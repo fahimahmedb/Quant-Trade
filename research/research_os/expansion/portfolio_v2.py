@@ -1,47 +1,234 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from itertools import combinations
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Tuple
+
 from research.research_os.scientific_store import sha256_json
 
 
+_UNKNOWN = {None, "", "UNKNOWN", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE"}
+
+# Structural weights are diagnostics only. They are deliberately not statistical
+# correlations and never consume returns. The three core economic-identity axes
+# (payer, mechanism, clock) are sufficient to force a same-exposure review when
+# all three are known and equal.
+_STRUCTURAL_WEIGHTS = {
+    "payer": 0.16,
+    "forced_constrained_actor": 0.12,
+    "mechanism": 0.18,
+    "instrument": 0.10,
+    "universe": 0.08,
+    "timing_clock": 0.16,
+    "horizon": 0.06,
+    "capacity_bottleneck": 0.04,
+    "cost_structure": 0.04,
+    "economic_exposure": 0.03,
+    "event_rule_dependency": 0.02,
+    "source_identity": 0.01,
+}
+
+
+def _is_known(value: Any) -> bool:
+    if isinstance(value, str):
+        return value not in _UNKNOWN
+    return value is not None
+
+
+def _stable_value(value: Any) -> Any:
+    if isinstance(value, set):
+        return sorted(value)
+    if isinstance(value, tuple):
+        return list(value)
+    if isinstance(value, list):
+        return sorted(value) if all(isinstance(v, str) for v in value) else value
+    return value
+
+
 def _eq_known(left: Any, right: Any) -> Any:
-    if left in (None, "", "UNKNOWN", "UNQUALIFIED", "NOT_QUALIFIED") or right in (None, "", "UNKNOWN", "UNQUALIFIED", "NOT_QUALIFIED"):
+    left = _stable_value(left)
+    right = _stable_value(right)
+    if not _is_known(left) or not _is_known(right):
         return None
     return 1.0 if left == right else 0.0
 
 
-def _jaccard(left: Iterable[str], right: Iterable[str]) -> float:
-    a, b = set(left or []), set(right or [])
-    if not a and not b:
-        return 0.0
-    return len(a & b) / len(a | b)
+def _candidate_from_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
+    basis = identity.get("documentary_basis")
+    if isinstance(basis, dict) and isinstance(basis.get("candidate"), dict):
+        return basis["candidate"]
+    return {}
+
+
+def _first_known(*choices: Tuple[Any, str]) -> Tuple[Any, str]:
+    for value, path in choices:
+        if _is_known(value):
+            return deepcopy(_stable_value(value)), path
+    return "UNKNOWN", "UNKNOWN"
+
+
+def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
+    """Project an identity into economic structure without inventing evidence.
+
+    Every field carries a trace back to the hypothesis/generation and, when
+    available, the candidate/source/dossier hashes that support the identity.
+    Missing support remains UNKNOWN. This function is read-only with respect to
+    the producer identity and candidate.
+    """
+    _verify_documentary_identity(identity)
+    candidate = _candidate_from_identity(identity)
+    provenance = identity.get("identity_provenance", {})
+    if not isinstance(provenance, dict):
+        provenance = {}
+
+    candidate_hash = provenance.get("candidate_hash")
+    if not _is_known(candidate_hash) and candidate:
+        candidate_hash = sha256_json(candidate)
+    if not _is_known(candidate_hash):
+        candidate_hash = "UNKNOWN"
+
+    source_hash = provenance.get("source_hash", "UNKNOWN")
+    dossier_hash = provenance.get("dossier_hash", "UNKNOWN")
+    source_refs = provenance.get("source_refs", [])
+
+    field_choices = {
+        "payer": (
+            (identity.get("payer"), "identity.payer"),
+            (candidate.get("payer"), "candidate.payer"),
+        ),
+        "forced_constrained_actor": (
+            (identity.get("forced_constrained_actor"), "identity.forced_constrained_actor"),
+            (identity.get("forced_actor"), "identity.forced_actor"),
+            (identity.get("constrained_actor"), "identity.constrained_actor"),
+            (candidate.get("forced_constrained_actor"), "candidate.forced_constrained_actor"),
+            (candidate.get("forced_actor"), "candidate.forced_actor"),
+            (candidate.get("constrained_actor"), "candidate.constrained_actor"),
+        ),
+        "mechanism": (
+            (identity.get("mechanism"), "identity.mechanism"),
+            (candidate.get("mechanism"), "candidate.mechanism"),
+        ),
+        "instrument": (
+            (identity.get("instrument"), "identity.instrument"),
+            (candidate.get("instrument"), "candidate.instrument"),
+            (identity.get("asset"), "identity.asset"),
+        ),
+        "universe": (
+            (identity.get("universe"), "identity.universe"),
+            (candidate.get("universe"), "candidate.universe"),
+        ),
+        "timing_clock": (
+            (identity.get("timing_clock"), "identity.timing_clock"),
+            (identity.get("clock"), "identity.clock"),
+            (candidate.get("timing_clock"), "candidate.timing_clock"),
+            (candidate.get("clock"), "candidate.clock"),
+        ),
+        "horizon": (
+            (identity.get("horizon"), "identity.horizon"),
+            (candidate.get("horizon"), "candidate.horizon"),
+        ),
+        "capacity_bottleneck": (
+            (identity.get("capacity_bottleneck"), "identity.capacity_bottleneck"),
+            (candidate.get("capacity_bottleneck"), "candidate.capacity_bottleneck"),
+            (identity.get("capacity"), "identity.capacity"),
+        ),
+        "cost_structure": (
+            (identity.get("cost_structure"), "identity.cost_structure"),
+            (candidate.get("cost_structure"), "candidate.cost_structure"),
+        ),
+        "economic_exposure": (
+            (identity.get("economic_exposure"), "identity.economic_exposure"),
+            (candidate.get("economic_exposure"), "candidate.economic_exposure"),
+            (identity.get("economic_tags"), "identity.economic_tags"),
+        ),
+        "event_rule_dependency": (
+            (identity.get("event_rule_dependency"), "identity.event_rule_dependency"),
+            (candidate.get("event_rule_dependency"), "candidate.event_rule_dependency"),
+        ),
+        "source_identity": (
+            (identity.get("source_identity"), "identity.source_identity"),
+            (source_hash, "identity_provenance.source_hash"),
+        ),
+    }
+
+    fields: Dict[str, Any] = {}
+    unknown_fields: List[str] = []
+    for name, choices in field_choices.items():
+        value, path = _first_known(*choices)
+        if not _is_known(value):
+            unknown_fields.append(name)
+        fields[name] = {
+            "value": value,
+            "status": "KNOWN" if _is_known(value) else "UNKNOWN",
+            "provenance": {
+                "hypothesis_id": identity.get("hypothesis_id", "UNKNOWN"),
+                "generation_id": identity.get("generation_id", "UNKNOWN"),
+                "candidate_hash": candidate_hash,
+                "source_hash": source_hash if _is_known(source_hash) else "UNKNOWN",
+                "dossier_hash": dossier_hash if _is_known(dossier_hash) else "UNKNOWN",
+                "identity_hash": sha256_json(identity),
+                "source_path": path,
+                "source_refs": deepcopy(source_refs) if isinstance(source_refs, list) else [],
+            },
+        }
+
+    return {
+        "hypothesis_id": identity.get("hypothesis_id", "UNKNOWN"),
+        "generation_id": identity.get("generation_id", "UNKNOWN"),
+        "fields": fields,
+        "unknown_fields": sorted(unknown_fields),
+        "identity_hash": sha256_json(identity),
+        "candidate_immutable": True,
+        "empirical_return_data_consumed": False,
+    }
 
 
 def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, Any]:
     _verify_documentary_identity(left)
     _verify_documentary_identity(right)
-    tag_overlap = _jaccard(left.get("economic_tags", []), right.get("economic_tags", []))
+    left_struct = structural_identity(left)
+    right_struct = structural_identity(right)
+
     dimensions = {
-        "mechanism": _eq_known(left.get("mechanism"), right.get("mechanism")),
-        "payer": _eq_known(left.get("payer"), right.get("payer")),
-        "asset": _eq_known(left.get("asset"), right.get("asset")),
-        "horizon": _eq_known(left.get("horizon"), right.get("horizon")),
-        "liquidity": _eq_known(left.get("liquidity"), right.get("liquidity")),
-        "tail_exposure": _eq_known(left.get("tail_exposure"), right.get("tail_exposure")),
-        "economic_tags": round(tag_overlap, 4) if left.get('economic_tags') and right.get('economic_tags') else None,
-    }
-    weights = {
-        "mechanism": 0.15,
-        "payer": 0.20,
-        "asset": 0.15,
-        "horizon": 0.10,
-        "liquidity": 0.05,
-        "tail_exposure": 0.10,
-        "economic_tags": 0.25,
+        key: _eq_known(
+            left_struct["fields"][key]["value"],
+            right_struct["fields"][key]["value"],
+        )
+        for key in _STRUCTURAL_WEIGHTS
     }
     unknown = sorted(key for key, value in dimensions.items() if value is None)
-    score = round(sum((dimensions[key] or 0) * weights[key] for key in dimensions), 4)
+    score = round(
+        sum((dimensions[key] or 0.0) * _STRUCTURAL_WEIGHTS[key] for key in dimensions),
+        4,
+    )
+    max_score = round(score + sum(_STRUCTURAL_WEIGHTS[key] for key in unknown), 4)
+
+    core = ("payer", "mechanism", "timing_clock")
+    core_known = all(dimensions[key] is not None for key in core)
+    core_same = core_known and all(dimensions[key] == 1.0 for key in core)
+    payer_and_mechanism_different = (
+        dimensions["payer"] == 0.0 and dimensions["mechanism"] == 0.0
+    )
+
+    if core_same:
+        classification = "HIGH_STRUCTURAL_OVERLAP_REVIEW"
+        review_required = True
+    elif payer_and_mechanism_different:
+        classification = "STRUCTURALLY_DISTINGUISHABLE"
+        review_required = False
+    elif not core_known:
+        classification = "UNKNOWN"
+        review_required = False
+    elif score >= 0.50:
+        classification = "HIGH_STRUCTURAL_OVERLAP_REVIEW"
+        review_required = True
+    elif score >= 0.25:
+        classification = "PARTIAL_STRUCTURAL_OVERLAP"
+        review_required = False
+    else:
+        classification = "STRUCTURALLY_DISTINGUISHABLE"
+        review_required = False
+
     return {
         "left": left["hypothesis_id"],
         "right": right["hypothesis_id"],
@@ -49,18 +236,31 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
         "dimensions": dimensions,
         "unknown_dimensions": unknown,
         "score_status": "PARTIAL" if unknown else "COMPLETE",
-        "overlap_score_interval": [score, round(score + sum(weights[k] for k in unknown), 4)],
+        "overlap_score_interval": [score, max_score],
         "identity_hashes": [sha256_json(left), sha256_json(right)],
-        "dossier_hashes": [item.get('identity_provenance', {}).get('dossier_hash') for item in (left, right)],
-        "classification": (
-            "INSUFFICIENT_EVIDENCE" if unknown else "HIGH_STRUCTURAL_OVERLAP"
-            if score >= 0.65
-            else "PARTIAL_STRUCTURAL_OVERLAP"
-            if score >= 0.30
-            else "STRUCTURALLY_DISTINCT_OR_UNKNOWN"
-        ),
+        "candidate_hashes": [
+            left_struct["fields"]["mechanism"]["provenance"]["candidate_hash"],
+            right_struct["fields"]["mechanism"]["provenance"]["candidate_hash"],
+        ],
+        "source_hashes": [
+            left_struct["fields"]["source_identity"]["provenance"]["source_hash"],
+            right_struct["fields"]["source_identity"]["provenance"]["source_hash"],
+        ],
+        "dossier_hashes": [
+            left_struct["fields"]["source_identity"]["provenance"]["dossier_hash"],
+            right_struct["fields"]["source_identity"]["provenance"]["dossier_hash"],
+        ],
+        "generations": [left.get("generation_id", "UNKNOWN"), right.get("generation_id", "UNKNOWN")],
+        "classification": classification,
+        "same_exposure_review_required": review_required,
+        "review_basis": list(core) if core_same else [],
+        "empirical_correlation": "UNAVAILABLE",
+        "empirical_correlation_reason": "NO_ADMISSIBLE_RETURN_DATA_CONSUMED",
+        # Compatibility with the previous v2 output. This remains explicitly
+        # non-empirical and must never be interpreted as a numeric correlation.
         "statistical_correlation": "UNAVAILABLE_BY_DESIGN",
         "return_series_consumed": False,
+        "structural_identity": {"left": left_struct, "right": right_struct},
     }
 
 
@@ -68,28 +268,38 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
     items = list(identities)
     for item in items:
         _verify_documentary_identity(item)
-    keys = [item['hypothesis_id'] for item in items]
+    keys = [item["hypothesis_id"] for item in items]
     if len(set(keys)) != len(keys):
         raise ValueError("portfolio requires one selected generation per hypothesis")
+
     pairwise: List[Dict[str, Any]] = [structural_pair(a, b) for a, b in combinations(items, 2)]
     novelty: Dict[str, Any] = {}
     for item in items:
-        overlaps = [
-            pair["structural_overlap_score"]
-            for pair in pairwise
-            if item["hypothesis_id"] in {pair["left"], pair["right"]}
-        ]
-        related = [p for p in pairwise if item['hypothesis_id'] in {p['left'], p['right']}]
-        novelty[item["hypothesis_id"]] = (
-            round(1.0 - max(overlaps), 4) if related and all(p['score_status'] == 'COMPLETE' for p in related)
-            else "UNKNOWN"
-        )
+        related = [p for p in pairwise if item["hypothesis_id"] in {p["left"], p["right"]}]
+        if not related or any(p["classification"] == "UNKNOWN" for p in related):
+            novelty[item["hypothesis_id"]] = "UNKNOWN"
+        elif all(p["score_status"] == "COMPLETE" for p in related):
+            novelty[item["hypothesis_id"]] = round(
+                1.0 - max(p["structural_overlap_score"] for p in related), 4
+            )
+        else:
+            novelty[item["hypothesis_id"]] = "UNKNOWN"
 
     return {
         "portfolio_engine": "portfolio-diagnostics.v2",
         "candidate_count": len(items),
+        "structural_identities": [structural_identity(item) for item in items],
         "pairwise": pairwise,
+        "same_exposure_review_pairs": [
+            {"left": p["left"], "right": p["right"], "basis": p["review_basis"]}
+            for p in pairwise
+            if p["same_exposure_review_required"]
+        ],
         "structural_novelty": novelty,
+        "empirical_correlation": "UNAVAILABLE",
+        "empirical_correlation_reason": "NO_ADMISSIBLE_RETURN_DATA_CONSUMED",
+        "marginal_portfolio_contribution": "NOT_ESTIMATED",
+        "marginal_portfolio_contribution_reason": "NO_ADMISSIBLE_RETURN_DATA_CONSUMED",
         "statistical_correlation_matrix": "UNAVAILABLE_BY_DESIGN",
         "covariance_matrix": "UNAVAILABLE_BY_DESIGN",
         "marginal_alpha_estimate": "NOT_ESTIMATED",
@@ -97,15 +307,20 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
         "capital_allocation_authorized": False,
         "position_sizing_authorized": False,
         "orders_authorized": False,
-        "claim": "Structural diversification diagnostics only; not an empirical portfolio optimizer.",
+        "real_capital_authorized": False,
+        "live_trading_authorized": False,
+        "portfolio_optimization_authorized": False,
+        "claim": "Structural economic-identity diagnostics only; no empirical portfolio value is estimated.",
+        "future_question": "Does this edge add economically distinct value?",
     }
 
 
 def _verify_documentary_identity(identity: Dict[str, Any]) -> None:
-    if identity.get('evidence_class') == 'DOCUMENTARY' or 'documentary_basis' in identity:
+    if identity.get("evidence_class") == "DOCUMENTARY" or "documentary_basis" in identity:
         from .final_shape import economic_identity_v1
-        basis = identity.get('documentary_basis')
-        if not isinstance(basis, dict) or basis.get('synthetic_only') is not False:
-            raise ValueError('documentary identity lacks its producer basis')
+
+        basis = identity.get("documentary_basis")
+        if not isinstance(basis, dict) or basis.get("synthetic_only") is not False:
+            raise ValueError("documentary identity lacks its producer basis")
         if identity != economic_identity_v1(basis, {}):
-            raise ValueError('documentary identity differs from reconstructed dossier support')
+            raise ValueError("documentary identity differs from reconstructed dossier support")
