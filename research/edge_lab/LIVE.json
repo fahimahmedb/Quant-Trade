@@ -1,8 +1,8 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-15T13:32:21.076721+00:00",
+  "generated_at": "2026-10-15T13:32:43.129415+00:00",
   "state_updated_at": "2026-10-15T13:31:05.447372+00:00",
-  "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
+  "operational_status": "WORKING",
   "paused": false,
   "scheduler": {
     "enabled": true,
@@ -20,11 +20,17 @@
     "meaning": "Observed scheduled sessions prove passages, not permanent daemon uptime."
   },
   "active_task": {
-    "id": "build:treasury-auction-zf:okx-l2-access-clock",
-    "status": "RECOVERY_NEEDED",
-    "claim_id": "deedea6791580c1dd06e3caa594b8f19a56a6b9f3c744f445b65bf8905b2b768",
-    "question": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
-    "next": null
+    "id": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+    "status": "CLAIMED",
+    "claim_id": "owner-interactive-20261015-a1",
+    "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
+    "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
+    "claimed_at": "2026-10-15T13:23:00+00:00",
+    "source_scope": [
+      "FRED VIXCLS daily observations",
+      "FRED SP500 daily observations"
+    ],
+    "authority": "durable-claim-receipt"
   },
   "last_completed": {
     "session_id": "owner-v2-repair-20261011",
@@ -43,7 +49,7 @@
   "planning_status": "RECOVERY_NEEDED",
   "research_options_pending": 0,
   "research_options_consumed": 1,
-  "next_action": "Les archives L2 OKX offrent-elles un accès sans compte ni paiement, des droits de recherche, une horloge et des bornes de fichiers documentées ?",
+  "next_action": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
   "next_due_at": null,
   "real_capital_authorized": false,
   "live_trading_authorized": false,
@@ -67,11 +73,25 @@
   },
   "discovery": {
     "lane": "DISCOVERY",
-    "status": "IDLE_NO_ADMISSIBLE_WORK",
+    "status": "WORKING",
     "paused": false,
     "groups": {
       "ready": [],
-      "running": [],
+      "running": [
+        {
+          "id": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+          "status": "CLAIMED",
+          "claim_id": "owner-interactive-20261015-a1",
+          "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
+          "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
+          "claimed_at": "2026-10-15T13:23:00+00:00",
+          "source_scope": [
+            "FRED VIXCLS daily observations",
+            "FRED SP500 daily observations"
+          ],
+          "authority": "durable-claim-receipt"
+        }
+      ],
       "recovery": [],
       "parked": [
         {
@@ -1510,21 +1530,47 @@
     },
     "counts": {
       "ready": 0,
-      "running": 0,
+      "running": 1,
       "recovery": 0,
       "parked": 9,
       "finished": 2
     },
-    "active_lease": null,
+    "active_lease": {
+      "id": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+      "status": "CLAIMED",
+      "claim_id": "owner-interactive-20261015-a1",
+      "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
+      "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
+      "claimed_at": "2026-10-15T13:23:00+00:00",
+      "source_scope": [
+        "FRED VIXCLS daily observations",
+        "FRED SP500 daily observations"
+      ],
+      "authority": "durable-claim-receipt"
+    },
     "next": null,
     "next_work": null,
     "economic_access_authorized": false,
-    "edge_validated": false
+    "edge_validated": false,
+    "active_external_claim": {
+      "id": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+      "status": "CLAIMED",
+      "claim_id": "owner-interactive-20261015-a1",
+      "question": "Discovery V4.2 — claim économique publié avant lecture des outcomes",
+      "next": "Exécuter une seule fois le contrat pré-déclaré, puis publier le verdict typé.",
+      "claimed_at": "2026-10-15T13:23:00+00:00",
+      "source_scope": [
+        "FRED VIXCLS daily observations",
+        "FRED SP500 daily observations"
+      ],
+      "authority": "durable-claim-receipt"
+    },
+    "telemetry_overlay": "UNRESOLVED_DURABLE_DISCOVERY_CLAIM"
   },
   "telemetry": {
-    "source_head": "bfdff60251fa5a8ea795e3f8356a48ed5628f861",
-    "generated_at": "2026-10-15T13:32:21.076721+00:00",
-    "overlay": "NONE",
+    "source_head": "f6882ce7bd7e6dff1d1f85ba4e1f48af6a13025e",
+    "generated_at": "2026-10-15T13:32:43.129415+00:00",
+    "overlay": "UNRESOLVED_DURABLE_DISCOVERY_CLAIM",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
   }
