@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import hashlib
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -114,9 +115,14 @@ def run_primary_documentary_build(base: Path, checkpoint_dir: Path):
     result = runner.execute(plan, inputs, checkpoint_dir / 'fact_transforms')
     if result != runner.execute(plan, inputs, checkpoint_dir / 'fact_transforms'):
         raise ValueError('fact transform replay differs')
+    pipeline_paths = [Path(__file__).resolve()] + [base / 'expansion' / name for name in (
+        'canonical_spine.py', 'canonical_depth_v1.py', 'validation_v2.py', 'final_shape.py', 'portfolio_v2.py')]
+    pipeline_pins = {str(path.resolve().relative_to(base.resolve())):hashlib.sha256(path.read_bytes()).hexdigest()
+                     for path in pipeline_paths}
     return {
         'build_profile':'primary-documentary-build.v1', 'evidence_class':'DOCUMENTARY',
         'scope':'OFFLINE_BUILD_PROOF_NOT_SCIENTIFIC_EDGE_VALIDATION',
+        'pipeline_code_pins':pipeline_pins, 'pipeline_code_hash':sha256_json(pipeline_pins),
         'candidates':summaries, 'economic_identities':identities,
         'portfolio':portfolio_diagnostics_v2(identities),
         'fact_transform_protocol':protocol, 'fact_transform_plan':plan,
