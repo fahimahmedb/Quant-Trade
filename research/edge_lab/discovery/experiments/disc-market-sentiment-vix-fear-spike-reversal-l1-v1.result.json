@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "experiment_id": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+  "claim": "research/edge_lab/discovery/claims/disc-market-sentiment-vix-fear-spike-reversal-l1-v1.owner-interactive-20261015-a1.json",
+  "completed_at_date": "2026-10-15",
+  "typed_verdict": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_eligible": false,
+  "economic_look_opened": true,
+  "economic_payoffs_computed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "first_broken_transition": "FROZEN_FRED_SERIES_TO_REPRODUCIBLE_BULK_MACHINE_SAMPLE_IN_CURRENT_RUNTIME",
+  "observed_fact": "After the claim was durably pushed, both frozen FRED series were confirmed publicly available: VIXCLS table data and SP500 table data. The FRED static table pages expose historical observations, but the bounded web environment did not expose the graph CSV download route as a machine-readable bulk payload, and the container runtime had no network DNS path to FRED. Reconstructing the rolling 252-observation VIX q95 trigger set and then joining exact SP500 entry/exit closes by manually transcribing thousands of table cells would introduce avoidable transcription/selection risk. The run therefore stops before computing triggers or joined returns rather than silently changing source or methodology.",
+  "source_status": {
+    "fred_vixcls": {
+      "route": "https://fred.stlouisfed.org/data/VIXCLS.txt",
+      "public_table_visible": true,
+      "series_identity_verified": true,
+      "bulk_machine_download_in_current_runtime": false,
+      "notes": "FRED table confirms daily close history and source CBOE; selected portions of raw signal rows were visible after claim."
+    },
+    "fred_sp500": {
+      "route": "https://fred.stlouisfed.org/data/SP500.txt",
+      "public_table_visible": true,
+      "series_identity_verified": true,
+      "bulk_machine_download_in_current_runtime": false,
+      "notes": "FRED table confirms daily S&P 500 close history; generic rows/metadata were visible after claim, but no trigger-date return join was computed."
+    },
+    "fred_graph_csv_attempt": {
+      "status": "NOT_ACCESSIBLE_VIA_CURRENT_WEB_TOOL",
+      "container_status": "DNS_UNAVAILABLE",
+      "source_substitution_attempted": false
+    }
+  },
+  "exposure_accounting": {
+    "claim_pushed_before_data_access": true,
+    "vix_signal_rows_seen_after_claim": true,
+    "generic_sp500_rows_seen_after_claim": true,
+    "rolling_q95_thresholds_computed": false,
+    "accepted_trigger_set_computed": false,
+    "trigger_to_sp500_pairs_joined": false,
+    "event_returns_computed": false,
+    "aggregate_economics_computed": false,
+    "adversarial_check_run": false,
+    "economic_look_count_increment": 1
+  },
+  "decision_reason": "The frozen expression requires exact rolling-252 linear q95 thresholds, first-entry trigger logic, non-overlap and exact FRED SP500 close joins. Manual reconstruction from browser table snippets is not an acceptable substitute for reproducible bulk acquisition. The protocol forbids alternate volatility/index sources, ETFs, futures or third-party market-data providers. PARK_DATA is therefore mandatory before any economic verdict.",
+  "failed_criteria": [
+    "No reproducible bulk machine payload for the full frozen VIX warm-up plus 2018-2024 sample in the current runtime.",
+    "No reproducible bulk machine payload for the exact SP500 join sample in the current runtime.",
+    "No exact trigger population or economic event returns can be safely computed without manual transcription."
+  ],
+  "continuation_rule": "Do not re-declare or retune this expression. A future recovery may continue this exact already-claimed execution only if the same frozen FRED VIXCLS and SP500 series become bulk-machine-retrievable in a permitted runtime, with all current exposure acknowledged and no rule/source/window change. It is a recovery of an incomplete execution, not a fresh trial. Otherwise remain PARK_DATA.",
+  "next_action": "Release the global economic-look slot. Continue documentary/prospective research on distinct admissible mechanisms; do not use manually copied VIX/SP500 snippets to approximate the result.",
+  "inference_ceiling": [
+    "No conclusion on fear-spike reversal economics",
+    "No KILL/PROMOTE verdict",
+    "No alpha/edge claim",
+    "No executable or live-trading claim"
+  ]
+}
