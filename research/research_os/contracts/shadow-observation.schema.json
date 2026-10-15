@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ShadowObservation",
+  "type": "object",
+  "required": ["observation_id","prediction_id","prediction_version","observed_at","outcome_status","prospective_integrity","capital_authority"],
+  "properties": {
+    "observation_id": {"type":"string","minLength":1},
+    "prediction_id": {"type":"string","minLength":1},
+    "prediction_version": {"type":"integer","minimum":1},
+    "observed_at": {"type":"string","minLength":1},
+    "outcome_status": {"enum":["PENDING","REALIZED","INVALIDATED","BLOCKED"]},
+    "outcome_value": {"type":["number","string","null"]},
+    "source_ref": {"type":["string","null"]},
+    "prospective_integrity": {"enum":["PASS","FAIL","NOT_ASSESSED"]},
+    "decay_status": {"enum":["NOT_ASSESSED","STABLE","WEAKENING","DECAYED","INCONCLUSIVE"]},
+    "capital_authority": {"const":"NONE"}
+  },
+  "additionalProperties": false
+}
