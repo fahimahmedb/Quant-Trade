@@ -1,6 +1,6 @@
 {
   "lot_id": "BUILD-DOCUMENTARY-DEPTH-002",
-  "status": "IN_PROGRESS_FINAL_CI",
+  "status": "COMPLETE",
   "observed_head_before": "52d87985aa50e47cb8d1911573cb587d93964443",
   "implementation_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
   "remote_head_verified": "df6b77041a8513d568274dabfadb0438eccc1021",
@@ -45,8 +45,8 @@
     "general_python_utc": {
       "count": 539,
       "result": "PASS",
-      "code_sha": "cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d",
-      "note": "Final source-wrapper guard is covered by Research OS tests; exact final-head general CI pending."
+      "code_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "evidence": "SEC P0 exact-head CI run 38787222141 Full unit suite SUCCESS"
     },
     "research_os_node": {
       "count": 11,
@@ -77,14 +77,6 @@
       "conclusion": "success",
       "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222170"
-    },
-    {
-      "id": 38787222141,
-      "name": "SEC P0 pre-t0 gate",
-      "status": "in_progress",
-      "conclusion": null,
-      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222141"
     },
     {
       "id": 38787222105,
@@ -125,6 +117,14 @@
       "conclusion": "success",
       "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222173"
+    },
+    {
+      "id": 38787222141,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "df6b77041a8513d568274dabfadb0438eccc1021",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222141"
     }
   ],
   "limitations": [
@@ -136,11 +136,61 @@
     "No eligible flow population, actual funding pressure, payer, tradable horizon, costs or capacity qualified.",
     "Builder regression tests and deterministic validators are not independent scientific validation."
   ],
-  "blocker": "Exact implementation-head SEC P0 CI not yet terminal; all seven Research OS gates green.",
-  "exact_reopen_condition": "Successful terminal run 38787222141, or diagnose its concrete failing step without reopening unrelated completed lots.",
-  "next_admissible_lot": "BUILD-QUALIFICATION-002",
+  "blocker": null,
+  "exact_reopen_condition": "This finite build queue is complete. Further scientific progress needs admissible source/applicability/implementability evidence and an independently reviewed, separately authorized scope; a green build does not supply that authority.",
+  "next_admissible_lot": null,
   "economic_experiment_authorized": false,
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
-  "live_trading_authorized": false
+  "live_trading_authorized": false,
+  "remaining_scientific_blockers": [
+    "All three canonical candidates remain BLOCK/NOT_READY.",
+    "No eligible directional flow universe, economic payer, expression, costs or capacity qualified.",
+    "No independent scientific validation, economic experiment or prospective observation performed."
+  ],
+  "changed_files": [
+    "research/research_os/architecture/work_receipts/PRIMARY_DOCUMENTARY_BUILD_20261015.json",
+    "research/research_os/architecture/work_receipts/PRIMARY_DOCUMENTARY_BUILD_FINAL_20261015.json",
+    "research/research_os/engines/protocol.py",
+    "research/research_os/expansion/engine_dossiers_v1.py",
+    "research/research_os/expansion/portfolio_v2.py",
+    "research/research_os/expansion/source_adapters_v1.py",
+    "research/research_os/expansion/validation_v2.py",
+    "research/research_os/simulations/primary_documentary_build.py",
+    "research/research_os/sources/apple_dividend_announcements.json",
+    "research/research_os/sources/sec_t1_staff_faq.json",
+    "research/research_os/tests/test_primary_documentary_build.py",
+    "research/research_os/tests/test_primary_event_admission.py",
+    "research/research_os/tests/test_primary_flow_and_challenge.py"
+  ],
+  "validation_commands": [
+    {
+      "command": "python -m unittest discover -s research/research_os/tests -p 'test_*.py' -q",
+      "result": "PASS, 123 tests"
+    },
+    {
+      "command": "env TZ=UTC PYTHONPATH=src python -m unittest discover -s tests -q",
+      "result": "PASS, 539 tests locally at cdf3e4d; Full unit suite SUCCESS in final-head CI 38787222141"
+    },
+    {
+      "command": "node --test research/research_os/tests/architecture-simulation.test.mjs research/research_os/tests/contract-smoke.test.mjs research/research_os/tests/multi-role-simulation.test.mjs",
+      "result": "PASS, 11 tests"
+    },
+    {
+      "command": "python scripts/generate_schemas.py --check",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "command": "Draft202012Validator manual check with isolated jsonschema install",
+      "result": "PASS, three actual documentary outputs accepted and synthetic relabel rejected"
+    },
+    {
+      "command": "python -m research.research_os.simulations.primary_documentary_build --checkpoint-dir /tmp/primary-documentary-build-final-20261015 --output research/research_os/architecture/work_receipts/PRIMARY_DOCUMENTARY_BUILD_FINAL_20261015.json",
+      "result": "PASS, three lineages replay IDENTICAL; fact-only batch EXECUTED_DRY_RUN; all Forward NOT_READY"
+    }
+  ]
 }

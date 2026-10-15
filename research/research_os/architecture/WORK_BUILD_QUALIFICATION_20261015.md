@@ -5,8 +5,8 @@ Branch: `builder/research-os-aggressive-architecture-20261015`
 Continuation checkpoint: `52d87985aa50e47cb8d1911573cb587d93964443`
 Previous qualified code: `971bd339f56c9683bd362fa85c38f17177de48f5`
 
-Qualification: AWAITING_EXACT_HEAD_GENERAL_CI. All seven Research OS gates on the
-new code candidate succeeded; SEC P0 run 38787222141 is still running. This later
+Qualification: QUALIFIED_FOR_BUILD_REVIEW. All eight CI gates on the exact code
+candidate completed successfully, including SEC P0 run 38787222141. This later
 metadata commit reports checks on the implementation SHA, not its own SHA.
 
 ## Result and evidence scope
@@ -25,12 +25,12 @@ Fundamental work and completed infrastructure were reused.
 | B05 | Three actual documentary identities with source/candidate/identity hashes; same Apple issuer and equity-beta thesis tags visible | Unqualified horizon, payer, capacity and exposures remain UNKNOWN; no returns, empirical correlation, optimization or allocation |
 | B06 | Existing immutable Forward guards preserved | Prospective observation and empirical decay remain blocked by authority |
 | B07 | Three canonical lineages replay identically, Legacy first, journal verified, all Forward registrations NOT_READY | No live ingress, economic experiment, production merge or activation |
-| B08 | Isolated review candidate, captured facts and durable resumption state | Final general exact-head CI still pending |
+| B08 | Isolated review candidate, captured facts and durable resumption state | Code/contract/replay qualification; no scientific promotion, merge or activation |
 
 ## Verification and artifacts
 
 - Research OS Python: 123 tests PASS on the final code tree.
-- General Python: 539 tests PASS under TZ=UTC at predecessor `cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d`; final-head CI pending.
+- General Python: 539 tests PASS locally under TZ=UTC at predecessor `cdf3e4d9f45c766e5ba6e4d532b2d56875eb449d`; Full unit suite also SUCCESS in final-head SEC P0 run 38787222141.
 - Research OS Node: 11 tests PASS.
 - Auxiliary Draft 2020-12 engine schema: all three actual documentary adapters accepted; synthetic relabel rejected.
 - Six common contract files remain byte-identical to `6130d6c4f97f76346760a5309ecc1efd32119eb6`.
@@ -54,9 +54,12 @@ rewritten as evidence for a newer commit.
 
 ## Resume and authority
 
-The next action is only to finish BUILD-QUALIFICATION-002 by inspecting SEC P0 run
-38787222141 on the exact implementation SHA. Do not repeat the completed Event,
-Flow, challenge or portfolio lots. No additional build framework was introduced.
+The finite continuation queue is complete. Event, Flow, challenge, portfolio and
+qualification tasks have durable COMPLETE receipts; prospective activation remains
+BLOCKED_AUTHORITY. Do not repeat completed lots on resumption. Further source and
+implementability depth, scientific review and production integration remain
+distinct work with their own evidence and authority requirements. No additional
+build framework was introduced.
 
 All four scientific/capital/live authority flags remain FALSE. All three actual
 canonical candidates remain BLOCK / NOT_READY. Source availability is bounded by
