@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quant-trade://research-os/ResearchTask",
+  "title": "ResearchTask",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id","task_type","required_capability","status","priority","inputs","allowed_actions","forbidden_actions","success_condition","authority","lease","created_at"],
+  "properties": {
+    "task_id": {"type":"string","minLength":1},
+    "task_type": {"type":"string","minLength":1},
+    "required_capability": {"type":"string","minLength":1},
+    "status": {"enum":["READY","CLAIMED","BLOCKED","COMPLETE","FAILED","CANCELLED"]},
+    "priority": {"type":"integer","minimum":0},
+    "inputs": {"type":"object"},
+    "allowed_actions": {"type":"array","items":{"type":"string"},"minItems":1},
+    "forbidden_actions": {"type":"array","items":{"type":"string"},"minItems":1},
+    "success_condition": {"type":"string","minLength":1},
+    "authority": {"type":"object","required":["scope","economic_experiment_authorized","prospective_observation_authorized","real_capital_authorized","live_trading_authorized"],"properties":{"scope":{"type":"string"},"economic_experiment_authorized":{"type":"boolean"},"prospective_observation_authorized":{"type":"boolean"},"real_capital_authorized":{"type":"boolean"},"live_trading_authorized":{"type":"boolean"}},"additionalProperties":true},
+    "lease": {"type":"object","required":["generation","owner","claimed_at","expires_at"],"properties":{"generation":{"type":"integer","minimum":0},"owner":{"type":["string","null"]},"claimed_at":{"type":["string","null"]},"expires_at":{"type":["string","null"]}},"additionalProperties":false},
+    "created_at": {"type":"string"},
+    "updated_at": {"type":["string","null"]},
+    "completion": {"type":["object","null"]}
+  }
+}
