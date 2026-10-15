@@ -3,8 +3,8 @@
   "repository": "fahimahmedb/Quant-Trade",
   "branch": "builder/research-os-aggressive-architecture-20261015",
   "code_candidate_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-  "qualified_code_sha": null,
-  "qualification_status": "RESEARCH_OS_CI_PASS_GENERAL_GATE_PENDING",
+  "qualified_code_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+  "qualification_status": "QUALIFIED_FOR_BUILD_REVIEW",
   "lease": {
     "generation": 0,
     "owner": null,
@@ -33,7 +33,11 @@
       "status": "READY",
       "priority": 100,
       "depends_on": [],
-      "scope": "Qualify one primary public event/announcement provider behind EventDocumentEngine. Capture numeric/document provenance, period/unit and actual availability; add event-specific disconfirmation and negative tests. Preserve the distinction between accounting/event facts, consensus surprise and market outcomes. Do not present a current capture as historical PIT."
+      "scope": "Qualify one primary public event/announcement provider behind EventDocumentEngine. Capture numeric/document provenance, period/unit and actual availability; add event-specific disconfirmation and negative tests. Preserve the distinction between accounting/event facts, consensus surprise and market outcomes. Do not present a current capture as historical PIT.",
+      "inputs": [
+        "research/research_os/sources/apple_dividend_announcements_capture.json"
+      ],
+      "input_status": "CAPTURED_NOT_YET_ADMITTED"
     },
     {
       "id": "BUILD-FLOW-PRIMARY-001",
@@ -128,14 +132,6 @@
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852929"
     },
     {
-      "id": 38781852893,
-      "name": "SEC P0 pre-t0 gate",
-      "status": "in_progress",
-      "conclusion": null,
-      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
-      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852893"
-    },
-    {
       "id": 38781852904,
       "name": "Research OS canonical spine CI",
       "status": "completed",
@@ -174,8 +170,36 @@
       "conclusion": "success",
       "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852937"
+    },
+    {
+      "id": 38781852893,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852893"
     }
   ],
-  "qualification_next_action": "Check SEC P0 pre-t0 gate run 38781852893 on code candidate 971bd339f56c9683bd362fa85c38f17177de48f5; do not substitute an older run.",
-  "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified."
+  "qualification_next_action": "Continue BUILD-EVENT-PRIMARY-001 in an active Work run, or arm the prepared relay after an additional scheduled-task slot is available. No production merge or activation is authorized.",
+  "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified.",
+  "validation": {
+    "research_os_python": {
+      "count": 107,
+      "result": "PASS"
+    },
+    "general_python_utc": {
+      "count": 539,
+      "result": "PASS"
+    },
+    "research_os_node": {
+      "count": 11,
+      "result": "PASS"
+    },
+    "auxiliary_json_schema": {
+      "result": "PASS",
+      "both_modes_and_relabel_negatives": true
+    },
+    "six_canonical_contract_files_unchanged": true
+  },
+  "review_compare_url": "https://github.com/fahimahmedb/Quant-Trade/compare/62bf644531bc38cb62cc8f5d35b392e9f7649d5f...971bd339f56c9683bd362fa85c38f17177de48f5"
 }
