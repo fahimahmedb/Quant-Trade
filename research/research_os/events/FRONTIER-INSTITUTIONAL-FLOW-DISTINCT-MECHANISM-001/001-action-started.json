@@ -1,0 +1,11 @@
+{
+  "event_id":"FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-001-g1-e001",
+  "session_id":"market-discovery-20261015T210019Z",
+  "worker_id":"chatgpt-scheduled-market-discovery",
+  "action_id":"FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-001-g1",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-15T21:00:19Z",
+  "payload":{"task_id":"FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-001","lane":"market_discovery","capability":"institutional_flows","queue_state":"WORKING","authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}}
+}
