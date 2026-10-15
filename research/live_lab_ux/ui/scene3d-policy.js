@@ -5,24 +5,25 @@ import {ACTIVITY,PROGRESS,ROLES,progressRatio} from '../core/model.js';
  * They never become "active" unless explicit event-backed state references them.
  */
 export const ARCHITECTURE_NODES=Object.freeze([
-  {id:'discovery',label:'QUANT / MECHANISMS',subtitle:'Discovery',position:[-6.8,0,-4.2]},
-  {id:'fundamental',label:'FUNDAMENTAL / EVENTS',subtitle:'Discovery',position:[0,0,-4.8]},
-  {id:'flows',label:'FLOWS / REGULATORY',subtitle:'Discovery',position:[6.8,0,-4.2]},
-  {id:'evidence',label:'EVIDENCE / DATA',subtitle:'Proof',position:[-7.6,0,0]},
-  {id:'challenge',label:'VALIDATOR / RED TEAM',subtitle:'Challenge',position:[7.6,0,0]},
-  {id:'identity',label:'ECONOMIC IDENTITY',subtitle:'Integration',position:[-6.5,0,4.5]},
-  {id:'portfolio',label:'PORTFOLIO MAP',subtitle:'Integration',position:[0,0,5.0]},
-  {id:'forward',label:'FORWARD FARM',subtitle:'Prospective',position:[6.5,0,4.5]},
-  {id:'decay',label:'DECAY MONITOR',subtitle:'Prospective',position:[0,0,7.3]},
+ {id:'discovery',label:'RESEARCH / MECHANISMS',position:[-10,1.05,-7]},
+ {id:'documents',label:'EVENT / DOCUMENTS',position:[-4,1.05,-12]},
+ {id:'fundamental',label:'FUNDAMENTAL',position:[4,1.05,-12]},
+ {id:'flows',label:'FLOWS / REGULATORY',position:[11,1.05,-8]},
+ {id:'evidence',label:'DATA / EVIDENCE',position:[-13,.4,.5]},
+ {id:'challenge',label:'VALIDATION / RED TEAM',position:[11,.4,-1]},
+ {id:'decay',label:'EDGE ARCHAEOLOGY / DECAY',position:[-12,.4,7]},
+ {id:'implement',label:'IMPLEMENTABILITY',position:[9,.4,6]},
+ {id:'experiment',label:'EXPERIMENT INFRASTRUCTURE',position:[3,.4,11]},
+ {id:'identity',label:'ECONOMIC IDENTITY',position:[-6,.4,8]},
+ {id:'portfolio',label:'PORTFOLIO / INTEGRATION',position:[-3,.4,13]},
 ]);
-
 export const ROLE_STATIONS=Object.freeze({
-  researcher:{position:[-4.8,0.55,-1.9],accent:[0.33,0.64,1.0]},
-  builder:{position:[0,0.55,-2.6],accent:[0.45,0.78,1.0]},
-  data:{position:[4.8,0.55,-1.9],accent:[0.45,0.91,0.72]},
-  auditor:{position:[-4.8,0.55,2.2],accent:[1.0,0.39,0.50]},
-  manager:{position:[0,0.55,2.8],accent:[0.76,0.67,1.0]},
-  worker:{position:[4.8,0.55,2.2],accent:[0.66,0.72,0.86]},
+ researcher:{position:[-9.4,1.05,-5.4],angle:.35,accent:[.72,.77,.78]},
+ builder:{position:[7.6,.4,6.65],angle:-1.15,accent:[.72,.77,.78]},
+ data:{position:[-11.7,.4,1.4],angle:.95,accent:[.72,.77,.78]},
+ auditor:{position:[9.7,.4,0],angle:-.9,accent:[.72,.77,.78]},
+ manager:{position:[3,.4,9.4],angle:Math.PI,accent:[.72,.77,.78]},
+ worker:{position:[-4.45,.4,7.8],angle:1.7,accent:[.72,.77,.78]},
 });
 
 const STATUS_COLOR=Object.freeze({IDLE:[0.45,0.52,0.66],WORKING:[0.31,0.91,0.67],BLOCKED:[1.0,0.39,0.50]});
@@ -43,6 +44,7 @@ export function deriveAgentVisual(agent){
     role:agent.role,
     label:escapeSceneText(agent.label||ROLES[agent.role]||agent.role||'Worker'),
     position:positionForAgent(agent),
+    angle:station?.angle||0,
     accent:station?.accent||[0.66,0.72,0.86],
     statusColor:stale?[0.49,0.42,0.48]:(STATUS_COLOR[agent.state]||STATUS_COLOR.IDLE),
     state:stale?'STALE':agent.state,

@@ -1,0 +1,19 @@
+from pathlib import Path
+shell='''<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#102031"><title>Quant · Research Observatory</title><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./ui/scene3d.css"></head>
+<body><main class="app-shell">
+ <div class="camera" data-camera><div class="scene3d-stage"><canvas data-scene3d-canvas aria-label="Interactive architectural research laboratory. Drag to orbit, pinch to zoom, select an agent to explore their station."></canvas></div><div class="scene3d-label-layer" data-scene3d-labels></div></div>
+ <header class="hud" aria-label="Factual laboratory status"><div class="status-module stream"><span class="status-dot"></span><strong data-connectivity>DISCONNECTED</strong>REPLAY_BADGE</div><div class="status-module clock"><span>Last event</span><strong data-clock>—</strong></div><div class="status-module economic"><span>Economic Look</span><strong data-economic-status>FREE</strong></div></header>
+ <div class="notice" data-warning hidden></div><div class="sr-only" data-resume-guard hidden>Waiting for a new business event to resume animation.</div>
+ <div class="signature" aria-hidden="true"><i>Q</i><span>QUANT<span>RESEARCH OBSERVATORY</span></span></div>
+ <nav class="camera-controls" aria-label="Explore laboratory"><button data-zoom-out aria-label="Zoom out">−</button><button data-camera-reset aria-label="Return to architectural view">⌂</button><button data-zoom-in aria-label="Zoom in">+</button></nav>
+ <p class="explore-hint">Drag to explore <span>·</span> Select an agent to approach</p>
+ REPLAY_CONTROLS
+ <aside class="agent-context" data-agent-context hidden aria-live="polite"><button class="close-context" data-detail-close aria-label="Return to laboratory">×</button><small data-context-state></small><h1 data-context-role></h1><p data-context-task></p><button class="text-button" data-open-details>View factual details <span>↗</span></button></aside>
+ <div hidden><div data-world-agents></div><span data-role-count></span><div data-result-wall></div></div>
+</main>
+<dialog class="detail-sheet" data-detail-sheet aria-label="Factual worker details"><button class="sheet-close" data-sheet-close aria-label="Close details">×</button><small>EVENT-BACKED IDENTITY</small><h2 data-detail-role></h2><strong data-detail-state></strong><dl class="detail-grid"><div><dt>Current task</dt><dd data-detail-task></dd></div><div><dt>Current step</dt><dd data-detail-step></dd></div><div><dt>Known progress</dt><dd data-detail-progress></dd></div><div><dt>Next action</dt><dd data-detail-next></dd></div><div><dt>Last real action</dt><dd data-detail-last></dd></div></dl><div class="history-row"><span>Last hour <strong data-detail-hour></strong></span><span>Last 24 hours <strong data-detail-today></strong></span></div><div class="evidence"><small>Evidence / references</small><div data-detail-evidence></div></div><footer>Real capital · FALSE &nbsp; Live trading · FALSE &nbsp; Paid USD · 0</footer></dialog>
+<script type="module" src="./SCRIPT"></script></body></html>'''
+replay='''<details class="replay-controls"><summary>Visual review · synthetic</summary><p>Isolated UX fixtures. No live research evidence.</p><select data-scenario aria-label="Review scenario"></select><div><button data-next-event>Next event</button><button data-play-all>Apply remaining</button><button data-reset>Reset</button></div><small data-remaining></small><span data-fixture-warning hidden></span></details>'''
+for name,script in [('index.html','app.js'),('live.html','live-app.js')]:
+ Path(name).write_text(shell.replace('SCRIPT',script).replace('REPLAY_BADGE','<span class="replay-badge" data-replay-badge>SYNTHETIC REVIEW</span>' if name=='index.html' else '').replace('REPLAY_CONTROLS',replay if name=='index.html' else ''))
