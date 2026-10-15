@@ -2,7 +2,7 @@
   "task_id": "PROD-EVENTDOC-001",
   "task_type": "EVENT_DOCUMENT",
   "required_capability": "event_document",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 90,
   "inputs": {
     "legacy_gate_required": true,
@@ -36,6 +36,16 @@
     "expires_at": "2026-10-15T13:32:00Z"
   },
   "created_at": "2026-10-15T14:25:00+02:00",
-  "updated_at": "2026-10-15T12:42:00Z",
-  "completion": null
+  "updated_at": "2026-10-15T12:45:02Z",
+  "completion": {
+    "completed_at": "2026-10-15T12:45:02Z",
+    "receipt": "research/research_os/receipts/PROD-EVENTDOC-001/PROD-EVENTDOC-001-g1.json",
+    "artifacts": [
+      "research/research_os/hypotheses/EVENT-DUEBILL-LARGE-DIST-001.json",
+      "research/research_os/tasks/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001.json",
+      "research/research_os/events/PROD-EVENTDOC-001/001-action-started.json",
+      "research/research_os/events/PROD-EVENTDOC-001/002-action-completed.json"
+    ],
+    "result": "FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION"
+  }
 }
