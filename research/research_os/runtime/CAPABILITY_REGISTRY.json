@@ -27,6 +27,6 @@
     {"capability_id":"portfolio_map","role":"Portfolio Map","production_enabled":true,"allowed_outputs":["economic identity overlap","factor overlap","marginal portfolio value assessment"],"forbidden":["position sizing","order generation","capital allocation"]},
     {"capability_id":"shadow_readiness","role":"Shadow Readiness","production_enabled":true,"allowed_outputs":["prospective eligibility assessment","draft shadow contract","authority blocker"],"forbidden":["start prospective observation without authority","capital action"]},
     {"capability_id":"learning_telemetry","role":"Learning Telemetry","production_enabled":true,"allowed_outputs":["research process telemetry","attempt/gap metrics","duplicate detection metrics"],"forbidden":["mechanical alpha allocation","invent effective trials"]},
-    {"capability_id":"control_integrator","role":"Control Integrator","production_enabled":true,"allowed_outputs":["queue reconciliation","handoff integrity","deadlock detection"],"forbidden":["economic verdict override","capital action"]}
+    {"capability_id":"control_integrator","role":"Control Integrator / Queue Steward","production_enabled":true,"allowed_outputs":["queue reconciliation","handoff integrity","deadlock detection","one deterministic frontier-derived READY task when global queue is empty","queue refill receipt/event"],"forbidden":["free-form task invention","producer research during refill wake","multiple refill tasks per wake","economic verdict override","economic outcome access","capital action"]}
   ]
 }
