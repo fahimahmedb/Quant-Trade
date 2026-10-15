@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "recorded_at": "2026-10-15T13:37:00Z",
+  "recorded_at": "2026-10-15T13:23:00Z",
   "branch": "research/edge-lab-continuous",
   "stage": "PRE_OUTCOME_SOURCE_PERMISSION_PREFLIGHT",
   "experiment": "disc-russell-deletion-calendar-basket-l1-v1",
@@ -40,7 +40,7 @@
     "The frozen route cannot be treated as a permitted credentialed Yahoo API merely because its schema is technically reachable.",
     "Protocol forbids switching to another provider after this source gate."
   ],
-  "next_action": "Keep this exact Russell eight-name calendar L1 PARK_DATA. Reopen only if Yahoo grants/ documents express permission applicable to this exact automated route and research use, or if an independently predeclared future Russell expression is designed before any outcomes around a different lawful source. Do not request the selected 2026-06-26/2026-07-06 quotes under this declaration and do not silently substitute Stooq, Nasdaq, Polygon, broker data or another vendor.",
+  "next_action": "Keep this exact Russell eight-name calendar L1 PARK_DATA. Reopen only if Yahoo grants/documents express permission applicable to this exact automated route and research use, or if an independently predeclared future Russell expression is designed before any outcomes around a different lawful source. Do not request the selected 2026-06-26/2026-07-06 quotes under this declaration and do not silently substitute Stooq, Nasdaq, Polygon, broker data or another vendor.",
   "inference_ceiling": [
     "No Russell deletion economic conclusion",
     "No return or benchmark result",
