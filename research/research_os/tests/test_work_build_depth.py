@@ -5,6 +5,7 @@ from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
+from datetime import datetime, timedelta
 
 from research.research_os.engines.builtin import ENGINE_REGISTRY
 from research.research_os.engines.protocol import EngineContext, EngineContractError
@@ -353,6 +354,7 @@ class PrimaryDocumentAdmissionTests(unittest.TestCase):
         hid = output['candidate']['hypothesis_id']
         configuration = json.loads((BASE / 'simulations/aggressive_architecture_fixture.json').read_text())
         configuration['sources']['fundamental'] = source
+        configuration['base_time'] = source['freeze_time']
         configuration['implementability'][hid] = {'source_available':True, 'pit_feasible':True,
             'expression_feasible':False, 'cost_model_feasible':False, 'capacity_observable':False}
         configuration['experiments'][hid] = {'dataset_provenance':{'source_ref':source['source_ref'],
@@ -365,6 +367,8 @@ class PrimaryDocumentAdmissionTests(unittest.TestCase):
         task['inputs'].update(engine_key='fundamental', evidence_mode='DOCUMENTARY')
         task['required_capability'] = 'fundamental'
         task['authority']['scope'] = 'DOCUMENTARY_SOURCE_QUALIFICATION_ONLY'
+        task['lease']['claimed_at'] = source['freeze_time']
+        task['lease']['expires_at'] = (datetime.fromisoformat(source['freeze_time']) + timedelta(hours=1)).isoformat()
         with self.assertRaises(PermissionError):
             run_canonical_spine(BASE, configuration, task)
         task['allowed_actions'].append('DOCUMENTARY_RESEARCH')
@@ -378,6 +382,14 @@ class PrimaryDocumentAdmissionTests(unittest.TestCase):
         self.assertEqual(result['forward_registration']['readiness'], 'NOT_READY')
         self.assertIn('BLOCK_COST_MODEL', result['red_team']['negative_rights'])
         self.assertFalse(any(result['authority'].values()))
+        task['lease']['expires_at'] = source['freeze_time']
+        with self.assertRaises(ValueError):
+            run_canonical_spine(BASE, configuration, task)
+        task['lease']['claimed_at'] = '2026-01-01T00:00:00Z'
+        task['lease']['expires_at'] = '2027-01-01T00:00:00Z'
+        configuration['base_time'] = '2026-01-02T00:00:00Z'
+        with self.assertRaises(ValueError):
+            run_canonical_spine(BASE, configuration, task)
 
 
 if __name__ == '__main__':

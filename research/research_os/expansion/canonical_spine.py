@@ -59,7 +59,7 @@ CANONICAL_DOWNSTREAM_STAGE_KINDS = [
 ]
 
 
-def _validate_task(task: Dict[str, Any], control: Dict[str, Any]) -> Dict[str, Any]:
+def _validate_task(task: Dict[str, Any], control: Dict[str, Any], run_time: str) -> Dict[str, Any]:
     required = {
         "task_id",
         "task_type",
@@ -85,6 +85,12 @@ def _validate_task(task: Dict[str, Any], control: Dict[str, Any]) -> Dict[str, A
         errors.append("invalid_lease_generation")
     if not lease.get("owner"):
         errors.append("missing_lease_owner")
+    from .engine_dossiers_v1 import _clock
+    try:
+        if not _clock(lease['claimed_at']) <= _clock(run_time) < _clock(lease['expires_at']):
+            errors.append('lease_not_valid_at_run_time')
+    except (KeyError, ValueError, TypeError, AttributeError):
+        errors.append('lease_clock_invalid')
     if task.get("required_capability") not in set(control.get("capabilities") or []):
         errors.append("capability_not_registered")
     authority = task.get("authority") or {}
@@ -192,7 +198,7 @@ def run_canonical_spine(
     task_id = task["task_id"]
 
     control = load_control_plane(base)
-    task_validation = _validate_task(task, control)
+    task_validation = _validate_task(task, control, base_time)
     if control["status"] != "PASS":
         raise ValueError(f"control plane invalid: {control['errors']}")
     if task_validation["status"] != "PASS":
@@ -244,6 +250,10 @@ def run_canonical_spine(
         raise PermissionError('documentary execution must be explicit in the task contract')
     context = EngineContext(run_id=run_id, synthetic_only=not documentary_mode)
     output = _engine_output(engine_key, fixture, context)
+    if documentary_mode:
+        from .engine_dossiers_v1 import _clock
+        if _clock(base_time) < _clock(output['candidate']['documentary_evidence']['freeze_time']):
+            raise ValueError('run clock precedes documentary source availability/freeze')
     if candidate_override_hypothesis_id is not None:
         output = deepcopy(output)
         output["candidate"]["hypothesis_id"] = candidate_override_hypothesis_id
