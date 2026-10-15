@@ -8,22 +8,21 @@ const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,'..');
 async function json(rel){return JSON.parse(await readFile(resolve(root,rel),'utf8'));}
 
-test('preprod capability registry exposes final roles but launches none in production',async()=>{
+test('production capability registry exposes workflow roles while hard economic authority stays closed',async()=>{
   const registry=await json('runtime/CAPABILITY_REGISTRY.json');
-  assert.equal(registry.mode,'PREPROD_SIMULATION_ONLY');
-  assert.equal(registry.production_worker_launch_authorized,false);
+  assert.equal(registry.mode,'PRODUCTION_RESEARCH_WORKERS');
+  assert.equal(registry.production_worker_launch_authorized,true);
   assert.equal(registry.economic_experiment_authorized,false);
   assert.equal(registry.prospective_observation_authorized,false);
   assert.equal(registry.real_capital_authorized,false);
   assert.equal(registry.live_trading_authorized,false);
 
   const ids=new Set(registry.capabilities.map(x=>x.capability_id));
-  for(const expected of ['legacy_recovery','quant_mechanisms','fundamental','event_document','institutional_flows','validator','red_team','portfolio_map']){
+  for(const expected of ['legacy_recovery','quant_mechanisms','fundamental','event_document','institutional_flows','validator','red_team','portfolio_map','economic_identity','shadow_readiness','learning_telemetry','control_integrator']){
     assert.ok(ids.has(expected),expected);
   }
   for(const capability of registry.capabilities){
-    assert.equal(capability.production_enabled,false,capability.capability_id);
-    assert.equal(capability.simulation_enabled,true,capability.capability_id);
+    assert.equal(capability.production_enabled,true,capability.capability_id);
   }
 });
 
