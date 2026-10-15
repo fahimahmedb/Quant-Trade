@@ -1,0 +1,29 @@
+{
+  "receipt_id": "QUEUE-REFILL-EVENT-DOCUMENT-DISTINCT-MECHANISM-001-g1",
+  "task_id": "QUEUE-REFILL-CONTROL-MAINTENANCE",
+  "worker_id": "integrator-portfolio-queue-steward-bootstrap",
+  "session_id": "QUEUE-REFILL-EVENT-DOCUMENT-DISTINCT-MECHANISM-001",
+  "lease_generation": 0,
+  "started_at": "2026-10-15T17:50:36Z",
+  "completed_at": "2026-10-15T17:50:36Z",
+  "input_head": "8b7ad46aed2411209dd5a99d6ff22bd287926b98",
+  "output_commit": "8b3a58446dde1ac832682f1f55f940ddeebbf15e",
+  "status": "COMPLETE",
+  "summary": "Verified the global Research OS queue had no READY or CLAIMED work and materialized exactly one producer task from the Owner-governed RESEARCH_FRONTIER. The refill performed no producer research and did not open any economic or prospective outcome.",
+  "artifacts": [
+    "research/research_os/tasks/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-001.json",
+    "research/research_os/events/QUEUE-REFILL-EVENT-DOCUMENT-DISTINCT-MECHANISM-001/001-action-completed.json"
+  ],
+  "derivation": {
+    "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+    "sequence": 1,
+    "derivation_key": "ed6a24b5c40decc71d4746383bb4df3008cdcd4fc22bc419769125716c3134c5",
+    "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID"
+  },
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}
