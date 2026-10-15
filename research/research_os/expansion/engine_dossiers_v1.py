@@ -31,20 +31,29 @@ def _clock(value: str) -> datetime:
 def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: str) -> Dict[str, Any]:
     """Qualify an outcome-free structured input, not a live source connector.
 
-    Documentary mode is limited to captured primary accounting data with numeric
-    cell provenance. It does not authorize market outcomes or a source network.
+    Documentary mode is limited to qualified captured primary accounting cells
+    and declared distribution announcement excerpts. It does not authorize market outcomes or a source network.
     """
     required = {"evidence_class", "source_ref", "issuer_id", "published_at", "available_at",
                 "revision_status", "period", "unit", "facts", "content_hash"}
     constraint_fields = {"actor", "constraint", "instrument", "horizon"}
-    optional = constraint_fields | {"capture"}
+    optional = constraint_fields | {"capture", "event_kind"}
     blockers = []
     if required - packet.keys() or packet.keys() - required - optional:
         blockers.append("DOCUMENT_FIELDS_INVALID")
     documentary = packet.get('evidence_class') == 'DOCUMENTARY'
     if not documentary and (packet.get("evidence_class") != "SYNTHETIC" or not str(packet.get("source_ref", "")).startswith("synthetic://")):
         blockers.append("DOCUMENT_CLASS_OUTSIDE_STABLE_ENGINE_CONTRACT")
-    if documentary:
+    event_distribution = documentary and family == 'EVENT_DOCUMENT'
+    if event_distribution:
+        try:
+            from .source_adapters_v1 import apple_dividend_packet
+            expected = apple_dividend_packet(packet['capture']['records'])
+            if packet != expected:
+                raise ValueError('event facts or metadata differ from captured declarations')
+        except (KeyError, ValueError, TypeError, AttributeError, InvalidOperation):
+            blockers.append('DOCUMENT_CAPTURE_NOT_QUALIFIED')
+    elif documentary:
         capture = packet.get('capture') or {}
         try:
             capture_fields = {'source_url','retrieved_at','publication_clock_basis','raw_sha256','representation',
@@ -111,7 +120,10 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
     except (KeyError, TypeError, ValueError, AttributeError):
         blockers.append("DOCUMENT_CLOCK_INVALID")
     facts = packet.get("facts", {})
-    required_facts = DOCUMENT_FACTS.get(family)
+    required_facts = ({"previous_distribution", "current_distribution"} if event_distribution
+                      else DOCUMENT_FACTS.get(family))
+    if not event_distribution and "event_kind" in packet:
+        blockers.append("DOCUMENT_EVENT_KIND_NOT_QUALIFIED")
     if required_facts is None or not isinstance(facts, dict) or set(facts) != required_facts:
         blockers.append("DOCUMENT_FACTS_INVALID")
     else:
@@ -122,6 +134,9 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
             if family == "FUNDAMENTAL":
                 if values["revenue"] <= 0 or values["capital_expenditure"] < 0:
                     raise ValueError("invalid statement magnitude")
+            elif event_distribution:
+                if any(v <= 0 for v in values.values()):
+                    raise ValueError("invalid distribution magnitude")
             elif family == "EVENT_DOCUMENT":
                 if any(values[f"{p}_low"] > values[f"{p}_high"] for p in ("previous", "current")):
                     raise ValueError("inverted guidance interval")
@@ -157,6 +172,22 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         claim = f"{issuer} {period}: operating margin={margin}; free cash flow={fcf} {unit}."
         disconfirm = "Withdraw the profitability premise if an admissible same-basis statement shows nonpositive margin or free cash flow."
         tags, horizon = ["quality", "cash_flow", "equity_beta"], "2q"
+    elif engine.family == "EVENT_DOCUMENT" and packet.get('event_kind') == 'DECLARED_CASH_DISTRIBUTION_COMPARISON':
+        before, after = facts['previous_distribution'], facts['current_distribution']
+        delta = after - before
+        measurements = {'previous_declared_distribution':str(before), 'current_declared_distribution':str(after),
+                        'year_over_year_declared_change':str(delta),
+                        'year_over_year_declared_change_fraction':str(delta / before)}
+        mechanism = ('A change in declared cash distributions may motivate a capital-return thesis; '
+                     'payer, expectations, consensus surprise and market response remain unqualified.')
+        claim = (f'{issuer} {period}: declared distribution changed from {before} to {after} {unit}; '
+                 f'year-over-year difference={delta}. This compares annual Q2 announcements, '
+                 'not consecutive payments; historical PIT, consensus surprise and price effect are not established.')
+        disconfirm = ('Withdraw the distribution-change premise if either declaration is corrected or superseded, '
+                     'or issuer, cash-versus-special classification, per-share basis, currency or annual Q2 comparison differ. '
+                     'Reject a positive-change premise if the comparable declared difference is nonpositive. '
+                     'Payment receipt, eligibility, tradable horizon and economic payoff are untested.')
+        tags, horizon = ['declared_distribution', 'capital_return', 'equity_beta'], 'UNQUALIFIED'
     elif engine.family == "EVENT_DOCUMENT":
         before = (facts["previous_low"] + facts["previous_high"]) / 2
         after = (facts["current_low"] + facts["current_high"]) / 2
@@ -174,7 +205,7 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         disconfirm = "Reject if the actor is not constrained, the universe is ineligible, or the legacy family has already spent this scope."
         tags, horizon = ["forced_flow", "liquidity", "constraint"], packet["horizon"]
     if not context.synthetic_only:
-        hypothesis_id = 'DOC-FUND-' + packet['content_hash'][:16]
+        hypothesis_id = ('DOC-EVENT-' if engine.family == 'EVENT_DOCUMENT' else 'DOC-FUND-') + packet['content_hash'][:16]
     evidence = {
         "packet": deepcopy(packet), "freeze_time": freeze, "measurements": measurements,
         "claim_source_hash": packet["content_hash"], "economic_result": "NOT_OBSERVED",
@@ -183,7 +214,9 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         engine_id=engine.engine_id, engine_family=engine.family, hypothesis_id=hypothesis_id,
         mechanism=mechanism, claim=claim, falsification_scope=disconfirm,
         decision_map={"premise_survives": "EXPLORE", "premise_fails": "KILL_GENERATION"},
-        economic_tags=tags, source_refs=[packet["source_ref"]], horizon=horizon, context=context,
+        economic_tags=tags, source_refs=([r["source_url"] for r in packet["capture"]["records"]]
+                                        if packet.get("event_kind") == "DECLARED_CASH_DISTRIBUTION_COMPARISON"
+                                        else [packet["source_ref"]]), horizon=horizon, context=context,
         documentary_evidence=evidence,
     )
     return output

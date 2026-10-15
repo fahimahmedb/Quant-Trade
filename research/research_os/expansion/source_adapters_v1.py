@@ -3,6 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any, Dict, Iterable, List
 from pathlib import Path
+from decimal import Decimal
 import hashlib
 import re
 import subprocess
@@ -84,6 +85,77 @@ def capture_apple_statement_cells(pdf_path: Path, *, retrieved_at: str) -> Dict[
     }
     packet['content_hash'] = sha256_json(packet)
     return {'source_ref':APPLE_FY2025_STATEMENTS, 'freeze_time':retrieved_at, 'documentary_packet':packet}
+
+
+
+APPLE_DIVIDEND_COMPARISON = 'YEAR_OVER_YEAR_ANNOUNCED_RATE_NOT_IMMEDIATE_PRIOR_PAYMENT'
+APPLE_DIVIDEND_UNIT = 'USD_per_share_per_declared_distribution'
+
+
+def apple_dividend_packet(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Validate two captured announcement receipts; never infer historical PIT.
+
+    Raw digests identify locally verified captures, not publisher signatures.
+    Numeric/excerpt consistency is checked again on every offline admission.
+    """
+    from .engine_dossiers_v1 import _clock
+    fields = {'issuer_id', 'announcement', 'source_url', 'raw_sha256', 'captured_at',
+              'capture_clock_basis', 'capture_excerpt', 'declared_amount_per_share', 'unit', 'evidence_class'}
+    if not isinstance(records, list) or len(records) != 2:
+        raise ValueError('two annual Q2 announcement captures required')
+    for record, year in zip(records, (2024, 2025)):
+        if set(record) != fields:
+            raise ValueError('unexpected announcement capture fields')
+        url = f'https://www.apple.com/newsroom/{year}/05/apple-reports-second-quarter-results/'
+        if (record['issuer_id'] != 'AAPL' or record['announcement'] != f'FY{year}_Q2_RELEASE'
+                or record['source_url'] != url or record['evidence_class'] != 'DOCUMENTARY'
+                or record['unit'] != APPLE_DIVIDEND_UNIT
+                or record['capture_clock_basis'] != 'LOCAL_CAPTURE_FILE_WRITE_TIME_NOT_SOURCE_PUBLICATION'):
+            raise ValueError('announcement source, period, unit or clock basis not qualified')
+        if not re.fullmatch('[0-9a-f]{64}', record['raw_sha256']):
+            raise ValueError('original HTML digest required')
+        amount = record['declared_amount_per_share']
+        if not isinstance(amount, str) or not re.fullmatch(r'\d+\.\d{2}', amount) or Decimal(amount) <= 0:
+            raise ValueError('positive declared cash amount required')
+        if record['capture_excerpt'] != f'cash dividend of ${amount} per share':
+            raise ValueError('declared amount differs from captured excerpt')
+        if _clock(record['captured_at']).year < year:
+            raise ValueError('capture predates announcement year')
+    # Captures may be acquired out of announcement order. Use the later capture.
+    available = max((r['captured_at'] for r in records), key=_clock)
+    packet = {
+        'evidence_class':'DOCUMENTARY', 'source_ref':records[1]['source_url'], 'issuer_id':'AAPL',
+        'published_at':available, 'available_at':available,
+        'revision_status':'CAPTURED_VERSION_AS_OF_RETRIEVAL',
+        'period':'FY2024_Q2_VS_FY2025_Q2_ANNOUNCEMENTS', 'unit':APPLE_DIVIDEND_UNIT,
+        'event_kind':'DECLARED_CASH_DISTRIBUTION_COMPARISON',
+        'facts':{'previous_distribution':records[0]['declared_amount_per_share'],
+                 'current_distribution':records[1]['declared_amount_per_share']},
+        'capture':{'records':deepcopy(records), 'comparison_basis':APPLE_DIVIDEND_COMPARISON,
+                   'publication_clock_basis':'FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT',
+                   'representation':'DECLARED_DISTRIBUTION_EXCERPTS',
+                   'extractor':'apple-q2-dividend-excerpts.v1'},
+    }
+    packet['content_hash'] = sha256_json(packet)
+    return packet
+
+
+def capture_apple_dividend_announcements(captured: Dict[str, Any], raw_paths: List[Path]) -> Dict[str, Any]:
+    """Admit previously captured local HTML after checking its bytes and excerpts.
+
+    Does not download documents or use publication-date strings as availability.
+    """
+    if captured['comparison_basis'] != APPLE_DIVIDEND_COMPARISON or len(raw_paths) != 2:
+        raise ValueError('unqualified comparison basis')
+    records = captured['records']
+    packet = apple_dividend_packet(records)
+    for record, path in zip(records, raw_paths):
+        raw = Path(path).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != record['raw_sha256']:
+            raise ValueError('original HTML capture digest mismatch')
+        if raw.decode('utf-8').count(record['capture_excerpt']) != 1:
+            raise ValueError('cash declaration excerpt missing or ambiguous')
+    return {'source_ref':packet['source_ref'], 'freeze_time':packet['available_at'], 'documentary_packet':packet}
 
 
 def validate_adapter_spec(spec: Dict[str, Any]) -> Dict[str, Any]:

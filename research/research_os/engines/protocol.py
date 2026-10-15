@@ -71,7 +71,10 @@ def validate_engine_output(output: Dict[str, Any]) -> None:
         qualification = qualify_document_packet(packet, output.get('engine_family'), evidence.get('freeze_time'))
         if qualification['status'] != 'PASS':
             raise EngineContractError(','.join(qualification['blockers']))
-        if output.get('source_refs') != [packet.get('source_ref')]:
+        expected_refs = ([r['source_url'] for r in packet['capture']['records']]
+                         if packet.get('event_kind') == 'DECLARED_CASH_DISTRIBUTION_COMPARISON'
+                         else [packet.get('source_ref')])
+        if output.get('source_refs') != expected_refs:
             raise EngineContractError('documentary source references must match the capture')
     if not output.get("engine_id") or not output.get("engine_family"):
         raise EngineContractError("missing engine identity")
