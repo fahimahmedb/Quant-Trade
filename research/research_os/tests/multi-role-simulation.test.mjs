@@ -8,16 +8,22 @@ const here=dirname(fileURLToPath(import.meta.url));
 const root=resolve(here,'..');
 async function json(rel){return JSON.parse(await readFile(resolve(root,rel),'utf8'));}
 
-test('control plane routes specialist task types and forbids invented work',async()=>{
+test('control plane routes workflow lanes and forbids invented work',async()=>{
   const cp=await json('runtime/CONTROL_PLANE.json');
-  assert.equal(cp.mode,'PREPROD_SIMULATION_ONLY');
+  assert.equal(cp.mode,'PRODUCTION_RESEARCH_WORKERS');
+  assert.equal(cp.workflow_model,'ONE_LINEAGE_MULTI_STAGE');
   assert.equal(cp.task_selection.invent_work_when_empty,false);
-  assert.equal(cp.task_selection.max_tasks_per_wake,1);
+  assert.equal(cp.task_selection.max_lineages_per_wake,1);
+  assert.equal(cp.task_selection.multi_stage_same_lineage,true);
   assert.equal(cp.claim_protocol.optimistic_lock,'CURRENT_BLOB_SHA');
-  assert.equal(cp.global_authority.production_worker_launch_authorized,false);
+  assert.equal(cp.global_authority.production_worker_launch_authorized,true);
+  assert.equal(cp.global_authority.economic_experiment_authorized,false);
+  assert.equal(cp.global_authority.prospective_observation_authorized,false);
   assert.equal(cp.global_authority.real_capital_authorized,false);
-  const caps=new Set(cp.routing.map(x=>x.capability));
-  for(const expected of ['legacy_recovery','quant_mechanisms','fundamental','event_document','institutional_flows','validator','red_team','portfolio_map']) assert.ok(caps.has(expected));
+  assert.equal(cp.global_authority.live_trading_authorized,false);
+  const lanes=new Set(cp.routing.map(x=>x.lane));
+  for(const expected of ['market_discovery','fundamental_events','evidence_data','independent_challenge','integrator_portfolio']) assert.ok(lanes.has(expected));
+  assert.equal(cp.independence_rules.discovery_lane_may_not_validate_own_hypothesis,true);
 });
 
 test('parallel specialist simulation converges through shared governed pipeline',async()=>{
