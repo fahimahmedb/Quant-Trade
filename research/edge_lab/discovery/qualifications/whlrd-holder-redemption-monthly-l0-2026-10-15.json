@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_MECHANISM_DATA_AND_FORWARD_CLOCK",
+  "family": "listed-preferred-holder-redemption-common-settlement",
+  "issuer": "Wheeler Real Estate Investment Trust, Inc.",
+  "preferred_ticker": "WHLRD",
+  "common_ticker": "WHLR",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "preferred_or_common_selected_forward_price_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "MECHANISM": "Series D holders have a contractual monthly put-style redemption right: a holder notice received by the 25th is paid on the 5th of the following month (or next business day) at $25 liquidation preference plus accrued/unpaid dividends, with Wheeler choosing cash, equal-value common shares, or a combination. If paid in common, the share count is redemption value divided by the ten-trading-day WHLR VWAP immediately preceding the holder redemption date. A WHLRD holder acquiring below the eventual net redemption value could in principle earn a convergence/service premium, but common-share settlement converts the contractual dollar amount into delivery/market risk rather than guaranteeing cash profit.",
+  "WHO_PAYS": "Wheeler owes the contractual redemption value. Economically, common-stock settlement dilutes existing common holders. A secondary WHLRD buyer earns only if acquisition cost plus operational/delivery/market risk is lower than realized redemption proceeds; there is no assumption of a free $25-plus-dividend floor in executable cash.",
+  "WHY_PERSIST": "The security is unusual, cumulative unpaid dividends materially affect redemption value, notices require DTC/PTOP procedures, Wheeler elects settlement form, common-share delivery follows the redemption date, and recurring dilution can make the delivered WHLR value diverge from the ten-day VWAP used to size shares. These frictions can deter arbitrage but can also fully consume any apparent discount.",
+  "CHEAP_DATA_NOW": "Primary SEC documents fully specify the recurring redemption clock and common-share sizing formula. The October 2026 8-K gives a future November notice deadline of October 25 and holder redemption date of November 5. WHLRD and WHLR are Nasdaq-listed. Nasdaq exposes public Historical Quotes surfaces for both tickers, but in this bounded pass WHLRD historical data rendered as 'currently not available'; therefore an admissible reproducible entry-price route is not presently qualified.",
+  "CHEAP_EXPRESSION": "Potential prospective November case only: Q=1 WHLRD share; a future declaration would need to freeze an entry session strictly after declaration and before the October 25 notice deadline, the exact DTC/PTOP eligibility assumption, redemption value accrual convention, Wheeler settlement election, common-share VWAP sizing period, delivery session and all preferred/common trading frictions. If settlement is common, economic payoff must be marked at a predeclared first deliverable-session price rather than pretending the sizing VWAP is an executable exit.",
+  "FATAL_PROBLEM": "The preferred entry price route is not currently machine/publicly usable from the documented Nasdaq surface. More importantly, redemption in common shares exposes the holder to WHLR dilution and price movement between the sizing VWAP and actual delivery. Company filings explicitly warn that redemption issuance has caused and is expected to continue causing substantial dilution and steep common-stock price declines. An apparent discount of WHLRD to stated redemption value may therefore be compensation for common-settlement and delivery risk.",
+  "primary_sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1527541/000119312516714890/d141828dex31.htm",
+      "facts": [
+        "Holder may require redemption after September 21, 2023.",
+        "Notice by 25th -> payment on 5th next month or next business day.",
+        "Redemption value is $25 plus accrued unpaid dividends.",
+        "Issuer may pay cash, equal-value common shares or a combination.",
+        "Notice can be withdrawn until the business day immediately preceding redemption, subject to DTC procedures."
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1527541/000121390026032331/ea0282687-424b3_wheeler.htm",
+      "facts": [
+        "When paid in common, shares per preferred equal redemption value divided by WHLR ten-trading-day VWAP immediately before redemption date.",
+        "Issuer states it has been and intends to continue settling redemptions in common shares."
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1527541/000152754126000374/aredemptionupdateoctober52.htm",
+      "facts": [
+        "Next notice deadline: October 25, 2026.",
+        "Next Holder Redemption Date: November 5, 2026.",
+        "October cycle was settled in WHLR common shares."
+      ]
+    },
+    {
+      "url": "https://www.nasdaq.com/market-activity/stocks/whlrd/historical",
+      "fact": "Nasdaq public WHLRD historical-quotes page exists, but data was currently unavailable in the bounded observation."
+    }
+  ],
+  "prior_exposure": {
+    "historical_redemption_cycles_seen": true,
+    "historical_common_vwap_and_redemption_values_seen": true,
+    "historical_whlrd_entry_prices_seen": false,
+    "forward_november_whlrd_entry_price_seen": false,
+    "forward_november_whlr_outcome_seen": false,
+    "implication": "Past monthly SEC results are documentary/mechanism exposure and can never be treated as fresh economic trials. A future November case, if ever declared, is prospective only."
+  },
+  "disconfirmation": [
+    "The issuer can settle in common stock rather than cash.",
+    "Sizing at a backward-looking ten-day VWAP does not guarantee that delivered WHLR shares can be sold at that VWAP.",
+    "Recurring redemption issuance itself may depress WHLR before/after delivery.",
+    "DTC/PTOP notice procedures and beneficial-owner support may not be available uniformly through retail brokers.",
+    "The WHLRD market can rationally discount stated redemption value for these risks."
+  ],
+  "failed_criteria": [
+    "No reproducible permitted forward WHLRD entry-price route qualified today.",
+    "No public broker-agnostic proof that a new beneficial holder can complete DTC/PTOP redemption through an ordinary retail account.",
+    "No fixed delivery/exit clock yet suitable for an economic test."
+  ],
+  "next_action": "PARK_DATA before any forward price. Reopen before the October 25 deadline only if a lawful reproducible WHLRD price route and public beneficial-owner redemption mechanics become available. If so, preregister exactly one November 5 prospective case before reading its selected entry price; preserve Q=1 and model common-share delivery risk explicitly. Do not mine the already-exposed historical redemption cycles for a profitable parameter/window.",
+  "inference_ceiling": [
+    "No WHLRD arbitrage conclusion",
+    "No preferred-stock floor claim",
+    "No November trade signal",
+    "No live or real-capital authorization"
+  ]
+}
