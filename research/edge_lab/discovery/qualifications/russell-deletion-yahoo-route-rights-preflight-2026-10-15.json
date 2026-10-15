@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:37:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PRE_OUTCOME_SOURCE_PERMISSION_PREFLIGHT",
+  "experiment": "disc-russell-deletion-calendar-basket-l1-v1",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "selected_price_payloads_accessed": 0,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "first_broken_transition": "FROZEN_YAHOO_CHART_ROUTE_TO_PERMITTED_AUTOMATED_RESEARCH_ACCESS",
+  "observed_fact": "The predeclared Russell L1 freezes Yahoo query1 chart as its sole daily-price route and explicitly requires route access/rights to be resolved before any selected quote request. Current official Yahoo Terms of Service prohibit accessing or collecting data from Yahoo Services by automated means without express prior permission. Yahoo's API terms separately frame API access around Yahoo API credentials/authorized APIs and also prohibit automated means other than Yahoo APIs. The uncredentialed query1.finance.yahoo.com chart endpoint frozen in the experiment has not been shown to be an authorized Yahoo API route for this research account. Therefore permission adequacy fails before any AARD/ARAY/ACTU/AISP/ALDX/ALIT/AOUT/AVD/IWM price payload is requested.",
+  "official_sources": [
+    {
+      "url": "https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html",
+      "fact": "Yahoo Terms of Service state that users may not access or collect data from Services using automated means, including robots, spiders, scrapers, data-mining or extraction tools, without express prior permission."
+    },
+    {
+      "url": "https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apitnc/index.html",
+      "fact": "Yahoo API terms describe licensed API access using Yahoo API credentials and prohibit automated means other than Yahoo APIs for collecting Yahoo-related information."
+    },
+    {
+      "url": "https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.html",
+      "fact": "Yahoo Developer API terms require compliance with API documentation, application identification/API key requirements where applicable, and reserve API access to licensed uses."
+    }
+  ],
+  "protocol_effect": "The exact declaration says an explicitly prohibited, unavailable or unresolved Yahoo route requires PARK_DATA and forbids bypass or silent vendor substitution. No alternative market-data provider may be introduced after this preflight without a new separately declared expression; doing so would no longer be this frozen L1.",
+  "exposure_accounting": {
+    "eight_selected_stock_prices_read": false,
+    "iwm_prices_read": false,
+    "entry_or_exit_returns_computed": false,
+    "corporate_action_payloads_read": false,
+    "economic_look_count_increment": 0
+  },
+  "failed_criteria": [
+    "Express permission for automated use of the frozen uncredentialed Yahoo chart route is not established.",
+    "The frozen route cannot be treated as a permitted credentialed Yahoo API merely because its schema is technically reachable.",
+    "Protocol forbids switching to another provider after this source gate."
+  ],
+  "next_action": "Keep this exact Russell eight-name calendar L1 PARK_DATA. Reopen only if Yahoo grants/ documents express permission applicable to this exact automated route and research use, or if an independently predeclared future Russell expression is designed before any outcomes around a different lawful source. Do not request the selected 2026-06-26/2026-07-06 quotes under this declaration and do not silently substitute Stooq, Nasdaq, Polygon, broker data or another vendor.",
+  "inference_ceiling": [
+    "No Russell deletion economic conclusion",
+    "No return or benchmark result",
+    "No forced-flow rejection",
+    "No live or real-capital authorization"
+  ]
+}
