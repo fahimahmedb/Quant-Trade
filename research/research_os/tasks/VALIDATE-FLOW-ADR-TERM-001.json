@@ -2,7 +2,7 @@
   "task_id": "VALIDATE-FLOW-ADR-TERM-001",
   "task_type": "VALIDATION",
   "required_capability": "validator",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 90,
   "inputs": {
     "hypothesis_path": "research/research_os/hypotheses/FLOW-ADR-TERM-001.json",
@@ -39,6 +39,15 @@
     "expires_at": "2026-10-15T13:27:10Z"
   },
   "created_at": "2026-10-15T12:35:20Z",
-  "updated_at": "2026-10-15T12:37:10Z",
-  "completion": null
+  "updated_at": "2026-10-15T12:39:35Z",
+  "completion": {
+    "completed_at": "2026-10-15T12:39:35Z",
+    "receipt": "research/research_os/receipts/VALIDATE-FLOW-ADR-TERM-001/VALIDATE-FLOW-ADR-TERM-001-g1.json",
+    "artifacts": [
+      "research/research_os/assessments/VALIDATE-FLOW-ADR-TERM-001.json",
+      "research/research_os/events/VALIDATE-FLOW-ADR-TERM-001/001-action-started.json",
+      "research/research_os/events/VALIDATE-FLOW-ADR-TERM-001/002-action-completed.json"
+    ],
+    "result": "EXPLORE_TEST_DESIGN_READY_WITH_SCOPE_RESTRICTION"
+  }
 }
