@@ -1,0 +1,17 @@
+{
+  "task_id":"FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-001",
+  "generation":1,
+  "worker_id":"chatgpt-scheduled-market-discovery",
+  "lane":"market_discovery",
+  "capability":"institutional_flows",
+  "started_at":"2026-10-15T21:00:19Z",
+  "completed_at":"2026-10-15T21:06:00Z",
+  "stages":["legacy_duplicate_check","mechanism_research","disconfirmation","freeze_hypothesis","validation_handoff"],
+  "result":"FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION",
+  "hypothesis_id":"FLOW-RUSSELL-RECON-CLOSE-001",
+  "artifacts":["research/research_os/hypotheses/FLOW-RUSSELL-RECON-CLOSE-001.json","research/research_os/tasks/VALIDATE-FLOW-RUSSELL-RECON-CLOSE-001.json"],
+  "legacy_screen":{"source_commit":"183ad65ff260b903a16548ce37948f54d47a9ec8","result":"NO_EXACT_RUSSELL_RECONSTITUTION_BENCHMARK_FLOW_RECORD_FOUND"},
+  "documentary_sources":["FTSE Russell December 2026 reconstitution schedule","FTSE Russell June 2026 reconstitution release","FTSE Russell semi-annual frequency decision"],
+  "outcome_data_accessed":false,
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}
+}
