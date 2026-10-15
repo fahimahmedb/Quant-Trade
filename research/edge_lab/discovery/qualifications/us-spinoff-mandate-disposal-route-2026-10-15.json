@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:52:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_NON_OUTCOME_DESIGN_FOLLOWUP",
+  "family": "us-spinoff-mandate-disposal",
+  "parent": "qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "economic_look_opened": false,
+  "economic_payloads_accessed": 0,
+  "decision": "READY_TO_PREDECLARE_PROSPECTIVE_ONLY",
+  "classification": "L1_NOW_PROSPECTIVE_CLOCK_AND_PRICE_ROUTE_QUALIFIED",
+  "MECHANISM": "A pro-rata spin-off delivers child-company shares to parent holders regardless of their standalone demand for the child. Mandate, size, tax, operational or concentration constraints can create early liquidity supply; a buyer may earn normalization if the selling pressure exceeds fundamental and trading risk.",
+  "WHO_PAYS": "Hypothesized parent holders choosing or needing to dispose of newly distributed child shares; there is no claim that every recipient is forced to sell.",
+  "WHY_PERSIST": "Irregular events, small/new listings, temporary when-issued symbols, operational complexity, mandate mismatch and limited capacity can make the opportunity unattractive to large capital. Public anticipation can also eliminate the effect.",
+  "CHEAP_DATA_NOW": "Nasdaq Trader publishes free public Equity Corporate Actions Alerts for Nasdaq-listed spin-offs. The alerts can state parent/child, ratio, record date, payment/ex date, when-issued child symbol and first trade date, and the first regular-way trading date. A separate Nasdaq Daily List historical product exists but is subscription-based, so no free complete historical census is claimed. A previously qualified Yahoo v8 daily raw-close route provides a prospective child-price schema; it must succeed for the selected future child without provider substitution. The same route can be used for SPY as a benchmark only after the event claim is persisted.",
+  "FATAL_PROBLEM": "The route supports a clean prospective case but not a complete free historical population. The causal payer remains probabilistic: distribution creates ownership, not compulsory sale. When-issued trading can partly pre-price the flow, and first-regular-way close may already reflect part of the disposal pressure.",
+  "route_facts": [
+    {
+      "source": "Nasdaq Trader free Equity Corporate Actions Alert",
+      "url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-399",
+      "observed_fact": "A 2026 spin-off alert for Honeywell explicitly identifies ratio, record/payment/ex dates, child when-issued symbol, first trade date, regular-way start and settlement date. Used as route/schema evidence only; permanently excluded from any future sample."
+    },
+    {
+      "source": "Nasdaq Trader Daily List product description",
+      "url": "https://classic.nasdaqtrader.com/Trader.aspx?id=DailyListPD",
+      "observed_fact": "Nasdaq documents corporate-action coverage and historical availability, but the Daily List is a monthly subscription product. Therefore no free historical-census inference is permitted."
+    },
+    {
+      "source": "prior qualified public daily-price schema",
+      "reference": "qualifications/us-cef-drip-discounted-issuance-l0-route-2026-10-12.json",
+      "observed_fact": "Yahoo v8 daily chart JSON was previously schema-qualified on excluded QQQX with raw close/timestamps; no selected spin-off child or benchmark numeric payload is accessed here."
+    }
+  ],
+  "prospective_scope": {
+    "listing": "Nasdaq-listed child common shares only",
+    "event_source": "public Nasdaq Trader Equity Corporate Actions Alert",
+    "required_terms_before_price": [
+      "pro-rata spin-off/distribution ratio",
+      "record date",
+      "payment or ex-distribution date",
+      "child when-issued symbol and first-trade date if a when-issued market exists",
+      "child regular-way symbol and first regular-way date"
+    ],
+    "historical_population_claim": false,
+    "current_2026_route_examples_excluded": ["HON/HONAV/HONA", "MIDD/MFPVV/MFP", "ANAB/TRAXV/TRAX", "TORO and any other alert observed before the future protocol T0"]
+  },
+  "disconfirmation": [
+    "Nasdaq's complete Daily List history is paid, so this route cannot support a zero-cost retrospective census without a different qualified population source.",
+    "When-issued trading provides price discovery before distribution; any post-regular-way rebound may be smaller or absent.",
+    "A pro-rata distribution does not identify actual forced sellers, so a positive case would remain consistent with risk compensation or coincident fundamentals."
+  ],
+  "next_action": "Predeclare one narrow future-event L1 before a new Nasdaq spin-off alert is eligible. Freeze event selection, observation clock, first-regular-way entry, benchmark, horizon, costs and one adversarial check before any selected child/benchmark prices are read. No historical event may be recycled as prospective evidence.",
+  "inference_ceiling": [
+    "No spin-off alpha conclusion",
+    "No historical effect estimate",
+    "No forced-selling proof",
+    "No executable/live-capital authorization"
+  ]
+}
