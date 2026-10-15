@@ -40,6 +40,11 @@
         }}
       }}
     }}}
+  }, {
+    "if": {"properties": {"synthetic_only": {"const": true}}},
+    "then": {"properties": {"candidate": {"properties": {"documentary_evidence": {
+      "properties": {"packet": {"properties": {"evidence_class": {"const": "SYNTHETIC"}}}}
+    }}}}}
   }],
   "additionalProperties": false
 }

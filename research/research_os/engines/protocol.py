@@ -61,12 +61,13 @@ def build_candidate(*, engine_id: str, engine_family: str, hypothesis_id: str,
 def validate_engine_output(output: Dict[str, Any]) -> None:
     if type(output.get('synthetic_only')) is not bool:
         raise EngineContractError('engine evidence mode must be explicit')
-    if output.get('synthetic_only') is False:
+    if output.get('synthetic_only') is False or output.get('candidate', {}).get('documentary_evidence') is not None:
         from research.research_os.expansion.engine_dossiers_v1 import qualify_document_packet
         evidence = output.get('candidate', {}).get('documentary_evidence') or {}
         packet = evidence.get('packet') or {}
-        if packet.get('evidence_class') != 'DOCUMENTARY':
-            raise EngineContractError('documentary evidence cannot be inferred from synthetic input')
+        expected_class = 'SYNTHETIC' if output['synthetic_only'] else 'DOCUMENTARY'
+        if packet.get('evidence_class') != expected_class:
+            raise EngineContractError('source evidence class cannot be relabeled')
         qualification = qualify_document_packet(packet, output.get('engine_family'), evidence.get('freeze_time'))
         if qualification['status'] != 'PASS':
             raise EngineContractError(','.join(qualification['blockers']))

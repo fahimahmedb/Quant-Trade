@@ -169,5 +169,6 @@
   "economic_experiment_authorized": false,
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
-  "live_trading_authorized": false
+  "live_trading_authorized": false,
+  "implementation_sha": "e0b2ed9d99e86d867c9b7229b108cdc6e66a2dbc"
 }

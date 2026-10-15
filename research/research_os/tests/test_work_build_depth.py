@@ -303,6 +303,10 @@ class PrimaryDocumentAdmissionTests(unittest.TestCase):
         output = ENGINE_REGISTRY['fundamental'].run(source, EngineContext('PRIMARY-ADMISSION', synthetic_only=False))
         validate_engine_output(output)
         self.assertFalse(output['synthetic_only'])
+        mislabeled = deepcopy(output)
+        mislabeled['synthetic_only'] = True
+        with self.assertRaises(EngineContractError):
+            validate_engine_output(mislabeled)
         self.assertTrue(output['candidate']['hypothesis_id'].startswith('DOC-FUND-'))
         self.assertEqual(output['candidate']['documentary_evidence']['measurements']['free_cash_flow'], '98767')
         self.assertEqual(output['candidate']['documentary_evidence']['packet']['unit'], 'USD_millions')
