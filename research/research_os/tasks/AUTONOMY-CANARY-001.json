@@ -2,7 +2,7 @@
   "task_id": "AUTONOMY-CANARY-001",
   "task_type": "SYSTEM_CANARY",
   "required_capability": "repository_read_write",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 100,
   "inputs": {
     "branch": "builder/research-os-autonomous-loop-20261015",
@@ -50,6 +50,14 @@
     "expires_at": "2026-10-15T12:36:42Z"
   },
   "created_at": "2026-10-15",
-  "updated_at": "2026-10-15T11:41:42Z",
-  "completion": null
+  "updated_at": "2026-10-15T11:44:00Z",
+  "completion": {
+    "completed_at": "2026-10-15T11:44:00Z",
+    "receipt": "research/research_os/receipts/AUTONOMY-CANARY-001/AUTONOMY-CANARY-001-g1.json",
+    "artifacts": [
+      "research/research_os/events/AUTONOMY-CANARY-001/001-action-started.json",
+      "research/research_os/events/AUTONOMY-CANARY-001/002-action-completed.json"
+    ],
+    "result": "PASS"
+  }
 }
