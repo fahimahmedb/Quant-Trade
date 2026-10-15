@@ -1,0 +1,18 @@
+{
+  "run_id": "SIM-MULTI-ENGINE-20261015-01",
+  "synthetic_only": true,
+  "sources": {
+    "quant": {
+      "source_ref": "synthetic://quant/cross-sectional-liquidity-v1"
+    },
+    "fundamental": {
+      "source_ref": "synthetic://fundamental/issuer-statements-v1"
+    },
+    "event_document": {
+      "source_ref": "synthetic://event/document-diff-v1"
+    },
+    "institutional_flow": {
+      "source_ref": "synthetic://flows/rebalance-calendar-v1"
+    }
+  }
+}
