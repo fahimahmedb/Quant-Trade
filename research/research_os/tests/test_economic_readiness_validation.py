@@ -9,6 +9,7 @@ from research.research_os.expansion.validation_readiness import (
     READY,
     validate_economic_test_readiness,
 )
+from research.research_os.expansion.validation_v2 import validator_economic_readiness_v3
 from research.research_os.expansion.red_team_v2 import red_team_negative_rights_v2
 
 
@@ -127,7 +128,7 @@ def _fixture() -> dict:
 
 class EconomicReadinessValidationTests(unittest.TestCase):
     def test_pass_when_every_precondition_is_present(self):
-        receipt = validate_economic_test_readiness(_fixture())
+        receipt = validator_economic_readiness_v3(readiness_bundle=_fixture())
         self.assertEqual(receipt["status"], READY)
         self.assertTrue(receipt["ready_for_authorized_economic_test"])
         self.assertFalse(receipt["economic_test_authorized"])
