@@ -1,0 +1,127 @@
+name: Research OS canonical spine CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/**'
+      - '.github/workflows/research-os-canonical-spine-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-spine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize pinned Legacy ledger
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+
+      - name: Run canonical integration tests
+        run: |
+          python -m unittest research.research_os.tests.test_canonical_integration_spine -v
+
+      - name: Run canonical spine twice
+        run: |
+          python -m research.research_os.expansion.run_canonical_spine
+          cp research/research_os/simulations/canonical_spine_result.json /tmp/canonical-a.json
+          python -m research.research_os.expansion.run_canonical_spine
+          cmp /tmp/canonical-a.json research/research_os/simulations/canonical_spine_result.json
+
+      - name: Exact-head final-shape assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.expansion.canonical_spine import run_canonical_spine
+          from research.research_os.legacy import LegacyKnowledgeBase
+
+          base = Path('research/research_os')
+          fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          task = json.loads((base / 'simulations' / 'canonical_spine_task.json').read_text())
+          legacy_path = base / 'legacy' / 'LEGACY_RESEARCH_LEDGER.imported.json'
+
+          expected_order = [
+              'GOVERNANCE_SNAPSHOT',
+              'CONTROL_PLANE_SNAPSHOT',
+              'TASK_CLAIM',
+              'CANDIDATE_HYPOTHESIS',
+              'LEGACY_SCREEN',
+              'IMPLEMENTABILITY_ASSESSMENT',
+              'EXPERIMENT_ENVELOPE',
+              'INDEPENDENT_VALIDATION',
+              'RED_TEAM_ASSESSMENT',
+              'ECONOMIC_IDENTITY',
+              'PORTFOLIO_MAP',
+              'FORWARD_REGISTRATION',
+              'DECAY_GUARD',
+              'LEARNING_TELEMETRY',
+              'CANONICAL_PERSISTENCE',
+              'HANDOFF',
+          ]
+
+          a = run_canonical_spine(base, fixture, task, legacy_ledger_path=legacy_path)
+          b = run_canonical_spine(base, fixture, task, legacy_ledger_path=legacy_path)
+          assert a['status'] == 'PASS'
+          assert a['canonical_fingerprint'] == b['canonical_fingerprint']
+          assert a['stage_order'] == expected_order
+          assert a['stage_order'].index('LEGACY_SCREEN') < a['stage_order'].index('IMPLEMENTABILITY_ASSESSMENT')
+          assert a['control_plane']['status'] == 'PASS'
+          assert a['task_validation']['status'] == 'PASS'
+          assert a['scientific_ledger']['verified'] is True
+          assert a['trial_ledger'][0]['effective_trials_status'] == 'UNKNOWN'
+          assert a['trial_ledger'][0]['estimated_effective_trials'] is None
+          assert set(a['live_lab_bridge']['native_event_types']) == {'ACTION_STARTED', 'ACTION_COMPLETED'}
+          assert a['live_lab_bridge']['event_count'] == len(expected_order) * 2
+          assert a['live_lab_bridge']['receipt_count'] == len(expected_order)
+          assert all(v is False for v in a['authority'].values())
+          assert a['experiment_envelope']['outcome_opened'] is False
+          assert a['forward_registration']['observation_started'] is False
+          assert a['forward_registration']['future_outcomes_consumed'] == 0
+          assert a['portfolio']['capital_allocation_authorized'] is False
+          assert a['portfolio']['orders_authorized'] is False
+          assert a['validation']['independent_from_producer'] is True
+
+          legacy = LegacyKnowledgeBase.load(base, legacy_path)
+          duplicate_id = sorted(legacy.by_id)[0]
+          blocked = run_canonical_spine(
+              base,
+              fixture,
+              task,
+              legacy_ledger_path=legacy_path,
+              candidate_override_hypothesis_id=duplicate_id,
+          )
+          assert blocked['status'] == 'BLOCKED_EXACT_LEGACY_DUPLICATE'
+          assert blocked['legacy']['screen']['status'] == 'BLOCK_EXACT_LEGACY_DUPLICATE'
+          assert blocked['downstream_executed'] is False
+          assert blocked['downstream_stage_kinds'] == []
+          for forbidden in (
+              'IMPLEMENTABILITY_ASSESSMENT',
+              'EXPERIMENT_ENVELOPE',
+              'INDEPENDENT_VALIDATION',
+              'RED_TEAM_ASSESSMENT',
+              'ECONOMIC_IDENTITY',
+              'PORTFOLIO_MAP',
+              'FORWARD_REGISTRATION',
+          ):
+              assert forbidden not in blocked['stage_order']
+          assert blocked['scientific_ledger']['verified'] is True
+          assert all(v is False for v in blocked['authority'].values())
+
+          print('CANONICAL_SPINE_FINAL_SHAPE=PASS')
+          PY
