@@ -31,7 +31,8 @@ class AggressiveArchitectureTests(unittest.TestCase):
 
     def test_implementability_is_early_and_non_destructive(self):
         by_id = {x["hypothesis_id"]: x for x in self.first["implementability"]}
-        self.assertEqual(by_id["SYN-FLOW-001"]["status"], "PARK_IMPLEMENTABILITY")
+        self.assertEqual(by_id["SYN-FLOW-001"]["status"], "BLOCK_IMPLEMENTABILITY")
+        self.assertEqual(by_id["SYN-FLOW-001"]["implementability_status"], "BLOCK_IMPLEMENTABILITY")
         self.assertIn("COST_MODEL_NOT_QUALIFIED", by_id["SYN-FLOW-001"]["blockers"])
         self.assertIn("CAPACITY_NOT_OBSERVABLE", by_id["SYN-FLOW-001"]["blockers"])
         self.assertFalse(any(x["mechanism_rewritten"] for x in by_id.values()))
