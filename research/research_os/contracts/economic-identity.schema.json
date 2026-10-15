@@ -1,0 +1,24 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"quant-trade://research-os/CandidateEconomicIdentity",
+  "title":"CandidateEconomicIdentity",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["hypothesis_generation","mechanism","payer","asset_class","horizon","beta_exposure","momentum_exposure","volatility_exposure","liquidity_exposure","crowding","crash_exposure","capacity","turnover","main_cost_driver"],
+  "properties":{
+    "hypothesis_generation":{"type":"string"},
+    "mechanism":{"type":"string"},
+    "payer":{"type":"string"},
+    "asset_class":{"type":"string"},
+    "horizon":{"type":"string"},
+    "beta_exposure":{"type":"string"},
+    "momentum_exposure":{"type":"string"},
+    "volatility_exposure":{"type":"string"},
+    "liquidity_exposure":{"type":"string"},
+    "crowding":{"type":"string"},
+    "crash_exposure":{"type":"string"},
+    "capacity":{"type":"string"},
+    "turnover":{"type":"string"},
+    "main_cost_driver":{"type":"string"}
+  }
+}
