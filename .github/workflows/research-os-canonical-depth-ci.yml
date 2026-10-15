@@ -1,0 +1,89 @@
+name: Research OS canonical depth CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/expansion/canonical_depth_v1.py'
+      - 'research/research_os/tests/test_canonical_depth_v1.py'
+      - 'research/research_os/simulations/**'
+      - '.github/workflows/research-os-canonical-depth-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-depth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize pinned Legacy ledger
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+
+      - name: Run canonical depth tests
+        run: |
+          python -m unittest research.research_os.tests.test_canonical_depth_v1 -v
+
+      - name: Re-run canonical spine regression tests
+        run: |
+          python -m unittest research.research_os.tests.test_canonical_integration_spine -v
+
+      - name: Exact-head depth assertions
+        run: |
+          python - <<'PY'
+          import json
+          from copy import deepcopy
+          from pathlib import Path
+          from research.research_os.expansion.canonical_spine import run_canonical_spine
+          from research.research_os.expansion.canonical_depth_v1 import enrich_canonical_depth
+
+          base = Path('research/research_os')
+          base_fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          wave2 = json.loads((base / 'simulations' / 'wave2_hardening_fixture.json').read_text())
+          wave3 = json.loads((base / 'simulations' / 'wave3_engine_depth_fixture.json').read_text())
+          task_template = json.loads((base / 'simulations' / 'canonical_spine_task.json').read_text())
+          legacy_path = base / 'legacy' / 'LEGACY_RESEARCH_LEDGER.imported.json'
+          caps = {
+              'quant': 'quant_mechanisms',
+              'fundamental': 'fundamental',
+              'event_document': 'event_document',
+              'institutional_flow': 'institutional_flows',
+          }
+          states = {}
+          for engine_key, capability in caps.items():
+              task = deepcopy(task_template)
+              task['task_id'] = f'CANONICAL-DEPTH-{engine_key.upper()}'
+              task['required_capability'] = capability
+              task['inputs']['engine_key'] = engine_key
+              task['lease']['owner'] = f'canonical-depth-{engine_key}.v1'
+              canonical = run_canonical_spine(base, base_fixture, task, legacy_ledger_path=legacy_path)
+              depth = enrich_canonical_depth(canonical, base_fixture, wave2, wave3)
+              assert canonical['status'] == 'PASS'
+              assert depth['system_status'] == 'PASS'
+              assert depth['candidate_unchanged'] is True
+              assert depth['unsafe_access_detected'] is False
+              assert depth['economic_result_observed'] is False
+              assert depth['forward_registry_v2']['authorized_count'] == 0
+              assert depth['forward_registry_v2']['future_outcomes_consumed'] == 0
+              states[engine_key] = depth['candidate_state']
+
+          assert states['quant']['dry_run'] == 'READY_FOR_REPRODUCIBLE_DRY_RUN'
+          assert states['fundamental']['dry_run'] == 'READY_FOR_REPRODUCIBLE_DRY_RUN'
+          assert states['event_document']['dry_run'] == 'READY_FOR_REPRODUCIBLE_DRY_RUN'
+          assert states['institutional_flow']['dry_run'] == 'BLOCK'
+          print('CANONICAL_DEPTH_V1=PASS')
+          PY
