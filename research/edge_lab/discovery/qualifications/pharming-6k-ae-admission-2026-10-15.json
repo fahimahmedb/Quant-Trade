@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:24:00Z",
+  "branch": "research/edge-lab-continuous",
+  "actor": "interactive-research-continuation",
+  "control_summary": {"paused": false, "real_capital_authorized": false, "live_trading_authorized": false, "paid_usd_total": 0},
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Pharming Group N.V.",
+    "cik": "0001828316",
+    "form": "6-K",
+    "accession": "0001828316-26-000045",
+    "saved_feed_updated": "2026-10-14T06:03:16-04:00"
+  },
+  "primary_observed_fact": "Pharming's own SEC-filings page identifies the October 14, 2026 6-K as 'Pharming presents positive Phase II topline data for leniolisib in genetic PIDs with immune dysregulation at ESID 2026'. Pharming's own newsroom repeats the same clinical-data announcement. This is a clinical/pipeline disclosure by an operating biotechnology company, not a tender, reverse-split fractional entitlement, SPAC redemption, ETF liquidation, or CEF rights offering.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The issuer's own filing index and newsroom identify the legal/economic subject sufficiently to fail every frozen A-E/CEF mechanism gate before any selected market-price, NAV, distribution or payoff access.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I issuer tender or odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional cash-in-lieu entitlement.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up entitlement.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption mechanism.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: issuer is an operating biotech company, not an ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: issuer is not a US listed closed-end fund rights offering; filing predates CEF protocol T0."
+  },
+  "source_receipts": [
+    {"source":"Pharming issuer SEC filings","url":"https://www.pharming.com/investors/investor-materials/sec-filings","observed_fact":"Issuer lists the 2026-10-14 6-K title as positive Phase II topline leniolisib data."},
+    {"source":"Pharming issuer newsroom","url":"https://www.pharming.com/our-news","observed_fact":"Issuer lists the same October 14, 2026 clinical-data announcement."}
+  ],
+  "outcome_exposure": {"selected_market_price": false, "nav": false, "liquidation_distribution": false, "tender_spread": false, "future_return_or_pnl": false, "economic_look_opened": false},
+  "ordering_effect": "Pharming may be removed from the saved documentary queue. Earlier unresolved Calamos remains the chronology blocker for a later FIRST ETF-liquidation claim.",
+  "next_action": "Continue the saved chronological queue without opening an economic look; preserve unresolved Calamos and any earlier source parks.",
+  "inference_ceiling": ["No economic verdict", "No clinical-alpha inference", "No exhaustive-coverage claim", "No live or real-capital authorization"]
+}
