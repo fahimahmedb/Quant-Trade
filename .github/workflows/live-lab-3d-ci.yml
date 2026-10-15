@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - builder/live-lab-3d-full-build-20261015
+      - builder/live-lab-owner-ux-rebuild-20261015
     paths:
       - 'research/live_lab_ux/**'
       - '.github/workflows/live-lab-3d-ci.yml'
@@ -27,13 +28,13 @@ jobs:
       - name: Run isolated Live Lab suite
         run: node --test tests/*.test.js
       - name: Syntax-check browser modules
-        run: find . -name '*.js' -type f -print0 | xargs -0 -n1 node --check
+        run: find . -path './node_modules' -prune -o -name '*.js' -type f -print0 | xargs -0 -n1 node --check
       - name: Assert 3D integration boundaries
         run: |
           grep -q 'createResearchLab3D' app.js
           grep -q 'createResearchLab3D' live-app.js
           grep -q 'scene3d.css' index.html
           grep -q 'scene3d.css' live.html
-          grep -q "getContext('webgl" ui/scene3d.js
+          grep -q "WebGLRenderer" ui/scene3d.js
           grep -q 'state.animationRunning' ui/scene3d.js
           grep -q 'escapeSceneText' ui/scene3d-policy.js

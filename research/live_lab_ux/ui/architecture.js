@@ -136,13 +136,14 @@ function limb(p,a,b,r1,r2,m){const v1=new T.Vector3(...a),v2=new T.Vector3(...b)
 export function buildHumanoid(parent,index=0){
  const g=new T.Group();parent.add(g);const skin=mat(['#b7957b','#8f6954','#c9ad93'][index%3],.83,0),suit=mat(['#94a0a5','#657c91','#8a8173'][index%3],.9,.03),trousers=mat('#263543',.91,0),hair=mat('#33312e',.98,0);
  // Adult: 7.5 head heights, narrow neck and articulated limbs, tailored jacket.
- ellipsoid(g,.215,.31,.135,suit,0,1.15,0);ellipsoid(g,.19,.13,.13,trousers,0,.9,0);
- cylinder(g,.066,.075,.12,skin,0,1.48,0,16);ellipsoid(g,.112,.145,.105,skin,0,1.64,0);ellipsoid(g,.116,.08,.11,hair,0,1.73,-.015);
- ellipsoid(g,.026,.043,.028,skin,-.116,1.64,0);ellipsoid(g,.026,.043,.028,skin,.116,1.64,0);
- box(g,.016,.012,.008,trousers,-.038,1.655,.096,0);box(g,.016,.012,.008,trousers,.038,1.655,.096,0);
- box(g,.025,.21,.012,mats.steel,0,1.22,.128,0);box(g,.055,.035,.016,mats.dim,.12,1.29,.127,0);
- for(const side of [-1,1]){limb(g,[side*.12,.88,0],[side*.13,.5,.015],.085,.065,trousers);limb(g,[side*.13,.5,.015],[side*.14,.13,.025],.065,.045,trousers);ellipsoid(g,.07,.065,.14,hair,side*.14,.075,.085);}
- const arms=[];for(const side of [-1,1]){const shoulder=new T.Group();shoulder.position.set(side*.23,1.36,0);g.add(shoulder);limb(shoulder,[0,0,0],[side*.045,-.27,0],.073,.055,suit);const forearm=new T.Group();forearm.position.set(side*.045,-.27,0);shoulder.add(forearm);limb(forearm,[0,0,0],[0,-.26,.025],.052,.034,suit);ellipsoid(forearm,.04,.07,.028,skin,0,-.31,.03);arms.push({shoulder,forearm});}
- const document=box(g,.27,.015,.36,mats.paper,0,1.02,.4);document.visible=false;
+ ellipsoid(g,.215,.28,.135,suit,0,.94,0);ellipsoid(g,.19,.13,.13,trousers,0,.68,0);
+ cylinder(g,.066,.075,.10,skin,0,1.24,0,16);ellipsoid(g,.105,.128,.10,skin,0,1.40,0);ellipsoid(g,.108,.06,.105,hair,0,1.49,-.015);
+ ellipsoid(g,.026,.043,.028,skin,-.108,1.40,0);ellipsoid(g,.026,.043,.028,skin,.108,1.40,0);
+ box(g,.016,.012,.008,trousers,-.038,1.415,.096,0);box(g,.016,.012,.008,trousers,.038,1.415,.096,0);
+ box(g,.025,.21,.012,mats.steel,0,1.00,.128,0);box(g,.055,.035,.016,mats.dim,.12,1.08,.127,0);
+ for(const side of [-1,1]){limb(g,[side*.12,.65,0],[side*.13,.48,.34],.085,.065,trousers);limb(g,[side*.13,.48,.34],[side*.14,.13,.38],.065,.045,trousers);ellipsoid(g,.07,.065,.14,hair,side*.14,.075,.43);}
+ for(const side of [-1,1]){const lapel=box(g,.038,.20,.012,mats.fabric,side*.065,1.08,.127,0);lapel.rotation.z=side*-.35;}
+ const arms=[];for(const side of [-1,1]){const shoulder=new T.Group();shoulder.position.set(side*.23,1.12,0);g.add(shoulder);ellipsoid(shoulder,.075,.09,.075,suit,0,-.025,0);limb(shoulder,[0,0,0],[side*.045,-.27,0],.073,.055,suit);const forearm=new T.Group();forearm.position.set(side*.045,-.27,0);shoulder.add(forearm);limb(forearm,[0,0,0],[0,-.26,.025],.052,.034,suit);ellipsoid(forearm,.04,.07,.028,skin,0,-.31,.03);arms.push({shoulder,forearm});}
+ const document=box(g,.27,.015,.36,mats.paper,0,.85,.4);document.visible=false;
  return {group:g,arms,document,phase:0};
 }

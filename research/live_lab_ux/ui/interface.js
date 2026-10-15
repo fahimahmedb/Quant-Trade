@@ -4,7 +4,7 @@ export function createInterface({getState,onSelection,camera}){
  let selected=null,focused=null;
  const refs=Object.fromEntries(['worldAgents','economicStatus','connectivity','warning','resumeGuard','clock','roleCount','resultWall','detailSheet'].map(key=>[key,q(`[data-${key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())}]`)]));
  function showContext(){const a=getState().agents[focused];if(!a){context.hidden=true;return;}context.hidden=false;q('[data-context-role]').textContent=a.label;q('[data-context-state]').textContent=`${a.id} · ${a.stale?'STALE':a.state}`;q('[data-context-task]').textContent=a.currentTask||'No task received';}
- function select(id){selected=id;focused=null;context.hidden=true;sheet.close();onSelection(id);}
+ function select(id){const repeat=selected===id;selected=id;focused=null;context.hidden=true;sheet.close();onSelection(id);if(repeat&&id)camera().focus(id);}
  q('[data-detail-close]').addEventListener('click',()=>select(null));
  q('[data-open-details]').addEventListener('click',()=>{if(!selected)return;renderDetailSheet(getState(),selected,sheet);sheet.showModal();});
  q('[data-sheet-close]').addEventListener('click',()=>sheet.close());

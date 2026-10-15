@@ -24,3 +24,8 @@ test('heartbeat and duplicated events cannot authorize core after reconnect',()=
  let state=activeEconomic();state=reduceScene(state,e(3,EVENT.DISCONNECTED));state=reduceScene(state,e(4,EVENT.CONNECTED));state=reduceScene(state,e(5,EVENT.HEARTBEAT));state=reduceScene(state,e(2,EVENT.ECONOMIC_LOOK_STARTED,worker));assert.equal(coreMotionAllowed(deriveSceneVisual(state),state),false);
  state=reduceScene(state,e(6,EVENT.ECONOMIC_LOOK_STARTED,worker));assert.equal(coreMotionAllowed(deriveSceneVisual(state),state),true);
 });
+
+test('empty snapshot freezes omitted workers and later work on another worker cannot revive them',()=>{
+ let state=activeEconomic();state=reduceScene(state,e(3,EVENT.SNAPSHOT,{agents:[]}));assert.equal(state.agents.a.animationRunning,false);
+ state=reduceScene(state,e(4,EVENT.WORK_STARTED,{workerId:'b',role:'worker',activity:ACTIVITY.CODING_TESTING}));assert.equal(state.agents.a.animationRunning,false);assert.equal(state.agents.b.animationRunning,true);assert.equal(coreMotionAllowed(deriveSceneVisual(state),state),false);
+});

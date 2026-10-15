@@ -17,3 +17,9 @@ VISUAL_REVIEW_REQUIRED = TRUE
 ## Slice 2
 
 Owner rejected first integrated image as too bland. Revised camera toward the calibrated low cinematic opening, added warm task-light pools, textured mineral/timber, curved brass containment ribs, architectural trusses and richer zone tools. Static batching reduces idle draw calls to ~79 before final lighting pass. Added dedicated gesture/core authority; a snapshot with no agents now suppresses previous core motion via the existing resume guard (core reducer remains unchanged). 39 tests PASS. Fallback and final captures still pending.
+
+## Slice 3
+
+Added same-world illustrated fallback with CPU projection of the exact adult geometry, optional factual details after settled camera focus, ambient occlusion and restrained optical bloom. Idle renderer sleeps; static geometry is batched. The browser review harness exercises live.html through a browser-only EventSource mock; Economic Look remains an explicit normalized reducer fixture because the native protocol does not support that event.
+
+A new regression proves an empty snapshot must freeze omitted workers even after another worker starts later. The sole reducer change freezes existing animation flags before applying a snapshot. Native adapters/SSE/ingress/store remain unchanged. 40 Node tests PASS. Final integrated screenshots and forced-fallback/browser checks are in progress.
