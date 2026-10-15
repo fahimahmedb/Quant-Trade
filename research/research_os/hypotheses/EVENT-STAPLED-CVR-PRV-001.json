@@ -1,0 +1,59 @@
+{
+  "candidate_id": "EVENT-STAPLED-CVR-PRV-001",
+  "generation": 1,
+  "status": "FROZEN_FOR_INDEPENDENT_VALIDATION",
+  "producer_task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-001",
+  "mechanism_family": "STAPLED_CONTINGENT_VALUE_RIGHT_ATTACHED_TO_COMMON_EQUITY",
+  "legacy_screen": {
+    "result": "NO_REPOSITORY_DUPLICATE_FOUND",
+    "method": "fresh repository search for CVR/contingent-value-right/Atossa/priority-review-voucher terminology plus comparison with existing event candidate",
+    "distinct_from": "EVENT-DUEBILL-LARGE-DIST-001 is a large-distribution/due-bill mechanism; this candidate concerns a contractually stapled contingent right whose value remains attached to each common share until discretionary detachment or expiry."
+  },
+  "primary_document": {
+    "issuer": "Atossa Therapeutics, Inc.",
+    "form": "8-K",
+    "event_date": "2026-10-08",
+    "filing_public_date": "2026-10-09",
+    "source": "SEC EDGAR 8-K for Atossa Therapeutics filed 2026-10-09",
+    "document_facts": [
+      "Board declared one stapled CVR for each common share outstanding at close of business 2026-10-19.",
+      "Each stapled CVR represents a contractual claim to a pro-rata share of a CVR payment tied to the first qualifying priority review voucher, capped in aggregate at USD 50m.",
+      "Until detachment, CVRs transfer only together with common shares and have no separate CUSIP or separate trading market.",
+      "The board may detach the CVRs in its sole discretion; detached rights may never obtain a trading market.",
+      "No qualifying voucher had been awarded as of the filing and the company had not submitted a marketing application for the referenced program."
+    ]
+  },
+  "candidate_hypothesis": {
+    "claim": "A newly declared, non-separately-tradable contingent value right stapled to common equity creates a mechanically identifiable embedded-claim interval in which common-share valuation must jointly reflect operating equity and a highly uncertain contractual contingent asset. A future authorized test may ask whether documented changes in the attached-right state (attachment, detachment announcement, expiry, or qualifying monetization) create reproducible valuation dislocations, but this generation makes no directional return claim.",
+    "causal_chain": [
+      "contract creates one attached CVR per eligible common share",
+      "attached CVR cannot initially be separately traded or independently price-discovered",
+      "common share therefore bundles operating equity with contingent contractual payoff exposure",
+      "state transitions in attachment/detachment/qualifying-voucher status alter the composition or observability of that bundled claim",
+      "any economic effect, if one exists, must survive independent validation and a separately authorized frozen outcome protocol"
+    ],
+    "event_clock": "SEC-public filing/issuer announcement establishing the CVR agreement and record date; any later state transition must use its own first-public primary-document timestamp.",
+    "eligibility": "US-listed common equity with a primary-filed contractual CVR explicitly attached to each common share, no separate initial trading market, objective record/attachment terms, and auditable state-transition documents.",
+    "exclusions": ["ordinary cash dividends","due-bill large distributions","separately traded rights from inception","CVRs issued only to merger consideration holders without being stapled to continuing common equity","events lacking primary contractual terms"],
+    "outcome_access": "FORBIDDEN_NOT_ACCESSED"
+  },
+  "active_disconfirmation": {
+    "documentary_points": [
+      "The payoff is deeply contingent: no voucher had been awarded and no marketing application had been submitted at filing.",
+      "Management has no covenant to pursue approval or monetize a voucher and may use or retain it instead.",
+      "Payments can be deferred by solvency/dividend-law constraints and may terminate after the contractual deferral period.",
+      "Detachment is discretionary and a detached CVR may never develop a trading market.",
+      "Additional common shares issued before detachment can carry additional CVRs, diluting per-CVR economics under the aggregate cap."
+    ],
+    "implication": "These features could make the embedded claim economically negligible or too idiosyncratic for a repeatable edge. Independent validation must therefore first establish a sufficiently general event population and contract comparability; failure yields rejection without outcome inspection."
+  },
+  "falsification_scope": [
+    "reject if repository/Legacy evidence shows this is not causally distinct",
+    "reject if fewer than a defensible multi-event population can be identified from primary documents",
+    "reject if contract heterogeneity prevents ex-ante comparable state definitions",
+    "reject if event clocks or attached-right eligibility cannot be established point-in-time",
+    "reject before any outcome access if implementability/cost or instrument identity is not auditable"
+  ],
+  "authority": {"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false},
+  "frozen_at": "2026-10-15T18:16:25Z"
+}
