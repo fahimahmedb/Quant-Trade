@@ -1,0 +1,104 @@
+{
+  "builder": "VALIDATION",
+  "mission": "ECONOMIC_READINESS_INDEPENDENT_VALIDATION_RED_TEAM",
+  "start_sha": "b570973836e0e7daf50ca095a7559d63328f0a57",
+  "implementation_sha": "20118372276e0d38cc3b10852903019528d93cf6",
+  "branch": "builder/econ-readiness-validation-20261016",
+  "scope": "PRE_OUTCOME_READINESS_ONLY",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_access_authorized": false
+  },
+  "validator": {
+    "status_contract": [
+      "READY_FOR_AUTHORIZED_ECONOMIC_TEST",
+      "BLOCK"
+    ],
+    "producer_validator_separation_required": true,
+    "machine_readable_block_reasons": true,
+    "checks": [
+      "candidate_immutability",
+      "producer_independence",
+      "legacy_screening_evidence",
+      "source_provenance",
+      "pit",
+      "clock",
+      "universe_definition",
+      "economic_expression_completeness",
+      "implementability_declaration",
+      "protocol_freeze",
+      "reproducibility_binding",
+      "multiplicity_declaration",
+      "trial_accounting",
+      "cost_model_declaration",
+      "capacity_declaration",
+      "falsification",
+      "decision_map",
+      "no_outcome_access"
+    ]
+  },
+  "red_team": {
+    "negative_rights_only": true,
+    "blockers_supported": [
+      "BLOCK_DATA",
+      "BLOCK_LEAKAGE",
+      "BLOCK_CLOCK",
+      "BLOCK_PIT",
+      "BLOCK_MULTIPLICITY",
+      "BLOCK_TRIAL_ACCOUNTING",
+      "BLOCK_IMPLEMENTABILITY",
+      "BLOCK_COST_MODEL",
+      "BLOCK_CAPACITY",
+      "BLOCK_CLAIM_LEVEL",
+      "BLOCK_REPRODUCIBILITY",
+      "BLOCK_ECONOMIC_IDENTITY",
+      "BLOCK_PORTFOLIO_DUPLICATION"
+    ],
+    "repair_signal": false,
+    "change_candidate": false,
+    "optimize_parameters": false,
+    "open_outcomes": false,
+    "retune_until_profitable": false
+  },
+  "tests": {
+    "bounded_unit_tests": {
+      "count": 9,
+      "result": "PASS",
+      "command": "python -m unittest research.research_os.tests.test_economic_readiness_validation -v",
+      "coverage": [
+        "all_preconditions_present",
+        "missing_protocol_freeze",
+        "missing_implementability",
+        "missing_multiplicity",
+        "missing_cost_or_capacity",
+        "pit_or_source_failure",
+        "producer_not_validator",
+        "candidate_immutability_and_no_signal_repair",
+        "no_outcome_access"
+      ]
+    },
+    "forbidden_surface_diff": "PASS"
+  },
+  "forbidden_files_unchanged": [
+    "research/research_os/expansion/experiment_runner.py",
+    "research/research_os/expansion/portfolio_v2.py",
+    "research/research_os/expansion/engine_dossiers_v1.py"
+  ],
+  "ci": {
+    "workflow": "Economic readiness validation CI",
+    "run_id": 38816535536,
+    "tested_sha": "20118372276e0d38cc3b10852903019528d93cf6",
+    "status": "QUEUED",
+    "conclusion": null
+  },
+  "integration_notes": [
+    "validation_v2.py exposes validator_economic_readiness_v3 as the primary readiness entry point.",
+    "validation_readiness.py accepts frozen fixture/stub fields from the parallel implementability and experiment builders without opening outcomes.",
+    "red_team_v2.py is intentionally separate from final_shape.py and has negative rights only.",
+    "The final integrator should bind the real implementability declaration, frozen protocol package, source/PIT bundle, cost model, capacity declaration, and reproducibility binding into the readiness bundle.",
+    "This receipt does not authorize an economic experiment, prospective observation, live trading, or real capital."
+  ]
+}
