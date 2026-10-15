@@ -1,0 +1,109 @@
+{
+  "builder": "IMPLEMENTABILITY",
+  "mission_type": "BOUNDED_IMPLEMENTABILITY_DEPTH_ONLY",
+  "branch": "builder/econ-readiness-implementability-20261016",
+  "start_sha": "b570973836e0e7daf50ca095a7559d63328f0a57",
+  "implementation_sha": "c5a7183fa40430c6b8f776f4a88c2bff7aabf4e4",
+  "implementability_status": "IMPLEMENTABILITY_GATE_COMPLETE",
+  "scope": {
+    "no_new_top_level_architecture": true,
+    "experiment_depth_entered": false,
+    "validator_depth_entered": false,
+    "portfolio_depth_entered": false,
+    "producer_depth_entered": false,
+    "economic_outcomes_acquired": false
+  },
+  "capability": {
+    "authoritative_decisions": [
+      "IMPLEMENTABLE",
+      "PARK_IMPLEMENTABILITY",
+      "BLOCK_IMPLEMENTABILITY"
+    ],
+    "explicit_outputs": [
+      "source_available",
+      "pit_feasible",
+      "expression_feasible",
+      "cost_model_feasible",
+      "capacity_observable",
+      "operational_complexity",
+      "exact_expression_status",
+      "exact_clock_status",
+      "exact_universe_status",
+      "blocking_reasons"
+    ],
+    "unknown_can_pass": false,
+    "candidate_mutation_allowed": false
+  },
+  "exact_expression_contract": {
+    "supports_instrument_or_universe": true,
+    "supports_direction_exposure_semantics": true,
+    "supports_entry_clock": true,
+    "supports_exit_clock_or_horizon": true,
+    "supports_eligibility": true,
+    "supports_position_expression": true,
+    "supports_cost_model_requirements": true,
+    "supports_capacity_requirements": true,
+    "supports_data_requirements": true,
+    "supports_execution_assumptions": true,
+    "supports_falsification_relevant_implementation_conditions": true
+  },
+  "files_changed_before_receipt": [
+    "research/research_os/expansion/final_shape.py",
+    "research/research_os/expansion/implementability_depth.py",
+    "research/research_os/simulations/aggressive_architecture_fixture.json",
+    "research/research_os/tests/test_aggressive_architecture.py",
+    "research/research_os/tests/test_implementability_depth.py"
+  ],
+  "tests": {
+    "targeted_helper_checks": "PASS",
+    "required_cases_covered": [
+      "fully_specified_pass",
+      "missing_expression_blocks",
+      "missing_cost_model_blocks",
+      "capacity_unknown_is_explicit_and_blocks",
+      "missing_pit_blocks",
+      "candidate_not_mutated",
+      "dangerous_authority_flags_false"
+    ],
+    "additional_cases_covered": [
+      "source_unavailable_parks",
+      "missing_exact_contract_is_unknown_and_blocks"
+    ]
+  },
+  "ci": {
+    "workflow": "SEC P0 pre-t0 gate",
+    "run_id": 38816411918,
+    "qualified_sha": "c5a7183fa40430c6b8f776f4a88c2bff7aabf4e4",
+    "status_at_receipt": "IN_PROGRESS",
+    "successful_steps_observed": [
+      "Fail-closed check (no SEC identity configured)",
+      "Generated schema drift",
+      "Status artifact freshness",
+      "Full unit suite",
+      "SEC P0 lane suite"
+    ],
+    "current_step_at_receipt": "V1 end-to-end regression",
+    "research_os_specific_workflows_auto_triggered": false,
+    "research_os_specific_workflow_reason": "Existing workflow push filters are pinned to builder/research-os-aggressive-architecture-20261015; they were not modified for this bounded builder branch."
+  },
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "integration_notes": [
+    "Existing assess_implementability interface is preserved and delegates to bounded implementability depth.",
+    "canonical_spine.py is unchanged.",
+    "experiment_runner.py, validation_v2.py, portfolio_v2.py and engine_dossiers_v1.py are unchanged.",
+    "Synthetic architecture fixtures received declarative exact-expression contracts only; no return, price, payoff or future outcome was added.",
+    "Existing downstream PASS semantics are fail-closed: only IMPLEMENTABLE maps to PASS; PARK and BLOCK cannot freeze an experiment envelope."
+  ],
+  "blockers_remaining": [
+    "Economic experiment authority remains false.",
+    "Prospective observation authority remains false.",
+    "Real capital authority remains false.",
+    "Live trading authority remains false.",
+    "The general exact-SHA CI run was still in progress when this receipt was written; no success is claimed for unfinished steps."
+  ]
+}
