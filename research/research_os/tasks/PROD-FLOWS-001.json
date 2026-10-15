@@ -2,7 +2,7 @@
   "task_id": "PROD-FLOWS-001",
   "task_type": "INSTITUTIONAL_FLOW",
   "required_capability": "institutional_flows",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 90,
   "inputs": {
     "legacy_gate_required": true,
@@ -36,6 +36,16 @@
     "expires_at": "2026-10-15T13:23:02Z"
   },
   "created_at": "2026-10-15T14:25:00+02:00",
-  "updated_at": "2026-10-15T12:33:02Z",
-  "completion": null
+  "updated_at": "2026-10-15T12:36:25Z",
+  "completion": {
+    "completed_at": "2026-10-15T12:36:25Z",
+    "receipt": "research/research_os/receipts/PROD-FLOWS-001/PROD-FLOWS-001-g1.json",
+    "artifacts": [
+      "research/research_os/hypotheses/FLOW-ADR-TERM-001.json",
+      "research/research_os/tasks/VALIDATE-FLOW-ADR-TERM-001.json",
+      "research/research_os/events/PROD-FLOWS-001/001-action-started.json",
+      "research/research_os/events/PROD-FLOWS-001/002-action-completed.json"
+    ],
+    "result": "FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION"
+  }
 }
