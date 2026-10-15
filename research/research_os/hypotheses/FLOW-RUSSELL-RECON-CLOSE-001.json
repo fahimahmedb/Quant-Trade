@@ -1,0 +1,50 @@
+{
+  "hypothesis_id":"FLOW-RUSSELL-RECON-CLOSE-001",
+  "family_id":"russell-us-reconstitution-benchmark-flow",
+  "generation_id":"G1",
+  "parent_generation_ids":[],
+  "mechanism":"FTSE Russell US index reconstitutions publish membership changes before a fixed effective close. Passive products and benchmark-constrained portfolios must realign holdings to the reconstituted benchmark, concentrating non-informational demand and supply into the effective close/closing-auction mechanism. The December 2026 semi-annual reconstitution creates a second annual implementation clock under the new 2026 schedule.",
+  "claim":"A rules-based Russell US reconstitution creates a causally explicit benchmark-tracking flow at the announced effective close. A later, separately authorized economic test could ask whether supplying liquidity to sufficiently large predicted benchmark demand/supply has a repeatable capturable concession after auction mechanics, anticipatory trading, spread, impact, borrow and crowding; no return effect is claimed here.",
+  "prediction":"Before any candidate return data are inspected, documentary evidence should establish a rank/reference clock, preliminary membership publication, an effective close, affected benchmark weights/universe, and a material population of benchmarked/passive assets whose tracking constraint implies implementation demand. Failure to establish ex-ante membership/weight deltas or a genuine implementation obligation blocks test design.",
+  "falsification_scope":"Mechanism usability is falsified if benchmark changes cannot be reconstructed point-in-time before the effective close, if passive/benchmark implementation is too discretionary to imply a dated flow, or if closing-auction liquidity mechanically absorbs the relevant flow without a measurable pre-specified execution concession. A later negative economic test would falsify only its frozen expression, not the existence of benchmark-tracking trades.",
+  "decision_map":{
+    "forced_actor":"Passive Russell-index products and benchmark-constrained portfolios that seek to minimize tracking error at the reconstitution effective close.",
+    "constraint":"Holdings must reflect announced index membership/weights when the reconstituted index becomes effective; implementation is naturally concentrated at the official closing price used for index transition.",
+    "clock":"For the second 2026 Russell US reconstitution: Rank Day 2026-10-30; preliminary additions/deletions 2026-11-13; query period 2026-11-16 through 2026-11-27; lockdown begins 2026-11-30; changes take effect after the US close 2026-12-11; reconstituted indexes operate from 2026-12-14.",
+    "affected_universe":"Russell US index additions, deletions and size-index membership movements, with exact eligible names/weights to be frozen only from point-in-time FTSE Russell publications before outcome access.",
+    "capacity_intuition":"Potentially material gross flow because FTSE Russell reports trillions of dollars benchmarked to Russell US indexes, but capacity for any liquidity-supply expression may be sharply reduced by deep closing-auction liquidity, anticipatory arbitrage and crowding.",
+    "implementability_questions":[
+      "Can preliminary/final constituent files and weight inputs be archived point-in-time with publication timestamps?",
+      "Can expected passive share demand/supply be computed from benchmark weights and benchmarked passive AUM without using post-event prices?",
+      "Which names have sufficient auction liquidity relative to predicted benchmark flow under a frozen capacity rule?",
+      "Can NYSE closing auctions and Nasdaq Closing Cross execution assumptions be represented without using hindsight fills?",
+      "How should query-period membership changes be handled without post-outcome selection?",
+      "Can borrow, spread, auction imbalance access and impact assumptions be frozen before any economic outcome inspection?"
+    ],
+    "active_disconfirmation":[
+      "FTSE Russell deliberately publishes preliminary lists and repeated updates before implementation, giving arbitrageurs time to pre-position and potentially eliminating any concession.",
+      "The provider reports very large reconstitution-close trading volumes, and primary exchange closing auctions/Closing Cross are designed to concentrate liquidity, which may absorb benchmark flow efficiently.",
+      "The mechanism may therefore be structurally real while offering no residual economic rent after crowding and impact; validation must not equate forced flow with alpha."
+    ],
+    "primary_documentary_evidence":[
+      {"source":"FTSE Russell / LSEG — December 2026 Russell US Indexes Reconstitution schedule","url":"https://www.lseg.com/en/media-centre/press-releases/ftse-russell/2026/ftse-russell-announces-december-2026-russell-us-indexes-reconstitution-schedule","fact":"Confirms 2026-10-30 Rank Day, 2026-11-13 preliminary lists, query and lockdown periods, and 2026-12-11 effective close."},
+      {"source":"FTSE Russell / LSEG — June 2026 semi-annual reconstitution","url":"https://www.lseg.com/en/media-centre/press-releases/ftse-russell/2026/ftse-russell-begins-june-2026-semi-annual-russell-us-indexes-reconstitution","fact":"Documents point-in-time preliminary/update schedule, effective close, approximately $12.2T benchmarked/invested assets, large reconstitution-close trading, and use of NYSE closing auction / Nasdaq Closing Cross."},
+      {"source":"FTSE Russell / LSEG — semi-annual frequency decision","url":"https://www.lseg.com/en/media-centre/press-releases/ftse-russell/2025/russell-us-indexes-move-to-semi-annual-reconstitution","fact":"Documents benchmark/passive scale and the move to semi-annual reconstitution from 2026."}
+    ],
+    "legacy_distinctness":{
+      "legacy_ledger_commit":"183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "legacy_ledger_blob":"ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "screening_result":"NO_EXACT_RUSSELL_RECONSTITUTION_BENCHMARK_FLOW_RECORD_FOUND_IN_PINNED_33_ITEM_LEGACY_LEDGER",
+      "nearby_but_distinct":["month-end pension rebalance: asset-allocation rebalance proxy rather than constituent-level benchmark membership implementation","NASDAQ/NDX short-horizon reversal: generic index reversal rather than announced benchmark reconstitution flow","ADR termination forced sale: depositary residual inventory rather than benchmark tracking"]
+    },
+    "next_validator_decision":{
+      "PASS_TO_TEST_DESIGN":"Point-in-time constituent/weight files, implementation clock and benchmark-flow sizing inputs can be frozen before any price/return access.",
+      "PARK_DATA":"Mechanism is real but required historical point-in-time membership/weight or auction data cannot be reconstructed without leakage/private data.",
+      "KILL_MECHANISM":"Benchmark implementation is not sufficiently constrained/datable or the proposed flow proxy cannot be specified independently of outcomes."
+    }
+  },
+  "freeze_status":"FROZEN",
+  "frozen_at":"2026-10-15T21:04:00Z",
+  "amendments":[],
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false,"outcome_data_accessed":false,"price_or_return_data_accessed":false,"scope":"DOCUMENTARY_MECHANISM_FREEZE_ONLY"}
+}
