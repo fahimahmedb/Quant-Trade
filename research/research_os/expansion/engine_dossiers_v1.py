@@ -322,7 +322,7 @@ def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
                                    EngineContext('DOSSIER-REBUILD', synthetic_only=False)) != output:
         raise EngineContractError('dossier candidate does not reproduce its qualified producer')
     family = output['engine_family']
-    if family != 'FUNDAMENTAL':
+    if family not in {'FUNDAMENTAL', 'EVENT_DOCUMENT'}:
         raise EngineContractError('documentary dossier family not yet qualified')
     candidate_hash = sha256_json(candidate)
     source_support = {'packet_hash':packet['content_hash'], 'source_refs':deepcopy(output['source_refs']),
@@ -337,6 +337,45 @@ def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
 
     detail = {field:record('UNKNOWN', {}, [], 'No qualified evidence for this premise in the captured packet.')
               for field in sorted(REQUIRED_BY_FAMILY[family])}
+    if family == 'EVENT_DOCUMENT':
+        detail['event_identity'] = record('SUPPORTED', {
+            'issuer_id':packet['issuer_id'], 'event_kind':packet['event_kind'],
+            'comparison_basis':packet['capture']['comparison_basis'],
+            **evidence['measurements'],
+            'positive_change_premise': 'DISCONFIRMED' if Decimal(
+                evidence['measurements']['year_over_year_declared_change']) <= 0
+                else 'NOT_DISCONFIRMED_BY_CAPTURED_DECLARATIONS',
+        }, ['issuer_id', 'event_kind', 'facts', 'capture.records', 'capture.comparison_basis'],
+            'Annual Q2 declarations only; no consecutive-payment or payment-receipt claim.')
+        detail['document_clock'] = record('SUPPORTED', {
+            'capture_clocks':[{'source_url':r['source_url'], 'captured_at':r['captured_at'],
+                              'raw_sha256':r['raw_sha256']} for r in packet['capture']['records']],
+            'publication_clock_basis':packet['capture']['publication_clock_basis'],
+            'historical_pit':'NOT_ESTABLISHED',
+        }, ['capture.records', 'available_at', 'revision_status'],
+            'Availability is the later capture, not either original announcement date.')
+        detail['confounders'] = record('PARTIAL', {
+            'controlled_basis':['same issuer', 'annual Q2 announcements', 'USD per declared share'],
+            'consensus_surprise':'UNKNOWN', 'concurrent_news':'UNKNOWN',
+            'payment_receipt':'UNKNOWN', 'price_response':'NOT_OBSERVED',
+        }, ['capture.records', 'capture.comparison_basis', 'unit'],
+            'Comparable declarations do not measure novelty, expectations, diffusion or market response.')
+        detail['eligibility_rule'] = record('UNKNOWN', {}, [],
+            'Captured excerpts do not establish record dates, holders, ex-date or tradable eligibility.')
+    else:
+        _fundamental_dossier_fields(detail, packet, evidence, record)
+    detail['disconfirmation_checks'] = {
+        'status':'SUPPORTED', 'values':{'declared_check':candidate['falsification_scope'],
+                                       'execution_status':'NOT_EXECUTED_AS_SCIENTIFIC_TEST'},
+        'support':{'candidate_hash':candidate_hash, 'paths':['falsification_scope']},
+        'limitations':['This is a declared check, not independent scientific validation.'],
+    }
+    detail.update(outcome_accessed=False, source_clock_frozen=True, active_disconfirmation=True,
+                  candidate_hash=candidate_hash, evidence_class='DOCUMENTARY')
+    return detail
+
+
+def _fundamental_dossier_fields(detail, packet, evidence, record):
     detail['issuer_identity'] = record('SUPPORTED', {'issuer_id':packet['issuer_id']}, ['issuer_id'],
         'One identified issuer; no issuer-universe or security-eligibility claim.')
     detail['financial_statements'] = record('PARTIAL', packet['facts'],
@@ -354,15 +393,6 @@ def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
             'DISCONFIRMED' if fcf <= 0 or margin <= 0 else 'NOT_DISCONFIRMED_BY_CAPTURED_CELLS',
     }, ['facts.operating_cash_flow', 'facts.capital_expenditure', 'facts.operating_income', 'facts.revenue'],
        'Accounting arithmetic does not qualify accruals, working capital, persistence, valuation or an economic payoff.')
-    detail['disconfirmation_checks'] = {
-        'status':'SUPPORTED', 'values':{'declared_check':candidate['falsification_scope'],
-                                       'execution_status':'NOT_EXECUTED_AS_SCIENTIFIC_TEST'},
-        'support':{'candidate_hash':candidate_hash, 'paths':['falsification_scope']},
-        'limitations':['This is a declared check, not independent scientific validation.'],
-    }
-    detail.update(outcome_accessed=False, source_clock_frozen=True, active_disconfirmation=True,
-                  candidate_hash=candidate_hash, evidence_class='DOCUMENTARY')
-    return detail
 
 
 def build_engine_dossier(output: Dict[str, Any], detail_input: Dict[str, Any] = None) -> Dict[str, Any]:
@@ -386,8 +416,10 @@ def build_engine_dossier(output: Dict[str, Any], detail_input: Dict[str, Any] = 
         if expected is not None:
             documentary_blockers.extend(f'UNQUALIFIED_{field.upper()}' for field in sorted(required)
                                         if expected[field]['status'] != 'SUPPORTED')
-            if expected['cash_flow_quality']['values']['positive_cash_profitability_premise'] == 'DISCONFIRMED':
+            if family == 'FUNDAMENTAL' and expected['cash_flow_quality']['values']['positive_cash_profitability_premise'] == 'DISCONFIRMED':
                 documentary_blockers.append('FUNDAMENTAL_PREMISE_DISCONFIRMED')
+            if family == 'EVENT_DOCUMENT' and expected['event_identity']['values']['positive_change_premise'] == 'DISCONFIRMED':
+                documentary_blockers.append('EVENT_PREMISE_DISCONFIRMED')
     detail_input = detail_input if isinstance(detail_input, dict) else {}
     missing = sorted(field for field in required if detail_input.get(field) in (None, "", [], {}))
     blockers: List[str] = documentary_blockers + [f"MISSING_{field.upper()}" for field in missing]

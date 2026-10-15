@@ -86,5 +86,56 @@ class FundamentalDossierDepthTests(unittest.TestCase):
         self.assertEqual(dossier['dossier']['cash_flow_quality']['values']['positive_cash_profitability_premise'],'DISCONFIRMED')
 
 
+class EventDossierDepthTests(unittest.TestCase):
+    def output(self, source=None):
+        source = source or json.loads((BASE / 'sources/apple_dividend_announcements.json').read_text())
+        return ENGINE_REGISTRY['event_document'].run(source, EngineContext('EVENT-DOSSIER', synthetic_only=False))
+
+    def test_event_binds_comparison_and_capture_clocks_without_promoting_novelty(self):
+        output = self.output()
+        before = deepcopy(output)
+        dossier = build_engine_dossier(output)
+        self.assertEqual(dossier, build_engine_dossier(output))
+        self.assertEqual(output, before)
+        self.assertEqual(dossier['factual_binding_status'], 'PASS')
+        self.assertEqual(dossier['status'], 'BLOCK')
+        detail = dossier['dossier']
+        self.assertEqual(detail['event_identity']['values']['year_over_year_declared_change'], '0.01')
+        self.assertEqual(detail['event_identity']['support']['period'], 'FY2024_Q2_VS_FY2025_Q2_ANNOUNCEMENTS')
+        records = output['candidate']['documentary_evidence']['packet']['capture']['records']
+        self.assertEqual(detail['document_clock']['support']['available_at'], max(r['captured_at'] for r in records))
+        for field in ('novel_information', 'diffusion_hypothesis', 'eligibility_rule'):
+            self.assertEqual(dossier['field_statuses'][field], 'UNKNOWN')
+            self.assertIn('UNQUALIFIED_'+field.upper(), dossier['blockers'])
+        self.assertEqual(detail['confounders']['status'], 'PARTIAL')
+
+    def test_event_rejects_contradictory_sources_and_unsupported_novelty(self):
+        from research.research_os.engines.protocol import EngineContractError
+        source = json.loads((BASE / 'sources/apple_dividend_announcements.json').read_text())
+        for field, value in [('issuer_id','MSFT'), ('period','CONSECUTIVE_PAYMENTS'),
+                             ('unit','EUR'), ('revision_status','SUPERSEDED')]:
+            changed = deepcopy(source)
+            changed['documentary_packet'][field] = value
+            with self.subTest(field=field), self.assertRaises(EngineContractError):
+                self.output(changed)
+        output = self.output()
+        detail = documentary_dossier_detail(output)
+        detail['novel_information'].update(status='SUPPORTED', values={'consensus_surprise':'positive'})
+        self.assertIn('DOCUMENTARY_DOSSIER_DETAIL_NOT_BOUND', build_engine_dossier(output, detail)['blockers'])
+        output['candidate']['falsification_scope'] = ''
+        self.assertEqual(build_engine_dossier(output)['factual_binding_status'], 'BLOCK')
+
+    def test_event_nonpositive_change_disconfirms_premise(self):
+        from research.research_os.expansion.source_adapters_v1 import apple_dividend_packet
+        source = json.loads((BASE / 'sources/apple_dividend_announcements.json').read_text())
+        # Explicit counterfactual, never saved as documentary evidence.
+        records = source['documentary_packet']['capture']['records']
+        records[1].update(declared_amount_per_share='0.24', capture_excerpt='cash dividend of $0.24 per share')
+        source['documentary_packet'] = apple_dividend_packet(records)
+        dossier = build_engine_dossier(self.output(source))
+        self.assertIn('EVENT_PREMISE_DISCONFIRMED', dossier['blockers'])
+        self.assertEqual(dossier['dossier']['event_identity']['values']['positive_change_premise'], 'DISCONFIRMED')
+
+
 if __name__ == '__main__':
     unittest.main()
