@@ -1,0 +1,11 @@
+{
+  "event_id":"PROD-FUNDAMENTAL-001-g1-e001",
+  "session_id":"PROD-FUNDAMENTAL-001-g1",
+  "worker_id":"fundamental-events-workflow",
+  "action_id":"PROD-FUNDAMENTAL-001",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-15T13:12:40Z",
+  "payload":{"task_type":"FUNDAMENTAL_RESEARCH","lane":"fundamental_events","authority":"FUNDAMENTAL_HYPOTHESIS_GENERATION_AND_FREEZE_ONLY"}
+}
