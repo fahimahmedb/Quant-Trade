@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:08:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before": "5eae823522050bfa4f16bb34c8968975faf9d576",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "candidate": {
+    "issuer": "SK Telecom Co., Ltd.",
+    "cik": "0001015650",
+    "form": "6-K",
+    "accession": "0001193125-26-420931",
+    "saved_feed_updated": "2026-10-14T06:01:47-04:00",
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/1015650/000119312526420931/d153043d6k.htm",
+    "accepted_timestamp_primary_verified_this_pass": false
+  },
+  "primary_observed_fact": "The SEC primary 6-K is titled as a clarification regarding rumors or media reports. It states that SK Telecom had previously disclosed review of phased AI data-center buildout plans and clarifies that there are no specific plans for the reported additional securing of 5 GW overseas capacity. No issuer tender, reverse split, fractional treatment, SPAC redemption, ETF liquidation, or CEF rights-offering entitlement is described.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The primary legal description is a foreign-private-issuer clarification of media reports and fails every frozen A-E/CEF event gate before any admissible economic access. Exact accepted time is unnecessary for admission ordering because the filing is substantively ineligible.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I issuer tender and no odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or cash-in-lieu fractional entitlement.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or round-up entitlement.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption event.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: issuer is an operating telecom company, not an ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: issuer is not a US listed closed-end management investment company rights offering; the filing also predates that protocol T0."
+  },
+  "exposure_accounting": {
+    "economic_look_opened": false,
+    "selected_market_price_requested": false,
+    "incidental_unrequested_market_price_snippet_surfaced_in_search_results": true,
+    "incidental_exposure_note": "A broad web search for the SEC filing surfaced an unrelated third-party SK Telecom daily-price snippet. It was not used for eligibility or economic inference. Treat that 2026-10-14 price window as exposed/non-pristine for any future SK Telecom-specific market study; this filing remains ineligible regardless."
+  },
+  "ordering_effect": "SK Telecom may be removed from the saved documentary queue. The earlier unresolved Calamos 497 accession remains the chronology blocker for any later FIRST ETF-liquidation event claim.",
+  "next_action": "Continue documentary-only queue work without claiming a later FIRST event while Calamos accession 0001104659-26-115676 remains unresolved. The next saved record is FortuneX Acquisition Corp 8-K accession 0001829126-26-011104, which is potentially relevant to the frozen SPAC-redemption protocol and should be checked from primary SEC text before any market-price or redemption-value access.",
+  "inference_ceiling": [
+    "No economic verdict",
+    "No market-direction inference from the SK Telecom clarification",
+    "No claim of exhaustive prospective coverage",
+    "No live or real-capital authorization"
+  ]
+}
