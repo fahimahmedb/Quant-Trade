@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-15, book-entry valuation route parked before outcomes
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Source decision and evidence](discovery/qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json): savings-calendar design PARK_DATA. TreasuryDirect explicitly limits the public calculator to paper bonds and says it WILL NOT provide accurate electronic values, directing electronic holders to login. No account/login or calculator submission; no silent paper proxy, selected redemption value, benchmark quote or economic test. The source question is PARK/closed; design unchanged, mechanism not economically rejected. Reopen only for genuinely new primary evidence resolving the exact book-entry route/equivalence gap.
+- Prospective admission: ASML6-K accepted2026-10-14 06:01:18Eastern confirmed. Primary cover describes Q3 results/financial exhibits and establishes no A-E entitlement; exhibits unread. Embedded results/guidance headlines were incidentally exposed and retained in the receipt, not treated as zero-information or used for return inference. No event selection/claim. Twelve saved records remain unreviewed, next Nomura index; Valaris plus earlier chronology gaps remain unresolved.
+- NEXT: continue bounded chronological metadata/legal qualification from the cached list, with original exclusions and no favorable later-event substitution. Do not refetch ASML cover/exhibits, Treasury calculator docs or completed legal pages. If no admissible prospective work exists, choose one genuinely distinct accessible L0 question; all three seeds already consumed, and savings source PARK does not authorize a renamed variant or repeat cycle.
+- Proof SHA256 `3caeb14a86cfc59024a3493145d0a47e1d89279837eab12f651f739fdd3e74ed`; unchanged design SHA256 `1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e`. Three complete primary responses, 58888 bytes, zero retries/USD0. Prior ledger prefix/counters/queue, planned variants, all exposures, frozen A-E/VX protocols and register preserved. Legacy UNKNOWN stays spent; VX exit not due, zero VX requests. Tokens/global bill unmeasured; raw documents private.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-15, savings L1 preparation completed without outcomes
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

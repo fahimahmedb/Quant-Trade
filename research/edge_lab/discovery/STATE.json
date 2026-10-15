@@ -3491,6 +3491,205 @@
       },
       "previous": "f6f710530b338c439926f6a918fa266c966c721c3f7e88bad0cf0f5587d68323",
       "sequence": 53
+    },
+    {
+      "at": "2026-10-15T07:28:23.286307+00:00",
+      "hash": "7230f8b536392549f267b9250d70aa5d0c71e64d0d28848b550abb1b3f300cf0",
+      "kind": "DISCOVERY_SAVINGS_BOOK_ENTRY_VALUE_ROUTE_PARKED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "Required accurate book-entry value route not established; public calculator expressly excludes accurate electronic values. Stop the design without a value look.",
+          "id": "us-savings-bond-accrual-calendar:historical-value-route",
+          "status": "PARK"
+        },
+        "decision": "PARK_DATA",
+        "economic_execution": false,
+        "exposure": {
+          "economic_tests_this_action": 0,
+          "effective_independent_M": "UNKNOWN",
+          "incidental_corporate_disclosure": {
+            "FY2026_gross_margin_guidance_percent_approx": 56,
+            "FY2026_sales_guidance_eur_billion": [
+              44,
+              45
+            ],
+            "Q3_2026_net_income_eur_billion": 5.0,
+            "Q3_2026_total_net_sales_eur_billion": 11.7,
+            "claim_id": null,
+            "consumed": true,
+            "id": "asml-cover-headlines-20261015-0001628280-26-065813",
+            "observed_at": "2026-10-15T07:25:27.129442+00:00",
+            "pre_reserved": false,
+            "scope_limit": "Issuer headline disclosure/forecast, not independently verified and not used for price selection or strategy test; document/issuer cannot later be called unseen.",
+            "source_sha256": "33f365300a3a16e3625575210c27af6da994e588c3fbb50dc756f97f06137797"
+          },
+          "new_economic_calculations": 0,
+          "new_planned_variants": 0,
+          "new_reserved_looks": 0,
+          "new_selected_market_or_redemption_payload_requests": 0,
+          "prior_exposures_preserved": true,
+          "private_history": "UNKNOWN",
+          "scope": "Two SEC metadata/cover documents and one Treasury calculator documentation page. ASML cover embedded financial headlines were incidentally read and are retained; no quarterly exhibits, selected prices, NAV, calculator execution or payoff join.",
+          "seed_consumptions": 0
+        },
+        "head_observed": "c01f84b55a64f0647b96b2008656b96ebc7d9dd4",
+        "next": {
+          "bounds": {
+            "economic_payloads": 0,
+            "max_agent_minutes": 15,
+            "max_bytes_per_document": 524288,
+            "max_primary_document_requests": 3,
+            "max_total_document_bytes": 1572864,
+            "retries": 0
+          },
+          "closed_dependencies": {
+            "WTI": "PARK_DATA; no CME/DataMine re-probe",
+            "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
+            "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+            "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
+            "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
+            "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+            "us-savings-bond-accrual-calendar": "PARK_DATA for current book-entry L1 design: official public calculator explicitly unsuitable for accurate electronic values; account route not authorized. No repeated documentation/calculator probes; exact re-entry condition in deferred_documentary.",
+            "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+            "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+          },
+          "deferred_documentary": {
+            "completed_question": "Official public paper calculator is not qualified for the book-entry values required by this design; issuer explicitly warns of inaccurate electronic results. Historical legal applicability, penalty definition and benchmark route remain unqualified, not silently passed.",
+            "decision": "PARK_DATA",
+            "economic_access_authorized": false,
+            "family": "us-savings-bond-accrual-calendar",
+            "kind": "L1_SOURCE_MANIFEST_QUALIFICATION_ONLY",
+            "prior_exposure_reference": {
+              "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+              "must_not_be_treated_as_pristine": true,
+              "pre_reserved": false,
+              "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
+            },
+            "reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+            "reopen_only": "Genuinely new primary evidence of a free permitted accurate book-entry historical value route, or documented exact equivalence/rounding bound adequate to this already specified design. No repeats, account or silent proxy substitution. This park is not a rejection of all savings-bond economics.",
+            "status": "PARK",
+            "unchanged_design": {
+              "path": "v4_2_pilot/disc-us-savings-bond-calendar-l1-v0.md",
+              "sha256": "1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e",
+              "status": "DESIGN_NOT_EXECUTABLE"
+            }
+          },
+          "economic_access_authorized": false,
+          "family": "A/B-v2/C-v2/D/E",
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "passive_VX_priority": {
+            "earliest_possible_exit_lower_bound_utc": "2026-11-06T00:00:00+00:00",
+            "lower_bound_note": "Necessary lower bound only, not an identified contract/official settlement calendar. An eligible actual entry >=T0 and30-day target separation with\u00b14-day endpoints imply an exit at least22days later. No calendar or price request; actual quarterly due date must still follow frozen official-calendar rules.",
+            "prospective_T0": "2026-10-15T00:00:00Z",
+            "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+            "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+            "status": "NOT_DUE_NO_ELIGIBLE_EXIT"
+          },
+          "pending_source_reference": {
+            "count_parked_unqualified": 1,
+            "count_pending": 12,
+            "field": "candidate_form_records",
+            "proof": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+            "unqualified_total_in_saved_slice": 13
+          },
+          "primary_document_candidates": [
+            "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm"
+          ],
+          "prospective_A_E_priority": {
+            "bounds": {
+              "economic_payloads": 0,
+              "max_agent_minutes": 15,
+              "max_bytes_per_document": 524288,
+              "max_primary_document_requests": 3,
+              "max_total_document_bytes": 1572864,
+              "retries": 0
+            },
+            "closed_dependencies": {
+              "WTI": "PARK_DATA; no CME/DataMine re-probe",
+              "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+              "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+            },
+            "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+            "economic_access_authorized": false,
+            "family": "A/B-v2/C-v2/D/E",
+            "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+            "latest_metadata_snapshot": {
+              "candidate_form_records": 16,
+              "coverage_complete_since_T0": false,
+              "entries": 100,
+              "new_entries_vs_prior": 76,
+              "newest_updated": "2026-10-14T06:14:36-04:00",
+              "observed_at": "2026-10-14T10:16:37.932636+00:00",
+              "oldest_updated": "2026-10-13T21:25:11-04:00",
+              "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
+            },
+            "pending": "Twelve saved candidate-form records unreviewed, beginning Nomura by provisional feed ordering, plus Valaris source park and earlier chronology gaps. ASML primary cover completed without an established entitlement; exhibits unread. No FIRST eligible event or universal absence established.",
+            "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+            "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+            "reuse_reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+            "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+            "status": "OPEN"
+          },
+          "question": "Reuse the saved SEC list; next unreviewed record Nomura6-K accession0001193125-26-420929. Verify accepted metadata and only the smallest safe primary legal description. Preserve earlier unresolved Valaris/Fusion/AmpliTech/IX chronology; no later favorable issuer substitution or FIRST-event claim without complete eligibility/order proof. No selected price/NAV/payoff access.",
+          "resume_rule": "ASML primary cover review is completed; do not fetch financial exhibits or repeat index/cover. Savings historical value-source question is now PARK/closed: Treasury explicitly disclaims electronic accuracy for its public paper calculator. No calculator submission, account/login, paper substitution, reconstructed formula or repeat of the same docs. Reopen only on genuinely new primary evidence of an admissible accurate book-entry value route or explicit equivalence relevant to the original design, with a distinct bounded source question before any value. Original A-E exclusions and one-look invariant govern.",
+          "reuse_reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+          "seed_history": [
+            {
+              "L0_verdict": "PARK_DATA",
+              "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+              "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+              "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+              "seed_id": "market_sentiment_dislocation_l0",
+              "source_followup": {
+                "decision": "PARK_DATA",
+                "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+                "repeat_allowed_without_new_fact": false,
+                "status": "PARK"
+              }
+            },
+            {
+              "L0_verdict": "DUPLICATE",
+              "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+              "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+              "same_candidate_id": "france-sovereign-repricing",
+              "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+              "seed_id": "france_fiscal_political_stress_l0"
+            },
+            {
+              "L0_verdict": "PARK_DATA",
+              "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+              "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+              "same_candidate_id": "policy-announcement-repricing",
+              "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+              "seed_id": "trump_policy_event_transmission_l0"
+            }
+          ],
+          "spent_exposure_reference": {
+            "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+            "must_not_be_treated_as_pristine": true,
+            "pre_reserved": false,
+            "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
+          },
+          "status": "OPEN",
+          "unconsumed_seeds": []
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_document_requests": 3,
+          "received_body_bytes": 58888,
+          "request_wall_seconds_sum": 1.5325190899893641,
+          "retries": 0,
+          "tokens": null,
+          "transport_total_bytes": null
+        },
+        "proof": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+        "proof_sha256": "3caeb14a86cfc59024a3493145d0a47e1d89279837eab12f651f739fdd3e74ed"
+      },
+      "previous": "6935b36dabef8c981b8da0bd630f1e211e02667fd31f799ce9ddf7e952d50d29",
+      "sequence": 54
     }
   ],
   "exposure_ledger": [
@@ -3536,7 +3735,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "c3bee0a4a62e23040fcd6e9463684393f79b909327474f74e3f6f31bfae4b042",
+  "integrity": "00fd3c80688e34fa9efb8c6008877897c8d0b90cbab9be67add491accf5e6b2c",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -3611,24 +3810,13 @@
       "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
       "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
       "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-savings-bond-accrual-calendar": "PARK_DATA for current book-entry L1 design: official public calculator explicitly unsuitable for accurate electronic values; account route not authorized. No repeated documentation/calculator probes; exact re-entry condition in deferred_documentary.",
       "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
       "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
     },
     "deferred_documentary": {
-      "bounds": {
-        "economic_payloads": 0,
-        "max_agent_minutes": 15,
-        "max_bytes_per_document": 524288,
-        "max_primary_document_requests": 3,
-        "max_total_document_bytes": 1572864,
-        "retries": 0
-      },
-      "completed_preparation": {
-        "execution_status": "DESIGN_NOT_EXECUTABLE",
-        "reference": "v4_2_pilot/disc-us-savings-bond-calendar-l1-v0.md",
-        "sha256": "1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e",
-        "status": "COMPLETED"
-      },
+      "completed_question": "Official public paper calculator is not qualified for the book-entry values required by this design; issuer explicitly warns of inaccurate electronic results. Historical legal applicability, penalty definition and benchmark route remain unqualified, not silently passed.",
+      "decision": "PARK_DATA",
       "economic_access_authorized": false,
       "family": "us-savings-bond-accrual-calendar",
       "kind": "L1_SOURCE_MANIFEST_QUALIFICATION_ONLY",
@@ -3638,12 +3826,14 @@
         "pre_reserved": false,
         "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
       },
-      "question": "After higher-priority admissible prospective work, qualify exact free official historical redemption-value route, monthly/penalty definition, historical legal applicability and single dated1Y Treasury quote route using documentation only. One bounded step, then PARK_DATA if unresolved. Do not fetch selected rates/redemption values; do not rewrite cohort, formulas, benchmark or adversary.",
-      "source_reuse": [
-        "qualifications/us-savings-bond-calendar-l0-2026-10-14.json",
-        "qualifications/us-savings-bond-calendar-legal-followup-2026-10-14.json"
-      ],
-      "status": "OPEN"
+      "reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+      "reopen_only": "Genuinely new primary evidence of a free permitted accurate book-entry historical value route, or documented exact equivalence/rounding bound adequate to this already specified design. No repeats, account or silent proxy substitution. This park is not a rejection of all savings-bond economics.",
+      "status": "PARK",
+      "unchanged_design": {
+        "path": "v4_2_pilot/disc-us-savings-bond-calendar-l1-v0.md",
+        "sha256": "1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e",
+        "status": "DESIGN_NOT_EXECUTABLE"
+      }
     },
     "economic_access_authorized": false,
     "family": "A/B-v2/C-v2/D/E",
@@ -3658,13 +3848,13 @@
     },
     "pending_source_reference": {
       "count_parked_unqualified": 1,
-      "count_pending": 13,
+      "count_pending": 12,
       "field": "candidate_form_records",
-      "proof": "qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json",
-      "unqualified_total_in_saved_slice": 14
+      "proof": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+      "unqualified_total_in_saved_slice": 13
     },
     "primary_document_candidates": [
-      "https://www.sec.gov/Archives/edgar/data/937966/000162828026065813/0001628280-26-065813-index.htm"
+      "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm"
     ],
     "prospective_A_E_priority": {
       "bounds": {
@@ -3694,16 +3884,16 @@
         "oldest_updated": "2026-10-13T21:25:11-04:00",
         "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
       },
-      "pending": "Thirteen unreviewed saved records, beginning ASML by provisional feed ordering, plus Valaris index-verified/body-unread source park. Earlier chronology gaps remain. No FIRST qualifying event or universal absence established.",
+      "pending": "Twelve saved candidate-form records unreviewed, beginning Nomura by provisional feed ordering, plus Valaris source park and earlier chronology gaps. ASML primary cover completed without an established entitlement; exhibits unread. No FIRST eligible event or universal absence established.",
       "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
       "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-      "reuse_reference": "qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json",
+      "reuse_reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
       "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
       "status": "OPEN"
     },
-    "question": "Reuse the saved SEC list, next unreviewed record ASML6-K accession0001628280-26-065813. Verify its index/accepted clock first; only a bounded safe legal description may follow. Valaris remains a prior unresolved source, not excluded. No price/NAV/payoff access, first-event claim or later favorable substitution while earlier order/eligibility remains unresolved.",
-    "resume_rule": "Do not refetch Valaris index or download/truncate its4807604-byte proxy under the current524288-byte cap. A genuinely distinct bounded primary legal source would be needed to resolve this dependency. Earlier partial Fusion/AmpliTech and IX chronology remain. The savings-bond L1 preparation is complete; reuse the design instead of writing another version or revisiting legal pages. No new selected values or economic look before a separately published executable manifest and CAS claim.",
-    "reuse_reference": "qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json",
+    "question": "Reuse the saved SEC list; next unreviewed record Nomura6-K accession0001193125-26-420929. Verify accepted metadata and only the smallest safe primary legal description. Preserve earlier unresolved Valaris/Fusion/AmpliTech/IX chronology; no later favorable issuer substitution or FIRST-event claim without complete eligibility/order proof. No selected price/NAV/payoff access.",
+    "resume_rule": "ASML primary cover review is completed; do not fetch financial exhibits or repeat index/cover. Savings historical value-source question is now PARK/closed: Treasury explicitly disclaims electronic accuracy for its public paper calculator. No calculator submission, account/login, paper substitution, reconstructed formula or repeat of the same docs. Reopen only on genuinely new primary evidence of an admissible accurate book-entry value route or explicit equivalence relevant to the original design, with a distinct bounded source question before any value. Original A-E exclusions and one-look invariant govern.",
+    "reuse_reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
     "seed_history": [
       {
         "L0_verdict": "PARK_DATA",
@@ -5179,5 +5369,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-15T06:21:18.076275+00:00"
+  "updated_at": "2026-10-15T07:28:23.276247+00:00"
 }
