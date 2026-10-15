@@ -1,5 +1,5 @@
 {
-  "mode": "PREPROD_SIMULATION_ONLY",
+  "mode": "PRODUCTION_RESEARCH_WORKERS",
   "source_of_truth": "GITHUB_DURABLE_STATE",
   "worker_memory_authority": "NONE",
   "task_selection": {
@@ -33,7 +33,7 @@
     {"from":"red_team","to":"portfolio_map","requires":"NO_BLOCKER_OR_OWNER_ACCEPTED_EXCEPTION"}
   ],
   "global_authority": {
-    "production_worker_launch_authorized": false,
+    "production_worker_launch_authorized": true,
     "economic_experiment_authorized": false,
     "prospective_observation_authorized": false,
     "real_capital_authorized": false,
