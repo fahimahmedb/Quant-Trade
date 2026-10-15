@@ -14,45 +14,25 @@ VALIDATOR_ID = "independent-validator.economic-test-readiness.v1"
 RED_TEAM_ID = "red-team.economic-test-readiness.v1"
 
 ALLOWED_RED_TEAM_RIGHTS = {
-    "DATA",
-    "LEAKAGE",
-    "CLOCK",
-    "PIT",
-    "MULTIPLICITY",
-    "TRIAL_ACCOUNTING",
-    "IMPLEMENTABILITY",
-    "COST_MODEL",
-    "CAPACITY",
-    "CLAIM_LEVEL",
-    "REPRODUCIBILITY",
-    "ECONOMIC_IDENTITY",
+    "DATA", "LEAKAGE", "CLOCK", "PIT", "MULTIPLICITY",
+    "TRIAL_ACCOUNTING", "IMPLEMENTABILITY", "COST_MODEL", "CAPACITY",
+    "CLAIM_LEVEL", "REPRODUCIBILITY", "ECONOMIC_IDENTITY",
     "PORTFOLIO_DUPLICATION",
 }
 
 _REQUIRED_SPEC_FIELDS = (
-    "universe_definition",
-    "clock",
-    "entry_definition",
-    "exit_definition",
-    "position_expression",
-    "gross_metric",
-    "net_metric",
-    "cost_assumptions",
-    "capacity_assumptions",
-    "sample_window",
-    "exclusions",
-    "missing_data_policy",
-    "revision_policy",
-    "survivorship_policy",
-    "falsification_rule",
-    "decision_map",
-    "observed_attempt_count",
-    "effective_trials_estimate",
-    "multiplicity_family",
-    "seed",
-    "environment",
-    "code_sha",
-    "dependency_environment_fingerprint",
+    "universe_definition", "clock", "entry_definition", "exit_definition",
+    "position_expression", "gross_metric", "net_metric", "cost_assumptions",
+    "capacity_assumptions", "sample_window", "exclusions",
+    "missing_data_policy", "revision_policy", "survivorship_policy",
+    "falsification_rule", "decision_map", "observed_attempt_count",
+    "effective_trials_estimate", "multiplicity_family", "seed", "environment",
+    "code_sha", "dependency_environment_fingerprint",
+)
+
+_IMPLEMENTABILITY_FIELDS = (
+    "source_available", "pit_feasible", "expression_feasible",
+    "cost_model_feasible", "capacity_observable", "operational_complexity",
 )
 
 
@@ -79,16 +59,34 @@ def _trial_accounting_valid(observed: Any, effective: Any) -> bool:
 
 
 def _source_snapshot(qualifications: Iterable[Dict[str, Any]]) -> Dict[str, str]:
-    items = list(qualifications)
     snapshot: Dict[str, str] = {}
-    for item in items:
-        route_id = item.get("route_id")
-        route_hash = item.get("route_hash")
+    for item in qualifications:
+        route_id, route_hash = item.get("route_id"), item.get("route_hash")
         if route_id and route_hash:
             if route_id in snapshot and snapshot[route_id] != route_hash:
                 raise ValueError(f"conflicting source snapshot for route {route_id}")
             snapshot[route_id] = route_hash
     return dict(sorted(snapshot.items()))
+
+
+def implementability_contract(implementability: Mapping[str, Any]) -> Dict[str, Any]:
+    """Expose the frozen early-implementability decision without upgrading it."""
+    blockers = list(implementability.get("blockers") or [])
+    explicit_reason = implementability.get("blocking_reason")
+    if explicit_reason and explicit_reason not in blockers:
+        blockers.insert(0, explicit_reason)
+    blocking_reason = explicit_reason or (blockers[0] if blockers else None)
+    return {
+        "status": implementability.get("status", "BLOCK"),
+        "source_available": implementability.get("source_available"),
+        "pit_feasible": implementability.get("pit_feasible"),
+        "expression_feasible": implementability.get("expression_feasible"),
+        "cost_model_feasible": implementability.get("cost_model_feasible"),
+        "capacity_observable": implementability.get("capacity_observable"),
+        "operational_complexity": implementability.get("operational_complexity"),
+        "blocking_reason": blocking_reason,
+        "blockers": blockers,
+    }
 
 
 def freeze_economic_test_package(
@@ -98,18 +96,18 @@ def freeze_economic_test_package(
     source_qualifications: Iterable[Dict[str, Any]],
     specification: Mapping[str, Any],
 ) -> Dict[str, Any]:
-    """Freeze a complete pre-outcome economic-test package.
-
-    This function never reads economic outcomes and never grants execution
-    authority. It only makes the next authorized test mechanically specific.
-    """
+    """Freeze a complete pre-outcome package; never read outcomes or grant authority."""
     candidate = deepcopy(engine_output["candidate"])
     sources = [deepcopy(item) for item in source_qualifications]
     spec = deepcopy(dict(specification))
+    implementation = implementability_contract(implementability)
     blockers: List[str] = []
 
-    if implementability.get("status") != "PASS":
+    if implementation["status"] != "PASS":
         blockers.append("IMPLEMENTABILITY_BLOCKED")
+    for field in _IMPLEMENTABILITY_FIELDS:
+        if field not in implementability:
+            blockers.append(f"IMPLEMENTABILITY_FIELD_MISSING_{field.upper()}")
     for field in _REQUIRED_SPEC_FIELDS:
         if field not in spec:
             blockers.append(f"MISSING_{field.upper()}")
@@ -185,6 +183,7 @@ def freeze_economic_test_package(
         "generation_id": candidate.get("generation_id"),
         "candidate_hash": candidate_hash,
         "source_snapshot_hashes": source_snapshot_hashes,
+        "implementability": implementation,
         "status": "FROZEN_READY_NO_OUTCOME" if not blockers else "BLOCK",
         "blockers": sorted(set(blockers)),
         "protocol_hash": protocol_hash,
@@ -210,7 +209,6 @@ def build_preoutcome_execution_plan(package: Dict[str, Any]) -> Dict[str, Any]:
         blockers.append("PROTOCOL_BINDING_INVALID")
     if package.get("economic_outcome_accessed") is not False:
         blockers.append("OUTCOME_ALREADY_ACCESSED")
-
     binding = {
         "schema": PLAN_SCHEMA,
         "experiment_id": package.get("experiment_id"),
@@ -220,9 +218,7 @@ def build_preoutcome_execution_plan(package: Dict[str, Any]) -> Dict[str, Any]:
         "protocol_hash": package.get("protocol_hash"),
         "source_snapshot_hashes": deepcopy(package.get("source_snapshot_hashes") or {}),
         "code_sha": protocol.get("code_sha") if isinstance(protocol, dict) else None,
-        "dependency_environment_fingerprint": (
-            protocol.get("dependency_environment_fingerprint") if isinstance(protocol, dict) else None
-        ),
+        "dependency_environment_fingerprint": protocol.get("dependency_environment_fingerprint") if isinstance(protocol, dict) else None,
         "seed": protocol.get("seed") if isinstance(protocol, dict) else None,
         "environment": deepcopy(protocol.get("environment")) if isinstance(protocol, dict) else None,
         "execution_mode": "PREOUTCOME_PLAN_ONLY",
@@ -241,17 +237,13 @@ def build_preoutcome_execution_plan(package: Dict[str, Any]) -> Dict[str, Any]:
 
 def verify_preoutcome_execution_plan(
     *,
-    plan: Dict[str, Any],
-    package: Dict[str, Any],
-    current_candidate: Dict[str, Any],
-    current_source_qualifications: Iterable[Dict[str, Any]],
-    current_code_sha: str,
+    plan: Dict[str, Any], package: Dict[str, Any], current_candidate: Dict[str, Any],
+    current_source_qualifications: Iterable[Dict[str, Any]], current_code_sha: str,
     current_dependency_environment_fingerprint: str,
 ) -> Dict[str, Any]:
     blockers: List[str] = []
     binding = plan.get("binding") if isinstance(plan.get("binding"), dict) else {}
     protocol = package.get("protocol_payload") if isinstance(package.get("protocol_payload"), dict) else {}
-
     if plan.get("status") != "READY_FOR_AUTHORIZED_ECONOMIC_TEST_PLAN":
         blockers.append("PLAN_NOT_READY")
     if sha256_json(binding) != plan.get("execution_plan_hash"):
@@ -271,22 +263,12 @@ def verify_preoutcome_execution_plan(
         blockers.append("SOURCE_CHANGED")
     if current_code_sha != protocol.get("code_sha") or current_code_sha != binding.get("code_sha"):
         blockers.append("CODE_BINDING_CHANGED")
-    if (
-        current_dependency_environment_fingerprint != protocol.get("dependency_environment_fingerprint")
-        or current_dependency_environment_fingerprint != binding.get("dependency_environment_fingerprint")
-    ):
+    if (current_dependency_environment_fingerprint != protocol.get("dependency_environment_fingerprint")
+            or current_dependency_environment_fingerprint != binding.get("dependency_environment_fingerprint")):
         blockers.append("ENVIRONMENT_BINDING_CHANGED")
-    for field in (
-        "experiment_id",
-        "hypothesis_id",
-        "generation_id",
-        "candidate_hash",
-        "protocol_hash",
-        "source_snapshot_hashes",
-    ):
+    for field in ("experiment_id", "hypothesis_id", "generation_id", "candidate_hash", "protocol_hash", "source_snapshot_hashes"):
         if binding.get(field) != package.get(field):
             blockers.append(f"PLAN_{field.upper()}_DRIFT")
-
     return {
         "status": "REPLAY_MATCH" if not blockers else "BLOCK",
         "blockers": sorted(set(blockers)),
@@ -297,112 +279,49 @@ def verify_preoutcome_execution_plan(
 
 
 def validate_economic_test_readiness(
-    *,
-    engine_output: Dict[str, Any],
-    implementability: Dict[str, Any],
-    package: Dict[str, Any],
-    plan: Dict[str, Any],
-    replay: Dict[str, Any],
-    validator_id: str = VALIDATOR_ID,
+    *, engine_output: Dict[str, Any], implementability: Dict[str, Any], package: Dict[str, Any],
+    plan: Dict[str, Any], replay: Dict[str, Any], validator_id: str = VALIDATOR_ID,
     economic_identity: Optional[Dict[str, Any]] = None,
     portfolio_interpretation: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     candidate = engine_output["candidate"]
-    sources = package.get("source_qualifications") or []
-    protocol = package.get("protocol_payload") or {}
+    sources, protocol = package.get("source_qualifications") or [], package.get("protocol_payload") or {}
     checks: Dict[str, Dict[str, Any]] = {}
 
     def add(name: str, passed: bool, blocker: str) -> None:
         checks[name] = {"status": "PASS" if passed else "FAIL", "blocker": None if passed else blocker}
 
-    add(
-        "producer_separation",
-        bool(validator_id) and validator_id != engine_output.get("engine_id"),
-        "CLAIM_LEVEL",
-    )
-    add(
-        "candidate_immutability",
-        sha256_json(candidate) == package.get("candidate_hash")
-        and candidate.get("generation_id") == package.get("generation_id"),
-        "REPRODUCIBILITY",
-    )
-    add(
-        "pit",
-        bool(sources) and all(item.get("status") == "PASS" and item.get("point_in_time_qualified") is True for item in sources),
-        "PIT",
-    )
-    add(
-        "clock",
-        _present(protocol.get("clock")) and _present(protocol.get("entry_definition")) and _present(protocol.get("exit_definition")),
-        "CLOCK",
-    )
+    add("producer_separation", bool(validator_id) and validator_id != engine_output.get("engine_id"), "CLAIM_LEVEL")
+    add("candidate_immutability", sha256_json(candidate) == package.get("candidate_hash") and candidate.get("generation_id") == package.get("generation_id"), "REPRODUCIBILITY")
+    add("pit", bool(sources) and all(item.get("status") == "PASS" and item.get("point_in_time_qualified") is True for item in sources), "PIT")
+    add("clock", _present(protocol.get("clock")) and _present(protocol.get("entry_definition")) and _present(protocol.get("exit_definition")), "CLOCK")
     try:
         source_binding_ok = _source_snapshot(sources) == package.get("source_snapshot_hashes")
     except ValueError:
         source_binding_ok = False
-    add(
-        "provenance",
-        source_binding_ok and all(item.get("outcome_accessed") is False for item in sources),
-        "DATA",
-    )
-    add(
-        "protocol_freeze",
-        package.get("status") == "FROZEN_READY_NO_OUTCOME"
-        and isinstance(package.get("protocol_payload"), dict)
-        and sha256_json(package["protocol_payload"]) == package.get("protocol_hash"),
-        "REPRODUCIBILITY",
-    )
+    add("provenance", source_binding_ok and all(item.get("outcome_accessed") is False for item in sources), "DATA")
+    add("protocol_freeze", package.get("status") == "FROZEN_READY_NO_OUTCOME" and isinstance(package.get("protocol_payload"), dict) and sha256_json(package["protocol_payload"]) == package.get("protocol_hash"), "REPRODUCIBILITY")
     add("multiplicity_declaration", _present(protocol.get("multiplicity_family")), "MULTIPLICITY")
-    add(
-        "trial_accounting",
-        _trial_accounting_valid(protocol.get("observed_attempt_count"), protocol.get("effective_trials_estimate")),
-        "TRIAL_ACCOUNTING",
-    )
+    add("trial_accounting", _trial_accounting_valid(protocol.get("observed_attempt_count"), protocol.get("effective_trials_estimate")), "TRIAL_ACCOUNTING")
     add("implementability", implementability.get("status") == "PASS", "IMPLEMENTABILITY")
-    add(
-        "reproducibility",
-        plan.get("status") == "READY_FOR_AUTHORIZED_ECONOMIC_TEST_PLAN" and replay.get("status") == "REPLAY_MATCH",
-        "REPRODUCIBILITY",
-    )
+    add("reproducibility", plan.get("status") == "READY_FOR_AUTHORIZED_ECONOMIC_TEST_PLAN" and replay.get("status") == "REPLAY_MATCH", "REPRODUCIBILITY")
     add("cost_model", _present(protocol.get("cost_assumptions")), "COST_MODEL")
     add("capacity", _present(protocol.get("capacity_assumptions")), "CAPACITY")
-    add(
-        "falsification",
-        protocol.get("falsification_rule") == candidate.get("falsification_scope") and _present(protocol.get("falsification_rule")),
-        "CLAIM_LEVEL",
-    )
-    add(
-        "decision_map",
-        protocol.get("decision_map") == candidate.get("decision_map") and _present(protocol.get("decision_map")),
-        "CLAIM_LEVEL",
-    )
-    add(
-        "no_outcome_access",
-        package.get("economic_outcome_accessed") is False
-        and plan.get("economic_outcome_accessed") is False
-        and replay.get("economic_outcome_accessed") is False,
-        "LEAKAGE",
-    )
+    add("falsification", protocol.get("falsification_rule") == candidate.get("falsification_scope") and _present(protocol.get("falsification_rule")), "CLAIM_LEVEL")
+    add("decision_map", protocol.get("decision_map") == candidate.get("decision_map") and _present(protocol.get("decision_map")), "CLAIM_LEVEL")
+    add("no_outcome_access", package.get("economic_outcome_accessed") is False and plan.get("economic_outcome_accessed") is False and replay.get("economic_outcome_accessed") is False, "LEAKAGE")
 
     if economic_identity is not None:
-        add(
-            "economic_identity",
-            economic_identity.get("hypothesis_id") == candidate.get("hypothesis_id")
+        add("economic_identity", economic_identity.get("hypothesis_id") == candidate.get("hypothesis_id")
             and economic_identity.get("generation_id") == candidate.get("generation_id")
             and economic_identity.get("empirical_correlation", "UNKNOWN") in {"UNKNOWN", "UNAVAILABLE", "UNAVAILABLE_BY_DESIGN"}
-            and economic_identity.get("return_series_consumed", False) is False,
-            "ECONOMIC_IDENTITY",
-        )
+            and economic_identity.get("return_series_consumed", False) is False, "ECONOMIC_IDENTITY")
     if portfolio_interpretation is not None:
-        add(
-            "portfolio_interpretation",
-            portfolio_interpretation.get("capital_allocation_authorized") is False
+        add("portfolio_interpretation", portfolio_interpretation.get("capital_allocation_authorized") is False
             and portfolio_interpretation.get("position_sizing_authorized") is False
             and portfolio_interpretation.get("orders_authorized") is False
             and portfolio_interpretation.get("empirical_correlation", "UNKNOWN") in {"UNKNOWN", "UNAVAILABLE", "UNAVAILABLE_BY_DESIGN"}
-            and portfolio_interpretation.get("marginal_contribution", "NOT_ESTIMATED") == "NOT_ESTIMATED",
-            "PORTFOLIO_DUPLICATION",
-        )
+            and portfolio_interpretation.get("marginal_contribution", "NOT_ESTIMATED") == "NOT_ESTIMATED", "PORTFOLIO_DUPLICATION")
 
     failures = sorted(name for name, check in checks.items() if check["status"] != "PASS")
     blockers = sorted({checks[name]["blocker"] for name in failures if checks[name]["blocker"]})
@@ -440,40 +359,27 @@ def red_team_economic_test_readiness(validation: Dict[str, Any]) -> Dict[str, An
 
 
 def qualify_economic_test_readiness(
-    *,
-    engine_output: Dict[str, Any],
-    implementability: Dict[str, Any],
-    source_qualifications: Iterable[Dict[str, Any]],
-    specification: Mapping[str, Any],
-    current_code_sha: str,
-    current_dependency_environment_fingerprint: str,
+    *, engine_output: Dict[str, Any], implementability: Dict[str, Any],
+    source_qualifications: Iterable[Dict[str, Any]], specification: Mapping[str, Any],
+    current_code_sha: str, current_dependency_environment_fingerprint: str,
     economic_identity: Optional[Dict[str, Any]] = None,
     portfolio_interpretation: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Close the path to, but never cross, Owner-authorized economic execution."""
     sources = [deepcopy(item) for item in source_qualifications]
     package = freeze_economic_test_package(
-        engine_output=engine_output,
-        implementability=implementability,
-        source_qualifications=sources,
-        specification=specification,
+        engine_output=engine_output, implementability=implementability,
+        source_qualifications=sources, specification=specification,
     )
     plan = build_preoutcome_execution_plan(package)
     replay = verify_preoutcome_execution_plan(
-        plan=plan,
-        package=package,
-        current_candidate=engine_output["candidate"],
-        current_source_qualifications=sources,
-        current_code_sha=current_code_sha,
+        plan=plan, package=package, current_candidate=engine_output["candidate"],
+        current_source_qualifications=sources, current_code_sha=current_code_sha,
         current_dependency_environment_fingerprint=current_dependency_environment_fingerprint,
     )
     validation = validate_economic_test_readiness(
-        engine_output=engine_output,
-        implementability=implementability,
-        package=package,
-        plan=plan,
-        replay=replay,
-        economic_identity=economic_identity,
+        engine_output=engine_output, implementability=implementability, package=package,
+        plan=plan, replay=replay, economic_identity=economic_identity,
         portfolio_interpretation=portfolio_interpretation,
     )
     red = red_team_economic_test_readiness(validation)
@@ -481,6 +387,7 @@ def qualify_economic_test_readiness(
     return {
         "schema": READINESS_SCHEMA,
         "status": "READY_FOR_OWNER_AUTHORIZED_TEST" if ready else "BLOCK",
+        "implementability": package.get("implementability"),
         "package": package,
         "execution_plan": plan,
         "replay": replay,
