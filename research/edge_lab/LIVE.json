@@ -1,6 +1,6 @@
 {
   "schema": 3,
-  "generated_at": "2026-10-15T13:31:05.533075+00:00",
+  "generated_at": "2026-10-15T13:32:21.076721+00:00",
   "state_updated_at": "2026-10-15T13:31:05.447372+00:00",
   "operational_status": "IDLE_NO_ADMISSIBLE_WORK",
   "paused": false,
@@ -1522,8 +1522,8 @@
     "edge_validated": false
   },
   "telemetry": {
-    "source_head": "2e1bc0be1f6d9f0988dfd48291bb2cb833a728e9",
-    "generated_at": "2026-10-15T13:31:05.533075+00:00",
+    "source_head": "bfdff60251fa5a8ea795e3f8356a48ed5628f861",
+    "generated_at": "2026-10-15T13:32:21.076721+00:00",
     "overlay": "NONE",
     "generator": "scripts/edge_lab_live.py",
     "authority": "DERIVED_DISPLAY_ONLY"
