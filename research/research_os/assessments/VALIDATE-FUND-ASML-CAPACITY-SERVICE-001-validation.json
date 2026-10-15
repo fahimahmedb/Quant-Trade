@@ -1,0 +1,27 @@
+{
+  "assessment_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-validation",
+  "task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
+  "hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001",
+  "generation_id":"G1",
+  "stage":"independent_validation",
+  "frozen_generation_mutated":false,
+  "outcome_or_return_data_accessed":false,
+  "primary_evidence":[
+    {"source":"ASML Q3 2026 results","published":"2026-10-14","url":"https://www.investor.asml.com/news-releases/news-release-details/asml-reports-eu11.7-billion-total-net-sales-and-eu5.0-billion-net-income-q3-2026","finding":"Confirms EUR11.662bn sales, EUR3.289bn Installed Base Management sales, 57.5% gross margin, Q4 guidance EUR14.2-15.2bn at about 57% margin, FY2026 EUR44-45bn at about 56%, and management's statement that currently planned 2027 and 2028 supply will not fully meet customer demand."},
+    {"source":"ASML 2025 Form 20-F","published":"2026-02-25","url":"https://www.sec.gov/Archives/edgar/data/937966/000162828026011378/asml-20251231.htm","finding":"Shows material geographic/export and concentration risk: China was 29.1% of 2025 sales; Taiwan 25.5%; South Korea 25.0%; four customers individually exceeded 10% and together represented 61.2% of 2025 sales. Export controls and trade restrictions can affect customers, suppliers, shipment eligibility and demand."},
+    {"source":"ASML Q4/FY2025 results","published":"2026-01-28","url":"https://www.investor.asml.com/news-releases/news-release-details/q4-2025-financial-results","finding":"Provides normalization anchor: FY2025 gross margin was 52.8%, Installed Base Management sales EUR8.193bn, and year-end backlog EUR38.797bn; backlog consists accepted system sales orders not yet recognized as sales."}
+  ],
+  "assessment":{
+    "mechanism_support":"SUPPORTED_BUT_FORWARD_LOOKING",
+    "installed_base_materiality":"SUPPORTED",
+    "demand_supply_scarcity":"SUPPORTED_AS_MANAGEMENT_VISIBILITY_NOT_AS_REALIZED_CONVERSION",
+    "backlog_convertibility":"NOT_PROVEN",
+    "customer_concentration":"MATERIAL_RISK",
+    "geographic_export_concentration":"MATERIAL_RISK",
+    "sustainable_margin":"NOT_ESTABLISHED_AT_Q3_57_5_PERCENT",
+    "valuation_inputs":"REQUIRED_AND_NOT_YET_AUTHORIZED_FOR_MARKET_OUTCOME_ACCESS"
+  },
+  "recommendation":"PASS_BUSINESS_MECHANISM_WITH_CLAIM_RESTRICTION",
+  "restriction":"G1 may state that primary disclosures support a capacity-scarcity plus installed-base-upgrade business mechanism. It may not claim durable earnings-power expansion as established, backlog conversion as assured, 57.5% gross margin as sustainable, security undervaluation, or positive alpha.",
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}
+}
