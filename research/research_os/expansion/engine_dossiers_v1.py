@@ -48,8 +48,9 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
     settlement_constraint = documentary and family == 'INSTITUTIONAL_FLOW'
     if settlement_constraint:
         try:
-            from .source_adapters_v1 import sec_t1_packet
-            if packet != sec_t1_packet(packet['capture']):
+            from .source_adapters_v1 import sec_t1_packet, sec_t1_rule_packet
+            adapter = sec_t1_rule_packet if packet.get('rule_kind') == 'STANDARD_SETTLEMENT_OPERATIVE_RULE' else sec_t1_packet
+            if packet != adapter(packet['capture']):
                 raise ValueError('rule explanation differs from captured facts')
         except (KeyError, ValueError, TypeError, AttributeError, InvalidOperation):
             blockers.append('DOCUMENT_CAPTURE_NOT_QUALIFIED')
@@ -217,7 +218,8 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         claim = f"{issuer} {period}: guidance midpoint changed by {delta} {unit}, from {before} to {after}."
         disconfirm = "Withdraw the revision premise if the document is corrected, superseded, or the periods/units differ."
         tags, horizon = ["guidance_revision", "information_processing", "equity_beta"], "1-20d"
-    elif engine.family == "INSTITUTIONAL_FLOW" and packet.get('rule_kind') == 'STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION':
+    elif engine.family == "INSTITUTIONAL_FLOW" and packet.get('rule_kind') in {
+            'STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION', 'STANDARD_SETTLEMENT_OPERATIVE_RULE'}:
         measurements = {'standard_settlement_business_days':str(facts['standard_settlement_business_days']),
                         'constrained_share':'UNKNOWN', 'directional_flow':'UNKNOWN'}
         mechanism = (f"{packet['actor']} face a settlement deadline for covered transactions; "
@@ -225,6 +227,12 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         claim = (f"SEC staff FAQ explains a standard T+1 settlement constraint for covered transactions; "
                  "exemptions and agreed extensions require applicability review. The FAQ is nonbinding; "
                  "no eligible quantity, actual funding pressure, current legal opinion or economic payoff is established.")
+        if packet['rule_kind'] == 'STANDARD_SETTLEMENT_OPERATIVE_RULE':
+            claim = ('17 CFR 240.15c6-1(a), official 2025-04-01 edition, specifies first-business-day '
+                     'settlement for covered broker/dealer securities contracts, subject to exclusions, '
+                     'paragraphs (b)-(d) and express alternate agreements at transaction time. '
+                     'Actual transaction eligibility, current legal status, quantity, funding pressure '
+                     'and directional flow remain UNKNOWN; no economic payoff is established.')
         disconfirm = ('Reject the constraint premise for an exempt transaction, a valid agreed extension, '
                      'a superseding rule, or an actor outside scope. Reject a directional-flow thesis without '
                      'independent evidence of binding funding pressure, an eligible instrument and implementation costs. '
@@ -322,7 +330,7 @@ def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
                                    EngineContext('DOSSIER-REBUILD', synthetic_only=False)) != output:
         raise EngineContractError('dossier candidate does not reproduce its qualified producer')
     family = output['engine_family']
-    if family not in {'FUNDAMENTAL', 'EVENT_DOCUMENT'}:
+    if family not in {'FUNDAMENTAL', 'EVENT_DOCUMENT', 'INSTITUTIONAL_FLOW'}:
         raise EngineContractError('documentary dossier family not yet qualified')
     candidate_hash = sha256_json(candidate)
     source_support = {'packet_hash':packet['content_hash'], 'source_refs':deepcopy(output['source_refs']),
@@ -362,6 +370,29 @@ def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
             'Comparable declarations do not measure novelty, expectations, diffusion or market response.')
         detail['eligibility_rule'] = record('UNKNOWN', {}, [],
             'Captured excerpts do not establish record dates, holders, ex-date or tradable eligibility.')
+    elif family == 'INSTITUTIONAL_FLOW':
+        operative = packet['rule_kind'] == 'STANDARD_SETTLEMENT_OPERATIVE_RULE'
+        detail['forced_actor'] = record('PARTIAL', {
+            'rule_actor':packet['actor'], 'actual_constrained_actor':'UNKNOWN', 'forced_quantity':'UNKNOWN',
+        }, ['actor', 'capture'], 'A legal obligation does not demonstrate actual binding pressure.')
+        detail['constraint_rule'] = record('SUPPORTED' if operative else 'PARTIAL', {
+            'rule_kind':packet['rule_kind'], 'constraint':packet['constraint'],
+            'legal_basis':'OFFICIAL_CFR_2025_EDITION' if operative else 'NONBINDING_STAFF_EXPLANATION',
+            'current_legal_status':'UNKNOWN',
+        }, ['rule_kind', 'constraint', 'capture'],
+            'The admitted edition is pinned; later amendments, exemption orders and actual applicability are unqualified.')
+        detail['implementation_clock'] = record('PARTIAL', {
+            'standard_settlement_business_days':'1', 'tradable_horizon':'UNKNOWN',
+        }, ['facts.standard_settlement_business_days', 'horizon'], 'Settlement timing is not a measured trading horizon.')
+        detail['affected_universe'] = record('PARTIAL', {
+            'bounded_scope':packet['instrument'], 'actual_eligible_quantity':'UNKNOWN',
+        }, ['instrument', 'capture'], 'Conditional class only; no admitted individual trade or eligible population.')
+        detail['confounders'] = record('PARTIAL', {
+            'exceptions':['excluded securities', 'paragraph (b) exclusions/orders',
+                          'paragraph (c) late-priced offering', 'paragraph (d) firm-commitment alternate date',
+                          'express agreement at transaction time'],
+            'directional_flow':'UNKNOWN', 'payer':'UNKNOWN', 'funding_pressure':'UNKNOWN',
+        }, ['capture', 'constraint'], 'No forced purchase, sale, flow magnitude or economic effect follows from T+1 alone.')
     else:
         _fundamental_dossier_fields(detail, packet, evidence, record)
     detail['disconfirmation_checks'] = {

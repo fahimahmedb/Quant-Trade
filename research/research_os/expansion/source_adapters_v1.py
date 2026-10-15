@@ -234,6 +234,85 @@ def capture_sec_t1_faq(html_path: Path, *, retrieved_at: str) -> Dict[str, Any]:
     return {'source_ref':SEC_T1_FAQ, 'freeze_time':retrieved_at, 'documentary_packet':packet}
 
 
+SEC_T1_RULE = 'https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol4/xml/CFR-2025-title17-vol4-sec240-15c6-1.xml'
+SEC_T1_RULE_RAW_SHA256 = '65c9d9ce2c73d45811c7f0c97b02349f8184546d42050d12f9c3ea1f2864fd36'
+SEC_T1_RULE_TEXT_SHA256 = '9a10050c12683ec42f4f765ca070885f693229cd171095c51d874eb67dbcbe1d'
+
+
+def sec_t1_rule_packet(capture: Dict[str, Any]) -> Dict[str, Any]:
+    """Admit the official 2025 CFR rule text, without a current-law opinion.
+
+    This pins the operative provision in that edition. Actual transaction
+    eligibility, later amendments and orders still require separate evidence.
+    """
+    from .engine_dossiers_v1 import _clock
+    fields = {'source_url', 'raw_sha256', 'retrieved_at', 'publication_clock_basis',
+              'document_kind', 'edition_date', 'section', 'section_text', 'extractor'}
+    if (set(capture) != fields or capture['source_url'] != SEC_T1_RULE
+            or capture['raw_sha256'] != SEC_T1_RULE_RAW_SHA256
+            or capture['document_kind'] != 'OFFICIAL_CFR_OPERATIVE_RULE_EDITION'
+            or capture['edition_date'] != '2025-04-01' or capture['section'] != '17 CFR 240.15c6-1'
+            or capture['publication_clock_basis'] != 'FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT'
+            or capture['extractor'] != 'govinfo-cfr-15c6-1.v1'
+            or hashlib.sha256(capture['section_text'].encode()).hexdigest() != SEC_T1_RULE_TEXT_SHA256
+            or _clock(capture['retrieved_at']).date().isoformat() < capture['edition_date']):
+        raise ValueError('unqualified operative rule capture')
+    packet = {
+        'evidence_class':'DOCUMENTARY', 'source_ref':SEC_T1_RULE, 'issuer_id':'SEC_RULE_15c6_1',
+        'published_at':capture['retrieved_at'], 'available_at':capture['retrieved_at'],
+        'revision_status':'CAPTURED_VERSION_AS_OF_RETRIEVAL', 'period':'CFR_EDITION_2025-04-01',
+        'unit':'business_days_after_trade', 'rule_kind':'STANDARD_SETTLEMENT_OPERATIVE_RULE',
+        'facts':{'standard_settlement_business_days':'1'},
+        'actor':'A broker or dealer entering a covered securities purchase or sale contract',
+        'constraint':'17 CFR 240.15c6-1(a): first business day settlement unless expressly agreed otherwise at transaction time; paragraphs (b)-(d) qualify scope',
+        'instrument':'Bounded class: ordinary common-equity secondary-market contracts outside all exclusions and alternate-date agreements; individual applicability UNKNOWN',
+        'horizon':'First business day settlement obligation only; tradable horizon UNKNOWN',
+        'capture':deepcopy(capture),
+    }
+    packet['content_hash'] = sha256_json(packet)
+    return packet
+
+
+def capture_sec_t1_rule(xml_path: Path, *, retrieved_at: str) -> Dict[str, Any]:
+    import xml.etree.ElementTree as ET
+    raw = Path(xml_path).read_bytes()
+    root = ET.fromstring(raw)
+    if root.findtext('./FDSYS/DATE') != '2025-04-01' or root.findtext('.//SECTION/SUBJECT') != 'Settlement cycle.':
+        raise ValueError('unqualified CFR edition or section')
+    section_text = '\n'.join(' '.join(''.join(p.itertext()).split()) for p in root.findall('.//SECTION/P'))
+    packet = sec_t1_rule_packet({
+        'source_url':SEC_T1_RULE, 'raw_sha256':hashlib.sha256(raw).hexdigest(), 'retrieved_at':retrieved_at,
+        'publication_clock_basis':'FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT',
+        'document_kind':'OFFICIAL_CFR_OPERATIVE_RULE_EDITION', 'edition_date':'2025-04-01',
+        'section':'17 CFR 240.15c6-1', 'section_text':section_text, 'extractor':'govinfo-cfr-15c6-1.v1',
+    })
+    return {'source_ref':SEC_T1_RULE, 'freeze_time':retrieved_at, 'documentary_packet':packet}
+
+
+def assess_t1_rule_scope(transaction: Dict[str, Any]) -> Dict[str, Any]:
+    """Conservative rule-scope logic for explicit assumptions, not a legal opinion.
+
+    No caller scenario is evidence of an actual covered trade or forced flow.
+    Unknown exception flags prevent positive eligibility.
+    """
+    flags = {'broker_or_dealer', 'agreed_alternate_date', 'commission_exemption', 'firm_commitment_offering'}
+    if set(transaction) != flags | {'security_class'}:
+        return {'status':'UNKNOWN', 'reason':'SCOPE_PREMISES_MISSING'}
+    if transaction['broker_or_dealer'] is False:
+        return {'status':'OUTSIDE_BOUNDED_SCOPE', 'reason':'ACTOR_OUTSIDE_SCOPE'}
+    if any(transaction[k] is True for k in flags - {'broker_or_dealer'}):
+        return {'status':'OUTSIDE_BOUNDED_SCOPE', 'reason':'EXCEPTION_OR_ALTERNATE_DATE'}
+    excluded = {'EXEMPTED_SECURITY', 'GOVERNMENT_SECURITY', 'MUNICIPAL_SECURITY', 'COMMERCIAL_PAPER',
+                'BANKERS_ACCEPTANCE', 'COMMERCIAL_BILL', 'UNLISTED_LIMITED_PARTNERSHIP', 'SECURITY_BASED_SWAP'}
+    if not isinstance(transaction['security_class'], str):
+        return {'status':'UNKNOWN', 'reason':'SCOPE_PREMISES_UNQUALIFIED'}
+    if transaction['security_class'] in excluded:
+        return {'status':'OUTSIDE_BOUNDED_SCOPE', 'reason':'EXCLUDED_INSTRUMENT'}
+    if any(type(transaction[k]) is not bool for k in flags) or transaction['security_class'] != 'ORDINARY_COMMON_EQUITY':
+        return {'status':'UNKNOWN', 'reason':'SCOPE_PREMISES_UNQUALIFIED'}
+    return {'status':'CONDITIONALLY_WITHIN_RULE_SCOPE', 'reason':'DECLARED_ASSUMPTIONS_ONLY_NOT_ACTUAL_TRANSACTION_EVIDENCE'}
+
+
 def validate_adapter_spec(spec: Dict[str, Any]) -> Dict[str, Any]:
     blockers: List[str] = []
     required = {
