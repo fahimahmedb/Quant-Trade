@@ -5,9 +5,7 @@ on:
     branches:
       - builder/research-os-aggressive-architecture-20261015
     paths:
-      - 'research/research_os/expansion/canonical_depth_v1.py'
-      - 'research/research_os/tests/test_canonical_depth_v1.py'
-      - 'research/research_os/simulations/**'
+      - 'research/research_os/**'
       - '.github/workflows/research-os-canonical-depth-ci.yml'
   workflow_dispatch:
 
@@ -37,6 +35,9 @@ jobs:
       - name: Run canonical depth tests
         run: |
           python -m unittest research.research_os.tests.test_canonical_depth_v1 -v
+
+      - name: Run all Research OS regressions
+        run: python -m unittest discover -s research/research_os/tests -p 'test_*.py' -v
 
       - name: Re-run canonical spine regression tests
         run: |

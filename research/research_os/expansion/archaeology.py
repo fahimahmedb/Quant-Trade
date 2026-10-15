@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
+from .engine_dossiers_v1 import documentary_candidate
+
 from research.research_os.engines.protocol import EngineContext, build_candidate
 
 
@@ -10,6 +12,8 @@ class EdgeArchaeologyEngine:
     family = "EDGE_ARCHAEOLOGY"
 
     def run(self, source: Dict[str, Any], context: EngineContext) -> Dict[str, Any]:
+        if "documentary_packet" in source:
+            return documentary_candidate(self, source, context, source.get("hypothesis_id", "SYN-ARCH-001"))
         return build_candidate(
             engine_id=self.engine_id,
             engine_family=self.family,
