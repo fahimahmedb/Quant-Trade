@@ -1,0 +1,113 @@
+{
+  "task_id": "ECON-READINESS-IDENTITY-PORTFOLIO-20261016",
+  "builder": "IDENTITY_PORTFOLIO",
+  "status": "IMPLEMENTED_CI_NOT_RUN",
+  "start_sha": "b570973836e0e7daf50ca095a7559d63328f0a57",
+  "implementation_sha": "ea304ad93d9a58e800d17423d37c6079a339c49d",
+  "branch": "builder/econ-readiness-identity-portfolio-20261016",
+  "scope": "Strengthen pre-outcome Economic Identity and Portfolio structural interpretation without empirical returns, allocation, sizing, orders or trading authority.",
+  "changed_code": [
+    "research/research_os/expansion/portfolio_v2.py"
+  ],
+  "tests_added": [
+    "research/research_os/tests/test_economic_identity_portfolio_readiness.py"
+  ],
+  "structural_identity_fields": [
+    "payer",
+    "forced_constrained_actor",
+    "mechanism",
+    "instrument",
+    "universe",
+    "timing_clock",
+    "horizon",
+    "capacity_bottleneck",
+    "cost_structure",
+    "economic_exposure",
+    "event_rule_dependency",
+    "source_identity"
+  ],
+  "field_provenance": {
+    "candidate_reference": "hypothesis_id + generation_id always retained",
+    "candidate_hash": "retained when available; UNKNOWN otherwise",
+    "source_hash": "retained when available; UNKNOWN otherwise",
+    "dossier_hash": "retained when available; UNKNOWN otherwise",
+    "identity_hash": "always deterministic",
+    "source_path": "records exact identity/candidate/provenance path used",
+    "unknown_policy": "missing evidence remains UNKNOWN"
+  },
+  "structural_same_exposure_policy": {
+    "review_trigger": "known equal payer + mechanism + timing_clock",
+    "result": "HIGH_STRUCTURAL_OVERLAP_REVIEW",
+    "numeric_empirical_correlation_inferred": false
+  },
+  "empirical_outputs": {
+    "empirical_correlation": "UNAVAILABLE",
+    "marginal_portfolio_contribution": "NOT_ESTIMATED",
+    "return_series_consumed": false
+  },
+  "authority": {
+    "capital_allocation_authorized": false,
+    "position_sizing_authorized": false,
+    "orders_authorized": false,
+    "portfolio_optimization_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false
+  },
+  "immutability": {
+    "candidate_mutation_permitted": false,
+    "identity_input_mutation_permitted": false,
+    "structural_projection_is_read_only": true
+  },
+  "compatibility": {
+    "legacy_portfolio_v2_dimensions_preserved": [
+      "asset",
+      "liquidity",
+      "tail_exposure",
+      "economic_tags"
+    ],
+    "existing_primary_surfaces_modified": [
+      "portfolio_v2.py"
+    ],
+    "explicitly_not_modified": [
+      "experiment_runner.py",
+      "validation_v2.py",
+      "engine_dossiers_v1.py",
+      "canonical_spine.py",
+      "final_shape.py"
+    ],
+    "new_top_level_architecture": false
+  },
+  "validation": {
+    "dedicated_tests_authored": 7,
+    "isolated_core_harness": {
+      "status": "PASS",
+      "checks": [
+        "same mechanism/payer/clock -> HIGH_STRUCTURAL_OVERLAP_REVIEW",
+        "different payer/mechanism -> STRUCTURALLY_DISTINGUISHABLE",
+        "missing core evidence -> UNKNOWN",
+        "empirical correlation -> UNAVAILABLE and non-numeric",
+        "marginal portfolio contribution -> NOT_ESTIMATED",
+        "allocation/sizing/orders/real-capital/live-trading/optimization authority -> false",
+        "input identity remains immutable"
+      ],
+      "passed": 7,
+      "failed": 0
+    },
+    "repository_integrated_test_suite": "NOT_EXECUTED_IN_CURRENT_TOOL_RUNTIME",
+    "github_ci": {
+      "status": "NOT_RUN",
+      "reason": "Existing Research OS workflows are push-filtered to builder/research-os-aggressive-architecture-20261015 or require workflow_dispatch; no workflow-dispatch action is exposed by the current GitHub connector. No old CI is attributed to this SHA."
+    }
+  },
+  "limitations": [
+    "No admissible return data exists in this mission, so empirical correlation remains UNAVAILABLE and marginal portfolio contribution remains NOT_ESTIMATED.",
+    "The isolated core harness validates the new deterministic logic but is not a substitute for the repository-integrated CI suite.",
+    "Documentary provenance is preserved when available; unavailable candidate/source/dossier hashes remain UNKNOWN rather than fabricated."
+  ],
+  "unknown_fields_preserved": true,
+  "future_question": "Does this edge add economically distinct value?",
+  "economic_outcomes_opened": false,
+  "empirical_evidence_invented": false
+}
