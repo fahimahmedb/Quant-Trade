@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:31:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_MECHANISM_AND_DATA_FEASIBILITY",
+  "family": "bank-capital-call-redemption-convergence",
+  "seed": "Banco Santander 4.750% Tier-1 CoCo optional early redemption",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "selected_security_price_or_return_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "MECHANISM": "After an issuer makes an irrevocable call of a listed perpetual bank-capital security at a contractually specified redemption amount and date, the instrument acquires a bounded terminal cash value. A residual discount to that amount can in principle converge as call date approaches, but the spread may simply compensate settlement, distribution-cancellation, credit, liquidity, tax and operational risk.",
+  "WHO_PAYS": "The issuer pays the contractual redemption amount plus any contractually payable accrued distribution; a secondary-market holder only earns a convergence return if it acquires the security below the eventual net redemption proceeds. No free transfer is assumed.",
+  "WHY_PERSIST": "Bank AT1/CoCo securities are institutionally sized, legally complex, often traded on specialist venues with thin public quote access. Regulatory consent, distribution rules, settlement conventions and large denominations can deter small entrants. These same frictions can also fully explain any discount and make the expression inaccessible.",
+  "CHEAP_DATA_NOW": "Primary Santander disclosures establish repeated optional early-redemption mechanics and the issuer's May/June 2026 tender history for the same 4.750% security. The October 2026 SEC 6-K already preserved in the admission receipt establishes an irrevocable November 12, 2026 redemption at nominal plus accrued-but-unpaid distribution. However, this bounded pass did not qualify a free, permitted, point-in-time historical bid/ask or transaction-price route for the Global Exchange Market-listed CoCo.",
+  "CHEAP_EXPRESSION": "Potential future preregistered convergence test: buy one minimum tradable denomination strictly after first-public irrevocable-call time, value against contractually fixed redemption proceeds on call date, include accrued distribution rules, settlement, FX if applicable, bid/ask and funding. No price payload is authorized until venue/symbol, minimum denomination, first-public clock and a permitted historical price route are frozen.",
+  "FATAL_PROBLEM": "The same 4.750% issue had a 2026 cash tender whose documentation states a $200,000 liquidation amount/minimum tender unit. Specialist venue access and public historical executable pricing are not qualified. The call may also be immediately and efficiently priced, leaving only carry/credit/liquidity compensation. Without a lawful point-in-time price route, any return calculation would be cherry-picked or non-reproducible.",
+  "disconfirmation": [
+    "An irrevocable call fixes terminal contractual proceeds but does not imply a mispricing after the announcement.",
+    "Large denominations and specialist venue access may make the expression irrelevant to small-account implementation.",
+    "Past Santander calls show that this is a recurring liability-management action, increasing the chance that sophisticated fixed-income desks price it quickly.",
+    "Accrued distributions can be conditional/cancellable under CoCo terms; redemption value must be read from exact terms, not approximated as par-plus-coupon."
+  ],
+  "primary_sources": [
+    {
+      "url": "https://www.santander.com/en/shareholders-and-investors/financial-and-economic-information/relevant-information",
+      "fact": "Santander's official information page records the May 27, 2026 tender for the 4.750% Non-Step-Up Non-Cumulative Contingent Convertible Perpetual Preferred Tier 1 Securities and other liability-management disclosures."
+    },
+    {
+      "url": "https://www.santander.com/content/dam/santander-com/es/documentos/otra-informacion-relevante/2026/06/hr-2026-06-10-santander-comunica-el-resultado-de-la-oferta-de-recompra-con-contraprestacion-en-efectivo-es.pdf",
+      "fact": "Official June 10, 2026 tender result states 100.1% purchase price and $200,000 liquidation amount/minimum tender denomination for the 4.750% preferred securities."
+    },
+    {
+      "url": "https://www.santander.com/content/dam/santander-com/en/documentos/informacion-privilegiada/2025/11/hr-2025-11-17-optional-early-redemption-of-all-outstanding-4375-per-cent-non-step-up-non-cumulative-contingent-convertible-perpetual-preferred-tier-1-securities-en.pdf",
+      "fact": "Official historical Santander call demonstrates the same generic irrevocable CoCo redemption structure: outstanding nominal value plus accrued/unpaid distribution on a specified call date after regulatory authorization. This is mechanism evidence only, not an economic observation for the 2026 4.750% case."
+    },
+    {
+      "source": "saved repository admission receipt",
+      "path": "research/edge_lab/discovery/qualifications/santander-6k-ae-admission-2026-10-15.json",
+      "fact": "Current October 2026 event: all outstanding 4.750% CoCos called for November 12, 2026 at nominal plus accrued but unpaid distribution; no selected market price/payoff was read."
+    }
+  ],
+  "failed_criteria": [
+    "No free permitted point-in-time price/bid-ask route for the exact CoCo and venue qualified.",
+    "No execution-cost/settlement route qualified.",
+    "Minimum denomination is institutionally large in the saved same-security tender documentation.",
+    "No predeclared economic expression can run until first-public clock and exact security terms are independently frozen."
+  ],
+  "next_action": "PARK. Reopen only on genuinely new primary/venue evidence that identifies the exact listed instrument, minimum tradable denomination and a free permitted historical quote/transaction route with timestamps. If reopened, preregister one call-to-redemption convergence expression before reading the October 2026 post-call price. Do not use the current event as a retrospective winner after seeing its price.",
+  "inference_ceiling": [
+    "No CoCo alpha or profitability conclusion",
+    "No claim that call spreads persist",
+    "No retail implementability claim",
+    "No live or real-capital authorization"
+  ]
+}
