@@ -86,8 +86,8 @@ def assess_implementability_depth(engine_output: Dict[str, Any], meta: Dict[str,
     """Conservative implementability depth behind the existing interface.
 
     This function never opens economic outcomes or mutates CandidateHypothesis.
-    ``status`` is retained for current downstream compatibility; the authoritative
-    economic-test readiness decision is ``implementability_status``.
+    ``implementability_status`` is the authoritative readiness decision. ``status``
+    mirrors it onto the existing PASS/PARK/BLOCK surface used by downstream code.
     """
 
     candidate = engine_output["candidate"]
@@ -100,30 +100,30 @@ def assess_implementability_depth(engine_output: Dict[str, Any], meta: Dict[str,
     capacity_observable = _tri_state(meta.get("capacity_observable"))
     operational_complexity = _complexity(meta.get("operational_complexity"))
 
-    legacy_blockers: List[str] = []
+    base_blockers: List[str] = []
     if source_available is False:
-        legacy_blockers.append("SOURCE_UNAVAILABLE")
+        base_blockers.append("SOURCE_UNAVAILABLE")
     elif source_available == _UNKNOWN:
-        legacy_blockers.append("SOURCE_AVAILABILITY_UNKNOWN")
+        base_blockers.append("SOURCE_AVAILABILITY_UNKNOWN")
     if pit_feasible is False:
-        legacy_blockers.append("PIT_NOT_QUALIFIED")
+        base_blockers.append("PIT_NOT_QUALIFIED")
     elif pit_feasible == _UNKNOWN:
-        legacy_blockers.append("PIT_FEASIBILITY_UNKNOWN")
+        base_blockers.append("PIT_FEASIBILITY_UNKNOWN")
     if expression_feasible is False:
-        legacy_blockers.append("EXPRESSION_NOT_QUALIFIED")
+        base_blockers.append("EXPRESSION_NOT_QUALIFIED")
     elif expression_feasible == _UNKNOWN:
-        legacy_blockers.append("EXPRESSION_FEASIBILITY_UNKNOWN")
+        base_blockers.append("EXPRESSION_FEASIBILITY_UNKNOWN")
     if cost_model_feasible is False:
-        legacy_blockers.append("COST_MODEL_NOT_QUALIFIED")
+        base_blockers.append("COST_MODEL_NOT_QUALIFIED")
     elif cost_model_feasible == _UNKNOWN:
-        legacy_blockers.append("COST_MODEL_FEASIBILITY_UNKNOWN")
+        base_blockers.append("COST_MODEL_FEASIBILITY_UNKNOWN")
     if capacity_observable is False:
-        legacy_blockers.append("CAPACITY_NOT_OBSERVABLE")
+        base_blockers.append("CAPACITY_NOT_OBSERVABLE")
     elif capacity_observable == _UNKNOWN:
-        legacy_blockers.append("CAPACITY_OBSERVABILITY_UNKNOWN")
+        base_blockers.append("CAPACITY_OBSERVABILITY_UNKNOWN")
 
     expression = _expression_diagnostics(meta)
-    blocking_reasons = list(legacy_blockers) + list(expression["blocking_reasons"])
+    blocking_reasons = list(base_blockers) + list(expression["blocking_reasons"])
     if operational_complexity == _UNKNOWN:
         blocking_reasons.append("OPERATIONAL_COMPLEXITY_UNKNOWN")
     blocking_reasons = sorted(set(blocking_reasons))
@@ -136,9 +136,11 @@ def assess_implementability_depth(engine_output: Dict[str, Any], meta: Dict[str,
     else:
         implementability_status = "BLOCK_IMPLEMENTABILITY"
 
-    # Current consumers key off PASS/PARK_IMPLEMENTABILITY. Preserve that surface
-    # while the stricter readiness decision above carries the future-test gate.
-    compatibility_status = "PASS" if not legacy_blockers else "PARK_IMPLEMENTABILITY"
+    status = {
+        "IMPLEMENTABLE": "PASS",
+        "PARK_IMPLEMENTABILITY": "PARK_IMPLEMENTABILITY",
+        "BLOCK_IMPLEMENTABILITY": "BLOCK_IMPLEMENTABILITY",
+    }[implementability_status]
 
     if candidate != candidate_before:
         raise AssertionError("implementability assessment mutated CandidateHypothesis")
@@ -152,7 +154,7 @@ def assess_implementability_depth(engine_output: Dict[str, Any], meta: Dict[str,
 
     return {
         "hypothesis_id": candidate["hypothesis_id"],
-        "status": compatibility_status,
+        "status": status,
         "implementability_status": implementability_status,
         "source_available": source_available,
         "pit_feasible": pit_feasible,
@@ -165,7 +167,7 @@ def assess_implementability_depth(engine_output: Dict[str, Any], meta: Dict[str,
         "exact_universe_status": expression["exact_universe_status"],
         "exact_expression_contract": expression["contract"],
         "blocking_reasons": blocking_reasons,
-        "blockers": legacy_blockers,
+        "blockers": blocking_reasons,
         "candidate_mutated": False,
         "mechanism_rewritten": False,
         "research_decision_rewritten": False,
