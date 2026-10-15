@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_EVENT_EXPOSURE_QUARANTINE",
+  "protocol": "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1",
+  "candidate": {
+    "fund": "iShares iBonds Oct 2026 Term TIPS ETF",
+    "ticker": "IBIC",
+    "issuer": "iShares Trust"
+  },
+  "decision": "INELIGIBLE_PRE_T0_EVENT",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "protocol_t0": "2026-10-12T21:00:00Z",
+  "primary_event_clock": {
+    "supplement_date": "2026-08-14",
+    "sec_accession": "0001193125-26-352275",
+    "status": "BEFORE_PROTOCOL_T0"
+  },
+  "primary_facts": [
+    "The August 14, 2026 iShares supplement states that IBIC's planned liquidation had been approved by the board on June 8, 2023.",
+    "The same supplement states October 15, 2026 is the last NYSE Arca trading day, trading will be suspended before the October 16 open, and liquidation proceeds are scheduled for October 20, 2026.",
+    "The final NAV is calculated on October 15, 2026 and includes expected liquidation costs.",
+    "These terms were public months before the ETF-liquidation prospective protocol's October 12, 2026 T0."
+  ],
+  "source": {
+    "url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526352275/d129369d497.htm",
+    "type": "SEC Rule 497 supplement"
+  },
+  "outcome_exposure": {
+    "fresh_selected_event_price_used": false,
+    "fresh_selected_event_nav_used": false,
+    "liquidation_distribution_used": false,
+    "note": "A public iShares product-page search result exposed a September 2026 historical NAV value while identifying the fund. That value is contamination only and is irrelevant to prospective eligibility because the liquidation announcement itself predates T0. Do not use it in any economic calculation."
+  },
+  "decision_reason": "Protocol E admits only the first Rule 497/497K filing accepted strictly after T0 that newly announces liquidation with final-trading and later liquidation dates. IBIC's operative liquidation notice was public in August 2026 (and the planned termination dates back to 2023), so the October 15 last-trading date cannot make it a fresh prospective event.",
+  "ordering_effect": "IBIC must never be selected as the prospective ETF-liquidation event under v1. It does not resolve the earlier Calamos accession chronology blocker because Calamos remains a separate post-T0 documentary candidate requiring exact primary-scope verification.",
+  "next_action": "Continue chronological post-T0 ETF filing qualification from the unresolved Calamos accession. Do not read IBIC October 15 market/NAV or October 20 liquidation outcome as a prospective trial under this protocol.",
+  "inference_ceiling": [
+    "No IBIC economic result",
+    "No ETF-liquidation family evidence",
+    "No edge/alpha claim",
+    "No live or real-capital authorization"
+  ]
+}
