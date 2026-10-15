@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:02:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before": "2d831f8d67e9d58348b90ca1515f89a5a681c3f8",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Calamos ETF Trust",
+    "cik": "0001579881",
+    "form": "497",
+    "accession": "0001104659-26-115676",
+    "saved_feed_updated": "2026-10-14T06:01:39-04:00",
+    "saved_index_url": "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm",
+    "accepted_timestamp_primary_verified_this_pass": false
+  },
+  "observed_documentary_facts": [
+    "The saved research queue identifies this accession as a Calamos ETF Trust Rule 497 filing.",
+    "Public filing mirrors for Calamos on 2026-10-14 identify a Rule 497(e) supplement for Calamos Least-Of Autocallable Income ETF and describe it as an update to a prospectus/SAI, not as a liquidation notice.",
+    "An official SEC same-day Calamos 485BPOS filing accessible in this environment describes Calamos Least-Of Autocallable Income ETF as an ETF registration/prospectus and includes only generic risk language that a board may liquidate a fund; generic liquidation risk is not a newly announced liquidation event."
+  ],
+  "decision": "PARK_DOCUMENT_SCOPE_PRIMARY_NOT_VERIFIED",
+  "decision_reason": "The exact primary SEC body for accession 0001104659-26-115676 could not be retrieved in the current environment. Secondary mirrors strongly indicate an ordinary prospectus supplement for an operating/launching ETF rather than a new liquidation announcement, but the frozen ETF-liquidation protocol requires primary-document qualification. Therefore do not silently promote the mirror to primary evidence and do not mark the candidate definitively ineligible yet.",
+  "protocol_implications": {
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "NO_EVENT_ADMITTED. The protocol requires a Rule 497/497K that newly announces liquidation and provides a fixed final trading date plus later liquidation/distribution date. Those terms were not established from the exact primary accession in this pass.",
+    "A_B_C_D": "No evidence in the saved form identity or accessible surrounding Calamos materials suggests an issuer tender, reverse split entitlement, or SPAC redemption; nevertheless the exact accession is left unresolved rather than overclassified from secondary text."
+  },
+  "outcome_exposure": {
+    "selected_market_price": false,
+    "nav": false,
+    "liquidation_distribution": false,
+    "tender_spread": false,
+    "future_return_or_pnl": false,
+    "economic_look_opened": false
+  },
+  "first_broken_transition": "EXACT_PRIMARY_SEC_497_BODY_NOT_RETRIEVABLE_IN_CURRENT_ENVIRONMENT",
+  "reopen_only": "Retrieve the exact SEC primary body or header for accession 0001104659-26-115676 and determine whether it newly announces liquidation with both final trading date and later liquidation/distribution date. Do not read any selected fund NAV, market price or distribution amount during this gate.",
+  "ordering_effect": "Preserve chronology. This unresolved accession prevents claiming a later A-E ETF event as the FIRST qualifying event unless this accession is resolved or mechanically shown ineligible from primary evidence. Other causally distinct documentary research may continue without opening an economic look.",
+  "next_action": "Do not repeat generic Calamos searches. On a later run, retry only if a genuinely different primary-access route becomes available. Otherwise continue one admissible non-outcome documentary action outside any FIRST-event claim, while monitoring post-T0 CEF-rights filings prospectively.",
+  "inference_ceiling": [
+    "No economic verdict",
+    "No ETF-liquidation event admitted",
+    "No claim that Calamos is definitively ineligible without the exact primary filing",
+    "No live or real-capital authorization"
+  ]
+}
