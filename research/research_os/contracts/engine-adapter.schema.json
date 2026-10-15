@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quant-trade://research-os/engine-adapter.schema.json",
+  "title": "EngineAdapterOutput",
+  "type": "object",
+  "required": ["engine_id", "engine_family", "candidate", "synthetic_only", "source_refs"],
+  "properties": {
+    "engine_id": {"type": "string", "minLength": 1},
+    "engine_family": {
+      "type": "string",
+      "enum": ["QUANT_MECHANISM", "FUNDAMENTAL", "EVENT_DOCUMENT", "INSTITUTIONAL_FLOW", "LEGACY_RECOVERY"]
+    },
+    "synthetic_only": {"const": true},
+    "source_refs": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "candidate": {
+      "type": "object",
+      "required": ["hypothesis_id", "generation_id", "mechanism", "claim", "falsification_scope", "decision_map", "economic_tags"],
+      "properties": {
+        "hypothesis_id": {"type": "string"},
+        "generation_id": {"type": "string"},
+        "mechanism": {"type": "string", "minLength": 1},
+        "claim": {"type": "string", "minLength": 1},
+        "falsification_scope": {"type": "string", "minLength": 1},
+        "decision_map": {"type": "object", "minProperties": 2},
+        "economic_tags": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
