@@ -1,0 +1,11 @@
+{
+  "event_id":"PROD-LEGACY-001-g1-e001",
+  "session_id":"PROD-LEGACY-001-g1",
+  "worker_id":"evidence-data-workflow",
+  "action_id":"PROD-LEGACY-001",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-15T13:21:26Z",
+  "payload":{"task_type":"LEGACY_RECOVERY","lane":"evidence_data","authority":"LEGACY_RECOVERY_ONLY"}
+}
