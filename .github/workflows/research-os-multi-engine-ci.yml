@@ -1,0 +1,47 @@
+name: Research OS multi-engine CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-autonomous-loop-20261015
+    paths:
+      - 'research/research_os/**'
+      - 'research/live_lab_ux/adapters/platform-native.js'
+      - '.github/workflows/research-os-multi-engine-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  multi-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run multi-engine pipeline
+        run: python -m research.research_os.engines.pipeline
+      - name: Run Python architecture tests
+        run: python -m unittest research.research_os.tests.test_multi_engine_pipeline -v
+      - name: Verify Live Lab native mapper compatibility
+        run: node research/research_os/tests/live_lab_bridge_check.mjs
+      - name: Assert hard safety invariants
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/research_os/simulations/multi_engine_result.json')
+          d=json.loads(p.read_text())
+          assert d['status']=='PASS'
+          assert d['synthetic_only'] is True
+          assert d['authorities']=={
+            'real_capital': False,
+            'live_trading': False,
+            'prospective_observation': False,
+            'economic_experiment': False,
+          }
+          assert all(not r['observation_started'] for r in d['shadow']['registrations'])
+          print('MULTI_ENGINE_ARCHITECTURE=PASS')
+          PY
