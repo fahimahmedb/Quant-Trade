@@ -347,6 +347,38 @@ class PrimaryDocumentAdmissionTests(unittest.TestCase):
         self.assertFalse(result['outcome_accessed'])
         self.assertEqual(result['economic_result'], 'NOT_OBSERVED')
 
+    def test_primary_document_enters_canonical_spine_without_fake_implementability(self):
+        source = self.source()
+        output = ENGINE_REGISTRY['fundamental'].run(source, EngineContext('DOC', synthetic_only=False))
+        hid = output['candidate']['hypothesis_id']
+        configuration = json.loads((BASE / 'simulations/aggressive_architecture_fixture.json').read_text())
+        configuration['sources']['fundamental'] = source
+        configuration['implementability'][hid] = {'source_available':True, 'pit_feasible':True,
+            'expression_feasible':False, 'cost_model_feasible':False, 'capacity_observable':False}
+        configuration['experiments'][hid] = {'dataset_provenance':{'source_ref':source['source_ref'],
+            'capture_hash':source['documentary_packet']['content_hash']}, 'code_version':'documentary-admission.v1',
+            'cost_model_version':'UNQUALIFIED', 'pit_controls_declared':True,
+            'leakage_controls_declared':True, 'multiplicity_accounting_declared':False}
+        configuration['economic_identity'][hid] = {'asset':'AAPL', 'payer':'UNKNOWN', 'beta':'UNKNOWN',
+            'capacity':'UNKNOWN', 'liquidity':'UNKNOWN', 'tail_exposure':'UNKNOWN'}
+        task = json.loads((BASE / 'simulations/canonical_spine_task.json').read_text())
+        task['inputs'].update(engine_key='fundamental', evidence_mode='DOCUMENTARY')
+        task['required_capability'] = 'fundamental'
+        task['authority']['scope'] = 'DOCUMENTARY_SOURCE_QUALIFICATION_ONLY'
+        with self.assertRaises(PermissionError):
+            run_canonical_spine(BASE, configuration, task)
+        task['allowed_actions'].append('DOCUMENTARY_RESEARCH')
+        with TemporaryDirectory() as directory:
+            result = run_canonical_spine(BASE, configuration, task, checkpoint_dir=Path(directory))
+            self.assertFalse(list(Path(directory).glob('*.completed.json')))
+        self.assertFalse(result['synthetic_only'])
+        self.assertEqual(result['event_provenance'], 'BUILD_REPLAY_NOT_LIVE')
+        self.assertEqual(result['documentary_depth']['evidence_class'], 'DOCUMENTARY')
+        self.assertEqual(result['validation']['status'], 'BLOCK')
+        self.assertEqual(result['forward_registration']['readiness'], 'NOT_READY')
+        self.assertIn('BLOCK_COST_MODEL', result['red_team']['negative_rights'])
+        self.assertFalse(any(result['authority'].values()))
+
 
 if __name__ == '__main__':
     unittest.main()

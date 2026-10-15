@@ -18,6 +18,7 @@ def execute_documentary_depth(output: Dict[str, Any], envelope: Dict[str, Any], 
     """Populate existing runner/source stages from the candidate's pinned packet."""
     evidence = output['candidate']['documentary_evidence']
     packet = evidence['packet']
+    synthetic = output['synthetic_only']
     family_keys = {'FUNDAMENTAL':'fundamental', 'EVENT_DOCUMENT':'event_document',
                    'QUANT_MECHANISM':'quant', 'INSTITUTIONAL_FLOW':'institutional_flow',
                    'EDGE_ARCHAEOLOGY':'archaeology'}
@@ -26,10 +27,11 @@ def execute_documentary_depth(output: Dict[str, Any], envelope: Dict[str, Any], 
         source['hypothesis_id'] = output['candidate']['hypothesis_id']
     inputs = [{'engine_key':family_keys[output['engine_family']], 'source':source}]
     qualification = qualify_source_route({
-        'route_id':packet['content_hash'], 'source_class':'SYNTHETIC_FIXTURE',
-        'transport':'fixture-json', 'locator':packet['source_ref'], 'permission_state':'FIXTURE_ONLY',
+        'route_id':packet['content_hash'], 'source_class':'SYNTHETIC_FIXTURE' if synthetic else 'PRIMARY_PUBLIC',
+        'transport':'fixture-json' if synthetic else 'pinned-documentary-capture',
+        'locator':packet['source_ref'], 'permission_state':'FIXTURE_ONLY' if synthetic else 'PUBLIC',
         'pit_mode':'PUBLICATION_TIME', 'revision_policy':packet['revision_status'],
-        'survivorship_policy':'FULL_SYNTHETIC_UNIVERSE_DECLARED', 'timezone':'UTC',
+        'survivorship_policy':'FULL_SYNTHETIC_UNIVERSE_DECLARED' if synthetic else 'SINGLE_SOURCE_NO_UNIVERSE_CLAIM', 'timezone':'UTC',
         'availability_start':packet['available_at'], 'contains_outcome':False,
         'content_scope':'TYPED_DOCUMENTARY_FACTS',
     }, freeze_time=evidence['freeze_time'])
@@ -44,7 +46,7 @@ def execute_documentary_depth(output: Dict[str, Any], envelope: Dict[str, Any], 
         executed = runner.execute(plan, inputs, checkpoint_dir)
     return {'source_qualification':qualification, 'dry_run_plan':plan, 'executed_dry_run':executed,
             'execution_status': 'EXECUTED_DRY_RUN' if executed else 'NOT_EXECUTED',
-            'evidence_class':'SYNTHETIC'}
+            'evidence_class':packet['evidence_class']}
 
 
 def enrich_canonical_depth(

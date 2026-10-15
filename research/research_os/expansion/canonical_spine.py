@@ -239,7 +239,10 @@ def run_canonical_spine(
     emit("CONTROL_PLANE_SNAPSHOT", "control-plane.v1", control, control["status"], "commit-persistence")
     emit("TASK_CLAIM", task["lease"]["owner"], task, task_validation["status"], "commit-persistence")
 
-    context = EngineContext(run_id=run_id, synthetic_only=True)
+    documentary_mode = task.get('inputs', {}).get('evidence_mode') == 'DOCUMENTARY'
+    if documentary_mode and 'DOCUMENTARY_RESEARCH' not in task.get('allowed_actions', []):
+        raise PermissionError('documentary execution must be explicit in the task contract')
+    context = EngineContext(run_id=run_id, synthetic_only=not documentary_mode)
     output = _engine_output(engine_key, fixture, context)
     if candidate_override_hypothesis_id is not None:
         output = deepcopy(output)
@@ -276,6 +279,10 @@ def run_canonical_spine(
         candidate=output["candidate"],
         timestamp=base_time,
     )
+    if documentary_mode:
+        snapshot['lifecycle'] = 'IDEA'
+        trial['covered_scope'] = 'Documentary candidate construction only; no economic experiment'
+        trial['attempt_refs'] = list(output['source_refs'])
     ledger.append("GOVERNANCE_SNAPSHOT", governance)
     ledger.append("CONTROL_PLANE_SNAPSHOT", control)
     ledger.append("RESEARCH_TASK_CLAIM", deepcopy(task))
@@ -310,7 +317,8 @@ def run_canonical_spine(
         final = {
             "run_id": run_id,
             "status": "BLOCKED_EXACT_LEGACY_DUPLICATE",
-            "synthetic_only": True,
+            "synthetic_only": context.synthetic_only,
+            "event_provenance": "BUILD_REPLAY_NOT_LIVE",
             "governance": governance,
             "control_plane": control,
             "task_validation": task_validation,
@@ -443,7 +451,8 @@ def run_canonical_spine(
     final = {
         "run_id": run_id,
         "status": status,
-        "synthetic_only": True,
+        "synthetic_only": context.synthetic_only,
+        "event_provenance": "BUILD_REPLAY_NOT_LIVE",
         "governance": governance,
         "control_plane": control,
         "task_validation": task_validation,

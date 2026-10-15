@@ -35,6 +35,13 @@ not run an economic experiment or consume prices, returns or future outcomes.
 Derived free cash flow is operating cash flow less capital expenditures; it is
 an arithmetic diagnostic, not an estimate of alpha or a valuation recommendation.
 
+The canonical spine accepts documentary mode only when DOCUMENTARY_RESEARCH is
+explicitly allowed by its ResearchTask. This admission journals an IDEA rather
+than claiming economic preregistration. The primary-document regression leaves
+expression, costs and capacity unqualified, so Validator and Red Team BLOCK and
+Forward remains NOT_READY. Build replay events are labeled BUILD_REPLAY_NOT_LIVE;
+they are not submitted to the live worker ingress.
+
 ## Scope and remaining limits
 
 - Only the Fundamental primary-document adapter is qualified in this increment.
