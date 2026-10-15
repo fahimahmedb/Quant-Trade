@@ -53,24 +53,29 @@ export function mapNativeWorkerEvent(event){
   }
 }
 
-function newestPerWorker(events=[]){
+function validMappedEvents(events=[]){return events.map(event=>({event,mapped:mapNativeWorkerEvent(event)})).filter(item=>item.mapped);}
+function newestPerWorker(items=[]){
   const latest=new Map();
-  for(const event of events){
-    const mapped=mapNativeWorkerEvent(event);if(!mapped||!mapped.workerId)continue;
+  for(const {event,mapped} of items){
+    if(!mapped.workerId)continue;
     const key=mapped.workerId,current=latest.get(key);
     const currentGeneration=current?.generation??-1;
     const generation=event.generation;
-    if(!current||generation>currentGeneration||(generation===currentGeneration&&event.event_seq>current.event_seq)){
-      latest.set(key,{event,event_seq:event.event_seq,generation,mapped});
-    }
+    if(!current||generation>currentGeneration||(generation===currentGeneration&&event.event_seq>current.event_seq))latest.set(key,{event,event_seq:event.event_seq,generation,mapped});
   }
   return [...latest.values()];
+}
+function replayGuard(items=[]){
+  const lastSeqByStream={};
+  for(const {mapped} of items)lastSeqByStream[mapped.stream]=Math.max(lastSeqByStream[mapped.stream]??-1,mapped.seq);
+  return {eventIds:items.map(({mapped})=>mapped.id),lastSeqByStream};
 }
 
 /** Convert the proven public Site snapshot shape into a non-animating UI snapshot. */
 export function mapNativeSnapshot(snapshot){
   if(!snapshot||typeof snapshot!=='object'||!text(snapshot.generated_at))return null;
-  const agents=newestPerWorker(Array.isArray(snapshot.events)?snapshot.events:[]).map(({event,mapped})=>{
+  const items=validMappedEvents(Array.isArray(snapshot.events)?snapshot.events:[]);
+  const agents=newestPerWorker(items).map(({event})=>{
     const payload=event.payload&&typeof event.payload==='object'?event.payload:{};
     const running=event.event_type==='ACTION_STARTED';
     return {
@@ -93,6 +98,7 @@ export function mapNativeSnapshot(snapshot){
     at:snapshot.generated_at,
     kind:EVENT.SNAPSHOT,
     agents,
+    replayGuard:replayGuard(items),
   };
 }
 
