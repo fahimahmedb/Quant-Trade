@@ -1,0 +1,76 @@
+{
+  "hypothesis_id": "FUND-ASML-CAPACITY-SERVICE-001",
+  "family_id": "fundamental-capacity-constrained-lithography",
+  "generation_id": "G1",
+  "parent_generation_ids": [],
+  "mechanism": "ASML's advanced-lithography franchise is operating against a demand profile that management says exceeds currently planned 2027-2028 supply. At the same time, Installed Base Management revenue is benefiting from productivity upgrades that add customer wafer capacity without requiring only new-system shipments. The candidate fundamental mechanism is that scarcity of critical lithography capacity plus a growing high-margin installed-base upgrade stream can sustain revenue and gross-margin economics longer than a simple one-quarter equipment-cycle interpretation would imply.",
+  "claim": "As of the October 14, 2026 Q3 disclosure, ASML is a bounded fundamental candidate for durable earnings-power expansion if customer AI-related equipment forecasts remain firm, constrained supply converts into shipments rather than cancellations, and installed-base productivity upgrades remain a material contributor. This is a business-thesis candidate only; no stock-return, fair-value or positive-alpha claim has been tested.",
+  "prediction": "Before any subsequent price or return is inspected, the thesis predicts that company disclosures should continue to show: (1) demand visibility remaining at or above planned 2027-2028 supply, (2) successful capacity ramp or explicit evidence that constrained supply is converting into later deliveries rather than cancellations, (3) Installed Base Management remaining economically material, and (4) gross margin remaining consistent with favorable mix/productivity economics rather than reverting solely because Q3 was unusually strong.",
+  "falsification_scope": "Falsify this G1 business thesis if management materially reverses the stated 2027-2028 demand-versus-supply imbalance, customer commitments are cancelled/pushed out enough to remove the scarcity mechanism, installed-base upgrade demand weakens materially without replacement economics, or export/control/customer concentration effects cause the demand backlog to be non-convertible. A high equity valuation can independently make the security unattractive without falsifying the business mechanism.",
+  "decision_map": {
+    "company": "ASML Holding N.V.",
+    "ticker_context": "ASML on Euronext Amsterdam and Nasdaq; ticker is identity only, not an observed market outcome in this task",
+    "catalysts": [
+      "Q4 2026 execution against company guidance of EUR14.2-15.2bn sales and around 57% gross margin",
+      "2027-2028 capacity decisions and evidence of conversion of customer demand visibility into shipments",
+      "continued Installed Base Management productivity-upgrade demand",
+      "future disclosures on High-NA EUV adoption and customer roadmaps"
+    ],
+    "valuation_logic_or_required_inputs": {
+      "logic": "Do not assign fair value in discovery. Validation must separate durable earnings power from valuation. Required inputs are normalized system and Installed Base Management revenue, sustainable gross margin, R&D/SG&A trajectory, free-cash-flow conversion, share count/buybacks, customer concentration, China/export-control exposure, backlog/order convertibility, and a market valuation observed only after the thesis is frozen under an authorized downstream protocol.",
+      "current_market_price_used": false,
+      "historical_return_used": false
+    },
+    "primary_evidence": [
+      {
+        "source": "ASML Q3 2026 financial results press release",
+        "published": "2026-10-14",
+        "url": "https://www.investor.asml.com/news-releases/news-release-details/asml-reports-eu11.7-billion-total-net-sales-and-eu5.0-billion-net-income-q3-2026",
+        "facts": [
+          "Q3 total net sales EUR11.662bn; Installed Base Management sales EUR3.289bn; gross margin 57.5%",
+          "Management expects Q4 2026 total net sales EUR14.2-15.2bn and gross margin around 57%",
+          "Management expects full-year 2026 sales EUR44-45bn and gross margin around 56%",
+          "Management states currently planned supply for both 2027 and 2028 will not fully meet customer demand and is investigating additional 2028 capacity",
+          "Management attributes customer demand forecasts primarily to views on the size and duration of AI-related investments"
+        ]
+      },
+      {
+        "source": "ASML Q3 2026 quarterly-results hub",
+        "published": "2026-10-14",
+        "url": "https://www.investor.asml.com/quarterly-results",
+        "fact": "Primary investor-relations hub exposes the Q3 results package, US GAAP statements, presentation and prepared remarks."
+      }
+    ],
+    "active_disconfirmation": [
+      "Management's demand statements are forward-looking and may not convert into actual orders or revenue.",
+      "The company explicitly lists order cancellation, delay/push-out and export-control restrictions as risks to backlog realization.",
+      "Capacity scarcity is not automatically positive: inability to expand supply can defer revenue and create execution/supply-chain risk.",
+      "Q3 gross margin benefited from Installed Base Management sales above guidance, so extrapolating 57.5% mechanically would be invalid.",
+      "China demand/export restrictions can alter geographic mix and shipment eligibility.",
+      "Even a correct business thesis can fail as an investment if the security valuation already discounts the favorable scenario."
+    ],
+    "legacy_distinctness": {
+      "legacy_ledger_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "legacy_ledger_blob": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "screening_result": "NO_ASML_OR_SINGLE-COMPANY_LITHOGRAPHY_FUNDAMENTAL_THESIS_FOUND_IN_PINNED_33-ITEM_LEDGER",
+      "note": "Legacy families are primarily systematic/event/mechanism programs; no recovered ASML fundamental lineage was identified."
+    },
+    "next_validator_decision": {
+      "PASS_TO_DEEPER_FUNDAMENTAL_VALIDATION": "Primary disclosures support the scarcity + installed-base mechanism and validator can establish normalized economics, concentration/export risks and valuation inputs without outcome-tuning.",
+      "PARK_VALUATION_OR_DATA": "Business mechanism is credible but valuation, backlog convertibility, segment economics or customer exposure cannot be bounded cleanly.",
+      "KILL_THESIS": "Primary evidence contradicts durable demand scarcity or shows the Q3 economics are predominantly transient/non-convertible."
+    }
+  },
+  "freeze_status": "FROZEN",
+  "frozen_at": "2026-10-15T13:14:30Z",
+  "amendments": [],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_data_accessed": false,
+    "price_or_return_data_accessed": false,
+    "scope": "FUNDAMENTAL_HYPOTHESIS_GENERATION_AND_FREEZE_ONLY"
+  }
+}
