@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NegativeKnowledgeRecord",
+  "type": "object",
+  "required": ["negative_knowledge_id","hypothesis_generation_id","finding","falsification_scope","transferable_lesson","source_refs","recorded_at"],
+  "properties": {
+    "negative_knowledge_id": {"type":"string","minLength":1},
+    "hypothesis_generation_id": {"type":"string","minLength":1},
+    "finding": {"type":"string","minLength":1},
+    "falsification_scope": {"type":"string","minLength":1},
+    "transferable_lesson": {"type":"string","minLength":1},
+    "source_refs": {"type":"array","items":{"type":"string"}},
+    "may_kill_family": {"type":"boolean"},
+    "limitations": {"type":"array","items":{"type":"string"}},
+    "recorded_at": {"type":"string","minLength":1}
+  },
+  "additionalProperties": false
+}
