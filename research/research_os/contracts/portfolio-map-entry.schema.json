@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PortfolioMapEntry",
+  "type": "object",
+  "required": ["candidate_id","hypothesis_generation_id","economic_identity_ref","overlap_assessment","marginal_portfolio_value","capital_authority"],
+  "properties": {
+    "candidate_id": {"type":"string","minLength":1},
+    "hypothesis_generation_id": {"type":"string","minLength":1},
+    "economic_identity_ref": {"type":"string","minLength":1},
+    "factor_exposures": {"type":"array","items":{"type":"string"}},
+    "overlap_refs": {"type":"array","items":{"type":"string"}},
+    "correlation_status": {"enum":["KNOWN","PARTIAL","UNKNOWN","NOT_APPLICABLE"]},
+    "tail_overlap_status": {"enum":["KNOWN","PARTIAL","UNKNOWN","NOT_APPLICABLE"]},
+    "capacity_status": {"enum":["KNOWN","ESTIMATED","UNKNOWN"]},
+    "liquidity_status": {"enum":["KNOWN","ESTIMATED","UNKNOWN"]},
+    "overlap_assessment": {"enum":["LOW","MEDIUM","HIGH","UNKNOWN"]},
+    "marginal_portfolio_value": {"enum":["POSITIVE","NEUTRAL","NEGATIVE","UNKNOWN"]},
+    "reason": {"type":["string","null"]},
+    "capital_authority": {"const":"NONE"}
+  },
+  "additionalProperties": false
+}
