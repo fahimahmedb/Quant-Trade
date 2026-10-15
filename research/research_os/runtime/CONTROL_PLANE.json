@@ -2,36 +2,48 @@
   "mode": "PRODUCTION_RESEARCH_WORKERS",
   "source_of_truth": "GITHUB_DURABLE_STATE",
   "worker_memory_authority": "NONE",
+  "workflow_model": "ONE_LINEAGE_MULTI_STAGE",
   "task_selection": {
-    "strategy": "HIGHEST_PRIORITY_ADMISSIBLE_READY",
-    "max_tasks_per_wake": 1,
+    "strategy": "HIGHEST_PRIORITY_ADMISSIBLE_READY_WITHIN_LANE",
+    "max_lineages_per_wake": 1,
+    "max_stages_per_lineage_per_wake": 5,
+    "multi_stage_same_lineage": true,
+    "fresh_state_before_each_stage": true,
+    "persist_after_each_stage": true,
     "invent_work_when_empty": false,
-    "follow_up_task_creation_authorized": false
+    "follow_up_task_creation_authorized_only_when_current_task_explicitly_allows": true
   },
   "claim_protocol": {
     "optimistic_lock": "CURRENT_BLOB_SHA",
     "lease_generation_required": true,
     "stale_claim_rejected": true,
-    "worker_reconstructs_context_each_wake": true
+    "worker_reconstructs_context_each_wake": true,
+    "lineage_lock": "ONE_ACTIVE_LINEAGE_PER_WORKFLOW_WAKE"
   },
+  "workflow_lanes_file": "research/research_os/runtime/WORKFLOW_LANES.json",
   "routing": [
-    {"task_type":"LEGACY_RECOVERY","capability":"legacy_recovery"},
-    {"task_type":"QUANT_MECHANISM","capability":"quant_mechanisms"},
-    {"task_type":"FUNDAMENTAL_RESEARCH","capability":"fundamental"},
-    {"task_type":"EVENT_DOCUMENT","capability":"event_document"},
-    {"task_type":"INSTITUTIONAL_FLOW","capability":"institutional_flows"},
-    {"task_type":"VALIDATION","capability":"validator"},
-    {"task_type":"RED_TEAM","capability":"red_team"},
-    {"task_type":"PORTFOLIO_MAP","capability":"portfolio_map"}
+    {"task_type":"QUANT_MECHANISM","lane":"market_discovery","capability":"quant_mechanisms"},
+    {"task_type":"INSTITUTIONAL_FLOW","lane":"market_discovery","capability":"institutional_flows"},
+    {"task_type":"FUNDAMENTAL_RESEARCH","lane":"fundamental_events","capability":"fundamental"},
+    {"task_type":"EVENT_DOCUMENT","lane":"fundamental_events","capability":"event_document"},
+    {"task_type":"LEGACY_RECOVERY","lane":"evidence_data","capability":"legacy_recovery"},
+    {"task_type":"DATA_PROVENANCE","lane":"evidence_data","capability":"data_provenance"},
+    {"task_type":"TRIAL_ACCOUNTING","lane":"evidence_data","capability":"trial_accounting"},
+    {"task_type":"SOURCE_QUALIFICATION","lane":"evidence_data","capability":"source_qualification"},
+    {"task_type":"VALIDATION","lane":"independent_challenge","capability":"validator"},
+    {"task_type":"RED_TEAM","lane":"independent_challenge","capability":"red_team"},
+    {"task_type":"PORTFOLIO_MAP","lane":"integrator_portfolio","capability":"portfolio_map"},
+    {"task_type":"ECONOMIC_IDENTITY","lane":"integrator_portfolio","capability":"economic_identity"},
+    {"task_type":"SHADOW_READINESS","lane":"integrator_portfolio","capability":"shadow_readiness"},
+    {"task_type":"LEARNING_TELEMETRY","lane":"integrator_portfolio","capability":"learning_telemetry"},
+    {"task_type":"CONTROL_INTEGRATION","lane":"integrator_portfolio","capability":"control_integrator"}
   ],
-  "handoff_rules": [
-    {"from":"quant_mechanisms","to":"validator","requires":"FROZEN_HYPOTHESIS"},
-    {"from":"fundamental","to":"validator","requires":"FROZEN_HYPOTHESIS"},
-    {"from":"event_document","to":"validator","requires":"FROZEN_HYPOTHESIS"},
-    {"from":"institutional_flows","to":"validator","requires":"FROZEN_HYPOTHESIS"},
-    {"from":"validator","to":"red_team","requires":"EVIDENCE_ASSESSMENT"},
-    {"from":"red_team","to":"portfolio_map","requires":"NO_BLOCKER_OR_OWNER_ACCEPTED_EXCEPTION"}
-  ],
+  "independence_rules": {
+    "discovery_lane_may_not_validate_own_hypothesis": true,
+    "challenge_lane_may_not_generate_or_repair_signal": true,
+    "integrator_lane_may_not_override_red_team_blocker": true,
+    "same_worker_may_execute_multiple_stages_only_within_same_lane_and_lineage": true
+  },
   "global_authority": {
     "production_worker_launch_authorized": true,
     "economic_experiment_authorized": false,
