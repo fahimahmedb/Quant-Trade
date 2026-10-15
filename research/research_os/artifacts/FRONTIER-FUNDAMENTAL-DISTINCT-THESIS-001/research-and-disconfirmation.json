@@ -1,0 +1,64 @@
+{
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001",
+  "stages": ["document_or_fundamental_research", "disconfirmation"],
+  "performed_at": "2026-10-15T19:13:00Z",
+  "issuer": "ASML Holding N.V.",
+  "information_cutoff": "2026-10-15T19:13:00Z",
+  "source_policy": "PUBLIC_NON_OUTCOME_DOCUMENTS_ONLY",
+  "sources": [
+    {
+      "date": "2026-10-14",
+      "publisher": "ASML Investor Relations",
+      "title": "ASML reports Q3 2026 results",
+      "url": "https://www.investor.asml.com/news-releases/news-release-details/asml-reports-eu11.7-billion-total-net-sales-and-eu5.0-billion-net-income-q3-2026",
+      "facts_used": [
+        "Q3 net sales EUR11.7bn, gross margin 57.5%, installed-base-management sales EUR3.3bn.",
+        "2026 sales guidance EUR44-45bn and gross margin around 56%.",
+        "Management says currently planned 2027 and 2028 supply will not fully meet customer demand and is investigating capacity beyond the previously communicated 30% increase for 2028.",
+        "Management attributes installed-base upside to productivity-upgrade demand."
+      ]
+    },
+    {
+      "date": "2026-01-28",
+      "publisher": "ASML Investor Relations",
+      "title": "ASML reports Q4 2025/full-year 2025 results",
+      "url": "https://www.investor.asml.com/news-releases/news-release-details/q4-2025-financial-results",
+      "facts_used": [
+        "2025 sales EUR32.7bn, gross margin 52.8%, year-end backlog EUR38.8bn.",
+        "Initial 2026 guidance was EUR34-39bn sales and 51-53% gross margin.",
+        "Management linked stronger medium-term capacity plans to customers' AI-demand expectations."
+      ]
+    }
+  ],
+  "causal_map": {
+    "driver": "Customer capacity plans for leading-edge logic/DRAM exceed ASML's currently planned EUV/DUV supply through 2028.",
+    "transmission": "Scarce system capacity plus negotiated pricing and high-value installed-base productivity upgrades can raise revenue visibility and mix/margin durability without requiring unit demand to accelerate indefinitely.",
+    "valuation_logic": "If supply-constrained demand converts into accepted orders and deliveries while installed-base upgrades remain strong, medium-term cash-earnings visibility can remain structurally higher than a simple cyclical equipment-revenue model implies.",
+    "catalysts_for_validation_not_observation": [
+      "Independent confirmation of order quality/cancellation protection and customer concentration.",
+      "Evidence that capacity expansion does not dilute gross margin through supplier or ramp costs.",
+      "Separation of price/mix effects from one-off quarterly timing."
+    ]
+  },
+  "active_disconfirmation": [
+    "The thesis may simply restate already-visible AI capex optimism; public reporting explicitly notes valuation sensitivity if AI returns disappoint.",
+    "Customer interest in 2029-2030 orders is not equivalent to firm, non-cancellable demand; ASML itself warns that interest may not become orders and orders may be cancelled, delayed or pushed out.",
+    "Export controls, especially geographic restrictions, can impair shipment conversion even with backlog.",
+    "Expanding manufacturing and supplier capacity can increase fixed/ramp costs and could weaken the assumed margin transmission.",
+    "A supply constraint can cap recognized revenue; scarcity is not automatically incremental earnings if output cannot rise.",
+    "Customer capex plans are exposed to AI infrastructure economics, financing conditions and semiconductor cyclicality."
+  ],
+  "falsification": [
+    "Demand visibility weakens materially through cancellations/push-outs or customer capex reductions before capacity is monetized.",
+    "Capacity expansion raises output but gross margin fails to retain the pricing/mix benefit after normalization.",
+    "Installed-base productivity-upgrade demand reverts materially, undermining the second earnings channel.",
+    "Export restrictions prevent conversion of economically meaningful portions of backlog/demand into shipments.",
+    "Independent validator finds the thesis is not causally distinct from a generic AI-capex continuation claim or is already fully represented in Legacy."
+  ],
+  "outcome_controls": {
+    "historical_price_returns_inspected": false,
+    "future_outcomes_inspected": false,
+    "backtest_performed": false,
+    "parameters_tuned_to_outcomes": false
+  }
+}
