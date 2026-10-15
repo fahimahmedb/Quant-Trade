@@ -47,7 +47,15 @@ jobs:
         run: python -m unittest research.research_os.tests.test_multi_engine_pipeline -v
       - name: Verify Live Lab native mapper compatibility
         run: node research/research_os/tests/live_lab_bridge_check.mjs
-      - name: Assert hard safety invariants
+      - name: Verify deterministic rerun
+        run: |
+          cp research/research_os/simulations/multi_engine_result.json /tmp/result-a.json
+          cp research/research_os/simulations/scientific_ledger.jsonl /tmp/ledger-a.jsonl
+          python -m research.research_os.engines.pipeline
+          cmp /tmp/result-a.json research/research_os/simulations/multi_engine_result.json
+          cmp /tmp/ledger-a.jsonl research/research_os/simulations/scientific_ledger.jsonl
+          echo DETERMINISTIC_REPLAY=PASS
+      - name: Assert hard safety and persistence invariants
         run: |
           python - <<'PY'
           import json
@@ -56,17 +64,25 @@ jobs:
           d=json.loads(p.read_text())
           assert d['status']=='PASS'
           assert d['synthetic_only'] is True
+          assert d['control_plane']['status']=='PASS'
+          assert d['scientific_ledger']['verified'] is True
+          assert d['scientific_ledger']['entry_count']==10
+          assert len(d['trial_ledger'])==4
+          assert all(t['observed_attempt_count']==1 for t in d['trial_ledger'])
+          assert all(t['effective_trials_status']=='UNKNOWN' for t in d['trial_ledger'])
           assert d['legacy']['summary']['source_commit']=='183ad65ff260b903a16548ce37948f54d47a9ec8'
+          assert d['legacy']['summary']['ledger_blob_sha']=='ba9b165aaf96956776672df51233bb9bf1e6cbc9'
           assert d['legacy']['summary']['loaded_record_count'] > 0
           assert d['legacy']['summary']['read_only'] is True
           assert d['learning_telemetry']['effective_trials_status']=='UNKNOWN'
           assert d['decay']['status']=='INACTIVE_BY_AUTHORITY'
           assert d['authorities']=={
+            'production_workers': False,
             'real_capital': False,
             'live_trading': False,
             'prospective_observation': False,
             'economic_experiment': False,
           }
           assert all(not r['observation_started'] for r in d['shadow']['registrations'])
-          print('MULTI_ENGINE_ARCHITECTURE=PASS')
+          print('RESEARCH_OS_FINAL_SHAPE_DEV=PASS')
           PY
