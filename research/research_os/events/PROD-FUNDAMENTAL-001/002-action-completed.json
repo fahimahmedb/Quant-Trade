@@ -1,0 +1,11 @@
+{
+  "event_id":"PROD-FUNDAMENTAL-001-g1-e002",
+  "session_id":"PROD-FUNDAMENTAL-001-g1",
+  "worker_id":"fundamental-events-workflow",
+  "action_id":"PROD-FUNDAMENTAL-001",
+  "event_type":"ACTION_COMPLETED",
+  "event_seq":2,
+  "generation":1,
+  "emitted_at":"2026-10-15T13:15:25Z",
+  "payload":{"result":"FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION","hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001","handoff_task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001","receipt":"research/research_os/receipts/PROD-FUNDAMENTAL-001/PROD-FUNDAMENTAL-001-g1.json"}
+}
