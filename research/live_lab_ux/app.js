@@ -1,6 +1,31 @@
-import {FixtureReplayAdapter} from './adapters/fixture-replay.js';import {createInitialState,reduceScene} from './core/state-machine.js';import {FIXTURE_META,scenarioNames,scenarios,UX_TOUR} from './fixtures/scenarios.js';import {createMobileCamera} from './ui/camera.js';import {renderScene} from './ui/render.js';
+import {FixtureReplayAdapter} from './adapters/fixture-replay.js';
+import {createInitialState,reduceScene} from './core/state-machine.js';
+import {FIXTURE_META,scenarioNames,scenarios,UX_TOUR} from './fixtures/scenarios.js';
+import {createMobileCamera} from './ui/camera.js';
+import {renderScene} from './ui/render.js';
+import {createResearchLab3D} from './ui/scene3d.js';
+
 const refs={worldAgents:document.querySelector('[data-world-agents]'),economicStatus:document.querySelector('[data-economic-status]'),connectivity:document.querySelector('[data-connectivity]'),warning:document.querySelector('[data-warning]'),resumeGuard:document.querySelector('[data-resume-guard]'),clock:document.querySelector('[data-clock]'),roleCount:document.querySelector('[data-role-count]'),resultWall:document.querySelector('[data-result-wall]'),detailSheet:document.querySelector('[data-detail-sheet]'),scenario:document.querySelector('[data-scenario]'),remaining:document.querySelector('[data-remaining]')};
-const options=[{key:'tour',label:'UX vision tour · all 8 scenarios',events:UX_TOUR},...scenarioNames.map(name=>({key:name,label:name,events:scenarios[name]}))];for(const o of options){const n=document.createElement('option');n.value=o.key;n.textContent=o.label;refs.scenario.append(n);}document.querySelector('[data-replay-badge]').textContent=FIXTURE_META.mode;document.querySelector('[data-fixture-warning]').textContent=FIXTURE_META.warning;
-let state=createInitialState({mode:'REPLAY'}),selectedWorkerId=null,adapter=new FixtureReplayAdapter(UX_TOUR),unsubscribe=null;function render(){renderScene(state,refs,{selectedWorkerId,onSelectAgent(id){selectedWorkerId=id;render();}});refs.remaining.textContent=`${adapter.remaining} event${adapter.remaining===1?'':'s'} remaining`;}
+const options=[{key:'tour',label:'UX vision tour · all 8 scenarios',events:UX_TOUR},...scenarioNames.map(name=>({key:name,label:name,events:scenarios[name]}))];
+for(const o of options){const n=document.createElement('option');n.value=o.key;n.textContent=o.label;refs.scenario.append(n);}
+document.querySelector('[data-replay-badge]').textContent=FIXTURE_META.mode;document.querySelector('[data-fixture-warning]').textContent=FIXTURE_META.warning;
+
+let state=createInitialState({mode:'REPLAY'}),selectedWorkerId=null,adapter=new FixtureReplayAdapter(UX_TOUR),unsubscribe=null,scene3d=null;
+function render(){renderScene(state,refs,{selectedWorkerId,onSelectAgent(id){selectedWorkerId=id;render();}});scene3d?.update(state,{selectedWorkerId});refs.remaining.textContent=`${adapter.remaining} event${adapter.remaining===1?'':'s'} remaining`;}
 function bind(events){unsubscribe?.();state=createInitialState({mode:'REPLAY'});selectedWorkerId=null;adapter=new FixtureReplayAdapter(events);unsubscribe=adapter.subscribe(event=>{state=reduceScene(state,event);render();});adapter.next();render();}
-refs.scenario.addEventListener('change',()=>bind((options.find(o=>o.key===refs.scenario.value)||options[0]).events));document.querySelector('[data-next-event]').addEventListener('click',()=>adapter.next());document.querySelector('[data-play-all]').addEventListener('click',()=>adapter.playAll());document.querySelector('[data-reset]').addEventListener('click',()=>bind((options.find(o=>o.key===refs.scenario.value)||options[0]).events));document.querySelector('[data-detail-close]').addEventListener('click',()=>{selectedWorkerId=null;render();});const camera=createMobileCamera(document.querySelector('[data-camera]'),document.querySelector('[data-world]'));document.querySelector('[data-zoom-in]').addEventListener('click',()=>camera.zoom(.12));document.querySelector('[data-zoom-out]').addEventListener('click',()=>camera.zoom(-.12));document.querySelector('[data-camera-reset]').addEventListener('click',()=>camera.reset());bind(UX_TOUR);
+
+const viewport=document.querySelector('[data-camera]');
+scene3d=createResearchLab3D({viewport,canvas:document.querySelector('[data-scene3d-canvas]'),labelLayer:document.querySelector('[data-scene3d-labels]'),onSelectAgent(id){selectedWorkerId=id;render();}});
+const fallbackCamera=scene3d.ready?null:createMobileCamera(viewport,document.querySelector('[data-world]'));
+const camera=scene3d.ready?scene3d:fallbackCamera;
+
+refs.scenario.addEventListener('change',()=>bind((options.find(o=>o.key===refs.scenario.value)||options[0]).events));
+document.querySelector('[data-next-event]').addEventListener('click',()=>adapter.next());
+document.querySelector('[data-play-all]').addEventListener('click',()=>adapter.playAll());
+document.querySelector('[data-reset]').addEventListener('click',()=>bind((options.find(o=>o.key===refs.scenario.value)||options[0]).events));
+document.querySelector('[data-detail-close]').addEventListener('click',()=>{selectedWorkerId=null;render();});
+document.querySelector('[data-zoom-in]').addEventListener('click',()=>camera?.zoom(.12));
+document.querySelector('[data-zoom-out]').addEventListener('click',()=>camera?.zoom(-.12));
+document.querySelector('[data-camera-reset]').addEventListener('click',()=>camera?.reset());
+window.addEventListener('pagehide',()=>{scene3d?.destroy();fallbackCamera?.destroy();},{once:true});
+bind(UX_TOUR);

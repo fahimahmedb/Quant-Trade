@@ -1,8 +1,9 @@
-# Live Research Lab — native integration
+# Live Research Lab — native events + WebGL 3D floor
 
-Integration branch: `builder/live-lab-native-integration-20261015`.
+Build branch: `builder/live-lab-3d-full-build-20261015`  
+Baseline: `fdfee2006869ff3770f752f32fb672da0b0fc4ac`
 
-This branch starts from the proved platform-probe checkpoint `809ec7e3d088a4ba4c5857771e6422ab91a139f4` and imports only the isolated UX subtree from `builder/live-lab-ux-vision-20261014`; it does **not** merge that branch's unrelated research history.
+This build keeps the proved native Live Lab event architecture and replaces the primary spatial visualization with a real dependency-free WebGL research floor. The previous DOM/CSS Research Floor remains the automatic fallback when WebGL is unavailable.
 
 ## Safety state
 
@@ -10,111 +11,71 @@ This branch starts from the proved platform-probe checkpoint `809ec7e3d088a4ba4c
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 paid_usd_total = 0
-LIVE_E2E_PASS = NOT_CLAIMED
-DEPLOYMENT = NOT_PERFORMED
 ```
 
-Nothing in this UI authorizes capital, trading, research conclusions, or economic decisions.
+Nothing in the renderer authorizes capital, trading, research conclusions, economic decisions, worker identity or progress.
+
+## Canonical authority path
+
+```text
+native Site SSE / deterministic replay
+              |
+              v
+        existing adapters
+              |
+              v
+      normalized UI event
+              |
+              v
+       reduceScene()
+ factual state + animation authorization
+              |
+              v
+       scene3d-policy.js
+              |
+              v
+   WebGL 3D floor + DOM factual overlays
+```
+
+The 3D layer consumes the existing factual state. It does not poll GitHub, create timers for business progress, synthesize roles, or infer economic meaning.
 
 ## Two surfaces
 
-- `index.html` remains the deterministic `DEVELOPMENT/REPLAY` UX harness.
-- `live.html` is the native live browser surface. It binds same-origin `/api/work/events` through browser `EventSource`, then through the canonical native mapper and the existing deterministic scene reducer.
+- `index.html`: synthetic `DEVELOPMENT/REPLAY` harness. Richer roles and Economic Look cases are explicitly fixtures, never evidence.
+- `live.html`: native browser surface using same-origin `/api/work/events` through `EventSource`, `LiveEventAdapter`, the canonical native mapper and `reduceScene()`.
 
-The live surface adds no GitHub polling, retry scheduler, heartbeat timer, lease timer, progress timer, or fabricated worker activity. Browser `EventSource` owns the already-proved SSE reconnect/cursor behavior.
+Both surfaces now share `ui/scene3d.js` and `ui/scene3d-policy.js`.
 
-## Native event authority
+## 3D floor
 
-The proved worker contract currently accepts only:
+The renderer uses browser WebGL directly and adds no runtime dependency. It includes procedural floor geometry, stations, avatars, lighting/fog, camera orbit/pinch/zoom, touch selection, mobile DPR limits, reduced-motion behavior and activity-specific visual states.
 
-```text
-ACTION_STARTED
-ACTION_COMPLETED
-WORKER_HEARTBEAT
-SESSION_ENDED
-```
+Architecture nodes such as **Quant / Mechanisms**, **Fundamental / Events**, **Flows / Regulatory**, **Validator / Red Team**, **Economic Identity**, **Portfolio Map**, **Forward Farm** and **Decay Monitor** are structural room labels only. They are not displayed as active workers without event-backed state.
 
-`adapters/platform-native.js` maps only those accepted facts. It deliberately does **not** infer:
+The old DOM/CSS scene remains available as fallback. HUD, result wall, detail sheet and safety strip remain DOM so factual text stays legible and accessible.
 
-- Codex == Owner identity;
-- Researcher / Builder / Auditor / Manager roles;
-- progress values or percentages;
-- KILL / PARK / PROMOTE;
-- Economic Look ownership;
-- economic results.
+## Truth rules preserved
 
-An accepted native worker is therefore represented as the protocol-backed `Worker` role unless stronger explicit semantics are supplied by a future proved contract. Missing progress remains `UNKNOWN`.
+- heartbeat updates presence only;
+- disconnect/stale freezes business animation;
+- `CONNECTED` and `SNAPSHOT` do not restart business animation;
+- snapshot replay guards still suppress duplicate/already-represented native events;
+- unknown/completed-count-only progress never becomes a fabricated ratio;
+- destinations require exact reducer state;
+- native workers remain generic `Worker` unless a future proved contract supplies stronger semantics;
+- Economic Look lights only when factual state has an explicit active worker.
 
-## Architecture
-
-```text
-native Site SSE frame
-        |
-        v
-platform-native-sse.js
-        |
-        v
-LiveEventAdapter
-        |
-        v
-platform-native.js
-        |
-        v
-normalized UI event
-        |
-        v
-reduceScene() factual UI state
-        |
-        v
-deterministic animation authorization
-        |
-        v
-DOM/CSS rendered scene
-```
-
-Development replay substitutes `FixtureReplayAdapter` at the adapter boundary. Renderer and state machine stay shared.
-
-## Snapshot / replay truth guard
-
-The native SSE path can send a factual snapshot and then replay active events already represented by that snapshot. `mapNativeSnapshot()` now emits a replay guard containing accepted event IDs and generation-scoped stream watermarks. `reduceScene()` seeds those IDs/sequences during snapshot application.
-
-Therefore:
-
-- snapshot reconstruction never starts business animation;
-- replayed SSE frames already represented by the snapshot are ignored;
-- only a genuinely later accepted event can resume business animation;
-- generation changes remain isolated by stream key `worker + session + generation`.
-
-## Truth rules
-
-- A heartbeat updates presence only; it cannot create or advance business animation.
-- Disconnect freezes business animation.
-- `CONNECTED` and `SNAPSHOT` restore transport/factual state but do not restart work animation.
-- Duplicate IDs and out-of-order sequence numbers cannot replay animation.
-- `UNKNOWN` progress renders `Progress unknown`; no percentage is synthesized.
-- KILL/PARK/PROMOTE changes only on an exact supported `DECISION` UI event; the current native worker contract does not produce one.
-- Only explicit event-backed roles are materialized.
-
-## UX surface
-
-Mobile Safari remains the primary layout. The shell uses ordinary DOM/CSS, safe-area insets, Pointer Events and a transform-only pan/pinch camera.
-
-The replay fixtures continue to demonstrate richer future semantic roles and Economic Look states, but they remain visibly synthetic development fixtures and are not evidence.
+Event-derived task/step strings are HTML-escaped in the 3D visual policy before overlay markup is rendered.
 
 ## Tests
 
-From this directory:
-
 ```bash
-npm test
+cd research/live_lab_ux
+node --test tests/*.test.js
 ```
 
-The suite uses Node's built-in test runner. `tests/platform-native.test.js` covers the real probe-shaped worker contract, generation-scoped ordering, duplicate suppression, heartbeat-only presence, unsupported-event rejection, factual snapshot reconstruction, snapshot replay suppression, forbidden identity/economic inferences, and the thin SSE subscription.
+`.github/workflows/live-lab-3d-ci.yml` runs the full isolated suite, syntax-checks JavaScript modules and verifies the replay/live 3D integration boundaries.
 
-During the integration session the exact native adapter/state-machine subset was executed locally and passed 11/11 tests. A full repository clone/CI run was not available in that runtime because direct GitHub DNS access from the execution container was unavailable.
+## Publication boundary
 
-## Known platform boundary
-
-This integration uses the platform capabilities already proved by the probe branch. It does not claim proof for the unresolved Codex/Owner principal, a fully remote Builder identity, native APNs delivery, app-specific mobile behavior, third-party model routing, or production publication of this UX surface.
-
-Those are capability boundaries, not reasons to replace the working native event/SSE architecture with the older polling approach.
+This branch is a build artifact, not a production deployment. The exact existing Site project remains `appgprj_6aca43cb86bc81918e067097356a37de`, slug `quant-trade-lab`. No replacement project or host is created by this branch. Public deployment and the native-ingress → SSE → `live.html` E2E canary require the Site project controls that were not exposed to the GitHub-only build runtime.
