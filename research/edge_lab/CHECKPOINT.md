@@ -1,3 +1,15 @@
+# Current STATE / NEXT — 2026-10-15, savings L1 preparation completed without outcomes
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Decision and original receipt](discovery/qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json); [linked L1 preparation](discovery/v4_2_pilot/disc-us-savings-bond-calendar-l1-v0.md) SHA256 `1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e`. The savings-calendar accounting case now fixes cohort/horizon, identical capital, cash benchmark proxy, penalty-definition gate, central/stress friction and one posting-slip adversary. Three planned dependent expressions, no executed test or reservation. DESIGN_NOT_EXECUTABLE: exact historical source/version/penalty routes remain to qualify before any selected value or separately published claim.
+- Prospective priority: Valaris DEFM14A accepted2026-10-14 06:01:02Eastern verified from its index. Primary proxy advertised4807604bytes exceeds524288-byte cap; it was not fetched/truncated. Source PARK is not INELIGIBLE or economic rejection. Original2026-10-14 receipt reused on resume with zero repeats. Thirteen saved records remain unreviewed, starting ASML index; Valaris plus earlier incomplete chronology stay unresolved. No event selected, claim, market-price/NAV/payoff acquisition or universal absence assertion.
+- NEXT: preserve A-E chronological admission priority, original exclusions and cached records. If it leaves no admissible work, one metadata-only historical source/penalty/version qualification for the completed savings design, then PARK_DATA if unresolved; no re-drafting or old legal-page loop. All three seed dispositions and prior Treasury rate/Liquidia exposures retained.
+- VX T0 has passed but no eligible exit is due. The frozen30-day target spacing and±4-day tolerances imply a necessary22-day minimum between eligible entry and exit: no completed eligible observation before2026-11-06T00:00Z. This is a lower bound, not an identified quarterly contract/date; no calendar, price, backfill or historical-economic request. Register unchanged; legacy UNKNOWN remains spent.
+- Proof SHA256 `94e2dc3527ed25821b518e6d103bc5426e9898590d49f941c3cf18cb7e96cf85`. One original primary metadata response15059bytes, zero retry/USD0; no additional external request on resume. Tokens/global bill and cumulative active agent time unmeasured; interruption wall time is not a workload claim. Prior ledger prefix, numeric counters, queue, multiplicity, reserved exposures and all frozen protocol hashes preserved; planned variants retained in this event, not falsely counted as completed tests.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-14, Liquidia admission closed; remote follow-up reused
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
