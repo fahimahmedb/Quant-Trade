@@ -118,7 +118,7 @@
     {
       "id": "DEPTH-FUNDAMENTAL-DOSSIER-002",
       "lot": "B01",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "priority": 100,
       "depends_on": [],
       "scope": "Strengthen the existing Fundamental dossier behind its current interface. Bind claimed statement/cash-flow/balance-sheet/valuation/catalyst premises to qualified documentary facts where evidence exists; report missing support explicitly. Mere nonempty dossier fields or arithmetic facts must not qualify unsupported economic premises.",
@@ -126,6 +126,14 @@
         "Source/period/unit/availability bound for each supported factual premise.",
         "Unqualified premises stay UNKNOWN/BLOCK, without placeholder PASS.",
         "Meaningful positive, contradictory/missing-evidence and immutable-candidate/replay checks. No prices, outcomes or economic test."
+      ],
+      "execution_phase": "IMPLEMENTED_AWAITING_EXACT_HEAD_CI",
+      "local_validation": {
+        "research_os_python": 127,
+        "result": "PASS"
+      },
+      "artifacts": [
+        "research/research_os/architecture/work_receipts/DEPTH_FUNDAMENTAL_DOSSIER_002_20261015.json"
       ]
     },
     {
@@ -277,7 +285,7 @@
       "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38787222141"
     }
   ],
-  "qualification_next_action": "Resume DEPTH-FUNDAMENTAL-DOSSIER-002 at current remote HEAD. Existing df6b770 implementation remains qualified; initial documentary task receipts remain COMPLETE. Broader internal-depth mission is PARTIAL and has READY offline follow-ups. Do not restart at 6130d6c or introduce top-level architecture.",
+  "qualification_next_action": "Qualify the pushed Fundamental dossier implementation on its exact SHA; continue independently admissible Event/Documents depth while that CI runs. Preserve the last qualified code baseline.",
   "scheduling_reopen_condition": "One additional available scheduled-task slot, or explicit Owner choice to pause/replace one of the five existing research workflows. None has been modified.",
   "validation": {
     "research_os_python": {

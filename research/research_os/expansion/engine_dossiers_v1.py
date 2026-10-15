@@ -300,14 +300,97 @@ REQUIRED_BY_FAMILY = {
 }
 
 
-def build_engine_dossier(output: Dict[str, Any], detail_input: Dict[str, Any]) -> Dict[str, Any]:
+
+def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
+    """Populate the existing dossier slots from the qualified producer's evidence.
+
+    This records factual support and explicit gaps. Nonempty prose cannot supply
+    valuation, consensus, balance-sheet or competitive evidence that is absent.
+    """
+    from research.research_os.engines.builtin import ENGINE_REGISTRY
+    from research.research_os.engines.protocol import EngineContext, validate_engine_output
+    validate_engine_output(output)
+    if output['synthetic_only'] is not False:
+        raise EngineContractError('captured documentary dossier requires documentary mode')
+    candidate = output['candidate']
+    evidence = candidate['documentary_evidence']
+    packet = evidence['packet']
+    engine = next((e for e in ENGINE_REGISTRY.values()
+                   if e.engine_id == output['engine_id'] and e.family == output['engine_family']), None)
+    if engine is None or engine.run({'source_ref':packet['source_ref'], 'documentary_packet':packet,
+                                    'freeze_time':evidence['freeze_time']},
+                                   EngineContext('DOSSIER-REBUILD', synthetic_only=False)) != output:
+        raise EngineContractError('dossier candidate does not reproduce its qualified producer')
+    family = output['engine_family']
+    if family != 'FUNDAMENTAL':
+        raise EngineContractError('documentary dossier family not yet qualified')
+    candidate_hash = sha256_json(candidate)
+    source_support = {'packet_hash':packet['content_hash'], 'source_refs':deepcopy(output['source_refs']),
+                      'issuer_id':packet['issuer_id'], 'period':packet['period'], 'unit':packet['unit'],
+                      'available_at':packet['available_at'], 'freeze_time':evidence['freeze_time'],
+                      'revision_status':packet['revision_status']}
+
+    def record(status, values, paths, limitation):
+        return {'status':status, 'values':deepcopy(values),
+                'support':dict(deepcopy(source_support), paths=list(paths)) if paths else None,
+                'limitations':[limitation] if limitation else []}
+
+    detail = {field:record('UNKNOWN', {}, [], 'No qualified evidence for this premise in the captured packet.')
+              for field in sorted(REQUIRED_BY_FAMILY[family])}
+    detail['issuer_identity'] = record('SUPPORTED', {'issuer_id':packet['issuer_id']}, ['issuer_id'],
+        'One identified issuer; no issuer-universe or security-eligibility claim.')
+    detail['financial_statements'] = record('PARTIAL', packet['facts'],
+        [f'facts.{k}' for k in sorted(packet['facts'])],
+        'Four annual accounting cells only; a complete statement and comparative history are not admitted.')
+    measurements = evidence['measurements']
+    fcf = Decimal(measurements['free_cash_flow'])
+    margin = Decimal(measurements['operating_margin'])
+    detail['cash_flow_quality'] = record('PARTIAL', {
+        'operating_cash_flow':packet['facts']['operating_cash_flow'],
+        'capital_expenditure':packet['facts']['capital_expenditure'],
+        'free_cash_flow':measurements['free_cash_flow'], 'unit':packet['unit'],
+        'operating_margin':measurements['operating_margin'], 'margin_unit':'ratio',
+        'positive_cash_profitability_premise':
+            'DISCONFIRMED' if fcf <= 0 or margin <= 0 else 'NOT_DISCONFIRMED_BY_CAPTURED_CELLS',
+    }, ['facts.operating_cash_flow', 'facts.capital_expenditure', 'facts.operating_income', 'facts.revenue'],
+       'Accounting arithmetic does not qualify accruals, working capital, persistence, valuation or an economic payoff.')
+    detail['disconfirmation_checks'] = {
+        'status':'SUPPORTED', 'values':{'declared_check':candidate['falsification_scope'],
+                                       'execution_status':'NOT_EXECUTED_AS_SCIENTIFIC_TEST'},
+        'support':{'candidate_hash':candidate_hash, 'paths':['falsification_scope']},
+        'limitations':['This is a declared check, not independent scientific validation.'],
+    }
+    detail.update(outcome_accessed=False, source_clock_frozen=True, active_disconfirmation=True,
+                  candidate_hash=candidate_hash, evidence_class='DOCUMENTARY')
+    return detail
+
+
+def build_engine_dossier(output: Dict[str, Any], detail_input: Dict[str, Any] = None) -> Dict[str, Any]:
     family = output["engine_family"]
     if family not in REQUIRED_BY_FAMILY:
         raise ValueError(f"unsupported deep-dossier family: {family}")
     candidate = output["candidate"]
     required = REQUIRED_BY_FAMILY[family]
+    documentary = output.get('synthetic_only') is False
+    expected = None
+    documentary_blockers = []
+    if documentary:
+        try:
+            expected = documentary_dossier_detail(output)
+        except (ValueError, KeyError, TypeError, AttributeError):
+            documentary_blockers.append('DOCUMENTARY_DOSSIER_SOURCE_NOT_BOUND')
+        if detail_input is None and expected is not None:
+            detail_input = expected
+        if expected is not None and detail_input != expected:
+            documentary_blockers.append('DOCUMENTARY_DOSSIER_DETAIL_NOT_BOUND')
+        if expected is not None:
+            documentary_blockers.extend(f'UNQUALIFIED_{field.upper()}' for field in sorted(required)
+                                        if expected[field]['status'] != 'SUPPORTED')
+            if expected['cash_flow_quality']['values']['positive_cash_profitability_premise'] == 'DISCONFIRMED':
+                documentary_blockers.append('FUNDAMENTAL_PREMISE_DISCONFIRMED')
+    detail_input = detail_input if isinstance(detail_input, dict) else {}
     missing = sorted(field for field in required if detail_input.get(field) in (None, "", [], {}))
-    blockers: List[str] = [f"MISSING_{field.upper()}" for field in missing]
+    blockers: List[str] = documentary_blockers + [f"MISSING_{field.upper()}" for field in missing]
     if detail_input.get("outcome_accessed") is not False:
         blockers.append("OUTCOME_ACCESS_NOT_ALLOWED")
     if detail_input.get("source_clock_frozen") is not True:
@@ -332,6 +415,15 @@ def build_engine_dossier(output: Dict[str, Any], detail_input: Dict[str, Any]) -
         "outcome_accessed": False,
         "economic_result": "NOT_OBSERVED",
     }
+    if documentary:
+        dossier.update(
+            evidence_class='DOCUMENTARY', candidate_hash=sha256_json(candidate),
+            source_hash=candidate.get('documentary_evidence', {}).get('claim_source_hash'),
+            factual_binding_status='PASS' if expected is not None and detail_input == expected else 'BLOCK',
+            field_statuses={field:expected[field]['status'] for field in sorted(required)} if expected else {},
+            claim_ceiling='DOCUMENTED_FACTS_ONLY' if expected is not None and detail_input == expected else 'UNSUPPORTED',
+        )
+        dossier['dossier_hash'] = sha256_json(dossier)
     return dossier
 
 
