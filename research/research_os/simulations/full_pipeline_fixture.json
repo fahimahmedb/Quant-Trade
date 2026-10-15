@@ -1,0 +1,46 @@
+{
+  "simulation_id": "FINAL-SHAPE-SIM-001",
+  "synthetic_only": true,
+  "candidate": {
+    "hypothesis_id": "SYNTH-FUND-001",
+    "generation_id": "G1",
+    "engine": "FUNDAMENTAL_RESEARCH",
+    "mechanism": "Synthetic margin normalization mechanism for interface testing only",
+    "claim": "Synthetic issuer margins improve after synthetic cost normalization",
+    "falsification_scope": "Synthetic fixture only",
+    "decision_map": {
+      "supportive": "EXPLORE",
+      "negative": "KILL",
+      "ambiguous": "PARK"
+    }
+  },
+  "validator_expected": "PASS_CONTRACT_ONLY",
+  "red_team_expected": "ACCEPT_SIMULATION_ONLY",
+  "economic_identity": {
+    "payer": "UNKNOWN_SYNTHETIC",
+    "asset_class": "SYNTHETIC_EQUITY",
+    "directional_beta": "UNKNOWN",
+    "momentum_exposure": "UNKNOWN",
+    "volatility_exposure": "UNKNOWN",
+    "liquidity_exposure": "UNKNOWN",
+    "capacity": "UNKNOWN"
+  },
+  "portfolio_expected": {
+    "status": "MAPPED_NOT_ALLOCATED",
+    "capital_authorized": false
+  },
+  "shadow_expected": {
+    "status": "SIMULATED_REGISTRATION_ONLY",
+    "prospective_observation_authorized": false
+  },
+  "expected_trace": [
+    "DISCOVERY_CREATED",
+    "HYPOTHESIS_FROZEN",
+    "VALIDATION_CONTRACT_PASS",
+    "RED_TEAM_ACCEPT_SIMULATION_ONLY",
+    "ECONOMIC_IDENTITY_MAPPED",
+    "PORTFOLIO_MAPPED_NOT_ALLOCATED",
+    "SHADOW_SIMULATED_REGISTRATION_ONLY",
+    "PIPELINE_COMPLETE"
+  ]
+}
