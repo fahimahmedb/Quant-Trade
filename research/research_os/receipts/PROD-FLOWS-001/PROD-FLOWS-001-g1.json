@@ -1,0 +1,29 @@
+{
+  "receipt_id": "PROD-FLOWS-001-g1",
+  "task_id": "PROD-FLOWS-001",
+  "worker_id": "chatgpt-interactive-institutional-flows-worker",
+  "session_id": "PROD-FLOWS-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T12:33:02Z",
+  "completed_at": "2026-10-15T12:35:51Z",
+  "input_head": "b79018c56bb67e77e9a2477c94591f8a82c81fe2",
+  "output_commit": "19a89eb31800e773f90eb84938cd7c574427ff02",
+  "status": "COMPLETE",
+  "summary": "Pinned Legacy memory was screened first. A distinct ADR/ADS program-termination forced-sale mechanism was documented from SEC-filed deposit-agreement terms, frozen as FLOW-ADR-TERM-001 without any price/return access, and exactly one downstream documentary VALIDATION task was queued.",
+  "artifacts": [
+    "research/research_os/hypotheses/FLOW-ADR-TERM-001.json",
+    "research/research_os/tasks/VALIDATE-FLOW-ADR-TERM-001.json",
+    "research/research_os/events/PROD-FLOWS-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "LEGACY_RESEARCH_LEDGER.json@183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "https://www.sec.gov/Archives/edgar/data/1335730/000119312518211885/d524292dex22.htm",
+    "https://www.sec.gov/Archives/edgar/data/1691221/000164117225000289/ex2-2.htm"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}
