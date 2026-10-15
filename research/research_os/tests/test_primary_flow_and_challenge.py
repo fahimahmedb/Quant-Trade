@@ -80,6 +80,7 @@ class ActualDocumentaryChallengeTests(unittest.TestCase):
         # fixture, not a finding that these real candidates are implementable.
         envelope = freeze_experiment_envelope(output, {'status':'PASS'}, {'code_version':'CHALLENGE_ONLY'})
         depth = execute_documentary_depth(output, envelope, Path(directory))
+        envelope['dry_run_execution'] = depth
         return dict(engine_output=output, validation_v1={'independent_from_producer':True,
             'validator':'challenge-validator', 'producer_engine':output['engine_id'], 'implementability_status':'PASS'},
             source_qualifications=[depth['source_qualification']], envelope=envelope,
@@ -91,7 +92,11 @@ class ActualDocumentaryChallengeTests(unittest.TestCase):
         for key in PRIMARY:
             with self.subTest(engine=key), TemporaryDirectory() as directory:
                 args = self.args(key, directory)
-                self.assertEqual(validator_diagnostics_v2(**args)['status'], 'PASS')
+                diagnostics = validator_diagnostics_v2(**args)
+                self.assertEqual(diagnostics['status'], 'BLOCK')
+                self.assertEqual(diagnostics['checks']['documentary_evidence_bound']['status'], 'PASS')
+                self.assertEqual(diagnostics['checks']['documentary_dossier_bound']['status'], 'PASS')
+                self.assertIn('documentary_dossier_sufficient', diagnostics['critical_failures'])
                 mutations = [
                     ('engine_output', lambda o:o['candidate'].update(claim='profitable alpha')),
                     ('engine_output', lambda o:o['candidate'].update(falsification_scope='')),

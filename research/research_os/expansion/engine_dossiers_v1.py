@@ -479,9 +479,11 @@ def build_engine_dossier(output: Dict[str, Any], detail_input: Dict[str, Any] = 
         "economic_result": "NOT_OBSERVED",
     }
     if documentary:
+        evidence = candidate.get('documentary_evidence')
+        evidence = evidence if isinstance(evidence, dict) else {}
         dossier.update(
             evidence_class='DOCUMENTARY', candidate_hash=sha256_json(candidate),
-            source_hash=candidate.get('documentary_evidence', {}).get('claim_source_hash'),
+            source_hash=evidence.get('claim_source_hash'),
             factual_binding_status='PASS' if expected is not None and detail_input == expected else 'BLOCK',
             field_statuses={field:expected[field]['status'] for field in sorted(required)} if expected else {},
             claim_ceiling='DOCUMENTED_FACTS_ONLY' if expected is not None and detail_input == expected else 'UNSUPPORTED',

@@ -45,6 +45,7 @@ def execute_documentary_depth(output: Dict[str, Any], envelope: Dict[str, Any], 
     if plan['status'] == 'READY_FOR_REPRODUCIBLE_DRY_RUN' and checkpoint_dir is not None:
         executed = runner.execute(plan, inputs, checkpoint_dir)
     return {'source_qualification':qualification, 'dry_run_plan':plan, 'executed_dry_run':executed,
+            'dossier':build_engine_dossier(output) if not synthetic else None,
             'execution_status': 'EXECUTED_DRY_RUN' if executed else 'NOT_EXECUTED',
             'evidence_class':packet['evidence_class']}
 

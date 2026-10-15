@@ -19,6 +19,8 @@ def _jaccard(left: Iterable[str], right: Iterable[str]) -> float:
 
 
 def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, Any]:
+    _verify_documentary_identity(left)
+    _verify_documentary_identity(right)
     tag_overlap = _jaccard(left.get("economic_tags", []), right.get("economic_tags", []))
     dimensions = {
         "mechanism": _eq_known(left.get("mechanism"), right.get("mechanism")),
@@ -49,6 +51,7 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
         "score_status": "PARTIAL" if unknown else "COMPLETE",
         "overlap_score_interval": [score, round(score + sum(weights[k] for k in unknown), 4)],
         "identity_hashes": [sha256_json(left), sha256_json(right)],
+        "dossier_hashes": [item.get('identity_provenance', {}).get('dossier_hash') for item in (left, right)],
         "classification": (
             "INSUFFICIENT_EVIDENCE" if unknown else "HIGH_STRUCTURAL_OVERLAP"
             if score >= 0.65
@@ -63,6 +66,8 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
 
 def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     items = list(identities)
+    for item in items:
+        _verify_documentary_identity(item)
     keys = [item['hypothesis_id'] for item in items]
     if len(set(keys)) != len(keys):
         raise ValueError("portfolio requires one selected generation per hypothesis")
@@ -94,3 +99,13 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
         "orders_authorized": False,
         "claim": "Structural diversification diagnostics only; not an empirical portfolio optimizer.",
     }
+
+
+def _verify_documentary_identity(identity: Dict[str, Any]) -> None:
+    if identity.get('evidence_class') == 'DOCUMENTARY' or 'documentary_basis' in identity:
+        from .final_shape import economic_identity_v1
+        basis = identity.get('documentary_basis')
+        if not isinstance(basis, dict) or basis.get('synthetic_only') is not False:
+            raise ValueError('documentary identity lacks its producer basis')
+        if identity != economic_identity_v1(basis, {}):
+            raise ValueError('documentary identity differs from reconstructed dossier support')

@@ -20,6 +20,9 @@ CRITICAL_CHECKS = {
     "implementability_passed",
     "falsification_scope_present",
     "decision_map_present",
+    "documentary_dossier_bound",
+    "documentary_dossier_sufficient",
+    "documentary_disconfirmation_supported",
 }
 
 
@@ -169,6 +172,19 @@ def validator_diagnostics_v2(
     add('documentary_evidence_bound', bound, 'Typed documentary facts must reproduce the frozen candidate.')
     add('executed_documentary_transform', executed, 'A documentary plan alone is not an executed dry-run.')
 
+    dossier = None
+    if engine_output.get('synthetic_only') is False:
+        from .engine_dossiers_v1 import build_engine_dossier
+        dossier = build_engine_dossier(engine_output)
+        supplied = envelope.get('dry_run_execution', {}).get('dossier')
+        add('documentary_dossier_bound', dossier.get('factual_binding_status') == 'PASS' and supplied == dossier,
+            'Reconstruct dossier from the registered producer and compare the entire supplied artifact.')
+        add('documentary_dossier_sufficient', dossier['status'] == 'PASS',
+            'Factual arithmetic or filled sections cannot qualify missing economic premises.')
+        add('documentary_disconfirmation_supported',
+            dossier.get('dossier', {}).get('disconfirmation_checks', {}).get('status') == 'SUPPORTED',
+            'Disconfirmation must bind to the frozen candidate, not caller prose.')
+
     failures: List[str] = sorted(name for name, record in checks.items() if record["status"] != "PASS")
     critical_failures = sorted(set(failures) & CRITICAL_CHECKS)
     claim_ceiling = "DESIGN_ONLY"
@@ -188,6 +204,8 @@ def validator_diagnostics_v2(
         "claim_ceiling": claim_ceiling,
         "economic_claim_authorized": False,
         "claim_mutated": False,
+        "dossier_hash": dossier.get('dossier_hash') if dossier else None,
+        "dossier_blockers": dossier['blockers'] if dossier else [],
     }
 
 

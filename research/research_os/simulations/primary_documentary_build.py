@@ -22,7 +22,7 @@ from research.research_os.scientific_store import sha256_json
 PRIMARY_SOURCES = {
     'fundamental':'apple_fy2025_statement_cells.json',
     'event_document':'apple_dividend_announcements.json',
-    'institutional_flow':'sec_t1_staff_faq.json',
+    'institutional_flow':'sec_t1_operative_rule.json',
 }
 
 
@@ -88,6 +88,8 @@ def run_primary_documentary_build(base: Path, checkpoint_dir: Path):
             'source_file':f'sources/{PRIMARY_SOURCES[key]}', 'source_refs':output['source_refs'],
             'source_hash':source['documentary_packet']['content_hash'],
             'candidate_hash':sha256_json(output['candidate']), 'identity_hash':sha256_json(identity),
+            'dossier':canonical['documentary_depth']['dossier'],
+            'validation_diagnostics':canonical['validation'], 'red_team_diagnostics':canonical['red_team'],
             'claim':output['candidate']['claim'], 'falsification_scope':output['candidate']['falsification_scope'],
             'measurements':output['candidate']['documentary_evidence']['measurements'],
             'canonical_fingerprint':canonical['canonical_fingerprint'], 'canonical_replay':'IDENTICAL',
@@ -123,7 +125,7 @@ def run_primary_documentary_build(base: Path, checkpoint_dir: Path):
         'limitations':[
             'Current captures do not establish historical point-in-time availability.',
             'Raw digests and public-source receipts are not publisher signatures.',
-            'SEC staff FAQ is explanatory and nonbinding; individual transaction applicability is unqualified.',
+            'Official 2025 CFR rule edition is pinned; current legal status and individual applicability remain unqualified. The historical SEC staff FAQ remains nonbinding.',
             'Declared distributions are year-over-year announcements, not consecutive payments or consensus surprise.',
             'Shared AAPL issuer and equity-beta thesis tags do not establish empirical exposure or return correlation.',
             'No eligible flow population, actual funding pressure, payer, tradable horizon, costs or capacity qualified.',
