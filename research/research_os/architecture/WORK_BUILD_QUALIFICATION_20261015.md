@@ -9,6 +9,18 @@ Qualification: QUALIFIED_FOR_BUILD_REVIEW. All eight CI gates on the exact code
 candidate completed successfully, including SEC P0 run 38787222141. This later
 metadata commit reports checks on the implementation SHA, not its own SHA.
 
+## Subsequent Fundamental dossier increment — awaiting CI
+
+New code candidate: `83f39cd479f6106952af0febd156e9ee6f6c10dc`.
+The qualification recorded above remains the historical qualified baseline;
+this new increment has 127 local Research OS tests PASS (4 new dossier tests),
+seven exact-head Research OS CI successes and SEC P0 run 38803294634 still running.
+Do not mark it fully qualified before that run finishes successfully.
+
+The existing dossier now binds admitted Fundamental facts and exposes unsupported
+premises as UNKNOWN/BLOCK. Event dossier support and downstream dossier consumption
+remain follow-up tasks. Full handoff: NEXT_CODEX_DEPTH_PROMPT_20261015.md.
+
 ## Result and evidence scope
 
 Continuation added a real Event adapter behind EventDocumentEngine, a real

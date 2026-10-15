@@ -1,0 +1,108 @@
+{
+  "task_id": "DEPTH-FUNDAMENTAL-DOSSIER-002",
+  "status": "IN_PROGRESS",
+  "execution_phase": "IMPLEMENTED_AWAITING_EXACT_HEAD_GENERAL_CI",
+  "observed_head_before": "dc57f1ea8f6f6742025aaa830f6b8fef9d2e439c",
+  "implementation_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+  "remote_head_verified": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+  "changed_code_files": [
+    "research/research_os/expansion/engine_dossiers_v1.py",
+    "research/research_os/tests/test_documentary_dossier_depth.py"
+  ],
+  "artifact": "DEPTH_FUNDAMENTAL_DOSSIER_002_20261015.json",
+  "local_validation": [
+    {
+      "command": "python -m unittest research.research_os.tests.test_documentary_dossier_depth -q",
+      "result": "PASS, 4 tests"
+    },
+    {
+      "command": "python -m unittest discover -s research/research_os/tests -p 'test_*.py' -q",
+      "result": "PASS, 127 tests"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "ci": [
+    {
+      "id": 38803294634,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294634"
+    },
+    {
+      "id": 38803294658,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294658"
+    },
+    {
+      "id": 38803294833,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294833"
+    },
+    {
+      "id": 38803294684,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294684"
+    },
+    {
+      "id": 38803294740,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294740"
+    },
+    {
+      "id": 38803294810,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294810"
+    },
+    {
+      "id": 38803294574,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294574"
+    },
+    {
+      "id": 38803294593,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "83f39cd479f6106952af0febd156e9ee6f6c10dc",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38803294593"
+    }
+  ],
+  "evidence_class": "CAPTURED_DOCUMENTARY_FACTS_WITH_EXPLICIT_DOSSIER_GAPS",
+  "facts_bound": true,
+  "economic_dossier_status": "BLOCK",
+  "limitations": [
+    "Only Fundamental real-source dossier construction is implemented in this step.",
+    "The helper rebuilds the candidate from its registered producer and binds facts/period/units/availability to their sources.",
+    "Valuation, balance sheet, revisions, catalysts and competitive evidence remain UNKNOWN; partial cells do not qualify an economic thesis.",
+    "Canonical/Validator/Portfolio consumption of the strengthened dossier is a later existing roadmap task, not claimed complete here.",
+    "Counterfactual numeric mutations in tests are not persisted as real evidence."
+  ],
+  "next_admissible_task": "DEPTH-EVENT-DOSSIER-002",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}
