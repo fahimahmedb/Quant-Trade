@@ -1,0 +1,36 @@
+{
+  "source_ref": "https://www.sec.gov/exams/educationhelpguidesfaqs/t1-faq",
+  "freeze_time": "2026-10-15T18:28:08.251479+00:00",
+  "documentary_packet": {
+    "evidence_class": "DOCUMENTARY",
+    "source_ref": "https://www.sec.gov/exams/educationhelpguidesfaqs/t1-faq",
+    "issuer_id": "SEC_RULE_15c6_1",
+    "published_at": "2026-10-15T18:28:08.251479+00:00",
+    "available_at": "2026-10-15T18:28:08.251479+00:00",
+    "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+    "period": "STAFF_FAQ_2024-03-27_COMPLIANCE_2024-05-28",
+    "unit": "business_days_after_trade",
+    "rule_kind": "STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION",
+    "facts": {
+      "standard_settlement_business_days": "1"
+    },
+    "actor": "US-registered broker-dealers entering covered securities transactions",
+    "constraint": "Standard T+1 settlement; statutory exemptions and expressly agreed extensions must be checked",
+    "instrument": "Covered securities transactions only; no individual instrument or eligible universe admitted",
+    "horizon": "T+1 business day standard settlement; no directional trading horizon qualified",
+    "capture": {
+      "source_url": "https://www.sec.gov/exams/educationhelpguidesfaqs/t1-faq",
+      "raw_sha256": "e61cd5190a3562c3018cd97284200b027c8293d0f3f185af553942d3945b3886",
+      "retrieved_at": "2026-10-15T18:28:08.251479+00:00",
+      "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+      "document_kind": "SEC_STAFF_FAQ_NOT_BINDING_RULE",
+      "excerpts": {
+        "cycle": "one business day after the trade date",
+        "compliance": "The compliance date is May 28, 2024.",
+        "status": "no legal force or effect"
+      },
+      "extractor": "sec-t1-faq-excerpts.v1"
+    },
+    "content_hash": "6db95aa10b1f3056c736b01558a55678f9977f6d95a734f76431a65f6a4438ef"
+  }
+}

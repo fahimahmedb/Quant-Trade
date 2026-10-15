@@ -158,6 +158,82 @@ def capture_apple_dividend_announcements(captured: Dict[str, Any], raw_paths: Li
     return {'source_ref':packet['source_ref'], 'freeze_time':packet['available_at'], 'documentary_packet':packet}
 
 
+
+SEC_T1_FAQ = 'https://www.sec.gov/exams/educationhelpguidesfaqs/t1-faq'
+SEC_T1_EXCERPTS = {
+    'cycle':'one business day after the trade date',
+    'compliance':'The compliance date is May 28, 2024.',
+    'status':'no legal force or effect',
+}
+
+
+def sec_t1_packet(capture: Dict[str, Any]) -> Dict[str, Any]:
+    """Admit a staff explanation of a settlement constraint, not a trading flow.
+
+    This historical FAQ is not treated as binding law or a current legal opinion.
+    No eligible population, constrained quantity or directional order is inferred.
+    """
+    from .engine_dossiers_v1 import _clock
+    if set(capture) != {'source_url', 'raw_sha256', 'retrieved_at', 'publication_clock_basis',
+                        'document_kind', 'excerpts', 'extractor'}:
+        raise ValueError('invalid rule explanation capture fields')
+    if (capture['source_url'] != SEC_T1_FAQ
+            or capture['document_kind'] != 'SEC_STAFF_FAQ_NOT_BINDING_RULE'
+            or capture['publication_clock_basis'] != 'FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT'
+            or capture['extractor'] != 'sec-t1-faq-excerpts.v1'
+            or capture['excerpts'] != SEC_T1_EXCERPTS
+            or not re.fullmatch('[0-9a-f]{64}', capture['raw_sha256'])
+            or _clock(capture['retrieved_at']).year < 2024):
+        raise ValueError('unqualified SEC staff explanation capture')
+    available = capture['retrieved_at']
+    packet = {
+        'evidence_class':'DOCUMENTARY', 'source_ref':SEC_T1_FAQ, 'issuer_id':'SEC_RULE_15c6_1',
+        'published_at':available, 'available_at':available,
+        'revision_status':'CAPTURED_VERSION_AS_OF_RETRIEVAL',
+        'period':'STAFF_FAQ_2024-03-27_COMPLIANCE_2024-05-28', 'unit':'business_days_after_trade',
+        'rule_kind':'STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION',
+        'facts':{'standard_settlement_business_days':'1'},
+        'actor':'US-registered broker-dealers entering covered securities transactions',
+        'constraint':'Standard T+1 settlement; statutory exemptions and expressly agreed extensions must be checked',
+        'instrument':'Covered securities transactions only; no individual instrument or eligible universe admitted',
+        'horizon':'T+1 business day standard settlement; no directional trading horizon qualified',
+        'capture':deepcopy(capture),
+    }
+    packet['content_hash'] = sha256_json(packet)
+    return packet
+
+
+def capture_sec_t1_faq(html_path: Path, *, retrieved_at: str) -> Dict[str, Any]:
+    from html.parser import HTMLParser
+
+    class Text(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.parts = []
+
+        def handle_data(self, data):
+            self.parts.append(data)
+
+    raw = Path(html_path).read_bytes()
+    parser = Text()
+    parser.feed(raw.decode('utf-8'))
+    text = ' '.join(' '.join(parser.parts).split())
+    # Guard actor, exclusions and override semantics as well as the numeric cell.
+    required = list(SEC_T1_EXCERPTS.values()) + [
+        'Rule 15c6-1 applies to brokers and dealers required to register in the United States',
+        'transactions that are exempt', 'expressly agreeing at the time of the transaction',
+    ]
+    if any(term not in text for term in required):
+        raise ValueError('unqualified FAQ layout, actor or exception terms')
+    packet = sec_t1_packet({
+        'source_url':SEC_T1_FAQ, 'raw_sha256':hashlib.sha256(raw).hexdigest(), 'retrieved_at':retrieved_at,
+        'publication_clock_basis':'FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT',
+        'document_kind':'SEC_STAFF_FAQ_NOT_BINDING_RULE', 'excerpts':deepcopy(SEC_T1_EXCERPTS),
+        'extractor':'sec-t1-faq-excerpts.v1',
+    })
+    return {'source_ref':SEC_T1_FAQ, 'freeze_time':retrieved_at, 'documentary_packet':packet}
+
+
 def validate_adapter_spec(spec: Dict[str, Any]) -> Dict[str, Any]:
     blockers: List[str] = []
     required = {

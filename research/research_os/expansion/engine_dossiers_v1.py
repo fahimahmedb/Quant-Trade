@@ -37,7 +37,7 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
     required = {"evidence_class", "source_ref", "issuer_id", "published_at", "available_at",
                 "revision_status", "period", "unit", "facts", "content_hash"}
     constraint_fields = {"actor", "constraint", "instrument", "horizon"}
-    optional = constraint_fields | {"capture", "event_kind"}
+    optional = constraint_fields | {"capture", "event_kind", "rule_kind"}
     blockers = []
     if required - packet.keys() or packet.keys() - required - optional:
         blockers.append("DOCUMENT_FIELDS_INVALID")
@@ -45,7 +45,15 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
     if not documentary and (packet.get("evidence_class") != "SYNTHETIC" or not str(packet.get("source_ref", "")).startswith("synthetic://")):
         blockers.append("DOCUMENT_CLASS_OUTSIDE_STABLE_ENGINE_CONTRACT")
     event_distribution = documentary and family == 'EVENT_DOCUMENT'
-    if event_distribution:
+    settlement_constraint = documentary and family == 'INSTITUTIONAL_FLOW'
+    if settlement_constraint:
+        try:
+            from .source_adapters_v1 import sec_t1_packet
+            if packet != sec_t1_packet(packet['capture']):
+                raise ValueError('rule explanation differs from captured facts')
+        except (KeyError, ValueError, TypeError, AttributeError, InvalidOperation):
+            blockers.append('DOCUMENT_CAPTURE_NOT_QUALIFIED')
+    elif event_distribution:
         try:
             from .source_adapters_v1 import apple_dividend_packet
             expected = apple_dividend_packet(packet['capture']['records'])
@@ -121,9 +129,12 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
         blockers.append("DOCUMENT_CLOCK_INVALID")
     facts = packet.get("facts", {})
     required_facts = ({"previous_distribution", "current_distribution"} if event_distribution
+                      else {"standard_settlement_business_days"} if settlement_constraint
                       else DOCUMENT_FACTS.get(family))
     if not event_distribution and "event_kind" in packet:
         blockers.append("DOCUMENT_EVENT_KIND_NOT_QUALIFIED")
+    if not settlement_constraint and "rule_kind" in packet:
+        blockers.append("DOCUMENT_RULE_KIND_NOT_QUALIFIED")
     if required_facts is None or not isinstance(facts, dict) or set(facts) != required_facts:
         blockers.append("DOCUMENT_FACTS_INVALID")
     else:
@@ -134,6 +145,9 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
             if family == "FUNDAMENTAL":
                 if values["revenue"] <= 0 or values["capital_expenditure"] < 0:
                     raise ValueError("invalid statement magnitude")
+            elif settlement_constraint:
+                if values["standard_settlement_business_days"] != 1:
+                    raise ValueError("unqualified settlement standard")
             elif event_distribution:
                 if any(v <= 0 for v in values.values()):
                     raise ValueError("invalid distribution magnitude")
@@ -197,6 +211,19 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         claim = f"{issuer} {period}: guidance midpoint changed by {delta} {unit}, from {before} to {after}."
         disconfirm = "Withdraw the revision premise if the document is corrected, superseded, or the periods/units differ."
         tags, horizon = ["guidance_revision", "information_processing", "equity_beta"], "1-20d"
+    elif engine.family == "INSTITUTIONAL_FLOW" and packet.get('rule_kind') == 'STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION':
+        measurements = {'standard_settlement_business_days':str(facts['standard_settlement_business_days']),
+                        'constrained_share':'UNKNOWN', 'directional_flow':'UNKNOWN'}
+        mechanism = (f"{packet['actor']} face a settlement deadline for covered transactions; "
+                     "this may motivate a funding or processing-constraint thesis, not an inferred forced buy or sale.")
+        claim = (f"SEC staff FAQ explains a standard T+1 settlement constraint for covered transactions; "
+                 "exemptions and agreed extensions require applicability review. The FAQ is nonbinding; "
+                 "no eligible quantity, actual funding pressure, current legal opinion or economic payoff is established.")
+        disconfirm = ('Reject the constraint premise for an exempt transaction, a valid agreed extension, '
+                     'a superseding rule, or an actor outside scope. Reject a directional-flow thesis without '
+                     'independent evidence of binding funding pressure, an eligible instrument and implementation costs. '
+                     'Prior closed research families remain closed.')
+        tags, horizon = ['settlement_constraint', 'funding', 'liquidity'], 'UNQUALIFIED'
     else:
         share = facts["constrained_quantity"] / facts["eligible_quantity"]
         measurements = {"constrained_share": str(share)}
@@ -205,7 +232,8 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         disconfirm = "Reject if the actor is not constrained, the universe is ineligible, or the legacy family has already spent this scope."
         tags, horizon = ["forced_flow", "liquidity", "constraint"], packet["horizon"]
     if not context.synthetic_only:
-        hypothesis_id = ('DOC-EVENT-' if engine.family == 'EVENT_DOCUMENT' else 'DOC-FUND-') + packet['content_hash'][:16]
+        prefix = {'EVENT_DOCUMENT':'DOC-EVENT-', 'INSTITUTIONAL_FLOW':'DOC-FLOW-', 'FUNDAMENTAL':'DOC-FUND-'}[engine.family]
+        hypothesis_id = prefix + packet['content_hash'][:16]
     evidence = {
         "packet": deepcopy(packet), "freeze_time": freeze, "measurements": measurements,
         "claim_source_hash": packet["content_hash"], "economic_result": "NOT_OBSERVED",

@@ -6,7 +6,7 @@ from research.research_os.scientific_store import sha256_json
 
 
 def _eq_known(left: Any, right: Any) -> Any:
-    if left in (None, "", "UNKNOWN") or right in (None, "", "UNKNOWN"):
+    if left in (None, "", "UNKNOWN", "UNQUALIFIED", "NOT_QUALIFIED") or right in (None, "", "UNKNOWN", "UNQUALIFIED", "NOT_QUALIFIED"):
         return None
     return 1.0 if left == right else 0.0
 

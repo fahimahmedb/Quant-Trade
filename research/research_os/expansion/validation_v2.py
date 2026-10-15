@@ -18,6 +18,8 @@ CRITICAL_CHECKS = {
     "documentary_evidence_bound",
     "executed_documentary_transform",
     "implementability_passed",
+    "falsification_scope_present",
+    "decision_map_present",
 }
 
 
@@ -77,7 +79,8 @@ def validator_diagnostics_v2(
     add(
         "reproducible_plan",
         dry_run_plan.get("status") == "READY_FOR_REPRODUCIBLE_DRY_RUN"
-        and dry_run_plan.get("execution_plan_hash") == sha256_json(dry_run_plan.get('plan')),
+        and dry_run_plan.get("execution_plan_hash") == sha256_json(dry_run_plan.get('plan'))
+        and dry_run_plan.get('plan', {}).get('protocol_hash') == envelope.get('protocol_hash'),
         "Execution plan must be replayable before economic execution.",
     )
     add(
@@ -116,28 +119,53 @@ def validator_diagnostics_v2(
     add('implementability_passed', validation_v1.get('implementability_status') == 'PASS',
         'Scientific readiness cannot override an implementability blocker.')
     evidence = candidate.get('documentary_evidence')
-    bound, executed = True, True
+    from research.research_os.engines.protocol import validate_engine_output
+    try:
+        validate_engine_output(engine_output)
+        bound = True
+    except (ValueError, KeyError, TypeError, AttributeError):
+        bound = False
+    executed = True
     if evidence is not None:
-        from types import SimpleNamespace
+        evidence = evidence if isinstance(evidence, dict) else {}
         from research.research_os.engines.protocol import EngineContext
-        from .engine_dossiers_v1 import documentary_candidate
+        from research.research_os.engines.builtin import ENGINE_REGISTRY
+        from .archaeology import EdgeArchaeologyEngine
         try:
-            source = {'documentary_packet': evidence['packet'], 'freeze_time': evidence['freeze_time']}
-            rebuilt = documentary_candidate(
-                SimpleNamespace(engine_id=engine_output['engine_id'], family=engine_output['engine_family']),
-                source, EngineContext('VALIDATOR-DOCUMENTARY', synthetic_only=engine_output['synthetic_only']), candidate['hypothesis_id'],
-            )
-            bound = rebuilt == engine_output
-        except (ValueError, KeyError, TypeError):
+            source = {'source_ref':evidence['packet']['source_ref'],
+                      'documentary_packet':evidence['packet'], 'freeze_time':evidence['freeze_time']}
+            engines = dict(ENGINE_REGISTRY, archaeology=EdgeArchaeologyEngine())
+            engine_key = next(key for key, engine in engines.items()
+                              if engine.engine_id == engine_output['engine_id'] and engine.family == engine_output['engine_family'])
+            if engine_key == 'archaeology':
+                source['hypothesis_id'] = candidate['hypothesis_id']
+            rebuilt = engines[engine_key].run(source, EngineContext('VALIDATOR-DOCUMENTARY', synthetic_only=engine_output['synthetic_only']))
+            bound = bound and rebuilt == engine_output
+            bound = bound and sha256_json([{'engine_key':engine_key, 'source':source}]) == dry_run_plan.get('plan', {}).get('dataset_manifest_hash')
+            from .source_qualification import qualify_source_route
+            for qualified in sources:
+                route = qualified.get('canonical_route', {})
+                replayed = qualify_source_route(route, freeze_time=evidence['freeze_time'])
+                bound = bound and qualified == replayed
+                bound = bound and route.get('route_id') == evidence['packet']['content_hash']
+                bound = bound and route.get('locator') == evidence['packet']['source_ref']
+                bound = bound and route.get('availability_start') == evidence['packet']['available_at']
+            bound = bound and dry_run_plan.get('plan', {}).get('source_route_hashes') == sorted(q['route_hash'] for q in sources)
+
+        except (ValueError, KeyError, TypeError, StopIteration, AttributeError):
             bound = False
-        run = executed_dry_run or {}
+        run = executed_dry_run if isinstance(executed_dry_run, dict) else {}
+        packet = evidence.get("packet")
+        packet_class = packet.get("evidence_class") if isinstance(packet, dict) else None
         receipt_payload = {k: v for k, v in run.items() if k != 'execution_receipt_hash'}
         executed = (run.get('state') == 'EXECUTED_DRY_RUN'
                     and run.get('execution_plan_hash') == dry_run_plan.get('execution_plan_hash')
                     and run.get('input_hash') == dry_run_plan.get('plan', {}).get('dataset_manifest_hash')
                     and run.get('execution_receipt_hash') == sha256_json(receipt_payload)
                     and engine_output in run.get('records', [])
-                    and run.get('outcome_accessed') is False)
+                    and run.get('outcome_accessed') is False
+                    and run.get('economic_result') == 'NOT_OBSERVED'
+                    and run.get('evidence_class') == packet_class)
     add('documentary_evidence_bound', bound, 'Typed documentary facts must reproduce the frozen candidate.')
     add('executed_documentary_transform', executed, 'A documentary plan alone is not an executed dry-run.')
 
