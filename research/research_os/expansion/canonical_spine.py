@@ -179,6 +179,7 @@ def run_canonical_spine(
     *,
     legacy_ledger_path: Optional[Path] = None,
     candidate_override_hypothesis_id: Optional[str] = None,
+    checkpoint_dir: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Run one deterministic final-shape lineage.
 
@@ -347,13 +348,34 @@ def run_canonical_spine(
             "receipts": final["worker_receipts"],
             "authority": final["authority"],
         })
+        if checkpoint_dir is not None:
+            from .persistent_state import write_immutable_json
+            write_immutable_json(checkpoint_dir / f"{final['canonical_fingerprint']}.canonical.json", final)
         return final
 
     meta_hid = output["candidate"]["hypothesis_id"]
+    if checkpoint_dir is not None:
+        from .persistent_state import write_immutable_json
+        generation_key = sha256_json([meta_hid, output['candidate']['generation_id']])
+        write_immutable_json(checkpoint_dir / f'{generation_key}.generation.json', output['candidate'])
     # In the normal fixture the hypothesis id is the engine's canonical synthetic id.
     impl = assess_implementability(output, fixture["implementability"][meta_hid])
     envelope = freeze_experiment_envelope(output, impl, fixture["experiments"][meta_hid])
     validation = independent_validate(output, impl, envelope)
+    documentary_depth = None
+    if 'documentary_evidence' in output['candidate']:
+        from .canonical_depth_v1 import execute_documentary_depth
+        from .validation_v2 import validator_diagnostics_v2
+        documentary_depth = execute_documentary_depth(output, envelope, checkpoint_dir)
+        envelope['dry_run_execution'] = documentary_depth
+        diagnostics = validator_diagnostics_v2(
+            engine_output=output, validation_v1=validation,
+            source_qualifications=[documentary_depth['source_qualification']],
+            envelope=envelope, dry_run_plan=documentary_depth['dry_run_plan'],
+            trial_record=trial, experiment_meta=fixture['experiments'][meta_hid],
+            executed_dry_run=documentary_depth['executed_dry_run'],
+        )
+        validation = {**validation, **diagnostics}
     red = red_team(output, impl, validation, fixture["experiments"][meta_hid])
     identity = economic_identity_v1(output, fixture["economic_identity"][meta_hid])
     portfolio = portfolio_map_v1([identity])
@@ -457,6 +479,8 @@ def run_canonical_spine(
         },
         "authority": authority,
     }
+    if documentary_depth is not None:
+        final['documentary_depth'] = documentary_depth
     final["canonical_fingerprint"] = sha256_json({
         "status": final["status"],
         "stage_order": final["stage_order"],
@@ -465,4 +489,7 @@ def run_canonical_spine(
         "receipts": final["worker_receipts"],
         "authority": final["authority"],
     })
+    if checkpoint_dir is not None:
+        from .persistent_state import write_immutable_json
+        write_immutable_json(checkpoint_dir / f"{final['canonical_fingerprint']}.canonical.json", final)
     return final

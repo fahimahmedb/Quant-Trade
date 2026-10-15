@@ -3,6 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from datetime import datetime, timezone
 from typing import Any, Dict
+from pathlib import Path
 
 from research.research_os.scientific_store import sha256_json
 
@@ -18,7 +19,7 @@ ALLOWED_STATES = {
 def _parse_utc(value: str) -> datetime:
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
+        raise ValueError("forward clocks must include a timezone")
     return parsed.astimezone(timezone.utc)
 
 
@@ -28,6 +29,9 @@ def build_forward_contract_v2(
     t0: str,
     observation_scope: Dict[str, Any],
 ) -> Dict[str, Any]:
+    _parse_utc(t0)
+    if not observation_scope:
+        raise ValueError("forward scope cannot be empty")
     readiness = registration.get("readiness")
     state = "READY_AWAITING_OWNER_AUTHORITY" if readiness == "READY_AWAITING_OWNER_AUTHORITY" else "DRAFT"
     payload = {
@@ -56,10 +60,34 @@ class ForwardRegistryV2:
         self._contracts: Dict[str, Dict[str, Any]] = {}
 
     def register(self, contract: Dict[str, Any]) -> Dict[str, Any]:
+        payload_fields = ("contract_id", "hypothesis_id", "generation_id", "protocol_hash", "t0",
+                          "observation_scope", "material_change_requires_new_generation")
+        expected_fields = set(payload_fields) | {'state', 'contract_hash', 'owner_authorization',
+            'authorization_scope_hash', 'observation_count', 'future_outcomes_consumed', 'economic_result'}
+        if set(contract) != expected_fields:
+            raise ValueError('forward contract fields invalid')
+        payload = {k: contract[k] for k in payload_fields}
+        if contract.get("contract_hash") != sha256_json(payload):
+            raise ValueError("forward contract hash mismatch")
+        _parse_utc(contract['t0'])
+        if not isinstance(contract['observation_scope'], dict) or not contract['observation_scope']:
+            raise ValueError("forward scope cannot be empty")
+        if (contract.get('state') not in {'DRAFT', 'READY_AWAITING_OWNER_AUTHORITY', 'CLOSED'}
+                or contract.get('owner_authorization') != 'NOT_AUTHORIZED'
+                or contract.get('authorization_scope_hash') is not None
+                or contract.get('observation_count') != 0
+                or contract.get('future_outcomes_consumed') != 0
+                or contract.get('economic_result') != 'NOT_OBSERVED'):
+            raise PermissionError("build registry cannot import observation authority or outcomes")
+        if contract['state'] == 'READY_AWAITING_OWNER_AUTHORITY' and not contract['protocol_hash']:
+            raise ValueError("ready registration requires a frozen protocol")
         contract_id = contract["contract_id"]
+        for other_id, other in self._contracts.items():
+            if other_id != contract_id and (other['hypothesis_id'], other['generation_id']) == (contract['hypothesis_id'], contract['generation_id']):
+                raise ValueError("same generation cannot be registered under a second contract id")
         current = self._contracts.get(contract_id)
         if current is not None:
-            if current["contract_hash"] != contract["contract_hash"]:
+            if current != contract:
                 raise ValueError(f"forward contract mutation rejected: {contract_id}")
             return deepcopy(current)
         if contract["state"] not in ALLOWED_STATES:
@@ -68,6 +96,21 @@ class ForwardRegistryV2:
             raise ValueError("material changes must create a new generation")
         self._contracts[contract_id] = deepcopy(contract)
         return deepcopy(contract)
+
+    def save(self, path: Path) -> None:
+        from .persistent_state import write_immutable_json
+        write_immutable_json(path, self.snapshot())
+
+    @classmethod
+    def load(cls, path: Path) -> 'ForwardRegistryV2':
+        from .persistent_state import read_immutable_json
+        snapshot = read_immutable_json(path)
+        registry = cls()
+        for entry in snapshot['entries']:
+            registry.register(entry)
+        if registry.snapshot() != snapshot:
+            raise ValueError("forward snapshot summary mismatch")
+        return registry
 
     def validate_observation_candidate(self, contract_id: str, observation_meta: Dict[str, Any]) -> Dict[str, Any]:
         contract = self._contracts[contract_id]

@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from itertools import combinations
 from typing import Any, Dict, Iterable, List
+from research.research_os.scientific_store import sha256_json
 
 
-def _eq_known(left: Any, right: Any) -> float:
-    if left in (None, "UNKNOWN") or right in (None, "UNKNOWN"):
-        return 0.0
+def _eq_known(left: Any, right: Any) -> Any:
+    if left in (None, "", "UNKNOWN") or right in (None, "", "UNKNOWN"):
+        return None
     return 1.0 if left == right else 0.0
 
 
@@ -20,29 +21,36 @@ def _jaccard(left: Iterable[str], right: Iterable[str]) -> float:
 def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, Any]:
     tag_overlap = _jaccard(left.get("economic_tags", []), right.get("economic_tags", []))
     dimensions = {
+        "mechanism": _eq_known(left.get("mechanism"), right.get("mechanism")),
         "payer": _eq_known(left.get("payer"), right.get("payer")),
         "asset": _eq_known(left.get("asset"), right.get("asset")),
         "horizon": _eq_known(left.get("horizon"), right.get("horizon")),
         "liquidity": _eq_known(left.get("liquidity"), right.get("liquidity")),
         "tail_exposure": _eq_known(left.get("tail_exposure"), right.get("tail_exposure")),
-        "economic_tags": round(tag_overlap, 4),
+        "economic_tags": round(tag_overlap, 4) if left.get('economic_tags') and right.get('economic_tags') else None,
     }
     weights = {
-        "payer": 0.25,
+        "mechanism": 0.15,
+        "payer": 0.20,
         "asset": 0.15,
         "horizon": 0.10,
-        "liquidity": 0.10,
-        "tail_exposure": 0.15,
+        "liquidity": 0.05,
+        "tail_exposure": 0.10,
         "economic_tags": 0.25,
     }
-    score = round(sum(dimensions[key] * weights[key] for key in dimensions), 4)
+    unknown = sorted(key for key, value in dimensions.items() if value is None)
+    score = round(sum((dimensions[key] or 0) * weights[key] for key in dimensions), 4)
     return {
         "left": left["hypothesis_id"],
         "right": right["hypothesis_id"],
         "structural_overlap_score": score,
         "dimensions": dimensions,
+        "unknown_dimensions": unknown,
+        "score_status": "PARTIAL" if unknown else "COMPLETE",
+        "overlap_score_interval": [score, round(score + sum(weights[k] for k in unknown), 4)],
+        "identity_hashes": [sha256_json(left), sha256_json(right)],
         "classification": (
-            "HIGH_STRUCTURAL_OVERLAP"
+            "INSUFFICIENT_EVIDENCE" if unknown else "HIGH_STRUCTURAL_OVERLAP"
             if score >= 0.65
             else "PARTIAL_STRUCTURAL_OVERLAP"
             if score >= 0.30
@@ -55,15 +63,22 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
 
 def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     items = list(identities)
+    keys = [item['hypothesis_id'] for item in items]
+    if len(set(keys)) != len(keys):
+        raise ValueError("portfolio requires one selected generation per hypothesis")
     pairwise: List[Dict[str, Any]] = [structural_pair(a, b) for a, b in combinations(items, 2)]
-    novelty: Dict[str, float] = {}
+    novelty: Dict[str, Any] = {}
     for item in items:
         overlaps = [
             pair["structural_overlap_score"]
             for pair in pairwise
             if item["hypothesis_id"] in {pair["left"], pair["right"]}
         ]
-        novelty[item["hypothesis_id"]] = round(1.0 - max(overlaps, default=0.0), 4)
+        related = [p for p in pairwise if item['hypothesis_id'] in {p['left'], p['right']}]
+        novelty[item["hypothesis_id"]] = (
+            round(1.0 - max(overlaps), 4) if related and all(p['score_status'] == 'COMPLETE' for p in related)
+            else "UNKNOWN"
+        )
 
     return {
         "portfolio_engine": "portfolio-diagnostics.v2",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from typing import Any, Dict
+from pathlib import Path
 
 from research.research_os.scientific_store import sha256_json
 
@@ -11,6 +12,39 @@ from .forward_v2 import ForwardRegistryV2, build_forward_contract_v2
 from .portfolio_v2 import portfolio_diagnostics_v2
 from .source_qualification import qualify_source_route
 from .validation_v2 import validator_diagnostics_v2
+
+
+def execute_documentary_depth(output: Dict[str, Any], envelope: Dict[str, Any], checkpoint_dir: Path = None) -> Dict[str, Any]:
+    """Populate existing runner/source stages from the candidate's pinned packet."""
+    evidence = output['candidate']['documentary_evidence']
+    packet = evidence['packet']
+    family_keys = {'FUNDAMENTAL':'fundamental', 'EVENT_DOCUMENT':'event_document',
+                   'QUANT_MECHANISM':'quant', 'INSTITUTIONAL_FLOW':'institutional_flow',
+                   'EDGE_ARCHAEOLOGY':'archaeology'}
+    source = {'source_ref':packet['source_ref'], 'documentary_packet':packet, 'freeze_time':evidence['freeze_time']}
+    if output['engine_family'] == 'EDGE_ARCHAEOLOGY':
+        source['hypothesis_id'] = output['candidate']['hypothesis_id']
+    inputs = [{'engine_key':family_keys[output['engine_family']], 'source':source}]
+    qualification = qualify_source_route({
+        'route_id':packet['content_hash'], 'source_class':'SYNTHETIC_FIXTURE',
+        'transport':'fixture-json', 'locator':packet['source_ref'], 'permission_state':'FIXTURE_ONLY',
+        'pit_mode':'PUBLICATION_TIME', 'revision_policy':packet['revision_status'],
+        'survivorship_policy':'FULL_SYNTHETIC_UNIVERSE_DECLARED', 'timezone':'UTC',
+        'availability_start':packet['available_at'], 'contains_outcome':False,
+        'content_scope':'TYPED_DOCUMENTARY_FACTS',
+    }, freeze_time=evidence['freeze_time'])
+    runner = DryRunExperimentRunner()
+    plan = runner.plan(envelope, [qualification], {
+        'dataset_manifest_hash':sha256_json(inputs), 'code_hash':runner.execution_code_hash(),
+        'environment_hash':runner.execution_environment_hash(), 'seed':0,
+        'declared_metrics':['DOCUMENTARY_FACTS_V1'],
+    })
+    executed = None
+    if plan['status'] == 'READY_FOR_REPRODUCIBLE_DRY_RUN' and checkpoint_dir is not None:
+        executed = runner.execute(plan, inputs, checkpoint_dir)
+    return {'source_qualification':qualification, 'dry_run_plan':plan, 'executed_dry_run':executed,
+            'execution_status': 'EXECUTED_DRY_RUN' if executed else 'NOT_EXECUTED',
+            'evidence_class':'SYNTHETIC'}
 
 
 def enrich_canonical_depth(

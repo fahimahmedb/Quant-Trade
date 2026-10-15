@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from copy import deepcopy
 from typing import Any, Dict, Iterable, List
+import hashlib
+import sys
+from pathlib import Path
 
 from research.research_os.scientific_store import sha256_json
 
@@ -67,6 +70,8 @@ class DryRunExperimentRunner:
         }
 
     def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:
+        if plan.get("status") != "READY_FOR_REPRODUCIBLE_DRY_RUN":
+            raise ValueError("blocked execution plan cannot be replayed")
         if plan.get("outcome_accessed") is not False:
             raise PermissionError("dry-run replay refuses outcome-bearing state")
         replay_hash = sha256_json(plan["plan"])
@@ -79,6 +84,61 @@ class DryRunExperimentRunner:
             "outcome_accessed": False,
             "economic_result": "NOT_OBSERVED",
         }
+
+    @staticmethod
+    def execution_code_hash() -> str:
+        root = Path(__file__).resolve().parents[1]
+        paths = [Path(__file__), root / 'expansion/engine_dossiers_v1.py',
+                 root / 'engines/builtin.py', root / 'engines/protocol.py',
+                 root / 'expansion/archaeology.py', root / 'expansion/persistent_state.py',
+                 root / 'scientific_store.py']
+        return sha256_json({str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
+
+    @staticmethod
+    def execution_environment_hash() -> str:
+        import decimal
+        return sha256_json({"python": sys.version, "decimal_precision": decimal.getcontext().prec,
+                            "decimal_rounding": decimal.getcontext().rounding})
+
+    def execute(self, plan: Dict[str, Any], inputs: List[Dict[str, Any]], checkpoint_dir: Path) -> Dict[str, Any]:
+        """Execute only pinned synthetic documentary transforms; never a backtest.
+
+        PREPARED survives interruption before COMPLETED. Replay recomputes the
+        transform and must match the immutable completed result byte-for-byte.
+        """
+        from research.research_os.engines.builtin import ENGINE_REGISTRY
+        from research.research_os.engines.protocol import EngineContext
+        from .archaeology import EdgeArchaeologyEngine
+        from .persistent_state import write_immutable_json
+
+        self.replay(plan)
+        payload = plan['plan']
+        if payload.get('declared_metrics') != ['DOCUMENTARY_FACTS_V1']:
+            raise ValueError('execution supports only DOCUMENTARY_FACTS_V1')
+        if not inputs or sha256_json(inputs) != payload.get('dataset_manifest_hash'):
+            raise ValueError('execution input hash mismatch')
+        if payload.get('code_hash') != self.execution_code_hash():
+            raise ValueError('execution code hash mismatch')
+        if payload.get('environment_hash') != self.execution_environment_hash():
+            raise ValueError('execution environment hash mismatch')
+        binding = {"execution_plan_hash": plan['execution_plan_hash'],
+                   "input_hash": sha256_json(inputs), "state": "PREPARED"}
+        key = plan['execution_plan_hash']
+        write_immutable_json(Path(checkpoint_dir) / f'{key}.prepared.json', binding)
+        records = []
+        for item in inputs:
+            if set(item) != {'engine_key', 'source'} or 'documentary_packet' not in item['source']:
+                raise ValueError('execution requires structured documentary inputs')
+            engine = EdgeArchaeologyEngine() if item['engine_key'] == 'archaeology' else ENGINE_REGISTRY[item['engine_key']]
+            output = engine.run(item['source'], EngineContext('DOCUMENTARY_FACTS_V1'))
+            records.append(output)
+        result = {"experiment_id": plan['experiment_id'], "execution_plan_hash": key,
+                  "input_hash": binding['input_hash'], "state": "EXECUTED_DRY_RUN",
+                  "records": records, "evidence_class": "SYNTHETIC",
+                  "outcome_accessed": False, "economic_result": "NOT_OBSERVED"}
+        result['execution_receipt_hash'] = sha256_json(result)
+        write_immutable_json(Path(checkpoint_dir) / f'{key}.completed.json', result)
+        return result
 
 
 def summarize_reproducibility(plans: Iterable[Dict[str, Any]]) -> Dict[str, Any]:

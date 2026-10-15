@@ -66,6 +66,7 @@ def freeze_experiment_envelope(
         "hypothesis_generation": f"{candidate['hypothesis_id']}:{candidate['generation_id']}",
         "status": "FROZEN_READY_NO_OUTCOME" if can_freeze else "NOT_FROZEN_BY_IMPLEMENTABILITY",
         "protocol_hash": _hash(protocol_payload) if can_freeze else None,
+        "protocol_payload": protocol_payload if can_freeze else None,
         "dataset_provenance": protocol_payload["dataset_provenance"],
         "cost_model_version": protocol_payload["cost_model_version"],
         "code_version": protocol_payload["code_version"],

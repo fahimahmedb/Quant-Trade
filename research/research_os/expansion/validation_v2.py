@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from typing import Any, Dict, Iterable, List
+from research.research_os.scientific_store import sha256_json
+import math
 
 
 CRITICAL_CHECKS = {
@@ -13,6 +15,9 @@ CRITICAL_CHECKS = {
     "no_outcome_access",
     "trial_accounting_explicit",
     "multiplicity_declared",
+    "documentary_evidence_bound",
+    "executed_documentary_transform",
+    "implementability_passed",
 }
 
 
@@ -25,6 +30,7 @@ def validator_diagnostics_v2(
     dry_run_plan: Dict[str, Any],
     trial_record: Dict[str, Any],
     experiment_meta: Dict[str, Any],
+    executed_dry_run: Dict[str, Any] = None,
 ) -> Dict[str, Any]:
     candidate = engine_output["candidate"]
     sources = list(source_qualifications)
@@ -35,18 +41,25 @@ def validator_diagnostics_v2(
 
     add(
         "producer_independence",
-        bool(validation_v1.get("independent_from_producer"))
+        validation_v1.get("independent_from_producer") is True
+        and bool(validation_v1.get("validator"))
+        and validation_v1.get("producer_engine") == engine_output.get("engine_id")
         and validation_v1.get("producer_engine") != validation_v1.get("validator"),
         "Validator identity must differ from producing engine.",
     )
+    from .final_shape import _hash
+    protocol = envelope.get('protocol_payload')
+    protocol_valid = (isinstance(protocol, dict)
+                      and _hash(protocol) == envelope.get('protocol_hash')
+                      and protocol.get('candidate') == candidate)
     add(
         "protocol_frozen",
-        envelope.get("status") == "FROZEN_READY_NO_OUTCOME" and bool(envelope.get("protocol_hash")),
+        envelope.get("status") == "FROZEN_READY_NO_OUTCOME" and protocol_valid,
         "Protocol hash must exist before any outcome access.",
     )
     add(
         "source_pit",
-        bool(sources) and all(item.get("point_in_time_qualified") is True for item in sources),
+        bool(sources) and all(item.get("status") == "PASS" and item.get("point_in_time_qualified") is True for item in sources),
         "Every route must be explicitly point-in-time qualified.",
     )
     add(
@@ -64,7 +77,7 @@ def validator_diagnostics_v2(
     add(
         "reproducible_plan",
         dry_run_plan.get("status") == "READY_FOR_REPRODUCIBLE_DRY_RUN"
-        and bool(dry_run_plan.get("execution_plan_hash")),
+        and dry_run_plan.get("execution_plan_hash") == sha256_json(dry_run_plan.get('plan')),
         "Execution plan must be replayable before economic execution.",
     )
     add(
@@ -76,8 +89,12 @@ def validator_diagnostics_v2(
     )
     add(
         "trial_accounting_explicit",
-        trial_record.get("observed_attempt_count") is not None
-        and trial_record.get("effective_trials_status") in {"KNOWN", "UNKNOWN"},
+        type(trial_record.get("observed_attempt_count")) is int
+        and trial_record["observed_attempt_count"] >= 0
+        and (trial_record.get("effective_trials_status") == 'UNKNOWN' and trial_record.get('estimated_effective_trials') is None
+             or trial_record.get("effective_trials_status") == 'KNOWN' and type(trial_record.get('estimated_effective_trials')) in (int, float)
+             and math.isfinite(trial_record['estimated_effective_trials'])
+             and trial_record['estimated_effective_trials'] >= 0),
         "Observed attempts and effective trials must remain distinct.",
     )
     add(
@@ -95,6 +112,34 @@ def validator_diagnostics_v2(
         bool(candidate.get("decision_map")),
         "Candidate must carry a preregistered decision map.",
     )
+
+    add('implementability_passed', validation_v1.get('implementability_status') == 'PASS',
+        'Scientific readiness cannot override an implementability blocker.')
+    evidence = candidate.get('documentary_evidence')
+    bound, executed = True, True
+    if evidence is not None:
+        from types import SimpleNamespace
+        from research.research_os.engines.protocol import EngineContext
+        from .engine_dossiers_v1 import documentary_candidate
+        try:
+            source = {'documentary_packet': evidence['packet'], 'freeze_time': evidence['freeze_time']}
+            rebuilt = documentary_candidate(
+                SimpleNamespace(engine_id=engine_output['engine_id'], family=engine_output['engine_family']),
+                source, EngineContext('VALIDATOR-DOCUMENTARY'), candidate['hypothesis_id'],
+            )
+            bound = rebuilt == engine_output
+        except (ValueError, KeyError, TypeError):
+            bound = False
+        run = executed_dry_run or {}
+        receipt_payload = {k: v for k, v in run.items() if k != 'execution_receipt_hash'}
+        executed = (run.get('state') == 'EXECUTED_DRY_RUN'
+                    and run.get('execution_plan_hash') == dry_run_plan.get('execution_plan_hash')
+                    and run.get('input_hash') == dry_run_plan.get('plan', {}).get('dataset_manifest_hash')
+                    and run.get('execution_receipt_hash') == sha256_json(receipt_payload)
+                    and engine_output in run.get('records', [])
+                    and run.get('outcome_accessed') is False)
+    add('documentary_evidence_bound', bound, 'Typed documentary facts must reproduce the frozen candidate.')
+    add('executed_documentary_transform', executed, 'A documentary plan alone is not an executed dry-run.')
 
     failures: List[str] = sorted(name for name, record in checks.items() if record["status"] != "PASS")
     critical_failures = sorted(set(failures) & CRITICAL_CHECKS)

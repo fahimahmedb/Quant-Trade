@@ -3,10 +3,49 @@ from __future__ import annotations
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+import json
+import os
+import tempfile
 
 from research.research_os.legacy import LegacyKnowledgeBase
 from research.research_os.scientific_store import build_scientific_ledgers, sha256_json
 from .live_receipts import run_with_live_receipts
+
+
+def write_immutable_json(path: Path, payload: Dict[str, Any]) -> None:
+    """Publish complete content once. Concurrent identical writers are idempotent.
+
+    A hard link exposes only a fully fsynced file and refuses replacement. The
+    caller must use a filesystem supporting atomic hard links within a directory.
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    record = {"payload_hash": sha256_json(payload), "payload": deepcopy(payload)}
+    fd, temporary = tempfile.mkstemp(prefix=".immutable-", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w") as stream:
+            json.dump(record, stream, sort_keys=True, allow_nan=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        try:
+            os.link(temporary, path)
+        except FileExistsError:
+            if read_immutable_json(path) != payload:
+                raise ValueError("immutable checkpoint mutation rejected")
+        directory_fd = os.open(path.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+    finally:
+        os.unlink(temporary)
+
+
+def read_immutable_json(path: Path) -> Dict[str, Any]:
+    record = json.loads(Path(path).read_text())
+    if set(record) != {"payload_hash", "payload"} or record["payload_hash"] != sha256_json(record["payload"]):
+        raise ValueError("checkpoint hash mismatch")
+    return record["payload"]
 
 
 class ImmutableArtifactRegistry:
