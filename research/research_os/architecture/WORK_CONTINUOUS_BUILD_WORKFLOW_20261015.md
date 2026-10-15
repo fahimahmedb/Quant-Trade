@@ -18,7 +18,7 @@ No paid resources or credentials are authorized by this workflow.
 Readiness is not permission. Architecture PASS is not economic validation.
 
 ## Resume protocol
-1. Read fresh remote branch HEAD, applicable AGENTS.md, the closure checkpoint, this file and the latest lot receipt.
+1. Read fresh remote branch HEAD, applicable AGENTS.md, the closure checkpoint, this file, architecture/work_receipts/WORK_BUILD_STATE.json and the latest lot receipt. Resolve that state path relative to research/research_os/.
 2. Verify the recorded implementation baseline exists in ancestry. Preserve newer commits; never reset the branch to the predecessor.
 3. Inspect relevant code, existing tests and exact-head CI before editing. Reuse existing modules.
 4. Find the first admissible nonterminal lot below. Reconcile any interrupted lot before starting another.
@@ -33,7 +33,7 @@ Use existing CI definitions where possible; never cancel an active useful run me
 If the connector cannot trigger a required gate, record CI_NOT_RUN and the missing action; never substitute an old green run.
 
 ## Ordered backlog
-All lots below are PLANNED, not executed by this document.
+This table defines acceptance; current progress, dependencies and remaining READY tasks are recorded in architecture/work_receipts/WORK_BUILD_STATE.json. Do not infer completion from this table.
 
 | Lot | Existing subsystem | Concrete work and acceptance |
 | --- | --- | --- |
@@ -74,3 +74,4 @@ Do not create receipts that assert execution merely because this backlog exists.
 This file is a durable continuation protocol, not a scheduler, daemon or proof of an always-running Work session.
 Within an active Work execution, continue admissible lots without routine Owner prompts. If the session ends or the platform interrupts it, resume from GitHub receipts on the next execution.
 The existing five scheduled research workflows remain separate; this file does not repurpose or add a scheduled research worker.
+An optional, separate Build Plane relay is armed only when WORK_BUILD_STATE.json records its actual automation ID. Its status is not a guarantee of continuous execution; each scheduled pass must leave a real checkpoint or an exact blocker. Claim the build-state blob with optimistic locking, increment lease generation, set an expiry and renew before meaningful edits. Release the lease at handoff. Never edit a live lease owned by another run.

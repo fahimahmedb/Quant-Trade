@@ -1,0 +1,177 @@
+{
+  "schema_version": "work-build-continuation.v1",
+  "repository": "fahimahmedb/Quant-Trade",
+  "branch": "builder/research-os-aggressive-architecture-20261015",
+  "code_candidate_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+  "qualified_code_sha": null,
+  "qualification_status": "RESEARCH_OS_CI_PASS_GENERAL_GATE_PENDING",
+  "lease": {
+    "generation": 0,
+    "owner": null,
+    "expires_at": null
+  },
+  "automation": {
+    "id": null,
+    "status": "NOT_ARMED"
+  },
+  "completed_this_execution": [
+    "B01: primary Fundamental capture and factual-transform admission; Event primary adapter still pending",
+    "B02: data-conditioned Quant/Flows/Archaeology synthetic depth; primary rule adapters still pending",
+    "B03: executed dry-run, pinned inputs/code/environment, interruption recovery and immutable completion",
+    "B04: receipt-based validation, candidate/protocol binding, negative rights and explicit producer separation",
+    "B05: structural multi-candidate comparisons; UNKNOWN preserved, identity provenance",
+    "B06: persistent Forward snapshots, hash verification, generation aliases and forged-authority rejection",
+    "B07: synthetic and documentary build replay through canonical spine; no live ingress emission"
+  ],
+  "tasks": [
+    {
+      "id": "BUILD-EVENT-PRIMARY-001",
+      "lot": "B01",
+      "status": "READY",
+      "priority": 100,
+      "depends_on": [],
+      "scope": "Qualify one primary public event/announcement provider behind EventDocumentEngine. Capture numeric/document provenance, period/unit and actual availability; add event-specific disconfirmation and negative tests. Preserve the distinction between accounting/event facts, consensus surprise and market outcomes. Do not present a current capture as historical PIT."
+    },
+    {
+      "id": "BUILD-FLOW-PRIMARY-001",
+      "lot": "B02",
+      "status": "READY",
+      "priority": 90,
+      "depends_on": [],
+      "scope": "Qualify one official public rule/constraint input behind existing Quant/Institutional Flow or Archaeology interfaces. Identify forced actor, eligible instrument/universe, horizon and falsification. Legacy-screen before downstream work. Do not acquire prices/payoffs or retest closed families."
+    },
+    {
+      "id": "BUILD-DOCUMENTARY-CHALLENGE-001",
+      "lot": "B04",
+      "status": "READY",
+      "priority": 80,
+      "depends_on": [
+        "BUILD-EVENT-PRIMARY-001",
+        "BUILD-FLOW-PRIMARY-001"
+      ],
+      "scope": "Harden the existing Validator/Red Team against the actual documentary artifacts produced by preceding build tasks: inconsistent clocks, periods, units, revisions, provenance, missing disconfirmation, self-validation and claim inflation. Builder tests are not independent scientific validation."
+    },
+    {
+      "id": "BUILD-PORTFOLIO-DOCUMENTARY-001",
+      "lot": "B05",
+      "status": "READY",
+      "priority": 70,
+      "depends_on": [
+        "BUILD-EVENT-PRIMARY-001",
+        "BUILD-FLOW-PRIMARY-001"
+      ],
+      "scope": "Feed multiple actual documentary candidates into the existing economic identity/structural portfolio path with truthful source attribution and UNKNOWN for estimates not available. Preserve blockers. No empirical correlation, return acquisition, sizing, allocation or orders."
+    },
+    {
+      "id": "BUILD-QUALIFICATION-002",
+      "lot": "B08",
+      "status": "READY",
+      "priority": 60,
+      "depends_on": [
+        "BUILD-DOCUMENTARY-CHALLENGE-001",
+        "BUILD-PORTFOLIO-DOCUMENTARY-001"
+      ],
+      "scope": "Integrate completed admissible depth behind existing canonical stages, verify exact-head CI and replay/recovery, persist limitations and a reviewable candidate. Do not merge or activate production."
+    },
+    {
+      "id": "PROSPECTIVE-DECAY-ACTIVATION",
+      "lot": "B06",
+      "status": "BLOCKED_AUTHORITY",
+      "priority": 0,
+      "depends_on": [],
+      "scope": "Prospective observation and empirical decay remain inactive.",
+      "exact_reopen_condition": "A separately authorized exact prospective contract, then admissible future observations. This build task cannot grant that authority."
+    }
+  ],
+  "allowed_actions": [
+    "READ_PUBLIC_PRIMARY_DOCUMENTS",
+    "BUILD_OFFLINE_CODE",
+    "RUN_SYNTHETIC_TESTS",
+    "RUN_ACCOUNTING_FACT_TRANSFORMS",
+    "PERSIST_BUILD_CHECKPOINTS",
+    "VERIFY_EXACT_HEAD_CI"
+  ],
+  "forbidden_actions": [
+    "CHANGE_SIX_CANONICAL_CONTRACTS",
+    "ADD_TOP_LEVEL_ARCHITECTURE",
+    "MODIFY_PRODUCTION_BRANCH",
+    "MODIFY_FIVE_RESEARCH_AUTOMATIONS",
+    "DEPLOY_OR_MERGE_PRODUCTION",
+    "ACQUIRE_ECONOMIC_OUTCOMES",
+    "START_PROSPECTIVE_OBSERVATION",
+    "ALLOCATE_CAPITAL",
+    "PLACE_ORDERS",
+    "PAID_RESOURCES"
+  ],
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "ci": [
+    {
+      "id": 38781853010,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781853010"
+    },
+    {
+      "id": 38781852929,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852929"
+    },
+    {
+      "id": 38781852893,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852893"
+    },
+    {
+      "id": 38781852904,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852904"
+    },
+    {
+      "id": 38781852956,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852956"
+    },
+    {
+      "id": 38781853099,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781853099"
+    },
+    {
+      "id": 38781852900,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852900"
+    },
+    {
+      "id": 38781852937,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "971bd339f56c9683bd362fa85c38f17177de48f5",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38781852937"
+    }
+  ],
+  "qualification_next_action": "Check SEC P0 pre-t0 gate run 38781852893 on code candidate 971bd339f56c9683bd362fa85c38f17177de48f5; do not substitute an older run."
+}
