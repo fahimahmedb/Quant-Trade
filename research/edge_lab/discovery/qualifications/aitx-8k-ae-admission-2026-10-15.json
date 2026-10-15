@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T11:55:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before": "06e84d7db884519ad4f4992cc0f72a5438935b8e",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Artificial Intelligence Technology Solutions, Inc.",
+    "cik": "0001498148",
+    "form": "8-K",
+    "accession": "0001062993-26-005318",
+    "saved_feed_updated": "2026-10-14T06:01:26-04:00",
+    "sec_directory": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318",
+    "primary_issuer_release": "https://aitx.ai/press-releases/rad-adds-another-municipal-customer-with-seven-rosa-unit-order",
+    "accepted_timestamp_primary_verified_this_pass": false
+  },
+  "primary_observed_fact": "The saved SEC candidate is an 8-K for AITX. The SEC filing directory contains form8k.htm and exhibit99-1.htm for the accession. The issuer's same-day primary release states that its subsidiary RAD secured an order for seven ROSA security units from a new municipal customer. The issuer identifies AITX as OTCID:AITX. This is an operating-company customer/order announcement, not a corporate-action entitlement or liquidation event.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The candidate fails every frozen A-E and CEF-rights family gate before any market-price, NAV, distribution or payoff access. Exact EDGAR accepted time is not required to rank/admit an event that is substantively ineligible; the saved feed ordering is preserved and the next saved candidate may be reviewed.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: form is 8-K, not a commencement SC TO-I issuer tender, and no odd-lot proration priority is described.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional cash-in-lieu mechanism is described.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up mechanism is described.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: AITX is not presented as a SPAC redemption event.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: issuer is an operating company, not an ETF liquidation event.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: issuer is not a listed closed-end management investment company rights offering, and this saved filing also predates that protocol's 2026-10-15T11:15:00Z T0."
+  },
+  "outcome_exposure": {
+    "selected_market_price": false,
+    "nav": false,
+    "liquidation_distribution": false,
+    "tender_spread": false,
+    "future_return_or_pnl": false,
+    "economic_look_opened": false
+  },
+  "source_receipts": [
+    {
+      "source": "SEC filing directory",
+      "url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318",
+      "observed_fact": "Directory exists for accession 0001062993-26-005318 and lists form8k.htm plus exhibit99-1.htm; directory timestamp 2026-10-14 06:01:26."
+    },
+    {
+      "source": "issuer primary release",
+      "url": "https://aitx.ai/press-releases/rad-adds-another-municipal-customer-with-seven-rosa-unit-order",
+      "observed_fact": "October 14, 2026 release: RAD secured a seven-unit ROSA order from a municipal customer; issuer identified as OTCID:AITX."
+    }
+  ],
+  "next_action": "Continue the saved chronological queue with Calamos ETF Trust 497 accession 0001104659-26-115676 after preserving the AITX clearance. Review only documentary eligibility/clock/liquidation terms before any NAV/price/distribution payload. In parallel, the CEF-rights protocol may only admit definitive filings accepted strictly after 2026-10-15T11:15:00Z.",
+  "inference_ceiling": [
+    "No economic verdict",
+    "No market-direction inference from the AITX customer order",
+    "No claim that the A-E or CEF prospective universe is exhaustively cleared",
+    "No live or real-capital authorization"
+  ]
+}
