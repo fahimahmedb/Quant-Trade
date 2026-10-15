@@ -17,6 +17,7 @@ export const ACTIVITY = Object.freeze({
 });
 
 export const PROGRESS = Object.freeze({ KNOWN_TOTAL:'KNOWN_TOTAL', COMPLETED_COUNT_ONLY:'COMPLETED_COUNT_ONLY', UNKNOWN:'UNKNOWN' });
+export const SYSTEM_STATE = Object.freeze({ UNKNOWN:'UNKNOWN', WORKING:'WORKING', QUEUED:'QUEUED', WAITING:'WAITING', IDLE:'IDLE' });
 export const DESTINATIONS = Object.freeze(['KILL','PARK','PROMOTE']);
 export const ANIMATION_EVENTS = new Set([EVENT.WORK_STARTED,EVENT.ACTIVITY_CHANGED,EVENT.BLOCKED,EVENT.COMMIT,EVENT.HANDOFF,EVENT.RESULT,EVENT.DECISION,EVENT.ECONOMIC_LOOK_STARTED,EVENT.ECONOMIC_LOOK_FINISHED,EVENT.IDLE]);
 
@@ -33,6 +34,19 @@ export function normalizeProgress(value={mode:PROGRESS.UNKNOWN}) {
   }
   return {mode:PROGRESS.UNKNOWN};
 }
+export function normalizeSystem(value={}) {
+  const state=Object.values(SYSTEM_STATE).includes(value?.state)?value.state:SYSTEM_STATE.UNKNOWN;
+  const count=value=>Number.isInteger(value)&&value>=0?value:null;
+  const string=value=>typeof value==='string'&&value.trim()?value.trim():null;
+  return {
+    state,
+    readyCount:count(value?.readyCount),
+    claimedCount:count(value?.claimedCount),
+    nextTaskId:string(value?.nextTaskId),
+    nextLane:string(value?.nextLane),
+    source:string(value?.source),
+  };
+}
 export function formatProgress(progress) {
   const p=normalizeProgress(progress);
   if (p.mode===PROGRESS.KNOWN_TOTAL) return `${p.completed} / ${p.total}`;
@@ -48,5 +62,5 @@ export function normalizeEvent(input) {
   if (!input.id||!Number.isInteger(input.seq)||!input.kind||!input.at) throw new TypeError('event requires id, integer seq, kind and at');
   if (!Object.values(EVENT).includes(input.kind)) throw new TypeError(`unknown event kind: ${input.kind}`);
   if (input.destination&&!DESTINATIONS.includes(input.destination)) throw new TypeError(`invalid result destination: ${input.destination}`);
-  return {...input,stream:input.stream||'default',progress:input.progress?normalizeProgress(input.progress):undefined,evidence:Array.isArray(input.evidence)?input.evidence:[]};
+  return {...input,stream:input.stream||'default',progress:input.progress?normalizeProgress(input.progress):undefined,system:input.system?normalizeSystem(input.system):undefined,evidence:Array.isArray(input.evidence)?input.evidence:[]};
 }
