@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ACTIVITY,EVENT,PROGRESS} from '../core/model.js';
+import {ACTIVITY,EVENT,PROGRESS,SYSTEM_STATE} from '../core/model.js';
 import {createInitialState,reduceScene} from '../core/state-machine.js';
 import {NATIVE_BINDING,mapNativeSiteFrame,mapNativeSnapshot,mapNativeWorkerEvent} from '../adapters/platform-native.js';
 import {subscribeNativeSiteEvents} from '../adapters/platform-native-sse.js';
@@ -29,6 +29,7 @@ test('real probe-shaped ACTION_STARTED maps without invented identity/progress/e
   assert.equal(mapped.step,'authenticated worker event accepted and published');
   assert.deepEqual(mapped.progress,{mode:PROGRESS.UNKNOWN});
   assert.equal(mapped.activity,ACTIVITY.NONE);
+  assert.equal(mapped.system.state,SYSTEM_STATE.WORKING);
   assert.ok(!JSON.stringify(mapped).toLowerCase().includes('owner'));
   assert.ok(!JSON.stringify(mapped).toLowerCase().includes('codex'));
 });
@@ -70,6 +71,30 @@ test('unsupported native type is rejected rather than visually invented',()=>{
   assert.equal(mapNativeWorkerEvent(native({event_type:'ECONOMIC_LOOK_STARTED'})),null);
 });
 
+test('completed worker with explicit queued result leaves worker idle but system queued',()=>{
+  const completed=mapNativeWorkerEvent(native({event_id:'done-queued',event_type:'ACTION_COMPLETED',event_seq:2,payload:{task_id:'FRONTIER-EVENT-001',result:'FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION',candidate_id:'EVENT-X'}}));
+  assert.equal(completed.kind,EVENT.IDLE);
+  assert.equal(completed.system.state,SYSTEM_STATE.QUEUED);
+  let state=reduceScene(createInitialState(),{id:'c',seq:1,stream:'transport',at:'2026-10-14T09:59:59Z',kind:EVENT.CONNECTED});
+  state=reduceScene(state,completed);
+  assert.equal(state.agents[completed.workerId].state,'IDLE');
+  assert.equal(state.system.state,SYSTEM_STATE.QUEUED);
+});
+
+test('plain ACTION_COMPLETED never proves global idle',()=>{
+  const completed=mapNativeWorkerEvent(native({event_id:'done-unknown',event_type:'ACTION_COMPLETED',event_seq:2,payload:{task_id:'T-1',result:'COMPLETE'}}));
+  assert.equal(completed.system.state,SYSTEM_STATE.UNKNOWN);
+});
+
+test('snapshot queue summary is the only path that can prove global IDLE',()=>{
+  const queued=mapNativeSnapshot({generated_at:'2026-10-14T10:01:00Z',events:[],queue_summary:{ready_count:1,claimed_count:0,next_task_id:'VALIDATE-X',next_lane:'independent_challenge'}});
+  assert.equal(queued.system.state,SYSTEM_STATE.QUEUED);
+  assert.equal(queued.system.readyCount,1);
+  assert.equal(queued.system.nextTaskId,'VALIDATE-X');
+  const idle=mapNativeSnapshot({generated_at:'2026-10-14T10:02:00Z',events:[],queue_summary:{ready_count:0,claimed_count:0}});
+  assert.equal(idle.system.state,SYSTEM_STATE.IDLE);
+});
+
 test('snapshot reconstruction is factual and non-animating until a later business event',()=>{
   const snapshot=mapNativeSnapshot({generated_at:'2026-10-14T10:01:00Z',cursor:'platform-probe-event-0422a0b3',events:[native()]});
   let state=reduceScene(createInitialState(),{id:'c',seq:1,stream:'transport',at:'2026-10-14T09:59:59Z',kind:EVENT.CONNECTED});
@@ -78,6 +103,7 @@ test('snapshot reconstruction is factual and non-animating until a later busines
   assert.equal(worker.state,'WORKING');
   assert.equal(worker.animationRunning,false);
   assert.deepEqual(worker.progress,{mode:PROGRESS.UNKNOWN});
+  assert.equal(state.system.state,SYSTEM_STATE.WORKING);
   assert.equal(state.transport.resumeRequiresBusinessEvent,true);
 });
 
@@ -105,7 +131,8 @@ test('native Site named frames route through one canonical mapper',()=>{
 });
 
 test('binding contract documents the forbidden inferences',()=>{
-  for(const key of ['codex-owner-identity','progress','decision','economic-look','economic-result'])assert.ok(NATIVE_BINDING.forbiddenInferences.includes(key));
+  for(const key of ['codex-owner-identity','progress','decision','economic-look','economic-result','global-idle-from-worker-completion'])assert.ok(NATIVE_BINDING.forbiddenInferences.includes(key));
+  assert.equal(NATIVE_BINDING.idleRequiresGlobalQueueProof,true);
 });
 
 test('SSE subscription forwards only real open/named-frame/error observations and closes cleanly',()=>{
