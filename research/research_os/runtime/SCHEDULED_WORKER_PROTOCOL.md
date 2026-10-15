@@ -60,7 +60,7 @@ Independent challenge must occur in the `independent_challenge` lane on a later 
    - `lease.owner = <stable workflow worker id>`
    - `lease.claimed_at = <current timestamp>`
    - `lease.expires_at = <current timestamp + <= 55 minutes>`
-8. Persist `ACTION_STARTED` using the proven native worker-event fields.
+8. Persist `ACTION_STARTED` using the proven native worker-event fields. Its payload SHOULD include `queue_state = "WORKING"` when the worker has durably claimed the task.
 9. Execute up to five authorized stages for this same lineage. Before every stage:
    - re-read fresh relevant GitHub state;
    - verify the stage remains in the same lineage;
@@ -69,7 +69,7 @@ Independent challenge must occur in the `independent_challenge` lane on a later 
 10. Persist durable output after every meaningful stage. Never rely on chat memory as the only record.
 11. A handoff task may be created only when the currently claimed task explicitly authorizes that exact downstream handoff. The new task must preserve lineage identity and identify the destination lane/capability.
 12. Persist exactly one receipt for the wake under `research/research_os/receipts/<task_id>/` summarizing all stages actually executed.
-13. Persist `ACTION_COMPLETED`, or `SESSION_ENDED` if blocked/failed.
+13. Immediately before the terminal worker event, perform a fresh queue observation sufficient to classify the state under **Queue observability semantics** below. Persist `ACTION_COMPLETED`, or `SESSION_ENDED` if blocked/failed, with explicit queue observability fields whenever they are proved.
 14. Re-fetch the claimed task and set it to `COMPLETE`, `BLOCKED` or `FAILED`, preserving lease generation and linking all durable artifacts.
 15. Stop. Do not claim another lineage in the same wake.
 
@@ -96,7 +96,7 @@ Then the steward must:
 5. Include a stable `derivation.frontier_id`, sequence and `derivation_key` in the new task.
 6. Require Legacy screening before any CandidateHypothesis freeze.
 7. Preserve all four hard authority flags as `false`.
-8. Persist the derived task plus a bounded queue-refill receipt/event identifying the frontier and derivation key.
+8. Persist the derived task plus a bounded queue-refill receipt/event identifying the frontier and derivation key. The refill completion event MUST report `queue_state = "QUEUED"`, `ready_count >= 1`, and the derived `next_task_id` / `next_lane` when those facts are durably known.
 9. Stop immediately. The steward MUST NOT execute the newly derived producer task in the refill wake.
 
 The steward must not:
@@ -166,6 +166,44 @@ generation
 emitted_at
 payload
 ```
+
+### Queue observability semantics
+
+Worker lifecycle state and Research OS global queue state are separate facts. A worker becoming inactive MUST NOT by itself imply that the Research OS is `IDLE`.
+
+The optional event payload fields are:
+
+```text
+queue_state = WORKING | QUEUED | WAITING | IDLE | UNKNOWN
+ready_count = non-negative integer when proved
+claimed_count = non-negative integer when proved
+next_task_id = durable next task id when known
+next_lane = destination workflow lane when known
+```
+
+Use them conservatively:
+
+- `WORKING`: the emitting worker has a durably claimed task and is executing it.
+- `QUEUED`: at least one durable `READY` task is known. When the current wake created an authorized handoff, the terminal event SHOULD include that handoff's `next_task_id` and `next_lane`.
+- `WAITING`: at least one durable `CLAIMED` task exists, while no stronger `WORKING` fact is being emitted by this event.
+- `IDLE`: allowed **only after a fresh GLOBAL queue scan proves `READY = 0` and `CLAIMED = 0`**. A worker completion, session end, missing task for the current lane, or absence of recent animation is never sufficient evidence for global `IDLE`.
+- `UNKNOWN`: use when the worker cannot prove the global queue state. `UNKNOWN` is preferred to a false `IDLE`.
+
+For an `ACTION_COMPLETED` that creates a durable downstream handoff, the preferred payload is:
+
+```json
+{
+  "result": "..._QUEUED_FOR_...",
+  "queue_state": "QUEUED",
+  "ready_count": 1,
+  "next_task_id": "<durable task id>",
+  "next_lane": "<destination lane>"
+}
+```
+
+`ready_count` MUST reflect the observed global count if a global scan was performed; do not hard-code `1` when other READY work exists. If exact counts are not established, omit them while still reporting `QUEUED` when the created handoff itself proves at least one READY task.
+
+A future native Site snapshot may expose an explicit `queue_summary` with `ready_count`, `claimed_count`, `next_task_id` and `next_lane`. When present, that queue summary is authoritative for the global system-state display. The Live Lab must keep individual worker state (`WORKING` / inactive) separate from this global queue state.
 
 ## Current hard boundaries
 
