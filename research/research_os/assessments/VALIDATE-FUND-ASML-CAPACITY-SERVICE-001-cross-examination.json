@@ -1,0 +1,17 @@
+{
+  "assessment_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-cross-examination",
+  "task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
+  "hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001",
+  "generation_id":"G1",
+  "stage":"cross_examination",
+  "questions":[
+    {"issue":"Demand visibility versus enforceable conversion","finding":"Management demand forecasts and interest in 2029/2030 orders support scarcity visibility, but do not prove conversion into recognized revenue. Existing risk disclosures explicitly preserve cancellation, delay, export and customer-capex uncertainty.","status":"OPEN_RISK"},
+    {"issue":"Installed Base Management durability","finding":"Q3 IBM sales of EUR3.289bn are material and above guidance, while FY2025 IBM sales were EUR8.193bn. This supports economic relevance but one above-guidance quarter cannot establish a durable growth rate or margin contribution.","status":"SUPPORTED_WITH_NORMALIZATION_REQUIRED"},
+    {"issue":"Margin normalization","finding":"Q3 2026 gross margin of 57.5% and FY2026 guidance around 56% are materially above FY2025 gross margin of 52.8%. The frozen thesis already notes IBM upside in Q3; therefore 57.5% must not be treated as normalized sustainable margin without additional cost/mix evidence.","status":"CLAIM_RESTRICTION_REQUIRED"},
+    {"issue":"Concentration and export controls","finding":"2025 disclosures show four customers represented 61.2% of sales and China/Taiwan/South Korea each represented large sales shares. Export controls can change shipment eligibility and geographic mix. Scarcity at aggregate level therefore does not imply all backlog/demand is equally convertible.","status":"MATERIAL_RISK"},
+    {"issue":"Investment claim","finding":"No market valuation or subsequent return is authorized or needed for business-mechanism validation. A correct business mechanism cannot support an undervaluation or alpha claim under current authority.","status":"BLOCK_CLAIM_LEVEL"}
+  ],
+  "cross_examination_result":"MECHANISM_SURVIVES_BUT_STRONG_FORM_DURABLE_EARNINGS_AND_SECURITY_CLAIMS_DO_NOT",
+  "frozen_generation_mutated":false,
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}
+}
