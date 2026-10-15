@@ -1,0 +1,77 @@
+name: Research OS wave3 engine depth CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/**'
+      - '.github/workflows/research-os-wave3-engine-depth-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  wave3-engine-depth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned legacy ledger
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+      - name: Run wave3 engine-depth tests
+        run: |
+          python -m unittest research.research_os.tests.test_wave3_engine_depth -v
+      - name: Exact-head wave3 assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.expansion.wave3_engine_depth import build_wave3_engine_depth
+
+          base = Path('research/research_os')
+          base_fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          wave2_fixture = json.loads((base / 'simulations' / 'wave2_hardening_fixture.json').read_text())
+          wave3_fixture = json.loads((base / 'simulations' / 'wave3_engine_depth_fixture.json').read_text())
+          result = build_wave3_engine_depth(
+              base_fixture,
+              wave2_fixture,
+              wave3_fixture,
+              legacy_ledger_path=base / 'legacy' / 'LEGACY_RESEARCH_LEDGER.imported.json',
+          )
+          assert result['wave3_status'] == 'PASS'
+          assert result['wave2_status'] == 'PASS'
+          assert result['unsafe_access_detected'] is False
+          assert result['candidate_integrity']['unchanged'] is True
+          assert result['engine_dossiers']['record_count'] == 4
+          assert result['engine_dossiers']['pass_count'] == 4
+          assert result['engine_dossiers']['block_count'] == 0
+          assert result['engine_dossiers']['economic_results_observed'] == 0
+          assert result['adapter_registry']['entry_count'] == 5
+          assert result['adapter_registry']['activated_count'] == 0
+          assert result['adapter_registry']['network_enabled_count'] == 0
+          assert result['adapter_registry']['outcome_authorized_count'] == 0
+          assert all(x['status'] == 'PASS' for x in result['validated_adapters'].values())
+          assert all(x['status'] == 'READY_DESIGN_ONLY' for x in result['adapter_bindings'].values())
+          assert result['engine_states']['SYN-FLOW-001']['dossier'] == 'PASS'
+          assert result['engine_states']['SYN-FLOW-001']['wave2_dry_run'] == 'BLOCK'
+          assert result['engine_states']['SYN-FLOW-001']['wave2_validator'] == 'BLOCK'
+          assert result['real_source_activation_authorized'] is False
+          assert result['network_access_authorized'] is False
+          assert result['economic_experiment_authorized'] is False
+          assert result['prospective_observation_authorized'] is False
+          assert result['real_capital_authorized'] is False
+          assert result['live_trading_authorized'] is False
+          print('RESEARCH_OS_WAVE3_ENGINE_DEPTH=PASS')
+          PY
