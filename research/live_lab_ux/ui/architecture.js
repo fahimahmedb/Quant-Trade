@@ -27,7 +27,9 @@ export function box(p,w,h,d,m,x=0,y=0,z=0,r=.035){
 }
 export function cylinder(p,rt,rb,h,m,x=0,y=0,z=0,n=48){return mesh(p,geo(`c:${rt}:${rb}:${h}:${n}`,()=>new T.CylinderGeometry(rt,rb,h,n)),m,x,y,z);}
 function ring(p,r,t,m,x,y,z){const o=mesh(p,geo(`ring:${r}:${t}`,()=>new T.TorusGeometry(r,t,8,96)),m,x,y,z);o.rotation.x=Math.PI/2;return o;}
-function arc(p,inner,outer,height,start,length,m,y=0){const o=mesh(p,new T.CylinderGeometry(outer,outer,height,96,1,true,start,length),m,0,y+height/2,0);o.material.side=T.DoubleSide;const floor=mesh(p,new T.RingGeometry(inner,outer,96,1,start,length),m,0,y,0);floor.rotation.x=-Math.PI/2;return o;}
+function arc(p,inner,outer,height,start,length,m,y=0){
+ const shape=new T.Shape();const pts=[];for(let i=0;i<=96;i++){const a=start+length*i/96;pts.push(new T.Vector2(Math.sin(a)*outer,-Math.cos(a)*outer));}for(let i=96;i>=0;i--){const a=start+length*i/96;pts.push(new T.Vector2(Math.sin(a)*inner,-Math.cos(a)*inner));}shape.setFromPoints(pts);const g=new T.ExtrudeGeometry(shape,{depth:height,bevelEnabled:false});g.rotateX(-Math.PI/2);return mesh(p,g,m,0,y,0);
+}
 function makeTexture(draw,w=1024,h=512){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;return t;}
 function textPanel(parent,text,sub,w,h,x,y,z){const texture=makeTexture((c,W,H)=>{c.fillStyle='#152d40';c.fillRect(0,0,W,H);c.fillStyle='#c6b691';c.fillRect(44,H*.28,32,3);c.font='500 39px sans-serif';c.fillText(text,44,H*.51);c.fillStyle='#8295a2';c.font='22px monospace';c.fillText(sub,44,H*.76);});const m=new T.MeshBasicMaterial({map:texture});const panel=mesh(parent,new T.PlaneGeometry(w,h),m,x,y,z);panel.castShadow=false;return panel;}
 function neutralScreen(parent,x,y,z,w=1.12,h=.69,angle=0){const g=new T.Group();g.position.set(x,y,z);g.rotation.y=angle;parent.add(g);box(g,w+.075,h+.065,.055,mats.steel,0,0,0,.025);const t=geo('screen',()=>makeTexture((c,W,H)=>{c.fillStyle='#0b1c2a';c.fillRect(0,0,W,H);c.strokeStyle='#405769';c.lineWidth=2;for(let i=0;i<5;i++){c.strokeRect(48+i*130,100+i%2*40,100,225);}c.strokeStyle='#a08961';c.beginPath();c.arc(W*.75,H*.47,72,0,Math.PI*2);c.stroke();c.font='23px monospace';c.fillStyle='#b0bbc0';c.fillText('STATION / AVAILABLE',42,48);c.font='18px monospace';c.fillStyle='#708a98';c.fillText('SYSTEM GEOMETRY · NON-DATA',42,H-34);}));const s=mesh(g,new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:t}),0,0,.031);s.castShadow=false;return g;}
@@ -37,6 +39,12 @@ function equipment(parent,type){if(type==='library'||type==='archive'){archive(p
  if(type==='racks'){for(let j=0;j<3;j++){box(parent,.76,2.3,.7,mats.blue,-1.1+j*.95,1.15,-1.3);for(let k=0;k<8;k++){box(parent,.66,.19,.025,mats.steel,-1.1+j*.95,.25+k*.25,-.93);box(parent,.025,.023,.035,k%3===0?mats.light:mats.dim,-.85+j*.95,.25+k*.25,-.90);}}}
  if(type==='panels'||type==='compare'){for(let j=0;j<3;j++){const p=new T.Group();p.position.set((j-1)*1.26,1.7,-1.3);p.rotation.y=(1-j)*.12;parent.add(p);neutralScreen(p,0,0,0,1.14,1.2);cylinder(p,.035,.035,1.1,mats.steel,0,-1,0);}}
  if(type==='instrument'){box(parent,1.05,.9,.8,mats.stone,1.75,.45,-.8);cylinder(parent,.3,.39,.35,mats.steel,1.75,1.05,-.8);cylinder(parent,.23,.23,.62,mats.glass,1.75,1.5,-.8);ring(parent,.3,.025,mats.light,1.75,1.25,-.8);box(parent,.8,.06,.65,mats.paper,-1.3,1.02,.1);}
+ if(type==='compare'){
+ for(const x of [-1.55,1.55]){box(parent,.55,1.2,.7,mats.stone,x,.6,.2);box(parent,.45,.04,.59,mats.paper,x,1.24,.2);}
+ }
+ if(type==='panels'){
+ const frame=new T.Group();frame.position.set(-1.7,.2,.15);parent.add(frame);cylinder(frame,.31,.39,.9,mats.steel,0,.45,0);cylinder(frame,.27,.27,.58,mats.glass,0,1.16,0);ring(frame,.3,.018,mats.brass,0,1.44,0);
+ }
  if(type==='table'){const t=cylinder(parent,1.45,1.45,.14,mats.wood,0,1.03,-.5);t.scale.z=.7;cylinder(parent,.52,.65,.85,mats.blue,0,.5,-.5);ring(parent,1.12,.012,mats.dim,0,1.11,-.5);}
 }
 export function workstation(parent){
@@ -52,16 +60,29 @@ export function workstation(parent){
  for(let i=0;i<2;i++)box(parent,.035,.35,.035,mats.steel,i? .29:-.29,.68,1.62);
 }
 export function buildArchitecture(scene){
- Object.assign(mats,{blue:mat('#263c50',.5,.45),steel:mat('#687d89',.3,.78),stone:mat('#394650',.94,.06),floor:mat('#58636a',.79,.14),wood:mat('#615146',.82,.06),fabric:mat('#596775',.98,0),paper:mat('#c2bdb0',.9,0),glass:mat('#74939d',.19,.38,{transparent:true,opacity:.19,depthWrite:false,side:T.DoubleSide}),light:mat('#e8b875',.4,.3,{emissive:'#ffc27c',emissiveIntensity:2.1}),dim:mat('#879da6',.4,.3,{emissive:'#58798a',emissiveIntensity:.6})});
+ Object.assign(mats,{blue:mat('#19334d',.42,.5),steel:mat('#687d89',.3,.78),stone:mat('#263641',.93,.05),floor:mat('#2b414e',.63,.24),wood:mat('#825e42',.68,.09),fabric:mat('#70858d',.98,0),paper:mat('#c2bdb0',.9,0),glass:mat('#74939d',.19,.38,{transparent:true,opacity:.19,depthWrite:false,side:T.DoubleSide}),light:mat('#c9883d',.4,.3,{emissive:'#ff9f31',emissiveIntensity:1.4}),brass:mat('#a77a41',.27,.78),dim:mat('#879da6',.4,.3,{emissive:'#58798a',emissiveIntensity:.6})});
+ // Deterministic architectural texture: mineral grain, expansion joints and
+ // brushed timber. Texture motion has no business meaning.
+ const mineral=makeTexture((c,W,H)=>{let seed=761;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};c.fillStyle='#344550';c.fillRect(0,0,W,H);for(let i=0;i<40000;i++){const g=40+rand()*60;c.fillStyle=`rgba(${g},${g+10},${g+15},.12)`;c.fillRect(rand()*W,rand()*H,1+rand()*3,1);}c.strokeStyle='#1f3039';c.lineWidth=2;for(let i=0;i<=W;i+=128){c.beginPath();c.moveTo(i,0);c.lineTo(i,H);c.stroke();}for(let j=0;j<=H;j+=128){c.beginPath();c.moveTo(0,j);c.lineTo(W,j);c.stroke();}},1024,1024);mineral.wrapS=mineral.wrapT=T.RepeatWrapping;mineral.repeat.set(3,3);mats.floor.map=mineral;mats.floor.bumpMap=mineral;mats.floor.bumpScale=.035;
+ const timber=makeTexture((c,W,H)=>{c.fillStyle='#765037';c.fillRect(0,0,W,H);for(let i=0;i<H;i+=3){c.strokeStyle=`rgba(30,18,9,${.04+(i%11)*.007})`;c.beginPath();c.moveTo(0,i);c.bezierCurveTo(W*.2,i+4,W*.7,i-3,W,i);c.stroke();}},512,512);mats.wood.map=timber;
  const root=new T.Group();scene.add(root);
  const floor=cylinder(root,18.8,19,.65,mats.blue,0,-.35,0,128);cylinder(root,18.5,18.5,.13,mats.floor,0,.025,0,128);ring(root,18.5,.035,mats.steel,0,.1,0);ring(root,18.78,.026,mats.light,0,-.17,0);
  // Quiet mineral circulation ring, inset brass guidance and radial expansion joints.
  cylinder(root,7.9,7.9,.13,mats.stone,0,.12,0,128);ring(root,7.87,.018,mats.light,0,.2,0);ring(root,5.3,.018,mats.steel,0,.201,0);
  for(let i=0;i<40;i++){const angle=i*Math.PI/20;const line=box(root,.016,.008,2.1,mats.steel,Math.sin(angle)*6.55,.204,Math.cos(angle)*6.55,0);line.rotation.y=angle;}
+ // Perforated facade ribs and arched ceiling trusses are physical structure.
+ for(const side of [-1,1]){
+ const path=new T.CatmullRomCurve3([new T.Vector3(side*16,.8,-4),new T.Vector3(side*15.2,6.9,-5),new T.Vector3(side*11.8,8.2,-6),new T.Vector3(side*6.5,8.8,-7.5)]);
+ mesh(root,new T.TubeGeometry(path,32,.13,8,false),mats.blue);
+ const inner=new T.CatmullRomCurve3([new T.Vector3(side*15.8,.8,-4),new T.Vector3(side*15,6.7,-5),new T.Vector3(side*11.6,8,-6),new T.Vector3(side*6.3,8.6,-7.5)]);
+ mesh(root,new T.TubeGeometry(inner,32,.022,6,false),mats.light);
+ }
+ // Physical routing conduits disappear beneath the research terraces.
+ for(let i=0;i<8;i++){const a=i*Math.PI/4,r=12.5;const strip=box(root,.025,.014,4,mats.brass,Math.sin(a)*r,.115,Math.cos(a)*r,0);strip.rotation.y=a;}
  // Raised horseshoe terrace and layered curved facade. The front is an open cutaway.
  const shape=new T.Shape();shape.absarc(0,0,17.9,0,Math.PI,false);shape.absarc(0,0,9.7,Math.PI,0,true);const slab=new T.ExtrudeGeometry(shape,{depth:.85,bevelEnabled:false,curveSegments:96});slab.rotateX(-Math.PI/2);mesh(root,slab,mats.stone,0,.15,0);
- for(let i=0;i<30;i++){const a=Math.PI*.5+i*Math.PI/29,rr=17.7,x=Math.sin(a)*rr,z=Math.cos(a)*rr;const bay=new T.Group();bay.position.set(x,0,z);bay.rotation.y=a;root.add(bay);box(bay,1.65,5.3,.3,mats.blue,0,3.3,0);box(bay,1.45,3.6,.09,mats.glass,0,3.6,.18);box(bay,.055,5.2,.09,mats.steel,-.81,3.3,.22);if(i%3===0)box(bay,.035,3.3,.035,mats.light,-.72,3.6,.28);}
- arc(root,17.15,18.2,.32,Math.PI/2,Math.PI,mats.blue,5.95);arc(root,17.14,17.3,.035,Math.PI/2,Math.PI,mats.light,5.93);
+ for(let i=0;i<30;i++){const a=Math.PI*.5+i*Math.PI/29,rr=17.7,x=Math.sin(a)*rr,z=Math.cos(a)*rr;const bay=new T.Group();bay.position.set(x,0,z);bay.rotation.y=a;root.add(bay);box(bay,1.65,7.1,.3,mats.blue,0,4.2,0);box(bay,1.45,4.9,.09,mats.glass,0,4.1,.18);box(bay,.055,7.1,.09,mats.steel,-.81,4.2,.22);if(i%3===0)box(bay,.035,3.3,.035,mats.light,-.72,3.6,.28);}
+ arc(root,17.15,18.2,.32,Math.PI/2,Math.PI,mats.blue,7.75);arc(root,17.14,17.3,.035,Math.PI/2,Math.PI,mats.light,7.72);
  // Architectural buttresses and overhead bridges draw sightlines to the atrium.
  for(const sign of [-1,1]){for(const z of [-9,0]){box(root,.38,5.9,.48,mats.steel,sign*15.5,3,z);const beam=box(root,7,.3,.5,mats.blue,sign*12.2,5.8,z);beam.rotation.z=sign*.055;box(root,6.8,.035,.08,mats.light,sign*12.2,5.65,z+.24);}
  for(let i=0;i<6;i++){box(root,3.6,.14,.4,mats.stone,sign*8.5,.21+i*.14,-6.7-i*.43);box(root,3.6,.023,.035,mats.light,sign*8.5,.29+i*.14,-6.51-i*.43);}}
@@ -70,26 +91,41 @@ export function buildArchitecture(scene){
  for(let i=0;i<15;i++){box(root,1.4,.16,.35,mats.steel,-8.3,1.07+i*.19,-10.5-i*.3);}
  for(const x of [-6,0,6])box(root,.18,3.8,.18,mats.steel,x,2,-15.2);
  // Roof blades imply a building without obscuring the diorama.
- for(let i=0;i<7;i++){const x=(i-3)*2.1;box(root,1.6,.15,3,mats.blue,x,6.45,-15.1);box(root,.025,.025,2.9,mats.dim,x-.65,6.36,-15.1);}
+ for(let i=0;i<7;i++){const x=(i-3)*2.1;box(root,1.6,.15,3,mats.blue,x,7.95,-15.1);box(root,.025,.025,2.9,mats.dim,x-.65,7.86,-15.1);}
  for(const zone of ZONES){const g=new T.Group();g.position.set(zone.x,zone.y,zone.z);g.rotation.y=zone.angle;root.add(g);box(g,4.75,.18,4.3,zone.type==='library'?mats.wood:mats.blue,0,-.14,0,.38);box(g,4.1,.025,.035,mats.light,0,-.035,2.08);equipment(g,zone.type);if(zone.type!=='table')workstation(g);
- const sign=textPanel(g,zone.name,zone.sub,3.6,.84,0,2.98,-1.65);box(g,3.72,.96,.075,mats.steel,0,2.98,-1.7,.04);
+ const sign=textPanel(g,zone.name,zone.sub,3.6,.57,0,2.72,-1.65);box(g,3.72,.67,.075,mats.blue,0,2.72,-1.7,.04);
  // Low side partition in translucent smoked glass.
  box(g,.045,1.1,2.4,mats.glass,-2.22,.55,-.25);box(g,.04,.035,2.4,mats.steel,-2.22,1.12,-.25);
  }
+ // Warm niches, overhead task luminaires, radial access bridges, and dark
+ // mineral service channels break the uniform tabletop appearance.
+ for(const z of ZONES){const g=new T.Group();g.position.set(z.x,z.y,z.z);g.rotation.y=z.angle;root.add(g);
+ box(g,3.2,.10,.28,mats.blue,0,3.5,-.25,.1);box(g,3,.018,.18,mats.light,0,3.44,-.25);for(const x of [-1.35,1.35])box(g,.018,2.1,.018,mats.steel,x,4.6,-.25);
+ for(let i=0;i<7;i++)box(g,.035,.11,3.6,mats.brass,-2.12+i*.08,-.22,0,0);
+ const l=new T.PointLight('#ffbc72',48,6,2);l.position.set(0,2.65,.1);g.add(l);
+ }
+ // Two bridge-like access spines are useful circulation, with lit handrails.
+ for(const side of [-1,1]){box(root,1.6,.17,4.3,mats.wood,side*4.5,.32,-7.5,.1);box(root,.045,.045,4.2,mats.brass,side*4.5-.8,1.05,-7.5);for(let i=0;i<5;i++)box(root,.025,.75,.025,mats.steel,side*4.5-.8,.67,-9.3+i*.9);}
+ // Research alcove: curved projection backing, document tables and rolling carts.
+ for(const side of [-1,1]){const niche=new T.Group();niche.position.set(side*13,1.05,-9);niche.rotation.y=side*-.6;root.add(niche);box(niche,1.65,.12,.65,mats.wood,0,.85,0);for(let i=0;i<4;i++)box(niche,.34,.025,.48,mats.paper,-.6+i*.4,.94,0);for(let i=0;i<4;i++)cylinder(niche,.045,.045,.09,mats.blue,-.7+(i%2)*1.4,.18,-.22+Math.floor(i/2)*.44,12);}
+ // Atrium instrument consoles sit outside a clear, narrower walking ring.
+ for(let i=0;i<3;i++){const a=i*Math.PI*2/3+.5,g=new T.Group();g.position.set(Math.sin(a)*4.4,.22,Math.cos(a)*4.4);g.rotation.y=a;root.add(g);box(g,.75,.8,.47,mats.blue,0,.4,0);const screen=neutralScreen(g,0,.94,.08,.64,.36);screen.rotation.x=-.32;box(g,.65,.025,.025,mats.light,0,.79,.25);}
+ // Recessed floor light wells and physical vents define the quiet area.
+ for(let i=0;i<12;i++){const a=i*Math.PI/6;const g=new T.Group();g.position.set(Math.sin(a)*16,.14,Math.cos(a)*16);g.rotation.y=a;root.add(g);box(g,1.1,.035,.3,mats.blue,0,0,0);for(let j=0;j<9;j++)box(g,.025,.012,.26,mats.steel,-.45+j*.11,.023,0,0);}
  // Central containment column: mineral podium, six load-bearing fins, glass chamber,
  // stacked experimental cartridge and secondary containment rings.
  const core=new T.Group();root.add(core);cylinder(core,2.45,2.7,.28,mats.stone,0,.3,0,96);cylinder(core,2.05,2.3,.32,mats.blue,0,.6,0,96);ring(core,2.07,.025,mats.light,0,.77,0);
  cylinder(core,1.3,1.65,.42,mats.steel,0,.95,0);cylinder(core,1.25,1.25,4.55,mats.glass,0,3.35,0,64);
- const energyMaterial=mat('#bd9b6e',.4,.6,{emissive:'#c78a3e',emissiveIntensity:.13});const cartridge=new T.Group();core.add(cartridge);
+ const energyMaterial=mat('#bd9b6e',.4,.6,{emissive:'#c78a3e',emissiveIntensity:.3});const cartridge=new T.Group();core.add(cartridge);
  cylinder(cartridge,.42,.55,3.7,energyMaterial,0,3.25,0);for(let i=0;i<12;i++){cylinder(cartridge,.63,.63,.09,mats.steel,0,1.55+i*.3,0);ring(cartridge,.48,.014,energyMaterial,0,1.7+i*.3,0);}
- for(let i=0;i<6;i++){const a=i*Math.PI/3,x=Math.sin(a)*1.52,z=Math.cos(a)*1.52;const fin=box(core,.15,4.8,.32,mats.steel,x,3.24,z);fin.rotation.y=a;box(core,.025,4.05,.025,mats.dim,x*1.02,3.24,z*1.02);}
+ for(let i=0;i<6;i++){const a=i*Math.PI/3,x=Math.sin(a)*1.52,z=Math.cos(a)*1.52;const curve=new T.CatmullRomCurve3([new T.Vector3(x,.98,z),new T.Vector3(x*1.27,2.25,z*1.27),new T.Vector3(x*1.23,4.35,z*1.23),new T.Vector3(x*.87,5.9,z*.87)]);mesh(core,new T.TubeGeometry(curve,24,.065,8,false),mats.brass);}
  for(const y of [1.15,2.25,4.45,5.65]){ring(core,1.54,.11,mats.blue,0,y,0);ring(core,1.56,.025,mats.steel,0,y+.12,0);}
  cylinder(core,1.66,1.34,.3,mats.blue,0,5.73,0);cylinder(core,.78,1.6,.23,mats.steel,0,5.98,0);const activeRing=ring(core,1.2,.025,energyMaterial,0,3.5,0);
- const coreLight=new T.PointLight('#ffb95f',0,11,2);coreLight.position.set(0,3,0);root.add(coreLight);
+ core.scale.y=1.18;const coreLight=new T.PointLight('#ffb95f',0,11,2);coreLight.position.set(0,3,0);root.add(coreLight);
  // Physical practical lights illuminate stations and circulation; never state indicators.
- for(const [x,z] of [[-10,-6],[9,-7],[-11,4],[10,5],[-3,10]]){const light=new T.PointLight('#ffd6a0',24,10,2);light.position.set(x,4.6,z);scene.add(light);}
- const overhead=new T.DirectionalLight('#d3e2f2',3.4);overhead.position.set(-10,24,15);overhead.castShadow=true;overhead.shadow.mapSize.set(2048,2048);Object.assign(overhead.shadow.camera,{left:-23,right:23,top:23,bottom:-23,near:1,far:65});overhead.shadow.normalBias=.04;overhead.shadow.bias=-.0003;scene.add(overhead);
- scene.add(new T.HemisphereLight('#adcbeb','#303543',2));const rim=new T.DirectionalLight('#9ab4c9',2.6);rim.position.set(8,12,-20);scene.add(rim);
+ for(const [x,z] of [[-10,-6],[9,-7],[-11,4],[10,5],[-3,10]]){const light=new T.PointLight('#ffb864',155,12,2);light.position.set(x,4.6,z);scene.add(light);}
+ const overhead=new T.DirectionalLight('#c3d9ef',1.65);overhead.position.set(-10,24,15);overhead.castShadow=true;overhead.shadow.mapSize.set(2048,2048);Object.assign(overhead.shadow.camera,{left:-23,right:23,top:23,bottom:-23,near:1,far:65});overhead.shadow.normalBias=.04;overhead.shadow.bias=-.0003;scene.add(overhead);
+ scene.add(new T.HemisphereLight('#9fb9d3','#273441',.95));const rim=new T.DirectionalLight('#9ab4c9',2.2);rim.position.set(8,12,-20);scene.add(rim);
  // Grounding plane is outside the cutaway, with a soft studio-night background.
  mesh(scene,new T.PlaneGeometry(400,400),mat('#0f1d2c',1,0),0,-.8,0).rotation.x=-Math.PI/2;
  return {root,core,cartridge,energyMaterial,coreLight,activeRing};

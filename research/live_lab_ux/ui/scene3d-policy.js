@@ -66,4 +66,4 @@ export function deriveSceneVisual(state,{selectedWorkerId=null}={}){
   const economicWorkerId=state.economicLook?.activeWorkerId||null;
   return {connected:Boolean(state.transport?.connected),stale:Boolean(state.transport?.stale),economicWorkerId,economicActive:Boolean(economicWorkerId),agents,architectureNodes:ARCHITECTURE_NODES,invariants:{realCapitalAuthorized:Boolean(state.invariants?.REAL_CAPITAL_AUTHORIZED),liveTradingAuthorized:Boolean(state.invariants?.LIVE_TRADING_AUTHORIZED),paidUsdTotal:Number(state.invariants?.paid_usd_total||0)}};
 }
-export function sceneBusinessMotionAllowed(state){return Boolean(state.transport?.connected)&&!state.transport?.stale;}
+export function sceneBusinessMotionAllowed(state){return Boolean(state.transport?.connected)&&!state.transport?.stale&&!state.transport?.resumeRequiresBusinessEvent;}

@@ -13,3 +13,7 @@ Pending: browser visual checks, fallback illustration, collision/authority tests
 
 PRODUCTION_REPLACEMENT_AUTHORIZED = FALSE
 VISUAL_REVIEW_REQUIRED = TRUE
+
+## Slice 2
+
+Owner rejected first integrated image as too bland. Revised camera toward the calibrated low cinematic opening, added warm task-light pools, textured mineral/timber, curved brass containment ribs, architectural trusses and richer zone tools. Static batching reduces idle draw calls to ~79 before final lighting pass. Added dedicated gesture/core authority; a snapshot with no agents now suppresses previous core motion via the existing resume guard (core reducer remains unchanged). 39 tests PASS. Fallback and final captures still pending.
