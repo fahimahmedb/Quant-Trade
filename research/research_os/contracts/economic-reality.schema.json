@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EconomicRealityAssessment",
+  "type": "object",
+  "required": ["assessment_id","hypothesis_generation_id","instrument_available","data_available","borrow_required","borrow_status","turnover_estimate","latency_requirement","capacity_obviously_blocked","currently_implementable","research_worth_continuing"],
+  "properties": {
+    "assessment_id": {"type":"string","minLength":1},
+    "hypothesis_generation_id": {"type":"string","minLength":1},
+    "instrument_available": {"enum":["YES","NO","UNKNOWN"]},
+    "data_available": {"enum":["YES","NO","UNKNOWN"]},
+    "spread_order_of_magnitude": {"type":["string","null"]},
+    "fee_assumption": {"type":["string","null"]},
+    "borrow_required": {"type":"boolean"},
+    "borrow_status": {"enum":["AVAILABLE","UNAVAILABLE","NOT_REQUIRED","UNKNOWN"]},
+    "turnover_estimate": {"type":["string","null"]},
+    "latency_requirement": {"type":["string","null"]},
+    "capacity_obviously_blocked": {"enum":["YES","NO","UNKNOWN"]},
+    "currently_implementable": {"enum":["YES","NO","UNKNOWN"]},
+    "research_worth_continuing": {"enum":["YES","NO","UNKNOWN"]},
+    "blocker_reason": {"type":["string","null"]}
+  },
+  "additionalProperties": false
+}
