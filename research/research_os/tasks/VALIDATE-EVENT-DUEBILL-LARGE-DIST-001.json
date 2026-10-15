@@ -2,7 +2,7 @@
   "task_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001",
   "task_type": "VALIDATION",
   "required_capability": "validator",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 90,
   "inputs": {
     "hypothesis_path": "research/research_os/hypotheses/EVENT-DUEBILL-LARGE-DIST-001.json",
@@ -39,6 +39,15 @@
     "expires_at": "2026-10-15T13:35:35Z"
   },
   "created_at": "2026-10-15T12:44:05Z",
-  "updated_at": "2026-10-15T12:45:35Z",
-  "completion": null
+  "updated_at": "2026-10-15T12:47:35Z",
+  "completion": {
+    "completed_at": "2026-10-15T12:47:35Z",
+    "receipt": "research/research_os/receipts/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001-g1.json",
+    "artifacts": [
+      "research/research_os/assessments/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001.json",
+      "research/research_os/events/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001/001-action-started.json",
+      "research/research_os/events/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001/002-action-completed.json"
+    ],
+    "result": "EXPLORE_TEST_DESIGN_READY_ENTITLEMENT_PARITY_ONLY"
+  }
 }
