@@ -1,3 +1,14 @@
+# Current STATE / NEXT — 2026-10-15, Nomura retrospective report excluded from prospective admission
+
+REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.
+
+- [Decision and exposure receipt](discovery/qualifications/prospective-admission-nomura-2026-10-15.json): Nomura6-K accession0001193125-26-420929 accepted2026-10-14 06:01:20Eastern is the September2026 buyback/disposition report under a January authorization. Historical less-than-a-full-unit share transactions are not a newly open SC TO-I odd-lot-priority offer or another A-E entitlement. Review COMPLETED/INELIGIBLE for this filing; no event admitted and no economic test.
+- The primary6-K embeds the report itself. Actual historical aggregate repurchase/disposition amounts and share balances were incidentally read without a prior reservation and are explicitly recorded as consumed public economic disclosure. No retroactive claim, implied transaction price/return calculation or pristine-period assertion. This is not a claim of zero exposure.
+- NEXT: reuse eleven saved unreviewed records, starting Artificial Intelligence Technology Solutions8-K index/accepted timestamp and bounded legal/exchange eligibility. Valaris source park and earlier Fusion/AmpliTech/IX chronology stay unresolved. No first-event claim, later favorable substitution, full census or repeated sources. Nomura is closed; savings calculator/value source PARK and all three seed dispositions remain unchanged.
+- Proof SHA256 `afb933d61c0f01287c9fd44615cfc38194105344eb3998d12595203c96009096`. Two complete primary responses, 50142 bytes; zero retries/USD0, no selected market-price/NAV/payoff request or economic calculation. Prior ledger prefix, counters, queue, multiplicity and all prior/planned exposure history retained. A-E/VX frozen hashes and register unchanged; VX exit not due, zero VX requests; legacy UNKNOWN remains spent. Raw documents private; tokens/global bill unmeasured.
+
+## Earlier checkpoint snapshots — historical
+
 # Current STATE / NEXT — 2026-10-15, book-entry valuation route parked before outcomes
 
 REAL_CAPITAL_AUTHORIZED = FALSE; LIVE_TRADING_AUTHORIZED = FALSE.

@@ -3690,6 +3690,87 @@
       },
       "previous": "6935b36dabef8c981b8da0bd630f1e211e02667fd31f799ce9ddf7e952d50d29",
       "sequence": 54
+    },
+    {
+      "at": "2026-10-15T08:26:11.959579+00:00",
+      "hash": "1b25b999bcbc9786ba929108e238f10a8171df189eddd2fcc72ad60a7d93f4af",
+      "kind": "DISCOVERY_PROSPECTIVE_NOMURA_RETROSPECTIVE_REPORT_CLOSED",
+      "payload": {
+        "actor": "fallback-research-worker",
+        "completed_question": {
+          "decision": "Retrospective repurchase/disposition reporting for September2026; no newly open eligible A-E event.",
+          "id": "sec:0001193125-26-420929:primary-report",
+          "status": "COMPLETED"
+        },
+        "decision": "NOMURA_INLINE_REPORT_INELIGIBLE_A_E",
+        "economic_execution": false,
+        "exposure": {
+          "claim_id": null,
+          "consumed": true,
+          "effective_independent_M": "UNKNOWN",
+          "historical_corporate_values_seen": {
+            "September_month_repurchases_displayed": "dashes; not imputed numeric zero",
+            "aggregate_repurchase_JPY_to_2026_09_30": 59999879300,
+            "aggregate_repurchased_shares_to_2026_09_30": 46861200,
+            "board_authorized_JPY": 60000000000,
+            "board_authorized_shares": 100000000,
+            "issued_shares_at_2026_09_30": 3088562601,
+            "less_than_full_unit_disposition_JPY": 109038,
+            "less_than_full_unit_disposition_date": "2026-09-02",
+            "less_than_full_unit_disposition_shares": 68,
+            "reported_progress_percent_amount": 100.0,
+            "reported_progress_percent_shares": 46.9,
+            "treasury_shares_at_2026_09_30": 165594021
+          },
+          "id": "nomura-inline-buyback-disclosure-20261015-0001193125-26-420929",
+          "new_planned_variants": 0,
+          "new_public_economic_disclosure_exposures": 1,
+          "new_reserved_looks": 0,
+          "new_return_or_strategy_tests": 0,
+          "observed_at": "2026-10-15T08:22:45.902696+00:00",
+          "pre_reserved": false,
+          "prior_exposures_preserved": true,
+          "private_history": "UNKNOWN",
+          "retroactive_claim_created": false,
+          "scope": "Retrospective September2026 inline corporate repurchase/disposition report, accidentally broader than intended legal-only review. No protocol-selected prices or payoff, no numerical analysis. Full disclosure remains exposed for any later mechanism selection.",
+          "seed_consumptions": 0,
+          "source_sha256": "f95315f4a2b85d8840a38005d2b244fd0519f050a9da9e94c466fe010d5c8917"
+        },
+        "head_observed": "e3f3a71c7deadc83d2679427df6d5d24f8852f6b",
+        "next": {
+          "economic_access_authorized": false,
+          "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+          "pending_source_reference": {
+            "count_parked_unqualified": 1,
+            "count_pending": 11,
+            "field": "candidate_form_records",
+            "proof": "qualifications/prospective-admission-nomura-2026-10-15.json",
+            "unqualified_total_in_saved_slice": 12
+          },
+          "primary_document_candidates": [
+            "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm"
+          ],
+          "question": "Reuse the saved SEC metadata; next unreviewed record Artificial Intelligence Technology Solutions8-K accession0001062993-26-005318. Verify exact accepted clock and primary legal/exchange eligibility using only bounded source access. Earlier unresolved Valaris/Fusion/AmpliTech/IX chronology remains prior constraint. No FIRST-event selection, price/NAV/payoff request or favorable later issuer substitution without original ordering/eligibility/claim gates.",
+          "resume_rule": "Nomura September buyback report is closed for A-E admission; do not refetch it or use its historical less-than-a-full-unit share disposition as a new prospective case. Inline actual monetary disclosures are consumed, not pristine. No repeat of ASML/NewsCorp/Liquidia covers, partial older sources or parked savings calculator/legal pages. All frozen exclusions and one-look invariant remain.",
+          "status": "OPEN"
+        },
+        "observable_cost": {
+          "architecture_changes": 0,
+          "economic_calculations": 0,
+          "global_bill": null,
+          "paid_usd": 0,
+          "primary_document_requests": 2,
+          "received_body_bytes": 50142,
+          "request_wall_seconds_sum": 0.43553490898921154,
+          "retries": 0,
+          "selected_market_payload_requests": 0,
+          "tokens": null
+        },
+        "proof": "qualifications/prospective-admission-nomura-2026-10-15.json",
+        "proof_sha256": "afb933d61c0f01287c9fd44615cfc38194105344eb3998d12595203c96009096"
+      },
+      "previous": "7230f8b536392549f267b9250d70aa5d0c71e64d0d28848b550abb1b3f300cf0",
+      "sequence": 55
     }
   ],
   "exposure_ledger": [
@@ -3735,7 +3816,7 @@
       "source_scope": "vix-known-prefix-v1"
     }
   ],
-  "integrity": "00fd3c80688e34fa9efb8c6008877897c8d0b90cbab9be67add491accf5e6b2c",
+  "integrity": "03aef4e34760f9ac256925c7c5b02f31b08510ba012b5bba1c3db1efa548a7d1",
   "legacy_metrics_snapshot": {
     "discriminating_tests_completed_this_week": 0,
     "families_touched_this_week": 4
@@ -3848,13 +3929,13 @@
     },
     "pending_source_reference": {
       "count_parked_unqualified": 1,
-      "count_pending": 12,
+      "count_pending": 11,
       "field": "candidate_form_records",
-      "proof": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
-      "unqualified_total_in_saved_slice": 13
+      "proof": "qualifications/prospective-admission-nomura-2026-10-15.json",
+      "unqualified_total_in_saved_slice": 12
     },
     "primary_document_candidates": [
-      "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm"
+      "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm"
     ],
     "prospective_A_E_priority": {
       "bounds": {
@@ -3884,16 +3965,16 @@
         "oldest_updated": "2026-10-13T21:25:11-04:00",
         "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
       },
-      "pending": "Twelve saved candidate-form records unreviewed, beginning Nomura by provisional feed ordering, plus Valaris source park and earlier chronology gaps. ASML primary cover completed without an established entitlement; exhibits unread. No FIRST eligible event or universal absence established.",
+      "pending": "Eleven unreviewed saved records, beginning Artificial Intelligence Technology Solutions by provisional feed time, plus Valaris source park and earlier chronology gaps. Nomura inline primary report completed/ineligible for A-E. No universal absence or FIRST admissible event established.",
       "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
       "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
-      "reuse_reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+      "reuse_reference": "qualifications/prospective-admission-nomura-2026-10-15.json",
       "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
       "status": "OPEN"
     },
-    "question": "Reuse the saved SEC list; next unreviewed record Nomura6-K accession0001193125-26-420929. Verify accepted metadata and only the smallest safe primary legal description. Preserve earlier unresolved Valaris/Fusion/AmpliTech/IX chronology; no later favorable issuer substitution or FIRST-event claim without complete eligibility/order proof. No selected price/NAV/payoff access.",
-    "resume_rule": "ASML primary cover review is completed; do not fetch financial exhibits or repeat index/cover. Savings historical value-source question is now PARK/closed: Treasury explicitly disclaims electronic accuracy for its public paper calculator. No calculator submission, account/login, paper substitution, reconstructed formula or repeat of the same docs. Reopen only on genuinely new primary evidence of an admissible accurate book-entry value route or explicit equivalence relevant to the original design, with a distinct bounded source question before any value. Original A-E exclusions and one-look invariant govern.",
-    "reuse_reference": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+    "question": "Reuse the saved SEC metadata; next unreviewed record Artificial Intelligence Technology Solutions8-K accession0001062993-26-005318. Verify exact accepted clock and primary legal/exchange eligibility using only bounded source access. Earlier unresolved Valaris/Fusion/AmpliTech/IX chronology remains prior constraint. No FIRST-event selection, price/NAV/payoff request or favorable later issuer substitution without original ordering/eligibility/claim gates.",
+    "resume_rule": "Nomura September buyback report is closed for A-E admission; do not refetch it or use its historical less-than-a-full-unit share disposition as a new prospective case. Inline actual monetary disclosures are consumed, not pristine. No repeat of ASML/NewsCorp/Liquidia covers, partial older sources or parked savings calculator/legal pages. All frozen exclusions and one-look invariant remain.",
+    "reuse_reference": "qualifications/prospective-admission-nomura-2026-10-15.json",
     "seed_history": [
       {
         "L0_verdict": "PARK_DATA",
@@ -5369,5 +5450,5 @@
   "real_capital_authorized": false,
   "schema": 1,
   "status": "READY_TO_QUALIFY",
-  "updated_at": "2026-10-15T07:28:23.276247+00:00"
+  "updated_at": "2026-10-15T08:26:11.938486+00:00"
 }

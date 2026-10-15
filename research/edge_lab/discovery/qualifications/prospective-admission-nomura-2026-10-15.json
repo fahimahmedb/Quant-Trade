@@ -1,0 +1,387 @@
+{
+  "recorded_at": "2026-10-15T08:26:11.938486+00:00",
+  "head_observed": "e3f3a71c7deadc83d2679427df6d5d24f8852f6b",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "FROZEN_PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "NOMURA_INLINE_REPORT_INELIGIBLE_A_E",
+  "economic_verdict": null,
+  "completed_question": {
+    "id": "sec:0001193125-26-420929:primary-report",
+    "status": "COMPLETED",
+    "decision": "Retrospective repurchase/disposition reporting for September2026; no newly open eligible A-E event."
+  },
+  "RESULT": "NOMURA_REPORT_ADMISSION_CLOSED; HISTORICAL_INLINE_DISCLOSURE_CONSUMED; NO_EVENT_SELECTED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Earlier source gaps and eleven unreviewed records remain; no claim that no qualifying event exists. This review establishes only the contents and period of this filing. Public report figures are not independent audited investor outcomes.",
+  "POWER_LIMITATION": "One filing index and primary report, no economic sample/price data test or complete SEC census.",
+  "ECONOMIC_SIGNIFICANCE": "A historical company buyback and a less-than-a-full-unit share disposition do not create a new fixed-price issuer tender with odd-lot priority. Counting a corporate cash transaction as a shareholder entry/payoff would change both mechanism and clock.",
+  "FAILED_CRITERIA": [
+    "A:6-K report is not first SC TO-I tender commencement; no newly open offer/explicit qualifying odd-lot priority.",
+    "B/C:no newly fixed reverse-split ratio/effective date or prospective fractional cash/round-up entitlement.",
+    "D/E:operating financial issuer retrospective treasury-share report, not SPAC cash redemption or listed ETF liquidation notice.",
+    "Reported transaction period ends2026-09-30, before all valid A-E T0s; cannot relabel the historical transactions as fresh because filing occurs later.",
+    "Global chronological eligibility and earlier unresolved sources remain unproven."
+  ],
+  "LESSON": "Check both disclosure time and operative entitlement time. Also inspect how source packaging affects exposure: a6-K may embed actual transaction totals in the primary document, so legal-review intent does not make those values unexposed.",
+  "FAMILY_STATUS": "A-E frozen protocols unchanged; this filing admission completed/ineligible, not an economic rejection of their families. Savings valuation dependency remains PARK; all seeds retain dispositions.",
+  "NEXT_DECISION": {
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "status": "OPEN",
+    "question": "Reuse the saved SEC metadata; next unreviewed record Artificial Intelligence Technology Solutions8-K accession0001062993-26-005318. Verify exact accepted clock and primary legal/exchange eligibility using only bounded source access. Earlier unresolved Valaris/Fusion/AmpliTech/IX chronology remains prior constraint. No FIRST-event selection, price/NAV/payoff request or favorable later issuer substitution without original ordering/eligibility/claim gates.",
+    "primary_document_candidates": [
+      "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm"
+    ],
+    "economic_access_authorized": false,
+    "pending_source_reference": {
+      "proof": "qualifications/prospective-admission-nomura-2026-10-15.json",
+      "field": "candidate_form_records",
+      "count_pending": 11,
+      "count_parked_unqualified": 1,
+      "unqualified_total_in_saved_slice": 12
+    },
+    "resume_rule": "Nomura September buyback report is closed for A-E admission; do not refetch it or use its historical less-than-a-full-unit share disposition as a new prospective case. Inline actual monetary disclosures are consumed, not pristine. No repeat of ASML/NewsCorp/Liquidia covers, partial older sources or parked savings calculator/legal pages. All frozen exclusions and one-look invariant remain."
+  },
+  "candidate_form_records": [
+    {
+      "issuer_and_form": "8-K - NEWS CORP (0001564708) (Filer)",
+      "cik": "0001564708",
+      "accession": "0001564708-26-000221",
+      "feed_updated": "2026-10-13T21:29:43-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1564708/000156470826000221/0001564708-26-000221-index.htm",
+      "accepted_at_verified": "2026-10-13T21:29:43-04:00",
+      "status": "REVIEWED_PRIMARY_COVER_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14"
+    },
+    {
+      "issuer_and_form": "8-K - Liquidia Corp (0001819576) (Filer)",
+      "cik": "0001819576",
+      "accession": "0001104659-26-115672",
+      "feed_updated": "2026-10-13T21:49:11-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1819576/000110465926115672/0001104659-26-115672-index.htm",
+      "accepted_at_verified": "2026-10-13T21:49:11-04:00",
+      "status": "REVIEWED_PRIMARY_DESCRIPTION_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14",
+      "period_of_report": "2026-10-08"
+    },
+    {
+      "issuer_and_form": "DEFM14A - Valaris Ltd (0000314808) (Filer)",
+      "cik": "0000314808",
+      "accession": "0001140361-26-039488",
+      "feed_updated": "2026-10-14T06:01:02-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:02-04:00",
+      "status": "PARK_DOCUMENT_SCOPE_NOT_REVIEWED",
+      "filing_date": "2026-10-14",
+      "reason": "Advertised primary4807604bytes exceeds524288byte cap; body not fetched. Qualification unresolved, not ineligible."
+    },
+    {
+      "issuer_and_form": "6-K - ASML HOLDING NV (0000937966) (Filer)",
+      "cik": "0000937966",
+      "accession": "0001628280-26-065813",
+      "feed_updated": "2026-10-14T06:01:18-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026065813/0001628280-26-065813-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:18-04:00",
+      "status": "REVIEWED_PRIMARY_COVER_NO_A_E_ENTITLEMENT_ESTABLISHED",
+      "filing_date": "2026-10-14",
+      "period_of_report": "2026-09-27",
+      "reason": "Quarterly results cover, no qualifying entitlement described. Exhibits unread; no universal admission/absence claim."
+    },
+    {
+      "issuer_and_form": "6-K - NOMURA HOLDINGS INC (0001163653) (Filer)",
+      "cik": "0001163653",
+      "accession": "0001193125-26-420929",
+      "feed_updated": "2026-10-14T06:01:20-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:20-04:00",
+      "status": "REVIEWED_PRIMARY_INLINE_REPORT_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14",
+      "reason": "Retrospective September buyback/disposition report under January authorization, not a newly open eligible A-E entitlement."
+    },
+    {
+      "issuer_and_form": "8-K - Artificial Intelligence Technology Solutions Inc. (0001498148) (Filer)",
+      "cik": "0001498148",
+      "accession": "0001062993-26-005318",
+      "feed_updated": "2026-10-14T06:01:26-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "497 - Calamos ETF Trust (0001579881) (Filer)",
+      "cik": "0001579881",
+      "accession": "0001104659-26-115676",
+      "feed_updated": "2026-10-14T06:01:39-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - SK TELECOM CO LTD (0001015650) (Filer)",
+      "cik": "0001015650",
+      "accession": "0001193125-26-420931",
+      "feed_updated": "2026-10-14T06:01:47-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1015650/000119312526420931/0001193125-26-420931-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - FortuneX Acquisition Corp (0002121703) (Filer)",
+      "cik": "0002121703",
+      "accession": "0001829126-26-011104",
+      "feed_updated": "2026-10-14T06:01:53-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/0001829126-26-011104-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - HDFC BANK LTD (0001144967) (Filer)",
+      "cik": "0001144967",
+      "accession": "0001193125-26-420933",
+      "feed_updated": "2026-10-14T06:02:14-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1144967/000119312526420933/0001193125-26-420933-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - SK hynix Inc. (0002120882) (Filer)",
+      "cik": "0002120882",
+      "accession": "0001193125-26-420934",
+      "feed_updated": "2026-10-14T06:02:20-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/2120882/000119312526420934/0001193125-26-420934-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Evotec SE (0001412558) (Filer)",
+      "cik": "0001412558",
+      "accession": "0001104659-26-115678",
+      "feed_updated": "2026-10-14T06:02:29-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1412558/000110465926115678/0001104659-26-115678-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Banco Santander, S.A. (0000891478) (Filer)",
+      "cik": "0000891478",
+      "accession": "0000950103-26-015545",
+      "feed_updated": "2026-10-14T06:02:36-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/891478/000095010326015545/0000950103-26-015545-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Pharming Group N.V. (0001828316) (Filer)",
+      "cik": "0001828316",
+      "accession": "0001828316-26-000045",
+      "feed_updated": "2026-10-14T06:03:16-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1828316/000182831626000045/0001828316-26-000045-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "DEFM14A - Transocean Ltd. (0001451505) (Filer)",
+      "cik": "0001451505",
+      "accession": "0001104659-26-115680",
+      "feed_updated": "2026-10-14T06:03:31-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1451505/000110465926115680/0001104659-26-115680-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - Verastem, Inc. (0001526119) (Filer)",
+      "cik": "0001526119",
+      "accession": "0001104659-26-115687",
+      "feed_updated": "2026-10-14T06:08:11-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1526119/000110465926115687/0001104659-26-115687-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    }
+  ],
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm",
+      "observed_at": "2026-10-15T08:22:20.789328+00:00",
+      "scope": "SEC prospective admission metadata and primary legal description only; no selected market-price/NAV/payoff payload, claims or economic calculations",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm",
+      "body_bytes": 7035,
+      "sha256": "66322d0952e5793a21d02e1d559f6d5a9cafe442aad207af778066efedd2d575",
+      "complete": true,
+      "content_type": "text/html; charset=UTF-8",
+      "wall_seconds": 0.29598250199342147,
+      "passages": [
+        "Accepted2026-10-14 06:01:20; Filing Date2026-10-14; one FORM6-K document.",
+        "Nomura Holdings Inc, CIK0001163653; SIC6211 Security Brokers, Dealers & Flotation Companies."
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/d384553d6k.htm",
+      "observed_at": "2026-10-15T08:22:45.902696+00:00",
+      "scope": "SEC prospective admission metadata and primary legal description only; no selected market-price/NAV/payoff payload, claims or economic calculations",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/d384553d6k.htm",
+      "body_bytes": 43107,
+      "sha256": "f95315f4a2b85d8840a38005d2b244fd0519f050a9da9e94c466fe010d5c8917",
+      "complete": true,
+      "content_type": "text/html",
+      "wall_seconds": 0.13955240699579008,
+      "passages": [
+        "Share Buyback Report for the reporting month from September1,2026 to September30,2026.",
+        "Authorization pursuant to the resolution of the Board (January30,2026); period of repurchase February17,2026 to September30,2026.",
+        "Other (upon request for purchasing less-than-a-full-unit shares): September2.",
+        "Status of shares held in treasury as of September30,2026."
+      ],
+      "scope_limit": "Entire primary6-K contains the English-translated buyback report inline, rather than a separately fetched exhibit. Includes actual aggregate repurchase/disposition amounts and share balances; this unreserved historical corporate economic disclosure is explicitly consumed. No market quote or protocol-selected payoff requested; no implied prices, returns or tests calculated."
+    }
+  ],
+  "reuse": {
+    "prior_proof": "qualifications/savings-book-entry-value-route-park-and-asml-admission-2026-10-15.json",
+    "prior_sha256": "3caeb14a86cfc59024a3493145d0a47e1d89279837eab12f651f739fdd3e74ed",
+    "saved_feed_sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157",
+    "feed_refetched": false,
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "VX_protocol_and_register_unchanged": {
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.md": "56fd0be311eb4672136008cdb2b6655afe5ac1d3b9db5bfdef9c7f23a7d72a15",
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.register.json": "316aa2bf3ed1fbe29e515d8888e2324ec9eeeed9113b646eda4e7db26018f768"
+    },
+    "seed_history_preserved": [
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+        "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+        "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
+      },
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+        "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+        "same_candidate_id": "policy-announcement-repricing",
+        "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+        "seed_id": "trump_policy_event_transmission_l0"
+      }
+    ]
+  },
+  "priority_check": {
+    "active_discovery_running": [],
+    "legacy_UNKNOWN_remains_consumed": true,
+    "no_admissible_fresh_event_established": true,
+    "universal_absence_claimed": false,
+    "VX": "Not due under saved necessary earliest-exit bound2026-11-06; zero VX requests.",
+    "savings_source_park_reopened": false
+  },
+  "exposure": {
+    "id": "nomura-inline-buyback-disclosure-20261015-0001193125-26-420929",
+    "consumed": true,
+    "pre_reserved": false,
+    "claim_id": null,
+    "observed_at": "2026-10-15T08:22:45.902696+00:00",
+    "source_sha256": "f95315f4a2b85d8840a38005d2b244fd0519f050a9da9e94c466fe010d5c8917",
+    "scope": "Retrospective September2026 inline corporate repurchase/disposition report, accidentally broader than intended legal-only review. No protocol-selected prices or payoff, no numerical analysis. Full disclosure remains exposed for any later mechanism selection.",
+    "historical_corporate_values_seen": {
+      "board_authorized_shares": 100000000,
+      "board_authorized_JPY": 60000000000,
+      "aggregate_repurchased_shares_to_2026_09_30": 46861200,
+      "aggregate_repurchase_JPY_to_2026_09_30": 59999879300,
+      "reported_progress_percent_shares": 46.9,
+      "reported_progress_percent_amount": 100.0,
+      "September_month_repurchases_displayed": "dashes; not imputed numeric zero",
+      "less_than_full_unit_disposition_date": "2026-09-02",
+      "less_than_full_unit_disposition_shares": 68,
+      "less_than_full_unit_disposition_JPY": 109038,
+      "issued_shares_at_2026_09_30": 3088562601,
+      "treasury_shares_at_2026_09_30": 165594021
+    },
+    "new_public_economic_disclosure_exposures": 1,
+    "new_reserved_looks": 0,
+    "new_return_or_strategy_tests": 0,
+    "new_planned_variants": 0,
+    "seed_consumptions": 0,
+    "prior_exposures_preserved": true,
+    "private_history": "UNKNOWN",
+    "effective_independent_M": "UNKNOWN",
+    "retroactive_claim_created": false
+  },
+  "observable_cost": {
+    "primary_document_requests": 2,
+    "received_body_bytes": 50142,
+    "request_wall_seconds_sum": 0.43553490898921154,
+    "retries": 0,
+    "selected_market_payload_requests": 0,
+    "economic_calculations": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null
+  },
+  "bounds": {
+    "economic_payloads": 0,
+    "max_agent_minutes": 15,
+    "max_bytes_per_document": 524288,
+    "max_primary_document_requests": 3,
+    "max_total_document_bytes": 1572864,
+    "retries": 0
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "VX_register_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false,
+    "account_created": false,
+    "economic_claim_created": false
+  }
+}
