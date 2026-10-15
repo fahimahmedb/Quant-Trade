@@ -1,0 +1,30 @@
+{
+  "receipt_id": "PROD-EVENTDOC-001-g1",
+  "task_id": "PROD-EVENTDOC-001",
+  "worker_id": "chatgpt-interactive-event-document-worker",
+  "session_id": "PROD-EVENTDOC-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T12:42:00Z",
+  "completed_at": "2026-10-15T12:44:25Z",
+  "input_head": "92a4030a48096affc6ac221960c11fe16dc3ae18",
+  "output_commit": "020a46793554a4948f7f18183087a33a0b0773fd",
+  "status": "COMPLETE",
+  "summary": "A distinct large-distribution due-bill entitlement mechanism was frozen from FINRA, SEC issuer and Nasdaq primary documents. The candidate isolates delayed ex-date/due-bill settlement entitlement rather than dividend yield, and exactly one independent validation task was queued. No candidate price or return outcome was accessed.",
+  "artifacts": [
+    "research/research_os/hypotheses/EVENT-DUEBILL-LARGE-DIST-001.json",
+    "research/research_os/tasks/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001.json",
+    "research/research_os/events/PROD-EVENTDOC-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "LEGACY_RESEARCH_LEDGER.json@183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "https://www.finra.org/sites/default/files/NoticeDocument/p003997.pdf",
+    "https://www.sec.gov/Archives/edgar/data/1941131/000114036125045775/ef20061277_ex99-1.htm",
+    "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-687"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}
