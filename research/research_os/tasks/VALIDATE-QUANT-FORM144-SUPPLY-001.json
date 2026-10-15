@@ -1,0 +1,39 @@
+{
+  "task_id": "VALIDATE-QUANT-FORM144-SUPPLY-001",
+  "task_type": "VALIDATION",
+  "required_capability": "validator",
+  "status": "READY",
+  "priority": 90,
+  "inputs": {
+    "hypothesis_path": "research/research_os/hypotheses/QUANT-FORM144-SUPPLY-001.json",
+    "source_task": "PROD-QUANT-001",
+    "objective": "Independently validate the Form 144 proposed-sale supply mechanism at documentary/data-feasibility level only. Verify public-time clock, field sufficiency, overlap/dependence controls, size-normalization feasibility and distinction from Form 4/lockup work without reading returns."
+  },
+  "allowed_actions": [
+    "read the frozen hypothesis and pinned Legacy ledger",
+    "verify SEC Form 144 filing requirements, current electronic filing clock and structured fields",
+    "assess PIT issuer/security mapping, pre-event float/liquidity normalization and repeat-filing dependence",
+    "persist one EvidenceAssessment with PASS_TO_TEST_DESIGN, PARK_DATA or KILL_MECHANISM recommendation"
+  ],
+  "forbidden_actions": [
+    "read post-filing prices or returns",
+    "backtest",
+    "optimize size thresholds, holding horizons or subgroups against outcomes",
+    "prospective observation",
+    "capital allocation",
+    "order generation",
+    "live trading"
+  ],
+  "success_condition": "One independent documentary EvidenceAssessment determines whether QUANT-FORM144-SUPPLY-001 is test-design ready, data-blocked or structurally invalid, without outcome access.",
+  "authority": {
+    "scope": "DOCUMENTARY_VALIDATION_ONLY",
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "lease": {"generation":0,"owner":null,"claimed_at":null,"expires_at":null},
+  "created_at": "2026-10-15T12:51:30Z",
+  "updated_at": null,
+  "completion": null
+}
