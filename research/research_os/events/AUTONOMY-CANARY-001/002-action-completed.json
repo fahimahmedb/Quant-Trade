@@ -1,0 +1,15 @@
+{
+  "event_id": "AUTONOMY-CANARY-001-g1-e2",
+  "session_id": "AUTONOMY-CANARY-001-g1",
+  "worker_id": "chatgpt-quant-research-worker",
+  "action_id": "AUTONOMY-CANARY-001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 2,
+  "generation": 1,
+  "emitted_at": "2026-10-15T11:44:00Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Autonomous loop infrastructure canary",
+    "detail": "Required contracts verified and durable receipt persisted; bounded canary completed without economic authority use."
+  }
+}
