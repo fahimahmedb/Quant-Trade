@@ -32,6 +32,8 @@ _STRUCTURAL_WEIGHTS = {
 def _is_known(value: Any) -> bool:
     if isinstance(value, str):
         return value not in _UNKNOWN
+    if isinstance(value, (list, tuple, set, dict)):
+        return bool(value)
     return value is not None
 
 
@@ -51,6 +53,13 @@ def _eq_known(left: Any, right: Any) -> Any:
     if not _is_known(left) or not _is_known(right):
         return None
     return 1.0 if left == right else 0.0
+
+
+def _jaccard(left: Iterable[str], right: Iterable[str]) -> Any:
+    a, b = set(left or []), set(right or [])
+    if not a or not b:
+        return None
+    return round(len(a & b) / len(a | b), 4)
 
 
 def _candidate_from_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
@@ -189,25 +198,35 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
     left_struct = structural_identity(left)
     right_struct = structural_identity(right)
 
-    dimensions = {
+    structural_dimensions = {
         key: _eq_known(
             left_struct["fields"][key]["value"],
             right_struct["fields"][key]["value"],
         )
         for key in _STRUCTURAL_WEIGHTS
     }
+    # Preserve the pre-existing v2 diagnostic keys for downstream consumers while
+    # moving economic identity decisions to the richer structural field set.
+    legacy_dimensions = {
+        "asset": _eq_known(left.get("asset"), right.get("asset")),
+        "liquidity": _eq_known(left.get("liquidity"), right.get("liquidity")),
+        "tail_exposure": _eq_known(left.get("tail_exposure"), right.get("tail_exposure")),
+        "economic_tags": _jaccard(left.get("economic_tags", []), right.get("economic_tags", [])),
+    }
+    dimensions = {**structural_dimensions, **legacy_dimensions}
     unknown = sorted(key for key, value in dimensions.items() if value is None)
+    structural_unknown = [key for key, value in structural_dimensions.items() if value is None]
     score = round(
-        sum((dimensions[key] or 0.0) * _STRUCTURAL_WEIGHTS[key] for key in dimensions),
+        sum((structural_dimensions[key] or 0.0) * _STRUCTURAL_WEIGHTS[key] for key in structural_dimensions),
         4,
     )
-    max_score = round(score + sum(_STRUCTURAL_WEIGHTS[key] for key in unknown), 4)
+    max_score = round(score + sum(_STRUCTURAL_WEIGHTS[key] for key in structural_unknown), 4)
 
     core = ("payer", "mechanism", "timing_clock")
-    core_known = all(dimensions[key] is not None for key in core)
-    core_same = core_known and all(dimensions[key] == 1.0 for key in core)
+    core_known = all(structural_dimensions[key] is not None for key in core)
+    core_same = core_known and all(structural_dimensions[key] == 1.0 for key in core)
     payer_and_mechanism_different = (
-        dimensions["payer"] == 0.0 and dimensions["mechanism"] == 0.0
+        structural_dimensions["payer"] == 0.0 and structural_dimensions["mechanism"] == 0.0
     )
 
     if core_same:
@@ -235,7 +254,7 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
         "structural_overlap_score": score,
         "dimensions": dimensions,
         "unknown_dimensions": unknown,
-        "score_status": "PARTIAL" if unknown else "COMPLETE",
+        "score_status": "PARTIAL" if structural_unknown else "COMPLETE",
         "overlap_score_interval": [score, max_score],
         "identity_hashes": [sha256_json(left), sha256_json(right)],
         "candidate_hashes": [
