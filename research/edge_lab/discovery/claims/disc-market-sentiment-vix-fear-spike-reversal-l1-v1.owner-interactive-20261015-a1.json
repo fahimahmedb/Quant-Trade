@@ -1,0 +1,20 @@
+{
+  "experiment_id": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+  "invocation_id": "owner-interactive-20261015-a1",
+  "claimed_at_utc": "2026-10-15T13:23:00Z",
+  "predeclaration_commit": "9ab466d9fafc7ac31ad885fe0b88faae338555ad",
+  "source_scope": [
+    "FRED VIXCLS daily observations",
+    "FRED SP500 daily observations"
+  ],
+  "frozen_sample": "signal dates 2018-01-01 through 2024-12-31; VIX prior-252 q95 linear; first entry into extreme; next SP500 close entry; fifth subsequent close exit; non-overlap",
+  "outcome_access_before_claim": false,
+  "metadata_only_before_claim": true,
+  "attempt": 1,
+  "replay_allowed": false,
+  "one_economic_look_assertion": "No other unresolved economic claim was found in the repository claims surface; existing claim files correspond to experiments with persisted results. This claim is exclusive for the current frozen economic execution.",
+  "paid_usd": 0,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "authority_note": "Claim committed before retrieving the frozen 2018-2024 joined VIX/SP500 economic sample or computing any trigger return. Execute exactly the predeclared expression once; no variant search or source substitution."
+}
