@@ -1,6 +1,6 @@
 {
-  "mode": "PREPROD_SIMULATION_ONLY",
-  "production_worker_launch_authorized": false,
+  "mode": "PRODUCTION_RESEARCH_WORKERS",
+  "production_worker_launch_authorized": true,
   "economic_experiment_authorized": false,
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
@@ -10,7 +10,7 @@
       "capability_id": "legacy_recovery",
       "role": "Legacy / Recovery",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["historical inventory","provenance","gap completion recommendation"],
       "forbidden": ["new economic look","sample extension","verdict rewrite"]
     },
@@ -18,7 +18,7 @@
       "capability_id": "quant_mechanisms",
       "role": "Quant / Mechanisms",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["candidate hypothesis","mechanism description","test contract"],
       "forbidden": ["real outcome inspection","capital action"]
     },
@@ -26,7 +26,7 @@
       "capability_id": "fundamental",
       "role": "Fundamental",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["candidate thesis","valuation logic","catalyst","falsification scope"],
       "forbidden": ["capital action","prospective observation without authority"]
     },
@@ -34,7 +34,7 @@
       "capability_id": "event_document",
       "role": "Event / Document",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["event hypothesis","document evidence map","timing requirements"],
       "forbidden": ["capital action","unfrozen forward claim"]
     },
@@ -42,7 +42,7 @@
       "capability_id": "institutional_flows",
       "role": "Flows / Institutional Constraints",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["mechanism candidate","institutional constraint map","implementability questions"],
       "forbidden": ["capital action","new outcome look"]
     },
@@ -50,7 +50,7 @@
       "capability_id": "validator",
       "role": "Independent Validator",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["evidence assessment","replication recommendation","claim-level restriction"],
       "forbidden": ["repair signal until profitable","capital action"]
     },
@@ -58,7 +58,7 @@
       "capability_id": "red_team",
       "role": "Red Team",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["BLOCK_DATA","BLOCK_LEAKAGE","BLOCK_MULTIPLICITY","BLOCK_COST_MODEL","BLOCK_CAPACITY","BLOCK_PORTFOLIO_DUPLICATION","BLOCK_CLAIM_LEVEL","ACCEPT"],
       "forbidden": ["strategy optimization","capital action"]
     },
@@ -66,7 +66,7 @@
       "capability_id": "portfolio_map",
       "role": "Portfolio Map",
       "simulation_enabled": true,
-      "production_enabled": false,
+      "production_enabled": true,
       "allowed_outputs": ["economic identity overlap","factor overlap","marginal portfolio value assessment"],
       "forbidden": ["position sizing","order generation","capital allocation"]
     }
