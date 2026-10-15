@@ -2,7 +2,7 @@
   "task_id": "PROD-QUANT-001",
   "task_type": "QUANT_MECHANISM",
   "required_capability": "quant_mechanisms",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 90,
   "inputs": {
     "legacy_gate_required": true,
@@ -38,6 +38,16 @@
     "expires_at": "2026-10-15T13:39:00Z"
   },
   "created_at": "2026-10-15T14:25:00+02:00",
-  "updated_at": "2026-10-15T12:49:00Z",
-  "completion": null
+  "updated_at": "2026-10-15T12:52:20Z",
+  "completion": {
+    "completed_at": "2026-10-15T12:52:20Z",
+    "receipt": "research/research_os/receipts/PROD-QUANT-001/PROD-QUANT-001-g1.json",
+    "artifacts": [
+      "research/research_os/hypotheses/QUANT-FORM144-SUPPLY-001.json",
+      "research/research_os/tasks/VALIDATE-QUANT-FORM144-SUPPLY-001.json",
+      "research/research_os/events/PROD-QUANT-001/001-action-started.json",
+      "research/research_os/events/PROD-QUANT-001/002-action-completed.json"
+    ],
+    "result": "FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION"
+  }
 }
