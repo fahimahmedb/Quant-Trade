@@ -1,8 +1,8 @@
-# Live Research Lab UX Vision — isolated implementation
+# Live Research Lab — native integration
 
-Branch target: `builder/live-lab-ux-vision-20261014`.
+Integration branch: `builder/live-lab-native-integration-20261015`.
 
-This directory is a **presentation/runtime shell only**. It is intentionally isolated from the production Site, worker ingress, authentication, lease semantics, scientific `CONTROL`/`STATE`, economic methods/results, and the parallel platform-capability probe branch.
+This branch starts from the proved platform-probe checkpoint `809ec7e3d088a4ba4c5857771e6422ab91a139f4` and imports only the isolated UX subtree from `builder/live-lab-ux-vision-20261014`; it does **not** merge that branch's unrelated research history.
 
 ## Safety state
 
@@ -14,17 +14,50 @@ LIVE_E2E_PASS = NOT_CLAIMED
 DEPLOYMENT = NOT_PERFORMED
 ```
 
-All supplied scenarios are visibly marked `DEVELOPMENT/REPLAY`. Their tasks, evidence references, metrics and decisions are synthetic UX fixtures and are **not research or economic evidence**.
+Nothing in this UI authorizes capital, trading, research conclusions, or economic decisions.
+
+## Two surfaces
+
+- `index.html` remains the deterministic `DEVELOPMENT/REPLAY` UX harness.
+- `live.html` is the native live browser surface. It binds same-origin `/api/work/events` through browser `EventSource`, then through the canonical native mapper and the existing deterministic scene reducer.
+
+The live surface adds no GitHub polling, retry scheduler, heartbeat timer, lease timer, progress timer, or fabricated worker activity. Browser `EventSource` owns the already-proved SSE reconnect/cursor behavior.
+
+## Native event authority
+
+The proved worker contract currently accepts only:
+
+```text
+ACTION_STARTED
+ACTION_COMPLETED
+WORKER_HEARTBEAT
+SESSION_ENDED
+```
+
+`adapters/platform-native.js` maps only those accepted facts. It deliberately does **not** infer:
+
+- Codex == Owner identity;
+- Researcher / Builder / Auditor / Manager roles;
+- progress values or percentages;
+- KILL / PARK / PROMOTE;
+- Economic Look ownership;
+- economic results.
+
+An accepted native worker is therefore represented as the protocol-backed `Worker` role unless stronger explicit semantics are supplied by a future proved contract. Missing progress remains `UNKNOWN`.
 
 ## Architecture
 
-The scene has one direction of authority:
-
 ```text
-canonical worker event
+native Site SSE frame
         |
         v
-LiveEventAdapter + protocol-owned mapper
+platform-native-sse.js
+        |
+        v
+LiveEventAdapter
+        |
+        v
+platform-native.js
         |
         v
 normalized UI event
@@ -39,53 +72,34 @@ deterministic animation authorization
 DOM/CSS rendered scene
 ```
 
-Development substitutes `FixtureReplayAdapter` at the adapter boundary. The renderer and state machine are unchanged.
+Development replay substitutes `FixtureReplayAdapter` at the adapter boundary. Renderer and state machine stay shared.
 
-`LiveEventAdapter` deliberately implements no polling, SSE/WebSocket selection, authentication, cursor, retry, lease, heartbeat cadence or reconnect policy. The proven platform protocol must own those semantics and inject a single `mapCanonicalEvent(canonicalEvent)` function. This prevents this UX branch from becoming a second competing live protocol.
+## Snapshot / replay truth guard
+
+The native SSE path can send a factual snapshot and then replay active events already represented by that snapshot. `mapNativeSnapshot()` now emits a replay guard containing accepted event IDs and generation-scoped stream watermarks. `reduceScene()` seeds those IDs/sequences during snapshot application.
+
+Therefore:
+
+- snapshot reconstruction never starts business animation;
+- replayed SSE frames already represented by the snapshot are ignored;
+- only a genuinely later accepted event can resume business animation;
+- generation changes remain isolated by stream key `worker + session + generation`.
 
 ## Truth rules
 
-- A heartbeat updates presence time only. It cannot create or advance business animation.
-- A stale lease or disconnect freezes business animation and raises a technical warning.
-- `CONNECTED` and `SNAPSHOT` can restore factual state, but cannot restart business animation.
-- Animation resumes only when a subsequent accepted semantic business event authorizes it.
-- Duplicate IDs and out-of-order sequence numbers are ignored and cannot replay animation.
+- A heartbeat updates presence only; it cannot create or advance business animation.
+- Disconnect freezes business animation.
+- `CONNECTED` and `SNAPSHOT` restore transport/factual state but do not restart work animation.
+- Duplicate IDs and out-of-order sequence numbers cannot replay animation.
 - `UNKNOWN` progress renders `Progress unknown`; no percentage is synthesized.
-- `COMPLETED_COUNT_ONLY` renders only the completed count.
-- `KNOWN_TOTAL` renders the explicit completed/total relationship.
-- Only one worker can visually own the Economic Look machine at once.
-- KILL/PARK/PROMOTE changes only on an exact `DECISION` event carrying that destination.
-- Roles are materialized only after an accepted event/snapshot provides backing for that role.
+- KILL/PARK/PROMOTE changes only on an exact supported `DECISION` UI event; the current native worker contract does not produce one.
+- Only explicit event-backed roles are materialized.
 
 ## UX surface
 
-Mobile Safari is the primary layout. The shell uses ordinary DOM/CSS (no canvas/WebGL or external assets), safe-area insets, Pointer Events, touch-action control, and a lightweight transform-only camera.
+Mobile Safari remains the primary layout. The shell uses ordinary DOM/CSS, safe-area insets, Pointer Events and a transform-only pan/pinch camera.
 
-Implemented surfaces:
-
-- global research floor with pan / pinch zoom / camera reset;
-- event-backed Worker, Researcher/Scout, Builder, Data, Auditor/Red Team, Manager/Orchestrator stations;
-- current task, step, progress mode, next action and last real action;
-- idle, working, blocked and stale/frozen presentation;
-- semantic activity visuals for source research, document reading, data qualification, coding/testing, Economic Look calculation, audit/red-team, commit/persistence, handoff, result and blocker;
-- KILL / PARK / PROMOTE destinations;
-- global Economic Look FREE / ACTIVE indicator and one-owner visual lock;
-- recent-result wall and synthetic economic-result cards;
-- character tap bottom sheet with replay-day / last-hour history and evidence references;
-- explicit stale/resync technical warnings.
-
-## Deterministic fixture scenarios
-
-1. Researcher source investigation → handoff.
-2. Builder coding/testing → commit/result.
-3. Auditor red-team → PARK.
-4. Economic Look → PROMOTE.
-5. Worker becomes BLOCKED.
-6. Heartbeat/lease becomes stale and freezes activity.
-7. Disconnect → reconnect → snapshot/resync without fake animation restart.
-8. Two documentary agents concurrently while exactly one Economic Look is active.
-
-The UI never advances these scenarios on a business timer. A user explicitly applies the next event or remaining fixture events.
+The replay fixtures continue to demonstrate richer future semantic roles and Economic Look states, but they remain visibly synthetic development fixtures and are not evidence.
 
 ## Tests
 
@@ -95,8 +109,12 @@ From this directory:
 npm test
 ```
 
-The suite uses only Node's built-in test runner and has no package dependencies. It covers the requested negative/failure invariants as well as the replay scenarios.
+The suite uses Node's built-in test runner. `tests/platform-native.test.js` covers the real probe-shaped worker contract, generation-scoped ordering, duplicate suppression, heartbeat-only presence, unsupported-event rejection, factual snapshot reconstruction, snapshot replay suppression, forbidden identity/economic inferences, and the thin SSE subscription.
 
-## Binding boundary
+During the integration session the exact native adapter/state-machine subset was executed locally and passed 11/11 tests. A full repository clone/CI run was not available in that runtime because direct GitHub DNS access from the execution container was unavailable.
 
-The implementation is **ready to bind structurally** to the proven live protocol without rewriting the scene. Production integration must stop at the adapter until the platform-probe owner supplies the canonical contract/mapper and live-stream authority.
+## Known platform boundary
+
+This integration uses the platform capabilities already proved by the probe branch. It does not claim proof for the unresolved Codex/Owner principal, a fully remote Builder identity, native APNs delivery, app-specific mobile behavior, third-party model routing, or production publication of this UX surface.
+
+Those are capability boundaries, not reasons to replace the working native event/SSE architecture with the older polling approach.
