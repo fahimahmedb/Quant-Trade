@@ -9,7 +9,10 @@
     "persist_after_each_stage": true,
     "self_validation_forbidden": true,
     "cross_lane_handoff_required_for_independent_challenge": true,
-    "invent_work_when_empty": false
+    "invent_work_when_empty": false,
+    "deterministic_frontier_refill_when_globally_empty": true,
+    "frontier_refill_steward_lane": "integrator_portfolio",
+    "max_refill_tasks_per_steward_wake": 1
   },
   "lanes": [
     {
@@ -18,7 +21,7 @@
       "capabilities": ["quant_mechanisms", "institutional_flows"],
       "task_types": ["QUANT_MECHANISM", "INSTITUTIONAL_FLOW"],
       "same_lineage_stages": ["legacy_duplicate_check", "mechanism_research", "disconfirmation", "freeze_hypothesis", "validation_handoff"],
-      "forbidden_stages": ["independent_validation", "red_team", "portfolio_allocation"]
+      "forbidden_stages": ["independent_validation", "red_team", "portfolio_allocation", "queue_refill"]
     },
     {
       "lane_id": "fundamental_events",
@@ -26,7 +29,7 @@
       "capabilities": ["fundamental", "event_document"],
       "task_types": ["FUNDAMENTAL_RESEARCH", "EVENT_DOCUMENT"],
       "same_lineage_stages": ["legacy_duplicate_check", "document_or_fundamental_research", "disconfirmation", "freeze_hypothesis", "validation_handoff"],
-      "forbidden_stages": ["independent_validation", "red_team", "portfolio_allocation"]
+      "forbidden_stages": ["independent_validation", "red_team", "portfolio_allocation", "queue_refill"]
     },
     {
       "lane_id": "evidence_data",
@@ -34,7 +37,7 @@
       "capabilities": ["legacy_recovery", "data_provenance", "trial_accounting", "source_qualification"],
       "task_types": ["LEGACY_RECOVERY", "DATA_PROVENANCE", "TRIAL_ACCOUNTING", "SOURCE_QUALIFICATION"],
       "same_lineage_stages": ["recover_or_qualify", "provenance_check", "trial_accounting", "gap_classification", "handoff"],
-      "forbidden_stages": ["new_economic_outcome", "verdict_rewrite", "portfolio_allocation"]
+      "forbidden_stages": ["new_economic_outcome", "verdict_rewrite", "portfolio_allocation", "queue_refill"]
     },
     {
       "lane_id": "independent_challenge",
@@ -42,7 +45,7 @@
       "capabilities": ["validator", "red_team"],
       "task_types": ["VALIDATION", "RED_TEAM"],
       "same_lineage_stages": ["independent_validation", "cross_examination", "red_team", "claim_restriction", "integration_handoff"],
-      "forbidden_stages": ["hypothesis_generation", "signal_repair", "portfolio_allocation"]
+      "forbidden_stages": ["hypothesis_generation", "signal_repair", "portfolio_allocation", "queue_refill"]
     },
     {
       "lane_id": "integrator_portfolio",
@@ -50,7 +53,16 @@
       "capabilities": ["portfolio_map", "economic_identity", "shadow_readiness", "learning_telemetry", "control_integrator"],
       "task_types": ["PORTFOLIO_MAP", "ECONOMIC_IDENTITY", "SHADOW_READINESS", "LEARNING_TELEMETRY", "CONTROL_INTEGRATION"],
       "same_lineage_stages": ["economic_identity", "overlap_map", "portfolio_map", "shadow_readiness", "ledger_and_telemetry_update"],
-      "forbidden_stages": ["capital_allocation", "position_sizing", "order_generation", "prospective_observation_without_authority"]
+      "queue_steward": {
+        "enabled": true,
+        "trigger": "NO_READY_OR_CLAIMED_TASKS_GLOBAL",
+        "frontier_file": "research/research_os/runtime/RESEARCH_FRONTIER.json",
+        "max_new_tasks_per_wake": 1,
+        "derive_only": true,
+        "execute_derived_producer_task_same_wake": false,
+        "free_form_task_invention": false
+      },
+      "forbidden_stages": ["capital_allocation", "position_sizing", "order_generation", "prospective_observation_without_authority", "execute_derived_producer_task_same_refill_wake"]
     }
   ],
   "handoffs": [
@@ -58,7 +70,9 @@
     {"from": "fundamental_events", "to": "independent_challenge", "requires": "FROZEN_HYPOTHESIS"},
     {"from": "evidence_data", "to": "market_discovery", "requires": "DATA_OR_PROVENANCE_READY", "optional": true},
     {"from": "evidence_data", "to": "fundamental_events", "requires": "DATA_OR_PROVENANCE_READY", "optional": true},
-    {"from": "independent_challenge", "to": "integrator_portfolio", "requires": "CHALLENGE_COMPLETE_NO_BLOCKER"}
+    {"from": "independent_challenge", "to": "integrator_portfolio", "requires": "CHALLENGE_COMPLETE_NO_BLOCKER"},
+    {"from": "integrator_portfolio", "to": "market_discovery", "requires": "DETERMINISTIC_FRONTIER_REFILL", "optional": true},
+    {"from": "integrator_portfolio", "to": "fundamental_events", "requires": "DETERMINISTIC_FRONTIER_REFILL", "optional": true}
   ],
   "hard_authority": {
     "economic_experiment_authorized": false,
