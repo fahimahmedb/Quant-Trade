@@ -81,6 +81,23 @@ test('snapshot reconstruction is factual and non-animating until a later busines
   assert.equal(state.transport.resumeRequiresBusinessEvent,true);
 });
 
+test('snapshot replay frames are ignored; only a truly later accepted event can animate',()=>{
+  const historical=native({payload:{label:'coding',ui_activity:ACTIVITY.CODING_TESTING}});
+  const snapshot=mapNativeSnapshot({generated_at:'2026-10-14T10:01:00Z',cursor:historical.event_id,events:[historical]});
+  let state=reduceScene(createInitialState(),{id:'c',seq:1,stream:'transport',at:'2026-10-14T09:59:59Z',kind:EVENT.CONNECTED});
+  state=reduceScene(state,snapshot);
+  const workerId=historical.worker_id;
+  assert.equal(state.agents[workerId].animationRunning,false);
+  const historyAfterSnapshot=state.history.length;
+  state=reduceScene(state,mapNativeWorkerEvent(historical));
+  assert.equal(state.history.length,historyAfterSnapshot);
+  assert.equal(state.agents[workerId].animationRunning,false);
+  const later=native({event_id:'platform-probe-event-next',event_seq:2,accepted_at:'2026-10-14T10:01:02Z',payload:{label:'coding next',ui_activity:ACTIVITY.CODING_TESTING}});
+  state=reduceScene(state,mapNativeWorkerEvent(later));
+  assert.equal(state.agents[workerId].animationRunning,true);
+  assert.equal(state.transport.resumeRequiresBusinessEvent,false);
+});
+
 test('native Site named frames route through one canonical mapper',()=>{
   assert.equal(mapNativeSiteFrame({channel:'worker_event',data:native()}).kind,EVENT.WORK_STARTED);
   assert.equal(mapNativeSiteFrame({channel:'snapshot',data:{generated_at:'2026-10-14T10:01:00Z',events:[]}}).kind,EVENT.SNAPSHOT);
