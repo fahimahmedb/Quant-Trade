@@ -1,0 +1,24 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"quant-trade://research-os/WorkerReceipt",
+  "title":"WorkerReceipt",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["receipt_id","task_id","worker_id","session_id","lease_generation","started_at","completed_at","input_head","status","summary","artifacts","evidence_refs","authority_assertion"],
+  "properties":{
+    "receipt_id":{"type":"string","minLength":1},
+    "task_id":{"type":"string","minLength":1},
+    "worker_id":{"type":"string","minLength":1},
+    "session_id":{"type":"string","minLength":1},
+    "lease_generation":{"type":"integer","minimum":1},
+    "started_at":{"type":"string"},
+    "completed_at":{"type":"string"},
+    "input_head":{"type":"string","minLength":7},
+    "output_commit":{"type":["string","null"]},
+    "status":{"enum":["COMPLETE","BLOCKED","FAILED"]},
+    "summary":{"type":"string","minLength":1},
+    "artifacts":{"type":"array","items":{"type":"string"}},
+    "evidence_refs":{"type":"array","items":{"type":"string"}},
+    "authority_assertion":{"type":"object","required":["economic_experiment_performed","prospective_observation_performed","real_capital_used","live_trading_performed"],"properties":{"economic_experiment_performed":{"const":false},"prospective_observation_performed":{"const":false},"real_capital_used":{"const":false},"live_trading_performed":{"const":false}},"additionalProperties":false}
+  }
+}
