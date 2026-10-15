@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "candidate": {
+    "issuer": "SkinHealth Systems Inc.",
+    "ticker": "SKIN",
+    "cik": "0001818093",
+    "form": "8-K",
+    "accession": "0001628280-26-065833",
+    "accepted": "2026-10-14T09:15:29-04:00"
+  },
+  "decision": "INELIGIBLE_POST_EVENT_NO_ENTRY_WINDOW",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "market_price_payload_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "protocols": {
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE"
+  },
+  "primary_facts": [
+    "The post-T0 SEC 8-K was accepted on October 14, 2026 at approximately 09:15 ET.",
+    "It reports a 1-for-20 reverse split effective at 12:00 a.m. ET on October 14 and post-split Nasdaq trading from the October 14 open.",
+    "No fractional shares are issued; holders otherwise entitled to a fraction receive cash in lieu, not round-up shares.",
+    "The filing states that the company had already issued a press release on October 9 announcing the October 14 effective date.",
+    "The 8-K does not itself state a reconstructible cash-in-lieu pricing formula in the body."
+  ],
+  "source": {
+    "url": "https://www.sec.gov/Archives/edgar/data/1818093/000162828026065833/skin-20261014.htm",
+    "directory": "https://www.sec.gov/Archives/edgar/data/1818093/000162828026065833/"
+  },
+  "decision_reason": "Protocol B requires at least one regular exchange-session open strictly after EVENT_TIME and strictly before the documented last time at which a purchase can obtain the split entitlement. Here the split was already effective at midnight and post-split trading had begun before the 09:15 ET filing. Therefore a post-filing buyer cannot acquire a pre-split fractional entitlement. This fails eligibility before any price access. The event also has cash-in-lieu rather than round-up treatment, so protocol C is inapplicable.",
+  "additional_contamination_guard": "The operative split was publicly announced by the issuer on October 9, before the v2 prospective T0. Even aside from the entry-window failure, this is not a clean surprise event to treat as fresh prospective evidence.",
+  "outcome_exposure": {
+    "entry_open": false,
+    "cash_basis": false,
+    "post_split_price": false,
+    "payout": false,
+    "economic_look_count_increment": 0
+  },
+  "ordering_effect": "SkinHealth may be cleared from the B/C documentary queue as ineligible without consuming the economic slot. It must not be replaced by a later event on attractiveness grounds; chronological screening must continue independently.",
+  "next_action": "Continue chronological post-T0 reverse-split admission. For a future B/C candidate, establish accepted clock, effective/entitlement cutoff, fractional treatment and at least one valid post-event pre-entitlement session before any selected market price.",
+  "inference_ceiling": [
+    "No reverse-split economic conclusion",
+    "No cash-in-lieu profitability conclusion",
+    "No round-up family evidence",
+    "No live or real-capital authorization"
+  ]
+}
