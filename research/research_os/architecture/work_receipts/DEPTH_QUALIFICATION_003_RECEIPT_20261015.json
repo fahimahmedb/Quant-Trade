@@ -1,0 +1,94 @@
+{
+  "task_id": "DEPTH-QUALIFICATION-003",
+  "status": "IN_PROGRESS",
+  "execution_phase": "IMPLEMENTED_AWAITING_EXACT_HEAD_CI",
+  "observed_head_before": "6d95661570fc60d0db2345d2a38340c213e596f0",
+  "implementation_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+  "remote_head_verified": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+  "scope": "Integrate only the completed internal-depth increment behind the existing canonical stages. Verify meaningful replay/recovery and exact implementation-head CI, persist its receipt and update known gaps. Qualification of a batch is not completion of all final depth.",
+  "changed_files": [
+    "research/research_os/architecture/work_receipts/DEPTH_QUALIFICATION_003_20261015.json",
+    "research/research_os/simulations/primary_documentary_build.py",
+    "research/research_os/tests/test_depth_qualification.py"
+  ],
+  "artifact": "DEPTH_QUALIFICATION_003_20261015.json",
+  "local_validation": [
+    {
+      "command": "python -m unittest discover -s research/research_os/tests -p 'test_*.py' -q",
+      "result": "PASS, 142 tests"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "ci": [
+    {
+      "id": 38805247661,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247661"
+    },
+    {
+      "id": 38805247677,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247677"
+    },
+    {
+      "id": 38805247592,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247592"
+    },
+    {
+      "id": 38805247666,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247666"
+    },
+    {
+      "id": 38805247515,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247515"
+    },
+    {
+      "id": 38805247628,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247628"
+    },
+    {
+      "id": 38805247606,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38805247606"
+    }
+  ],
+  "evidence_class": "CAPTURED_DOCUMENTARY_FACTS_AND_ENGINEERING_CHECKS",
+  "limitations": [
+    "Internal depth remains PARTIAL. UNKNOWN/BLOCK retained. No independent scientific validation or economic outcomes.",
+    "CI conclusions refer only to their recorded implementation SHA."
+  ],
+  "next_admissible_task": "BOUNDARY_REVIEW_OF_REMAINING_DEPTH",
+  "recorded_at": "2026-10-15T20:51:43.910990+00:00",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}
