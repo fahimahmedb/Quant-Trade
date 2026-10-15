@@ -1,0 +1,30 @@
+{
+  "receipt_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001-g1",
+  "task_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001",
+  "worker_id": "chatgpt-interactive-validator",
+  "session_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T12:45:35Z",
+  "completed_at": "2026-10-15T12:47:05Z",
+  "input_head": "74c7b1c1ff338b1e7582fe07cd4f3df17d1792f6",
+  "output_commit": "d09fa3e75716c80fbec65849cc89e0c3fb9d1041",
+  "status": "COMPLETE",
+  "summary": "Independent challenge confirms current FINRA large-distribution ex-date/due-bill mechanics and current Nasdaq event-level implementation. The candidate is narrowed to entitlement-parity/microstructure and requires event-specific exchange notices plus versioned terms. No prices or returns were accessed.",
+  "artifacts": [
+    "research/research_os/assessments/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001.json",
+    "research/research_os/events/VALIDATE-EVENT-DUEBILL-LARGE-DIST-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "research/research_os/hypotheses/EVENT-DUEBILL-LARGE-DIST-001.json",
+    "https://www.finra.org/sites/default/files/2023-11/SR-FINRA-2023-017.pdf",
+    "https://www.finra.org/sites/default/files/NoticeDocument/p003997.pdf",
+    "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-687",
+    "https://www.sec.gov/Archives/edgar/data/1941131/000114036125045775/ef20061277_ex99-1.htm"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}
