@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "scope": "PUBLIC_E2E_LIVE_CANARY_ONLY",
+  "owner_override_recorded_at": "2026-10-15",
+  "identity_gate": "WAIVED_FOR_THIS_CANARY",
+  "codex_authenticated_runtime_status": "BLOCKED_UNCHANGED",
+  "owner_auth_mutation_status": "BLOCKED_UNCHANGED",
+  "allowed_canary_executor": "WRAPPED_BENIGN_WORKER_ONLY",
+  "worker_ingress_authentication": "REQUIRED_UNCHANGED",
+  "github_as_live_event_bus": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "economic_actions": "UNSUPPORTED",
+  "claim_rules": {
+    "may_claim_live_transport_e2e": true,
+    "may_claim_codex_identity": false,
+    "may_claim_owner_identity": false,
+    "may_claim_economic_worker": false
+  },
+  "expiry": "END_OF_CURRENT_PUBLICATION_CANARY",
+  "notes": "Owner explicitly waived Codex==Owner identity as a gating prerequisite for this publication canary. This waiver does not weaken native worker-ingress authentication or upgrade blocked identity probes to PASS."
+}
