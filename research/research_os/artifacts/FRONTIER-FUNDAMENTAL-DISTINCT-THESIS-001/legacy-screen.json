@@ -1,0 +1,26 @@
+{
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001",
+  "stage": "legacy_duplicate_check",
+  "performed_at": "2026-10-15T19:11:00Z",
+  "pinned_legacy_source": {
+    "branch": "research/legacy-economic-reconciliation-20261015",
+    "commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "ledger": "LEGACY_RESEARCH_LEDGER.json",
+    "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS"
+  },
+  "screen_result": "NO_DIRECT_ASML_CAPACITY_PRICING_FUNDAMENTAL_LINEAGE_FOUND_IN_REVIEWED_LEGACY_LEDGER",
+  "candidate_family": "semicap-capacity-pricing-operating-leverage",
+  "candidate_issuer": "ASML Holding N.V.",
+  "causal_distinctness": "The proposed thesis is issuer-fundamental: constrained EUV/High-NA capacity plus negotiated pricing and service/upgrades may translate backlog visibility into revenue/margin durability. It is not a calendar anomaly, generic trend/carry, crypto venue spread, sector reversal, weather, sports, box-office, or previously promoted CFE/VIX expression.",
+  "negative_knowledge_respected": [
+    "No backtest or historical price-outcome inspection was performed.",
+    "No issuer was selected because of subsequent stock performance.",
+    "Legacy reconciliation is partial, so independent validation must re-check duplication before any stronger claim."
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  }
+}
