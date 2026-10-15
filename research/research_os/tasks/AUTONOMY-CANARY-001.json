@@ -2,7 +2,7 @@
   "task_id": "AUTONOMY-CANARY-001",
   "task_type": "SYSTEM_CANARY",
   "required_capability": "repository_read_write",
-  "status": "READY",
+  "status": "CLAIMED",
   "priority": 100,
   "inputs": {
     "branch": "builder/research-os-autonomous-loop-20261015",
@@ -44,12 +44,12 @@
     "live_trading_authorized": false
   },
   "lease": {
-    "generation": 0,
-    "owner": null,
-    "claimed_at": null,
-    "expires_at": null
+    "generation": 1,
+    "owner": "chatgpt-quant-research-worker",
+    "claimed_at": "2026-10-15T11:41:42Z",
+    "expires_at": "2026-10-15T12:36:42Z"
   },
   "created_at": "2026-10-15",
-  "updated_at": null,
+  "updated_at": "2026-10-15T11:41:42Z",
   "completion": null
 }
