@@ -1,0 +1,30 @@
+{
+  "receipt_id": "VALIDATE-FLOW-ADR-TERM-001-g1",
+  "task_id": "VALIDATE-FLOW-ADR-TERM-001",
+  "worker_id": "chatgpt-interactive-validator",
+  "session_id": "VALIDATE-FLOW-ADR-TERM-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T12:37:10Z",
+  "completed_at": "2026-10-15T12:39:05Z",
+  "input_head": "95d5aa3db7ab089a17caeaaf582b09de14a6878b",
+  "output_commit": "7329ad261b29916b9c0fe0382b8b0a649461279c",
+  "status": "COMPLETE",
+  "summary": "Independent documentary validation supports FLOW-ADR-TERM-001 as a real, distinct residual forced-sale mechanism, but only when event-specific primary terms explicitly require or permit sale of remaining deposited securities. A historical SEC notice provides a dated termination plus six-month surrender window and forced sale; mandatory-exchange ADR terminations are explicitly excluded. No price or return outcome was accessed.",
+  "artifacts": [
+    "research/research_os/assessments/VALIDATE-FLOW-ADR-TERM-001.json",
+    "research/research_os/events/VALIDATE-FLOW-ADR-TERM-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "research/research_os/hypotheses/FLOW-ADR-TERM-001.json",
+    "LEGACY_RESEARCH_LEDGER.json@183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "https://www.sec.gov/Archives/edgar/data/914596/000091459605000010/shareholders05.htm",
+    "https://www.sec.gov/Archives/edgar/data/818686/000119312526323619/d118828dex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1038572/000129281420004575/ex02-d.htm"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}
