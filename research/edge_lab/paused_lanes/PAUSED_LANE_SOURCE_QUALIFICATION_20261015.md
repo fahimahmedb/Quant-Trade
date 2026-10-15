@@ -90,25 +90,48 @@ Recommended lane disposition: `L0_SOURCE_GATE_ADVANCED`; do not treat daily yiel
 Existing lane: `disc-sec-form4-eod-l1-v0`
 Existing blocker: referenced census code exists but the saved event dataset was not found at the pinned source head; survivorship-safe mapping and delist prices remain unresolved.
 
-### New source qualification
+### Primary-source qualification
 
-SEC EDGAR is publicly accessible without API keys for core filing/submission data. Form 4 XML filings contain issuer/security identifiers such as trading symbol/ticker and transaction fields at filing time.
+SEC EDGAR is publicly accessible for the core filing/submission surfaces used by the prior capture implementation. Form 4 XML filings contain issuer/security identity and transaction fields that can support a point-in-time mapping chain if handled under the existing custody/visibility controls.
 
-This materially helps the CIK/security mapping side of the data chain, but it does not solve historical delist returns, survivorship-safe price history or the missing saved census artifact.
+### Repository recovery findings
+
+The prior SEC work was recovered far enough to distinguish **implementation history** from **published scientific dataset**:
+
+1. Real raw-capture evidence exists. Commit `aa34939cd1d1995cc8a26cfc07d7c1aa7b95640c` records a live SEC probe that acquired 20 distinct Form-4 accessions as immutable raw objects, re-hashed 22 stored objects with no address mismatch, preserved the journal/raw bytes/cursor across restart, and explicitly classified the raw capture as not admissible for scientific confirmation.
+2. The dedicated census branch still exists: `builder/sec-form4-census-v2a` at HEAD `08dcfc39b4b22e0b25e54edde7b6accbb2bc4502`.
+3. That branch contains `scripts/sec_form4_census.py`, `scripts/sec_form4_proof.py`, dedicated SEC census/event schemas, tests, and `.github/workflows/sec-form4-census-proof.yml`.
+4. The workflow was designed to generate `artifacts/sec_form4_census/`, exact-head prove it, commit it with message `data: publish deterministic SEC Form-4 V2-A1 census`, upload the pinned raw SEC cache as a GitHub Actions artifact, and then push the exact proven HEAD.
+5. The current branch tree contains no `artifacts/sec_form4_census/` directory.
+6. Repository commit search did not locate the expected deterministic-census publication commit.
+7. Therefore the strongest supported conclusion is that the **census publication step never landed in Git history**. This is not evidence that no intermediate workflow run ever produced temporary files.
+8. Actions-artifact recovery remains unverified because the currently available connector surface did not expose branch push/workflow-dispatch run enumeration sufficiently to prove presence or absence of a retained artifact. The raw-cache artifact was configured for 90-day retention when successfully uploaded.
 
 ### Qualification verdict
 
 `SEC_PRIMARY_FILING_ACCESS = PASS`
 `CIK_SECURITY_MAPPING_SUPPORT = PARTIAL_PASS`
-`SAVED_CENSUS_LOCATED = FALSE`
+`RAW_FORM4_CAPTURE_HISTORY_EXISTS = TRUE`
+`PREVIOUS_CENSUS_IMPLEMENTATION_LOCATED = TRUE`
+`DETERMINISTIC_CENSUS_PUBLISH_COMMIT_LOCATED = FALSE`
+`CENSUS_ARTIFACT_IN_BRANCH_HEAD = FALSE`
+`ACTIONS_ARTIFACT_RECOVERY_STATUS = UNKNOWN_CONNECTOR_LIMITATION`
 `SURVIVORSHIP_DELIST_CHAIN = BLOCKED`
+`REBUILD_AUTHORIZED = FALSE`
 `ECONOMIC_LOOK_PERFORMED = FALSE`
+
+### What this changes
+
+The lane is no longer correctly described as “census work absent.” The implementation and real raw-capture history exist. The missing object is the **published deterministic scientific census** plus an admissible survivorship/delist return chain.
 
 ### Next safe action
 
-Search repository history/workflow artifacts for the previously built census and its hashes. Do not rebuild it until that search is exhausted. In parallel, qualify a survivorship-safe/delist-capable price source independently of the hypothesis outcome.
+1. If a surface capable of enumerating historical push/workflow-dispatch Actions artifacts becomes available, search for the configured `sec-form4-v2a1-raw-cache-*` artifact before reacquiring SEC data.
+2. Do **not** rerun `sec_form4_census.py` against SEC until a separate historical-data acquisition/rebuild authority is granted.
+3. Independently qualify a survivorship-safe/delist-capable price source and point-in-time security mapping path without inspecting the hypothesis outcome.
+4. Only after those data-chain gates are resolved should a new frozen economic protocol be considered.
 
-Recommended lane disposition: `DATA_CHAIN_PARTIAL_UNBLOCK`.
+Recommended lane disposition: `DATA_CHAIN_PARTIAL_UNBLOCK`; canonical economic state remains unchanged.
 
 ## 4. Hyperliquid forced-flow
 
@@ -157,7 +180,7 @@ Known unresolved items remain material: current 2022–2026 behavior, capital de
 |---|---|---|---|
 | Treasury / ZF | no cheap proxy before BBO/roll work | official auction + daily 5Y proxy identified | `L0_SOURCE_GATE_ADVANCED` |
 | France OAT/Bund | failed ECB key / no distinct proxy | TEC10 + Bundesbank 10Y route identified | `L0_SOURCE_GATE_ADVANCED` |
-| SEC Form 4 | missing saved census + mapping/delist chain | primary filings support mapping; census/delist still blocked | `DATA_CHAIN_PARTIAL_UNBLOCK` |
+| SEC Form 4 | missing census + mapping/delist chain | census implementation + raw capture history recovered; deterministic publish absent; delist chain still blocked | `DATA_CHAIN_PARTIAL_UNBLOCK` |
 | Hyperliquid | expensive host/global history | official archive remains requester-pays; recent API insufficient | `PARK_DATA_CONFIRMED` |
 | F2 prediction | permission/access | unchanged | `PARK_PERMISSION_CONFIRMED` |
 | Policy announcement | prospective contract/timing | authority still absent | `PARK_UNTIL_AUTHORITY` |
