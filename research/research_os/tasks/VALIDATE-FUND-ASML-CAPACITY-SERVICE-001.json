@@ -2,7 +2,7 @@
   "task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
   "task_type":"VALIDATION",
   "required_capability":"validator",
-  "status":"CLAIMED",
+  "status":"COMPLETE",
   "priority":90,
   "lineage":{"hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001","generation_id":"G1","source_task_id":"PROD-FUNDAMENTAL-001","source_lane":"fundamental_events","destination_lane":"independent_challenge"},
   "inputs":{"frozen_hypothesis":"research/research_os/hypotheses/FUND-ASML-CAPACITY-SERVICE-001.json","objective":"Independently challenge the ASML capacity-scarcity plus Installed Base Management fundamental thesis using primary disclosures. Verify normalization, demand/backlog convertibility, customer/geographic/export concentration, sustainable margin logic and required valuation inputs without using subsequent returns to repair the thesis."},
@@ -11,5 +11,6 @@
   "success_condition":"Independent EvidenceAssessment and challenge decision persisted for frozen G1.",
   "authority":{"scope":"INDEPENDENT_VALIDATION_ONLY","economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false},
   "lease":{"generation":1,"owner":"independent_challenge","claimed_at":"2026-10-15T13:41:03Z","expires_at":"2026-10-15T14:31:03Z"},
-  "created_at":"2026-10-15T13:15:00Z","updated_at":"2026-10-15T13:41:03Z","completion":null
+  "created_at":"2026-10-15T13:15:00Z","updated_at":"2026-10-15T13:46:00Z",
+  "completion":{"completed_at":"2026-10-15T13:46:00Z","receipt":"research/research_os/receipts/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-g1.json","artifacts":["research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-validation.json","research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-cross-examination.json","research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-red-team.json","research/research_os/assessments/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001.json","research/research_os/events/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001/001-action-started.json","research/research_os/events/VALIDATE-FUND-ASML-CAPACITY-SERVICE-001/002-action-completed.json"],"result":"PASS_BOUNDED_BUSINESS_MECHANISM_WITH_BLOCK_CLAIM_LEVEL","integration_handoff_created":false}
 }
