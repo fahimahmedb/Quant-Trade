@@ -64,10 +64,10 @@
     "retune_until_profitable": false
   },
   "tests": {
-    "bounded_unit_tests": {
+    "local_core_logic": {
       "count": 9,
       "result": "PASS",
-      "command": "python -m unittest research.research_os.tests.test_economic_readiness_validation -v",
+      "note": "Executed after the readiness helper and Red Team implementation, before the thin validation_v2.py entry-point wrapper was added. The exact implementation SHA is therefore qualified separately by CI below.",
       "coverage": [
         "all_preconditions_present",
         "missing_protocol_freeze",
@@ -92,7 +92,14 @@
     "run_id": 38816535536,
     "tested_sha": "20118372276e0d38cc3b10852903019528d93cf6",
     "status": "QUEUED",
-    "conclusion": null
+    "conclusion": null,
+    "exact_head_tests": [
+      "Python compile of owned surfaces",
+      "research.research_os.tests.test_economic_readiness_validation",
+      "research.research_os.tests.test_final_shape_registry",
+      "forbidden-file diff against mandatory base",
+      "closed-authority and blocker-taxonomy assertions"
+    ]
   },
   "integration_notes": [
     "validation_v2.py exposes validator_economic_readiness_v3 as the primary readiness entry point.",
