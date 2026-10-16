@@ -1,0 +1,16 @@
+{
+  "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1-e1",
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1",
+  "worker_id": "manual-market-discovery-20261016",
+  "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-16T06:51:00Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Distinct quant mechanism research",
+    "detail": "Legacy screening and non-outcome public market-microstructure documentation for an equity closing-auction imbalance mechanism; no return or future-outcome access authorized.",
+    "queue_state": "WORKING"
+  }
+}
