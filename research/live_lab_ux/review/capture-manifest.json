@@ -1,11 +1,12 @@
 {
-  "sourceHead": "b29b65b03d1f8519abe8c056a16d8131e7995048",
+  "sourceHead": "c825c740bbbe0999f29294a23239a1caeba500d0",
   "synthetic": true,
   "productionTouched": false,
   "results": [
     {
       "name": "A_IDLE",
       "entry": "live.html",
+      "sourceHead": "c825c740bbbe0999f29294a23239a1caeba500d0",
       "authority": "mock EventSource -> native mapper -> real reducer",
       "viewport": {
         "width": 1440,
@@ -19,6 +20,7 @@
     {
       "name": "B_ACTIVE",
       "entry": "live.html",
+      "sourceHead": "c825c740bbbe0999f29294a23239a1caeba500d0",
       "authority": "mock EventSource -> native mapper -> real reducer",
       "viewport": {
         "width": 1440,
@@ -32,6 +34,7 @@
     {
       "name": "C_SELECTED",
       "entry": "live.html",
+      "sourceHead": "c825c740bbbe0999f29294a23239a1caeba500d0",
       "authority": "mock EventSource -> native mapper -> real reducer",
       "viewport": {
         "width": 1440,
@@ -45,6 +48,7 @@
     {
       "name": "D_ECONOMIC",
       "entry": "index.html",
+      "sourceHead": "c825c740bbbe0999f29294a23239a1caeba500d0",
       "authority": "synthetic explicit reducer Economic Look",
       "viewport": {
         "width": 1440,
@@ -58,6 +62,7 @@
     {
       "name": "E_IPHONE",
       "entry": "live.html",
+      "sourceHead": "c825c740bbbe0999f29294a23239a1caeba500d0",
       "authority": "mock EventSource -> native mapper -> real reducer",
       "viewport": {
         "width": 393,
