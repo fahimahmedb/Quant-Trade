@@ -8,3 +8,9 @@ export async function emitNative(page,type='open',data){
 }
 export const nativeEvent=(overrides={})=>({event_id:'synthetic-review-action-1',session_id:'synthetic-review-session',worker_id:'review-worker',action_id:'synthetic-review-action',event_type:'ACTION_STARTED',event_seq:1,generation:1,emitted_at:'2026-10-15T21:34:00Z',accepted_at:'2026-10-15T21:34:01Z',payload:{label:'Review source methodology · synthetic fixture',detail:'Reading a primary document',ui_activity:'document-reading'},...overrides});
 export async function markSynthetic(page){await page.evaluate(()=>{const badge=document.createElement('span');badge.className='replay-badge';badge.textContent='SYNTHETIC REVIEW';document.querySelector('.stream').append(badge);});}
+export async function captureEmptyArchitecture(page,path){
+ // Element screenshots include overlapping DOM. Hide factual overlays while
+ // capturing the empty world; never bake LIVE, clocks, workers or HUD into it.
+ const style=await page.addStyleTag({content:'.app-shell > :not(.camera), [data-scene3d-labels]{visibility:hidden!important}'});
+ try{await page.locator('[data-scene3d-canvas]').screenshot({path,timeout:120000});}finally{await style.evaluate(node=>node.remove());}
+}
