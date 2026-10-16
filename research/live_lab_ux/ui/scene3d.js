@@ -37,7 +37,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  const c=Math.cos(view.pitch);camera.position.set(view.target.x+Math.sin(view.yaw)*c*view.distance,view.target.y+Math.sin(view.pitch)*view.distance,view.target.z+Math.cos(view.yaw)*c*view.distance);camera.lookAt(view.target);camera.updateMatrixWorld();}
 
  applyCamera();
- function focus(id){const a=visual.agents.find(a=>a.id===id);if(!a)return;const location=actors.get(id)?.group.position||new T.Vector3(...a.position);goal.target.set(location.x,location.y+1.1,location.z);goal.distance=fallback?(mobile()?20:16):(mobile()?8.6:7.2);goal.pitch=.25;goal.yaw=a.angle+Math.PI-.95;focusPending=id;focusStarted=performance.now();if(reduced){view.target.copy(goal.target);Object.assign(view,{distance:goal.distance,pitch:goal.pitch,yaw:goal.yaw});}}
+ function focus(id){const a=visual.agents.find(a=>a.id===id);if(!a)return;const location=actors.get(id)?.group.position||new T.Vector3(...a.position);goal.target.set(location.x,location.y+1.1,location.z);goal.distance=fallback?(mobile()?20:16):(mobile()?6.6:6.1);goal.pitch=.18;goal.yaw=a.angle+1.4;focusPending=id;focusStarted=performance.now();if(reduced){view.target.copy(goal.target);Object.assign(view,{distance:goal.distance,pitch:goal.pitch,yaw:goal.yaw});}}
  function reset(){goal.target.set(0,3.4,-3.8);goal.yaw=.40;goal.pitch=.18;goal.distance=mobile()?30:35;focusPending=null;}
  function zoom(delta){goal.distance=clamp(goal.distance-delta*18,5.5,63);}
  function syncActors(){const ids=new Set(visual.agents.map(a=>a.id));for(const[id,actor]of actors)if(!ids.has(id)){scene.remove(actor.group);targets.get(id)?.remove();targets.delete(id);actors.delete(id);}
@@ -87,7 +87,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  const move=e=>{const p=pointers.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;dragged ||= Math.hypot(p.x-p.sx,p.y-p.sy)>7;if(!dragged)return;focusPending=null;
  if(pointers.size===2){const[a,b]=[...pointers.values()];if(pinch)goal.distance=clamp(pinch.camera*pinch.d/Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),5.5,63);}
  else if(fallback||e.shiftKey||e.buttons===2){goal.target.x=clamp(goal.target.x-dx*.025,-10,10);goal.target.z=clamp(goal.target.z-dy*.025,-10,10);}
- else{const selectedAngle=visual.agents.find(a=>a.id===selected)?.angle;const anchor=selectedAngle===undefined?.4:selectedAngle+Math.PI-.95;goal.yaw=clamp(goal.yaw-dx*.005,anchor-1.1,anchor+1.1);goal.pitch=clamp(goal.pitch+dy*.004,.14,.83);}};
+ else{const selectedAngle=visual.agents.find(a=>a.id===selected)?.angle;const anchor=selectedAngle===undefined?.4:selectedAngle+1.4;goal.yaw=clamp(goal.yaw-dx*.005,anchor-1.1,anchor+1.1);goal.pitch=clamp(goal.pitch+dy*.004,.14,.83);}};
  const up=e=>{pointers.delete(e.pointerId);pinch=null;};
  const wheel=e=>{e.preventDefault();goal.distance=clamp(goal.distance*Math.exp(e.deltaY*.001),5.5,63);};
  const context=e=>e.preventDefault();

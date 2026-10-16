@@ -12,7 +12,7 @@ function torso(p,m){const positions=[],uv=[],indices=[],rings=[[.74,.17,.115],[.
 export function buildHumanoid(parent,index=0){
  const g=new T.Group();parent.add(g);const skin=mat(['#a9866c','#87644f','#bda38b'][index%3],.8),suit=mat(['#354d61','#52616b','#6f675b'][index%3],.9),trousers=mat('#253441',.95),shoe=mat('#292b2c',.63),trim=mat('#a7987d',.45,.5),shirt=mat('#aaa79a',.92);
  torso(g,suit);ell(g,0,.71,0,.175,.115,.13,trousers);limb(g,[0,1.2,0],[0,1.33,0],.055,.055,skin);
- const head=new T.Group();g.add(head);const h=mesh(head,headGeometry,skin,0,1.3458,.005);h.scale.setScalar(.047);
+ const head=new T.Group();head.position.y=1.28;g.add(head);const h=mesh(head,headGeometry,skin,0,.0658,.005);h.scale.setScalar(.047);
  // Tailored jacket: shirt inset, lapels, shoulder seams and restrained agent pin.
  const inset=mesh(g,new T.PlaneGeometry(.115,.25),shirt,0,1.1,.128);inset.rotation.x=.05;
  for(const s of [-1,1]){const lapel=mesh(g,new T.BoxGeometry(.048,.23,.012),suit,s*.067,1.11,.13);lapel.rotation.z=s*-.28;limb(g,[s*.1,1.21,.02],[s*.21,1.18,.05],.008,.008,trim);}
