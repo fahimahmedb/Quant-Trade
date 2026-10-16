@@ -1,0 +1,17 @@
+{
+  "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1-e2",
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1",
+  "worker_id": "manual-market-discovery-20261016",
+  "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 2,
+  "generation": 1,
+  "emitted_at": "2026-10-16T07:01:00Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Distinct quant mechanism frozen",
+    "detail": "US-equity closing-auction imbalance-pressure mechanism frozen after Legacy screening and active disconfirmation; no economic outcome access. Historical imbalance-feed rights remain to be qualified before any future authorized test.",
+    "result": "MECHANISM_FROZEN_NO_VALIDATION_HANDOFF_AUTHORIZED",
+    "queue_state": "UNKNOWN"
+  }
+}
