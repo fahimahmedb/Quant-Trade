@@ -2,7 +2,7 @@
   "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001",
   "task_type": "QUANT_DISTINCT_MECHANISM",
   "required_capability": "QUANT_RESEARCH",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "priority": 78,
   "inputs": {
     "objective": "Find one structurally distinct quant signal family grounded in an observable market mechanism, not a parameter variant of the closed Weather/MLB/Soccer families.",
@@ -39,7 +39,7 @@
     "expires_at": "2026-10-16T07:45:00Z"
   },
   "created_at": "2026-10-15T22:47:17Z",
-  "updated_at": "2026-10-16T06:50:00Z",
+  "updated_at": "2026-10-16T07:02:00Z",
   "derivation": {
     "type": "EMPTY_QUEUE_FRONTIER_REFILL",
     "frontier_id": "QUANT_MECHANISM_DISTINCT_SIGNAL",
@@ -48,5 +48,16 @@
     "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
     "target_lane": "market_discovery",
     "steward_lane": "integrator_portfolio"
+  },
+  "result": {
+    "hypothesis_id": "QUANT-CLOSE-AUCTION-IMBALANCE-001",
+    "receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1.json",
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001/legacy-screen.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001/research-and-disconfirmation.json",
+      "research/research_os/hypotheses/QUANT-CLOSE-AUCTION-IMBALANCE-001.json"
+    ],
+    "validation_handoff_created": false,
+    "validation_handoff_reason": "Task did not explicitly authorize creation of a downstream validation task."
   }
 }
