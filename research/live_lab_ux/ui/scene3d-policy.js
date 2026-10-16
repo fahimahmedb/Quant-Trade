@@ -4,27 +4,9 @@ import {ACTIVITY,PROGRESS,ROLES,progressRatio} from '../core/model.js';
  * Structural floor nodes are architecture, not runtime claims.
  * They never become "active" unless explicit event-backed state references them.
  */
-export const ARCHITECTURE_NODES=Object.freeze([
- {id:'discovery',label:'RESEARCH / MECHANISMS',position:[-10,1.05,-7]},
- {id:'documents',label:'EVENT / DOCUMENTS',position:[-4,1.05,-12]},
- {id:'fundamental',label:'FUNDAMENTAL',position:[4,1.05,-12]},
- {id:'flows',label:'FLOWS / REGULATORY',position:[11,1.05,-8]},
- {id:'evidence',label:'DATA / EVIDENCE',position:[-13,.4,.5]},
- {id:'challenge',label:'VALIDATION / RED TEAM',position:[11,.4,-1]},
- {id:'decay',label:'EDGE ARCHAEOLOGY / DECAY',position:[-12,.4,7]},
- {id:'implement',label:'IMPLEMENTABILITY',position:[9,.4,6]},
- {id:'experiment',label:'EXPERIMENT INFRASTRUCTURE',position:[3,.4,11]},
- {id:'identity',label:'ECONOMIC IDENTITY',position:[-6,.4,8]},
- {id:'portfolio',label:'PORTFOLIO / INTEGRATION',position:[-3,.4,13]},
-]);
-export const ROLE_STATIONS=Object.freeze({
- researcher:{position:[-9.4,1.05,-5.4],angle:.35,accent:[.72,.77,.78]},
- builder:{position:[7.6,.4,6.65],angle:-1.15,accent:[.72,.77,.78]},
- data:{position:[-11.7,.4,1.4],angle:.95,accent:[.72,.77,.78]},
- auditor:{position:[9.7,.4,0],angle:-.9,accent:[.72,.77,.78]},
- manager:{position:[3,.4,9.4],angle:Math.PI,accent:[.72,.77,.78]},
- worker:{position:[-4.45,.4,7.8],angle:1.7,accent:[.72,.77,.78]},
-});
+import {ZONES,ROLE_STATIONS} from './layout.js';
+export {ROLE_STATIONS} from './layout.js';
+export const ARCHITECTURE_NODES=Object.freeze(ZONES.map(z=>({id:z.id,label:z.name,position:[z.x,z.y,z.z]})));
 
 const STATUS_COLOR=Object.freeze({IDLE:[0.45,0.52,0.66],WORKING:[0.31,0.91,0.67],BLOCKED:[1.0,0.39,0.50]});
 const ACTIVITY_LABELS=Object.freeze({
