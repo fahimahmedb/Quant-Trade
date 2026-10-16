@@ -10,6 +10,7 @@
     ".github/workflows/research-os-aggressive-final-gate.yml",
     ".github/workflows/research-os-canonical-depth-ci.yml",
     ".github/workflows/research-os-canonical-spine-ci.yml",
+    "STATE.md",
     "research/research_os/architecture/FINAL_SHAPE_MODULE_REGISTRY.json",
     "research/research_os/architecture/work_receipts/ECON_READINESS_INTEGRATION_MANIFEST_20261016.json",
     "research/research_os/architecture/work_receipts/ECON_READINESS_PORT_MANIFEST_20261016.json",
@@ -90,7 +91,6 @@
     ".github/workflows/research-os-wave2-hardening-ci.yml",
     ".github/workflows/research-os-wave3-engine-depth-ci.yml",
     ".github/workflows/research-os-wave4-acquisition-firewall-ci.yml",
-    "STATE.md",
     "research/live_lab_ux/adapters/platform-native.js",
     "research/live_lab_ux/core/model.js",
     "research/live_lab_ux/core/state-machine.js",
@@ -223,7 +223,8 @@
   "CONFLICTS_RESOLVED": [
     "Preserved fresh autonomous control_plane.py with queue replenishment guard and all existing runtime semantics",
     "Preserved queue_replenisher.py, its tests and workflow; ported B7 dependency closure as exact file blobs",
-    "No state files or architecture-branch runtime snapshots imported; canonical_spine_task.json is a static synthetic test template, never an active task"
+    "No state files or architecture-branch runtime snapshots imported; canonical_spine_task.json is a static synthetic test template, never an active task",
+    "SEC P0 freshness gate correctly rejected inherited stale proof-inventory count; metadata-only correction, no gate or runtime fact changed"
   ],
   "B7_CI": [
     {
@@ -294,5 +295,14 @@
     "Owner reconciliation/activation of the isolated port candidate",
     "Owner authorization before any economic test"
   ],
-  "LIVE_AUTONOMOUS_BRANCH_MERGE_AUTHORIZED": false
+  "LIVE_AUTONOMOUS_BRANCH_MERGE_AUTHORIZED": false,
+  "METADATA_REPAIRS": {
+    "STATE.md": {
+      "reason": "Inherited autonomous proof inventory stale: 371 versus 539 actually discovered root unit tests",
+      "change": "Only proof-inventory test count corrected from 371 to 539; every other byte retained from fresh autonomous source",
+      "runtime_facts_changed": false,
+      "derived_by": "scripts.status_artifacts.unit_test_count() on retained source tests",
+      "failed_run": 38864836341
+    }
+  }
 }
