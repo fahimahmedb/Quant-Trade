@@ -12,3 +12,7 @@ scene3d=createResearchLab3D({viewport:document.querySelector('[data-camera]'),ca
 const adapter=new LiveEventAdapter({subscribeLive:emit=>subscribeNativeSiteEvents(emit),mapCanonicalEvent:mapNativeSiteFrame});
 adapter.start(event=>{state=reduceScene(state,event);render();});
 window.addEventListener('pagehide',()=>{adapter.stop();scene3d.destroy();},{once:true});render();
+
+// Safari may restore this destroyed scene from the back-forward cache. Rebind
+// through a fresh snapshot, which cannot authorize replayed work.
+window.addEventListener('pageshow',event=>{if(event.persisted)window.location.reload();});

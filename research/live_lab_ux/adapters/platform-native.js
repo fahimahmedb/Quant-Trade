@@ -23,6 +23,7 @@ function baseNative(event){
     id:event.event_id,
     seq:event.event_seq,
     stream:nativeStream(event),
+    authorityStream:nativeStream(event),
     at,
     workerId:event.worker_id,
     role:'worker',
@@ -79,8 +80,10 @@ export function mapNativeSnapshot(snapshot){
     const payload=event.payload&&typeof event.payload==='object'?event.payload:{};
     const running=event.event_type==='ACTION_STARTED';
     return {
+      authorityStream:nativeStream(event),
       workerId:event.worker_id,
       role:'worker',
+      stale:(snapshot.sessions||[]).some(s=>s.worker_id===event.worker_id&&s.session_id===event.session_id&&s.generation===event.generation&&['STALE','STALE_RESTART'].includes(s.lease_status)),
       state:running?'WORKING':'IDLE',
       activity:running?explicitActivity(payload):ACTIVITY.NONE,
       task:text(payload.label)||event.action_id,
@@ -106,6 +109,11 @@ export function mapNativeSnapshot(snapshot){
 export function mapNativeSiteFrame(frame){
   if(!frame||typeof frame!=='object')return null;
   if(frame.channel==='worker_event')return mapNativeWorkerEvent(frame.data);
+  if(frame.channel==='worker_stale'){
+    const d=frame.data;
+    if(!d||!text(d.worker_id)||!text(d.session_id)||!Number.isInteger(d.generation)||d.generation<1||!text(d.at)||!['STALE','STALE_RESTART'].includes(d.reason))return null;
+    return {id:`native-lease:${nativeStream(d)}:${d.at}`,seq:1,stream:`native-lease:${nativeStream(d)}:${d.at}`,authorityStream:nativeStream(d),at:d.at,workerId:d.worker_id,kind:EVENT.STALE,reason:d.reason};
+  }
   if(frame.channel==='snapshot')return mapNativeSnapshot(frame.data);
   if(frame.channel==='connected'&&text(frame.at))return {id:`transport-connected:${frame.at}`,seq:1,stream:`transport:${frame.at}`,at:frame.at,kind:EVENT.CONNECTED};
   if(frame.channel==='disconnected'&&text(frame.at))return {id:`transport-disconnected:${frame.at}`,seq:1,stream:`transport:${frame.at}`,at:frame.at,kind:EVENT.DISCONNECTED,reason:text(frame.reason)||'Native Site event stream disconnected'};

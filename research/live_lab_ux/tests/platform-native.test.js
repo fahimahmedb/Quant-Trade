@@ -120,11 +120,41 @@ test('SSE subscription forwards only real open/named-frame/error observations an
   const stop=subscribeNativeSiteEvents(frame=>frames.push(frame),{EventSourceImpl:FakeEventSource,now:()=> '2026-10-15T00:00:00Z'});
   FakeEventSource.instance.emit('open');
   FakeEventSource.instance.emit('worker_event',{data:JSON.stringify(native())});
+  FakeEventSource.instance.emit('worker_stale',{data:JSON.stringify({worker_id:'worker',reason:'STALE'})});
+  FakeEventSource.instance.emit('stream_error',{data:'{}'});
   FakeEventSource.instance.emit('error');
   assert.equal(FakeEventSource.instance.url,'/api/work/events');
   assert.equal(frames[0].channel,'connected');
   assert.equal(frames[1].channel,'worker_event');
-  assert.equal(frames[2].channel,'disconnected');
+  assert.equal(frames[2].channel,'worker_stale');
+  assert.equal(frames[3].channel,'disconnected');
+  assert.equal(frames[4].channel,'disconnected');
   stop();
   assert.equal(FakeEventSource.instance.closed,true);
+});
+
+test('server lease expiry freezes only the matching worker generation; heartbeat cannot resume it',()=>{
+ let state=createInitialState({mode:'LIVE'});
+ state=reduceScene(state,mapNativeSiteFrame({channel:'connected',at:'2026-10-16T06:00:00Z'}));
+ const start=native({payload:{ui_activity:ACTIVITY.CODING_TESTING}});
+ const other=native({event_id:'other-start',worker_id:'other',payload:{ui_activity:ACTIVITY.CODING_TESTING}});
+ state=reduceScene(state,mapNativeWorkerEvent(start));state=reduceScene(state,mapNativeWorkerEvent(other));
+ const stale={worker_id:start.worker_id,session_id:start.session_id,generation:start.generation,at:'2026-10-16T06:00:30Z',reason:'STALE'};
+ state=reduceScene(state,mapNativeSiteFrame({channel:'worker_stale',data:{...stale,generation:1}}));
+ assert.equal(state.agents[start.worker_id].animationRunning,true);
+ state=reduceScene(state,mapNativeSiteFrame({channel:'worker_stale',data:stale}));
+ assert.equal(state.agents[start.worker_id].animationRunning,false);
+ assert.equal(state.agents[start.worker_id].stale,true);
+ assert.equal(state.agents.other.animationRunning,true);assert.equal(state.transport.stale,false);
+ state=reduceScene(state,mapNativeWorkerEvent(native({event_id:'post-stale-hb',event_seq:2,event_type:'WORKER_HEARTBEAT'})));
+ assert.equal(state.agents[start.worker_id].animationRunning,false);
+ state=reduceScene(state,mapNativeWorkerEvent(native({event_id:'post-stale-semantic',event_seq:3,payload:{ui_activity:ACTIVITY.CODING_TESTING}})));
+ assert.equal(state.agents[start.worker_id].animationRunning,true);
+ assert.equal(mapNativeSiteFrame({channel:'worker_stale',data:{...stale,reason:'FRESH'}}),null);
+});
+
+test('native stale snapshot keeps lease status factual without authorizing motion',()=>{
+ const e=native();let state=reduceScene(createInitialState({mode:'LIVE'}),mapNativeSiteFrame({channel:'connected',at:e.accepted_at}));
+ state=reduceScene(state,mapNativeSnapshot({generated_at:e.accepted_at,events:[e],sessions:[{worker_id:e.worker_id,session_id:e.session_id,generation:e.generation,lease_status:'STALE'}]}));
+ assert.equal(state.agents[e.worker_id].stale,true);assert.equal(state.agents[e.worker_id].animationRunning,false);
 });
