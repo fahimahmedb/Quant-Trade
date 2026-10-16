@@ -1,0 +1,11 @@
+{
+  "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-001-g1-e1",
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-001-g1",
+  "worker_id": "market-discovery-workflow",
+  "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-16T06:57:20Z",
+  "payload": {"queue_state":"WORKING","lane":"market_discovery","task_type":"QUANT_MECHANISM"}
+}
