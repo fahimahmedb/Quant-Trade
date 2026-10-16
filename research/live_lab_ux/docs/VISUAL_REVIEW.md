@@ -1,5 +1,8 @@
 # Integrated visual review — 2026-10-16
 
+**Historical isolated review.** Owner subsequently authorized publication. The
+review hold below is superseded by [production receipts](PRODUCTION_20261016.md).
+
 Branch: `builder/live-lab-owner-ux-rebuild-20261015`.
 Capture/source HEAD: `c825c740bbbe0999f29294a23239a1caeba500d0`.
 Owner constitution/UX3/UX4 unchanged. The rejected 2026-10-15 candidate is superseded.
