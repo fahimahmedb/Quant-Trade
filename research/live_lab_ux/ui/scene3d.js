@@ -17,7 +17,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  const actors=new Map(),targets=new Map(),pointers=new Map();let dragged=false,pinch=null;
  let fallback=false,illustration,illustratedCanvas,illustratedContext,energyOverlay;let illustrationTransform={x:0,y:0,scale:1};
  try{renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,mobile()?1.65:1.75));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=.96;ready=true;}catch{fallback=true;}
- const world=buildArchitecture(scene);if(renderer){const pmrem=new T.PMREMGenerator(renderer),room=new T.RoomEnvironment();scene.environment=pmrem.fromScene(room,.045).texture;scene.environmentIntensity=.22;room.dispose();pmrem.dispose();}batchArchitecture(scene,world);
+ const world=renderer?buildArchitecture(scene):{cartridge:new T.Group(),activeRing:new T.Group(),energyMaterial:{emissiveIntensity:0},coreLight:{intensity:0}};if(renderer){const pmrem=new T.PMREMGenerator(renderer),room=new T.RoomEnvironment();scene.environment=pmrem.fromScene(room,.045).texture;scene.environmentIntensity=.22;room.dispose();pmrem.dispose();}batchArchitecture(scene,world);
  if(renderer){composer=new T.EffectComposer(renderer);composer.addPass(new T.RenderPass(scene,camera));ao=new T.SSAOPass(scene,camera,viewport.clientWidth,viewport.clientHeight,12);ao.kernelRadius=2.2;ao.minDistance=.001;ao.maxDistance=.075;composer.addPass(ao);bloom=new T.UnrealBloomPass(new T.Vector2(viewport.clientWidth,viewport.clientHeight),.13,.4,1.1);composer.addPass(bloom);composer.addPass(new T.OutputPass());composer.renderTarget1.samples=4;composer.renderTarget2.samples=4;}
  function enableIllustration(){
  fallback=true;
@@ -37,7 +37,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  const c=Math.cos(view.pitch);camera.position.set(view.target.x+Math.sin(view.yaw)*c*view.distance,view.target.y+Math.sin(view.pitch)*view.distance,view.target.z+Math.cos(view.yaw)*c*view.distance);camera.lookAt(view.target);camera.updateMatrixWorld();}
 
  applyCamera();
- function focus(id){const a=visual.agents.find(a=>a.id===id);if(!a)return;goal.target.set(a.position[0],a.position[1]+1.1,a.position[2]);goal.distance=fallback?(mobile()?20:16):(mobile()?8.6:7.2);goal.pitch=.25;goal.yaw=a.angle+Math.PI-.95;focusPending=id;focusStarted=performance.now();if(reduced){view.target.copy(goal.target);Object.assign(view,{distance:goal.distance,pitch:goal.pitch,yaw:goal.yaw});}}
+ function focus(id){const a=visual.agents.find(a=>a.id===id);if(!a)return;const location=actors.get(id)?.group.position||new T.Vector3(...a.position);goal.target.set(location.x,location.y+1.1,location.z);goal.distance=fallback?(mobile()?20:16):(mobile()?8.6:7.2);goal.pitch=.25;goal.yaw=a.angle+Math.PI-.95;focusPending=id;focusStarted=performance.now();if(reduced){view.target.copy(goal.target);Object.assign(view,{distance:goal.distance,pitch:goal.pitch,yaw:goal.yaw});}}
  function reset(){goal.target.set(0,3.4,-3.8);goal.yaw=.40;goal.pitch=.18;goal.distance=mobile()?30:35;focusPending=null;}
  function zoom(delta){goal.distance=clamp(goal.distance-delta*18,5.5,63);}
  function syncActors(){const ids=new Set(visual.agents.map(a=>a.id));for(const[id,actor]of actors)if(!ids.has(id)){scene.remove(actor.group);targets.get(id)?.remove();targets.delete(id);actors.delete(id);}
