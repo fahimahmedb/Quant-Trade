@@ -1,0 +1,183 @@
+{
+  "MISSION": "ECONOMIC_READINESS_ONE_SHOT",
+  "SOURCE_BUILDER_SHAS": {
+    "B1": "972a94eb763fa40498139c76c339f04a7467910f",
+    "B2": "8eb01c5163e43b8d23ee977d68c71770b6b25c26",
+    "B3": "6d3a9ddba44e993b4bab133feb9a784045d94cec",
+    "B4": "71267d09b6fc0ea0d822bd35268c151f740a943d",
+    "B5": "d48eaf78487d1d617cf9feddbdd16c199925684d"
+  },
+  "CANONICAL_BASE": "b570973836e0e7daf50ca095a7559d63328f0a57",
+  "B6_START_HEAD": "972a94eb763fa40498139c76c339f04a7467910f",
+  "B6_FINAL_HEAD": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+  "FILES_INTEGRATED": [
+    ".github/workflows/econ-readiness-experiment-ci.yml",
+    ".github/workflows/econ-readiness-validation-ci.yml",
+    ".github/workflows/economic-readiness-integration-ci.yml",
+    ".github/workflows/producer-readiness-ci.yml",
+    "research/research_os/ECON_READINESS_VALIDATION_RECEIPT_20261016.json",
+    "research/research_os/architecture/work_receipts/ECON_READINESS_IDENTITY_PORTFOLIO_20261016.json",
+    "research/research_os/architecture/work_receipts/ECON_READINESS_IMPLEMENTABILITY_20261016.json",
+    "research/research_os/architecture/work_receipts/ECON_READINESS_INTEGRATION_MANIFEST_20261016.json",
+    "research/research_os/expansion/economic_test_readiness_v1.py",
+    "research/research_os/expansion/experiment_runner.py",
+    "research/research_os/expansion/final_shape.py",
+    "research/research_os/expansion/implementability_depth.py",
+    "research/research_os/expansion/portfolio_v2.py",
+    "research/research_os/expansion/red_team_v2.py",
+    "research/research_os/expansion/source_qualification.py",
+    "research/research_os/expansion/validation_readiness.py",
+    "research/research_os/expansion/validation_v2.py",
+    "research/research_os/simulations/aggressive_architecture_fixture.json",
+    "research/research_os/tests/test_aggressive_architecture.py",
+    "research/research_os/tests/test_economic_identity_portfolio_readiness.py",
+    "research/research_os/tests/test_economic_readiness_integration.py",
+    "research/research_os/tests/test_economic_readiness_validation.py",
+    "research/research_os/tests/test_experiment_runner_frozen_protocol.py",
+    "research/research_os/tests/test_implementability_depth.py",
+    "research/research_os/tests/test_producer_economic_readiness.py"
+  ],
+  "FILES_DEFERRED": [],
+  "FILES_DO_NOT_PORT": [
+    "research/research_os/tasks/**",
+    "research/research_os/runtime/**",
+    "runtime receipts",
+    "queue state",
+    "leases",
+    "frontier counters",
+    "scheduler state",
+    "worker claims",
+    "current runtime snapshots",
+    "UX / Live Lab / 3D / site files"
+  ],
+  "RUNTIME_STATE_DO_NOT_TOUCH": [
+    "tasks",
+    "leases",
+    "receipts",
+    "queue",
+    "frontier counters",
+    "worker events",
+    "workflow lanes",
+    "scheduler state",
+    "queue replenishment state",
+    "ChatGPT scheduled automations"
+  ],
+  "CONTRACT_CHANGES": [
+    "New pure economic_test_readiness facade composes B1-B5; no scheduler wiring or automatic execution",
+    "B1 final_shape compatibility adjustment retained",
+    "B4 portfolio summary preserves canonical seven-axis classification/score; richer twelve-axis analysis remains in economic_structure and structural_pair",
+    "READY is a pre-outcome package capability, never authority"
+  ],
+  "KNOWN_CONFLICTS": [
+    "Resolved B4 portfolio summary compatibility: three existing regression failures; original assertions retained"
+  ],
+  "TEST_MATRIX": {
+    "specialists": "55 tests",
+    "cross_module": "14 tests including 10 mission cases, malformed input, legacy, tampering and summary compatibility",
+    "research_os_python": "All test_*.py; includes canonical spine/depth, aggressive architecture/final-shape, replay/recovery, producer dossiers and workflow lanes",
+    "research_os_node": "All *.test.mjs; contracts/autonomy/worker-event compatibility",
+    "schema": "scripts/generate_schemas.py --check",
+    "broad_exact_head_ci": [
+      "Economic Readiness Integration CI",
+      "Research OS canonical spine CI",
+      "Research OS canonical depth CI",
+      "Research OS aggressive architecture CI",
+      "Research OS aggressive final gate",
+      "Research OS autonomous loop CI",
+      "Research OS workflow lanes CI",
+      "SEC P0 pre-t0 gate"
+    ]
+  },
+  "AUTHORITY_STATE": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "REMAINING_BLOCKERS": [
+    "OWNER_AUTHORIZATION"
+  ],
+  "STOP_BUILD_RULE": "Once READY_FOR_AUTHORIZED_ECONOMIC_TEST is proven without outcome access, architecture build for this objective is complete",
+  "QUALIFICATION_PERSISTENCE": "Exact-head manifest is uploaded by unified CI and complete run matrix is attached as a pushed refs/notes/economic-readiness git note to the qualified commit",
+  "B7_SOURCE_HEAD": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+  "B7_FINAL_ARCHITECTURE_HEAD": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+  "CI": [
+    {
+      "conclusion": "success",
+      "databaseId": 38863747047,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Research OS workflow lanes CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863744413,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Research OS autonomous loop CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863741412,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Research OS aggressive final gate"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863738934,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Research OS aggressive architecture CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863736315,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Research OS canonical depth CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863733383,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Research OS canonical spine CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863721082,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "Economic Readiness Integration CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38863720959,
+      "headSha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "status": "completed",
+      "workflowName": "SEC P0 pre-t0 gate"
+    }
+  ],
+  "B7_QUALIFICATION": {
+    "IMPLEMENTABILITY": "PASS",
+    "FROZEN_PROTOCOL": "PASS",
+    "DETERMINISTIC_REPLAY": "PASS",
+    "VALIDATOR": "PASS",
+    "RED_TEAM": "PASS",
+    "ECONOMIC_IDENTITY": "PASS",
+    "PORTFOLIO_STRUCTURAL": "PASS",
+    "PRODUCER_READINESS": "PASS",
+    "CROSS_MODULE_PATH": "PASS",
+    "AUTHORITY_BARRIERS": "PASS"
+  },
+  "OUTCOME_ACCESS": "CLOSED",
+  "READY_FOR_AUTHORIZED_ECONOMIC_TEST_CAPABILITY": true,
+  "ARCHITECTURE_STOP_BUILD": true,
+  "TESTS": {
+    "Research OS Python": 211,
+    "Research OS Node": 11,
+    "specialist subset": 55,
+    "cross-module subset": 14
+  }
+}
