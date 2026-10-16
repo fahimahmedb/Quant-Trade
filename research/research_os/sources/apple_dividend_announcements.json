@@ -1,0 +1,52 @@
+{
+  "source_ref": "https://www.apple.com/newsroom/2025/05/apple-reports-second-quarter-results/",
+  "freeze_time": "2026-10-15T18:06:31.429778+00:00",
+  "documentary_packet": {
+    "evidence_class": "DOCUMENTARY",
+    "source_ref": "https://www.apple.com/newsroom/2025/05/apple-reports-second-quarter-results/",
+    "issuer_id": "AAPL",
+    "published_at": "2026-10-15T18:06:31.429778+00:00",
+    "available_at": "2026-10-15T18:06:31.429778+00:00",
+    "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+    "period": "FY2024_Q2_VS_FY2025_Q2_ANNOUNCEMENTS",
+    "unit": "USD_per_share_per_declared_distribution",
+    "event_kind": "DECLARED_CASH_DISTRIBUTION_COMPARISON",
+    "facts": {
+      "previous_distribution": "0.25",
+      "current_distribution": "0.26"
+    },
+    "capture": {
+      "records": [
+        {
+          "issuer_id": "AAPL",
+          "announcement": "FY2024_Q2_RELEASE",
+          "source_url": "https://www.apple.com/newsroom/2024/05/apple-reports-second-quarter-results/",
+          "raw_sha256": "c3194d348111955ba003f2bc9769d440cad106a88c31a5bced5415d205c0654d",
+          "captured_at": "2026-10-15T18:06:31.429778+00:00",
+          "capture_clock_basis": "LOCAL_CAPTURE_FILE_WRITE_TIME_NOT_SOURCE_PUBLICATION",
+          "capture_excerpt": "cash dividend of $0.25 per share",
+          "declared_amount_per_share": "0.25",
+          "unit": "USD_per_share_per_declared_distribution",
+          "evidence_class": "DOCUMENTARY"
+        },
+        {
+          "issuer_id": "AAPL",
+          "announcement": "FY2025_Q2_RELEASE",
+          "source_url": "https://www.apple.com/newsroom/2025/05/apple-reports-second-quarter-results/",
+          "raw_sha256": "0a8142f754dc9f4ac5ec651dcd3c288e16056e87ef802053913b33f55194d186",
+          "captured_at": "2026-10-15T17:39:51.109720+00:00",
+          "capture_clock_basis": "LOCAL_CAPTURE_FILE_WRITE_TIME_NOT_SOURCE_PUBLICATION",
+          "capture_excerpt": "cash dividend of $0.26 per share",
+          "declared_amount_per_share": "0.26",
+          "unit": "USD_per_share_per_declared_distribution",
+          "evidence_class": "DOCUMENTARY"
+        }
+      ],
+      "comparison_basis": "YEAR_OVER_YEAR_ANNOUNCED_RATE_NOT_IMMEDIATE_PRIOR_PAYMENT",
+      "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+      "representation": "DECLARED_DISTRIBUTION_EXCERPTS",
+      "extractor": "apple-q2-dividend-excerpts.v1"
+    },
+    "content_hash": "d8d19dbf0b1291ce43d3c3f12254a2b9afb0258c27cadbaef9288fd666cee142"
+  }
+}

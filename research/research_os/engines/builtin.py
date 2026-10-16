@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict
 
 from .protocol import EngineContext, build_candidate
+from research.research_os.expansion.engine_dossiers_v1 import documentary_candidate
 
 
 class QuantMechanismEngine:
@@ -10,6 +11,8 @@ class QuantMechanismEngine:
     family = "QUANT_MECHANISM"
 
     def run(self, source: Dict[str, Any], context: EngineContext) -> Dict[str, Any]:
+        if "documentary_packet" in source:
+            return documentary_candidate(self, source, context, "SYN-QUANT-001")
         return build_candidate(
             engine_id=self.engine_id,
             engine_family=self.family,
@@ -30,6 +33,8 @@ class FundamentalEngine:
     family = "FUNDAMENTAL"
 
     def run(self, source: Dict[str, Any], context: EngineContext) -> Dict[str, Any]:
+        if "documentary_packet" in source:
+            return documentary_candidate(self, source, context, "SYN-FUND-001")
         return build_candidate(
             engine_id=self.engine_id,
             engine_family=self.family,
@@ -50,6 +55,8 @@ class EventDocumentEngine:
     family = "EVENT_DOCUMENT"
 
     def run(self, source: Dict[str, Any], context: EngineContext) -> Dict[str, Any]:
+        if "documentary_packet" in source:
+            return documentary_candidate(self, source, context, "SYN-EVENT-001")
         return build_candidate(
             engine_id=self.engine_id,
             engine_family=self.family,
@@ -70,6 +77,8 @@ class InstitutionalFlowEngine:
     family = "INSTITUTIONAL_FLOW"
 
     def run(self, source: Dict[str, Any], context: EngineContext) -> Dict[str, Any]:
+        if "documentary_packet" in source:
+            return documentary_candidate(self, source, context, "SYN-FLOW-001")
         return build_candidate(
             engine_id=self.engine_id,
             engine_family=self.family,
