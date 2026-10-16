@@ -283,6 +283,35 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
     }
 
 
+def _portfolio_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, Any]:
+    """Preserve the canonical v2 summary while retaining B4's richer analysis.
+
+    Existing portfolio consumers use the seven-axis summary contract. New
+    economic-identity consumers use structural_pair or economic_structure.
+    Neither interpretation is an empirical correlation.
+    """
+    pair = structural_pair(left, right)
+    pair["economic_structure"] = {key: deepcopy(pair[key]) for key in (
+        "classification", "structural_overlap_score", "dimensions", "unknown_dimensions",
+        "score_status", "overlap_score_interval",
+    )}
+    weights = {"mechanism": .15, "payer": .20, "asset": .15, "horizon": .10,
+               "liquidity": .05, "tail_exposure": .10, "economic_tags": .25}
+    dimensions = {key: (_jaccard(left.get(key, []), right.get(key, [])) if key == "economic_tags"
+                        else _eq_known(left.get(key), right.get(key))) for key in weights}
+    unknown = sorted(key for key, value in dimensions.items() if value is None)
+    score = round(sum((dimensions[key] or 0) * weights[key] for key in dimensions), 4)
+    pair.update(
+        dimensions=dimensions, unknown_dimensions=unknown, structural_overlap_score=score,
+        score_status="PARTIAL" if unknown else "COMPLETE",
+        overlap_score_interval=[score, round(score + sum(weights[k] for k in unknown), 4)],
+        classification=("INSUFFICIENT_EVIDENCE" if unknown else "HIGH_STRUCTURAL_OVERLAP"
+                        if score >= .65 else "PARTIAL_STRUCTURAL_OVERLAP" if score >= .30
+                        else "STRUCTURALLY_DISTINCT_OR_UNKNOWN"),
+    )
+    return pair
+
+
 def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     items = list(identities)
     for item in items:
@@ -291,15 +320,15 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
     if len(set(keys)) != len(keys):
         raise ValueError("portfolio requires one selected generation per hypothesis")
 
-    pairwise: List[Dict[str, Any]] = [structural_pair(a, b) for a, b in combinations(items, 2)]
+    pairwise: List[Dict[str, Any]] = [_portfolio_pair(a, b) for a, b in combinations(items, 2)]
     novelty: Dict[str, Any] = {}
     for item in items:
         related = [p for p in pairwise if item["hypothesis_id"] in {p["left"], p["right"]}]
-        if not related or any(p["classification"] == "UNKNOWN" for p in related):
+        if not related or any(p["economic_structure"]["classification"] == "UNKNOWN" for p in related):
             novelty[item["hypothesis_id"]] = "UNKNOWN"
-        elif all(p["score_status"] == "COMPLETE" for p in related):
+        elif all(p["economic_structure"]["score_status"] == "COMPLETE" for p in related):
             novelty[item["hypothesis_id"]] = round(
-                1.0 - max(p["structural_overlap_score"] for p in related), 4
+                1.0 - max(p["economic_structure"]["structural_overlap_score"] for p in related), 4
             )
         else:
             novelty[item["hypothesis_id"]] = "UNKNOWN"
