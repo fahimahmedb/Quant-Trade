@@ -219,3 +219,10 @@ def validator_portfolio_summary(records: Iterable[Dict[str, Any]]) -> Dict[str, 
         "economic_claims_authorized": 0,
         "claim_ceilings": {item["hypothesis_id"]: item["claim_ceiling"] for item in items},
     }
+
+
+def validator_economic_readiness_v3(*, readiness_bundle: Dict[str, Any]) -> Dict[str, Any]:
+    """Primary validator entry point for a future frozen economic-test package."""
+    from .validation_readiness import validate_economic_test_readiness
+
+    return validate_economic_test_readiness(readiness_bundle)
