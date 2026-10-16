@@ -13,7 +13,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  const camera=new T.PerspectiveCamera(40,1,.1,180);
  const view={yaw:.40,pitch:.18,distance:mobile()?30:35,target:new T.Vector3(0,3.4,-3.8)};
  const goal={...view,target:view.target.clone()};
- let renderer,composer,ao,bloom,ready=false,destroyed=false,frame=0,last=0,lastDraw=0,dirty=true,state=null,visual={agents:[]},selected=null,focusPending=null,focusStarted=0,economicLevel=0;
+ let renderer,composer,ao,bloom,ready=false,destroyed=false,frame=0,last=0,lastDraw=0,dirty=true,state=null,visual={agents:[]},selected=null,focusPending=null,focusStarted=0,economicLevel=0,frameFence=null;
  const actors=new Map(),targets=new Map(),pointers=new Map();let dragged=false,pinch=null;
  let fallback=false,illustration,illustratedCanvas,illustratedContext,energyOverlay;let illustrationTransform={x:0,y:0,scale:1};
  try{renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,mobile()?1.65:1.75));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=.96;ready=true;}catch{fallback=true;}
@@ -57,8 +57,8 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  arm.forearm.rotation.x=reading?-.7:typing?-1.12+Math.sin(phase)*.045:comparison?-1.10+Math.sin(phase)*.13:economic?-1.20:-.3;
  });
  }
- function animate(now){if(destroyed)return;frame=requestAnimationFrame(animate);if(document.hidden){last=now;return;}const dt=Math.min((now-(last||now))/1000,.2);last=now;
- const k=reduced?1:1-Math.exp(-dt*5.5);view.target.lerp(goal.target,k);for(const key of ['yaw','pitch','distance'])view[key]+= (goal[key]-view[key])*k;
+ function animate(now){if(destroyed)return;frame=requestAnimationFrame(animate);if(document.hidden){last=now;return;}const elapsed=(now-(last||now))/1000,dt=Math.min(elapsed,.2);last=now;
+ const k=reduced?1:1-Math.exp(-elapsed*5.5);view.target.lerp(goal.target,k);for(const key of ['yaw','pitch','distance'])view[key]+= (goal[key]-view[key])*k;
  applyCamera();
  // Core activation requires both the explicit Economic Look slot and a currently
  // authorized factual worker. Historical snapshots, stale and reconnect stay dim.
@@ -67,13 +67,21 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  world.energyMaterial.emissiveIntensity=.30+economicLevel*3.3;world.coreLight.intensity=economicLevel*38;
  if(coreAllowed&&!reduced){world.cartridge.rotation.y+=dt*.33;world.activeRing.rotation.z+=dt*.22;}
  for(const[id,actor]of actors){pose(actor,dt);const pos=actor.group.position;const p=point([pos.x,pos.y+1.65,pos.z]);if(fallback){p.x=p.x*illustrationTransform.scale+illustrationTransform.x;p.y=p.y*illustrationTransform.scale+illustrationTransform.y;}const b=targets.get(id);b.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;b.hidden=!p.visible;}
- if(focusPending&&now-focusStarted>(reduced?0:750)&&view.target.distanceTo(goal.target)<.04&&Math.abs(view.distance-goal.distance)<.04){const id=focusPending;focusPending=null;onFocusComplete(id);}
+ const focusSettled=focusPending&&now-focusStarted>(reduced?0:750)&&view.target.distanceTo(goal.target)<.04&&Math.abs(view.distance-goal.distance)<.04;
+
  if(fallback){drawIllustratedActors(illustratedContext,actors,camera,viewport.clientWidth,viewport.clientHeight,illustrationTransform);const top=point([0,7,-.4]),bottom=point([0,1.3,-.4]);energyOverlay.style.cssText=`left:${top.x*illustrationTransform.scale+illustrationTransform.x}px;top:${top.y*illustrationTransform.scale+illustrationTransform.y}px;width:${20*illustrationTransform.scale}px;height:${(bottom.y-top.y)*illustrationTransform.scale}px;opacity:${economicLevel*.8}`;}
  const moving=view.target.distanceTo(goal.target)>.001||['yaw','pitch','distance'].some(key=>Math.abs(view[key]-goal[key])>.001);
  const activeMotion=!reduced&&visual.agents.some(a=>Boolean(gestureFamily(a,state)));
  const coreTransition=Math.abs(economicLevel-Number(coreAllowed))>.001;
  if(scene.userData.materialsChanged){dirty=true;scene.userData.materialsChanged=false;}
- if(renderer&&!fallback&&(dirty||moving||activeMotion||coreTransition)&&(now-lastDraw>33)){lastDraw=now;dirty=false;if(composer)composer.render();else renderer.render(scene,camera);canvas.dataset.drawCalls=renderer.info.render.calls;}
+ let painted=false;
+ if(renderer&&!fallback&&(dirty||moving||activeMotion||coreTransition||focusSettled)&&(now-lastDraw>33)){
+ const gl=renderer.getContext();let available=true;
+ if(frameFence){const status=gl.clientWaitSync(frameFence,0,0);available=status!==gl.TIMEOUT_EXPIRED;if(available){gl.deleteSync(frameFence);frameFence=null;}}
+ if(available){lastDraw=now;dirty=false;if(composer)composer.render();else renderer.render(scene,camera);frameFence=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();canvas.dataset.drawCalls=renderer.info.render.calls;painted=true;}
+ }
+ if(focusSettled&&(painted||fallback)){const id=focusPending;focusPending=null;onFocusComplete(id);}
+
  }
  const down=e=>{if(e.target.closest('button'))return;viewport.setPointerCapture?.(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY});dragged=false;if(pointers.size===2){const[a,b]=[...pointers.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),camera:goal.distance};}};
  const move=e=>{const p=pointers.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;dragged ||= Math.hypot(p.x-p.sx,p.y-p.sy)>7;if(!dragged)return;focusPending=null;
@@ -89,7 +97,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  return{ready:true,renderer:ready?'WebGL':'illustrated',
  update(next,{selectedWorkerId=null}={}){dirty=true;state=next;visual=deriveSceneVisual(state,{selectedWorkerId});syncActors();if(selectedWorkerId!==selected){selected=selectedWorkerId;if(selected)focus(selected);else reset();}},
  focus,reset,zoom,
- destroy(){destroyed=true;cancelAnimationFrame(frame);observer.disconnect();for(const[name,fn]of[['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',up],['wheel',wheel],['contextmenu',context]])viewport.removeEventListener(name,fn);for(const b of targets.values())b.remove();scene.traverse(o=>{o.geometry?.dispose();if(o.material)for(const m of [].concat(o.material)){m.map?.dispose();m.dispose();}});composer?.dispose();ao?.dispose();bloom?.dispose();renderer?.dispose();illustration?.remove();illustratedCanvas?.remove();energyOverlay?.remove();scene.environment?.dispose();},
+ destroy(){destroyed=true;cancelAnimationFrame(frame);observer.disconnect();for(const[name,fn]of[['pointerdown',down],['pointermove',move],['pointerup',up],['pointercancel',up],['wheel',wheel],['contextmenu',context]])viewport.removeEventListener(name,fn);for(const b of targets.values())b.remove();scene.traverse(o=>{o.geometry?.dispose();if(o.material)for(const m of [].concat(o.material)){m.map?.dispose();m.dispose();}});if(frameFence&&renderer)renderer.getContext().deleteSync(frameFence);composer?.dispose();ao?.dispose();bloom?.dispose();renderer?.dispose();illustration?.remove();illustratedCanvas?.remove();energyOverlay?.remove();scene.environment?.dispose();},
  };
 }
 export const SCENE3D_CAPABILITIES=Object.freeze({renderer:'Three.js / WebGL2',businessAnimationAuthority:'state.animationRunning',webglFallback:'same-world architectural illustration',mobileSafari:true});
