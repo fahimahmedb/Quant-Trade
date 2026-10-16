@@ -158,3 +158,11 @@ test('native stale snapshot keeps lease status factual without authorizing motio
  state=reduceScene(state,mapNativeSnapshot({generated_at:e.accepted_at,events:[e],sessions:[{worker_id:e.worker_id,session_id:e.session_id,generation:e.generation,lease_status:'STALE'}]}));
  assert.equal(state.agents[e.worker_id].stale,true);assert.equal(state.agents[e.worker_id].animationRunning,false);
 });
+
+test('disconnect and reconnect within the same clock millisecond remain separate observations',()=>{
+ let state=createInitialState();const at='2026-10-16T06:00:00Z';
+ state=reduceScene(state,mapNativeSiteFrame({channel:'disconnected',at}));
+ state=reduceScene(state,mapNativeSiteFrame({channel:'connected',at}));
+ assert.equal(state.transport.connected,true);assert.equal(state.transport.stale,false);
+ assert.equal(state.transport.resumeRequiresBusinessEvent,true);
+});

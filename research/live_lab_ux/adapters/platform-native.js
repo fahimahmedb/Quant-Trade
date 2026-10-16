@@ -115,8 +115,8 @@ export function mapNativeSiteFrame(frame){
     return {id:`native-lease:${nativeStream(d)}:${d.at}`,seq:1,stream:`native-lease:${nativeStream(d)}:${d.at}`,authorityStream:nativeStream(d),at:d.at,workerId:d.worker_id,kind:EVENT.STALE,reason:d.reason};
   }
   if(frame.channel==='snapshot')return mapNativeSnapshot(frame.data);
-  if(frame.channel==='connected'&&text(frame.at))return {id:`transport-connected:${frame.at}`,seq:1,stream:`transport:${frame.at}`,at:frame.at,kind:EVENT.CONNECTED};
-  if(frame.channel==='disconnected'&&text(frame.at))return {id:`transport-disconnected:${frame.at}`,seq:1,stream:`transport:${frame.at}`,at:frame.at,kind:EVENT.DISCONNECTED,reason:text(frame.reason)||'Native Site event stream disconnected'};
+  if(frame.channel==='connected'&&text(frame.at))return {id:`transport-connected:${frame.at}`,seq:1,stream:`transport:connected:${frame.at}`,at:frame.at,kind:EVENT.CONNECTED};
+  if(frame.channel==='disconnected'&&text(frame.at))return {id:`transport-disconnected:${frame.at}`,seq:1,stream:`transport:disconnected:${frame.at}`,at:frame.at,kind:EVENT.DISCONNECTED,reason:text(frame.reason)||'Native Site event stream disconnected'};
   return null;
 }
 
