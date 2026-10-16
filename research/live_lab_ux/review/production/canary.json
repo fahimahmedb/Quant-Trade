@@ -1,0 +1,144 @@
+{
+  "trace_id": "PROD-CANARY-cc5b0bdb-739",
+  "scope": "WRAPPED_BENIGN_OPERATIONAL_CANARY_ONLY",
+  "base": "https://quant-trade-lab.sassylime.chatgpt.site",
+  "checks": [
+    {
+      "name": "production serves rebuilt release",
+      "release": "owner-ux-20261016-r1",
+      "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62"
+    },
+    {
+      "name": "anonymous ingress remains rejected"
+    },
+    {
+      "name": "public integrated WebGL and native stream connected idle"
+    },
+    {
+      "name": "real heartbeat creates no business animation",
+      "event_id": "PROD-CANARY-cc5b0bdb-739-1"
+    },
+    {
+      "name": "authenticated ingress → D1 → public SSE → real reducer → visible active worker → post-frame ACK",
+      "event_id": "PROD-CANARY-cc5b0bdb-739-2"
+    },
+    {
+      "name": "native duplicate does not create another transition"
+    },
+    {
+      "name": "production focus precedes context and progress remains unknown"
+    },
+    {
+      "name": "actual subprocess completion stops gesture",
+      "event_id": "PROD-CANARY-cc5b0bdb-739-14",
+      "exit_code": 0
+    },
+    {
+      "name": "real reload snapshot does not replay work"
+    },
+    {
+      "name": "production iPhone portrait viewport renders"
+    }
+  ],
+  "errors": [],
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "identity_claim": "No Codex/Owner/research identity claim",
+  "started_at": "2026-10-16T06:58:02.953Z",
+  "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62",
+  "binding": {
+    "worker_id": "wrapped-production-canary-20261016",
+    "session_id": "2a1cd154-5cf0-48fd-ae83-87f9eec9d66a",
+    "generation": 3
+  },
+  "start": {
+    "packet": {
+      "worker_id": "wrapped-production-canary-20261016",
+      "session_id": "2a1cd154-5cf0-48fd-ae83-87f9eec9d66a",
+      "lease_id": "be930722-f2fc-4b47-930f-b404998be17e",
+      "session_generation": 3,
+      "sequence": 2,
+      "event_id": "PROD-CANARY-cc5b0bdb-739-2",
+      "trace_id": "PROD-CANARY-cc5b0bdb-739",
+      "scope": "PLATFORM_PROBE_ONLY",
+      "type": "ACTION_STARTED",
+      "action_id": "PROD-CANARY-cc5b0bdb-739-sha256",
+      "label": "Production connectivity canary · benign SHA256",
+      "detail": "Actual wrapped Python subprocess; no research or economic action",
+      "ui_activity": "coding-testing"
+    },
+    "receipt": {
+      "status": "APPLIED",
+      "event_id": "PROD-CANARY-cc5b0bdb-739-2",
+      "cursor": 64,
+      "server_received_at": 1792133909153
+    }
+  },
+  "render_ack": {
+    "ack": "POST_RENDER_ACK_RECORDED",
+    "event_id": "PROD-CANARY-cc5b0bdb-739-2",
+    "server_to_render_ack_ms": 8467,
+    "limitation": "Browser render lifecycle evidence; not hardware pixel attestation."
+  },
+  "effect_proof": {
+    "exit_code": 0,
+    "stdout_sha256": "ee86151cc2dfa4518673567b7c44a0e7a203086dc65a43aa3861f6384ff5dfde",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command_sha256": "7fd4ea3c3af0c1eb3ed5093358560d478f9b9a42ff8693cc330b5a71af63b29c"
+  },
+  "completion": {
+    "packet": {
+      "worker_id": "wrapped-production-canary-20261016",
+      "session_id": "2a1cd154-5cf0-48fd-ae83-87f9eec9d66a",
+      "lease_id": "be930722-f2fc-4b47-930f-b404998be17e",
+      "session_generation": 3,
+      "sequence": 14,
+      "event_id": "PROD-CANARY-cc5b0bdb-739-14",
+      "trace_id": "PROD-CANARY-cc5b0bdb-739",
+      "scope": "PLATFORM_PROBE_ONLY",
+      "type": "ACTION_COMPLETED",
+      "action_id": "PROD-CANARY-cc5b0bdb-739-sha256",
+      "label": "Production connectivity canary · benign SHA256",
+      "detail": "Actual wrapped Python subprocess; no research or economic action",
+      "ui_activity": "coding-testing",
+      "effect_proof": {
+        "exit_code": 0,
+        "stdout_sha256": "ee86151cc2dfa4518673567b7c44a0e7a203086dc65a43aa3861f6384ff5dfde",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "command_sha256": "7fd4ea3c3af0c1eb3ed5093358560d478f9b9a42ff8693cc330b5a71af63b29c"
+      }
+    },
+    "receipt": {
+      "status": "APPLIED",
+      "event_id": "PROD-CANARY-cc5b0bdb-739-14",
+      "cursor": 76,
+      "server_received_at": 1792134029290
+    }
+  },
+  "end": {
+    "packet": {
+      "worker_id": "wrapped-production-canary-20261016",
+      "session_id": "2a1cd154-5cf0-48fd-ae83-87f9eec9d66a",
+      "lease_id": "be930722-f2fc-4b47-930f-b404998be17e",
+      "session_generation": 3,
+      "sequence": 15,
+      "event_id": "PROD-CANARY-cc5b0bdb-739-15",
+      "trace_id": "PROD-CANARY-cc5b0bdb-739",
+      "scope": "PLATFORM_PROBE_ONLY",
+      "type": "SESSION_ENDED",
+      "action_id": "PROD-CANARY-cc5b0bdb-739-sha256",
+      "label": "Production connectivity canary · benign SHA256",
+      "detail": "Actual wrapped Python subprocess; no research or economic action",
+      "ui_activity": "coding-testing"
+    },
+    "receipt": {
+      "status": "APPLIED",
+      "event_id": "PROD-CANARY-cc5b0bdb-739-15",
+      "cursor": 77,
+      "server_received_at": 1792134029660
+    }
+  },
+  "status": "PASS",
+  "finished_at": "2026-10-16T07:01:18.421Z"
+}

@@ -3,7 +3,7 @@
 Branch: `builder/live-lab-owner-ux-rebuild-20261015`.
 Production runtime source: `872ca38f036a2ebdf4b30289caa5c94952377f62`.
 Site source: `517f510c096e752643c64097b475048cfc0385c1`.
-Site version: **22**, deployment `appgdep_6ad1c97d6bf88191b3adf3d3d8d81697`.
+Site version: **22**, deployment `appgdep_6ad1cbcce8088191be4817048281de07`.
 URL: https://quant-trade-lab.sassylime.chatgpt.site
 
 Owner explicitly requested production publication in this conversation and
@@ -17,7 +17,8 @@ Read first:
 
 UX3 `UX3-LUEKkkChgA` / UX4 `UX4-DkkiQkhZhkA` remain frozen.
 44 UX tests, 43 Site/backend tests, 9 browser checks PASS. All 34 production
-runtime assets match SHA-256. Native lease/reconnect hotfixes reconciled.
+runtime assets match SHA-256. Real public wrapped-worker canary PASS (10 checks);
+canary credential removed in environment revision 8. Native lease/reconnect hotfixes reconciled.
 Real Safari/device performance remains unverified. Richer native roles, zone
 travel and Economic Look are unsupported; no inferred activity is introduced.
 

@@ -1,0 +1,8 @@
+{
+  "old_canary_key_status": 401,
+  "old_canary_key_rejected": true,
+  "live_page_status": 200,
+  "release": "owner-ux-20261016-r1",
+  "canary_lease_status": "ENDED",
+  "tls_verification": true
+}
