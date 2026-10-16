@@ -19,6 +19,6 @@ export function buildHumanoid(parent,index=0){
  mesh(g,new T.BoxGeometry(.026,.014,.012),trim,.13,1.12,.124);
  for(const s of [-1,1]){limb(g,[s*.11,.70,.02],[s*.13,.49,.35],.09,.075,trousers);ell(g,s*.13,.49,.35,.076,.078,.076,trousers);limb(g,[s*.13,.49,.35],[s*.14,.14,.39],.07,.046,trousers);ell(g,s*.14,.08,.45,.065,.06,.13,shoe);}
  const arms=[];for(const s of [-1,1]){const shoulder=new T.Group();shoulder.position.set(s*.225,1.18,0);g.add(shoulder);ell(shoulder,0,-.025,0,.075,.085,.08,suit);limb(shoulder,[0,-.025,0],[s*.035,-.265,.015],.071,.053,suit);const forearm=new T.Group();forearm.position.set(s*.035,-.265,.015);shoulder.add(forearm);limb(forearm,[0,0,0],[0,-.245,.015],.052,.034,suit);limb(forearm,[0,-.235,.015],[0,-.26,.017],.036,.036,shirt);ell(forearm,0,-.292,.02,.037,.046,.024,skin);for(let f=0;f<4;f++)limb(forearm,[(f-1.5)*.015,-.31,.022],[(f-1.5)*.015,-.355+(f%2)*.006,.03],.007,.005,skin);limb(forearm,[s*.03,-.28,.025],[s*.05,-.31,.045],.011,.007,skin);arms.push({shoulder,forearm});}
- const document=mesh(g,new T.BoxGeometry(.28,.012,.36),mat('#c8c1ad'),0,.9,.41);document.visible=false;
+ const document=mesh(g,new T.BoxGeometry(.28,.012,.36),mat('#c8c1ad'),0,1.11,.48);document.rotation.x=.20;document.visible=false;
  return{group:g,head,arms,document,phase:0};
 }

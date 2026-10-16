@@ -54,7 +54,7 @@ export function createResearchLab3D({viewport,canvas,labelLayer,onSelectAgent=()
  actor.arms.forEach((arm,i)=>{const phase=t*(typing?8:1.6)+i*1.7;
  arm.shoulder.rotation.x=reading?-1.05:typing?-.58:comparison?-.7+Math.sin(phase)*.22:economic?-.72:-.3;
  arm.shoulder.rotation.z=(i?-.1:.1)+(comparison?Math.sin(phase*.7)*.16:0);
- arm.forearm.rotation.x=reading?-.7:typing?-.9+Math.sin(phase)*.11:comparison?-.5+Math.sin(phase)*.26:-.3;
+ arm.forearm.rotation.x=reading?-.7:typing?-1.12+Math.sin(phase)*.045:comparison?-1.10+Math.sin(phase)*.13:economic?-1.20:-.3;
  });
  }
  function animate(now){if(destroyed)return;frame=requestAnimationFrame(animate);if(document.hidden){last=now;return;}const dt=Math.min((now-(last||now))/1000,.2);last=now;
