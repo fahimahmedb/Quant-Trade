@@ -1,0 +1,25 @@
+{
+  "task_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-001",
+  "stage":"mechanism_research_and_disconfirmation",
+  "researched_at":"2026-10-16T06:59:00Z",
+  "mechanism":"Short-dated SPX option inventory can in principle require market makers to dynamically delta hedge in futures/underlying as spot moves; gamma determines how delta changes.",
+  "payer_or_forced_actor":"Options liquidity providers carrying residual customer inventory would be the constrained hedgers, conditional on material net exposure.",
+  "candidate_expression_considered":"Use observable short-dated option positioning/Greeks to infer the direction and intensity of required dealer hedge adjustment; no trading rule or threshold frozen.",
+  "public_documentary_sources":[
+    {"publisher":"Cboe Global Markets","title":"Volatility Insights: Much Ado About 0DTEs - Evaluating the Market Impact of SPX 0DTE Options","url":"https://www.cboe.com/insights/posts/volatility-insights-evaluating-the-market-impact-of-spx-0-dte-options"},
+    {"publisher":"Cboe Global Markets","title":"0DTEs Decoded: Positioning, Trends, and Market Impact","date":"2025-05-02","url":"https://www.cboe.com/insights/posts/0-dt-es-decoded-positioning-trends-and-market-impact"},
+    {"publisher":"Cboe Global Markets","title":"Option Quote Intervals","url":"https://datashop.cboe.com/option-quote-intervals"}
+  ],
+  "active_disconfirmation":[
+    "Cboe reports customer SPX 0DTE activity is highly balanced and estimates net market-maker gamma hedging as de minimis relative to SPX daily liquidity.",
+    "Cboe reports no discernible broad market impact attributable to 0DTE option trading in its analysis.",
+    "A legitimate signal would require defensible point-in-time dealer inventory inference rather than gross option notional or open interest; public quote/Greek data alone does not establish dealer sign or residual net inventory.",
+    "The available Cboe DataShop quote/Greek product is a data-access path, but does not by itself solve participant-position attribution."
+  ],
+  "decision":"NO_CANDIDATE",
+  "reason":"The causal hedge channel is real in principle, but the bounded public evidence actively weakens the necessary premise of material net SPX 0DTE dealer hedging pressure, while point-in-time dealer inventory sign is not established by the identified public data surface. Freezing a directional CandidateHypothesis would therefore overstate mechanism evidence.",
+  "candidate_frozen":false,
+  "validation_handoff_authorized_but_not_applicable":true,
+  "economic_outcome_accessed":false,
+  "prospective_observation_started":false
+}
