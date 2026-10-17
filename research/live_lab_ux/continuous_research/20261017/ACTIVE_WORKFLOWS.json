@@ -1,0 +1,43 @@
+{
+  "observed_on": "2026-10-17",
+  "source": "Native automations.list read-only control-plane metadata; last_run_time is not successful research completion evidence",
+  "research_os_branch": "builder/research-os-autonomous-loop-20261015",
+  "workflows": [
+    {
+      "id": "6ad0cbc1f32481919a7bca888a31836c",
+      "title": "Integrator Portfolio Workflow",
+      "is_enabled": true,
+      "last_run_time": "2026-10-16T23:43:50.492584+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261015T154800\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+    },
+    {
+      "id": "6ad0cbb2906c819181acac585e86481b",
+      "title": "Independent Challenge Workflow",
+      "is_enabled": true,
+      "last_run_time": "2026-10-17T00:33:25.262442+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261015T153600\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+    },
+    {
+      "id": "6ad0cba3b3dc819191b1fc3d3210f658",
+      "title": "Evidence Data Workflow",
+      "is_enabled": true,
+      "last_run_time": "2026-10-17T00:20:02.243998+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261015T152400\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+    },
+    {
+      "id": "6ad0cb93cfac819195936be9a1f4d423",
+      "title": "Fundamental Events Workflow",
+      "is_enabled": true,
+      "last_run_time": "2026-10-17T00:11:25.902477+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261015T151200\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+    },
+    {
+      "id": "6ad0cb859ed881919b3699cd6c3143d9",
+      "title": "Market Discovery Workflow",
+      "is_enabled": true,
+      "last_run_time": "2026-10-16T23:56:43.698818+00:00",
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261015T150000\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+    }
+  ],
+  "changed": false
+}

@@ -1,0 +1,58 @@
+{
+  "status": "PROPOSED_NOT_RUNNING",
+  "goal": "A single campaign start survives chat/browser closure and autonomously progresses useful permitted research for 24 real hours with documented idle/resource waits.",
+  "default_cost_policy": "No new paid service or API inference without an accepted concrete budget; ChatGPT entitlement only after target-host qualification.",
+  "reuse_branch": "builder/research-os-autonomous-loop-20261015",
+  "observed_source_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466",
+  "first_task": "Reconcile expired FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002 with artifact/run evidence and CAS generation fencing; never silently complete/delete/replay it.",
+  "preferred_first_executor": "Trusted always-on host plus supervised controller and bounded Codex headless workers; managed API alternative if budget selected.",
+  "events": [
+    "campaign_start",
+    "task_completed",
+    "handoff_ready",
+    "new_data",
+    "dependency_resolved",
+    "lease_expired",
+    "resource_available"
+  ],
+  "preserved_authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "acceptance": [
+    {
+      "id": "USEFUL_RESEARCH",
+      "evidence": "Documentary hypothesis and independent critique, or valid rejection, linked to admitted lineage."
+    },
+    {
+      "id": "AUTOMATIC_CONTINUATION",
+      "evidence": "Next lane begins from durable completion/handoff without hourly ChatGPT wake or human relaunch."
+    },
+    {
+      "id": "CRASH_RECOVERY",
+      "evidence": "Actual process kill and host restart; resume confirmed pending work without duplicated accepted effect."
+    },
+    {
+      "id": "STALE_LEASE",
+      "evidence": "Expired claim reconciled without globally blocking unrelated work."
+    },
+    {
+      "id": "LIVE_NATIVE",
+      "evidence": "Authenticated native ingress/store/SSE/reducer activity from real executor; no GitHub polling authority."
+    },
+    {
+      "id": "PAUSE",
+      "evidence": "Authenticated Site pause prevents new admission, with explicit in-flight behavior."
+    },
+    {
+      "id": "RESOURCE_ACCOUNTING",
+      "evidence": "Observed token/resource use, quota/auth/backoff waits; no made-up progress or inference."
+    },
+    {
+      "id": "DURATION",
+      "evidence": "24 real elapsed hours, no manual relaunch; idle/recovery periods explicitly recorded."
+    }
+  ]
+}

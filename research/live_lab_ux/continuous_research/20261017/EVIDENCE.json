@@ -35,7 +35,7 @@
       "fact": "Only existing D1 DB and MCP configured; no observed Queue/Workflow/DO/Container binding."
     }
   ],
-  "interpretation": "Runtimes, durable continuation and reasoning invocation are missing/incomplete. Transport and declarative leases alone cannot execute research.",
+  "interpretation": "Five scheduled workflows exist; zero READY and one expired CLAIMED task currently prevent refill. Persistent event-driven continuation, recovery and live delivery remain to be qualified.",
   "mutations": {
     "production": false,
     "automation_schedules": false,
@@ -44,5 +44,8 @@
   },
   "real_capital_authorized": false,
   "live_trading_authorized": false,
-  "paid_usd_authorized": 0
+  "paid_usd_authorized": 0,
+  "scope_note": "The first checkpoint audits historical Edge Lab code. CURRENT_OS_PROOF.json and ACTIVE_WORKFLOWS.json supersede any inference that the current Research OS has no scheduled workers.",
+  "current_research_os_branch": "builder/research-os-autonomous-loop-20261015",
+  "current_research_os_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466"
 }
