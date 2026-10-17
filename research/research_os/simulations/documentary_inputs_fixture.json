@@ -1,0 +1,116 @@
+{
+  "evidence_class": "SYNTHETIC",
+  "sources": {
+    "fundamental": {
+      "source_ref": "synthetic://documentary/fundamental/v1",
+      "freeze_time": "2026-10-15T10:00:00Z",
+      "documentary_packet": {
+        "evidence_class": "SYNTHETIC",
+        "source_ref": "synthetic://documentary/fundamental/v1",
+        "issuer_id": "SYN-ISSUER",
+        "published_at": "2026-10-14T10:00:00Z",
+        "available_at": "2026-10-14T10:01:00Z",
+        "revision_status": "ORIGINAL_AS_PUBLISHED",
+        "period": "2026Q3",
+        "unit": "USD_millions",
+        "facts": {
+          "revenue": "100",
+          "operating_income": "12",
+          "operating_cash_flow": "18",
+          "capital_expenditure": "6"
+        },
+        "content_hash": "ac446450db350844add7d60d3ac3c42644e2d8bfb4c04d3e5fc9dfb4c1c1dbe1"
+      }
+    },
+    "event_document": {
+      "source_ref": "synthetic://documentary/event_document/v1",
+      "freeze_time": "2026-10-15T10:00:00Z",
+      "documentary_packet": {
+        "evidence_class": "SYNTHETIC",
+        "source_ref": "synthetic://documentary/event_document/v1",
+        "issuer_id": "SYN-ISSUER",
+        "published_at": "2026-10-14T10:00:00Z",
+        "available_at": "2026-10-14T10:01:00Z",
+        "revision_status": "ORIGINAL_AS_PUBLISHED",
+        "period": "2026Q3",
+        "unit": "USD_millions",
+        "facts": {
+          "previous_low": "90",
+          "previous_high": "110",
+          "current_low": "110",
+          "current_high": "130"
+        },
+        "content_hash": "c5f54cc82c95b554f5e9b4690388fe5521ee315844f2db6e3239f3bdc6f4d4f8"
+      }
+    },
+    "quant": {
+      "source_ref": "synthetic://documentary/quant/v1",
+      "freeze_time": "2026-10-15T10:00:00Z",
+      "documentary_packet": {
+        "evidence_class": "SYNTHETIC",
+        "source_ref": "synthetic://documentary/quant/v1",
+        "issuer_id": "SYN-ISSUER",
+        "published_at": "2026-10-14T10:00:00Z",
+        "available_at": "2026-10-14T10:01:00Z",
+        "revision_status": "ORIGINAL_AS_PUBLISHED",
+        "period": "2026Q3",
+        "unit": "units",
+        "facts": {
+          "constrained_quantity": "100",
+          "eligible_quantity": "1000"
+        },
+        "actor": "SYN-index-tracker",
+        "constraint": "mandatory-rebalance",
+        "instrument": "SYN-BASKET",
+        "horizon": "1-3d",
+        "content_hash": "a6d3834d52c628522981b0fd5a3c42cc0934f9cd56c85df270d33b6fc155c9c3"
+      }
+    },
+    "institutional_flow": {
+      "source_ref": "synthetic://documentary/institutional_flow/v1",
+      "freeze_time": "2026-10-15T10:00:00Z",
+      "documentary_packet": {
+        "evidence_class": "SYNTHETIC",
+        "source_ref": "synthetic://documentary/institutional_flow/v1",
+        "issuer_id": "SYN-ISSUER",
+        "published_at": "2026-10-14T10:00:00Z",
+        "available_at": "2026-10-14T10:01:00Z",
+        "revision_status": "ORIGINAL_AS_PUBLISHED",
+        "period": "2026Q3",
+        "unit": "units",
+        "facts": {
+          "constrained_quantity": "100",
+          "eligible_quantity": "1000"
+        },
+        "actor": "SYN-index-tracker",
+        "constraint": "mandatory-rebalance",
+        "instrument": "SYN-BASKET",
+        "horizon": "1-3d",
+        "content_hash": "949df5f8a7def8c05e5802b04bfa7dfad922d3eb79a7d21587bb81320b1c9a97"
+      }
+    },
+    "archaeology": {
+      "source_ref": "synthetic://documentary/archaeology/v1",
+      "freeze_time": "2026-10-15T10:00:00Z",
+      "documentary_packet": {
+        "evidence_class": "SYNTHETIC",
+        "source_ref": "synthetic://documentary/archaeology/v1",
+        "issuer_id": "SYN-ISSUER",
+        "published_at": "2026-10-14T10:00:00Z",
+        "available_at": "2026-10-14T10:01:00Z",
+        "revision_status": "ORIGINAL_AS_PUBLISHED",
+        "period": "2026Q3",
+        "unit": "units",
+        "facts": {
+          "constrained_quantity": "100",
+          "eligible_quantity": "1000"
+        },
+        "actor": "SYN-index-tracker",
+        "constraint": "mandatory-rebalance",
+        "instrument": "SYN-BASKET",
+        "horizon": "1-3d",
+        "content_hash": "7b0aba6dee6ea7edd8d42899e45ca32c603be5908fea0a7d12b80ccb5e691227"
+      }
+    }
+  }
+}

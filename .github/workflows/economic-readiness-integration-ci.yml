@@ -1,0 +1,95 @@
+name: Economic Readiness Integration CI
+
+on:
+  push:
+    branches:
+      - builder/econ-readiness-integration-20261016
+      - builder/research-os-autonomous-econ-readiness-port-20261016
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned read-only Legacy corpus
+        run: |
+          git fetch --depth=1 origin 183ad65ff260b903a16548ce37948f54d47a9ec8
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+      - name: B1 through B5 and cross-module authorization boundary
+        run: |
+          python -m unittest \
+            research.research_os.tests.test_implementability_depth \
+            research.research_os.tests.test_experiment_runner_frozen_protocol \
+            research.research_os.tests.test_economic_readiness_validation \
+            research.research_os.tests.test_economic_identity_portfolio_readiness \
+            research.research_os.tests.test_producer_economic_readiness \
+            research.research_os.tests.test_economic_readiness_integration -v
+      - name: All Research OS Python regressions, canonical spine/depth, replay and recovery
+        run: python -m unittest discover -s research/research_os/tests -p 'test_*.py' -v
+      - name: Schema drift
+        run: python scripts/generate_schemas.py --check
+      - name: Exact-head manifest and port preservation
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          from research.research_os.expansion.economic_test_readiness_v1 import AUTHORITY, READY, economic_test_readiness
+          from research.research_os.tests.test_economic_readiness_integration import fixture, legacy
+          result = economic_test_readiness(fixture(), legacy=legacy())
+          assert result['status'] == READY, result['block_reasons']
+          assert result['authority'] == AUTHORITY
+          assert result['remaining_execution_blockers'] == ['OWNER_AUTHORIZATION']
+          assert result['outcome_accessed'] is False
+          assert result['economic_result'] == 'NOT_OBSERVED'
+          receipt = Path('research/research_os/architecture/work_receipts/ECON_READINESS_INTEGRATION_MANIFEST_20261016.json')
+          manifest = json.loads(receipt.read_text())
+          manifest['QUALIFIED_HEAD'] = os.environ['GITHUB_SHA']
+          manifest['CI_RUN_ID'] = os.environ['GITHUB_RUN_ID']
+          port_path = receipt.with_name('ECON_READINESS_PORT_MANIFEST_20261016.json')
+          if port_path.exists():
+              port = json.loads(port_path.read_text())
+              changed = subprocess.check_output(['git', 'diff', '--name-only', port['AUTONOMOUS_SOURCE_HEAD'], 'HEAD'], text=True).splitlines()
+              assert set(changed) <= set(port['FILES_PORTED']), changed
+              for item in port['FILES_PORTED']:
+                  if item == str(port_path):
+                      continue
+                  current = subprocess.check_output(['git', 'rev-parse', 'HEAD:' + item], text=True).strip()
+                  qualified = subprocess.check_output(['git', 'rev-parse', port['B7_SOURCE_HEAD'] + ':' + item], text=True).strip()
+                  assert current == qualified, item
+              manifest.update(port)
+              manifest['PORT_CANDIDATE_HEAD'] = os.environ['GITHUB_SHA']
+              manifest['AUTONOMOUS_RUNTIME_STATE_PRESERVED'] = True
+          else:
+              manifest['B6_FINAL_HEAD'] = os.environ['GITHUB_SHA']
+              manifest['B7_SOURCE_HEAD'] = os.environ['GITHUB_SHA']
+          manifest['AUTHORITY_STATE'] = AUTHORITY
+          manifest['CROSS_MODULE_PATH'] = 'PASS'
+          manifest['OUTCOME_ACCESS'] = 'CLOSED'
+          manifest['REMAINING_BLOCKERS'] = ['OWNER_AUTHORIZATION']
+          Path('/tmp/economic-readiness-exact-head.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: economic-readiness-exact-head-${{ github.sha }}
+          path: /tmp/economic-readiness-exact-head.json
+          if-no-files-found: error
+
+  node-contracts-and-autonomy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Research OS Node contracts and autonomous compatibility
+        run: node --test research/research_os/tests/*.test.mjs

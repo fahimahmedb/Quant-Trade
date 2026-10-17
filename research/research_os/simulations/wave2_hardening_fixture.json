@@ -1,0 +1,94 @@
+{
+  "freeze_time": "2026-10-15T13:20:00Z",
+  "source_routes": {
+    "SYN-QUANT-001": {
+      "route_id": "SRC-SYN-QUANT-001",
+      "source_class": "SYNTHETIC_FIXTURE",
+      "transport": "fixture-json",
+      "locator": "synthetic://pit/quant/liquidity-reversal-v1",
+      "permission_state": "FIXTURE_ONLY",
+      "pit_mode": "VERSIONED_SNAPSHOT",
+      "event_time_field": "event_time",
+      "publication_time_field": "published_at",
+      "revision_policy": "IMMUTABLE_FIXTURE_VERSION",
+      "survivorship_policy": "FULL_SYNTHETIC_UNIVERSE_DECLARED",
+      "timezone": "UTC",
+      "availability_start": "2026-10-15T00:00:00Z",
+      "contains_outcome": false
+    },
+    "SYN-FUND-001": {
+      "route_id": "SRC-SYN-FUND-001",
+      "source_class": "SYNTHETIC_FIXTURE",
+      "transport": "fixture-json",
+      "locator": "synthetic://pit/fundamental/margin-normalization-v1",
+      "permission_state": "FIXTURE_ONLY",
+      "pit_mode": "PUBLICATION_TIME",
+      "event_time_field": "period_end",
+      "publication_time_field": "filed_at",
+      "revision_policy": "VERSION_CHAIN_DECLARED",
+      "survivorship_policy": "INCLUDE_INACTIVE_SYNTHETIC_ENTITIES",
+      "timezone": "UTC",
+      "availability_start": "2026-10-15T00:00:00Z",
+      "contains_outcome": false
+    },
+    "SYN-EVENT-001": {
+      "route_id": "SRC-SYN-EVENT-001",
+      "source_class": "SYNTHETIC_FIXTURE",
+      "transport": "fixture-json",
+      "locator": "synthetic://pit/event/guidance-revision-v1",
+      "permission_state": "FIXTURE_ONLY",
+      "pit_mode": "PUBLICATION_TIME",
+      "event_time_field": "event_at",
+      "publication_time_field": "published_at",
+      "revision_policy": "ORIGINAL_AND_REVISIONS_SEPARATED",
+      "survivorship_policy": "ALL_SYNTHETIC_EVENTS_RETAINED",
+      "timezone": "UTC",
+      "availability_start": "2026-10-15T00:00:00Z",
+      "contains_outcome": false
+    },
+    "SYN-FLOW-001": {
+      "route_id": "SRC-SYN-FLOW-001",
+      "source_class": "SYNTHETIC_FIXTURE",
+      "transport": "fixture-json",
+      "locator": "synthetic://pit/flows/rebalance-pressure-v1",
+      "permission_state": "FIXTURE_ONLY",
+      "pit_mode": "EVENT_TIME",
+      "event_time_field": "effective_at",
+      "publication_time_field": "announced_at",
+      "revision_policy": "ANNOUNCEMENT_VERSIONS_RETAINED",
+      "survivorship_policy": "FULL_SYNTHETIC_FLOW_SET",
+      "timezone": "UTC",
+      "availability_start": "2026-10-15T00:00:00Z",
+      "contains_outcome": false
+    },
+    "SYN-ARCH-001": {
+      "route_id": "SRC-SYN-ARCH-001",
+      "source_class": "SYNTHETIC_FIXTURE",
+      "transport": "fixture-json",
+      "locator": "synthetic://pit/legacy/negative-knowledge-map-v1",
+      "permission_state": "FIXTURE_ONLY",
+      "pit_mode": "VERSIONED_SNAPSHOT",
+      "event_time_field": "recorded_at",
+      "publication_time_field": "recorded_at",
+      "revision_policy": "APPEND_ONLY_NEGATIVE_KNOWLEDGE",
+      "survivorship_policy": "KILLS_AND_PARKS_RETAINED",
+      "timezone": "UTC",
+      "availability_start": "2026-10-15T00:00:00Z",
+      "contains_outcome": false
+    }
+  },
+  "runner_meta": {
+    "SYN-QUANT-001": {"dataset_manifest_hash": "manifest-q-v1", "code_hash": "code-q-v1", "environment_hash": "py312-lock-v1", "seed": 101, "declared_metrics": ["effect", "stability"]},
+    "SYN-FUND-001": {"dataset_manifest_hash": "manifest-f-v1", "code_hash": "code-f-v1", "environment_hash": "py312-lock-v1", "seed": 102, "declared_metrics": ["milestone_state"]},
+    "SYN-EVENT-001": {"dataset_manifest_hash": "manifest-e-v1", "code_hash": "code-e-v1", "environment_hash": "py312-lock-v1", "seed": 103, "declared_metrics": ["revision_state"]},
+    "SYN-FLOW-001": {"dataset_manifest_hash": "manifest-flow-v1", "code_hash": "code-flow-v1", "environment_hash": "py312-lock-v1", "seed": 104, "declared_metrics": ["pressure", "reversal"]},
+    "SYN-ARCH-001": {"dataset_manifest_hash": "manifest-arch-v1", "code_hash": "code-arch-v1", "environment_hash": "py312-lock-v1", "seed": 105, "declared_metrics": ["distinctness", "niche_status"]}
+  },
+  "forward": {
+    "SYN-QUANT-001": {"t0": "2026-10-16T00:00:00Z", "scope": {"instrument_family": "SYNTHETIC_EQUITY", "clock": "event_time", "generation": "G1"}},
+    "SYN-FUND-001": {"t0": "2026-10-16T00:00:00Z", "scope": {"instrument_family": "SYNTHETIC_EQUITY", "clock": "publication_time", "generation": "G1"}},
+    "SYN-EVENT-001": {"t0": "2026-10-16T00:00:00Z", "scope": {"instrument_family": "SYNTHETIC_EQUITY", "clock": "publication_time", "generation": "G1"}},
+    "SYN-FLOW-001": {"t0": "2026-10-16T00:00:00Z", "scope": {"instrument_family": "SYNTHETIC_EQUITY", "clock": "effective_time", "generation": "G1"}},
+    "SYN-ARCH-001": {"t0": "2026-10-16T00:00:00Z", "scope": {"instrument_family": "SYNTHETIC_MULTI_ASSET", "clock": "event_time", "generation": "G1"}}
+  }
+}
