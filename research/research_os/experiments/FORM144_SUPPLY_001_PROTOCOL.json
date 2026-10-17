@@ -1,0 +1,106 @@
+{
+  "authority": {
+    "economic_experiment_authorized": true,
+    "live_trading_authorized": false,
+    "owner_authorized": true,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "candidate_id": "QUANT-FORM144-SUPPLY-001",
+  "clock": {
+    "entry": "Open of the first market session strictly after the Form 144 filing calendar date",
+    "exit": "Close of the fifth market session counting the entry session as session 1",
+    "pre_event_data_cutoff": "All liquidity, symbol and eligibility data must be timestamped strictly before T0 except fields contained in the Form 144 itself at T0.",
+    "t0": "SEC ACCEPTANCE-DATETIME for the Form 144 filing"
+  },
+  "decision_map": {
+    "INSUFFICIENT_POWER": "source coverage>=80% but n<20, or n>=20 with mean>0 and t<1.645. Preserve as inconclusive; do not tune.",
+    "INVALID_SOFTWARE": "Runner/hash/schema/clock invariant fails before a trustworthy result. Repair software only; do not alter economic parameters.",
+    "NEGATIVE": "n>=20, source coverage>=80% and mean net_short_excess_return<=0. Reject this frozen expression; do not retune it.",
+    "POSITIVE_EXPLORATORY": "n>=20, source coverage>=80%, mean net_short_excess_return>0 and one-sided t>=1.645. Requires independent validation; no capital authorization follows.",
+    "SOURCE_UNUSABLE": "PIT symbol/market coverage<80% or required SEC/market source contract cannot be reproduced. PARK_DATA, not an economic rejection."
+  },
+  "economic_expression": {
+    "benchmark_return": "SPY exit_close / SPY entry_open - 1 over the same dates",
+    "benchmark_symbol": "SPY.US",
+    "capacity_guard": "Research-only. Pre-event ADV >= $5m and no real sizing/order generation. Any later capacity claim requires a separate analysis.",
+    "direction": "SHORT",
+    "gross_short_excess_return": "-(stock_return - benchmark_return)",
+    "instrument": "U.S. listed common equity",
+    "net_short_excess_return": "gross_short_excess_return - 0.0050",
+    "real_orders": false,
+    "round_trip_cost_bps": 50.0,
+    "stock_return": "exit_close / entry_open - 1"
+  },
+  "frozen_at": "2026-10-17T12:05:00Z",
+  "generation_id": "G1",
+  "outcome_firewall": {
+    "no_later_Form4_used_to_define_signal_or_sample": true,
+    "no_outcome_data_used_for_event_selection": true,
+    "no_parameter_change_after_first_outcome_access": true,
+    "no_post_t0_ticker_mapping": true,
+    "protocol_must_exist_before_runner_execution": true
+  },
+  "protocol_id": "EXP-QUANT-FORM144-SUPPLY-001-G1-E1",
+  "purpose": "First bounded historical economic look at the frozen Form 144 proposed-sale supply expression. No parameter tuning after outcomes.",
+  "sample": {
+    "event_window_utc_half_open": [
+      "2024-03-01T00:00:00Z",
+      "2024-04-01T00:00:00Z"
+    ],
+    "excluded_accessions": [
+      "0001195345-26-000004",
+      "0001921094-24-000174",
+      "0001921094-24-001530",
+      "0001921094-24-001548",
+      "0001950047-24-004196"
+    ],
+    "form_types": [
+      "144"
+    ],
+    "issuer_exchange_allowlist": [
+      "NASDAQ",
+      "NYSE",
+      "NEW YORK STOCK EXCHANGE"
+    ],
+    "lineage_rule": "Keep earliest qualifying filing per issuer CIK + reporting-owner CIK in any rolling 30-calendar-day window; later overlapping notices are not independent trials.",
+    "minimum_valid_events_for_economic_decision": 20,
+    "pre_event_market_filters": {
+      "adv_lookback_sessions": 20,
+      "minimum_average_daily_dollar_volume_usd": 5000000.0,
+      "price_floor_usd": 5.0
+    },
+    "security_rule": "Exactly one eligible securities-information row whose title contains COMMON and does not contain PREFERRED, ADR, ADS, UNIT, OPTION, NOTE, BOND, DEBT, WARRANT or TRUST.",
+    "signal_normalization": "proposed_shares / shares_outstanding_as_reported_on_Form144",
+    "signal_threshold": 0.001,
+    "signal_threshold_label": ">=0.10% of reported shares outstanding",
+    "ten_b5_1_treatment": "INCLUDE. No 10b5-1 subgroup, exclusion or interaction is allowed in this first look."
+  },
+  "schema": 1,
+  "source_contract": {
+    "event_index_url": "https://www.sec.gov/Archives/edgar/full-index/2024/QTR1/master.idx",
+    "event_source": "SEC EDGAR full-index and as-filed Form 144 complete submissions",
+    "market_source": "Stooq public daily OHLCV CSV",
+    "market_symbol_rule": "SEC PIT ticker must match ^[A-Z]{1,5}$; market symbol is lower(ticker)+'.us'. No current ticker map or post-T0 symbol lookup is allowed.",
+    "minimum_pit_symbol_and_market_coverage": 0.8,
+    "pit_symbol_source": "Latest SEC Form 4 issuerTradingSymbol accepted strictly before each Form 144 T0 for the same issuer CIK",
+    "source_failure_rule": "If documentary-selected events cannot achieve >=80% PIT ticker+market-data coverage, classify SOURCE_UNUSABLE/PARK_DATA and do not infer an economic rejection."
+  },
+  "stage": "EXPLORATION",
+  "statistics": {
+    "effective_trials": "UNKNOWN",
+    "multiplicity_family": "FORM144_SUPPLY_G1_E1_SINGLE_SIGNAL_SINGLE_HORIZON",
+    "no_horizon_sweep": true,
+    "no_subgroup_search": true,
+    "no_threshold_sweep": true,
+    "observed_attempt_count": 1,
+    "positive_threshold_t": 1.645,
+    "primary_metric": "mean net_short_excess_return across lineage-deduplicated events",
+    "secondary_descriptive_only": [
+      "median net_short_excess_return",
+      "positive_net_hit_rate",
+      "mean gross_short_excess_return"
+    ],
+    "test": "one-sided t statistic of mean net_short_excess_return > 0"
+  }
+}
