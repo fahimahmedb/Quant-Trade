@@ -1,0 +1,113 @@
+name: Economic Test — Form144 Supply 001
+
+on:
+  push:
+    branches:
+      - research/economic-test-form144-supply-20261017
+    paths:
+      - 'research/research_os/experiments/FORM144_SUPPLY_001_PROTOCOL.json'
+      - 'research/research_os/experiments/FORM144_SUPPLY_001_ADMISSION.json'
+      - 'research/research_os/experiments/run_form144_supply_001.py'
+      - '.github/workflows/economic-test-form144-supply-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: economic-test-form144-supply-001
+  cancel-in-progress: false
+
+jobs:
+  single-historical-look:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONUNBUFFERED: '1'
+      REAL_CAPITAL_AUTHORIZED: 'FALSE'
+      LIVE_TRADING_AUTHORIZED: 'FALSE'
+      RESULT_PATH: research/research_os/experiments/results/FORM144_SUPPLY_001_RESULT.json
+    steps:
+      - name: Checkout exact branch history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify immutable protocol, runner and admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROTOCOL='research/research_os/experiments/FORM144_SUPPLY_001_PROTOCOL.json'
+          RUNNER='research/research_os/experiments/run_form144_supply_001.py'
+          ADMISSION='research/research_os/experiments/FORM144_SUPPLY_001_ADMISSION.json'
+          git diff --exit-code b80cd82115cfaef156c5dd7074bc4d0b6ef93a67 HEAD -- "$PROTOCOL"
+          git diff --exit-code f2a71f220dea3acc50ddb8d0657fe37f3bbb61fa HEAD -- "$RUNNER"
+          git diff --exit-code c479ff254a223e15eac14b9af44afbe04423c66e HEAD -- "$ADMISSION"
+          echo 'cd7fe7c8d0140ffa18ae6b9da293cdb0c480ed73214bd180ae2ce6995a8ca520  '"$PROTOCOL" | sha256sum --check --strict
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('research/research_os/experiments/FORM144_SUPPLY_001_PROTOCOL.json').read_text())
+          a=json.loads(Path('research/research_os/experiments/FORM144_SUPPLY_001_ADMISSION.json').read_text())
+          assert a['admission_state']=='AUTHORIZED_SINGLE_HISTORICAL_LOOK'
+          assert a['first_outcome_look'] is True
+          assert p['authority']['economic_experiment_authorized'] is True
+          assert p['authority']['real_capital_authorized'] is False
+          assert p['authority']['live_trading_authorized'] is False
+          assert p['statistics']['no_threshold_sweep'] is True
+          assert p['statistics']['no_horizon_sweep'] is True
+          print('ADMISSION_VERIFY_PASS')
+          PY
+
+      - name: Compile and self-test runner before outcome access
+        run: |
+          python -m py_compile research/research_os/experiments/run_form144_supply_001.py
+          python research/research_os/experiments/run_form144_supply_001.py --self-test
+
+      - name: Execute the single authorized historical look
+        run: |
+          python research/research_os/experiments/run_form144_supply_001.py --output "$RESULT_PATH"
+
+      - name: Validate result authority and decision contract
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          result=json.loads(Path(os.environ['RESULT_PATH']).read_text())
+          allowed={'POSITIVE_EXPLORATORY','NEGATIVE','INSUFFICIENT_POWER','SOURCE_UNUSABLE','INVALID_SOFTWARE'}
+          assert result['kind'] in allowed, result.get('kind')
+          assert result['real_capital_used'] is False
+          assert result['live_trading_used'] is False
+          assert result['protocol_id']=='EXP-QUANT-FORM144-SUPPLY-001-G1-E1'
+          print('RESULT_KIND='+result['kind'])
+          print('RESULT_LESSON='+result['lesson'])
+          print('RESULT_CONTRACT_PASS')
+          PY
+
+      - name: Upload immutable result artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FORM144_SUPPLY_001_RESULT
+          path: ${{ env.RESULT_PATH }}
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Persist result receipt on isolated experiment branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'quant-trade-economic-test-bot'
+          git config user.email 'quant-trade-economic-test-bot@users.noreply.github.com'
+          git add "$RESULT_PATH"
+          if git diff --cached --quiet; then
+            echo 'No new result to persist.'
+          else
+            KIND=$(python -c "import json,os; print(json.load(open(os.environ['RESULT_PATH']))['kind'])")
+            git commit -m "Record frozen Form144 supply result: ${KIND} [skip ci]"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
