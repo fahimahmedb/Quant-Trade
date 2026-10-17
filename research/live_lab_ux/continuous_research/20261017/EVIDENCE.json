@@ -47,5 +47,5 @@
   "paid_usd_authorized": 0,
   "scope_note": "The first checkpoint audits historical Edge Lab code. CURRENT_OS_PROOF.json and ACTIVE_WORKFLOWS.json supersede any inference that the current Research OS has no scheduled workers.",
   "current_research_os_branch": "builder/research-os-autonomous-loop-20261015",
-  "current_research_os_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466"
+  "current_research_os_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121"
 }

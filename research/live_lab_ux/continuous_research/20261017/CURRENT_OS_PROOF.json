@@ -1,7 +1,7 @@
 {
   "observed_at": "2026-10-17T00:43:36.170600+00:00",
   "research_os_branch": "builder/research-os-autonomous-loop-20261015",
-  "research_os_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466",
+  "research_os_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
   "method": "execute existing pure derivation function against exact committed JSON; no GitHub or runtime writes",
   "queue_summary": {
     "task_count": 21,
@@ -41,5 +41,8 @@
     "exhaustion_requires_owner_refresh": true
   },
   "production_mutated": false,
-  "scientific_state_mutated": false
+  "scientific_state_mutated": false,
+  "initial_research_os_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466",
+  "final_recheck_at": "2026-10-17T00:47:47.536361+00:00",
+  "runtime_tasks_replenisher_unchanged_from_initial": true
 }

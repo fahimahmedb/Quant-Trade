@@ -3,7 +3,7 @@
   "goal": "A single campaign start survives chat/browser closure and autonomously progresses useful permitted research for 24 real hours with documented idle/resource waits.",
   "default_cost_policy": "No new paid service or API inference without an accepted concrete budget; ChatGPT entitlement only after target-host qualification.",
   "reuse_branch": "builder/research-os-autonomous-loop-20261015",
-  "observed_source_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466",
+  "observed_source_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
   "first_task": "Reconcile expired FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002 with artifact/run evidence and CAS generation fencing; never silently complete/delete/replay it.",
   "preferred_first_executor": "Trusted always-on host plus supervised controller and bounded Codex headless workers; managed API alternative if budget selected.",
   "events": [

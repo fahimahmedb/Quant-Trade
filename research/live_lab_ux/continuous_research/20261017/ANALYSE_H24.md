@@ -4,13 +4,15 @@ Statut : **analyse sourcée + reproduction locale d’un blocage réel**. Aucun 
 
 ## 1. Le blocage concret trouvé
 
-La branche active des cinq workflows est **`builder/research-os-autonomous-loop-20261015`**, observée à **`89ece99da11d04fe725161a6ccc66b80d6d91466`**. Elle est distincte de l’ancienne branche `research/edge-lab-continuous` et de la branche de reconstruction du Live Lab.
+La branche active des cinq workflows est **`builder/research-os-autonomous-loop-20261015`**, relue à **`e980d201d3c84d16d7d91fde0d27a06c9a2c3121`**. Elle est distincte de l’ancienne branche `research/edge-lab-continuous` et de la branche de reconstruction du Live Lab.
 
 L’outil natif des automatisations confirme cinq workflows horaires activés, avec des heures de lancement récentes. Cela prouve des lancements observés, pas la réussite du travail. L’ancienne tâche « Discovery V4.2 » est désactivée. Le Site lui-même n’a aucune automatisation liée. [Relevé borné](ACTIVE_WORKFLOWS.json).
 
 À l’instant de l’audit, la file contient **21 tâches : 20 COMPLETE, 0 READY, 1 CLAIMED**. La réservation restante est `FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002`, génération 1, propriétaire `fundamental_events_workflow`. Son bail a expiré le **16 octobre à 10:10:23 UTC**, sans completion persistée.
 
 J’ai exécuté la fonction pure `derive_refill_task` du code exact de cette branche contre les fichiers exacts : elle renvoie **`NOOP_QUEUE_NOT_EMPTY`**. Le remplissage compte le statut CLAIMED sans résoudre ici l’expiration. Les prompts sélectionnent d’abord des tâches READY. Cette combinaison peut maintenir la file bloquée malgré des réveils réguliers. La règle de reprise existe dans le protocole, mais son application effective à cette réservation n’est pas démontrée. [Reproduction et horloges](CURRENT_OS_PROOF.json).
+
+La relecture finale inclut l’intégration `e980d20` de préparation économique qualifiée. Son manifeste indique explicitement « no scheduler wiring or automatic execution » et préserve les états actifs. Les tâches, le runtime et le replenisher sont identiques au premier relevé `89ece99` ; la reproduction du blocage reste identique. Les nouveaux moteurs purs pourront être réutilisés sans les confondre avec un service déjà en marche.
 
 Autres limites explicites actuelles :
 
