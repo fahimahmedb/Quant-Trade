@@ -5,7 +5,9 @@
   "reuse_branch": "builder/research-os-autonomous-loop-20261015",
   "observed_source_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
   "first_task": "Reconcile expired FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002 with artifact/run evidence and CAS generation fencing; never silently complete/delete/replay it.",
-  "preferred_first_executor": "Trusted always-on host plus supervised controller and bounded Codex headless workers; managed API alternative if budget selected.",
+  "preferred_first_executor": "Owner-selected Oracle Cloud Free Compute VM plus llama.cpp CPU serving GPT-OSS-20B and supervised deterministic controller; target access, RAM fit and throughput not yet qualified.",
+  "installation_route": "ROUTE_ORACLE_12GO.md",
+  "owner_host_report": "Instance created, maximum free storage allocated, phone only, SSH not currently used; shape, OS, RAM and administrator access unverified.",
   "events": [
     "campaign_start",
     "task_completed",

@@ -2,6 +2,8 @@
 
 Objectif ajouté : production d’idées décorrélée de la vitesse de validation, backlog accepté, aucun réveil horaire comme déclencheur principal. Préserver les quotas Codex autant que possible. Proposition documentaire, non activée.
 
+Choix Owner ultérieur : **GPT-OSS sur Oracle Cloud Free**, instance annoncée créée, téléphone uniquement. Le chemin concret et les points de raccordement sont dans [ROUTE_ORACLE_12GO.md](ROUTE_ORACLE_12GO.md). Les poids GGUF vérifiés occupent encore 11,46–12,11 Go ; chargement et débit sur 12 Go restent à tester. Aucun accès Oracle ni pilote H24 actif n’est établi.
+
 ## Accès et modèles
 
 Un modèle ne fournit pas un service de lancement permanent. Codex peut construire/lancer un programme qui appelle des modèles conversationnels ; ces appels utilisent l’accès et la facturation de leur fournisseur. Les mécanismes officiels de partage de l’abonnement ChatGPT examinés imputent les requêtes admissibles à l’allocation Work/Codex. Ils ne donnent pas un nouveau quota de chats classiques. L’API a une facturation séparée de l’abonnement.
