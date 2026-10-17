@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "protocol_id": "EXP-QUANT-FORM144-SUPPLY-001-G1-E1",
+  "candidate_id": "QUANT-FORM144-SUPPLY-001",
+  "generation_id": "G1",
+  "kind": "SOURCE_UNUSABLE",
+  "classification_scope": "PARK_DATA_NOT_ECONOMIC_REJECTION",
+  "lesson": "The frozen SEC event source contract could not be reproduced from the authorized GitHub Actions execution host: the SEC Q1 2024 master index returned HTTP 403 after three attempts. No event sample or market outcome was reached, so this is not evidence against the economic hypothesis.",
+  "decision_map_applied": true,
+  "economic_outcome_accessed": false,
+  "real_capital_used": false,
+  "live_trading_used": false,
+  "protocol_freeze_commit": "b80cd82115cfaef156c5dd7074bc4d0b6ef93a67",
+  "runner_commit": "f2a71f220dea3acc50ddb8d0657fe37f3bbb61fa",
+  "admission_revision_commit": "4ed7e39349b13c383fc5c0d9f16008fabebd9ab5",
+  "execution_evidence": {
+    "pre_execution_failure_run_id": 39032409229,
+    "pre_execution_failure_stage": "admission checksum verification",
+    "pre_execution_outcome_accessed": false,
+    "source_attempt_run_id": 39032686104,
+    "source_attempt_head_sha": "4ed7e39349b13c383fc5c0d9f16008fabebd9ab5",
+    "admission_verify": "PASS",
+    "runner_self_test": "PASS",
+    "execution_failure_stage": "documentary source acquisition before event parsing",
+    "failing_url": "https://www.sec.gov/Archives/edgar/full-index/2024/QTR1/master.idx",
+    "failure_type": "HTTP 403 Forbidden after 3 attempts",
+    "market_outcome_stage_reached": false
+  },
+  "frozen_parameters_changed_after_outcome": false,
+  "economic_attempt_count": 0,
+  "infrastructure_attempt_count": 2,
+  "next_action": "Rotate to the next independently qualified candidate without retuning QUANT-FORM144-SUPPLY-001."
+}
