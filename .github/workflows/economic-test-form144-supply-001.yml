@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Verify immutable protocol, runner and admission
+      - name: Verify immutable protocol, runner and revised admission
         shell: bash
         run: |
           set -euo pipefail
@@ -47,15 +47,19 @@ jobs:
           ADMISSION='research/research_os/experiments/FORM144_SUPPLY_001_ADMISSION.json'
           git diff --exit-code b80cd82115cfaef156c5dd7074bc4d0b6ef93a67 HEAD -- "$PROTOCOL"
           git diff --exit-code f2a71f220dea3acc50ddb8d0657fe37f3bbb61fa HEAD -- "$RUNNER"
-          git diff --exit-code c479ff254a223e15eac14b9af44afbe04423c66e HEAD -- "$ADMISSION"
-          echo 'cd7fe7c8d0140ffa18ae6b9da293cdb0c480ed73214bd180ae2ce6995a8ca520  '"$PROTOCOL" | sha256sum --check --strict
+          test "$(git rev-parse HEAD:"$ADMISSION")" = '6b48ea9d3dfdd484036e7b9718b22e22008f325c'
           python - <<'PY'
           import json
           from pathlib import Path
           p=json.loads(Path('research/research_os/experiments/FORM144_SUPPLY_001_PROTOCOL.json').read_text())
           a=json.loads(Path('research/research_os/experiments/FORM144_SUPPLY_001_ADMISSION.json').read_text())
           assert a['admission_state']=='AUTHORIZED_SINGLE_HISTORICAL_LOOK'
+          assert a['admission_revision']==2
           assert a['first_outcome_look'] is True
+          assert a['pre_execution_repair']['failed_run_id']==39032409229
+          assert a['pre_execution_repair']['economic_outcome_accessed_before_repair'] is False
+          assert a['pre_execution_repair']['runner_executed_before_repair'] is False
+          assert a['pre_execution_repair']['economic_parameters_changed'] is False
           assert p['authority']['economic_experiment_authorized'] is True
           assert p['authority']['real_capital_authorized'] is False
           assert p['authority']['live_trading_authorized'] is False

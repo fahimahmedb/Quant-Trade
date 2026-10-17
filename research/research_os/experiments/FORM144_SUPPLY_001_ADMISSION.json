@@ -1,11 +1,12 @@
 {
   "schema": 1,
+  "admission_revision": 2,
   "protocol_id": "EXP-QUANT-FORM144-SUPPLY-001-G1-E1",
   "candidate_id": "QUANT-FORM144-SUPPLY-001",
   "generation_id": "G1",
   "protocol_path": "research/research_os/experiments/FORM144_SUPPLY_001_PROTOCOL.json",
   "protocol_freeze_commit": "b80cd82115cfaef156c5dd7074bc4d0b6ef93a67",
-  "protocol_sha256": "cd7fe7c8d0140ffa18ae6b9da293cdb0c480ed73214bd180ae2ce6995a8ca520",
+  "protocol_integrity_method": "git_path_identity_against_freeze_commit",
   "runner_path": "research/research_os/experiments/run_form144_supply_001.py",
   "runner_commit": "f2a71f220dea3acc50ddb8d0657fe37f3bbb61fa",
   "admission_state": "AUTHORIZED_SINGLE_HISTORICAL_LOOK",
@@ -14,6 +15,15 @@
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
   "live_trading_authorized": false,
+  "pre_execution_repair": {
+    "failed_run_id": 39032409229,
+    "failure_stage": "admission checksum verification",
+    "failure_reason": "A manually entered protocol SHA-256 metadata value was incorrect even though the protocol path itself was byte-identical to its freeze commit.",
+    "economic_outcome_accessed_before_repair": false,
+    "runner_executed_before_repair": false,
+    "economic_parameters_changed": false,
+    "repair_scope": "Replace redundant manual SHA-256 assertion with Git path identity against the immutable protocol freeze commit; no protocol or runner modification."
+  },
   "source_contract": {
     "events": "SEC EDGAR as-filed Form 144 complete submissions selected from 2024 Q1 master index",
     "pit_symbol": "SEC Insider Transactions Data Sets Form 4 issuerTradingSymbol on a filing date strictly before event date",
@@ -23,6 +33,7 @@
   "execution_invariants": [
     "Protocol file must be byte-identical to protocol_freeze_commit.",
     "Runner file must be byte-identical to runner_commit.",
+    "Admission revision must be byte-identical to the admitted Git blob pinned by the workflow.",
     "No economic threshold, horizon, sample window, cost or decision rule may change after this admission.",
     "No current or post-T0 ticker mapping may be used.",
     "No real orders, real capital or live trading are permitted.",
