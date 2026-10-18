@@ -3,7 +3,7 @@
   "task_type":"VALIDATION",
   "required_capability":"validator",
   "target_lane":"independent_challenge",
-  "status":"CLAIMED",
+  "status":"COMPLETE",
   "priority":76,
   "inputs":{"candidate_id":"EVENT-FDA-ADCOM-BRIEFING-CLOCK-001","candidate_path":"research/research_os/hypotheses/EVENT-FDA-ADCOM-BRIEFING-CLOCK-001.json","producer_task":"FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003","required_checks":["independent Legacy duplicate/causal-distinctness check","FDA advisory-committee document publication rule and event-clock verification","deterministic FDA-versus-sponsor document provenance and outcome-blind substantive-feature classification","point-in-time first-public-availability reproducibility","confounder and leakage analysis","active attempt to invalidate mechanism before any economic test","claim restriction"]},
   "allowed_actions":["read frozen candidate without mutation","inspect public primary documentary evidence","perform independent cross-examination and red-team checks","restrict or reject claim","persist validation result and explicitly authorized integration handoff only if warranted"],
@@ -11,6 +11,8 @@
   "success_condition":"Independent validation either rejects/blocks the candidate on documentary grounds or confirms only eligibility for a future separately-authorized economic-test design; no economic result is produced.",
   "authority":{"scope":"INDEPENDENT_DOCUMENTARY_VALIDATION_ONLY","economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false},
   "lease":{"generation":1,"owner":"independent_challenge","claimed_at":"2026-10-18T11:33:30Z","expires_at":"2026-10-18T12:28:30Z","heartbeat_at":"2026-10-18T11:33:30Z"},
-  "created_at":"2026-10-18T11:19:00Z","updated_at":"2026-10-18T11:33:30Z",
-  "lineage":{"parent_task_id":"FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003","candidate_id":"EVENT-FDA-ADCOM-BRIEFING-CLOCK-001","hypothesis_id":"EVENT-FDA-ADCOM-BRIEFING-CLOCK-001"}
+  "created_at":"2026-10-18T11:19:00Z","updated_at":"2026-10-18T11:40:00Z",
+  "lineage":{"parent_task_id":"FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003","candidate_id":"EVENT-FDA-ADCOM-BRIEFING-CLOCK-001","hypothesis_id":"EVENT-FDA-ADCOM-BRIEFING-CLOCK-001"},
+  "artifacts":{"produced":["research/research_os/assessments/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001.json","research/research_os/receipts/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001-g1.json","research/research_os/events/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001/001-action-started-g1.json","research/research_os/events/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001/002-action-completed-g1.json"]},
+  "completion":{"completed_at":"2026-10-18T11:40:00Z","result":"PARK_DATA_BLOCK_DATA_AND_BLOCK_CLAIM_LEVEL","receipt":"research/research_os/receipts/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001/VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001-g1.json","integration_handoff":null}
 }
