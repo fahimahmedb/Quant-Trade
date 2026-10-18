@@ -52,6 +52,21 @@
     "private_console_key_available_here": false,
     "runtime_revision_rechecked": "41"
   },
+  "credential_followup_20261018": {
+    "owner_attached_private_key": true,
+    "file_permissions": "0600",
+    "key_type": "RSA",
+    "key_bits": 2048,
+    "fingerprint_matches_owner_public_fingerprint": true,
+    "private_key_locally_readable": true,
+    "private_key_content_printed_or_committed": false,
+    "runtime_revision_rechecked": "45",
+    "console_port_443_tcp_proxy_retest": "FAILED_TO_CONNECT_TO_PROXY",
+    "curl_exit_code": 7,
+    "ssh_authentication_attempted": false,
+    "remaining_blocker": "The configured TCP relay is unavailable; no conclusion about Oracle-side SSH reachability.",
+    "remote_commands_executed": false
+  },
   "next_access_options": [
     "Configure a supported SSH transport and a scoped private credential in the execution environment; no plaintext private key in public chat or Git.",
     "Use Oracle browser Cloud Shell with the matching key to administer the instance; serial console may require OS login/recovery."
