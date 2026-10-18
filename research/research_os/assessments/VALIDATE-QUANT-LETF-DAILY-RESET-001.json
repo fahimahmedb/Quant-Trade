@@ -1,0 +1,27 @@
+{
+  "assessment_id":"VALIDATE-QUANT-LETF-DAILY-RESET-001",
+  "hypothesis_id":"QUANT-LETF-DAILY-RESET-001",
+  "generation_id":"G1",
+  "lane":"independent_challenge",
+  "recommendation":"PARK_DATA",
+  "red_team_verdicts":["BLOCK_DATA","BLOCK_CLAIM_LEVEL"],
+  "mechanism_assessment":"PASS_BOUNDED_DAILY_RESET_MECHANISM",
+  "findings":[
+    "SEC documentation independently confirms that most leveraged and inverse ETFs reset daily and obtain exposure through swaps, futures and other derivatives.",
+    "Direxion independently states that its leveraged/inverse ETFs rebalance exposure daily by buying or selling swaps and that target exposure is a function of target leverage and net assets.",
+    "The frozen causal premise therefore survives at the product-mandate level: daily target maintenance creates recurring exposure adjustment.",
+    "The stronger frozen claim that sign and rough market-wide scale can be derived point-in-time before the close is not yet established. Historical pre-close AUM/shares, same-day creations/redemptions, product benchmark mappings and net long/inverse exposure must be reconstructed without using post-close NAV or holdings.",
+    "Derivative implementation transfers hedge demand to swap/futures counterparties; opposing products can offset and dealer pre-hedging can alter timing. Gross fund reset arithmetic therefore cannot be represented as executable constituent demand without a separately frozen mapping and netting model.",
+    "No price, return or economic outcome was inspected."
+  ],
+  "required_reopen_conditions":[
+    "Demonstrate a reproducible historical PIT source for each included product's shares/AUM that is known before the expression freeze time.",
+    "Version leverage targets and benchmark mappings historically.",
+    "Freeze ex ante treatment of creations/redemptions, long/inverse netting and derivatives-to-benchmark exposure mapping.",
+    "Define a pre-close freeze clock that cannot consume same-day closing NAV or post-close holdings.",
+    "Declare cost/capacity model before any authorized economic test."
+  ],
+  "claim_restriction":"Retain only that daily-reset leveraged/inverse products create rules-based exposure adjustments. Do not claim that public pre-close inputs currently identify executable net close flow, price pressure, or economic edge.",
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false,"outcome_data_accessed":false},
+  "completed_at":"2026-10-18T10:43:00Z"
+}
