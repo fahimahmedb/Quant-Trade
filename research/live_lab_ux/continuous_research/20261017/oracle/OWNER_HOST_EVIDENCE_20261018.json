@@ -25,12 +25,20 @@
   "access": {
     "owner_general_cloud_shell_and_compute_read_api": "WORKING",
     "guest_os_login": "NOT_ESTABLISHED",
-    "run_command_plugin_status": "NOT_YET_OBSERVED",
+    "run_command_plugin_status": "RUNNING_OWNER_PASTED_PLUGIN_LIST",
     "ssh_transport_from_codex": "LAST_OBSERVED_UNAVAILABLE",
     "next_read_only_checks": [
-      "Locate existing SSH private-key filenames in the owner's Cloud Shell without printing their contents.",
-      "Read Compute Instance Run Command plugin status using the verified --instanceagent-id CLI parameter."
-    ]
+      "Submit the bounded guest diagnostic through the confirmed running Run Command plugin.",
+      "Establish actual command delivery, guest resources, existing Quant services and sudo availability."
+    ],
+    "run_command_diagnostic_preparation": {
+      "script": "run-command-diagnostic.sh",
+      "cli_and_payload_schema": "CHECKED_AGAINST_OFFICIAL_OCI_DOCUMENTATION",
+      "shell_and_embedded_guest_syntax": "PASS",
+      "cli_flow_with_mock_responses_only": "PASS",
+      "actual_oci_submission_from_codex": false,
+      "guest_execution_confirmed": false
+    }
   },
   "guest_ram_fit_or_throughput_tested": false,
   "model_installed": false,

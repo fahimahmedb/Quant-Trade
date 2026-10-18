@@ -2,6 +2,8 @@
 
 État : chemin préparé le 17 octobre 2026 ; aucune instance Oracle inspectée, aucun modèle lancé, aucun coût engagé. L’Owner indique une instance créée, stockage gratuit maximal, téléphone uniquement et pas d’accès SSH utilisé.
 
+Mise à jour du 18 octobre : l’Owner a interrogé OCI depuis le **Cloud Shell général**. A1.Flex, 2 OCPU, 12 Go, zéro GPU et plugin **Compute Instance Run Command RUNNING** sont confirmés par ses sorties. La clé de création du 20 septembre diffère de la clé console du 18 octobre. La livraison d’une commande à Ubuntu et l’accès sudo restent à établir. Le script `oracle/run-command-diagnostic.sh` soumet depuis Cloud Shell un diagnostic invité borné, affiche son identifiant puis suit son exécution. Il crée un enregistrement Run Command mais ne change ni packages, services, volumes, clés ou IAM. Un état RUNNING du plugin ne prouve pas à lui seul les permissions de livraison/exécution. Commande CLI vérifiée : `oci instance-agent command create --timeout-in-seconds`, corps source TEXT et cible `instanceId` ; suivi par `command-execution get --command-id --instance-id`. Le script ne recrée pas une commande si l’attente expire : conserver son identifiant et réinterroger l’exécution. Les 30 tentatives espacées de quatre secondes sont bornées ; le temps total dépend aussi des appels OCI.
+
 ECONOMIC_PROGRESS : préparer une production de brouillons causaux qui ne consomme pas le quota Codex, avec admission distincte dans la recherche existante.
 REMAINING_BLOCKER : accès à l’instance, configuration effective et faisabilité mémoire/débit inconnus.
 EXIT_CONDITION : diagnostic réel, génération locale mesurée, puis intégration factuelle et essai de 24 heures réelles.
