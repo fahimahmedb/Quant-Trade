@@ -1,0 +1,3 @@
+{
+  "schema_version":"research-os-queue-refill-event-v1","event_type":"QUEUE_REFILL","event_id":"queue-refill:QUANT_MECHANISM_DISTINCT:2","emitted_at":"2026-10-18T09:44:15Z","steward_lane":"integrator_portfolio","task_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-002","frontier_id":"QUANT_MECHANISM_DISTINCT","sequence":2,"derivation_key":"a95d120f9c12c776a3f99445bc95415e6fa0328d1cc4e5f81be2aac408db55a7","selection_policy":"LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID","queue_before":{"ready_count":0,"claimed_count":0},"queue_after":{"ready_count":1,"claimed_count":0},"producer_executed_same_wake":false
+}
