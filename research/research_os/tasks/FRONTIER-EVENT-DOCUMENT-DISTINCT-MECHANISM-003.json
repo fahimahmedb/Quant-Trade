@@ -1,0 +1,58 @@
+{
+  "schema_version": "research-os-task-v1",
+  "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003",
+  "task_type": "EVENT_DOCUMENT",
+  "required_capability": "event_document",
+  "target_lane": "fundamental_events",
+  "priority": 76,
+  "status": "READY",
+  "created_at": "2026-10-18T10:48:16Z",
+  "updated_at": "2026-10-18T10:48:16Z",
+  "lease": {
+    "owner": null,
+    "generation": 0,
+    "claimed_at": null,
+    "expires_at": null,
+    "heartbeat_at": null
+  },
+  "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+  "sequence": 3,
+  "derivation_key": "2638b1f2f82b01ce6557014419b53dd20eb7f1a8589936e8f05ac3033dff81f6",
+  "objective": "Find exactly one causally distinct event/document mechanism using admissible public primary or documentary evidence, screen Legacy before freeze, actively seek disconfirmation, and freeze at most one CandidateHypothesis without reading candidate returns or future outcomes.",
+  "allowed_actions": [
+    "search public web sources and primary documents",
+    "read existing repository artifacts and LegacyResearchLedger",
+    "create or update event/document source packets",
+    "freeze at most one CandidateHypothesis",
+    "create the next validation task when a candidate is frozen",
+    "write task events and one bounded receipt"
+  ],
+  "forbidden_actions": [
+    "query or inspect candidate return outcomes",
+    "run or extend a backtest",
+    "start prospective observation",
+    "authorize economic experiment",
+    "allocate capital or generate orders",
+    "reuse a Legacy expression without proving economic distinctness"
+  ],
+  "legacy_screen_required_before_freeze": true,
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "lineage": {
+    "parent_task_id": null,
+    "candidate_id": null,
+    "hypothesis_id": null
+  },
+  "artifacts": {
+    "required": [],
+    "produced": []
+  },
+  "notes": [
+    "Derived deterministically by integrator_portfolio empty-queue refill.",
+    "Producer task must not be executed by integrator_portfolio in the refill wake."
+  ]
+}
