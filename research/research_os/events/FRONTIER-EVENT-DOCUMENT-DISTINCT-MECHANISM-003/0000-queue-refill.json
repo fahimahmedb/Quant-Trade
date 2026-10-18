@@ -1,0 +1,15 @@
+{
+  "schema_version": "research-os-queue-refill-event-v1",
+  "event_type": "QUEUE_REFILL",
+  "event_id": "queue-refill:EVENT_DOCUMENT_DISTINCT_MECHANISM:3",
+  "emitted_at": "2026-10-18T10:48:16Z",
+  "steward_lane": "integrator_portfolio",
+  "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003",
+  "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+  "sequence": 3,
+  "derivation_key": "2638b1f2f82b01ce6557014419b53dd20eb7f1a8589936e8f05ac3033dff81f6",
+  "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+  "queue_before": {"ready_count": 0, "claimed_count": 0},
+  "queue_after": {"ready_count": 1, "claimed_count": 0},
+  "producer_executed_same_wake": false
+}
