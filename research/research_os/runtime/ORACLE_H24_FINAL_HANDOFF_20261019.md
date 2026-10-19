@@ -1,5 +1,15 @@
 # Oracle H24 recovery — exact handoff
 
+**Continuation:** authenticated OCI HTTPS access has since been restored.
+Read `CP2B_0_LIVE_ACCESS_RESUMED_20261019.md` and
+`CP2B_0_LIVE_INVENTORY_20261019.json` before interpreting the historical access
+blocker below. The real unprivileged inventory is recorded, and a permission-gap
+probe defect is fixed/CI-qualified at `b54dc2fa4c9ae294927c63f9056a5c4dc7746973`.
+H24 remains NOT_PROVEN; privileged host access, complete backend qualification,
+unattended GitHub credentials and all live activation gates still apply.
+
+## Historical initial handoff
+
 Verdict: **BLOCKED_BY_SPECIFIC_EXTERNAL_DEPENDENCY**.
 `ORACLE_H24_RESEARCH_LAB = NOT_PROVEN`.
 
