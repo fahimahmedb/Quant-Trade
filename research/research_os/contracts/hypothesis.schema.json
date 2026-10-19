@@ -18,6 +18,8 @@
     "freeze_status":{"enum":["DRAFT","FROZEN"]},
     "frozen_at":{"type":["string","null"]},
     "amendments":{"type":"array","items":{"type":"object"}},
-    "authority":{"type":"object"}
+    "authority":{"type":"object"},
+    "issuer":{"type":"string"},
+    "worker_provenance":{"type":"object","required":["lane","worker_id","task_id","engine_output_ref","candidate_hash"],"properties":{"lane":{"type":"string"},"worker_id":{"type":"string"},"task_id":{"type":"string"},"engine_output_ref":{"type":"string"},"candidate_hash":{"type":"string"}},"additionalProperties":false}
   }
 }

@@ -1,10 +1,16 @@
 # Scheduled Workflow Protocol
 
-This protocol is for ChatGPT/Codex-style workflow workers that wake periodically and operate on the durable Quant-Trade queue.
+This protocol governs external workers operating on the durable Quant-Trade queue.
+The Oracle implementation is `research.research_os.oracle_worker`: systemd wakes
+one bounded stage, with optional local model reasoning through `ModelBackend`.
+Codex is a build/repair plane, never a scheduled runtime dependency.
 
 ## Source of truth
 
-Branch: `builder/research-os-autonomous-loop-20261015`
+The state branch is an explicit runtime configuration. The recovery deployment
+uses `builder/oracle-economic-loop-recovery-20261019`. Executable releases are
+identified by exact immutable Git SHA; state is fetched fresh from the configured
+branch on every wake and before critical transitions.
 
 Canonical runtime files:
 - `research/research_os/runtime/CONTROL_PLANE.json`
@@ -68,7 +74,7 @@ Independent challenge must occur in the `independent_challenge` lane on a later 
    - verify no authority boundary changed.
 10. Persist durable output after every meaningful stage. Never rely on chat memory as the only record.
 11. A handoff task may be created only when the currently claimed task explicitly authorizes that exact downstream handoff. The new task must preserve lineage identity and identify the destination lane/capability.
-12. Persist exactly one receipt for the wake under `research/research_os/receipts/<task_id>/` summarizing all stages actually executed.
+12. Persist exactly one receipt for the wake under `research/research_os/receipts/<task_id>/` summarizing all stages actually executed. The Oracle adapter executes one small stage per wake. The stage artifact, terminal event, receipt and task progress publish atomically in one Git commit; the durable claim/start event is a preceding transaction.
 13. Immediately before the terminal worker event, perform a fresh queue observation sufficient to classify the state under **Queue observability semantics** below. Persist `ACTION_COMPLETED`, or `SESSION_ENDED` if blocked/failed, with explicit queue observability fields whenever they are proved.
 14. Re-fetch the claimed task and set it to `COMPLETE`, `BLOCKED` or `FAILED`, preserving lease generation and linking all durable artifacts.
 15. Stop. Do not claim another lineage in the same wake.

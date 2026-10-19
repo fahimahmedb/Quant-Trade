@@ -19,6 +19,22 @@
     "lease": {"type":"object","required":["generation","owner","claimed_at","expires_at"],"properties":{"generation":{"type":"integer","minimum":0},"owner":{"type":["string","null"]},"claimed_at":{"type":["string","null"]},"expires_at":{"type":["string","null"]}},"additionalProperties":false},
     "created_at": {"type":"string"},
     "updated_at": {"type":["string","null"]},
-    "completion": {"type":["object","null"]}
+    "completion": {"type":["object","null"]},
+    "lineage": {"type":"object"},
+    "derivation": {"type":"object"},
+    "execution": {
+      "type":"object",
+      "description":"Progress on this canonical task, never an independent task authority.",
+      "properties": {
+        "session_id":{"type":"string"},
+        "release_sha":{"type":"string","pattern":"^[a-f0-9]{40}$"},
+        "lineage":{"type":"string"},
+        "completed_stages":{"type":"object","additionalProperties":{"type":"object","required":["artifact","artifact_hash"],"properties":{"artifact":{"type":"string"},"artifact_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"}},"additionalProperties":false}},
+        "attempts":{"type":"object","additionalProperties":{"type":"integer","minimum":0}},
+        "retry_after":{"type":"string"},
+        "last_receipt":{"type":"string"}
+      },
+      "additionalProperties":false
+    }
   }
 }

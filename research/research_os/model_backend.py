@@ -99,7 +99,7 @@ class LocalHTTPBackend(ModelBackend):
         self.endpoint, self.model, self.runtime = endpoint.rstrip('/'), model, runtime
         self.budget = budget or ModelBudget()
 
-    def _request(self, path, payload=None):
+    def _request(self, path, payload=None, *, timeout=None):
         class NoRedirect(urllib.request.HTTPRedirectHandler):
             def redirect_request(self, *args, **kwargs):
                 return None
@@ -109,7 +109,7 @@ class LocalHTTPBackend(ModelBackend):
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
         for attempt in range(self.budget.retries + 1):
             try:
-                with opener.open(request, timeout=self.budget.timeout_seconds) as response:
+                with opener.open(request, timeout=min(timeout or self.budget.timeout_seconds, self.budget.timeout_seconds)) as response:
                     data = response.read(2 * 1024 * 1024 + 1)
                 if len(data) > 2 * 1024 * 1024:
                     raise InvalidModelOutput('LOCAL_MODEL_RESPONSE_TOO_LARGE')
@@ -124,7 +124,7 @@ class LocalHTTPBackend(ModelBackend):
         raise BackendUnavailable('LOCAL_MODEL_RETRIES_EXHAUSTED')
 
     def healthcheck(self):
-        data = self._request('/api/tags' if self.runtime == 'ollama' else '/v1/models')
+        data = self._request('/api/tags' if self.runtime == 'ollama' else '/v1/models', timeout=5)
         models = data.get('models', []) if self.runtime == 'ollama' else data.get('data', [])
         matches = [m for m in models if m.get('name', m.get('id')) == self.model]
         if not matches:
@@ -182,7 +182,7 @@ class GPTOSSBackend(LocalHTTPBackend):
     def healthcheck(self):
         health = super().healthcheck()
         if self.runtime == 'ollama':
-            details = self._request('/api/show', {'model': self.model})
+            details = self._request('/api/show', {'model': self.model}, timeout=5)
             metadata = details.get('details') or {}
             family = str(metadata.get('family', '')).lower().replace('_', '-').replace('gptoss', 'gpt-oss')
             if family != 'gpt-oss':

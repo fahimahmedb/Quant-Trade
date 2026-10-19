@@ -5,10 +5,9 @@ on:
     branches:
       - builder/oracle-economic-loop-recovery-20261019
     paths:
-      - 'deploy/oracle_release_install.py'
-      - 'deploy/oci_research_os_deploy.py'
-      - 'tests/test_oracle_release_install.py'
-      - 'tests/test_oci_research_os_deploy.py'
+      - 'deploy/**'
+      - 'tests/test_oracle*.py'
+      - 'tests/test_oci*.py'
       - 'research/research_os/**'
       - '.github/workflows/oracle-economic-loop-recovery-ci.yml'
   workflow_dispatch:
@@ -37,13 +36,23 @@ jobs:
             tests/test_oracle_release_install.py \
             tests/test_oci_research_os_deploy.py \
             research/research_os/worker_preflight.py \
-            research/research_os/tests/test_worker_preflight.py
+            research/research_os/model_backend.py \
+            research/research_os/github_state.py \
+            research/research_os/worker_stages.py \
+            research/research_os/oracle_worker.py \
+            deploy/oracle_model_inventory.py
 
       - name: Run Oracle recovery unit tests
         run: |
           python -m unittest \
             tests/test_oracle_release_install.py \
             tests/test_oci_research_os_deploy.py
+
+      - name: Local backend, fresh Git state, atomic leases and crash recovery (not live OCI evidence)
+        run: |
+          python -m unittest -v \
+            research.research_os.tests.test_model_backend \
+            research.research_os.tests.test_oracle_worker
 
       - name: Run pre-outcome Research OS regressions used by installer and worker preflight
         run: |
