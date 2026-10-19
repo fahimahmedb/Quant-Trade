@@ -72,11 +72,27 @@ def mechanism_tokens(value: str) -> List[str]:
     return sorted(out)
 
 
+def _hypothesis_id(record: Dict[str, Any], path: str) -> str:
+    for key in ("hypothesis_id", "candidate_id"):
+        value = record.get(key)
+        if isinstance(value, str) and value.strip():
+            result = value.strip()
+            if key == "candidate_id" and Path(path).stem != result:
+                raise WorkerPreflightBlock(
+                    f"CURRENT_CANDIDATE_ID_PATH_MISMATCH:{path}:{result}"
+                )
+            return result
+    raise WorkerPreflightBlock(f"CURRENT_HYPOTHESIS_ID_MISSING:{path}")
+
+
 def _entity(record: Dict[str, Any]) -> str:
+    primary_document = record.get("primary_document") or {}
+    decision_map = record.get("decision_map") or {}
     for value in (
         record.get("issuer"),
-        (record.get("decision_map") or {}).get("company"),
+        decision_map.get("company"),
         record.get("company"),
+        primary_document.get("issuer"),
     ):
         if isinstance(value, str) and value.strip():
             return " ".join(TOKEN_RE.findall(value.lower())) or "UNKNOWN"
@@ -99,18 +115,33 @@ def _mechanism(record: Dict[str, Any]) -> str:
     value = record.get("mechanism")
     if isinstance(value, str) and value.strip():
         return value.strip()
+
     thesis = record.get("thesis")
     chain = record.get("causal_chain")
     combined = " ".join(part for part in (_text(thesis), _text(chain)) if part)
     if combined.strip():
         return combined.strip()
+
+    mechanism_family = record.get("mechanism_family")
+    candidate = record.get("candidate_hypothesis") or {}
+    candidate_text = " ".join(
+        part
+        for part in (
+            _text(mechanism_family),
+            _text(candidate.get("claim")),
+            _text(candidate.get("causal_chain")),
+        )
+        if part
+    )
+    if candidate_text.strip():
+        return candidate_text.strip()
     return ""
 
 
 def _family(record: Dict[str, Any]) -> str:
-    value = record.get("family_id")
-    if isinstance(value, str) and value.strip():
-        return value.strip().lower()
+    for value in (record.get("family_id"), record.get("mechanism_family")):
+        if isinstance(value, str) and value.strip():
+            return value.strip().lower()
     return "UNKNOWN"
 
 
@@ -122,9 +153,7 @@ def _freeze_state(record: Dict[str, Any]) -> str:
 def normalize_hypothesis(record: Dict[str, Any], *, path: str) -> Dict[str, Any]:
     if not isinstance(record, dict):
         raise WorkerPreflightBlock(f"CURRENT_HYPOTHESIS_NOT_OBJECT:{path}")
-    hypothesis_id = record.get("hypothesis_id")
-    if not isinstance(hypothesis_id, str) or not hypothesis_id.strip():
-        raise WorkerPreflightBlock(f"CURRENT_HYPOTHESIS_ID_MISSING:{path}")
+    hypothesis_id = _hypothesis_id(record, path)
     generation_id = _generation(record)
     if generation_id == "UNKNOWN":
         raise WorkerPreflightBlock(f"CURRENT_HYPOTHESIS_GENERATION_UNSUPPORTED:{path}")
@@ -141,7 +170,7 @@ def normalize_hypothesis(record: Dict[str, Any], *, path: str) -> Dict[str, Any]
         )
 
     normalized = {
-        "hypothesis_id": hypothesis_id.strip(),
+        "hypothesis_id": hypothesis_id,
         "generation_id": generation_id,
         "family_id": _family(record),
         "entity": _entity(record),
