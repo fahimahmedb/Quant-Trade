@@ -18,6 +18,18 @@ representative production structured critique also completed. This qualifies
 bounded unverified commentary with the explicit production policy, not general
 autonomous scientific competence or economic correctness.
 
+The complete successful host serialization is preserved byte-for-byte in
+CP3_LOCAL_MODEL_POLICY_QUALIFIED_20261020.json: 5244 bytes, SHA256
+6535991128be78afc59d0dcceffe88ade06677a23b2709b76454daf2ef9a0631.
+Four bounded initial transport chunks and a fifth verified chunk reconstructed
+these exact bytes. The production critique took 49.641 seconds. Scored case
+latencies were 48.215, 28.478, 18.893, 19.048 and 38.275 seconds.
+
+The proposed operational release is f138c980c94eea313fd77532c20857da5c02d3fe,
+with Oracle CI 39338286363 and SEC P0 CI 39338286411 both SUCCESS. Its worker,
+backend and policy are identical to the locally qualified e20e853 release; the
+host model memory cap is the measured 10G adjustment described below.
+
 The original failed attempt is preserved byte-for-byte in
 CP3_LOCAL_MODEL_FIRST_REJECTION_20261020.json (3818 bytes, SHA256
 4d960fec523d71cc4c6b00acea06332b4f486b97a7781c5f65ba779b354a62fd).

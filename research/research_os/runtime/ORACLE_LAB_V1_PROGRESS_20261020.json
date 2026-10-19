@@ -1,0 +1,64 @@
+{
+  "schema_version": "oracle-lab-v1-progress-v1",
+  "status": "WAITING_FOR_ADMINISTRATIVE_HOST_PREPARATION",
+  "oracle_h24_research_lab": "NOT_RUNNING_AT_LAST_LIVE_PROBE",
+  "operational_release_proposed": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "local_backend_qualification_code_sha": "e20e8530a177ae9e197cf9578fae0a503f3b3d09",
+  "ci": {
+    "oracle_run_id": 39338286363,
+    "oracle_conclusion": "success",
+    "oracle_tests": 145,
+    "general_run_id": 39338286411,
+    "general_conclusion": "success",
+    "general_demo_checks": "35/35",
+    "scope": "CI evidence; not live scheduler proof"
+  },
+  "actual_local_model": {
+    "status": "PASS_LOCAL_COMMENTARY_BACKEND_ONLY",
+    "scored_cases_passed": 5,
+    "production_critique_seconds": 49.641,
+    "peak_rss_kib": 9883908,
+    "swap_free_kib": 0,
+    "temporary_server_stopped": true,
+    "report": "CP3_LOCAL_MODEL_POLICY_QUALIFIED_20261020.json",
+    "report_sha256": "6535991128be78afc59d0dcceffe88ade06677a23b2709b76454daf2ef9a0631",
+    "prior_failed_attempt_preserved": true
+  },
+  "github_identity": {
+    "repository_scoped_native_ssh_authenticated": true,
+    "private_key_exported": false,
+    "live_write_and_claim_canary": "PENDING"
+  },
+  "last_live_host_probe": {
+    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaa7qzqm5xg6qja7wwllk2lgun5edobw4oxoigueg2l6uga",
+    "transport_updated_at": "2026-10-19T23:06:18.226000+00:00",
+    "model_service_load_state": "not-found",
+    "worker_service_load_state": "not-found",
+    "worker_timer_load_state": "not-found",
+    "bounded_recovery_wrappers_present": false
+  },
+  "external_execution_dependency": {
+    "new_owner_authorization_required": false,
+    "required": "Execute pinned root host preparation from the already-working ubuntu SSH terminal",
+    "reason": "OCI Run Command executes as ocarun without general noninteractive sudo; the recovery commands are not installed yet",
+    "source": "deploy/oracle_v1_host_prepare.py",
+    "source_commit": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "source_sha256": "4f16891393a7adaea4b9c55ff29c479860ffc08d770b82e48ec24a0211a1e44f",
+    "qualification_ci_run_id": 39338286363,
+    "root_preparation_enables_research_timer": false
+  },
+  "remaining_live_gates": [
+    "Administrator host preparation and actual resource-bounded model service",
+    "Canonical GitHub write, claim, actual process death and expired-lease recovery",
+    "Matching live pre-activation receipt and gated activation",
+    "Two automatic wakes and no duplicated work",
+    "Actual VM reboot recovery and final H24 receipt"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "live_lab_ui": "Existing Site inspected read-only; native Oracle event-ingress connection remains separate unfinished observability work"
+}
