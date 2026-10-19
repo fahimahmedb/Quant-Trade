@@ -44,6 +44,7 @@ jobs:
             deploy/oracle_h24_canary.py \
             deploy/oracle_scheduler_install.py
           python -m py_compile deploy/oracle_local_backend_install.py
+          python -m py_compile deploy/oracle_local_backend_qualify.py
 
       - name: Run Oracle recovery unit tests
         shell: bash
@@ -60,7 +61,8 @@ jobs:
           python -m unittest -v \
             research.research_os.tests.test_model_backend \
             research.research_os.tests.test_oracle_worker \
-            research.research_os.tests.test_oracle_scheduler 2>&1 | tee /tmp/quant-worker-tests.log
+            research.research_os.tests.test_oracle_scheduler \
+            tests.test_oracle_local_backend_qualify 2>&1 | tee /tmp/quant-worker-tests.log
 
       - name: Run pre-outcome Research OS regressions used by installer and worker preflight
         shell: bash
