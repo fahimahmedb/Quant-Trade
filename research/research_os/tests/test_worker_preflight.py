@@ -12,12 +12,19 @@ from research.research_os.worker_preflight import (
     git_blob_sha,
     load_current_hypothesis_corpus,
     normalize_hypothesis,
+    screen_candidate_against_current,
     verify_materialized_legacy,
     verify_task_authority,
 )
 
 
 BASE = Path(__file__).resolve().parents[1]
+CLOSED_AUTHORITY = {
+    "economic_experiment_authorized": False,
+    "prospective_observation_authorized": False,
+    "real_capital_authorized": False,
+    "live_trading_authorized": False,
+}
 
 
 class WorkerPreflightTests(unittest.TestCase):
@@ -57,6 +64,57 @@ class WorkerPreflightTests(unittest.TestCase):
         )
         self.assertTrue(pair["review_required"])
 
+    def test_candidate_screen_blocks_asml_rewording_against_current_corpus(self):
+        corpus = load_current_hypothesis_corpus(BASE)
+        candidate = {
+            "hypothesis_id": "FUND-ASML-CAPACITY-ALT-999",
+            "family_id": "fundamental-capacity-constrained-lithography",
+            "generation_id": "G1",
+            "mechanism": (
+                "ASML customer demand for 2027 and 2028 exceeds planned lithography supply, "
+                "while installed-base productivity upgrades monetize customer wafer capacity. "
+                "Capacity scarcity and installed-base upgrades may sustain revenue and margin mix."
+            ),
+            "decision_map": {"company": "ASML Holding N.V."},
+            "freeze_status": "DRAFT",
+            "authority": CLOSED_AUTHORITY,
+        }
+        result = screen_candidate_against_current(candidate, corpus)
+        self.assertEqual(result["status"], "BLOCK")
+        self.assertIn(
+            "BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP", result["block_reasons"]
+        )
+        matched = {item["peer_hypothesis_id"] for item in result["matches"]}
+        self.assertIn("FUND-ASML-CAPACITY-SERVICE-001", matched)
+        self.assertIn("FUND-ASML-CAPACITY-PRICING-001", matched)
+        self.assertEqual(result["current_corpus_snapshot_hash"], corpus["snapshot_hash"])
+        self.assertEqual(len(result["screen_hash"]), 64)
+
+    def test_candidate_screen_blocks_exact_existing_id(self):
+        corpus = load_current_hypothesis_corpus(BASE)
+        source = json.loads(
+            (BASE / "hypotheses" / "FLOW-UST-PRIMARY-DEALER-AUCTION-001.json").read_text()
+        )
+        result = screen_candidate_against_current(source, corpus)
+        self.assertEqual(result["status"], "BLOCK")
+        self.assertIn("BLOCK_EXACT_CURRENT_DUPLICATE", result["block_reasons"])
+
+    def test_candidate_screen_allows_low_observed_overlap_without_claiming_distinctness(self):
+        corpus = load_current_hypothesis_corpus(BASE)
+        candidate = {
+            "hypothesis_id": "TEST-UNRELATED-001",
+            "family_id": "synthetic-distinct-test-family",
+            "generation_id": "G1",
+            "mechanism": "municipal water tariff billing reconciliation under utility invoice timing",
+            "issuer": "Synthetic Water Utility",
+            "freeze_status": "DRAFT",
+            "authority": CLOSED_AUTHORITY,
+        }
+        result = screen_candidate_against_current(candidate, corpus)
+        self.assertEqual(result["status"], "PASS_CURRENT_CORPUS_SCREEN")
+        self.assertEqual(result["block_reasons"], [])
+        self.assertEqual(result["matches"], [])
+
     def test_alternate_generation_thesis_schema_is_normalized(self):
         record = {
             "hypothesis_id": "ALT-1",
@@ -65,12 +123,7 @@ class WorkerPreflightTests(unittest.TestCase):
             "thesis": "Capacity scarcity supports pricing power",
             "causal_chain": ["demand exceeds supply", "pricing remains firm"],
             "status": "FROZEN_FOR_INDEPENDENT_VALIDATION",
-            "authority": {
-                "economic_experiment_authorized": False,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
+            "authority": CLOSED_AUTHORITY,
         }
         value = normalize_hypothesis(record, path="ALT-1.json")
         self.assertEqual(value["generation_id"], "G2")
@@ -89,12 +142,7 @@ class WorkerPreflightTests(unittest.TestCase):
                 "causal_chain": ["right attached", "state transition changes entitlement"],
             },
             "status": "FROZEN_FOR_INDEPENDENT_VALIDATION",
-            "authority": {
-                "economic_experiment_authorized": False,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
+            "authority": CLOSED_AUTHORITY,
         }
         value = normalize_hypothesis(record, path="EVENT-ALT-1.json")
         self.assertEqual(value["hypothesis_id"], "EVENT-ALT-1")
@@ -109,12 +157,7 @@ class WorkerPreflightTests(unittest.TestCase):
             "generation": 1,
             "mechanism_family": "EVENT_FAMILY",
             "candidate_hypothesis": {"claim": "bounded event mechanism"},
-            "authority": {
-                "economic_experiment_authorized": False,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
+            "authority": CLOSED_AUTHORITY,
         }
         with self.assertRaisesRegex(
             WorkerPreflightBlock, "CURRENT_CANDIDATE_ID_PATH_MISMATCH"
@@ -125,12 +168,7 @@ class WorkerPreflightTests(unittest.TestCase):
         record = {
             "hypothesis_id": "BAD-1",
             "mechanism": "some valid mechanism text",
-            "authority": {
-                "economic_experiment_authorized": False,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
+            "authority": CLOSED_AUTHORITY,
         }
         with self.assertRaisesRegex(
             WorkerPreflightBlock, "CURRENT_HYPOTHESIS_GENERATION_UNSUPPORTED"
@@ -138,23 +176,39 @@ class WorkerPreflightTests(unittest.TestCase):
             normalize_hypothesis(record, path="BAD-1.json")
 
     def test_hypothesis_authority_must_remain_closed(self):
+        authority = dict(CLOSED_AUTHORITY)
+        authority["economic_experiment_authorized"] = True
         record = {
             "hypothesis_id": "BAD-AUTH",
             "generation_id": "G1",
             "mechanism": "bounded documentary mechanism",
-            "authority": {
-                "economic_experiment_authorized": True,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
+            "authority": authority,
         }
         with self.assertRaisesRegex(
             WorkerPreflightBlock, "CURRENT_HYPOTHESIS_AUTHORITY_UNSAFE"
         ):
             normalize_hypothesis(record, path="BAD-AUTH.json")
 
-    def test_unknown_identity_is_not_auto_distinct(self):
+    def test_unknown_identity_with_material_overlap_is_not_auto_distinct(self):
+        left = {
+            "hypothesis_id": "H1",
+            "family_id": "UNKNOWN",
+            "entity": "UNKNOWN",
+            "mechanism_tokens": ["capacity", "scarcity", "supply"],
+        }
+        right = {
+            "hypothesis_id": "H2",
+            "family_id": "UNKNOWN",
+            "entity": "UNKNOWN",
+            "mechanism_tokens": ["capacity", "scarcity", "demand"],
+        }
+        relation = compare_current_identities(left, right)
+        self.assertEqual(
+            relation["classification"], "UNKNOWN_CURRENT_EXPOSURE_RELATION"
+        )
+        self.assertTrue(relation["review_required"])
+
+    def test_low_overlap_with_missing_identity_does_not_claim_proven_distinctness(self):
         left = {
             "hypothesis_id": "H1",
             "family_id": "UNKNOWN",
@@ -169,9 +223,9 @@ class WorkerPreflightTests(unittest.TestCase):
         }
         relation = compare_current_identities(left, right)
         self.assertEqual(
-            relation["classification"], "UNKNOWN_CURRENT_EXPOSURE_RELATION"
+            relation["classification"], "LOW_OBSERVED_OVERLAP_NO_DISTINCTNESS_CLAIM"
         )
-        self.assertTrue(relation["review_required"])
+        self.assertFalse(relation["review_required"])
 
     def test_exact_current_id_duplicate_blocks(self):
         base = {
@@ -185,24 +239,8 @@ class WorkerPreflightTests(unittest.TestCase):
         self.assertTrue(relation["review_required"])
 
     def test_task_authority_and_status_fail_closed(self):
-        task = {
-            "status": "READY",
-            "authority": {
-                "economic_experiment_authorized": False,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
-        }
-        self.assertEqual(
-            verify_task_authority(task),
-            {
-                "economic_experiment_authorized": False,
-                "prospective_observation_authorized": False,
-                "real_capital_authorized": False,
-                "live_trading_authorized": False,
-            },
-        )
+        task = {"status": "READY", "authority": CLOSED_AUTHORITY}
+        self.assertEqual(verify_task_authority(task), CLOSED_AUTHORITY)
         bad = json.loads(json.dumps(task))
         bad["authority"]["real_capital_authorized"] = True
         with self.assertRaisesRegex(WorkerPreflightBlock, "TASK_AUTHORITY_UNSAFE"):
