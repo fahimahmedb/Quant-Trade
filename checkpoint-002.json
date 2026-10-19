@@ -1,0 +1,68 @@
+{
+  "audit_id": "QT-AUDIT-20261018T2352Z",
+  "checkpoint": "002",
+  "status": "PARTIAL_IN_PROGRESS",
+  "continuation_mode": "REMOTE_RECONSTRUCTION_AFTER_ORIGINAL_WORKSPACE_LOSS",
+  "parent_checkpoint_commit": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489",
+  "checkpoint_002_markdown_commit": "46390f4fa5d042894202ab76da2e75cd43897930",
+  "branch_counts": {
+    "checkpoint_001": 221,
+    "current_observed": 226,
+    "delta": 5
+  },
+  "new_branches_observed": {
+    "audit/forensic-checkpoint-20261019": "46390f4fa5d042894202ab76da2e75cd43897930",
+    "ops/oci-one-shot-install-20261019": "6e8ea155b05086f8e5eabcf830a5f835d3e3d09c",
+    "builder/research-os-vm-autonomy-20261019": "8a1bdadc9bc52c4889ee19d0472bcee61fe24318",
+    "builder/econ-test-flow-ust-auction-20261019": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+    "builder/oracle-economic-loop-recovery-20261019": "d69298b70c832955cf3bac7e0475dc7208412fc5"
+  },
+  "moved_existing_refs": {
+    "claude/data-feeds-6vr22g": {
+      "initial": "55066ed4322f51798a3252a90e976e01d3281276",
+      "current_observed": "fc243f9a786e13220fe283c5bd0a6d74f7def5b5",
+      "delta_commits": 2,
+      "classification": "DATA_ONLY_OBSERVED_DELTA"
+    }
+  },
+  "oci": {
+    "head": "6e8ea155b05086f8e5eabcf830a5f835d3e3d09c",
+    "modern_reference": "d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec",
+    "merge_base": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
+    "ahead_by": 3,
+    "behind_by": 55,
+    "wholesale_merge_safe": false
+  },
+  "pr1": {
+    "head": "c60c8ab20b3f08add097e25e7295ba1196b0e4a6",
+    "base": "35cf6d626e979e24b2784d9e2e8cc5ba94bb7f4e",
+    "ahead_by": 700,
+    "merged": false,
+    "mandatory_audit_scope": true,
+    "pead_prereg": "64e95ff35d336c1641fa1550c91119f6ec7f104d",
+    "pead_result": "39d5f9c8e9112a067b1d32c5942373cfc7c2660d",
+    "pead_prereg_ordering_supported": true,
+    "pead_strict_pit_clean": false,
+    "spa_dsr_prereg": "916e3d602f228cc0e671d533987fa59df29448f6",
+    "spa_dsr_result": "d0ea7155717811163016d2f3bdb2536099183cbd"
+  },
+  "governance": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "new_economic_experiment_authorized_by_audit": false,
+    "operational_changes_in_audit_branch": false
+  },
+  "verdicts": {
+    "COVERAGE_COMPLETE": false,
+    "SAFE_TO_CONSOLIDATE": false,
+    "SAFE_TO_WHOLESALE_MERGE_OCI": false,
+    "ORACLE_ECONOMIC_LOOP_FINAL_WIRING_OBSERVED": false,
+    "PR1_INCLUDED_IN_SCOPE": true
+  },
+  "limitations": [
+    "Original local mirror/bundle and raw GitHub collections from checkpoint 001 are not present in this continuation environment.",
+    "No live OCI host verification has been performed.",
+    "No project scripts or economic backtests were executed by this continuation.",
+    "Final ref delta must be re-read at closure because data/automation branches may keep moving."
+  ]
+}
