@@ -35,7 +35,9 @@ jobs:
             deploy/oracle_release_install.py \
             deploy/oci_research_os_deploy.py \
             tests/test_oracle_release_install.py \
-            tests/test_oci_research_os_deploy.py
+            tests/test_oci_research_os_deploy.py \
+            research/research_os/worker_preflight.py \
+            research/research_os/tests/test_worker_preflight.py
 
       - name: Run Oracle recovery unit tests
         run: |
@@ -43,7 +45,7 @@ jobs:
             tests/test_oracle_release_install.py \
             tests/test_oci_research_os_deploy.py
 
-      - name: Run pre-outcome Research OS regressions used by installer
+      - name: Run pre-outcome Research OS regressions used by installer and worker preflight
         run: |
           python -m unittest \
             research.research_os.tests.test_implementability_depth \
@@ -52,7 +54,8 @@ jobs:
             research.research_os.tests.test_economic_identity_portfolio_readiness \
             research.research_os.tests.test_producer_economic_readiness \
             research.research_os.tests.test_economic_readiness_integration \
-            research.research_os.tests.test_queue_replenisher
+            research.research_os.tests.test_queue_replenisher \
+            research.research_os.tests.test_worker_preflight
 
       - name: Assert scheduler remains absent from CP1 deploy scripts
         run: |
