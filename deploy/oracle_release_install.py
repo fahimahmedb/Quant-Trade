@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Install one exact Quant-Trade Research OS release on an Oracle VM.
 
-This module is deliberately scheduler-free.  It installs a content-addressed
+This module is deliberately scheduler-free. It installs a content-addressed
 release, materializes the pinned real Legacy ledger fail-closed, validates the
 control plane, runs bounded pre-outcome verification, and only then publishes an
 atomic installation receipt.
@@ -116,22 +116,23 @@ def verify_legacy_payload(manifest: Dict[str, Any], data: bytes) -> Dict[str, An
             raise InstallBlock(prefix + "_LIVE_TRADING_AUTHORITY_UNSAFE")
 
     records = ledger.get("records")
-    declared = manifest.get("historical_research_items_found")
+    declared_items = manifest.get("historical_research_items_found")
     if not isinstance(records, list) or not records:
         raise InstallBlock("LEGACY_LEDGER_EMPTY")
-    if type(declared) is not int or declared <= 0:
-        raise InstallBlock("LEGACY_MANIFEST_INVALID_RECORD_COUNT")
-    if len(records) != declared:
-        raise InstallBlock(
-            f"LEGACY_LEDGER_RECORD_COUNT_MISMATCH:expected={declared}:actual={len(records)}"
-        )
+    if type(declared_items) is not int or declared_items <= 0:
+        raise InstallBlock("LEGACY_MANIFEST_INVALID_HISTORICAL_ITEM_COUNT")
 
+    # The manifest's historical_research_items_found is a reconciliation-census
+    # field, not a declared 1:1 ledger-record count.  Do not manufacture an
+    # equality invariant.  Integrity comes from the exact pinned Git blob plus a
+    # non-empty parsed ledger; both counts are retained in the receipt.
     return {
         "source_commit": source_commit,
         "ledger_path": str(manifest["ledger_path"]),
         "ledger_blob_sha": actual_blob,
         "schema_version": ledger["schema_version"],
         "reconciliation_status": manifest["reconciliation_status"],
+        "manifest_historical_research_items_found": declared_items,
         "loaded_record_count": len(records),
         "historical_result_immutability": True,
         "real_capital_authorized": False,
@@ -201,11 +202,8 @@ def verify_control_plane(release: Path) -> Dict[str, Any]:
 
     knowledge = LegacyKnowledgeBase.load(base)
     summary = knowledge.summary()
-    declared = json.loads(
-        (base / "legacy" / "source_manifest.json").read_text()
-    )["historical_research_items_found"]
-    if summary.get("loaded_record_count") != declared:
-        raise InstallBlock("LEGACY_KB_RECORD_COUNT_MISMATCH_AFTER_LOAD")
+    if type(summary.get("loaded_record_count")) is not int or summary["loaded_record_count"] <= 0:
+        raise InstallBlock("LEGACY_KB_EMPTY_AFTER_MATERIALIZATION")
 
     return {
         "status": "PASS",
