@@ -21,7 +21,7 @@
     "last_receipt": "research/research_os/receipts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/AAA-ORACLE-H24-CANARY-f138c980c94eea31-g2-516c23088e87.json",
     "lineage": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
     "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
-    "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g2-516c23088e87"
+    "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g3-716bea9dd541"
   },
   "forbidden_actions": [
     "new hypothesis",
@@ -37,16 +37,16 @@
     "canary": true
   },
   "lease": {
-    "claimed_at": "2026-10-19T23:49:50Z",
-    "expires_at": "2026-10-19T23:49:55Z",
-    "generation": 2,
+    "claimed_at": "2026-10-19T23:49:59Z",
+    "expires_at": "2026-10-19T23:51:29Z",
+    "generation": 3,
     "owner": "oracle-research-v1.evidence_data"
   },
   "priority": 2147483647,
   "required_capability": "legacy_recovery",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Two reproducible read-only Legacy provenance stages and durable GitHub receipts.",
   "task_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
   "task_type": "LEGACY_RECOVERY",
-  "updated_at": "2026-10-19T23:49:55Z"
+  "updated_at": "2026-10-19T23:49:59Z"
 }
