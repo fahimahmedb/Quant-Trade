@@ -1,0 +1,30 @@
+{
+  "checkpoint":"ECON_TEST_FLOW_UST_AUCTION_CP1_20261019",
+  "created_at":"2026-10-19T12:51:00+02:00",
+  "branch":"builder/econ-test-flow-ust-auction-20261019",
+  "autonomous_source_head":"d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec",
+  "activation_ancestor":"e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
+  "candidate":"FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "candidate_generation":"G1",
+  "selection_reason":"Frozen institutional-flow candidate is distinct, has not failed validation, and was previously stopped only because the producer task lacked authority to create the downstream validation handoff.",
+  "prior_candidates":{
+    "QUANT-LETF-DAILY-RESET-001":"PARK_DATA / BLOCK_DATA / BLOCK_CLAIM_LEVEL",
+    "FUND-TSMC-N2-MARGIN-LEARNING-001":"BLOCK_CLAIM_LEVEL for stronger durable-earnings claim",
+    "EVENT-FDA-ADCOM-BRIEFING-CLOCK-001":"PARK_DATA / BLOCK_DATA / BLOCK_CLAIM_LEVEL"
+  },
+  "owner_authorization":{
+    "granted_in_current_conversation":true,
+    "scope":[
+      "independent documentary validation",
+      "implementability and frozen-protocol construction",
+      "bounded economic experiment when all pre-outcome gates pass",
+      "candidate substitution after falsification or blocking",
+      "prospective observation only if required by the frozen protocol"
+    ],
+    "real_capital_required":false,
+    "live_trading_required":false
+  },
+  "next_gate":"INDEPENDENT_VALIDATION_THEN_ECONOMIC_READINESS",
+  "policy":"Fail closed. Do not inspect price/return outcomes until validation, PIT, expression, cost/capacity, multiplicity, trial-accounting and protocol-freeze gates pass. If this candidate fails, select the next admissible candidate without Owner interruption.",
+  "status":"CHECKPOINT_PUSHED_CONTINUE_AUTONOMOUSLY"
+}
