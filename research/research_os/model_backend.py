@@ -113,7 +113,10 @@ class LocalHTTPBackend(ModelBackend):
                     data = response.read(2 * 1024 * 1024 + 1)
                 if len(data) > 2 * 1024 * 1024:
                     raise InvalidModelOutput('LOCAL_MODEL_RESPONSE_TOO_LARGE')
-                return json.loads(data, parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+                decoded = json.loads(data, parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+                if not isinstance(decoded, dict):
+                    raise InvalidModelOutput('LOCAL_MODEL_RESPONSE_NOT_OBJECT')
+                return decoded
             except urllib.error.HTTPError as exc:
                 if exc.code < 500 or attempt == self.budget.retries:
                     raise BackendUnavailable(f'LOCAL_MODEL_HTTP_{exc.code}') from None
@@ -126,6 +129,8 @@ class LocalHTTPBackend(ModelBackend):
     def healthcheck(self):
         data = self._request('/api/tags' if self.runtime == 'ollama' else '/v1/models', timeout=5)
         models = data.get('models', []) if self.runtime == 'ollama' else data.get('data', [])
+        if not isinstance(models, list) or any(not isinstance(m, dict) for m in models):
+            raise InvalidModelOutput('LOCAL_MODEL_LIST_INVALID')
         matches = [m for m in models if m.get('name', m.get('id')) == self.model]
         if not matches:
             raise BackendUnavailable('CONFIGURED_LOCAL_MODEL_NOT_PRESENT')
@@ -147,7 +152,8 @@ class LocalHTTPBackend(ModelBackend):
             data = self._request('/api/chat', payload)
             if data.get('done') is not True or data.get('done_reason') == 'length':
                 raise InvalidModelOutput('MODEL_OUTPUT_INCOMPLETE')
-            result = data.get('message', {}).get('content')
+            message = data.get('message')
+            result = message.get('content') if isinstance(message, dict) else None
         else:
             payload = {'model': self.model, 'messages': [{'role': 'user', 'content': prompt}],
                        'stream': False, 'max_tokens': self.budget.output_tokens,
@@ -157,9 +163,10 @@ class LocalHTTPBackend(ModelBackend):
                     'name': 'research_reasoning', 'strict': True, 'schema': schema}}
             data = self._request('/v1/chat/completions', payload)
             choices = data.get('choices') or []
-            if not choices or choices[0].get('finish_reason') != 'stop':
+            if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict) or choices[0].get('finish_reason') != 'stop':
                 raise InvalidModelOutput('MODEL_OUTPUT_INCOMPLETE')
-            result = choices[0].get('message', {}).get('content')
+            message = choices[0].get('message')
+            result = message.get('content') if isinstance(message, dict) else None
         if not isinstance(result, str) or not result.strip():
             raise InvalidModelOutput('MODEL_OUTPUT_EMPTY')
         return result

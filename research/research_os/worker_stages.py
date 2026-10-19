@@ -157,7 +157,8 @@ def _frozen(snapshot, task, lane):
     if output:
         validate_engine_output(output)
         c = output['candidate']
-        if (c['hypothesis_id'] != identity['hypothesis_id'] or c['generation_id'] != identity['generation_id']
+        if (canonical_hash(c) != producer.get('candidate_hash')
+                or c['hypothesis_id'] != identity['hypothesis_id'] or c['generation_id'] != identity['generation_id']
                 or c['mechanism'] != frozen['mechanism'] or c['claim'] != frozen['claim']):
             raise StageBlocked('FROZEN_ENGINE_OUTPUT_BINDING_MISMATCH')
     return frozen, identity, output
@@ -271,6 +272,10 @@ class CanonicalStageExecutor:
                 result.update(handoff=child_id, next_lane='independent_challenge')
         elif lane == 'independent_challenge':
             frozen, identity, output = _frozen(snapshot, task, lane)
+            if stage != 'independent_validation':
+                first = _previous(snapshot, task, 'independent_validation')
+                if first['frozen_hash'] != canonical_hash(frozen):
+                    raise StageBlocked('FROZEN_HYPOTHESIS_CHANGED_DURING_CHALLENGE')
             candidate = dict(frozen, hypothesis_id=identity['hypothesis_id'], mechanism=identity['mechanism'])
             result.update(frozen_hash=canonical_hash(frozen), screen=_screen(snapshot, candidate, exclude_self=True))
             if stage == 'independent_validation':
@@ -283,6 +288,17 @@ class CanonicalStageExecutor:
                     result['validation'] = {'status': 'BLOCK', 'failures': ['MISSING_CANONICAL_DOCUMENTARY_EVIDENCE']}
                 # Documentary plausibility never establishes an economic claim.
                 result['blockers'] = ['BLOCK_CLAIM_LEVEL']
+                package_path = task.get('inputs', {}).get('readiness_package')
+                if package_path and output:
+                    package = snapshot.read(package_path)
+                    if package.get('engine_output') != output:
+                        raise StageBlocked('VALIDATION_PACKAGE_CANDIDATE_BINDING_MISMATCH')
+                    package = deepcopy(package)
+                    package['validator_id'] = worker_id
+                    readiness = economic_test_readiness(package, legacy=LegacyKnowledgeBase.load(snapshot.base),
+                        peer_identities=peer_identities(snapshot, identity['hypothesis_id']))
+                    result['readiness'] = readiness
+                    result['blockers'] = list(readiness.get('red_team', {}).get('negative_rights', ['BLOCK_CLAIM_LEVEL']))
                 if result['screen']['status'] == 'BLOCK':
                     result['blockers'].append('BLOCK_PORTFOLIO_DUPLICATION')
             elif stage == 'cross_examination':
@@ -290,8 +306,12 @@ class CanonicalStageExecutor:
                 result['independent_validation'] = _previous(snapshot, task, 'independent_validation')['validation']
             elif stage == 'red_team':
                 _previous(snapshot, task, 'cross_examination')
-                result['red_team'] = red_team_negative_rights_v2({'hypothesis_id': identity['hypothesis_id'],
-                    'generation_id': identity['generation_id'], 'status': 'BLOCK', 'checks': {}})
+                validation = _previous(snapshot, task, 'independent_validation')
+                validator = validation.get('readiness', {}).get('validator') or {
+                    'hypothesis_id': identity['hypothesis_id'], 'generation_id': identity['generation_id'],
+                    'status': 'BLOCK', 'checks': {}}
+                result['red_team'] = red_team_negative_rights_v2(validator,
+                    context={'portfolio_duplication_status': 'FAIL' if result['screen']['status'] == 'BLOCK' else 'UNKNOWN'})
             elif stage == 'claim_restriction':
                 red = _previous(snapshot, task, 'red_team')['red_team']
                 result.update(blockers=red['negative_rights'], claim_ceiling='DOCUMENTARY_PREMISE_ONLY_NO_ECONOMIC_PASS')
@@ -300,6 +320,33 @@ class CanonicalStageExecutor:
                 # Negative rights cannot be overridden by a generic handoff phrase.
                 result.update(handoff_created=False, blockers=restriction['blockers'],
                               result='PARK_BLOCKED_NO_INTEGRATION_AUTHORITY')
+                inputs = task.get('inputs') or {}
+                # Both machine-readable exact authorization and natural-language
+                # task authority are required. A generic handoff phrase is insufficient.
+                if (not restriction['blockers'] and result['screen']['status'] == 'PASS'
+                        and inputs.get('integration_handoff_authorized') is True):
+                    if inputs.get('integration_target_lane') != 'integrator_portfolio':
+                        raise StageBlocked('EXPLICIT_INTEGRATION_TARGET_REQUIRED')
+                    hid = identity['hypothesis_id']
+                    child_id = 'INTEGRATE-' + hid
+                    child = {'task_id': child_id, 'task_type': 'SHADOW_READINESS',
+                        'required_capability': 'shadow_readiness', 'status': 'READY', 'priority': task['priority'],
+                        'inputs': {'frozen_hypothesis': inputs['frozen_hypothesis'],
+                                   'readiness_package': inputs.get('readiness_package'),
+                                   'upstream_red_team': artifact_path(task, 'red_team')},
+                        'lineage': {'hypothesis_id': hid, 'generation_id': identity['generation_id'],
+                                    'parent_task_id': task['task_id'], 'source_lane': lane,
+                                    'destination_lane': 'integrator_portfolio'},
+                        'allowed_actions': ['economic identity, overlap and portfolio map',
+                                            'assess shadow readiness and update ledger telemetry without outcomes'],
+                        'forbidden_actions': ['override red-team blocker', 'economic outcomes',
+                                              'prospective observation', 'capital allocation', 'sizing', 'orders', 'live trading'],
+                        'success_condition': 'Persist pre-outcome readiness with complete peer corpus and closed authority.',
+                        'authority': dict(AUTHORITY, scope='PRE_OUTCOME_INTEGRATION_ONLY'),
+                        'lease': {'generation': 0, 'owner': None, 'claimed_at': None, 'expires_at': None},
+                        'created_at': now}
+                    writes[PREFIX + f'tasks/{child_id}.json'] = child
+                    result.update(handoff_created=True, handoff=child_id, next_lane='integrator_portfolio')
         elif lane == 'evidence_data':
             result['legacy'] = LegacyKnowledgeBase.load(snapshot.base).summary()
             source = task.get('inputs', {}).get('source_path')
@@ -318,6 +365,14 @@ class CanonicalStageExecutor:
                 result.update(queue=queue_summary(snapshot.tasks()),
                               corpus=load_current_hypothesis_corpus(snapshot.base), capital_authorized=False)
             else:
+                upstream = task.get('inputs', {}).get('upstream_red_team')
+                if not upstream or not re.fullmatch(r'research/research_os/artifacts/[A-Za-z0-9_.-]+/oracle-worker/red_team.json', upstream):
+                    raise StageBlocked('INDEPENDENT_RED_TEAM_PASS_REQUIRED_FOR_INTEGRATION')
+                source_task = snapshot.read(PREFIX + 'tasks/' + upstream.split('/')[3] + '.json')
+                if (source_task['status'] != 'COMPLETE' or source_task.get('required_capability') not in ('validator', 'red_team')
+                        or lineage_key(source_task) != lineage_key(task)
+                        or _previous(snapshot, source_task, 'red_team').get('red_team', {}).get('status') != 'PASS'):
+                    raise StageBlocked('INDEPENDENT_RED_TEAM_PASS_REQUIRED_FOR_INTEGRATION')
                 frozen, identity, output = _frozen(snapshot, task, lane)
                 candidate = dict(frozen, hypothesis_id=identity['hypothesis_id'], mechanism=identity['mechanism'])
                 screen = _screen(snapshot, candidate, exclude_self=True)

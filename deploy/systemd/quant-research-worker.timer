@@ -1,0 +1,13 @@
+[Unit]
+Description=Quant Research OS autonomous ten-minute wakes
+
+[Timer]
+OnActiveSec=45s
+OnCalendar=*-*-* *:00/10:00 UTC
+RandomizedDelaySec=20s
+AccuracySec=5s
+Persistent=true
+Unit=quant-research-worker.service
+
+[Install]
+WantedBy=timers.target

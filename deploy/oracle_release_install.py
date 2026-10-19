@@ -227,6 +227,8 @@ def run_verification_suite(release: Path, *, log_path: Path) -> Dict[str, Any]:
         "research.research_os.tests.test_producer_economic_readiness",
         "research.research_os.tests.test_economic_readiness_integration",
         "research.research_os.tests.test_queue_replenisher",
+        "research.research_os.tests.test_model_backend",
+        "research.research_os.tests.test_oracle_worker",
     ]
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     with log_path.open("w") as log:

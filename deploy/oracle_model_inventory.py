@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import subprocess
 import time
@@ -76,8 +77,12 @@ def inventory(model_roots):
             details = local_json('http://127.0.0.1:11434/api/show', {'model': name})
             # Deliberately exclude modelfile/template/system text (may contain secrets).
             entry['metadata'] = {k: details.get(k) for k in ('details', 'model_info', 'capabilities')}
+            # Ollama exposes the local weights path in FROM; retain that path
+            # only, never the surrounding template, system prompt or parameters.
+            match = re.search(r'^FROM\s+(/[^\r\n]+)$', details.get('modelfile') or '', re.MULTILINE)
+            entry['weights_path'] = match.group(1).strip().strip('"') if match else 'NOT_EXPOSED_BY_RUNTIME'
         models.append(entry)
-    files, truncated = [], False
+    files, truncated, inspected_entries = [], False, 0
     for root in model_roots:
         root = Path(root).expanduser()
         if not root.is_dir():
@@ -87,6 +92,10 @@ def inventory(model_roots):
                 dirs[:] = []
                 continue
             for name in names:
+                inspected_entries += 1
+                if inspected_entries > 10000:
+                    truncated = True
+                    break
                 path = Path(directory) / name
                 if path.is_symlink() or not (name.lower().endswith(('.gguf', '.safetensors')) or 'gpt-oss' in str(path).lower()):
                     continue
@@ -102,17 +111,23 @@ def inventory(model_roots):
         if truncated:
             break
     disk = shutil.disk_usage('/')
+    services = {'ollama.service', 'llama-server.service', 'gpt-oss.service', 'quant-research-worker.timer'}
+    unit_list = command(['systemctl', 'list-unit-files', '--type=service', '--no-legend', '--no-pager'])
+    for line in unit_list.get('stdout', '').splitlines():
+        name = line.split()[0] if line.split() else ''
+        if re.fullmatch(r'[A-Za-z0-9_.@-]+\.service', name) and any(word in name.lower() for word in ('ollama', 'llama', 'gpt')):
+            services.add(name)
     return {'schema_version': 'oracle-local-model-inventory-v1',
             'observed_at': datetime.now(timezone.utc).isoformat(), 'evidence_scope': 'LIVE_HOST_WHERE_EXECUTED',
             'host_architecture': platform.machine(), 'kernel': platform.release(), 'cpu_count': os.cpu_count(),
             'memory': command(['free', '-b']), 'disk': {'total': disk.total, 'free': disk.free},
             'cpu': command(['lscpu']), 'processes': processes(),
-            'runtimes': {name: command([name, '--version']) for name in ('ollama', 'llama-server', 'llama-cli') if shutil.which(name)},
-            'services': {name: command(['systemctl', 'show', name, '--property=ActiveState,SubState,UnitFileState,MainPID,MemoryCurrent,CPUUsageNSec,FragmentPath']) for name in ('ollama.service', 'llama-server.service', 'gpt-oss.service', 'quant-research-worker.timer')},
+            'runtimes': {name: {'binary': shutil.which(name), 'version': command([name, '--version'])} for name in ('ollama', 'llama-server', 'llama-cli') if shutil.which(name)},
+            'services': {name: command(['systemctl', 'show', name, '--property=ActiveState,SubState,UnitFileState,MainPID,MemoryCurrent,CPUUsageNSec,FragmentPath']) for name in sorted(services)[:32]},
             'ollama_models': models, 'ollama_status': tags.get('unavailable', 'REACHABLE'),
             'loaded_models': local_json('http://127.0.0.1:11434/api/ps'),
             'openai_compatible_models': local_json('http://127.0.0.1:8080/v1/models'),
-            'llama_properties': local_json('http://127.0.0.1:8080/props'),
+            'llama_properties': {k: v for k, v in local_json('http://127.0.0.1:8080/props').items() if k in ('model_path', 'model_alias', 'total_slots', 'unavailable')},
             'model_files': files, 'file_scan_truncated': truncated,
             'compatibility_verdict': 'REQUIRES_REVIEW_AND_BOUNDED_INFERENCE_CANARY',
             'mutations_performed': False, 'models_downloaded': 0}

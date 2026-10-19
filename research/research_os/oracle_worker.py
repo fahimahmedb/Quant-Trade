@@ -62,7 +62,7 @@ def next_stage(task, lane):
 
 class ResearchOSWorker:
     def __init__(self, store, *, lane='auto', worker_id='oracle-research', release_sha,
-                 executor=None, lease_seconds=600, now=None, fault=None):
+                 executor=None, lease_seconds=600, now=None, fault=None, expected_task_id=None):
         if not ID.fullmatch(worker_id) or not re.fullmatch('[a-f0-9]{40}', release_sha):
             raise ValueError('EXACT_RELEASE_SHA_AND_SAFE_WORKER_ID_REQUIRED')
         if not 30 <= lease_seconds <= 3300:
@@ -71,6 +71,7 @@ class ResearchOSWorker:
         self.executor, self.lease_seconds = executor or CanonicalStageExecutor(), lease_seconds
         self.now = now or (lambda: datetime.now(timezone.utc))
         self.fault = fault or (lambda point: None)
+        self.expected_task_id = expected_task_id
 
     def _select(self, snapshot):
         candidates = []
@@ -130,7 +131,10 @@ class ResearchOSWorker:
         with self.store.snapshot() as snapshot:
             preflight = run_worker_preflight(snapshot.base)
             task, lane = self._select(snapshot)
+            if task and self.expected_task_id and task['task_id'] != self.expected_task_id:
+                raise StateConflict('CANARY_SELECTED_A_DIFFERENT_TASK_ABORT')
             base_receipt = {'release_sha': self.release_sha, 'input_head': snapshot.head,
+                            'state_repository': self.store.repository, 'state_branch': self.store.branch,
                             'authority': dict(AUTHORITY), 'preflight': preflight,
                             'one_lineage_per_wake': True, 'hosted_model_calls': 0}
             if mode == 'dry-run':
@@ -147,6 +151,8 @@ class ResearchOSWorker:
             if snapshot.head != observed_head:
                 raise StateConflict('HEAD_CHANGED_BEFORE_CLAIM')
             task, selected_lane = self._select(snapshot)
+            if task and self.expected_task_id and task['task_id'] != self.expected_task_id:
+                raise StateConflict('CANARY_SELECTED_A_DIFFERENT_TASK_ABORT')
             if not task or selected_lane != lane:
                 raise StateConflict('TASK_NO_LONGER_ADMISSIBLE')
             task = deepcopy(task)
@@ -192,6 +198,7 @@ class ResearchOSWorker:
             except (StageBlocked, ValueError, KeyError, TypeError) as exc:
                 output, status = {'stage': stage, 'retryable': False, 'blocker': str(exc)}, 'BLOCKED'
             output.update(input_head=stage_head, preflight=preflight, release_sha=self.release_sha,
+                          state_repository=self.store.repository, state_branch=self.store.branch,
                           authority=dict(AUTHORITY), outcome_accessed=False, economic_result='NOT_OBSERVED')
         self.fault('after_execution')
         with self.store.snapshot() as snapshot:
@@ -226,6 +233,8 @@ class ResearchOSWorker:
             queue_state = 'QUEUED' if summary['ready_count'] else 'WAITING' if summary['claimed_count'] else 'IDLE'
             event = self._event(task, session, lane, 2, 'SESSION_ENDED' if task['status'] == 'BLOCKED' or status == 'RETRY' else 'ACTION_COMPLETED',
                                 {'stage': stage, 'result': task['status'], 'queue_state': queue_state, **summary})
+            if output.get('handoff'):
+                event['payload'].update(next_task_id=output['handoff'], next_lane=output['next_lane'])
             event_path = PREFIX + f'events/{task_id}/{session}-002.json'
             writes[event_path] = event
             self.fault('after_event_before_receipt')
@@ -287,6 +296,18 @@ class ResearchOSWorker:
             return dict(base_receipt, status='DERIVED_ONE_READY_TASK', task_id=task['task_id'], output_commit=commit)
 
 
+def backend_from_config(config):
+    model = config.get('model_backend')
+    if not model:
+        return None
+    implementation = model.get('implementation')
+    if implementation not in ('gpt_oss', 'local_http'):
+        raise ValueError('UNKNOWN_MODEL_BACKEND_IMPLEMENTATION')
+    cls = GPTOSSBackend if implementation == 'gpt_oss' else LocalHTTPBackend
+    return cls(endpoint=model['endpoint'], model=model['model'], runtime=model['runtime'],
+               budget=ModelBudget(**model.get('budget', {})))
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', required=True)
@@ -294,21 +315,25 @@ def main(argv=None):
     parser.add_argument('--healthcheck', action='store_true')
     args = parser.parse_args(argv)
     config = json.loads(Path(args.config).read_text())
-    model = config.get('model_backend')
-    backend = None
-    if model:
-        cls = GPTOSSBackend if model.get('implementation') == 'gpt_oss' else LocalHTTPBackend
-        backend = cls(endpoint=model['endpoint'], model=model['model'], runtime=model['runtime'],
-                      budget=ModelBudget(**model.get('budget', {})))
+    backend = backend_from_config(config)
     if args.healthcheck:
         if backend is None:
             raise BackendUnavailable('LOCAL_MODEL_NOT_CONFIGURED')
         print(json.dumps(backend.healthcheck(), sort_keys=True))
         return 0
+    if args.mode == 'run':
+        from deploy.oracle_release_install import _validate_release_receipt
+        release_root = Path(__file__).resolve().parents[2]
+        receipt = json.loads((release_root / '.quant_release_receipt.json').read_text())
+        _validate_release_receipt(receipt, config['release_sha'])
+        if Path(receipt['path']).resolve() != release_root:
+            raise ValueError('EXECUTABLE_RELEASE_PATH_MISMATCH')
     store = GitHubStateStore(cache=Path(config['cache']), repository=config['repository'], branch=config['branch'])
     worker = ResearchOSWorker(store, lane=config.get('lane', 'auto'), worker_id=config['worker_id'],
                               release_sha=config['release_sha'], executor=CanonicalStageExecutor(backend))
     print(json.dumps(worker.wake(mode=args.mode), sort_keys=True))
+    if args.mode == 'run':
+        store.compact_if_due()
     return 0
 
 
@@ -318,6 +343,6 @@ if __name__ == '__main__':
     except StateConflict as exc:
         print(json.dumps({'status': 'RETRY_FRESH_STATE_NEXT_WAKE', 'reason': str(exc), 'authority': AUTHORITY}))
         raise SystemExit(0)
-    except (StateUnavailable, WorkerPreflightBlock, StageBlocked, BackendUnavailable, ValueError, KeyError, OSError) as exc:
+    except (RuntimeError, ValueError, KeyError, OSError) as exc:
         print(json.dumps({'status': 'BLOCKED', 'reason': str(exc), 'authority': AUTHORITY}))
         raise SystemExit(1)

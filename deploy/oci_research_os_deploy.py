@@ -212,8 +212,24 @@ def remote_bootstrap(sha: str) -> str:
     return command
 
 
-def state_path(*, vm: str, sha: str) -> Path:
-    identity = hashlib.sha256((vm + "\0" + sha).encode()).hexdigest()[:20]
+def remote_inventory_bootstrap(sha: str) -> str:
+    """Run only the versioned read-only probe; no release/model installation."""
+    sha = validate_inputs('ocid1.instance.inventory', sha, DEFAULT_REGION)[1]
+    raw_url = f'https://raw.githubusercontent.com/{REPOSITORY}/{sha}/deploy/oracle_model_inventory.py'
+    program = (
+        "import sys,urllib.request;"
+        f"u={raw_url!r};"
+        "d=urllib.request.urlopen(u,timeout=30).read(262144);"
+        "assert d, 'EMPTY_INVENTORY_PROBE';"
+        "sys.argv=['oracle_model_inventory.py'];"
+        "exec(compile(d,u,'exec'),{'__name__':'__main__','__file__':u})"
+    )
+    return 'python3 -c ' + shlex.quote(program)
+
+
+def state_path(*, vm: str, sha: str, operation: str = 'install') -> Path:
+    identity_text = vm + '\0' + sha + ('' if operation == 'install' else '\0' + operation)
+    identity = hashlib.sha256(identity_text.encode()).hexdigest()[:20]
     return Path.home() / ".cache" / "quant-oci-research-os" / f"{identity}.json"
 
 
@@ -255,12 +271,14 @@ def try_ssh(*, vm: str, sha: str, region: str, command: str) -> int | None:
     return None
 
 
-def get_or_create_command(*, vm: str, sha: str, region: str, command: str) -> str:
-    path = state_path(vm=vm, sha=sha)
+def get_or_create_command(*, vm: str, sha: str, region: str, command: str, operation: str = 'install') -> str:
+    if operation not in ('install', 'inventory'):
+        raise DeployBlock('UNKNOWN_OCI_OPERATION')
+    path = state_path(vm=vm, sha=sha) if operation == 'install' else state_path(vm=vm, sha=sha, operation=operation)
     path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     if path.exists():
         state = json.loads(path.read_text())
-        if state.get("vm") != vm or state.get("sha") != sha or state.get("region") != region:
+        if state.get("vm") != vm or state.get("sha") != sha or state.get("region") != region or state.get('operation', 'install') != operation:
             raise DeployBlock("DEPLOY_STATE_IDENTITY_MISMATCH")
         return state["command_id"]
 
@@ -285,14 +303,14 @@ def get_or_create_command(*, vm: str, sha: str, region: str, command: str) -> st
         "--timeout-in-seconds",
         "1200",
         "--display-name",
-        "Quant-Trade verified Research OS installation; scheduler disabled",
+        "Quant-Trade read-only model inventory" if operation == 'inventory' else "Quant-Trade verified Research OS installation; scheduler disabled",
         region=region,
     )
     command_id = created["data"]["id"]
     pending = path.with_suffix(".tmp")
     pending.write_text(
         json.dumps(
-            {"vm": vm, "sha": sha, "region": region, "command_id": command_id},
+            {"vm": vm, "sha": sha, "region": region, "command_id": command_id, 'operation': operation},
             sort_keys=True,
         )
         + "\n"
@@ -333,20 +351,22 @@ def parse_args(argv=None):
     parser.add_argument("--region", default=DEFAULT_REGION)
     parser.add_argument("--repair-agent", action="store_true")
     parser.add_argument("--skip-ssh", action="store_true")
+    parser.add_argument('--inventory', action='store_true', help='Read-only model/host inventory; no installation')
     return parser.parse_args(argv)
 
 
 def main(argv=None) -> int:
     args = parse_args(argv)
     vm, sha, region = validate_inputs(args.vm, args.sha, args.region)
-    command = remote_bootstrap(sha)
+    command = remote_inventory_bootstrap(sha) if args.inventory else remote_bootstrap(sha)
 
     if not args.skip_ssh:
         ssh_result = try_ssh(vm=vm, sha=sha, region=region, command=command)
         if ssh_result is not None:
             return ssh_result
 
-    command_id = get_or_create_command(vm=vm, sha=sha, region=region, command=command)
+    kwargs = {'operation': 'inventory'} if args.inventory else {}
+    command_id = get_or_create_command(vm=vm, sha=sha, region=region, command=command, **kwargs)
     print("Oracle command: " + command_id, flush=True)
     if args.repair_agent:
         execution = oci(

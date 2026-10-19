@@ -311,6 +311,11 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(validators[0]['status'], 'READY')
         wake = self.worker(lane='independent_challenge').wake()
         self.assertEqual(wake['stage'], 'independent_validation')
+        for stage in ('cross_examination', 'red_team', 'claim_restriction', 'integration_handoff'):
+            wake = self.worker(lane='independent_challenge').wake()
+            self.assertEqual(wake['stage'], stage)
+        self.assertEqual(wake['status'], 'COMPLETE')
+        self.assertEqual(self.count_paths('tasks/INTEGRATE-'), 0)
         self.assertEqual(self.count_paths('hypotheses/'), hypotheses)
         self.assertEqual(self.read('tasks/' + validators[0]['task_id'] + '.json')['lease']['owner'], 'oracle-research.independent_challenge')
 
@@ -330,6 +335,15 @@ class WorkerTests(unittest.TestCase):
             self.worker().wake(mode=mode)
         self.assertEqual(git(self.remote, 'rev-parse', 'recovery'), before)
         self.assertEqual(self.model.calls, 0)
+
+    def test_expired_lease_cannot_publish_even_if_task_was_not_reclaimed(self):
+        def expire(point):
+            if point == 'after_execution':
+                self.now += timedelta(seconds=601)
+        with self.assertRaises(StateConflict):
+            self.worker(lane='evidence_data', fault=expire).wake()
+        self.assertEqual(self.count_paths('artifacts/RECOVER-TEST-001/'), 0)
+        self.assertEqual(self.count_paths('receipts/RECOVER-TEST-001/'), 0)
 
 
 if __name__ == '__main__':

@@ -15,9 +15,11 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import shutil
 import subprocess
 import tarfile
 import tempfile
+import time
 
 from .worker_preflight import git_blob_sha, verify_materialized_legacy
 
@@ -101,10 +103,13 @@ class GitHubStateStore:
     @contextmanager
     def snapshot(self):
         with self._locked():
+            if shutil.disk_usage(self.cache).free < 256 * 1024 ** 2:
+                raise StateUnavailable('GIT_CACHE_DISK_HEADROOM_BELOW_256_MIB')
             self._git('fetch', '--no-tags', self.remote, self.ref)
             head = self._git('rev-parse', 'FETCH_HEAD').decode().strip()
             if not SHA.fullmatch(head):
                 raise StateUnavailable('INVALID_REMOTE_HEAD')
+            self._git('update-ref', 'refs/quant/observed', head)
             entries = self._git('ls-tree', '-rz', head, '--', PREFIX).split(b'\0')
             blobs = {}
             for entry in filter(None, entries):
@@ -167,4 +172,15 @@ class GitHubStateStore:
             # Lost responses recover from durable state on the next wake.
             self._git('push', '--porcelain', '--force-with-lease=' + self.ref + ':' + snapshot.head,
                       self.remote, commit + ':' + self.ref)
+            self._git('update-ref', 'refs/quant/observed', commit)
             return commit
+
+    def compact_if_due(self):
+        """Bound local object accumulation; local timestamps grant no task authority."""
+        marker = self.cache / 'last-worker-gc'
+        with self._locked():
+            if marker.exists() and time.time() - marker.stat().st_mtime < 86400:
+                return
+            if (self.cache / 'refs/quant/observed').exists():
+                self._git('gc', '--prune=2.weeks.ago', '--no-detach')
+            marker.touch()

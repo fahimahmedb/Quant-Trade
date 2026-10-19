@@ -40,7 +40,9 @@ jobs:
             research/research_os/github_state.py \
             research/research_os/worker_stages.py \
             research/research_os/oracle_worker.py \
-            deploy/oracle_model_inventory.py
+            deploy/oracle_model_inventory.py \
+            deploy/oracle_h24_canary.py \
+            deploy/oracle_scheduler_install.py
 
       - name: Run Oracle recovery unit tests
         run: |
@@ -52,7 +54,8 @@ jobs:
         run: |
           python -m unittest -v \
             research.research_os.tests.test_model_backend \
-            research.research_os.tests.test_oracle_worker
+            research.research_os.tests.test_oracle_worker \
+            research.research_os.tests.test_oracle_scheduler
 
       - name: Run pre-outcome Research OS regressions used by installer and worker preflight
         run: |

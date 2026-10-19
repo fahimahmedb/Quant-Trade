@@ -1,8 +1,8 @@
 # CP2b.1–CP2b.4 — canonical local-backend worker
 
 Baseline: `fb831cf26060cbe6487dd953b8683dcbe82a07db`.
-CP2b.0 inventory/access evidence: `8ce219f19` (resolve full SHA in Git history).
-CP2b.1 backend: `c23531e` (resolve full SHA in Git history).
+CP2b.0 inventory/access evidence: `8ce219fa5415fd3cc53ab7ba89cf46bd4f3094c4`.
+CP2b.1 backend: `c23531e838a0a9e974de0d304c0becc5bd4fe692`.
 This checkpoint's exact implementation SHA is the Git commit containing this file;
 subsequent final evidence records the full tested SHA. No self-referential SHA is invented.
 
