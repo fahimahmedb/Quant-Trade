@@ -69,7 +69,7 @@ def copy_verified(source, target, spec, verify, *, magic=None):
             os.unlink(pending)
 
 
-def verify_local_qualification(report, runtime, model):
+def verify_local_qualification(report, runtime, model, policy_hash):
     if (report.get('status') != 'PASS_LOCAL_COMMENTARY_BACKEND_ONLY'
             or report.get('temporary_server_stopped') is not True
             or report.get('github_writes') != 0 or report.get('hosted_model_calls') != 0):
@@ -78,9 +78,12 @@ def verify_local_qualification(report, runtime, model):
         if (report.get('assets', {}).get(name) or {}).get('sha256') != spec['sha256']:
             raise ValueError('LOCAL_QUALIFICATION_ASSET_MISMATCH')
     cases = report.get('scientific_cases', [])
-    expected = {'closed_authority', 'unresolved_overlap', 'missing_correlation', 'independent_validation'}
-    if {case.get('case') for case in cases} != expected or len(cases) != 4 or any(case.get('passed') is not True for case in cases):
+    expected = {'closed_authority', 'unresolved_overlap', 'missing_correlation', 'independent_validation',
+                'proved_distinct_structural_screen'}
+    if {case.get('case') for case in cases} != expected or len(cases) != len(expected) or any(case.get('passed') is not True for case in cases):
         raise ValueError('LOCAL_QUALIFICATION_SCIENTIFIC_CASES_MISSING')
+    if report.get('reasoning_policy_hash') != policy_hash:
+        raise ValueError('LOCAL_QUALIFICATION_PRODUCTION_POLICY_MISMATCH')
     when = datetime.fromisoformat(report['completed_at'])
     if when.tzinfo is None or not timedelta(0) <= datetime.now(timezone.utc) - when <= timedelta(hours=6):
         raise ValueError('LOCAL_BACKEND_QUALIFICATION_EXPIRED')
@@ -123,12 +126,14 @@ def prepare(sha, ci_run):
     from deploy.oracle_local_backend_install import RUNTIME, MODEL, stage, verify
     from deploy.oracle_local_backend_qualify import server_command
     from deploy.oracle_scheduler_install import prepare as prepare_worker
+    from research.research_os.worker_stages import REASONING_POLICY
+    from research.research_os.worker_preflight import canonical_hash
 
     instance_identity(VM)
     release_ci({'qualification_ci_run_id': ci_run, 'release_sha': sha})
     build_home = Path('/var/lib/ocarun')
     qualification = json.loads((build_home / '.cache/quant-qualification/local-backend.json').read_text())
-    verify_local_qualification(qualification, RUNTIME, MODEL)
+    verify_local_qualification(qualification, RUNTIME, MODEL, canonical_hash(REASONING_POLICY))
 
     config = {'repository': REPOSITORY, 'branch': BRANCH, 'release_sha': sha,
               'qualification_ci_run_id': ci_run, 'cache': '/var/lib/quant-research/github.git',

@@ -14,11 +14,20 @@ from deploy import oracle_local_backend_qualify as qualification
 class BackendQualificationTests(unittest.TestCase):
     def test_schema_valid_but_scientifically_wrong_answers_fail(self):
         class WrongBackend:
+            answers = iter(('ALLOW', 'PASS', 'ESTIMATED', 'VALIDATED', 'BLOCK'))
             def generate_structured(self, prompt, schema):
-                choices = schema['properties']['decision']['enum']
-                return {'decision': choices[-1]}
+                return {'decision': next(self.answers)}
         results = qualification.scientific_cases(WrongBackend())
-        self.assertEqual(len(results), 4)
+        self.assertEqual(len(results), 5)
+        self.assertTrue(all(not item['passed'] for item in results))
+
+    def test_first_choice_bias_cannot_qualify_and_production_policy_is_supplied(self):
+        class FirstChoiceBackend:
+            def generate_structured(self, prompt, schema):
+                if not prompt.startswith(qualification.REASONING_POLICY):
+                    raise AssertionError('PRODUCTION_POLICY_MISSING')
+                return {'decision': schema['properties']['decision']['enum'][0]}
+        results = qualification.scientific_cases(FirstChoiceBackend())
         self.assertTrue(all(not item['passed'] for item in results))
 
     def test_backend_failure_stops_actual_temporary_process_and_persists_blocker(self):
