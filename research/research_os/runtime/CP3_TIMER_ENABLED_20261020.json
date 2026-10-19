@@ -1,0 +1,33 @@
+{
+  "schema_version": "oracle-h24-timer-activation-v1",
+  "status": "TIMER_ENABLED_PENDING_AUTOMATIC_WAKE_AND_VM_REBOOT_PROOF",
+  "evidence_scope": "LIVE_ORACLE_VM",
+  "recorded_at": "2026-10-19T23:54:07.082902+00:00",
+  "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "instance_id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+  "activation_command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaa52saueye6hwwzfvc3y2kunlbdwjdxdcs2qbkzbkwrt2q",
+  "command_exit_code": 0,
+  "qualified_config_hash": "fa6ecb5ec2109f564660af53690907d2c306d000a7d3062a9b190743751cafd2",
+  "qualification_report": "research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/qualification-fa6ecb5ec2109f56.json",
+  "qualification_gates_passed": 13,
+  "timer_enabled": "enabled",
+  "timer_active": "active",
+  "model_service_enabled": "enabled",
+  "model_service_active": "active",
+  "model_loopback_health": "ok",
+  "boot_id_at_activation": "289d8c8b-d312-482b-9126-49deb61f2751",
+  "automatic_wakes_observed_at_first_probe": 0,
+  "first_probe_at": "2026-10-19T23:54:14.391932+00:00",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "limitations": [
+    "Activation is proven; automatic execution and reboot recovery require subsequent evidence.",
+    "Worker inactivity between bounded scheduled wakes is expected.",
+    "An enabled timer grants no new economic, outcome or trading authority.",
+    "This receipt does not claim Live Lab native ingress or Safari validation."
+  ]
+}
