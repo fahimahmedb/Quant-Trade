@@ -28,6 +28,7 @@ REPOSITORY = "fahimahmedb/Quant-Trade"
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 MAX_ARCHIVE_BYTES = 96 * 1024 * 1024
 MAX_LEDGER_BYTES = 16 * 1024 * 1024
+LOCAL_RECEIPT = ".quant_release_receipt.json"
 AUTHORITY_KEYS = (
     "economic_experiment_authorized",
     "prospective_observation_authorized",
@@ -70,6 +71,12 @@ def _json_object(data: bytes, label: str) -> Dict[str, Any]:
     if not isinstance(value, dict):
         raise InstallBlock(f"{label}_NOT_OBJECT")
     return value
+
+
+def _atomic_json(path: Path, value: Dict[str, Any]) -> None:
+    pending = path.with_name(path.name + ".tmp")
+    pending.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+    pending.replace(path)
 
 
 def verify_legacy_payload(manifest: Dict[str, Any], data: bytes) -> Dict[str, Any]:
@@ -122,10 +129,9 @@ def verify_legacy_payload(manifest: Dict[str, Any], data: bytes) -> Dict[str, An
     if type(declared_items) is not int or declared_items <= 0:
         raise InstallBlock("LEGACY_MANIFEST_INVALID_HISTORICAL_ITEM_COUNT")
 
-    # The manifest's historical_research_items_found is a reconciliation-census
-    # field, not a declared 1:1 ledger-record count.  Do not manufacture an
-    # equality invariant.  Integrity comes from the exact pinned Git blob plus a
-    # non-empty parsed ledger; both counts are retained in the receipt.
+    # historical_research_items_found is a reconciliation census, not a stated
+    # 1:1 record-count contract. Integrity is the pinned Git blob + non-empty
+    # parsed ledger. Both census and materialized count are retained in receipts.
     return {
         "source_commit": source_commit,
         "ledger_path": str(manifest["ledger_path"]),
@@ -279,6 +285,54 @@ def _safe_extract_tar(data: bytes, destination: Path, sha: str) -> Path:
     return source
 
 
+def _validate_release_receipt(receipt: Any, sha: str) -> Dict[str, Any]:
+    if not isinstance(receipt, dict):
+        raise InstallBlock("RELEASE_RECEIPT_NOT_OBJECT")
+    if receipt.get("sha") != sha:
+        raise InstallBlock("RELEASE_RECEIPT_SHA_MISMATCH")
+    if receipt.get("status") != "INSTALLED_VERIFIED_NO_SCHEDULER":
+        raise InstallBlock("RELEASE_RECEIPT_STATUS_INVALID")
+    if receipt.get("scheduler_started") is not False:
+        raise InstallBlock("RELEASE_RECEIPT_SCHEDULER_UNSAFE")
+    if receipt.get("outcome_accessed") is not False:
+        raise InstallBlock("RELEASE_RECEIPT_OUTCOME_UNSAFE")
+    authority = receipt.get("authority") or {}
+    for key in AUTHORITY_KEYS:
+        if authority.get(key) is not False:
+            raise InstallBlock(f"RELEASE_RECEIPT_AUTHORITY_UNSAFE:{key}")
+    legacy = receipt.get("legacy") or {}
+    if type(legacy.get("loaded_record_count")) is not int or legacy["loaded_record_count"] <= 0:
+        raise InstallBlock("RELEASE_RECEIPT_LEGACY_EMPTY")
+    if not SHA_RE.fullmatch(str(legacy.get("ledger_blob_sha") or "")):
+        raise InstallBlock("RELEASE_RECEIPT_LEGACY_BLOB_INVALID")
+    return receipt
+
+
+def _recover_existing_release(release: Path, receipt_path: Path, sha: str) -> Dict[str, Any]:
+    local_path = release / LOCAL_RECEIPT
+    if not local_path.is_file():
+        raise InstallBlock("EXISTING_RELEASE_WITHOUT_LOCAL_RECEIPT")
+    try:
+        local = json.loads(local_path.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise InstallBlock(f"EXISTING_LOCAL_RECEIPT_INVALID:{exc}") from exc
+    local = _validate_release_receipt(local, sha)
+
+    # The release-local receipt is written before the directory is atomically
+    # published. If power is lost after rename but before the global pointer is
+    # updated, this safely reconstructs the pointer without reinstalling.
+    if receipt_path.is_file():
+        try:
+            current = json.loads(receipt_path.read_text())
+        except (OSError, json.JSONDecodeError):
+            current = None
+        if isinstance(current, dict) and current.get("sha") == sha:
+            _validate_release_receipt(current, sha)
+            return current
+    _atomic_json(receipt_path, local)
+    return local
+
+
 def install_release(sha: str, *, base: Path) -> Dict[str, Any]:
     sha = validate_sha(sha)
     if sys.version_info < (3, 12):
@@ -294,15 +348,7 @@ def install_release(sha: str, *, base: Path) -> Dict[str, Any]:
         release = base / sha
         receipt_path = base / "installed.json"
         if release.exists():
-            if not receipt_path.is_file():
-                raise InstallBlock("EXISTING_RELEASE_WITHOUT_RECEIPT")
-            existing = json.loads(receipt_path.read_text())
-            if (
-                existing.get("sha") != sha
-                or existing.get("status") != "INSTALLED_VERIFIED_NO_SCHEDULER"
-            ):
-                raise InstallBlock("EXISTING_RELEASE_RECEIPT_MISMATCH")
-            return existing
+            return _recover_existing_release(release, receipt_path, sha)
 
         archive_url = f"https://codeload.github.com/{REPOSITORY}/tar.gz/{sha}"
         archive = fetch_bytes(archive_url, max_bytes=MAX_ARCHIVE_BYTES)
@@ -314,25 +360,26 @@ def install_release(sha: str, *, base: Path) -> Dict[str, Any]:
             control = verify_control_plane(source)
             verification = run_verification_suite(source, log_path=log_path)
             smoke = run_real_legacy_readiness_smoke(source)
+
+            receipt = {
+                "status": "INSTALLED_VERIFIED_NO_SCHEDULER",
+                "sha": sha,
+                "path": str(release),
+                "python": platform.python_version(),
+                "architecture": platform.machine(),
+                "legacy": legacy,
+                "control_plane": control,
+                "verification": verification,
+                "readiness_smoke": smoke,
+                "outcome_accessed": False,
+                "scheduler_started": False,
+                "authority": {key: False for key in AUTHORITY_KEYS},
+            }
+            _validate_release_receipt(receipt, sha)
+            _atomic_json(source / LOCAL_RECEIPT, receipt)
             source.rename(release)
 
-        receipt = {
-            "status": "INSTALLED_VERIFIED_NO_SCHEDULER",
-            "sha": sha,
-            "path": str(release),
-            "python": platform.python_version(),
-            "architecture": platform.machine(),
-            "legacy": legacy,
-            "control_plane": control,
-            "verification": verification,
-            "readiness_smoke": smoke,
-            "outcome_accessed": False,
-            "scheduler_started": False,
-            "authority": {key: False for key in AUTHORITY_KEYS},
-        }
-        pending = base / "installed.json.tmp"
-        pending.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-        pending.replace(receipt_path)
+        _atomic_json(receipt_path, receipt)
         return receipt
 
 
