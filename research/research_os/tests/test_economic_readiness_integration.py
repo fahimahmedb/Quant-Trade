@@ -143,13 +143,15 @@ class EconomicReadinessIntegrationTests(unittest.TestCase):
         for key in ("repair_attempted", "signal_repair_attempted", "parameters_optimized", "retuned_until_profitable"):
             self.assertIs(result["red_team"][key], False)
 
-    def test_structural_duplication_without_empirical_correlation_or_allocation(self):
+    def test_structural_duplication_blocks_without_fabricating_empirical_correlation_or_allocation(self):
         p = fixture()
         peer = identity("PEER", payer="fixture-payer", mechanism=p["engine_output"]["candidate"]["mechanism"],
                         timing_clock="UNKNOWN")
         result = self.run_package(p, peer_identities=[peer])
-        self.assertEqual(result["status"], READY)
+        self.assertEqual(result["status"], "BLOCK")
+        self.assertIn("BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP", result["block_reasons"])
         portfolio = result["portfolio"]
+        self.assertTrue(portfolio["same_exposure_review_pairs"])
         self.assertEqual(portfolio["empirical_correlation"], "UNAVAILABLE")
         self.assertEqual(portfolio["marginal_portfolio_contribution"], "NOT_ESTIMATED")
         self.assertEqual(portfolio["pairwise"][0]["dimensions"]["mechanism"], 1.0)
