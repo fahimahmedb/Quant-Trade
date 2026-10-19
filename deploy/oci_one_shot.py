@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+"""CloudShell installer for the qualified, pre-outcome release. No scheduler starts."""
+import base64
+import json
+import os
+from pathlib import Path
+import shlex
+import subprocess
+import sys
+import time
+import zlib
+
+VM = "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa"
+REGION = "eu-paris-1"
+HEAD = "e980d201d3c84d16d7d91fde0d27a06c9a2c3121"
+REMOTE = r'''
+import fcntl, io, json, os, platform, subprocess, sys, tarfile, tempfile, urllib.request
+from pathlib import Path
+sha = "e980d201d3c84d16d7d91fde0d27a06c9a2c3121"
+assert sys.version_info >= (3, 12), "Python 3.12+ requis"
+base = Path.home() / "Quant-Trade-qualified"
+base.mkdir(mode=0o700, exist_ok=True)
+lock = (base / "install.lock").open("a")
+fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+release = base / sha
+receipt = base / "installed.json"
+if release.exists():
+    assert receipt.exists() and json.loads(receipt.read_text())["sha"] == sha, "Installation existante inconnue: aucune modification"
+else:
+    url = "https://codeload.github.com/fahimahmedb/Quant-Trade/tar.gz/" + sha
+    with tempfile.TemporaryDirectory(prefix=".install-", dir=base) as tmp:
+        with urllib.request.urlopen(url, timeout=60) as response:
+            archive = response.read(64 * 1024 * 1024 + 1)
+        assert len(archive) <= 64 * 1024 * 1024, "Archive trop grande"
+        with tarfile.open(fileobj=io.BytesIO(archive), mode="r:gz") as tar:
+            tar.extractall(tmp, filter="data")
+        source = Path(tmp) / ("Quant-Trade-" + sha)
+        assert source.is_dir(), "Archive inattendue"
+        # Publish only after verification below; preserve all other installations.
+        release = source
+        env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+        modules = ["implementability_depth", "experiment_runner_frozen_protocol", "economic_readiness_validation", "economic_identity_portfolio_readiness", "producer_economic_readiness", "economic_readiness_integration"]
+        with (base / "verification.log").open("w") as log:
+            check = subprocess.run([sys.executable, "-m", "unittest"] + ["research.research_os.tests.test_" + m for m in modules], cwd=source, env=env, stdout=log, stderr=subprocess.STDOUT)
+        if check.returncode:
+            print((base / "verification.log").read_text()[-1800:])
+            raise SystemExit("BLOCK_VERIFICATION")
+        release = base / sha
+        source.rename(release)
+os.chdir(release)
+sys.path.insert(0, str(release))
+sys.dont_write_bytecode = True
+from research.research_os.tests.test_economic_readiness_integration import fixture, legacy
+from research.research_os.expansion.economic_test_readiness_v1 import economic_test_readiness, AUTHORITY, READY
+r = economic_test_readiness(fixture(), legacy=legacy())
+assert r["status"] == READY and r["authority"] == AUTHORITY
+assert r["outcome_accessed"] is False and r["economic_result"] == "NOT_OBSERVED"
+result = dict(status="INSTALLED_VERIFIED", sha=sha, path=str(release), python=platform.python_version(), architecture=platform.machine(), synthetic_readiness=r["status"], outcome_accessed=False, scheduler_started=False, authority=AUTHORITY)
+pending = base / "installed.json.tmp"
+pending.write_text(json.dumps(result, indent=2) + "\n")
+pending.replace(receipt)
+print(json.dumps(result))
+'''
+
+
+def oci(*args):
+    return json.loads(subprocess.check_output(
+        ["oci", "--region", REGION, *args, "--output", "json"], text=True))
+
+
+def main():
+    cache = Path.home() / ".cache" / "quant-oci-one-shot"
+    cache.mkdir(parents=True, mode=0o700, exist_ok=True)
+    state = cache / "command.json"
+    if state.exists():
+        saved = json.loads(state.read_text())
+        assert saved["vm"] == VM and saved["sha"] == HEAD, "Etat de reprise incompatible"
+        command = saved["command"]
+        print("Reprise de la commande existante.", flush=True)
+    else:
+        instance = oci("compute", "instance", "get", "--instance-id", VM)["data"]
+        vnics = oci("compute", "instance", "list-vnics", "--instance-id", VM)["data"]
+        ips = [v["public-ip"] for v in vnics if v.get("public-ip")]
+        # No password prompt, no key generation, no firewall/IAM changes.
+        keys = [None] + [str(p.with_suffix("")) for p in (Path.home() / ".ssh").glob("*.pub") if p.with_suffix("").is_file()]
+        for ip in ips[:1]:
+            for key in keys:
+                ssh = ["ssh", "-oBatchMode=yes", "-oConnectTimeout=6", "-oConnectionAttempts=1", "-oStrictHostKeyChecking=accept-new"]
+                if key:
+                    ssh += ["-oIdentitiesOnly=yes", "-i", key]
+                ssh += ["ubuntu@" + ip]
+                try:
+                    probe = subprocess.run(ssh + ["python3 -c 'print(81273)'"], capture_output=True, text=True, timeout=9)
+                except (subprocess.TimeoutExpired, FileNotFoundError):
+                    continue
+                if probe.returncode == 0 and probe.stdout.strip() == "81273":
+                    print("Installation par SSH…", flush=True)
+                    return subprocess.run(ssh + ["python3 -"], input=REMOTE, text=True).returncode
+        print("SSH indisponible ; installation par l'agent OCI…", flush=True)
+        packed = base64.b64encode(zlib.compress(REMOTE.encode())).decode()
+        payload = "python3 -c " + shlex.quote("import zlib,base64;exec(zlib.decompress(base64.b64decode(" + repr(packed) + ")))" )
+        assert len(payload.encode()) < 4096, "Limite OCI depassee"
+        content = {"source": {"sourceType": "TEXT", "text": payload}, "output": {"outputType": "TEXT"}}
+        target = {"instanceId": VM}
+        created = oci("instance-agent", "command", "create", "--compartment-id", instance["compartment-id"], "--target", json.dumps(target), "--content", json.dumps(content), "--timeout-in-seconds", "900", "--display-name", "Quant qualified code installation; no worker execution")
+        command = created["data"]["id"]
+        state.write_text(json.dumps(dict(vm=VM, sha=HEAD, command=command)))
+        state.chmod(0o600)
+    print("Commande : " + command, flush=True)
+    for n in range(91):
+        execution = oci("instance-agent", "command-execution", "get", "--command-id", command, "--instance-id", VM)["data"]
+        status = execution["lifecycle-state"]
+        if n % 3 == 0:
+            print(status, flush=True)
+        if status in {"SUCCEEDED", "FAILED", "TIMED_OUT", "CANCELED"}:
+            output = execution.get("content") or {}
+            print(output.get("text") or output.get("message") or status)
+            return 0 if status == "SUCCEEDED" and output.get("exit-code") == 0 else 1
+        if n == 12 and status == "ACCEPTED":
+            print("BLOCK_AGENT_DELIVERY: l'agent n'a pas execute la commande. Identifiant conserve ; relancer ce script reprend le suivi sans nouvelle commande.")
+            return 2
+        time.sleep(10)
+    print("Suivi interrompu ; commande conservee. Relancer ce script reprend le suivi.")
+    return 2
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except (OSError, ValueError, KeyError, AssertionError, subprocess.CalledProcessError) as exc:
+        raise SystemExit("BLOCK_INSTALLATION: " + str(exc))
