@@ -1,0 +1,75 @@
+name: Oracle Economic Loop Recovery CI
+
+on:
+  push:
+    branches:
+      - builder/oracle-economic-loop-recovery-20261019
+    paths:
+      - 'deploy/oracle_release_install.py'
+      - 'deploy/oci_research_os_deploy.py'
+      - 'tests/test_oracle_release_install.py'
+      - 'tests/test_oci_research_os_deploy.py'
+      - 'research/research_os/**'
+      - '.github/workflows/oracle-economic-loop-recovery-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cp1-static-and-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Oracle recovery scripts
+        run: |
+          python -m py_compile \
+            deploy/oracle_release_install.py \
+            deploy/oci_research_os_deploy.py \
+            tests/test_oracle_release_install.py \
+            tests/test_oci_research_os_deploy.py
+
+      - name: Run Oracle recovery unit tests
+        run: |
+          python -m unittest \
+            tests/test_oracle_release_install.py \
+            tests/test_oci_research_os_deploy.py
+
+      - name: Run pre-outcome Research OS regressions used by installer
+        run: |
+          python -m unittest \
+            research.research_os.tests.test_implementability_depth \
+            research.research_os.tests.test_experiment_runner_frozen_protocol \
+            research.research_os.tests.test_economic_readiness_validation \
+            research.research_os.tests.test_economic_identity_portfolio_readiness \
+            research.research_os.tests.test_producer_economic_readiness \
+            research.research_os.tests.test_economic_readiness_integration \
+            research.research_os.tests.test_queue_replenisher
+
+      - name: Assert scheduler remains absent from CP1 deploy scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          forbidden = (
+              'systemctl enable',
+              'systemctl start',
+              'systemctl --now',
+              'scheduler_started = true',
+              'scheduler_started": true',
+          )
+          for name in ('deploy/oracle_release_install.py', 'deploy/oci_research_os_deploy.py'):
+              text = Path(name).read_text().lower()
+              hits = [needle for needle in forbidden if needle in text]
+              if hits:
+                  raise SystemExit(f'{name}: forbidden scheduler activation surface: {hits}')
+          print('CP1 scheduler activation surface: absent')
+          PY
