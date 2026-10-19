@@ -1,6 +1,6 @@
 {
   "schema_version": "oracle-lab-v1-progress-v1",
-  "status": "WAITING_FOR_ADMINISTRATIVE_HOST_PREPARATION",
+  "status": "LIVE_CANARY_PASSED_GATED_ACTIVATION_REQUESTED",
   "oracle_h24_research_lab": "NOT_RUNNING_AT_LAST_LIVE_PROBE",
   "operational_release_proposed": "f138c980c94eea313fd77532c20857da5c02d3fe",
   "local_backend_qualification_code_sha": "e20e8530a177ae9e197cf9578fae0a503f3b3d09",
@@ -27,20 +27,23 @@
   "github_identity": {
     "repository_scoped_native_ssh_authenticated": true,
     "private_key_exported": false,
-    "live_write_and_claim_canary": "PENDING"
+    "live_write_and_claim_canary": "PASS_13_OF_13_GATES",
+    "live_canary_report": "research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/qualification-fa6ecb5ec2109f56.json",
+    "live_canary_report_sha256": "721f82cad9804fc0b2bbfb5d0b25d93d621b87b3d35423f2dfd6d2474361fd0b"
   },
   "last_live_host_probe": {
-    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaa7qzqm5xg6qja7wwllk2lgun5edobw4oxoigueg2l6uga",
-    "transport_updated_at": "2026-10-19T23:06:18.226000+00:00",
-    "model_service_load_state": "not-found",
+    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaawbxtxht7izureascdwz5djl4rios5wpw7bn55rz2mavq",
+    "model_service_load_state": "loaded",
+    "model_service_state": "enabled/running",
+    "model_health": "ok",
     "worker_service_load_state": "not-found",
     "worker_timer_load_state": "not-found",
-    "bounded_recovery_wrappers_present": false
+    "bounded_recovery_wrappers_present": true
   },
   "external_execution_dependency": {
     "new_owner_authorization_required": false,
-    "required": "Execute pinned root host preparation from the already-working ubuntu SSH terminal",
-    "reason": "OCI Run Command executes as ocarun without general noninteractive sudo; the recovery commands are not installed yet",
+    "required": "NONE; Owner completed pinned host preparation",
+    "reason": "Two fixed root-owned no-argument wrappers now permit canonical qualification and gated activation without general sudo",
     "source": "deploy/oracle_v1_host_prepare.py",
     "source_commit": "f138c980c94eea313fd77532c20857da5c02d3fe",
     "source_sha256": "4f16891393a7adaea4b9c55ff29c479860ffc08d770b82e48ec24a0211a1e44f",
@@ -48,8 +51,6 @@
     "root_preparation_enables_research_timer": false
   },
   "remaining_live_gates": [
-    "Administrator host preparation and actual resource-bounded model service",
-    "Canonical GitHub write, claim, actual process death and expired-lease recovery",
     "Matching live pre-activation receipt and gated activation",
     "Two automatic wakes and no duplicated work",
     "Actual VM reboot recovery and final H24 receipt"
