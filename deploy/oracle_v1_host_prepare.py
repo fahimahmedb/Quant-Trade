@@ -182,7 +182,10 @@ def prepare(sha, ci_run):
         write_atomic(key, private, 0o600, uid=worker.pw_uid, gid=worker.pw_gid)
     public = checked(['ssh-keygen', '-y', '-f', str(key)])
     with urllib.request.urlopen('https://api.github.com/meta', timeout=20) as response:
-        meta = json.loads(response.read(131072))
+        raw_meta = response.read(2 * 1024 * 1024 + 1)
+    if len(raw_meta) > 2 * 1024 * 1024:
+        raise ValueError('OFFICIAL_GITHUB_METADATA_TOO_LARGE')
+    meta = json.loads(raw_meta)
     host_keys = [k for k in meta.get('ssh_keys', []) if k.startswith('ssh-ed25519 ')]
     if not host_keys or any('\n' in key for key in host_keys):
         raise ValueError('OFFICIAL_GITHUB_HOST_KEYS_MISSING')
