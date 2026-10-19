@@ -165,13 +165,36 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     reasons.extend(red["negative_rights"])
     identity = economic_identity_v1(output, p.get("identity_meta", {}))
     portfolio = portfolio_diagnostics_v2([identity, *deepcopy(list(peer_identities))])
-    # Portfolio structural overlap is a pre-outcome scientific integrity gate,
-    # not an empirical correlation claim. A new independent lineage cannot be
-    # READY while a same-exposure review is unresolved.
-    require(
-        not (portfolio.get("same_exposure_review_pairs") or []),
-        "BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP",
-    )
+
+    # Portfolio overlap is a pre-outcome scientific-integrity gate, never an
+    # empirical-correlation claim. Besides explicit Portfolio review pairs, a
+    # known-equal payer + mechanism with an unknown clock is unresolved rather
+    # than distinct and must not pass independent-lineage readiness.
+    blocking_pairs = []
+    for pair in portfolio.get("pairwise", []):
+        structure = pair.get("economic_structure") or {}
+        dimensions = structure.get("dimensions") or {}
+        explicit_review = bool(pair.get("same_exposure_review_required")) or (
+            structure.get("classification") == "HIGH_STRUCTURAL_OVERLAP_REVIEW"
+        )
+        unresolved_core = (
+            dimensions.get("payer") == 1.0
+            and dimensions.get("mechanism") == 1.0
+            and dimensions.get("timing_clock") is None
+        )
+        if explicit_review or unresolved_core:
+            blocking_pairs.append({
+                "left": pair.get("left"),
+                "right": pair.get("right"),
+                "classification": structure.get("classification"),
+                "payer": dimensions.get("payer"),
+                "mechanism": dimensions.get("mechanism"),
+                "timing_clock": dimensions.get("timing_clock"),
+                "basis": "EXPLICIT_REVIEW" if explicit_review else "SAME_PAYER_MECHANISM_CLOCK_UNKNOWN",
+            })
+    portfolio["readiness_blocking_review_pairs"] = blocking_pairs
+    require(not blocking_pairs, "BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP")
+
     ready = not reasons
     return {
         "status": READY if ready else "BLOCK", "block_reasons": sorted(set(reasons)),
