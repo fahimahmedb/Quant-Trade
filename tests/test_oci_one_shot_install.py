@@ -3,6 +3,7 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -46,6 +47,37 @@ class IamFixture:
 
 
 class OciInstallerAccessTests(unittest.TestCase):
+    def test_oracle_empty_list_output_is_valid_for_known_list_operations(self):
+        routes = (("iam", "dynamic-group", "list"), ("iam", "policy", "list"))
+        for route in routes:
+            with self.subTest(route=route), patch.object(installer.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
+                self.assertEqual(installer.oci(*route), {"data": []})
+
+    def test_empty_get_does_not_become_empty_list(self):
+        with patch.object(installer.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
+            with self.assertRaisesRegex(RuntimeError, "OCI_EMPTY_RESPONSE: oci instance-agent command-execution get"):
+                installer.oci("instance-agent", "command-execution", "get")
+
+    def test_failed_list_preserves_authorization_error(self):
+        with patch.object(installer.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, "", "NotAuthorizedOrNotFound")):
+            with self.assertRaisesRegex(RuntimeError, "oci iam dynamic-group list.*NotAuthorizedOrNotFound"):
+                installer.oci("iam", "dynamic-group", "list")
+
+    def test_query_warning_does_not_become_empty_list(self):
+        with patch.object(installer.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "Query returned empty result, no output to show.")):
+            with self.assertRaisesRegex(RuntimeError, "OCI_EMPTY_RESPONSE"):
+                installer.oci("iam", "dynamic-group", "list")
+
+    def test_bad_json_reports_the_exact_operation(self):
+        with patch.object(installer.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "not-json", "")):
+            with self.assertRaisesRegex(RuntimeError, "OCI_INVALID_JSON: oci iam policy list"):
+                installer.oci("iam", "policy", "list")
+
+    def test_cli_query_is_explicitly_unfiltered(self):
+        with patch.object(installer.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, '{"data": []}', "")) as run:
+            self.assertEqual(installer.oci("iam", "policy", "list"), {"data": []})
+            self.assertEqual(run.call_args.args[0][-4:], ["--output", "json", "--query", "@"])
+
     def test_grant_is_limited_to_one_instance_and_its_own_commands(self):
         api = IamFixture()
         with patch.object(installer, "oci", api):

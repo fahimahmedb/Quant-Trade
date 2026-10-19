@@ -64,8 +64,39 @@ print(json.dumps(result))
 
 
 def oci(*args, region=REGION):
-    return json.loads(subprocess.check_output(
-        ["oci", "--region", region, *args, "--output", "json"], text=True))
+    # Oracle's renderer prints nothing for some successful, empty list responses.
+    # Never interpret an empty GET or a failed request as an empty collection.
+    list_operations = {
+        ("compute", "instance", "list-vnics"),
+        ("instance-agent", "plugin", "list"),
+        ("iam", "region-subscription", "list"),
+        ("iam", "dynamic-group", "list"),
+        ("iam", "policy", "list"),
+    }
+    operation = "oci " + " ".join(args[:3])
+    process = subprocess.run(
+        ["oci", "--region", region, *args, "--output", "json", "--query", "@"],
+        capture_output=True, text=True)
+    if process.returncode:
+        raise RuntimeError(operation + " a echoue (code " + str(process.returncode) + "): "
+                           + (process.stderr.strip() or "aucun detail stderr"))
+    raw = process.stdout.strip()
+    if not raw:
+        if args[:3] in list_operations and not process.stderr.strip():
+            return {"data": []}
+        raise RuntimeError("OCI_EMPTY_RESPONSE: " + operation + "; "
+                           + (process.stderr.strip() or "code 0 mais aucune reponse exploitable"))
+    try:
+        response = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("OCI_INVALID_JSON: " + operation + "; " + str(exc)) from exc
+    if not isinstance(response, dict):
+        raise RuntimeError("OCI_UNEXPECTED_RESPONSE: " + operation)
+    if "data" not in response:
+        if args[:3] in list_operations and set(response) <= {"etag", "opc-request-id"}:
+            return dict(response, data=[])
+        raise RuntimeError("OCI_DATA_MISSING: " + operation)
+    return response
 
 
 def repair_agent_iam():
@@ -168,12 +199,12 @@ def main():
             print("BLOCK_AGENT_DELIVERY: aucune execution confirmee. Un plugin RUNNING ne prouve pas ses droits IAM. Diagnostic/correction: python3 ~/qt-install.py --repair-agent")
             return 2
         time.sleep(10)
-    print("BLOCK_AGENT_DELIVERY: execution non confirmee apres attente. Commande conservee; droits IAM configures ne prouvent pas la connectivite/compatibilite de l'agent. Aucun succes d'installation declare.")
+    print("BLOCK_AGENT_DELIVERY: execution non confirmee apres attente. Commande conservee; la cause doit etre verifiee dans les journaux de l'agent. Aucun succes d'installation declare.")
     return 2
 
 
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
-    except (OSError, ValueError, KeyError, AssertionError, subprocess.CalledProcessError) as exc:
+    except (OSError, ValueError, KeyError, AssertionError, RuntimeError, subprocess.CalledProcessError) as exc:
         raise SystemExit("BLOCK_INSTALLATION: " + str(exc))
