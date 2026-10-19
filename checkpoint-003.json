@@ -1,0 +1,65 @@
+{
+  "audit_id": "QT-AUDIT-20261018T2352Z",
+  "checkpoint": "003",
+  "status": "PARTIAL_IN_PROGRESS",
+  "branch": "audit/forensic-checkpoint-20261019",
+  "parent_audit_head": "b59466c40547cb75511a912e5a6e8a5ad0dd5abd",
+  "checkpoint_markdown_commit": "fcae88b81afb9fdd8b86f8243bad9cae35fcbda5",
+  "modern_research_os_ref": "d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec",
+  "production_executor_review": {
+    "reviewed_runtime_directory": true,
+    "reviewed_autonomous_loop_ci": true,
+    "reviewed_multi_engine_pipeline": true,
+    "reviewed_queue_replenisher": true,
+    "reviewed_control_plane": true,
+    "reviewed_worker_protocol": true,
+    "production_executor_observed_in_reviewed_modern_path": false,
+    "repo_wide_absence_proven": false,
+    "classification": "SCOPED_NEGATIVE_FINDING"
+  },
+  "ust_candidate": {
+    "branch": "builder/econ-test-flow-ust-auction-20261019",
+    "head": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+    "hypothesis_id": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+    "protocol_frozen": true,
+    "protocol_freeze_status": "FROZEN_BEFORE_OUTCOME_ACCESS",
+    "protocol_outcome_accessed": false,
+    "protocol_economic_result": "NOT_OBSERVED",
+    "economic_result_artifact_observed": false,
+    "validation_result": "PASS_TO_TEST_DESIGN_BOUNDED",
+    "validation_economic_experiment_authorized": false,
+    "post_freeze_receipt_stage": "AUTHORIZED_OUTCOME_ACQUISITION_AND_EXECUTION_OF_FROZEN_SCREEN"
+  },
+  "authority": {
+    "canonical_control_plane_economic_experiment_authorized": false,
+    "candidate_local_receipt_claims_bounded_owner_authorization": true,
+    "authority_precedence_explicit": false,
+    "authority_precedence_conflict": true,
+    "autonomous_outcome_access_safe": false
+  },
+  "scientific_memory": {
+    "pr1_mandatory_scope": true,
+    "legacy_reconciliation_complete": false,
+    "pr1_families_missing_from_reviewed_legacy_ledger": true,
+    "scientific_identity_coverage_complete": false,
+    "anti_restart_gate_proven_complete": false
+  },
+  "oracle": {
+    "oracle_autonomous_activation_safe": false,
+    "oci_wholesale_merge_safe": false,
+    "host_candidate_only_pending_audit": true
+  },
+  "governance": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "operational_changes_in_audit_branch": false,
+    "new_economic_experiment_authorized_by_audit": false
+  },
+  "next": [
+    "Search modern and historical side branches for a real claim/dispatch/executor implementation.",
+    "Build PR1 scientific lineage identity map and reconcile aliases against Legacy and current Research OS.",
+    "Trace durable authority provenance for UST local authorization without resolving precedence during audit.",
+    "Audit crash/lease/idempotence semantics if an executor is located.",
+    "Re-read moving refs before final closure."
+  ]
+}
