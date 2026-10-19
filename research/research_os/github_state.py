@@ -165,7 +165,10 @@ class GitHubStateStore:
                 rows.append(f'100644 {sha}\t{path}\n')
             self._git('update-index', '--index-info', data=''.join(rows).encode(), env=env)
             tree = self._git('write-tree', env=env).decode().strip()
-            commit = self._git('commit-tree', tree, '-p', snapshot.head, data=(message + '\n').encode(), env=env).decode().strip()
+            # Durable runtime DATA must not launch full hosted build workflows
+            # at every ten-minute wake. Executable release commits still run CI.
+            commit = self._git('commit-tree', tree, '-p', snapshot.head,
+                               data=(message + ' [skip ci]\n').encode(), env=env).decode().strip()
             # commit-tree above proves this is a direct child of snapshot.head.
             # The explicit ref lease is compare-and-swap, including if an owner
             # rewound the ref. It never authorizes replacing another HEAD.

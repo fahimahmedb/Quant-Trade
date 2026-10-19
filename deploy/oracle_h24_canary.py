@@ -22,7 +22,7 @@ from deploy.oracle_release_install import _validate_release_receipt
 from research.research_os.github_state import GitHubStateStore, PREFIX, json_bytes
 from research.research_os.oracle_worker import ResearchOSWorker, backend_from_config
 from research.research_os.worker_preflight import AUTHORITY_KEYS, canonical_hash
-from research.research_os.worker_stages import CanonicalStageExecutor
+from research.research_os.worker_stages import CanonicalStageExecutor, _reason
 
 AUTHORITY = {k: False for k in AUTHORITY_KEYS}
 GATES = ('oracle_instance_verified', 'exact_release_ci', 'inventory_recorded', 'local_gpt_oss_health', 'local_structured_inference',
@@ -126,6 +126,12 @@ def qualify(config_path, output_path):
         report['post_inference_resources'] = {'mem_available_kib': int(memory['MemAvailable'].split()[0]),
                                                'swap_free_kib': int(memory['SwapFree'].split()[0])}
         report['gates']['local_structured_inference'] = True
+        reasoning_start = time.monotonic()
+        report['representative_worker_reasoning'] = _reason(backend, 'disconfirmation', {
+            'claim': 'A verified nonempty Legacy ledger is necessary for new candidate screening.',
+            'mechanism': 'Pinned historical memory prevents forgetting prior research.',
+            'falsification_scope': 'Reject the preflight if the ledger blob differs, is empty or has unsafe governance.'})
+        report['representative_reasoning_seconds'] = round(time.monotonic() - reasoning_start, 3)
         task_id = 'AAA-ORACLE-H24-CANARY-' + config['release_sha'][:16]
         worker = ResearchOSWorker(store_from_config(config), lane='auto', worker_id=config['worker_id'],
                                   release_sha=config['release_sha'])

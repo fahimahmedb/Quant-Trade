@@ -55,6 +55,7 @@ class BackendTests(unittest.TestCase):
         self.assertEqual(payload['model'], 'gpt-oss:test')
         self.assertEqual(payload['options']['temperature'], 0)
         self.assertFalse(payload['stream'])
+        self.assertEqual(payload['think'], 'low')
 
     def test_hosted_endpoints_proxy_credentials_and_redirect_destinations_refused(self):
         for endpoint in ('https://api.openai.com:443', 'http://example.com:80',

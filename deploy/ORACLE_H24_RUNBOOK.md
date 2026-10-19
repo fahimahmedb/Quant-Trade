@@ -4,6 +4,8 @@ Runtime: Oracle VM → systemd timer → one bounded Python stage → fresh GitH
 state → canonical task/lease/event/receipt → exit. Reasoning, when needed, uses
 an explicitly configured loopback model through `ModelBackend`. No Codex,
 ChatGPT, Work, paid model service or model download is part of a normal wake.
+Runtime data commits carry `[skip ci]` so normal wakes do not consume hosted
+GitHub Actions build minutes. Builder release commits still require exact-head CI.
 
 All four economic/prospective/capital/live authorities remain false. A running
 timer does not grant outcome access. Ordinary source/evidence gaps remain

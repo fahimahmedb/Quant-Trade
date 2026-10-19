@@ -208,6 +208,7 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(sorted(results), ['CONFLICT', 'READY'])
         self.assertEqual(self.count_paths('receipts/RECOVER-TEST-001/'), 1)
         self.assertEqual(self.count_paths('artifacts/RECOVER-TEST-001/'), 1)
+        self.assertTrue(git(self.remote, 'log', '-1', '--format=%s', 'recovery').endswith('[skip ci]'))
 
     def test_empty_queue_derives_once_without_executing_producer(self):
         def finish(s):

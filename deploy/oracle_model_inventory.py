@@ -88,6 +88,10 @@ def inventory(model_roots):
         if not root.is_dir():
             continue
         for directory, dirs, names in os.walk(root, followlinks=False):
+            inspected_entries += len(dirs)
+            if inspected_entries > 10000:
+                truncated = True
+                break
             if len(Path(directory).relative_to(root).parts) > 5:
                 dirs[:] = []
                 continue
@@ -111,6 +115,7 @@ def inventory(model_roots):
         if truncated:
             break
     disk = shutil.disk_usage('/')
+    listeners = command(['ss', '-lntp'])
     services = {'ollama.service', 'llama-server.service', 'gpt-oss.service', 'quant-research-worker.timer'}
     unit_list = command(['systemctl', 'list-unit-files', '--type=service', '--no-legend', '--no-pager'])
     for line in unit_list.get('stdout', '').splitlines():
@@ -121,6 +126,7 @@ def inventory(model_roots):
             'observed_at': datetime.now(timezone.utc).isoformat(), 'evidence_scope': 'LIVE_HOST_WHERE_EXECUTED',
             'host_architecture': platform.machine(), 'kernel': platform.release(), 'cpu_count': os.cpu_count(),
             'memory': command(['free', '-b']), 'disk': {'total': disk.total, 'free': disk.free},
+            'runtime_listeners': [line for line in listeners.get('stdout', '').splitlines() if any(word in line.lower() for word in ('gpt', 'llama', 'ollama'))],
             'cpu': command(['lscpu']), 'processes': processes(),
             'runtimes': {name: {'binary': shutil.which(name), 'version': command([name, '--version'])} for name in ('ollama', 'llama-server', 'llama-cli') if shutil.which(name)},
             'services': {name: command(['systemctl', 'show', name, '--property=ActiveState,SubState,UnitFileState,MainPID,MemoryCurrent,CPUUsageNSec,FragmentPath']) for name in sorted(services)[:32]},

@@ -99,6 +99,9 @@ class LocalHTTPBackend(ModelBackend):
         self.endpoint, self.model, self.runtime = endpoint.rstrip('/'), model, runtime
         self.budget = budget or ModelBudget()
 
+    def _runtime_reasoning_options(self):
+        return {}
+
     def _request(self, path, payload=None, *, timeout=None):
         class NoRedirect(urllib.request.HTTPRedirectHandler):
             def redirect_request(self, *args, **kwargs):
@@ -149,6 +152,7 @@ class LocalHTTPBackend(ModelBackend):
                                    'temperature': self.budget.temperature, 'seed': self.budget.seed}}
             if schema:
                 payload['format'] = schema
+            payload.update(self._runtime_reasoning_options())
             data = self._request('/api/chat', payload)
             if data.get('done') is not True or data.get('done_reason') == 'length':
                 raise InvalidModelOutput('MODEL_OUTPUT_INCOMPLETE')
@@ -161,6 +165,7 @@ class LocalHTTPBackend(ModelBackend):
             if schema:
                 payload['response_format'] = {'type': 'json_schema', 'json_schema': {
                     'name': 'research_reasoning', 'strict': True, 'schema': schema}}
+            payload.update(self._runtime_reasoning_options())
             data = self._request('/v1/chat/completions', payload)
             choices = data.get('choices') or []
             if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict) or choices[0].get('finish_reason') != 'stop':
@@ -186,6 +191,9 @@ class LocalHTTPBackend(ModelBackend):
 
 class GPTOSSBackend(LocalHTTPBackend):
     """GPT-OSS/variant adapter; variant and quantization come from VM inventory."""
+    def _runtime_reasoning_options(self):
+        return {'think': 'low'} if self.runtime == 'ollama' else {'reasoning_effort': 'low'}
+
     def healthcheck(self):
         health = super().healthcheck()
         if self.runtime == 'ollama':

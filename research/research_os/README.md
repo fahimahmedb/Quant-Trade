@@ -1,8 +1,8 @@
 # Quant-Trade Research OS — Autonomous Loop Backbone
 
-Status: isolated build spike
-Branch: `builder/research-os-autonomous-loop-20261015`
-Base: `fdfee2006869ff3770f752f32fb672da0b0fc4ac`
+Status: canonical Oracle worker implemented; live Oracle access/qualification pending.
+Recovery branch: `builder/oracle-economic-loop-recovery-20261019`.
+Deployment/canaries: [`deploy/ORACLE_H24_RUNBOOK.md`](../../deploy/ORACLE_H24_RUNBOOK.md).
 
 ## Purpose
 
@@ -10,7 +10,7 @@ Build the thinnest final-shape backbone that can support:
 
 1. a canonical scientific ledger;
 2. a task/lease control plane;
-3. scheduled ChatGPT/Codex workers;
+3. Oracle systemd wakes with a local, pluggable model backend;
 4. durable receipts and provenance;
 5. real worker events consumable by the existing Live Lab native adapter.
 
@@ -57,7 +57,9 @@ WAKE
   -> STOP
 ```
 
-A conversation is a replaceable worker, never the canonical memory.
+Codex is the build/repair plane. The H24 worker reconstructs context from GitHub
+and never invokes Codex, ChatGPT or Work. Stage output/event/receipt/task progress
+publish atomically; the durable claim is a preceding transaction.
 
 ## Source of truth
 
