@@ -77,7 +77,7 @@ def _hypothesis_id(record: Dict[str, Any], path: str) -> str:
         value = record.get(key)
         if isinstance(value, str) and value.strip():
             result = value.strip()
-            if key == "candidate_id" and Path(path).stem != result:
+            if key == "candidate_id" and path != "<candidate>" and Path(path).stem != result:
                 raise WorkerPreflightBlock(
                     f"CURRENT_CANDIDATE_ID_PATH_MISMATCH:{path}:{result}"
                 )
@@ -262,8 +262,10 @@ def compare_current_identities(left: Dict[str, Any], right: Dict[str, Any]) -> D
             "basis": basis,
         }
 
-    # Missing structural context is not evidence of distinctness.
-    if not entity_known or not family_known:
+    # Incomplete identity plus non-trivial mechanism overlap is unresolved. Very
+    # low observed overlap is allowed to proceed without claiming proven semantic
+    # distinctness; later validators may still restrict it.
+    if (not entity_known or not family_known) and overlap >= 0.15:
         return {
             "classification": "UNKNOWN_CURRENT_EXPOSURE_RELATION",
             "review_required": True,
@@ -272,7 +274,7 @@ def compare_current_identities(left: Dict[str, Any], right: Dict[str, Any]) -> D
         }
 
     return {
-        "classification": "STRUCTURALLY_DISTINGUISHABLE_CURRENT_LINEAGES",
+        "classification": "LOW_OBSERVED_OVERLAP_NO_DISTINCTNESS_CLAIM",
         "review_required": False,
         "mechanism_overlap": round(overlap, 4),
         "basis": basis,
@@ -300,6 +302,46 @@ def current_corpus_overlap_map(corpus: Dict[str, Any]) -> Dict[str, Any]:
         "review_pairs": reviews,
         "pairs": pairs,
         "map_hash": canonical_hash(pairs),
+    }
+
+
+def screen_candidate_against_current(
+    candidate: Dict[str, Any], corpus: Dict[str, Any]
+) -> Dict[str, Any]:
+    identity = normalize_hypothesis(candidate, path="<candidate>")
+    matches = []
+    reasons = []
+    for peer in corpus["identities"]:
+        relation = compare_current_identities(identity, peer)
+        if not relation["review_required"]:
+            continue
+        match = {
+            "peer_hypothesis_id": peer["hypothesis_id"],
+            "peer_generation_id": peer["generation_id"],
+            **relation,
+        }
+        matches.append(match)
+        if relation["classification"] == "BLOCK_EXACT_CURRENT_DUPLICATE":
+            reasons.append("BLOCK_EXACT_CURRENT_DUPLICATE")
+        elif relation["classification"] == "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW":
+            reasons.append("BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP")
+        else:
+            reasons.append("BLOCK_CURRENT_EXPOSURE_IDENTITY_INCOMPLETE")
+
+    return {
+        "status": "BLOCK" if reasons else "PASS_CURRENT_CORPUS_SCREEN",
+        "candidate_hypothesis_id": identity["hypothesis_id"],
+        "candidate_generation_id": identity["generation_id"],
+        "current_corpus_snapshot_hash": corpus["snapshot_hash"],
+        "block_reasons": sorted(set(reasons)),
+        "matches": matches,
+        "screen_hash": canonical_hash(
+            {
+                "candidate": identity,
+                "corpus": corpus["snapshot_hash"],
+                "matches": matches,
+            }
+        ),
     }
 
 
