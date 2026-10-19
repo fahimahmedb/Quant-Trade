@@ -28,7 +28,7 @@ class WorkerPreflightTests(unittest.TestCase):
         self.assertGreater(corpus["count"], 0)
         self.assertEqual(
             {item["hypothesis_id"] for item in corpus["identities"]},
-            {json.loads(path.read_text())["hypothesis_id"] for path in files},
+            {path.stem for path in files},
         )
         self.assertEqual(len(corpus["snapshot_hash"]), 64)
 
@@ -77,6 +77,49 @@ class WorkerPreflightTests(unittest.TestCase):
         self.assertEqual(value["entity"], "example corp")
         self.assertIn("capacity", value["mechanism_tokens"])
         self.assertIn("scarcity", value["mechanism_tokens"])
+
+    def test_candidate_id_mechanism_family_schema_is_normalized(self):
+        record = {
+            "candidate_id": "EVENT-ALT-1",
+            "generation": 1,
+            "mechanism_family": "STAPLED_CONTINGENT_VALUE_RIGHT",
+            "primary_document": {"issuer": "Example Bio, Inc."},
+            "candidate_hypothesis": {
+                "claim": "A stapled contingent right changes the bundled claim.",
+                "causal_chain": ["right attached", "state transition changes entitlement"],
+            },
+            "status": "FROZEN_FOR_INDEPENDENT_VALIDATION",
+            "authority": {
+                "economic_experiment_authorized": False,
+                "prospective_observation_authorized": False,
+                "real_capital_authorized": False,
+                "live_trading_authorized": False,
+            },
+        }
+        value = normalize_hypothesis(record, path="EVENT-ALT-1.json")
+        self.assertEqual(value["hypothesis_id"], "EVENT-ALT-1")
+        self.assertEqual(value["generation_id"], "G1")
+        self.assertEqual(value["family_id"], "stapled_contingent_value_right")
+        self.assertEqual(value["entity"], "example bio inc")
+        self.assertIn("stapled", value["mechanism_tokens"])
+
+    def test_candidate_id_must_match_file_identity(self):
+        record = {
+            "candidate_id": "OTHER-ID",
+            "generation": 1,
+            "mechanism_family": "EVENT_FAMILY",
+            "candidate_hypothesis": {"claim": "bounded event mechanism"},
+            "authority": {
+                "economic_experiment_authorized": False,
+                "prospective_observation_authorized": False,
+                "real_capital_authorized": False,
+                "live_trading_authorized": False,
+            },
+        }
+        with self.assertRaisesRegex(
+            WorkerPreflightBlock, "CURRENT_CANDIDATE_ID_PATH_MISMATCH"
+        ):
+            normalize_hypothesis(record, path="EXPECTED-ID.json")
 
     def test_unsupported_generation_fails_closed(self):
         record = {
