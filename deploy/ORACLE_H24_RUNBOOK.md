@@ -11,13 +11,34 @@ All four economic/prospective/capital/live authorities remain false. A running
 timer does not grant outcome access. Ordinary source/evidence gaps remain
 BLOCKED with receipts; they do not cause invented facts or alternative work.
 
-## Current external dependency
+## V1 scope and current access
 
-The build environment has GitHub access, but no OCI identity/configuration,
-SSH key/agent or supported Oracle browser session. Inventory, VM mutation,
-GPT-OSS performance and activation are **not yet live-verified**. Evidence is in
-`research/research_os/runtime/CP2B_0_LOCAL_MODEL_INVENTORY_20261019.json`.
-Do not label the lab RUNNING from CI or from the GitHub read-only smoke.
+The Owner fixed the current H24 delivery as V1; broader scientific capabilities
+will be specified, tested and rolled out as V2. The acceptance boundary and
+explicit limitations are in
+`research/research_os/runtime/ORACLE_LAB_V1_SCOPE_20261020.md`.
+
+OCI HTTPS access is configured outside Git. Actual inventories, 98 release
+qualification tests and two read-only wakes have run on Oracle. Owner SSH as
+`ubuntu` is working. OCI Run Command itself uses `ocarun`, without general sudo.
+Runtime/model inference, durable writes and H24 activation need their own live
+proofs; do not label the lab RUNNING from CI or read-only wakes.
+
+The optional V1 bootstrap `deploy/oracle_v1_host_prepare.py` reuses the existing
+CP1 exact-SHA installer. It requires successful exact-head CI and a recent actual
+local backend qualification before preparing the host. It copies hash-verified
+assets, installs a resource-bounded loopback model service under `quant-model`,
+and keeps the research timer stopped. A VM-generated repository deploy key moves
+into the native `quant-research` SSH configuration; only its public half is
+registered in GitHub. Official GitHub host keys come from HTTPS `/meta`.
+
+For OCI-driven completion it delegates only two fixed, no-argument commands:
+`sudo -n -u quant-research /usr/local/libexec/quant-v1-qualify` and
+`sudo -n /usr/local/libexec/quant-v1-activate`. Their root-owned code/release and
+configuration cannot be selected by the caller. Activation retains all existing
+VM/SHA/config/authority/live-canary gates. No blanket sudo or interactive token
+is provisioned. Owner can remove `/etc/sudoers.d/quant-v1-bounded-recovery` after
+completion; this does not affect normal model or worker wakes.
 
 ## 1. Inventory first, without installation
 
