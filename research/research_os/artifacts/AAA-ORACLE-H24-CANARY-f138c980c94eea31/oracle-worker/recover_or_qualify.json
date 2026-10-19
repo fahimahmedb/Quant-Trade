@@ -1,0 +1,74 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "economic_result": "NOT_OBSERVED",
+  "input_head": "d9ff5bc9ff7dfdf7167b2067feb5f77bd9b7bd38",
+  "legacy": {
+    "global_effective_trials": "UNKNOWN",
+    "historical_research_items_found": 33,
+    "known_duplicate_or_variant_items": 17,
+    "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+    "loaded_record_count": 20,
+    "prospective_validated": 0,
+    "read_only": true,
+    "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+    "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8"
+  },
+  "outcome_accessed": false,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 13,
+      "overlap_map_hash": "d7cdf881da5807aaec74287f3ea5fe407a0a717700bf1fd3db0714c8ab1c63ff",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "8dc9f4b770152c60887540b0f8d8047202657fd38e607c8520153dd45fc2e544"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "fb4c5dadb57994c5d249b48ad4d600e848a1050fd1ded029f5a39ed570ae401a",
+    "status": "PASS",
+    "task_authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    }
+  },
+  "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "stage": "recover_or_qualify",
+  "state_branch": "builder/oracle-economic-loop-recovery-20261019",
+  "state_repository": "fahimahmedb/Quant-Trade"
+}
