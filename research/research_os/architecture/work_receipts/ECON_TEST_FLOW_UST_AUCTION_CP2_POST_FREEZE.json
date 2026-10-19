@@ -1,0 +1,18 @@
+{
+  "checkpoint":"ECON_TEST_FLOW_UST_AUCTION_CP2_POST_FREEZE",
+  "branch":"builder/econ-test-flow-ust-auction-20261019",
+  "source_head_before_checkpoint":"7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+  "candidate":"FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "generation":"G1",
+  "validation_status":"PASS_TO_TEST_DESIGN_BOUNDED",
+  "validation_artifact":"research/research_os/assessments/VALIDATE-FLOW-UST-PRIMARY-DEALER-AUCTION-001.json",
+  "frozen_protocol":"research/research_os/artifacts/FLOW-UST-PRIMARY-DEALER-AUCTION-001/frozen-economic-screen-v1.json",
+  "protocol_freeze_commit":"7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+  "outcome_access_before_protocol_freeze":false,
+  "current_stage":"AUTHORIZED_OUTCOME_ACQUISITION_AND_EXECUTION_OF_FROZEN_SCREEN",
+  "decision_rule":"Do not alter sample, transform, endpoint, alpha, economic materiality floor or rescue rules after this checkpoint. Execute exactly the frozen protocol. If primary endpoint fails, mark this expression failed and move to the next admissible candidate rather than retuning it.",
+  "owner_authorization":"CURRENT_CONVERSATION_OWNER_AUTHORIZATION_ACCEPTED_FOR_BOUNDED_ECONOMIC_RESEARCH_AND_CANDIDATE_SUBSTITUTION",
+  "real_capital_required":false,
+  "live_trading_required":false,
+  "status":"CHECKPOINT_PUSHED_CONTINUE_AUTONOMOUSLY"
+}
