@@ -1,0 +1,184 @@
+{
+  "audit_date": "2026-10-19",
+  "status": "AUDIT_ONLY_NO_OPERATIONAL_LEDGER_MUTATION",
+  "research_os_ref": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+  "pr1_ref": "c60c8ab20b3f08add097e25e7295ba1196b0e4a6",
+  "pr1_semantic_map_ref": "audit/forensic-checkpoint-20261019:PR1_SCIENTIFIC_IDENTITY_MAP.md",
+  "classification_legend": {
+    "DISTINCT": "No material PR1 mechanism/exposure identity observed in the reviewed map.",
+    "RELATED_EXPOSURE_DIFFERENT_MECHANISM": "Shares an economic surface/exposure with PR1 but the causal mechanism is materially different; requires anti-restart acknowledgement, not automatic kill.",
+    "SAME_MECHANISM_DIFFERENT_EXPRESSION": "Substantially the same causal mechanism with a changed implementation/expression; must be treated as historical-family continuation unless proven otherwise.",
+    "EXACT_DUPLICATE": "Same historical identity/expression.",
+    "UNKNOWN_NEEDS_REVIEW": "Insufficient evidence for safe classification."
+  },
+  "current_hypotheses": [
+    {
+      "hypothesis_id": "EVENT-DUEBILL-LARGE-DIST-001",
+      "family_id": "large-distribution-due-bill-entitlement",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Settlement-entitlement/due-bill mechanics are not represented in the reviewed PR1 non-ML families; calendar proximity alone is not structural identity.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "EVENT-FDA-ADCOM-BRIEFING-CLOCK-001",
+      "family_id": "fda-advisory-committee-briefing-document-clock",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Regulatory-document release clock and sponsor-specific FDA assessment are not represented in reviewed PR1 families.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001",
+      "family_id": "schedule13d-control-intent-disclosure-clock",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Beneficial-ownership/control-intent disclosure event is economically distinct from PR1 price/calendar/momentum/regime families.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "EVENT-STAPLED-CVR-PRV-001",
+      "family_id": "STAPLED_CONTINGENT_VALUE_RIGHT_ATTACHED_TO_COMMON_EQUITY",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Contractually stapled contingent-right state is absent from reviewed PR1 scientific families.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "FLOW-ADR-TERM-001",
+      "family_id": "adr-program-termination-forced-sale",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Depositary-program termination and residual forced-sale inventory are not represented in reviewed PR1 families.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "FLOW-RUSSELL-RECON-CLOSE-001",
+      "family_id": "russell-us-reconstitution-benchmark-flow",
+      "pr1_classification": "RELATED_EXPOSURE_DIFFERENT_MECHANISM",
+      "pr1_related_families": ["F05-calendar-seasonal-equity-overlays", "F10-multi-market-confirmation-lead-lag"],
+      "reason": "Shares fixed-calendar/effective-close and index-linked trading surfaces with PR1, including month/quarter timing research, but the causal driver is forced benchmark membership implementation rather than a calendar anomaly or cross-market predictor.",
+      "required_note": "Do not count PR1 calendar PASS/FAIL as direct evidence for Russell reconstitution alpha; do count them as spent close/calendar exposure context and multiplicity context.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+      "family_id": "us-treasury-primary-dealer-auction-constraint",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Primary-dealer Treasury issuance constraint, primary-market auction clock and curve expression are not represented in reviewed PR1 families.",
+      "legacy_screen_reassessment_required": true,
+      "separate_blocker": "AUTHORITY_PRECEDENCE_CONFLICT remains unresolved; distinctness does not authorize outcome access."
+    },
+    {
+      "hypothesis_id": "FUND-ASML-CAPACITY-PRICING-001",
+      "family_id": "ASML capacity scarcity + pricing/mix + installed-base upgrades",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Single-company fundamental lithography capacity/pricing thesis is not represented in reviewed PR1 systematic families.",
+      "legacy_screen_reassessment_required": true,
+      "intra_research_os_collision": "FUND-ASML-CAPACITY-SERVICE-001"
+    },
+    {
+      "hypothesis_id": "FUND-ASML-CAPACITY-SERVICE-001",
+      "family_id": "fundamental-capacity-constrained-lithography",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Single-company fundamental lithography capacity/service thesis is not represented in reviewed PR1 systematic families.",
+      "legacy_screen_reassessment_required": true,
+      "intra_research_os_collision": "FUND-ASML-CAPACITY-PRICING-001"
+    },
+    {
+      "hypothesis_id": "FUND-TSMC-N2-MARGIN-LEARNING-001",
+      "family_id": "fundamental-leading-edge-foundry-node-ramp-margin",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Single-company foundry node-ramp learning/mix economics are not represented in reviewed PR1 systematic families.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "QUANT-CLOSE-AUCTION-IMBALANCE-001",
+      "family_id": "us-equity-closing-auction-imbalance-pressure",
+      "pr1_classification": "RELATED_EXPOSURE_DIFFERENT_MECHANISM",
+      "pr1_related_families": ["F05-calendar-seasonal-equity-overlays", "F09-breadth-dispersion-correlation-concentration-state"],
+      "reason": "Shares equity-close, liquidity-pressure and reversal surfaces with historical calendar/reversal research, but the proposed treatment is exchange-published pre-cross imbalance/paired-liquidity microstructure rather than calendar timing or price-only state.",
+      "required_note": "Index-rebalance and month/quarter-end sessions are explicit confounders and must remain frozen/excluded/stratified ex ante; PR1 history is relevant negative/multiplicity context.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "QUANT-FORM144-SUPPLY-001",
+      "family_id": "affiliate-proposed-sale-supply",
+      "pr1_classification": "DISTINCT",
+      "pr1_related_families": [],
+      "reason": "Specific proposed-sale supply disclosed by Form 144 is not represented in reviewed PR1 families.",
+      "legacy_screen_reassessment_required": true
+    },
+    {
+      "hypothesis_id": "QUANT-LETF-DAILY-RESET-001",
+      "family_id": "leveraged-etf-daily-reset-rebalance-flow",
+      "pr1_classification": "RELATED_EXPOSURE_DIFFERENT_MECHANISM",
+      "pr1_related_families": ["F07-static-leverage-continuous-vol-scaling-risk-targeting", "F08-hierarchical-vol-targeting-gates"],
+      "reason": "PR1 heavily spent leveraged exposure, volatility drag and risk-targeting surfaces. This candidate instead claims product-mandated daily leverage-reset flow and pre-close hedge demand. The causal mechanism is materially different, but the exposure/product family is close enough that PR1 cannot be omitted from distinctness/multiplicity review.",
+      "required_note": "Do not inherit PR1 vol-targeting PASS labels as evidence for reset-flow alpha; do not call LETF reset research pristine/untested either.",
+      "legacy_screen_reassessment_required": true
+    }
+  ],
+  "intra_research_os_findings": [
+    {
+      "finding_id": "INTRA-ASML-G1-IDENTITY-001",
+      "members": ["FUND-ASML-CAPACITY-PRICING-001", "FUND-ASML-CAPACITY-SERVICE-001"],
+      "classification": "PROBABLE_SAME_CORE_LINEAGE_DUPLICATE_NEEDS_OWNER_INTEGRATOR_REVIEW",
+      "evidence": [
+        "Both are G1 with empty parent_generation_ids.",
+        "Both use ASML 2027-2028 supply below customer demand as the central scarcity mechanism.",
+        "Both use installed-base productivity/service upgrades as the second monetization channel.",
+        "Both frame the result as durable earnings/margin economics and keep market outcomes closed."
+      ],
+      "risk": "Double-counting one economic thesis as two independent discoveries/lineages and later double-counting trial/portfolio contribution.",
+      "audit_action": "Do not merge or delete during forensic audit; mark for explicit canonical lineage reconciliation."
+    }
+  ],
+  "legacy_gate_code_review": {
+    "file": "research/research_os/legacy.py",
+    "exact_id_block": true,
+    "semantic_method": "TOKEN_JACCARD",
+    "candidate_fields": ["mechanism", "economic_tags"],
+    "legacy_fields": ["MECHANISM", "TITLE", "RESEARCH_FAMILY_ID"],
+    "threshold": 0.30,
+    "normalization": "lowercase alphanumeric tokens length >= 3",
+    "structural_fields_not_compared": [
+      "payer/forced_actor",
+      "constraint",
+      "instrument/base exposure",
+      "universe",
+      "clock",
+      "horizon",
+      "capacity bottleneck",
+      "cost structure",
+      "event/rule dependency",
+      "parent/descendant lineage",
+      "historical sample identity",
+      "trial-family membership"
+    ],
+    "forensic_assessment": "INSUFFICIENT_FOR_SEMANTIC_ANTI_RESTART_COMPLETENESS",
+    "why": "Exact IDs are strong, but token-Jaccard is vocabulary-sensitive and can miss economically related aliases/synonyms. Long candidate mechanism prose versus short legacy labels can also dilute overlap below 0.30.",
+    "repair_authorized": false
+  },
+  "verdicts": {
+    "current_hypothesis_count_reviewed": 13,
+    "exact_pr1_duplicates_observed": 0,
+    "same_mechanism_different_expression_observed": 0,
+    "related_exposure_different_mechanism_observed": 3,
+    "distinct_observed": 10,
+    "intra_research_os_probable_duplicate_groups": 1,
+    "legacy_gate_proven_semantically_complete": false,
+    "pr1_operational_ledger_migration_authorized": false,
+    "oracle_autonomous_activation_safe": false
+  },
+  "governance": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "ECONOMIC_EXPERIMENT_AUTHORIZED_BY_AUDIT": false,
+    "PROSPECTIVE_OBSERVATION_AUTHORIZED_BY_AUDIT": false
+  }
+}
