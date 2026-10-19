@@ -145,16 +145,27 @@ class EconomicReadinessIntegrationTests(unittest.TestCase):
 
     def test_structural_duplication_blocks_without_fabricating_empirical_correlation_or_allocation(self):
         p = fixture()
-        peer = identity("PEER", payer="fixture-payer", mechanism=p["engine_output"]["candidate"]["mechanism"],
-                        timing_clock="UNKNOWN")
+        p["identity_meta"] = {"payer": "fixture-payer", "asset": "UST"}
+        peer = identity(
+            "PEER",
+            payer="fixture-payer",
+            mechanism=p["engine_output"]["candidate"]["mechanism"],
+            instrument="UST",
+            horizon="one interval",
+            timing_clock="UNKNOWN",
+        )
         result = self.run_package(p, peer_identities=[peer])
         self.assertEqual(result["status"], "BLOCK")
         self.assertIn("BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP", result["block_reasons"])
         portfolio = result["portfolio"]
         self.assertTrue(portfolio["same_exposure_review_pairs"])
+        self.assertEqual(
+            portfolio["pairwise"][0]["economic_structure"]["classification"],
+            "HIGH_STRUCTURAL_OVERLAP_REVIEW",
+        )
         self.assertEqual(portfolio["empirical_correlation"], "UNAVAILABLE")
         self.assertEqual(portfolio["marginal_portfolio_contribution"], "NOT_ESTIMATED")
-        self.assertEqual(portfolio["pairwise"][0]["dimensions"]["mechanism"], 1.0)
+        self.assertEqual(portfolio["pairwise"][0]["economic_structure"]["dimensions"]["mechanism"], 1.0)
         for key in ("capital_allocation_authorized", "position_sizing_authorized", "orders_authorized", "return_series_consumed"):
             self.assertIs(portfolio[key], False)
 
