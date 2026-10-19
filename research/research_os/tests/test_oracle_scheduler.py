@@ -1,14 +1,18 @@
 from copy import deepcopy
+from contextlib import nullcontext
 from datetime import datetime, timezone, timedelta
 import json
+import os
 from pathlib import Path
 import subprocess
+import tempfile
 import unittest
 from unittest.mock import patch
 
 from deploy.oracle_h24_canary import GATES, instance_identity, release_ci
 from deploy.oracle_scheduler_install import verify_qualification, activate
 from deploy.oci_research_os_deploy import remote_inventory_bootstrap, state_path, parse_args
+from deploy.oracle_model_inventory import inventory
 from research.research_os.oracle_worker import backend_from_config
 from research.research_os.worker_preflight import AUTHORITY_KEYS, canonical_hash
 
@@ -85,6 +89,38 @@ class SchedulerGateTests(unittest.TestCase):
             opener.return_value.open.return_value = Response()
             with self.assertRaisesRegex(ValueError, 'INSTANCE_ID_MISMATCH'):
                 instance_identity(self.config['vm_ocid'])
+
+    def test_unreadable_model_root_is_an_explicit_gap_not_absence_or_crash(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            denied, readable = root / 'denied', root / 'readable'
+            denied.mkdir()
+            (denied / 'models').mkdir()
+            readable.mkdir()
+            (readable / 'existing.gguf').write_bytes(b'GGUF')
+            denied.chmod(0)
+            try:
+                # Real OS permissions reproduce the live unprivileged VM failure.
+                # Retain deterministic coverage when a developer runs tests as root.
+                original_is_dir = Path.is_dir
+                def checked_is_dir(path):
+                    if path == denied / 'models':
+                        raise PermissionError(13, 'Permission denied', str(path))
+                    return original_is_dir(path)
+                permission_probe = patch.object(Path, 'is_dir', checked_is_dir) if os.geteuid() == 0 else nullcontext()
+                with permission_probe, \
+                     patch('deploy.oracle_model_inventory.local_json', return_value={}), \
+                     patch('deploy.oracle_model_inventory.command', return_value={'returncode': 0, 'stdout': ''}), \
+                     patch('deploy.oracle_model_inventory.processes', return_value=[]):
+                    report = inventory([str(denied / 'models'), str(readable)])
+            finally:
+                denied.chmod(0o700)
+            self.assertEqual(report['model_files'], [{'path': str(readable / 'existing.gguf'), 'size_bytes': 4}])
+            self.assertEqual(report['inspection_gaps'], [{'path': str(denied / 'models'),
+                             'operation': 'MODEL_ROOT_STAT', 'error': 'PermissionError'}])
+            self.assertFalse(report['file_inventory_complete_for_requested_roots'])
+            self.assertEqual(report['compatibility_verdict'], 'REQUIRES_REVIEW_AND_BOUNDED_INFERENCE_CANARY')
+            self.assertFalse(report['mutations_performed'])
 
 
 if __name__ == '__main__':

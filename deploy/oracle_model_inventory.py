@@ -83,11 +83,23 @@ def inventory(model_roots):
             entry['weights_path'] = match.group(1).strip().strip('"') if match else 'NOT_EXPOSED_BY_RUNTIME'
         models.append(entry)
     files, truncated, inspected_entries = [], False, 0
+    inspection_gaps = []
+
+    def inaccessible(error, *, operation):
+        inspection_gaps.append({'path': str(error.filename or ''),
+                                'operation': operation, 'error': type(error).__name__})
+
     for root in model_roots:
         root = Path(root).expanduser()
-        if not root.is_dir():
+        try:
+            is_directory = root.is_dir()
+        except OSError as exc:
+            inaccessible(exc, operation='MODEL_ROOT_STAT')
             continue
-        for directory, dirs, names in os.walk(root, followlinks=False):
+        if not is_directory:
+            continue
+        for directory, dirs, names in os.walk(
+                root, followlinks=False, onerror=lambda exc: inaccessible(exc, operation='MODEL_DIRECTORY_SCAN')):
             inspected_entries += len(dirs)
             if inspected_entries > 10000:
                 truncated = True
@@ -105,7 +117,8 @@ def inventory(model_roots):
                     continue
                 try:
                     files.append({'path': str(path), 'size_bytes': path.stat().st_size})
-                except OSError:
+                except OSError as exc:
+                    inaccessible(exc, operation='MODEL_FILE_STAT')
                     continue
                 if len(files) >= 100:
                     truncated = True
@@ -135,6 +148,8 @@ def inventory(model_roots):
             'openai_compatible_models': local_json('http://127.0.0.1:8080/v1/models'),
             'llama_properties': {k: v for k, v in local_json('http://127.0.0.1:8080/props').items() if k in ('model_path', 'model_alias', 'total_slots', 'unavailable')},
             'model_files': files, 'file_scan_truncated': truncated,
+            'inspection_gaps': inspection_gaps,
+            'file_inventory_complete_for_requested_roots': not truncated and not inspection_gaps,
             'compatibility_verdict': 'REQUIRES_REVIEW_AND_BOUNDED_INFERENCE_CANARY',
             'mutations_performed': False, 'models_downloaded': 0}
 
