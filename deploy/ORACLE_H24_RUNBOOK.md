@@ -57,6 +57,7 @@ runtime, loopback endpoint and inventoried model ID. The example deliberately
 contains unusable placeholders; it does not select a model without inventory.
 
 ```sh
+cd "/opt/quant-research/releases/$QUANT_RELEASE_SHA"
 sudo python3.12 -m deploy.oracle_scheduler_install \
   --release "/opt/quant-research/releases/$QUANT_RELEASE_SHA" \
   --config /path/to/nonsecret-worker.json

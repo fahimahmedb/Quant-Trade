@@ -45,20 +45,26 @@ jobs:
             deploy/oracle_scheduler_install.py
 
       - name: Run Oracle recovery unit tests
+        shell: bash
         run: |
+          set -o pipefail
           python -m unittest \
             tests/test_oracle_release_install.py \
-            tests/test_oci_research_os_deploy.py
+            tests/test_oci_research_os_deploy.py 2>&1 | tee /tmp/quant-oracle-tests.log
 
       - name: Local backend, fresh Git state, atomic leases and crash recovery (not live OCI evidence)
+        shell: bash
         run: |
+          set -o pipefail
           python -m unittest -v \
             research.research_os.tests.test_model_backend \
             research.research_os.tests.test_oracle_worker \
-            research.research_os.tests.test_oracle_scheduler
+            research.research_os.tests.test_oracle_scheduler 2>&1 | tee /tmp/quant-worker-tests.log
 
       - name: Run pre-outcome Research OS regressions used by installer and worker preflight
+        shell: bash
         run: |
+          set -o pipefail
           python -m unittest \
             research.research_os.tests.test_implementability_depth \
             research.research_os.tests.test_experiment_runner_frozen_protocol \
@@ -67,7 +73,7 @@ jobs:
             research.research_os.tests.test_producer_economic_readiness \
             research.research_os.tests.test_economic_readiness_integration \
             research.research_os.tests.test_queue_replenisher \
-            research.research_os.tests.test_worker_preflight
+            research.research_os.tests.test_worker_preflight 2>&1 | tee /tmp/quant-science-tests.log
 
       - name: Assert scheduler remains absent from CP1 deploy scripts
         run: |
@@ -88,3 +94,41 @@ jobs:
                   raise SystemExit(f'{name}: forbidden scheduler activation surface: {hits}')
           print('CP1 scheduler activation surface: absent')
           PY
+
+      - name: Write exact-head CI receipt (never live host proof)
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          from research.research_os.worker_preflight import AUTHORITY_KEYS, load_current_hypothesis_corpus
+
+          counts = {}
+          for suite, path in [('oracle', '/tmp/quant-oracle-tests.log'), ('worker_backend_scheduler', '/tmp/quant-worker-tests.log'), ('science', '/tmp/quant-science-tests.log')]:
+              raw = Path(path).read_text()
+              match = re.search(r'Ran (\d+) tests? in ', raw)
+              if not match or not re.search(r'^OK$', raw, re.MULTILINE):
+                  raise SystemExit('Missing successful test evidence: ' + suite)
+              counts[suite] = int(match.group(1))
+          authority = json.loads(Path('research/research_os/runtime/CONTROL_PLANE.json').read_text())['global_authority']
+          assert all(authority.get(k) is False for k in AUTHORITY_KEYS)
+          corpus = load_current_hypothesis_corpus(Path('research/research_os'))
+          receipt = {
+              'schema_version': 'oracle-h24-exact-head-ci-v1',
+              'commit_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'ci_run_id': int(os.environ['GITHUB_RUN_ID']),
+              'evidence_scope': 'CI_ONLY_LOCAL_GIT_AND_HTTP_TEST_DOUBLES',
+              'status': 'PASS', 'tests_passed': counts, 'total_tests_passed': sum(counts.values()),
+              'current_corpus_count': corpus['count'], 'current_corpus_hash': corpus['snapshot_hash'],
+              'authority': {k: authority[k] for k in AUTHORITY_KEYS},
+              'live_oracle_execution': False, 'live_gpt_oss_execution': False,
+              'timer_enabled_by_ci': False, 'oracle_h24_research_lab': 'NOT_PROVEN_BY_CI'
+          }
+          (Path(os.environ['RUNNER_TEMP']) / 'oracle-h24-ci-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oracle-h24-ci-receipt-${{ github.sha }}
+          path: ${{ runner.temp }}/oracle-h24-ci-receipt.json
+          if-no-files-found: error
+          retention-days: 30
