@@ -119,6 +119,7 @@ def _reason(backend, stage, candidate):
                      'mechanism': candidate.get('mechanism'), 'falsification_scope': candidate.get('falsification_scope')}))
     reasoning = backend.generate_structured(prompt, REASONING_SCHEMA)
     return {'classification': 'UNVERIFIED_MODEL_COMMENTARY', 'content': reasoning,
+            'backend_health_hash': canonical_hash(health),
             'backend_health': {k: health[k] for k in ('status', 'model', 'runtime') if k in health}}
 
 
@@ -153,6 +154,11 @@ def _frozen(snapshot, task, lane):
             raise StageBlocked('PRODUCER_LANE_INDEPENDENCE_NOT_PROVEN')
         if lineage.get('hypothesis_id', identity['hypothesis_id']) != identity['hypothesis_id']:
             raise StageBlocked('HANDOFF_LINEAGE_MISMATCH')
+    expected_generation = lineage.get('generation_id')
+    if expected_generation is None and 'generation' in lineage:
+        expected_generation = 'G' + str(lineage['generation']).removeprefix('G')
+    if expected_generation is not None and expected_generation != identity['generation_id']:
+        raise StageBlocked('HANDOFF_HYPOTHESIS_GENERATION_MISMATCH')
     output_ref = producer.get('engine_output_ref')
     output = snapshot.read(output_ref)['engine_output'] if output_ref else None
     if output:
@@ -371,10 +377,17 @@ class CanonicalStageExecutor:
                     raise StageBlocked('INDEPENDENT_RED_TEAM_PASS_REQUIRED_FOR_INTEGRATION')
                 source_task = snapshot.read(PREFIX + 'tasks/' + upstream.split('/')[3] + '.json')
                 if (source_task['status'] != 'COMPLETE' or source_task.get('required_capability') not in ('validator', 'red_team')
+                        or source_task.get('task_type') not in ('VALIDATION', 'RED_TEAM')
                         or lineage_key(source_task) != lineage_key(task)
+                        or _previous(snapshot, source_task, 'claim_restriction').get('blockers') != []
                         or _previous(snapshot, source_task, 'red_team').get('red_team', {}).get('status') != 'PASS'):
                     raise StageBlocked('INDEPENDENT_RED_TEAM_PASS_REQUIRED_FOR_INTEGRATION')
                 frozen, identity, output = _frozen(snapshot, task, lane)
+                result['frozen_hash'] = canonical_hash(frozen)
+                if _previous(snapshot, source_task, 'independent_validation')['frozen_hash'] != result['frozen_hash']:
+                    raise StageBlocked('FROZEN_HYPOTHESIS_CHANGED_AFTER_CHALLENGE')
+                if stage != 'economic_identity' and _previous(snapshot, task, 'economic_identity')['frozen_hash'] != result['frozen_hash']:
+                    raise StageBlocked('FROZEN_HYPOTHESIS_CHANGED_DURING_INTEGRATION')
                 candidate = dict(frozen, hypothesis_id=identity['hypothesis_id'], mechanism=identity['mechanism'])
                 screen = _screen(snapshot, candidate, exclude_self=True)
                 result['screen'] = screen

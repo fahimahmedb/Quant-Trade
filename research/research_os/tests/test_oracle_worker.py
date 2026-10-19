@@ -19,7 +19,7 @@ from research.research_os.github_state import GitHubStateStore, PREFIX, StateCon
 from research.research_os.model_backend import BackendUnavailable
 from research.research_os.oracle_worker import ResearchOSWorker
 from research.research_os.worker_preflight import AUTHORITY_KEYS, canonical_hash, git_blob_sha
-from research.research_os.worker_stages import CanonicalStageExecutor, artifact_path
+from research.research_os.worker_stages import CanonicalStageExecutor, artifact_path, _frozen, StageBlocked
 
 BASE = Path(__file__).resolve().parents[1]
 AUTH = {k: False for k in AUTHORITY_KEYS}
@@ -189,6 +189,24 @@ class WorkerTests(unittest.TestCase):
             with self.assertRaises(StateConflict):
                 other.commit(b, {path: task}, expected_blobs={path: b.blobs[path]}, message='worker B stale')
         self.assertEqual(self.read('tasks/RECOVER-TEST-001.json')['status'], 'CLAIMED')
+
+    def test_owner_rewind_is_a_conflict_even_when_stale_commit_is_a_fast_forward(self):
+        with self.store.snapshot() as s:
+            owner_head = git(self.remote, 'rev-parse', 'recovery^')
+            git(self.remote, 'update-ref', 'refs/heads/recovery', owner_head)
+            task = s.read(PREFIX + 'tasks/RECOVER-TEST-001.json')
+            task['status'] = 'CLAIMED'
+            with self.assertRaises(StateConflict):
+                self.store.commit(s, {PREFIX + 'tasks/RECOVER-TEST-001.json': task}, message='stale after owner rewind')
+            self.assertEqual(git(self.remote, 'rev-parse', 'recovery'), owner_head)
+
+    def test_independent_handoff_cannot_change_hypothesis_generation(self):
+        hid = 'FUND-TSMC-N2-MARGIN-LEARNING-001'
+        task = recovery_task('GENERATION-MISMATCH')
+        task['inputs']['frozen_hypothesis'] = PREFIX + f'hypotheses/{hid}.json'
+        task['lineage'] = {'hypothesis_id': hid, 'generation': 2, 'source_lane': 'fundamental_events'}
+        with self.store.snapshot() as s, self.assertRaisesRegex(StageBlocked, 'GENERATION_MISMATCH'):
+            _frozen(s, task, 'independent_challenge')
 
     def test_actual_competing_workers_publish_only_one_stage(self):
         barrier = threading.Barrier(2)
