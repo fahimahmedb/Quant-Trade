@@ -63,20 +63,68 @@ print(json.dumps(result))
 '''
 
 
-def oci(*args):
+def oci(*args, region=REGION):
     return json.loads(subprocess.check_output(
-        ["oci", "--region", REGION, *args, "--output", "json"], text=True))
+        ["oci", "--region", region, *args, "--output", "json"], text=True))
+
+
+def repair_agent_iam():
+    """Add only the documented right for this instance to consume its commands."""
+    instance = oci("compute", "instance", "get", "--instance-id", VM)["data"]
+    assert instance["lifecycle-state"] == "RUNNING", "VM non RUNNING"
+    compartment = instance["compartment-id"]
+    plugins = oci("instance-agent", "plugin", "list", "--compartment-id", compartment,
+                  "--instanceagent-id", VM, "--name", "Compute Instance Run Command")["data"]
+    assert any(p["status"] == "RUNNING" for p in plugins), "Plugin Run Command non RUNNING"
+    tenancy = compartment
+    seen = set()
+    while not tenancy.startswith("ocid1.tenancy."):
+        assert tenancy not in seen, "Hierarchie IAM invalide"
+        seen.add(tenancy)
+        tenancy = oci("iam", "compartment", "get", "--compartment-id", tenancy)["data"]["compartment-id"]
+    subscriptions = oci("iam", "region-subscription", "list", "--tenancy-id", tenancy, "--all")["data"]
+    home_regions = [r["region-name"] for r in subscriptions if r["is-home-region"]]
+    assert len(home_regions) == 1, "Region IAM principale introuvable"
+    home_region = home_regions[0]
+    name = "QuantRunCommand-" + VM[-16:]
+    rule = "ALL {instance.id = '" + VM + "'}"
+    groups = oci("iam", "dynamic-group", "list", "--compartment-id", tenancy, "--all", region=home_region)["data"]
+    group = next((g for g in groups if g["name"] == name), None)
+    if group is None:
+        print("Creation du groupe IAM limite a cette VM…", flush=True)
+        group = oci("iam", "dynamic-group", "create", "--compartment-id", tenancy,
+                    "--name", name, "--description", "Quant: this VM may consume only its own Run Commands",
+                    "--matching-rule", rule, "--wait-for-state", "ACTIVE", "--max-wait-seconds", "60",
+                    "--wait-interval-seconds", "3", region=home_region)["data"]
+    assert group["matching-rule"] == rule and group["lifecycle-state"] == "ACTIVE", "Groupe IAM existant incompatible; aucun remplacement"
+    scope = "tenancy" if compartment == tenancy else "compartment id " + compartment
+    statement = ("Allow dynamic-group id " + group["id"] + " to use instance-agent-command-execution-family in "
+                 + scope + " where request.instance.id=target.instance.id")
+    policies = oci("iam", "policy", "list", "--compartment-id", compartment, "--all", region=home_region)["data"]
+    policy = next((p for p in policies if p["name"] == name), None)
+    if policy is None:
+        print("Ajout du droit de recuperer uniquement ses propres commandes…", flush=True)
+        policy = oci("iam", "policy", "create", "--compartment-id", compartment, "--name", name,
+                     "--description", "Quant: instance-bound Run Command execution only",
+                     "--statements", json.dumps([statement]), region=home_region)["data"]
+    assert policy["statements"] == [statement], "Politique IAM existante incompatible; aucun remplacement"
+    print("Prerequis IAM configure. Propagation Oracle: jusqu'a 30 min. Suivi de la meme commande…", flush=True)
 
 
 def main():
+    repair = "--repair-agent" in sys.argv[1:]
     cache = Path.home() / ".cache" / "quant-oci-one-shot"
     cache.mkdir(parents=True, mode=0o700, exist_ok=True)
     state = cache / "command.json"
+    assert not repair or state.exists(), "Etat de reprise absent; aucune nouvelle commande creee"
     if state.exists():
         saved = json.loads(state.read_text())
         assert saved["vm"] == VM and saved["sha"] == HEAD, "Etat de reprise incompatible"
         command = saved["command"]
         print("Reprise de la commande existante.", flush=True)
+        execution = oci("instance-agent", "command-execution", "get", "--command-id", command, "--instance-id", VM)["data"]
+        if repair and execution["lifecycle-state"] == "ACCEPTED":
+            repair_agent_iam()
     else:
         instance = oci("compute", "instance", "get", "--instance-id", VM)["data"]
         vnics = oci("compute", "instance", "list-vnics", "--instance-id", VM)["data"]
@@ -107,20 +155,20 @@ def main():
         state.write_text(json.dumps(dict(vm=VM, sha=HEAD, command=command)))
         state.chmod(0o600)
     print("Commande : " + command, flush=True)
-    for n in range(91):
+    for n in range(211 if repair else 91):
         execution = oci("instance-agent", "command-execution", "get", "--command-id", command, "--instance-id", VM)["data"]
         status = execution["lifecycle-state"]
-        if n % 3 == 0:
+        if n % 6 == 0:
             print(status, flush=True)
         if status in {"SUCCEEDED", "FAILED", "TIMED_OUT", "CANCELED"}:
             output = execution.get("content") or {}
             print(output.get("text") or output.get("message") or status)
             return 0 if status == "SUCCEEDED" and output.get("exit-code") == 0 else 1
-        if n == 12 and status == "ACCEPTED":
-            print("BLOCK_AGENT_DELIVERY: l'agent n'a pas execute la commande. Identifiant conserve ; relancer ce script reprend le suivi sans nouvelle commande.")
+        if not repair and n == 12 and status == "ACCEPTED":
+            print("BLOCK_AGENT_DELIVERY: aucune execution confirmee. Un plugin RUNNING ne prouve pas ses droits IAM. Diagnostic/correction: python3 ~/qt-install.py --repair-agent")
             return 2
         time.sleep(10)
-    print("Suivi interrompu ; commande conservee. Relancer ce script reprend le suivi.")
+    print("BLOCK_AGENT_DELIVERY: execution non confirmee apres attente. Commande conservee; droits IAM configures ne prouvent pas la connectivite/compatibilite de l'agent. Aucun succes d'installation declare.")
     return 2
 
 
