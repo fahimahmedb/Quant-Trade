@@ -1,0 +1,49 @@
+{
+  "audit_id": "QT-AUDIT-20261018T2352Z",
+  "checkpoint": "004",
+  "status": "PARTIAL_IN_PROGRESS",
+  "branch": "audit/forensic-checkpoint-20261019",
+  "parent_audit_head": "b7f8cb27c535bfd5d785cf2c55589f3fcc11cd56",
+  "checkpoint_markdown_commit": "7ca919c9542bc434f84f57e66814db7c16f36082",
+  "execution_architecture": {
+    "protocol_introduction_commit": "42976ddc5cf26f95a034d6a45c0d614a0f3b4353",
+    "multi_stage_protocol_commit": "0df659e93755837a0b73e9fe1dc6fe0e0c2ea55e",
+    "bounded_refill_commit": "9b04b7db5c33777074383bec7cc82d9f69d0782e",
+    "queue_observability_commit": "b3b04efd99d18cbcefd0256d6f6f8ff3a69a1522",
+    "repository_contained_production_executor_observed": false,
+    "external_chatgpt_codex_worker_model_explicit_in_protocol": true,
+    "github_durable_state_is_execution_coordination_contract": true,
+    "external_scheduler_or_wake_mechanism_proven_by_repository": false,
+    "oracle_may_define_new_execution_semantics": false
+  },
+  "required_execution_invariants": [
+    "fresh GitHub reconstruction on every wake",
+    "blob-SHA optimistic task claim",
+    "bounded lease generation",
+    "abort claim race without force overwrite",
+    "no blind lease stealing",
+    "one lineage per wake",
+    "durable stage persistence",
+    "exact bounded handoff authority",
+    "global task rescan before queue refill",
+    "no producer execution during refill wake"
+  ],
+  "blockers": {
+    "authority_precedence_conflict": true,
+    "scientific_identity_coverage_complete": false,
+    "oci_wholesale_merge_safe": false,
+    "oracle_autonomous_activation_safe": false
+  },
+  "governance": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "new_economic_experiment_authorized_by_audit": false,
+    "operational_changes_in_audit_branch": false
+  },
+  "next": [
+    "Build PR1 semantic scientific identity map for completed cycles 0-110.",
+    "Separate individual historical PASS/FAIL from family-level evidence and adaptive multiplicity.",
+    "Crosswalk PR1 families against Legacy/current Research OS without mutating operational ledgers.",
+    "Search repository history for any external wake configuration while keeping absence claims scoped."
+  ]
+}
