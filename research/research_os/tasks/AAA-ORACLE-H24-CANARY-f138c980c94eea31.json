@@ -13,7 +13,7 @@
   "execution": {
     "lineage": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
     "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
-    "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g1-9fcc4b3293ed"
+    "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g2-516c23088e87"
   },
   "forbidden_actions": [
     "new hypothesis",
@@ -29,9 +29,9 @@
     "canary": true
   },
   "lease": {
-    "claimed_at": "2026-10-19T23:48:18Z",
-    "expires_at": "2026-10-19T23:49:48Z",
-    "generation": 1,
+    "claimed_at": "2026-10-19T23:49:50Z",
+    "expires_at": "2026-10-19T23:51:20Z",
+    "generation": 2,
     "owner": "oracle-research-v1.evidence_data"
   },
   "priority": 2147483647,
@@ -40,5 +40,5 @@
   "success_condition": "Two reproducible read-only Legacy provenance stages and durable GitHub receipts.",
   "task_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
   "task_type": "LEGACY_RECOVERY",
-  "updated_at": "2026-10-19T23:48:18Z"
+  "updated_at": "2026-10-19T23:49:50Z"
 }
