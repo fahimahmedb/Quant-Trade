@@ -204,7 +204,7 @@ class WorkerPreflightTests(unittest.TestCase):
         }
         relation = compare_current_identities(left, right)
         self.assertEqual(
-            relation["classification"], "UNKNOWN_CURRENT_EXPOSURE_RELATION"
+            relation["classification"], "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW"
         )
         self.assertTrue(relation["review_required"])
 
