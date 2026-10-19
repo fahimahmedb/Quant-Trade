@@ -38,7 +38,9 @@ RSS/swap/CPU samples and loopback APIs. It neither loads nor replaces a model.
 Select the existing healthy GPT-OSS variant from this evidence. If repair is
 needed, record the observed defect before making a bounded repair. Do not
 download multiple large models. Oracle A1 Free Tier requires an evidenced
-envelope of at most four OCPUs and 24 GiB total memory; account-wide Free Tier
+envelope of at most two OCPUs and 12 GiB total memory under the current
+[Always Free allowance](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm)
+(1500 OCPU hours and 9000 GB hours monthly); account-wide Free Tier
 eligibility still depends on the tenancy. Do not create paid capacity.
 
 ## 2. Exact release and service-user preparation

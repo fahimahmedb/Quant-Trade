@@ -43,7 +43,9 @@ def instance_identity(expected):
         raise ValueError('SHAPE_NOT_IN_FREE_TIER_ALLOWLIST')
     if result['shape'] == 'VM.Standard.A1.Flex':
         shape = result.get('shapeConfig') or {}
-        if not (0 < shape.get('memoryInGBs', 0) <= 24 and 0 < shape.get('ocpus', 0) <= 4):
+        # Current Oracle Always Free documentation: 1500 OCPU / 9000 GB hours,
+        # equivalent to 2 OCPUs / 12 GiB H24. Service limits are NOT free credits.
+        if not (0 < shape.get('memoryInGBs', 0) <= 12 and 0 < shape.get('ocpus', 0) <= 2):
             raise ValueError('A1_RESOURCES_NOT_PROVEN_WITHIN_ALWAYS_FREE_ENVELOPE')
     return result
 

@@ -2,6 +2,8 @@ from copy import deepcopy
 from contextlib import nullcontext
 from datetime import datetime, timezone, timedelta
 import json
+import hashlib
+import io
 import os
 from pathlib import Path
 import subprocess
@@ -13,6 +15,7 @@ from deploy.oracle_h24_canary import GATES, instance_identity, release_ci
 from deploy.oracle_scheduler_install import verify_qualification, activate
 from deploy.oci_research_os_deploy import remote_inventory_bootstrap, state_path, parse_args
 from deploy.oracle_model_inventory import inventory
+from deploy.oracle_local_backend_install import download
 from research.research_os.oracle_worker import backend_from_config
 from research.research_os.worker_preflight import AUTHORITY_KEYS, canonical_hash
 
@@ -54,6 +57,69 @@ class SchedulerGateTests(unittest.TestCase):
     def test_unknown_model_adapter_does_not_silently_choose_a_backend(self):
         with self.assertRaises(ValueError):
             backend_from_config({'model_backend': {'implementation': 'hosted'}})
+
+    def test_current_free_tier_envelope_blocks_larger_billable_shapes(self):
+        class Response:
+            def __init__(self, memory, cpus):
+                self.memory, self.cpus = memory, cpus
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def read(self, *args):
+                return json.dumps({'id': self_vm, 'shape': 'VM.Standard.A1.Flex',
+                    'shapeConfig': {'memoryInGBs': self.memory, 'ocpus': self.cpus}}).encode()
+        self_vm = self.config['vm_ocid']
+        with patch('deploy.oracle_h24_canary.urllib.request.build_opener') as opener:
+            opener.return_value.open.return_value = Response(12, 2)
+            self.assertEqual(instance_identity(self_vm)['id'], self_vm)
+            for memory, cpus in ((24, 4), (13, 2), (12, 3), (0, 2)):
+                opener.return_value.open.return_value = Response(memory, cpus)
+                with self.subTest(memory=memory, cpus=cpus), self.assertRaisesRegex(ValueError, 'FREE_ENVELOPE'):
+                    instance_identity(self_vm)
+
+    def test_model_download_never_overwrites_unverified_existing_weights(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'weights.gguf'
+            path.write_bytes(b'GGUFbad!')
+            spec = {'size': 8, 'sha256': hashlib.sha256(b'GGUFgood').hexdigest(), 'url': 'https://example.invalid/model'}
+            with patch('deploy.oracle_local_backend_install.urllib.request.urlopen') as network:
+                with self.assertRaisesRegex(ValueError, 'SHA256_MISMATCH'):
+                    download(path, spec, magic=b'GGUF')
+                network.assert_not_called()
+            self.assertEqual(path.read_bytes(), b'GGUFbad!')
+
+    def test_interrupted_model_download_resumes_and_verifies_pinned_gguf(self):
+        data = b'GGUFgood'
+        spec = {'size': len(data), 'sha256': hashlib.sha256(data).hexdigest(), 'url': 'https://example.invalid/model'}
+        class Response(io.BytesIO):
+            status = 206
+            headers = {'Content-Range': 'bytes 2-7/8'}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'weights.gguf'
+            path.with_suffix('.gguf.part').write_bytes(data[:2])
+            with patch('deploy.oracle_local_backend_install.urllib.request.urlopen', return_value=Response(data[2:])):
+                self.assertEqual(download(path, spec, magic=b'GGUF'), 'DOWNLOADED_AND_VERIFIED')
+            self.assertEqual(path.read_bytes(), data)
+            with patch('deploy.oracle_local_backend_install.urllib.request.urlopen') as network:
+                self.assertEqual(download(path, spec, magic=b'GGUF'), 'REUSED_VERIFIED')
+                network.assert_not_called()
+
+    def test_ignored_model_range_does_not_duplicate_or_corrupt_partial(self):
+        data = b'GGUFgood'
+        spec = {'size': 8, 'sha256': hashlib.sha256(data).hexdigest(), 'url': 'https://example.invalid/model'}
+        class Response(io.BytesIO):
+            status = 200
+            headers = {}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'weights.gguf'
+            partial = path.with_suffix('.gguf.part')
+            partial.write_bytes(data[:2])
+            with patch('deploy.oracle_local_backend_install.urllib.request.urlopen', return_value=Response(data)):
+                with self.assertRaisesRegex(ValueError, 'RANGE_NOT_HONORED'):
+                    download(path, spec, magic=b'GGUF')
+            self.assertFalse(path.exists())
+            self.assertEqual(partial.read_bytes(), data[:2])
 
     def test_oci_inventory_has_separate_resume_identity_and_no_installer(self):
         vm, sha = 'ocid1.instance.test', 'a' * 40

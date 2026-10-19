@@ -43,6 +43,7 @@ jobs:
             deploy/oracle_model_inventory.py \
             deploy/oracle_h24_canary.py \
             deploy/oracle_scheduler_install.py
+          python -m py_compile deploy/oracle_local_backend_install.py
 
       - name: Run Oracle recovery unit tests
         shell: bash
