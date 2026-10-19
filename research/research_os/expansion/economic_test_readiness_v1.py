@@ -165,6 +165,13 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     reasons.extend(red["negative_rights"])
     identity = economic_identity_v1(output, p.get("identity_meta", {}))
     portfolio = portfolio_diagnostics_v2([identity, *deepcopy(list(peer_identities))])
+    # Portfolio structural overlap is a pre-outcome scientific integrity gate,
+    # not an empirical correlation claim. A new independent lineage cannot be
+    # READY while a same-exposure review is unresolved.
+    require(
+        not (portfolio.get("same_exposure_review_pairs") or []),
+        "BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP",
+    )
     ready = not reasons
     return {
         "status": READY if ready else "BLOCK", "block_reasons": sorted(set(reasons)),
