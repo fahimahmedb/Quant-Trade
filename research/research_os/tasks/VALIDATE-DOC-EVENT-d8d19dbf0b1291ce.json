@@ -11,6 +11,14 @@
     "real_capital_authorized": false,
     "scope": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/integration_handoff.json"
+    ],
+    "completed_at": "2026-10-20T04:40:29Z",
+    "receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3.json",
+    "result": "COMPLETE"
+  },
   "created_at": "2026-10-20T03:50:27Z",
   "execution": {
     "attempts": {},
@@ -27,12 +35,16 @@
         "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/independent_validation.json",
         "artifact_hash": "530e1c3c704274387f77f0e929712b513ecef75b332f6269eb8a5e46018a0536"
       },
+      "integration_handoff": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/integration_handoff.json",
+        "artifact_hash": "ea87a00c3c9389db81ab50399d3fdcddb838e065b3ba78913b68342be2456229"
+      },
       "red_team": {
         "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/red_team.json",
         "artifact_hash": "941f1eb923838dca5e7a1f1012bc752b66154a2c19818f28e04e205acfcdbee9"
       }
     },
-    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g4-69818299954c.json",
+    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3.json",
     "lineage": "DOC-EVENT-d8d19dbf0b1291ce",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3"
@@ -54,7 +66,7 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T04:40:24Z",
-    "expires_at": "2026-10-20T04:50:24Z",
+    "expires_at": "2026-10-20T04:40:29Z",
     "generation": 5,
     "owner": "oracle-research-v1.independent_challenge"
   },
@@ -67,9 +79,9 @@
   },
   "priority": 70,
   "required_capability": "validator",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
   "task_type": "VALIDATION",
-  "updated_at": "2026-10-20T04:40:24Z"
+  "updated_at": "2026-10-20T04:40:29Z"
 }
