@@ -60,6 +60,9 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     require(legacy_screen["status"] == "NO_EXACT_LEGACY_CONFLICT", legacy_screen["status"])
     implementation = assess_implementability(output, p["implementability_meta"])
     reasons.extend(implementation["blocking_reasons"])
+    if output.get("engine_family") == "FUNDAMENTAL" and output.get("synthetic_only") is False:
+        from .engine_dossiers_v1 import build_engine_dossier
+        require(build_engine_dossier(output)["status"] == "PASS", "FUNDAMENTAL_DOSSIER_NOT_QUALIFIED")
     require(expression == implementation["exact_expression_contract"], "EXPRESSION_CONTRACT_MISMATCH")
     require(output.get("outcome_accessed", False) is False, "PRODUCER_OUTCOME_ACCESS_FORBIDDEN")
     require(output.get("economic_result", "NOT_OBSERVED") == "NOT_OBSERVED", "PRODUCER_RESULT_FORBIDDEN")

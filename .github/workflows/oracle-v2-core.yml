@@ -51,9 +51,11 @@ jobs:
             tests.test_research_os_v2_worker_integration \
             tests.test_research_os_implementability_contract \
             tests.test_research_os_readiness_declarations \
+            tests.test_research_os_fundamental_readiness \
             research.research_os.tests.test_implementability_depth \
             research.research_os.tests.test_economic_readiness_integration \
             research.research_os.tests.test_economic_readiness_validation \
+            research.research_os.tests.test_producer_economic_readiness \
             tests.test_research_os_edge_observability_v2 \
             tests.test_research_os_edge_observation_reader_v2 \
             tests.test_research_os_frontier_source_planner_v2 \

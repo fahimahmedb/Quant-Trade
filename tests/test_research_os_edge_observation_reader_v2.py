@@ -149,17 +149,25 @@ class EdgeObservationReaderTests(unittest.TestCase):
         self.assertEqual(result["research_artifact_status"], "ABSENT")
         self.assertFalse(result["edge_projection"]["stages"]["research_attempted"])
 
-    def test_missing_dossier_or_unsupported_family_does_not_create_readiness(self):
+    def test_missing_dossier_blocks_but_native_fundamental_can_project_requirements(self):
         self.values[RESEARCH_PATH].pop("dossier")
         self.rebind_research()
         out = observe_edge_task(self.snapshot(), TASK)
         self.assertEqual(out["acquisition_projection_state"], "NOT_PROJECTED_NO_DOSSIER")
-        self.values[RESEARCH_PATH]["dossier"] = {"dossier": _event_detail()}
+        self.values[RESEARCH_PATH]["dossier"] = {"dossier": {
+            "issuer_identity": {"status": "SUPPORTED", "values": {"issuer_id": "FIXTURE"}},
+        }}
         self.values[TASK_PATH]["task_type"] = "FUNDAMENTAL_RESEARCH"
         self.values[RESEARCH_PATH]["engine_output"]["engine_family"] = "FUNDAMENTAL"
         self.rebind_research()
         out = observe_edge_task(self.snapshot(), TASK)
-        self.assertEqual(out["acquisition_projection_state"], "NOT_PROJECTED_UNSUPPORTED_READINESS_FAMILY")
+        self.assertEqual(out["acquisition_projection_state"], "PROJECTED_FROM_BOUND_RESEARCH_DOSSIER")
+        acquisition = out["edge_projection"]["evidence_acquisition"]
+        self.assertEqual(acquisition["summary"]["unresolved_count"], 5)
+        self.assertEqual(acquisition["summary"]["ready_count"], 0)
+        self.assertNotEqual(out["edge_projection"]["experiment_readiness"], "READY")
+        self.assertEqual(out["edge_projection"]["empirical_correlation"], "UNKNOWN")
+        self.assertFalse(out["network_call_performed"])
 
     def test_traversal_and_cross_task_references_fail_before_artifact_read(self):
         snapshot = self.snapshot()

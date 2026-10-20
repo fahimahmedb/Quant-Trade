@@ -170,12 +170,18 @@ class ProducerEconomicReadinessTests(unittest.TestCase):
         self.assertEqual(spec["cost_capacity_requirements"]["status"], "REQUIRED")
         self.assertEqual(spec["unsupported_economic_claims"]["empirical_return"], "NOT_OBSERVED")
 
-    def test_fundamental_remains_outside_prioritized_readiness_projection(self):
-        with self.assertRaisesRegex(ValueError, "prioritized engine families"):
-            build_producer_test_readiness(
-                _candidate_output("FUNDAMENTAL"),
-                {"issuer_identity": {"status": "SUPPORTED", "values": {"issuer_id": "AAPL"}}},
-            )
+    def test_fundamental_projection_preserves_issuer_only_support_and_economic_unknowns(self):
+        result = build_producer_test_readiness(
+            _candidate_output("FUNDAMENTAL"),
+            {"issuer_identity": {"status": "SUPPORTED", "values": {"issuer_id": "AAPL"}}},
+        )
+        self.assertEqual(result["qualification"]["status"], "PASS")
+        spec = result["specification"]
+        self.assertEqual(spec["universe"]["status"], "PARTIAL")
+        self.assertEqual(spec["clock"]["status"], "UNKNOWN")
+        self.assertEqual(spec["data_requirements"]["status"], "REQUIRED")
+        self.assertEqual(spec["unsupported_economic_claims"]["mispricing"], "UNKNOWN")
+        self.assertEqual(spec["unsupported_economic_claims"]["rerating_alpha"], "UNKNOWN")
 
     def test_new_claim_requires_legacy_screen_before_readiness_pass(self):
         base = self._event_spec()

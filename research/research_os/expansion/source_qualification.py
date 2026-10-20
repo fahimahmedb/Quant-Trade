@@ -38,6 +38,10 @@ UNKNOWN_ONLY_CLAIMS = {
     "market_response",
     "empirical_return",
     "capacity_estimate",
+    "mispricing",
+    "valuation_edge",
+    "earnings_forecast",
+    "rerating_alpha",
 }
 UNKNOWN_VALUES = {"UNKNOWN", "UNAVAILABLE", "NOT_OBSERVED", "NOT_ESTIMATED"}
 
@@ -114,13 +118,14 @@ def qualify_producer_test_readiness(readiness: Dict[str, Any]) -> Dict[str, Any]
         blockers.append("UNSUPPORTED_ECONOMIC_CLAIMS_INVALID")
     else:
         for field in UNKNOWN_ONLY_CLAIMS:
-            if field in unsupported and unsupported[field] not in UNKNOWN_VALUES:
+            if field in unsupported and (not isinstance(unsupported[field], str)
+                                         or unsupported[field] not in UNKNOWN_VALUES):
                 blockers.append(f"UNSUPPORTED_{field.upper()}_PROMOTED")
 
     # Defense in depth: these keys may appear nested in readiness records, but they
     # still cannot be populated from an announcement or rule packet alone.
     for key, value in _walk_mapping(readiness):
-        if key in UNKNOWN_ONLY_CLAIMS and value not in UNKNOWN_VALUES:
+        if key in UNKNOWN_ONLY_CLAIMS and (not isinstance(value, str) or value not in UNKNOWN_VALUES):
             blockers.append(f"UNSUPPORTED_{key.upper()}_PROMOTED")
 
     canonical = deepcopy(readiness)
@@ -152,8 +157,8 @@ def build_producer_test_readiness(
     expression/data/cost-capacity inputs remain required before an authorized test.
     """
     family = output.get("engine_family")
-    if family not in {"INSTITUTIONAL_FLOW", "EVENT_DOCUMENT", "QUANT_MECHANISM"}:
-        raise ValueError("producer test-readiness is limited to prioritized engine families")
+    if family not in {"INSTITUTIONAL_FLOW", "EVENT_DOCUMENT", "QUANT_MECHANISM", "FUNDAMENTAL"}:
+        raise ValueError("producer test-readiness requires a supported native engine family")
     candidate = output.get("candidate")
     if not isinstance(candidate, dict):
         raise ValueError("candidate required")
@@ -274,6 +279,45 @@ def build_producer_test_readiness(
                 "event_identity": deepcopy(identity),
                 "eligibility": deepcopy(eligibility),
             },
+        })
+    elif family == "FUNDAMENTAL":
+        issuer = dossier_detail.get("issuer_identity", {})
+        supported_issuer = issuer.get("status") in {"PARTIAL", "SUPPORTED"}
+        common.update({
+            "universe": rec(
+                "PARTIAL" if supported_issuer else "UNKNOWN",
+                {"issuer_identity": deepcopy(issuer.get("values") or "UNKNOWN"),
+                 "security_eligibility": "UNKNOWN"},
+                ["dossier.issuer_identity"] if supported_issuer else [],
+            ),
+            # An accounting period or capture timestamp is not an executable
+            # research clock. The frozen protocol must declare that separately.
+            "clock": rec("UNKNOWN", "UNKNOWN"),
+            "expression_requirements": rec("REQUIRED", [
+                "issuer-to-security mapping and executable instrument",
+                "predeclared entry/exit clock and falsifiable valuation or fundamental thesis",
+                "benchmark and economic expression distinct from accounting quality",
+            ]),
+            "data_requirements": rec("REQUIRED", [
+                "point-in-time financial statements and immutable revision history",
+                "point-in-time estimates only for a declared expectations thesis",
+                "declared valuation inputs and benchmark for any mispricing thesis",
+                "predeclared catalyst or falsification conditions",
+                "security mapping, corporate actions and survivorship controls",
+            ]),
+            "cost_capacity_requirements": rec("REQUIRED", [
+                "fees/spread/slippage and borrow/financing where applicable",
+                "liquidity/participation limit and capacity declaration",
+            ]),
+            "unsupported_economic_claims": {
+                "mispricing": "UNKNOWN", "valuation_edge": "UNKNOWN",
+                "earnings_forecast": "UNKNOWN", "rerating_alpha": "UNKNOWN",
+                "empirical_return": "NOT_OBSERVED", "capacity_estimate": "NOT_ESTIMATED",
+            },
+            "documentary_support": {field: deepcopy(dossier_detail.get(field, {})) for field in (
+                "issuer_identity", "financial_statements", "cash_flow_quality", "valuation_frame",
+                "earnings_and_guidance", "estimate_revisions", "catalysts",
+            )},
         })
     else:
         universe = dossier_detail.get("universe_definition", {})

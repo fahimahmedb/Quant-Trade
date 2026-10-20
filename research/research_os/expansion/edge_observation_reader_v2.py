@@ -149,8 +149,6 @@ def observe_edge_task(snapshot, task_id, *, declared_routes=None, validated_adap
             acquisition_state = "NOT_PROJECTED_UPSTREAM_BLOCKED"
         elif not candidate or not (research.get("dossier") or {}).get("dossier"):
             acquisition_state = "NOT_PROJECTED_NO_DOSSIER"
-        elif task["task_type"] == "FUNDAMENTAL_RESEARCH":
-            acquisition_state = "NOT_PROJECTED_UNSUPPORTED_READINESS_FAMILY"
         else:
             producer = build_producer_test_readiness(output, research["dossier"]["dossier"])
             acquisition_state = "PROJECTED_FROM_BOUND_RESEARCH_DOSSIER"
