@@ -13,6 +13,14 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010/oracle-worker/mechanism_research.json"
+    ],
+    "completed_at": "2026-10-20T16:20:17Z",
+    "receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g2-323599fe8318.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T16:07:36Z",
   "derivation": {
     "derivation_key": "abf3d3028aa53278f73007e0f4ffeb0111d1013c0287e8934aa712bd5e091921",
@@ -31,7 +39,7 @@
         "artifact_hash": "43a629b9ce72e0cf2298b5e4483158196115077a9de343df47e3f94eedb1f54a"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g2-323599fe8318.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
     "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g2-323599fe8318",
@@ -61,16 +69,16 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T16:20:09Z",
-    "expires_at": "2026-10-20T16:30:09Z",
+    "expires_at": "2026-10-20T16:20:17Z",
     "generation": 2,
     "owner": "oracle-research.market_discovery"
   },
   "priority": 70,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct institutional-flow CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-10-20T16:20:09Z"
+  "updated_at": "2026-10-20T16:20:17Z"
 }
