@@ -126,9 +126,9 @@ def _consumed_bindings(
     tasks: Iterable[Dict[str, Any]], *, frontier_id: str, task_type: str
 ) -> Dict[str, set]:
     legacy_paths: set[str] = set()
-    packet_bindings: set[tuple[str, str]] = set()
-    blob_bindings: set[tuple[str, str]] = set()
-    record_bindings: set[tuple[str, str]] = set()
+    packet_bindings: set[str] = set()
+    blob_bindings: set[str] = set()
+    record_bindings: set[str] = set()
 
     for task in tasks:
         derivation = task.get("derivation") or {}
@@ -144,11 +144,11 @@ def _consumed_bindings(
             blob_sha = inputs.get("documentary_source_blob")
             record_hash = inputs.get("documentary_source_record_hash")
             if packet_hash:
-                packet_bindings.add((path, str(packet_hash)))
+                packet_bindings.add(str(packet_hash))
             if blob_sha:
-                blob_bindings.add((path, str(blob_sha)))
+                blob_bindings.add(str(blob_sha))
             if record_hash:
-                record_bindings.add((path, str(record_hash)))
+                record_bindings.add(str(record_hash))
             if not any((packet_hash, blob_sha, record_hash)):
                 legacy_paths.add(path)
             continue
@@ -176,11 +176,13 @@ def _is_consumed(source: Dict[str, Any], consumed: Dict[str, set]) -> bool:
     path = source["path"]
     if path in consumed["legacy_paths"]:
         return True
-    if (path, source["packet_hash"]) in consumed["packet_bindings"]:
+    # Content identity survives renames/copies. Paths remain provenance, not
+    # evidence of scientific novelty; consumption is still frontier-scoped.
+    if source["packet_hash"] in consumed["packet_bindings"]:
         return True
-    if source.get("blob_sha") and (path, source["blob_sha"]) in consumed["blob_bindings"]:
+    if source.get("blob_sha") and source["blob_sha"] in consumed["blob_bindings"]:
         return True
-    if (path, source["record_hash"]) in consumed["record_bindings"]:
+    if source["record_hash"] in consumed["record_bindings"]:
         return True
     return False
 

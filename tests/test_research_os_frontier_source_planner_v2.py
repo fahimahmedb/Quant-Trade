@@ -210,6 +210,51 @@ class FrontierSourcePlannerV2Test(unittest.TestCase):
         }
         require_stage_authorized(task, "mechanism_research")
 
+    def test_renamed_reserved_content_is_not_novel_for_any_bound_identity(self):
+        entry = self.entry("EVENT_DOCUMENT_DISTINCT_MECHANISM")
+        original = "research/research_os/sources/apple_dividend_announcements.json"
+        alias = "research/research_os/sources/renamed_packet.json"
+        catalog = {alias: deepcopy(self.catalog[original])}
+        catalog[alias]["blob_sha"] = "a" * 40
+        source = plan_frontier_source(frontier_entry=entry, tasks=[], source_catalog=catalog)["source"]
+        for field, value in (("packet_hash", source["packet_hash"]),
+                             ("record_hash", source["record_hash"]), ("blob", "a" * 40)):
+            with self.subTest(identity=field):
+                task = self.historical_task(entry)
+                task["inputs"] = {"documentary_source": original, "documentary_source_" + field: value}
+                plan = plan_frontier_source(frontier_entry=entry, tasks=[task], source_catalog=catalog)
+                self.assertEqual(plan["status"], "NO_UNUSED_ADMISSIBLE_SOURCE")
+                self.assertIsNone(plan["source"])
+
+    def test_consumption_is_frontier_scoped_and_new_version_is_eligible(self):
+        entry = self.entry("EVENT_DOCUMENT_DISTINCT_MECHANISM")
+        path = "research/research_os/sources/apple_dividend_announcements.json"
+        source = plan_frontier_source(frontier_entry=entry, tasks=[],
+                                      source_catalog={path: self.catalog[path]})["source"]
+        task = self.historical_task(entry)
+        task["inputs"] = {"documentary_source": path, "documentary_source_packet_hash": source["packet_hash"]}
+        other = deepcopy(task)
+        other["derivation"]["frontier_id"] = "OTHER_FRONTIER"
+        self.assertEqual(plan_frontier_source(frontier_entry=entry, tasks=[other],
+                         source_catalog={path: self.catalog[path]})["status"], "SOURCE_SELECTED")
+        task["inputs"]["documentary_source_packet_hash"] = "previous-immutable-version"
+        self.assertEqual(plan_frontier_source(frontier_entry=entry, tasks=[task],
+                         source_catalog={path: self.catalog[path]})["status"], "SOURCE_SELECTED")
+
+    def test_alias_cannot_manufacture_a_refill_task(self):
+        entry = self.entry("EVENT_DOCUMENT_DISTINCT_MECHANISM")
+        path = "research/research_os/sources/apple_dividend_announcements.json"
+        source = plan_frontier_source(frontier_entry=entry, tasks=[],
+                                      source_catalog={path: self.catalog[path]})["source"]
+        task = self.historical_task(entry)
+        task["inputs"] = {"documentary_source": path, "documentary_source_packet_hash": source["packet_hash"]}
+        frontier = deepcopy(self.frontier)
+        frontier["frontiers"] = [entry]
+        result = derive_refill_task(frontier=frontier, tasks=[task], created_at="2026-10-20T20:00:00Z",
+                                   source_catalog={"research/research_os/sources/alias.json": self.catalog[path]})
+        self.assertEqual(result["status"], "NOOP_NO_ADMISSIBLE_NOVEL_SOURCE")
+        self.assertIsNone(result["task"])
+
 
 if __name__ == "__main__":
     unittest.main()
