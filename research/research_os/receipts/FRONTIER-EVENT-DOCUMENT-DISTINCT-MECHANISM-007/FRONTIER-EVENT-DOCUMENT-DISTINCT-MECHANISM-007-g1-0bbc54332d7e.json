@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/oracle-worker/legacy_duplicate_check.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T10:30:18Z",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g1-0bbc54332d7e-002.json"
+  ],
+  "input_head": "6d35d467864cad7719dcaa6d7c7acdcae9f7c787",
+  "lease_generation": 1,
+  "receipt_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g1-0bbc54332d7e",
+  "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g1-0bbc54332d7e",
+  "started_at": "2026-10-20T10:30:13Z",
+  "status": "COMPLETE",
+  "summary": "legacy_duplicate_check: CONTINUE; task=READY; release=f3943830e20b05d926d3013501573b8b21fdace7",
+  "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007",
+  "worker_id": "oracle-research-v1.fundamental_events"
+}
