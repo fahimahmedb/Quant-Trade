@@ -1,0 +1,64 @@
+{
+  "candidate_hash": "7bbc323ad51d2b5ec98cec01f3ede3a337046d87d01406c9a5e189e191871a77",
+  "claim": "AAPL FY2024_Q2_VS_FY2025_Q2_ANNOUNCEMENTS: declared distribution changed from 0.25 to 0.26 USD_per_share_per_declared_distribution; year-over-year difference=0.01. This compares annual Q2 announcements, not consecutive payments; historical PIT, consensus surprise and price effect are not established.",
+  "clock": "2026-10-15T18:06:31.429778+00:00",
+  "decision_map": {
+    "premise_fails": "KILL_GENERATION",
+    "premise_survives": "EXPLORE"
+  },
+  "disconfirmation_manifest": {
+    "attempted": false,
+    "status": "PENDING"
+  },
+  "economic_expression": {
+    "direction": "NOT_YET_MEASURABLE",
+    "implementation_status": "NOT_YET_MEASURABLE",
+    "instrument": "UNKNOWN"
+  },
+  "evidence_manifest": {
+    "documentary_packet_hash": "d8d19dbf0b1291ce43d3c3f12254a2b9afb0258c27cadbaef9288fd666cee142",
+    "engine_family": "EVENT_DOCUMENT",
+    "engine_id": "engine.event_document.v0",
+    "evidence_class": "DOCUMENTARY",
+    "source_blob": "e3b39bce63d171fb41b090db9d49690d0266ac7d",
+    "source_candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+    "source_path": "research/research_os/sources/apple_dividend_announcements.json",
+    "source_refs": [
+      "https://www.apple.com/newsroom/2024/05/apple-reports-second-quarter-results/",
+      "https://www.apple.com/newsroom/2025/05/apple-reports-second-quarter-results/"
+    ],
+    "synthetic_only": false
+  },
+  "extension": {
+    "availability_time": "2026-10-15T18:06:31.429778+00:00",
+    "event": "DECLARED_CASH_DISTRIBUTION_COMPARISON",
+    "event_clock": "2026-10-15T18:06:31.429778+00:00",
+    "reaction_channel": "UNRESOLVED",
+    "revision_policy": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+    "type": "EventExtension"
+  },
+  "falsification_scope": "Withdraw the distribution-change premise if either declaration is corrected or superseded, or issuer, cash-versus-special classification, per-share basis, currency or annual Q2 comparison differ. Reject a positive-change premise if the comparable declared difference is nonpositive. Payment receipt, eligibility, tradable horizon and economic payoff are untested.",
+  "family": "event",
+  "generation_id": "G1",
+  "horizon": "UNQUALIFIED",
+  "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce",
+  "known_confounders": [],
+  "mechanism_statement": "A change in declared cash distributions may motivate a capital-return thesis; payer, expectations, consensus surprise and market response remain unqualified.",
+  "producer_identity": {
+    "engine_family": "EVENT_DOCUMENT",
+    "engine_id": "engine.event_document.v0",
+    "lane": "fundamental_events",
+    "process": {
+      "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+      "pid": 1940,
+      "start_ticks": "156083"
+    },
+    "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008",
+    "worker_id": "oracle-research-v2.fundamental_events"
+  },
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+  "research_trial_id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008::G1",
+  "universe": [
+    "AAPL"
+  ]
+}

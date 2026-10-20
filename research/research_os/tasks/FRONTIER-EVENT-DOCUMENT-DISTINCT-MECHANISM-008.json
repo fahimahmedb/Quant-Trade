@@ -13,6 +13,18 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/candidate_draft.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/leakage.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-worker/document_or_fundamental_research.json"
+    ],
+    "completed_at": "2026-10-20T11:40:10Z",
+    "receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g2-e6eef7224992.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T11:20:14Z",
   "derivation": {
     "derivation_key": "c45424ba152150a97a728c88df27f14419ba52acad6799c5ec5403cbd6567f80",
@@ -31,7 +43,7 @@
         "artifact_hash": "c9d3e997b7a4e6775c9cc98c069f716c4a7beb1cf300eef63190178b50527151"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g1-36e2f39e74c0.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g2-e6eef7224992.json",
     "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
     "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g2-e6eef7224992",
@@ -61,16 +73,16 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T11:40:05Z",
-    "expires_at": "2026-10-20T11:50:05Z",
+    "expires_at": "2026-10-20T11:40:10Z",
     "generation": 2,
     "owner": "oracle-research-v2.fundamental_events"
   },
   "priority": 70,
   "required_capability": "event_document",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008",
   "task_type": "EVENT_DOCUMENT",
-  "updated_at": "2026-10-20T11:40:05Z"
+  "updated_at": "2026-10-20T11:40:10Z"
 }

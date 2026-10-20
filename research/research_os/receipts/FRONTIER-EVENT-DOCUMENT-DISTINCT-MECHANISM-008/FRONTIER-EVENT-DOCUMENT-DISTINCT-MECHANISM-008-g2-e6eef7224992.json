@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-worker/document_or_fundamental_research.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T11:40:10Z",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g2-e6eef7224992-002.json"
+  ],
+  "input_head": "80b6fd5322dad4d96bc5ec5b6dfb468277ee6ff2",
+  "lease_generation": 2,
+  "receipt_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g2-e6eef7224992",
+  "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008-g2-e6eef7224992",
+  "started_at": "2026-10-20T11:40:05Z",
+  "status": "BLOCKED",
+  "summary": "document_or_fundamental_research: BLOCKED; task=BLOCKED; release=a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008",
+  "worker_id": "oracle-research-v2.fundamental_events"
+}
