@@ -1,46 +1,63 @@
 # Claude Current Mission Router
 
-This file is deliberately a **router**, not a frozen task specification.
+This file is deliberately a router, not a frozen mission.
 
-The former PR #12 corrective mission is historical and is no longer current authority.
+## Current source of truth
 
-## Resolve current work
-
-Read in this order:
+Read:
 
 1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
-5. `governance/BLUE_ORGANIZATIONAL_AUDIT_2026-09-20.md`
-6. the exact mission/handoff referenced there for the branch you are on
+2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
+3. resolve the exact current branch and live HEAD
+4. read the branch-specific mission / audit / runtime evidence required for the work
 
-Always resolve:
-- current branch;
-- exact HEAD;
-- relation to the pinned mission base;
-- current Blue HEAD;
-- exact CI evidence relevant to that SHA.
+Do not infer current work from historical September governance, `STATE.md`, `CHIEF_BRIEF.md`, old issues/PRs or a stale branch name.
 
-Do not infer the mission from:
-- `STATE.md`;
-- `CHIEF_BRIEF.md`;
-- repository default branch;
-- old PR/issue text;
-- this file's historical Git versions.
+## Current project rails
 
-## Current Blue workstreams at last router update
+### Oracle V1
 
-- Gate A v4: frozen candidate `4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072`; independent Astra audit dispatched.
-- P14D: hybrid qualification method review active; amendment still non-authoritative.
-- Repository hygiene: default migration + 35 pinned delete-ready refs prepared for server/admin execution.
-- Target-host qualification: paused until independent v4 acceptance.
-- Product integration: paused; canonical Forward/Economic leaves preserved.
+Live branch:
 
-Safety:
-- `t0 = NOT DECLARED`
-- `P0_CONTINUOUS_SERVICE_STATE = OPEN / NOT_YET_PROVEN_CONTINUOUS`
-- `P14D_GOVERNANCE_STATUS = STILL_FROZEN / NOT_YET_AMENDED`
+`builder/oracle-economic-loop-recovery-20261019`
+
+Status: operational H24 V1 line. It may advance autonomously. Resolve live HEAD at execution time.
+
+Do not mutate this line as incidental repository cleanup.
+
+### Forensic / V2 preparation
+
+Audit branch:
+
+`audit/forensic-checkpoint-20261019`
+
+Current forensic checkpoint:
+
+`CHECKPOINT_010.md`
+
+V2 canonical trunk:
+
+`NOT_YET_DECLARED`
+
+Current objective is repository cleanup + evidence reconciliation + explicit V2 source selection before declaring a small canonical V2 trunk.
+
+## Permanent safety
+
+- `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
 - `REAL_CAPITAL_AUTHORIZED = FALSE`
+- `LIVE_TRADING_AUTHORIZED = FALSE`
 
-This snapshot is only a convenience. Later current Blue governance wins.
+No lower-level mission may silently change these values.
+
+## Repository hygiene
+
+Use:
+
+`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
+
+and, for terminal execution:
+
+`scripts/repository_hygiene_20261020.sh`
+
+Branch deletion is namespace cleanup, not evidence deletion. Unique historical tips must remain reachable before their branch refs disappear.
