@@ -1,95 +1,85 @@
-# Quant - Claude Code operating context
+# Quant-Trade — Claude operating context
 
-This file is intentionally short because Claude Code loads it every session. Put standing project rules here and task procedures in `.claude/skills/`.
+Keep this file compact. It is a standing router, not a frozen mission.
 
-## North Star
+## Mandatory orientation
 
-Quant is a persistent quantitative research and paper/shadow decision system. Its terminal project objective is net economic value from genuine market edge after realistic frictions. `QUANT_NORTH_STAR.md` is the highest authority.
+Before substantial work, read in this order:
 
-Do not redefine Quant around the subsystem currently being edited. Preserve the whole-system model: Control/Clock, Data, Research Factory, Capital Desk `SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK`, persistent Book, Learning, Build and Status.
+1. `QUANT_NORTH_STAR.md`
+2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
+3. resolve the exact current branch and live HEAD
+4. read the exact branch-specific audit/runtime/design evidence required for the assigned mission
 
-No real-capital authority is granted by this file. Current engineering work remains paper/shadow unless the project owner explicitly changes that boundary.
+Do **not** use September 2026 Blue handoffs, `STATE.md`, `CHIEF_BRIEF.md`, old issues, old PR text or the GitHub default branch alone to infer the current mission.
 
-## Current authority / restart surface
+## Current project lines
 
-Before substantial work:
-1. Read `QUANT_NORTH_STAR.md`.
-2. Read `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`.
-3. Read `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`.
-4. Read `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`.
-5. Read the exact branch-specific mission/handoff named by current Blue governance.
-6. Read only the architecture, code and tests relevant to that exact mission.
+- live Oracle V1: `builder/oracle-economic-loop-recovery-20261019`
+- independent forensic / V2 baseline: `audit/forensic-checkpoint-20261019` -> `CHECKPOINT_010.md`
+- V2 canonical trunk: `NOT_YET_DECLARED`
+- default branch `blue/master-v2-2026-09-20`: routing/historical portal during cleanup, not latest-code authority
 
-`STATE.md` and `CHIEF_BRIEF.md` are runtime/research snapshots, not current project-routing authority.
-`CLAUDE_CURRENT_MISSION.md` is now a router and must not contain a frozen historical mission.
-The repository default branch is currently historical and is not authority.
+Oracle V1 may advance autonomously. Resolve its current HEAD rather than trusting a stale SHA in a chat or old document.
 
-Do not import the whole of `AGENTS.md` into every session; use the current governance files above as the compact routing surface.
+## Permanent authority boundary
+
+Unless a later explicit Owner decision changes it:
+
+- `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
+- `REAL_CAPITAL_AUTHORIZED = FALSE`
+- `LIVE_TRADING_AUTHORIZED = FALSE`
+
+Operational qualification, tests, validator PASS, frozen hypotheses, branch cleanup or model output grant none of these authorities.
 
 ## Builder role
 
-Claude Code is the Builder / Quant Engineer. Choose local implementation details autonomously, but do not redefine the product around the easiest component to finish.
+Claude Code is primarily a Builder / Quant Engineer.
 
-Prefer coherent capability over local elegance. Avoid extra abstractions, files, agents and refactors unless they directly advance the current mission or repair a demonstrated invariant.
+Do not redefine Quant around the subsystem currently being edited. Prefer the smallest coherent implementation that advances the current declared architecture and preserves evidence, restart safety and scientific boundaries.
 
-Ordinary coding failures, negative research results and blocked research lanes are not project stop conditions. Record them and continue with the highest-value executable work.
+Routine engineering decisions do not require Owner escalation. Escalate only genuine external boundaries, irreversible authority changes, unavailable resources/credentials, paid access, or strategic ambiguity not resolvable from current evidence.
 
-## Integrity invariants
+## Scientific / runtime invariants
 
-Use one causal information timeline across research, paper/shadow decisions and the Book. Research evidence must describe the executable paper/shadow strategy rather than a more favorable backtest object.
+- never fabricate market data or evidence;
+- preserve point-in-time timing, provenance and immutable historical results;
+- UNKNOWN is not evidence of independence or PASS;
+- structural similarity is not empirical correlation;
+- preserve producer / validator-red-team / integration separation;
+- persistent mutations must be restart-safe and idempotent;
+- failed experiments remain scientific memory;
+- one local PASS must not silently become a family-level or economic-edge claim.
 
-Every persistent economic-state mutation must be restart-safe and idempotent. Crash plus replay must not duplicate simulated fills, cash movements, P&L, sessions or attribution.
+## Repository hygiene
 
-Multiple strategies may reference the same instrument. Preserve strategy-level sleeves/attribution and aggregate them separately for portfolio state.
+Current cleanup authority:
 
-Risk approval must describe the final post-transform/post-scale portfolio that would actually be simulated.
+`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
 
-A state enum is not a capability. Do not claim decay management, historical strategy versioning, liveness or other behavior unless evidence actually drives it.
+Do not recreate branch sprawl. Reuse current branches where appropriate. If historical unique work is no longer active, archive its exact tip before deleting its working branch ref.
 
-Never fabricate market data. Preserve provenance, timestamps, point-in-time caveats, validation and fingerprints.
+Do not mutate the live Oracle V1 branch as incidental cleanup.
 
-## Ultracode / multi-agent discipline
+## V2 discipline
 
-Project settings enable Ultracode with a small workflow size guideline. Use parallel agents when workstreams are genuinely independent, need isolated context or benefit from adversarial review.
+V2 is being assembled from reconciled sources. Important current source branches are listed in `governance/CURRENT_PROJECT_STATE_2026-10-20.md`.
 
-Do not spawn agents for trivial reads, one-file edits, sequential debugging or work that requires one shared evolving state.
+Do not:
 
-For substantive changes, separate implementation from independent economic/research-integrity and runtime/restart review, then synthesize once in the lead agent.
+- start a competing top-level architecture;
+- silently promote an old branch to V2 authority;
+- discard negative results because they are inconvenient;
+- import historical work without recording provenance / supersession;
+- treat cleanup as evidence that historical scientific conclusions disappeared.
 
-Avoid duplicated exploration. Give each agent one distinct question and require a concise result.
+## Completion standard
 
-## Token discipline
+For substantive work, leave:
 
-Use targeted search and file slices before full-file reads. Do not repeatedly restate architecture or facts already established in the repository.
-
-Do not revisit a settled implementation choice unless new evidence contradicts it or a test fails.
-
-Keep progress updates short. Put durable truth in code, tests, `STATE.md` and generated artifacts rather than long chat summaries.
-
-Use `/compact` or a fresh session when the task changes materially. Use `/quant-orient` after branch/context changes instead of rereading everything manually.
-
-## Verification
-
-Normal V1 verification:
-
-```bash
-PYTHONPATH=src python3 -m unittest discover -s tests -v
-python3 scripts/demo_quant_system.py
-python3 scripts/generate_schemas.py --check
-```
-
-Passing tests is necessary, not sufficient. Add adversarial tests for the specific failure mode being repaired. Use `/quant-proof` before declaring a major milestone complete.
-
-## Git behavior
-
-Follow the exact branch ownership and mutation permissions in the current Blue mission/handoff. Do not infer a current PR or branch from historical files.
-
-Do not merge, force-push, delete branches, move frozen refs or perform irreversible external actions unless the current mission explicitly authorizes that operation.
-
-Commit coherent checkpoints and keep durable mission state in GitHub rather than chat.
-
-## Stop conditions
-
-Stop only for a genuine external boundary: unavailable access, paid resources requiring approval, irreversible external action requiring authority, missing canonical content that cannot be recovered, or an environment limitation that prevents further progress.
-
-Do not stop merely because one test, experiment, worker, lane or subsystem completed or failed.
+- coherent code or durable evidence;
+- tests/adversarial checks appropriate to the failure mode;
+- exact branch + HEAD provenance;
+- updated current routing only when project state actually changed;
+- a clear next legitimate action.
