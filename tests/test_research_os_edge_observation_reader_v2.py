@@ -123,6 +123,8 @@ class EdgeObservationReaderTests(unittest.TestCase):
         self.assertEqual(edge["experiment_readiness"], "INCOMPLETE")
         self.assertEqual(edge["scientific_maturity"], "EVIDENCE_BOUND")
         self.assertTrue(any(r["status"] == "UNRESOLVED_NO_DECLARED_ROUTE" for r in edge["evidence_acquisition"]["intents"]))
+        self.assertEqual(edge["evidence_acquisition"]["summary"]["blocked_count"], 0)
+        self.assertEqual(edge["evidence_acquisition"]["summary"]["unresolved_count"], 4)
         self.assertFalse(first["network_call_performed"])
 
     def test_blocked_stage_uses_own_receipt_and_never_invents_dossier(self):

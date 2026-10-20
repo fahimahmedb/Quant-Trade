@@ -9,9 +9,76 @@ from research.research_os.expansion.evidence_acquisition_intents_v2 import (
 )
 from research.research_os.expansion.source_adapters_v1 import validate_adapter_spec
 from research.research_os.expansion.source_qualification import qualify_producer_test_readiness
+from research.research_os.expansion.source_qualification import build_producer_test_readiness
+from research.research_os.tests.test_producer_economic_readiness import _candidate_output, _event_detail
 
 
 class EvidenceAcquisitionIntentsV2Tests(unittest.TestCase):
+    documentary_control = "concurrent-news/confounder controls declared before outcome access"
+
+    def test_existing_producer_control_is_unresolved_not_an_outcome_request(self):
+        readiness = build_producer_test_readiness(_candidate_output("EVENT_DOCUMENT"), _event_detail())
+        before = deepcopy(readiness)
+        result = build_evidence_acquisition_intents(readiness, declared_routes=[], validated_adapters={})
+        self.assertEqual(readiness, before)
+        self.assertEqual(result["readiness_hash"], readiness["qualification"]["readiness_hash"])
+        self.assertEqual(result["status"], "INCOMPLETE_UNRESOLVED")
+        self.assertEqual(result["summary"], {"requirement_count": 4, "ready_count": 0, "blocked_count": 0, "unresolved_count": 4})
+        self.assertTrue(all(i["status"] == "UNRESOLVED_NO_DECLARED_ROUTE" for i in result["intents"]))
+
+    def test_exact_documentary_control_with_explicit_route_is_plan_only(self):
+        adapter = self._adapter()
+        result = build_evidence_acquisition_intents(
+            self._readiness([self.documentary_control]),
+            declared_routes=[self._route(self.documentary_control)],
+            validated_adapters={adapter["adapter_id"]: adapter},
+        )
+        self.assertEqual(result["status"], "READY_PLAN_ONLY")
+        self.assertEqual(result["intents"][0]["acquisition_plan"]["plan"]["execution_mode"], "PLAN_ONLY_NO_NETWORK")
+        self.assertEqual(result["authority"], CLOSED_AUTHORITY)
+        self.assertFalse(result["network_execution_authorized"])
+        self.assertFalse(result["network_call_performed"])
+        self.assertFalse(result["outcome_accessed"])
+
+    def test_documentary_control_never_bypasses_content_adapter_or_pit_firewall(self):
+        for route_changes, adapter_changes, expected in (
+            ({"content_classes": ["returns"]}, {}, "BLOCK_FORBIDDEN_CONTENT_CLASS"),
+            ({"content_classes": ["future_outcomes"]}, {}, "BLOCK_FORBIDDEN_CONTENT_CLASS"),
+            ({"clock_cutoff": "2026-10-20T01:00:00"}, {}, "BLOCK_INVALID_DECLARED_ROUTE"),
+            ({"version_policy": "UNKNOWN"}, {}, "BLOCK_INVALID_DECLARED_ROUTE"),
+            ({}, {"activated": True}, "BLOCK_FIREWALL"),
+            ({}, {"network_access": True}, "BLOCK_FIREWALL"),
+            ({}, {"outcome_access_authorized": True}, "BLOCK_FIREWALL"),
+        ):
+            with self.subTest(route=route_changes, adapter=adapter_changes):
+                adapter = self._adapter()
+                adapter.update(adapter_changes)
+                result = build_evidence_acquisition_intents(
+                    self._readiness([self.documentary_control]),
+                    declared_routes=[self._route(self.documentary_control, **route_changes)],
+                    validated_adapters={adapter["adapter_id"]: adapter},
+                )
+                self.assertEqual(result["intents"][0]["status"], expected)
+                self.assertFalse(result["network_execution_authorized"])
+                self.assertFalse(result["outcome_accessed"])
+
+    def test_control_wording_cannot_launder_extra_outcome_demands(self):
+        for requirement in (
+            self.documentary_control + " and future returns",
+            "returns required; " + self.documentary_control,
+            self.documentary_control.replace("before", "after"),
+            self.documentary_control.upper(),
+            self.documentary_control + "; fetch market reaction",
+            self.documentary_control + "\npost-event prices",
+        ):
+            with self.subTest(requirement=requirement):
+                result = build_evidence_acquisition_intents(
+                    self._readiness([requirement]), declared_routes=[self._route(requirement)],
+                    validated_adapters={},
+                )
+                self.assertEqual(result["intents"][0]["status"], "BLOCK_FORBIDDEN_REQUIREMENT")
+                self.assertIsNone(result["intents"][0]["acquisition_plan"])
+
     def _readiness(self, requirements):
         specification = {
             "engine_family": "EVENT_DOCUMENT",

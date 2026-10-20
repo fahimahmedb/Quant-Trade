@@ -36,6 +36,14 @@ FORBIDDEN_REQUIREMENT_MARKERS = (
     "post release",
 )
 
+# Exact declaration already emitted by source_qualification. It requests a
+# predeclared documentary control, not an outcome observation. Do not generalize
+# this to arbitrary prose/negations: route, PIT, adapter and content checks below
+# remain mandatory, and appended outcome demands still hit the generic guard.
+DOCUMENTARY_CONTROL_REQUIREMENTS = frozenset({
+    "concurrent-news/confounder controls declared before outcome access",
+})
+
 
 def _parse_bound_clock(value: Any) -> None:
     if not isinstance(value, str) or not value.strip():
@@ -46,6 +54,8 @@ def _parse_bound_clock(value: Any) -> None:
 
 
 def _forbidden_requirement(requirement: str) -> bool:
+    if requirement in DOCUMENTARY_CONTROL_REQUIREMENTS:
+        return False
     text = " " + " ".join(requirement.lower().replace("_", " ").split())
     return any(marker in text for marker in FORBIDDEN_REQUIREMENT_MARKERS)
 
