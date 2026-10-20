@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime
+from math import isfinite
 from typing import Any, Dict, List, Mapping, Optional
 
 from research.research_os.scientific_store import sha256_json
@@ -54,7 +55,14 @@ REASON_CODES = {
 
 
 def _present(value: Any) -> bool:
-    return value not in (None, "", "UNKNOWN", "UNSPECIFIED")
+    if value is None or isinstance(value, bool):
+        return False
+    if isinstance(value, str):
+        return bool(value.strip()) and value.strip().upper() not in (
+            "UNKNOWN", "UNSPECIFIED", "UNAVAILABLE", "NOT_ESTIMATED")
+    if isinstance(value, float):
+        return isfinite(value)
+    return bool(value)
 
 
 def _is_hash(value: Any) -> bool:
@@ -111,7 +119,8 @@ def _trial_accounting_valid(record: Mapping[str, Any]) -> bool:
     if state == "UNKNOWN":
         return estimate is None
     if state == "KNOWN":
-        return type(estimate) in (int, float) and estimate >= 0
+        return (type(estimate) in (int, float) and estimate >= 0
+                and (not isinstance(estimate, float) or isfinite(estimate)))
     return False
 
 
@@ -280,6 +289,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     add(
         "cost_model_declaration",
         cost_model.get("status") == "DECLARED"
+        and isinstance(cost_model.get("model_id"), str)
         and _present(cost_model.get("model_id"))
         and _is_hash(cost_model.get("declaration_hash")),
         "A frozen cost-model declaration is required; feasibility alone is insufficient.",
@@ -287,6 +297,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     add(
         "capacity_declaration",
         capacity.get("status") == "DECLARED"
+        and isinstance(capacity.get("model_id"), str)
         and _present(capacity.get("model_id"))
         and _is_hash(capacity.get("declaration_hash")),
         "A frozen capacity declaration is required before any economic test can be authorized.",

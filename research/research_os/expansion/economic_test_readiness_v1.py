@@ -89,7 +89,8 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
         return type(value) in (int, float) and isfinite(value) and value >= 0
 
     def known(value):
-        return value not in (None, "", "UNKNOWN", "UNAVAILABLE", "UNSPECIFIED")
+        return isinstance(value, str) and bool(value.strip()) and value.strip().upper() not in (
+            "UNKNOWN", "UNAVAILABLE", "UNSPECIFIED", "NOT_ESTIMATED")
 
     cost_valid = known(cost.get("model_id")) and all(
         number(cost.get(k)) for k in ("fees_bps", "spread_bps", "slippage_bps", "financing_bps", "borrow_bps")
