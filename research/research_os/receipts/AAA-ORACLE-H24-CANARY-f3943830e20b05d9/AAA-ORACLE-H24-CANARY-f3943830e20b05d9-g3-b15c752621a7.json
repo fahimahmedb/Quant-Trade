@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f3943830e20b05d9/oracle-worker/provenance_check.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T00:49:26Z",
+  "evidence_refs": [
+    "research/research_os/events/AAA-ORACLE-H24-CANARY-f3943830e20b05d9/AAA-ORACLE-H24-CANARY-f3943830e20b05d9-g3-b15c752621a7-002.json"
+  ],
+  "input_head": "4cbcb1ca6db96ff679cd19c9cb6bd9f85782df5f",
+  "lease_generation": 3,
+  "receipt_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9-g3-b15c752621a7",
+  "session_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9-g3-b15c752621a7",
+  "started_at": "2026-10-20T00:49:22Z",
+  "status": "COMPLETE",
+  "summary": "provenance_check: CONTINUE; task=COMPLETE; release=f3943830e20b05d926d3013501573b8b21fdace7",
+  "task_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9",
+  "worker_id": "oracle-research-v1.evidence_data"
+}
