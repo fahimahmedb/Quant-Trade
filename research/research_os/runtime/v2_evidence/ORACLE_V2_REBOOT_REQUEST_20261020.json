@@ -1,0 +1,11 @@
+{
+  "requested_at": "2026-10-20T11:13:12.071171+00:00",
+  "instance_id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+  "action": "SOFTRESET",
+  "boot_id_before": "79a29c0f-c7cd-4cd2-885c-9e4c18e123b6",
+  "healthy_natural_wakes_before": 1,
+  "proof": "/workspace/quant-oci-session/v2-status-preboot-a67ffec.json",
+  "http_status": 200,
+  "oracle_request_id": "F0A0B03A29F54680BB519041D34FDACE/F499D43B9A006EB9C84CD76A434447A8/EAF1FD36D1C3BAEEC097E92FE0CAE31B",
+  "lifecycle_state": "STOPPING"
+}

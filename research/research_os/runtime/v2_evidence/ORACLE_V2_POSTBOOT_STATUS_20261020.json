@@ -1,0 +1,29 @@
+{
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaah53jwnkdor7tsw4gxblep74wol26hfeag4vqqhds2mqa",
+  "exit_code": 0,
+  "lifecycle_state": "SUCCEEDED",
+  "observed": {
+    "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+    "evidence_file": "v2-status-20261020T155047.695158Z.json",
+    "model": "active/enabled",
+    "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+    "service_result": "success",
+    "sha256": "d6a7afc34c87c52fc3100a3b8bd008bb02fc860348a9749ef609815b056312c8",
+    "successful_wakes": 29,
+    "timer": "active/enabled",
+    "v1_timer": "inactive",
+    "wakes": [
+      {
+        "commit": "89d69f055cf4427571492dcb28a2a1e512360058",
+        "invocation": "6fc0f9a7985947f6820b497eab7523b7",
+        "status": "BLOCKED"
+      },
+      {
+        "commit": "1b80321eb81860586b5645661e34574ed40f968f",
+        "invocation": "38b12ebc10da443eb3f17dc908ce1abc",
+        "status": "DERIVED_ONE_READY_TASK"
+      }
+    ]
+  },
+  "oracle_request_id": "D105814534E2454BB4F9DE6CAF4E2F3C/0E571B864BF12814E18DD76A434447E0/5AF18A01B01013707B2E2E711B3DB24E"
+}
