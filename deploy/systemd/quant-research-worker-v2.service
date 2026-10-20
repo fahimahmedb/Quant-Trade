@@ -15,7 +15,7 @@ StateDirectoryMode=0700
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONNOUSERSITE=1
 Environment=GIT_TERMINAL_PROMPT=0
-ExecStart=/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research /usr/bin/python3.12 -m research.research_os.oracle_worker_v2 --config /etc/quant-research-v2/worker.json
+ExecStart=/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research /usr/bin/python3.12 -m research.research_os.oracle_worker_v2_live --config /etc/quant-research-v2/worker.json --outbox /var/lib/quant-research-v2/live-lab-outbox
 TimeoutStartSec=8min
 Restart=no
 UMask=0077
