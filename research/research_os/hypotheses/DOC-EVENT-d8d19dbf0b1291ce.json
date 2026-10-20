@@ -1,0 +1,30 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "claim": "AAPL FY2024_Q2_VS_FY2025_Q2_ANNOUNCEMENTS: declared distribution changed from 0.25 to 0.26 USD_per_share_per_declared_distribution; year-over-year difference=0.01. This compares annual Q2 announcements, not consecutive payments; historical PIT, consensus surprise and price effect are not established.",
+  "decision_map": {
+    "premise_fails": "KILL_GENERATION",
+    "premise_survives": "EXPLORE"
+  },
+  "falsification_scope": "Withdraw the distribution-change premise if either declaration is corrected or superseded, or issuer, cash-versus-special classification, per-share basis, currency or annual Q2 comparison differ. Reject a positive-change premise if the comparable declared difference is nonpositive. Payment receipt, eligibility, tradable horizon and economic payoff are untested.",
+  "family_id": "EVENT_DOCUMENT",
+  "freeze_status": "FROZEN",
+  "frozen_at": "2026-10-20T03:40:27Z",
+  "generation_id": "G1",
+  "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce",
+  "issuer": "AAPL",
+  "mechanism": "A change in declared cash distributions may motivate a capital-return thesis; payer, expectations, consensus surprise and market response remain unqualified.",
+  "parent_generation_ids": [],
+  "prediction": "Documentary premise only; economic payoff NOT_OBSERVED",
+  "worker_provenance": {
+    "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+    "engine_output_ref": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/oracle-worker/document_or_fundamental_research.json",
+    "lane": "fundamental_events",
+    "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
+    "worker_id": "oracle-research-v1.fundamental_events"
+  }
+}
