@@ -17,7 +17,7 @@ permissions:
 jobs:
   live-lab-3d-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: research/live_lab_ux
@@ -26,6 +26,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install pinned Live Lab dependencies
+        run: npm ci
       - name: Run isolated Live Lab suite
         run: node --test tests/*.test.js
       - name: Syntax-check browser modules
@@ -39,6 +41,7 @@ jobs:
           grep -q "WebGLRenderer" ui/scene3d.js
           grep -q 'state.animationRunning' ui/scene3d.js
           grep -q 'escapeSceneText' ui/scene3d-policy.js
+          grep -q "mobileSafari:'UNVERIFIED_REAL_DEVICE'" ui/scene3d.js
       - name: Assert Oracle-native truth contract
         run: |
           grep -q "HYPOTHESIS_GENERATION:'hypothesis-generation'" core/model.js
@@ -46,3 +49,19 @@ jobs:
           grep -q "ui_label" adapters/platform-native.js
           grep -q "role-from-worker-id" adapters/platform-native.js
           grep -q "hypothesis-generation" tests/oracle-native.test.js
+          grep -q "UNBOUND_UNTIL_SITE_PRINCIPAL_IS_DEPLOYED" adapters/oracle-native-contract.js
+      - name: Browser QA on real live page and no-WebGL fallback
+        run: |
+          python3 -m http.server 4173 >/tmp/live-lab-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          npm run qa:browser || { cat /tmp/live-lab-http.log; exit 1; }
+      - name: Upload browser QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-lab-browser-qa-${{ github.sha }}
+          path: |
+            research/live_lab_ux/artifacts/browser-qa.json
+            research/live_lab_ux/artifacts/F_FALLBACK.png
+          if-no-files-found: error
+          retention-days: 90
