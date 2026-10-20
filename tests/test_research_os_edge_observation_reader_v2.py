@@ -11,7 +11,7 @@ from research.research_os.github_state import PREFIX, Snapshot, StateUnavailable
 from research.research_os.worker_preflight import git_blob_sha
 from research.research_os.oracle_worker import ASSERTION
 from research.research_os.expansion.edge_observation_reader_v2 import (
-    EdgeObservationReadError, observe_edge_task,
+    observe_edge_task,
 )
 from research.research_os.expansion.v2_core import CLOSED_AUTHORITY, build_epoch_manifest, canonical_hash
 from research.research_os.expansion.v2_state import POLICY_PATH
