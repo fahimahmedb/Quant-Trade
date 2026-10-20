@@ -40,13 +40,14 @@ V1 proves operational scheduling, persistence, claim/lease recovery and fail-clo
 
 Current audit checkpoint:
 
-`090076945ff4d3e8006757047bbc6d2716d2eea6`
+`6443017be73238fd2b589969348a3e134d937bcd`
 
-Primary reconciliation document:
+Read in order:
 
-`CHECKPOINT_010.md`
+- `CHECKPOINT_010.md` — CP7–CP9 reconciliation against qualified Oracle V1;
+- `CHECKPOINT_011.md` — repository-hygiene / V2-source-preservation decision surface.
 
-CP10 updates CP7–CP9 against the qualified Oracle V1 implementation. It is the current forensic baseline for V2 cleanup/design work.
+CP10 remains the scientific/runtime forensic baseline. CP11 extends it with the current branch-cleanup and V2 source-preservation policy.
 
 ## 3. Permanent authority boundary
 
@@ -76,8 +77,9 @@ Current V2 source/evidence branches that must survive branch cleanup until their
 - `codex/test` — historical negative economic result / scientific memory
 - `audit/forensic-checkpoint-20261019`
 - `builder/oracle-economic-loop-recovery-20261019` — live V1 runtime
+- `builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08` — compact Weather V4 source ref during reconciliation
 
-Weather V4, Gate A/B, Forward/Economic, Astra and other historical workstreams may contain unique evidence. Their branch refs are cleanup candidates only after ancestry/duplicate proof or after their tips are archived.
+Weather V4, Gate A/B, Forward/Economic, Astra and other historical workstreams may contain unique evidence. Their branch refs are cleanup candidates only after ancestry/duplicate proof or after their exact tips are archived.
 
 ## 5. Branch hygiene policy
 
@@ -107,6 +109,10 @@ Rules:
 Operational cleanup procedure is documented in:
 
 `governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
+
+Terminal tool:
+
+`scripts/repository_hygiene_20261020.sh`
 
 ## 6. Current known reconciliation facts
 
@@ -140,6 +146,8 @@ CP10 establishes the following current interpretation:
 - structural similarity must never be converted into empirical correlation without admissible return history;
 - marginal portfolio contribution remains `NOT_ESTIMATED` without admissible evidence.
 
+CP11 adds the repository conclusion that branch refs should be reduced aggressively while exact unique/diverged tips remain reachable through archive tags until V2 reconciliation is complete.
+
 ## 8. Mandatory read order for new agents
 
 Before substantial work:
@@ -147,7 +155,7 @@ Before substantial work:
 1. `QUANT_NORTH_STAR.md`
 2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
 3. resolve the exact current branch + live HEAD
-4. if working on scientific architecture / V2: `audit/forensic-checkpoint-20261019` -> `CHECKPOINT_010.md`
+4. if working on scientific architecture / V2: `audit/forensic-checkpoint-20261019` -> `CHECKPOINT_010.md`, then `CHECKPOINT_011.md`
 5. if working on Oracle V1: read the current Oracle branch runtime handoff/scope and exact latest state
 6. read only the branch-specific architecture, tests and evidence needed for the assigned mission
 
@@ -157,6 +165,6 @@ Do not use September Blue handoffs as current routing authority. They are histor
 
 Near-term repository objective:
 
-`CLEAN_REPOSITORY -> PRESERVE_EVIDENCE -> DECLARE_SMALL_V2_TRUNK -> CONTINUE_V2_FROM_RECONCILED_SOURCES`
+`CLEAN_REPOSITORY -> PRESERVE_EVIDENCE -> RECONCILE_V2_SOURCES -> DECLARE_SMALL_V2_TRUNK -> CONTINUE_V2_FROM_RECONCILED_SOURCES`
 
 The intended end state is a small number of understandable active branches, durable archived evidence, one explicit live V1 line, and one future V2 trunk whose ancestry and imported capabilities are documented rather than inferred.
