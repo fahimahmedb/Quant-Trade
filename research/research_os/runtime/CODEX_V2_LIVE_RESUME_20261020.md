@@ -180,3 +180,21 @@ no test worker/session created. Explicit `Quant-Trade-Oracle/1.0` User-Agent
 is required by the public ingress edge (default Python agent returned403).
 ASML/current-corpus preflight 15/15 PASS. Status test count612 obtained from
 canonical `unit_test_count()`; unchanged replay inputs, no manual count.
+
+## Final superseding checkpoint: LIVE CONNECTION VERIFIED
+
+Read `ORACLE_H24_SITE_FINAL_RECEIPT_20261020.json` first. Owner/root installed
+the exact c564 observer after BOTH exact-head CI gates passed. V2 remains
+enabled/active, local GPT-OSS healthy, scientific a67 core/config unchanged.
+Actual Oracle sessions reached the production Site and durable GitHub receipts.
+The subsequent calendar wake delivered real SSE cursors84/85/86 (start,
+completion, end); production-source mapper/reducer starts/stops and reload
+non-replay are proven using those captured frames. Exact production duplicate
+returned DUPLICATE_IGNORED with cursor83 unchanged. All authority flags FALSE.
+Secret is installed through EnvironmentFile, root:quant-research0640 per Owner
+SSH receipt; only ciphertext crossed OCI command history. No value in Git/logs.
+Browser rendering and Safari/iPhone remain untested; no economic qualification.
+Do not reinstall, rotate again, or reboot merely to resume. Use the final
+receipt and new GitHub events as truth. Fetch the V2 tracking ref explicitly:
+`git fetch origin refs/heads/builder/oracle-v2-core-20261020:refs/remotes/origin/builder/oracle-v2-core-20261020`
+(the origin default fetch refspec tracks the older recovery branch only).
