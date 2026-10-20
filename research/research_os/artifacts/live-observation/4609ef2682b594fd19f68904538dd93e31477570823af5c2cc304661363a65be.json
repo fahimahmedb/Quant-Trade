@@ -1,0 +1,89 @@
+{
+  "authority": "OBSERVATIONAL_ONLY",
+  "canonical_terminal": {
+    "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3-2",
+    "event_seq": 2,
+    "generation": 2,
+    "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3",
+    "source_commit": "f431a2bd61650e5ddfd153812c7540d6511427aa"
+  },
+  "credentials_included": false,
+  "records": [
+    {
+      "packet": {
+        "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010",
+        "emitted_at": "2026-10-20T16:06:42Z",
+        "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3-1",
+        "event_seq": 1,
+        "event_type": "ACTION_STARTED",
+        "generation": 1,
+        "lease_id": "916ea588-6362-4fe7-b325-f503c106bfa4",
+        "payload": {
+          "label": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010",
+          "stage": "document_or_fundamental_research",
+          "ui_activity": "document-reading",
+          "ui_label": "Oracle \u00b7 Documents",
+          "ui_role": "researcher"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "9d55ee8a-8081-4a15-9852-e9b09fa704ab",
+        "trace_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T16:06:46.588Z",
+      "cursor": 82,
+      "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3-1",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010",
+        "emitted_at": "2026-10-20T16:06:49Z",
+        "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3-2",
+        "event_seq": 2,
+        "event_type": "SESSION_ENDED",
+        "generation": 1,
+        "lease_id": "916ea588-6362-4fe7-b325-f503c106bfa4",
+        "payload": {
+          "ui_activity": "none"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "9d55ee8a-8081-4a15-9852-e9b09fa704ab",
+        "trace_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T16:06:52.274Z",
+      "cursor": 83,
+      "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3-2",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    }
+  ],
+  "schema_version": "oracle-live-projection-v1",
+  "site_session": {
+    "generation": 1,
+    "heartbeat_interval_ms": 10000,
+    "lease_id": "916ea588-6362-4fe7-b325-f503c106bfa4",
+    "session_id": "9d55ee8a-8081-4a15-9852-e9b09fa704ab"
+  },
+  "source": {
+    "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010",
+    "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3-1",
+    "event_seq": 1,
+    "generation": 2,
+    "input_commit": "1c5fe8195259bc6770bfac194ec0930f0d580a13",
+    "lane": "fundamental_events",
+    "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3",
+    "stage": "document_or_fundamental_research",
+    "worker_id": "oracle-research.fundamental_events"
+  },
+  "source_events_mutated": false,
+  "stale_starts_replayed": false
+}
