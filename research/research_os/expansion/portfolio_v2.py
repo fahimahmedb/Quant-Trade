@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from copy import deepcopy
 from itertools import combinations
+from math import isfinite
 from typing import Any, Dict, Iterable, List, Tuple
 
 from research.research_os.scientific_store import sha256_json
+from .v2_core import SEMANTIC_NULLS
 
 
-_UNKNOWN = {None, "", "UNKNOWN", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE"}
+_UNKNOWN = SEMANTIC_NULLS | {"", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE"}
 
 # Structural weights are diagnostics only. They are deliberately not statistical
 # correlations and never consume returns. The three core economic-identity axes
@@ -31,9 +33,15 @@ _STRUCTURAL_WEIGHTS = {
 
 def _is_known(value: Any) -> bool:
     if isinstance(value, str):
-        return value not in _UNKNOWN
-    if isinstance(value, (list, tuple, set, dict)):
-        return bool(value)
+        return value.strip().upper() not in _UNKNOWN
+    if isinstance(value, bool):
+        return False
+    if isinstance(value, float):
+        return isfinite(value)
+    if isinstance(value, dict):
+        return any(_is_known(item) for item in value.values())
+    if isinstance(value, (list, tuple, set)):
+        return any(_is_known(item) for item in value)
     return value is not None
 
 
@@ -56,7 +64,8 @@ def _eq_known(left: Any, right: Any) -> Any:
 
 
 def _jaccard(left: Iterable[str], right: Iterable[str]) -> Any:
-    a, b = set(left or []), set(right or [])
+    a = {value for value in left or [] if _is_known(value)}
+    b = {value for value in right or [] if _is_known(value)}
     if not a or not b:
         return None
     return round(len(a & b) / len(a | b), 4)
