@@ -1,0 +1,89 @@
+{
+  "authority": "OBSERVATIONAL_ONLY",
+  "canonical_terminal": {
+    "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c-2",
+    "event_seq": 2,
+    "generation": 2,
+    "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c",
+    "source_commit": "d4530652a7361b277d7f59bad4fec32ea64dfdfc"
+  },
+  "credentials_included": false,
+  "records": [
+    {
+      "packet": {
+        "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011",
+        "emitted_at": "2026-10-20T18:50:14Z",
+        "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c-1",
+        "event_seq": 1,
+        "event_type": "ACTION_STARTED",
+        "generation": 8,
+        "lease_id": "f6a5f928-4545-4570-8a4a-6626c88098e5",
+        "payload": {
+          "label": "FRONTIER-QUANT-MECHANISM-DISTINCT-011",
+          "stage": "mechanism_research",
+          "ui_activity": "hypothesis-generation",
+          "ui_label": "Oracle \u00b7 Discovery",
+          "ui_role": "researcher"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "d9c749fd-fea1-49fa-8248-8d156e5e03ec",
+        "trace_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c",
+        "worker_id": "oracle-research.market_discovery"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T18:50:19.159Z",
+      "cursor": 110,
+      "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c-1",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011",
+        "emitted_at": "2026-10-20T18:50:22Z",
+        "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c-2",
+        "event_seq": 2,
+        "event_type": "SESSION_ENDED",
+        "generation": 8,
+        "lease_id": "f6a5f928-4545-4570-8a4a-6626c88098e5",
+        "payload": {
+          "ui_activity": "none"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "d9c749fd-fea1-49fa-8248-8d156e5e03ec",
+        "trace_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c",
+        "worker_id": "oracle-research.market_discovery"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T18:50:25.083Z",
+      "cursor": 111,
+      "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c-2",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    }
+  ],
+  "schema_version": "oracle-live-projection-v1",
+  "site_session": {
+    "generation": 8,
+    "heartbeat_interval_ms": 10000,
+    "lease_id": "f6a5f928-4545-4570-8a4a-6626c88098e5",
+    "session_id": "d9c749fd-fea1-49fa-8248-8d156e5e03ec"
+  },
+  "source": {
+    "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011",
+    "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c-1",
+    "event_seq": 1,
+    "generation": 2,
+    "input_commit": "6eb6b8897254a7715a37c3453ceae689cf7e54eb",
+    "lane": "market_discovery",
+    "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-011-g2-3f68a82d611c",
+    "stage": "mechanism_research",
+    "worker_id": "oracle-research.market_discovery"
+  },
+  "source_events_mutated": false,
+  "stale_starts_replayed": false
+}
