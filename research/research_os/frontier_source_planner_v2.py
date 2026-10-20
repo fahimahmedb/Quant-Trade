@@ -52,6 +52,24 @@ def _catalog_entry(path: str, value: Any) -> Dict[str, Any]:
     return {"path": str(path), "record": record, "blob_sha": blob_sha}
 
 
+def _evidence_authority_rank(family: str, packet: Mapping[str, Any]) -> int:
+    """Prefer binding primary authority over explanatory support.
+
+    The only multi-source family currently admitted is Institutional Flow. Its
+    operative CFR text is stronger evidence for the binding rule than a staff FAQ
+    that explicitly has no legal force. Capture chronology is a tie-breaker, not
+    a reason to prefer weaker authority.
+    """
+    if family == "INSTITUTIONAL_FLOW":
+        rule_kind = packet.get("rule_kind")
+        if rule_kind == "STANDARD_SETTLEMENT_OPERATIVE_RULE":
+            return 0
+        if rule_kind == "STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION":
+            return 10
+        return 50
+    return 0
+
+
 def _qualified_source(
     entry: Dict[str, Any],
     *,
@@ -93,6 +111,8 @@ def _qualified_source(
         "source_ref": packet.get("source_ref"),
         "available_at": packet.get("available_at"),
         "family": family,
+        "evidence_authority_rank": _evidence_authority_rank(family, packet),
+        "evidence_kind": packet.get("rule_kind") or packet.get("event_kind") or "DOCUMENTARY_PRIMARY",
     }
 
 
@@ -178,7 +198,8 @@ def plan_frontier_source(
     acquires no data, reads no outcome, and mutates no state. For old tasks that
     lack explicit source bindings, fallback consumption is inferred only from a
     durable completed producer stage; administrative issuance or a pre-stage
-    BLOCK is not treated as scientific consumption.
+    BLOCK is not treated as scientific consumption. Among unused sources,
+    stronger primary authority precedes weaker explanatory evidence.
     """
 
     task_type = str(frontier_entry.get("task_type") or "")
@@ -211,6 +232,7 @@ def plan_frontier_source(
     unused = [source for source in qualified if not _is_consumed(source, consumed)]
     unused.sort(
         key=lambda source: (
+            int(source.get("evidence_authority_rank", 100)),
             str(source.get("available_at") or ""),
             source["path"],
             source["packet_hash"],
