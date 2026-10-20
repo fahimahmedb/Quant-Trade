@@ -183,19 +183,21 @@ class EvidenceAcquisitionIntentsV2Tests(unittest.TestCase):
         self.assertEqual(result["status"], "BLOCK")
         self.assertEqual(result["intents"][0]["status"], "BLOCK_AMBIGUOUS_DECLARED_ROUTE")
 
-    def test_projection_is_deterministic_and_requirement_order_independent(self):
+    def test_projection_is_deterministic_and_declared_route_order_independent(self):
         req_a = "point-in-time event availability"
         req_b = "official holder/record/ex-date data when eligibility matters"
+        readiness = self._readiness([req_b, req_a])
         adapter = self._adapter()
         adapters = {adapter["adapter_id"]: adapter}
         routes = [self._route(req_b), self._route(req_a)]
         first = build_evidence_acquisition_intents(
-            self._readiness([req_b, req_a]), declared_routes=routes, validated_adapters=adapters,
+            readiness, declared_routes=routes, validated_adapters=adapters,
         )
         second = build_evidence_acquisition_intents(
-            self._readiness([req_a, req_b]), declared_routes=list(reversed(routes)), validated_adapters=adapters,
+            deepcopy(readiness), declared_routes=list(reversed(routes)), validated_adapters=adapters,
         )
         self.assertEqual(first, second)
+        self.assertEqual(first["requirements"], sorted([req_a, req_b]))
         self.assertEqual(first["status"], "READY_PLAN_ONLY")
         self.assertEqual(len(first["projection_hash"]), 64)
 
