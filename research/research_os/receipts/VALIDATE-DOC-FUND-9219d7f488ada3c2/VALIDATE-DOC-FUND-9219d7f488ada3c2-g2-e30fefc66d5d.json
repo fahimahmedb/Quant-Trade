@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/VALIDATE-DOC-FUND-9219d7f488ada3c2/oracle-worker/cross_examination.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T01:22:12Z",
+  "evidence_refs": [
+    "research/research_os/events/VALIDATE-DOC-FUND-9219d7f488ada3c2/VALIDATE-DOC-FUND-9219d7f488ada3c2-g2-e30fefc66d5d-002.json"
+  ],
+  "input_head": "5048b546ef299f85b296ce622a4b608c3540d6a6",
+  "lease_generation": 2,
+  "receipt_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g2-e30fefc66d5d",
+  "session_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g2-e30fefc66d5d",
+  "started_at": "2026-10-20T01:20:07Z",
+  "status": "COMPLETE",
+  "summary": "cross_examination: CONTINUE; task=READY; release=f3943830e20b05d926d3013501573b8b21fdace7",
+  "task_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
+  "worker_id": "oracle-research-v1.independent_challenge"
+}
