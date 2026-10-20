@@ -1,0 +1,14 @@
+{
+  "action_id": "AAA-V2-CANARY-a67ffec48fff895d",
+  "emitted_at": "2026-10-20T10:57:46Z",
+  "event_id": "AAA-V2-CANARY-a67ffec48fff895d-g3-432a0379274b-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 3,
+  "payload": {
+    "lineage": "AAA-V2-CANARY-a67ffec48fff895d",
+    "queue_state": "WORKING"
+  },
+  "session_id": "AAA-V2-CANARY-a67ffec48fff895d-g3-432a0379274b",
+  "worker_id": "oracle-research-v2.fundamental_events"
+}
