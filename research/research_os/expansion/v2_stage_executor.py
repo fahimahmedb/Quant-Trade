@@ -20,6 +20,7 @@ from .v2_bridge import adapt_engine_output_to_v2_candidate, adapt_existing_valid
 from .v2_independence import AXES, independent_context, process_identity
 from .v2_core import (
     V2ContractError,
+    assert_epoch_blinding,
     assert_validator_candidate_binding,
     blinding_integrity,
     build_epoch_manifest,
@@ -51,8 +52,13 @@ def _active_epoch(snapshot) -> Dict[str, Any]:
         manifest = build_epoch_manifest(raw)
     except V2ContractError as exc:
         raise StageBlocked("V2_ACTIVE_EPOCH_INVALID:" + str(exc)) from None
-    manifest["owner_outcome_blinding_status"] = raw.get("owner_outcome_blinding_status", "BLINDED")
-    manifest["supervisor_outcome_blinding_status"] = raw.get("supervisor_outcome_blinding_status", "BLINDED")
+    try:
+        assert_epoch_blinding(manifest, owner_status=raw.get("owner_outcome_blinding_status"),
+                              supervisor_status=raw.get("supervisor_outcome_blinding_status"))
+    except V2ContractError:
+        raise StageBlocked("V2_EPOCH_CONTAMINATED") from None
+    manifest["owner_outcome_blinding_status"] = raw["owner_outcome_blinding_status"]
+    manifest["supervisor_outcome_blinding_status"] = raw["supervisor_outcome_blinding_status"]
     manifest["first_evaluation_export_accepted"] = bool(raw.get("first_evaluation_export_accepted", False))
     return manifest
 

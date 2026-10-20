@@ -77,9 +77,7 @@ class V2StateStore:
                            ("validator_policy_hash", policy["validator_policy"])):
             if epoch[key] != canonical_hash(value):
                 raise StageBlocked("V2_EPOCH_POLICY_HASH_MISMATCH:" + key)
-        if epoch["contamination_status"] != "CLEAN" or any(epoch[k] != "BLINDED" for k in (
-                "owner_outcome_blinding_status", "supervisor_outcome_blinding_status")):
-            raise StageBlocked("V2_EPOCH_CONTAMINATED")
+        # _active_epoch applies the shared clean/explicit-blinding admission law.
         assert_model_allowed(epoch, self.model_identity)
         self.last_preflight = dict(status="PASS", research_epoch_id=epoch["research_epoch_id"],
                                    epoch_manifest_hash=epoch["epoch_manifest_hash"],

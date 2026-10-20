@@ -390,6 +390,17 @@ def blinding_integrity(*, owner_status: str, supervisor_status: str) -> Dict[str
     }
 
 
+def assert_epoch_blinding(epoch: Mapping[str, Any], *, owner_status: str,
+                          supervisor_status: str) -> Dict[str, str]:
+    """Admit only a CLEAN epoch with explicit blinding of both influencing actors."""
+    if epoch.get("contamination_status") != "CLEAN":
+        raise V2ContractError("EPOCH_CONTAMINATED")
+    integrity = blinding_integrity(owner_status=owner_status, supervisor_status=supervisor_status)
+    if integrity["epoch_blinding_integrity"] != "PASS":
+        raise V2ContractError("BLINDING_INTEGRITY_BROKEN")
+    return integrity
+
+
 def release_feedback(*, source_epoch_id: str, successor_epoch_id: str,
                      source_epoch_closed: bool, policy_allows_release: bool,
                      feedback_hash: str) -> Dict[str, Any]:

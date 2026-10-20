@@ -7,8 +7,8 @@ from .v2_core import (
     CLOSED_AUTHORITY,
     V2ContractError,
     assert_authority_closed,
+    assert_epoch_blinding,
     assert_validator_candidate_binding,
-    blinding_integrity,
     build_candidate,
     build_epoch_manifest,
     build_evaluation_ingest_receipt,
@@ -88,12 +88,11 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
     if expected_leakage["source_pit"] != "PASS":
         raise V2ContractError("EXPORT_REQUIRES_SOURCE_PIT_PASS")
 
-    blinding = blinding_integrity(
+    blinding = assert_epoch_blinding(
+        epoch,
         owner_status=bundle["blinding"]["owner_status"],
         supervisor_status=bundle["blinding"]["supervisor_status"],
     )
-    if blinding["epoch_blinding_integrity"] != "PASS":
-        raise V2ContractError("BLINDING_INTEGRITY_BROKEN")
 
     priority = build_priority_decision(
         policy_version=bundle["priority_policy_version"],
