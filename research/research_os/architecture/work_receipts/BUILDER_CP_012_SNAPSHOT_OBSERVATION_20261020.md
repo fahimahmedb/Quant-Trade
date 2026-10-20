@@ -22,7 +22,8 @@ It reads one producer task at one exact commit, its canonical research artifact
 and, for an uncompleted/blocked stage, its own generation/session-bound receipt.
 It verifies completed-stage content hashes, epoch and source-blob bindings,
 candidate/family/lineage identity and closed authority. Source tree metadata may
-be indexed; source content and evaluation paths are never read. There is no
+be indexed; no source-packet file or evaluation path is opened. Bound producer
+artifacts can themselves contain documentary material. There is no
 handoff traversal or inference of Validator, portfolio or Site completion.
 
 Blocked research, absent research, absent dossier and unsupported producer
