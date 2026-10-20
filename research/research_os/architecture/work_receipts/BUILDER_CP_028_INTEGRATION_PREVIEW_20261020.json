@@ -1,0 +1,24 @@
+{
+  "schema_version": "builder-integration-feasibility-v1",
+  "builder_head": "ed947dc61b4631bb45b487953e1fbb46a246e9af",
+  "oracle_head": "d46116b31f3a217fdf418fe08aa2c4820d5d93c0",
+  "merge_base": "7e2a6de231939f4b559a63fac3ea7eee28d81e1f",
+  "merge_tree_exit_code": 1,
+  "merge_conflicts": true,
+  "preview_tree": "4dc0e6e0cc8cbf8d880e0d99db93821b4d03973e",
+  "preview_sha256": "e1023467cfc946a94a770527ab6f7a991bc7d28c0535c845ea72708ece1f353e",
+  "preview": "4dc0e6e0cc8cbf8d880e0d99db93821b4d03973e\n100644 5436cfc630c21d9cd87fdaa1c235bdd5129d2dd3 1\t.github/workflows/oracle-v2-core.yml\n100644 ec8877d50fa22c01d2fdfd8e401d43eb1a29d6dc 2\t.github/workflows/oracle-v2-core.yml\n100644 818990b88c201e3eb0ccef7eedc7376cc85e571d 3\t.github/workflows/oracle-v2-core.yml\n100644 620cc1ffc578d98583241c8a543bdf6401587f66 1\tSTATE.md\n100644 27d2450106812bb952abe17fa75d9af3483d8927 2\tSTATE.md\n100644 e66fbf1769ca4fb34011ca25c98fbcd2e8f42b4f 3\tSTATE.md\n\nAuto-merging .github/workflows/oracle-v2-core.yml\nCONFLICT (content): Merge conflict in .github/workflows/oracle-v2-core.yml\nAuto-merging STATE.md\nCONFLICT (content): Merge conflict in STATE.md\n",
+  "authoritative_ref_changed": false,
+  "checkout_changed": false,
+  "deployment_performed": false,
+  "outcome_accessed": false,
+  "python_syntax_compiled": 24,
+  "oracle_only_evidence_blobs_preserved": 48,
+  "oracle_site_files_preserved": 23,
+  "native_observer_vm_configuration": "NOT_INSPECTED_NO_REPOSITORY_MODULE_ASSUMED",
+  "frontier_prerequisite_diff": "diff --git a/research/research_os/runtime/RESEARCH_FRONTIER.json b/research/research_os/runtime/RESEARCH_FRONTIER.json\nindex 8b7d713..6e1fb65 100644\n--- a/research/research_os/runtime/RESEARCH_FRONTIER.json\n+++ b/research/research_os/runtime/RESEARCH_FRONTIER.json\n@@ -78,6 +78,7 @@\n       \"objective\": \"Find exactly one causally distinct forced-flow or institutional-constraint mechanism from admissible public rules/documents, screen Legacy before freeze, and freeze at most one CandidateHypothesis without inspecting returns.\",\n       \"allowed_actions\": [\n         \"read fresh Legacy ledger, duplication map and negative knowledge before ideation\",\n+        \"research one bounded institutional-flow mechanism from admissible public rules and documentary evidence\",\n         \"inspect public rules, institutional constraints, calendars and implementation mechanics\",\n         \"map forced actor, constraint, clock, affected universe, capacity and falsification\",\n         \"actively seek structural disconfirmation\",\n",
+  "conflict_paths": [
+    ".github/workflows/oracle-v2-core.yml",
+    "STATE.md"
+  ]
+}
