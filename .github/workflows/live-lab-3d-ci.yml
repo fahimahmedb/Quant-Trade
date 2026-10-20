@@ -62,6 +62,7 @@ jobs:
           name: live-lab-browser-qa-${{ github.sha }}
           path: |
             research/live_lab_ux/artifacts/browser-qa.json
+            research/live_lab_ux/artifacts/G_ORACLE_DESKTOP.png
             research/live_lab_ux/artifacts/F_FALLBACK.png
           if-no-files-found: error
           retention-days: 90
