@@ -330,6 +330,7 @@ class V2WorkerIntegrationTests(unittest.TestCase):
     def test_real_git_validator_requires_separate_process_and_reconstructs_primary_evidence(self):
         from copy import deepcopy
         from research.research_os.expansion.v2_independence import independent_context, process_identity, AXES
+        import subprocess, sys, json
         harness, worker = self.real_worker()
         worker.wake(); worker.wake()
         task = harness.read("tasks/PRODUCER-TEST.json")
@@ -337,6 +338,22 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             candidate = snapshot.read(v2_artifact_path(task, "candidate_draft.json"))
             with self.assertRaisesRegex(RuntimeError, "DISTINCT_PROCESS_NOT_PROVEN"):
                 independent_context(snapshot, candidate)
+            code = """
+import json,sys
+from pathlib import Path
+from research.research_os.github_state import GitHubStateStore
+from research.research_os.expansion.v2_independence import independent_context
+s=GitHubStateStore(cache=Path(sys.argv[1]),repository='fixture/repo',branch='recovery')
+s.remote=sys.argv[2]
+with s.snapshot() as snapshot:
+    print(json.dumps(independent_context(snapshot,snapshot.read(sys.argv[3]))))
+"""
+            actual = subprocess.run([sys.executable, "-c", code, str(harness.root / "validator-cache"),
+                                     str(harness.remote), v2_artifact_path(task, "candidate_draft.json")],
+                                    capture_output=True, text=True, check=True, timeout=60)
+            proof = json.loads(actual.stdout)
+            self.assertTrue(all(proof[axis] is True for axis in AXES))
+            self.assertNotEqual(proof["process"], candidate["producer_identity"]["process"])
             different = dict(process_identity(), pid=-1)
             with patch("research.research_os.expansion.v2_independence.process_identity", return_value=different):
                 proof = independent_context(snapshot, candidate)

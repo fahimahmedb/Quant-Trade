@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import unittest
 from unittest.mock import patch
+import subprocess
 
 from deploy import oracle_v2_canary as canary
 from deploy.oracle_v2_deploy import CONFIG, ROOT_QUALIFICATION, GATES, verify_qualification
@@ -15,6 +16,17 @@ from research.research_os.github_state import GitHubStateStore, PREFIX
 class V2DeploymentTests(unittest.TestCase):
     def test_activation_rejects_missing_stale_foreign_and_unsafe_proofs(self):
         self.assertEqual(ROOT_QUALIFICATION.parent, CONFIG.parent)
+        from deploy.oracle_v2_deploy import run_as_worker
+        process = unittest.mock.Mock(pid=999)
+        process.communicate.side_effect = [subprocess.TimeoutExpired("fixture", 1), ("", "")]
+        with patch("deploy.oracle_v2_deploy.subprocess.Popen", return_value=process) as spawn, \
+                patch("deploy.oracle_v2_deploy.os.killpg") as kill:
+            with self.assertRaisesRegex(RuntimeError, "PROCESS_GROUP_KILLED"):
+                run_as_worker(["-m", "fixture"], timeout=1)
+            self.assertTrue(spawn.call_args.kwargs["start_new_session"])
+            self.assertIn("/usr/bin/flock", spawn.call_args.args[0])
+            self.assertIn("/var/lib/quant-research", spawn.call_args.args[0])
+            kill.assert_called_once()
         now = datetime(2026, 10, 20, 3, tzinfo=timezone.utc)
         config = dict(release_sha="a" * 40, vm_ocid="fixture-vm")
         valid = dict(status="PASS_V2_PRE_ACTIVATION", evidence_scope="LIVE_ORACLE_V2_CORE",

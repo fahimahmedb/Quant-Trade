@@ -10,6 +10,7 @@ import signal
 import subprocess
 import urllib.request
 import hashlib
+import fcntl
 
 from deploy.oracle_h24_canary import instance_identity
 from deploy.oracle_release_install import _validate_release_receipt, validate_sha
@@ -145,7 +146,8 @@ def prepare(release, v2_run, sec_run):
 
 def run_as_worker(arguments, timeout):
     command = ["runuser", "-u", "quant-research", "--", "env", "HOME=/var/lib/quant-research",
-               "PYTHONDONTWRITEBYTECODE=1", "/usr/bin/python3.12", "-B", "-s", *arguments]
+               "PYTHONDONTWRITEBYTECODE=1", "/usr/bin/flock", "--nonblock", "--conflict-exit-code=75",
+               "/var/lib/quant-research", "/usr/bin/python3.12", "-B", "-s", *arguments]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                text=True, start_new_session=True)
     try:
@@ -244,8 +246,24 @@ def main():
     release = validate_config(config)
     if CURRENT.resolve() != release: raise ValueError("V2_CURRENT_RELEASE_CHANGED")
     os.chdir(release)
-    print(json.dumps({"qualify": lambda: qualify(config, release), "activate": lambda: activate(config),
-                      "status": lambda: status(config)}[args.action](), sort_keys=True))
+    # Fixed controls may be called twice through Run Command. A root-owned
+    # stable directory lock serializes qualification/activation independently
+    # of the service-user writer lock held by run_as_worker.
+    if args.action == "status":
+        result = status(config)
+    else:
+        control_lock = Path("/run/quant-research-v2-control")
+        control_lock.mkdir(mode=0o700, exist_ok=True)
+        fd = os.open(control_lock, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise ValueError("V2_FIXED_CONTROL_ALREADY_RUNNING") from None
+            result = qualify(config, release) if args.action == "qualify" else activate(config)
+        finally:
+            os.close(fd)
+    print(json.dumps(result, sort_keys=True))
 
 
 if __name__ == "__main__": main()
