@@ -2,6 +2,7 @@ import {ACTIVITY,EVENT,PROGRESS,ROLES} from '../core/model.js';
 
 const NATIVE_EVENT_TYPES=new Set(['ACTION_STARTED','ACTION_COMPLETED','WORKER_HEARTBEAT','SESSION_ENDED']);
 const ACTIVITY_VALUES=new Set(Object.values(ACTIVITY));
+const ROLE_KEYS=new Set(Object.keys(ROLES));
 
 function text(value){return typeof value==='string'&&value.trim()?value.trim():null;}
 function integer(value){return Number.isInteger(value)?value:null;}
@@ -10,6 +11,15 @@ function evidence(event){return [{ref:`worker-event:${event.event_id}`}];}
 function explicitActivity(payload={}){
   const candidate=payload.ui_activity??payload.activity;
   return ACTIVITY_VALUES.has(candidate)?candidate:ACTIVITY.NONE;
+}
+function explicitRole(payload={}){
+  const candidate=text(payload.ui_role);
+  return candidate&&ROLE_KEYS.has(candidate)?candidate:'worker';
+}
+function explicitDisplayName(payload={}){
+  const candidate=text(payload.ui_label);
+  if(!candidate||candidate.length>64)return undefined;
+  return candidate;
 }
 function baseNative(event){
   if(!event||typeof event!=='object')return null;
@@ -26,30 +36,32 @@ function baseNative(event){
     authorityStream:nativeStream(event),
     at,
     workerId:event.worker_id,
-    role:'worker',
     evidence:evidence(event),
   };
 }
 
 /**
- * Maps only the worker facts proved by the native Site contract.
- * It deliberately does not infer Codex/Owner identity, research role,
- * progress, decisions, Economic Look activity, or economic meaning.
+ * Maps only facts supplied by the authenticated native Site contract.
+ * Role/display identity and activity are accepted only from explicit allowlisted
+ * payload fields. They are never inferred from worker IDs, labels, timing or
+ * reconnect/heartbeat state.
  */
 export function mapNativeWorkerEvent(event){
   const base=baseNative(event);if(!base)return null;
   const payload=event.payload&&typeof event.payload==='object'?event.payload:{};
+  const role=explicitRole(payload),displayName=explicitDisplayName(payload);
+  const identified={...base,role,...(displayName?{displayName}:{})};
   const label=text(payload.label)||event.action_id;
   const detail=text(payload.detail);
   switch(event.event_type){
     case 'WORKER_HEARTBEAT':
       return {id:base.id,seq:base.seq,stream:base.stream,at:base.at,kind:EVENT.HEARTBEAT};
     case 'ACTION_STARTED':
-      return {...base,kind:EVENT.WORK_STARTED,task:label,step:detail,lastAction:detail||label,activity:explicitActivity(payload),progress:{mode:PROGRESS.UNKNOWN}};
+      return {...identified,kind:EVENT.WORK_STARTED,task:label,step:detail,lastAction:detail||label,activity:explicitActivity(payload),progress:{mode:PROGRESS.UNKNOWN}};
     case 'ACTION_COMPLETED':
-      return {...base,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||`Completed: ${label}`,activity:ACTIVITY.NONE};
+      return {...identified,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||`Completed: ${label}`,activity:ACTIVITY.NONE};
     case 'SESSION_ENDED':
-      return {...base,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||'Worker session ended',activity:ACTIVITY.NONE};
+      return {...identified,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||'Worker session ended',activity:ACTIVITY.NONE};
     default:return null;
   }
 }
@@ -76,13 +88,14 @@ function replayGuard(items=[]){
 export function mapNativeSnapshot(snapshot){
   if(!snapshot||typeof snapshot!=='object'||!text(snapshot.generated_at))return null;
   const items=validMappedEvents(Array.isArray(snapshot.events)?snapshot.events:[]);
-  const agents=newestPerWorker(items).map(({event})=>{
+  const agents=newestPerWorker(items).map(({event,mapped})=>{
     const payload=event.payload&&typeof event.payload==='object'?event.payload:{};
     const running=event.event_type==='ACTION_STARTED';
     return {
       authorityStream:nativeStream(event),
       workerId:event.worker_id,
-      role:'worker',
+      role:mapped.role||'worker',
+      ...(mapped.displayName?{displayName:mapped.displayName}:{}),
       stale:(snapshot.sessions||[]).some(s=>s.worker_id===event.worker_id&&s.session_id===event.session_id&&s.generation===event.generation&&['STALE','STALE_RESTART'].includes(s.lease_status)),
       state:running?'WORKING':'IDLE',
       activity:running?explicitActivity(payload):ACTIVITY.NONE,
@@ -121,8 +134,9 @@ export function mapNativeSiteFrame(frame){
 }
 
 export const NATIVE_BINDING={
-  roles:{worker:ROLES.worker},
+  roles:{worker:ROLES.worker,researcher:ROLES.researcher,builder:ROLES.builder,data:ROLES.data,auditor:ROLES.auditor,manager:ROLES.manager},
   supportedEventTypes:[...NATIVE_EVENT_TYPES],
+  explicitPayloadFacts:['ui_activity','ui_role','ui_label'],
   inferredFacts:[],
-  forbiddenInferences:['codex-owner-identity','research-role','progress','decision','economic-look','economic-result'],
+  forbiddenInferences:['codex-owner-identity','role-from-worker-id','identity-from-worker-id','research-role-without-ui-role','progress','decision','economic-look','economic-result'],
 };
