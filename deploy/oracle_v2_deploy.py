@@ -20,6 +20,7 @@ from research.research_os.oracle_worker import backend_from_config
 from research.research_os.oracle_worker_v2 import _require_v2_config
 
 BRANCH = "builder/oracle-v2-core-20261020"
+QUALIFICATION_SOURCE_BRANCHES = (BRANCH, "builder/v2-forward-20261020")
 CONFIG = Path("/etc/quant-research-v2/worker.json")
 ROOT_QUALIFICATION = CONFIG.parent / "qualification.root.json"
 STATE = Path("/var/lib/quant-research-v2")
@@ -40,7 +41,15 @@ def control_wrapper(release, action):
     return original.replace(b"PATH=/usr/bin:/bin", ("PATH=" + ROOT_CONTROL_PATH).encode())
 
 
+def _ci_source_branch(config):
+    branch = config.get("qualification_source_branch", BRANCH)
+    if not isinstance(branch, str) or branch not in QUALIFICATION_SOURCE_BRANCHES:
+        raise ValueError("V2_QUALIFICATION_SOURCE_BRANCH_NOT_AUTHORIZED")
+    return branch
+
+
 def verify_ci(config):
+    source_branch = _ci_source_branch(config)
     evidence = {}
     for key, name in (("v2_core", "Oracle V2 Core"), ("sec_p0", "SEC P0 pre-t0 gate")):
         run_id = int(config["qualification_ci_runs"][key])
@@ -48,10 +57,10 @@ def verify_ci(config):
         request = urllib.request.Request(url, headers={"User-Agent": "Quant-Trade-V2-qualification"})
         with urllib.request.urlopen(request, timeout=30) as response:
             run = json.loads(response.read(2 * 1024 * 1024))
-        if (run.get("head_sha") != config["release_sha"] or run.get("head_branch") != BRANCH
+        if (run.get("head_sha") != config["release_sha"] or run.get("head_branch") != source_branch
                 or run.get("name") != name or run.get("status") != "completed" or run.get("conclusion") != "success"):
             raise ValueError("V2_EXACT_RELEASE_CI_NOT_SUCCESSFUL:" + key)
-        evidence[key] = {k: run[k] for k in ("id", "head_sha", "conclusion", "html_url")}
+        evidence[key] = {k: run[k] for k in ("id", "head_sha", "head_branch", "conclusion", "html_url")}
     return evidence
 
 
@@ -59,6 +68,7 @@ def validate_config(config):
     sha = validate_sha(config["release_sha"])
     _require_v2_config(config)
     assert_authority_closed(config)
+    _ci_source_branch(config)
     if (config.get("repository") != "fahimahmedb/Quant-Trade" or config.get("branch") != BRANCH
             or config.get("cache") != str(STATE / "github.git") or config.get("lane") != "auto"):
         raise ValueError("V2_CANONICAL_CONFIG_REQUIRED")
@@ -93,15 +103,17 @@ def active(unit):
     return subprocess.run(["systemctl", "is-active", unit], capture_output=True, text=True).stdout.strip()
 
 
-def prepare(release, v2_run, sec_run):
+def prepare(release, v2_run, sec_run, *, qualification_source_branch=BRANCH):
     if os.geteuid() != 0:
         raise ValueError("ROOT_REQUIRED_FOR_V2_PREPARATION")
+    source_branch = _ci_source_branch({"qualification_source_branch": qualification_source_branch})
     old = json.loads(Path("/etc/quant-research/worker.json").read_text())
     account = pwd.getpwnam("quant-research")
     if account.pw_uid == 0 or account.pw_dir != "/var/lib/quant-research":
         raise ValueError("QUALIFIED_V1_ACCOUNT_REQUIRED")
     config = dict(old, release_sha=release.name, branch=BRANCH, cache=str(STATE / "github.git"),
                   worker_id="oracle-research-v2", lane="auto", research_contract_version="v2-core",
+                  qualification_source_branch=source_branch,
                   qualification_ci_runs={"v2_core": int(v2_run), "sec_p0": int(sec_run)})
     for key in ("economic_experiment_authorized", "prospective_observation_authorized", "real_capital_authorized", "live_trading_authorized"):
         config[key] = False
