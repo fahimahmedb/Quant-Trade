@@ -73,7 +73,9 @@ def main(argv=None):
             raise ValueError("EXECUTABLE_RELEASE_PATH_MISMATCH")
 
     worker = build_v2_worker(config, backend=backend)
-    print(json.dumps(worker.wake(mode=args.mode), sort_keys=True))
+    result = worker.wake(mode=args.mode)
+    result["research_contract_version"] = "v2-core"
+    print(json.dumps(result, sort_keys=True))
     if args.mode == "run":
         worker.store.compact_if_due()
     return 0

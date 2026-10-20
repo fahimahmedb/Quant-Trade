@@ -70,8 +70,16 @@ class WorkerTests(unittest.TestCase):
         git(self.seed, 'config', 'user.name', 'Test')
         git(self.seed, 'config', 'user.email', 'test@localhost')
         self.base = self.seed / 'research/research_os'
-        for folder in ('runtime', 'hypotheses', 'sources', 'legacy'):
+        for folder in ('runtime', 'sources', 'legacy'):
             shutil.copytree(BASE / folder, self.base / folder)
+        # A deterministic worker harness must not inherit hypotheses frozen by
+        # the live lab after the harness was written. Keep the real ASML overlap
+        # in this local fixture; full current-corpus screening has its own tests.
+        (self.base / 'hypotheses').mkdir()
+        for hypothesis in ('FUND-ASML-CAPACITY-SERVICE-001', 'FUND-ASML-CAPACITY-PRICING-001',
+                           'FUND-TSMC-N2-MARGIN-LEARNING-001'):
+            shutil.copyfile(BASE / 'hypotheses' / (hypothesis + '.json'),
+                            self.base / 'hypotheses' / (hypothesis + '.json'))
         (self.base / 'tasks').mkdir()
         manifest = json.loads((self.base / 'legacy/source_manifest.json').read_text())
         ledger = {'schema_version': manifest['schema_version'], 'governance': manifest['governance'],

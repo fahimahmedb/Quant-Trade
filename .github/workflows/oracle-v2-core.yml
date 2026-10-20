@@ -29,6 +29,7 @@ jobs:
             research/research_os/expansion/v2_stage_executor.py \
             research/research_os/oracle_worker_v2.py \
             scripts/qualify_oracle_v2_core.py
+          python -m py_compile scripts/prove_oracle_v2_dry_run.py
 
       - name: V2 Core contract, bridge, worker and whole-loop tests
         run: |
@@ -101,10 +102,18 @@ jobs:
             --sha "${{ github.sha }}" \
             --output /tmp/oracle-v2-core-verification.json
 
+      - name: Real V2 entrypoint against fresh GitHub state with remote writes disabled
+        run: |
+          python scripts/prove_oracle_v2_dry_run.py \
+            --sha "${{ github.sha }}" --scope CI_GITHUB_READ_ONLY \
+            --output /tmp/oracle-v2-real-github-dry-run.json
+
       - name: Upload exact-head V2 qualification receipt
         uses: actions/upload-artifact@v4
         with:
           name: oracle-v2-core-verification-${{ github.sha }}
-          path: /tmp/oracle-v2-core-verification.json
+          path: |
+            /tmp/oracle-v2-core-verification.json
+            /tmp/oracle-v2-real-github-dry-run.json
           if-no-files-found: error
           retention-days: 90
