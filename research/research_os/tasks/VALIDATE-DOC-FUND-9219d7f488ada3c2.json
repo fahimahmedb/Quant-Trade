@@ -12,6 +12,11 @@
     "scope": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
   "created_at": "2026-10-20T01:00:27Z",
+  "execution": {
+    "lineage": "DOC-FUND-9219d7f488ada3c2",
+    "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+    "session_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g1-b081ffda6505"
+  },
   "forbidden_actions": [
     "hypothesis_generation",
     "signal_repair",
@@ -28,10 +33,10 @@
     "validation_mode": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
   "lease": {
-    "claimed_at": null,
-    "expires_at": null,
-    "generation": 0,
-    "owner": null
+    "claimed_at": "2026-10-20T01:10:06Z",
+    "expires_at": "2026-10-20T01:20:06Z",
+    "generation": 1,
+    "owner": "oracle-research-v1.independent_challenge"
   },
   "lineage": {
     "destination_lane": "independent_challenge",
@@ -42,9 +47,9 @@
   },
   "priority": 70,
   "required_capability": "validator",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
   "task_type": "VALIDATION",
-  "updated_at": "2026-10-20T01:00:27Z"
+  "updated_at": "2026-10-20T01:10:06Z"
 }
