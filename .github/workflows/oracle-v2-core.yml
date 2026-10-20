@@ -25,7 +25,8 @@ jobs:
           python -m py_compile \
             research/research_os/expansion/v2_core.py \
             research/research_os/expansion/v2_bridge.py \
-            research/research_os/expansion/v2_pipeline.py
+            research/research_os/expansion/v2_pipeline.py \
+            scripts/qualify_oracle_v2_core.py
 
       - name: V2 Core contract, bridge and whole-loop tests
         run: |
@@ -85,3 +86,18 @@ jobs:
           assert result['live_trading_authorized'] is False
           print('V2_CLAIM_CEILING=PASS')
           PY
+
+      - name: Generate exact-head V2 qualification receipt
+        run: |
+          PYTHONPATH=. python scripts/qualify_oracle_v2_core.py \
+            --fixture tests/fixtures/oracle_v2_core_fixture.json \
+            --sha "${{ github.sha }}" \
+            --output /tmp/oracle-v2-core-verification.json
+
+      - name: Upload exact-head V2 qualification receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: oracle-v2-core-verification-${{ github.sha }}
+          path: /tmp/oracle-v2-core-verification.json
+          if-no-files-found: error
+          retention-days: 90
