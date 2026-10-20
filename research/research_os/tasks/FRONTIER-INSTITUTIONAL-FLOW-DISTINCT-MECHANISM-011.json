@@ -23,6 +23,16 @@
     "target_lane": "market_discovery",
     "type": "EMPTY_QUEUE_FRONTIER_REFILL"
   },
+  "execution": {
+    "lineage": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-011",
+    "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-011-g1-456b51a85dae",
+    "v2_epoch_binding": {
+      "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
+      "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+      "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001"
+    }
+  },
   "forbidden_actions": [
     "candidate return inspection",
     "backtest",
@@ -41,17 +51,17 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": null,
-    "expires_at": null,
-    "generation": 0,
-    "owner": null
+    "claimed_at": "2026-10-20T18:10:18Z",
+    "expires_at": "2026-10-20T18:20:18Z",
+    "generation": 1,
+    "owner": "oracle-research.market_discovery"
   },
   "priority": 70,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "One Legacy-screened, causally distinct institutional-flow CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-011",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-10-20T18:00:16Z"
+  "updated_at": "2026-10-20T18:10:18Z"
 }
