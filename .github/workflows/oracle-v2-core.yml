@@ -1,0 +1,85 @@
+name: Oracle V2 Core
+
+on:
+  push:
+    branches:
+      - builder/oracle-v2-core-20261020
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v2-core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile V2 Core
+        run: |
+          python -m py_compile \
+            research/research_os/expansion/v2_core.py \
+            research/research_os/expansion/v2_pipeline.py
+
+      - name: V2 Core contract and whole-loop tests
+        run: |
+          python -m unittest -v \
+            tests.test_research_os_v2_core \
+            tests.test_research_os_v2_pipeline
+
+      - name: Verify V2 policy remains fail-closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('research/research_os/runtime/V2_CORE_POLICY.json')
+          policy = json.loads(path.read_text())
+          authority = policy['authority']
+          required = (
+              'economic_experiment_authorized',
+              'prospective_observation_authorized',
+              'real_capital_authorized',
+              'live_trading_authorized',
+          )
+          assert all(authority[k] is False for k in required), authority
+          assert policy['evaluation_membrane']['status'] == 'SEALED'
+          assert policy['evaluation_membrane']['research_outcome_read_capability'] is False
+          assert policy['evaluation_membrane']['research_supervisor_outcome_read_capability'] is False
+          assert policy['evaluation_membrane']['evaluation_research_write_capability'] is False
+          assert policy['owner_overrides']['p0_d_server_side_branch_protection_required'] is False
+          assert policy['owner_overrides']['destructive_git_operations_authorized'] is False
+          print('V2_POLICY_FAIL_CLOSED=PASS')
+          PY
+
+      - name: Verify V2 claim ceiling
+        run: |
+          python - <<'PY'
+          from research.research_os.expansion.v2_core import CLOSED_AUTHORITY, qualify_v2_core
+          proof = {
+              'authority': CLOSED_AUTHORITY,
+              'epoch_contract_qualified': True,
+              'ideation_trial_accounting_qualified': True,
+              'leakage_classification_qualified': True,
+              'candidate_contract_qualified': True,
+              'validator_independence_qualified': True,
+              'evaluation_membrane_qualified': True,
+              'feedback_lineage_qualified': True,
+              'priority_policy_qualified': True,
+              'negative_memory_qualified': True,
+              'multidimensional_status_qualified': True,
+              'bounded_orchestration_qualified': True,
+          }
+          result = qualify_v2_core(proof)
+          assert result['status'] == 'AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED'
+          assert result['economic_claim_authorized'] is False
+          assert result['prospective_observation_authorized'] is False
+          assert result['real_capital_authorized'] is False
+          assert result['live_trading_authorized'] is False
+          print('V2_CLAIM_CEILING=PASS')
+          PY
