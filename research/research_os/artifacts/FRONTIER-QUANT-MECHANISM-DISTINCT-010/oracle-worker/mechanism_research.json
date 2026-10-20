@@ -1,0 +1,65 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "blocker": "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant",
+  "economic_result": "NOT_OBSERVED",
+  "input_head": "aacb611b317df142f6f620cfd674afd93915ec53",
+  "outcome_accessed": false,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 15,
+      "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "492f9bc1849f6ceee2a01fde29cc2b42c73b7f9280366cf5db615c5fb2b3519c",
+    "status": "PASS",
+    "task_authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    }
+  },
+  "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "retryable": false,
+  "stage": "mechanism_research",
+  "state_branch": "builder/oracle-v2-core-20261020",
+  "state_repository": "fahimahmedb/Quant-Trade"
+}

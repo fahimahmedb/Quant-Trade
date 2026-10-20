@@ -13,6 +13,14 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-010/oracle-worker/mechanism_research.json"
+    ],
+    "completed_at": "2026-10-20T16:50:31Z",
+    "receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-010/FRONTIER-QUANT-MECHANISM-DISTINCT-010-g2-09b100dfdd64.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T16:30:14Z",
   "derivation": {
     "derivation_key": "3f1698a0e5b53aac29f532d4bdbb7f7b8e432b4dad00f256a207e16cce59cd9d",
@@ -31,7 +39,7 @@
         "artifact_hash": "95653b5d51b013fd158e774a959150c06ab328648c2510b34ea9f546f5336c96"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-010/FRONTIER-QUANT-MECHANISM-DISTINCT-010-g1-7c0dad1c80d4.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-010/FRONTIER-QUANT-MECHANISM-DISTINCT-010-g2-09b100dfdd64.json",
     "lineage": "FRONTIER-QUANT-MECHANISM-DISTINCT-010",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
     "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-010-g2-09b100dfdd64",
@@ -62,16 +70,16 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T16:50:23Z",
-    "expires_at": "2026-10-20T17:00:23Z",
+    "expires_at": "2026-10-20T16:50:31Z",
     "generation": 2,
     "owner": "oracle-research.market_discovery"
   },
   "priority": 70,
   "required_capability": "quant_mechanisms",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct quantitative/mechanism CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-010",
   "task_type": "QUANT_MECHANISM",
-  "updated_at": "2026-10-20T16:50:23Z"
+  "updated_at": "2026-10-20T16:50:31Z"
 }
