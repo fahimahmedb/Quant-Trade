@@ -1,0 +1,202 @@
+{
+  "checks": {
+    "configured": {
+      "log_sha256": "7611765f52a8cf697fb88c3ffb1c286d7417fb7d9df1ea40a4141f41599de943",
+      "status": "PASS",
+      "tests": 669
+    },
+    "readiness_focused": {
+      "log_sha256": "a4ce7d07b243c02a83d425d5f3270643e73cac0c73993cbe29bda78f99b17887",
+      "status": "PASS",
+      "tests": 28
+    },
+    "research_os": {
+      "log_sha256": "878410ec3a1b4f80c9d503c000d4e2c96621a1db1171358dfbdf5a6cb4c7a088",
+      "status": "PASS",
+      "tests": 266
+    },
+    "v2": {
+      "log_sha256": "506e9d24b9ebb48f3232b6fe03cb6d09c3850dfac975fbf049d812b563320174",
+      "status": "PASS",
+      "tests": 141
+    }
+  },
+  "code_sha": "89c013b9b9220294ef46c1ca0313e3de540d200a",
+  "dry_run": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "branch": "builder/oracle-v2-core-20261020",
+    "entrypoint": "research.research_os.oracle_worker_v2",
+    "evidence_scope": "LOCAL_GITHUB_READ_ONLY",
+    "executable_sha": "89c013b9b9220294ef46c1ca0313e3de540d200a",
+    "git_trace_sha256": "6ba8c053a0c4e9286edb19f483b30bf76026645054ad243c10d7df95f62e9755",
+    "github_state_head": "49bc8077b55a7fdc3f0f432e692b319b59f22021",
+    "github_writes": 0,
+    "hosted_model_calls": 0,
+    "limitations": "Read-only integration proof; does not prove runtime activation or scientific throughput.",
+    "mocks_used": false,
+    "model_configured": false,
+    "push_attempts": 0,
+    "real_fetch_commands": 2,
+    "real_subprocess": true,
+    "repository": "fahimahmedb/Quant-Trade",
+    "research_contract_version": "v2-core",
+    "schema_version": "oracle-v2-real-github-dry-run-v1",
+    "status": "PASS",
+    "worker_result": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "hosted_model_calls": 0,
+      "input_head": "49bc8077b55a7fdc3f0f432e692b319b59f22021",
+      "lane": "fundamental_events",
+      "one_lineage_per_wake": true,
+      "preflight": {
+        "control_plane": {
+          "authority": {
+            "economic_experiment_authorized": false,
+            "live_trading_authorized": false,
+            "prospective_observation_authorized": false,
+            "real_capital_authorized": false
+          },
+          "mode": "PRODUCTION_RESEARCH_WORKERS",
+          "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+        },
+        "current_corpus": {
+          "count": 15,
+          "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+          "review_count": 1,
+          "review_pairs": [
+            {
+              "basis": [
+                "entity",
+                "mechanism_tokens"
+              ],
+              "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+              "left": "FUND-ASML-CAPACITY-PRICING-001",
+              "mechanism_overlap": 0.2529,
+              "review_required": true,
+              "right": "FUND-ASML-CAPACITY-SERVICE-001"
+            }
+          ],
+          "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+        },
+        "legacy": {
+          "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+          "loaded_record_count": 20,
+          "manifest_historical_research_items_found": 33,
+          "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+          "schema_version": "legacy-research-ledger-v1",
+          "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+          "status": "PASS"
+        },
+        "preflight_hash": "af586f7116b275fd1ae69d9e1061d232d50ba628102f6be87bd0aee71d544b83",
+        "status": "PASS",
+        "task_authority": null
+      },
+      "release_sha": "89c013b9b9220294ef46c1ca0313e3de540d200a",
+      "research_contract_version": "v2-core",
+      "selected_task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+      "state_branch": "builder/oracle-v2-core-20261020",
+      "state_repository": "fahimahmedb/Quant-Trade",
+      "status": "DRY_RUN",
+      "v2_preflight": {
+        "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
+        "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+        "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+        "snapshot_head": "49bc8077b55a7fdc3f0f432e692b319b59f22021",
+        "status": "PASS"
+      },
+      "writes": 0
+    }
+  },
+  "evidence_scope": "LOCAL_CODE_AND_REAL_READ_ONLY_GITHUB_NOT_DEPLOYMENT",
+  "hosted_ci": "PENDING_FOR_THIS_CODE",
+  "outcome_accessed": false,
+  "qualification": {
+    "fixture_path": "tests/fixtures/oracle_v2_core_fixture.json",
+    "fixture_sha256": "75cc0d4e29c2fb64dd10cf05ca04a87a85c18cd5cb570f498b465c205797458b",
+    "receipt": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "blinding": {
+        "epoch_blinding_integrity": "PASS",
+        "owner_outcome_blinding_status": "BLINDED",
+        "supervisor_outcome_blinding_status": "BLINDED"
+      },
+      "candidate_hash": "32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a",
+      "economic_claim_authorized": false,
+      "epoch_manifest_hash": "8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457",
+      "evaluation_ingest_receipt_hash": "26e2ea1554b22a89f484a7b0557bbe91aa882249cc9cf22ea8b933489b9d4a44",
+      "export_bundle_hash": "7f29848d207e21c00a111efeff5c58eaf4477f1cee5e0a129479cca53a55d93a",
+      "negative_knowledge_hash": "53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e",
+      "outcome_accessed": false,
+      "priority_decision_hash": "5cbb42581d10d2f6433aeffc47437d49b544657b939eda0c29ce17aaa0c83508",
+      "receipt_hash": "82295fa29ef43cdf22508008738b06e767d7de149692836164b8fb908e6920a4",
+      "research_epoch_id": "V2-FIXTURE-EPOCH-001",
+      "research_trial_id": "V2-FIXTURE-TRIAL-001",
+      "schema_version": "oracle-v2-core-pre-outcome-receipt-v1",
+      "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY",
+      "system_qualification": "AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED",
+      "trial_hash": "dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b",
+      "validator_hash": "45bb2e3c401ae635867bb9b89825bda5cdd6e0624c3cd9bf5304a5fed903aeb4"
+    },
+    "schema_version": "oracle-v2-core-exact-head-verification-v1",
+    "verified_commit_sha": "89c013b9b9220294ef46c1ca0313e3de540d200a"
+  },
+  "real_snapshot_source_binding": {
+    "changed_snapshot_rejected": true,
+    "outcome_accessed": false,
+    "remote_writes": 0,
+    "scope": "LOCAL_REAL_SNAPSHOT_SOURCE_BINDING_NOT_RUNTIME",
+    "unverified_bytes_rejected": true,
+    "valid_source_pass": true
+  },
+  "schema_version": "builder-cp022-local-qualification-v1",
+  "workflow": {
+    "adaptations": [
+      "github.sha",
+      "scope LOCAL",
+      "output paths"
+    ],
+    "scope": "LOCAL_EXECUTION_NOT_HOSTED_CI",
+    "sha": "89c013b9b9220294ef46c1ca0313e3de540d200a",
+    "steps": [
+      {
+        "exit_code": 0,
+        "name": "Compile V2 Core"
+      },
+      {
+        "exit_code": 0,
+        "name": "V2 Core contract, bridge, worker and whole-loop tests"
+      },
+      {
+        "exit_code": 0,
+        "name": "Verify V2 policy remains fail-closed"
+      },
+      {
+        "exit_code": 0,
+        "name": "Verify V2 claim ceiling"
+      },
+      {
+        "exit_code": 0,
+        "name": "Generate exact-head V2 qualification receipt"
+      },
+      {
+        "exit_code": 0,
+        "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled"
+      }
+    ]
+  }
+}
