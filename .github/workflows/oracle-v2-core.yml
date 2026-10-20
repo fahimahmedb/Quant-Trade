@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - builder/oracle-v2-core-20261020
+      - builder/v2-forward-20261020
   workflow_dispatch:
 
 permissions:
@@ -29,6 +30,9 @@ jobs:
             research/research_os/expansion/v2_stage_executor.py \
             research/research_os/expansion/v2_state.py \
             research/research_os/expansion/v2_independence.py \
+            research/research_os/expansion/edge_observability_v2.py \
+            research/research_os/frontier_source_planner_v2.py \
+            research/research_os/queue_replenisher.py \
             research/research_os/oracle_worker_v2.py \
             scripts/qualify_oracle_v2_core.py
           python -m py_compile scripts/prove_oracle_v2_dry_run.py
@@ -42,6 +46,8 @@ jobs:
             tests.test_research_os_v2_bridge \
             tests.test_research_os_v2_pipeline \
             tests.test_research_os_v2_worker_integration \
+            tests.test_research_os_edge_observability_v2 \
+            tests.test_research_os_frontier_source_planner_v2 \
             tests.test_oracle_v2_deploy
 
       - name: Verify V2 policy remains fail-closed
