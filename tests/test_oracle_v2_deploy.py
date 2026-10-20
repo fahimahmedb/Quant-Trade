@@ -100,6 +100,17 @@ class V2DeploymentTests(unittest.TestCase):
         with target.snapshot() as snapshot: self.assertEqual(snapshot.head, head)
 
     def test_v2_units_and_bootstrap_keep_explicit_release_and_shared_v1_lock(self):
+        from deploy.oracle_v2_control_path_repair import repaired_bytes, ROOT_PATH
+        from deploy.oracle_v2_deploy import control_wrapper
+        from deploy.oracle_v1_host_prepare import wrapper
+        import shutil
+        release_identity = Path("/fixture/qualified-release")
+        for action in ("qualify", "activate", "status"):
+            original = wrapper(release_identity, "deploy.oracle_v2_deploy", ["--action", action])
+            self.assertEqual(repaired_bytes(original), control_wrapper(release_identity, action))
+            self.assertIn(b'[ "$#" -eq 0 ] || exit 64', repaired_bytes(original))
+        self.assertEqual(shutil.which("runuser", path=ROOT_PATH), "/usr/sbin/runuser")
+        with self.assertRaises(ValueError): repaired_bytes(b"unexpected root command")
         root = Path(__file__).resolve().parents[1] / "deploy/systemd"
         v1 = (root / "quant-research-worker.service").read_text()
         v2 = (root / "quant-research-worker-v2.service").read_text()

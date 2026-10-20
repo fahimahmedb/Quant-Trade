@@ -1,0 +1,19 @@
+{
+  "status": "ROOT_CONTROL_PATH_DEFECT_REPRODUCED_REPAIR_TESTED_OWNER_EXECUTION_REQUIRED",
+  "qualified_runtime_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "base_sha": "3870d10b9f165402eee9efcca158c66aa3ad2720",
+  "failure": "Fixed root wrapper PATH=/usr/bin:/bin omits /usr/sbin/runuser on Ubuntu Minimal. Canary child was never launched; no V2 claim, migration, freeze or scheduler activation occurred. Root qualifier finally restarted V1.",
+  "evidence": "v2_evidence/ORACLE_V2_QUALIFIER_RUNUSER_FAILURE.json",
+  "repair_scope": "Only root-owned deployment wrapper environment. Installed a67ffec release code and four authorities stay unchanged. No general sudo or extra arguments authorized.",
+  "repair_script": "deploy/oracle_v2_control_path_repair.py",
+  "repair_script_sha256": "40216c5a613c6649f4a66d2103ee408adc9ccdb378daea5bd642efd87da6b8c5",
+  "future_release_fix": "Generate V2 controls with standard root-only PATH including /usr/sbin; invoke /usr/sbin/runuser by absolute path.",
+  "tests": "42 V2 tests PASS, including exact wrapper equivalence and actual runuser resolution. Discovery remains 602.",
+  "live_path_probe": "PENDING_OCI_DELIVERY",
+  "root_execution": "PENDING_OWNER",
+  "v2_activation": "NOT_PERFORMED",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

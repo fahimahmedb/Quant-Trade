@@ -30,6 +30,14 @@ TIMER, SERVICE = "quant-research-worker-v2.timer", "quant-research-worker-v2.ser
 GATES = ("exact_release_ci", "oracle_identity", "real_readonly_entrypoint", "local_gpt_oss_reasoning",
          "v1_quiesced_during_writes", "canonical_migration", "trial_before_ideation", "claim_expiry_recovered",
          "v2_sidecars_persisted", "no_duplicate_replay", "authority_closed")
+ROOT_CONTROL_PATH = "/usr/sbin:/usr/bin:/sbin:/bin"
+
+
+def control_wrapper(release, action):
+    original = wrapper(release, "deploy.oracle_v2_deploy", ["--action", action])
+    if original.count(b"PATH=/usr/bin:/bin") != 1:
+        raise ValueError("ROOT_WRAPPER_ENVIRONMENT_TEMPLATE_CHANGED")
+    return original.replace(b"PATH=/usr/bin:/bin", ("PATH=" + ROOT_CONTROL_PATH).encode())
 
 
 def verify_ci(config):
@@ -131,7 +139,7 @@ def prepare(release, v2_run, sec_run):
     rules = []
     for action in ("qualify", "activate", "status"):
         name = "quant-v2-" + action
-        write_atomic(libexec / name, wrapper(release, "deploy.oracle_v2_deploy", ["--action", action]), 0o755)
+        write_atomic(libexec / name, control_wrapper(release, action), 0o755)
         rules.append(f'ocarun ALL=(root) NOPASSWD: /usr/local/libexec/{name} ""')
     data = ("\n".join(rules) + "\n").encode()
     import tempfile
@@ -145,7 +153,7 @@ def prepare(release, v2_run, sec_run):
 
 
 def run_as_worker(arguments, timeout):
-    command = ["runuser", "-u", "quant-research", "--", "env", "HOME=/var/lib/quant-research",
+    command = ["/usr/sbin/runuser", "-u", "quant-research", "--", "env", "HOME=/var/lib/quant-research",
                "PYTHONDONTWRITEBYTECODE=1", "/usr/bin/flock", "--nonblock", "--conflict-exit-code=75",
                "/var/lib/quant-research", "/usr/bin/python3.12", "-B", "-s", *arguments]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,

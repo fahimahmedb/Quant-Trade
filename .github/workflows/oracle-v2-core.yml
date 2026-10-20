@@ -33,6 +33,7 @@ jobs:
             scripts/qualify_oracle_v2_core.py
           python -m py_compile scripts/prove_oracle_v2_dry_run.py
           python -m py_compile deploy/oracle_v2_deploy.py deploy/oracle_v2_canary.py deploy/oracle_v2_host_prepare.py
+          python -m py_compile deploy/oracle_v2_control_path_repair.py
 
       - name: V2 Core contract, bridge, worker and whole-loop tests
         run: |
