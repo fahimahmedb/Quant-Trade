@@ -1,0 +1,65 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "economic_result": "NOT_OBSERVED",
+  "handoff": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
+  "input_head": "9b6ffa0ef9da92a870feb1fb8fe64e0a72042d43",
+  "next_lane": "independent_challenge",
+  "outcome_accessed": false,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 14,
+      "overlap_map_hash": "db1cfb04810ce0f5f6abeaa53dff5e91025d0991306c09fbfe42ea7f1642cd74",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "70d6b18961ed47c48295e160074cff29ebd3e85aa76d60288752ea1f8e6b1f0e"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "bd7b43c5bdd3def477515913cdc98c677e5080839bb1ca060a745e50b58261ec",
+    "status": "PASS",
+    "task_authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    }
+  },
+  "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+  "stage": "validation_handoff",
+  "state_branch": "builder/oracle-economic-loop-recovery-20261019",
+  "state_repository": "fahimahmedb/Quant-Trade"
+}
