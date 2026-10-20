@@ -31,12 +31,14 @@ jobs:
             research/research_os/expansion/v2_state.py \
             research/research_os/expansion/v2_independence.py \
             research/research_os/expansion/edge_observability_v2.py \
+            research/research_os/expansion/edge_observation_reader_v2.py \
             research/research_os/expansion/evidence_acquisition_intents_v2.py \
             research/research_os/frontier_source_planner_v2.py \
             research/research_os/queue_replenisher.py \
             research/research_os/oracle_worker_v2.py \
             scripts/qualify_oracle_v2_core.py
           python -m py_compile scripts/prove_oracle_v2_dry_run.py
+          python -m py_compile scripts/observe_edge_task_v2.py
           python -m py_compile deploy/oracle_v2_deploy.py deploy/oracle_v2_canary.py deploy/oracle_v2_host_prepare.py
           python -m py_compile deploy/oracle_v2_control_path_repair.py
 
@@ -48,6 +50,7 @@ jobs:
             tests.test_research_os_v2_pipeline \
             tests.test_research_os_v2_worker_integration \
             tests.test_research_os_edge_observability_v2 \
+            tests.test_research_os_edge_observation_reader_v2 \
             tests.test_research_os_frontier_source_planner_v2 \
             tests.test_research_os_evidence_acquisition_intents_v2 \
             tests.test_oracle_v2_deploy
