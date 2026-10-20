@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/oracle-worker/mechanism_research.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T07:40:27Z",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g2-840a953a13ed-002.json"
+  ],
+  "input_head": "9f6df73699b745417cd269665548aab7976a75e4",
+  "lease_generation": 2,
+  "receipt_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g2-840a953a13ed",
+  "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g2-840a953a13ed",
+  "started_at": "2026-10-20T07:40:23Z",
+  "status": "BLOCKED",
+  "summary": "mechanism_research: BLOCKED; task=BLOCKED; release=f3943830e20b05d926d3013501573b8b21fdace7",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005",
+  "worker_id": "oracle-research-v1.market_discovery"
+}

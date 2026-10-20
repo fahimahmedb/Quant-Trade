@@ -1,0 +1,20 @@
+{
+  "action_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005",
+  "emitted_at": "2026-10-20T06:30:10Z",
+  "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005-g1-adb57274caef-2",
+  "event_seq": 2,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 1,
+  "payload": {
+    "active_count": 1,
+    "claimed_count": 0,
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "result": "READY",
+    "stage": "legacy_duplicate_check",
+    "task_count": 40,
+    "terminal_count": 39
+  },
+  "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005-g1-adb57274caef",
+  "worker_id": "oracle-research-v1.fundamental_events"
+}
