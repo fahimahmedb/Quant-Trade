@@ -82,6 +82,8 @@ def prove(sha, output, scope):
                 or result.get("research_contract_version") != "v2-core"
                 or result.get("input_head") != head or result.get("hosted_model_calls") != 0
                 or result.get("preflight", {}).get("status") != "PASS"
+                or result.get("v2_preflight", {}).get("status") != "PASS"
+                or result["v2_preflight"]["snapshot_head"] != head
                 or any(result.get("authority", {}).get(key) is not False for key in AUTHORITY_KEYS)):
             raise ValueError("V2_DRY_RUN_CONTRACT_NOT_PROVEN")
         proof = dict(schema_version="oracle-v2-real-github-dry-run-v1", status="PASS",

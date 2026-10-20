@@ -15,6 +15,7 @@ from .github_state import GitHubStateStore, StateConflict
 from .model_backend import BackendUnavailable
 from .oracle_worker import AUTHORITY, ResearchOSWorker, backend_from_config
 from .expansion.v2_stage_executor import V2StageExecutor
+from .expansion.v2_state import V2ModelAudit, V2StateStore
 
 
 def _require_v2_config(config):
@@ -30,18 +31,30 @@ def _require_v2_config(config):
         raise ValueError("V2_WORKER_LIVE_AUTHORITY_MUST_REMAIN_FALSE")
 
 
+class V2ResearchOSWorker(ResearchOSWorker):
+    def _refill_or_idle(self, snapshot, base_receipt):
+        if self.expected_task_id:
+            return self._idle(snapshot, base_receipt, "CANARY_TARGET_TERMINAL", persist=False)
+        return super()._refill_or_idle(snapshot, base_receipt)
+
+
 def build_v2_worker(config, *, store=None, backend=None):
     _require_v2_config(config)
     backend = backend if backend is not None else backend_from_config(config)
+    if backend is not None and hasattr(backend, "model") and hasattr(backend, "budget"):
+        backend = V2ModelAudit(backend)
     store = store or GitHubStateStore(
         cache=Path(config["cache"]), repository=config["repository"], branch=config["branch"]
     )
-    return ResearchOSWorker(
+    store = V2StateStore(store, (config.get("model_backend") or {}).get("model", "DETERMINISTIC_ENGINE"),
+                         backend if isinstance(backend, V2ModelAudit) else None, config.get("lane", "auto"))
+    return V2ResearchOSWorker(
         store,
         lane=config.get("lane", "auto"),
         worker_id=config["worker_id"],
         release_sha=config["release_sha"],
         executor=V2StageExecutor(backend),
+        lease_seconds=config.get("lease_seconds", 600), expected_task_id=config.get("canary_task_id"),
     )
 
 
@@ -75,6 +88,7 @@ def main(argv=None):
     worker = build_v2_worker(config, backend=backend)
     result = worker.wake(mode=args.mode)
     result["research_contract_version"] = "v2-core"
+    result["v2_preflight"] = worker.store.last_preflight
     print(json.dumps(result, sort_keys=True))
     if args.mode == "run":
         worker.store.compact_if_due()

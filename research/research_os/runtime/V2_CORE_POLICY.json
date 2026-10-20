@@ -49,7 +49,10 @@
       "FROZEN",
       "VALIDATED"
     ],
-    "experiment_readiness": ["INCOMPLETE", "READY"],
+    "experiment_readiness": [
+      "INCOMPLETE",
+      "READY"
+    ],
     "portfolio_relationship": [
       "UNKNOWN",
       "DISTINCT",
@@ -58,11 +61,34 @@
       "DUPLICATE",
       "COMPLEMENTARY"
     ],
-    "authority": ["CLOSED", "OWNER_AUTHORIZED"]
+    "authority": [
+      "CLOSED",
+      "OWNER_AUTHORIZED"
+    ]
   },
   "portfolio_invariants": {
     "structural_overlap_is_empirical_correlation": false,
     "empirical_correlation_without_admissible_returns": "UNKNOWN",
     "marginal_portfolio_contribution_without_admissible_returns": "NOT_ESTIMATED"
+  },
+  "source_policy": {
+    "version": "v2-primary-pit-v1",
+    "required_evidence_class": "DOCUMENTARY",
+    "availability_ceiling": "EPOCH_KNOWLEDGE_CUTOFF",
+    "missing_pit": "BLOCK_BEFORE_IDEATION"
+  },
+  "retrieval_policy": {
+    "version": "v2-fresh-blob-v1",
+    "source": "FRESH_GITHUB_SNAPSHOT",
+    "verify_git_blob": true,
+    "validator_reconstructs_from_primary_source": true
+  },
+  "validator_policy": {
+    "version": "v2-independent-r0-v1",
+    "decision_scope": "DETERMINISTIC_STRUCTURAL_CHECKS_ONLY",
+    "require_four_independence_axes": true,
+    "require_distinct_process": true,
+    "model_commentary_can_grant_pass": false,
+    "semantic_diverse_review": "NOT_PROVEN_NO_SEMANTIC_PASS_GRANTED"
   }
 }

@@ -27,9 +27,12 @@ jobs:
             research/research_os/expansion/v2_bridge.py \
             research/research_os/expansion/v2_pipeline.py \
             research/research_os/expansion/v2_stage_executor.py \
+            research/research_os/expansion/v2_state.py \
+            research/research_os/expansion/v2_independence.py \
             research/research_os/oracle_worker_v2.py \
             scripts/qualify_oracle_v2_core.py
           python -m py_compile scripts/prove_oracle_v2_dry_run.py
+          python -m py_compile deploy/oracle_v2_deploy.py deploy/oracle_v2_canary.py deploy/oracle_v2_host_prepare.py
 
       - name: V2 Core contract, bridge, worker and whole-loop tests
         run: |
@@ -37,7 +40,8 @@ jobs:
             tests.test_research_os_v2_core \
             tests.test_research_os_v2_bridge \
             tests.test_research_os_v2_pipeline \
-            tests.test_research_os_v2_worker_integration
+            tests.test_research_os_v2_worker_integration \
+            tests.test_oracle_v2_deploy
 
       - name: Verify V2 policy remains fail-closed
         run: |

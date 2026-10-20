@@ -67,6 +67,7 @@ class V2BridgeTests(unittest.TestCase):
             validator_retrieval_manifest_hash="r" * 64,
             producer_identity_hash="a" * 64,
             validator_state_identity_hash="b" * 64,
+            independence_evidence=dict.fromkeys(("information_isolation", "retrieval_independence", "cognitive_independence", "state_isolation"), True),
         )
         self.assertEqual(result["execution_state"], "COMPLETE")
         self.assertEqual(result["scientific_decision"], "PASS")
@@ -87,7 +88,8 @@ class V2BridgeTests(unittest.TestCase):
             validator_state_identity_hash="b" * 64,
         )
         self.assertEqual(result["scientific_decision"], "BLOCK")
-        self.assertEqual(result["epistemic_blockers"], ["PIT_UNRESOLVED"])
+        self.assertIn("PIT_UNRESOLVED", result["epistemic_blockers"])
+        self.assertIn("VALIDATOR_FOUR_AXIS_INDEPENDENCE_NOT_PROVEN", result["epistemic_blockers"])
 
     def test_validator_state_isolation_is_not_name_only(self):
         candidate = self.adapt("fundamental")

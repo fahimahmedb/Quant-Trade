@@ -15,16 +15,16 @@
     "mode": "AFTER_CLOSE_AND_GOVERNED_RELEASE",
     "economic_feedback_visible_to_active_epoch": false
   },
-  "research_policy_hash": "a18cfdf05b8dd94f4803bfc77ae850a942b9428c5a40a7742cb4675c19620f87",
-  "model_routing_policy_hash": "b76063e55788141e136887bf50a03b42bf828e451af8968fac10bd8063c4b83e",
+  "research_policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+  "model_routing_policy_hash": "78105b02ec5a4d343c8cdf571b186cb41fc7cdce0748d32420c4949079c372c4",
   "allowed_model_set": [
     "DETERMINISTIC_ENGINE",
     "gpt-oss-10.2b-q4-k-m"
   ],
   "allowed_model_change_policy": "WITHIN_ALLOWED_SET_ONLY",
-  "source_policy_hash": "117d828628c6327c6b58062582da5cd34b18d5b78c4a60ab0917d74baab4bd6d",
-  "retrieval_policy_hash": "7317ef420772b74a6159c72e8a2367a40de86a303936bed91cb9ab8b68eb5ca2",
-  "validator_policy_hash": "a592006441965759822480781ced63047b839261a5cb01aff3b87bcf647e85aa",
+  "source_policy_hash": "48e4aae6aa38e7c3a6e823f538160992bedd9b9c9545c45bf7ce8e42cae980db",
+  "retrieval_policy_hash": "51d09eb842c18e153dbb5a4c5b50ca62c0bec67e35ec5251f341758b07232fab",
+  "validator_policy_hash": "79127e0aabd139a522eb9ade5b5e9e67d5ca29c43e48039a8aec917df79bf98e",
   "max_candidate_exports": 100,
   "scheduled_close_at": "2027-01-01T00:00:00Z",
   "epoch_knowledge_parent": null,

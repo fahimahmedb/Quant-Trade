@@ -9,18 +9,22 @@ from research.research_os.worker_stages import (
     AUTHORITY,
     REASONING_POLICY,
     CanonicalStageExecutor,
+    DEFAULT_SOURCES,
+    PRODUCERS,
     StageBlocked,
     artifact_path,
 )
 
 from .economic_test_readiness_v1 import READY as V1_READY
 from .v2_bridge import adapt_engine_output_to_v2_candidate, adapt_existing_validation_to_v2
+from .v2_independence import AXES, independent_context, process_identity
 from .v2_core import (
     V2ContractError,
     blinding_integrity,
     build_epoch_manifest,
     build_frozen_export_intent,
     build_research_trial,
+    build_negative_memory,
     canonical_hash,
 )
 
@@ -111,8 +115,37 @@ class V2StageExecutor(CanonicalStageExecutor):
     """
 
     def execute(self, snapshot, task, lane, stage, now, worker_id):
-        result, writes, status = super().execute(snapshot, task, lane, stage, now, worker_id)
         epoch = _active_epoch(snapshot)
+        window = epoch["research_window"]
+        if not _parse_time(window["start"]) <= _parse_time(now) < _parse_time(window["end"]):
+            raise StageBlocked("V2_RESEARCH_WINDOW_CLOSED")
+        if stage == "claim_restriction":
+            if _parse_time(now) >= _parse_time(epoch["export_cutoff"]):
+                raise StageBlocked("V2_EXPORT_CUTOFF_REACHED")
+            exports = sum(1 for p in snapshot.blobs if "/oracle-v2/frozen_export_intent" in p
+                          and snapshot.read(p).get("research_epoch_id") == epoch["research_epoch_id"])
+            if exports >= epoch["max_candidate_exports"]:
+                raise StageBlocked("V2_EPOCH_EXPORT_BUDGET_EXHAUSTED")
+        independence = None
+        if lane == "independent_challenge" and stage == "independent_validation":
+            independence = independent_context(snapshot, _read_v2_candidate(snapshot, task))
+        if isinstance(getattr(self.backend, "calls", None), list):
+            self.backend.calls.clear()
+        if stage in ("mechanism_research", "document_or_fundamental_research"):
+            source = (task.get("inputs") or {}).get("documentary_source")
+            key = PRODUCERS[task["task_type"]]
+            source = source or (PREFIX + "sources/" + DEFAULT_SOURCES[key] if key in DEFAULT_SOURCES else None)
+            if source:
+                if not isinstance(source, str) or not source.startswith(PREFIX + "sources/"):
+                    raise StageBlocked("V2_UNSAFE_DOCUMENTARY_SOURCE_PATH")
+                packet = snapshot.read(source).get("documentary_packet") or {}
+                available = packet.get("available_at")
+                if not available or _parse_time(available) > _parse_time(epoch["knowledge_cutoff"]):
+                    raise StageBlocked("V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION")
+                intent = (task.get("execution") or {}).get("v2_trial_intent")
+                if intent and snapshot.read(intent).get("source_blob") != snapshot.blobs[source]:
+                    raise StageBlocked("V2_SOURCE_CHANGED_AFTER_IDEATION_INTENT")
+        result, writes, status = super().execute(snapshot, task, lane, stage, now, worker_id)
         result["research_contract_version"] = "v2-core"
         result["research_epoch_id"] = epoch["research_epoch_id"]
         result["epoch_manifest_hash"] = epoch["epoch_manifest_hash"]
@@ -125,6 +158,8 @@ class V2StageExecutor(CanonicalStageExecutor):
             candidate = engine_output["candidate"]
             trial_id = f"{epoch['research_epoch_id']}::{task['task_id']}::{candidate['generation_id']}"
             source_packet = ((candidate.get("documentary_evidence") or {}).get("packet") or {})
+            intents = sorted(p for p in snapshot.blobs if p.startswith(PREFIX + f"artifacts/{task['task_id']}/oracle-v2/trial_intents/")
+                             and not p.endswith("-completion.json"))
             trial = build_research_trial({
                 "research_trial_id": trial_id,
                 "research_epoch_id": epoch["research_epoch_id"],
@@ -147,14 +182,20 @@ class V2StageExecutor(CanonicalStageExecutor):
                     "generation_id": candidate["generation_id"],
                     "candidate_hash": canonical_hash(candidate),
                 }],
-                "discarded_proposals": [],
-                "retry_count": 0,
+                "discarded_proposals": ([{"hypothesis_id": candidate["hypothesis_id"], "reason": "STRUCTURAL_SCREEN_BLOCK",
+                                          "blockers": result.get("screen", {}).get("block_reasons", [])}]
+                                        if status == "BLOCKED" else []),
+                "retry_count": max(0, len(intents) - 1),
+                "ideation_intents": intents,
+                "earlier_attempt_proposals": "UNKNOWN_IF_NO_DURABLE_COMPLETION",
+                "executable_release_sha": (task.get("execution") or {}).get("release_sha"),
             })
             v2_candidate = adapt_engine_output_to_v2_candidate(
                 engine_output,
                 research_trial_id=trial_id,
                 research_epoch_id=epoch["research_epoch_id"],
                 producer_identity={
+                    "process": process_identity(),
                     "worker_id": worker_id,
                     "lane": lane,
                     "task_id": task["task_id"],
@@ -162,6 +203,8 @@ class V2StageExecutor(CanonicalStageExecutor):
                     "engine_family": engine_output["engine_family"],
                 },
                 disconfirmation_manifest={"attempted": False, "status": "PENDING"},
+                source_binding={"source_path": result.get("source_path"), "source_blob": result.get("source_blob"),
+                                "source_candidate_hash": canonical_hash(candidate)},
             )
             leakage = _source_pit(engine_output, epoch)
             leakage["reasoning_output_classification"] = (result.get("reasoning") or {}).get(
@@ -170,6 +213,14 @@ class V2StageExecutor(CanonicalStageExecutor):
             writes[v2_artifact_path(task, "research_trial.json")] = trial
             writes[v2_artifact_path(task, "candidate_draft.json")] = v2_candidate
             writes[v2_artifact_path(task, "leakage.json")] = leakage
+            if status == "BLOCKED":
+                writes[v2_artifact_path(task, "negative_memory.json")] = build_negative_memory({
+                    "negative_knowledge_id": trial_id + "::screen", "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+                    "assumptions": {"screen": result["screen"]}, "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+                    "source_context": {"path": result.get("source_path"), "blob": result.get("source_blob")},
+                    "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+                    "revisit_conditions": ["New evidence resolves the recorded structural blockers without rewriting frozen history"],
+                    "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE"})
             result["v2_sidecars"] = {
                 "research_trial": v2_artifact_path(task, "research_trial.json"),
                 "candidate_draft": v2_artifact_path(task, "candidate_draft.json"),
@@ -202,13 +253,9 @@ class V2StageExecutor(CanonicalStageExecutor):
                 research["engine_output"],
                 research_trial_id=trial["research_trial_id"],
                 research_epoch_id=epoch["research_epoch_id"],
-                producer_identity={
-                    "worker_id": worker_id,
-                    "lane": lane,
-                    "task_id": task["task_id"],
-                    "engine_id": research["engine_output"]["engine_id"],
-                    "engine_family": research["engine_output"]["engine_family"],
-                },
+                producer_identity=snapshot.read(v2_artifact_path(task, "candidate_draft.json"))["producer_identity"],
+                source_binding={"source_path": research["source_path"], "source_blob": research["source_blob"],
+                                "source_candidate_hash": canonical_hash(research["engine_output"]["candidate"])},
                 disconfirmation_manifest={
                     "attempted": True,
                     "artifact": disconfirmation_path,
@@ -261,19 +308,21 @@ class V2StageExecutor(CanonicalStageExecutor):
                 existing_validation=existing,
                 validator_identity=worker_id,
                 validator_version="oracle-v2-validator-bridge-v1",
-                validator_model=model,
+                validator_model="R0_DETERMINISTIC_VALIDATOR_LOCAL_CRITIC_UNVERIFIED:" + model,
                 validator_prompt_hash=canonical_hash({"policy": REASONING_POLICY, "stage": stage}),
                 validator_context_hash=canonical_hash({
                     "candidate_hash": candidate["candidate_hash"],
                     "screen": result.get("screen"),
                 }),
-                validator_retrieval_manifest_hash=canonical_hash(candidate["evidence_manifest"]),
+                validator_retrieval_manifest_hash=canonical_hash(independence["retrieval"]),
+                independence_evidence=independence,
                 producer_identity_hash=canonical_hash(candidate["producer_identity"]),
                 validator_state_identity_hash=canonical_hash({
                     "worker_id": worker_id,
                     "lane": lane,
                     "task_id": task["task_id"],
                     "role": "INDEPENDENT_VALIDATOR_STATE",
+                    "process": independence["process"],
                 }),
             )
             path = v2_artifact_path(task, "validator.json")
@@ -290,6 +339,8 @@ class V2StageExecutor(CanonicalStageExecutor):
             blockers = list(result.get("blockers") or [])
             if validator.get("scientific_decision") != "PASS":
                 blockers.append("V2_VALIDATOR_BLOCK")
+            if not all(validator.get("independence_evidence", {}).get(axis) is True for axis in AXES):
+                blockers.append("V2_VALIDATOR_INDEPENDENCE_NOT_PROVEN")
             if readiness.get("status") != V1_READY:
                 blockers.append("PRE_OUTCOME_READINESS_NOT_READY")
             blind = blinding_integrity(

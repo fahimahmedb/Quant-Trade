@@ -29,6 +29,7 @@ def adapt_engine_output_to_v2_candidate(
     research_epoch_id: str,
     producer_identity: Mapping[str, Any],
     disconfirmation_manifest: Mapping[str, Any],
+    source_binding: Mapping[str, Any] | None = None,
 ) -> Dict[str, Any]:
     """Project an existing qualified producer output into CandidateCore V2.
 
@@ -56,6 +57,7 @@ def adapt_engine_output_to_v2_candidate(
         "documentary_packet_hash": packet.get("content_hash", "NOT_APPLICABLE"),
         "evidence_class": packet.get("evidence_class", "UNKNOWN"),
     }
+    evidence_manifest.update(deepcopy(dict(source_binding or {})))
     clock = packet.get("available_at", candidate.get("evidence_timing", "UNRESOLVED"))
     horizon = candidate.get("horizon", packet.get("horizon", "UNRESOLVED"))
     economic_expression = {
@@ -136,11 +138,11 @@ def adapt_existing_validation_to_v2(
     validator_retrieval_manifest_hash: str,
     producer_identity_hash: str,
     validator_state_identity_hash: str,
+    independence_evidence: Mapping[str, Any] | None = None,
 ) -> Dict[str, Any]:
     """Bind an existing independent validation result to the V2 state model.
 
-    Different identity hashes are required so a mere worker-name difference
-    cannot masquerade as state isolation.
+    Distinct hashes alone never prove the four independence axes.
     """
     if producer_identity_hash == validator_state_identity_hash:
         raise V2ContractError("VALIDATOR_STATE_ISOLATION_NOT_PROVEN")
@@ -148,6 +150,11 @@ def adapt_existing_validation_to_v2(
     if status not in {"PASS", "BLOCK"}:
         raise V2ContractError("EXISTING_VALIDATION_HAS_NO_SCIENTIFIC_DECISION")
     failures = list(existing_validation.get("failures") or existing_validation.get("critical_failures") or [])
+    from .v2_independence import AXES
+    proof = dict(independence_evidence or {})
+    if not all(proof.get(axis) is True for axis in AXES):
+        status = "BLOCK"
+        failures.append("VALIDATOR_FOUR_AXIS_INDEPENDENCE_NOT_PROVEN")
     payload = {
         "hypothesis_id": v2_candidate["hypothesis_id"],
         "generation_id": v2_candidate["generation_id"],
@@ -163,5 +170,6 @@ def adapt_existing_validation_to_v2(
         "producer_identity_hash": producer_identity_hash,
         "validator_state_identity_hash": validator_state_identity_hash,
         "source_validation_hash": canonical_hash(existing_validation),
+        "independence_evidence": proof,
     }
     return build_validator_result(payload)

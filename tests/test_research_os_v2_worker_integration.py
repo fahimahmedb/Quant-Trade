@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 from research.research_os.engines.builtin import ENGINE_REGISTRY
@@ -121,8 +122,10 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             {"source_ref": "synthetic://fundamental"},
             EngineContext("RUN", synthetic_only=True),
         )
-        task = {"task_id": "TASK-1", "task_type": "FUNDAMENTAL_RESEARCH"}
-        snapshot = FakeSnapshot({ACTIVE_EPOCH_PATH: self.epoch()})
+        source_path = "research/research_os/sources/example.json"
+        task = {"task_id": "TASK-1", "task_type": "FUNDAMENTAL_RESEARCH", "inputs": {"documentary_source": source_path}}
+        snapshot = FakeSnapshot({ACTIVE_EPOCH_PATH: self.epoch(), source_path: {
+            "documentary_packet": {"available_at": "2025-12-01T00:00:00Z"}}})
         base_result = {
             "stage": "document_or_fundamental_research",
             "engine_output": output,
@@ -179,7 +182,10 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             "screen": {"status": "PASS"},
             "reasoning": {"backend_health": {"model": "gpt-oss-10.2b-q4-k-m"}},
         }
-        with patch.object(CanonicalStageExecutor, "execute", return_value=(base, {}, "CONTINUE")):
+        proof = dict.fromkeys(("information_isolation", "retrieval_independence", "cognitive_independence", "state_isolation"), True)
+        proof.update(retrieval={"fixture": "separate unit contract; actual retrieval tested separately"}, process={"pid": 2})
+        with patch("research.research_os.expansion.v2_stage_executor.independent_context", return_value=proof), \
+                patch.object(CanonicalStageExecutor, "execute", return_value=(base, {}, "CONTINUE")):
             result, writes, _ = V2StageExecutor().execute(
                 snapshot, task, "independent_challenge", "independent_validation",
                 "2026-10-20T02:20:00Z", "oracle-v2.independent_challenge",
@@ -217,6 +223,7 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             "validator_context_hash": "c", "validator_retrieval_manifest_hash": "r",
             "execution_state": "COMPLETE", "scientific_decision": "PASS",
             "epistemic_blockers": [],
+            "independence_evidence": dict.fromkeys(("information_isolation", "retrieval_independence", "cognitive_independence", "state_isolation"), True),
         })
         readiness = {
             "status": V1_READY,
@@ -252,6 +259,95 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         self.assertFalse(export["economic_experiment_authorized"])
         self.assertFalse(export["prospective_observation_authorized"])
         self.assertEqual(result["v2_claim_ceiling"], "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY")
+
+    def real_worker(self):
+        from research.research_os.tests import test_oracle_worker as fixture
+        harness = fixture.WorkerTests()
+        harness.setUp()
+        self.addCleanup(harness.tearDown)
+        harness.producer()
+        harness.now = datetime(2026, 10, 20, 2, tzinfo=timezone.utc)
+        worker = build_v2_worker(self.worker_config(), store=harness.store, backend=harness.model)
+        worker.now = lambda: harness.now
+        return harness, worker
+
+    def test_real_git_claim_counts_ideation_before_crash_and_replay(self):
+        harness, worker = self.real_worker()
+        worker.wake()
+        def crash(point):
+            if point == "after_claim":
+                raise RuntimeError("process lost before ideation")
+        worker.fault = crash
+        with self.assertRaises(RuntimeError):
+            worker.wake()
+        task = harness.read("tasks/PRODUCER-TEST.json")
+        intent = harness.read(task["execution"]["v2_trial_intent"].removeprefix("research/research_os/"))
+        self.assertEqual(intent["state"], "STARTED_BEFORE_IDEATION")
+        self.assertEqual(harness.model.calls, 0)
+        harness.now += timedelta(seconds=601)
+        resumed = build_v2_worker(self.worker_config(), store=harness.store, backend=harness.model)
+        resumed.now = lambda: harness.now
+        result = resumed.wake()
+        self.assertEqual(result["stage"], "document_or_fundamental_research")
+        trial_path = v2_artifact_path(task, "research_trial.json").removeprefix("research/research_os/")
+        trial = harness.read(trial_path)
+        self.assertEqual(len(trial["ideation_intents"]), 2)
+        self.assertEqual(trial["retry_count"], 1)
+        self.assertEqual(trial["proposal_count"], 1)
+        self.assertEqual(trial["earlier_attempt_proposals"], "UNKNOWN_IF_NO_DURABLE_COMPLETION")
+        with harness.store.snapshot() as snapshot:
+            priorities = [snapshot.read(p) for p in snapshot.blobs if "/oracle-v2/priority/" in p]
+        self.assertTrue(priorities)
+        self.assertTrue(all(p["selected_task"] == "PRODUCER-TEST" for p in priorities))
+
+    def test_real_git_epoch_change_cannot_relabel_existing_trial(self):
+        harness, worker = self.real_worker()
+        worker.wake()
+        # This is a governed test fixture update, outside worker-write paths.
+        import json, subprocess
+        from research.research_os.tests import test_oracle_worker as fixture
+        raw = harness.store._git("show", "refs/quant/observed:" + ACTIVE_EPOCH_PATH)
+        epoch = json.loads(raw); epoch["knowledge_cutoff"] = "2026-10-19T00:00:00Z"
+        subprocess.run(["git", "-C", str(harness.seed), "pull", str(harness.remote), "recovery"], check=True, capture_output=True)
+        (harness.seed / ACTIVE_EPOCH_PATH).write_text(json.dumps(epoch))
+        fixture.git(harness.seed, "add", "."); fixture.git(harness.seed, "commit", "-m", "test epoch policy update")
+        fixture.git(harness.seed, "push", str(harness.remote), "HEAD:recovery")
+        with self.assertRaisesRegex(RuntimeError, "EPOCH_OR_POLICY_CHANGED"):
+            worker.wake()
+        self.assertEqual(harness.read("tasks/PRODUCER-TEST.json")["lease"]["generation"], 1)
+
+    def test_source_after_epoch_cutoff_is_blocked_before_model_generation(self):
+        task = {"task_id": "TASK-1", "task_type": "FUNDAMENTAL_RESEARCH", "inputs": {
+            "documentary_source": "research/research_os/sources/future.json"}}
+        snapshot = FakeSnapshot({ACTIVE_EPOCH_PATH: self.epoch(), task["inputs"]["documentary_source"]: {
+            "documentary_packet": {"available_at": "2026-10-21T00:00:00Z"}}})
+        with patch.object(CanonicalStageExecutor, "execute") as base:
+            with self.assertRaisesRegex(RuntimeError, "SOURCE_PIT_NOT_QUALIFIED"):
+                V2StageExecutor().execute(snapshot, task, "fundamental_events", "document_or_fundamental_research",
+                                          "2026-10-20T02:00:00Z", "oracle-v2")
+            base.assert_not_called()
+
+    def test_real_git_validator_requires_separate_process_and_reconstructs_primary_evidence(self):
+        from copy import deepcopy
+        from research.research_os.expansion.v2_independence import independent_context, process_identity, AXES
+        harness, worker = self.real_worker()
+        worker.wake(); worker.wake()
+        task = harness.read("tasks/PRODUCER-TEST.json")
+        with harness.store.snapshot() as snapshot:
+            candidate = snapshot.read(v2_artifact_path(task, "candidate_draft.json"))
+            with self.assertRaisesRegex(RuntimeError, "DISTINCT_PROCESS_NOT_PROVEN"):
+                independent_context(snapshot, candidate)
+            different = dict(process_identity(), pid=-1)
+            with patch("research.research_os.expansion.v2_independence.process_identity", return_value=different):
+                proof = independent_context(snapshot, candidate)
+                self.assertTrue(all(proof[axis] is True for axis in AXES))
+                self.assertEqual(proof["retrieval"]["source_blob"], candidate["evidence_manifest"]["source_blob"])
+                forged = deepcopy(candidate); forged["evidence_manifest"]["source_blob"] = "0" * 40
+                with self.assertRaisesRegex(RuntimeError, "SOURCE_BINDING_NOT_PROVEN"):
+                    independent_context(snapshot, forged)
+                forged = deepcopy(candidate); forged["evidence_manifest"]["source_candidate_hash"] = "0" * 64
+                with self.assertRaisesRegex(RuntimeError, "RECONSTRUCTION_MISMATCH"):
+                    independent_context(snapshot, forged)
 
 
 if __name__ == "__main__":

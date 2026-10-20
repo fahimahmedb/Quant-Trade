@@ -29,7 +29,7 @@ Normal no-force/no-rewind/no-reset operating discipline remains in force.
 - [x] P0-D override recorded.
 - [x] Canonical V2 Core architecture written.
 
-### V2-1 — Core scientific contracts — IMPLEMENTED / CI PENDING
+### V2-1 — Core scientific contracts — IMPLEMENTED / BASELINE CI PASS
 
 - [x] Closed authority assertion.
 - [x] Research Epoch contract and hash.
@@ -51,34 +51,35 @@ Normal no-force/no-rewind/no-reset operating discipline remains in force.
 Implementation: `research/research_os/expansion/v2_core.py`
 Tests: `tests/test_research_os_v2_core.py`
 
-### V2-2 — Repository integration — ACTIVE
+### V2-2 — Repository integration — IMPLEMENTED / RUNTIME QUALIFICATION PENDING
 
 Goal: bind V2 contracts to durable Research OS surfaces without invalidating V1 evidence.
 
-- [ ] Add canonical V2 policy/config artifacts.
-- [ ] Add bounded end-to-end pre-outcome pipeline adapter.
-- [ ] Bind V2 trial/epoch/candidate metadata into new V2 pipeline artifacts.
-- [ ] Preserve existing V1 worker behavior unless explicitly routed to V2.
-- [ ] Prove no outcome access and four authorities false.
+- [x] Add canonical V2 policy/config artifacts.
+- [x] Add bounded end-to-end pre-outcome pipeline adapter.
+- [x] Bind V2 trial/epoch/candidate metadata into new V2 pipeline artifacts.
+- [x] Preserve existing V1 worker behavior unless explicitly routed to V2.
+- [x] Prove no outcome access and four authorities false in fixture and real read-only integration.
 
-### V2-3 — Adversarial verification — PENDING
+### V2-3 — Adversarial verification — BASELINE CI PASS / EXTENSIONS LOCALLY PASS
 
-- [ ] Run V2 contract tests in repository CI.
-- [ ] Run relevant V1/Research OS regression suite.
-- [ ] Fix integration regressions.
-- [ ] Verify forbidden reverse-channel cases.
-- [ ] Verify infrastructure-error != scientific BLOCK.
-- [ ] Verify post-export epoch mutation fails closed.
-- [ ] Verify model-policy escape fails closed.
-- [ ] Verify candidate family mismatch fails closed.
+- [x] Run V2 contract tests in repository CI.
+- [x] Run relevant V1/Research OS regression suite.
+- [x] Fix integration regressions.
+- [x] Verify forbidden reverse-channel cases.
+- [x] Verify infrastructure-error != scientific BLOCK.
+- [x] Verify post-export epoch mutation fails closed.
+- [x] Verify model-policy escape fails closed.
+- [x] Verify candidate family mismatch fails closed.
 
 ### V2-4 — Whole pre-outcome qualification — PENDING
 
-- [ ] Produce one deterministic V2 end-to-end fixture:
+- [x] Produce one deterministic V2 end-to-end fixture:
   epoch -> trial -> candidate -> validator -> export intent -> ingest receipt.
-- [ ] Confirm no economic/prospective outcome is accessed.
-- [ ] Produce V2 qualification receipt.
-- [ ] Bind exact implementation SHA and CI.
+- [x] Confirm no economic/prospective outcome is accessed in that fixture.
+- [x] Produce fixture-scoped V2 qualification receipt.
+- [x] Bind baseline exact implementation SHA and CI.
+- [ ] Qualify actual Oracle V2 writes, recovery, natural wakes and reboot.
 
 ### V2-5 — Deployment decision — PENDING
 
@@ -87,6 +88,36 @@ V2 Core code completion is not deployment authorization by itself.
 Before replacing the qualified V1 runtime, determine whether the V2 changes materially affect V1 runtime properties. If yes, rerun only affected operational gates and deploy through the exact-release discipline already qualified in V1.
 
 No V2-E/economic/prospective activation is included.
+
+Prepared path: `deploy/oracle_v2_host_prepare.py` -> three fixed, no-argument
+root controls (`quant-v2-qualify`, `quant-v2-activate`, `quant-v2-status`).
+Preparation leaves V1 running. The qualifier temporarily quiesces V1, migrates
+fresh GitHub state with conflict checks, tests a real process crash before
+ideation, and restores V1. Activation requires all eleven live gates and a fresh
+transfer before enabling the separate V2 timer. V1 executable remains the
+qualified rollback release; state reconciliation is required after V2 writes.
+
+## Reconciled evidence — 2026-10-20
+
+- Baseline executable: `a313dbe57e47c7cf50802a4b8a118f0dc9e52097`.
+- Oracle V2 Core CI: `39357185710`, SUCCESS.
+- SEC P0 pre-t0 CI: `39357185733`, SUCCESS.
+- Real public GitHub dry-run: PASS, two fetches, zero pushes/writes; model not
+  configured. This proves read-only integration, not runtime activation.
+- Extensions: 42 local V2 tests PASS, including real Git migration/conflicts,
+  claim-intent persistence before crash, lease recovery and primary evidence
+  reconstruction. 73 combined worker/preflight/V2 tests PASS; 24 additional
+  portfolio/producer readiness tests PASS.
+- Epoch policy hashes now bind the actual versioned policy objects. This
+  pre-activation correction occurs before any accepted evaluation export.
+- Validator process identity includes boot ID/PID/start ticks. A separate
+  validator independently reads the fresh primary-source blob and reconstructs
+  the candidate. Decision scope is R0 structural checks; semantic diverse review
+  is NOT_PROVEN. Different worker names alone cannot grant PASS.
+- All four authorities remain false; evaluation remains SEALED.
+- Remaining: exact extension CI, live Oracle V2 read-only proof, then the real
+  Owner/root preparation boundary and gated live execution. No V2 operational
+  or economic qualification is asserted by these local tests.
 
 ## Definition of Done
 
