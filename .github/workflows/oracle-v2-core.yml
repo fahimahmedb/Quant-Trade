@@ -31,6 +31,7 @@ jobs:
             research/research_os/expansion/v2_state.py \
             research/research_os/expansion/v2_independence.py \
             research/research_os/expansion/edge_observability_v2.py \
+            research/research_os/expansion/evidence_acquisition_intents_v2.py \
             research/research_os/frontier_source_planner_v2.py \
             research/research_os/queue_replenisher.py \
             research/research_os/oracle_worker_v2.py \
@@ -48,6 +49,7 @@ jobs:
             tests.test_research_os_v2_worker_integration \
             tests.test_research_os_edge_observability_v2 \
             tests.test_research_os_frontier_source_planner_v2 \
+            tests.test_research_os_evidence_acquisition_intents_v2 \
             tests.test_oracle_v2_deploy
 
       - name: Verify V2 policy remains fail-closed
