@@ -22,12 +22,13 @@
     "last_receipt": "research/research_os/receipts/AAA-V2-CANARY-a67ffec48fff895d/AAA-V2-CANARY-a67ffec48fff895d-g1-950c253d6722.json",
     "lineage": "AAA-V2-CANARY-a67ffec48fff895d",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
-    "session_id": "AAA-V2-CANARY-a67ffec48fff895d-g1-950c253d6722",
+    "session_id": "AAA-V2-CANARY-a67ffec48fff895d-g2-0b42fbd38fde",
     "v2_epoch_binding": {
       "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
       "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
       "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001"
-    }
+    },
+    "v2_trial_intent": "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/trial_intents/g000002.json"
   },
   "forbidden_actions": [
     "freeze_hypothesis",
@@ -41,17 +42,17 @@
     "research_contract_version": "v2-core"
   },
   "lease": {
-    "claimed_at": "2026-10-20T10:56:02Z",
-    "expires_at": "2026-10-20T10:56:06Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T10:56:13Z",
+    "expires_at": "2026-10-20T10:57:43Z",
+    "generation": 2,
     "owner": "oracle-research-v2.fundamental_events"
   },
   "priority": 2147483647,
   "required_capability": "fundamental",
   "research_contract_version": "v2-core",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Traceable negative structural screen, not a new freeze or economic result.",
   "task_id": "AAA-V2-CANARY-a67ffec48fff895d",
   "task_type": "FUNDAMENTAL_RESEARCH",
-  "updated_at": "2026-10-20T10:56:06Z"
+  "updated_at": "2026-10-20T10:56:13Z"
 }
