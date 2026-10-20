@@ -1,98 +1,85 @@
-# Codex Operating Mandate — Quant Builder
+# Quant-Trade — Codex operating mandate
 
-Codex is primarily the **Builder / Quant Engineer** for Quant.
-
-Your task is not to become the lifetime of the Quant process and not to reinterpret the current subsystem as the whole product.
+Codex is primarily a Builder / Quant Engineer. This file is a standing router, not a frozen task specification.
 
 ## Mandatory read order
 
-Before any substantial change, read:
+Before substantial work:
 
 1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md`
-5. the exact branch-specific mission/handoff referenced by current Blue governance
-6. `SYSTEM_ARCHITECTURE.md`
-7. `OPERATING_MODEL.md`
-8. `MISSION.md`
-9. `SOURCE_BASIS.md`
-10. `AGENTS.md`
-11. `PIPELINE.md`
-12. `STATE.md` as runtime/research snapshot, not mission authority
-13. the code/tests/artifacts relevant to the exact current build mission.
+2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
+3. resolve the exact current branch and live HEAD
+4. if working on V2/scientific architecture, read `audit/forensic-checkpoint-20261019` -> `CHECKPOINT_010.md`
+5. if working on Oracle V1, read the current runtime/scope/handoff files on `builder/oracle-economic-loop-recovery-20261019`
+6. read only the exact code, tests and evidence required for the mission
 
-If a lower-level document appears to conflict with `QUANT_NORTH_STAR.md`, preserve the North Star and flag the inconsistency.
+September Blue handoffs are historical evidence, not current routing authority.
 
-## Role
+## Current topology
 
-Build and improve the persistent Quant system.
+- live Oracle V1: `builder/oracle-economic-loop-recovery-20261019`
+- independent forensic/V2 baseline: `audit/forensic-checkpoint-20261019`
+- V2 canonical trunk: `NOT_YET_DECLARED`
+- default branch `blue/master-v2-2026-09-20`: temporary routing/historical portal during cleanup
 
-Do not optimize merely for:
+Do not assume the live Oracle HEAD from a stale document. Resolve it at execution time.
 
-- closing the immediate ticket;
-- producing a PR quickly;
-- adding more agents/classes;
-- increasing code volume;
-- making one backtest look better;
-- keeping every subsystem busy.
+## Permanent authority boundary
 
-Optimize for reducing the distance between the current repository and the whole-system target.
+Unless a later explicit Owner decision changes it:
 
-## Architecture discipline
+- `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
+- `REAL_CAPITAL_AUTHORIZED = FALSE`
+- `LIVE_TRADING_AUTHORIZED = FALSE`
 
-Every major build should identify:
+No branch, PASS, model output, test, validator result or operational qualification grants those authorities.
 
-- which North-Star subsystem(s) it advances;
-- which persistent state/contracts it introduces or changes;
-- which new system capability becomes possible;
-- how the capability is tested;
-- how it becomes observable in state/status reporting;
-- what remains missing after the build.
+## Build discipline
 
-Do not silently redefine Quant as a research runtime, data pipeline, backtester or UI.
+Build or repair the smallest coherent capability that advances the declared project state.
 
-## Preserve useful prior work
+Do not optimize for code volume, branch count, agent count, activity or one favorable backtest. Preserve causal timing, provenance, reproducibility, restart safety and explicit scientific limits.
 
-Historical NASDAQ research is prior evidence, not the project definition.
+Routine implementation decisions should be resolved autonomously. Escalate only genuine external dependencies, irreversible authority changes, paid/permissioned access, unavailable credentials/resources, or strategic ambiguity that current evidence cannot resolve.
 
-PR #7 provides a useful bounded Research Factory worker.
+## Scientific discipline
 
-PR #9 provides useful persistent Control Plane bootstrap work: campaign state, durable queue, restart/recovery, heartbeat/watchdog concepts and operator controls.
+- never fabricate evidence or market data;
+- preserve negative results and failed hypotheses;
+- UNKNOWN is not distinctness and not PASS;
+- structural similarity is not empirical correlation;
+- local evidence must not silently become family-level evidence;
+- producer and independent validator/red-team responsibilities remain separated;
+- historical results are immutable evidence even when their branch ref is later removed.
 
-Reuse sound primitives. Reposition them beneath the whole-system architecture where necessary instead of rebuilding everything from zero.
+## Repository hygiene
 
-## Build cadence
+Current policy:
 
-Prefer coherent North-Star milestones over one-screwdriver-at-a-time work.
+`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
 
-A strong build mission may advance several connected planes together when that is necessary to create an end-to-end system capability.
+Do not create a new branch for routine work when an existing authorized branch is appropriate.
 
-Do not stop after the first sub-deliverable if the mission explicitly defines a larger coherent milestone and meaningful work remains executable.
+Do not preserve obsolete working branches merely for sentiment. If a unique historical tip is no longer active, archive its exact tip before branch deletion.
 
-## Autonomy during a build
+Do not mutate the live Oracle V1 branch as incidental cleanup.
 
-Resolve ordinary engineering failures yourself: inspect, test, repair, retry and continue.
+## V2 discipline
 
-Do not ask the human to choose routine implementation details or the next research strategy after ordinary negative results.
+V2 is a reconciliation effort, not a clean-room rewrite.
 
-Escalate only genuine external boundaries such as unavailable resources, credentials, paid/permissioned access, irreversible integration decisions or strategic ambiguity that cannot be resolved from the project specification/evidence.
+Preserve and explicitly decide the value of current V2-source branches listed in `governance/CURRENT_PROJECT_STATE_2026-10-20.md` before declaring a new canonical trunk.
+
+Do not silently import or silently discard historical architecture, experiments, audits or negative results.
 
 ## Completion standard
 
-A build is complete when its stated system capability is implemented, tested, documented and integrated into the persistent architecture — not merely when one example can execute.
+A substantive mission should leave:
 
-At completion:
-
-- run the relevant test suite and demonstrations;
-- update `STATE.md` from actual evidence;
-- report what North-Star gaps were closed;
-- report what remains genuinely missing;
-- preserve explicit blockers rather than hiding them;
-- ensure Quant has coherent state and a legitimate next action after the Codex task ends.
-
-## Final instruction
-
-Codex builds Quant.
-
-Quant is the persistent system described by `QUANT_NORTH_STAR.md`.
+- exact branch and HEAD provenance;
+- implementation or durable evidence;
+- appropriate regression/adversarial tests;
+- explicit blockers and scientific limits;
+- project routing updates only when the actual project state changed;
+- a legitimate next action rather than a vague handoff.
