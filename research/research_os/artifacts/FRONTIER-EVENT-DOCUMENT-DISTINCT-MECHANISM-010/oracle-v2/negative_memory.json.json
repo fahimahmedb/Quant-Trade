@@ -1,0 +1,50 @@
+{
+  "assumptions": {
+    "screen": {
+      "block_reasons": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "current": {
+        "block_reasons": [
+          "BLOCK_EXACT_CURRENT_DUPLICATE"
+        ],
+        "candidate_generation_id": "G1",
+        "candidate_hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce",
+        "current_corpus_snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0",
+        "matches": [
+          {
+            "basis": [
+              "hypothesis_id"
+            ],
+            "classification": "BLOCK_EXACT_CURRENT_DUPLICATE",
+            "mechanism_overlap": 1.0,
+            "peer_generation_id": "G1",
+            "peer_hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce",
+            "review_required": true
+          }
+        ],
+        "screen_hash": "e224477b0c3e206d347f7c71188d7bd8f98c32a56dac0d1cb1c6852e1cd07a79",
+        "status": "BLOCK"
+      },
+      "distinctness_claim": "NOT_ESTABLISHED_BY_LOW_TOKEN_OVERLAP",
+      "legacy": {
+        "matches": [],
+        "status": "NO_EXACT_LEGACY_CONFLICT"
+      },
+      "status": "BLOCK"
+    }
+  },
+  "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+  "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+  "negative_knowledge_hash": "72c9671bc9c3c1570d01b3ee39f9c2fd3d476412ce648d7f232150361a72298c",
+  "negative_knowledge_id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010::G1::screen",
+  "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+  "revisit_conditions": [
+    "New evidence resolves the recorded structural blockers without rewriting frozen history"
+  ],
+  "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+  "source_context": {
+    "blob": "e3b39bce63d171fb41b090db9d49690d0266ac7d",
+    "path": "research/research_os/sources/apple_dividend_announcements.json"
+  }
+}
