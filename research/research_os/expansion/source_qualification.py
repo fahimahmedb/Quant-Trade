@@ -47,9 +47,11 @@ UNKNOWN_VALUES = {"UNKNOWN", "UNAVAILABLE", "NOT_OBSERVED", "NOT_ESTIMATED"}
 
 
 def _parse_utc(value: str) -> datetime:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("explicit availability/freeze clock required")
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("availability/freeze clock requires an explicit timezone")
     return parsed.astimezone(timezone.utc)
 
 
@@ -397,12 +399,11 @@ def qualify_source_route(route: Dict[str, Any], *, freeze_time: str) -> Dict[str
         blockers.append("TIMEZONE_UNKNOWN")
 
     availability_start = route.get("availability_start")
-    if availability_start:
-        try:
-            if _parse_utc(availability_start) > _parse_utc(freeze_time):
-                blockers.append("ROUTE_NOT_AVAILABLE_AT_FREEZE")
-        except ValueError:
-            blockers.append("AVAILABILITY_CLOCK_INVALID")
+    try:
+        if _parse_utc(availability_start) > _parse_utc(freeze_time):
+            blockers.append("ROUTE_NOT_AVAILABLE_AT_FREEZE")
+    except ValueError:
+        blockers.append("AVAILABILITY_CLOCK_INVALID")
 
     canonical = {
         "route_id": route.get("route_id"),

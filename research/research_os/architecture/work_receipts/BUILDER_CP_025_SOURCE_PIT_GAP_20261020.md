@@ -1,9 +1,10 @@
 # Builder CP025 — source availability → PIT qualification false positive
 
 STATUS=REPRODUCED_BEFORE_CODE
-BASE=7f9886e (full identity through Git parent)
+BASE=7f9886edaf13c81ac58e742662f70b8301e5d658
 HEAD=parent of this audit checkpoint
 NORTH_STAR_SHA=a328b4e6d7d71dafd532938888ebf9818b1b610f (Git blob)
+ORACLE_HEAD=d46116b31f3a217fdf418fe08aa2c4820d5d93c0 (observed before patch)
 
 FOUND: qualify_source_route checks the presence of availability_start but only
 parses it when truthy. Empty/null values therefore return PASS and
