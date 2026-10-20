@@ -13,6 +13,18 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/candidate_draft.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/leakage.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-worker/document_or_fundamental_research.json"
+    ],
+    "completed_at": "2026-10-20T12:10:19Z",
+    "receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008-g2-19ab4d85b7e4.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T11:50:22Z",
   "derivation": {
     "derivation_key": "a22ab7ff06f70093c9c2067152cd423b88751b58a5c29283be2d13e37645e6b5",
@@ -31,7 +43,7 @@
         "artifact_hash": "cf3294bb8db451f9e5c547257a3722df942df7f397fa3ff9700a620cc007b5a1"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008-g1-b098de3164f5.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008-g2-19ab4d85b7e4.json",
     "lineage": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
     "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008-g2-19ab4d85b7e4",
@@ -61,16 +73,16 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T12:10:14Z",
-    "expires_at": "2026-10-20T12:20:14Z",
+    "expires_at": "2026-10-20T12:10:19Z",
     "generation": 2,
     "owner": "oracle-research-v2.fundamental_events"
   },
   "priority": 70,
   "required_capability": "fundamental",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct fundamental CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008",
   "task_type": "FUNDAMENTAL_RESEARCH",
-  "updated_at": "2026-10-20T12:10:14Z"
+  "updated_at": "2026-10-20T12:10:19Z"
 }
