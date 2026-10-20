@@ -26,12 +26,16 @@
   "execution": {
     "attempts": {},
     "completed_stages": {
+      "document_or_fundamental_research": {
+        "artifact": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/oracle-worker/document_or_fundamental_research.json",
+        "artifact_hash": "72697562b93427664431022ef5272296a5131711ffbd7648e1807c9a1fd2d089"
+      },
       "legacy_duplicate_check": {
         "artifact": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/oracle-worker/legacy_duplicate_check.json",
         "artifact_hash": "c730a53603b2986cd72ebd80e5c573a32caa579bb43c712f3f778efe98200b2d"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g1-d606d015b52e.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g2-a09e3da99394.json",
     "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g2-a09e3da99394"
@@ -55,15 +59,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T03:20:07Z",
-    "expires_at": "2026-10-20T03:30:07Z",
+    "expires_at": "2026-10-20T03:21:49Z",
     "generation": 2,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "event_document",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
   "task_type": "EVENT_DOCUMENT",
-  "updated_at": "2026-10-20T03:20:07Z"
+  "updated_at": "2026-10-20T03:21:49Z"
 }
