@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from math import isfinite
 from typing import Any, Dict, List
 
 _UNKNOWN = "UNKNOWN"
@@ -25,10 +26,14 @@ def _tri_state(value: Any) -> bool | str:
 
 
 def _known(value: Any) -> bool:
-    if value is None:
+    if value is None or isinstance(value, bool):
         return False
     if isinstance(value, str):
-        return bool(value.strip()) and value.strip().upper() != _UNKNOWN
+        return bool(value.strip()) and value.strip().upper() not in {
+            _UNKNOWN, "UNAVAILABLE", "UNSPECIFIED", "NOT_ESTIMATED",
+        }
+    if isinstance(value, float):
+        return isfinite(value)
     if isinstance(value, (list, tuple, set, dict)):
         return bool(value)
     return True

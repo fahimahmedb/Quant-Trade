@@ -49,6 +49,8 @@ jobs:
             tests.test_research_os_v2_bridge \
             tests.test_research_os_v2_pipeline \
             tests.test_research_os_v2_worker_integration \
+            tests.test_research_os_implementability_contract \
+            research.research_os.tests.test_implementability_depth \
             tests.test_research_os_edge_observability_v2 \
             tests.test_research_os_edge_observation_reader_v2 \
             tests.test_research_os_frontier_source_planner_v2 \
