@@ -34,7 +34,7 @@
     "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g1-0bbc54332d7e.json",
     "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
-    "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g1-0bbc54332d7e"
+    "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g2-746df4f614ce"
   },
   "forbidden_actions": [
     "candidate price or return inspection",
@@ -54,16 +54,16 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T10:30:13Z",
-    "expires_at": "2026-10-20T10:30:18Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T10:40:13Z",
+    "expires_at": "2026-10-20T10:50:13Z",
+    "generation": 2,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "event_document",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007",
   "task_type": "EVENT_DOCUMENT",
-  "updated_at": "2026-10-20T10:30:18Z"
+  "updated_at": "2026-10-20T10:40:13Z"
 }
