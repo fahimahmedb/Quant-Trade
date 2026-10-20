@@ -11,9 +11,11 @@ import argparse
 import json
 from pathlib import Path
 
-from .github_state import GitHubStateStore, StateConflict
+from .github_state import GitHubStateStore, PREFIX, StateConflict
 from .model_backend import BackendUnavailable
-from .oracle_worker import AUTHORITY, ResearchOSWorker, backend_from_config
+from .oracle_worker import AUTHORITY, ResearchOSWorker, backend_from_config, timestamp
+from .queue_replenisher import derive_refill_task
+from .worker_preflight import canonical_hash, run_worker_preflight
 from .expansion.v2_stage_executor import V2StageExecutor
 from .expansion.v2_state import V2ModelAudit, V2StateStore
 
@@ -32,10 +34,120 @@ def _require_v2_config(config):
 
 
 class V2ResearchOSWorker(ResearchOSWorker):
+    @staticmethod
+    def _source_catalog(snapshot):
+        catalog = {}
+        prefix = PREFIX + "sources/"
+        for path, blob_sha in sorted(snapshot.blobs.items()):
+            if not path.startswith(prefix) or not path.endswith(".json"):
+                continue
+            try:
+                record = snapshot.read(path)
+            except (KeyError, ValueError, TypeError):
+                continue
+            if isinstance(record, dict):
+                catalog[path] = {"record": record, "blob_sha": blob_sha}
+        return catalog
+
+    @staticmethod
+    def _verify_bound_source(snapshot, task):
+        inputs = task.get("inputs") or {}
+        path = inputs.get("documentary_source")
+        if not path:
+            return
+        if not isinstance(path, str) or not path.startswith(PREFIX + "sources/"):
+            raise StateConflict("V2_DERIVED_SOURCE_PATH_INVALID")
+        if path not in snapshot.blobs:
+            raise StateConflict("V2_DERIVED_SOURCE_MISSING")
+        expected_blob = inputs.get("documentary_source_blob")
+        if expected_blob and snapshot.blobs[path] != expected_blob:
+            raise StateConflict("V2_DERIVED_SOURCE_BLOB_CHANGED")
+        record = snapshot.read(path)
+        expected_record = inputs.get("documentary_source_record_hash")
+        if expected_record and canonical_hash(record) != expected_record:
+            raise StateConflict("V2_DERIVED_SOURCE_RECORD_CHANGED")
+        packet = record.get("documentary_packet") or {}
+        expected_packet = inputs.get("documentary_source_packet_hash")
+        if expected_packet and packet.get("content_hash") != expected_packet:
+            raise StateConflict("V2_DERIVED_SOURCE_PACKET_CHANGED")
+
+    def _select(self, snapshot):
+        task, lane = super()._select(snapshot)
+        if task is not None:
+            self._verify_bound_source(snapshot, task)
+        return task, lane
+
+    def _verify_lease(self, snapshot, task_id, generation, session, lane):
+        task, preflight = super()._verify_lease(snapshot, task_id, generation, session, lane)
+        self._verify_bound_source(snapshot, task)
+        return task, preflight
+
     def _refill_or_idle(self, snapshot, base_receipt):
         if self.expected_task_id:
             return self._idle(snapshot, base_receipt, "CANARY_TARGET_TERMINAL", persist=False)
-        return super()._refill_or_idle(snapshot, base_receipt)
+        if self.lane not in ("auto", "integrator_portfolio"):
+            return self._idle(snapshot, base_receipt, "NO_ADMISSIBLE_LANE_TASK")
+
+        derived = derive_refill_task(
+            frontier=snapshot.read(PREFIX + "runtime/RESEARCH_FRONTIER.json"),
+            tasks=snapshot.tasks(),
+            created_at=timestamp(self.now()),
+            source_catalog=self._source_catalog(snapshot),
+        )
+        task = derived["task"]
+        if task is None:
+            return self._idle(snapshot, base_receipt, derived["status"])
+
+        original_head = snapshot.head
+        # Reacquire both queue and documentary source identities before publish.
+        with self.store.snapshot() as fresh:
+            if fresh.head != original_head:
+                raise StateConflict("QUEUE_CHANGED_BEFORE_REFILL")
+            run_worker_preflight(fresh.base)
+            confirmed = derive_refill_task(
+                frontier=fresh.read(PREFIX + "runtime/RESEARCH_FRONTIER.json"),
+                tasks=fresh.tasks(),
+                created_at=task["created_at"],
+                source_catalog=self._source_catalog(fresh),
+            )
+            if confirmed != derived:
+                raise StateConflict("FRONTIER_DERIVATION_CHANGED")
+            task_path = PREFIX + f"tasks/{task['task_id']}.json"
+            key = derived["derivation_key"]
+            receipt_path = PREFIX + f"receipts/queue-refill/{key}.json"
+            event_path = PREFIX + f"events/queue-refill/{key}.json"
+            event = {
+                "event_id": key,
+                "session_id": key,
+                "worker_id": self.worker_id + ".integrator_portfolio",
+                "action_id": task["task_id"],
+                "event_type": "ACTION_COMPLETED",
+                "event_seq": 1,
+                "generation": 1,
+                "emitted_at": timestamp(self.now()),
+                "payload": {
+                    "result": "DERIVED_ONE_READY_TASK",
+                    "queue_state": "QUEUED",
+                    "ready_count": 1,
+                    "next_task_id": task["task_id"],
+                    "next_lane": task["derivation"]["target_lane"],
+                    "source_bound": bool((task.get("inputs") or {}).get("documentary_source")),
+                },
+            }
+            receipt = dict(base_receipt, derivation=derived, producer_execution_same_wake=False)
+            writes = {task_path: task, receipt_path: receipt, event_path: event}
+            commit = self.store.commit(
+                fresh,
+                writes,
+                create_only=list(writes),
+                message="Research OS canonical source-aware queue refill " + key,
+            )
+            return dict(
+                base_receipt,
+                status="DERIVED_ONE_READY_TASK",
+                task_id=task["task_id"],
+                output_commit=commit,
+            )
 
 
 def build_v2_worker(config, *, store=None, backend=None):
