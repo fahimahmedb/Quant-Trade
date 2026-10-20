@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/independent_validation.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T04:02:19Z",
+  "evidence_refs": [
+    "research/research_os/events/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360-002.json"
+  ],
+  "input_head": "1825bcb7d44b87177691dd7c7be95f7e6e7e3161",
+  "lease_generation": 1,
+  "receipt_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360",
+  "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360",
+  "started_at": "2026-10-20T04:00:24Z",
+  "status": "COMPLETE",
+  "summary": "independent_validation: CONTINUE; task=READY; release=f3943830e20b05d926d3013501573b8b21fdace7",
+  "task_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
+  "worker_id": "oracle-research-v1.independent_challenge"
+}

@@ -13,6 +13,14 @@
   },
   "created_at": "2026-10-20T03:50:27Z",
   "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "independent_validation": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/independent_validation.json",
+        "artifact_hash": "530e1c3c704274387f77f0e929712b513ecef75b332f6269eb8a5e46018a0536"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360.json",
     "lineage": "DOC-EVENT-d8d19dbf0b1291ce",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360"
@@ -34,7 +42,7 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T04:00:24Z",
-    "expires_at": "2026-10-20T04:10:24Z",
+    "expires_at": "2026-10-20T04:02:19Z",
     "generation": 1,
     "owner": "oracle-research-v1.independent_challenge"
   },
@@ -47,9 +55,9 @@
   },
   "priority": 70,
   "required_capability": "validator",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
   "task_type": "VALIDATION",
-  "updated_at": "2026-10-20T04:00:24Z"
+  "updated_at": "2026-10-20T04:02:19Z"
 }
