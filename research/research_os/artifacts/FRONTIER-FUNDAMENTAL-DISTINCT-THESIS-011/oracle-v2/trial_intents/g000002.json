@@ -1,0 +1,17 @@
+{
+  "critic_model_identity": "gpt-oss-10.2b-q4-k-m",
+  "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
+  "generated_proposal_count": "NOT_YET_KNOWN",
+  "generation": 2,
+  "model_identity": "DETERMINISTIC_ENGINE",
+  "outcome_accessed": false,
+  "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+  "schema_version": "v2-ideation-intent-v1",
+  "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g2-217153d80729",
+  "source_blob": "b798e52c217bc6c9ceea98c74bfc412b7e99c4f4",
+  "source_path": "research/research_os/sources/apple_fy2025_statement_cells.json",
+  "started_at": "2026-10-20T17:50:09Z",
+  "state": "STARTED_BEFORE_IDEATION",
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011"
+}
