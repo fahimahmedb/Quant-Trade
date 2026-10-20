@@ -13,6 +13,14 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/oracle-worker/document_or_fundamental_research.json"
+    ],
+    "completed_at": "2026-10-20T10:40:18Z",
+    "receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g2-746df4f614ce.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T10:20:10Z",
   "derivation": {
     "derivation_key": "4ca20cb1869326b028d915c657f0d66dad2cbb6758970a57d9ce3f460ab33a7b",
@@ -31,7 +39,7 @@
         "artifact_hash": "a3fc75f4f690eec288f1ecd15f67b6780d55422e1a95b52da51acc7ba7e430e8"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g1-0bbc54332d7e.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g2-746df4f614ce.json",
     "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007-g2-746df4f614ce"
@@ -55,15 +63,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T10:40:13Z",
-    "expires_at": "2026-10-20T10:50:13Z",
+    "expires_at": "2026-10-20T10:40:18Z",
     "generation": 2,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "event_document",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007",
   "task_type": "EVENT_DOCUMENT",
-  "updated_at": "2026-10-20T10:40:13Z"
+  "updated_at": "2026-10-20T10:40:18Z"
 }
