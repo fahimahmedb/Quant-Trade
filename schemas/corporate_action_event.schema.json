@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "action_type": {
+      "enum": [
+        "NAME_CHANGE",
+        "MERGER",
+        "SPLIT",
+        "SPIN_OFF",
+        "DELISTING"
+      ],
+      "type": "string"
+    },
+    "delisting_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "effective_at": {
+      "type": "string"
+    },
+    "event_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "evidence_hashes": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "issuer_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "knowledge_at": {
+      "type": "string"
+    },
+    "legs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "cash_per_source_share": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "kind": {
+            "enum": [
+              "CASH",
+              "STOCK",
+              "SPIN"
+            ],
+            "type": "string"
+          },
+          "target_security_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "units_per_source_share": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "new_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_security_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "split_ratio": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "event_id",
+    "action_type",
+    "knowledge_at",
+    "effective_at",
+    "evidence_hashes"
+  ],
+  "title": "CorporateActionEvent",
+  "type": "object"
+}

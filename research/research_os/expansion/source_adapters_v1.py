@@ -140,21 +140,33 @@ def apple_dividend_packet(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     return packet
 
 
-def capture_apple_dividend_announcements(captured: Dict[str, Any], raw_paths: List[Path]) -> Dict[str, Any]:
+def capture_apple_dividend_announcements(captured: Dict[str, Any], raw_paths: List[Path], *,
+                                        evidence_store: Any = None) -> Dict[str, Any]:
     """Admit previously captured local HTML after checking its bytes and excerpts.
 
     Does not download documents or use publication-date strings as availability.
+    An optional caller-owned Data Plane store preserves the exact verified bytes;
+    the scientific packet and its hash remain unchanged.
     """
     if captured['comparison_basis'] != APPLE_DIVIDEND_COMPARISON or len(raw_paths) != 2:
         raise ValueError('unqualified comparison basis')
     records = captured['records']
     packet = apple_dividend_packet(records)
+    verified = []
     for record, path in zip(records, raw_paths):
         raw = Path(path).read_bytes()
         if hashlib.sha256(raw).hexdigest() != record['raw_sha256']:
             raise ValueError('original HTML capture digest mismatch')
         if raw.decode('utf-8').count(record['capture_excerpt']) != 1:
             raise ValueError('cash declaration excerpt missing or ambiguous')
+        verified.append((record, raw))
+    if evidence_store is not None:
+        for record, raw in verified:
+            receipt = evidence_store.put_bytes(raw, source_uri=record['source_url'],
+                                               retrieved_at=record['captured_at'], media_type='text/html',
+                                               source_type='CORPORATE_IR')
+            if receipt.sha256 != 'sha256:' + record['raw_sha256']:
+                raise ValueError('raw evidence archive receipt digest mismatch')
     return {'source_ref':packet['source_ref'], 'freeze_time':packet['available_at'], 'documentary_packet':packet}
 
 
