@@ -24,12 +24,14 @@ jobs:
         run: |
           python -m py_compile \
             research/research_os/expansion/v2_core.py \
+            research/research_os/expansion/v2_bridge.py \
             research/research_os/expansion/v2_pipeline.py
 
-      - name: V2 Core contract and whole-loop tests
+      - name: V2 Core contract, bridge and whole-loop tests
         run: |
           python -m unittest -v \
             tests.test_research_os_v2_core \
+            tests.test_research_os_v2_bridge \
             tests.test_research_os_v2_pipeline
 
       - name: Verify V2 policy remains fail-closed
