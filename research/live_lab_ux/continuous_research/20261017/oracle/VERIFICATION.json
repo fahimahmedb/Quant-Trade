@@ -1,0 +1,35 @@
+{
+  "observed_at": "2026-10-17T01:08:29Z",
+  "status": "PREPARATION_VERIFIED_TARGET_NOT_CONNECTED",
+  "quant_source_base": "4a6e952debcc443d134be1b1c60eda46d2c09fbf",
+  "research_os_remote_head": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
+  "blue_remote_head": "09ba64b8bee1419076ec8a30f8d75a916932c2ba",
+  "site_local_source_head": "517f510c096e752643c64097b475048cfc0385c1",
+  "checks": {
+    "shell_syntax": "PASS",
+    "diagnostic_local_execution": "PASS",
+    "json_parsing": "PASS",
+    "pinned_model_revision_size_and_lfs_sha256_metadata": "PASS_3_CANDIDATES",
+    "pinned_llama_server_cli_options_documented": "PASS",
+    "local_artifact_paths": "PASS",
+    "diff_whitespace": "PASS"
+  },
+  "local_diagnostic_scope": {
+    "machine": "CURRENT_CHATGPT_EXECUTOR_NOT_ORACLE_INSTANCE",
+    "architecture": "x86_64",
+    "cgroup_memory_max_bytes": 8589934592,
+    "cpu_quota_cores": 2,
+    "swap_kib": 0
+  },
+  "not_performed": [
+    "Oracle connection or instance inspection",
+    "Oracle IAM, storage or instance changes",
+    "Model download, compilation or inference",
+    "Load, throughput, quality or 24-hour pilot",
+    "Research OS task or policy mutations",
+    "Site deployment or event injection"
+  ],
+  "target_access_blocker": "No Oracle identity, credential or SSH access attached here; Owner uses a phone and reports an existing instance.",
+  "runtime_activated": false,
+  "new_paid_resource_provisioned": false
+}

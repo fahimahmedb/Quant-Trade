@@ -1,120 +1,51 @@
-# Live Research Lab — native integration
+# Quant — Live Research Lab · Owner revision 2026-10-16
 
-Integration branch: `builder/live-lab-native-integration-20261015`.
+[Integrated visual review](docs/VISUAL_REVIEW.md) · [Gallery A–F](review/index.html) · [Frozen constitution](docs/CANONICAL_UX_CONSTITUTION.md) · [Checkpoints](docs/REBUILD_20261016.md)
 
-This branch starts from the proved platform-probe checkpoint `809ec7e3d088a4ba4c5857771e6422ab91a139f4` and imports only the isolated UX subtree from `builder/live-lab-ux-vision-20261014`; it does **not** merge that branch's unrelated research history.
+The Owner rejected the previous sparse candidate. This revision replaces it with a differentiated architectural research hall: double-height library, mezzanine, bridge, stepped terraces, glazed validation room, evidence pod, engineering alcove, archives, seminar tiers and integration table around the scientific column. Local PBR surfaces, beveled furniture/tools and a tailored adult humanoid replace the previous generic visual kit. Asset sources are credited in `assets/ASSET_CREDITS.md`.
 
-## Safety state
+## Local review
+
+```sh
+cd research/live_lab_ux
+python3 -m http.server 4173
+```
+
+- `live.html`: existing same-origin native SSE → mapper → reducer → shared renderer.
+- `index.html`: isolated, visibly synthetic review/replay; `?case=idle|active|selected|economic`. Original eight replay scenarios remain available.
+- `review/index.html`: committed integrated captures and provenance.
+
+Runtime dependencies/assets are local; no CDN, paid API or generated business data. To rebuild the MIT Three.js vendor bundle: `npm ci && npm run vendor`.
+
+## Interaction and truth
+
+Full-viewport world, maximum three normal corner facts. Drag/orbit, bounded navigation, wheel/pinch zoom, Shift/right-drag pan and canonical reset. Tap worker → actual station camera focus → short context after a focused frame paints → optional factual details.
+
+Existing native adapters/mapper/SSE/reducer are unchanged by this revision. Heartbeat, connection, resync and duplicates never authorize work. Unknown progress stays unknown. Only explicit reducer-backed supported activity selects a gesture. Core motion requires the explicit Economic Look slot, an authorized worker and current transport. Structural zone names are not live role assignments. Screens show architectural schematics marked NON-DATA. No unsupported travel or inferred research roles.
+
+Rendering batches static geometry, sleeps when idle and uses a nonblocking GPU fence to bound pending frames. Camera timing follows real elapsed time; gesture deltas stay bounded. Reduced motion suppresses repetitive motion/easing. The illustrated fallback uses a new empty capture of this exact hall and CPU projection of the same articulated adults. It supports pan/zoom/focus rather than perspective orbit or WebGL lighting, and skips building/loading the 3D environment.
 
 ```text
 REAL_CAPITAL_AUTHORIZED = FALSE
 LIVE_TRADING_AUTHORIZED = FALSE
 paid_usd_total = 0
-LIVE_E2E_PASS = NOT_CLAIMED
-DEPLOYMENT = NOT_PERFORMED
+PRODUCTION_REPLACEMENT_AUTHORIZED = FALSE
+VISUAL_REVIEW_REQUIRED = TRUE
 ```
 
-Nothing in this UI authorizes capital, trading, research conclusions, or economic decisions.
+## Verification/reproduction
 
-## Two surfaces
-
-- `index.html` remains the deterministic `DEVELOPMENT/REPLAY` UX harness.
-- `live.html` is the native live browser surface. It binds same-origin `/api/work/events` through browser `EventSource`, then through the canonical native mapper and the existing deterministic scene reducer.
-
-The live surface adds no GitHub polling, retry scheduler, heartbeat timer, lease timer, progress timer, or fabricated worker activity. Browser `EventSource` owns the already-proved SSE reconnect/cursor behavior.
-
-## Native event authority
-
-The proved worker contract currently accepts only:
-
-```text
-ACTION_STARTED
-ACTION_COMPLETED
-WORKER_HEARTBEAT
-SESSION_ENDED
-```
-
-`adapters/platform-native.js` maps only those accepted facts. It deliberately does **not** infer:
-
-- Codex == Owner identity;
-- Researcher / Builder / Auditor / Manager roles;
-- progress values or percentages;
-- KILL / PARK / PROMOTE;
-- Economic Look ownership;
-- economic results.
-
-An accepted native worker is therefore represented as the protocol-backed `Worker` role unless stronger explicit semantics are supplied by a future proved contract. Missing progress remains `UNKNOWN`.
-
-## Architecture
-
-```text
-native Site SSE frame
-        |
-        v
-platform-native-sse.js
-        |
-        v
-LiveEventAdapter
-        |
-        v
-platform-native.js
-        |
-        v
-normalized UI event
-        |
-        v
-reduceScene() factual UI state
-        |
-        v
-deterministic animation authorization
-        |
-        v
-DOM/CSS rendered scene
-```
-
-Development replay substitutes `FixtureReplayAdapter` at the adapter boundary. Renderer and state machine stay shared.
-
-## Snapshot / replay truth guard
-
-The native SSE path can send a factual snapshot and then replay active events already represented by that snapshot. `mapNativeSnapshot()` now emits a replay guard containing accepted event IDs and generation-scoped stream watermarks. `reduceScene()` seeds those IDs/sequences during snapshot application.
-
-Therefore:
-
-- snapshot reconstruction never starts business animation;
-- replayed SSE frames already represented by the snapshot are ignored;
-- only a genuinely later accepted event can resume business animation;
-- generation changes remain isolated by stream key `worker + session + generation`.
-
-## Truth rules
-
-- A heartbeat updates presence only; it cannot create or advance business animation.
-- Disconnect freezes business animation.
-- `CONNECTED` and `SNAPSHOT` restore transport/factual state but do not restart work animation.
-- Duplicate IDs and out-of-order sequence numbers cannot replay animation.
-- `UNKNOWN` progress renders `Progress unknown`; no percentage is synthesized.
-- KILL/PARK/PROMOTE changes only on an exact supported `DECISION` UI event; the current native worker contract does not produce one.
-- Only explicit event-backed roles are materialized.
-
-## UX surface
-
-Mobile Safari remains the primary layout. The shell uses ordinary DOM/CSS, safe-area insets, Pointer Events and a transform-only pan/pinch camera.
-
-The replay fixtures continue to demonstrate richer future semantic roles and Economic Look states, but they remain visibly synthetic development fixtures and are not evidence.
-
-## Tests
-
-From this directory:
-
-```bash
+```sh
+npm ci
 npm test
+npm run capture
+python3 tools/prepare-review.py
+npm run qa:browser
+python3 tools/prepare-review.py
 ```
 
-The suite uses Node's built-in test runner. `tests/platform-native.test.js` covers the real probe-shaped worker contract, generation-scoped ordering, duplicate suppression, heartbeat-only presence, unsupported-event rejection, factual snapshot reconstruction, snapshot replay suppression, forbidden identity/economic inferences, and the thin SSE subscription.
+Capture/QA requires Chromium (`CHROMIUM_PATH`, default `/usr/bin/chromium`); packaging requires Python Pillow. `LAB_REVIEW_URL` defaults to `http://127.0.0.1:4173`. A/B/C/E use the real live entry and mapper with a browser-only EventSource mock. D uses an explicit normalized Economic Look fixture because native protocol does not supply it. Captures are synthetic, not evidence of real research.
 
-During the integration session the exact native adapter/state-machine subset was executed locally and passed 11/11 tests. A full repository clone/CI run was not available in that runtime because direct GitHub DNS access from the execution container was unavailable.
+41 Node tests cover native ordering/generation, snapshots, replay guards, progress, decisions, core/gesture authority and neck articulation. Browser results are stored with captures. Portrait is 393×852 Chromium touch emulation; real iPhone/Safari performance is unverified. The unrelated global SEC gate retains its existing STATE.md test-inventory freshness failure; no governance data is rewritten.
 
-## Known platform boundary
-
-This integration uses the platform capabilities already proved by the probe branch. It does not claim proof for the unresolved Codex/Owner principal, a fully remote Builder identity, native APNs delivery, app-specific mobile behavior, third-party model routing, or production publication of this UX surface.
-
-Those are capability boundaries, not reasons to replace the working native event/SSE architecture with the older polling approach.
+No Site is created, connected or deployed. Owner visual approval of the new integrated captures is required before production replacement.

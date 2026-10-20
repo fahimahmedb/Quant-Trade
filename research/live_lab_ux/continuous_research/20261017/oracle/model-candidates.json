@@ -1,0 +1,48 @@
+{
+  "status": "METADATA_VERIFIED_INFERENCE_NOT_TESTED",
+  "observed_date": "2026-10-17",
+  "target_instance_observed": false,
+  "weights_downloaded": false,
+  "llama_cpp_revision": "ea0c4c2c85fb183ec0fbd30a1af4e4275a18a064",
+  "initial_settings": {
+    "host": "127.0.0.1",
+    "port": 8080,
+    "gpu_layers": 0,
+    "context_tokens": 2048,
+    "parallel_slots": 1,
+    "threads_if_two_ocpu": 2,
+    "batch_size": 128,
+    "ubatch_size": 64,
+    "reasoning_budget_tokens": 128
+  },
+  "candidates": [
+    {
+      "priority": 1,
+      "repository": "ggml-org/gpt-oss-20b-GGUF",
+      "revision": "ef9b12f2ff56c69cf32153a02784e7a3c88bf524",
+      "file": "gpt-oss-20b-MXFP4.gguf",
+      "bytes": 12109566624,
+      "sha256": "27cd6c432c7672cb812a92f611cf3ba7bbc35928262bb1e1253ff4ee6ae35901",
+      "url": "https://huggingface.co/ggml-org/gpt-oss-20b-GGUF/resolve/ef9b12f2ff56c69cf32153a02784e7a3c88bf524/gpt-oss-20b-MXFP4.gguf"
+    },
+    {
+      "priority": 2,
+      "repository": "unsloth/gpt-oss-20b-GGUF",
+      "revision": "d449b42d93e1c2c7bda5312f5c25c8fb91dfa9b4",
+      "file": "gpt-oss-20b-Q3_K_S.gguf",
+      "bytes": 11463894208,
+      "sha256": "8deacd2c5ed46d1a62368c52e44abdb55e32a2aa0e5acea86d18d8258339f17d",
+      "url": "https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/d449b42d93e1c2c7bda5312f5c25c8fb91dfa9b4/gpt-oss-20b-Q3_K_S.gguf"
+    },
+    {
+      "priority": 3,
+      "repository": "unsloth/gpt-oss-20b-GGUF",
+      "revision": "d449b42d93e1c2c7bda5312f5c25c8fb91dfa9b4",
+      "file": "gpt-oss-20b-Q2_K.gguf",
+      "bytes": 11468317888,
+      "sha256": "129b8e3865517cbba55bbb7d4f0cc2444a014e73a619eafbac247ef6573a19ee",
+      "url": "https://huggingface.co/unsloth/gpt-oss-20b-GGUF/resolve/d449b42d93e1c2c7bda5312f5c25c8fb91dfa9b4/gpt-oss-20b-Q2_K.gguf",
+      "note": "Not smaller than Q3_K_S; no claim of measured quality or feasibility."
+    }
+  ]
+}

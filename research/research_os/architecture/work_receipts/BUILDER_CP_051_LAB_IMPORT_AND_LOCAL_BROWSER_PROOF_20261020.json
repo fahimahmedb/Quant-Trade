@@ -1,0 +1,496 @@
+{
+  "browser_qa": {
+    "result": {
+      "checks": [
+        "native connected creates no worker",
+        "native heartbeat creates no worker",
+        "explicit native activity creates one active adult",
+        "duplicate creates no extra actor",
+        "disconnect and reconnect do not animate",
+        "snapshot and replay stay frozen",
+        "later semantic event resumes",
+        "focus precedes context; details remain optional and unknown progress remains unknown",
+        "forced no-WebGL: same-world illustration, factual adult and camera approach"
+      ],
+      "errors": []
+    },
+    "scope": "LOCAL_CHROMIUM_SYNTHETIC_EVENTSOURCE_NOT_PRODUCTION",
+    "screenshot_sha256": "69e15ed6eb8662b32e34a26343e35c34d4aca6c934f911b445abb9b3e5c5d0bc"
+  },
+  "exact_copied_files": [
+    {
+      "git_blob": "fd3807ca8043d38c7d9fd69b8df07c8bc564a9f0",
+      "path": "research/live_lab_ux/.gitignore"
+    },
+    {
+      "git_blob": "c26c3a844099e7ca6707db43bd6a1454e1c11141",
+      "path": "research/live_lab_ux/3D_BUILD_CHECKPOINT_20261015.md"
+    },
+    {
+      "git_blob": "387ab5d0e01dadd8386b63ef5f24d3c82608d2ff",
+      "path": "research/live_lab_ux/CANARY_IDENTITY_WAIVER_20261015.json"
+    },
+    {
+      "git_blob": "b4141e499edd61a605cd1266c98d52d87d037b05",
+      "path": "research/live_lab_ux/LIVE_LAB_CONTINUATION_20261020.md"
+    },
+    {
+      "git_blob": "5465e5df075271d6c6dd8e3732c7705cbb43d076",
+      "path": "research/live_lab_ux/NATIVE_INTEGRATION_CHECKPOINT_20261015.md"
+    },
+    {
+      "git_blob": "fe824ca806d537acf6664b32752a1ef0a40d559d",
+      "path": "research/live_lab_ux/ORACLE_INTEGRATION_CHECKPOINT_20261020.md"
+    },
+    {
+      "git_blob": "bcd846987e5216d2fa5564f45fbf6af39f5c9356",
+      "path": "research/live_lab_ux/OWNER_UX_REBUILD_CHECKPOINT_20261015.md"
+    },
+    {
+      "git_blob": "3c7c573f9247e2b3fbc3de8ab71d0d49172c549a",
+      "path": "research/live_lab_ux/OWNER_UX_REBUILD_CHECKPOINT_HEAD_20261015.md"
+    },
+    {
+      "git_blob": "9b1276012486882b806a73292e91dc37d46131ff",
+      "path": "research/live_lab_ux/PUBLICATION_CANARY_CHECKPOINT_20261015.json"
+    },
+    {
+      "git_blob": "11c5492b629c32fe1a28a221a8411c7142f20c35",
+      "path": "research/live_lab_ux/README.md"
+    },
+    {
+      "git_blob": "8a39246566fda43a5b1e308fd11962e5d9a7506c",
+      "path": "research/live_lab_ux/WORK_SITE_HANDOFF_20261020.md"
+    },
+    {
+      "git_blob": "76c15dd0866d9af509192bec4bc6c5105470d5ed",
+      "path": "research/live_lab_ux/adapters/fixture-replay.js"
+    },
+    {
+      "git_blob": "610754d2aaea02df404222e3a3648a9d4247cfff",
+      "path": "research/live_lab_ux/adapters/live-event.js"
+    },
+    {
+      "git_blob": "828f532d13c92423c11a3ea6fd6f473a9b74b4c0",
+      "path": "research/live_lab_ux/adapters/platform-native-sse.js"
+    },
+    {
+      "git_blob": "2416b8c83f37ab4cb293df6abd5ffbfe0c59bfaa",
+      "path": "research/live_lab_ux/adapters/platform-native.js"
+    },
+    {
+      "git_blob": "351cb13f9ba19898994e00dc54bcac31509dbc26",
+      "path": "research/live_lab_ux/app.js"
+    },
+    {
+      "git_blob": "8ce0b513b8e89d325959a8d793c0b0563064becc",
+      "path": "research/live_lab_ux/assets/ASSET_CREDITS.md"
+    },
+    {
+      "git_blob": "4bba884b52bf01833fa3d31da85ca809cf207c40",
+      "path": "research/live_lab_ux/assets/laboratory-idle-mobile.webp"
+    },
+    {
+      "git_blob": "d5c8533e7e65dbbf817b9baf57878fedbd94f815",
+      "path": "research/live_lab_ux/assets/laboratory-idle.webp"
+    },
+    {
+      "git_blob": "146367b8ef56376f42f8c7f699803f15c8ed1a79",
+      "path": "research/live_lab_ux/assets/materials/mineral-color.jpg"
+    },
+    {
+      "git_blob": "692c30a4e7d95ea8e3e5dd729e534c83095bcddb",
+      "path": "research/live_lab_ux/assets/materials/mineral-normal.jpg"
+    },
+    {
+      "git_blob": "e743650fa015f5b3a2f9ef3b1333aaa6aa58f6bf",
+      "path": "research/live_lab_ux/assets/materials/mineral-roughness.jpg"
+    },
+    {
+      "git_blob": "ef37fd3aa03219709dbae5af60dc88fafbd97156",
+      "path": "research/live_lab_ux/assets/materials/oak-bump.jpg"
+    },
+    {
+      "git_blob": "7cc171b9e96b6ad8a1d5a0266f6304d1ec8d9607",
+      "path": "research/live_lab_ux/assets/materials/oak-color.jpg"
+    },
+    {
+      "git_blob": "6ce0af2eb0ca2c336178ad7e7460b125358f1f89",
+      "path": "research/live_lab_ux/assets/materials/oak-roughness.jpg"
+    },
+    {
+      "git_blob": "e0407e33374136d5b03beb06c9e2dbcbf081765f",
+      "path": "research/live_lab_ux/assets/quant-mark.svg"
+    },
+    {
+      "git_blob": "4cfe7602a71632d64107c24445b11b570efa6695",
+      "path": "research/live_lab_ux/continuous_research/20261017/ACTIVE_WORKFLOWS.json"
+    },
+    {
+      "git_blob": "64dfcf906613868fd8890ffe0b090984706a1e7f",
+      "path": "research/live_lab_ux/continuous_research/20261017/ANALYSE_H24.md"
+    },
+    {
+      "git_blob": "d73fe451d3ef715e15805bb73ef5f7a415fda06a",
+      "path": "research/live_lab_ux/continuous_research/20261017/CURRENT_OS_PROOF.json"
+    },
+    {
+      "git_blob": "eaa1997aca88e8d9d1c6e4372f4eb9d3bcde047b",
+      "path": "research/live_lab_ux/continuous_research/20261017/EVIDENCE.json"
+    },
+    {
+      "git_blob": "05d3e31312f5a442f1cd00a916dcea7a43cb7d04",
+      "path": "research/live_lab_ux/continuous_research/20261017/IDEATION_CONTINUE.md"
+    },
+    {
+      "git_blob": "683b753686363023674d281ac61fa5b08a9bbb3b",
+      "path": "research/live_lab_ux/continuous_research/20261017/PILOT_SPEC.json"
+    },
+    {
+      "git_blob": "0b2f809b9686d255f03c710e0a507fe071a9e3af",
+      "path": "research/live_lab_ux/continuous_research/20261017/ROUTE_ORACLE_12GO.md"
+    },
+    {
+      "git_blob": "78cae10ac0c7c16cfca5bee5c72990342437dee1",
+      "path": "research/live_lab_ux/continuous_research/20261017/SOURCES.json"
+    },
+    {
+      "git_blob": "d02590166748dca7f2d2efd42d267fe63134931b",
+      "path": "research/live_lab_ux/continuous_research/20261017/oracle/CONNECTION_CHECK_20261018.json"
+    },
+    {
+      "git_blob": "212129935639e8ad4094843805ce9b142d693832",
+      "path": "research/live_lab_ux/continuous_research/20261017/oracle/OWNER_HOST_EVIDENCE_20261018.json"
+    },
+    {
+      "git_blob": "0f58b8f65d25f67b1a0d408b0aa73de3b10c7d46",
+      "path": "research/live_lab_ux/continuous_research/20261017/oracle/VERIFICATION.json"
+    },
+    {
+      "git_blob": "e159bae222eb4ae3f449b9bd1627c00c7e2270b8",
+      "path": "research/live_lab_ux/continuous_research/20261017/oracle/model-candidates.json"
+    },
+    {
+      "git_blob": "87198a02382be1139f78effd3ad8730665e0506c",
+      "path": "research/live_lab_ux/continuous_research/20261017/oracle/preflight.sh"
+    },
+    {
+      "git_blob": "abb70a292a0a8f250c105e69d177a3b83d8ba6ac",
+      "path": "research/live_lab_ux/continuous_research/20261017/oracle/run-command-diagnostic.sh"
+    },
+    {
+      "git_blob": "97746efc35c611c315ee9d0f05661782b2823b6b",
+      "path": "research/live_lab_ux/core/model.js"
+    },
+    {
+      "git_blob": "af54c4861472e8a714349dd59605edd7e06c1d8e",
+      "path": "research/live_lab_ux/core/state-machine.js"
+    },
+    {
+      "git_blob": "402eb4f670abde46ee44fddd677c72b7055edffe",
+      "path": "research/live_lab_ux/docs/CANONICAL_UX_CONSTITUTION.md"
+    },
+    {
+      "git_blob": "c812ce8c2c651e38a2b4211695fb0694144742e0",
+      "path": "research/live_lab_ux/docs/INTEGRATION_CHECKPOINT.md"
+    },
+    {
+      "git_blob": "e6d82bf4dc32030be5ae362dbf496572164fc6bf",
+      "path": "research/live_lab_ux/docs/PRODUCTION_20261016.md"
+    },
+    {
+      "git_blob": "f6b44db2d8bc541669256b6907f468164f30829c",
+      "path": "research/live_lab_ux/docs/REBUILD_20261016.md"
+    },
+    {
+      "git_blob": "ffc786589c41a92dde36cf6cbc260f8a4648e435",
+      "path": "research/live_lab_ux/docs/VISUAL_REVIEW.md"
+    },
+    {
+      "git_blob": "42fcc0ead5aa0c29f06849d4070d4356caaea5b9",
+      "path": "research/live_lab_ux/fixtures/scenarios.js"
+    },
+    {
+      "git_blob": "2401dc768fb8cb59491e6b9d5e6e4b2698ec0554",
+      "path": "research/live_lab_ux/index.html"
+    },
+    {
+      "git_blob": "8e645b064d0703ce4bbb7ea5363b4ba33df95fe3",
+      "path": "research/live_lab_ux/live-app.js"
+    },
+    {
+      "git_blob": "a0def51418caeddf13c37c6cd314a4011885320d",
+      "path": "research/live_lab_ux/live.html"
+    },
+    {
+      "git_blob": "87e230573887ea6b32095a0c7f42cb05e6646a79",
+      "path": "research/live_lab_ux/owner_rebuild_preview/preview.css"
+    },
+    {
+      "git_blob": "a7b5e29b17e564d4046c59e61d9d2cc7370e8cef",
+      "path": "research/live_lab_ux/owner_rebuild_preview/preview.html"
+    },
+    {
+      "git_blob": "f6d1f916c63898735e5e40926c3956bc74705df6",
+      "path": "research/live_lab_ux/owner_rebuild_preview/preview.js"
+    },
+    {
+      "git_blob": "e4800d5c86b675b2928a2ad65a41737c0a27a687",
+      "path": "research/live_lab_ux/package-lock.json"
+    },
+    {
+      "git_blob": "0042fdbc6d11a5bc40c4e45690c4c9b7bb528a5e",
+      "path": "research/live_lab_ux/package.json"
+    },
+    {
+      "git_blob": "28ba8ac2013d3d0385db07b0edcab33af4822f7b",
+      "path": "research/live_lab_ux/review/A_IDLE.png"
+    },
+    {
+      "git_blob": "959c0d6efd9aa40d95fc13f69220370236496458",
+      "path": "research/live_lab_ux/review/B_ACTIVE.png"
+    },
+    {
+      "git_blob": "0c85a90089a925e5dfca9e444be85de4ea214270",
+      "path": "research/live_lab_ux/review/C_SELECTED.png"
+    },
+    {
+      "git_blob": "77cdb808ec1bf421198e01b0dec1f7b672f0febf",
+      "path": "research/live_lab_ux/review/D_ECONOMIC.png"
+    },
+    {
+      "git_blob": "2d4667916c0e2c5d0a517998dea9194e742ccaff",
+      "path": "research/live_lab_ux/review/E_IPHONE.png"
+    },
+    {
+      "git_blob": "0377fed33048dc7dc1f077aac1065a22d8749660",
+      "path": "research/live_lab_ux/review/F_FALLBACK.png"
+    },
+    {
+      "git_blob": "acc5d96ec045555c2e5a59205c9f8bec774e6986",
+      "path": "research/live_lab_ux/review/browser-qa.json"
+    },
+    {
+      "git_blob": "79f5a7be7cb2936ac374e1826788e08b3f931e57",
+      "path": "research/live_lab_ux/review/capture-manifest.json"
+    },
+    {
+      "git_blob": "5ea9270eb1dbee11ad2b2671ebcc78644dc94cbd",
+      "path": "research/live_lab_ux/review/fallback-verification.json"
+    },
+    {
+      "git_blob": "ee1dd298fc104a052d2203e67a32af6e3bcccfbc",
+      "path": "research/live_lab_ux/review/index.html"
+    },
+    {
+      "git_blob": "b191c8cb99707b1b7e62f8fd61aa09084a277c5d",
+      "path": "research/live_lab_ux/review/production/A_IDLE.png"
+    },
+    {
+      "git_blob": "7da2a650ac6cccd37d12d9bf8afff35e4b58b701",
+      "path": "research/live_lab_ux/review/production/B_ACTIVE.png"
+    },
+    {
+      "git_blob": "10a638c8a499a81f6bd346825af7d4d9b71c8751",
+      "path": "research/live_lab_ux/review/production/C_SELECTED.png"
+    },
+    {
+      "git_blob": "b51f4db08df163ec5aa8479e82c627515060cc7b",
+      "path": "research/live_lab_ux/review/production/E_IPHONE.png"
+    },
+    {
+      "git_blob": "c8e8cbed73828eb21ef45ee023b7a133ba5dcdc5",
+      "path": "research/live_lab_ux/review/production/F_FALLBACK.png"
+    },
+    {
+      "git_blob": "359af7a919a5093257a28866521a13c5187841f2",
+      "path": "research/live_lab_ux/review/production/asset-verification.json"
+    },
+    {
+      "git_blob": "294e5fcc4afd4990a593641db124750948f608d7",
+      "path": "research/live_lab_ux/review/production/canary-initial-capture-timeout.json"
+    },
+    {
+      "git_blob": "09b6d7b5b968c0a2ddab7fe6c78b468d4f4828b0",
+      "path": "research/live_lab_ux/review/production/canary-retry-heartbeat-assertion.json"
+    },
+    {
+      "git_blob": "b7d010818dbf31b2511637bafb69eef77e860a03",
+      "path": "research/live_lab_ux/review/production/canary.json"
+    },
+    {
+      "git_blob": "eea3f49098600e059d3a293dca2f6fad3ae1bfb3",
+      "path": "research/live_lab_ux/review/production/index.html"
+    },
+    {
+      "git_blob": "529a9b1d61b2746e9356275bc6a046e637756da6",
+      "path": "research/live_lab_ux/review/production/portrait-fallback.json"
+    },
+    {
+      "git_blob": "d4cdfec5e00d2666aee8ce9168552b117ef79c1f",
+      "path": "research/live_lab_ux/review/production/post-cleanup.json"
+    },
+    {
+      "git_blob": "da66ddcd8715da9ef94c3c57ce6331e755a36f64",
+      "path": "research/live_lab_ux/review/rebuild-20261016/OPENING_DRAFT.png"
+    },
+    {
+      "git_blob": "5c1dd765b87ce400cc9adc8ffbf76d5e30d2df9f",
+      "path": "research/live_lab_ux/styles.css"
+    },
+    {
+      "git_blob": "5074d9ffcabb1a6acf3a989850f0362e6534fff9",
+      "path": "research/live_lab_ux/tests/character-rig.test.js"
+    },
+    {
+      "git_blob": "80ae43582d6b22d0fb8949668c6dce4b33379bb4",
+      "path": "research/live_lab_ux/tests/fixtures.test.js"
+    },
+    {
+      "git_blob": "8ea60a2dab2db9bd81e818d96a9d51c78e7901fe",
+      "path": "research/live_lab_ux/tests/live-event.test.js"
+    },
+    {
+      "git_blob": "71282d3ef509c137388b05c22215a35b6a5a9da5",
+      "path": "research/live_lab_ux/tests/motion-authority.test.js"
+    },
+    {
+      "git_blob": "cf2a019ba46dcd5ad313adc93781d788c18bf288",
+      "path": "research/live_lab_ux/tests/oracle-live-contract.test.js"
+    },
+    {
+      "git_blob": "18502987b9291ae9f4f0143a20467190be809b8e",
+      "path": "research/live_lab_ux/tests/oracle-native.test.js"
+    },
+    {
+      "git_blob": "ccf729cf735f8b46ea0ddaae41559bb76fe0f93b",
+      "path": "research/live_lab_ux/tests/platform-native.test.js"
+    },
+    {
+      "git_blob": "3b9cc3be54f5eedd971dfce0b4d5ccd216b2523b",
+      "path": "research/live_lab_ux/tests/scene3d-policy.test.js"
+    },
+    {
+      "git_blob": "12d779b9e5c8850c987bffce1a2e7ff059cbcac1",
+      "path": "research/live_lab_ux/tests/state-machine.test.js"
+    },
+    {
+      "git_blob": "fddfc661a5bf46a235e262ebebf0c4579525e13a",
+      "path": "research/live_lab_ux/tools/browser-qa.mjs"
+    },
+    {
+      "git_blob": "f01d553274e03ae1b619fa3a0d79a1b70782c5d6",
+      "path": "research/live_lab_ux/tools/capture-illustration.mjs"
+    },
+    {
+      "git_blob": "6879ea64e94144db8d77aca54d03f3f90eba462d",
+      "path": "research/live_lab_ux/tools/capture-review.mjs"
+    },
+    {
+      "git_blob": "a5d4c354ffa44cccd9592150b3d0e04cc4f18791",
+      "path": "research/live_lab_ux/tools/create-shell.py"
+    },
+    {
+      "git_blob": "9a3343bd9f0ac227af16b6fff0bb5435dbbdefa7",
+      "path": "research/live_lab_ux/tools/fallback-shot.mjs"
+    },
+    {
+      "git_blob": "6adea8ce8c0ef7e1b33b9c1fe27cf5fb0145f2de",
+      "path": "research/live_lab_ux/tools/native-review.mjs"
+    },
+    {
+      "git_blob": "961eecbae0af56823f2951349e3ccdfcc56d4bdf",
+      "path": "research/live_lab_ux/tools/opening-shot.mjs"
+    },
+    {
+      "git_blob": "77a49d5354fd28138fe08d644d09fcafb2c3071b",
+      "path": "research/live_lab_ux/tools/prepare-review.py"
+    },
+    {
+      "git_blob": "ffa88210077083b94c78929185edb3105693f399",
+      "path": "research/live_lab_ux/tools/production-canary.mjs"
+    },
+    {
+      "git_blob": "d27fc97c27a52db19da6caf4f86ace2e4d257ff2",
+      "path": "research/live_lab_ux/tools/production-portrait.mjs"
+    },
+    {
+      "git_blob": "af4d18c081da4da52d24b477a2df89821ea2ea13",
+      "path": "research/live_lab_ux/tools/vendor-entry.js"
+    },
+    {
+      "git_blob": "d2253f65dd4ff85894400d622f737ba246447ee3",
+      "path": "research/live_lab_ux/ui/adult-head.js"
+    },
+    {
+      "git_blob": "5c77eaf75614d0d9412dfba15d387555cd6d4201",
+      "path": "research/live_lab_ux/ui/architecture.js"
+    },
+    {
+      "git_blob": "1a46fce0ebf5cb893f466c61a4ca1e7125cf9d72",
+      "path": "research/live_lab_ux/ui/camera.js"
+    },
+    {
+      "git_blob": "3dd411a0c83403b58f71168a59930adb03dc4af3",
+      "path": "research/live_lab_ux/ui/characters.js"
+    },
+    {
+      "git_blob": "e6e4353d088288f702c0e62b0752321b8878feb2",
+      "path": "research/live_lab_ux/ui/illustrated-actors.js"
+    },
+    {
+      "git_blob": "2046f5da65f4d29aca095ddd27fc2c4f74744332",
+      "path": "research/live_lab_ux/ui/interface.js"
+    },
+    {
+      "git_blob": "ffedcc7e6db78219a3045a1f09db1fcf7e2e4118",
+      "path": "research/live_lab_ux/ui/layout.js"
+    },
+    {
+      "git_blob": "15a355c395989d36421a2419d4adf6b6468c1a7a",
+      "path": "research/live_lab_ux/ui/motion-authority.js"
+    },
+    {
+      "git_blob": "2aaab4b68f10a548c91de0905d01552c20871223",
+      "path": "research/live_lab_ux/ui/render.js"
+    },
+    {
+      "git_blob": "b7886b9a5123efab134d7ef5639f17a4ba885de7",
+      "path": "research/live_lab_ux/ui/scene3d-policy.js"
+    },
+    {
+      "git_blob": "30e0bae16f4a39b9a790a9356c0122a5c2fe9172",
+      "path": "research/live_lab_ux/ui/scene3d.css"
+    },
+    {
+      "git_blob": "a4cb56fe1441c42098bf5843f01b093bcd7755af",
+      "path": "research/live_lab_ux/ui/scene3d.js"
+    },
+    {
+      "git_blob": "b3879cd2c7501730e8f1510e26bfad6a6151c16a",
+      "path": "research/live_lab_ux/ui/static-batch.js"
+    },
+    {
+      "git_blob": "cf781430404b0ae0ba7d8dea3457a3515dd7c9b9",
+      "path": "research/live_lab_ux/ui/vendor/THREE-LICENSE.txt"
+    },
+    {
+      "git_blob": "04ee6dbc344f43c7f643309b13b0faad5bf2ba58",
+      "path": "research/live_lab_ux/ui/vendor/three.js"
+    },
+    {
+      "git_blob": "3f4512a404f363b4660a55699f7ce9f0032f390b",
+      "path": "research/research_os/live_lab_contract.py"
+    },
+    {
+      "git_blob": "2c24b7c72134c821a9fcbdddde4b28df7021a83d",
+      "path": "research/research_os/oracle_live_worker.py"
+    },
+    {
+      "git_blob": "b5db1b9a4ba4dc2d5111bd7f1507ecfb06b7762f",
+      "path": "research/research_os/tests/test_live_lab_contract.py"
+    }
+  ],
+  "scope": "UX and metadata compatibility only; existing native observer retained; no stale Site scientific state imported.",
+  "source_commit": "d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec"
+}

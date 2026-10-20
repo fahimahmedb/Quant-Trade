@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-10-17T00:43:36.170600+00:00",
+  "research_os_branch": "builder/research-os-autonomous-loop-20261015",
+  "research_os_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
+  "method": "execute existing pure derivation function against exact committed JSON; no GitHub or runtime writes",
+  "queue_summary": {
+    "task_count": 21,
+    "ready_count": 0,
+    "claimed_count": 1,
+    "active_count": 1,
+    "terminal_count": 20
+  },
+  "refill_dry_run": {
+    "status": "NOOP_QUEUE_NOT_EMPTY",
+    "queue": {
+      "task_count": 21,
+      "ready_count": 0,
+      "claimed_count": 1,
+      "active_count": 1,
+      "terminal_count": 20
+    },
+    "task": null
+  },
+  "expired_claims": [
+    {
+      "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002",
+      "lease": {
+        "generation": 1,
+        "owner": "fundamental_events_workflow",
+        "claimed_at": "2026-10-16T09:15:23Z",
+        "expires_at": "2026-10-16T10:10:23Z"
+      },
+      "expired": true
+    }
+  ],
+  "policy": {
+    "max_lineages_per_wake": 1,
+    "max_stages_per_wake": 5,
+    "max_issued_per_frontier": 12,
+    "frontier_count": 4,
+    "exhaustion_requires_owner_refresh": true
+  },
+  "production_mutated": false,
+  "scientific_state_mutated": false,
+  "initial_research_os_sha": "89ece99da11d04fe725161a6ccc66b80d6d91466",
+  "final_recheck_at": "2026-10-17T00:47:47.536361+00:00",
+  "runtime_tasks_replenisher_unchanged_from_initial": true
+}

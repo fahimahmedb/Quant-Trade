@@ -1,0 +1,26 @@
+{
+  "architecture_source": "c825c740bbbe0999f29294a23239a1caeba500d0",
+  "fresh_desktop_and_portrait_views": true,
+  "overlays_hidden_during_capture": true,
+  "workers_baked": false,
+  "checks": [
+    {
+      "file": "assets/laboratory-idle.webp",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "known_empty_sky_colors": 1,
+      "sha256": "33df3e5d24019b548949da962cfb5364bcfd473ec1447acd7bba2c14ba1e5c01"
+    },
+    {
+      "file": "assets/laboratory-idle-mobile.webp",
+      "dimensions": [
+        393,
+        852
+      ],
+      "known_empty_sky_colors": 1,
+      "sha256": "35f7ca4e5a8201b3761cd79c9bf2ad700835eac801c347695deea4c8a60d94d5"
+    }
+  ]
+}

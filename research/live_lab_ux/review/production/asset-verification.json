@@ -1,0 +1,144 @@
+{
+  "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62",
+  "release_id": "owner-ux-20261016-r1",
+  "checks": [
+    {
+      "asset": "adapters/fixture-replay.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "adapters/live-event.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "adapters/platform-native-sse.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "adapters/platform-native.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "core/model.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "core/state-machine.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/adult-head.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/architecture.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/camera.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/characters.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/illustrated-actors.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/interface.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/layout.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/motion-authority.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/render.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/scene3d-policy.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/scene3d.css",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/scene3d.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/static-batch.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/vendor/THREE-LICENSE.txt",
+      "sha256_matches": true
+    },
+    {
+      "asset": "ui/vendor/three.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/ASSET_CREDITS.md",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/laboratory-idle-mobile.webp",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/laboratory-idle.webp",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/materials/mineral-color.jpg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/materials/mineral-normal.jpg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/materials/mineral-roughness.jpg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/materials/oak-bump.jpg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/materials/oak-color.jpg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/materials/oak-roughness.jpg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "assets/quant-mark.svg",
+      "sha256_matches": true
+    },
+    {
+      "asset": "live.html",
+      "sha256_matches": true
+    },
+    {
+      "asset": "live-app.js",
+      "sha256_matches": true
+    },
+    {
+      "asset": "styles.css",
+      "sha256_matches": true
+    }
+  ],
+  "status": "PASS",
+  "tls_verification": true
+}

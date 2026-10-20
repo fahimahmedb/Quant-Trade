@@ -21,6 +21,10 @@ jobs:
         with:
           python-version: '3.12'
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Compile V2 Core
         run: |
           python -m py_compile \
@@ -75,7 +79,13 @@ jobs:
             tests.test_research_os_evidence_acquisition_intents_v2 \
             tests.test_oracle_v2_deploy \
             tests.test_oracle_live_projection \
+            tests.test_oracle_live_composition \
             tests.test_oracle_live_host_prepare
+
+      - name: Qualify composed native Live Lab contracts
+        run: |
+          python -m unittest research.research_os.tests.test_live_lab_contract
+          node --test research/live_lab_ux/tests/*.test.js
 
       - name: Verify V2 policy remains fail-closed
         run: |
