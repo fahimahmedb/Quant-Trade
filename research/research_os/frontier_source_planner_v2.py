@@ -14,12 +14,18 @@ TASK_FAMILY = {
 }
 
 # Historical frontier tasks predate explicit source binding. These are the exact
-# worker fallbacks they consumed/attempted, so they are conservatively treated
-# as consumed for the same frontier rather than replayed under a new sequence.
+# deterministic worker fallbacks, but they are inferred as consumed only when
+# durable task execution proves that the producer stage actually completed.
 LEGACY_DEFAULT_SOURCE = {
     "FUNDAMENTAL_RESEARCH": "research/research_os/sources/apple_fy2025_statement_cells.json",
     "EVENT_DOCUMENT": "research/research_os/sources/apple_dividend_announcements.json",
     "INSTITUTIONAL_FLOW": "research/research_os/sources/sec_t1_operative_rule.json",
+}
+PRODUCER_STAGE = {
+    "FUNDAMENTAL_RESEARCH": "document_or_fundamental_research",
+    "EVENT_DOCUMENT": "document_or_fundamental_research",
+    "INSTITUTIONAL_FLOW": "mechanism_research",
+    "QUANT_MECHANISM": "mechanism_research",
 }
 
 
@@ -90,6 +96,12 @@ def _qualified_source(
     }
 
 
+def _producer_stage_completed(task: Mapping[str, Any], task_type: str) -> bool:
+    stage = PRODUCER_STAGE.get(task_type)
+    completed = ((task.get("execution") or {}).get("completed_stages") or {})
+    return bool(stage and isinstance(completed, Mapping) and stage in completed)
+
+
 def _consumed_bindings(
     tasks: Iterable[Dict[str, Any]], *, frontier_id: str, task_type: str
 ) -> Dict[str, set]:
@@ -105,6 +117,9 @@ def _consumed_bindings(
         inputs = task.get("inputs") or {}
         path = inputs.get("documentary_source")
         if path:
+            # New planner-derived tasks explicitly reserve one immutable source
+            # identity. Once the task exists that identity is not reissued under
+            # another sequence, regardless of where the task later terminates.
             packet_hash = inputs.get("documentary_source_packet_hash")
             blob_sha = inputs.get("documentary_source_blob")
             record_hash = inputs.get("documentary_source_record_hash")
@@ -118,7 +133,13 @@ def _consumed_bindings(
                 legacy_paths.add(path)
             continue
 
-        # Pre-planner frontier tasks used the worker's single hard-coded fallback.
+        # A pre-planner task had no durable source binding. Do NOT infer use of
+        # the later deterministic fallback merely because such a task existed:
+        # older/manual workers could use different research paths, and V2 can
+        # block before producer execution. Only durable completion of the exact
+        # producer stage proves that the historical fallback was consumed.
+        if not _producer_stage_completed(task, task_type):
+            continue
         default = LEGACY_DEFAULT_SOURCE.get(task_type)
         if default:
             legacy_paths.add(default)
@@ -154,9 +175,10 @@ def plan_frontier_source(
     """Select one unused engine-qualified documentary packet for a frontier.
 
     This function performs pre-outcome planning only. It executes no engine,
-    acquires no data, reads no outcome, and mutates no state. Old pre-planner
-    tasks are treated conservatively: their historical hard-coded fallback path
-    is considered consumed because no durable source hash existed at that time.
+    acquires no data, reads no outcome, and mutates no state. For old tasks that
+    lack explicit source bindings, fallback consumption is inferred only from a
+    durable completed producer stage; administrative issuance or a pre-stage
+    BLOCK is not treated as scientific consumption.
     """
 
     task_type = str(frontier_entry.get("task_type") or "")
