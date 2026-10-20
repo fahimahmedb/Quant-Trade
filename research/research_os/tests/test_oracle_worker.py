@@ -15,7 +15,7 @@ import tempfile
 import threading
 import unittest
 
-from research.research_os.github_state import GitHubStateStore, PREFIX, StateConflict, json_bytes
+from research.research_os.github_state import GitHubStateStore, PREFIX, StateConflict, StateUnavailable, json_bytes
 from research.research_os.model_backend import BackendUnavailable
 from research.research_os.oracle_worker import ResearchOSWorker
 from research.research_os.worker_preflight import AUTHORITY_KEYS, canonical_hash, git_blob_sha
@@ -129,6 +129,21 @@ class WorkerTests(unittest.TestCase):
         self.worker(lane='evidence_data').wake()
         self.assertEqual(self.count_paths('receipts/RECOVER-TEST-001/'), receipt_count)
         self.assertEqual(len(task['execution']['completed_stages']), 2)
+        # Production Ubuntu 24.04 has Git 2.43; CI's newer Git accepts options
+        # absent there. Exercise real compaction with that compatibility boundary.
+        real_git, collections = self.store._git, []
+        def git_243(*args, **kwargs):
+            if args[0] == 'gc':
+                if '--no-detach' in args:
+                    raise StateUnavailable('Git 2.43: unknown option no-detach')
+                collections.append(args)
+            return real_git(*args, **kwargs)
+        self.store._git = git_243
+        self.store.compact_if_due()
+        self.assertTrue((self.store.cache / 'last-worker-gc').is_file())
+        self.store.compact_if_due()
+        self.assertEqual(len(collections), 1)
+        self.assertEqual(self.read('tasks/RECOVER-TEST-001.json')['status'], 'COMPLETE')
 
     def test_crash_boundaries_cannot_publish_partial_event_receipt_or_task(self):
         for point in ('before_claim', 'after_claim', 'after_execution',

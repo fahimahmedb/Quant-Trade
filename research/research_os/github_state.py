@@ -185,5 +185,7 @@ class GitHubStateStore:
             if marker.exists() and time.time() - marker.stat().st_mtime < 86400:
                 return
             if (self.cache / 'refs/quant/observed').exists():
-                self._git('gc', '--prune=2.weeks.ago', '--no-detach')
+                # Explicit gc is foreground without --auto. Ubuntu 24.04's
+                # Git 2.43 does not yet accept the newer --no-detach option.
+                self._git('gc', '--prune=2.weeks.ago')
             marker.touch()
