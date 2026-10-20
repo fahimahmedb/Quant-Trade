@@ -1,0 +1,186 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "epoch": {
+    "research_epoch_id": "V2-FIXTURE-EPOCH-001",
+    "parent_epoch_id": null,
+    "opened_at": "2026-10-20T01:00:00Z",
+    "knowledge_cutoff": "2026-10-20T00:00:00Z",
+    "research_window": {
+      "start": "2026-10-20T01:00:00Z",
+      "end": "2026-10-27T01:00:00Z"
+    },
+    "export_cutoff": "2026-10-26T01:00:00Z",
+    "close_policy": "PREDECLARED_COMPOSITE",
+    "feedback_release_policy": {
+      "mode": "AFTER_CLOSE_AND_GOVERNED_RELEASE"
+    },
+    "research_policy_hash": "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+    "model_routing_policy_hash": "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+    "allowed_model_set": [
+      "gpt-oss-10.2b-q4-k-m"
+    ],
+    "allowed_model_change_policy": "WITHIN_ALLOWED_SET_ONLY",
+    "source_policy_hash": "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+    "retrieval_policy_hash": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+    "validator_policy_hash": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+    "max_candidate_exports": 10,
+    "scheduled_close_at": "2026-10-27T01:00:00Z",
+    "epoch_knowledge_parent": null,
+    "epoch_feedback_dependencies": [],
+    "contamination_status": "CLEAN"
+  },
+  "trial": {
+    "research_trial_id": "V2-FIXTURE-TRIAL-001",
+    "research_epoch_id": "V2-FIXTURE-EPOCH-001",
+    "trial_type": "RESEARCH_GENERATION_TRIAL",
+    "model_identity": "gpt-oss-10.2b-q4-k-m",
+    "prompt_hash": "fixture-prompt-v1",
+    "context_hash": "fixture-context-v1",
+    "retrieval_manifest_hash": "fixture-retrieval-v1",
+    "source_packet_hash": "fixture-source-packet-v1",
+    "generated_at": "2026-10-20T01:10:00Z",
+    "sampling_parameters": {
+      "temperature": 0
+    },
+    "generated_proposals": [
+      {
+        "id": "P1"
+      },
+      {
+        "id": "P2"
+      }
+    ],
+    "discarded_proposals": [
+      {
+        "id": "P2",
+        "reason": "DUPLICATE"
+      }
+    ],
+    "retry_count": 0
+  },
+  "candidate": {
+    "hypothesis_id": "V2-FIXTURE-HYPOTHESIS-001",
+    "generation_id": "G1",
+    "research_trial_id": "V2-FIXTURE-TRIAL-001",
+    "research_epoch_id": "V2-FIXTURE-EPOCH-001",
+    "family": "fundamental",
+    "claim": "Fixture documentary premise only; no economic payoff is observed.",
+    "mechanism_statement": "Fixture cash generation mechanism used only to qualify the V2 pre-outcome pipeline.",
+    "universe": [
+      "FIXTURE-ISSUER"
+    ],
+    "clock": "publication",
+    "horizon": "5d",
+    "economic_expression": {
+      "instrument": "equity",
+      "direction": "UNKNOWN"
+    },
+    "evidence_manifest": {
+      "sources": [
+        "fixture://primary-document"
+      ]
+    },
+    "falsification_scope": "Kill the fixture generation if its declared premise is contradicted.",
+    "decision_map": {
+      "fails": "KILL",
+      "survives": "EXPLORE"
+    },
+    "known_confounders": [],
+    "disconfirmation_manifest": {
+      "attempted": true,
+      "status": "NO_BLOCKER_FOUND"
+    },
+    "producer_identity": {
+      "worker": "fixture-producer",
+      "model": "gpt-oss-10.2b-q4-k-m"
+    },
+    "extension": {
+      "type": "FundamentalExtension",
+      "issuer": "FIXTURE-ISSUER",
+      "business_driver": "fixture-driver",
+      "valuation_transmission": "fixture-transmission"
+    }
+  },
+  "validator": {
+    "hypothesis_id": "V2-FIXTURE-HYPOTHESIS-001",
+    "generation_id": "G1",
+    "validator_identity": "fixture-independent-validator",
+    "validator_version": "v2",
+    "validator_model": "gpt-oss-10.2b-q4-k-m",
+    "validator_prompt_hash": "fixture-validator-prompt-v1",
+    "validator_context_hash": "fixture-validator-context-v1",
+    "validator_retrieval_manifest_hash": "fixture-validator-retrieval-v1",
+    "execution_state": "COMPLETE",
+    "scientific_decision": "PASS",
+    "epistemic_blockers": []
+  },
+  "status": {
+    "scientific_maturity": "VALIDATED",
+    "experiment_readiness": "READY",
+    "portfolio_relationship": "DISTINCT",
+    "authority": "CLOSED"
+  },
+  "blinding": {
+    "owner_status": "BLINDED",
+    "supervisor_status": "BLINDED"
+  },
+  "priority_policy_version": "V2-FIXTURE-PRIORITY-V1",
+  "priority_eligible": [
+    {
+      "task_id": "V2-FIXTURE-HYPOTHESIS-001",
+      "priority": 10,
+      "reason_codes": [
+        "READY_VALIDATED"
+      ],
+      "resource_cost": 1,
+      "starvation_factor": 1
+    }
+  ],
+  "negative_memory": {
+    "negative_knowledge_id": "V2-FIXTURE-NEGATIVE-001",
+    "failure_scope": "NONE_YET",
+    "assumptions": [],
+    "regime_context": {},
+    "source_context": {},
+    "failure_reason": "NO_FAILURE",
+    "revisit_conditions": [],
+    "revisit_policy": "ON_NEW_EVIDENCE"
+  },
+  "export": {
+    "candidate_hash": "AUTO",
+    "research_trial_history_hash": "AUTO",
+    "research_epoch_id": "AUTO",
+    "epoch_manifest_hash": "AUTO",
+    "protocol_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_snapshot_hashes": [
+      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    ],
+    "pit_manifest_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "universe": [
+      "FIXTURE-ISSUER"
+    ],
+    "clock": "publication",
+    "horizon": "5d",
+    "economic_expression": {
+      "direction": "UNKNOWN"
+    },
+    "cost_model_declaration": "DECLARED",
+    "capacity_declaration": "DECLARED",
+    "multiplicity_declaration": "DECLARED",
+    "validator_artifact_hash": "AUTO",
+    "research_head": "2222222222222222222222222222222222222222"
+  },
+  "leakage_classification": {
+    "source_pit": "PASS",
+    "model_pit": "NOT_PROVABLE",
+    "historical_generation_status": "HISTORICAL_IDEA_GENERATION_NOT_PROVABLY_PIT"
+  },
+  "validator_independence_qualified": true,
+  "feedback_lineage_qualified": true,
+  "bounded_orchestration_qualified": true
+}
