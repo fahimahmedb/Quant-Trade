@@ -1,4 +1,5 @@
 {
+  "derivation":{"type":"EMPTY_QUEUE_FRONTIER_REFILL","frontier_id":"EVENT_DOCUMENT_DISTINCT_MECHANISM","sequence":3,"derivation_key":"2638b1f2f82b01ce6557014419b53dd20eb7f1a8589936e8f05ac3033dff81f6","selection_policy":"LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID","target_lane":"fundamental_events","steward_lane":"integrator_portfolio"},
   "schema_version":"research-os-task-v1",
   "task_id":"FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003",
   "task_type":"EVENT_DOCUMENT",

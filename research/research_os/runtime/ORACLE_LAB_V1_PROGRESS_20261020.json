@@ -1,7 +1,7 @@
 {
   "schema_version": "oracle-lab-v1-progress-v1",
-  "status": "LIVE_CANARY_PASSED_GATED_ACTIVATION_REQUESTED",
-  "oracle_h24_research_lab": "NOT_RUNNING_AT_LAST_LIVE_PROBE",
+  "status": "TIMER_ENABLED_HISTORICAL_QUEUE_METADATA_REPAIR_VERIFIED",
+  "oracle_h24_research_lab": "AUTOMATIC_WAKES_PROVEN_DURABLE_RESEARCH_PROGRESS_NOT_YET_PROVEN",
   "operational_release_proposed": "f138c980c94eea313fd77532c20857da5c02d3fe",
   "local_backend_qualification_code_sha": "e20e8530a177ae9e197cf9578fae0a503f3b3d09",
   "ci": {
@@ -36,8 +36,8 @@
     "model_service_load_state": "loaded",
     "model_service_state": "enabled/running",
     "model_health": "ok",
-    "worker_service_load_state": "not-found",
-    "worker_timer_load_state": "not-found",
+    "worker_service_load_state": "loaded",
+    "worker_timer_load_state": "loaded/enabled/active",
     "bounded_recovery_wrappers_present": true
   },
   "external_execution_dependency": {
@@ -51,8 +51,8 @@
     "root_preparation_enables_research_timer": false
   },
   "remaining_live_gates": [
-    "Matching live pre-activation receipt and gated activation",
-    "Two automatic wakes and no duplicated work",
+    "Historical queue metadata migration must be observed by automatic fresh-state wakes",
+    "Two successful durable automatic wakes and no duplicated work",
     "Actual VM reboot recovery and final H24 receipt"
   ],
   "authority": {

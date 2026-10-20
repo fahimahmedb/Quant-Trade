@@ -1,4 +1,5 @@
 {
+  "derivation":{"type":"EMPTY_QUEUE_FRONTIER_REFILL","frontier_id":"INSTITUTIONAL_FLOW_DISTINCT_MECHANISM","sequence":2,"derivation_key":"19cc3e61106d085aebc115c11d33a14c96aeb5dff30725433084c47a8a48883e","selection_policy":"LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID","target_lane":"market_discovery","steward_lane":"integrator_portfolio"},
   "schema_version":"research-os-task-v1",
   "task_id":"FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-002",
   "task_type":"INSTITUTIONAL_FLOW",
