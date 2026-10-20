@@ -9,11 +9,22 @@
   "repair_script_sha256": "40216c5a613c6649f4a66d2103ee408adc9ccdb378daea5bd642efd87da6b8c5",
   "future_release_fix": "Generate V2 controls with standard root-only PATH including /usr/sbin; invoke /usr/sbin/runuser by absolute path.",
   "tests": "42 V2 tests PASS, including exact wrapper equivalence and actual runuser resolution. Discovery remains 602.",
-  "live_path_probe": "PENDING_OCI_DELIVERY",
+  "live_path_probe": {
+    "status": "PASS",
+    "evidence": "v2_evidence/ORACLE_V2_ROOT_CONTROL_PATH_PROBE.json",
+    "native_wrappers_match_qualified_template": true,
+    "v1_timer": "active",
+    "v2_timer": "inactive"
+  },
   "root_execution": "PENDING_OWNER",
   "v2_activation": "NOT_PERFORMED",
   "economic_experiment_authorized": false,
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
-  "live_trading_authorized": false
+  "live_trading_authorized": false,
+  "repair_commit_sha": "d7ce4bc7d79e5f219660973c79d47859dc7f42e1",
+  "repair_v2_ci": {
+    "id": 39410778325,
+    "conclusion": "success"
+  }
 }
