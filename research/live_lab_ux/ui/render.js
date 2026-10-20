@@ -6,6 +6,7 @@ export function renderScene(state,refs){
  const active=Boolean(state.economicLook.activeWorkerId);
  const economicStatus=active?'ACTIVE':state.mode==='LIVE'?'UNAVAILABLE':'FREE';
  refs.economicStatus.textContent=economicStatus;refs.economicStatus.dataset.active=String(active);refs.economicStatus.dataset.supported=String(state.mode!=='LIVE'||active);
+ const economicModule=refs.economicStatus.closest('[data-economic-module]');if(economicModule)economicModule.hidden=state.mode==='LIVE'&&!active;
  refs.connectivity.textContent=state.transport.stale?'STALE':state.transport.connected?(state.mode==='LIVE'?'LIVE':'CONNECTED'):'OFFLINE';
  refs.connectivity.dataset.state=state.transport.stale?'stale':state.transport.connected?'connected':'disconnected';
  refs.warning.hidden=!state.transport.warning;refs.warning.textContent=state.transport.warning||'';
