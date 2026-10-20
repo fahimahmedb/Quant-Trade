@@ -1,0 +1,10 @@
+{
+  "blocker": null,
+  "disposition": "GENERATED_AND_SCREENED",
+  "generation": 2,
+  "intent": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012/oracle-v2/trial_intents/g000002.json",
+  "model_calls": [],
+  "outcome_accessed": false,
+  "scientific_decision": null,
+  "task_status": "BLOCKED"
+}
