@@ -23,6 +23,11 @@
     "target_lane": "fundamental_events",
     "type": "EMPTY_QUEUE_FRONTIER_REFILL"
   },
+  "execution": {
+    "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
+    "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+    "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g1-d606d015b52e"
+  },
   "forbidden_actions": [
     "candidate price or return inspection",
     "backtest",
@@ -41,16 +46,16 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": null,
-    "expires_at": null,
-    "generation": 0,
-    "owner": null
+    "claimed_at": "2026-10-20T03:10:14Z",
+    "expires_at": "2026-10-20T03:20:14Z",
+    "generation": 1,
+    "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "event_document",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
   "task_type": "EVENT_DOCUMENT",
-  "updated_at": "2026-10-20T03:00:22Z"
+  "updated_at": "2026-10-20T03:10:14Z"
 }
