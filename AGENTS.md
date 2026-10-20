@@ -1,159 +1,114 @@
-# AGENTS.md — Quant System Agent Contract
+# AGENTS.md — Quant-Trade agent contract
 
-Read in this order before acting:
+## Read before acting
 
 1. `QUANT_NORTH_STAR.md`
-2. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact current route
-3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` — current project routing/authority
-4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` — current Blue durable state
-5. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`
-6. the exact mission handoff/checkpoint for the branch being worked on
-7. `SYSTEM_ARCHITECTURE.md`
-8. `OPERATING_MODEL.md`
-9. `MISSION.md`
-10. `SOURCE_BASIS.md`
-11. `STATE.md` — runtime/research snapshot, **not** current governance authority
+2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
+3. resolve the exact branch and live HEAD
+4. read the exact branch-specific evidence / mission required for your work
 
-For current work, do not infer the active mission from `STATE.md`, `CHIEF_BRIEF.md`, an old issue, the repository default branch, or historical `NEXT_BUILD_MISSION.md` content. Resolve the live Blue branch and exact mission SHA first.
+Do not infer the current mission from old September Blue handoffs, `STATE.md`, `CHIEF_BRIEF.md`, historical PR/issue text or the GitHub default branch alone.
+
+## Current topology
+
+- Oracle V1 live runtime: `builder/oracle-economic-loop-recovery-20261019`
+- forensic / V2 baseline: `audit/forensic-checkpoint-20261019` -> `CHECKPOINT_010.md`
+- V2 canonical trunk: `NOT_YET_DECLARED`
+- default branch: temporary routing/historical portal during repository cleanup
 
 ## Prime rule
 
 Do not reduce Quant to the subsystem currently being worked on.
 
-A research worker, runtime, data adapter, Book, dashboard or Codex task is a component of Quant, not Quant itself.
+A worker, runtime, data adapter, research engine, validator, Book, UI, Oracle host or agent is a component of Quant, not the whole project.
 
-When local implementation choices conflict with the North Star, prefer the North Star.
+When lower-level implementation choices conflict with `QUANT_NORTH_STAR.md`, preserve the North Star and surface the conflict.
 
-## Agent roles
+## Permanent authority boundary
 
-### Codex / engineering agent
+Unless changed by a later explicit Owner decision:
 
-Primary role: **Builder / Quant Engineer**.
+- `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
+- `REAL_CAPITAL_AUTHORIZED = FALSE`
+- `LIVE_TRADING_AUTHORIZED = FALSE`
 
-Build, repair and extend the persistent Quant system. Do not assume your task lifetime is the runtime lifetime.
+Tests, audits, validator PASS, local-model output, operational qualification and branch cleanup grant none of these authorities.
 
-A build task should leave:
+## Functional roles
 
-- coherent persistent state contracts;
-- tests;
-- observability;
-- a known next system/research action;
-- no silent redefinition of project objectives.
+### Builder / engineering
 
-### Research function
+Build, repair and integrate persistent capabilities. Leave tests, observability, restart safety and durable evidence. Do not create architectural novelty without a demonstrated need.
 
-Searches broadly for economically meaningful edge, generates falsifiable hypotheses, tests them, preserves lessons and chooses the next research action through ordinary failures.
+### Research / producer
 
-### Validation function
+Generate falsifiable economically meaningful hypotheses, screen against Legacy/current knowledge, preserve negative results and produce explicit evidence.
 
-Attempts to falsify promising results using timing, leakage, out-of-sample behavior, costs, factor/beta attribution, sensitivity and concentration checks as relevant.
+### Independent validation / red team
 
-### Capital-decision functions
+Attempt to falsify promising work. Check timing, provenance, leakage, multiplicity, implementability, costs, sensitivity, structural duplication and decision-map integrity as relevant.
 
-The project uses the logical paper/shadow chain:
+### Portfolio / integration
 
-`SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK`
+Reason about economic identity and structural overlap without inventing empirical correlation. Without admissible returns, empirical correlation is UNKNOWN/UNAVAILABLE and marginal contribution is NOT_ESTIMATED.
 
-These roles should be stateful, traceable functions. They do not require one LLM each.
+### Control / clock
 
-### Control / Clock function
+Maintain lifetime, due work, claim/lease fencing, recovery, liveness, bounded work selection and durable state.
 
-Maintains system lifetime, due work, event routing, recovery, liveness and major role state.
+## Scientific invariants
 
-## Objective hierarchy
-
-When priorities conflict:
-
-1. expected real economic relevance to future wealth growth;
-2. empirical truth and causal correctness;
-3. whole-system coherence with `QUANT_NORTH_STAR.md`;
-4. ability to distinguish edge from noise/beta/implementation illusion;
-5. value of information and discovery throughput;
-6. persistence/reproducibility/observability;
-7. code quality;
-8. presentation.
-
-Do not optimize a lower-ranked item at the expense of a higher-ranked one.
+- never fabricate data or evidence;
+- preserve point-in-time timing and provenance;
+- UNKNOWN is not evidence of independence or PASS;
+- negative results remain scientific memory;
+- a local PASS is not automatically a family-level or economic-edge claim;
+- producer and independent challenge functions remain separated;
+- historical result immutability survives branch cleanup;
+- persistent state mutation must be restart-safe and idempotent.
 
 ## Research autonomy
 
-The human should not have to invent the next strategy after every ordinary failure.
+Ordinary negative experiments should normally produce:
 
-Within available data/resources, Quant should choose markets, research lanes, hypotheses, tests, rejections and follow-up work itself.
+`RESULT -> LESSON -> PRIORITY UPDATE -> NEXT LEGITIMATE ACTION`
 
-A failed experiment should normally produce:
+not a request for the human to invent another strategy.
 
-`RESULT -> LESSON -> PRIORITY UPDATE -> NEXT ACTION`
+Use broad inexpensive/deterministic monitoring before expensive reasoning. Reserve deeper analysis and engineering for candidates with sufficient information value.
 
-not a request for the human to supply another idea.
+## Repository hygiene
 
-## Wide/cheap -> narrow/deep
+Current procedure:
 
-Use broad inexpensive/deterministic monitoring before expensive reasoning.
+`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
 
-Reserve deeper reasoning and engineering for candidates with sufficient information value.
+Branch sprawl is now considered a project defect.
 
-This principle comes directly from the source architecture and is foundational.
-
-## Research versus current opportunity
-
-Do not confuse:
-
-- discovering/validating a strategy;
-- a strategy producing a current candidate;
-- accepting that candidate;
-- sizing it in the paper/shadow Book;
-- portfolio-context evaluation;
-- observed paper/shadow outcome.
-
-These are distinct stages and should leave distinct evidence.
-
-## Persistent state
-
-Important state survives process restarts and build tasks.
-
-At minimum, the architecture should converge toward persistent state for:
-
-- datasets;
-- research tickets and memory;
-- strategy lifecycle;
-- current opportunity tickets;
-- paper/shadow Book;
-- system events;
-- build tasks/capability gaps.
-
-`IDLE` means alive with no useful work due now. It is not `FINISHED`.
-
-## Existing repository work
-
-The historical NASDAQ work is prior research, not the product definition.
-
-PR #7 is a useful bounded Research Factory worker.
-
-PR #9 is useful Control Plane / persistent research-runtime bootstrap work.
-
-Preserve useful code, but reposition it under the whole-system architecture rather than allowing it to redefine Quant.
+- reuse an existing authorized branch when appropriate;
+- absorbed ancestors do not need permanent branch refs;
+- unique historical tips can be archived before deleting their working refs;
+- do not delete scientific meaning merely because a branch is old;
+- do not mutate Oracle V1 as incidental cleanup;
+- do not create another top-level V2 architecture before the canonical trunk is declared.
 
 ## Human escalation
 
-Do not escalate ordinary research negatives or routine implementation decisions.
+Do not escalate routine coding choices, ordinary research negatives or expected test failures.
 
-Escalate genuine boundaries such as unavailable external resources, paid/permissioned access, credentials, irreversible integrations or strategic ambiguity that evidence cannot resolve.
+Escalate genuine boundaries such as unavailable external resources, paid/permissioned access, credentials, irreversible authority/integration decisions or strategic ambiguity that current project evidence cannot resolve.
 
-## Reporting
+## Reporting standard
 
-Report milestones in terms of the whole system:
+Report milestones with:
 
-- North-Star subsystem(s) advanced;
-- persistent state added/changed;
-- research/economic capability newly enabled;
-- evidence produced or invalidated;
+- exact branch and HEAD;
+- capability/evidence added or invalidated;
+- scientific limits;
+- tests / adversarial checks;
+- durable state changes;
 - genuine blockers;
-- what the Clock/system will do next;
-- what remains missing before Quant System V1 is coherent.
+- next legitimate action.
 
-## Final rule
-
-Build the smallest coherent **whole system** that improves Quant's ability to discover, select, evaluate and learn from economic edge.
-
-Do not optimize for looking sophisticated. Do not optimize for activity. Do not mistake plumbing for the product.
+Durable truth belongs in GitHub, code, tests and evidence artifacts rather than in chat-only summaries.
