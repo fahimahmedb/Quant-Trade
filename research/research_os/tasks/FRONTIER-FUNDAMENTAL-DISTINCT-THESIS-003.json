@@ -34,7 +34,7 @@
     "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003-g1-436763aa9a09.json",
     "lineage": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
     "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
-    "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003-g1-436763aa9a09"
+    "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003-g2-2ff9a6070128"
   },
   "forbidden_actions": [
     "backtest or outcome-driven issuer selection",
@@ -54,16 +54,16 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T00:20:12Z",
-    "expires_at": "2026-10-20T00:20:17Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T00:30:18Z",
+    "expires_at": "2026-10-20T00:40:18Z",
+    "generation": 2,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "fundamental",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "One Legacy-screened, causally distinct fundamental CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
   "task_type": "FUNDAMENTAL_RESEARCH",
-  "updated_at": "2026-10-20T00:20:17Z"
+  "updated_at": "2026-10-20T00:30:18Z"
 }
