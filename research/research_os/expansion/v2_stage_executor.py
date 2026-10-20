@@ -20,6 +20,7 @@ from .v2_bridge import adapt_engine_output_to_v2_candidate, adapt_existing_valid
 from .v2_independence import AXES, independent_context, process_identity
 from .v2_core import (
     V2ContractError,
+    assert_validator_candidate_binding,
     blinding_integrity,
     build_epoch_manifest,
     build_frozen_export_intent,
@@ -126,6 +127,12 @@ class V2StageExecutor(CanonicalStageExecutor):
                           and snapshot.read(p).get("research_epoch_id") == epoch["research_epoch_id"])
             if exports >= epoch["max_candidate_exports"]:
                 raise StageBlocked("V2_EPOCH_EXPORT_BUDGET_EXHAUSTED")
+            if lane == "independent_challenge":
+                try:
+                    assert_validator_candidate_binding(_read_v2_candidate(snapshot, task),
+                                                       _validator_sidecar(snapshot, task))
+                except V2ContractError as exc:
+                    raise StageBlocked("V2_" + str(exc)) from exc
         independence = None
         if lane == "independent_challenge" and stage == "independent_validation":
             independence = independent_context(snapshot, _read_v2_candidate(snapshot, task))
@@ -396,11 +403,11 @@ class V2StageExecutor(CanonicalStageExecutor):
                     },
                     "validator_artifact_hash": validator["validator_hash"],
                     "research_head": snapshot.head,
+                    "evaluation_plane_status": "SEALED",
+                    "evaluation_ingest_status": "NOT_ATTEMPTED_V2_CORE",
+                    "economic_experiment_authorized": False,
+                    "prospective_observation_authorized": False,
                 })
-                export["evaluation_plane_status"] = "SEALED"
-                export["evaluation_ingest_status"] = "NOT_ATTEMPTED_V2_CORE"
-                export["economic_experiment_authorized"] = False
-                export["prospective_observation_authorized"] = False
                 export_path = v2_artifact_path(task, "frozen_export_intent.json")
                 writes[export_path] = export
                 result["v2_frozen_export_intent"] = export_path

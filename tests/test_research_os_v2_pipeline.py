@@ -1,12 +1,12 @@
 import unittest
 
-from research.research_os.expansion.v2_core import CLOSED_AUTHORITY, V2ContractError
+from research.research_os.expansion.v2_core import CLOSED_AUTHORITY, V2ContractError, build_candidate
 from research.research_os.expansion.v2_pipeline import run_pre_outcome_pipeline
 
 
 class V2PipelineTests(unittest.TestCase):
     def bundle(self):
-        return {
+        bundle = {
             "authority": CLOSED_AUTHORITY,
             "epoch": {
                 "research_epoch_id": "E1",
@@ -90,7 +90,7 @@ class V2PipelineTests(unittest.TestCase):
                 "research_epoch_id": "AUTO", "epoch_manifest_hash": "AUTO",
                 "protocol_hash": "d" * 64, "source_snapshot_hashes": ["e" * 64],
                 "pit_manifest_hash": "f" * 64, "universe": ["AAPL"], "clock": "publication",
-                "horizon": "5d", "economic_expression": {"direction": "UNKNOWN"},
+                "horizon": "5d", "economic_expression": {"instrument": "equity", "direction": "UNKNOWN"},
                 "cost_model_declaration": "DECLARED", "capacity_declaration": "DECLARED",
                 "multiplicity_declaration": "DECLARED", "validator_artifact_hash": "AUTO",
                 "research_head": "2" * 40,
@@ -103,6 +103,8 @@ class V2PipelineTests(unittest.TestCase):
             "feedback_lineage_qualified": True,
             "bounded_orchestration_qualified": True,
         }
+        bundle["validator"]["candidate_hash"] = build_candidate(bundle["candidate"])["candidate_hash"]
+        return bundle
 
     def test_end_to_end_pre_outcome_receipt(self):
         receipt = run_pre_outcome_pipeline(self.bundle())

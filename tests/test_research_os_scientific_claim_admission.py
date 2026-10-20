@@ -48,7 +48,9 @@ class ScientificClaimAdmissionTests(unittest.TestCase):
 
     def test_valid_pass_hash_and_block_failure_state_separation_are_preserved(self):
         payload = self.bundle()["validator"]
-        self.assertEqual(build_validator_result(payload)["validator_hash"],
+        legacy_payload = dict(payload)
+        legacy_payload.pop("candidate_hash", None)
+        self.assertEqual(build_validator_result(legacy_payload)["validator_hash"],
                          "45bb2e3c401ae635867bb9b89825bda5cdd6e0624c3cd9bf5304a5fed903aeb4")
         for blockers in ([], ["SOURCE_PIT_MISSING"]):
             payload["scientific_decision"] = "BLOCK"

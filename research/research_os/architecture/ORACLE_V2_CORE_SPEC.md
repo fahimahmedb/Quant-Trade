@@ -245,6 +245,13 @@ Forbidden reverse messages include outcome, pass/fail, metrics, rank, portfolio 
 
 Research creates `FROZEN_EXPORT_INTENT` binding candidate, trial-history, epoch, protocol, source/PIT, universe/clock/horizon/expression, cost/capacity/multiplicity and Validator hashes plus `research_head` and `export_bundle_hash`.
 
+At export admission, the Validator artifact must bind the exact `candidate_hash`
+as well as hypothesis/generation IDs, and its own canonical hash must be intact.
+Historical Validator metadata without that binding remains historical evidence;
+it cannot authorize a new export. Export universe, clock, horizon and economic
+expression must preserve the Candidate's values. Any sealed-plane metadata in an
+emitted export is included before calculating `export_bundle_hash`.
+
 Evaluation may return only an `EVALUATION_INGEST_RECEIPT` proving receipt of that exact bundle and containing no outcome.
 
 The technical receipt has exactly four fields: `event_type` (the literal

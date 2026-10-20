@@ -253,6 +253,14 @@ def validate_multidimensional_status(status: Mapping[str, str]) -> None:
         raise V2ContractError("INVALID_AUTHORITY_STATE")
 
 
+def assert_validator_candidate_binding(candidate: Mapping[str, Any], validator: Mapping[str, Any]) -> None:
+    """Require the complete Validator artifact to refer to this exact Candidate."""
+    if any(validator.get(key) != candidate[key] for key in ("hypothesis_id", "generation_id", "candidate_hash")):
+        raise V2ContractError("VALIDATOR_CANDIDATE_BINDING_MISMATCH")
+    if validator.get("validator_hash") != build_validator_result(validator)["validator_hash"]:
+        raise V2ContractError("VALIDATOR_HASH_MISMATCH")
+
+
 def build_priority_decision(*, policy_version: str, eligible: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     if not policy_version or not eligible:
         raise V2ContractError("PRIORITY_REQUIRES_POLICY_AND_ELIGIBLE_SET")

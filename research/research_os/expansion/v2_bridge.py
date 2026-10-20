@@ -158,6 +158,7 @@ def adapt_existing_validation_to_v2(
     payload = {
         "hypothesis_id": v2_candidate["hypothesis_id"],
         "generation_id": v2_candidate["generation_id"],
+        "candidate_hash": v2_candidate["candidate_hash"],
         "validator_identity": validator_identity,
         "validator_version": validator_version,
         "validator_model": validator_model,

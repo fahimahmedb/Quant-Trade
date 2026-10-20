@@ -117,7 +117,8 @@
     "validator_retrieval_manifest_hash": "fixture-validator-retrieval-v1",
     "execution_state": "COMPLETE",
     "scientific_decision": "PASS",
-    "epistemic_blockers": []
+    "epistemic_blockers": [],
+    "candidate_hash": "32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a"
   },
   "status": {
     "scientific_maturity": "VALIDATED",
@@ -167,6 +168,7 @@
     "clock": "publication",
     "horizon": "5d",
     "economic_expression": {
+      "instrument": "equity",
       "direction": "UNKNOWN"
     },
     "cost_model_declaration": "DECLARED",

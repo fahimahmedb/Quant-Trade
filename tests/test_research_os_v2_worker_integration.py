@@ -9,6 +9,7 @@ from research.research_os.expansion.v2_core import (
     build_candidate,
     build_research_trial,
     build_validator_result,
+    canonical_hash,
 )
 from research.research_os.expansion.v2_stage_executor import (
     ACTIVE_EPOCH_PATH,
@@ -218,6 +219,7 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         })
         validator = build_validator_result({
             "hypothesis_id": "H1", "generation_id": "G1",
+            "candidate_hash": candidate["candidate_hash"],
             "validator_identity": "validator", "validator_version": "v2",
             "validator_model": "gpt-oss", "validator_prompt_hash": "p",
             "validator_context_hash": "c", "validator_retrieval_manifest_hash": "r",
@@ -254,6 +256,9 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             )
         export = writes[v2_artifact_path(task, "frozen_export_intent.json")]
         self.assertEqual(export["event_type"], "FROZEN_EXPORT_INTENT")
+        self.assertEqual(export["export_bundle_hash"], canonical_hash({
+            key: value for key, value in export.items() if key != "export_bundle_hash"
+        }))
         self.assertEqual(export["evaluation_plane_status"], "SEALED")
         self.assertEqual(export["evaluation_ingest_status"], "NOT_ATTEMPTED_V2_CORE")
         self.assertFalse(export["economic_experiment_authorized"])

@@ -7,6 +7,7 @@ from .v2_core import (
     CLOSED_AUTHORITY,
     V2ContractError,
     assert_authority_closed,
+    assert_validator_candidate_binding,
     blinding_integrity,
     build_candidate,
     build_epoch_manifest,
@@ -55,6 +56,8 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
     trial = build_research_trial(bundle["trial"])
     candidate = build_candidate(bundle["candidate"])
     validator = build_validator_result(bundle["validator"])
+    if "validator_hash" in bundle["validator"] and bundle["validator"]["validator_hash"] != validator["validator_hash"]:
+        raise V2ContractError("VALIDATOR_HASH_MISMATCH")
     validate_multidimensional_status(bundle["status"])
 
     if trial["research_epoch_id"] != epoch["research_epoch_id"]:
@@ -63,8 +66,7 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
         raise V2ContractError("CANDIDATE_EPOCH_BINDING_MISMATCH")
     if candidate["research_trial_id"] != trial["research_trial_id"]:
         raise V2ContractError("CANDIDATE_TRIAL_BINDING_MISMATCH")
-    if validator["hypothesis_id"] != candidate["hypothesis_id"] or validator["generation_id"] != candidate["generation_id"]:
-        raise V2ContractError("VALIDATOR_CANDIDATE_BINDING_MISMATCH")
+    assert_validator_candidate_binding(candidate, validator)
     if validator["execution_state"] != "COMPLETE" or validator.get("scientific_decision") != "PASS":
         raise V2ContractError("EXPORT_REQUIRES_COMPLETED_VALIDATOR_PASS")
     if bundle["status"]["scientific_maturity"] != "VALIDATED":
@@ -107,6 +109,10 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
         "research_epoch_id": epoch["research_epoch_id"],
         "epoch_manifest_hash": epoch["epoch_manifest_hash"],
         "validator_artifact_hash": validator["validator_hash"],
+        "universe": candidate["universe"],
+        "clock": candidate["clock"],
+        "horizon": candidate["horizon"],
+        "economic_expression": candidate["economic_expression"],
     }
     for key, expected in expected_bindings.items():
         supplied = export_payload.get(key)
