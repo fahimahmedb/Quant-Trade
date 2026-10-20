@@ -34,12 +34,13 @@
     "last_receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-009/FRONTIER-QUANT-MECHANISM-DISTINCT-009-g1-a6dee680a66b.json",
     "lineage": "FRONTIER-QUANT-MECHANISM-DISTINCT-009",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
-    "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-009-g1-a6dee680a66b",
+    "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-009-g2-de26f389489e",
     "v2_epoch_binding": {
       "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
       "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
       "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001"
-    }
+    },
+    "v2_trial_intent": "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-009/oracle-v2/trial_intents/g000002.json"
   },
   "forbidden_actions": [
     "signal-to-return calculation",
@@ -60,17 +61,17 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T15:00:09Z",
-    "expires_at": "2026-10-20T15:00:14Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T15:10:17Z",
+    "expires_at": "2026-10-20T15:20:17Z",
+    "generation": 2,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 70,
   "required_capability": "quant_mechanisms",
   "research_contract_version": "v2-core",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "One Legacy-screened, causally distinct quantitative/mechanism CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-009",
   "task_type": "QUANT_MECHANISM",
-  "updated_at": "2026-10-20T15:00:14Z"
+  "updated_at": "2026-10-20T15:10:17Z"
 }
