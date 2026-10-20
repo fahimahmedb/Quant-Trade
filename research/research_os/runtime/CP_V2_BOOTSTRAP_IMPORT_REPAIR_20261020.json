@@ -1,5 +1,5 @@
 {
-  "status": "BOOTSTRAP_STAGING_IMPORT_DEFECT_FIXED_LOCAL_TESTS_PASS",
+  "status": "LIVE_FRESH_INTERPRETER_IMPORT_PASS_OWNER_PREPARATION_RETRY_REQUIRED",
   "qualified_runtime_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
   "repair_base_sha": "2439f8649dab29ecee983ff30c7a1426603d376a",
   "bootstrap_source_sha256": "6606655ad40cf72a69de77f45af7caa5dc37d09b042dbc8a6633e8c53928eecc",
@@ -13,11 +13,21 @@
     "conclusion": "success"
   },
   "repair_commit_ci": "PENDING_AT_COMMIT_NOT_USED_TO_REQUALIFY_RUNTIME",
-  "live_import_probe": "PENDING_OCI_DELIVERY",
+  "live_import_probe": {
+    "status": "PASS",
+    "evidence": "v2_evidence/ORACLE_V2_BOOTSTRAP_IMPORT_REPAIR_PROBE.json",
+    "v1_timer": "active",
+    "v2_timer": "inactive"
+  },
   "root_preparation": "PENDING_OWNER_RETRY",
   "v2_timer_activation": "NOT_PERFORMED",
   "economic_experiment_authorized": false,
   "prospective_observation_authorized": false,
   "real_capital_authorized": false,
-  "live_trading_authorized": false
+  "live_trading_authorized": false,
+  "repair_commit_sha": "65847ab632daa5cb6f82f9cc33703fe65352b29f",
+  "repair_v2_ci": {
+    "id": 39409409069,
+    "conclusion": "success"
+  }
 }

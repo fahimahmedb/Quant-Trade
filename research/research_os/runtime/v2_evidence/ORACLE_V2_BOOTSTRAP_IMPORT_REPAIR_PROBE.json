@@ -1,0 +1,19 @@
+{
+  "instance_agent_command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaajoeqeghruixxs4pldhrouj2l2tguxo5vruflzb4ywnna",
+  "instance_id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+  "delivery_state": "ACKED",
+  "lifecycle_state": "SUCCEEDED",
+  "time_created": "2026-10-20T10:37:51.485000+00:00",
+  "time_updated": "2026-10-20T10:39:24.941000+00:00",
+  "sequence_number": 4932957,
+  "display_name": "Quant-Trade recovery qualification",
+  "content": {
+    "output_type": "TEXT",
+    "exit_code": 0,
+    "message": "{\"execExitCode\":0,\"runtime\":\"119ms\"}",
+    "text": "{\"fresh_interpreter_import\": \"PASS\", \"deployment_file\": \"/opt/quant-research/releases/a67ffec48fff895d5edc42171855e2213e49cf0d/deploy/oracle_v2_deploy.py\", \"contract_file\": \"/opt/quant-research/releases/a67ffec48fff895d5edc42171855e2213e49cf0d/research/research_os/expansion/v2_core.py\", \"release_exists\": true, \"v1_timer\": \"active\", \"v2_timer\": \"inactive\"}\n",
+    "text_sha256": ""
+  },
+  "oracle_request_id": "74946D22EED8448CA700239A82D2BF6F/A4D532E2D9367891DE44D76A43444709/96B2331899E24301956BF5F75210DB0B",
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaajoeqeghruixxs4pldhrouj2l2tguxo5vruflzb4ywnna"
+}
