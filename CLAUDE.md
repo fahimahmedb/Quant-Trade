@@ -10,156 +10,174 @@ Do not redefine Quant around whichever subsystem is currently being edited. Pres
 
 No file in this repository silently grants real-capital or live-trading authority.
 
-## Current Oracle H24 operational truth
+## Current Oracle state
 
-For branch `builder/oracle-economic-loop-recovery-20261019`, the canonical live roadmap is:
-
-`research/research_os/runtime/ORACLE_LAB_V1_ROADMAP.md`
-
-As of the verified 2026-10-20 checkpoint, Oracle H24 V1 is classified:
-
-`ORACLE_H24_V1_OPERATIONALLY_QUALIFIED`
-
-Qualified release:
+Oracle H24 V1 is operationally qualified on release:
 
 `f3943830e20b05d926d3013501573b8b21fdace7`
 
-V1 has verified exact-release CI, local GPT-OSS inference, durable GitHub task/receipt/artifact state, claim/lease recovery, natural systemd scheduling, a genuine VM reboot, automatic model/timer recovery, and a natural post-reboot worker transition correlated to GitHub.
+Canonical V1 roadmap:
 
-Do **not** reinterpret this as proof of positive economic expectancy, scientific completeness of every research engine, Forward Farm operation, Live Lab UI completeness, real-capital safety, or live-trading readiness.
+`research/research_os/runtime/ORACLE_LAB_V1_ROADMAP.md`
 
-The permanent Oracle authority boundary remains:
+V1 proved exact-release CI, local GPT-OSS inference, durable GitHub task/receipt/artifact state, claim/lease recovery, natural systemd scheduling, genuine VM reboot recovery and natural post-reboot continuation.
+
+Do not reinterpret V1 as proof of positive economic expectancy, scientific completeness of all research engines, Forward Farm operation, Live Lab UI completeness, real-capital safety or live-trading readiness.
+
+## Active V2 implementation mission
+
+Working branch:
+
+`builder/oracle-v2-core-20261020`
+
+Owner authorization on 2026-10-20: execute the Oracle Research OS V2 Core build autonomously from the challenged v0.3 architecture.
+
+This authorization opens implementation only. The authority boundary remains:
 
 - `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
 - `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
 - `REAL_CAPITAL_AUTHORIZED = FALSE`
 - `LIVE_TRADING_AUTHORIZED = FALSE`
 
-A future phase may change one of these only through explicit governed Owner authorization. Never infer authority from task status, model output, test success, or operational uptime.
+Do not infer authority from task state, model output, tests, runtime health, Owner implementation approval or V2 readiness.
 
-## Reacquisition order
+V2 Core target system status:
 
-Before substantial work, first resolve the current branch and exact HEAD.
+`AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED`
 
-### If on the Oracle recovery / H24 branch
+Strongest candidate-level status:
 
-Read in this order:
+`READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY`
 
-1. `QUANT_NORTH_STAR.md`
-2. fresh HEAD of `builder/oracle-economic-loop-recovery-20261019`
-3. `research/research_os/runtime/ORACLE_LAB_V1_ROADMAP.md`
-4. current `research/research_os/tasks/*.json` relevant to the active lineage
-5. newest linked receipts, artifacts and events
-6. repaired-release canary artifact `research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f3943830e20b05d9/qualification-5f9807e6bd84fc5a.json` when runtime qualification detail is needed
-7. CP5 / CP4 / CP3 only when historical detail is required
+Both are pre-outcome process claims only. They never mean profitable, alpha-proven or economically validated.
 
-The Oracle timer may mutate durable GitHub state while an agent is working. Never rely on a previously remembered HEAD before a write.
+## Owner override — P0-D lifted
 
-### Otherwise
+The prior V2 candidate proposed server-side canonical-ref protection / fast-forward-only branch enforcement as P0-D.
 
-Use the current Blue/governance routing surfaces for that branch. Historical September files such as `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`, `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`, and `handoff/BLUE_CONTEXT_REACQUISITION_2026-09-20.md` remain branch-context documents, but they are **not** a substitute for the Oracle roadmap on the Oracle H24 branch.
+Owner decision: **P0-D is lifted and is not an implementation blocker.**
 
-`CLAUDE_CURRENT_MISSION.md`, `STATE.md`, `CHIEF_BRIEF.md`, repository default branch state, old PR text, and old chat summaries must not override fresher branch-specific canonical evidence.
+Therefore V2 Core MUST NOT require GitHub branch protection, rulesets, or server-side force-push prevention as a Definition-of-Done gate.
+
+Operating discipline still forbids agents from force-pushing, rewinding, resetting or deleting autonomous evidence during normal project work. This is an operating rule, not a server-side qualification requirement.
+
+GitHub remains the qualified initial orchestration backend under bounded-writer operation. A future backend migration requires an explicit migration gate and one authoritative orchestration source at a time.
+
+## V2 architectural laws
+
+1. **Research / Evaluation separation.** Research, Evidence and Validation remain outcome-blind. Evaluation is architecturally present but sealed while economic/prospective authority is false.
+2. **Capability isolation over convention.** Future outcome access must not rely only on code choosing not to read an available file. Evaluation credentials/storage are a distinct capability boundary when activated.
+3. **Research Epochs.** Every research trial belongs to a versioned epoch with knowledge cutoff, export policy, close policy, feedback-release policy, research policy, model-routing policy and lineage metadata.
+4. **Precommitted closure.** After the first evaluation export, epoch close policy cannot silently change.
+5. **Feedback lineage.** Economic feedback, once separately authorized and released in a future phase, may influence successor epochs only and may never rewrite historical Producer/Validator/trial state.
+6. **Human/Supervisor blinding.** An actor that can influence an active blinded epoch must not observe sealed outcomes without contaminating that epoch.
+7. **Model leakage accounting.** `SOURCE_PIT` and `MODEL_PIT` are distinct. Historical LLM idea generation is not assumed provably PIT merely because documentary sources are PIT.
+8. **Trial accounting from ideation.** Multiplicity starts before CandidateHypothesis freeze; generated/discarded alternatives and retries remain traceable.
+9. **Validator independence.** Information, retrieval, cognition and state isolation matter; different worker names alone do not prove independence.
+10. **Multidimensional scientific state.** Scientific maturity, experiment readiness, portfolio relationship and authority are separate axes.
+11. **Structural overlap is not empirical correlation.** Without admissible return data, empirical correlation and marginal portfolio contribution remain unknown/not estimated.
+12. **Explicit research policy.** Forced Flows or any family priority is configurable/versioned policy, not a hidden scheduler belief.
+13. **Explainable scheduling.** Undefined narrative concepts such as `HIGH_VALUE_CANDIDATE` must not drive priority; selection carries reason codes and policy version.
+14. **Atomicity over artificial serialization.** The invariant is one authoritative atomic transition per claim. Initial resource policy may keep heavy local inference and authoritative writes bounded to one at a time.
+15. **Negative knowledge is scoped.** Failure carries assumptions, regime context and revisit conditions; it does not mean an idea is false forever.
+16. **No dual orchestration truth.** Any future SQLite/PostgreSQL promotion requires explicit migration proof and a single authoritative backend.
+17. **Evaluation feedback is one-way while an epoch is active.** Only schema/integrity acknowledgements may cross back before governed feedback release.
+18. **History remains epistemically honest.** Later learning never rewrites what the system knew, generated, discarded, prioritized or validated earlier.
+
+## Reacquisition order on the V2 branch
+
+Before substantial work:
+
+1. read `QUANT_NORTH_STAR.md`;
+2. resolve the fresh HEAD of `builder/oracle-v2-core-20261020`;
+3. read this file;
+4. read the canonical V2 architecture/spec and V2 roadmap under `research/research_os/` once created;
+5. read only the code/tests relevant to the current V2 work package;
+6. use V1 roadmap/checkpoints only for properties inherited from V1.
+
+Do not route this branch through stale September Blue handoffs unless a current V2 file explicitly points there.
 
 ## Builder / project-execution role
 
-Claude Code is a Builder / Quant Engineer operating inside the governed project. Choose local implementation details autonomously, but do not redefine product scope or authority.
+Claude Code or another Builder may choose implementation details autonomously inside the governed V2 scope.
 
-Optimize for **verified progress per intervention**:
+Optimize for verified progress per intervention:
 
 - prefer one large coherent work package over many microtasks;
 - split only genuinely independent work when wall-clock gain exceeds coordination cost;
-- batch Owner/root commands into the smallest safe bounded intervention;
-- delegate to another AI only substantial independent packages with exact branch/base SHA, scope, surfaces, invariants, evidence, forbidden actions, acceptance tests and handoff format;
-- treat external-agent output as advisory until reconciled against fresh GitHub state and required runtime evidence;
-- combine investigation, implementation, tests, evidence and durable documentation in the same package when practical;
-- do not stop because one lane, test or experiment failed if other high-value executable work remains.
+- combine investigation, implementation, tests, evidence and durable documentation where practical;
+- delegate only substantial independent packages with exact branch/base SHA, invariants, acceptance tests and handoff format;
+- external-agent output remains advisory until reconciled against repository evidence;
+- do not stop because one worker, lane, test or candidate fails if other high-value executable work remains.
 
-Prefer coherent capability over local elegance. Avoid new abstractions, files, agents, branches and refactors unless they directly advance the current mission or repair a demonstrated invariant.
+Prefer coherent capability over local elegance. Avoid abstractions, agents, branches and refactors that do not directly advance V2 acceptance criteria.
 
 ## Oracle concurrency and Git discipline
 
-On autonomous Oracle branches, GitHub is canonical shared memory and may change between reads.
+GitHub is shared durable memory and may change between reads.
 
 Before every mutation:
 
 1. reacquire fresh branch HEAD;
-2. reacquire the current task/receipt/artifact state involved;
+2. reacquire the relevant task/receipt/artifact state;
 3. preserve autonomous commits;
-4. write only after confirming the intended base still makes sense.
+4. reconcile if HEAD advanced.
 
-Never force-push, reset, rewind, delete autonomous evidence, or overwrite a newer Oracle transition to recover from a conflict. If HEAD advances concurrently, reacquire and reconcile.
+Never force-push, reset, rewind or delete autonomous evidence as a conflict-recovery tactic.
 
-Commit coherent checkpoints. Do not create serial documentation commits for every minor observation.
+P0-D being lifted means server-side branch protection is not required; it does **not** authorize unsafe Git operations.
 
 ## Evidence hierarchy and model-output boundary
 
-GitHub evidence can prove durable repository state, commit ancestry, receipts and artifacts. It cannot by itself prove live host state such as systemd service health, a reboot, current boot identity, or local inference. Runtime claims require corresponding host/runtime evidence.
+GitHub evidence proves repository state, ancestry, receipts and artifacts. It does not by itself prove host state, boot identity, model health or runtime execution.
 
-Local model output is research commentary, not authority. In particular, Oracle qualification explicitly classifies representative model reasoning as `UNVERIFIED_MODEL_COMMENTARY`. Never promote generated prose to evidence merely because the model ran successfully.
+Local or hosted model prose is not evidence by itself. Model output remains `UNVERIFIED_MODEL_OUTPUT` until bound to admissible evidence or deterministic checks.
 
-A state enum is not a capability. A passing operational qualification is not a scientific result. A frozen hypothesis is not an economic result. Preserve these distinctions.
+A state enum is not a capability. Passing operational qualification is not a scientific result. A frozen hypothesis is not an economic result.
 
 ## Research and economic integrity
 
-Use one causal information timeline across research, paper/shadow decisions and the Book. Never inspect future outcomes to tune a supposedly pre-outcome hypothesis.
+Never inspect future outcomes to tune a supposedly pre-outcome hypothesis.
 
-Research evidence must describe the executable paper/shadow object rather than a more favorable backtest object.
+Never fabricate market data. Preserve provenance, timestamps, PIT caveats, retrieval manifests, hashes and transformations.
 
-Never fabricate market data. Preserve provenance, timestamps, point-in-time caveats, validation and fingerprints.
+Every persistent state mutation must remain restart-safe and idempotent. Crash plus replay must not duplicate sessions, receipts, candidates, freezes or attribution.
 
-Every persistent economic-state mutation must be restart-safe and idempotent. Crash plus replay must not duplicate simulated fills, cash movements, P&L, sessions, receipts, candidates or attribution.
+Research trials begin at ideation, not at candidate freeze. Keep discarded alternatives and retries attributable.
 
-Multiple strategies may reference the same instrument. Preserve strategy-level sleeves/attribution and aggregate separately for portfolio state.
+Where model-weight hindsight cannot be ruled out, record that limitation instead of claiming historical discovery ability.
 
-Risk approval must describe the final post-transform/post-scale portfolio that would actually be simulated.
+## V1 / V2 boundary
 
-Structural similarity is not empirical correlation. Where admissible return data is unavailable, correlation and marginal portfolio contribution remain unknown/not estimated.
+V1 remains closed and qualified for the properties it actually proved.
 
-## V1 closed / V2 boundary
+V2 Core may reuse those mechanisms but must independently qualify new scientific properties introduced by V2.
 
-Oracle H24 V1 is operationally closed. Do not silently extend V1 and then describe new work as already-qualified.
-
-Further Oracle work should begin from an explicit V2 or separately governed specification. Candidate V2 topics include:
-
-- scientific depth and acceptance criteria for Quant, Fundamental, Event/Documents, Institutional/Forced Flows and Validator engines;
-- stronger fault injection and restart/idempotency tests;
-- reusable release/upgrade operating contract;
-- Portfolio Map evidence boundaries;
-- Live Lab native ingress/UI proof;
-- Forward Farm only if prospective observation is separately authorized;
-- economic experiment paths only if separately authorized.
-
-Operational V1 proof remains valid only for properties not materially invalidated by later code/deployment changes. Do not rerun completed qualification gates by habit; do rerun the affected gate when a later change can invalidate what it proved.
-
-## Multi-agent discipline
-
-Use parallel agents only when workstreams are genuinely independent, require isolated context, or benefit from adversarial review. Do not spawn agents for trivial reads, one-file edits, sequential debugging, or multiple writers against the same evolving state.
-
-For substantive changes, separate implementation from independent scientific/economic-integrity and runtime/restart review when that separation adds value, then synthesize once in the lead agent.
-
-Avoid duplicated exploration. Give each agent one distinct responsibility and require a concise durable result.
-
-## Token discipline
-
-Use targeted search and file slices before full-file reads. Do not repeatedly restate architecture or facts already established in canonical repository evidence.
-
-Do not revisit a settled implementation choice unless new evidence contradicts it or a relevant test fails.
-
-Keep progress updates short. Put durable truth in code, tests, roadmaps and generated artifacts rather than long chat summaries.
-
-Use `/compact` or a fresh session when the task changes materially. After branch/context changes, reacquire through the canonical router rather than rereading the entire repository.
+Forward Farm remains closed while prospective observation is unauthorized. Economic evaluation remains sealed while economic experiment authority is false. Real capital and live trading remain closed.
 
 ## Verification
 
-Passing tests is necessary, not sufficient. Verify the specific property being claimed.
+Passing tests is necessary, not sufficient. Verify the exact property claimed.
 
-For code changes, run the narrow affected tests plus the relevant broader regression/CI path. Add adversarial coverage for the demonstrated failure mode being repaired.
+For code changes, run narrow affected tests plus relevant broader regression/CI. Add adversarial tests for each new V2 invariant.
 
-For runtime claims, bind exact release SHA, host/runtime evidence, GitHub evidence and authority state. Never substitute a simulated/manual wake for a property that specifically requires a natural scheduled wake.
+For V2 Core qualification, required evidence must include at least:
+
+- Research Epoch freeze and close-policy immutability;
+- trial accounting from ideation;
+- explicit `SOURCE_PIT` / `MODEL_PIT` classification;
+- CandidateCore plus family-extension validation;
+- independent Validator metadata and state separation;
+- sealed Evaluation export with reverse-channel restrictions;
+- successor-only feedback lineage;
+- multidimensional maturity/portfolio state;
+- explainable priority decisions;
+- scoped Negative Memory;
+- bounded-writer orchestration and failure recovery;
+- unchanged four authority flags.
 
 ## Stop conditions
 
-Stop only for a genuine external boundary: unavailable access, paid resources requiring approval, irreversible external action requiring authority, missing canonical content that cannot be recovered, or an environment limitation that prevents further progress.
+Stop only for a genuine external boundary: unavailable access, paid resources requiring approval, an irreversible external action requiring authority, missing canonical content that cannot be recovered, or an environment limitation that prevents further progress.
 
-Do not stop merely because one test, research candidate, worker, lane or subsystem completed or failed.
+Do not stop merely because one test, candidate, worker, lane or subsystem completed or failed.
