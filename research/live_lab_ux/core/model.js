@@ -12,8 +12,8 @@ export const EVENT = Object.freeze({
 
 export const ACTIVITY = Object.freeze({
   NONE:'none', SOURCE_RESEARCH:'source-research', DOCUMENT_READING:'document-reading', DATA_QUALIFICATION:'data-qualification',
-  CODING_TESTING:'coding-testing', CALCULATION:'calculation-economic-look', AUDIT:'audit-red-team', COMMIT:'commit-persistence',
-  HANDOFF:'handoff', RESULT:'result', BLOCKER:'blocker',
+  HYPOTHESIS_GENERATION:'hypothesis-generation', CODING_TESTING:'coding-testing', CALCULATION:'calculation-economic-look',
+  AUDIT:'audit-red-team', COMMIT:'commit-persistence', HANDOFF:'handoff', RESULT:'result', BLOCKER:'blocker',
 });
 
 export const PROGRESS = Object.freeze({ KNOWN_TOTAL:'KNOWN_TOTAL', COMPLETED_COUNT_ONLY:'COMPLETED_COUNT_ONLY', UNKNOWN:'UNKNOWN' });
