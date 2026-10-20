@@ -26,12 +26,16 @@
   "execution": {
     "attempts": {},
     "completed_stages": {
+      "document_or_fundamental_research": {
+        "artifact": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003/oracle-worker/document_or_fundamental_research.json",
+        "artifact_hash": "13393bfc357bebfeb1dc54f738e09f5b12a1fe1e0e982ad9e916f9d06fd9c4b9"
+      },
       "legacy_duplicate_check": {
         "artifact": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003/oracle-worker/legacy_duplicate_check.json",
         "artifact_hash": "52ef24981ce98bc4751f7ac053bd66ad0bb968fb883f648d4677367f9ef7698b"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003-g1-436763aa9a09.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003-g2-2ff9a6070128.json",
     "lineage": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
     "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
     "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003-g2-2ff9a6070128"
@@ -55,15 +59,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T00:30:18Z",
-    "expires_at": "2026-10-20T00:40:18Z",
+    "expires_at": "2026-10-20T00:32:04Z",
     "generation": 2,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "fundamental",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "One Legacy-screened, causally distinct fundamental CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
   "task_type": "FUNDAMENTAL_RESEARCH",
-  "updated_at": "2026-10-20T00:30:18Z"
+  "updated_at": "2026-10-20T00:32:04Z"
 }
