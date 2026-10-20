@@ -350,12 +350,16 @@ def blinding_integrity(*, owner_status: str, supervisor_status: str) -> Dict[str
 def release_feedback(*, source_epoch_id: str, successor_epoch_id: str,
                      source_epoch_closed: bool, policy_allows_release: bool,
                      feedback_hash: str) -> Dict[str, Any]:
-    if not source_epoch_closed:
+    if source_epoch_closed is not True:
         raise V2ContractError("FEEDBACK_BEFORE_EPOCH_CLOSE")
-    if not policy_allows_release:
+    if policy_allows_release is not True:
         raise V2ContractError("FEEDBACK_RELEASE_NOT_AUTHORIZED_BY_POLICY")
     if not source_epoch_id or not successor_epoch_id or source_epoch_id == successor_epoch_id:
         raise V2ContractError("FEEDBACK_REQUIRES_SUCCESSOR_EPOCH")
+    _require_identifiers({"source_epoch_id": source_epoch_id, "successor_epoch_id": successor_epoch_id},
+                         ("source_epoch_id", "successor_epoch_id"), "FEEDBACK")
+    if not isinstance(feedback_hash, str) or not feedback_hash.strip():
+        raise V2ContractError("FEEDBACK_HASH_REQUIRED")
     event = {
         "event_type": "ECONOMIC_FEEDBACK_RELEASED",
         "source_epoch_id": source_epoch_id,
