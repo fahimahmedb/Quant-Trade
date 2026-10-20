@@ -23,7 +23,7 @@
     "last_receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360.json",
     "lineage": "DOC-EVENT-d8d19dbf0b1291ce",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
-    "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360"
+    "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g2-e1a4ffc080ff"
   },
   "forbidden_actions": [
     "hypothesis_generation",
@@ -41,9 +41,9 @@
     "validation_mode": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T04:00:24Z",
-    "expires_at": "2026-10-20T04:02:19Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T04:10:24Z",
+    "expires_at": "2026-10-20T04:20:24Z",
+    "generation": 2,
     "owner": "oracle-research-v1.independent_challenge"
   },
   "lineage": {
@@ -55,9 +55,9 @@
   },
   "priority": 70,
   "required_capability": "validator",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
   "task_type": "VALIDATION",
-  "updated_at": "2026-10-20T04:02:19Z"
+  "updated_at": "2026-10-20T04:10:24Z"
 }
