@@ -1,0 +1,14 @@
+{
+  "action_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
+  "emitted_at": "2026-10-20T03:40:24Z",
+  "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g4-fb6faca11af0-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 4,
+  "payload": {
+    "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
+    "queue_state": "WORKING"
+  },
+  "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g4-fb6faca11af0",
+  "worker_id": "oracle-research-v1.fundamental_events"
+}
