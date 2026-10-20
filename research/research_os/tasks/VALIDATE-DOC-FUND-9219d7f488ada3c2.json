@@ -27,7 +27,7 @@
     "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FUND-9219d7f488ada3c2/VALIDATE-DOC-FUND-9219d7f488ada3c2-g2-e30fefc66d5d.json",
     "lineage": "DOC-FUND-9219d7f488ada3c2",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
-    "session_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g2-e30fefc66d5d"
+    "session_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g3-6c86a7d1f3ab"
   },
   "forbidden_actions": [
     "hypothesis_generation",
@@ -45,9 +45,9 @@
     "validation_mode": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T01:20:07Z",
-    "expires_at": "2026-10-20T01:22:12Z",
-    "generation": 2,
+    "claimed_at": "2026-10-20T01:30:24Z",
+    "expires_at": "2026-10-20T01:40:24Z",
+    "generation": 3,
     "owner": "oracle-research-v1.independent_challenge"
   },
   "lineage": {
@@ -59,9 +59,9 @@
   },
   "priority": 70,
   "required_capability": "validator",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
   "task_type": "VALIDATION",
-  "updated_at": "2026-10-20T01:22:12Z"
+  "updated_at": "2026-10-20T01:30:24Z"
 }
