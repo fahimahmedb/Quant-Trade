@@ -25,6 +25,10 @@ const oracle=(overrides={})=>({
   ...overrides,
 });
 
+function connected(){
+  return reduceScene(createInitialState({mode:'LIVE'}),{id:'connected',seq:1,stream:'transport',at:'2026-10-20T02:10:00Z',kind:EVENT.CONNECTED});
+}
+
 test('explicit authenticated Oracle UI facts survive mapper and reducer without invented progress',()=>{
   const mapped=mapNativeWorkerEvent(oracle());
   assert.equal(mapped.kind,EVENT.WORK_STARTED);
@@ -33,8 +37,7 @@ test('explicit authenticated Oracle UI facts survive mapper and reducer without 
   assert.equal(mapped.activity,ACTIVITY.DOCUMENT_READING);
   assert.deepEqual(mapped.progress,{mode:PROGRESS.UNKNOWN});
 
-  let state=reduceScene(createInitialState({mode:'LIVE'}),{id:'connected',seq:1,stream:'transport',at:'2026-10-20T02:10:00Z',kind:EVENT.CONNECTED});
-  state=reduceScene(state,mapped);
+  let state=reduceScene(connected(),mapped);
   const agent=state.agents['oracle-research.fundamental_events'];
   assert.equal(agent.role,'researcher');
   assert.equal(agent.label,'Oracle · Documents');
@@ -49,8 +52,7 @@ test('heartbeat remains presence-only even when payload tries to supply UI work 
   }));
   assert.equal(heartbeat.kind,EVENT.HEARTBEAT);
   assert.equal(heartbeat.workerId,undefined);
-  let state=reduceScene(createInitialState({mode:'LIVE'}),{id:'connected',seq:1,stream:'transport',at:'2026-10-20T02:10:00Z',kind:EVENT.CONNECTED});
-  state=reduceScene(state,heartbeat);
+  const state=reduceScene(connected(),heartbeat);
   assert.deepEqual(state.agents,{});
 });
 
@@ -63,8 +65,7 @@ test('non-allowlisted identity cannot become Owner or another invented role',()=
 
 test('snapshot may reconstruct explicit Oracle identity but cannot replay business motion',()=>{
   const snapshot=mapNativeSnapshot({generated_at:'2026-10-20T02:11:00Z',cursor:'oracle-live-event-1',events:[oracle()]});
-  let state=reduceScene(createInitialState({mode:'LIVE'}),{id:'connected',seq:1,stream:'transport',at:'2026-10-20T02:10:00Z',kind:EVENT.CONNECTED});
-  state=reduceScene(state,snapshot);
+  const state=reduceScene(connected(),snapshot);
   const agent=state.agents['oracle-research.fundamental_events'];
   assert.equal(agent.role,'researcher');
   assert.equal(agent.label,'Oracle · Documents');
@@ -72,8 +73,15 @@ test('snapshot may reconstruct explicit Oracle identity but cannot replay busine
   assert.equal(state.transport.resumeRequiresBusinessEvent,true);
 });
 
-test('hypothesis-generation has a visible non-economic physical gesture family',()=>{
-  let state=reduceScene(createInitialState({mode:'LIVE'}),{id:'connected',seq:1,stream:'transport',at:'2026-10-20T02:10:00Z',kind:EVENT.CONNECTED});
+test('hypothesis-generation becomes visible only after a real semantic start and stays non-economic',()=>{
+  let state=connected();
+  assert.equal(gestureFamily({animate:true,activity:ACTIVITY.HYPOTHESIS_GENERATION},state),null);
+  const start=mapNativeWorkerEvent(oracle({
+    event_id:'oracle-idea-1',
+    payload:{stage:'mechanism_research',label:'Mechanism research',ui_activity:ACTIVITY.HYPOTHESIS_GENERATION,ui_role:'researcher',ui_label:'Oracle · Discovery'},
+  }));
+  state=reduceScene(state,start);
+  assert.equal(state.transport.resumeRequiresBusinessEvent,false);
   assert.equal(gestureFamily({animate:true,activity:ACTIVITY.HYPOTHESIS_GENERATION},state),'comparison');
   assert.notEqual(gestureFamily({animate:true,activity:ACTIVITY.HYPOTHESIS_GENERATION},state),'economic');
 });
