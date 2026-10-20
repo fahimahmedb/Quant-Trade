@@ -5,6 +5,8 @@ from hashlib import sha256
 import json
 from typing import Any, Dict, Mapping, Optional
 
+from .evidence_acquisition_intents_v2 import build_evidence_acquisition_intents
+
 
 SCHEMA_VERSION = "oracle-v2-edge-observability-v1"
 CLOSED_AUTHORITY = {
@@ -144,12 +146,20 @@ def build_edge_observability_projection(
     readiness: Optional[Mapping[str, Any]] = None,
     negative_memory: Optional[Mapping[str, Any]] = None,
     export_intent: Optional[Mapping[str, Any]] = None,
+    producer_readiness: Optional[Dict[str, Any]] = None,
+    declared_routes: Optional[list[Dict[str, Any]]] = None,
+    validated_adapters: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """Project V2 research truth without becoming a new source of truth.
 
     All inputs are caller-supplied durable artifacts. This function performs no
     fetch, write, observation, evaluation, or trading action. It deliberately
     reports scientific/process maturity rather than economic success.
+
+    Optional producer readiness is distinct from V2 validation ``readiness``.
+    Its explicit catalogs are passed to the existing CP008 bridge. Missing
+    catalogs mean no declared route/adapter, never implicit source discovery.
+    Acquisition planning does not advance scientific or experiment maturity.
     """
     inputs = {
         "task": task,
@@ -160,6 +170,9 @@ def build_edge_observability_projection(
         "readiness": readiness,
         "negative_memory": negative_memory,
         "export_intent": export_intent,
+        "producer_readiness": producer_readiness,
+        "declared_routes": declared_routes,
+        "validated_adapters": validated_adapters,
     }
     _assert_pre_outcome(inputs)
 
@@ -167,6 +180,50 @@ def build_edge_observability_projection(
     task_type = str(task.get("task_type") or "UNKNOWN")
     if not task_id:
         raise EdgeObservabilityError("TASK_ID_REQUIRED")
+    if producer_readiness is None and (declared_routes is not None or validated_adapters is not None):
+        raise EdgeObservabilityError("PRODUCER_READINESS_REQUIRED_FOR_ACQUISITION")
+
+    acquisition = None
+    if producer_readiness is not None:
+        hypothesis_id = producer_readiness.get("hypothesis_id")
+        # Do not silently join an intent for one hypothesis to another's edge.
+        for record in (task, research or {}, (research or {}).get("candidate") or {}, frozen_candidate or {}):
+            if record.get("hypothesis_id") and record["hypothesis_id"] != hypothesis_id:
+                raise EdgeObservabilityError("ACQUISITION_HYPOTHESIS_BINDING_MISMATCH")
+        intents = build_evidence_acquisition_intents(
+            producer_readiness,
+            declared_routes=declared_routes if declared_routes is not None else [],
+            validated_adapters=validated_adapters if validated_adapters is not None else {},
+        )
+        rows = []
+        for intent in intents["intents"]:
+            plan = intent["acquisition_plan"] or {}
+            rows.append({
+                "requirement": intent["requirement"],
+                "status": intent["status"],
+                "blockers": deepcopy(intent["blockers"]),
+                "adapter_id": intent.get("adapter_id"),
+                "adapter_hash": intent.get("adapter_hash"),
+                "declared_route_hash": intent.get("declared_route_hash"),
+                "request_id": (intent["request"] or {}).get("request_id"),
+                "firewall_status": plan.get("status", "NOT_PLANNED"),
+                "firewall_blockers": deepcopy(plan.get("blockers", [])),
+                "plan_hash": plan.get("plan_hash"),
+                "execution_mode": (plan.get("plan") or {}).get("execution_mode"),
+            })
+        acquisition = {
+            "hypothesis_id": intents["hypothesis_id"],
+            "readiness_hash": intents["readiness_hash"],
+            "intent_projection_hash": intents["projection_hash"],
+            "status": intents["status"],
+            "requirements": deepcopy(intents["requirements"]),
+            "summary": deepcopy(intents["summary"]),
+            "intents": rows,
+            "interpretation": "PLAN_READINESS_IS_NOT_EVIDENCE_ACQUIRED",
+            "network_execution_authorized": intents["network_execution_authorized"],
+            "network_call_performed": intents["network_call_performed"],
+            "network_connectivity": "NOT_INSPECTED",
+        }
 
     blockers = _collect_blockers(research, readiness, negative_memory)
     scientific_maturity, experiment_readiness = _maturity(
@@ -231,5 +288,7 @@ def build_edge_observability_projection(
         "projection_only": True,
         "source_of_truth": "CALLER_SUPPLIED_DURABLE_ARTIFACTS",
     }
+    if acquisition is not None:
+        projection["evidence_acquisition"] = acquisition
     projection["projection_hash"] = _canonical_hash(projection)
     return projection
