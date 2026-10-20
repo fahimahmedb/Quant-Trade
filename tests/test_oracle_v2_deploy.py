@@ -99,7 +99,7 @@ class V2DeploymentTests(unittest.TestCase):
             canary.migrate(config)
         with target.snapshot() as snapshot: self.assertEqual(snapshot.head, head)
 
-    def test_v2_units_keep_explicit_entrypoint_and_shared_v1_lock(self):
+    def test_v2_units_and_bootstrap_keep_explicit_release_and_shared_v1_lock(self):
         root = Path(__file__).resolve().parents[1] / "deploy/systemd"
         v1 = (root / "quant-research-worker.service").read_text()
         v2 = (root / "quant-research-worker-v2.service").read_text()
@@ -109,6 +109,41 @@ class V2DeploymentTests(unittest.TestCase):
         self.assertIn("--conflict-exit-code=0 /var/lib/quant-research ", v2)
         self.assertIn("Conflicts=quant-research-worker.timer quant-research-worker.service", v2)
         self.assertIn("MemoryMax=768M", v2)
+        # Reproduce CP1 importing a package from staging, then publishing it
+        # by rename. A sys.path insertion cannot repair cached __path__ values.
+        import tempfile, sys
+        with tempfile.TemporaryDirectory() as directory:
+            stage, release = Path(directory) / "staging", Path(directory) / "release"
+            for package in ("deploy", "research", "research/research_os", "research/research_os/expansion"):
+                folder = stage / package; folder.mkdir(parents=True, exist_ok=True)
+                (folder / "__init__.py").write_text("")
+            (stage / "research/research_os/expansion/v2_core.py").write_text("SENTINEL = 'published-package'\n")
+            (stage / "deploy/oracle_v2_deploy.py").write_text(
+                "from research.research_os.expansion.v2_core import SENTINEL\n"
+                "def prepare(release, v2, sec): return dict(sentinel=SENTINEL,path=str(release),runs=[v2,sec])\n")
+            bootstrap = root.parent / "oracle_v2_host_prepare.py"
+            code = '''
+import importlib.util,json,sys
+from pathlib import Path
+stage,release,bootstrap=sys.argv[1:]
+sys.path.insert(0,stage)
+import research.research_os.expansion
+Path(stage).rename(release)
+sys.path.insert(0,release)
+try:
+    import research.research_os.expansion.v2_core
+except ModuleNotFoundError:
+    pass
+else:
+    raise AssertionError("fixture did not reproduce the stale package path")
+spec=importlib.util.spec_from_file_location("fixed_bootstrap",bootstrap)
+module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+module.prepare_installed_release(Path(release),12,34)
+'''
+            process = subprocess.run([sys.executable, "-I", "-c", code, str(stage), str(release), str(bootstrap)],
+                                     capture_output=True, text=True, check=True, timeout=30)
+            value = json.loads(process.stdout)
+            self.assertEqual(value, dict(sentinel="published-package", path=str(release), runs=[12, 34]))
 
 
 if __name__ == "__main__": unittest.main()

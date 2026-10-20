@@ -1,0 +1,23 @@
+{
+  "status": "BOOTSTRAP_STAGING_IMPORT_DEFECT_FIXED_LOCAL_TESTS_PASS",
+  "qualified_runtime_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "repair_base_sha": "2439f8649dab29ecee983ff30c7a1426603d376a",
+  "bootstrap_source_sha256": "6606655ad40cf72a69de77f45af7caa5dc37d09b042dbc8a6633e8c53928eecc",
+  "cause": "CP1 imports packages under staging before atomic rename; cached __path__ remains stale in the caller interpreter. sys.path.insert alone cannot repair it.",
+  "fix": "Prepare the installed exact release in a fresh isolated Python subprocess after CP1 returns.",
+  "regression": "Real subprocess fixture reproduces ModuleNotFoundError after staging rename, then verifies successful clean-interpreter handoff. Four deployment test methods pass; discovery remains 602.",
+  "owner_recovery": "V2_OWNER_ROOT_PREPARATION_20261020.sh now invokes the already-installed, CI-qualified a67ffec prepare function in a fresh interpreter. No repeated archive installation required.",
+  "qualified_runtime_ci": {
+    "oracle_v2": 39360664488,
+    "sec_p0": 39360664487,
+    "conclusion": "success"
+  },
+  "repair_commit_ci": "PENDING_AT_COMMIT_NOT_USED_TO_REQUALIFY_RUNTIME",
+  "live_import_probe": "PENDING_OCI_DELIVERY",
+  "root_preparation": "PENDING_OWNER_RETRY",
+  "v2_timer_activation": "NOT_PERFORMED",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

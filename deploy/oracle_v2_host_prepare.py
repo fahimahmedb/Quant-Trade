@@ -5,7 +5,19 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import subprocess
 import urllib.request
+
+
+def prepare_installed_release(release, v2_run, sec_run):
+    # CP1 imports research modules while the archive still lives in staging.
+    # After its atomic rename, cached package __path__ values point to the old
+    # directory. A fresh interpreter binds imports to the published release.
+    program = ('import json,os,sys; p=sys.argv[1]; os.chdir(p); sys.path.insert(0,p); '
+               'from deploy.oracle_v2_deploy import prepare; from pathlib import Path; '
+               'print(json.dumps(prepare(Path(p),int(sys.argv[2]),int(sys.argv[3])),sort_keys=True))')
+    subprocess.run([sys.executable, "-I", "-B", "-c", program, str(release), str(v2_run), str(sec_run)],
+                   cwd="/", check=True)
 
 
 def main():
@@ -32,9 +44,7 @@ def main():
     exec(compile(data, url, "exec"), namespace)
     receipt = namespace["bootstrap"](args.sha)
     release = Path(receipt["path"])
-    sys.path.insert(0, str(release))
-    from deploy.oracle_v2_deploy import prepare
-    print(json.dumps(prepare(release, args.v2_ci_run, args.sec_ci_run), sort_keys=True))
+    prepare_installed_release(release, args.v2_ci_run, args.sec_ci_run)
 
 
 if __name__ == "__main__": main()
