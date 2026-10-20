@@ -24,6 +24,14 @@
     "type": "EMPTY_QUEUE_FRONTIER_REFILL"
   },
   "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "legacy_duplicate_check": {
+        "artifact": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004/oracle-worker/legacy_duplicate_check.json",
+        "artifact_hash": "c2e2df557543581373b838f0b6d3be37520c7e34e7d49ac34afe9e186cbea356"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004-g1-460b290d4144.json",
     "lineage": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004-g1-460b290d4144"
@@ -47,15 +55,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T05:00:22Z",
-    "expires_at": "2026-10-20T05:10:22Z",
+    "expires_at": "2026-10-20T05:00:27Z",
     "generation": 1,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "fundamental",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "One Legacy-screened, causally distinct fundamental CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004",
   "task_type": "FUNDAMENTAL_RESEARCH",
-  "updated_at": "2026-10-20T05:00:22Z"
+  "updated_at": "2026-10-20T05:00:27Z"
 }
