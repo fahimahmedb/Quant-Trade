@@ -1,0 +1,117 @@
+{
+  "authority": "OBSERVATIONAL_ONLY",
+  "canonical_terminal": {
+    "event_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-2",
+    "event_seq": 2,
+    "generation": 1,
+    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c",
+    "source_commit": "c8d1992b1cc076ab5bbdc69d763d8a6d171c0b63"
+  },
+  "credentials_included": false,
+  "records": [
+    {
+      "packet": {
+        "action_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
+        "emitted_at": "2026-10-20T16:10:19Z",
+        "event_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-1",
+        "event_seq": 1,
+        "event_type": "ACTION_STARTED",
+        "generation": 1,
+        "lease_id": "a82d22bf-c540-459d-92c4-5220783155c7",
+        "payload": {
+          "label": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
+          "stage": "legacy_duplicate_check",
+          "ui_activity": "data-qualification",
+          "ui_label": "Oracle \u00b7 Discovery",
+          "ui_role": "researcher"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "72819dc3-adec-49d2-9faa-99b2f70a5ac3",
+        "trace_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c",
+        "worker_id": "oracle-research.market_discovery"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T16:10:22.457Z",
+      "cursor": 84,
+      "event_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-1",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
+        "effect_proof": {
+          "exit_code": 0,
+          "stdout_sha256": "442afdb69db0743b04f66bf40d0467fafc88bd14b593b3035f08f08c59f1e087"
+        },
+        "emitted_at": "2026-10-20T16:10:25Z",
+        "event_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-2",
+        "event_seq": 2,
+        "event_type": "ACTION_COMPLETED",
+        "generation": 1,
+        "lease_id": "a82d22bf-c540-459d-92c4-5220783155c7",
+        "payload": {
+          "ui_activity": "none"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "72819dc3-adec-49d2-9faa-99b2f70a5ac3",
+        "trace_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c",
+        "worker_id": "oracle-research.market_discovery"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T16:10:28.557Z",
+      "cursor": 85,
+      "event_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-2",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
+        "emitted_at": "2026-10-20T16:10:28.894814Z",
+        "event_id": "closed-ea718f62b4b031761627f7af7881e0c0601a62bf3f3d08423b0ed210729c6ab2",
+        "event_seq": 3,
+        "event_type": "SESSION_ENDED",
+        "generation": 1,
+        "lease_id": "a82d22bf-c540-459d-92c4-5220783155c7",
+        "payload": {},
+        "principal": "oracle-research-live",
+        "session_id": "72819dc3-adec-49d2-9faa-99b2f70a5ac3",
+        "trace_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c",
+        "worker_id": "oracle-research.market_discovery"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T16:10:29.195Z",
+      "cursor": 86,
+      "event_id": "closed-ea718f62b4b031761627f7af7881e0c0601a62bf3f3d08423b0ed210729c6ab2",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    }
+  ],
+  "schema_version": "oracle-live-projection-v1",
+  "site_session": {
+    "generation": 1,
+    "heartbeat_interval_ms": 10000,
+    "lease_id": "a82d22bf-c540-459d-92c4-5220783155c7",
+    "session_id": "72819dc3-adec-49d2-9faa-99b2f70a5ac3"
+  },
+  "source": {
+    "action_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
+    "event_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-1",
+    "event_seq": 1,
+    "generation": 1,
+    "input_commit": "9513656c716c41bb78adf621e4cebd9d656998f8",
+    "lane": "market_discovery",
+    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c",
+    "stage": "legacy_duplicate_check",
+    "worker_id": "oracle-research.market_discovery"
+  },
+  "source_events_mutated": false,
+  "stale_starts_replayed": false
+}
