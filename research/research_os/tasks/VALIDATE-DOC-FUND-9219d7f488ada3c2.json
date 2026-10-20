@@ -15,6 +15,10 @@
   "execution": {
     "attempts": {},
     "completed_stages": {
+      "claim_restriction": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-FUND-9219d7f488ada3c2/oracle-worker/claim_restriction.json",
+        "artifact_hash": "d22956611d15f84b7c1fa83bce49c26acd1a994e8ed7a62b8a35e659a91676bd"
+      },
       "cross_examination": {
         "artifact": "research/research_os/artifacts/VALIDATE-DOC-FUND-9219d7f488ada3c2/oracle-worker/cross_examination.json",
         "artifact_hash": "fe83a423931da166d6db776836f072ab5d80970789fd13032f90067310d30193"
@@ -28,7 +32,7 @@
         "artifact_hash": "3a1a7a0f26a13e3be0300f07c49073b3b3be7a006e9c7e2bcdb5530c0da35a4f"
       }
     },
-    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FUND-9219d7f488ada3c2/VALIDATE-DOC-FUND-9219d7f488ada3c2-g3-6c86a7d1f3ab.json",
+    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FUND-9219d7f488ada3c2/VALIDATE-DOC-FUND-9219d7f488ada3c2-g4-cccedbfc5fe3.json",
     "lineage": "DOC-FUND-9219d7f488ada3c2",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g4-cccedbfc5fe3"
@@ -50,7 +54,7 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T01:40:13Z",
-    "expires_at": "2026-10-20T01:50:13Z",
+    "expires_at": "2026-10-20T01:40:17Z",
     "generation": 4,
     "owner": "oracle-research-v1.independent_challenge"
   },
@@ -63,9 +67,9 @@
   },
   "priority": 70,
   "required_capability": "validator",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
   "task_type": "VALIDATION",
-  "updated_at": "2026-10-20T01:40:13Z"
+  "updated_at": "2026-10-20T01:40:17Z"
 }

@@ -1,0 +1,20 @@
+{
+  "action_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
+  "emitted_at": "2026-10-20T01:40:17Z",
+  "event_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g4-cccedbfc5fe3-2",
+  "event_seq": 2,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 4,
+  "payload": {
+    "active_count": 1,
+    "claimed_count": 0,
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "result": "READY",
+    "stage": "claim_restriction",
+    "task_count": 32,
+    "terminal_count": 31
+  },
+  "session_id": "VALIDATE-DOC-FUND-9219d7f488ada3c2-g4-cccedbfc5fe3",
+  "worker_id": "oracle-research-v1.independent_challenge"
+}
