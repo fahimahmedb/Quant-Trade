@@ -13,6 +13,14 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/oracle-worker/mechanism_research.json"
+    ],
+    "completed_at": "2026-10-20T07:40:27Z",
+    "receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g2-840a953a13ed.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T07:20:04Z",
   "derivation": {
     "derivation_key": "07a3a46706db6067fcf02b9ba4ef1a338c3b01489a8a20d393d9a7910a2ed0bc",
@@ -31,7 +39,7 @@
         "artifact_hash": "b279c49da14390dc1872bdd4c2b29ff44f763279d4fed2a07e1b710c47c2f93c"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g1-cdf857af545c.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g2-840a953a13ed.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005-g2-840a953a13ed"
@@ -55,15 +63,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T07:40:23Z",
-    "expires_at": "2026-10-20T07:50:23Z",
+    "expires_at": "2026-10-20T07:40:27Z",
     "generation": 2,
     "owner": "oracle-research-v1.market_discovery"
   },
   "priority": 70,
   "required_capability": "institutional_flows",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct institutional-flow CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-10-20T07:40:23Z"
+  "updated_at": "2026-10-20T07:40:27Z"
 }
