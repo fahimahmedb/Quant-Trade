@@ -14,7 +14,7 @@ from pathlib import Path
 from .github_state import GitHubStateStore, PREFIX, StateConflict
 from .model_backend import BackendUnavailable
 from .oracle_worker import AUTHORITY, ResearchOSWorker, backend_from_config, timestamp
-from .queue_replenisher import derive_refill_task
+from .queue_replenisher import derive_refill_task, validate_source_binding
 from .worker_preflight import canonical_hash, run_worker_preflight
 from .expansion.v2_stage_executor import V2StageExecutor
 from .expansion.v2_state import V2ModelAudit, V2StateStore
@@ -51,6 +51,10 @@ class V2ResearchOSWorker(ResearchOSWorker):
 
     @staticmethod
     def _verify_bound_source(snapshot, task):
+        try:
+            validate_source_binding(task)
+        except (ValueError, TypeError, AttributeError) as exc:
+            raise StateConflict("V2_DERIVED_SOURCE_BINDING_INVALID:" + str(exc)) from None
         inputs = task.get("inputs") or {}
         path = inputs.get("documentary_source")
         if not path:

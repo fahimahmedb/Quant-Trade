@@ -2,10 +2,12 @@ import json
 import unittest
 from copy import deepcopy
 from pathlib import Path
+from unittest.mock import patch
 
 from research.research_os.frontier_source_planner_v2 import plan_frontier_source
 from research.research_os.github_state import StateConflict
 from research.research_os.oracle_worker_v2 import V2ResearchOSWorker
+from research.research_os.oracle_worker import ResearchOSWorker
 from research.research_os.queue_replenisher import derive_refill_task, load_source_catalog
 from research.research_os.worker_stages import require_stage_authorized
 
@@ -254,6 +256,68 @@ class FrontierSourcePlannerV2Test(unittest.TestCase):
                                    source_catalog={"research/research_os/sources/alias.json": self.catalog[path]})
         self.assertEqual(result["status"], "NOOP_NO_ADMISSIBLE_NOVEL_SOURCE")
         self.assertIsNone(result["task"])
+
+    def source_aware_task(self):
+        frontier = deepcopy(self.frontier)
+        frontier["frontiers"] = [self.entry("EVENT_DOCUMENT_DISTINCT_MECHANISM")]
+        catalog = deepcopy(self.catalog)
+        for entry in catalog.values():
+            entry["blob_sha"] = "a" * 40
+        return derive_refill_task(frontier=frontier, tasks=[], created_at="2026-10-20T20:00:00Z",
+                                 source_catalog=catalog)["task"]
+
+    def test_derived_selection_mismatch_blocks_before_reading_source(self):
+        task = self.source_aware_task()
+        class NoReads:
+            def read(self, path):
+                raise AssertionError("must reject task binding before source access")
+        for key in ("documentary_source", "documentary_source_blob",
+                    "documentary_source_packet_hash", "documentary_source_record_hash"):
+            for change in ("remove", "replace"):
+                with self.subTest(field=key, change=change):
+                    altered = deepcopy(task)
+                    if change == "remove":
+                        altered["inputs"].pop(key)
+                    else:
+                        altered["inputs"][key] = "different"
+                    with self.assertRaisesRegex(StateConflict, "V2_DERIVED_SOURCE_BINDING_INVALID"):
+                        V2ResearchOSWorker._verify_bound_source(NoReads(), altered)
+
+    def test_source_aware_binding_cannot_downgrade_to_legacy_fallback(self):
+        task = self.source_aware_task()
+        for binding in (None, {}, [], "invalid"):
+            altered = deepcopy(task)
+            altered["derivation"]["source_binding"] = binding
+            with self.subTest(binding=binding), self.assertRaisesRegex(StateConflict, "BINDING_INVALID"):
+                V2ResearchOSWorker._verify_bound_source(object(), altered)
+        altered = deepcopy(task)
+        del altered["derivation"]["source_binding"]
+        with self.assertRaisesRegex(StateConflict, "BINDING_INVALID"):
+            V2ResearchOSWorker._verify_bound_source(object(), altered)
+        # Actual producer input/content remains admissible at any task status.
+        class Snapshot:
+            blobs = {task["inputs"]["documentary_source"]: "a" * 40}
+            def read(inner, path):
+                return self.catalog[path]["record"]
+        for status in ("READY", "CLAIMED"):
+            task["status"] = status
+            V2ResearchOSWorker._verify_bound_source(Snapshot(), task)
+        task["inputs"]["documentary_source_blob"] = None
+        task["derivation"]["source_binding"]["blob_sha"] = None
+        V2ResearchOSWorker._verify_bound_source(Snapshot(), task)
+        V2ResearchOSWorker._verify_bound_source(object(), {"inputs": {}, "derivation": {
+            "type": "EMPTY_QUEUE_FRONTIER_REFILL"}})
+
+    def test_selection_and_lease_recheck_the_original_source_selection(self):
+        task = self.source_aware_task()
+        task["inputs"]["documentary_source"] = "research/research_os/sources/switched.json"
+        worker = object.__new__(V2ResearchOSWorker)
+        with patch.object(ResearchOSWorker, "_select", return_value=(task, "lane")):
+            with self.assertRaisesRegex(StateConflict, "BINDING_INVALID"):
+                worker._select(object())
+        with patch.object(ResearchOSWorker, "_verify_lease", return_value=(task, {})):
+            with self.assertRaisesRegex(StateConflict, "BINDING_INVALID"):
+                worker._verify_lease(object(), task["task_id"], 1, "session", "lane")
 
 
 if __name__ == "__main__":

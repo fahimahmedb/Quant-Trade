@@ -276,6 +276,39 @@ def derive_refill_task(
     }
 
 
+def validate_source_binding(task: Mapping[str, Any]) -> None:
+    """Verify the source selection survives in task inputs, at any lease state.
+
+    Historical tasks without explicit source selection remain supported. A
+    source-aware refill cannot silently shed its binding and use that fallback.
+    This checks selection integrity; it does not qualify source contents.
+    """
+    inputs = task.get("inputs") or {}
+    derivation = task.get("derivation") or {}
+    binding = derivation.get("source_binding")
+    source_fields = ("documentary_source", "documentary_source_blob",
+                     "documentary_source_packet_hash", "documentary_source_record_hash")
+    required = ("source_binding" in derivation or
+                (derivation.get("type") == "EMPTY_QUEUE_FRONTIER_REFILL"
+                 and any(key in inputs for key in source_fields)))
+    if not required:
+        return
+    if not isinstance(binding, Mapping) or not binding:
+        raise ValueError("derived source binding missing or invalid")
+    path = inputs.get("documentary_source")
+    if not isinstance(path, str) or not path.startswith(SOURCE_PREFIX):
+        raise ValueError("derived source path is outside documentary source store")
+    if path != binding.get("path"):
+        raise ValueError("derived source path binding mismatch")
+    for field in ("packet_hash", "record_hash"):
+        if not isinstance(binding.get(field), str) or not binding[field]:
+            raise ValueError("derived source " + field + " missing")
+        if inputs.get("documentary_source_" + field) != binding[field]:
+            raise ValueError("derived source " + field + " binding mismatch")
+    if inputs.get("documentary_source_blob") != binding.get("blob_sha"):
+        raise ValueError("derived source blob binding mismatch")
+
+
 def validate_derived_task(task: Dict[str, Any]) -> None:
     if task.get("status") != "READY":
         raise ValueError("derived task must start READY")
@@ -295,19 +328,7 @@ def validate_derived_task(task: Dict[str, Any]) -> None:
     inputs = task.get("inputs", {})
     if inputs.get("legacy_gate_required") is not True:
         raise ValueError("derived discovery task must require Legacy screening")
-    binding = (task.get("derivation") or {}).get("source_binding")
-    if binding:
-        path = inputs.get("documentary_source")
-        if not isinstance(path, str) or not path.startswith(SOURCE_PREFIX):
-            raise ValueError("derived source path is outside documentary source store")
-        if path != binding.get("path"):
-            raise ValueError("derived source path binding mismatch")
-        if inputs.get("documentary_source_packet_hash") != binding.get("packet_hash"):
-            raise ValueError("derived source packet hash binding mismatch")
-        if inputs.get("documentary_source_record_hash") != binding.get("record_hash"):
-            raise ValueError("derived source record hash binding mismatch")
-        if inputs.get("documentary_source_blob") != binding.get("blob_sha"):
-            raise ValueError("derived source blob binding mismatch")
+    validate_source_binding(task)
     forbidden = " ".join(task.get("forbidden_actions") or []).lower()
     if "backtest" not in forbidden:
         raise ValueError("derived discovery task must explicitly forbid backtests")
