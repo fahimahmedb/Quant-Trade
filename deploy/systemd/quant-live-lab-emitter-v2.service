@@ -1,0 +1,42 @@
+[Unit]
+Description=Quant Research OS V2 Live Lab non-authoritative emitter
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/quant-research/worker.env
+ConditionPathExists=/opt/quant-research-v2/current
+
+[Service]
+Type=simple
+User=quant-research
+Group=quant-research
+WorkingDirectory=/opt/quant-research-v2/current
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONNOUSERSITE=1
+EnvironmentFile=/etc/quant-research/worker.env
+ExecStart=/usr/bin/python3.12 -B -s -m research.research_os.live_lab_emitter --outbox /var/lib/quant-research-v2/live-lab-outbox
+Restart=on-failure
+RestartSec=10s
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=quant-live-lab-emitter-v2
+LogRateLimitIntervalSec=1h
+LogRateLimitBurst=120
+MemoryMax=128M
+MemorySwapMax=0
+CPUQuota=20%
+TasksMax=24
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/quant-research-v2/live-lab-outbox
+
+[Install]
+WantedBy=multi-user.target
