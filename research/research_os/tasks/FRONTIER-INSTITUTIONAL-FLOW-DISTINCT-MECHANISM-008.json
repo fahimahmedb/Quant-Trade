@@ -34,12 +34,13 @@
     "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008-g1-37c1ee999827.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
-    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008-g1-37c1ee999827",
+    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008-g2-4519d43c8ad4",
     "v2_epoch_binding": {
       "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
       "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
       "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001"
-    }
+    },
+    "v2_trial_intent": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008/oracle-v2/trial_intents/g000002.json"
   },
   "forbidden_actions": [
     "candidate return inspection",
@@ -59,17 +60,17 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T12:30:07Z",
-    "expires_at": "2026-10-20T12:30:12Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T12:40:24Z",
+    "expires_at": "2026-10-20T12:50:24Z",
+    "generation": 2,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 70,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "One Legacy-screened, causally distinct institutional-flow CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-10-20T12:30:12Z"
+  "updated_at": "2026-10-20T12:40:24Z"
 }
