@@ -1,0 +1,8 @@
+{
+  "available_at": "2026-10-15T17:43:15.050564+00:00",
+  "historical_generation_status": "DETERMINISTIC_PRODUCER_SOURCE_PIT",
+  "knowledge_cutoff": "2026-10-20T01:00:00Z",
+  "model_pit": "NOT_APPLICABLE_DETERMINISTIC_PRODUCER",
+  "reasoning_output_classification": "NO_MODEL_COMMENTARY",
+  "source_pit": "PASS"
+}

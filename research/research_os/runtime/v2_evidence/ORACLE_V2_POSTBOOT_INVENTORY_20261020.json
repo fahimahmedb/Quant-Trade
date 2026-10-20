@@ -1,0 +1,41 @@
+{
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaa6lhygr2hmaxpp3vozeouka26whfblsauhrznnhu45hpa",
+  "exit_code": 0,
+  "lifecycle_state": "SUCCEEDED",
+  "observed": {
+    "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+    "health": {
+      "status": "ok"
+    },
+    "model": {
+      "ActiveState": "active",
+      "MemoryCurrent": "10348507136",
+      "MemoryPeak": "10348732416",
+      "Result": "success",
+      "UnitFileState": "enabled"
+    },
+    "secret_file": {
+      "status": "PermissionError"
+    },
+    "uses_canonical_v2_entrypoint": true,
+    "uses_projection_entrypoint": false,
+    "v1": {
+      "ActiveState": "inactive",
+      "Result": "success",
+      "UnitFileState": "disabled"
+    },
+    "v2": {
+      "ActiveState": "active",
+      "Result": "success",
+      "UnitFileState": "enabled"
+    },
+    "worker": {
+      "ActiveState": "inactive",
+      "MemoryCurrent": "[not set]",
+      "MemoryPeak": "[not set]",
+      "Result": "success",
+      "UnitFileState": "static"
+    }
+  },
+  "oracle_request_id": "F9D0749BFE16409590DE65B758238837/682DC7CC03607F41208CD76A43444799/1A0DC796D046A4C65BAECDE5B2C3A762"
+}

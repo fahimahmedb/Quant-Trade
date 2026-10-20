@@ -1,0 +1,21 @@
+{
+  "criteria": [
+    "priority_desc",
+    "starvation_desc",
+    "resource_cost_asc",
+    "task_id_asc"
+  ],
+  "decision_hash": "37c53ea2ce9de3e49b5e031f04c135f1396a38d78c8043c542f630f892afc217",
+  "eligible_set": [
+    "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010"
+  ],
+  "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+  "policy_version": "oracle-v2-core-policy-v1",
+  "resource_cost_semantics": "UNIFORM_DECLARED_UNIT_NOT_MEASURED",
+  "selected_reason_codes": [
+    "CANONICAL_PRIORITY_DESC_TASK_ID_ASC"
+  ],
+  "selected_task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010",
+  "snapshot_head": "c564699c8876bf1cf99ee5dd2387874b96a5baef",
+  "starvation_policy": "DISABLED"
+}

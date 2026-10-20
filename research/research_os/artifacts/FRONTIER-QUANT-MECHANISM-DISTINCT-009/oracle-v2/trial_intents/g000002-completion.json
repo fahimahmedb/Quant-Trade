@@ -1,0 +1,10 @@
+{
+  "blocker": "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant",
+  "disposition": "EXECUTION_BLOCKED",
+  "generation": 2,
+  "intent": "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-009/oracle-v2/trial_intents/g000002.json",
+  "model_calls": [],
+  "outcome_accessed": false,
+  "scientific_decision": null,
+  "task_status": "BLOCKED"
+}

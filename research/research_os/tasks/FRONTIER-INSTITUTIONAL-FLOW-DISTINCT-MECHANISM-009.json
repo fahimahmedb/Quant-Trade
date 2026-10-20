@@ -13,6 +13,14 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/oracle-worker/mechanism_research.json"
+    ],
+    "completed_at": "2026-10-20T14:40:14Z",
+    "receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009-g2-6f7d0e484837.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T14:20:25Z",
   "derivation": {
     "derivation_key": "06d2ae962022f20bcc71d5a8d1c06d9326c7e83ad5cf4b9b788b056a00e7e6ed",
@@ -31,15 +39,16 @@
         "artifact_hash": "03e7dde20c285b75f6efc5b1fa8f40147834e648f39e089476f956ee8777d889"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009-g1-bcebf8885313.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009-g2-6f7d0e484837.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009",
     "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
-    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009-g1-bcebf8885313",
+    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009-g2-6f7d0e484837",
     "v2_epoch_binding": {
       "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
       "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
       "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001"
-    }
+    },
+    "v2_trial_intent": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/oracle-v2/trial_intents/g000002.json"
   },
   "forbidden_actions": [
     "candidate return inspection",
@@ -59,17 +68,17 @@
     "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-10-20T14:30:17Z",
-    "expires_at": "2026-10-20T14:30:25Z",
-    "generation": 1,
+    "claimed_at": "2026-10-20T14:40:09Z",
+    "expires_at": "2026-10-20T14:40:14Z",
+    "generation": 2,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 70,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "READY",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct institutional-flow CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-10-20T14:30:25Z"
+  "updated_at": "2026-10-20T14:40:14Z"
 }

@@ -1,0 +1,20 @@
+{
+  "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012",
+  "emitted_at": "2026-10-20T19:50:34Z",
+  "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012-g2-a4bcb5834623-2",
+  "event_seq": 2,
+  "event_type": "SESSION_ENDED",
+  "generation": 2,
+  "payload": {
+    "active_count": 0,
+    "claimed_count": 0,
+    "queue_state": "IDLE",
+    "ready_count": 0,
+    "result": "BLOCKED",
+    "stage": "document_or_fundamental_research",
+    "task_count": 70,
+    "terminal_count": 70
+  },
+  "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012-g2-a4bcb5834623",
+  "worker_id": "oracle-research.fundamental_events"
+}

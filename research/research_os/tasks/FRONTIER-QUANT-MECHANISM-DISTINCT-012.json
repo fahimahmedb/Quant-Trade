@@ -1,0 +1,85 @@
+{
+  "allowed_actions": [
+    "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+    "research one bounded causal market mechanism from admissible public evidence",
+    "map payer or forced actor, causal chain, expression, confounders and falsification",
+    "actively seek mechanism-level disconfirmation",
+    "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
+  },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/oracle-worker/mechanism_research.json"
+    ],
+    "completed_at": "2026-10-20T20:50:25Z",
+    "receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/FRONTIER-QUANT-MECHANISM-DISTINCT-012-g2-16d11617f7b1.json",
+    "result": "BLOCKED"
+  },
+  "created_at": "2026-10-20T20:30:06Z",
+  "derivation": {
+    "derivation_key": "18eb53c0927ff1d2b3435d7bd39e4fd18a58307d0bcc6272f2606f2f38dcaab3",
+    "frontier_id": "QUANT_MECHANISM_DISTINCT",
+    "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+    "sequence": 12,
+    "steward_lane": "integrator_portfolio",
+    "target_lane": "market_discovery",
+    "type": "EMPTY_QUEUE_FRONTIER_REFILL"
+  },
+  "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "legacy_duplicate_check": {
+        "artifact": "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/oracle-worker/legacy_duplicate_check.json",
+        "artifact_hash": "6b5fbfbc835d278379ab81aeb914ddd12b8541cc3562b48eb7decba5bcdd38f2"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/FRONTIER-QUANT-MECHANISM-DISTINCT-012-g2-16d11617f7b1.json",
+    "lineage": "FRONTIER-QUANT-MECHANISM-DISTINCT-012",
+    "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+    "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-012-g2-16d11617f7b1",
+    "v2_epoch_binding": {
+      "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
+      "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+      "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001"
+    },
+    "v2_trial_intent": "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/oracle-v2/trial_intents/g000002.json"
+  },
+  "forbidden_actions": [
+    "signal-to-return calculation",
+    "backtest",
+    "future outcome inspection",
+    "parameter tuning against outcomes",
+    "prospective observation",
+    "capital allocation",
+    "order generation",
+    "live trading"
+  ],
+  "inputs": {
+    "causal_distinctness_required": true,
+    "derivation_key": "18eb53c0927ff1d2b3435d7bd39e4fd18a58307d0bcc6272f2606f2f38dcaab3",
+    "frontier_id": "QUANT_MECHANISM_DISTINCT",
+    "legacy_gate_required": true,
+    "objective": "Find exactly one causally distinct quantitative/market-mechanism candidate from admissible public documentary or literature evidence, screen Legacy before freeze, and freeze at most one CandidateHypothesis without inspecting candidate returns.",
+    "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
+  },
+  "lease": {
+    "claimed_at": "2026-10-20T20:50:18Z",
+    "expires_at": "2026-10-20T20:50:25Z",
+    "generation": 2,
+    "owner": "oracle-research.market_discovery"
+  },
+  "priority": 70,
+  "required_capability": "quant_mechanisms",
+  "research_contract_version": "v2-core",
+  "status": "BLOCKED",
+  "success_condition": "One Legacy-screened, causally distinct quantitative/mechanism CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
+  "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-012",
+  "task_type": "QUANT_MECHANISM",
+  "updated_at": "2026-10-20T20:50:25Z"
+}

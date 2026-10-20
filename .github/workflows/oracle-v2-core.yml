@@ -41,6 +41,7 @@ jobs:
           python -m py_compile scripts/observe_edge_task_v2.py
           python -m py_compile deploy/oracle_v2_deploy.py deploy/oracle_v2_canary.py deploy/oracle_v2_host_prepare.py
           python -m py_compile deploy/oracle_v2_control_path_repair.py
+          python -m py_compile deploy/oracle_live_projection.py deploy/oracle_live_host_prepare.py
 
       - name: V2 Core contract, bridge, worker and whole-loop tests
         run: |
@@ -72,7 +73,9 @@ jobs:
             tests.test_research_os_edge_observation_reader_v2 \
             tests.test_research_os_frontier_source_planner_v2 \
             tests.test_research_os_evidence_acquisition_intents_v2 \
-            tests.test_oracle_v2_deploy
+            tests.test_oracle_v2_deploy \
+            tests.test_oracle_live_projection \
+            tests.test_oracle_live_host_prepare
 
       - name: Verify V2 policy remains fail-closed
         run: |
