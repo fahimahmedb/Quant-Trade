@@ -23,6 +23,25 @@ The following remain CLOSED unless explicitly authorized by the Owner in a futur
 
 V1 qualification must not silently open any of these authorities.
 
+## Project-management execution doctrine
+
+ChatGPT acts as project lead for this qualification. The optimization target is **maximum verified progress per intervention**, not maximum number of tasks, agents, branches, prompts, or checkpoints.
+
+Execution rules:
+
+1. Prefer one large coherent work package over many small subtasks when the dependencies can be safely handled in one pass.
+2. Do not split work merely to parallelize it. Split only when work is genuinely independent, the integration boundary is explicit, and the expected wall-clock gain outweighs coordination/review cost.
+3. Before asking the Owner to run commands, batch all actions that can safely be executed together into the smallest practical number of bounded commands.
+4. Before delegating to another AI, give it a highly constrained mission containing: exact branch/base SHA, scope, files/surfaces, invariants, evidence to read, forbidden actions, acceptance tests, required output, and checkpoint/handoff format.
+5. Delegate only substantial packages. Do not create an AI handoff for tiny investigative or editing tasks that ChatGPT can finish faster directly.
+6. External AI output is advisory until independently reconciled against fresh GitHub state and required runtime evidence. Never let two agents write concurrently to the same mutable surface without an explicit ownership boundary.
+7. Avoid serial micro-checkpoints. Create a checkpoint after a meaningful proof boundary, release/deployment boundary, failure requiring handoff, or major architectural decision.
+8. Within a major package, perform investigation, implementation, tests, evidence collection, documentation, and roadmap update together whenever practical.
+9. When a blocker requires unavailable host/OCI access, continue every independent GitHub/code/documentation task first, then ask the Owner for the minimum bounded intervention needed to unblock the remaining package.
+10. Every completed large package must leave the repository easier for Codex or another agent to reacquire than it was before the package began.
+
+Default delegation test: **if explaining, supervising, reviewing and integrating the delegated work is likely to cost as much as doing it directly, do it directly.**
+
 ## Evidence already acquired
 
 ### CP3 — native canary / crash recovery
