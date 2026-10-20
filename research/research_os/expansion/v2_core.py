@@ -89,6 +89,8 @@ def assert_authority_closed(authority: Mapping[str, Any]) -> None:
 def classify_model_pit(*, source_pit: bool, model_knowledge_cutoff_status: str) -> Dict[str, str]:
     if model_knowledge_cutoff_status not in {"PROVABLY_BEFORE_CUTOFF", "NOT_PROVABLE", "AFTER_CUTOFF"}:
         raise V2ContractError("INVALID_MODEL_PIT_STATUS")
+    if type(source_pit) is not bool:
+        raise V2ContractError("INVALID_SOURCE_PIT_STATUS")
     if not source_pit:
         status = "SOURCE_NOT_PIT"
     elif model_knowledge_cutoff_status == "PROVABLY_BEFORE_CUTOFF":
@@ -219,6 +221,7 @@ def build_validator_result(payload: Mapping[str, Any]) -> Dict[str, Any]:
         "validator_retrieval_manifest_hash", "execution_state", "epistemic_blockers",
     }
     _require(payload, required, "VALIDATOR")
+    _require_identifiers(payload, ("hypothesis_id", "generation_id", "validator_identity"), "VALIDATOR")
     execution = payload["execution_state"]
     if execution not in EXECUTION_STATES:
         raise V2ContractError("INVALID_VALIDATOR_EXECUTION_STATE")
@@ -231,6 +234,8 @@ def build_validator_result(payload: Mapping[str, Any]) -> Dict[str, Any]:
         raise V2ContractError("NONCOMPLETE_VALIDATOR_CANNOT_DECIDE")
     if not isinstance(result["epistemic_blockers"], list):
         raise V2ContractError("INVALID_EPISTEMIC_BLOCKERS")
+    if decision == "PASS" and result["epistemic_blockers"]:
+        raise V2ContractError("VALIDATOR_PASS_WITH_EPISTEMIC_BLOCKERS")
     result["validator_hash"] = canonical_hash({k: v for k, v in result.items() if k != "validator_hash"})
     return result
 
