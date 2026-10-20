@@ -10,6 +10,11 @@
     "scope": "H24_SYNTHETIC_LEGACY_PROVENANCE_CANARY"
   },
   "created_at": "2026-10-20T00:47:35.918387+00:00",
+  "execution": {
+    "lineage": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9",
+    "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+    "session_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9-g1-962a70f5e7cb"
+  },
   "forbidden_actions": [
     "new hypothesis",
     "freeze",
@@ -24,15 +29,16 @@
     "canary": true
   },
   "lease": {
-    "claimed_at": null,
-    "expires_at": null,
-    "generation": 0,
-    "owner": null
+    "claimed_at": "2026-10-20T00:47:40Z",
+    "expires_at": "2026-10-20T00:49:10Z",
+    "generation": 1,
+    "owner": "oracle-research-v1.evidence_data"
   },
   "priority": 2147483647,
   "required_capability": "legacy_recovery",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Two reproducible read-only Legacy provenance stages and durable GitHub receipts.",
   "task_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9",
-  "task_type": "LEGACY_RECOVERY"
+  "task_type": "LEGACY_RECOVERY",
+  "updated_at": "2026-10-20T00:47:40Z"
 }
