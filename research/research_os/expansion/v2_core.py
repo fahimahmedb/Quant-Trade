@@ -64,6 +64,13 @@ def _require(mapping: Mapping[str, Any], keys: Iterable[str], label: str) -> Non
         raise V2ContractError(f"{label}_MISSING:" + ",".join(missing))
 
 
+def _require_identifiers(mapping: Mapping[str, Any], keys: Iterable[str], label: str) -> None:
+    invalid = sorted(key for key in keys if not isinstance(mapping[key], str)
+                     or not mapping[key].strip() or mapping[key].strip().upper() in SEMANTIC_NULLS)
+    if invalid:
+        raise V2ContractError(f"{label}_INVALID_IDENTIFIER:" + ",".join(invalid))
+
+
 def _parse_time(value: str) -> datetime:
     if not isinstance(value, str) or not value:
         raise V2ContractError("INVALID_TIMESTAMP")
@@ -107,6 +114,7 @@ def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:
         "epoch_feedback_dependencies", "contamination_status",
     }
     _require(payload, required, "EPOCH")
+    _require_identifiers(payload, ("research_epoch_id",), "EPOCH")
     if payload["close_policy"] not in EPOCH_CLOSE_POLICIES:
         raise V2ContractError("INVALID_CLOSE_POLICY")
     if not isinstance(payload["allowed_model_set"], list) or not payload["allowed_model_set"]:
@@ -160,6 +168,7 @@ def build_research_trial(payload: Mapping[str, Any]) -> Dict[str, Any]:
         "sampling_parameters", "generated_proposals", "discarded_proposals", "retry_count",
     }
     _require(payload, required, "TRIAL")
+    _require_identifiers(payload, ("research_trial_id", "research_epoch_id"), "TRIAL")
     if payload["trial_type"] != "RESEARCH_GENERATION_TRIAL":
         raise V2ContractError("INVALID_RESEARCH_TRIAL_TYPE")
     if type(payload["retry_count"]) is not int or payload["retry_count"] < 0:
@@ -183,6 +192,8 @@ def build_candidate(payload: Mapping[str, Any]) -> Dict[str, Any]:
         "disconfirmation_manifest", "producer_identity", "extension",
     }
     _require(payload, core_required, "CANDIDATE")
+    _require_identifiers(payload, ("hypothesis_id", "generation_id", "research_trial_id", "research_epoch_id"),
+                         "CANDIDATE")
     family = payload["family"]
     if family not in PRIMARY_EXTENSIONS:
         raise V2ContractError("UNSUPPORTED_CANDIDATE_FAMILY")
