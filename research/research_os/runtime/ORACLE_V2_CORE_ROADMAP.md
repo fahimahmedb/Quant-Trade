@@ -128,3 +128,17 @@ V2 Core can be marked complete only when:
 is supported by repository tests and a bounded whole-loop pre-outcome receipt, with all four authority flags still false.
 
 `READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY` remains an eligibility status, never a profitability claim.
+
+## Exact release checkpoint — a67ffec48fff895d5edc42171855e2213e49cf0d
+
+Both exact-release CI gates passed: Oracle V2 Core `39360664488` and SEC P0
+`39360664487`. The actual Oracle read-only entrypoint passed on this exact SHA:
+two fresh fetches, zero push attempts/writes, all authorities false. The V1
+timer remained active. Full hash-verified report and the independently probed
+`ocarun` root boundary are preserved in `v2_evidence/`.
+
+See `CP_V2_CORE_ORACLE_READONLY_20261020.json` for exact scope and remaining
+operational gates. The single Owner command is
+`V2_OWNER_ROOT_PREPARATION_20261020.sh`; its shell and Python syntax were checked.
+It prepares V2 assets disabled and leaves V1 running. Actual V2 qualification,
+activation, natural wakes and reboot remain pending; no final V2 verdict yet.

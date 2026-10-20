@@ -1,0 +1,19 @@
+{
+  "instance_agent_command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaalm4janbalkpiwqdbbupy7maftqpqjqxj7v3y6kvcmvka",
+  "instance_id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+  "delivery_state": "ACKED",
+  "lifecycle_state": "SUCCEEDED",
+  "time_created": "2026-10-20T02:48:25.098000+00:00",
+  "time_updated": "2026-10-20T02:51:39.587000+00:00",
+  "sequence_number": 4930977,
+  "display_name": "Quant-Trade recovery qualification",
+  "content": {
+    "output_type": "TEXT",
+    "exit_code": 0,
+    "message": "{\"execExitCode\":0,\"runtime\":\"20.873s\"}",
+    "text": "{\"status\": \"PASS\", \"executable_sha\": \"a67ffec48fff895d5edc42171855e2213e49cf0d\", \"github_state_head\": \"a67ffec48fff895d5edc42171855e2213e49cf0d\", \"github_writes\": 0, \"push_attempts\": 0, \"real_fetch_commands\": 2, \"evidence_file\": \"/var/lib/ocarun/.cache/quant-qualification/v2-real-readonly-a67ffec48fff895d5edc42171855e2213e49cf0d.json\", \"sha256\": \"02b1a16734c3a2a4c5a32cbe8c0889c2482c9664b90cbf22af4d002b60355e7b\", \"v1_timer\": \"active\"}\n",
+    "text_sha256": ""
+  },
+  "oracle_request_id": "FB279C8B1FB04D9FAD53B2AFE7EF7DFF/341381CED28C8E323DD7D66A4344473A/ADE1FEA44280AFD2E3A2F8E48A2D62CD",
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaalm4janbalkpiwqdbbupy7maftqpqjqxj7v3y6kvcmvka"
+}
