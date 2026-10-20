@@ -1,0 +1,65 @@
+{
+  "candidate_hash": "9be9de55a96a03e8af810715ac566f415c87a5633993e1d5d742cc751ffd5376",
+  "claim": "AAPL FY2025_TWELVE_MONTHS_ENDED_2025-09-27: operating margin=0.3197079976259188150739737746; free cash flow=98767 USD_millions.",
+  "clock": "2026-10-15T17:43:15.050564+00:00",
+  "decision_map": {
+    "premise_fails": "KILL_GENERATION",
+    "premise_survives": "EXPLORE"
+  },
+  "disconfirmation_manifest": {
+    "attempted": false,
+    "status": "PENDING"
+  },
+  "economic_expression": {
+    "direction": "NOT_YET_MEASURABLE",
+    "implementation_status": "NOT_YET_MEASURABLE",
+    "instrument": "UNKNOWN"
+  },
+  "evidence_manifest": {
+    "documentary_packet_hash": "9219d7f488ada3c21431fc51210280445d653b8ad8b3075d2fb8be2678dc6f3c",
+    "engine_family": "FUNDAMENTAL",
+    "engine_id": "engine.fundamental.v0",
+    "evidence_class": "DOCUMENTARY",
+    "source_blob": "b798e52c217bc6c9ceea98c74bfc412b7e99c4f4",
+    "source_candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+    "source_path": "research/research_os/sources/apple_fy2025_statement_cells.json",
+    "source_refs": [
+      "https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf"
+    ],
+    "synthetic_only": false
+  },
+  "extension": {
+    "business_driver": [
+      "cash_flow",
+      "equity_beta",
+      "quality"
+    ],
+    "issuer": "AAPL",
+    "type": "FundamentalExtension",
+    "valuation_transmission": "Cash generation and operating profitability may support a valuation thesis; market pricing remains untested."
+  },
+  "falsification_scope": "Withdraw the profitability premise if an admissible same-basis statement shows nonpositive margin or free cash flow.",
+  "family": "fundamental",
+  "generation_id": "G1",
+  "horizon": "2q",
+  "hypothesis_id": "DOC-FUND-9219d7f488ada3c2",
+  "known_confounders": [],
+  "mechanism_statement": "Cash generation and operating profitability may support a valuation thesis; market pricing remains untested.",
+  "producer_identity": {
+    "engine_family": "FUNDAMENTAL",
+    "engine_id": "engine.fundamental.v0",
+    "lane": "fundamental_events",
+    "process": {
+      "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+      "pid": 7425,
+      "start_ticks": "2376408"
+    },
+    "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+    "worker_id": "oracle-research.fundamental_events"
+  },
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+  "research_trial_id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011::G1",
+  "universe": [
+    "AAPL"
+  ]
+}
