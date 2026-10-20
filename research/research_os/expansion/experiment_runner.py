@@ -335,7 +335,14 @@ class DryRunExperimentRunner:
         replay_hash = sha256_json(plan["plan"])
         if replay_hash != plan["execution_plan_hash"]:
             raise ValueError("execution plan mutation detected")
+        if plan.get("experiment_id") != plan["plan"].get("experiment_id"):
+            raise ValueError("EXPERIMENT_ID_BINDING_MISMATCH")
         frozen_protocol = plan.get("frozen_protocol")
+        if "frozen_protocol_version" in plan["plan"]:
+            if plan["plan"]["frozen_protocol_version"] != FROZEN_PROTOCOL_VERSION:
+                raise ValueError("UNSUPPORTED_FROZEN_PROTOCOL_VERSION")
+            if not isinstance(frozen_protocol, Mapping):
+                raise ValueError("FROZEN_PROTOCOL_REQUIRED")
         if frozen_protocol is not None:
             expected_frozen_hash = plan["plan"].get("frozen_protocol_hash")
             if expected_frozen_hash != sha256_json(frozen_protocol):
@@ -349,12 +356,26 @@ class DryRunExperimentRunner:
                 raise ValueError("FROZEN_PROTOCOL_EFFECTIVE_TRIALS_INVALID")
 
         receipt = plan.get("pre_outcome_receipt")
+        if frozen_protocol is not None and not isinstance(receipt, Mapping):
+            raise ValueError("PRE_OUTCOME_RECEIPT_REQUIRED")
         if receipt is not None:
+            if frozen_protocol is None:
+                raise ValueError("PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL")
             expected_receipt_hash = receipt.get("receipt_hash")
             payload = {key: value for key, value in receipt.items() if key != "receipt_hash"}
             if expected_receipt_hash != sha256_json(payload):
                 raise ValueError("pre-outcome receipt mutation detected")
-            self._assert_pre_outcome_closed(receipt)
+            expected = {
+                "receipt_version": "pre-outcome-experiment-receipt.v1",
+                "status": "PRE_OUTCOME_READY",
+                "experiment_id": plan["plan"].get("experiment_id"),
+                "execution_plan_hash": replay_hash,
+                "frozen_protocol_hash": plan["plan"].get("frozen_protocol_hash"),
+                "binding_hashes": plan.get("binding_hashes"),
+            }
+            if any(receipt.get(key) != value for key, value in expected.items()):
+                raise ValueError("PRE_OUTCOME_RECEIPT_BINDING_MISMATCH")
+            self._assert_pre_outcome_closed(receipt, require_authority_fields=True)
         return {
             "experiment_id": plan["experiment_id"],
             "status": "REPLAY_MATCH",
@@ -364,13 +385,18 @@ class DryRunExperimentRunner:
         }
 
     @staticmethod
-    def _assert_pre_outcome_closed(value: Mapping[str, Any]) -> None:
+    def _assert_pre_outcome_closed(value: Mapping[str, Any], *, require_authority_fields=False) -> None:
         if value.get("outcome_accessed") is not False:
             raise PermissionError("dry-run state refuses outcome-bearing data")
         if value.get("economic_result") != NOT_OBSERVED:
             raise PermissionError("dry-run state refuses observed economic results")
         if value.get("outcome_access_authorized", False) is not False:
             raise PermissionError("dry-run state refuses outcome authorization")
+        default = None if require_authority_fields else False
+        for key in ("economic_experiment_authorized", "prospective_observation_authorized",
+                    "real_capital_authorized", "live_trading_authorized"):
+            if value.get(key, default) is not False:
+                raise PermissionError("PRE_OUTCOME_AUTHORITY_NOT_CLOSED:" + key)
 
     @staticmethod
     def execution_code_hash() -> str:
