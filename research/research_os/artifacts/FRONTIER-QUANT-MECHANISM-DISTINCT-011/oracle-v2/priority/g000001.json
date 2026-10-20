@@ -1,0 +1,21 @@
+{
+  "criteria": [
+    "priority_desc",
+    "starvation_desc",
+    "resource_cost_asc",
+    "task_id_asc"
+  ],
+  "decision_hash": "beb2121a5fc91dfa7394a24b0b427cf48120b5d43566bd76f183ab9ad3bfe029",
+  "eligible_set": [
+    "FRONTIER-QUANT-MECHANISM-DISTINCT-011"
+  ],
+  "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+  "policy_version": "oracle-v2-core-policy-v1",
+  "resource_cost_semantics": "UNIFORM_DECLARED_UNIT_NOT_MEASURED",
+  "selected_reason_codes": [
+    "CANONICAL_PRIORITY_DESC_TASK_ID_ASC"
+  ],
+  "selected_task": "FRONTIER-QUANT-MECHANISM-DISTINCT-011",
+  "snapshot_head": "85f90f1a75dab518ed76f1e2146f16d8ca47f818",
+  "starvation_policy": "DISABLED"
+}
