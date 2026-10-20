@@ -1,0 +1,14 @@
+{
+  "action_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007",
+  "emitted_at": "2026-10-20T11:02:45.426484+00:00",
+  "event_id": "V2-MIGRATION-FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007-0837f419c4e3",
+  "event_seq": 1,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 2,
+  "payload": {
+    "result": "CONTRACT_MIGRATION_BLOCKED",
+    "scientific_decision": null
+  },
+  "session_id": "V2-MIGRATION-FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007-0837f419c4e3",
+  "worker_id": "oracle-v2.migration"
+}

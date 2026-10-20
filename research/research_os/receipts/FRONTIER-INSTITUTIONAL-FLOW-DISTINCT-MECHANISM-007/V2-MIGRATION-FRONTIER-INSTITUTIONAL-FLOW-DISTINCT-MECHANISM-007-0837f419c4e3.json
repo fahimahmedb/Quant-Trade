@@ -1,0 +1,19 @@
+{
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T11:02:45.426484+00:00",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007/V2-MIGRATION-FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007-0837f419c4e3.json"
+  ],
+  "input_head": "243019cf9dc76d8a6c2862a2bf65cf18bab90003",
+  "receipt_id": "V2-MIGRATION-FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007-0837f419c4e3",
+  "started_at": "2026-10-20T11:02:45.426484+00:00",
+  "status": "BLOCKED",
+  "summary": "Execution paused for new V2 trial provenance; no scientific falsification.",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007",
+  "worker_id": "oracle-v2.migration"
+}
