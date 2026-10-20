@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "native connected creates no worker",
+    "native heartbeat creates no worker",
+    "explicit native activity creates one active adult",
+    "duplicate creates no extra actor",
+    "disconnect and reconnect do not animate",
+    "snapshot and replay stay frozen",
+    "later semantic event resumes",
+    "focus precedes context; details remain optional and unknown progress remains unknown",
+    "forced no-WebGL: same-world illustration, factual adult and camera approach"
+  ],
+  "errors": []
+}

@@ -16,15 +16,21 @@ export function subscribeNativeSiteEvents(listener,{url='/api/work/events',Event
   const onOpen=()=>listener({channel:'connected',at:now()});
   const onSnapshot=(event)=>parseFrame('snapshot',event,listener);
   const onWorkerEvent=(event)=>parseFrame('worker_event',event,listener);
+  const onStale=event=>parseFrame('worker_stale',event,listener);
+  const onStoreError=()=>listener({channel:'disconnected',at:now(),reason:'Native worker store unavailable'});
   const onError=()=>listener({channel:'disconnected',at:now(),reason:'Native Site event stream disconnected'});
   source.addEventListener('open',onOpen);
   source.addEventListener('snapshot',onSnapshot);
   source.addEventListener('worker_event',onWorkerEvent);
+  source.addEventListener('worker_stale',onStale);
+  source.addEventListener('stream_error',onStoreError);
   source.addEventListener('error',onError);
   return ()=>{
     source.removeEventListener?.('open',onOpen);
     source.removeEventListener?.('snapshot',onSnapshot);
     source.removeEventListener?.('worker_event',onWorkerEvent);
+    source.removeEventListener?.('worker_stale',onStale);
+    source.removeEventListener?.('stream_error',onStoreError);
     source.removeEventListener?.('error',onError);
     source.close();
   };

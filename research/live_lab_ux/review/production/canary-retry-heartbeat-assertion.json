@@ -1,0 +1,34 @@
+{
+  "trace_id": "PROD-CANARY-31a91ed6-da5",
+  "scope": "WRAPPED_BENIGN_OPERATIONAL_CANARY_ONLY",
+  "base": "https://quant-trade-lab.sassylime.chatgpt.site",
+  "checks": [
+    {
+      "name": "production serves rebuilt release",
+      "release": "owner-ux-20261016-r1",
+      "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62"
+    },
+    {
+      "name": "anonymous ingress remains rejected"
+    },
+    {
+      "name": "public integrated WebGL and native stream connected idle"
+    }
+  ],
+  "errors": [],
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "identity_claim": "No Codex/Owner/research identity claim",
+  "started_at": "2026-10-16T06:56:25.149Z",
+  "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62",
+  "binding": {
+    "worker_id": "wrapped-production-canary-20261016",
+    "session_id": "29ca11fe-9514-4a77-ad5d-24b4cb2d7ad8",
+    "generation": 2
+  },
+  "status": "FAIL",
+  "failure": "page.waitForFunction: Timeout 30000ms exceeded.",
+  "cleanup_error": "{\"status\":409,\"body\":{\"error\":\"lease_expired\",\"server_received_at\":1792133841477,\"lease_expires_at\":1792133841261,\"last_sequence\":1,\"current_generation\":2,\"runtime_epoch\":\"probe-epoch-20261014-b\"}}\n\n409 !== 200\n",
+  "finished_at": "2026-10-16T06:57:21.704Z"
+}

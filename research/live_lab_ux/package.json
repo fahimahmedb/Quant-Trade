@@ -2,6 +2,20 @@
   "name": "quant-live-lab-ux-vision",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test tests/*.test.js" },
-  "engines": { "node": ">=20" }
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "vendor": "esbuild tools/vendor-entry.js --bundle --format=esm --minify --outfile=ui/vendor/three.js",
+    "capture": "node tools/capture-review.mjs",
+    "qa:browser": "node tools/browser-qa.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.11",
+    "playwright-core": "1.56.1"
+  }
 }

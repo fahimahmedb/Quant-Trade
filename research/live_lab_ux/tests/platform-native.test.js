@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {ACTIVITY,EVENT,PROGRESS,SYSTEM_STATE} from '../core/model.js';
+import {ACTIVITY,EVENT,PROGRESS} from '../core/model.js';
 import {createInitialState,reduceScene} from '../core/state-machine.js';
 import {NATIVE_BINDING,mapNativeSiteFrame,mapNativeSnapshot,mapNativeWorkerEvent} from '../adapters/platform-native.js';
 import {subscribeNativeSiteEvents} from '../adapters/platform-native-sse.js';
@@ -29,7 +29,6 @@ test('real probe-shaped ACTION_STARTED maps without invented identity/progress/e
   assert.equal(mapped.step,'authenticated worker event accepted and published');
   assert.deepEqual(mapped.progress,{mode:PROGRESS.UNKNOWN});
   assert.equal(mapped.activity,ACTIVITY.NONE);
-  assert.equal(mapped.system.state,SYSTEM_STATE.WORKING);
   assert.ok(!JSON.stringify(mapped).toLowerCase().includes('owner'));
   assert.ok(!JSON.stringify(mapped).toLowerCase().includes('codex'));
 });
@@ -71,30 +70,6 @@ test('unsupported native type is rejected rather than visually invented',()=>{
   assert.equal(mapNativeWorkerEvent(native({event_type:'ECONOMIC_LOOK_STARTED'})),null);
 });
 
-test('completed worker with explicit queued result leaves worker idle but system queued',()=>{
-  const completed=mapNativeWorkerEvent(native({event_id:'done-queued',event_type:'ACTION_COMPLETED',event_seq:2,payload:{task_id:'FRONTIER-EVENT-001',result:'FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION',candidate_id:'EVENT-X'}}));
-  assert.equal(completed.kind,EVENT.IDLE);
-  assert.equal(completed.system.state,SYSTEM_STATE.QUEUED);
-  let state=reduceScene(createInitialState(),{id:'c',seq:1,stream:'transport',at:'2026-10-14T09:59:59Z',kind:EVENT.CONNECTED});
-  state=reduceScene(state,completed);
-  assert.equal(state.agents[completed.workerId].state,'IDLE');
-  assert.equal(state.system.state,SYSTEM_STATE.QUEUED);
-});
-
-test('plain ACTION_COMPLETED never proves global idle',()=>{
-  const completed=mapNativeWorkerEvent(native({event_id:'done-unknown',event_type:'ACTION_COMPLETED',event_seq:2,payload:{task_id:'T-1',result:'COMPLETE'}}));
-  assert.equal(completed.system.state,SYSTEM_STATE.UNKNOWN);
-});
-
-test('snapshot queue summary is the only path that can prove global IDLE',()=>{
-  const queued=mapNativeSnapshot({generated_at:'2026-10-14T10:01:00Z',events:[],queue_summary:{ready_count:1,claimed_count:0,next_task_id:'VALIDATE-X',next_lane:'independent_challenge'}});
-  assert.equal(queued.system.state,SYSTEM_STATE.QUEUED);
-  assert.equal(queued.system.readyCount,1);
-  assert.equal(queued.system.nextTaskId,'VALIDATE-X');
-  const idle=mapNativeSnapshot({generated_at:'2026-10-14T10:02:00Z',events:[],queue_summary:{ready_count:0,claimed_count:0}});
-  assert.equal(idle.system.state,SYSTEM_STATE.IDLE);
-});
-
 test('snapshot reconstruction is factual and non-animating until a later business event',()=>{
   const snapshot=mapNativeSnapshot({generated_at:'2026-10-14T10:01:00Z',cursor:'platform-probe-event-0422a0b3',events:[native()]});
   let state=reduceScene(createInitialState(),{id:'c',seq:1,stream:'transport',at:'2026-10-14T09:59:59Z',kind:EVENT.CONNECTED});
@@ -103,7 +78,6 @@ test('snapshot reconstruction is factual and non-animating until a later busines
   assert.equal(worker.state,'WORKING');
   assert.equal(worker.animationRunning,false);
   assert.deepEqual(worker.progress,{mode:PROGRESS.UNKNOWN});
-  assert.equal(state.system.state,SYSTEM_STATE.WORKING);
   assert.equal(state.transport.resumeRequiresBusinessEvent,true);
 });
 
@@ -131,8 +105,7 @@ test('native Site named frames route through one canonical mapper',()=>{
 });
 
 test('binding contract documents the forbidden inferences',()=>{
-  for(const key of ['codex-owner-identity','progress','decision','economic-look','economic-result','global-idle-from-worker-completion'])assert.ok(NATIVE_BINDING.forbiddenInferences.includes(key));
-  assert.equal(NATIVE_BINDING.idleRequiresGlobalQueueProof,true);
+  for(const key of ['codex-owner-identity','progress','decision','economic-look','economic-result'])assert.ok(NATIVE_BINDING.forbiddenInferences.includes(key));
 });
 
 test('SSE subscription forwards only real open/named-frame/error observations and closes cleanly',()=>{
@@ -147,11 +120,49 @@ test('SSE subscription forwards only real open/named-frame/error observations an
   const stop=subscribeNativeSiteEvents(frame=>frames.push(frame),{EventSourceImpl:FakeEventSource,now:()=> '2026-10-15T00:00:00Z'});
   FakeEventSource.instance.emit('open');
   FakeEventSource.instance.emit('worker_event',{data:JSON.stringify(native())});
+  FakeEventSource.instance.emit('worker_stale',{data:JSON.stringify({worker_id:'worker',reason:'STALE'})});
+  FakeEventSource.instance.emit('stream_error',{data:'{}'});
   FakeEventSource.instance.emit('error');
   assert.equal(FakeEventSource.instance.url,'/api/work/events');
   assert.equal(frames[0].channel,'connected');
   assert.equal(frames[1].channel,'worker_event');
-  assert.equal(frames[2].channel,'disconnected');
+  assert.equal(frames[2].channel,'worker_stale');
+  assert.equal(frames[3].channel,'disconnected');
+  assert.equal(frames[4].channel,'disconnected');
   stop();
   assert.equal(FakeEventSource.instance.closed,true);
+});
+
+test('server lease expiry freezes only the matching worker generation; heartbeat cannot resume it',()=>{
+ let state=createInitialState({mode:'LIVE'});
+ state=reduceScene(state,mapNativeSiteFrame({channel:'connected',at:'2026-10-16T06:00:00Z'}));
+ const start=native({payload:{ui_activity:ACTIVITY.CODING_TESTING}});
+ const other=native({event_id:'other-start',worker_id:'other',payload:{ui_activity:ACTIVITY.CODING_TESTING}});
+ state=reduceScene(state,mapNativeWorkerEvent(start));state=reduceScene(state,mapNativeWorkerEvent(other));
+ const stale={worker_id:start.worker_id,session_id:start.session_id,generation:start.generation,at:'2026-10-16T06:00:30Z',reason:'STALE'};
+ state=reduceScene(state,mapNativeSiteFrame({channel:'worker_stale',data:{...stale,generation:1}}));
+ assert.equal(state.agents[start.worker_id].animationRunning,true);
+ state=reduceScene(state,mapNativeSiteFrame({channel:'worker_stale',data:stale}));
+ assert.equal(state.agents[start.worker_id].animationRunning,false);
+ assert.equal(state.agents[start.worker_id].stale,true);
+ assert.equal(state.agents.other.animationRunning,true);assert.equal(state.transport.stale,false);
+ state=reduceScene(state,mapNativeWorkerEvent(native({event_id:'post-stale-hb',event_seq:2,event_type:'WORKER_HEARTBEAT'})));
+ assert.equal(state.agents[start.worker_id].animationRunning,false);
+ state=reduceScene(state,mapNativeWorkerEvent(native({event_id:'post-stale-semantic',event_seq:3,payload:{ui_activity:ACTIVITY.CODING_TESTING}})));
+ assert.equal(state.agents[start.worker_id].animationRunning,true);
+ assert.equal(mapNativeSiteFrame({channel:'worker_stale',data:{...stale,reason:'FRESH'}}),null);
+});
+
+test('native stale snapshot keeps lease status factual without authorizing motion',()=>{
+ const e=native();let state=reduceScene(createInitialState({mode:'LIVE'}),mapNativeSiteFrame({channel:'connected',at:e.accepted_at}));
+ state=reduceScene(state,mapNativeSnapshot({generated_at:e.accepted_at,events:[e],sessions:[{worker_id:e.worker_id,session_id:e.session_id,generation:e.generation,lease_status:'STALE'}]}));
+ assert.equal(state.agents[e.worker_id].stale,true);assert.equal(state.agents[e.worker_id].animationRunning,false);
+});
+
+test('disconnect and reconnect within the same clock millisecond remain separate observations',()=>{
+ let state=createInitialState();const at='2026-10-16T06:00:00Z';
+ state=reduceScene(state,mapNativeSiteFrame({channel:'disconnected',at}));
+ state=reduceScene(state,mapNativeSiteFrame({channel:'connected',at}));
+ assert.equal(state.transport.connected,true);assert.equal(state.transport.stale,false);
+ assert.equal(state.transport.resumeRequiresBusinessEvent,true);
 });

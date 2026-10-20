@@ -1,49 +1,25 @@
-import {ACTIVITY,EVENT,PROGRESS,ROLES,SYSTEM_STATE} from '../core/model.js';
+import {ACTIVITY,EVENT,PROGRESS,ROLES} from '../core/model.js';
 
 const NATIVE_EVENT_TYPES=new Set(['ACTION_STARTED','ACTION_COMPLETED','WORKER_HEARTBEAT','SESSION_ENDED']);
 const ACTIVITY_VALUES=new Set(Object.values(ACTIVITY));
-const SYSTEM_STATE_VALUES=new Set(Object.values(SYSTEM_STATE));
+const ROLE_KEYS=new Set(Object.keys(ROLES));
 
 function text(value){return typeof value==='string'&&value.trim()?value.trim():null;}
 function integer(value){return Number.isInteger(value)?value:null;}
-function nonnegativeInteger(value){return Number.isInteger(value)&&value>=0?value:null;}
 function nativeStream(event){return `native:${event.worker_id}:${event.session_id}:g${event.generation}`;}
 function evidence(event){return [{ref:`worker-event:${event.event_id}`}];}
 function explicitActivity(payload={}){
   const candidate=payload.ui_activity??payload.activity;
   return ACTIVITY_VALUES.has(candidate)?candidate:ACTIVITY.NONE;
 }
-function systemFromPayload(payload={},fallback=SYSTEM_STATE.UNKNOWN){
-  let state=text(payload.queue_state)||text(payload.system_state);
-  if(!SYSTEM_STATE_VALUES.has(state)){
-    const result=text(payload.result);
-    state=result&&result.includes('_QUEUED_FOR_')?SYSTEM_STATE.QUEUED:fallback;
-  }
-  return {
-    state,
-    readyCount:nonnegativeInteger(payload.ready_count),
-    claimedCount:nonnegativeInteger(payload.claimed_count),
-    nextTaskId:text(payload.next_task_id)||text(payload.handoff_task_id),
-    nextLane:text(payload.next_lane)||text(payload.handoff_lane),
-    source:'worker-event',
-  };
+function explicitRole(payload={}){
+  const candidate=text(payload.ui_role);
+  return candidate&&ROLE_KEYS.has(candidate)?candidate:'worker';
 }
-function snapshotSystem(snapshot,items=[]){
-  const summary=snapshot.queue_summary&&typeof snapshot.queue_summary==='object'?snapshot.queue_summary:null;
-  if(summary){
-    const ready=nonnegativeInteger(summary.ready_count);
-    const claimed=nonnegativeInteger(summary.claimed_count);
-    if(ready!==null&&claimed!==null){
-      const state=ready>0?SYSTEM_STATE.QUEUED:claimed>0?SYSTEM_STATE.WAITING:SYSTEM_STATE.IDLE;
-      return {state,readyCount:ready,claimedCount:claimed,nextTaskId:text(summary.next_task_id),nextLane:text(summary.next_lane),source:'queue-summary'};
-    }
-  }
-  const states=items.map(({mapped})=>mapped.system?.state).filter(Boolean);
-  const state=states.includes(SYSTEM_STATE.WORKING)?SYSTEM_STATE.WORKING:
-    states.includes(SYSTEM_STATE.QUEUED)?SYSTEM_STATE.QUEUED:
-    states.includes(SYSTEM_STATE.WAITING)?SYSTEM_STATE.WAITING:SYSTEM_STATE.UNKNOWN;
-  const next=items.map(({mapped})=>mapped.system).find(system=>system?.nextTaskId)||null;
-  return {state,readyCount:null,claimedCount:null,nextTaskId:next?.nextTaskId??null,nextLane:next?.nextLane??null,source:'worker-events'};
+function explicitDisplayName(payload={}){
+  const candidate=text(payload.ui_label);
+  if(!candidate||candidate.length>64)return undefined;
+  return candidate;
 }
 function baseNative(event){
   if(!event||typeof event!=='object')return null;
@@ -57,31 +33,35 @@ function baseNative(event){
     id:event.event_id,
     seq:event.event_seq,
     stream:nativeStream(event),
+    authorityStream:nativeStream(event),
     at,
     workerId:event.worker_id,
-    role:'worker',
     evidence:evidence(event),
   };
 }
 
 /**
- * Maps only facts proved by the native worker/Site contract.
- * Worker idleness and global Research OS idleness are deliberately separate facts.
+ * Maps only facts supplied by the authenticated native Site contract.
+ * Role/display identity and activity are accepted only from explicit allowlisted
+ * payload fields. They are never inferred from worker IDs, labels, timing or
+ * reconnect/heartbeat state.
  */
 export function mapNativeWorkerEvent(event){
   const base=baseNative(event);if(!base)return null;
   const payload=event.payload&&typeof event.payload==='object'?event.payload:{};
-  const label=text(payload.label)||text(payload.task_id)||event.action_id;
+  const role=explicitRole(payload),displayName=explicitDisplayName(payload);
+  const identified={...base,role,...(displayName?{displayName}:{})};
+  const label=text(payload.label)||event.action_id;
   const detail=text(payload.detail);
   switch(event.event_type){
     case 'WORKER_HEARTBEAT':
       return {id:base.id,seq:base.seq,stream:base.stream,at:base.at,kind:EVENT.HEARTBEAT};
     case 'ACTION_STARTED':
-      return {...base,kind:EVENT.WORK_STARTED,task:label,step:detail,lastAction:detail||label,activity:explicitActivity(payload),progress:{mode:PROGRESS.UNKNOWN},system:systemFromPayload(payload,SYSTEM_STATE.WORKING)};
+      return {...identified,kind:EVENT.WORK_STARTED,task:label,step:detail,lastAction:detail||label,activity:explicitActivity(payload),progress:{mode:PROGRESS.UNKNOWN}};
     case 'ACTION_COMPLETED':
-      return {...base,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||`Completed: ${label}`,activity:ACTIVITY.NONE,system:systemFromPayload(payload,SYSTEM_STATE.UNKNOWN)};
+      return {...identified,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||`Completed: ${label}`,activity:ACTIVITY.NONE};
     case 'SESSION_ENDED':
-      return {...base,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||'Worker session ended',activity:ACTIVITY.NONE,system:systemFromPayload(payload,SYSTEM_STATE.UNKNOWN)};
+      return {...identified,kind:EVENT.IDLE,task:label,step:detail,lastAction:detail||'Worker session ended',activity:ACTIVITY.NONE};
     default:return null;
   }
 }
@@ -108,17 +88,20 @@ function replayGuard(items=[]){
 export function mapNativeSnapshot(snapshot){
   if(!snapshot||typeof snapshot!=='object'||!text(snapshot.generated_at))return null;
   const items=validMappedEvents(Array.isArray(snapshot.events)?snapshot.events:[]);
-  const agents=newestPerWorker(items).map(({event})=>{
+  const agents=newestPerWorker(items).map(({event,mapped})=>{
     const payload=event.payload&&typeof event.payload==='object'?event.payload:{};
     const running=event.event_type==='ACTION_STARTED';
     return {
+      authorityStream:nativeStream(event),
       workerId:event.worker_id,
-      role:'worker',
+      role:mapped.role||'worker',
+      ...(mapped.displayName?{displayName:mapped.displayName}:{}),
+      stale:(snapshot.sessions||[]).some(s=>s.worker_id===event.worker_id&&s.session_id===event.session_id&&s.generation===event.generation&&['STALE','STALE_RESTART'].includes(s.lease_status)),
       state:running?'WORKING':'IDLE',
       activity:running?explicitActivity(payload):ACTIVITY.NONE,
-      task:text(payload.label)||text(payload.task_id)||event.action_id,
+      task:text(payload.label)||event.action_id,
       step:text(payload.detail),
-      lastAction:text(payload.detail)||text(payload.label)||text(payload.result)||event.event_type,
+      lastAction:text(payload.detail)||text(payload.label)||event.event_type,
       progress:{mode:PROGRESS.UNKNOWN},
       evidence:evidence(event),
     };
@@ -131,7 +114,6 @@ export function mapNativeSnapshot(snapshot){
     at:snapshot.generated_at,
     kind:EVENT.SNAPSHOT,
     agents,
-    system:snapshotSystem(snapshot,items),
     replayGuard:replayGuard(items),
   };
 }
@@ -140,17 +122,21 @@ export function mapNativeSnapshot(snapshot){
 export function mapNativeSiteFrame(frame){
   if(!frame||typeof frame!=='object')return null;
   if(frame.channel==='worker_event')return mapNativeWorkerEvent(frame.data);
+  if(frame.channel==='worker_stale'){
+    const d=frame.data;
+    if(!d||!text(d.worker_id)||!text(d.session_id)||!Number.isInteger(d.generation)||d.generation<1||!text(d.at)||!['STALE','STALE_RESTART'].includes(d.reason))return null;
+    return {id:`native-lease:${nativeStream(d)}:${d.at}`,seq:1,stream:`native-lease:${nativeStream(d)}:${d.at}`,authorityStream:nativeStream(d),at:d.at,workerId:d.worker_id,kind:EVENT.STALE,reason:d.reason};
+  }
   if(frame.channel==='snapshot')return mapNativeSnapshot(frame.data);
-  if(frame.channel==='connected'&&text(frame.at))return {id:`transport-connected:${frame.at}`,seq:1,stream:`transport:${frame.at}`,at:frame.at,kind:EVENT.CONNECTED};
-  if(frame.channel==='disconnected'&&text(frame.at))return {id:`transport-disconnected:${frame.at}`,seq:1,stream:`transport:${frame.at}`,at:frame.at,kind:EVENT.DISCONNECTED,reason:text(frame.reason)||'Native Site event stream disconnected'};
+  if(frame.channel==='connected'&&text(frame.at))return {id:`transport-connected:${frame.at}`,seq:1,stream:`transport:connected:${frame.at}`,at:frame.at,kind:EVENT.CONNECTED};
+  if(frame.channel==='disconnected'&&text(frame.at))return {id:`transport-disconnected:${frame.at}`,seq:1,stream:`transport:disconnected:${frame.at}`,at:frame.at,kind:EVENT.DISCONNECTED,reason:text(frame.reason)||'Native Site event stream disconnected'};
   return null;
 }
 
 export const NATIVE_BINDING={
-  roles:{worker:ROLES.worker},
+  roles:{worker:ROLES.worker,researcher:ROLES.researcher,builder:ROLES.builder,data:ROLES.data,auditor:ROLES.auditor,manager:ROLES.manager},
   supportedEventTypes:[...NATIVE_EVENT_TYPES],
-  supportedSystemStates:[...SYSTEM_STATE_VALUES],
-  idleRequiresGlobalQueueProof:true,
-  inferredFacts:['queue-state-from-explicit-queued-result-code'],
-  forbiddenInferences:['codex-owner-identity','research-role','progress','decision','economic-look','economic-result','global-idle-from-worker-completion'],
+  explicitPayloadFacts:['ui_activity','ui_role','ui_label'],
+  inferredFacts:[],
+  forbiddenInferences:['codex-owner-identity','role-from-worker-id','identity-from-worker-id','research-role-without-ui-role','progress','decision','economic-look','economic-result'],
 };
