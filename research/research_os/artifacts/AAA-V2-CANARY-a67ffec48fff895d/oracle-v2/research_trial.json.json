@@ -1,0 +1,40 @@
+{
+  "context_hash": "3a6e400345fb9ba0398f5d6ef1fb886d14a0cb42977c264b24701b6c4d361181",
+  "discard_count": 1,
+  "discarded_proposals": [
+    {
+      "blockers": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "hypothesis_id": "DOC-FUND-9219d7f488ada3c2",
+      "reason": "STRUCTURAL_SCREEN_BLOCK"
+    }
+  ],
+  "earlier_attempt_proposals": "UNKNOWN_IF_NO_DURABLE_COMPLETION",
+  "executable_release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "generated_at": "2026-10-20T10:57:49Z",
+  "generated_proposals": [
+    {
+      "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+      "generation_id": "G1",
+      "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+    }
+  ],
+  "ideation_intents": [
+    "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/trial_intents/g000002.json",
+    "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/trial_intents/g000003.json"
+  ],
+  "model_identity": "DETERMINISTIC_ENGINE",
+  "prompt_hash": "ed890018b00c80bef33dfa09e6ecc2e29628b13586b33d9a1796982f6711f808",
+  "proposal_count": 1,
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+  "research_trial_id": "ORACLE-V2-EPOCH-20261020-001::AAA-V2-CANARY-a67ffec48fff895d::G1",
+  "retrieval_manifest_hash": "42d90316899b4c1ee6c20c7f2d7c9a2c62af8380ac71e46e8da81aa5827b393e",
+  "retry_count": 1,
+  "sampling_parameters": {
+    "mode": "DETERMINISTIC_REGISTERED_ENGINE"
+  },
+  "source_packet_hash": "9219d7f488ada3c21431fc51210280445d653b8ad8b3075d2fb8be2678dc6f3c",
+  "trial_hash": "17706ab7a3d123159769cf759bd0854bc8c09f6bf293a0732c9be311479d2e73",
+  "trial_type": "RESEARCH_GENERATION_TRIAL"
+}
