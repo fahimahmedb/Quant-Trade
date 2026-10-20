@@ -1,0 +1,117 @@
+{
+  "authority": "OBSERVATIONAL_ONLY",
+  "canonical_terminal": {
+    "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551-2",
+    "event_seq": 2,
+    "generation": 1,
+    "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551",
+    "source_commit": "a9126f74ff91b6b0adfb9e98e1bf3e23dea50712"
+  },
+  "credentials_included": false,
+  "records": [
+    {
+      "packet": {
+        "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+        "emitted_at": "2026-10-20T17:40:17Z",
+        "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551-1",
+        "event_seq": 1,
+        "event_type": "ACTION_STARTED",
+        "generation": 4,
+        "lease_id": "35171780-ec35-4968-acef-2e8daffe590e",
+        "payload": {
+          "label": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+          "stage": "legacy_duplicate_check",
+          "ui_activity": "data-qualification",
+          "ui_label": "Oracle \u00b7 Documents",
+          "ui_role": "researcher"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "fbd000a8-7856-48fb-a5d0-894a863ea4a7",
+        "trace_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T17:40:21.993Z",
+      "cursor": 99,
+      "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551-1",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+        "effect_proof": {
+          "exit_code": 0,
+          "stdout_sha256": "dd43ba48397def77696ff4c28c9ffa1f3a3042b4e073117bc5c97342489014df"
+        },
+        "emitted_at": "2026-10-20T17:40:25Z",
+        "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551-2",
+        "event_seq": 2,
+        "event_type": "ACTION_COMPLETED",
+        "generation": 4,
+        "lease_id": "35171780-ec35-4968-acef-2e8daffe590e",
+        "payload": {
+          "ui_activity": "none"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "fbd000a8-7856-48fb-a5d0-894a863ea4a7",
+        "trace_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T17:40:27.927Z",
+      "cursor": 100,
+      "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551-2",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+        "emitted_at": "2026-10-20T17:40:28.109276Z",
+        "event_id": "closed-7c4f7906278355f556765d320819861780a65cda0d98ec4dbf8dd0265e7bbe63",
+        "event_seq": 3,
+        "event_type": "SESSION_ENDED",
+        "generation": 4,
+        "lease_id": "35171780-ec35-4968-acef-2e8daffe590e",
+        "payload": {},
+        "principal": "oracle-research-live",
+        "session_id": "fbd000a8-7856-48fb-a5d0-894a863ea4a7",
+        "trace_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T17:40:28.298Z",
+      "cursor": 101,
+      "event_id": "closed-7c4f7906278355f556765d320819861780a65cda0d98ec4dbf8dd0265e7bbe63",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    }
+  ],
+  "schema_version": "oracle-live-projection-v1",
+  "site_session": {
+    "generation": 4,
+    "heartbeat_interval_ms": 10000,
+    "lease_id": "35171780-ec35-4968-acef-2e8daffe590e",
+    "session_id": "fbd000a8-7856-48fb-a5d0-894a863ea4a7"
+  },
+  "source": {
+    "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+    "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551-1",
+    "event_seq": 1,
+    "generation": 1,
+    "input_commit": "dbca86c4c8c5222052a53b997ea55c21facd437f",
+    "lane": "fundamental_events",
+    "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g1-8af6c7c87551",
+    "stage": "legacy_duplicate_check",
+    "worker_id": "oracle-research.fundamental_events"
+  },
+  "source_events_mutated": false,
+  "stale_starts_replayed": false
+}
