@@ -26,14 +26,17 @@ jobs:
             research/research_os/expansion/v2_core.py \
             research/research_os/expansion/v2_bridge.py \
             research/research_os/expansion/v2_pipeline.py \
+            research/research_os/expansion/v2_stage_executor.py \
+            research/research_os/oracle_worker_v2.py \
             scripts/qualify_oracle_v2_core.py
 
-      - name: V2 Core contract, bridge and whole-loop tests
+      - name: V2 Core contract, bridge, worker and whole-loop tests
         run: |
           python -m unittest -v \
             tests.test_research_os_v2_core \
             tests.test_research_os_v2_bridge \
-            tests.test_research_os_v2_pipeline
+            tests.test_research_os_v2_pipeline \
+            tests.test_research_os_v2_worker_integration
 
       - name: Verify V2 policy remains fail-closed
         run: |
@@ -41,8 +44,8 @@ jobs:
           import json
           from pathlib import Path
 
-          path = Path('research/research_os/runtime/V2_CORE_POLICY.json')
-          policy = json.loads(path.read_text())
+          policy = json.loads(Path('research/research_os/runtime/V2_CORE_POLICY.json').read_text())
+          epoch = json.loads(Path('research/research_os/runtime/V2_ACTIVE_EPOCH.json').read_text())
           authority = policy['authority']
           required = (
               'economic_experiment_authorized',
@@ -57,6 +60,10 @@ jobs:
           assert policy['evaluation_membrane']['evaluation_research_write_capability'] is False
           assert policy['owner_overrides']['p0_d_server_side_branch_protection_required'] is False
           assert policy['owner_overrides']['destructive_git_operations_authorized'] is False
+          assert epoch['state'] == 'OPEN'
+          assert epoch['owner_outcome_blinding_status'] == 'BLINDED'
+          assert epoch['supervisor_outcome_blinding_status'] == 'BLINDED'
+          assert epoch['first_evaluation_export_accepted'] is False
           print('V2_POLICY_FAIL_CLOSED=PASS')
           PY
 
