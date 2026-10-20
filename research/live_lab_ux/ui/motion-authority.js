@@ -5,8 +5,11 @@ import {sceneBusinessMotionAllowed} from './scene3d-policy.js';
 export function gestureFamily(agent,state){
  if(!agent?.animate||!sceneBusinessMotionAllowed(state))return null;
  if([ACTIVITY.SOURCE_RESEARCH,ACTIVITY.DOCUMENT_READING].includes(agent.activity))return 'reading';
+ // Physical-pose reuse only: semantic activity remains hypothesis-generation.
+ // This makes bounded ideation visible without implying audit or Economic Look.
+ if(agent.activity===ACTIVITY.HYPOTHESIS_GENERATION)return 'comparison';
  if(agent.activity===ACTIVITY.CODING_TESTING)return 'typing';
- if([ACTIVITY.HYPOTHESIS_GENERATION,ACTIVITY.AUDIT,ACTIVITY.DATA_QUALIFICATION].includes(agent.activity))return 'comparison';
+ if([ACTIVITY.AUDIT,ACTIVITY.DATA_QUALIFICATION].includes(agent.activity))return 'comparison';
  if(agent.activity===ACTIVITY.CALCULATION)return 'economic';
  return null;
 }
