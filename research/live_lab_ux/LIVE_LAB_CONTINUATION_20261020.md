@@ -43,16 +43,25 @@ Since that audit, Oracle V1 has become a real autonomous runtime. The UI workstr
 - `REAL_CAPITAL_AUTHORIZED = FALSE`.
 - `LIVE_TRADING_AUTHORIZED = FALSE`.
 
-## Work package L1 — Oracle-native frontend contract
+## Work package L1 — Oracle-native frontend contract — CLOSED PASS
 
-- [ ] Add an explicit `hypothesis-generation` activity to the canonical UI model.
-- [ ] Give it a truthful, non-economic visual gesture family.
-- [ ] Permit explicit native display identity/role metadata only when supplied by the authenticated event payload and allowlisted; never infer it from worker ID.
-- [ ] Keep unsupported/malformed identity/activity values fail-closed.
-- [ ] Add regression tests proving heartbeat/snapshot/reconnect cannot fabricate Oracle work.
-- [ ] Add representative Oracle V1/V2-shaped event fixtures without claiming that Site ingress is already deployed.
+- [x] Added explicit `hypothesis-generation` activity to the canonical UI model.
+- [x] Bound it to a truthful existing non-economic comparison gesture family.
+- [x] Explicit `ui_role` / `ui_label` metadata is accepted only when supplied and allowlisted; worker IDs never create identity.
+- [x] Unsupported/malformed identity/activity values fail closed to generic worker/no activity.
+- [x] Regression tests prove heartbeat/snapshot/reconnect cannot fabricate or replay Oracle work.
+- [x] Representative Oracle event fixtures cover active, reconstructed, heartbeat and later-semantic-event behavior.
+- [x] Added a bounded Oracle ingress-packet contract matching the proven historical native packet shape; it deliberately leaves the production ingress endpoint UNBOUND until a Site principal is actually deployed.
+- [x] Completion packets require a durable output SHA-256 + exit code proof and forbid outcome-like UI fields.
+- [x] Corrected the previous misleading `mobileSafari:true` capability to `UNVERIFIED_REAL_DEVICE`.
 
-## Work package L2 — Desktop Live Lab integration
+Exact-head client qualification before this checkpoint: `96b674fb23345a61cfad91438c1aebf4c147d761`.
+Live Lab CI run `39357493478`: SUCCESS.
+Earlier Oracle semantics CI run `39357269096`: SUCCESS.
+
+L1 does **not** claim Oracle -> Site production ingress exists. It qualifies the frontend/native contract only.
+
+## Work package L2 — Desktop Live Lab integration — ACTIVE
 
 - [ ] Audit the current desktop composition against the locked UX3/UX4 constitution.
 - [ ] Remove stale probe/demo framing from the live path where it can mislead the Owner.
