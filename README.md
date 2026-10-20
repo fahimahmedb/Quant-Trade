@@ -1,156 +1,100 @@
-# Quant — Persistent Autonomous Quantitative System
+# Quant-Trade
 
-Quant exists to increase real capital by repeatedly discovering, selecting and exploiting genuine market edge.
+Quant-Trade is a persistent quantitative research system whose long-term objective is genuine **net economic value after realistic frictions**.
 
-Read **`QUANT_NORTH_STAR.md` first**. It is the highest-level product specification for this repository.
+`QUANT_NORTH_STAR.md` remains the highest-level product specification.
 
-## Current governance / restart surface
+## Start here — current state
 
-For **current project work**, do not use the GitHub default branch, `STATE.md`, `CHIEF_BRIEF.md`, historical issues or old handoffs to infer the active mission.
+The repository has undergone several generations of architecture, research, governance and deployment work. Do **not** infer the current project state from an old branch name, historical handoff or September 2026 Blue document.
 
-After the North Star, read:
+Read first:
 
-1. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact restart surface
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`
-5. the exact active mission/audit handoff referenced there
+1. `QUANT_NORTH_STAR.md`
+2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
+3. resolve the exact branch and live HEAD relevant to your task
+4. then read only the branch-specific audit/runtime/design evidence required for that task
 
-Resolve the live HEAD of `blue/master-v2-2026-09-20`. The repository default is now this Blue branch, but default-branch status alone is still not proof of the active mission or gate state.
+## Current lines
 
-`STATE.md` and `CHIEF_BRIEF.md` describe generated/runtime/research state; they are not governance routing documents.
+### Live Oracle V1
 
+Current live runtime branch:
 
-Quant is not a backtester, a scanner, an LLM wrapper or a collection of strategies. The target is a persistent system combining:
+`builder/oracle-economic-loop-recovery-20261019`
 
-- Control Plane / Clock;
-- Data Plane;
-- Research Factory;
-- the paper/shadow functional chain `SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK`;
-- persistent Book/economic state;
-- learning feedback;
-- Build/Codex plane;
-- status/control UI backed by real state.
+This is the operational H24 Research OS / Oracle line. It can advance autonomously. Always resolve its current HEAD before making implementation claims.
 
-## Architecture
+V1 operational qualification proves scheduling, persistence, claim/lease recovery and fail-closed authority behavior. It does **not** prove economic edge.
 
-```text
-                     HUMAN / PROJECT CONTROL
-                              |
-                              v
-                       ROOT / CLOCK
-                              |
-          +-------------------+-------------------+
-          |                   |                   |
-          v                   v                   v
-       DATA PLANE       RESEARCH FACTORY       BUILD PLANE
-          |                   |                   |
-          +-------------------+-------------------+
-                              |
-                              v
-                  SCAN -> VET -> SIZE -> RISK
-                              -> FILLS -> BOOK
-                                     |
-                                     v
-                              LEARNING / MEMORY
-                                     |
-                                     +----> SEARCH AGAIN
-```
+### Independent audit / V2 forensic baseline
 
-Quant System V1 is developed in persistent paper/shadow mode while preserving the topology of the intended complete system.
+`audit/forensic-checkpoint-20261019`
 
-## Source basis
+Current audit checkpoint:
 
-The supplied source material contributes the principles of continuous strategy discovery, alpha replacement/decay, broad inexpensive monitoring before deeper reasoning and specialized functional roles.
+`090076945ff4d3e8006757047bbc6d2716d2eea6`
 
-The project screenshots contribute system-level ideas including persistent runtime, `RUN/IDLE` state, ticket/activity traceability, bankroll continuity and the visible `SCAN/VET/SIZE/RISK/FILLS/BOOK` chain.
+Read `CHECKPOINT_010.md` on that branch for the current CP7–CP9 reconciliation against qualified Oracle V1.
 
-Their financial results, vendor claims and performance numbers are **not treated as verified evidence**.
+### V2
 
-See `SOURCE_BASIS.md`.
+`V2_CANONICAL_TRUNK = NOT_YET_DECLARED`
 
-## Core specification hierarchy
+V2 is being prepared from reconciled source branches and historical evidence. Do not create a competing top-level architecture or silently promote an old branch into V2 authority.
 
-1. `QUANT_NORTH_STAR.md` — what Quant is and what wins when priorities conflict.
-2. `SYSTEM_ARCHITECTURE.md` — whole-system planes and boundaries.
-3. `OPERATING_MODEL.md` — how the system behaves over time.
-4. `MISSION.md` — terminal economic objective and autonomy rules.
-5. `SOURCE_BASIS.md` — source-derived ideas versus project adaptations.
-6. `PIPELINE.md` — Research Factory sub-pipeline, not the whole product.
-7. `STATE.md` — current implementation/research frontier.
+## Permanent safety boundary
 
-Lower-level documents and code must not silently redefine the North Star.
+Unless a later explicit Owner decision changes them:
 
-## Running the system
+- `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
+- `REAL_CAPITAL_AUTHORIZED = FALSE`
+- `LIVE_TRADING_AUTHORIZED = FALSE`
 
-The system has no third-party dependencies. Python 3.11+ and the standard library are enough.
+No test PASS, validator PASS, branch cleanup, model output or operational qualification changes these values.
 
-```bash
-python3 scripts/ingest_data.py          # Data Plane: refresh and fingerprint datasets
-python3 scripts/quant.py boot           # resume persistent state, seed due work
-python3 scripts/quant.py run            # run until IDLE (bounded batch)
-python3 scripts/quant.py serve          # stay alive: work when due, wait when not
-python3 scripts/quant.py status         # status surface, rendered from real state
-python3 scripts/quant.py brief          # regenerate CHIEF_BRIEF.md
-python3 scripts/quant.py health         # watchdog report
-python3 scripts/quant.py tick           # advance exactly one unit of due work
-python3 scripts/quant.py pause --reason "..." | resume
-```
+## Repository cleanup
 
-Verification:
+The active branch namespace became excessively large again (roughly 227 branches observed before the 2026-10-20 cleanup pass).
 
-```bash
-PYTHONPATH=src python3 -m unittest discover -s tests
-python3 scripts/demo_quant_system.py    # boot, stop mid-campaign, restart, resume
-python3 scripts/generate_schemas.py --check
-```
+Current cleanup authority:
 
-The V1 integrity gate contains 87 tests, including adversarial window-containment,
-frozen-cohort, refresh, malformed-data, execution-gap, per-strategy fault-isolation and
-crash/replay cases. Research partitions and multiple-testing reservations are durable across
-append-only refreshes and restarts; historical changes inside a frozen cohort block review.
+- `governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
+- `scripts/repository_hygiene_20261020.sh`
 
-`ingest_data.py` fetches from a free credential-free source when the network allows and
-otherwise re-registers the fingerprinted snapshot committed under `data/datasets/`, so every
-published result is reproducible offline. It never fabricates a bar.
+The cleanup is aggressive on branch refs but conservative on information:
 
-### Where state lives
+- absorbed ancestors are deleted as refs;
+- duplicate refs are collapsed;
+- unique historical/diverged tips are archived before branch deletion;
+- live V1, the independent audit line and explicit V2 source branches remain active.
 
-| Path | Contents | Committed |
-| --- | --- | --- |
-| `data/datasets/*.csv` | normalized price panels | yes |
-| `data/datasets/*.meta.json` | provenance, caveats, validation, fingerprint | yes |
-| `schemas/` | contracts for the persistent state objects, generated from the code | yes |
-| `var/` | live operational state: control state, work queue, ledgers, desk journal, tickets, events | no |
+## Default branch warning
 
-A different `--root` gives a fully isolated system, which is how the tests and the restart
-demonstration avoid touching operational state.
+The GitHub default branch is currently still:
 
-## Current state
+`blue/master-v2-2026-09-20`
 
-Quant System V1 is implemented end to end in persistent paper/shadow mode: Control Plane clock,
-Data Plane with real ingestion, Research Factory with a versioned strategy lifecycle, the
-`SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK` chain, a persistent Book with per-strategy
-sleeves, a learning loop that scores the system's own rejections, and a status surface plus
-`CHIEF_BRIEF.md` rendered from that state.
+During cleanup it acts as a **routing / historical portal**, not as proof that its code snapshot is the latest implementation.
 
-Research, simulated execution and the Book share one causal timeline: information through
-`close(t)`, decision after that close, entry at `open(t+1)`, exit and marking at `open(t+2)` or
-later. Economic state mutations carry deterministic operation identities, and a session records
-its intent before it moves money, so a crash plus replay is provably equal to an uninterrupted
-run.
+The default branch will only move after a canonical V2 trunk is explicitly declared and its imported capabilities/evidence are documented.
 
-`STATE.md` carries the current evidence, including what the research actually concluded and
-which North-Star gaps remain open.
+## Core scientific principles
 
-## Historical NASDAQ work
+- preserve point-in-time provenance and timing correctness;
+- never fabricate market data or evidence;
+- treat structural similarity as structural similarity, not empirical correlation;
+- preserve negative results and failed hypotheses as scientific memory;
+- separate producer, validator/red-team and portfolio/integration authority;
+- make persistent mutations restart-safe and idempotent;
+- prefer wide/cheap deterministic monitoring before narrow/deep reasoning;
+- do not confuse research, current opportunity, simulated execution, portfolio state or observed outcome.
 
-The existing NASDAQ research predates the rebuild. It remains prior evidence and reusable code where useful, but it does not define Quant's future market universe or architecture.
+## Historical material
 
-## Build philosophy
+Historical NASDAQ work, Gate A/B, Weather, Forward/Economic, Edge Lab, Blue/Astra/Builder/Owner handoffs and old runtime experiments remain valuable evidence where applicable.
 
-The engineering agent is the Builder / Quant Engineer. Quant is the persistent system.
+They are **not automatically current authority** merely because their branch or document still exists.
 
-A build task may end. Quant's state, Book, research memory, pending work and next legitimate action must remain coherent.
-
-Build large coherent North-Star milestones instead of accumulating unrelated micro-fixes.
+Use `governance/CURRENT_PROJECT_STATE_2026-10-20.md` to determine what is live, retained for V2, scientific memory, archival evidence or cleanup material.
