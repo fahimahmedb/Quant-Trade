@@ -13,6 +13,15 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/tasks/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/oracle-worker/validation_handoff.json"
+    ],
+    "completed_at": "2026-10-20T03:50:29Z",
+    "receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g5-6ddec5c07a3e.json",
+    "result": "COMPLETE"
+  },
   "created_at": "2026-10-20T03:00:22Z",
   "derivation": {
     "derivation_key": "957f8bc31b0071e633ff7ced1a9f53469cb03f397abc686cf70252c4381fd94c",
@@ -41,9 +50,13 @@
       "legacy_duplicate_check": {
         "artifact": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/oracle-worker/legacy_duplicate_check.json",
         "artifact_hash": "c730a53603b2986cd72ebd80e5c573a32caa579bb43c712f3f778efe98200b2d"
+      },
+      "validation_handoff": {
+        "artifact": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/oracle-worker/validation_handoff.json",
+        "artifact_hash": "c94d6c353d44e64f7d330339dbf428704fb47f888fa5f1edc1f9e5dea1258f0e"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g4-fb6faca11af0.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g5-6ddec5c07a3e.json",
     "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004-g5-6ddec5c07a3e"
@@ -67,15 +80,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T03:50:24Z",
-    "expires_at": "2026-10-20T04:00:24Z",
+    "expires_at": "2026-10-20T03:50:29Z",
     "generation": 5,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "event_document",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
   "task_type": "EVENT_DOCUMENT",
-  "updated_at": "2026-10-20T03:50:24Z"
+  "updated_at": "2026-10-20T03:50:29Z"
 }
