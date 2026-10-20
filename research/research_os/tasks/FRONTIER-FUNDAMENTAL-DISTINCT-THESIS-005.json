@@ -13,6 +13,14 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005/oracle-worker/document_or_fundamental_research.json"
+    ],
+    "completed_at": "2026-10-20T07:10:19Z",
+    "receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005-g2-76e15cd2df72.json",
+    "result": "BLOCKED"
+  },
   "created_at": "2026-10-20T06:50:12Z",
   "derivation": {
     "derivation_key": "547fbaca4c8addb62bb40a678fe40d29e46062d9ce0ed921c898e377d4b560eb",
@@ -31,7 +39,7 @@
         "artifact_hash": "1b52fb1e7bd314d140cc6631d098331d43cc623a268d3534890e7c211248bdfc"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005-g1-2b71294a0bed.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005-g2-76e15cd2df72.json",
     "lineage": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005-g2-76e15cd2df72"
@@ -55,15 +63,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T07:10:14Z",
-    "expires_at": "2026-10-20T07:20:14Z",
+    "expires_at": "2026-10-20T07:10:19Z",
     "generation": 2,
     "owner": "oracle-research-v1.fundamental_events"
   },
   "priority": 70,
   "required_capability": "fundamental",
-  "status": "CLAIMED",
+  "status": "BLOCKED",
   "success_condition": "One Legacy-screened, causally distinct fundamental CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005",
   "task_type": "FUNDAMENTAL_RESEARCH",
-  "updated_at": "2026-10-20T07:10:14Z"
+  "updated_at": "2026-10-20T07:10:19Z"
 }
