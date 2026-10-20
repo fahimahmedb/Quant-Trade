@@ -32,7 +32,8 @@
     "live_canary_report_sha256": "721f82cad9804fc0b2bbfb5d0b25d93d621b87b3d35423f2dfd6d2474361fd0b"
   },
   "last_live_host_probe": {
-    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaawbxtxht7izureascdwz5djl4rios5wpw7bn55rz2mavq",
+    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaa5hgfsqanqc6zuzkwzc7vjebnmv2alqs3njnsz7dehyda",
+    "observed_at": "2026-10-20T00:02:47.864056+00:00",
     "model_service_load_state": "loaded",
     "model_service_state": "enabled/running",
     "model_health": "ok",
