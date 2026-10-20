@@ -1,0 +1,36 @@
+{
+  "schema_version": "oracle-v2-research-epoch-v1",
+  "state": "OPEN",
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+  "parent_epoch_id": null,
+  "opened_at": "2026-10-20T01:30:00Z",
+  "knowledge_cutoff": "2026-10-20T01:00:00Z",
+  "research_window": {
+    "start": "2026-10-20T01:30:00Z",
+    "end": "2026-12-31T00:00:00Z"
+  },
+  "export_cutoff": "2026-12-31T00:00:00Z",
+  "close_policy": "PREDECLARED_COMPOSITE",
+  "feedback_release_policy": {
+    "mode": "AFTER_CLOSE_AND_GOVERNED_RELEASE",
+    "economic_feedback_visible_to_active_epoch": false
+  },
+  "research_policy_hash": "a18cfdf05b8dd94f4803bfc77ae850a942b9428c5a40a7742cb4675c19620f87",
+  "model_routing_policy_hash": "b76063e55788141e136887bf50a03b42bf828e451af8968fac10bd8063c4b83e",
+  "allowed_model_set": [
+    "DETERMINISTIC_ENGINE",
+    "gpt-oss-10.2b-q4-k-m"
+  ],
+  "allowed_model_change_policy": "WITHIN_ALLOWED_SET_ONLY",
+  "source_policy_hash": "117d828628c6327c6b58062582da5cd34b18d5b78c4a60ab0917d74baab4bd6d",
+  "retrieval_policy_hash": "7317ef420772b74a6159c72e8a2367a40de86a303936bed91cb9ab8b68eb5ca2",
+  "validator_policy_hash": "a592006441965759822480781ced63047b839261a5cb01aff3b87bcf647e85aa",
+  "max_candidate_exports": 100,
+  "scheduled_close_at": "2027-01-01T00:00:00Z",
+  "epoch_knowledge_parent": null,
+  "epoch_feedback_dependencies": [],
+  "contamination_status": "CLEAN",
+  "owner_outcome_blinding_status": "BLINDED",
+  "supervisor_outcome_blinding_status": "BLINDED",
+  "first_evaluation_export_accepted": false
+}
