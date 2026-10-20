@@ -1,0 +1,68 @@
+{
+  "schema_version": "oracle-v2-core-policy-v1",
+  "mode": "PRE_OUTCOME_RESEARCH_ONLY",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "claim_ceiling": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY",
+  "system_qualification_target": "AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED",
+  "owner_overrides": {
+    "p0_d_server_side_branch_protection_required": false,
+    "destructive_git_operations_authorized": false
+  },
+  "model_routing": {
+    "policy_version": "v2-core-model-routing-v1",
+    "routes": [
+      "R0_DETERMINISTIC",
+      "R1_LOCAL_STANDARD",
+      "R2_DIVERSE_REVIEW_REQUIRED",
+      "R3_SENIOR_ESCALATION"
+    ],
+    "silent_hosted_fallback": false,
+    "default_local_model": "gpt-oss-10.2b-q4-k-m"
+  },
+  "resource_policy": {
+    "max_heavy_local_inference": 1,
+    "max_authoritative_write_transition": 1,
+    "orchestration_backend": "GITHUB_BOUNDED_WRITER",
+    "dual_authoritative_backends_allowed": false
+  },
+  "evaluation_membrane": {
+    "status": "SEALED",
+    "research_outcome_read_capability": false,
+    "research_supervisor_outcome_read_capability": false,
+    "evaluation_research_write_capability": false,
+    "allowed_reverse_messages": [
+      "EXPORT_ACCEPTED",
+      "EXPORT_REJECTED_FOR_SCHEMA_ERROR",
+      "INTEGRITY_FAILURE"
+    ]
+  },
+  "scientific_state_axes": {
+    "scientific_maturity": [
+      "IDEA",
+      "EVIDENCE_BOUND",
+      "DISCONFIRMATION_ATTEMPTED",
+      "FROZEN",
+      "VALIDATED"
+    ],
+    "experiment_readiness": ["INCOMPLETE", "READY"],
+    "portfolio_relationship": [
+      "UNKNOWN",
+      "DISTINCT",
+      "VARIANT",
+      "REPLICATION",
+      "DUPLICATE",
+      "COMPLEMENTARY"
+    ],
+    "authority": ["CLOSED", "OWNER_AUTHORIZED"]
+  },
+  "portfolio_invariants": {
+    "structural_overlap_is_empirical_correlation": false,
+    "empirical_correlation_without_admissible_returns": "UNKNOWN",
+    "marginal_portfolio_contribution_without_admissible_returns": "NOT_ESTIMATED"
+  }
+}
