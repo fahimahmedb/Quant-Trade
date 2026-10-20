@@ -24,6 +24,14 @@
     "type": "EMPTY_QUEUE_FRONTIER_REFILL"
   },
   "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "legacy_duplicate_check": {
+        "artifact": "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-004/oracle-worker/legacy_duplicate_check.json",
+        "artifact_hash": "0e469e6733463f30f52964c677bfb2a432f2f9e56b69c8008901696252188482"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/FRONTIER-QUANT-MECHANISM-DISTINCT-004/FRONTIER-QUANT-MECHANISM-DISTINCT-004-g1-ad42e1dfe85f.json",
     "lineage": "FRONTIER-QUANT-MECHANISM-DISTINCT-004",
     "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
     "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-004-g1-ad42e1dfe85f"
@@ -48,15 +56,15 @@
   },
   "lease": {
     "claimed_at": "2026-10-20T06:00:14Z",
-    "expires_at": "2026-10-20T06:10:14Z",
+    "expires_at": "2026-10-20T06:00:19Z",
     "generation": 1,
     "owner": "oracle-research-v1.market_discovery"
   },
   "priority": 70,
   "required_capability": "quant_mechanisms",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "One Legacy-screened, causally distinct quantitative/mechanism CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
   "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-004",
   "task_type": "QUANT_MECHANISM",
-  "updated_at": "2026-10-20T06:00:14Z"
+  "updated_at": "2026-10-20T06:00:19Z"
 }
