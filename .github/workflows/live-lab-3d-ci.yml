@@ -5,6 +5,7 @@ on:
     branches:
       - builder/live-lab-3d-full-build-20261015
       - builder/live-lab-owner-ux-rebuild-20261015
+      - builder/live-lab-oracle-integration-20261020
     paths:
       - 'research/live_lab_ux/**'
       - '.github/workflows/live-lab-3d-ci.yml'
@@ -38,3 +39,10 @@ jobs:
           grep -q "WebGLRenderer" ui/scene3d.js
           grep -q 'state.animationRunning' ui/scene3d.js
           grep -q 'escapeSceneText' ui/scene3d-policy.js
+      - name: Assert Oracle-native truth contract
+        run: |
+          grep -q "HYPOTHESIS_GENERATION:'hypothesis-generation'" core/model.js
+          grep -q "ui_role" adapters/platform-native.js
+          grep -q "ui_label" adapters/platform-native.js
+          grep -q "role-from-worker-id" adapters/platform-native.js
+          grep -q "hypothesis-generation" tests/oracle-native.test.js
