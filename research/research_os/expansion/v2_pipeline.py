@@ -17,8 +17,10 @@ from .v2_core import (
     build_research_trial,
     build_validator_result,
     canonical_hash,
+    classify_model_pit,
     qualify_v2_core,
     validate_multidimensional_status,
+    validate_reverse_message,
 )
 
 _FORBIDDEN_RESEARCH_KEYS = {
@@ -72,6 +74,18 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
     if bundle["status"]["authority"] != "CLOSED":
         raise V2ContractError("V2_CORE_STATUS_AUTHORITY_MUST_REMAIN_CLOSED")
 
+    leakage = bundle.get("leakage_classification")
+    if not isinstance(leakage, Mapping) or leakage.get("source_pit") not in ("PASS", "FAIL"):
+        raise V2ContractError("INVALID_LEAKAGE_CLASSIFICATION")
+    expected_leakage = classify_model_pit(
+        source_pit=leakage["source_pit"] == "PASS",
+        model_knowledge_cutoff_status=leakage.get("model_pit"),
+    )
+    if any(leakage.get(key) != value for key, value in expected_leakage.items()):
+        raise V2ContractError("INVALID_LEAKAGE_CLASSIFICATION")
+    if expected_leakage["source_pit"] != "PASS":
+        raise V2ContractError("EXPORT_REQUIRES_SOURCE_PIT_PASS")
+
     blinding = blinding_integrity(
         owner_status=bundle["blinding"]["owner_status"],
         supervisor_status=bundle["blinding"]["supervisor_status"],
@@ -103,20 +117,21 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
 
     export = build_frozen_export_intent(export_payload)
     ingest = build_evaluation_ingest_receipt(export_bundle_hash=export["export_bundle_hash"])
+    validate_reverse_message(ingest, expected_export_bundle_hash=export["export_bundle_hash"])
 
     proof = {
         "authority": authority,
         "epoch_contract_qualified": True,
         "ideation_trial_accounting_qualified": trial["proposal_count"] >= 1,
-        "leakage_classification_qualified": bool(bundle.get("leakage_classification")),
+        "leakage_classification_qualified": True,
         "candidate_contract_qualified": True,
-        "validator_independence_qualified": bool(bundle.get("validator_independence_qualified")),
+        "validator_independence_qualified": bundle.get("validator_independence_qualified"),
         "evaluation_membrane_qualified": ingest["message"] == "EXPORT_ACCEPTED",
-        "feedback_lineage_qualified": bool(bundle.get("feedback_lineage_qualified")),
+        "feedback_lineage_qualified": bundle.get("feedback_lineage_qualified"),
         "priority_policy_qualified": bool(priority["selected_task"]),
         "negative_memory_qualified": bool(negative["negative_knowledge_hash"]),
         "multidimensional_status_qualified": True,
-        "bounded_orchestration_qualified": bool(bundle.get("bounded_orchestration_qualified")),
+        "bounded_orchestration_qualified": bundle.get("bounded_orchestration_qualified"),
     }
     qualification = qualify_v2_core(proof)
     if qualification["status"] != "AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED":

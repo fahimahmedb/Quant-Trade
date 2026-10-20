@@ -87,7 +87,9 @@ def assert_authority_closed(authority: Mapping[str, Any]) -> None:
 
 
 def classify_model_pit(*, source_pit: bool, model_knowledge_cutoff_status: str) -> Dict[str, str]:
-    if model_knowledge_cutoff_status not in {"PROVABLY_BEFORE_CUTOFF", "NOT_PROVABLE", "AFTER_CUTOFF"}:
+    if not isinstance(model_knowledge_cutoff_status, str) or model_knowledge_cutoff_status not in {
+        "PROVABLY_BEFORE_CUTOFF", "NOT_PROVABLE", "AFTER_CUTOFF"
+    }:
         raise V2ContractError("INVALID_MODEL_PIT_STATUS")
     if type(source_pit) is not bool:
         raise V2ContractError("INVALID_SOURCE_PIT_STATUS")
@@ -319,8 +321,10 @@ def build_frozen_export_intent(payload: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def build_evaluation_ingest_receipt(*, export_bundle_hash: str, message: str = "EXPORT_ACCEPTED") -> Dict[str, Any]:
-    if message not in ALLOWED_REVERSE_MESSAGES:
+    if not isinstance(message, str) or message not in ALLOWED_REVERSE_MESSAGES:
         raise V2ContractError("FORBIDDEN_EVALUATION_REVERSE_MESSAGE")
+    if not _is_sha256(export_bundle_hash):
+        raise V2ContractError("INVALID_EXPORT_BUNDLE_HASH")
     receipt = {
         "event_type": "EVALUATION_INGEST_RECEIPT",
         "message": message,
@@ -332,12 +336,38 @@ def build_evaluation_ingest_receipt(*, export_bundle_hash: str, message: str = "
     return receipt
 
 
-def validate_reverse_message(message: Mapping[str, Any]) -> None:
-    if message.get("message") not in ALLOWED_REVERSE_MESSAGES:
+def _is_sha256(value: Any) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(char in "0123456789abcdef" for char in value)
+
+
+def validate_reverse_message(message: Mapping[str, Any], *, expected_export_bundle_hash: str = None) -> None:
+    """Validate technical receipt metadata, optionally bound to a known export.
+
+    This does not authenticate an evaluator or prove transport isolation.
+    """
+    if not isinstance(message, Mapping):
+        raise V2ContractError("INVALID_EVALUATION_REVERSE_MESSAGE")
+    if not isinstance(message.get("message"), str) or message["message"] not in ALLOWED_REVERSE_MESSAGES:
         raise V2ContractError("FORBIDDEN_EVALUATION_REVERSE_MESSAGE")
     hits = _scan_forbidden_outcome_keys(message)
     if hits:
         raise V2ContractError("OUTCOME_DATA_IN_REVERSE_MESSAGE:" + ",".join(hits))
+    required = {"event_type", "message", "export_bundle_hash", "receipt_hash"}
+    _require(message, required, "EVALUATION_RECEIPT")
+    if set(message) != required:
+        raise V2ContractError("UNEXPECTED_EVALUATION_REVERSE_FIELDS")
+    if message["event_type"] != "EVALUATION_INGEST_RECEIPT":
+        raise V2ContractError("INVALID_EVALUATION_RECEIPT_EVENT")
+    if not _is_sha256(message["export_bundle_hash"]):
+        raise V2ContractError("INVALID_EXPORT_BUNDLE_HASH")
+    if expected_export_bundle_hash is not None:
+        if not _is_sha256(expected_export_bundle_hash):
+            raise V2ContractError("INVALID_EXPECTED_EXPORT_BUNDLE_HASH")
+        if message["export_bundle_hash"] != expected_export_bundle_hash:
+            raise V2ContractError("EVALUATION_RECEIPT_EXPORT_BINDING_MISMATCH")
+    expected_receipt_hash = canonical_hash({key: value for key, value in message.items() if key != "receipt_hash"})
+    if message["receipt_hash"] != expected_receipt_hash:
+        raise V2ContractError("EVALUATION_RECEIPT_HASH_MISMATCH")
 
 
 def blinding_integrity(*, owner_status: str, supervisor_status: str) -> Dict[str, str]:

@@ -49,6 +49,7 @@ jobs:
             tests.test_research_os_canonical_identity \
             tests.test_research_os_feedback_authorization \
             tests.test_research_os_scientific_claim_admission \
+            tests.test_research_os_evaluation_membrane_admission \
             tests.test_research_os_v2_bridge \
             tests.test_research_os_v2_pipeline \
             tests.test_research_os_v2_worker_integration \

@@ -247,6 +247,16 @@ Research creates `FROZEN_EXPORT_INTENT` binding candidate, trial-history, epoch,
 
 Evaluation may return only an `EVALUATION_INGEST_RECEIPT` proving receipt of that exact bundle and containing no outcome.
 
+The technical receipt has exactly four fields: `event_type` (the literal
+`EVALUATION_INGEST_RECEIPT`), `message` (one of the three allowed codes),
+`export_bundle_hash` (lowercase hexadecimal SHA-256), and `receipt_hash` (the
+canonical hash of the other three fields). No free-text extension fields or
+structured export references are admitted. A receiver with a known frozen export
+must compare `expected_export_bundle_hash`; a valid receipt for another bundle
+cannot acknowledge its export. The deterministic pre-outcome pipeline exercises
+that comparison. Payload/hash checks alone do not authenticate an evaluator,
+establish runtime principal isolation or eliminate outcome-dependent timing.
+
 After accepted export, material candidate/protocol/trial-history/epoch-policy mutation is forbidden. A material change requires a new generation/export.
 
 ## Feedback lineage

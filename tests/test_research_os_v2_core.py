@@ -219,10 +219,10 @@ class V2CoreContractTests(unittest.TestCase):
             build_frozen_export_intent(contaminated)
 
     def test_reverse_channel_is_restricted(self):
-        receipt = build_evaluation_ingest_receipt(export_bundle_hash="x" * 64)
+        receipt = build_evaluation_ingest_receipt(export_bundle_hash="a" * 64)
         validate_reverse_message(receipt)
         with self.assertRaisesRegex(V2ContractError, "FORBIDDEN_EVALUATION_REVERSE_MESSAGE"):
-            build_evaluation_ingest_receipt(export_bundle_hash="x" * 64, message="EVALUATION_COMPLETE")
+            build_evaluation_ingest_receipt(export_bundle_hash="a" * 64, message="EVALUATION_COMPLETE")
 
     def test_blinding_contaminates_when_influencer_views_outcomes(self):
         self.assertEqual(blinding_integrity(owner_status="BLINDED", supervisor_status="BLINDED")["epoch_blinding_integrity"], "PASS")
