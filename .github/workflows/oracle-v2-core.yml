@@ -55,6 +55,7 @@ jobs:
             tests.test_research_os_source_pit_clocks \
             tests.test_research_os_frozen_trial_accounting \
             tests.test_research_os_frozen_receipt_binding \
+            tests.test_research_os_frozen_envelope_binding \
             research.research_os.tests.test_experiment_runner_frozen_protocol \
             research.research_os.tests.test_implementability_depth \
             research.research_os.tests.test_economic_readiness_integration \

@@ -205,6 +205,13 @@ class DryRunExperimentRunner:
         generation_id = payload.get("generation_id") if isinstance(payload, Mapping) else None
         if not isinstance(candidate, Mapping):
             blockers.append("FROZEN_PROTOCOL_CANDIDATE_MISSING")
+        if isinstance(payload, Mapping) and sha256_json(payload) != envelope.get("protocol_hash"):
+            blockers.append("FROZEN_PROTOCOL_HASH_MISMATCH")
+        if isinstance(candidate, Mapping):
+            if candidate.get("hypothesis_id") != hypothesis_id:
+                blockers.append("FROZEN_PROTOCOL_HYPOTHESIS_BINDING_MISMATCH")
+            if candidate.get("generation_id") != generation_id:
+                blockers.append("FROZEN_PROTOCOL_GENERATION_BINDING_MISMATCH")
         if hypothesis_id in (None, ""):
             blockers.append("FROZEN_PROTOCOL_HYPOTHESIS_ID_MISSING")
         if generation_id in (None, ""):
@@ -306,6 +313,16 @@ class DryRunExperimentRunner:
         self.replay(plan)
         if not isinstance(plan.get("frozen_protocol"), Mapping):
             raise FrozenExperimentBindingError("FROZEN_PROTOCOL_NOT_PRESENT")
+
+        # Preserve the existing identity diagnostics even when the supplied
+        # envelope also carries a stale protocol hash after that identity edit.
+        payload = envelope.get("protocol_payload")
+        if isinstance(payload, Mapping):
+            if payload.get("generation_id") != plan["frozen_protocol"]["generation_id"]:
+                raise FrozenExperimentBindingError("GENERATION_BINDING_MISMATCH")
+            candidate = payload.get("candidate")
+            if isinstance(candidate, Mapping) and sha256_json(candidate) != plan["frozen_protocol"]["candidate_hash"]:
+                raise FrozenExperimentBindingError("CANDIDATE_BINDING_MISMATCH")
 
         rebound = self.plan(envelope, source_qualifications, runner_meta)
         if rebound.get("status") != "READY_FOR_REPRODUCIBLE_DRY_RUN":
