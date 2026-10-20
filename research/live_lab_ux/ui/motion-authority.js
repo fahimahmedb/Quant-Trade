@@ -5,9 +5,8 @@ import {sceneBusinessMotionAllowed} from './scene3d-policy.js';
 export function gestureFamily(agent,state){
  if(!agent?.animate||!sceneBusinessMotionAllowed(state))return null;
  if([ACTIVITY.SOURCE_RESEARCH,ACTIVITY.DOCUMENT_READING].includes(agent.activity))return 'reading';
- if(agent.activity===ACTIVITY.HYPOTHESIS_GENERATION)return 'ideation';
  if(agent.activity===ACTIVITY.CODING_TESTING)return 'typing';
- if([ACTIVITY.AUDIT,ACTIVITY.DATA_QUALIFICATION].includes(agent.activity))return 'comparison';
+ if([ACTIVITY.HYPOTHESIS_GENERATION,ACTIVITY.AUDIT,ACTIVITY.DATA_QUALIFICATION].includes(agent.activity))return 'comparison';
  if(agent.activity===ACTIVITY.CALCULATION)return 'economic';
  return null;
 }
