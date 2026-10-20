@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from math import isfinite
 from typing import Any, Dict, Iterable, List, Mapping, Sequence
 import hashlib
 import sys
@@ -58,6 +59,13 @@ BINDING_MISMATCH_ERRORS = {
 
 class FrozenExperimentBindingError(ValueError):
     """Raised when a pre-outcome experiment freeze is incomplete or changes materially."""
+
+
+def _valid_effective_trials(value: Any) -> bool:
+    return value == UNKNOWN or (
+        type(value) in (int, float) and value >= 0
+        and (not isinstance(value, float) or isfinite(value))
+    )
 
 
 def _copy_fields(source: Mapping[str, Any], fields: Sequence[str]) -> Dict[str, Any]:
@@ -225,11 +233,7 @@ class DryRunExperimentRunner:
                 blockers.append("FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID")
         if "effective_trials" in declared:
             effective = declared.get("effective_trials")
-            if effective != UNKNOWN and (
-                isinstance(effective, bool)
-                or not isinstance(effective, (int, float))
-                or effective < 0
-            ):
+            if not _valid_effective_trials(effective):
                 blockers.append("FROZEN_PROTOCOL_EFFECTIVE_TRIALS_INVALID")
 
         authoritative = {
@@ -341,6 +345,8 @@ class DryRunExperimentRunner:
                 raise ValueError("frozen binding hash mutation detected")
             if plan["plan"].get("binding_hashes") != computed_hashes:
                 raise ValueError("execution plan binding hash mismatch")
+            if not _valid_effective_trials(frozen_protocol.get("effective_trials")):
+                raise ValueError("FROZEN_PROTOCOL_EFFECTIVE_TRIALS_INVALID")
 
         receipt = plan.get("pre_outcome_receipt")
         if receipt is not None:

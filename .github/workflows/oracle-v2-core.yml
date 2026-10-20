@@ -53,6 +53,8 @@ jobs:
             tests.test_research_os_readiness_declarations \
             tests.test_research_os_fundamental_readiness \
             tests.test_research_os_source_pit_clocks \
+            tests.test_research_os_frozen_trial_accounting \
+            research.research_os.tests.test_experiment_runner_frozen_protocol \
             research.research_os.tests.test_implementability_depth \
             research.research_os.tests.test_economic_readiness_integration \
             research.research_os.tests.test_economic_readiness_validation \
