@@ -19,8 +19,12 @@ read in this order:
 3. `research/research_os/architecture/ORACLE_V2_CORE_SPEC.md`
 4. `research/research_os/runtime/ORACLE_V2_CORE_ROADMAP.md`
 5. `research/research_os/runtime/V2_CORE_POLICY.json`
-6. the code/tests relevant to the current V2 work package
-7. the V1 roadmap/checkpoints only when validating inherited V1 properties
+6. `research/research_os/runtime/V2_ACTIVE_EPOCH.json`
+7. `research/research_os/runtime/CODEX_V2_HANDOFF_20261020.md`
+8. the code/tests relevant to the current V2 work package
+9. the V1 roadmap/checkpoints only when validating inherited V1 properties
+
+The Codex handoff is a point-in-time continuation guide, not a substitute for fresh HEAD/CI reacquisition. If repository state advanced after the handoff commit, preserve and reconcile newer evidence.
 
 Current mission: implement and qualify Oracle Research OS V2 Core as an autonomous **pre-outcome** research pipeline.
 
