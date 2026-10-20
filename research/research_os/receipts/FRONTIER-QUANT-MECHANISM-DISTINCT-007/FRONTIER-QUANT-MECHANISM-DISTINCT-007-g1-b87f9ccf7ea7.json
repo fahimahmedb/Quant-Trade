@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-007/oracle-worker/legacy_duplicate_check.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T11:10:11Z",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-QUANT-MECHANISM-DISTINCT-007/FRONTIER-QUANT-MECHANISM-DISTINCT-007-g1-b87f9ccf7ea7-002.json"
+  ],
+  "input_head": "e3bfa3698481dd4ae5056ec7cdcb7f460db610a7",
+  "lease_generation": 1,
+  "receipt_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007-g1-b87f9ccf7ea7",
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007-g1-b87f9ccf7ea7",
+  "started_at": "2026-10-20T11:10:06Z",
+  "status": "COMPLETE",
+  "summary": "legacy_duplicate_check: CONTINUE; task=READY; release=a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007",
+  "worker_id": "oracle-research-v2.market_discovery"
+}
