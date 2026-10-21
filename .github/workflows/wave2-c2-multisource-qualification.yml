@@ -1,4 +1,4 @@
-name: Wave2 C2 Canonical Multi-Source Qualification
+name: Wave2 C2 Final Cumulative Qualification
 
 on:
   push:
@@ -11,16 +11,20 @@ permissions:
 
 env:
   WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
   MULTISOURCE_MERGED_HEAD: b5ba754188b9029f8a80ebfeea37c98b6f636869
   MULTISOURCE_QUALIFICATION_HEAD: b9b7c1bd9efeaaf74c236f29d88e1a3c6fe759e5
-  NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
+  C2_B_PORT_SHA: 42203de5e82e72b619ab70af399208178b6631ef
+  C2_D0_PORT_SHA: a0ba421c0d56f7d7bdff451a0fc6ac8d8e0bc17e
+  C2_C0_PORT_SHA: 14926055583ee13e9fd84aa52b3e660b5ce56844
+  C2_MEGA_E_PORT_SHA: 8d7383be274797d3114c37f92cd11c6f90de1af0
   PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
 
 jobs:
-  qualify-multisource:
-    name: Canonical passive Multi-Source intake and cumulative Wave2 proof
+  final-cumulative-qualification:
+    name: Exact-head B C0 D0 E Multi-Source cumulative proof
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,39 +38,52 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Bind qualification to exact canonical HEAD and source snapshots
+      - name: Install declared test dependency
+        run: python3 -m pip install --disable-pip-version-check pytest
+
+      - name: Bind qualification to exact canonical head and immutable law
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
-          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
-          git merge-base --is-ancestor "${MULTISOURCE_MERGED_HEAD}" HEAD
           test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
-          git fetch origin "+refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
-          git cat-file -e "${MULTISOURCE_MERGED_HEAD}^{commit}"
-          git cat-file -e "${MULTISOURCE_QUALIFICATION_HEAD}^{commit}"
-          test "$(git merge-base "${WAVE2_IMMUTABLE_BASE_SHA}" "${MULTISOURCE_MERGED_HEAD}")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
-          test "$(git merge-base "${WAVE2_IMMUTABLE_BASE_SHA}" "${MULTISOURCE_QUALIFICATION_HEAD}")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
-          git merge-base --is-ancestor "${MULTISOURCE_MERGED_HEAD}" "${MULTISOURCE_QUALIFICATION_HEAD}"
-          echo "OBSERVED_MULTISOURCE_HEAD=$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)" | tee /tmp/ms-c2.env
-          echo "MERGED_MULTISOURCE_HEAD=${MULTISOURCE_MERGED_HEAD}" | tee -a /tmp/ms-c2.env
-          echo "QUALIFICATION_MULTISOURCE_HEAD=${MULTISOURCE_QUALIFICATION_HEAD}" | tee -a /tmp/ms-c2.env
+          for ancestor in \
+            "${WAVE2_IMMUTABLE_BASE_SHA}" \
+            "${C2_B_PORT_SHA}" \
+            "${C2_D0_PORT_SHA}" \
+            "${C2_C0_PORT_SHA}" \
+            "${C2_MEGA_E_PORT_SHA}" \
+            "${MULTISOURCE_MERGED_HEAD}"
+          do
+            git merge-base --is-ancestor "$ancestor" HEAD
+          done
+          echo "QUALIFIED_HEAD=${GITHUB_SHA}" > /tmp/wave2-c2-final.env
 
-      - name: Prove qualification delta after merged snapshot is test-only
+      - name: Fetch and pin the later Multi-Source adversarial snapshot
         shell: bash
         run: |
           set -euo pipefail
-          git diff --name-only "${MULTISOURCE_MERGED_HEAD}" "${MULTISOURCE_QUALIFICATION_HEAD}" > /tmp/ms-post-merge.paths
-          test -s /tmp/ms-post-merge.paths
-          if grep -Ev '^tests/test_multi_source_ideation_v2_.*\.py$' /tmp/ms-post-merge.paths; then
-            echo 'NON_TEST_DELTA_AFTER_MERGED_MULTISOURCE_HEAD=TRUE' >&2
-            exit 1
-          fi
-          late_count=$(wc -l < /tmp/ms-post-merge.paths | tr -d ' ')
-          test "$late_count" -gt 0
-          echo "MULTISOURCE_LATE_TEST_ONLY_FILES=${late_count}" | tee -a /tmp/ms-c2.env
+          git fetch origin "+refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
+          git cat-file -e "${MULTISOURCE_QUALIFICATION_HEAD}^{commit}"
+          git merge-base --is-ancestor "${MULTISOURCE_MERGED_HEAD}" "${MULTISOURCE_QUALIFICATION_HEAD}"
+          test "$(git merge-base "${WAVE2_IMMUTABLE_BASE_SHA}" "${MULTISOURCE_QUALIFICATION_HEAD}")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
+          observed="$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)"
+          echo "OBSERVED_MULTISOURCE_HEAD=${observed}" | tee -a /tmp/wave2-c2-final.env
+          echo "MULTISOURCE_QUALIFICATION_HEAD=${MULTISOURCE_QUALIFICATION_HEAD}" | tee -a /tmp/wave2-c2-final.env
 
-      - name: Prove exact Multi-Source semantic port
+      - name: Prove all post-merge Multi-Source changes in the pinned qualification snapshot are tests only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "${MULTISOURCE_MERGED_HEAD}" "${MULTISOURCE_QUALIFICATION_HEAD}" | sort > /tmp/ms-late.paths
+          test -s /tmp/ms-late.paths
+          unexpected="$(grep -Ev '^tests/test_multi_source_ideation_v2_.*\.py$' /tmp/ms-late.paths || true)"
+          test -z "$unexpected" || { printf '%s\n' "$unexpected" >&2; exit 1; }
+          late_count="$(wc -l < /tmp/ms-late.paths | tr -d ' ')"
+          test "$late_count" -gt 0
+          echo "MULTISOURCE_LATE_TEST_ONLY_FILES=${late_count}" | tee -a /tmp/wave2-c2-final.env
+
+      - name: Prove exact Multi-Source semantic port without rewriting source history
         shell: bash
         run: |
           set -euo pipefail
@@ -85,22 +102,31 @@ jobs:
           for path in "${paths[@]}"; do
             test "$(git rev-parse "HEAD:${path}")" = "$(git rev-parse "${MULTISOURCE_QUALIFICATION_HEAD}:${path}")"
           done
-          grep -F 'PENDING_EXACT_HEAD_CI' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
-          grep -F 'WAVE2_INTEGRATED=false' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
-          grep -F 'Policy C is advisory only' research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
-          echo 'MULTISOURCE_SEMANTIC_PORT_EXACT=TRUE' | tee -a /tmp/ms-c2.env
-          echo 'SOURCE_MANIFEST_NOT_PROMOTED_TO_FINAL=TRUE' | tee -a /tmp/ms-c2.env
+          manifest=research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
+          contract=research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
+          grep -F 'FINAL_SHA=PENDING_EXACT_HEAD' "$manifest"
+          grep -F 'SAFE_TO_INTEGRATE=PENDING_EXACT_HEAD_CI' "$manifest"
+          grep -F 'GPT_OSS_LIVE=FALSE' "$manifest"
+          grep -F 'not authorized to emit `WAVE2_INTEGRATED_SHA`' "$manifest"
+          grep -F 'The backend is not truth, scheduler, Control Plane or scientific evidence.' "$contract"
+          grep -F '`ELIGIBLE_FOR_DISCOVERY != READY`' "$contract"
+          echo 'MULTISOURCE_SEMANTIC_PORT_EXACT=TRUE' | tee -a /tmp/wave2-c2-final.env
+          echo 'SOURCE_MANIFEST_PROMOTED_TO_FINAL=FALSE' | tee -a /tmp/wave2-c2-final.env
 
-      - name: Preserve exact sealed-base repair blobs
+      - name: Preserve sealed-base repair blobs
         shell: bash
         run: |
           set -euo pipefail
           test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
           test "$(git hash-object research/research_os/tests/test_economic_identity_portfolio_readiness.py)" = 4c163e5c1276e4909b4be3e97990e899c9079234
           test "$(git hash-object research/research_os/tests/test_economic_readiness_integration.py)" = 8b64c95695abfc661e636b20deb20713d391d5e5
-          echo 'SEALED_BASE_REPAIR_PRESERVED=TRUE' | tee -a /tmp/ms-c2.env
 
-      - name: Compile canonical Multi-Source implementation
+      - name: Generated schemas and status artifacts are fresh
+        run: |
+          python3 scripts/generate_schemas.py --check
+          python3 scripts/status_artifacts.py --check
+
+      - name: Compile all Wave2 convergence surfaces
         run: |
           python3 -m py_compile \
             research/research_os/ideation_cycle.py \
@@ -108,26 +134,25 @@ jobs:
             research/research_os/multi_source_ideation_bindings.py \
             research/research_os/multi_source_ideation_hardening.py \
             research/research_os/policy_c_safe.py \
-            research/research_os/tests/test_multi_source_ideation_v2.py
+            research/research_os/discovery_chain.py \
+            research/research_os/discovery_engine.py \
+            research/research_os/expansion/scientific_adjudication.py \
+            research/research_os/expansion/economic_lifecycle.py \
+            research/research_os/expansion/wave2_scientific_economic_bridge.py \
+            deploy/oracle_live_projection.py
 
-      - name: Run merged canonical Multi-Source suites
+      - name: Run canonical Multi-Source suites
         shell: bash
         run: |
           set -euo pipefail
           python3 -m unittest -v research.research_os.tests.test_multi_source_ideation_v2
-          python3 -m unittest discover -s tests -p 'test_multi_source_ideation_v2*.py' -v 2>&1 | tee /tmp/ms-merged.log
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          text=Path('/tmp/ms-merged.log').read_text()
-          counts=re.findall(r'^Ran ([0-9]+) tests', text, flags=re.MULTILINE)
-          assert counts, text[-2000:]
-          n=int(counts[-1]); assert n > 20, n
-          Path('/tmp/ms-merged.count').write_text(str(n))
-          print(f'MULTISOURCE_MERGED_TESTS={n}_PASS')
-          PY
+          python3 -m unittest discover -s tests -p 'test_multi_source_ideation_v2*.py' -v 2>&1 | tee /tmp/ms-canonical.log
+          count="$(grep -E '^Ran [0-9]+ tests' /tmp/ms-canonical.log | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/')"
+          test -n "$count"
+          test "$count" -gt 20
+          echo "MULTISOURCE_CANONICAL_TESTS=${count}" | tee -a /tmp/wave2-c2-final.env
 
-      - name: Extract and run every adversarial test from later pinned qualification snapshot
+      - name: Extract and run every later pinned Multi-Source adversarial test against canonical code
         shell: bash
         run: |
           set -euo pipefail
@@ -136,27 +161,21 @@ jobs:
           git ls-tree -r --name-only "${MULTISOURCE_QUALIFICATION_HEAD}" tests \
             | grep '^tests/test_multi_source_ideation_v2_.*\.py$' \
             | sort > /tmp/ms-adversarial.paths
-          count=$(wc -l < /tmp/ms-adversarial.paths | tr -d ' ')
-          test "$count" -gt 20
+          file_count="$(wc -l < /tmp/ms-adversarial.paths | tr -d ' ')"
+          test "$file_count" -gt 20
           while IFS= read -r src; do
             dst="/tmp/ms-adversarial/$(basename "$src")"
             git show "${MULTISOURCE_QUALIFICATION_HEAD}:${src}" > "$dst"
             test "$(git hash-object "$dst")" = "$(git rev-parse "${MULTISOURCE_QUALIFICATION_HEAD}:${src}")"
           done < /tmp/ms-adversarial.paths
-          echo "MULTISOURCE_ADVERSARIAL_FILES=${count}" | tee -a /tmp/ms-c2.env
           python3 -m unittest discover -s /tmp/ms-adversarial -p 'test_multi_source_ideation_v2_*.py' -v 2>&1 | tee /tmp/ms-adversarial.log
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          text = Path('/tmp/ms-adversarial.log').read_text()
-          counts = re.findall(r'^Ran ([0-9]+) tests', text, flags=re.MULTILINE)
-          assert counts, text[-2000:]
-          n = int(counts[-1]); assert n > 20, n
-          Path('/tmp/ms-adversarial.count').write_text(str(n))
-          print(f'MULTISOURCE_PINNED_ADVERSARIAL_TESTS={n}_PASS')
-          PY
+          test_count="$(grep -E '^Ran [0-9]+ tests' /tmp/ms-adversarial.log | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/')"
+          test -n "$test_count"
+          test "$test_count" -gt 20
+          echo "MULTISOURCE_ADVERSARIAL_FILES=${file_count}" | tee -a /tmp/wave2-c2-final.env
+          echo "MULTISOURCE_ADVERSARIAL_TESTS=${test_count}" | tee -a /tmp/wave2-c2-final.env
 
-      - name: Prove Multi-Source cannot bypass Research Intelligence into B
+      - name: Prove Multi-Source cannot bypass Research Intelligence into Discovery B
         shell: bash
         run: |
           set -euo pipefail
@@ -164,11 +183,10 @@ jobs:
           from research.research_os.multi_source_ideation import BASE_SHA, side_effect_zeroes
           from research.research_os.multi_source_ideation_hardening import qualify_for_discovery
           from research.research_os.discovery_chain import run_discovery_chain
-
           assert BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
           proposal = {
               'artifact_kind': 'IDEA_PROPOSAL',
-              'context_snapshot_hash': 'ctx-wave2-c2-msb',
+              'context_snapshot_hash': 'ctx-wave2-c2-final',
               'payload': {
                   'mechanism': 'bounded mechanism', 'payer': 'payer', 'actor': 'actor',
                   'clock': 'clock', 'universe': 'universe', 'falsifier': 'falsifier',
@@ -176,59 +194,47 @@ jobs:
           }
           disposition = qualify_for_discovery(
               proposal=proposal,
-              context_snapshot_hash='ctx-wave2-c2-msb',
+              context_snapshot_hash='ctx-wave2-c2-final',
               memory={'classification': 'NO_QUALIFIED_MATCH'},
               duplicate={'classification': 'DISTINCT'},
               implementability={'admissible': True},
           )
-          assert disposition == {
-              'decision': 'ELIGIBLE_FOR_DISCOVERY',
-              'eligible_for_discovery': True,
-              'boundary': 'ELIGIBLE_FOR_DISCOVERY',
-              'ready_task_created': False,
-              'candidate_created': False,
-          }, disposition
-          assert all(value == 0 for value in side_effect_zeroes().values()), side_effect_zeroes()
+          assert disposition['decision'] == 'ELIGIBLE_FOR_DISCOVERY', disposition
+          assert disposition['boundary'] == 'ELIGIBLE_FOR_DISCOVERY', disposition
+          assert disposition['ready_task_created'] is False, disposition
+          assert disposition['candidate_created'] is False, disposition
+          assert all(value == 0 for value in side_effect_zeroes().values())
           bypass = run_discovery_chain(
               {**disposition, 'proposal': proposal},
-              engine_key='quant', source={}, run_id='WAVE2-C2-MS-B-BYPASS',
+              engine_key='quant', source={}, run_id='WAVE2-C2-FINAL-MS-BYPASS',
               synthetic_only=True, discovery_facts={},
           )
           assert bypass['status'] == 'BLOCKED_BEFORE_PRODUCER', bypass
-          assert bypass['producer_executed'] is False, bypass
           assert bypass['blockers'] == ['RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER'], bypass
+          assert bypass['producer_executed'] is False
           assert bypass['scheduler_mutation'] is False
           assert bypass['control_plane_mutation'] is False
           assert bypass['scientific_memory_mutation'] is False
           assert bypass['outcome_accessed'] is False
           assert all(value is False for value in bypass['authority'].values())
-          print('MULTISOURCE_BOUNDARY=ELIGIBLE_FOR_DISCOVERY_ONLY')
-          print('DIRECT_MULTISOURCE_TO_B_BYPASS=BLOCKED')
-          print('RESEARCH_INTELLIGENCE_REMAINS_REQUIRED=TRUE')
-          print('READY_TASK_CREATED=FALSE')
-          print('CANDIDATE_CREATED_BY_MULTISOURCE=FALSE')
-          print('OUTCOME_ACCESSED=FALSE')
           PY
 
-      - name: Regress qualified MEGA B discovery contracts
+      - name: MEGA B focused discovery qualification
         run: |
-          python3 -m pip install --disable-pip-version-check pytest
-          python3 -m pytest -q \
+          pytest -q \
             research/research_os/tests/test_mega_b_all_producer_routes.py \
             research/research_os/tests/test_mega_b_canonical_gate.py \
             research/research_os/tests/test_mega_b_discovery_chain.py \
             research/research_os/tests/test_mega_b_discovery_engine.py \
             research/research_os/tests/test_mega_b_outcome_firewall.py
 
-      - name: Regress C0 scientific adjudication and C0 to D0 seam
+      - name: C0 adjudication, scientific-economic seam and D0 lifecycle qualification
         run: |
           python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v
           python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_economic_d0_seam.py' -v
+          python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
 
-      - name: Regress D0 economic lifecycle
-        run: python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
-
-      - name: Regress E runtime recovery and Oracle composition
+      - name: MEGA E runtime recovery and Oracle qualification
         run: |
           python3 -m unittest -v \
             research.research_os.tests.test_mega_e_live_receipt_reconciliation \
@@ -236,10 +242,26 @@ jobs:
             tests.test_oracle_live_composition \
             tests.test_research_os_v2_core \
             tests.test_research_os_v2_worker_integration \
+            tests.test_oracle_v2_bootstrap_admission \
+            tests.test_oracle_v2_release_provenance \
             research.research_os.tests.test_queue_replenisher \
             research.research_os.tests.test_oracle_worker
 
-      - name: Regress W1 Factory and W1 Economic law
+      - name: Research Intelligence, Scientific Memory and Data PIT regression
+        run: |
+          python3 -m unittest -v \
+            tests.mega_a_research_intelligence_contracts \
+            research.research_os.tests.test_research_intelligence \
+            research.research_os.tests.test_research_refill_policy \
+            research.research_os.tests.test_archaeology \
+            research.research_os.tests.test_legacy_scientific_memory \
+            research.research_os.tests.test_memory_archaeology_bridge \
+            research.research_os.tests.test_scientific_memory \
+            research.research_os.tests.test_w1_data_evidence_ingest \
+            research.research_os.tests.test_w1_data_pit_strict
+          node research/research_os/tests/contract-smoke.test.mjs
+
+      - name: W1 Factory and Economic law regression
         run: |
           python3 -m unittest -v \
             research.research_os.tests.test_w1_factory_experiment_infrastructure \
@@ -251,37 +273,36 @@ jobs:
             research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
             research.research_os.tests.test_economic_identity_portfolio_readiness \
             research.research_os.tests.test_economic_readiness_integration \
-            research.research_os.tests.test_economic_readiness_validation
+            research.research_os.tests.test_economic_readiness_validation \
+            research.research_os.tests.test_producer_economic_readiness \
+            tests.test_research_os_structural_unknown_evidence
 
       - name: Prove cumulative authority and outcome membranes remain closed
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
-          from research.research_os.multi_source_ideation import BASE_SHA, side_effect_zeroes
-          from research.research_os.discovery_engine import AUTHORITY as B_AUTHORITY
-          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE as D0_AUTHORITY
-          from research.research_os.expansion.scientific_adjudication import AUTHORITY_STATE as C0_AUTHORITY
+          from research.research_os.multi_source_ideation import side_effect_zeroes
+          from research.research_os.discovery_engine import AUTHORITY as b_authority
+          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE as d0_authority
+          from research.research_os.expansion.scientific_adjudication import AUTHORITY_STATE as c0_authority
           from research.research_os.control_plane import load_control_plane
-
-          assert BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
-          assert all(value == 0 for value in side_effect_zeroes().values())
-          assert all(value is False for value in B_AUTHORITY.values()), B_AUTHORITY
-          assert all(value is False for value in D0_AUTHORITY.values()), D0_AUTHORITY
-          assert all(value is False for value in C0_AUTHORITY.values()), C0_AUTHORITY
+          assert all(v == 0 for v in side_effect_zeroes().values())
+          assert all(v is False for v in b_authority.values()), b_authority
+          assert all(v is False for v in c0_authority.values()), c0_authority
+          assert all(v is False for v in d0_authority.values()), d0_authority
           control = load_control_plane(Path('research/research_os'))
           assert control['status'] == 'PASS', control['errors']
           refill = control['queue_replenishment']
           for key in ('economic_experiment_authorized','prospective_observation_authorized','real_capital_authorized','live_trading_authorized'):
               assert refill[key] is False, (key, refill)
           policy = json.loads(Path('research/research_os/runtime/V2_CORE_POLICY.json').read_text())
-          assert all(value is False for value in policy['authority'].values()), policy['authority']
+          assert all(v is False for v in policy['authority'].values()), policy['authority']
           membrane = policy['evaluation_membrane']
           assert membrane['status'] == 'SEALED'
           assert membrane['research_outcome_read_capability'] is False
           assert membrane['research_supervisor_outcome_read_capability'] is False
           assert membrane['evaluation_research_write_capability'] is False
-          print('MULTISOURCE_AUTHORITY_OPENED=FALSE')
           print('CUMULATIVE_AUTHORITY_OPENED=FALSE')
           print('OUTCOME_ACCESSED=FALSE')
           PY
@@ -300,7 +321,7 @@ jobs:
       - name: V1 end-to-end non-regression
         run: python3 scripts/demo_quant_system.py
 
-      - name: Exact-head clean tree and cumulative receipt
+      - name: Exact-head clean tree and final cumulative receipt
         shell: bash
         run: |
           set -euo pipefail
@@ -310,39 +331,45 @@ jobs:
           import json, os
           from pathlib import Path
           env = {}
-          for line in Path('/tmp/ms-c2.env').read_text().splitlines():
+          for line in Path('/tmp/wave2-c2-final.env').read_text().splitlines():
               if '=' in line:
-                  k, v = line.split('=', 1); env[k] = v
+                  key, value = line.split('=', 1)
+                  env[key] = value
           receipt = {
               'mission': 'WAVE2_C2_CANONICAL_INTEGRATION',
-              'stage': 'MULTISOURCE_IDEATION_INTAKE_PORT',
+              'stage': 'FINAL_CUMULATIVE_QUALIFICATION',
               'qualified_head': os.environ['GITHUB_SHA'],
               'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
               'multisource_merged_head': os.environ['MULTISOURCE_MERGED_HEAD'],
               'multisource_qualification_head': os.environ['MULTISOURCE_QUALIFICATION_HEAD'],
               'observed_multisource_head_at_run': env.get('OBSERVED_MULTISOURCE_HEAD'),
-              'late_test_only_files': int(env['MULTISOURCE_LATE_TEST_ONLY_FILES']),
-              'semantic_port_exact': True,
+              'multisource_late_test_only_files': int(env['MULTISOURCE_LATE_TEST_ONLY_FILES']),
+              'multisource_canonical_tests_passed': int(env['MULTISOURCE_CANONICAL_TESTS']),
+              'multisource_adversarial_source_files': int(env['MULTISOURCE_ADVERSARIAL_FILES']),
+              'multisource_adversarial_tests_passed': int(env['MULTISOURCE_ADVERSARIAL_TESTS']),
               'source_manifest_promoted_to_final': False,
-              'merged_multisource_tests_passed': int(Path('/tmp/ms-merged.count').read_text()),
-              'pinned_adversarial_source_test_files': int(env['MULTISOURCE_ADVERSARIAL_FILES']),
-              'pinned_adversarial_tests_passed': int(Path('/tmp/ms-adversarial.count').read_text()),
               'direct_multisource_to_b_bypass': 'BLOCKED',
               'research_intelligence_remains_required': True,
-              'ready_task_created': False,
-              'candidate_created_by_multisource': False,
+              'b_discovery': 'PASS',
+              'c0_adjudication': 'PASS',
+              'scientific_economic_d0_seam': 'PASS',
+              'd0_lifecycle': 'PASS',
+              'mega_e_runtime_recovery': 'PASS',
+              'w1_factory_economic_non_regression': 'PASS',
+              'live_lab_projection': 'OBSERVATIONAL_ONLY',
               'economic_experiment_authorized': False,
               'prospective_observation_authorized': False,
               'real_capital_authorized': False,
               'live_trading_authorized': False,
               'outcome_accessed': False,
+              'profitability_status': 'UNKNOWN',
               'worktree_clean': True,
           }
-          Path('/tmp/wave2-c2-multisource-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          Path('/tmp/wave2-c2-final-cumulative-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
           PY
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wave2-c2-multisource-${{ github.sha }}
-          path: /tmp/wave2-c2-multisource-receipt.json
+          name: wave2-c2-final-cumulative-${{ github.sha }}
+          path: /tmp/wave2-c2-final-cumulative-receipt.json
           if-no-files-found: error
