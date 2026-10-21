@@ -64,6 +64,14 @@ class EconomicDeclarationTests(unittest.TestCase):
         expression = bundle["economic_expression"]
         expression["spec"]["entry_rule"] = {"clock_id": "frozen-clock", "relation": "AFTER_INFORMATION"}
         expression["expression_hash"] = sha256_json(expression["spec"])
+        # A valid structured rule must be declared in the frozen intent too.
+        self.assertEqual(validate_economic_test_readiness(bundle)["status"], "BLOCK")
+        declared = bundle["protocol"]["protocol_payload"]["dataset_provenance"]["protocol"]
+        declared["economic_expression"]["entry_clock"] = deepcopy(expression["spec"]["entry_rule"])
+        declared["entry_definition"] = deepcopy(expression["spec"]["entry_rule"])
+        bundle["protocol"]["protocol_hash"] = sha256_json(bundle["protocol"]["protocol_payload"])
+        bundle["reproducibility"]["binding_payload"]["protocol_hash"] = bundle["protocol"]["protocol_hash"]
+        bundle["reproducibility"]["binding_hash"] = sha256_json(bundle["reproducibility"]["binding_payload"])
         self.assertEqual(validate_economic_test_readiness(bundle)["status"], READY)
 
     def test_nonfinite_effective_trials_cannot_be_claimed_known(self):

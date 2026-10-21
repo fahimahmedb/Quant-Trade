@@ -38,6 +38,8 @@ def freeze_experiment_envelope(
         "declared_metrics": experiment_meta.get("declared_metrics", []),
         "declared_decision_map": candidate["decision_map"],
     }
+    if "implementability_declaration" in experiment_meta:
+        protocol_payload["implementability_declaration"] = deepcopy(experiment_meta["implementability_declaration"])
     return {
         "experiment_id": f"EXP-{candidate['hypothesis_id']}-{candidate['generation_id']}",
         "hypothesis_generation": f"{candidate['hypothesis_id']}:{candidate['generation_id']}",

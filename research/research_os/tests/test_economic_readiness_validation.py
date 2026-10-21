@@ -45,7 +45,7 @@ def _fixture() -> dict:
         "protocol_hash": protocol_hash,
         "source_snapshot_hashes": source_hashes,
     }
-    return {
+    bundle = {
         "candidate": candidate,
         "candidate_hash": candidate_hash,
         "producer_id": "candidate-producer.v1",
@@ -126,6 +126,38 @@ def _fixture() -> dict:
             "result": "NOT_OBSERVED",
         },
     }
+
+
+    # Complete frozen metadata contract, still wholly synthetic and outcome-free.
+    expression = dict(zip(("instrument", "direction_exposure_semantics", "entry_clock", "exit_clock",
+                           "horizon", "position_expression"), expression_spec.values()), universe="U-1")
+    costs = {"model_id": "COST-FIXTURE-V1", "fees_bps": 0, "spread_bps": 1,
+             "slippage_bps": 2, "financing_bps": 0, "borrow_bps": 0}
+    capacity = {"model_id": "CAPACITY-FIXTURE-V1", "max_adv_fraction": .01,
+                "evidence_ref": "fixture://declared-liquidity"}
+    declared = {"clock": deepcopy(bundle["clock"]), "universe": deepcopy(bundle["universe"]),
+                "economic_expression": expression, "cost_assumptions": costs, "capacity_assumptions": capacity,
+                "multiplicity_family": "FAMILY-FIXTURE", "multiplicity_method": bundle["multiplicity"]["method"],
+                "observed_attempt_count": 0, "effective_trials": "UNKNOWN", "decision_map": candidate["decision_map"],
+                "entry_definition": expression["entry_clock"], "exit_definition": expression["exit_clock"]}
+    sources = [{"snapshot_hash": source_hashes[0], "available_at": "2026-10-15T09:00:00+00:00",
+                "route": {"route_id": "SRC-1", "source_class": "SYNTHETIC_FIXTURE", "transport": "MEMORY",
+                    "locator": "fixture://metadata", "permission_state": "FIXTURE_ONLY", "pit_mode": "VERSIONED_SNAPSHOT",
+                    "revision_policy": "IMMUTABLE", "survivorship_policy": "PIT_MEMBERSHIP", "timezone": "UTC",
+                    "availability_start": "2026-10-15T09:00:00+00:00", "contains_outcome": False}}]
+    implementation = {"status": "PASS", "basis": "SYNTHETIC_METADATA_ONLY"}
+    protocol_payload.update(dataset_provenance={"sources": sources, "protocol": declared},
+                            implementability_declaration=implementation,
+                            declared_decision_map=candidate["decision_map"])
+    bundle["sources"]["manifest_hash"] = sha256_json(sources)
+    bundle["sources"]["pit_metadata"][0]["revision_policy"] = "IMMUTABLE"
+    bundle["implementability"]["declaration_hash"] = sha256_json(implementation)
+    bundle["cost_model"]["declaration_hash"] = sha256_json(costs)
+    bundle["capacity"]["declaration_hash"] = sha256_json(capacity)
+    bundle["protocol"]["protocol_hash"] = sha256_json(protocol_payload)
+    binding_payload["protocol_hash"] = bundle["protocol"]["protocol_hash"]
+    bundle["reproducibility"]["binding_hash"] = sha256_json(binding_payload)
+    return bundle
 
 
 class EconomicReadinessValidationTests(unittest.TestCase):

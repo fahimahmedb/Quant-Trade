@@ -69,6 +69,7 @@ jobs:
             tests.test_research_os_implementability_contract \
             tests.test_research_os_readiness_declarations \
             tests.test_research_os_readiness_provenance_admission \
+            tests.test_research_os_frozen_readiness_inputs \
             tests.test_research_os_fundamental_readiness \
             tests.test_research_os_source_pit_clocks \
             tests.test_research_os_frozen_trial_accounting \

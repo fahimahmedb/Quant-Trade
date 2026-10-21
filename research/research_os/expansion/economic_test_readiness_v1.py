@@ -121,6 +121,7 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
 
     envelope = deepcopy(freeze_experiment_envelope(output, implementation, {
         "dataset_provenance": {"sources": p["sources"], "protocol": protocol},
+        "implementability_declaration": implementation,
         "cost_model_version": cost.get("model_id"), "code_version": meta.get("code_sha"),
         "declared_metrics": meta.get("declared_metrics"),
     }))

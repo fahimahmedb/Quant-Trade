@@ -50,6 +50,12 @@ class ReadinessProvenanceAdmissionTests(unittest.TestCase):
         package = json.loads(json.dumps(_fixture()))
         package['sources']['snapshot_hashes'].append('b'*64)
         package['protocol']['protocol_payload']['source_snapshot_hashes'].append('b'*64)
+        frozen_sources = package['protocol']['protocol_payload']['dataset_provenance']['sources']
+        source = deepcopy(frozen_sources[0])
+        source['snapshot_hash'] = 'b'*64
+        source['route']['route_id'] = 'SRC-2'
+        frozen_sources.append(source)
+        package['sources']['manifest_hash'] = sha256_json(frozen_sources)
         package['protocol']['protocol_hash'] = sha256_json(package['protocol']['protocol_payload'])
         package['reproducibility']['binding_payload'].update(
             protocol_hash=package['protocol']['protocol_hash'],
@@ -113,6 +119,11 @@ class ReadinessProvenanceAdmissionTests(unittest.TestCase):
         alias = deepcopy(direct['sources']['pit_metadata'][0])
         alias['source_id'] = 'DECLARED-ALIAS'
         direct['sources']['pit_metadata'].append(alias)
+        frozen_sources = direct['protocol']['protocol_payload']['dataset_provenance']['sources']
+        source = deepcopy(frozen_sources[0])
+        source['route']['route_id'] = 'DECLARED-ALIAS'
+        frozen_sources.append(source)
+        direct['sources']['manifest_hash'] = sha256_json(frozen_sources)
         # Fixture aliases share the same snapshot list, so preserve protocol bindings.
         direct['protocol']['protocol_hash'] = sha256_json(direct['protocol']['protocol_payload'])
         direct['reproducibility']['binding_payload']['protocol_hash'] = direct['protocol']['protocol_hash']
