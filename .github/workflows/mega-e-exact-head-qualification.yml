@@ -1,0 +1,115 @@
+name: MEGA E Exact-Head Runtime Qualification
+
+on:
+  push:
+    branches:
+      - builder/mega-e-autonomous-runtime-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mega-e-exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Bind qualification to exact pushed HEAD
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+          echo "MEGA_E_QUALIFIED_SHA=$(git rev-parse HEAD)"
+          git status --short
+
+      - name: Schema and status freshness
+        run: |
+          python3 scripts/generate_schemas.py --check
+          python3 scripts/status_artifacts.py --check
+
+      - name: Root unit suite
+        run: PYTHONPATH=src:. python3 -m unittest discover -s tests -v
+
+      - name: Research OS unit suite
+        run: PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -v
+
+      - name: MEGA E focused recovery and projection suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            tests.test_mega_e_live_receipt_reconciliation \
+            tests.test_oracle_live_projection \
+            tests.test_oracle_live_composition \
+            tests.test_research_os_v2_core \
+            tests.test_research_os_v2_worker_integration \
+            tests.test_oracle_v2_bootstrap_admission \
+            tests.test_oracle_v2_release_provenance \
+            research.research_os.tests.test_queue_replenisher \
+            research.research_os.tests.test_oracle_worker
+
+      - name: Control Plane and authority membrane proof
+        run: |
+          PYTHONPATH=src:. python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.control_plane import load_control_plane
+          from research.research_os.queue_replenisher import derive_refill_task
+
+          base = Path('research/research_os')
+          control = load_control_plane(base)
+          assert control['status'] == 'PASS', control['errors']
+          refill = control['queue_replenishment']
+          assert refill['authorized'] is True
+          assert refill['max_new_tasks_per_wake'] == 1
+          assert refill['producer_execution_same_refill_wake'] is False
+          assert refill['recursive_refill_same_wake'] is False
+          assert refill['free_form_task_invention_forbidden'] is True
+          authority_keys = ('economic_experiment_authorized', 'prospective_observation_authorized',
+                            'real_capital_authorized', 'live_trading_authorized')
+          assert all(refill[key] is False for key in authority_keys), refill
+          frontier = json.loads((base / 'runtime' / 'RESEARCH_FRONTIER.json').read_text())
+          assert frontier['require_global_queue_empty'] is True
+          assert frontier['max_new_tasks_per_refill'] == 1
+          assert frontier['producer_execution_same_refill_wake'] is False
+          assert frontier['recursive_refill_same_wake'] is False
+          assert all(value is False for value in frontier['authority'].values())
+          no_refill = derive_refill_task(frontier=frontier,
+                                         tasks=[{'task_id': 'ACTIVE', 'status': 'READY'}],
+                                         created_at='2026-10-21T16:00:00Z')
+          assert no_refill['status'] == 'NOOP_QUEUE_NOT_EMPTY'
+          assert no_refill['task'] is None
+          policy = json.loads((base / 'runtime' / 'V2_CORE_POLICY.json').read_text())
+          assert all(policy['authority'][key] is False for key in authority_keys), policy['authority']
+          membrane = policy['evaluation_membrane']
+          assert membrane['status'] == 'SEALED'
+          assert membrane['research_outcome_read_capability'] is False
+          assert membrane['research_supervisor_outcome_read_capability'] is False
+          assert membrane['evaluation_research_write_capability'] is False
+          print('MEGA_E_CONTROL_AUTHORITY=PASS')
+          print('OUTCOME_ACCESSED=FALSE')
+          PY
+
+      - name: Live Lab factual projection contracts
+        run: |
+          PYTHONPATH=src:. python3 -m unittest research.research_os.tests.test_live_lab_contract -v
+          node --test research/live_lab_ux/tests/*.test.js
+
+      - name: V1 end-to-end non-regression
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Exact-head clean tree
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+          git status --short
+          test -z "$(git status --porcelain)"
