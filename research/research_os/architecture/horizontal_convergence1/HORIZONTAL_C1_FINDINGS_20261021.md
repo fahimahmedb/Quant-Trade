@@ -2,6 +2,8 @@
 
 BASE_SHA=97165db2faa3300cef1f23de0045ed93d25eb9cb
 REPAIR_SOURCE_SHA=1342d6a0f11c0287f20049de7958d3922af68d5e
+AUXILIARY_CONTRACT_REPAIR_SHA=d88107fb2d872d203ca6f361df1adbb5fb8d24e4
+LATEST_REVIEW=CP004
 NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
 
 This is the intermediate review requested by the Owner after supplying this SHA.
@@ -130,7 +132,7 @@ new Vertical findings means no defect was established on that axis in this revie
 | D004 | VM/Site/D1/SSE/deployment qualification | INTENTIONALLY_DEFERRED | No production deployment or service probe performed. |
 | U001 | Specific global VOI allocator / starvation aging | UNKNOWN_OWNERSHIP | Canonical control has bounded priorities/resources and A accepts declared action costs. A particular optimizer/fairness algorithm is not justified by current evidence. |
 
-The detailed matrix has 43 rows and 92 family entries: 57 narrowly qualified,
+The CP002 matrix had 43 rows and 92 family entries: 57 narrowly qualified,
 4 partial, 21 future and 10 intentionally deferred. Entries overlap by submodule;
 counts are not a percentage of final completeness. One current partial is the
 Longitudinal-owned frozen declaration handoff. Other partials preserve incomplete
@@ -145,6 +147,58 @@ FINAL_WAVE2_COMPLETENESS_QUALIFIED=FALSE
 No rebase or future merge follows automatically. The final Wave-2 review must start
 on a new exact integrated SHA and re-evaluate every finding, including H001/H002
 and L001, against that architecture.
+
+## CP004 — additional current contract surfaces repaired
+
+H003 — CURRENT_REQUIRED_CAPABILITY / HORIZONTAL / REPAIRED.
+`ImplementabilityAssessment` in the existing auxiliary schema did not represent
+BLOCK_IMPLEMENTABILITY, UNKNOWN feasibility for source/PIT/expression/cost, or
+the producer's exact-expression, blocker, candidate-mutation and authority fields.
+Because additionalProperties=false, even ordinary complete PASS and PARK objects
+failed full Draft 2020-12 validation. The old required-key inclusion test did not
+detect the incompatibility. The schema now represents the actual emitted state
+and detail families, retaining closed additional properties, false authority and
+false mutation assertions. No implementation decision or model output changed.
+
+H004 — CURRENT_REQUIRED_CAPABILITY / HORIZONTAL / REPAIRED.
+The actual experiment producer emits protocol_payload as the frozen protocol
+object, or null when not frozen. The auxiliary ExperimentEnvelope definition had
+no property for either legitimate representation and rejected both outputs. Its
+existing definition now includes the object/null field. Frozen-body integrity and
+readiness remain the responsibility of existing freeze/hash/validator gates;
+schema acceptance is representation, never execution or authority grant.
+
+Six new tests validate actual producer outputs and JSON round trips using
+jsonschema 4.26.0 Draft202012Validator: PASS/PARK/BLOCK, every unknown feasibility
+family, frozen/nonfrozen envelopes, all four registered auxiliary producer families,
+legacy minimal-record readability, and negative controls for newly represented
+authority/mutation/undeclared fields. Before repair, 21 subcases failed across the
+6 methods. Afterwards the focused 34-test suite and full regression pass.
+
+The test requirement is declared in
+`research/research_os/tests/requirements-contract-tests.txt`; the existing SEC P0
+canonical CI gate explicitly installs it and runs the new contract suite. There
+is no runtime dependency, new validator service, new registry or redefinition of
+the six stable common contracts. Legacy minimal auxiliary records remain readable.
+
+U002 — UNKNOWN_OWNERSHIP / DOCUMENTARY_ONLY binding, no feature built.
+The registered shared `CandidateEconomicIdentity` schema requires a stable common
+wire shape (hypothesis_generation, asset_class, beta/momentum/etc. exposure fields).
+The current native economic_identity_v1 and structural_identity use a different
+Python/JSON shape. Native producer and consumer behavior exists and is tested;
+conformance of a current native-to-shared-wire adapter is not established. Parsing
+the shared schema or checking that its filename exists cannot qualify that binding.
+The CP004 matrix records this distinction explicitly and marks that binding
+documentary-only/unknown ownership. No current qualified requirement justifies
+inventing an adapter or redefining the stable common schema on this rail. Final
+convergence must resolve the intended interface and ownership before claiming it.
+
+The active matrix is now
+`HORIZONTAL_C1_COVERAGE_MATRIX_CP004_20261021.json`: 43 rows, 95 overlapping family
+entries, 59 narrowly qualified, 4 partial, 21 future, 10 intentionally deferred
+and 1 documentary-only binding question. The CP002 JSON/validation/logs remain
+historical evidence at their original source; they are not overwritten or treated
+as current full-schema qualification. L001 remains open, owner LONGITUDINAL.
 
 ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
 PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE

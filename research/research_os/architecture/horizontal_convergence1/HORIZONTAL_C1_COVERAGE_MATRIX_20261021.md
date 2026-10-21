@@ -1,5 +1,7 @@
 # Horizontal coverage — supplied Convergence #1 snapshot
 
+Historical CP002 revision. The active review is [CP004](HORIZONTAL_C1_COVERAGE_MATRIX_CP004_20261021.md), which adds full producer/schema validation and the shared-wire/native binding ownership question. This JSON/validation pair remains pinned historical evidence.
+
 Base: `97165db2faa3300cef1f23de0045ed93d25eb9cb`. This is an intermediate review, not final Wave-2 Phase B.
 
 [Detailed inventory](HORIZONTAL_C1_COVERAGE_MATRIX_20261021.json) provides named capability families, contracts, exact source hashes, methods/function tests, producers/consumers and limits for each row. [Findings](HORIZONTAL_C1_FINDINGS_20261021.md) records repairs, qualification fixture alignment and L001.
