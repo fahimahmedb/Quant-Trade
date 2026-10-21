@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Mapping, Optional
 from research.research_os.scientific_store import sha256_json
 from .experiment_geometry import geometry_from_mapping
 from .experiment_power import power_from_mapping
+from .experiment_runner import DryRunExperimentRunner
 
 
 READY = "READY_FOR_AUTHORIZED_ECONOMIC_TEST"
@@ -146,7 +147,6 @@ def _factory_declarations_match_frozen_protocol(
     *, frozen_protocol: Mapping[str, Any], geometry: Mapping[str, Any],
     power: Mapping[str, Any], protocol_hash: str,
 ) -> bool:
-    """Reconstruct declarations from the runner freeze, never from caller hashes."""
     try:
         expected_geometry = geometry_from_mapping(
             protocol_hash, frozen_protocol.get("geometry_declaration")
@@ -164,6 +164,8 @@ def _factory_declarations_match_frozen_protocol(
 def _experiment_infrastructure_valid(
     infrastructure: Mapping[str, Any], *, candidate_hash: str,
     protocol_hash: Any, reproducibility_payload: Any, multiplicity_method: Any,
+    source_hashes: List[str], pit_rows: List[Mapping[str, Any]],
+    trial_accounting: Mapping[str, Any],
 ) -> bool:
     if infrastructure.get("status") != "PASS" or infrastructure.get("blockers") not in ([], ()):
         return False
@@ -181,10 +183,12 @@ def _experiment_infrastructure_valid(
     registry = infrastructure.get("registry")
     frozen_registry = infrastructure.get("frozen_registry")
     frozen_protocol = infrastructure.get("frozen_protocol")
+    execution_plan = infrastructure.get("execution_plan")
+    replay = infrastructure.get("replay")
     geometry = infrastructure.get("geometry")
     power = infrastructure.get("power")
     if not all(isinstance(item, Mapping) for item in (
-        registry, frozen_registry, frozen_protocol, geometry, power
+        registry, frozen_registry, frozen_protocol, execution_plan, replay, geometry, power
     )):
         return False
     if not _entry_hash_valid(registry) or not _entry_hash_valid(frozen_registry):
@@ -197,12 +201,17 @@ def _experiment_infrastructure_valid(
         return False
     if registry.get("registry_id") != frozen_registry.get("registry_id"):
         return False
+
     frozen_hash = sha256_json(frozen_protocol)
     if registry.get("frozen_protocol_hash") != frozen_hash or frozen_registry.get("frozen_protocol_hash") != frozen_hash:
         return False
     if frozen_protocol.get("candidate_hash") != candidate_hash or frozen_protocol.get("protocol_hash") != protocol_hash:
         return False
     if frozen_protocol.get("multiplicity_method") != multiplicity_method:
+        return False
+    if sorted(frozen_protocol.get("source_snapshot_hashes") or []) != sorted(source_hashes):
+        return False
+    if frozen_protocol.get("source_pit_metadata") != pit_rows:
         return False
     if not _factory_declarations_match_frozen_protocol(
         frozen_protocol=frozen_protocol, geometry=geometry, power=power,
@@ -212,6 +221,42 @@ def _experiment_infrastructure_valid(
     if registry.get("geometry_hash") != geometry.get("declaration_hash"):
         return False
     if registry.get("power_hash") != power.get("declaration_hash"):
+        return False
+    if registry.get("trial_accounting_hash") != sha256_json(dict(trial_accounting)):
+        return False
+
+    plan_frozen = execution_plan.get("frozen_protocol")
+    plan_bindings = execution_plan.get("binding_hashes")
+    if plan_frozen != frozen_protocol or not isinstance(plan_bindings, Mapping):
+        return False
+    if dict(registry.get("binding_hashes") or {}) != dict(plan_bindings):
+        return False
+    if dict(frozen_registry.get("binding_hashes") or {}) != dict(plan_bindings):
+        return False
+    expected_reproducibility_hash = sha256_json({
+        "source": plan_bindings.get("source"),
+        "pit": plan_bindings.get("pit"),
+        "code_environment": plan_bindings.get("code_environment"),
+    })
+    if registry.get("reproducibility_hash") != expected_reproducibility_hash:
+        return False
+    if frozen_registry.get("reproducibility_hash") != expected_reproducibility_hash:
+        return False
+
+    try:
+        replayed = DryRunExperimentRunner().replay(deepcopy(dict(execution_plan)))
+    except (ValueError, PermissionError, KeyError, TypeError):
+        return False
+    if replayed != dict(replay):
+        return False
+    receipt = execution_plan.get("pre_outcome_receipt")
+    if not isinstance(receipt, Mapping):
+        return False
+    if registry.get("execution_plan_hash") != execution_plan.get("execution_plan_hash"):
+        return False
+    if registry.get("receipt_hash") != receipt.get("receipt_hash"):
+        return False
+    if registry.get("replay_hash") != sha256_json(dict(replay)):
         return False
 
     if not isinstance(reproducibility_payload, Mapping):
@@ -384,8 +429,11 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
             protocol_hash=protocol.get("protocol_hash"),
             reproducibility_payload=reproducibility_payload,
             multiplicity_method=multiplicity.get("method"),
+            source_hashes=source_hashes,
+            pit_rows=pit_rows,
+            trial_accounting=trial_accounting,
         ),
-        "Registry, runner freeze, geometry, power, receipt and replay must form one hash-valid candidate/protocol-bound pre-outcome attestation.",
+        "Registry, canonical runner plan/receipt/replay, geometry, power and trial accounting must form one exact pre-outcome attestation.",
     )
     add(
         "multiplicity_declaration",

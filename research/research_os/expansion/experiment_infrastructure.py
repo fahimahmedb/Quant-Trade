@@ -95,6 +95,8 @@ def bind_pre_outcome_infrastructure(
             "registry": final_entry.to_dict(),
             "frozen_registry": frozen_entry.to_dict(),
             "frozen_protocol": deepcopy(dict(frozen_protocol)),
+            "execution_plan": deepcopy(dict(plan)),
+            "replay": deepcopy(dict(replay)) if isinstance(replay, Mapping) else None,
             "geometry": geometry_payload,
             "power": power_payload,
             "outcome_accessed": False,

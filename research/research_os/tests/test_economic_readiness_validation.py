@@ -4,6 +4,8 @@ from copy import deepcopy
 import unittest
 
 from research.research_os.scientific_store import sha256_json
+from research.research_os.expansion.experiment_infrastructure import bind_pre_outcome_infrastructure
+from research.research_os.expansion.experiment_runner import DryRunExperimentRunner
 from research.research_os.expansion.validation_readiness import (
     BLOCK,
     READY,
@@ -32,6 +34,15 @@ def _fixture() -> dict:
         "outcome_access": "CLOSED",
     }
     protocol_hash = sha256_json(protocol_payload)
+    envelope = {
+        "experiment_id": "EXP-H-ECON-READY-001-G1",
+        "status": "FROZEN_READY_NO_OUTCOME",
+        "protocol_hash": protocol_hash,
+        "protocol_payload": protocol_payload,
+        "candidate_hash": candidate_hash,
+        "outcome_opened": False,
+        "result": "NOT_OBSERVED",
+    }
     expression_spec = {
         "instrument_rule": "fixture-instrument",
         "side_rule": "fixture-side",
@@ -41,12 +52,80 @@ def _fixture() -> dict:
         "sizing_rule": "fixture-size",
     }
     multiplicity_method = "all attempts counted before outcome access"
+    pit = [{
+        "source_id": "SRC-1",
+        "point_in_time_qualified": True,
+        "available_at": "2026-10-15T09:00:00+00:00",
+    }]
+    frozen_protocol = {
+        "universe": {"universe_id": "U-1"},
+        "clock": "fixture-clock",
+        "entry_definition": "fixture-entry",
+        "exit_definition": "fixture-exit",
+        "economic_expression": "fixture-expression",
+        "benchmark": "fixture-benchmark",
+        "gross_metric": "gross",
+        "net_metric": "net",
+        "cost_assumptions": {"model_id": "COST-FIXTURE-V1"},
+        "capacity_assumptions": {"model_id": "CAPACITY-FIXTURE-V1"},
+        "sample_definition": {"unit": "event"},
+        "sample_window": {"start": "2020-01-01", "end": "2025-12-31"},
+        "exclusions": [],
+        "missing_data_policy": "NO_IMPUTATION",
+        "revision_policy": "POINT_IN_TIME_ONLY",
+        "survivorship_policy": "POINT_IN_TIME_UNIVERSE",
+        "falsification_rule": candidate["falsification_scope"],
+        "decision_map": candidate["decision_map"],
+        "observed_attempt_count": 0,
+        "effective_trials": "UNKNOWN",
+        "multiplicity_family": "FAMILY-H-ECON-READY-001",
+        "multiplicity_method": multiplicity_method,
+    }
+    qualifications = [{
+        "status": "PASS",
+        "outcome_accessed": False,
+        "route_hash": sha256_json({"route": "SRC-1"}),
+        "snapshot_hash": source_hashes[0],
+    }]
+    runner_meta = {
+        "dataset_manifest_hash": sha256_json({"manifest": source_hashes}),
+        "code_hash": sha256_json({"code": "fixture"}),
+        "environment_hash": sha256_json({"environment": "fixture"}),
+        "seed": 7,
+        "declared_metrics": ["gross", "net"],
+        "code_sha": "fixture-code-sha",
+        "environment": "fixture-python",
+        "dependency_fingerprint": sha256_json({"deps": "fixture"}),
+        "source_pit_metadata": pit,
+        "frozen_protocol": frozen_protocol,
+    }
+    runner = DryRunExperimentRunner()
+    plan = runner.plan(envelope, qualifications, runner_meta)
+    assert plan["status"] == "READY_FOR_REPRODUCIBLE_DRY_RUN", plan["blockers"]
+    replay = runner.replay(plan)
+    trial_accounting = {
+        "hypothesis_id": candidate["hypothesis_id"],
+        "generation_id": candidate["generation_id"],
+        "observed_attempt_count": 0,
+        "effective_trials_status": "UNKNOWN",
+        "estimated_effective_trials": None,
+    }
+    infrastructure = bind_pre_outcome_infrastructure(
+        envelope=envelope,
+        plan=plan,
+        replay=replay,
+        trial_accounting=trial_accounting,
+    )
     binding_payload = {
         "candidate_hash": candidate_hash,
         "protocol_hash": protocol_hash,
         "source_snapshot_hashes": source_hashes,
+        "execution_plan_hash": plan["execution_plan_hash"],
+        "experiment_registry_id": infrastructure["registry"]["registry_id"],
+        "experiment_registry_hash": infrastructure["registry"]["entry_hash"],
+        "experiment_infrastructure_hash": infrastructure["infrastructure_hash"],
     }
-    bundle = {
+    return {
         "candidate": candidate,
         "candidate_hash": candidate_hash,
         "producer_id": "candidate-producer.v1",
@@ -56,15 +135,9 @@ def _fixture() -> dict:
             "evidence_hash": sha256_json({"legacy": "screened"}),
         },
         "sources": {
-            "manifest_hash": sha256_json({"manifest": source_hashes}),
+            "manifest_hash": runner_meta["dataset_manifest_hash"],
             "snapshot_hashes": source_hashes,
-            "pit_metadata": [
-                {
-                    "source_id": "SRC-1",
-                    "point_in_time_qualified": True,
-                    "available_at": "2026-10-15T09:00:00+00:00",
-                }
-            ],
+            "pit_metadata": pit,
         },
         "clock": {
             "timezone": "UTC",
@@ -87,28 +160,19 @@ def _fixture() -> dict:
             "status": "PASS",
             "declaration_hash": sha256_json({"implementability": "PASS"}),
         },
-        "protocol": {
-            "status": "FROZEN_READY_NO_OUTCOME",
-            "protocol_hash": protocol_hash,
-            "protocol_payload": protocol_payload,
-            "candidate_hash": candidate_hash,
-            "outcome_opened": False,
-        },
+        "protocol": envelope,
         "reproducibility": {
             "status": "BOUND",
             "binding_payload": binding_payload,
-            "binding_hash": "",
+            "binding_hash": sha256_json(binding_payload),
             "outcome_accessed": False,
         },
+        "experiment_infrastructure": infrastructure,
         "multiplicity": {
             "declared": True,
             "method": multiplicity_method,
         },
-        "trial_accounting": {
-            "observed_attempt_count": 0,
-            "effective_trials_status": "UNKNOWN",
-            "estimated_effective_trials": None,
-        },
+        "trial_accounting": trial_accounting,
         "cost_model": {
             "status": "DECLARED",
             "model_id": "COST-FIXTURE-V1",
@@ -125,81 +189,6 @@ def _fixture() -> dict:
             "result": "NOT_OBSERVED",
         },
     }
-
-    frozen_protocol = {
-        "candidate_hash": candidate_hash,
-        "protocol_hash": protocol_hash,
-        "multiplicity_method": multiplicity_method,
-    }
-    frozen_protocol_hash = sha256_json(frozen_protocol)
-    geometry = {
-        "protocol_hash": protocol_hash,
-        "status": "UNKNOWN",
-        "observation_unit": None,
-        "target_observations": None,
-        "dependence_assumption": None,
-        "cluster_key": None,
-        "max_cluster_share": None,
-        "sampling_rule": None,
-        "assumptions": [],
-    }
-    geometry["declaration_hash"] = sha256_json(geometry)
-    power = {
-        "protocol_hash": protocol_hash,
-        "status": "UNKNOWN",
-        "minimum_detectable_effect": None,
-        "baseline_scale": None,
-        "significance_level": None,
-        "desired_power": None,
-        "required_observations": None,
-        "method": None,
-        "assumptions": [],
-    }
-    power["declaration_hash"] = sha256_json(power)
-    registry_payload = {
-        "registry_id": "EXR-VALIDATOR-FIXTURE",
-        "candidate_hash": candidate_hash,
-        "protocol_hash": protocol_hash,
-        "frozen_protocol_hash": frozen_protocol_hash,
-        "geometry_hash": geometry["declaration_hash"],
-        "power_hash": power["declaration_hash"],
-        "lifecycle": "REPLAY_VERIFIED",
-    }
-    registry = {**registry_payload, "entry_hash": sha256_json(registry_payload)}
-    frozen_payload = {
-        "registry_id": registry["registry_id"],
-        "candidate_hash": candidate_hash,
-        "protocol_hash": protocol_hash,
-        "frozen_protocol_hash": frozen_protocol_hash,
-        "geometry_hash": geometry["declaration_hash"],
-        "power_hash": power["declaration_hash"],
-        "lifecycle": "FROZEN",
-    }
-    frozen_registry = {**frozen_payload, "entry_hash": sha256_json(frozen_payload)}
-    infrastructure = {
-        "status": "PASS",
-        "blockers": [],
-        "registry": registry,
-        "frozen_registry": frozen_registry,
-        "frozen_protocol": frozen_protocol,
-        "geometry": geometry,
-        "power": power,
-        "outcome_accessed": False,
-        "economic_result": "NOT_OBSERVED",
-        "economic_experiment_authorized": False,
-        "prospective_observation_authorized": False,
-        "real_capital_authorized": False,
-        "live_trading_authorized": False,
-    }
-    infrastructure["infrastructure_hash"] = sha256_json(infrastructure)
-    bundle["experiment_infrastructure"] = infrastructure
-    binding_payload.update({
-        "experiment_registry_id": registry["registry_id"],
-        "experiment_registry_hash": registry["entry_hash"],
-        "experiment_infrastructure_hash": infrastructure["infrastructure_hash"],
-    })
-    bundle["reproducibility"]["binding_hash"] = sha256_json(binding_payload)
-    return bundle
 
 
 def _rehash_infrastructure(fixture: dict) -> None:
@@ -243,8 +232,6 @@ class EconomicReadinessValidationTests(unittest.TestCase):
         _rehash_infrastructure(fixture)
         receipt = validate_economic_test_readiness(fixture)
         self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
-        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["reason_code"],
-                         "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED")
 
     def test_block_on_self_consistent_geometry_forgery_not_present_in_runner_freeze(self):
         fixture = _fixture()
@@ -271,6 +258,14 @@ class EconomicReadinessValidationTests(unittest.TestCase):
     def test_block_on_multiplicity_method_drift_from_runner_freeze(self):
         fixture = _fixture()
         fixture["multiplicity"]["method"] = "different method after freeze"
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
+
+    def test_block_when_embedded_runner_plan_is_tampered_even_if_outer_hashes_are_rebuilt(self):
+        fixture = _fixture()
+        plan = fixture["experiment_infrastructure"]["execution_plan"]
+        plan["plan"]["seed"] = 999
+        _rehash_infrastructure(fixture)
         receipt = validate_economic_test_readiness(fixture)
         self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
 
