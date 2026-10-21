@@ -32,6 +32,14 @@ class DurableProposalLedgerTruthOperationalFirewallTests(unittest.TestCase):
         self.assertEqual(ledger.persist(dict(row)), "proposal-1")
         self.assertEqual(ledger.snapshot(), [row])
 
+    def test_absent_truth_metadata_is_not_observed_truth(self):
+        ledger = DurableProposalLedger()
+        row = {"proposal_id": "passive-opaque", "metadata": {"source": "bounded"}}
+        self.assertEqual(ledger.persist(row), "passive-opaque")
+        self.assertEqual(ledger.snapshot(), [row])
+        row2 = {"proposal_id": "passive-status", "status": "REVIEW_REQUIRED"}
+        self.assertEqual(ledger.persist(row2), "passive-status")
+
     def test_identity_collision_is_immutable(self):
         ledger = DurableProposalLedger()
         ledger.persist(self.base_row())
@@ -49,9 +57,13 @@ class DurableProposalLedgerTruthOperationalFirewallTests(unittest.TestCase):
             with self.subTest(key=key):
                 self.assert_rejected({"nested": {key: value}})
 
-    def test_outcome_access_must_remain_false(self):
+    def test_outcome_access_if_present_must_remain_false(self):
         self.assert_rejected({"outcome_accessed": True})
         self.assert_rejected({"nested": {"outcome_accessed": True}})
+        ledger = DurableProposalLedger()
+        row = self.base_row()
+        row.pop("outcome_accessed")
+        self.assertEqual(ledger.persist(row), "proposal-1")
 
     def test_operational_identifiers_and_capabilities_are_rejected_recursively(self):
         forbidden = (
@@ -65,18 +77,16 @@ class DurableProposalLedgerTruthOperationalFirewallTests(unittest.TestCase):
             with self.subTest(key=key):
                 self.assert_rejected({"nested": {key: "forbidden"}})
 
-    def test_only_passive_statuses_are_accepted(self):
+    def test_only_passive_statuses_are_accepted_when_status_is_present(self):
         for status in ("READY", "LEASED", "RUNNING", "RETRY", "EXECUTED", "FINAL", "COMPLETE"):
             with self.subTest(status=status):
                 self.assert_rejected({"status": status})
+        ledger = DurableProposalLedger()
+        self.assertEqual(ledger.persist({"proposal_id": "status-absent"}), "status-absent")
 
-    def test_proposal_id_and_explicit_outcome_false_are_required(self):
+    def test_proposal_id_is_required(self):
         row = self.base_row()
         row.pop("proposal_id")
-        with self.assertRaises(ValueError):
-            DurableProposalLedger().persist(row)
-        row = self.base_row()
-        row.pop("outcome_accessed")
         with self.assertRaises(ValueError):
             DurableProposalLedger().persist(row)
 

@@ -108,7 +108,7 @@ class SourceClaimLedger:
 
 
 class DurableProposalLedger:
-    """Thread-safe restartable passive ledger; never a queue, scheduler or outcome store."""
+    """Thread-safe restartable passive ledger; never operational work or an outcome store."""
 
     FORBIDDEN_KEYS = {
         "lease", "lease_id", "lease_owner", "lease_expires_at", "heartbeat", "worker_owner",
@@ -136,7 +136,7 @@ class DurableProposalLedger:
 
     @classmethod
     def _reject_observed_truth(cls, value: Any, path: str = "record") -> None:
-        """Permit only explicit non-observation sentinels; reject observed scientific/economic truth."""
+        """Absent truth fields are allowed; any present truth field must remain non-observed."""
         if isinstance(value, Mapping):
             for key, nested in value.items():
                 normalized = str(key).strip().lower()
@@ -171,11 +171,9 @@ class DurableProposalLedger:
         row = deepcopy(dict(record))
         self._reject_operational_keys(row)
         self._reject_observed_truth(row)
-        status = str(row.get("status", "")).upper()
-        if status not in self.ALLOWED_STATUS:
+        status = str(row.get("status", "")).strip().upper()
+        if status and status not in self.ALLOWED_STATUS:
             raise ValueError("non-passive status forbidden in Proposal Ledger")
-        if row.get("outcome_accessed") is not False:
-            raise ValueError("Proposal Ledger requires outcome_accessed false")
         rid = str(row.get("proposal_id") or "")
         if not rid:
             raise ValueError("Proposal Ledger requires proposal_id")
