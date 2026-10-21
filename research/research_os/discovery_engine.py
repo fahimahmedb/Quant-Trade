@@ -29,8 +29,10 @@ AUTHORITY = {
 }
 _SAFE_OUTCOME_TEXT = {UNKNOWN, "NOT_OBSERVED", "NOT_AUTHORIZED", "UNEXECUTED", "SEALED_BY_AUTHORITY"}
 _OUTCOME_KEYS = {
-    "pnl", "profit", "profitability", "return", "returns", "observed_return",
-    "realized_return", "sharpe", "performance", "economic_result", "outcome", "outcomes",
+    "alpha", "observed_alpha", "pnl", "realized_pnl", "profit", "profitability",
+    "return", "returns", "return_series", "observed_return", "realized_return",
+    "sharpe", "performance", "effect_size", "observed_effect", "market_response",
+    "price_response", "economic_result", "outcome", "outcomes",
 }
 _REQUIRED_EXPRESSION_FIELDS = (
     "direction_exposure_semantics", "eligibility", "position_expression",
@@ -204,8 +206,10 @@ def _identity_keys(discovery: Mapping[str, Any]) -> Dict[str, Any]:
     mechanism_payload = {"mechanism_identity": hints.get("mechanism_identity"), "payer": discovery.get("payer"), "actor": actor}
     exposure_payload = {"economic_exposure": hints.get("economic_exposure"), "universe": discovery.get("universe"), "horizon": discovery.get("horizon")}
     expression_payload = {**exposure_payload, "instrument": discovery.get("instrument"), "wrapper": discovery.get("wrapper")}
+
     def key(payload: Mapping[str, Any]) -> Any:
         return _stable_key(payload) if all(_known(v) for v in payload.values()) else UNKNOWN
+
     return {"mechanism_key": key(mechanism_payload), "exposure_key": key(exposure_payload), "expression_key": key(expression_payload)}
 
 
