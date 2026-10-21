@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import json
+from pathlib import Path
 import unittest
 
 from research.research_os.expansion.economic_test_readiness_v1 import READY, economic_test_readiness
@@ -37,6 +39,37 @@ class W1FactoryEconomicIntegrationTests(unittest.TestCase):
         self.assertIn("POWER_DECLARATION_UNKNOWN", infrastructure["declaration_gaps"])
         self.assertEqual(result["validator"]["checks"]["experiment_infrastructure"]["status"], "PASS")
         self.assertFalse(infrastructure["outcome_accessed"])
+
+    def test_public_contract_schema_tracks_real_attestation_shape(self):
+        result = self.run_package()
+        self.assertEqual(result["status"], READY, result["block_reasons"])
+        infrastructure = result["experiment_infrastructure"]
+        root = Path(__file__).resolve().parents[3]
+        schema = json.loads((root / "research/research_os/contracts/experiment-infrastructure.schema.json").read_text())
+
+        self.assertIs(schema["additionalProperties"], False)
+        self.assertEqual(set(schema["properties"]), set(infrastructure))
+        self.assertEqual(set(schema["required"]), set(infrastructure))
+
+        definitions = schema["$defs"]
+        for name in ("registry", "frozen_registry"):
+            self.assertIs(definitions["registry"]["additionalProperties"], False)
+            self.assertEqual(set(definitions["registry"]["properties"]), set(infrastructure[name]))
+            self.assertEqual(set(definitions["registry"]["required"]), set(infrastructure[name]))
+
+        for name in ("geometry", "power"):
+            self.assertIs(definitions[name]["additionalProperties"], False)
+            self.assertEqual(set(definitions[name]["properties"]), set(infrastructure[name]))
+            self.assertEqual(set(definitions[name]["required"]), set(infrastructure[name]))
+            self.assertEqual(len(infrastructure[name]["declaration_hash"]), 64)
+
+        self.assertTrue(set(definitions["frozenProtocol"]["required"]).issubset(infrastructure["frozen_protocol"]))
+        self.assertTrue(set(definitions["executionPlan"]["required"]).issubset(infrastructure["execution_plan"]))
+        self.assertEqual(set(definitions["replay"]["properties"]), set(infrastructure["replay"]))
+        self.assertEqual(set(definitions["replay"]["required"]), set(infrastructure["replay"]))
+        receipt = infrastructure["execution_plan"]["pre_outcome_receipt"]
+        self.assertEqual(set(definitions["preOutcomeReceipt"]["properties"]), set(receipt))
+        self.assertEqual(set(definitions["preOutcomeReceipt"]["required"]), set(receipt))
 
     def test_declared_geometry_and_power_are_protocol_bound_without_empirical_claim(self):
         package = fixture()

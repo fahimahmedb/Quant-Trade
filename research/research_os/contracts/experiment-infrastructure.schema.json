@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "ExperimentInfrastructureBinding",
-  "description": "Pre-outcome attestation binding the canonical frozen experiment to registry identity, planned geometry/power declarations, existing runner receipt and deterministic replay. This schema grants no execution or economic authority.",
+  "description": "Pre-outcome attestation binding the canonical frozen experiment to registry identity, planned geometry/power declarations, the canonical runner plan/receipt and deterministic replay. This schema grants no execution or economic authority.",
   "type": "object",
   "required": [
     "status",
@@ -11,6 +11,9 @@
     "declaration_gaps",
     "registry",
     "frozen_registry",
+    "frozen_protocol",
+    "execution_plan",
+    "replay",
     "geometry",
     "power",
     "outcome_accessed",
@@ -29,6 +32,9 @@
     "declaration_gaps": {"type": "array", "items": {"type": "string"}},
     "registry": {"$ref": "#/$defs/registry"},
     "frozen_registry": {"$ref": "#/$defs/registry"},
+    "frozen_protocol": {"$ref": "#/$defs/frozenProtocol"},
+    "execution_plan": {"$ref": "#/$defs/executionPlan"},
+    "replay": {"anyOf": [{"$ref": "#/$defs/replay"}, {"type": "null"}]},
     "geometry": {"$ref": "#/$defs/geometry"},
     "power": {"$ref": "#/$defs/power"},
     "outcome_accessed": {"const": false},
@@ -61,6 +67,7 @@
         "registry_id", "experiment_id", "hypothesis_id", "generation_id",
         "candidate_hash", "protocol_hash", "frozen_protocol_hash", "reproducibility_hash",
         "binding_hashes", "trial_accounting_hash", "geometry_hash", "power_hash", "lifecycle",
+        "execution_plan_hash", "receipt_hash", "replay_hash",
         "outcome_accessed", "economic_result", "economic_experiment_authorized",
         "prospective_observation_authorized", "real_capital_authorized", "live_trading_authorized",
         "entry_hash"
@@ -92,9 +99,118 @@
       },
       "additionalProperties": false
     },
+    "frozenProtocol": {
+      "type": "object",
+      "required": [
+        "freeze_version", "hypothesis_id", "generation_id", "candidate_hash", "protocol_hash",
+        "source_snapshot_hashes", "source_route_hashes", "source_pit_metadata",
+        "observed_attempt_count", "effective_trials", "multiplicity_family",
+        "seed", "environment", "code_sha", "code_hash", "environment_hash", "dependency_fingerprint"
+      ],
+      "properties": {
+        "freeze_version": {"type": "string", "minLength": 1},
+        "hypothesis_id": {"type": "string", "minLength": 1},
+        "generation_id": {"type": "string", "minLength": 1},
+        "candidate_hash": {"$ref": "#/$defs/hash"},
+        "protocol_hash": {"$ref": "#/$defs/hash"},
+        "source_snapshot_hashes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "source_route_hashes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "source_pit_metadata": {},
+        "observed_attempt_count": {"type": "integer", "minimum": 0},
+        "effective_trials": {"anyOf": [{"const": "UNKNOWN"}, {"type": "number", "minimum": 0}]},
+        "multiplicity_family": {"type": "string", "minLength": 1},
+        "multiplicity_method": {"type": "string", "minLength": 1},
+        "geometry_declaration": {"type": "object"},
+        "power_declaration": {"type": "object"},
+        "seed": {},
+        "environment": {},
+        "code_sha": {"type": "string", "minLength": 1},
+        "code_hash": {"type": "string", "minLength": 1},
+        "environment_hash": {"type": "string", "minLength": 1},
+        "dependency_fingerprint": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "preOutcomeReceipt": {
+      "type": "object",
+      "required": [
+        "receipt_version", "experiment_id", "status", "frozen_protocol_hash",
+        "execution_plan_hash", "binding_hashes", "outcome_access_authorized",
+        "outcome_accessed", "economic_result", "economic_experiment_authorized",
+        "prospective_observation_authorized", "real_capital_authorized",
+        "live_trading_authorized", "receipt_hash"
+      ],
+      "properties": {
+        "receipt_version": {"const": "pre-outcome-experiment-receipt.v1"},
+        "experiment_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["PRE_OUTCOME_READY", "BLOCK"]},
+        "frozen_protocol_hash": {"$ref": "#/$defs/hash"},
+        "execution_plan_hash": {"$ref": "#/$defs/hash"},
+        "binding_hashes": {"$ref": "#/$defs/bindingHashes"},
+        "outcome_access_authorized": {"const": false},
+        "outcome_accessed": {"const": false},
+        "economic_result": {"const": "NOT_OBSERVED"},
+        "economic_experiment_authorized": {"const": false},
+        "prospective_observation_authorized": {"const": false},
+        "real_capital_authorized": {"const": false},
+        "live_trading_authorized": {"const": false},
+        "receipt_hash": {"$ref": "#/$defs/hash"}
+      },
+      "additionalProperties": false
+    },
+    "executionPlan": {
+      "type": "object",
+      "required": [
+        "experiment_id", "status", "blockers", "runner_version", "execution_plan_hash", "plan",
+        "outcome_access_authorized", "outcome_accessed", "economic_result", "side_effects_authorized",
+        "reproducible_inputs_frozen", "frozen_protocol_capability", "frozen_protocol",
+        "binding_hashes", "pre_outcome_receipt"
+      ],
+      "properties": {
+        "experiment_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["READY_FOR_REPRODUCIBLE_DRY_RUN", "BLOCK"]},
+        "blockers": {"type": "array", "items": {"type": "string"}},
+        "runner_version": {"type": "string", "minLength": 1},
+        "execution_plan_hash": {"$ref": "#/$defs/hash"},
+        "plan": {
+          "type": "object",
+          "required": ["experiment_id", "protocol_hash", "execution_mode", "frozen_protocol_hash", "binding_hashes"],
+          "properties": {
+            "experiment_id": {"type": "string", "minLength": 1},
+            "protocol_hash": {"$ref": "#/$defs/hash"},
+            "execution_mode": {"const": "DRY_RUN_NO_OUTCOME"},
+            "frozen_protocol_hash": {"$ref": "#/$defs/hash"},
+            "binding_hashes": {"$ref": "#/$defs/bindingHashes"}
+          },
+          "additionalProperties": true
+        },
+        "outcome_access_authorized": {"const": false},
+        "outcome_accessed": {"const": false},
+        "economic_result": {"const": "NOT_OBSERVED"},
+        "side_effects_authorized": {"const": false},
+        "reproducible_inputs_frozen": {"type": "boolean"},
+        "frozen_protocol_capability": {"enum": ["READY", "BLOCKED", "LEGACY_DRY_RUN_ONLY"]},
+        "frozen_protocol": {"$ref": "#/$defs/frozenProtocol"},
+        "binding_hashes": {"$ref": "#/$defs/bindingHashes"},
+        "pre_outcome_receipt": {"$ref": "#/$defs/preOutcomeReceipt"}
+      },
+      "additionalProperties": false
+    },
+    "replay": {
+      "type": "object",
+      "required": ["experiment_id", "status", "execution_plan_hash", "outcome_accessed", "economic_result"],
+      "properties": {
+        "experiment_id": {"type": "string", "minLength": 1},
+        "status": {"const": "REPLAY_MATCH"},
+        "execution_plan_hash": {"$ref": "#/$defs/hash"},
+        "outcome_accessed": {"const": false},
+        "economic_result": {"const": "NOT_OBSERVED"}
+      },
+      "additionalProperties": false
+    },
     "geometry": {
       "type": "object",
-      "required": ["protocol_hash", "status", "observation_unit", "target_observations", "dependence_assumption", "cluster_key", "max_cluster_share", "sampling_rule", "assumptions"],
+      "required": ["protocol_hash", "status", "observation_unit", "target_observations", "dependence_assumption", "cluster_key", "max_cluster_share", "sampling_rule", "assumptions", "declaration_hash"],
       "properties": {
         "protocol_hash": {"$ref": "#/$defs/hash"},
         "status": {"enum": ["UNKNOWN", "DECLARED"]},
@@ -104,13 +220,14 @@
         "cluster_key": {"type": ["string", "null"]},
         "max_cluster_share": {"type": ["number", "null"], "exclusiveMinimum": 0, "maximum": 1},
         "sampling_rule": {"type": ["string", "null"]},
-        "assumptions": {"type": "array", "items": {"type": "string"}}
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "declaration_hash": {"$ref": "#/$defs/hash"}
       },
       "additionalProperties": false
     },
     "power": {
       "type": "object",
-      "required": ["protocol_hash", "status", "minimum_detectable_effect", "baseline_scale", "significance_level", "desired_power", "required_observations", "method", "assumptions"],
+      "required": ["protocol_hash", "status", "minimum_detectable_effect", "baseline_scale", "significance_level", "desired_power", "required_observations", "method", "assumptions", "declaration_hash"],
       "properties": {
         "protocol_hash": {"$ref": "#/$defs/hash"},
         "status": {"enum": ["UNKNOWN", "DECLARED", "DERIVED_FROM_DECLARED_ASSUMPTIONS"]},
@@ -120,7 +237,8 @@
         "desired_power": {"type": ["number", "null"], "exclusiveMinimum": 0.5, "exclusiveMaximum": 1},
         "required_observations": {"type": ["integer", "null"], "minimum": 2},
         "method": {"type": ["string", "null"]},
-        "assumptions": {"type": "array", "items": {"type": "string"}}
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "declaration_hash": {"$ref": "#/$defs/hash"}
       },
       "additionalProperties": false
     }
