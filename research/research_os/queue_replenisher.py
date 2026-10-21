@@ -10,7 +10,7 @@ from .frontier_source_planner_v2 import plan_frontier_source
 
 
 ACTIVE_STATUSES = {"READY", "CLAIMED"}
-TERMINAL_STATUSES = {"COMPLETE", "BLOCKED", "CANCELLED", "KILLED"}
+TERMINAL_STATUSES = {"COMPLETE", "BLOCKED", "FAILED", "CANCELLED", "KILLED"}
 SOURCE_PREFIX = "research/research_os/sources/"
 
 
@@ -55,6 +55,7 @@ def queue_summary(tasks: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         "claimed_count": sum(item.get("status") == "CLAIMED" for item in items),
         "active_count": sum(item.get("status") in ACTIVE_STATUSES for item in items),
         "terminal_count": sum(item.get("status") in TERMINAL_STATUSES for item in items),
+        "unknown_count": sum(item.get("status") not in ACTIVE_STATUSES | TERMINAL_STATUSES for item in items),
     }
 
 
@@ -134,6 +135,11 @@ def derive_refill_task(
     if frontier.get("recursive_refill_same_wake") is not False:
         raise ValueError("recursive refill is forbidden")
     authority = _safe_authority(frontier)
+
+    # An unsupported task state has no qualified scheduling meaning. Preserve
+    # it for reconciliation instead of treating it as an empty queue.
+    if summary["unknown_count"]:
+        return {"status": "BLOCKED_UNKNOWN_TASK_STATUS", "queue": summary, "task": None}
 
     if summary["active_count"] > 0:
         return {"status": "NOOP_QUEUE_NOT_EMPTY", "queue": summary, "task": None}

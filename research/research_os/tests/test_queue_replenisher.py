@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import unittest
 from copy import deepcopy
+import json
 from pathlib import Path
 
 from research.research_os.queue_replenisher import (
     derive_refill_task,
     load_frontier,
+    queue_summary,
     validate_derived_task,
 )
 
@@ -55,6 +57,50 @@ class QueueReplenisherTests(unittest.TestCase):
             created_at=self.now,
         )
         self.assertEqual(result["status"], "NOOP_QUEUE_NOT_EMPTY")
+
+    def test_every_contract_task_state_is_accounted_for(self) -> None:
+        contract = json.loads((self.base / "contracts/research-task.schema.json").read_text())
+        states = contract["properties"]["status"]["enum"]
+        for state in states:
+            with self.subTest(state=state):
+                summary = queue_summary([{"task_id": "CONTRACT-STATE", "status": state}])
+                self.assertEqual(summary["unknown_count"], 0)
+                self.assertEqual(summary["active_count"] + summary["terminal_count"], 1)
+                self.assertEqual(summary["active_count"], int(state in {"READY", "CLAIMED"}))
+        # Retain the historical terminal spelling already accepted by this reader.
+        self.assertEqual(queue_summary([{"status": "KILLED"}])["terminal_count"], 1)
+
+    def test_unrecognized_task_states_block_refill_with_an_explicit_disposition(self) -> None:
+        for state in ("UNKNOWN", "UNSUPPORTED_FUTURE_STATE", None):
+            with self.subTest(state=state):
+                result = derive_refill_task(
+                    frontier=self.frontier,
+                    tasks=[{"task_id": "UNRESOLVED", "status": state}],
+                    created_at=self.now,
+                )
+                self.assertEqual(result["status"], "BLOCKED_UNKNOWN_TASK_STATUS")
+                self.assertEqual(result["queue"]["unknown_count"], 1)
+                self.assertIsNone(result["task"])
+
+    def test_missing_status_does_not_mean_an_empty_queue(self) -> None:
+        result = derive_refill_task(
+            frontier=self.frontier, tasks=[{"task_id": "NO-STATUS"}], created_at=self.now,
+        )
+        self.assertEqual(result["status"], "BLOCKED_UNKNOWN_TASK_STATUS")
+        self.assertIsNone(result["task"])
+
+    def test_failed_task_is_terminal_without_preventing_legitimate_followup(self) -> None:
+        result = derive_refill_task(
+            frontier=self.frontier,
+            tasks=[{"task_id": "FAILED-ATTEMPT", "status": "FAILED"}],
+            created_at=self.now,
+        )
+        self.assertEqual(result["queue"]["terminal_count"], 1)
+        self.assertEqual(result["queue"]["unknown_count"], 0)
+        self.assertEqual(result["status"], "DERIVED_ONE_READY_TASK")
+        self.assertTrue(all(result["task"]["authority"][key] is False for key in (
+            "economic_experiment_authorized", "prospective_observation_authorized",
+            "real_capital_authorized", "live_trading_authorized")))
 
     def test_selection_rotates_by_durable_issue_count(self) -> None:
         first = derive_refill_task(

@@ -317,6 +317,28 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         worker.now = lambda: harness.now
         return harness, worker
 
+    def test_v2_source_aware_refill_persists_unknown_queue_block_without_ideation(self):
+        harness, worker = self.real_worker()
+        def unresolved(snapshot):
+            writes = {}
+            for task in snapshot.tasks():
+                task['status'] = 'UNSUPPORTED_FUTURE_STATE'
+                writes['research/research_os/tasks/' + task['task_id'] + '.json'] = task
+            return writes
+        harness.remote_change(unresolved)
+        before = harness.count_paths('tasks/')
+        result = worker.wake()
+        self.assertEqual(result['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+        self.assertEqual(result['queue']['unknown_count'], before)
+        self.assertEqual(harness.count_paths('tasks/'), before)
+        self.assertEqual(harness.model.calls, 0)
+        self.assertEqual(harness.count_paths('artifacts/'), 0)
+        with harness.store.snapshot() as snapshot:
+            wakes = [snapshot.read(p) for p in snapshot.blobs
+                     if '/runtime/worker_wakes/' in p]
+        self.assertTrue(any(w['status'] == 'BLOCKED_UNKNOWN_TASK_STATUS' for w in wakes))
+        self.assertTrue(all(v is False for v in result['authority'].values()))
+
     def test_real_git_claim_counts_ideation_before_crash_and_replay(self):
         harness, worker = self.real_worker()
         worker.wake()

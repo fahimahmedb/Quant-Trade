@@ -123,6 +123,32 @@ class WorkerTests(unittest.TestCase):
         with self.store.snapshot() as snapshot:
             return len([p for p in snapshot.blobs if p.startswith(PREFIX + prefix)])
 
+    def test_unknown_queue_state_has_a_durable_block_and_recovers_after_correction(self):
+        def change_status(status):
+            def mutate(snapshot):
+                task = snapshot.read(PREFIX + 'tasks/RECOVER-TEST-001.json')
+                task['status'] = status
+                return {PREFIX + 'tasks/RECOVER-TEST-001.json': task}
+            self.remote_change(mutate)
+
+        change_status('UNSUPPORTED_FUTURE_STATE')
+        result = self.worker().wake()
+        self.assertEqual(result['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+        self.assertEqual(result['queue']['unknown_count'], 1)
+        self.assertEqual(self.count_paths('tasks/'), 1)
+        self.assertEqual(self.model.calls, 0)
+        with self.store.snapshot() as snapshot:
+            wakes = [snapshot.read(path) for path in snapshot.blobs
+                     if path.startswith(PREFIX + 'runtime/worker_wakes/')]
+        self.assertTrue(any(wake['status'] == 'BLOCKED_UNKNOWN_TASK_STATUS'
+                            and wake['queue']['unknown_count'] == 1 for wake in wakes))
+        self.store = LocalStore(self.root / 'restarted-unknown-queue', self.remote)
+        self.assertEqual(self.worker().wake()['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+        change_status('FAILED')
+        self.assertEqual(self.worker().wake()['status'], 'DERIVED_ONE_READY_TASK')
+        self.assertEqual(self.read('tasks/RECOVER-TEST-001.json')['status'], 'FAILED')
+        self.assertEqual(self.model.calls, 0)
+
     def test_two_wakes_continue_same_task_then_completed_restart_is_noop(self):
         first = self.worker(lane='evidence_data').wake()
         self.assertEqual(first['stage'], 'recover_or_qualify')
