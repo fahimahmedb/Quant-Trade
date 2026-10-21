@@ -11,7 +11,7 @@ import threading
 from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
-from .multi_source_ideation import POLICIES
+from .multi_source_ideation import POLICIES, _reject_outcome_fields
 
 
 def _hash(value: Any) -> str:
@@ -23,6 +23,8 @@ def proposal_identity(*, policy_kind: str, context_snapshot_hash: str, payload: 
         raise ValueError("unknown ideation policy")
     if not context_snapshot_hash or not provenance:
         raise ValueError("proposal identity requires frozen context and provenance")
+    _reject_outcome_fields(payload, "proposal_identity.payload")
+    _reject_outcome_fields(provenance, "proposal_identity.provenance")
     body = {
         "policy_kind": policy_kind,
         "context_snapshot_hash": context_snapshot_hash,
@@ -34,6 +36,8 @@ def proposal_identity(*, policy_kind: str, context_snapshot_hash: str, payload: 
 
 def ancestry_check(proposal: Mapping[str, Any], ancestry: Sequence[Mapping[str, Any]]) -> dict:
     """Exact ancestry is dispositive; labels alone never are."""
+    _reject_outcome_fields(proposal, "ancestry.proposal")
+    _reject_outcome_fields(ancestry, "ancestry.rows")
     parents = {str(x) for x in proposal.get("ancestor_ids", []) if x}
     if not parents:
         return {"classification": "UNKNOWN", "matches": []}
@@ -47,6 +51,8 @@ def ancestry_check(proposal: Mapping[str, Any], ancestry: Sequence[Mapping[str, 
 
 
 def combine_duplicate_evidence(*, semantic: Mapping[str, Any], ancestry: Mapping[str, Any]) -> dict:
+    _reject_outcome_fields(semantic, "duplicate.semantic")
+    _reject_outcome_fields(ancestry, "duplicate.ancestry")
     if ancestry.get("classification") == "ANCESTRY_MATCH":
         return {"classification": "ANCESTRY_MATCH", "basis": "EXPLICIT_LINEAGE"}
     classification = str(semantic.get("classification") or "UNKNOWN")
@@ -118,6 +124,7 @@ class DurableProposalLedger:
         lowered = {str(k).lower() for k in record}
         if lowered.intersection(self.FORBIDDEN_KEYS) or str(record.get("status", "")).upper() in self.FORBIDDEN_STATUS:
             raise ValueError("operational work semantics forbidden in Proposal Ledger")
+        _reject_outcome_fields(record, "proposal_ledger.record")
         row = deepcopy(dict(record))
         rid = str(row.get("proposal_id") or _hash(row))
         with self._lock:
@@ -133,6 +140,10 @@ class DurableProposalLedger:
 
 
 def qualify_for_discovery(*, proposal: Mapping[str, Any], context_snapshot_hash: str, memory: Mapping[str, Any], duplicate: Mapping[str, Any], implementability: Mapping[str, Any]) -> dict:
+    _reject_outcome_fields(proposal, "qualification.proposal")
+    _reject_outcome_fields(memory, "qualification.memory")
+    _reject_outcome_fields(duplicate, "qualification.duplicate")
+    _reject_outcome_fields(implementability, "qualification.implementability")
     if proposal.get("context_snapshot_hash") != context_snapshot_hash:
         return {"decision": "STALE_REQUALIFICATION_REQUIRED", "eligible_for_discovery": False}
     if proposal.get("artifact_kind") != "IDEA_PROPOSAL":
