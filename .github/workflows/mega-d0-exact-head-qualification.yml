@@ -129,10 +129,11 @@ jobs:
             set -e
             printf '%s\n' "$code" > "/tmp/${label}.exit"
             grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
-            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 > "/tmp/${label}.count" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
           }
           run_suite /tmp/wave2-base base
           run_suite "$GITHUB_WORKSPACE" head
+          echo '--- normalized test counts ---'
           cat /tmp/base.count
           cat /tmp/head.count
           diff -u /tmp/base.failures /tmp/head.failures
