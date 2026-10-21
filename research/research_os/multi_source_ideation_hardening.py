@@ -11,7 +11,7 @@ import threading
 from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
-from .multi_source_ideation import OUTCOME_KEYS, POLICIES, _reject_outcome_fields
+from .multi_source_ideation import POLICIES, _OUTCOME_KEYS as OUTCOME_KEYS, _reject_outcome_fields
 
 
 def _hash(value: Any) -> str:
