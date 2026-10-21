@@ -14,6 +14,9 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import fcntl
+import tempfile
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -112,12 +115,18 @@ def _digest(value: str) -> str:
 
 
 def _canonical_json(value: Any) -> bytes:
-    return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return (json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
             + "\n").encode("utf-8")
 
 
 def _record_id(prefix: str, payload: dict[str, Any]) -> str:
     return f"{prefix}:" + hashlib.sha256(_canonical_json(payload)).hexdigest()
+
+
+def _record_digest(value: str, prefix: str) -> str:
+    if not isinstance(value, str) or not value.startswith(prefix + ":"):
+        raise ValueError(f"expected {prefix} record identity")
+    return _digest("sha256:" + value[len(prefix) + 1:])
 
 
 def _parse_timestamp(value: str) -> datetime:
@@ -143,9 +152,10 @@ def _fsync_directory(path: Path) -> None:
 
 def _atomic_write(path: Path, payload: bytes) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.parent / f".{path.name}.{os.getpid()}.tmp"
+    fd, name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    temporary = Path(name)
     try:
-        with temporary.open("wb") as handle:
+        with os.fdopen(fd, "wb") as handle:
             handle.write(payload)
             handle.flush()
             os.fsync(handle.fileno())
@@ -222,7 +232,17 @@ class EvidenceStore:
         self.manifest_path = self.root / "manifest.jsonl"
         self._fault_hook = fault_hook
         self.root.mkdir(parents=True, exist_ok=True)
-        _recover_torn_jsonl_tail(self.manifest_path)
+        with self._manifest_lock():
+            _recover_torn_jsonl_tail(self.manifest_path)
+
+    @contextmanager
+    def _manifest_lock(self):
+        fd = os.open(self.root / ".manifest.lock", os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            yield
+        finally:
+            os.close(fd)
 
     def _fault(self, stage: str, **context: Any) -> None:
         if self._fault_hook is not None:
@@ -230,10 +250,11 @@ class EvidenceStore:
 
     def _append_manifest_once(self, record: dict[str, Any], identity_field: str) -> None:
         identity = record[identity_field]
-        for existing in self.read_manifest():
-            if existing.get("kind") == record.get("kind") and existing.get(identity_field) == identity:
-                return
-        _append_jsonl(self.manifest_path, record)
+        with self._manifest_lock():
+            for existing in _read_jsonl_strict(self.manifest_path):
+                if existing.get("kind") == record.get("kind") and existing.get(identity_field) == identity:
+                    return
+            _append_jsonl(self.manifest_path, record)
 
     def object_path(self, sha256: str) -> Path:
         digest = _digest(sha256)
@@ -244,11 +265,11 @@ class EvidenceStore:
 
     def _validation_path(self, raw_sha256: str, validation_id: str) -> Path:
         raw_digest = _digest(raw_sha256)
-        validation_digest = validation_id.split(":", 1)[-1]
+        validation_digest = _record_digest(validation_id, "validation")
         return self.validated_root / raw_digest / f"{validation_digest}.json"
 
     def _derived_path(self, artifact_id: str) -> Path:
-        digest = artifact_id.split(":", 1)[-1]
+        digest = _record_digest(artifact_id, "artifact")
         return self.derived_root / f"{digest}.json"
 
     def put_bytes(
@@ -404,7 +425,8 @@ class EvidenceStore:
 
     def load_validation_record(self, validation_id: str) -> ValidatedObject:
         """Load recorded assertions without granting them semantic authority."""
-        for path in self.validated_root.glob(f"*/{validation_id.split(':', 1)[-1]}.json"):
+        digest = _record_digest(validation_id, "validation")
+        for path in self.validated_root.glob(f"*/{digest}.json"):
             return self._load_validation_file(path)
         raise FileNotFoundError(validation_id)
 
@@ -561,7 +583,8 @@ class EvidenceStore:
         return record
 
     def read_manifest(self) -> list[dict[str, Any]]:
-        return _read_jsonl_strict(self.manifest_path)
+        with self._manifest_lock():
+            return _read_jsonl_strict(self.manifest_path)
 
     def _inventory_records(self) -> list[dict[str, Any]]:
         records: list[dict[str, Any]] = []
@@ -592,9 +615,10 @@ class EvidenceStore:
 
     def rebuild_manifest(self) -> dict[str, int]:
         """Reconstruct a deterministic manifest from immutable durable records."""
-        records = self._inventory_records()
-        payload = b"".join(_canonical_json(record) for record in records)
-        _atomic_write(self.manifest_path, payload)
+        with self._manifest_lock():
+            records = self._inventory_records()
+            payload = b"".join(_canonical_json(record) for record in records)
+            _atomic_write(self.manifest_path, payload)
         summary: dict[str, int] = {}
         for record in records:
             kind = str(record["kind"])
