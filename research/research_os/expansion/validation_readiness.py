@@ -340,7 +340,6 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     expression = bundle.get("economic_expression") if isinstance(bundle.get("economic_expression"), dict) else {}
     implementability = bundle.get("implementability") if isinstance(bundle.get("implementability"), dict) else {}
     reproducibility = bundle.get("reproducibility") if isinstance(bundle.get("reproducibility"), dict) else {}
-    infrastructure_supplied = "experiment_infrastructure" in bundle
     infrastructure = bundle.get("experiment_infrastructure") if isinstance(bundle.get("experiment_infrastructure"), dict) else {}
     multiplicity = bundle.get("multiplicity") if isinstance(bundle.get("multiplicity"), dict) else {}
     trial_accounting = bundle.get("trial_accounting") if isinstance(bundle.get("trial_accounting"), dict) else {}
@@ -478,11 +477,8 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and protocol.get("outcome_opened") is False,
         "Protocol must be frozen, candidate-bound, hash-valid, and outcome-closed.",
     )
-    add(
-        "frozen_input_binding",
-        _frozen_input_binding(bundle, protocol),
-        "Readiness projections must match the source, protocol and implementation declarations frozen in the envelope.",
-    )
+    add("frozen_input_binding", _frozen_input_binding(bundle, protocol),
+        "Readiness projections must match the source, protocol and implementation declarations frozen in the envelope.")
     binding_payload_matches = (
         isinstance(reproducibility_payload, dict)
         and reproducibility_payload.get("candidate_hash") == actual_candidate_hash
@@ -498,7 +494,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     )
     add(
         "experiment_infrastructure",
-        (not infrastructure_supplied) or _experiment_infrastructure_valid(
+        _experiment_infrastructure_valid(
             infrastructure,
             candidate_hash=actual_candidate_hash,
             protocol_hash=protocol.get("protocol_hash"),
@@ -508,7 +504,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
             pit_rows=pit_rows,
             trial_accounting=trial_accounting,
         ),
-        "When supplied, registry, canonical runner plan/receipt/replay, geometry, power and trial accounting must form one exact pre-outcome attestation.",
+        "Registry, canonical runner plan/receipt/replay, geometry, power and trial accounting must form one exact pre-outcome attestation.",
     )
     add(
         "multiplicity_declaration",
