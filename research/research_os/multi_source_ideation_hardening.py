@@ -108,9 +108,19 @@ class SourceClaimLedger:
 
 
 class DurableProposalLedger:
-    """Thread-safe, restartable passive ledger with caller-supplied durable snapshot."""
-    FORBIDDEN_KEYS = {"lease", "lease_owner", "heartbeat", "worker_owner", "retry_at", "scheduler_state"}
-    FORBIDDEN_STATUS = {"READY", "LEASED", "RUNNING", "RETRY"}
+    """Thread-safe restartable passive ledger; never a queue, scheduler or outcome store."""
+
+    FORBIDDEN_KEYS = {
+        "lease", "lease_id", "lease_owner", "lease_expires_at", "heartbeat", "worker_owner",
+        "retry_at", "commit_token", "scheduler_state", "oracle_state",
+        "task_id", "ready_task", "candidate_id", "producer_id", "experiment_id",
+        "scheduler", "oracle", "control_plane", "queue", "worker", "runtime_activation",
+        "control_plane_mutation", "scheduler_mutation", "scientific_memory_mutation", "producer_executed",
+    }
+    ALLOWED_STATUS = {
+        "ELIGIBLE_FOR_DISCOVERY", "REVIEW_REQUIRED", "NOT_ELIGIBLE", "DUPLICATE_OR_KNOWN",
+        "BLOCKED", "STALE_REQUALIFICATION_REQUIRED", "NEEDS_DISCOVERY_SYNTHESIS",
+    }
 
     @classmethod
     def _reject_operational_keys(cls, value: Any, path: str = "record") -> None:
@@ -126,7 +136,7 @@ class DurableProposalLedger:
 
     @classmethod
     def _reject_observed_truth(cls, value: Any, path: str = "record") -> None:
-        """Permit explicit non-observation sentinels, reject observed scientific/economic truth."""
+        """Permit only explicit non-observation sentinels; reject observed scientific/economic truth."""
         if isinstance(value, Mapping):
             for key, nested in value.items():
                 normalized = str(key).strip().lower()
@@ -156,15 +166,24 @@ class DurableProposalLedger:
             self.persist(row)
 
     def persist(self, record: Mapping[str, Any]) -> str:
+        if not isinstance(record, Mapping):
+            raise ValueError("Proposal Ledger record must be a mapping")
         row = deepcopy(dict(record))
         self._reject_operational_keys(row)
         self._reject_observed_truth(row)
-        if str(row.get("status", "")).upper() in self.FORBIDDEN_STATUS:
-            raise ValueError("operational work semantics forbidden in Proposal Ledger")
-        rid = str(row.get("proposal_id") or _hash(row))
+        status = str(row.get("status", "")).upper()
+        if status not in self.ALLOWED_STATUS:
+            raise ValueError("non-passive status forbidden in Proposal Ledger")
+        if row.get("outcome_accessed") is not False:
+            raise ValueError("Proposal Ledger requires outcome_accessed false")
+        rid = str(row.get("proposal_id") or "")
+        if not rid:
+            raise ValueError("Proposal Ledger requires proposal_id")
         with self._lock:
             prior = self._rows.get(rid)
-            if prior is not None and prior != row:
+            if prior is not None:
+                if prior == row:
+                    return rid
                 raise ValueError("immutable proposal identity collision")
             self._rows[rid] = row
         return rid
