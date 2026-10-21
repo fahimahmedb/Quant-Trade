@@ -35,7 +35,10 @@ _CLOSED_FALSE_KEYS = {"outcome_opened", "outcome_accessed", "outcome_gate_opened
 _CLOSED_ZERO_KEYS = {"future_outcomes_consumed", "outcomes_consumed"}
 _SENTINEL_RESULT_KEYS = {"result", "economic_result"}
 _ROLE_KEYS = {"role", "column_role", "dataset_role", "field_role"}
-_LINEAGE_KEYS = {"alias_of", "derived_from", "lineage", "sources", "source_columns", "input_columns"}
+_FIELD_ROLE_KEYS = {"role", "column_role", "field_role"}
+_EXPLICIT_LINEAGE_KEYS = {"alias_of", "derived_from", "lineage", "source_columns", "input_columns"}
+_CONTEXTUAL_LINEAGE_KEYS = {"sources"}
+_LINEAGE_KEYS = _EXPLICIT_LINEAGE_KEYS | _CONTEXTUAL_LINEAGE_KEYS
 _OUTCOME_BOOLEAN_KEYS = {"contains_outcome", "outcome_derived", "derived_from_outcome", "contains_future_outcomes"}
 _OUTCOME_ID_RE = re.compile(r"(?:^|[_\-.])(outcome|future[_\-.]?return|realized[_\-.]?(?:return|pnl)|response|target)(?:$|[_\-.])", re.I)
 
@@ -54,6 +57,21 @@ def _lineage_mentions_outcome(value: Any) -> bool:
     return False
 
 
+def _sources_are_lineage(value: Mapping[str, Any]) -> bool:
+    """Distinguish column derivation sources from generic source provenance.
+
+    ``sources`` is overloaded across the Research Core. In a field/column object it
+    names derivation inputs and must be inspected as lineage. In a dataset-provenance
+    object it is merely a collection of source records; those records are recursively
+    checked for outcome roles/markers on their own. Treating every provenance list as
+    derivation lineage creates a false positive on the literal key
+    ``contains_outcome`` even when its value is explicitly false.
+    """
+    return any(key in value for key in _FIELD_ROLE_KEYS) or any(
+        key in value for key in _EXPLICIT_LINEAGE_KEYS
+    )
+
+
 def assert_pre_outcome_payload(value: Any, *, path: str = "$") -> None:
     """Reject outcome data/lineage while allowing preregistered definitions."""
     if isinstance(value, Mapping):
@@ -68,6 +86,7 @@ def assert_pre_outcome_payload(value: Any, *, path: str = "$") -> None:
         if isinstance(role, str) and role.upper() == "DERIVED":
             if not any(key in value for key in _LINEAGE_KEYS):
                 raise OutcomeFirewallError(f"UNKNOWN_DERIVED_LINEAGE:{path}")
+        sources_are_lineage = _sources_are_lineage(value)
         for raw_key, item in value.items():
             key = str(raw_key)
             lowered = key.lower()
@@ -86,7 +105,9 @@ def assert_pre_outcome_payload(value: Any, *, path: str = "$") -> None:
                 raise OutcomeFirewallError(f"OUTCOME_VALUE_FORBIDDEN:{current}")
             if lowered in _OUTCOME_BOOLEAN_KEYS and item not in (False, None):
                 raise OutcomeFirewallError(f"OUTCOME_MARKER_FORBIDDEN:{current}")
-            if lowered in _LINEAGE_KEYS and _lineage_mentions_outcome(item):
+            if lowered in _EXPLICIT_LINEAGE_KEYS and _lineage_mentions_outcome(item):
+                raise OutcomeFirewallError(f"OUTCOME_LINEAGE_FORBIDDEN:{current}")
+            if lowered in _CONTEXTUAL_LINEAGE_KEYS and sources_are_lineage and _lineage_mentions_outcome(item):
                 raise OutcomeFirewallError(f"OUTCOME_LINEAGE_FORBIDDEN:{current}")
             assert_pre_outcome_payload(item, path=current)
         return
