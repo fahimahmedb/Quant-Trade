@@ -259,6 +259,20 @@ def test_unknown_identity_never_becomes_novelty():
     assert "MECHANISM_IDENTITY_UNKNOWN" in result["blockers"]
 
 
+def test_research_intelligence_origin_id_is_preserved_not_conflated_with_producer_hypothesis_id():
+    decision = _decision("RESEARCH-CANDIDATE-7")
+    result = build_discovery_handoff(
+        decision,
+        _producer(hid="PRODUCED-HYPOTHESIS-9"),
+        dossier=_dossier(hid="PRODUCED-HYPOTHESIS-9"),
+        discovery_facts=_facts(),
+    )
+    assert result["status"] == "READY_FOR_FACTORY"
+    ancestry = result["discovery"]["ancestry"]
+    assert ancestry["research_origin_candidate_id"] == "RESEARCH-CANDIDATE-7"
+    assert ancestry["hypothesis_id"] == "PRODUCED-HYPOTHESIS-9"
+
+
 def test_factory_handoff_reuses_implementability_but_does_not_cross_downstream_membranes():
     result = _run()
     handoff = result["factory_handoff"]
