@@ -60,6 +60,9 @@ jobs:
       - name: Full unit suite
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
+      - name: W1 Data focused suite
+        run: PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -p 'test_w1_data_*.py' -v
+
       - name: SEC P0 lane suite
         run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
 
