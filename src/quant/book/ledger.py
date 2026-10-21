@@ -35,6 +35,8 @@ from dataclasses import asdict, dataclass, field
 from copy import deepcopy
 from datetime import date as calendar_date
 import fcntl
+import hashlib
+import json
 import math
 import os
 from pathlib import Path
@@ -100,7 +102,18 @@ class LedgerState:
     fills: int = 0
     #: Deterministic ids of every mutation already applied, so replay is a no-op.
     applied_operations: list[str] = field(default_factory=list)
+    #: Optional for legacy Books; new fills bind their full economic identity.
+    operation_fingerprints: dict[str, str] = field(default_factory=dict)
     notes: list[str] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.operation_fingerprints, dict) or any(
+                not isinstance(operation, str) or not operation.strip()
+                or operation not in self.applied_operations
+                or not isinstance(digest, str) or len(digest) != 64
+                or any(character not in "0123456789abcdef" for character in digest)
+                for operation, digest in self.operation_fingerprints.items()):
+            raise ValueError("invalid Book operation identity bindings")
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -218,7 +231,13 @@ class Ledger:
                 raise ValueError(f"invalid fill {label}")
         if quantity == 0 or price <= 0 or cost < 0:
             raise ValueError("fill requires nonzero quantity, positive price and nonnegative cost")
+        fingerprint = self._fill_fingerprint(symbol, quantity, price, cost, date, strategy_id)
         if operation_id in self._applied:
+            prior = self.state.operation_fingerprints.get(operation_id)
+            if prior is None:
+                raise LedgerConflict("LEGACY_OPERATION_PAYLOAD_UNVERIFIABLE")
+            if prior != fingerprint:
+                raise LedgerConflict("OPERATION_IDENTITY_PAYLOAD_MISMATCH")
             return {"symbol": symbol, "quantity": 0.0, "price": price, "cost": 0.0,
                     "realized_pnl": 0.0, "cash_after": self.state.cash,
                     "operation_id": operation_id, "replayed": True}
@@ -257,6 +276,7 @@ class Ledger:
 
         self._applied.add(operation_id)
         self.state.applied_operations.append(operation_id)
+        self.state.operation_fingerprints[operation_id] = fingerprint
         self.save()
         return {"symbol": symbol, "quantity": quantity, "price": price, "cost": cost,
                 "realized_pnl": realized, "cash_after": self.state.cash,
@@ -308,6 +328,21 @@ class Ledger:
     def _validate_date(value: str) -> None:
         if not isinstance(value, str) or calendar_date.fromisoformat(value).isoformat() != value:
             raise ValueError("ledger date must be ISO YYYY-MM-DD")
+
+    def _fill_fingerprint(self, symbol: str, quantity: float, price: float, cost: float,
+                          date: str, strategy_id: str) -> str:
+        def number(value):
+            # Treat 1 and 1.0 (and signed zero) as the same amount without
+            # rounding distinct large integer inputs through float conversion.
+            return str(int(value)) if type(value) is int or value.is_integer() else value.hex()
+
+        payload = {"schema": "book-fill-identity-v1", "ledger_id": self.state.ledger_id,
+                   "authority": self.state.authority, "mode": self.state.mode,
+                   "currency": self.state.currency, "symbol": symbol,
+                   "strategy_id": strategy_id, "date": date,
+                   "quantity": number(quantity), "price": number(price), "cost": number(cost)}
+        encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False)
+        return hashlib.sha256(encoded.encode()).hexdigest()
 
     # --- views -------------------------------------------------------------
     def _positions(self) -> list[Position]:
