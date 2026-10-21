@@ -34,6 +34,12 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install foreman test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check pytest
+
       - name: Fetch exact sibling refs
         shell: bash
         run: |
@@ -61,7 +67,6 @@ jobs:
           D0_HEAD="$(git rev-parse "refs/remotes/origin/${D0_BRANCH}")"
           E_HEAD="$(git rev-parse "refs/remotes/origin/${E_BRANCH}")"
           printf 'B_HEAD=%s\nC0_HEAD=%s\nD0_HEAD=%s\nE_HEAD=%s\n' "$B_HEAD" "$C0_HEAD" "$D0_HEAD" "$E_HEAD" | tee /tmp/wave2-sibling-heads.env
-          # Moving siblings are allowed, but the foreman must surface movement explicitly.
           if [ "$B_HEAD" != "$B_EXPECTED_HEAD" ]; then echo "B_HEAD_MOVED_FROM_FOREMAN_SNAPSHOT=true" | tee -a /tmp/wave2-sibling-heads.env; fi
           if [ "$D0_HEAD" != "$D0_EXPECTED_HEAD" ]; then echo "D0_HEAD_MOVED_FROM_FOREMAN_SNAPSHOT=true" | tee -a /tmp/wave2-sibling-heads.env; fi
           if [ "$C0_HEAD" = "$HISTORICAL_START" ]; then echo "C0_NO_DELTA_STALE_BASE=true" | tee -a /tmp/wave2-sibling-heads.env; fi
@@ -99,14 +104,14 @@ jobs:
         run: |
           set -euo pipefail
           cd /tmp/mega-b
-          PYTHONPATH="$PWD/src:$PWD" python -m unittest -v \
-            research.research_os.tests.test_mega_b_all_producer_routes \
-            research.research_os.tests.test_mega_b_canonical_gate \
-            research.research_os.tests.test_mega_b_discovery_chain \
-            research.research_os.tests.test_mega_b_discovery_engine \
-            research.research_os.tests.test_mega_b_outcome_firewall \
+          PYTHONPATH="$PWD/src:$PWD" python -m pytest -q \
+            research/research_os/tests/test_mega_b_all_producer_routes.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py \
+            research/research_os/tests/test_mega_b_discovery_chain.py \
+            research/research_os/tests/test_mega_b_discovery_engine.py \
+            research/research_os/tests/test_mega_b_outcome_firewall.py \
             2>&1 | tee /tmp/mega-b-foreman.log
-          grep -E '^Ran [0-9]+ tests' /tmp/mega-b-foreman.log | tail -1
+          grep -E '[0-9]+ passed' /tmp/mega-b-foreman.log | tail -1
 
       - name: Qualify current visible MEGA D0 contracts
         shell: bash
@@ -151,10 +156,15 @@ jobs:
           import json, re
           from pathlib import Path
 
-          def count(path):
+          def unittest_count(path):
               text = Path(path).read_text()
               m = re.findall(r'^Ran ([0-9]+) tests.*$', text, flags=re.MULTILINE)
               return int(m[-1]) if m else None
+
+          def pytest_count(path):
+              text = Path(path).read_text()
+              matches = re.findall(r'(\d+) passed(?:,| in|$)', text)
+              return int(matches[-1]) if matches else None
 
           env = {}
           for path in ('/tmp/wave2-sibling-heads.env', '/tmp/base-port-classification.env', '/tmp/d0-rebind.env'):
@@ -168,8 +178,8 @@ jobs:
               "wave2_immutable_base_sha": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
               "wave2_integrated_sha_emitted": False,
               "observed_heads": {k: env.get(k) for k in ("B_HEAD", "C0_HEAD", "D0_HEAD", "E_HEAD")},
-              "b_focused_tests": count('/tmp/mega-b-foreman.log'),
-              "d0_focused_tests": count('/tmp/mega-d0-foreman.log'),
+              "b_focused_tests": pytest_count('/tmp/mega-b-foreman.log'),
+              "d0_focused_tests": unittest_count('/tmp/mega-d0-foreman.log'),
               "textual_base_repair_conflict_b": False,
               "textual_base_repair_conflict_d0": False,
               "d0_semantic_base_rebind_required": True,
@@ -177,6 +187,8 @@ jobs:
               "outcome_access_opened": False,
               "ready_for_canonical_convergence2": False,
           }
+          assert receipt["b_focused_tests"] is not None
+          assert receipt["d0_focused_tests"] is not None
           Path('/tmp/wave2-c2-foreman-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
           print(json.dumps(receipt, indent=2))
           PY
