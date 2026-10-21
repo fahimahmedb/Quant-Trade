@@ -75,6 +75,12 @@ history was not treated as proof or blindly imported. The loss was independently
 reproduced at the supplied convergence SHA and remains present after the narrow
 queue/test repairs.
 
+Source locator: `research/research_os/expansion/economic_test_readiness_v1.py:213`
+is the composer call; `research/research_os/expansion/final_shape.py` defines
+`economic_identity_v1`; `research/research_os/expansion/portfolio_v2.py` defines
+the independent `structural_identity` consumer representation. The probe returns
+both the actual composed identity and the direct consumer representation.
+
 Reproduce:
 
 ```sh
