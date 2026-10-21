@@ -1,0 +1,146 @@
+name: Wave2 C2 Canonical C0 Qualification
+
+on:
+  push:
+    branches:
+      - builder/convergence-wave2-canonical-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
+  HISTORICAL_C0_INPUT_HEAD: 8160764b39fde86a7f29cebd5a97f5cec0cb2b81
+  HISTORICAL_C0_SOURCE_BLOB: 3f0e1b7bae53e9513f0061cabcfae2505a6795f3
+  C2_C0_SOURCE_PRESERVATION_COMMIT: d0ce5b2492cc33d91541259f2c6dde7ecbc01d22
+  C2_C0_CANONICAL_PORT_COMMIT: 14926055583ee13e9fd84aa52b3e660b5ce56844
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  qualify-c0:
+    name: Canonical C0 semantic port and adjudication qualification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prove canonical ancestry and North Star identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          git merge-base --is-ancestor "${C2_C0_SOURCE_PRESERVATION_COMMIT}" HEAD
+          git merge-base --is-ancestor "${C2_C0_CANONICAL_PORT_COMMIT}" HEAD
+          test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
+
+      - name: Prove historical C0 source preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f research/research_os/expansion/_scientific_adjudication_c0.py
+          test "$(git hash-object research/research_os/expansion/_scientific_adjudication_c0.py)" = "${HISTORICAL_C0_SOURCE_BLOB}"
+          test -f research/research_os/expansion/scientific_adjudication.py
+          test -f tests/test_wave2_c2_scientific_adjudication.py
+
+      - name: Compile canonical C0 surfaces
+        run: |
+          python3 -m py_compile \
+            research/research_os/expansion/_scientific_adjudication_c0.py \
+            research/research_os/expansion/scientific_adjudication.py \
+            tests/test_wave2_c2_scientific_adjudication.py
+
+      - name: Canonical C0 adversarial suite
+        run: python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v
+
+      - name: Regress W1 Factory boundary
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_w1_factory_experiment_infrastructure \
+            research.research_os.tests.test_w1_factory_experiment_bridge \
+            research.research_os.tests.test_w1_factory_economic_integration \
+            research.research_os.tests.test_w1_factory_firewall_hardening \
+            research.research_os.tests.test_economic_readiness_validation
+
+      - name: Regress cumulative D0 lifecycle
+        run: python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
+
+      - name: Prove W1 Factory owned implementation law unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD -- \
+            research/research_os/contracts/experiment-infrastructure.schema.json \
+            research/research_os/expansion/economic_test_readiness_v1.py \
+            research/research_os/expansion/experiment_geometry.py \
+            research/research_os/expansion/experiment_infrastructure.py \
+            research/research_os/expansion/experiment_outcome_firewall.py \
+            research/research_os/expansion/experiment_power.py \
+            research/research_os/expansion/experiment_registry.py \
+            research/research_os/expansion/experiment_runner.py \
+            research/research_os/expansion/validation_readiness.py \
+            src/quant/factory/experiments.py \
+            src/quant/factory/geometry.py \
+            src/quant/factory/outcome_firewall.py \
+            src/quant/factory/power.py)"
+
+      - name: Prove C0 authority, outcome and ownership membrane
+        run: |
+          python3 - <<'PY'
+          from research.research_os.expansion.scientific_adjudication import (
+              AUTHORITY_STATE,
+              CROSS_EXAMINATION_AXES,
+              QUALIFIED_HISTORICAL_C0_SOURCE_BLOB,
+              WAVE2_IMMUTABLE_BASE_SHA,
+          )
+          assert WAVE2_IMMUTABLE_BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          assert QUALIFIED_HISTORICAL_C0_SOURCE_BLOB == '3f0e1b7bae53e9513f0061cabcfae2505a6795f3'
+          assert len(CROSS_EXAMINATION_AXES) == 14
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          PY
+
+      - name: Clean working tree after C0 qualification
+        shell: bash
+        run: test -z "$(git status --porcelain)"
+
+      - name: Emit canonical C0 exact-head receipt
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {
+              'mission': 'WAVE2_C2_CANONICAL_INTEGRATION',
+              'stage': 'C0_PORT',
+              'qualified_head': os.environ['GITHUB_SHA'],
+              'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
+              'historical_c0_input_head': os.environ['HISTORICAL_C0_INPUT_HEAD'],
+              'historical_c0_source_blob': os.environ['HISTORICAL_C0_SOURCE_BLOB'],
+              'semantic_port': 'PASS',
+              'canonical_base_rebind': 'PASS',
+              'cross_examination_axes': 14,
+              'validator_independence': 'FAIL_CLOSED',
+              'red_team_independence': 'FAIL_CLOSED',
+              'qualified_negative_external_provenance': 'REQUIRED',
+              'raw_outcome_access': False,
+              'economic_identity_created': False,
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+              'outcome_accessed': False,
+              'worktree_clean': True,
+          }
+          Path('/tmp/wave2-c2-c0-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c2-c0-${{ github.sha }}
+          path: /tmp/wave2-c2-c0-receipt.json
+          if-no-files-found: error
