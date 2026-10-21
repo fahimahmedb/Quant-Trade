@@ -1,0 +1,288 @@
+{
+  "qualified_source_sha": "5b90a8a57df621e27526a297dbf63016ff7bec06",
+  "source_branch": "builder/v2-forward-20261020",
+  "canonical_state_branch": "builder/oracle-v2-core-20261020",
+  "scope": "SOURCE_QUALIFICATION_NOT_DEPLOYMENT_OR_ECONOMIC_VALIDATION",
+  "observed_at": "2026-10-21T13:18:46.106637+00:00",
+  "hosted": {
+    "target_commit": "5b90a8a57df621e27526a297dbf63016ff7bec06",
+    "source_url": "https://github.com/fahimahmedb/Quant-Trade/actions?query=branch%3Abuilder%2Fv2-forward-20261020",
+    "observed_at": "2026-10-21T13:18:37.281572+00:00",
+    "runs": [
+      {
+        "id": "39605245194",
+        "name": "Oracle V2 Core",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39605245194",
+        "state": {
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED",
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS"
+        }
+      },
+      {
+        "id": "39605245168",
+        "name": "SEC P0 pre-t0 gate",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39605245168",
+        "state": {
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED",
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS"
+        }
+      }
+    ],
+    "page_sha256": "a22d7592084cc4ff4e2e1ae58034f21ce9e3f19b2baffac44472640e4f57796c"
+  },
+  "jobs": [
+    {
+      "run_id": "39605245194",
+      "job_id": "119239639971",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39605245194/job/119239639971",
+      "observed_at": "2026-10-21T13:09:50.228230+00:00",
+      "page_sha256": "aa5be5d5bdc455e8ba650008e3738ea28a092af5025128035f223f155cd9122b",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compile V2 Core",
+          "conclusion": "success"
+        },
+        {
+          "name": "V2 Core contract, bridge, worker and whole-loop tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Qualify composed native Live Lab contracts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify V2 policy remains fail-closed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify V2 claim ceiling",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate exact-head V2 qualification receipt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload exact-head V2 qualification receipt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": "39605245168",
+      "job_id": "119239640345",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39605245168/job/119239640345",
+      "observed_at": "2026-10-21T13:18:42.329875+00:00",
+      "page_sha256": "2621c4e0a46e052e78c8c5321132a6f4e5a707113dd269ec69ee356e5d756b43",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Record environment",
+          "conclusion": "success"
+        },
+        {
+          "name": "Fail-closed check (no SEC identity configured)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated schema drift",
+          "conclusion": "success"
+        },
+        {
+          "name": "Status artifact freshness",
+          "conclusion": "success"
+        },
+        {
+          "name": "Full unit suite",
+          "conclusion": "success"
+        },
+        {
+          "name": "SEC P0 lane suite",
+          "conclusion": "success"
+        },
+        {
+          "name": "V1 end-to-end regression",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate exact-head verification artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload exact-head verification artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Restore committed verification placeholder",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clean working tree",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "independent_run_source_bindings": [
+    {
+      "run_id": "39605245194",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39605245194",
+      "commit_links": [
+        "5b90a8a57df621e27526a297dbf63016ff7bec06"
+      ],
+      "page_sha256": "dce601f202694336b135b70b89c5962ef95a1b65ab7d598b8e0ea2ddd1c66f2f",
+      "observed_at": "2026-10-21T13:09:49.744604+00:00"
+    },
+    {
+      "run_id": "39605245168",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39605245168",
+      "commit_links": [
+        "5b90a8a57df621e27526a297dbf63016ff7bec06"
+      ],
+      "page_sha256": "6811e055838fb514918f68d50c08d82b3deccc8e68f895f6481780e2800a2256",
+      "observed_at": "2026-10-21T13:09:50.273440+00:00"
+    }
+  ],
+  "hosted_artifact_payloads_downloaded": false,
+  "local": {
+    "root": {
+      "status": "PASS",
+      "tests": 802,
+      "log_sha256": "e564c04b234f12895af066a0bfdf0d15c4565cf48ed3e41768dd4b9f5c21a7f4"
+    },
+    "broader_research_os": {
+      "status": "PASS",
+      "tests": 268,
+      "log_sha256": "48cddda4e3079a0eff6424f79858d8c9d37bef168f60438619469e6105f2284e"
+    },
+    "v2_core": {
+      "status": "PASS",
+      "tests": 311,
+      "log_sha256": "0af5252cfab9042f8f522ec18a185ee349d6a65a06b86838345d5089b14c2646"
+    },
+    "shared_python_tests": 2,
+    "javascript_tests": 57,
+    "shared_suite_log_sha256": "c2a85df2f1563c00a458e75537f5842269d1a04b125059f03fa14a52c1b0c4bf",
+    "suites_overlap": true,
+    "actual_workflow_run_steps": {
+      "sha": "5b90a8a57df621e27526a297dbf63016ff7bec06",
+      "scope": "LOCAL_EXECUTION_NOT_HOSTED_CI",
+      "adaptations": [
+        "github.sha",
+        "scope LOCAL",
+        "output paths"
+      ],
+      "steps": [
+        {
+          "name": "Compile V2 Core",
+          "exit_code": 0
+        },
+        {
+          "name": "V2 Core contract, bridge, worker and whole-loop tests",
+          "exit_code": 0
+        },
+        {
+          "name": "Qualify composed native Live Lab contracts",
+          "exit_code": 0
+        },
+        {
+          "name": "Verify V2 policy remains fail-closed",
+          "exit_code": 0
+        },
+        {
+          "name": "Verify V2 claim ceiling",
+          "exit_code": 0
+        },
+        {
+          "name": "Generate exact-head V2 qualification receipt",
+          "exit_code": 0
+        },
+        {
+          "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled",
+          "exit_code": 0
+        }
+      ]
+    },
+    "workflow_source_sha256": "7b2b4f5f9a63283c46a4445980dde4c2bcbcee4eee53059c054792c8c0c75ecf",
+    "python": "Python 3.12.14",
+    "node": "v24.19.0",
+    "hosted_node_requested": "20",
+    "read_only_github": {
+      "status": "PASS",
+      "executable_sha": "5b90a8a57df621e27526a297dbf63016ff7bec06",
+      "github_writes": 0,
+      "push_attempts": 0,
+      "worker_writes": 0,
+      "input_head": "e2cf4b28150879386bf510e7f9364cd9599af9e1",
+      "selected_task": null,
+      "hosted_model_calls": 0,
+      "receipt_sha256": "dc4ef68d57a67da9945b44de41596ae0764f348023d0ea8b25b9fbeb899a14f3"
+    },
+    "qualification_receipt_sha256": "8e37affcb067077686b8f1a50bd41f3291b9480d246552c7e1f3ba063bbc05d0"
+  },
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  }
+}
