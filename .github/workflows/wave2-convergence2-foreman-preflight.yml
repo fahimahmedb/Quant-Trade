@@ -1,0 +1,197 @@
+name: Wave2 Convergence2 Foreman Preflight
+
+on:
+  push:
+    branches:
+      - builder/wave2-convergence2-foreman-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SEALED_BASE: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  HISTORICAL_START: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  B_BRANCH: builder/mega-b-discovery-engine-20261021
+  C0_BRANCH: builder/mega-c0-scientific-adjudication-20261021
+  D0_BRANCH: builder/mega-d0-economic-lifecycle-20261021
+  E_BRANCH: builder/mega-e-autonomous-runtime-20261021
+  B_EXPECTED_HEAD: ba80b8cd717a3239d92a005248a326462d6a5744
+  D0_EXPECTED_HEAD: 4262462e0c853d917f32e8f87c2423f93a313167
+  D0_QUALIFIED_CODE_HEAD: 84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  preflight:
+    name: Reacquire visible sibling truth
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch exact sibling refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in "$B_BRANCH" "$C0_BRANCH" "$D0_BRANCH" "$E_BRANCH"; do
+            git fetch origin "+refs/heads/${branch}:refs/remotes/origin/${branch}"
+          done
+          git fetch origin "+refs/heads/builder/convergence-cp079-wave2-base-20261021:refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021"
+
+      - name: Prove sealed base identity and repair blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          observed="$(git rev-parse refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021)"
+          test "$observed" = "$SEALED_BASE"
+          test "$(git show "${SEALED_BASE}:research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json" | git hash-object --stdin)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+          test "$(git rev-parse "${SEALED_BASE}^")" = "$HISTORICAL_START"
+
+      - name: Snapshot sibling heads
+        shell: bash
+        run: |
+          set -euo pipefail
+          B_HEAD="$(git rev-parse "refs/remotes/origin/${B_BRANCH}")"
+          C0_HEAD="$(git rev-parse "refs/remotes/origin/${C0_BRANCH}")"
+          D0_HEAD="$(git rev-parse "refs/remotes/origin/${D0_BRANCH}")"
+          E_HEAD="$(git rev-parse "refs/remotes/origin/${E_BRANCH}")"
+          printf 'B_HEAD=%s\nC0_HEAD=%s\nD0_HEAD=%s\nE_HEAD=%s\n' "$B_HEAD" "$C0_HEAD" "$D0_HEAD" "$E_HEAD" | tee /tmp/wave2-sibling-heads.env
+          # Moving siblings are allowed, but the foreman must surface movement explicitly.
+          if [ "$B_HEAD" != "$B_EXPECTED_HEAD" ]; then echo "B_HEAD_MOVED_FROM_FOREMAN_SNAPSHOT=true" | tee -a /tmp/wave2-sibling-heads.env; fi
+          if [ "$D0_HEAD" != "$D0_EXPECTED_HEAD" ]; then echo "D0_HEAD_MOVED_FROM_FOREMAN_SNAPSHOT=true" | tee -a /tmp/wave2-sibling-heads.env; fi
+          if [ "$C0_HEAD" = "$HISTORICAL_START" ]; then echo "C0_NO_DELTA_STALE_BASE=true" | tee -a /tmp/wave2-sibling-heads.env; fi
+          if [ "$E_HEAD" = "$HISTORICAL_START" ]; then echo "E_NO_DELTA_STALE_BASE=true" | tee -a /tmp/wave2-sibling-heads.env; fi
+
+      - name: Classify sealed-base divergence and textual overlap
+        shell: bash
+        run: |
+          set -euo pipefail
+          B_HEAD="$(git rev-parse "refs/remotes/origin/${B_BRANCH}")"
+          D0_HEAD="$(git rev-parse "refs/remotes/origin/${D0_BRANCH}")"
+          test "$(git merge-base "$SEALED_BASE" "$B_HEAD")" = "$HISTORICAL_START"
+          test "$(git merge-base "$SEALED_BASE" "$D0_HEAD")" = "$HISTORICAL_START"
+          git diff --name-only "$HISTORICAL_START".."$SEALED_BASE" | sort > /tmp/base-repair-paths.txt
+          git diff --name-only "$HISTORICAL_START".."$B_HEAD" | sort > /tmp/b-paths.txt
+          git diff --name-only "$HISTORICAL_START".."$D0_HEAD" | sort > /tmp/d0-paths.txt
+          comm -12 /tmp/base-repair-paths.txt /tmp/b-paths.txt > /tmp/b-base-overlap.txt
+          comm -12 /tmp/base-repair-paths.txt /tmp/d0-paths.txt > /tmp/d0-base-overlap.txt
+          test ! -s /tmp/b-base-overlap.txt
+          test ! -s /tmp/d0-base-overlap.txt
+          echo 'TEXTUAL_BASE_REPAIR_CONFLICT_B=FALSE' | tee /tmp/base-port-classification.env
+          echo 'TEXTUAL_BASE_REPAIR_CONFLICT_D0=FALSE' | tee -a /tmp/base-port-classification.env
+
+      - name: Materialize B and D0 worktrees
+        shell: bash
+        run: |
+          set -euo pipefail
+          B_HEAD="$(git rev-parse "refs/remotes/origin/${B_BRANCH}")"
+          D0_HEAD="$(git rev-parse "refs/remotes/origin/${D0_BRANCH}")"
+          git worktree add --detach /tmp/mega-b "$B_HEAD"
+          git worktree add --detach /tmp/mega-d0 "$D0_HEAD"
+
+      - name: Qualify current visible MEGA B contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/mega-b
+          PYTHONPATH="$PWD/src:$PWD" python -m unittest -v \
+            research.research_os.tests.test_mega_b_all_producer_routes \
+            research.research_os.tests.test_mega_b_canonical_gate \
+            research.research_os.tests.test_mega_b_discovery_chain \
+            research.research_os.tests.test_mega_b_discovery_engine \
+            research.research_os.tests.test_mega_b_outcome_firewall \
+            2>&1 | tee /tmp/mega-b-foreman.log
+          grep -E '^Ran [0-9]+ tests' /tmp/mega-b-foreman.log | tail -1
+
+      - name: Qualify current visible MEGA D0 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/mega-d0
+          PYTHONPATH="$PWD/src:$PWD" python -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v 2>&1 | tee /tmp/mega-d0-foreman.log
+          grep -E '^Ran [0-9]+ tests' /tmp/mega-d0-foreman.log | tail -1
+
+      - name: Prove D0 requires semantic sealed-base rebinding
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -F 'WAVE2_IMMUTABLE_BASE_SHA = "97165db2faa3300cef1f23de0045ed93d25eb9cb"' /tmp/mega-d0/research/research_os/expansion/economic_lifecycle.py
+          grep -F 'WAVE2_IMMUTABLE_BASE_SHA: 97165db2faa3300cef1f23de0045ed93d25eb9cb' /tmp/mega-d0/.github/workflows/mega-d0-exact-head-qualification.yml
+          echo 'D0_BASE_BINDING_CONFLICT=TRUE' | tee /tmp/d0-rebind.env
+          echo 'D0_SEMANTIC_REBIND_REQUIRED=TRUE' | tee -a /tmp/d0-rebind.env
+
+      - name: Verify authority membranes in visible B and D0 code
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH="/tmp/mega-b/src:/tmp/mega-b" python - <<'PY'
+          from research.research_os.discovery_engine import AUTHORITY
+          assert AUTHORITY == {
+              "economic_experiment_authorized": False,
+              "prospective_observation_authorized": False,
+              "real_capital_authorized": False,
+              "live_trading_authorized": False,
+          }, AUTHORITY
+          PY
+          PYTHONPATH="/tmp/mega-d0/src:/tmp/mega-d0" python - <<'PY'
+          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          PY
+
+      - name: Emit foreman receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          def count(path):
+              text = Path(path).read_text()
+              m = re.findall(r'^Ran ([0-9]+) tests.*$', text, flags=re.MULTILINE)
+              return int(m[-1]) if m else None
+
+          env = {}
+          for path in ('/tmp/wave2-sibling-heads.env', '/tmp/base-port-classification.env', '/tmp/d0-rebind.env'):
+              for line in Path(path).read_text().splitlines():
+                  if '=' in line:
+                      k, v = line.split('=', 1)
+                      env[k] = v
+
+          receipt = {
+              "foreman_role": "PRE_CONVERGENCE_ONLY",
+              "wave2_immutable_base_sha": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+              "wave2_integrated_sha_emitted": False,
+              "observed_heads": {k: env.get(k) for k in ("B_HEAD", "C0_HEAD", "D0_HEAD", "E_HEAD")},
+              "b_focused_tests": count('/tmp/mega-b-foreman.log'),
+              "d0_focused_tests": count('/tmp/mega-d0-foreman.log'),
+              "textual_base_repair_conflict_b": False,
+              "textual_base_repair_conflict_d0": False,
+              "d0_semantic_base_rebind_required": True,
+              "authority_opened": False,
+              "outcome_access_opened": False,
+              "ready_for_canonical_convergence2": False,
+          }
+          Path('/tmp/wave2-c2-foreman-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c2-foreman-${{ github.sha }}
+          path: |
+            /tmp/wave2-c2-foreman-receipt.json
+            /tmp/wave2-sibling-heads.env
+            /tmp/base-port-classification.env
+            /tmp/d0-rebind.env
+            /tmp/base-repair-paths.txt
+            /tmp/b-paths.txt
+            /tmp/d0-paths.txt
+            /tmp/mega-b-foreman.log
+            /tmp/mega-d0-foreman.log
+          if-no-files-found: error
