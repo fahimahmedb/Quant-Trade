@@ -29,6 +29,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install declared test dependency
+        run: python3 -m pip install --disable-pip-version-check pytest
+
       - name: Prove canonical ancestry and North Star identity
         shell: bash
         run: |
@@ -63,12 +66,12 @@ jobs:
 
       - name: MEGA B focused suite
         run: |
-          python3 -m unittest -v \
-            research.research_os.tests.test_mega_b_all_producer_routes \
-            research.research_os.tests.test_mega_b_canonical_gate \
-            research.research_os.tests.test_mega_b_discovery_chain \
-            research.research_os.tests.test_mega_b_discovery_engine \
-            research.research_os.tests.test_mega_b_outcome_firewall
+          pytest -q \
+            research/research_os/tests/test_mega_b_all_producer_routes.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py \
+            research/research_os/tests/test_mega_b_discovery_chain.py \
+            research/research_os/tests/test_mega_b_discovery_engine.py \
+            research/research_os/tests/test_mega_b_outcome_firewall.py
 
       - name: Research Intelligence regression
         run: |
