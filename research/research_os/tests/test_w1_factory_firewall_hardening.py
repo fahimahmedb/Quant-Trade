@@ -1,6 +1,8 @@
 import unittest
 
 from quant.factory.outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload
+from research.research_os.expansion.validation_readiness import BLOCK, validate_economic_test_readiness
+from research.research_os.tests.test_economic_readiness_validation import _fixture
 
 
 class FirewallHardeningTests(unittest.TestCase):
@@ -59,6 +61,27 @@ class FirewallHardeningTests(unittest.TestCase):
     def test_preregistered_outcome_definition_is_still_allowed(self):
         assert_pre_outcome_payload({"outcome_definition":"next eligible return", "outcome_accessed":False,
                                     "result":"NOT_OBSERVED"})
+
+    def test_native_validator_rejects_ignored_top_level_outcome_payload(self):
+        fixture = _fixture()
+        fixture["outcome_payload"] = {"future_return": 0.12}
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["status"], BLOCK)
+        self.assertEqual(receipt["checks"]["outcome_firewall"]["status"], "FAIL")
+        self.assertEqual(receipt["checks"]["outcome_firewall"]["reason_code"], "OUTCOME_FIREWALL_REJECTED")
+
+    def test_native_validator_rejects_nested_outcome_value_in_ignored_source_extension(self):
+        fixture = _fixture()
+        fixture["sources"]["provenance_extension"] = {"future_return": 0.12}
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["status"], BLOCK)
+        self.assertEqual(receipt["checks"]["outcome_firewall"]["status"], "FAIL")
+
+    def test_native_validator_allows_safe_pre_outcome_extension(self):
+        fixture = _fixture()
+        fixture["sources"]["provenance_extension"] = {"note": "pre-outcome metadata only"}
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["outcome_firewall"]["status"], "PASS")
 
 
 if __name__ == "__main__":

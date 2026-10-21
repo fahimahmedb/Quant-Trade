@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Mapping, Optional
 
 from research.research_os.scientific_store import sha256_json
 from .experiment_geometry import geometry_from_mapping
+from .experiment_outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload
 from .experiment_power import power_from_mapping
 from .experiment_runner import DryRunExperimentRunner
 
@@ -33,6 +34,7 @@ CHECK_ORDER = (
     "capacity_declaration",
     "falsification",
     "decision_map",
+    "outcome_firewall",
     "no_outcome_access",
 )
 
@@ -55,6 +57,7 @@ REASON_CODES = {
     "capacity_declaration": "CAPACITY_DECLARATION_MISSING",
     "falsification": "FALSIFICATION_SCOPE_MISSING",
     "decision_map": "DECISION_MAP_MISSING",
+    "outcome_firewall": "OUTCOME_FIREWALL_REJECTED",
     "no_outcome_access": "OUTCOME_ACCESS_FORBIDDEN",
 }
 
@@ -312,6 +315,11 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and _is_hash(reproducibility.get("binding_hash"))
         and sha256_json(reproducibility_payload) == reproducibility.get("binding_hash")
     )
+    firewall_error: str | None = None
+    try:
+        assert_pre_outcome_payload(bundle)
+    except OutcomeFirewallError as error:
+        firewall_error = str(error)
 
     checks: Dict[str, Dict[str, Any]] = {}
 
@@ -465,6 +473,12 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         "decision_map",
         bool(candidate.get("decision_map")),
         "Candidate must carry a preregistered decision map.",
+    )
+    add(
+        "outcome_firewall",
+        firewall_error is None,
+        "Entire Validator bundle is outcome-blind under the canonical firewall."
+        if firewall_error is None else f"Canonical outcome firewall rejected bundle: {firewall_error}",
     )
     add(
         "no_outcome_access",
