@@ -57,6 +57,11 @@ jobs:
           from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE
           assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
           PY
+      - name: Verify clean working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain)"
       - name: Emit D0 receipt
         shell: bash
         run: |
@@ -76,6 +81,7 @@ jobs:
               "outcome_access_opened": False,
               "scheduler_owned": False,
               "runtime_owned": False,
+              "clean_working_tree": True,
           }
           Path('/tmp/mega-d0-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
           PY
