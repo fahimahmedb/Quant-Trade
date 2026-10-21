@@ -133,7 +133,6 @@ class DurableProposalLedger:
     def persist(self, record: Mapping[str, Any]) -> str:
         row = deepcopy(dict(record))
         self._reject_operational_keys(row)
-        _reject_outcome_fields(row, "proposal_ledger")
         if str(row.get("status", "")).upper() in self.FORBIDDEN_STATUS:
             raise ValueError("operational work semantics forbidden in Proposal Ledger")
         rid = str(row.get("proposal_id") or _hash(row))
