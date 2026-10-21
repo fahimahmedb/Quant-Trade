@@ -3,23 +3,25 @@
 from __future__ import annotations
 
 import json
-import os
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from quant.state import write_json as _write_json
 
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def _write_json(path: Path, value: object) -> None:
-    """Atomically replace a JSON document so a killed process cannot truncate it."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+def _queue_clock(value: str) -> datetime:
+    if not isinstance(value, str) or not value:
+        raise ValueError("queue timestamp is required")
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        raise ValueError("queue timestamp must carry timezone information")
+    return parsed.astimezone(timezone.utc)
 
 
 @dataclass
@@ -93,11 +95,19 @@ class PersistentQueue:
         self.tasks: dict[str, ResearchTask] = {}
         if path.exists():
             payload = json.loads(path.read_text(encoding="utf-8"))
+            if type(payload.get("version")) is not int or payload["version"] != 1:
+                raise ValueError("unknown queue schema version")
             self.tasks = {item["task_id"]: ResearchTask(**item) for item in payload["tasks"]}
+            if len(self.tasks) != len(payload["tasks"]):
+                raise ValueError("duplicate queue task identity")
 
     def save(self) -> None:
         ordered = sorted(self.tasks.values(), key=lambda task: (task.created_at, task.task_id))
-        _write_json(self.path, {"version": 1, "tasks": [asdict(task) for task in ordered]})
+        try:
+            _write_json(self.path, {"version": 1, "tasks": [asdict(task) for task in ordered]})
+        except BaseException:
+            self.__init__(self.path)
+            raise
 
     def add(self, task: ResearchTask) -> bool:
         existing = self.tasks.get(task.task_id)
@@ -110,10 +120,12 @@ class PersistentQueue:
         return True
 
     def next_due(self, now: str | None = None) -> ResearchTask | None:
-        now = now or utc_now()
+        instant = _queue_clock(utc_now() if now is None else now)
         due = [task for task in self.tasks.values()
-               if task.status == "PENDING" and (task.due_at is None or task.due_at <= now)]
-        return min(due, key=lambda task: (-task.priority, task.created_at, task.task_id), default=None)
+               if task.status == "PENDING"
+               and (task.due_at is None or _queue_clock(task.due_at) <= instant)]
+        return min(due, key=lambda task: (-task.priority, _queue_clock(task.created_at), task.task_id),
+                   default=None)
 
     def has_completed(self, task_id: str, fingerprint: str | None) -> bool:
         task = self.tasks.get(task_id)
