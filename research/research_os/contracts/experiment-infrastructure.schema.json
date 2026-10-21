@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExperimentInfrastructureBinding",
+  "description": "Pre-outcome attestation binding the canonical frozen experiment to registry identity, planned geometry/power declarations, existing runner receipt and deterministic replay. This schema grants no execution or economic authority.",
+  "type": "object",
+  "required": [
+    "status",
+    "qualification",
+    "scientific_declaration_state",
+    "blockers",
+    "declaration_gaps",
+    "registry",
+    "frozen_registry",
+    "geometry",
+    "power",
+    "outcome_accessed",
+    "economic_result",
+    "economic_experiment_authorized",
+    "prospective_observation_authorized",
+    "real_capital_authorized",
+    "live_trading_authorized",
+    "infrastructure_hash"
+  ],
+  "properties": {
+    "status": {"enum": ["PASS", "BLOCK"]},
+    "qualification": {"enum": ["QUALIFIED_CURRENT", "PARTIAL_WITH_EXPLICIT_BLOCKER"]},
+    "scientific_declaration_state": {"enum": ["DECLARED", "DECLARED_OR_EXPLICIT_UNKNOWN"]},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "declaration_gaps": {"type": "array", "items": {"type": "string"}},
+    "registry": {"$ref": "#/$defs/registry"},
+    "frozen_registry": {"$ref": "#/$defs/registry"},
+    "geometry": {"$ref": "#/$defs/geometry"},
+    "power": {"$ref": "#/$defs/power"},
+    "outcome_accessed": {"const": false},
+    "economic_result": {"const": "NOT_OBSERVED"},
+    "economic_experiment_authorized": {"const": false},
+    "prospective_observation_authorized": {"const": false},
+    "real_capital_authorized": {"const": false},
+    "live_trading_authorized": {"const": false},
+    "infrastructure_hash": {"$ref": "#/$defs/hash"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "bindingHashes": {
+      "type": "object",
+      "required": ["generation", "candidate", "protocol", "source", "pit", "code_environment"],
+      "properties": {
+        "generation": {"$ref": "#/$defs/hash"},
+        "candidate": {"$ref": "#/$defs/hash"},
+        "protocol": {"$ref": "#/$defs/hash"},
+        "source": {"$ref": "#/$defs/hash"},
+        "pit": {"$ref": "#/$defs/hash"},
+        "code_environment": {"$ref": "#/$defs/hash"}
+      },
+      "additionalProperties": false
+    },
+    "registry": {
+      "type": "object",
+      "required": [
+        "registry_id", "experiment_id", "hypothesis_id", "generation_id",
+        "candidate_hash", "protocol_hash", "frozen_protocol_hash", "reproducibility_hash",
+        "binding_hashes", "trial_accounting_hash", "geometry_hash", "power_hash", "lifecycle",
+        "outcome_accessed", "economic_result", "economic_experiment_authorized",
+        "prospective_observation_authorized", "real_capital_authorized", "live_trading_authorized",
+        "entry_hash"
+      ],
+      "properties": {
+        "registry_id": {"type": "string", "pattern": "^EXR-[0-9A-F]{24}$"},
+        "experiment_id": {"type": "string", "minLength": 1},
+        "hypothesis_id": {"type": "string", "minLength": 1},
+        "generation_id": {"type": "string", "minLength": 1},
+        "candidate_hash": {"$ref": "#/$defs/hash"},
+        "protocol_hash": {"$ref": "#/$defs/hash"},
+        "frozen_protocol_hash": {"$ref": "#/$defs/hash"},
+        "reproducibility_hash": {"$ref": "#/$defs/hash"},
+        "binding_hashes": {"$ref": "#/$defs/bindingHashes"},
+        "trial_accounting_hash": {"$ref": "#/$defs/hash"},
+        "geometry_hash": {"$ref": "#/$defs/hash"},
+        "power_hash": {"$ref": "#/$defs/hash"},
+        "lifecycle": {"enum": ["FROZEN", "PREPARED", "RECEIPT_BOUND", "REPLAY_VERIFIED"]},
+        "execution_plan_hash": {"anyOf": [{"$ref": "#/$defs/hash"}, {"type": "null"}]},
+        "receipt_hash": {"anyOf": [{"$ref": "#/$defs/hash"}, {"type": "null"}]},
+        "replay_hash": {"anyOf": [{"$ref": "#/$defs/hash"}, {"type": "null"}]},
+        "outcome_accessed": {"const": false},
+        "economic_result": {"const": "NOT_OBSERVED"},
+        "economic_experiment_authorized": {"const": false},
+        "prospective_observation_authorized": {"const": false},
+        "real_capital_authorized": {"const": false},
+        "live_trading_authorized": {"const": false},
+        "entry_hash": {"$ref": "#/$defs/hash"}
+      },
+      "additionalProperties": false
+    },
+    "geometry": {
+      "type": "object",
+      "required": ["protocol_hash", "status", "observation_unit", "target_observations", "dependence_assumption", "cluster_key", "max_cluster_share", "sampling_rule", "assumptions"],
+      "properties": {
+        "protocol_hash": {"$ref": "#/$defs/hash"},
+        "status": {"enum": ["UNKNOWN", "DECLARED"]},
+        "observation_unit": {"type": ["string", "null"]},
+        "target_observations": {"type": ["integer", "null"], "minimum": 1},
+        "dependence_assumption": {"type": ["string", "null"]},
+        "cluster_key": {"type": ["string", "null"]},
+        "max_cluster_share": {"type": ["number", "null"], "exclusiveMinimum": 0, "maximum": 1},
+        "sampling_rule": {"type": ["string", "null"]},
+        "assumptions": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "power": {
+      "type": "object",
+      "required": ["protocol_hash", "status", "minimum_detectable_effect", "baseline_scale", "significance_level", "desired_power", "required_observations", "method", "assumptions"],
+      "properties": {
+        "protocol_hash": {"$ref": "#/$defs/hash"},
+        "status": {"enum": ["UNKNOWN", "DECLARED", "DERIVED_FROM_DECLARED_ASSUMPTIONS"]},
+        "minimum_detectable_effect": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "baseline_scale": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "significance_level": {"type": ["number", "null"], "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "desired_power": {"type": ["number", "null"], "exclusiveMinimum": 0.5, "exclusiveMaximum": 1},
+        "required_observations": {"type": ["integer", "null"], "minimum": 2},
+        "method": {"type": ["string", "null"]},
+        "assumptions": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  }
+}
