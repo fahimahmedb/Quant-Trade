@@ -93,14 +93,23 @@ def proposal_disposition(*, proposal_id: str, intake_decision: Mapping[str, Any]
     allowed = {"ELIGIBLE_FOR_DISCOVERY", "NEEDS_DISCOVERY_SYNTHESIS", "NOT_ELIGIBLE", "REVIEW_REQUIRED", "STALE_REQUALIFICATION_REQUIRED"}
     if decision not in allowed:
         raise ValueError("unrecognized passive intake disposition")
+    expected_eligible = decision in {"ELIGIBLE_FOR_DISCOVERY", "NEEDS_DISCOVERY_SYNTHESIS"}
+    if (intake_decision.get("eligible_for_discovery") is True) != expected_eligible:
+        raise ValueError("passive intake disposition has contradictory eligibility")
+    bounded_lineage = deepcopy(dict(lineage))
+    bounded_duplicate = deepcopy(dict(duplicate))
+    bounded_implementability = deepcopy(dict(implementability))
+    _reject_outcome_fields(bounded_lineage, "memory_lineage")
+    _reject_outcome_fields(bounded_duplicate, "duplicate")
+    _reject_outcome_fields(bounded_implementability, "light_implementability")
     return {
         "schema_version": "ideation-disposition-v2",
         "proposal_id": proposal_id,
         "decision": decision,
-        "eligible_for_discovery": intake_decision.get("eligible_for_discovery") is True,
-        "memory_lineage": deepcopy(dict(lineage)),
-        "duplicate": deepcopy(dict(duplicate)),
-        "light_implementability": deepcopy(dict(implementability)),
+        "eligible_for_discovery": expected_eligible,
+        "memory_lineage": bounded_lineage,
+        "duplicate": bounded_duplicate,
+        "light_implementability": bounded_implementability,
         "operational_admission": False,
         "scientific_verdict": "NOT_PERFORMED",
         "economic_result": "NOT_OBSERVED",
