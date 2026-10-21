@@ -5,8 +5,29 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
 from research.research_os.expansion.v2_pipeline import run_pre_outcome_pipeline
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def assert_exact_source(sha: str) -> None:
+    try:
+        observed = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT,
+                                           stderr=subprocess.DEVNULL, text=True).strip()
+        if observed != sha:
+            raise SystemExit("CODE_HEAD_MISMATCH")
+        changed = subprocess.run(
+            ["git", "diff", "--quiet", "HEAD", "--", "src", "research", "deploy", "scripts",
+             "tests/fixtures"], cwd=ROOT, capture_output=True)
+    except (OSError, subprocess.CalledProcessError):
+        raise SystemExit("EXACT_SOURCE_CHECK_UNAVAILABLE") from None
+    if changed.returncode == 1:
+        raise SystemExit("DIRTY_EXECUTABLE_TREE_CANNOT_PROVE_EXACT_SHA")
+    if changed.returncode:
+        raise SystemExit("EXACT_SOURCE_CHECK_UNAVAILABLE")
 
 
 def sha256_file(path: Path) -> str:
@@ -24,6 +45,7 @@ def main() -> int:
     output_path = Path(args.output)
     if len(args.sha) != 40 or any(c not in "0123456789abcdef" for c in args.sha):
         raise SystemExit("--sha must be a full lowercase Git commit SHA")
+    assert_exact_source(args.sha)
 
     bundle = json.loads(fixture_path.read_text(encoding="utf-8"))
     receipt = run_pre_outcome_pipeline(bundle)
