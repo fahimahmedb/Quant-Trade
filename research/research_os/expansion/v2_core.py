@@ -136,6 +136,7 @@ def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if export_cutoff > scheduled_close:
         raise V2ContractError("EXPORT_CUTOFF_AFTER_CLOSE")
     manifest = deepcopy(dict(payload))
+    manifest.pop("epoch_manifest_hash", None)
     manifest["close_policy_hash"] = canonical_hash({"close_policy": payload["close_policy"],
                                                     "max_candidate_exports": payload["max_candidate_exports"],
                                                     "scheduled_close_at": payload["scheduled_close_at"]})
@@ -182,6 +183,7 @@ def build_research_trial(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if not isinstance(payload["discarded_proposals"], list):
         raise V2ContractError("INVALID_DISCARDED_PROPOSALS")
     trial = deepcopy(dict(payload))
+    trial.pop("trial_hash", None)
     trial["proposal_count"] = len(trial["generated_proposals"])
     trial["discard_count"] = len(trial["discarded_proposals"])
     trial["trial_hash"] = canonical_hash(trial)
@@ -293,6 +295,7 @@ def build_negative_memory(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if payload.get("failure_reason") == "IDEA_FALSE_FOREVER" and not payload.get("logical_proof"):
         raise V2ContractError("UNSCOPED_PERMANENT_NEGATIVE_CLAIM")
     record = deepcopy(dict(payload))
+    record.pop("negative_knowledge_hash", None)
     record["negative_knowledge_hash"] = canonical_hash(record)
     return record
 
@@ -305,7 +308,7 @@ def _scan_forbidden_outcome_keys(value: Any, path: str = "$") -> List[str]:
             if key_norm in FORBIDDEN_OUTCOME_KEYS:
                 hits.append(f"{path}.{key}")
             hits.extend(_scan_forbidden_outcome_keys(child, f"{path}.{key}"))
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for idx, child in enumerate(value):
             hits.extend(_scan_forbidden_outcome_keys(child, f"{path}[{idx}]"))
     return hits
@@ -323,6 +326,7 @@ def build_frozen_export_intent(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if hits:
         raise V2ContractError("OUTCOME_DATA_IN_RESEARCH_EXPORT:" + ",".join(hits))
     export = deepcopy(dict(payload))
+    export.pop("export_bundle_hash", None)
     export["event_type"] = "FROZEN_EXPORT_INTENT"
     export["export_bundle_hash"] = canonical_hash(export)
     return export
