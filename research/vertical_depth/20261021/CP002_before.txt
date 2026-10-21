@@ -1,0 +1,206 @@
+FF..FF.F.F.F.FF.........F                                                [100%]
+=================================== FAILURES ===================================
+_ test_canonical_build_survives_serialized_reconstruction[epoch-build_epoch_manifest-epoch_manifest_hash] _
+
+key = 'epoch', builder = <function build_epoch_manifest at 0x7fb43c3bfe20>
+digest = 'epoch_manifest_hash'
+
+    @pytest.mark.parametrize("key,builder,digest", BUILDERS)
+    def test_canonical_build_survives_serialized_reconstruction(key, builder, digest):
+        original = bundle()[key]
+        before = deepcopy(original)
+        built = builder(original)
+        assert original == before
+        # Reordering, reconstructing and rebuilding must not create a new identity.
+        restored = json.loads(json.dumps(dict(reversed(list(built.items())))))
+        for _ in range(3):
+            restored = builder(restored)
+>           assert restored == built
+E           AssertionError: assert {'epoch_manif... 'CLEAN', ...} == {'research_ep...:00:00Z', ...}
+E             
+E             Omitting 22 identical items, use -vv to show
+E             Differing items:
+E             {'epoch_manifest_hash': '264fbffbe24c753a30a9fcab145c41cc79687713431dbfc2d3a42324ba314fff'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E             Use -v to get more diff
+
+tests/test_vertical_core_depth.py:41: AssertionError
+_ test_canonical_build_survives_serialized_reconstruction[trial-build_research_trial-trial_hash] _
+
+key = 'trial', builder = <function build_research_trial at 0x7fb43c7dc040>
+digest = 'trial_hash'
+
+    @pytest.mark.parametrize("key,builder,digest", BUILDERS)
+    def test_canonical_build_survives_serialized_reconstruction(key, builder, digest):
+        original = bundle()[key]
+        before = deepcopy(original)
+        built = builder(original)
+        assert original == before
+        # Reordering, reconstructing and rebuilding must not create a new identity.
+        restored = json.loads(json.dumps(dict(reversed(list(built.items())))))
+        for _ in range(3):
+            restored = builder(restored)
+>           assert restored == built
+E           AssertionError: assert {'trial_hash'...ount': 0, ...} == {'research_tr...-q4-k-m', ...}
+E             
+E             Omitting 15 identical items, use -vv to show
+E             Differing items:
+E             {'trial_hash': 'cc1fce122b79fbb601fb6fa56873806dff340b2e40881bfff774523f69bc2edb'} != {'trial_hash': 'dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b'}
+E             Use -v to get more diff
+
+tests/test_vertical_core_depth.py:41: AssertionError
+_ test_canonical_build_survives_serialized_reconstruction[negative_memory-build_negative_memory-negative_knowledge_hash] _
+
+key = 'negative_memory'
+builder = <function build_negative_memory at 0x7fb43c7dc400>
+digest = 'negative_knowledge_hash'
+
+    @pytest.mark.parametrize("key,builder,digest", BUILDERS)
+    def test_canonical_build_survives_serialized_reconstruction(key, builder, digest):
+        original = bundle()[key]
+        before = deepcopy(original)
+        built = builder(original)
+        assert original == before
+        # Reordering, reconstructing and rebuilding must not create a new identity.
+        restored = json.loads(json.dumps(dict(reversed(list(built.items())))))
+        for _ in range(3):
+            restored = builder(restored)
+>           assert restored == built
+E           AssertionError: assert {'negative_kn...FAILURE', ...} == {'negative_kn...ext': {}, ...}
+E             
+E             Omitting 8 identical items, use -vv to show
+E             Differing items:
+E             {'negative_knowledge_hash': '9aae2970c69be55c4c7c53c4d9676a92267a93ae3dae5fc78a0a69c29257f3f4'} != {'negative_knowledge_hash': '53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e'}
+E             Use -v to get more diff
+
+tests/test_vertical_core_depth.py:41: AssertionError
+_ test_canonical_build_survives_serialized_reconstruction[export-build_frozen_export_intent-export_bundle_hash] _
+
+key = 'export'
+builder = <function build_frozen_export_intent at 0x7fb43c7dc540>
+digest = 'export_bundle_hash'
+
+    @pytest.mark.parametrize("key,builder,digest", BUILDERS)
+    def test_canonical_build_survives_serialized_reconstruction(key, builder, digest):
+        original = bundle()[key]
+        before = deepcopy(original)
+        built = builder(original)
+        assert original == before
+        # Reordering, reconstructing and rebuilding must not create a new identity.
+        restored = json.loads(json.dumps(dict(reversed(list(built.items())))))
+        for _ in range(3):
+            restored = builder(restored)
+>           assert restored == built
+E           AssertionError: assert {'export_bund...: 'AUTO', ...} == {'candidate_h...: 'AUTO', ...}
+E             
+E             Omitting 17 identical items, use -vv to show
+E             Differing items:
+E             {'export_bundle_hash': 'af5026e60e7b87399de696ea3443e6af83eae66a80251c9a1d64f2d7ef61f95d'} != {'export_bundle_hash': '71c3e5af98a6193e7bd925bc393675bf38b51037eb72a16940079a5dbaacb258'}
+E             Use -v to get more diff
+
+tests/test_vertical_core_depth.py:41: AssertionError
+____ test_export_guard_covers_nested_json_serializable_sequences[pnl-tuple] ____
+
+sequence = <class 'tuple'>, key = 'pnl'
+
+    @pytest.mark.parametrize("sequence", [list, tuple])
+    @pytest.mark.parametrize("key", ["pnl", "RETURNS", "evaluation_result", "outcome"])
+    def test_export_guard_covers_nested_json_serializable_sequences(sequence, key):
+        payload = bundle()["export"]
+        payload["fixture_extra"] = {"layer": sequence([{"layer": sequence([{key: 123}])}])}
+        # Python tuples become JSON arrays. Both in-memory and wire forms must block.
+        for value in (payload, json.loads(json.dumps(payload))):
+>           with pytest.raises(V2ContractError, match="OUTCOME_DATA_IN_RESEARCH_EXPORT"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE V2ContractError
+
+tests/test_vertical_core_depth.py:54: Failed
+__ test_export_guard_covers_nested_json_serializable_sequences[RETURNS-tuple] __
+
+sequence = <class 'tuple'>, key = 'RETURNS'
+
+    @pytest.mark.parametrize("sequence", [list, tuple])
+    @pytest.mark.parametrize("key", ["pnl", "RETURNS", "evaluation_result", "outcome"])
+    def test_export_guard_covers_nested_json_serializable_sequences(sequence, key):
+        payload = bundle()["export"]
+        payload["fixture_extra"] = {"layer": sequence([{"layer": sequence([{key: 123}])}])}
+        # Python tuples become JSON arrays. Both in-memory and wire forms must block.
+        for value in (payload, json.loads(json.dumps(payload))):
+>           with pytest.raises(V2ContractError, match="OUTCOME_DATA_IN_RESEARCH_EXPORT"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE V2ContractError
+
+tests/test_vertical_core_depth.py:54: Failed
+_ test_export_guard_covers_nested_json_serializable_sequences[evaluation_result-tuple] _
+
+sequence = <class 'tuple'>, key = 'evaluation_result'
+
+    @pytest.mark.parametrize("sequence", [list, tuple])
+    @pytest.mark.parametrize("key", ["pnl", "RETURNS", "evaluation_result", "outcome"])
+    def test_export_guard_covers_nested_json_serializable_sequences(sequence, key):
+        payload = bundle()["export"]
+        payload["fixture_extra"] = {"layer": sequence([{"layer": sequence([{key: 123}])}])}
+        # Python tuples become JSON arrays. Both in-memory and wire forms must block.
+        for value in (payload, json.loads(json.dumps(payload))):
+>           with pytest.raises(V2ContractError, match="OUTCOME_DATA_IN_RESEARCH_EXPORT"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE V2ContractError
+
+tests/test_vertical_core_depth.py:54: Failed
+__ test_export_guard_covers_nested_json_serializable_sequences[outcome-tuple] __
+
+sequence = <class 'tuple'>, key = 'outcome'
+
+    @pytest.mark.parametrize("sequence", [list, tuple])
+    @pytest.mark.parametrize("key", ["pnl", "RETURNS", "evaluation_result", "outcome"])
+    def test_export_guard_covers_nested_json_serializable_sequences(sequence, key):
+        payload = bundle()["export"]
+        payload["fixture_extra"] = {"layer": sequence([{"layer": sequence([{key: 123}])}])}
+        # Python tuples become JSON arrays. Both in-memory and wire forms must block.
+        for value in (payload, json.loads(json.dumps(payload))):
+>           with pytest.raises(V2ContractError, match="OUTCOME_DATA_IN_RESEARCH_EXPORT"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE V2ContractError
+
+tests/test_vertical_core_depth.py:54: Failed
+_ test_pipeline_cannot_accept_tuple_hidden_outcome_then_claim_no_outcome_access _
+
+    def test_pipeline_cannot_accept_tuple_hidden_outcome_then_claim_no_outcome_access():
+        payload = bundle()
+        payload["negative_memory"]["source_context"]["fixture_extra"] = ({"pnl": 123},)
+>       with pytest.raises(V2ContractError, match="OUTCOME_DATA_VISIBLE_TO_RESEARCH"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE V2ContractError
+
+tests/test_vertical_core_depth.py:61: Failed
+________________ test_clean_pipeline_stays_closed_after_replay _________________
+
+    def test_clean_pipeline_stays_closed_after_replay():
+        payload = bundle()
+        first = run_pre_outcome_pipeline(payload)
+        for key, builder, _ in BUILDERS:
+            if key != "export":  # AUTO export references are resolved by the pipeline.
+                payload[key] = json.loads(json.dumps(builder(payload[key])))
+>       assert run_pre_outcome_pipeline(payload) == first
+E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
+E         
+E         Omitting 12 identical items, use -vv to show
+E         Differing items:
+E         {'receipt_hash': '4d9a0caf9fc4453c4cfcddeb93ed0d8c40825e0d654e10fb75658dc41a34f105'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
+E         {'trial_hash': 'cc1fce122b79fbb601fb6fa56873806dff340b2e40881bfff774523f69bc2edb'} != {'trial_hash': 'dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b'}
+E         {'epoch_manifest_hash': '264fbffbe24c753a30a9fcab145c41cc79687713431dbfc2d3a42324ba314fff'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c38...
+E         
+E         ...Full output truncated (5 lines hidden), use '-vv' to show
+
+tests/test_vertical_core_depth.py:79: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_core_depth.py::test_canonical_build_survives_serialized_reconstruction[epoch-build_epoch_manifest-epoch_manifest_hash]
+FAILED tests/test_vertical_core_depth.py::test_canonical_build_survives_serialized_reconstruction[trial-build_research_trial-trial_hash]
+FAILED tests/test_vertical_core_depth.py::test_canonical_build_survives_serialized_reconstruction[negative_memory-build_negative_memory-negative_knowledge_hash]
+FAILED tests/test_vertical_core_depth.py::test_canonical_build_survives_serialized_reconstruction[export-build_frozen_export_intent-export_bundle_hash]
+FAILED tests/test_vertical_core_depth.py::test_export_guard_covers_nested_json_serializable_sequences[pnl-tuple]
+FAILED tests/test_vertical_core_depth.py::test_export_guard_covers_nested_json_serializable_sequences[RETURNS-tuple]
+FAILED tests/test_vertical_core_depth.py::test_export_guard_covers_nested_json_serializable_sequences[evaluation_result-tuple]
+FAILED tests/test_vertical_core_depth.py::test_export_guard_covers_nested_json_serializable_sequences[outcome-tuple]
+FAILED tests/test_vertical_core_depth.py::test_pipeline_cannot_accept_tuple_hidden_outcome_then_claim_no_outcome_access
+FAILED tests/test_vertical_core_depth.py::test_clean_pipeline_stays_closed_after_replay
+10 failed, 15 passed in 0.07s
