@@ -66,6 +66,8 @@ def run_discovery_chain(
 
     selected = research_decision.get("selected_action")
     selected = selected if isinstance(selected, Mapping) else {}
+    if selected.get("action") != "RUN_PRODUCER":
+        return _blocked("RESEARCH_INTELLIGENCE_SELECTED_ACTION_MISMATCH")
     if selected.get("required_capability") != expected_capability:
         return _blocked("RESEARCH_INTELLIGENCE_PRODUCER_CAPABILITY_MISSING_OR_MISMATCH")
     if type(synthetic_only) is not bool:
