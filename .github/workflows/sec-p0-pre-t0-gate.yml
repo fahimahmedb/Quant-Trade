@@ -53,6 +53,11 @@ jobs:
       - name: Full unit suite
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
+      - name: Auxiliary producer JSON Schema contracts
+        run: |
+          python3 -m pip install -r research/research_os/tests/requirements-contract-tests.txt
+          PYTHONPATH=src:. python3 -m unittest research.research_os.tests.test_auxiliary_contract_surface -v
+
       - name: Mega-A Research Intelligence contracts
         run: PYTHONPATH=src python3 -m unittest tests.mega_a_research_intelligence_contracts -v
 

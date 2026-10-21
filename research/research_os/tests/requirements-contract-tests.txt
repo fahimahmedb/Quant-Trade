@@ -1,0 +1,2 @@
+# Development-only Draft 2020-12 validation for actual producer/schema contracts.
+jsonschema==4.26.0
