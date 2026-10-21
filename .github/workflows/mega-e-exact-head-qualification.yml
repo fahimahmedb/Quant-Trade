@@ -47,7 +47,7 @@ jobs:
       - name: MEGA E focused recovery and projection suite
         run: |
           PYTHONPATH=src:. python3 -m unittest -v \
-            tests.test_mega_e_live_receipt_reconciliation \
+            research.research_os.tests.test_mega_e_live_receipt_reconciliation \
             tests.test_oracle_live_projection \
             tests.test_oracle_live_composition \
             tests.test_research_os_v2_core \
