@@ -169,6 +169,14 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
         ),
     }
 
+    documentary = identity.get("evidence_class") == "DOCUMENTARY"
+    if documentary:
+        # These native identity fields intentionally retain UNKNOWN when their
+        # economic meaning is not supported. Issuer facts, thesis tags and a
+        # proposed candidate horizon cannot qualify different structural fields.
+        for name in ("instrument", "horizon", "economic_exposure"):
+            field_choices[name] = ((identity.get(name), "identity." + name),)
+
     fields: Dict[str, Any] = {}
     unknown_fields: List[str] = []
     for name, choices in field_choices.items():
@@ -189,6 +197,17 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
                 "source_refs": deepcopy(source_refs) if isinstance(source_refs, list) else [],
             },
         }
+        if documentary:
+            support_name = {"instrument": "asset", "economic_exposure": "economic_tags",
+                            "capacity_bottleneck": "capacity"}.get(name, name)
+            record = deepcopy(provenance.get("field_support", {}).get(
+                support_name, {"status": "UNKNOWN", "support": None}))
+            declared_value = identity.get(support_name, "UNKNOWN")
+            if name == "source_identity":
+                support_name, declared_value = "identity_provenance.source_hash", source_hash
+                record = {"status": "CONTENT_IDENTITY_ONLY", "support": {"source_hash": source_hash}}
+            fields[name]["documentary_evidence"] = dict(
+                record, identity_field=support_name, declared_value=deepcopy(declared_value))
 
     return {
         "hypothesis_id": identity.get("hypothesis_id", "UNKNOWN"),

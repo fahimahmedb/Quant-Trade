@@ -63,8 +63,13 @@ class StructuralUnknownEvidenceTests(unittest.TestCase):
             json.loads(source_path.read_text()), EngineContext("IDENTITY-IMMUTABILITY", synthetic_only=False))
         identity = economic_identity_v1(output, {})
         before = deepcopy(identity)
-        self.assertEqual(sha256_json(structural_identity(identity)),
-                         "0a8566d6c0c603ead49afe7a666b038a8f66243f56e2e2b63cbfbf789aa423c7")
+        projected = structural_identity(identity)
+        for field in ("instrument", "horizon", "economic_exposure"):
+            self.assertEqual(projected["fields"][field]["status"], "UNKNOWN")
+            self.assertEqual(projected["fields"][field]["value"], "UNKNOWN")
+        self.assertEqual(projected["fields"]["instrument"]["documentary_evidence"]["status"], "SUPPORTED_ISSUER_ONLY")
+        self.assertEqual(sha256_json(projected),
+                         "a56949710be1fb1374867785c297c8d387f3bee8a2c46c10f9c227a158f6fb4e")
         self.assertEqual(identity, before)
 
 
