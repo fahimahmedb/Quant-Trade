@@ -11,7 +11,7 @@ import threading
 from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
-from .multi_source_ideation import POLICIES, _reject_outcome_fields
+from .multi_source_ideation import OUTCOME_KEYS, POLICIES, _reject_outcome_fields
 
 
 def _hash(value: Any) -> str:
@@ -124,6 +124,31 @@ class DurableProposalLedger:
             for index, nested in enumerate(value):
                 cls._reject_operational_keys(nested, f"{path}[{index}]")
 
+    @classmethod
+    def _reject_observed_truth(cls, value: Any, path: str = "record") -> None:
+        """Permit explicit non-observation sentinels, reject observed scientific/economic truth."""
+        if isinstance(value, Mapping):
+            for key, nested in value.items():
+                normalized = str(key).strip().lower()
+                if normalized == "outcome_accessed":
+                    if nested is not False:
+                        raise ValueError(f"observed outcome forbidden in Proposal Ledger: {path}.{key}")
+                    continue
+                if normalized == "economic_result":
+                    if nested != "NOT_OBSERVED":
+                        raise ValueError(f"economic result forbidden in Proposal Ledger: {path}.{key}")
+                    continue
+                if normalized == "scientific_verdict":
+                    if nested != "NOT_PERFORMED":
+                        raise ValueError(f"scientific verdict forbidden in Proposal Ledger: {path}.{key}")
+                    continue
+                if normalized in OUTCOME_KEYS:
+                    raise ValueError(f"outcome-bearing field forbidden in Proposal Ledger: {path}.{key}")
+                cls._reject_observed_truth(nested, f"{path}.{key}")
+        elif isinstance(value, (list, tuple)):
+            for index, nested in enumerate(value):
+                cls._reject_observed_truth(nested, f"{path}[{index}]")
+
     def __init__(self, rows: Sequence[Mapping[str, Any]] = ()) -> None:
         self._lock = threading.Lock()
         self._rows: dict[str, dict] = {}
@@ -133,6 +158,7 @@ class DurableProposalLedger:
     def persist(self, record: Mapping[str, Any]) -> str:
         row = deepcopy(dict(record))
         self._reject_operational_keys(row)
+        self._reject_observed_truth(row)
         if str(row.get("status", "")).upper() in self.FORBIDDEN_STATUS:
             raise ValueError("operational work semantics forbidden in Proposal Ledger")
         rid = str(row.get("proposal_id") or _hash(row))
