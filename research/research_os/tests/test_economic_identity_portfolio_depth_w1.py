@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import unittest
 
+from research.research_os.expansion.final_shape import economic_identity_v1, portfolio_map_v1
 from research.research_os.expansion.portfolio_v2 import (
     portfolio_diagnostics_v2,
     structural_identity,
@@ -30,6 +32,19 @@ def identity(hypothesis_id: str, **overrides):
     }
     base.update(overrides)
     return base
+
+
+def synthetic_output(hypothesis_id: str, mechanism: str = "balance-sheet-window"):
+    return {
+        "synthetic_only": True,
+        "candidate": {
+            "hypothesis_id": hypothesis_id,
+            "generation_id": "GEN-1",
+            "mechanism": mechanism,
+            "horizon": "1d",
+            "economic_tags": ["balance-sheet", "quarter-end"],
+        },
+    }
 
 
 class EconomicIdentityPortfolioDepthW1Tests(unittest.TestCase):
@@ -132,6 +147,40 @@ class EconomicIdentityPortfolioDepthW1Tests(unittest.TestCase):
         }
         with self.assertRaisesRegex(ValueError, "hypothesis binding mismatch"):
             structural_identity(value)
+
+    def test_producer_identity_is_bound_to_candidate_snapshot(self):
+        produced = economic_identity_v1(
+            synthetic_output("H1"),
+            {"payer": "dealer-balance-sheet", "asset": "UST"},
+        )
+        projected = structural_identity(produced)
+        self.assertEqual(projected["candidate_binding"]["status"], "BOUND")
+        self.assertEqual(
+            produced["candidate_binding"]["candidate_hash"],
+            projected["candidate_binding"]["candidate_hash"],
+        )
+
+        tampered = deepcopy(produced)
+        tampered["candidate_snapshot"]["mechanism"] = "different-mechanism"
+        with self.assertRaisesRegex(ValueError, "candidate hash binding mismatch"):
+            structural_identity(tampered)
+
+    def test_portfolio_map_v1_routes_synthetic_identities_through_canonical_v2(self):
+        left = economic_identity_v1(
+            synthetic_output("H1"),
+            {"payer": "dealer-balance-sheet", "asset": "UST"},
+        )
+        right = economic_identity_v1(
+            synthetic_output("H2"),
+            {"payer": "dealer-balance-sheet", "asset": "SOFR-FUTURE"},
+        )
+        mapped = portfolio_map_v1([left, right])
+        self.assertIn("structural_diagnostics", mapped)
+        self.assertIn("economic_structure", mapped["pairwise"][0])
+        self.assertEqual(mapped["empirical_correlation"], "UNAVAILABLE")
+        self.assertFalse(mapped["return_series_consumed"])
+        self.assertFalse(mapped["capital_allocation_authorized"])
+        self.assertFalse(mapped["live_trading_authorized"])
 
     def test_memory_context_never_becomes_alpha_or_empirical_correlation(self):
         value = identity("H1", memory_refs=["MEM-HISTORICAL-POSITIVE-SIGNAL"])
