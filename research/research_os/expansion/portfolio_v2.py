@@ -13,7 +13,11 @@ from .v2_core import SEMANTIC_NULLS
 _UNKNOWN = (SEMANTIC_NULLS - {"NOT_APPLICABLE"}) | {"", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE"}
 _FIELD_STATES = {"KNOWN", "UNKNOWN", "NOT_APPLICABLE", "CONFLICTED"}
 _CORE_FIELDS = ("payer", "mechanism", "timing_clock")
-_STRICT_COMPLETE_FIELDS = {"capacity_bottleneck", "cost_structure"}
+_STRICT_COMPLETE_FIELDS = {
+    "payer", "forced_constrained_actor", "mechanism", "instrument", "universe",
+    "timing_clock", "horizon", "capacity_bottleneck", "cost_structure",
+    "economic_exposure", "event_rule_dependency", "source_identity",
+}
 
 # Diagnostics only: never statistical correlation and never outcome-derived.
 _STRUCTURAL_WEIGHTS = {
@@ -65,7 +69,7 @@ def _is_known(value: Any) -> bool:
 
 
 def _fully_known_assumption_value(value: Any) -> bool:
-    """Cost/capacity structures are known only when every declared atom is usable."""
+    """A structured economic fact is known only when every declared atom is usable."""
     if isinstance(value, dict) and "status" in value:
         if _semantic_state(value) != "KNOWN":
             return False
@@ -81,6 +85,20 @@ def _fully_known_assumption_value(value: Any) -> bool:
     if isinstance(value, (list, tuple, set)):
         return bool(value) and all(_fully_known_assumption_value(item) for item in value)
     return True
+
+
+def _validated_memory_refs(value: Any) -> List[str]:
+    """Memory is opaque structural context; malformed refs never become silent evidence."""
+    if value is None:
+        return []
+    if not isinstance(value, list):
+        raise ValueError("economic identity memory refs must be a list")
+    refs: List[str] = []
+    for ref in value:
+        if not isinstance(ref, str) or not _is_known(ref):
+            raise ValueError("economic identity memory ref must be a known string")
+        refs.append(ref.strip())
+    return sorted(set(refs))
 
 
 def _stable_value(value: Any) -> Any:
@@ -261,9 +279,7 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
     source_hash = provenance.get("source_hash", "UNKNOWN")
     dossier_hash = provenance.get("dossier_hash", "UNKNOWN")
     source_refs = provenance.get("source_refs", [])
-    memory_refs = provenance.get("memory_refs", identity.get("memory_refs", []))
-    if not isinstance(memory_refs, list):
-        memory_refs = []
+    memory_refs = _validated_memory_refs(provenance.get("memory_refs", identity.get("memory_refs", [])))
 
     specs = {
         "payer": (((identity.get("payer"), "identity.payer"), (candidate.get("payer"), "candidate.payer")), ()),
@@ -291,7 +307,9 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
 
     fields: Dict[str, Any] = {}
     by_state = {state: [] for state in _FIELD_STATES}
-    identity_hash = sha256_json(identity)
+    identity_hash_payload = deepcopy(identity)
+    identity_hash_payload.pop("memory_refs", None)
+    identity_hash = sha256_json(identity_hash_payload)
     for name, (primary, fallback) in specs.items():
         record = _select_field(name, primary, fallback)
         by_state[record["status"]].append(name)
@@ -608,6 +626,10 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
     if len(items) < 2:
         decision_blockers.append("INSUFFICIENT_CANDIDATES_FOR_RELATIONSHIP_MAP")
     for projection in projections:
+        if not _is_known(projection["hypothesis_id"]):
+            decision_blockers.append("IDENTITY_HYPOTHESIS_ID_UNKNOWN")
+        if not _is_known(projection["generation_id"]):
+            decision_blockers.append(f"{projection['hypothesis_id']}:GENERATION_ID_UNKNOWN")
         binding = projection["candidate_binding"]
         if binding.get("status") != "BOUND" or not _is_known(binding.get("candidate_hash")):
             decision_blockers.append(f"{projection['hypothesis_id']}:CANDIDATE_BINDING_NOT_VERIFIED")
@@ -691,5 +713,9 @@ def _verify_documentary_identity(identity: Dict[str, Any]) -> None:
         basis = identity.get("documentary_basis")
         if not isinstance(basis, dict) or basis.get("synthetic_only") is not False:
             raise ValueError("documentary identity lacks its producer basis")
-        if identity != economic_identity_v1(basis, {}):
+        replay_candidate = deepcopy(identity)
+        memory_refs = replay_candidate.pop("memory_refs", None)
+        if memory_refs is not None:
+            _validated_memory_refs(memory_refs)
+        if replay_candidate != economic_identity_v1(basis, {}):
             raise ValueError("documentary identity differs from reconstructed dossier support")
