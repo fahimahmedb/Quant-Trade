@@ -3,12 +3,29 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
+from functools import wraps
+import fcntl
+import os
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+import threading
 from typing import Any
 
-from quant.state import write_json as _write_json
+from quant.state import read_json, write_json as _write_json
+
+
+class QueueConflict(RuntimeError):
+    """A durable queue update invalidated this writer's observed snapshot."""
+
+
+def _serialized_mutation(method):
+    @wraps(method)
+    def serialized(self, *args, **kwargs):
+        with self._mutation_lock:
+            return method(self, *args, **kwargs)
+    return serialized
 
 
 def utc_now() -> str:
@@ -91,24 +108,43 @@ class PersistentQueue:
     """A small JSON queue with stable ordering and durable terminal records."""
 
     def __init__(self, path: Path):
+        if not hasattr(self, "_mutation_lock"):
+            self._mutation_lock = threading.RLock()
         self.path = path
         self.tasks: dict[str, ResearchTask] = {}
+        observed = read_json(path)
+        self._persisted = deepcopy(observed)
         if path.exists():
-            payload = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(observed, dict):
+                raise ValueError("queue state must be an object")
+            payload = observed
             if type(payload.get("version")) is not int or payload["version"] != 1:
                 raise ValueError("unknown queue schema version")
             self.tasks = {item["task_id"]: ResearchTask(**item) for item in payload["tasks"]}
             if len(self.tasks) != len(payload["tasks"]):
                 raise ValueError("duplicate queue task identity")
 
+    @_serialized_mutation
     def save(self) -> None:
-        ordered = sorted(self.tasks.values(), key=lambda task: (task.created_at, task.task_id))
+        fd = None
         try:
-            _write_json(self.path, {"version": 1, "tasks": [asdict(task) for task in ordered]})
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            if read_json(self.path) != self._persisted:
+                raise QueueConflict("QUEUE_CHANGED_SINCE_READ")
+            ordered = sorted(self.tasks.values(), key=lambda task: (task.created_at, task.task_id))
+            document = {"version": 1, "tasks": [asdict(task) for task in ordered]}
+            _write_json(self.path, document)
+            self._persisted = deepcopy(document)
         except BaseException:
             self.__init__(self.path)
             raise
+        finally:
+            if fd is not None:
+                os.close(fd)
 
+    @_serialized_mutation
     def add(self, task: ResearchTask) -> bool:
         existing = self.tasks.get(task.task_id)
         if existing and existing.execution_key == task.execution_key:
