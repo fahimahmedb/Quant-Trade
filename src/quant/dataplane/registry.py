@@ -2,8 +2,9 @@
 
 ``QUANT_NORTH_STAR.md``: "No research or capital decision may silently assume
 data that the system cannot trace." A dataset is therefore usable only when it
-is registered, fingerprinted and ``AVAILABLE``; anything else blocks the work
-that depends on it instead of degrading quietly.
+is registered, fingerprinted and ``AVAILABLE``; evidence-required datasets also
+need recoverable raw content + receipt identities. Anything else blocks the
+work that depends on it instead of degrading quietly.
 """
 
 from __future__ import annotations
@@ -42,6 +43,16 @@ class DatasetRecord:
     point_in_time: dict[str, Any] = field(default_factory=dict)
     caveats: list[str] = field(default_factory=list)
     license_note: str | None = None
+    # Source/publisher identity and source-product identity are deliberately
+    # separate from ticker/security identity and from URI/path provenance.
+    source_identity: str | None = None
+    source_product_identity: str | None = None
+    # Evidence bindings identify exact raw bytes and the acquisition receipt.
+    # ``evidence_store_path`` is repository-relative operational provenance;
+    # it is never itself treated as content identity.
+    evidence_required: bool = False
+    evidence_store_path: str | None = None
+    evidence: list[dict[str, str]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -66,7 +77,69 @@ class DatasetRegistry:
                                "datasets": {key: record.to_dict()
                                             for key, record in sorted(self.records.items())}})
 
+    def _evidence_problem(self, record: DatasetRecord) -> str | None:
+        """Return why an evidence-required record is not replayable, if any.
+
+        This is a downstream consumption gate, not merely an ingestion-time
+        assertion. A hand-edited registry entry saying ``AVAILABLE`` cannot
+        bypass missing/corrupt evidence because every usable lookup rechecks the
+        raw object and the referenced receipt.
+        """
+        if not record.evidence_required:
+            return None
+        if not record.evidence_store_path:
+            return "evidence-required dataset has no evidence_store_path"
+        if not record.evidence:
+            return "evidence-required dataset has no raw evidence identity"
+
+        relative = Path(record.evidence_store_path)
+        if relative.is_absolute():
+            return "evidence_store_path must be repository-relative"
+        try:
+            store_root = (self.root / relative).resolve()
+            store_root.relative_to(self.root.resolve())
+        except ValueError:
+            return "evidence_store_path escapes repository root"
+        if not store_root.exists():
+            return f"evidence store is unavailable: {record.evidence_store_path}"
+
+        # Local import avoids making the registry primitive own a second truth
+        # store. EvidenceStore remains the sole authority for CAS/receipt checks.
+        from .evidence import EvidenceError, EvidenceStore
+
+        store = EvidenceStore(store_root)
+        for binding in record.evidence:
+            sha256 = binding.get("sha256")
+            receipt_id = binding.get("receipt_id")
+            if not sha256 or not receipt_id:
+                return "evidence binding must include sha256 and receipt_id"
+            try:
+                receipts = store.receipts(sha256)
+            except (EvidenceError, FileNotFoundError, ValueError) as exc:
+                return f"raw evidence is not recoverable: {type(exc).__name__}: {exc}"
+            if not any(receipt.receipt_id == receipt_id for receipt in receipts):
+                return f"evidence receipt is not recoverable: {receipt_id}"
+        return None
+
+    def _enforce_evidence_gate(self, record: DatasetRecord) -> None:
+        problem = self._evidence_problem(record)
+        if problem is None or record.availability != "AVAILABLE":
+            return
+        record.availability = "INVALID"
+        validation = dict(record.validation)
+        problems = list(validation.get("problems", []))
+        message = f"evidence qualification failed: {problem}"
+        if message not in problems:
+            problems.append(message)
+        validation["problems"] = problems
+        validation["passed"] = False
+        record.validation = validation
+
+    def is_usable(self, record: DatasetRecord) -> bool:
+        return record.availability == "AVAILABLE" and self._evidence_problem(record) is None
+
     def register(self, record: DatasetRecord) -> DatasetRecord:
+        self._enforce_evidence_gate(record)
         self.records[record.dataset_id] = record
         self.save()
         return record
@@ -81,15 +154,16 @@ class DatasetRegistry:
     def reload(self) -> list[str]:
         """Re-read records written by another ingestion process.
 
-        Existing ids are replaced when the persisted document changed.  A
-        reloaded AVAILABLE verdict is still checked against the validation
-        fingerprint in ``refresh_availability`` before it can be trusted.
+        Existing ids are replaced when the persisted document changed. A
+        reloaded AVAILABLE verdict is still checked against both the dataset
+        fingerprint and any required evidence binding before it can be trusted.
         """
         payload = read_json(self.path, {"version": 1, "datasets": {}}) or {}
         stored = payload.get("datasets", {})
         changed: list[str] = []
         for key, value in stored.items():
             incoming = DatasetRecord(**value)
+            self._enforce_evidence_gate(incoming)
             current = self.records.get(key)
             if current is None or current.to_dict() != incoming.to_dict():
                 self.records[key] = incoming
@@ -123,6 +197,7 @@ class DatasetRegistry:
                 validation["fingerprint"] = after
                 record.availability = "AVAILABLE" if validation["passed"] else "INVALID"
             record.validation = validation
+            self._enforce_evidence_gate(record)
         except Exception as exc:
             current = fingerprint_file(path) if path.exists() else None
             record.fingerprint = current
@@ -132,12 +207,12 @@ class DatasetRegistry:
             record.availability = "INVALID"
 
     def refresh_availability(self) -> list[DatasetRecord]:
-        """Re-check every registered dataset against the filesystem.
+        """Re-check every registered dataset against filesystem and evidence.
 
-        A byte change is never promoted directly to AVAILABLE.  The validation
-        verdict itself carries the exact byte fingerprint it describes, so a
-        second process cannot publish new bytes/new fingerprint while leaving a
-        stale AVAILABLE verdict behind.
+        A byte change is never promoted directly to AVAILABLE. The validation
+        verdict carries the exact normalized-byte fingerprint it describes, and
+        evidence-required records must additionally replay their raw CAS object
+        and referenced acquisition receipt.
         """
         changed: list[DatasetRecord] = []
         for record in self.records.values():
@@ -151,9 +226,11 @@ class DatasetRegistry:
             current = fingerprint_file(path)
             bytes_changed = current != record.fingerprint
             validation_fingerprint = record.validation.get("fingerprint")
+            evidence_problem = self._evidence_problem(record)
             needs_recheck = (bytes_changed
                              or record.availability in {"MISSING", "STALE"}
-                             or validation_fingerprint != current)
+                             or validation_fingerprint != current
+                             or (record.availability == "AVAILABLE" and evidence_problem is not None))
             if needs_recheck:
                 record.refreshed_at = utc_now()
                 self._revalidate(record, path)
@@ -163,17 +240,22 @@ class DatasetRegistry:
         return changed
 
     def available(self) -> list[DatasetRecord]:
-        return [record for record in self.records.values() if record.availability == "AVAILABLE"]
+        return [record for record in self.records.values() if self.is_usable(record)]
 
     def missing_for(self, required: list[str]) -> list[str]:
         """Dataset ids a task needs that are not currently usable."""
         return [dataset_id for dataset_id in required
                 if (record := self.records.get(dataset_id)) is None
-                or record.availability != "AVAILABLE"]
+                or not self.is_usable(record)]
 
     def health(self) -> dict[str, Any]:
         counts: dict[str, int] = {name: 0 for name in AVAILABILITY}
+        unusable_evidence = 0
         for record in self.records.values():
             counts[record.availability] = counts.get(record.availability, 0) + 1
+            if record.availability == "AVAILABLE" and not self.is_usable(record):
+                unusable_evidence += 1
         return {"datasets": len(self.records), "by_availability": counts,
-                "healthy": counts["AVAILABLE"] == len(self.records) and bool(self.records)}
+                "evidence_unusable": unusable_evidence,
+                "healthy": counts["AVAILABLE"] == len(self.records)
+                           and bool(self.records) and unusable_evidence == 0}
