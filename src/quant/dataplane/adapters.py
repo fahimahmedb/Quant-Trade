@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -35,6 +36,54 @@ YAHOO_CAVEATS = [
 ]
 
 
+def _yahoo_daily_rows(payload: Any, symbol: str) -> list[dict[str, Any]]:
+    """Admit an explicit successful envelope and aligned, complete source bars."""
+    try:
+        if not isinstance(payload, dict) or not isinstance(payload.get("chart"), dict):
+            raise ValueError("chart object is required")
+        chart = payload["chart"]
+        if "error" not in chart or chart["error"] is not None:
+            raise ValueError("source did not declare error=null")
+        results = chart.get("result")
+        if not isinstance(results, list) or len(results) != 1 or not isinstance(results[0], dict):
+            raise ValueError("one chart result is required")
+        result = results[0]
+        indicators = result["indicators"]
+        if not isinstance(indicators, dict):
+            raise ValueError("indicators object is required")
+        quotes, adjusted = indicators["quote"], indicators["adjclose"]
+        if (not isinstance(quotes, list) or len(quotes) != 1 or not isinstance(quotes[0], dict)
+                or not isinstance(adjusted, list) or len(adjusted) != 1 or not isinstance(adjusted[0], dict)):
+            raise ValueError("one quote and adjusted-close series are required")
+        stamps = result["timestamp"]
+        quote = quotes[0]
+        series = [quote[key] for key in ("open", "high", "low", "close")]
+        series += [adjusted[0]["adjclose"], quote["volume"]]
+        if (not isinstance(stamps, list) or not stamps
+                or any(not isinstance(values, list) or len(values) != len(stamps) for values in series)):
+            raise ValueError("source arrays must align with timestamps")
+        rows = []
+        dates = set()
+        for index, stamp in enumerate(stamps):
+            if type(stamp) not in (int, float) or not math.isfinite(stamp):
+                raise ValueError("invalid source timestamp")
+            date = datetime.fromtimestamp(stamp, tz=timezone.utc).date().isoformat()
+            if date in dates:
+                raise ValueError("duplicate source session")
+            dates.add(date)
+            values = [column[index] for column in series]
+            if any(value is None for value in values):
+                continue  # Missing volume is unknown, never manufactured as zero.
+            if any(type(value) not in (int, float) or not math.isfinite(value) for value in values):
+                raise ValueError("source bar values must be finite numbers")
+            rows.append(dict(date=date, symbol=symbol, **dict(zip(PricePanel.FIELDS, values))))
+        if not rows:
+            raise ValueError("source returned no complete bars")
+        return rows
+    except (KeyError, IndexError, TypeError, ValueError, OverflowError, OSError) as exc:
+        raise DataUnavailable(f"{symbol}: malformed or unsuccessful daily chart ({type(exc).__name__})") from exc
+
+
 def fetch_yahoo_daily(symbols: list[str], range_: str = "10y",
                       timeout: int = 45) -> tuple[PricePanel, dict[str, Any]]:
     """Fetch daily bars for several symbols from the free Yahoo chart endpoint."""
@@ -48,29 +97,9 @@ def fetch_yahoo_daily(symbols: list[str], range_: str = "10y",
                 payload = json.load(response)
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, OSError) as exc:
             raise DataUnavailable(f"{symbol}: {type(exc).__name__}: {exc}") from exc
-        error = (payload.get("chart") or {}).get("error")
-        if error:
-            raise DataUnavailable(f"{symbol}: source returned error {error}")
-        result = payload["chart"]["result"][0]
-        quote = result["indicators"]["quote"][0]
-        adjusted = result["indicators"].get("adjclose", [{}])[0].get("adjclose")
-        if adjusted is None:
-            raise DataUnavailable(f"{symbol}: source returned no adjusted close series")
-        kept = 0
-        for index, stamp in enumerate(result["timestamp"]):
-            values = [quote["open"][index], quote["high"][index], quote["low"][index],
-                      quote["close"][index], adjusted[index]]
-            if any(value is None for value in values):
-                continue  # A partial bar is dropped, never interpolated.
-            volume = quote["volume"][index] or 0
-            rows.append({
-                "date": datetime.fromtimestamp(stamp, tz=timezone.utc).date().isoformat(),
-                "symbol": symbol, "open": values[0], "high": values[1], "low": values[2],
-                "close": values[3], "adj_close": values[4], "volume": float(volume)})
-            kept += 1
-        if kept == 0:
-            raise DataUnavailable(f"{symbol}: source returned no complete bars")
-        per_symbol[symbol] = kept
+        symbol_rows = _yahoo_daily_rows(payload, symbol)
+        rows.extend(symbol_rows)
+        per_symbol[symbol] = len(symbol_rows)
     provenance = {
         "source": "Yahoo Finance chart API (public, credential-free)",
         "adapter": "yahoo_daily", "requested_range": range_,
