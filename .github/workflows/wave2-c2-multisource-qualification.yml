@@ -14,6 +14,9 @@ env:
   NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
   MULTISOURCE_MERGED_HEAD: b5ba754188b9029f8a80ebfeea37c98b6f636869
   MULTISOURCE_QUALIFICATION_HEAD: b9b7c1bd9efeaaf74c236f29d88e1a3c6fe759e5
+  MULTISOURCE_REPAIR_BASE: 4d87333b72e17fcb4a5488ac60aba94e45000268
+  MULTISOURCE_OUTCOME_REPAIR: 884632a1fc332df8155eaa5e0557521497dc6d4b
+  MULTISOURCE_OUTCOME_REPAIR_BLOB: 8d6e5d27386c437e66593a2e533f67a7f45227e5
   C2_B_PORT_SHA: 42203de5e82e72b619ab70af399208178b6631ef
   C2_D0_PORT_SHA: a0ba421c0d56f7d7bdff451a0fc6ac8d8e0bc17e
   C2_C0_PORT_SHA: 14926055583ee13e9fd84aa52b3e660b5ce56844
@@ -53,7 +56,8 @@ jobs:
             "${C2_D0_PORT_SHA}" \
             "${C2_C0_PORT_SHA}" \
             "${C2_MEGA_E_PORT_SHA}" \
-            "${MULTISOURCE_MERGED_HEAD}"
+            "${MULTISOURCE_MERGED_HEAD}" \
+            "${MULTISOURCE_OUTCOME_REPAIR}"
           do
             git merge-base --is-ancestor "$ancestor" HEAD
           done
@@ -71,7 +75,7 @@ jobs:
           echo "OBSERVED_MULTISOURCE_HEAD=${observed}" | tee -a /tmp/wave2-c2-final.env
           echo "MULTISOURCE_QUALIFICATION_HEAD=${MULTISOURCE_QUALIFICATION_HEAD}" | tee -a /tmp/wave2-c2-final.env
 
-      - name: Prove all post-merge Multi-Source changes in the pinned qualification snapshot are tests only
+      - name: Prove later qualification snapshot delta is tests only
         shell: bash
         run: |
           set -euo pipefail
@@ -83,7 +87,17 @@ jobs:
           test "$late_count" -gt 0
           echo "MULTISOURCE_LATE_TEST_ONLY_FILES=${late_count}" | tee -a /tmp/wave2-c2-final.env
 
-      - name: Prove exact Multi-Source semantic port without rewriting source history
+      - name: Prove nested outcome firewall repair scope and exact blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${MULTISOURCE_OUTCOME_REPAIR}^")" = "${MULTISOURCE_REPAIR_BASE}"
+          git diff --name-only "${MULTISOURCE_REPAIR_BASE}" "${MULTISOURCE_OUTCOME_REPAIR}" > /tmp/ms-repair.paths
+          test "$(cat /tmp/ms-repair.paths)" = 'research/research_os/multi_source_ideation.py'
+          test "$(git rev-parse HEAD:research/research_os/multi_source_ideation.py)" = "${MULTISOURCE_OUTCOME_REPAIR_BLOB}"
+          echo 'MULTISOURCE_NESTED_OUTCOME_FIREWALL=PINNED' | tee -a /tmp/wave2-c2-final.env
+
+      - name: Prove remaining Multi-Source semantic port exact without rewriting source history
         shell: bash
         run: |
           set -euo pipefail
@@ -92,7 +106,6 @@ jobs:
             research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
             research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
             research/research_os/ideation_cycle.py
-            research/research_os/multi_source_ideation.py
             research/research_os/multi_source_ideation_bindings.py
             research/research_os/multi_source_ideation_hardening.py
             research/research_os/policy_c_safe.py
@@ -110,7 +123,7 @@ jobs:
           grep -F 'not authorized to emit `WAVE2_INTEGRATED_SHA`' "$manifest"
           grep -F 'The backend is not truth, scheduler, Control Plane or scientific evidence.' "$contract"
           grep -F '`ELIGIBLE_FOR_DISCOVERY != READY`' "$contract"
-          echo 'MULTISOURCE_SEMANTIC_PORT_EXACT=TRUE' | tee -a /tmp/wave2-c2-final.env
+          echo 'MULTISOURCE_SEMANTIC_PORT_EXACT_EXCEPT_PINNED_FIREWALL_REPAIR=TRUE' | tee -a /tmp/wave2-c2-final.env
           echo 'SOURCE_MANIFEST_PROMOTED_TO_FINAL=FALSE' | tee -a /tmp/wave2-c2-final.env
 
       - name: Preserve sealed-base repair blobs
@@ -141,7 +154,7 @@ jobs:
             research/research_os/expansion/wave2_scientific_economic_bridge.py \
             deploy/oracle_live_projection.py
 
-      - name: Run canonical Multi-Source suites
+      - name: Run canonical Multi-Source suites including merged firewall tests
         shell: bash
         run: |
           set -euo pipefail
@@ -152,7 +165,7 @@ jobs:
           test "$count" -gt 20
           echo "MULTISOURCE_CANONICAL_TESTS=${count}" | tee -a /tmp/wave2-c2-final.env
 
-      - name: Extract and run every later pinned Multi-Source adversarial test against canonical code
+      - name: Extract and run every later pinned Multi-Source adversarial test against repaired canonical code
         shell: bash
         run: |
           set -euo pipefail
@@ -174,6 +187,28 @@ jobs:
           test "$test_count" -gt 20
           echo "MULTISOURCE_ADVERSARIAL_FILES=${file_count}" | tee -a /tmp/wave2-c2-final.env
           echo "MULTISOURCE_ADVERSARIAL_TESTS=${test_count}" | tee -a /tmp/wave2-c2-final.env
+
+      - name: Direct adversarial proof for recursive outcome firewall
+        run: |
+          python3 - <<'PY'
+          from research.research_os.multi_source_ideation import raw_artifact
+          cases = [
+              {'pnl': 1},
+              {'nested': {'returns': [0.1]}},
+              {'list': [{'statistics': {'sharpe': 2.0}}]},
+              {'deeper': {'a': {'b': {'economic_result': 'positive'}}}},
+          ]
+          for payload in cases:
+              try:
+                  raw_artifact(
+                      policy_kind='SYSTEMATIC_COVERAGE', status='PROPOSAL_EMITTED',
+                      context_snapshot_hash='ctx', artifact_kind='IDEA_PROPOSAL', payload=payload,
+                  )
+              except ValueError as exc:
+                  assert 'outcome-bearing ideation field forbidden' in str(exc)
+              else:
+                  raise AssertionError(payload)
+          PY
 
       - name: Prove Multi-Source cannot bypass Research Intelligence into Discovery B
         shell: bash
@@ -228,7 +263,7 @@ jobs:
             research/research_os/tests/test_mega_b_discovery_engine.py \
             research/research_os/tests/test_mega_b_outcome_firewall.py
 
-      - name: C0 adjudication, scientific-economic seam and D0 lifecycle qualification
+      - name: C0 adjudication scientific-economic seam and D0 lifecycle qualification
         run: |
           python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v
           python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_economic_d0_seam.py' -v
@@ -247,7 +282,7 @@ jobs:
             research.research_os.tests.test_queue_replenisher \
             research.research_os.tests.test_oracle_worker
 
-      - name: Research Intelligence, Scientific Memory and Data PIT regression
+      - name: Research Intelligence Scientific Memory and Data PIT regression
         run: |
           python3 -m unittest -v \
             tests.mega_a_research_intelligence_contracts \
@@ -342,11 +377,13 @@ jobs:
               'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
               'multisource_merged_head': os.environ['MULTISOURCE_MERGED_HEAD'],
               'multisource_qualification_head': os.environ['MULTISOURCE_QUALIFICATION_HEAD'],
+              'multisource_outcome_firewall_repair': os.environ['MULTISOURCE_OUTCOME_REPAIR'],
               'observed_multisource_head_at_run': env.get('OBSERVED_MULTISOURCE_HEAD'),
               'multisource_late_test_only_files': int(env['MULTISOURCE_LATE_TEST_ONLY_FILES']),
               'multisource_canonical_tests_passed': int(env['MULTISOURCE_CANONICAL_TESTS']),
               'multisource_adversarial_source_files': int(env['MULTISOURCE_ADVERSARIAL_FILES']),
               'multisource_adversarial_tests_passed': int(env['MULTISOURCE_ADVERSARIAL_TESTS']),
+              'nested_outcome_firewall': 'PASS',
               'source_manifest_promoted_to_final': False,
               'direct_multisource_to_b_bypass': 'BLOCKED',
               'research_intelligence_remains_required': True,
