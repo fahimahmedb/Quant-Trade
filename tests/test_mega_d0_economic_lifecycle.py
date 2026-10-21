@@ -146,6 +146,30 @@ class MegaD0EconomicLifecycleContracts(unittest.TestCase):
                 implementation_version="impl-v1", review_policy=policy(), metadata={"pnl": 1.0},
             )
 
+    def test_outcome_series_aliases_are_rejected_recursively(self):
+        aliases = {
+            "pnl_series": [1.0],
+            "return_series": [0.01],
+            "realized_return_series": [0.01],
+            "price": 100.0,
+            "prices": [100.0],
+            "price_series": [100.0],
+            "fill": {"px": 100.0},
+            "fills": [{"px": 100.0}],
+            "equity_curve": [1.0],
+            "unrealized_pnl": 1.0,
+            "win_rate": 0.5,
+            "hit_rate": 0.5,
+        }
+        for key, value in aliases.items():
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, "outcome-bearing"):
+                create_shadow_contract(
+                    self.econ, self.ready,
+                    prospective_start_boundary="2026-11-01T00:00:00Z",
+                    implementation_version="impl-v1", review_policy=policy(),
+                    metadata={"nested": [{"payload": {key: value}}]},
+                )
+
     def test_material_change_creates_new_observation_identity(self):
         changed = create_shadow_contract(
             self.econ, self.ready, prospective_start_boundary="2026-11-01T00:00:00Z",
