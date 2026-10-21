@@ -126,6 +126,10 @@ def append_jsonl(path: Path, record: dict[str, Any]) -> None:
     Writers share a lock.  SEC evidence refuses an existing torn tail rather
     than discarding it and manufacturing a clean-looking history.
     """
+    # Reject invalid input before recovery can alter any existing journal bytes.
+    if not isinstance(record, dict):
+        raise ValueError("JOURNAL_RECORD_NOT_OBJECT")
+    encoded = json.dumps(record, sort_keys=True, allow_nan=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
     lock_path = path.with_name(path.name + ".lock")
     lock_fd = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
@@ -139,7 +143,7 @@ def append_jsonl(path: Path, record: dict[str, Any]) -> None:
         else:
             _discard_torn_jsonl_tail(path)
         with path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
+            handle.write(encoded)
             handle.flush()
             os.fsync(handle.fileno())
         _fsync_directory(path.parent)
@@ -153,8 +157,13 @@ def read_jsonl(path: Path) -> Iterator[dict[str, Any]]:
 
     def _iterate() -> Iterator[dict[str, Any]]:
         data = path.read_bytes()
-        if _sec_evidence_path(path) and data and not data.endswith(b"\n"):
-            raise ValueError("SEC_JOURNAL_TORN_TAIL")
+        if data and not data.endswith(b"\n"):
+            if _sec_evidence_path(path):
+                raise ValueError("SEC_JOURNAL_TORN_TAIL")
+            # A newline commits the record. Ignore the same bytes the append
+            # recovery discards, before decoding a potentially torn UTF-8 code
+            # point. A complete-looking uncommitted object is still a tail.
+            data = data[:data.rfind(b"\n") + 1]
         lines = data.decode("utf-8").splitlines(keepends=True)
         for index, line in enumerate(lines):
             if not line.strip():
