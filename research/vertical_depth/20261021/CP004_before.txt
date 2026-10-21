@@ -1,0 +1,71 @@
+F.F.F                                                                    [100%]
+=================================== FAILURES ===================================
+____ test_replay_after_retention_and_restart_does_not_update_priority_twice ____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_replay_after_retention_an0')
+
+    def test_replay_after_retention_and_restart_does_not_update_priority_twice(tmp_path):
+        path = tmp_path / "learning.json"
+        store = LearningStore(path)
+        for index in range(205):
+            assert store.record_research("fixture", "FIXTURE", result(f"ticket-{index}"))
+        restarted = LearningStore(path)
+        before = deepcopy(read_json(path))
+>       assert not restarted.record_research("fixture", "FIXTURE", result("ticket-0"))
+E       AssertionError: assert not True
+E        +  where True = record_research('fixture', 'FIXTURE', {'ticket_id': 'ticket-0', 'lesson': 'synthetic bounded negative', 'outcome': 'REJECTED', 'next_action_hint': 'review distinct mechanism'})
+E        +    where record_research = <quant.learning.store.LearningStore object at 0x7f296f102f00>.record_research
+E        +    and   {'ticket_id': 'ticket-0', 'lesson': 'synthetic bounded negative', 'outcome': 'REJECTED', 'next_action_hint': 'review distinct mechanism'} = result('ticket-0')
+
+tests/test_vertical_learning_depth.py:24: AssertionError
+_____ test_same_object_research_retry_recovers_actual_durable_state[False] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_same_object_research_retr0')
+after_write = False
+
+    @pytest.mark.parametrize("after_write", [False, True])
+    def test_same_object_research_retry_recovers_actual_durable_state(tmp_path, after_write):
+        path = tmp_path / "learning.json"
+        store = LearningStore(path)
+    
+        def failure(path, value):
+            if after_write:
+                write_json(path, value)
+            raise OSError("fixture persistence failure")
+    
+        with patch("quant.learning.store.write_json", side_effect=failure):
+            with pytest.raises(OSError):
+                store.record_research("fixture", "FIXTURE", result("one"))
+>       assert store.record_research("fixture", "FIXTURE", result("one")) is (not after_write)
+E       AssertionError: assert False is not False
+E        +  where False = record_research('fixture', 'FIXTURE', {'ticket_id': 'one', 'lesson': 'synthetic bounded negative', 'outcome': 'REJECTED', 'next_action_hint': 'review distinct mechanism'})
+E        +    where record_research = <quant.learning.store.LearningStore object at 0x7f296ecac140>.record_research
+E        +    and   {'ticket_id': 'one', 'lesson': 'synthetic bounded negative', 'outcome': 'REJECTED', 'next_action_hint': 'review distinct mechanism'} = result('one')
+
+tests/test_vertical_learning_depth.py:54: AssertionError
+_____________ test_failed_build_task_write_does_not_suppress_retry _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_failed_build_task_write_d0')
+
+    def test_failed_build_task_write_does_not_suppress_retry(tmp_path):
+        path = tmp_path / "learning.json"
+        store = LearningStore(path)
+        task = BuildTask("fixture", "fixture capability", "synthetic reason", ["BUILD"],
+                         "synthetic acceptance", 1)
+        with patch("quant.learning.store.write_json", side_effect=OSError("disk full")):
+            with pytest.raises(OSError):
+                store.raise_build_task(task)
+        store.raise_build_task(task)
+>       assert len(LearningStore(path).open_build_tasks()) == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = open_build_tasks()
+E        +      where open_build_tasks = <quant.learning.store.LearningStore object at 0x7f296f11dc40>.open_build_tasks
+E        +        where <quant.learning.store.LearningStore object at 0x7f296f11dc40> = LearningStore(PosixPath('/tmp/pytest-of-agent/pytest-6/test_failed_build_task_write_d0/learning.json'))
+
+tests/test_vertical_learning_depth.py:69: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_learning_depth.py::test_replay_after_retention_and_restart_does_not_update_priority_twice
+FAILED tests/test_vertical_learning_depth.py::test_same_object_research_retry_recovers_actual_durable_state[False]
+FAILED tests/test_vertical_learning_depth.py::test_failed_build_task_write_does_not_suppress_retry
+3 failed, 2 passed in 0.18s
