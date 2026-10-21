@@ -27,6 +27,22 @@ def _tokens(*values: Iterable[str]) -> set[str]:
     return {t for t in out if len(t) >= 3}
 
 
+def _optional_json_object(path: Path) -> Dict[str, Any]:
+    """Load optional planning context without turning absence into a Legacy crash.
+
+    The Legacy knowledge base is also used by historical/minimal fixtures that do not
+    materialize the runtime control surfaces. Missing optional context therefore means
+    "capability/route not proven" to the downstream planner, not "assume available".
+    A present but malformed/non-object control artifact remains a hard error.
+    """
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text())
+    if not isinstance(payload, dict):
+        raise ValueError("research planning context must be a JSON object: " + str(path))
+    return payload
+
+
 class LegacyKnowledgeBase:
     def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None,
                  research_context: Optional[Dict[str, Any]] = None):
@@ -94,9 +110,9 @@ class LegacyKnowledgeBase:
             if ledger.get("governance", {}).get("historical_result_immutability") is not True:
                 raise ValueError("legacy ledger missing historical result immutability")
         context = {
-            "capability_registry": json.loads((base / "runtime" / "CAPABILITY_REGISTRY.json").read_text()),
-            "workflow_lanes": json.loads((base / "runtime" / "WORKFLOW_LANES.json").read_text()),
-            "control_plane": json.loads((base / "runtime" / "CONTROL_PLANE.json").read_text()),
+            "capability_registry": _optional_json_object(base / "runtime" / "CAPABILITY_REGISTRY.json"),
+            "workflow_lanes": _optional_json_object(base / "runtime" / "WORKFLOW_LANES.json"),
+            "control_plane": _optional_json_object(base / "runtime" / "CONTROL_PLANE.json"),
         }
         return cls(manifest, ledger, research_context=context)
 
