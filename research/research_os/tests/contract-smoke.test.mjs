@@ -21,7 +21,8 @@ const contractPaths=[
   'contracts/trial-ledger.schema.json',
   'contracts/prospective-contract.schema.json',
   'contracts/decision-record.schema.json',
-  'contracts/portfolio-map-entry.schema.json'
+  'contracts/portfolio-map-entry.schema.json',
+  'contracts/scientific-memory.schema.json'
 ];
 
 test('all final-shape thin contracts parse as JSON',async()=>{
