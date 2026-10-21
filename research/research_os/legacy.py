@@ -101,11 +101,13 @@ class LegacyKnowledgeBase:
         return cls(manifest, ledger, research_context=context)
 
     def screen_candidate(self, candidate: Dict[str, Any]) -> Dict[str, Any]:
-        """Screen with semantic Scientific Memory; lexical overlap is review-only.
+        """Screen legacy history while keeping semantic truth and review distinct.
 
-        Exact identifier reuse remains an operational collision requiring review,
-        but is not called scientific equivalence unless semantic memory establishes
-        that relation. BLOCKED/UNEXECUTED history is never reclassified NEGATIVE.
+        Exact identifier reuse is an operational collision and retains the historical
+        fail-closed status. Lexical overlap remains scoped review evidence. Qualified
+        Scientific Memory may suppress/park/repair/escalate only after semantic identity
+        is complete enough to establish the relation. Missing identity stays explicitly
+        unresolved but does not, by itself, rewrite the Legacy gate as a duplicate veto.
         """
         cid = candidate.get("hypothesis_id")
         exact_record = self.by_id.get(cid)
@@ -143,17 +145,25 @@ class LegacyKnowledgeBase:
         feedback = scientific_memory_feedback(candidate, memory_view["canonical_records"])
         action_receipt = plan_research_action(feedback, self.research_context)
         status_by_action = {
-            "ARCHAEOLOGY_LOOKUP": "BLOCK_SEMANTIC_IDENTITY_UNRESOLVED",
             "NO_BUILD": "BLOCK_KNOWN_NEGATIVE_SAME_SEMANTIC_FAMILY",
             "REPAIR_PROTOCOL": "BLOCK_INVALIDATED_PROTOCOL_REPAIR_REQUIRED",
             "PARK": "BLOCK_HISTORICAL_BLOCKER_UNRESOLVED",
             "ESCALATE_VALIDATION": "BLOCK_POSITIVE_INSUFFICIENT_VALIDATION_REQUIRED",
         }
-        if feedback["allow_candidate_progress"] is not True:
-            status = status_by_action.get(feedback["action"], "BLOCK_SCIENTIFIC_MEMORY_REVIEW_REQUIRED")
-        elif exact_record is not None:
-            status = "BLOCK_LEGACY_ID_COLLISION_REQUIRES_SEMANTIC_REVIEW"
+
+        # Preserve the original operational identity collision exactly. This is not a
+        # scientific-equivalence claim; it prevents accidental reuse of a historical ID.
+        if exact_record is not None:
+            status = "BLOCK_EXACT_LEGACY_DUPLICATE"
+        elif feedback.get("allow_candidate_progress") is not True and feedback.get("action") in status_by_action:
+            status = status_by_action[feedback["action"]]
+        elif feedback.get("action") == "ARCHAEOLOGY_LOOKUP" and (matches or source_matches):
+            # Sparse semantic identity cannot dismiss a plausible historical overlap.
+            # Keep the historical scoped-review behavior until identity is resolved.
+            status = "REVIEW_LEGACY_OVERLAP"
         else:
+            # An unresolved identity with no actual legacy collision is not called novel;
+            # the additive feedback/action receipt carries that uncertainty forward.
             status = "NO_EXACT_LEGACY_CONFLICT"
 
         result = {
@@ -161,6 +171,10 @@ class LegacyKnowledgeBase:
             "matches": matches[:5],
             "lexical_review_required": bool(matches or source_matches),
             "lexical_review_status": "REVIEW_LEGACY_OVERLAP" if matches or source_matches else "NO_LEXICAL_OVERLAP_REVIEW",
+            "novelty_status": (
+                "UNRESOLVED_NOT_CLAIMED" if feedback.get("action") == "ARCHAEOLOGY_LOOKUP"
+                else "NOT_INFERRED_BY_LEGACY_GATE"
+            ),
             "recovered_source_matches": source_matches,
             "recovered_source_reviews_hash": self._source_review_hash(),
             "scientific_memory": {
