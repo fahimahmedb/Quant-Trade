@@ -13,6 +13,7 @@ from .v2_core import SEMANTIC_NULLS
 _UNKNOWN = (SEMANTIC_NULLS - {"NOT_APPLICABLE"}) | {"", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE"}
 _FIELD_STATES = {"KNOWN", "UNKNOWN", "NOT_APPLICABLE", "CONFLICTED"}
 _CORE_FIELDS = ("payer", "mechanism", "timing_clock")
+_STRICT_COMPLETE_FIELDS = {"capacity_bottleneck", "cost_structure"}
 
 # Diagnostics only: never statistical correlation and never outcome-derived.
 _STRUCTURAL_WEIGHTS = {
@@ -63,6 +64,25 @@ def _is_known(value: Any) -> bool:
     return value is not None
 
 
+def _fully_known_assumption_value(value: Any) -> bool:
+    """Cost/capacity structures are known only when every declared atom is usable."""
+    if isinstance(value, dict) and "status" in value:
+        if _semantic_state(value) != "KNOWN":
+            return False
+        return _fully_known_assumption_value(value.get("value"))
+    if value is None or isinstance(value, bool):
+        return False
+    if isinstance(value, str):
+        return _is_known(value)
+    if isinstance(value, float):
+        return isfinite(value)
+    if isinstance(value, dict):
+        return bool(value) and all(_fully_known_assumption_value(item) for item in value.values())
+    if isinstance(value, (list, tuple, set)):
+        return bool(value) and all(_fully_known_assumption_value(item) for item in value)
+    return True
+
+
 def _stable_value(value: Any) -> Any:
     if isinstance(value, set):
         return sorted(value)
@@ -94,7 +114,7 @@ def _canonical_value(value: Any, *, canonical_id: Any = None) -> Any:
     return value
 
 
-def _field_input(value: Any, path: str) -> Dict[str, Any]:
+def _field_input(value: Any, path: str, *, strict_complete: bool = False) -> Dict[str, Any]:
     if isinstance(value, dict) and "status" in value:
         status = _semantic_state(value)
         raw_value = deepcopy(_stable_value(value.get("value", status)))
@@ -102,7 +122,8 @@ def _field_input(value: Any, path: str) -> Dict[str, Any]:
         evidence_refs = value.get("evidence_refs", [])
         if not isinstance(evidence_refs, list):
             evidence_refs = []
-        if status == "KNOWN" and not _is_known(raw_value):
+        known_check = _fully_known_assumption_value if strict_complete else _is_known
+        if status == "KNOWN" and not known_check(raw_value):
             status = "UNKNOWN"
             raw_value = "UNKNOWN"
         return {
@@ -115,6 +136,8 @@ def _field_input(value: Any, path: str) -> Dict[str, Any]:
             "source_path": path,
         }
     status = _semantic_state(value)
+    if strict_complete and status == "KNOWN" and not _fully_known_assumption_value(value):
+        status = "UNKNOWN"
     raw_value = deepcopy(_stable_value(value)) if status == "KNOWN" else status
     return {
         "status": status,
@@ -133,9 +156,12 @@ def _select_field(
     fallback: Iterable[Tuple[Any, str]] = (),
 ) -> Dict[str, Any]:
     """Choose one field without silently normalizing contradictory known inputs."""
-    del name  # semantic label is carried by the caller; selection is uniform.
+    strict_complete = name in _STRICT_COMPLETE_FIELDS
     for group in (tuple(primary), tuple(fallback)):
-        records = [_field_input(value, path) for value, path in group if value is not None]
+        records = [
+            _field_input(value, path, strict_complete=strict_complete)
+            for value, path in group if value is not None
+        ]
         if not records:
             continue
         explicit_conflict = [record for record in records if record["status"] == "CONFLICTED"]
@@ -578,6 +604,26 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
             structural_blockers.append(f"{pair['left']}:{pair['right']}:IDENTITY_CONFLICT")
     structural_status = "QUALIFIED_CURRENT" if not structural_blockers else "PARTIAL_WITH_EXPLICIT_BLOCKER"
 
+    decision_blockers: List[str] = []
+    if len(items) < 2:
+        decision_blockers.append("INSUFFICIENT_CANDIDATES_FOR_RELATIONSHIP_MAP")
+    for projection in projections:
+        binding = projection["candidate_binding"]
+        if binding.get("status") != "BOUND" or not _is_known(binding.get("candidate_hash")):
+            decision_blockers.append(f"{projection['hypothesis_id']}:CANDIDATE_BINDING_NOT_VERIFIED")
+    for pair in pairwise:
+        economic = pair["economic_structure"]
+        pair_id = f"{pair['left']}:{pair['right']}"
+        if economic["classification"] == "CONFLICTED_IDENTITY_REVIEW":
+            decision_blockers.append(f"{pair_id}:IDENTITY_CONFLICT")
+        elif economic["classification"] == "UNKNOWN":
+            decision_blockers.append(f"{pair_id}:RELATIONSHIP_UNKNOWN")
+        if economic["same_exposure_review_required"]:
+            decision_blockers.append(f"{pair_id}:SAME_EXPOSURE_REVIEW_REQUIRED")
+        if economic["score_status"] != "COMPLETE":
+            decision_blockers.append(f"{pair_id}:RELATIONSHIP_INCOMPLETE")
+    decision_status = "QUALIFIED_CURRENT" if not decision_blockers else "PARTIAL_WITH_EXPLICIT_BLOCKER"
+
     return {
         "portfolio_engine": "portfolio-diagnostics.v2",
         "candidate_count": len(items),
@@ -592,6 +638,14 @@ def portfolio_diagnostics_v2(identities: Iterable[Dict[str, Any]]) -> Dict[str, 
             "structural_mapping": {
                 "status": structural_status,
                 "blockers": sorted(set(structural_blockers)),
+            },
+            "pre_outcome_decision": {
+                "status": decision_status,
+                "blockers": sorted(set(decision_blockers)),
+                "relationship_count": len(pairwise),
+                "requires_verified_candidate_binding": True,
+                "unknown_is_not_diversification": True,
+                "same_exposure_review_is_not_portfolio_clearance": True,
             },
             "empirical_layer": {
                 "status": "SEALED_BY_AUTHORITY",
