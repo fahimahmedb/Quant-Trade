@@ -6,6 +6,7 @@ import unittest
 from research.research_os.expansion.economic_test_readiness_v1 import economic_test_readiness
 from research.research_os.expansion.validation_readiness import validate_economic_test_readiness, READY
 from research.research_os.scientific_store import sha256_json
+from research.research_os.tests.factory_infrastructure_fixture import rebind_factory_infrastructure
 from research.research_os.tests.test_economic_readiness_integration import fixture, legacy
 from research.research_os.tests.test_economic_readiness_validation import _fixture
 
@@ -44,6 +45,7 @@ class ReadinessProvenanceAdmissionTests(unittest.TestCase):
         binding = package['reproducibility']['binding_payload']
         binding['protocol_hash'] = package['protocol']['protocol_hash']
         package['reproducibility']['binding_hash'] = sha256_json(binding)
+        rebind_factory_infrastructure(package)
         result = self.assert_direct_block(package, 'CLOCK_DEFINITION_INVALID')
         self.assertEqual([k for k, v in result['checks'].items() if v['status'] != 'PASS'], ['clock'])
 
@@ -122,6 +124,7 @@ class ReadinessProvenanceAdmissionTests(unittest.TestCase):
         second = deepcopy(package['sources']['pit_metadata'][0])
         second.update(source_id='SRC-2', snapshot_hash='b'*64)
         package['sources']['pit_metadata'].append(second)
+        rebind_factory_infrastructure(package)
         self.assertEqual(validate_economic_test_readiness(package)['status'], READY)
         for key, value in (('snapshot_hash', 'c'*64), ('snapshot_hash', None), ('source_id', False)):
             altered = deepcopy(package)
@@ -183,6 +186,7 @@ class ReadinessProvenanceAdmissionTests(unittest.TestCase):
         direct['protocol']['protocol_hash'] = sha256_json(direct['protocol']['protocol_payload'])
         direct['reproducibility']['binding_payload']['protocol_hash'] = direct['protocol']['protocol_hash']
         direct['reproducibility']['binding_hash'] = sha256_json(direct['reproducibility']['binding_payload'])
+        rebind_factory_infrastructure(direct)
         self.assertEqual(validate_economic_test_readiness(direct)['status'], READY)
         self.assertEqual(direct['trial_accounting']['effective_trials_status'], 'UNKNOWN')
         for marker in (False, None, 'false', 0):
