@@ -70,6 +70,7 @@ class ResearchChainTests(unittest.TestCase):
         )
         self.assertEqual(result["next_action"]["candidate_id"], "high")
         self.assertIn("HYPOTHESIS_PRIORITY_THEN_INFORMATION_VALUE_THEN_COST", result["next_action"]["reason_codes"])
+        self.assertEqual(result["selection_state"], "RANKED_SELECTION")
 
     def test_information_value_breaks_equal_priority_before_cost(self):
         result = _plan(
@@ -89,13 +90,33 @@ class ResearchChainTests(unittest.TestCase):
         )
         self.assertEqual(result["next_action"]["candidate_id"], "cheap")
 
-    def test_unknown_ranking_metadata_is_not_fabricated(self):
+    def test_unknown_ranking_metadata_is_not_fabricated_for_single_executable(self):
         result = _plan([_candidate("unknown", "m-unknown", cost=0)])
         ranking = result["decisions"][0]["research_ranking"]
         self.assertEqual(ranking["hypothesis_priority"], UNKNOWN)
         self.assertEqual(ranking["information_value"], UNKNOWN)
         self.assertFalse(result["ranking_complete"])
+        self.assertEqual(result["next_action"]["candidate_id"], "unknown")
+        self.assertEqual(result["selection_state"], "SINGLE_EXECUTABLE_NO_COMPARISON")
         self.assertIn("RANKING_METADATA_INCOMPLETE_UNKNOWN_NOT_INFERRED", result["next_action"]["reason_codes"])
+        self.assertIn("SINGLE_EXECUTABLE_ACTION_NO_CROSS_CANDIDATE_RANKING_REQUIRED", result["next_action"]["reason_codes"])
+
+    def test_multiple_executable_candidates_with_unknown_ranking_fail_closed(self):
+        result = _plan(
+            [
+                _candidate("known", "m-known", priority=5, information_value=5, cost=1),
+                _candidate("unknown", "m-unknown-2", priority=None, information_value=None, cost=0),
+            ]
+        )
+        self.assertEqual(result["next_action"]["action"], "NO_ACTION")
+        self.assertIsNone(result["next_action"]["candidate_id"])
+        self.assertFalse(result["next_action"]["executable"])
+        self.assertEqual(result["selection_state"], "RANKING_BLOCKED")
+        self.assertFalse(result["ranking_complete"])
+        self.assertIn("MULTI_CANDIDATE_RANKING_INCOMPLETE_FAIL_CLOSED", result["next_action"]["reason_codes"])
+        self.assertIn("UNKNOWN_RANKING_METADATA_NOT_INFERRED", result["next_action"]["reason_codes"])
+        self.assertEqual(result["frontier"]["state"], "ACTIVE_ACTIONABLE")
+        self.assertFalse(result["scheduler_mutation"])
 
     def test_blocked_high_priority_candidate_never_wins(self):
         result = _plan(

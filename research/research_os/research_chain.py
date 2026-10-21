@@ -30,6 +30,7 @@ _OUTCOME_FIELDS = frozenset({
     "alpha", "pnl", "profit", "profitability", "return", "returns",
     "observed_return", "realized_return", "sharpe", "performance", "outcome",
 })
+_RANK_FIELDS = ("hypothesis_priority", "information_value", "cost_units")
 
 
 def _number(value: Any) -> Optional[float]:
@@ -77,18 +78,32 @@ def _rank_key(item: Mapping[str, Any]) -> Tuple[Any, ...]:
     rank = item["research_ranking"]
     p, i, c = rank["hypothesis_priority"], rank["information_value"], rank["cost_units"]
     return (
-        p == UNKNOWN, -float(p) if p != UNKNOWN else 0.0,
-        i == UNKNOWN, -float(i) if i != UNKNOWN else 0.0,
-        c == UNKNOWN, float(c) if c != UNKNOWN else 0.0,
+        -float(p),
+        -float(i),
+        float(c),
         _ACTION_ORDER.get(str(item.get("action")), 99),
         str(item.get("candidate_id") or ""),
     )
 
 
+def _missing_ranking_fields(executable: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    missing: List[Dict[str, Any]] = []
+    for item in executable:
+        fields = [field for field in _RANK_FIELDS if item["research_ranking"][field] == UNKNOWN]
+        if fields:
+            missing.append({"candidate_id": item.get("candidate_id"), "missing_fields": fields})
+    return missing
+
+
 def rank_research_decisions(
     decisions: Sequence[Mapping[str, Any]], candidates: Sequence[Mapping[str, Any]]
 ) -> Dict[str, Any]:
-    """Rank admitted decisions; UNKNOWN remains symbolic and outcomes never score."""
+    """Rank admitted decisions; UNKNOWN remains symbolic and outcomes never score.
+
+    Cross-candidate selection fails closed when any executable candidate lacks a required
+    ranking field. A single executable candidate may still be recommended because no
+    scientific comparison against another executable candidate is being asserted.
+    """
     if len(decisions) != len(candidates):
         raise ValueError("decisions and candidates must preserve one-to-one search-space order")
     decorated: List[Dict[str, Any]] = []
@@ -100,31 +115,55 @@ def rank_research_decisions(
         d for d in decorated
         if d.get("executable") is True and d.get("action") not in {"NO_BUILD", "NO_ACTION", "PARK"}
     ]
-    complete = bool(executable) and all(
-        d["research_ranking"][field] != UNKNOWN
-        for d in executable
-        for field in ("hypothesis_priority", "information_value", "cost_units")
-    )
+    missing_ranking = _missing_ranking_fields(executable)
+    complete = bool(executable) and not missing_ranking
     if not executable:
         selected = {
             "candidate_id": None, "action": "NO_ACTION", "executable": False,
             "reason_codes": ["NO_EXECUTABLE_RESEARCH_ACTION"], "scheduler_mutation": False,
         }
+        selection_state = "NO_EXECUTABLE_ACTION"
+    elif len(executable) > 1 and missing_ranking:
+        selected = {
+            "candidate_id": None,
+            "action": "NO_ACTION",
+            "executable": False,
+            "reason_codes": [
+                "MULTI_CANDIDATE_RANKING_INCOMPLETE_FAIL_CLOSED",
+                "UNKNOWN_RANKING_METADATA_NOT_INFERRED",
+            ],
+            "ranking_blockers": missing_ranking,
+            "scheduler_mutation": False,
+        }
+        selection_state = "RANKING_BLOCKED"
     else:
-        selected = deepcopy(sorted(executable, key=_rank_key)[0])
+        chosen = executable[0] if len(executable) == 1 else sorted(executable, key=_rank_key)[0]
+        selected = deepcopy(chosen)
         reasons = list(selected.get("reason_codes") or [])
-        reasons.append("HYPOTHESIS_PRIORITY_THEN_INFORMATION_VALUE_THEN_COST")
-        if not complete:
-            reasons.append("RANKING_METADATA_INCOMPLETE_UNKNOWN_NOT_INFERRED")
+        if len(executable) == 1 and missing_ranking:
+            reasons.extend([
+                "RANKING_METADATA_INCOMPLETE_UNKNOWN_NOT_INFERRED",
+                "SINGLE_EXECUTABLE_ACTION_NO_CROSS_CANDIDATE_RANKING_REQUIRED",
+            ])
+            selection_state = "SINGLE_EXECUTABLE_NO_COMPARISON"
+        else:
+            reasons.append("HYPOTHESIS_PRIORITY_THEN_INFORMATION_VALUE_THEN_COST")
+            selection_state = "RANKED_SELECTION"
         selected["reason_codes"] = list(dict.fromkeys(reasons))
         selected["scheduler_mutation"] = False
     return {
-        "selected": selected, "decisions": decorated, "ranking_complete": complete,
+        "selected": selected,
+        "decisions": decorated,
+        "ranking_complete": complete,
+        "ranking_blockers": missing_ranking,
+        "selection_state": selection_state,
         "ranking_contract": [
             "EXPLICIT_HYPOTHESIS_PRIORITY_DESC", "EXPLICIT_INFORMATION_VALUE_DESC",
             "ADMITTED_COST_ASC", "ACTION_CLASS_THEN_CANDIDATE_ID_TIEBREAK_ONLY",
+            "MULTI_CANDIDATE_UNKNOWN_FAILS_CLOSED",
         ],
-        "scheduler_mutation": False, "outcome_accessed": False,
+        "scheduler_mutation": False,
+        "outcome_accessed": False,
     }
 
 
@@ -165,7 +204,11 @@ def plan_research_chain(
             },
             "frontier": {"state": "SEARCH_SPACE_INCOMPLETE", "scientifically_exhausted": False,
                          "basis": ["CHAIN_CONTEXT_INCOMPLETE", "QUEUE_EMPTY_IS_NOT_FRONTIER_EXHAUSTED"]},
-            "ranking_complete": False, "scheduler_mutation": False, "outcome_accessed": False,
+            "ranking_complete": False,
+            "ranking_blockers": [],
+            "selection_state": "CHAIN_CONTEXT_INCOMPLETE",
+            "scheduler_mutation": False,
+            "outcome_accessed": False,
         }
     decisions = evaluate_search_space(
         candidates, memory_records=memory, capability_registry=capability_registry,
@@ -179,7 +222,10 @@ def plan_research_chain(
     return {
         "version": CHAIN_VERSION, "fixed_chain": list(FIXED_CHAIN), "input_receipt": receipt,
         "decisions": ranked["decisions"], "next_action": ranked["selected"],
-        "ranking_complete": ranked["ranking_complete"], "ranking_contract": ranked["ranking_contract"],
+        "ranking_complete": ranked["ranking_complete"],
+        "ranking_blockers": ranked["ranking_blockers"],
+        "selection_state": ranked["selection_state"],
+        "ranking_contract": ranked["ranking_contract"],
         "frontier": frontier,
         "feedback": {"next_action_candidate_id": ranked["selected"].get("candidate_id"),
                      "frontier_state": frontier.get("state"), "persistent_memory_mutation": False},
