@@ -9,12 +9,54 @@
   "known_duplicate_or_variant_items": 17,
   "prospective_validated": 0,
   "global_effective_trials": "UNKNOWN",
-  "promoted_but_not_validated": ["CFE_VIX_EXPRESSION"],
-  "primary_unrecovered_results": ["BOX-OFFICE-REPLAY", "MLB-SOCCER-WEATHER-REPLICATION"],
+  "promoted_but_not_validated": [
+    "CFE_VIX_EXPRESSION"
+  ],
+  "primary_unrecovered_results": [
+    "BOX-OFFICE-REPLAY",
+    "MLB-SOCCER-WEATHER-REPLICATION"
+  ],
   "governance": {
     "REAL_CAPITAL_AUTHORIZED": false,
     "LIVE_TRADING_AUTHORIZED": false,
     "historical_result_immutability": true
   },
-  "import_policy": "READ_ONLY_PINNED_SOURCE"
+  "import_policy": "READ_ONLY_PINNED_SOURCE",
+  "recovered_source_reviews": [
+    {
+      "source_id": "codex/test:P0-E1@723a778e302b6bc96e72030ded91440f75769aba",
+      "historical_id": "P0-E1",
+      "mechanism": "causal volatility forecast EWMA exposure",
+      "classification": "HISTORICAL_NEGATIVE_WITH_LIMITATIONS",
+      "researcher_decision": "KILL",
+      "judge_verdict": "REJECT",
+      "failure_scope": "P0-E1 fixed long-only unlevered NASDAQ Composite volatility-targeted exposure versus constant exposure under its preregistered wealth criterion and disclosed perturbations; not all volatility mechanisms.",
+      "limitations": [
+        "Historical completed experiment; not a V2 blinded trial or prospective validation.",
+        "Holdout was already consumed; no untouched holdout remains.",
+        "Original index is not tradable and source data provenance is absent.",
+        "Original returns omit dividends, financing, spreads and instrument-specific tracking.",
+        "No equivalence with TSR-NDX-001 or other ledger records is established."
+      ],
+      "revisit_conditions": [
+        "Preserve the historical KILL/REJECT; do not tune or rerun spent windows to repair it.",
+        "A distinct hypothesis requires explicit scope review, traceable tradable-instrument data, admissible unspent evaluation and separately granted economic authority."
+      ],
+      "source_commit": "723a778e302b6bc96e72030ded91440f75769aba",
+      "source_refs": [
+        {
+          "path": "research/ledger.jsonl",
+          "blob_sha": "effa8d35602c2967cd30b03c35bd64050cf2a5c9"
+        },
+        {
+          "path": "evaluation/phase0_e1_judgment.md",
+          "blob_sha": "85761cf47d15fb17eb01abddcff3dddcd7d8cba1"
+        },
+        {
+          "path": "research/EXPERIMENT_PROTOCOL.md",
+          "blob_sha": "afeab9a43600b8da8db02e766a624f5210f75f5b"
+        }
+      ]
+    }
+  ]
 }

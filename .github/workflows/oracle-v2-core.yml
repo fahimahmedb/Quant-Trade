@@ -52,6 +52,7 @@ jobs:
           PYTHONPATH=src python -m unittest -v \
             tests.test_evidence_identity \
             tests.test_research_os_raw_evidence_capture \
+            tests.test_research_os_historical_source_recovery \
             tests.test_research_os_v2_core \
             tests.test_research_os_canonical_identity \
             tests.test_research_os_epoch_blinding_admission \

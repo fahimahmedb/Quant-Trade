@@ -395,6 +395,8 @@ def verify_materialized_legacy(base: Path) -> Dict[str, Any]:
             "historical_research_items_found"
         ),
         "loaded_record_count": len(records),
+        "recovered_source_review_count": summary["recovered_source_review_count"],
+        "recovered_source_reviews_hash": summary["recovered_source_reviews_hash"],
     }
 
 
