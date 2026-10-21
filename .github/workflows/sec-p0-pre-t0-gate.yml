@@ -56,6 +56,9 @@ jobs:
       - name: Mega-A Research Intelligence contracts
         run: PYTHONPATH=src python3 -m unittest tests.mega_a_research_intelligence_contracts -v
 
+      - name: Mega-B Discovery Engine contracts
+        run: PYTHONPATH=src:. python3 -m unittest -v research.research_os.tests.test_mega_b_canonical_gate
+
       - name: W1 Scientific Memory focused suite
         run: |
           PYTHONPATH=src:. python3 -m unittest -v \
