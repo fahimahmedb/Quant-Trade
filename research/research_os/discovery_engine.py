@@ -2,8 +2,9 @@
 
 Consumes a qualified Research Intelligence RUN_PRODUCER decision, enriches the
 existing canonical Candidate additively, applies family-specific scientific
-admission law, reuses canonical implementability, and emits a Factory handoff.
-No scheduling, outcome access, validation, Red Team, observation, or trading.
+admission law, reuses canonical implementability, and emits a tamper-evident
+Factory handoff. No scheduling, outcome access, validation, Red Team,
+observation, or trading authority is owned here.
 """
 from __future__ import annotations
 
@@ -18,6 +19,8 @@ from .expansion.implementability_depth import assess_implementability_depth
 
 UNKNOWN = "UNKNOWN"
 DISCOVERY_VERSION = "mega-b-discovery-v1"
+DISCOVERY_BINDING_VERSION = "mega-b-discovery-binding-v1"
+FACTORY_BINDING_VERSION = "mega-b-factory-handoff-binding-v1"
 SUPPORTED_FAMILIES = {
     "QUANT_MECHANISM", "EVENT_DOCUMENT", "FUNDAMENTAL", "INSTITUTIONAL_FLOW",
 }
@@ -26,13 +29,18 @@ AUTHORITY = {
     "prospective_observation_authorized": False,
     "real_capital_authorized": False,
     "live_trading_authorized": False,
+    "outcome_accessed": False,
 }
-_SAFE_OUTCOME_TEXT = {UNKNOWN, "NOT_OBSERVED", "NOT_AUTHORIZED", "UNEXECUTED", "SEALED_BY_AUTHORITY"}
+_SAFE_OUTCOME_TEXT = {
+    UNKNOWN, "NOT_OBSERVED", "NOT_AUTHORIZED", "UNEXECUTED", "SEALED_BY_AUTHORITY",
+}
 _OUTCOME_KEYS = {
-    "alpha", "observed_alpha", "pnl", "realized_pnl", "profit", "profitability",
-    "return", "returns", "return_series", "observed_return", "realized_return",
-    "sharpe", "performance", "effect_size", "observed_effect", "market_response",
-    "price_response", "economic_result", "outcome", "outcomes",
+    "alpha", "observed_alpha", "pnl", "pnl_series", "realized_pnl", "unrealized_pnl",
+    "profit", "profitability", "return", "returns", "return_series",
+    "realized_return_series", "observed_return", "realized_return", "sharpe", "sortino",
+    "performance", "effect_size", "observed_effect", "market_response", "price_response",
+    "post_event_price", "price_series", "fill", "fills", "equity_curve", "drawdown",
+    "win_rate", "hit_rate", "economic_result", "outcome", "outcomes",
 }
 _REQUIRED_EXPRESSION_FIELDS = (
     "direction_exposure_semantics", "eligibility", "position_expression",
@@ -90,9 +98,10 @@ def _string_list(value: Any) -> List[str]:
 
 
 def _outcome_payload_present(value: Any) -> bool:
+    """Detect outcome-bearing values recursively without treating closed sentinels as outcomes."""
     if isinstance(value, Mapping):
         for key, item in value.items():
-            normalized = str(key).lower()
+            normalized = str(key).strip().lower()
             if normalized == "outcome_accessed":
                 if item is not False:
                     return True
@@ -107,23 +116,30 @@ def _outcome_payload_present(value: Any) -> bool:
     return False
 
 
-def _source_clocks(producer_output: Mapping[str, Any], facts: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[str]]:
+def _source_clocks(
+    producer_output: Mapping[str, Any], facts: Mapping[str, Any]
+) -> Tuple[Dict[str, Any], List[str]]:
     explicit = facts.get("source_clocks") if isinstance(facts.get("source_clocks"), Mapping) else {}
     documentary = producer_output["candidate"].get("documentary_evidence")
     documentary = documentary if isinstance(documentary, Mapping) else {}
     packet = documentary.get("packet") if isinstance(documentary.get("packet"), Mapping) else {}
     clocks: Dict[str, Any] = {}
     blockers: List[str] = []
+
     for field in ("published_at", "available_at", "effective_at"):
         observed, declared = packet.get(field), explicit.get(field)
         if _known(observed) and _known(declared) and observed != declared:
             blockers.append(f"SOURCE_CLOCK_CONFLICT:{field}")
         chosen = observed if _known(observed) else declared
         clocks[field] = chosen if _known(chosen) else UNKNOWN
+
     observed_freeze, declared_freeze = documentary.get("freeze_time"), explicit.get("freeze_time")
     if _known(observed_freeze) and _known(declared_freeze) and observed_freeze != declared_freeze:
         blockers.append("SOURCE_CLOCK_CONFLICT:freeze_time")
-    clocks["freeze_time"] = observed_freeze if _known(observed_freeze) else (declared_freeze if _known(declared_freeze) else UNKNOWN)
+    clocks["freeze_time"] = (
+        observed_freeze if _known(observed_freeze)
+        else (declared_freeze if _known(declared_freeze) else UNKNOWN)
+    )
     clocks["entry_clock"] = _value(facts, "entry_clock")
     clocks["exit_clock"] = _value(facts, "exit_clock")
 
@@ -142,13 +158,25 @@ def _source_clocks(producer_output: Mapping[str, Any], facts: Mapping[str, Any])
         blockers.append("SOURCE_CLOCK_INVALID:exit_clock")
 
     published, available = parsed.get("published_at"), parsed.get("available_at")
-    effective, entry, exit_clock = parsed.get("effective_at"), parsed.get("entry_clock"), parsed.get("exit_clock")
+    effective, entry, exit_clock = (
+        parsed.get("effective_at"), parsed.get("entry_clock"), parsed.get("exit_clock")
+    )
     if published and available and published > available:
         blockers.append("SOURCE_TIME_LEAKAGE:PUBLISHED_AFTER_AVAILABLE")
     if available and entry and available > entry:
         blockers.append("SOURCE_TIME_LEAKAGE:ENTRY_BEFORE_AVAILABLE")
-    if effective and entry and effective > entry:
-        blockers.append("SOURCE_TIME_LEAKAGE:ENTRY_BEFORE_EFFECTIVE")
+    # effective_at is a causal clock, not a generic information-availability gate.
+    # A public announcement can legitimately be traded after availability but before
+    # its future effective date. Family evidence must qualify the causal transfer /
+    # implementation calendar; only availability is the generic anti-leakage boundary.
+    if effective and entry:
+        clocks["entry_effective_relation"] = (
+            "BEFORE_EFFECTIVE" if entry < effective
+            else "AT_EFFECTIVE" if entry == effective
+            else "AFTER_EFFECTIVE"
+        )
+    else:
+        clocks["entry_effective_relation"] = UNKNOWN
     if entry and exit_clock and entry >= exit_clock:
         blockers.append("EXECUTION_TIMING_IMPOSSIBLE")
     return clocks, sorted(set(blockers))
@@ -178,19 +206,30 @@ def _family_blockers(family: str, facts: Mapping[str, Any], hints: Mapping[str, 
         if not _known(facts.get("turnover_hypothesis")):
             blockers.append("QUANT_TURNOVER_HYPOTHESIS_UNKNOWN")
     elif family == "EVENT_DOCUMENT":
-        required = ("actor_security_identity_qualified", "novel_information_supported", "causal_transfer_supported", "revision_state_qualified", "reaction_horizon_qualified")
+        required = (
+            "actor_security_identity_qualified", "novel_information_supported",
+            "causal_transfer_supported", "revision_state_qualified", "reaction_horizon_qualified",
+        )
         missing = [key for key in required if evidence.get(key) is not True]
         if evidence.get("document_change_only") is True or missing:
             blockers.append("DOCUMENT_CHANGE_NOT_EDGE")
         blockers.extend(f"EVENT_{key.upper()}_MISSING" for key in missing)
     elif family == "FUNDAMENTAL":
-        required = ("issuer_security_identity_qualified", "pit_facts_qualified", "realized_vs_expected_qualified", "expectation_gap_supported", "valuation_mispricing_basis_supported", "uncertainty_qualified", "restatement_state_qualified")
+        required = (
+            "issuer_security_identity_qualified", "pit_facts_qualified",
+            "realized_vs_expected_qualified", "expectation_gap_supported",
+            "valuation_mispricing_basis_supported", "uncertainty_qualified",
+            "restatement_state_qualified",
+        )
         missing = [key for key in required if evidence.get(key) is not True]
         if evidence.get("good_fundamentals_only") is True or missing:
             blockers.append("GOOD_FUNDAMENTALS_NOT_MISPRICING")
         blockers.extend(f"FUNDAMENTAL_{key.upper()}_MISSING" for key in missing)
     elif family == "INSTITUTIONAL_FLOW":
-        required = ("binding_rule_supported", "actual_forced_action_supported", "eligibility_supported", "implementation_calendar_supported")
+        required = (
+            "binding_rule_supported", "actual_forced_action_supported",
+            "eligibility_supported", "implementation_calendar_supported",
+        )
         missing = [key for key in required if evidence.get(key) is not True]
         if evidence.get("rule_exists_only") is True or missing:
             blockers.append("RULE_EXISTS_NOT_FORCED_FLOW")
@@ -203,17 +242,35 @@ def _family_blockers(family: str, facts: Mapping[str, Any], hints: Mapping[str, 
 def _identity_keys(discovery: Mapping[str, Any]) -> Dict[str, Any]:
     hints = discovery.get("economic_identity_hints") if isinstance(discovery.get("economic_identity_hints"), Mapping) else {}
     actor = discovery.get("constrained_actor") if _known(discovery.get("constrained_actor")) else discovery.get("causal_actor")
-    mechanism_payload = {"mechanism_identity": hints.get("mechanism_identity"), "payer": discovery.get("payer"), "actor": actor}
-    exposure_payload = {"economic_exposure": hints.get("economic_exposure"), "universe": discovery.get("universe"), "horizon": discovery.get("horizon")}
-    expression_payload = {**exposure_payload, "instrument": discovery.get("instrument"), "wrapper": discovery.get("wrapper")}
+    mechanism_payload = {
+        "mechanism_identity": hints.get("mechanism_identity"),
+        "payer": discovery.get("payer"),
+        "actor": actor,
+    }
+    exposure_payload = {
+        "economic_exposure": hints.get("economic_exposure"),
+        "universe": discovery.get("universe"),
+        "horizon": discovery.get("horizon"),
+    }
+    expression_payload = {
+        **exposure_payload,
+        "instrument": discovery.get("instrument"),
+        "wrapper": discovery.get("wrapper"),
+    }
 
     def key(payload: Mapping[str, Any]) -> Any:
         return _stable_key(payload) if all(_known(v) for v in payload.values()) else UNKNOWN
 
-    return {"mechanism_key": key(mechanism_payload), "exposure_key": key(exposure_payload), "expression_key": key(expression_payload)}
+    return {
+        "mechanism_key": key(mechanism_payload),
+        "exposure_key": key(exposure_payload),
+        "expression_key": key(expression_payload),
+    }
 
 
-def _duplicate_assessment(discovery: Mapping[str, Any], prior_candidates: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+def _duplicate_assessment(
+    discovery: Mapping[str, Any], prior_candidates: Sequence[Mapping[str, Any]]
+) -> Dict[str, Any]:
     current = _identity_keys(discovery)
     mechanism_matches: List[str] = []
     exposure_wrapper_matches: List[str] = []
@@ -230,7 +287,12 @@ def _duplicate_assessment(discovery: Mapping[str, Any], prior_candidates: Sequen
                 mechanism_matches.append(pid)
         if current["exposure_key"] != UNKNOWN and prior_keys["exposure_key"] != UNKNOWN:
             comparable += 1
-            if current["exposure_key"] == prior_keys["exposure_key"] and current["expression_key"] != UNKNOWN and prior_keys["expression_key"] != UNKNOWN and current["expression_key"] != prior_keys["expression_key"]:
+            if (
+                current["exposure_key"] == prior_keys["exposure_key"]
+                and current["expression_key"] != UNKNOWN
+                and prior_keys["expression_key"] != UNKNOWN
+                and current["expression_key"] != prior_keys["expression_key"]
+            ):
                 exposure_wrapper_matches.append(pid)
     if mechanism_matches:
         state = "DUPLICATE_MECHANISM"
@@ -252,7 +314,9 @@ def _duplicate_assessment(discovery: Mapping[str, Any], prior_candidates: Sequen
     }
 
 
-def _implementability_meta(discovery: Mapping[str, Any], facts: Mapping[str, Any], *, semantic_blocked: bool) -> Dict[str, Any]:
+def _implementability_meta(
+    discovery: Mapping[str, Any], facts: Mapping[str, Any], *, semantic_blocked: bool
+) -> Dict[str, Any]:
     instrument = discovery.get("instrument") if _known(discovery.get("instrument")) else discovery.get("wrapper")
     expression = {
         "instrument": instrument,
@@ -267,7 +331,10 @@ def _implementability_meta(discovery: Mapping[str, Any], facts: Mapping[str, Any
     pit = facts.get("pit_feasible", UNKNOWN)
     if documentary and pit == UNKNOWN:
         pit = True
-    expression_complete = all(_known(expression.get(field)) for field in ("instrument", "universe", "entry_clock", "exit_clock", *_REQUIRED_EXPRESSION_FIELDS))
+    expression_complete = all(
+        _known(expression.get(field))
+        for field in ("instrument", "universe", "entry_clock", "exit_clock", *_REQUIRED_EXPRESSION_FIELDS)
+    )
     explicit = facts.get("expression_feasible", UNKNOWN)
     if explicit is False:
         expression_feasible: Any = False
@@ -284,6 +351,103 @@ def _implementability_meta(discovery: Mapping[str, Any], facts: Mapping[str, Any
         "operational_complexity": facts.get("operational_complexity", UNKNOWN),
         "economic_expression": expression,
     }
+
+
+def _discovery_binding(candidate_core: Mapping[str, Any], discovery: Mapping[str, Any]) -> Dict[str, Any]:
+    core = deepcopy(dict(discovery))
+    core.pop("binding", None)
+    duplicate = core.get("duplicate_identity") if isinstance(core.get("duplicate_identity"), Mapping) else {}
+    binding = {
+        "schema_version": DISCOVERY_BINDING_VERSION,
+        "canonical_candidate_hash": _stable_key(candidate_core),
+        "discovery_core_hash": _stable_key(core),
+        "producer_family": core.get("producer_family"),
+        "mechanism_key": duplicate.get("mechanism_key", UNKNOWN),
+        "exposure_key": duplicate.get("exposure_key", UNKNOWN),
+        "expression_key": duplicate.get("expression_key", UNKNOWN),
+        "evidence_refs_hash": _stable_key({"evidence_refs": core.get("evidence_refs", [])}),
+        "source_clocks_hash": _stable_key(core.get("source_clocks", {})),
+        "ancestry_hash": _stable_key(core.get("ancestry", {})),
+        "implementability_hash": _stable_key(core.get("implementability", {})),
+        "outcome_accessed": False,
+    }
+    binding["binding_hash"] = _stable_key(binding)
+    return binding
+
+
+def _factory_binding(
+    candidate: Mapping[str, Any], discovery_binding: Mapping[str, Any],
+    implementability_receipt: Mapping[str, Any], status: str,
+) -> Dict[str, Any]:
+    binding = {
+        "schema_version": FACTORY_BINDING_VERSION,
+        "handoff_status": status,
+        "candidate_hash": _stable_key(candidate),
+        "discovery_binding_hash": discovery_binding.get("binding_hash"),
+        "implementability_receipt_hash": _stable_key(implementability_receipt),
+        "factory_law_redefined": False,
+        "validator_invoked": False,
+        "red_team_invoked": False,
+        "experiment_frozen": False,
+        "outcome_accessed": False,
+    }
+    binding["binding_hash"] = _stable_key(binding)
+    return binding
+
+
+def validate_discovery_handoff(result: Mapping[str, Any]) -> None:
+    """Recompute identity bindings and authority membranes for a Discovery result."""
+    if not isinstance(result, Mapping) or result.get("version") != DISCOVERY_VERSION:
+        raise ValueError("unsupported discovery handoff version")
+    if result.get("status") not in {"READY_FOR_FACTORY", "BLOCKED_DISCOVERY"}:
+        raise ValueError("invalid discovery handoff status")
+    if result.get("scheduler_mutation") is not False or result.get("scientific_memory_mutation") is not False:
+        raise ValueError("discovery handoff crossed scheduler/memory boundary")
+    if result.get("control_plane_mutation") is not False or result.get("outcome_accessed") is not False:
+        raise ValueError("discovery handoff crossed control/outcome boundary")
+    authority = result.get("authority")
+    if not isinstance(authority, Mapping) or any(value is not False for value in authority.values()):
+        raise ValueError("discovery authority membrane opened")
+
+    candidate = result.get("candidate")
+    discovery = result.get("discovery")
+    handoff = result.get("factory_handoff")
+    if not isinstance(candidate, Mapping) or not isinstance(discovery, Mapping) or not isinstance(handoff, Mapping):
+        raise ValueError("discovery handoff missing candidate/discovery/factory contract")
+    if candidate.get("discovery") != discovery:
+        raise ValueError("candidate.discovery diverges from discovery contract")
+    if _outcome_payload_present(discovery):
+        raise ValueError("discovery contract contains outcome-bearing payload")
+
+    candidate_core = deepcopy(dict(candidate))
+    candidate_core.pop("discovery", None)
+    observed_binding = discovery.get("binding")
+    expected_binding = _discovery_binding(candidate_core, discovery)
+    if observed_binding != expected_binding:
+        raise ValueError("discovery binding hash mismatch")
+
+    expected_status = "EXPERIMENT_READY_HANDOFF" if result["status"] == "READY_FOR_FACTORY" else "NOT_READY"
+    if handoff.get("status") != expected_status:
+        raise ValueError("factory handoff readiness mismatch")
+    if handoff.get("candidate") != candidate:
+        raise ValueError("factory handoff candidate binding mismatch")
+    producer_output = handoff.get("producer_output")
+    if not isinstance(producer_output, Mapping) or producer_output.get("candidate") != candidate:
+        raise ValueError("factory producer output candidate binding mismatch")
+    for field in (
+        "factory_law_redefined", "validator_invoked", "red_team_invoked",
+        "experiment_frozen", "scheduler_mutation", "outcome_accessed",
+    ):
+        if handoff.get(field) is not False:
+            raise ValueError(f"factory handoff membrane opened: {field}")
+    implementability = handoff.get("implementability_receipt")
+    if not isinstance(implementability, Mapping):
+        raise ValueError("factory handoff missing implementability receipt")
+    expected_factory_binding = _factory_binding(
+        candidate, observed_binding, implementability, expected_status
+    )
+    if handoff.get("binding") != expected_factory_binding:
+        raise ValueError("factory handoff binding hash mismatch")
 
 
 def build_discovery_handoff(
@@ -305,7 +469,11 @@ def build_discovery_handoff(
 
     if family not in SUPPORTED_FAMILIES:
         blockers.append("UNSUPPORTED_DISCOVERY_FAMILY")
-    if research_decision.get("action") != "RUN_PRODUCER" or research_decision.get("executable") is not True or research_decision.get("scheduler_mutation") is not False:
+    if (
+        research_decision.get("action") != "RUN_PRODUCER"
+        or research_decision.get("executable") is not True
+        or research_decision.get("scheduler_mutation") is not False
+    ):
         blockers.append("RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER")
     decision_candidate = research_decision.get("candidate_id")
     declared_origin = facts.get("research_origin_candidate_id")
@@ -318,7 +486,11 @@ def build_discovery_handoff(
         blockers.append("OUTCOME_ACCESS_NOT_CLOSED")
     if dossier.get("candidate_mutated") is True:
         blockers.append("UPSTREAM_CANDIDATE_MUTATION_DETECTED")
-    for field, expected in (("hypothesis_id", candidate.get("hypothesis_id")), ("generation_id", candidate.get("generation_id")), ("engine_family", family)):
+    for field, expected in (
+        ("hypothesis_id", candidate.get("hypothesis_id")),
+        ("generation_id", candidate.get("generation_id")),
+        ("engine_family", family),
+    ):
         observed = dossier.get(field)
         if not _known(observed):
             blockers.append(f"DOSSIER_BINDING_MISSING:{field}")
@@ -338,7 +510,9 @@ def build_discovery_handoff(
 
     clocks, clock_blockers = _source_clocks(output, facts)
     blockers.extend(clock_blockers)
-    universe, instrument, wrapper = _value(facts, "universe"), _value(facts, "instrument"), _value(facts, "wrapper")
+    universe, instrument, wrapper = (
+        _value(facts, "universe"), _value(facts, "instrument"), _value(facts, "wrapper")
+    )
     if universe == UNKNOWN:
         blockers.append("UNDEFINED_UNIVERSE")
     if instrument == UNKNOWN and wrapper == UNKNOWN:
@@ -365,7 +539,10 @@ def build_discovery_handoff(
     candidate_horizon, declared_horizon = candidate.get("horizon", UNKNOWN), facts.get("horizon", UNKNOWN)
     if _known(candidate_horizon) and _known(declared_horizon) and candidate_horizon != declared_horizon:
         blockers.append("HORIZON_CONFLICT_WITH_CANONICAL_CANDIDATE")
-    horizon = candidate_horizon if _known(candidate_horizon) else (declared_horizon if _known(declared_horizon) else UNKNOWN)
+    horizon = (
+        candidate_horizon if _known(candidate_horizon)
+        else (declared_horizon if _known(declared_horizon) else UNKNOWN)
+    )
     if horizon == UNKNOWN:
         blockers.append("HORIZON_UNKNOWN")
 
@@ -441,7 +618,9 @@ def build_discovery_handoff(
     elif duplicate["novelty_state"] == "SAME_EXPOSURE_DIFFERENT_WRAPPER":
         blockers.append("DUPLICATE_EXPOSURE_DIFFERENT_WRAPPER")
     elif duplicate["novelty_state"] == UNKNOWN:
-        discovery["evidence_gaps"] = sorted(set(discovery["evidence_gaps"] + ["NOVELTY_IDENTITY_INCOMPLETE"]))
+        discovery["evidence_gaps"] = sorted(
+            set(discovery["evidence_gaps"] + ["NOVELTY_IDENTITY_INCOMPLETE"])
+        )
 
     impl_meta = _implementability_meta(discovery, facts, semantic_blocked=bool(blockers))
     output["candidate"] = deepcopy(candidate)
@@ -457,14 +636,22 @@ def build_discovery_handoff(
         "cost_model_feasible": canonical_impl["cost_model_feasible"],
         "capacity_observable": canonical_impl["capacity_observable"],
     }
-    output["candidate"]["discovery"] = deepcopy(discovery)
     if canonical_impl["implementability_status"] != "IMPLEMENTABLE":
         blockers.append("EARLY_IMPLEMENTABILITY_NOT_READY")
         blockers.extend(f"IMPLEMENTABILITY:{reason}" for reason in canonical_impl["blocking_reasons"])
 
+    candidate_core = deepcopy(candidate)
+    discovery["binding"] = _discovery_binding(candidate_core, discovery)
+    output["candidate"] = deepcopy(candidate_core)
+    output["candidate"]["discovery"] = deepcopy(discovery)
+
     blockers = sorted(set(blockers))
     ready = not blockers
-    return {
+    handoff_status = "EXPERIMENT_READY_HANDOFF" if ready else "NOT_READY"
+    factory_binding = _factory_binding(
+        output["candidate"], discovery["binding"], canonical_impl, handoff_status
+    )
+    result = {
         "version": DISCOVERY_VERSION,
         "status": "READY_FOR_FACTORY" if ready else "BLOCKED_DISCOVERY",
         "producer_family": family,
@@ -472,11 +659,12 @@ def build_discovery_handoff(
         "discovery": deepcopy(discovery),
         "blockers": blockers,
         "factory_handoff": {
-            "status": "EXPERIMENT_READY_HANDOFF" if ready else "NOT_READY",
+            "status": handoff_status,
             "candidate": deepcopy(output["candidate"]),
-            "producer_output": output,
+            "producer_output": deepcopy(output),
             "implementability_meta": deepcopy(impl_meta),
             "implementability_receipt": deepcopy(canonical_impl),
+            "binding": factory_binding,
             "factory_law_redefined": False,
             "validator_invoked": False,
             "red_team_invoked": False,
@@ -490,3 +678,5 @@ def build_discovery_handoff(
         "outcome_accessed": False,
         "authority": deepcopy(AUTHORITY),
     }
+    validate_discovery_handoff(result)
+    return result
