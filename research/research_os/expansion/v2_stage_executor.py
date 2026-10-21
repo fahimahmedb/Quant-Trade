@@ -24,6 +24,7 @@ from .v2_core import (
     _is_sha256,
     assert_epoch_blinding,
     assert_validator_candidate_binding,
+    assert_trial_proposal_binding,
     blinding_integrity,
     build_epoch_manifest,
     build_frozen_export_intent,
@@ -139,12 +140,10 @@ def _assert_native_trial_lineage(snapshot, task, epoch, candidate):
     if (not isinstance(manifest, Mapping) or not _is_sha256(manifest.get("source_candidate_hash"))
             or not _is_sha256(manifest.get("documentary_packet_hash"))):
         raise StageBlocked("V2_TRIAL_SOURCE_PROPOSAL_BINDING_MISMATCH")
-    expected = {"hypothesis_id": candidate.get("hypothesis_id"), "generation_id": candidate.get("generation_id"),
-                "candidate_hash": manifest.get("source_candidate_hash")}
-    if (trial["source_packet_hash"] != manifest.get("documentary_packet_hash")
-            or not any(isinstance(p, Mapping) and all(p.get(k) == v for k, v in expected.items())
-                       for p in trial["generated_proposals"])):
-        raise StageBlocked("V2_TRIAL_SOURCE_PROPOSAL_BINDING_MISMATCH")
+    try:
+        assert_trial_proposal_binding(candidate, trial)
+    except V2ContractError as error:
+        raise StageBlocked("V2_TRIAL_SOURCE_PROPOSAL_BINDING_MISMATCH") from error
 
 
 def _canonical_freeze_binding(snapshot, task, candidate):

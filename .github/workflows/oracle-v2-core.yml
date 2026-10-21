@@ -69,6 +69,7 @@ jobs:
             tests.test_research_os_v2_bridge \
             tests.test_research_os_independent_candidate_reconstruction \
             tests.test_research_os_native_trial_lineage \
+            tests.test_research_os_trial_proposal_export_binding \
             tests.test_research_os_canonical_freeze_v2_binding \
             tests.test_research_os_v2_pipeline \
             tests.test_research_os_v2_worker_integration \

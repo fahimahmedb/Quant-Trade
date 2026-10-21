@@ -33,12 +33,16 @@ class CanonicalIdentityTests(unittest.TestCase):
                             builder(payload)
                         self.assertEqual(payload, before)
 
-    def test_valid_epoch_trial_and_four_family_hashes_are_unchanged(self):
+    def test_epoch_and_four_family_hashes_are_unchanged_with_attributed_trial(self):
         bundle = self.bundle()
         self.assertEqual(build_epoch_manifest(bundle["epoch"])["epoch_manifest_hash"],
                          "8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457")
+        proposal = bundle["trial"]["generated_proposals"][0]
+        candidate = build_candidate(bundle["candidate"])
+        self.assertTrue(all(proposal[key] == candidate[key]
+                            for key in ("hypothesis_id", "generation_id", "candidate_hash")))
         self.assertEqual(build_research_trial(bundle["trial"])["trial_hash"],
-                         "dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b")
+                         "a02058400aec467b836985f030f2a1694f5a0c78eedefa7c270b21c24b92ae47")
         expected = {"fundamental": "73bedcc4cf9fa2ae2887b2342f23caea10fa14062a332459d81fa2be69ebf4b1",
                     "event": "8355c998707d92865c54a2db4c5a622f0d7c50cbef55c91fa2062965528f2dc2",
                     "forced_flow": "10d6ed7e58bb728297d0f467aec2ed8f6ecbfff93b49b21612bed549792e2d43",

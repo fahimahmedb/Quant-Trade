@@ -49,7 +49,10 @@
     },
     "generated_proposals": [
       {
-        "id": "P1"
+        "id": "P1",
+        "hypothesis_id": "V2-FIXTURE-HYPOTHESIS-001",
+        "generation_id": "G1",
+        "candidate_hash": "32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a"
       },
       {
         "id": "P2"

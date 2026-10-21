@@ -261,6 +261,31 @@ def assert_validator_candidate_binding(candidate: Mapping[str, Any], validator: 
         raise V2ContractError("VALIDATOR_HASH_MISMATCH")
 
 
+def assert_trial_proposal_binding(candidate: Mapping[str, Any], trial: Mapping[str, Any]) -> None:
+    """Join a generated proposal to its exact subject, not merely its trial ID.
+
+    Native producer trials reference the original source Candidate; generic V2
+    trials reference the V2 Candidate itself. These hashes are not interchangeable.
+    """
+    _require_identifiers(candidate, ("hypothesis_id", "generation_id"), "TRIAL_CANDIDATE")
+    manifest = candidate.get("evidence_manifest")
+    if not isinstance(manifest, Mapping):
+        raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+    reference = candidate.get("candidate_hash")
+    if "source_candidate_hash" in manifest or "documentary_packet_hash" in manifest:
+        reference = manifest.get("source_candidate_hash")
+        packet_hash = manifest.get("documentary_packet_hash")
+        if not _is_sha256(packet_hash) or trial.get("source_packet_hash") != packet_hash:
+            raise V2ContractError("TRIAL_SOURCE_PACKET_BINDING_MISMATCH")
+    if not _is_sha256(reference):
+        raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+    expected = {"hypothesis_id": candidate.get("hypothesis_id"),
+                "generation_id": candidate.get("generation_id"), "candidate_hash": reference}
+    if not any(isinstance(proposal, Mapping) and all(proposal.get(k) == v for k, v in expected.items())
+               for proposal in trial["generated_proposals"]):
+        raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+
+
 def build_priority_decision(*, policy_version: str, eligible: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     if not policy_version or not eligible:
         raise V2ContractError("PRIORITY_REQUIRES_POLICY_AND_ELIGIBLE_SET")

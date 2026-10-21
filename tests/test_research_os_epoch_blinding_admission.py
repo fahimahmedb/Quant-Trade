@@ -72,7 +72,12 @@ class EpochBlindingAdmissionTests(unittest.TestCase):
         bundle = self.bundle()
         before = deepcopy(bundle)
         result = run_pre_outcome_pipeline(bundle)
-        self.assertEqual(result["receipt_hash"], "01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec")
+        # CP090 attributes the first proposal; only its trial/derived receipt changes.
+        proposal = bundle["trial"]["generated_proposals"][0]
+        self.assertEqual(proposal["hypothesis_id"], bundle["candidate"]["hypothesis_id"])
+        self.assertEqual(proposal["generation_id"], bundle["candidate"]["generation_id"])
+        self.assertEqual(proposal["candidate_hash"], result["candidate_hash"])
+        self.assertEqual(result["receipt_hash"], "48ec56afa0be00bcd198c38a37b49c89f2b0d00d05b7f055346e887f7b2480e8")
         self.assertEqual(bundle, before)
         for actor in ("owner_status", "supervisor_status"):
             broken = deepcopy(bundle)
