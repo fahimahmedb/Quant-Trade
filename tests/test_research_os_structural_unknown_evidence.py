@@ -12,6 +12,31 @@ from research.research_os.expansion.portfolio_v2 import (
 )
 from research.research_os.scientific_store import sha256_json
 from research.research_os.tests import test_economic_identity_portfolio_readiness as fixtures
+from research.research_os.tests.test_economic_identity_memory_context_w1 import (
+    EconomicIdentityMemoryContextW1Tests,
+)
+from research.research_os.tests.test_economic_identity_portfolio_depth_w1 import (
+    EconomicIdentityPortfolioDepthW1Tests,
+)
+from research.research_os.tests.test_economic_identity_portfolio_frontier_w1 import (
+    EconomicIdentityPortfolioFrontierW1Tests,
+)
+
+
+def _run_w1_falsification_cases() -> None:
+    """Run W1 lane cases inside the existing root test inventory."""
+    for case_type in (
+        EconomicIdentityMemoryContextW1Tests,
+        EconomicIdentityPortfolioDepthW1Tests,
+        EconomicIdentityPortfolioFrontierW1Tests,
+    ):
+        for method_name in sorted(name for name in dir(case_type) if name.startswith("test_")):
+            case = case_type(methodName=method_name)
+            case.setUp()
+            try:
+                getattr(case, method_name)()
+            finally:
+                case.tearDown()
 
 
 class StructuralUnknownEvidenceTests(unittest.TestCase):
@@ -66,6 +91,7 @@ class StructuralUnknownEvidenceTests(unittest.TestCase):
         self.assertEqual(sha256_json(structural_identity(identity)),
                          "03af5bdd581963292f10daa557c3e5feb6aeb713429cb5d8ac01155d981a4ce0")
         self.assertEqual(identity, before)
+        _run_w1_falsification_cases()
 
 
 if __name__ == "__main__":
