@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
+from copy import deepcopy
+from threading import RLock
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
@@ -14,51 +18,108 @@ def sha256_json(value: Any) -> str:
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
 
 
+def _ledger_payload(payload: Any) -> Dict[str, Any]:
+    if not isinstance(payload, dict):
+        raise ValueError("ledger payload must be an object")
+
+    def check_keys(value: Any) -> None:
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if not isinstance(key, str):
+                    raise ValueError("ledger object keys must be strings")
+                check_keys(item)
+        elif isinstance(value, (list, tuple)):
+            for item in value:
+                check_keys(item)
+
+    check_keys(payload)
+    # Freeze the JSON representation used by both hashing and persistence.
+    return json.loads(json.dumps(payload, allow_nan=False, ensure_ascii=False))
+
+
 class AppendOnlyHashLedger:
     def __init__(self) -> None:
         self.entries: List[Dict[str, Any]] = []
+        self._lock = RLock()
 
     def append(self, kind: str, payload: Dict[str, Any]) -> Dict[str, Any]:
-        previous_hash = self.entries[-1]["entry_hash"] if self.entries else None
-        envelope = {
-            "seq": len(self.entries) + 1,
-            "kind": kind,
-            "previous_hash": previous_hash,
-            "payload_hash": sha256_json(payload),
-            "payload": payload,
-        }
-        envelope["entry_hash"] = sha256_json({
-            "seq": envelope["seq"],
-            "kind": kind,
-            "previous_hash": previous_hash,
-            "payload_hash": envelope["payload_hash"],
-        })
-        self.entries.append(envelope)
-        return envelope
+        with self._lock:
+            if not isinstance(kind, str) or not kind:
+                raise ValueError("ledger kind must be a nonempty string")
+            frozen = _ledger_payload(payload)
+            if not self.verify():
+                raise ValueError("cannot extend an invalid ledger")
+            previous_hash = self.entries[-1]["entry_hash"] if self.entries else None
+            envelope = {
+                "seq": len(self.entries) + 1,
+                "kind": kind,
+                "previous_hash": previous_hash,
+                "payload_hash": sha256_json(frozen),
+                "payload": frozen,
+            }
+            envelope["entry_hash"] = sha256_json({
+                "seq": envelope["seq"],
+                "kind": kind,
+                "previous_hash": previous_hash,
+                "payload_hash": envelope["payload_hash"],
+            })
+            self.entries.append(envelope)
+            return deepcopy(envelope)
 
     def verify(self) -> bool:
-        previous_hash = None
-        for index, entry in enumerate(self.entries, 1):
-            if entry.get("seq") != index:
+        with self._lock:
+            if not isinstance(self.entries, list):
                 return False
-            if entry.get("previous_hash") != previous_hash:
+            previous_hash = None
+            try:
+                for index, entry in enumerate(self.entries, 1):
+                    if not isinstance(entry, dict) or set(entry) != {
+                        "seq", "kind", "previous_hash", "payload_hash", "payload", "entry_hash"
+                    }:
+                        return False
+                    if type(entry["seq"]) is not int or entry["seq"] != index:
+                        return False
+                    if not isinstance(entry["kind"], str) or not entry["kind"]:
+                        return False
+                    if entry["previous_hash"] != previous_hash:
+                        return False
+                    payload = _ledger_payload(entry["payload"])
+                    if entry["payload_hash"] != sha256_json(payload):
+                        return False
+                    expected = sha256_json({
+                        "seq": index,
+                        "kind": entry["kind"],
+                        "previous_hash": previous_hash,
+                        "payload_hash": entry["payload_hash"],
+                    })
+                    if entry["entry_hash"] != expected:
+                        return False
+                    previous_hash = entry["entry_hash"]
+            except (TypeError, ValueError, OverflowError, RecursionError):
                 return False
-            if entry.get("payload_hash") != sha256_json(entry.get("payload")):
-                return False
-            expected = sha256_json({
-                "seq": index,
-                "kind": entry.get("kind"),
-                "previous_hash": previous_hash,
-                "payload_hash": entry.get("payload_hash"),
-            })
-            if entry.get("entry_hash") != expected:
-                return False
-            previous_hash = entry["entry_hash"]
-        return True
+            return True
 
     def write_jsonl(self, path: Path) -> None:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("".join(canonical_json(entry) + "\n" for entry in self.entries))
+        with self._lock:
+            if not self.verify():
+                raise ValueError("cannot publish an invalid ledger")
+            content = "".join(canonical_json(entry) + "\n" for entry in self.entries)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            fd, staging = tempfile.mkstemp(prefix=".scientific-ledger-", dir=path.parent)
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                    stream.write(content)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.replace(staging, path)
+                directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(directory)
+                finally:
+                    os.close(directory)
+            finally:
+                if os.path.exists(staging):
+                    os.unlink(staging)
 
 
 def scientific_snapshot(*, run_id: str, candidate: Dict[str, Any], timestamp: str) -> Dict[str, Any]:
