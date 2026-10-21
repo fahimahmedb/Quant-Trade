@@ -10,13 +10,13 @@
   "base_sha": "01c2e520fa4116645870f96acf6770ea83f1881c",
   "baseline_root_passed": 808,
   "branch": "codex/vertical-depth-prewave2-20261021",
-  "checkpoint_count": 16,
-  "count_scope": "17 explicitly scoped capability units; not whole-module or production qualification",
+  "checkpoint_count": 17,
+  "count_scope": "18 explicitly scoped capability units; not whole-module or production qualification",
   "deployments": 0,
   "depth_counts": {
     "D1": 0,
     "D2": 8,
-    "D3": 5,
+    "D3": 6,
     "D4": 4
   },
   "evidence_sha256": {
@@ -53,15 +53,17 @@
     "CP015_before.txt": "af934c0d419681836e76eb432da154aa8b4e67901a5f771fa8813c35e1766421",
     "CP016_after.txt": "3f24907716fe9183a53a4bb78918dd6f37729e7301d520c79c33412c90791f2e",
     "CP016_before.txt": "dee1e8fa0cd277da39da25819e4b348e5e46f0e9bd7af5e42c7fda163f8011d9",
-    "FINAL_core_receipt.json": "ee93a6a8e402b9a7201ea00dc8cd423ce90a01e889eaa4e08ea9e35bb024969d",
-    "FINAL_live_lab_js.txt": "077b97a3f743ffa1dcaebc6cd5995774e9e2f8de3350f1027a0526a3ee540ba0",
-    "FINAL_platform.txt": "80cc2ecf12ffc8469e01131917b32ec0682eac22f6e92080be3e6d3a005b8aa8",
-    "FINAL_research_os.txt": "2d80eeccb2ad119e87a336ee319a034d526d6e23b17d02bff3ad681b45f8bf8a",
-    "FINAL_root.txt": "d5002a01a2f791d11a1cc5e2cd90be27c67535cfb4c3c768c03659f00739b5e4"
+    "CP017_after.txt": "f70e31f81adee7bb6378d317d3b0f82b9eb9ca1c9750696031141019bec8fd90",
+    "CP017_before.txt": "d2746383136ada991913c838aab140943a5fc52b42561ec491b2ff9b70a34210",
+    "FINAL_core_receipt.json": "f3b2491397e9ef2f1f667a06cab8f037cee022f3ee3b6a552ed8f9aec075e0fc",
+    "FINAL_live_lab_js.txt": "906cd721396f052af4f4fe4654a47706642f8a3096f4338909963ff283196f71",
+    "FINAL_platform.txt": "6a840c9afb8c0e0e613d2f47dddba1dbba0efc79f3d678114250febb27d74362",
+    "FINAL_research_os.txt": "6b9a24189ef61fa007ac2d4457f8533e7cd652cd67363f55a5c5e87647e12d41",
+    "FINAL_root.txt": "de5003c1977a26950aa2c92efb671ac4192d1103e669c1fceb41c70b35dffe61"
   },
   "execution_scope": "LOCAL_DISPOSABLE_FIXTURES_ONLY",
   "hosted_ci_claimed": false,
-  "new_vertical_cases_passed": 286,
+  "new_vertical_cases_passed": 308,
   "node": "v24.19.0",
   "north_star_blob": "a328b4e6d7d71dafd532938888ebf9818b1b610f",
   "phase_b_required": true,
@@ -71,10 +73,10 @@
     "local_materialization_only": true,
     "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8"
   },
-  "previous_delivery_sha": "bcf7add94dc03589d3e3d5b44365281c51649ef7",
+  "previous_delivery_sha": "aea4a07240d3427e9c19788704534d95cbbfaa19",
   "pytest": "pytest 9.1.1",
   "python": "3.12.14",
-  "qualified_source_sha": "2584be09e8010aa33856e4e7fefa3b18a4e58f6d",
+  "qualified_source_sha": "ac78358b5d8a96f5f5ad7990cc7b51c6e6aa043f",
   "remote_runtime_writes": 0,
   "ruff": "ruff 0.17.1",
   "schema_version": "vertical-prewave2-local-qualification-v1",
@@ -83,6 +85,7 @@
     "research/research_os/expansion/final_shape.py": "bd599ddffceb977fe81b45fd7e2fe74c0a034311f6827e9be36d683223ea85f4",
     "research/research_os/expansion/v2_core.py": "f85d44d05c87817c292da00a1dd4840e0ef40bdf8be393984c4876e7501b40b1",
     "research/research_os/expansion/v2_pipeline.py": "65243c38be24704c3ea86f4fcc3057a6126fb9a4529392a1d47e99f98e4f57bb",
+    "research/research_os/scientific_store.py": "21127221e1fc35f89a0c040c4e20163b7e9b64b7996f2ebd3b83c21e3bb49d22",
     "schemas/book_state.schema.json": "dfe47b9c181d640b2cd030fe1a5c60126c110ffa970c72f9118cfc946f2f8d00",
     "scripts/qualify_oracle_v2_core.py": "9bfd776315fa3ec617dbf54064c11e4aae5312c99b5d4c39dcf2a694c30bf1e5",
     "src/autonomous_research/runtime.py": "c0497d1f139e7ee7a8d853c0fb399eba98fc7cc76306f50bc8e53fe896a313ab",
@@ -110,13 +113,14 @@
     "tests/test_vertical_qualification_depth.py": "757cdc88cdaa9bba527a1f9af12f05aef51fb890e96a38ac8f5498046ea16ed3",
     "tests/test_vertical_queue_concurrency.py": "9902e9da9aa0458ec78460e2a9b6e9fe3e9e8e89b940dbbd334a1e5e26311e75",
     "tests/test_vertical_queue_depth.py": "6de31bfa73c85fe5307fa3f896ca008a131d03830da6ad3a662a7c69147c3af8",
-    "tests/test_vertical_risk_depth.py": "81abd949a1252340d24ef61ee70cf3cc95f3b55a58619b7dcff2526f8f56141a"
+    "tests/test_vertical_risk_depth.py": "81abd949a1252340d24ef61ee70cf3cc95f3b55a58619b7dcff2526f8f56141a",
+    "tests/test_vertical_scientific_ledger_depth.py": "8b93719e1040af1812abb9291019ce6e1eff78c2b92d07b8c253bf5e25c5e6f6"
   },
   "suites": [
     {
       "command": "PYTHONPATH=src:tests:. python -m pytest -q",
       "log": "FINAL_root.txt",
-      "passed": 1094,
+      "passed": 1116,
       "subtests_passed": 1077,
       "warnings": 2
     },

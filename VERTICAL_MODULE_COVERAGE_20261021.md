@@ -4,11 +4,12 @@ Base: `01c2e520fa4116645870f96acf6770ea83f1881c`.
 North Star: blob `a328b4e6d7d71dafd532938888ebf9818b1b610f`.
 
 This inventory uses the 25 existing nodes in the base's CP085 coverage index as
-a routing map. It does **not** inherit that index's Q labels as vertical depth
+a routing map, with the existing scientific snapshot ledger explicitly itemized
+as an additional row in CP017. It does **not** inherit that index's Q labels as vertical depth
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 17 explicit capability units below the table.
+to the 18 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -16,6 +17,7 @@ to the 17 explicit capability units below the table.
 | Control/clock | local runtime, GitHubStateStore, native worker; oracle_worker/scheduler and V2 worker tests | CP007/CP015 local clocks, stale/terminal fencing and shared-instance publication recovery. Existing real local-Git lease races, expiry, owner rewind, lost ACK and restart tests pass. Local selection/claim is not atomic. No production reboot proof. |
 | Data/research | evidence, identity, source qualification, source-PIT clocks, raw-capture/admission suites | CP003 concurrent evidence/index and exact references; CP009 action boundaries. Vendor/source truth and all identity interval conflicts unproven. |
 | Data/control recovery | Quant clock dependency recovery and V1 data-validation suites | Existing durable BLOCK/recovery behavior regressed. No new live capture or outage experiment. |
+| Scientific memory snapshots | scientific_store; CP017 alias, malformed chain, threaded append and atomic publication/retry tests | D3 for same-instance scientific hash ledger; public entries, independent publishers and authenticated rollback anchoring unproven. |
 | Canonical research core | v2_core, canonical depth, persistent state, freeze/trial accounting suites | CP002 serialized reconstruction repaired; durable freeze/immutable registry cases regressed. Full concurrent epoch lifecycle unproven. |
 | Producer families | engines/builtin/protocol, documentary dossiers; multi-engine, primary-event, operative-rule, independent-reconstruction suites | Existing four-family contracts and claim ceilings regressed. Semantic creativity/economic validity unproven; no missing-family implementation. |
 | Archaeology/search | Legacy knowledge base, archaeology; canonical-spine and historical-source recovery suites | Pinned imported ledger materialized and blob verified. Historical scope, negative/blocked distinctions regressed. Unrecovered provenance remains unresolved. |
@@ -65,6 +67,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Exact-source qualification receipt binding | D2 | CP011 |
 | Desk journal frozen intent, completion, shared recovery and identity reads | D4 | CP012/CP016 |
 | Book replay token bound to exact durable economic payload | D3 | CP013 |
+| Scientific ledger detached append/verification and atomic snapshot publication | D3 | CP017 |
 
 These are evidence limits, not claims that every edge case or every function in
 every listed module has been exhausted. Whole multi-file session concurrency,

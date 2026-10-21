@@ -1,0 +1,409 @@
+FFFFFFF.FFFFFFFFFF.FFF                                                   [100%]
+=================================== FAILURES ===================================
+_________________________ test_input_alias_is_detached _________________________
+
+    def test_input_alias_is_detached():
+        payload = {'nested': [1]}
+        result = AppendOnlyHashLedger()
+        result.append('TEST', payload)
+        payload['nested'].append(2)
+>       assert result.verify()
+E       assert False
+E        +  where False = verify()
+E        +    where verify = <research.research_os.scientific_store.AppendOnlyHashLedger object at 0x7f5dbec34b30>.verify
+
+tests/test_vertical_scientific_ledger_depth.py:21: AssertionError
+________________________ test_return_alias_is_detached _________________________
+
+    def test_return_alias_is_detached():
+        result = AppendOnlyHashLedger()
+        entry = result.append('TEST', {'nested': [1]})
+        entry['payload']['nested'].append(2)
+        entry['entry_hash'] = 'changed'
+>       assert result.verify()
+E       assert False
+E        +  where False = verify()
+E        +    where verify = <research.research_os.scientific_store.AppendOnlyHashLedger object at 0x7f5dbec33080>.verify
+
+tests/test_vertical_scientific_ledger_depth.py:30: AssertionError
+___________________ test_trial_export_does_not_mutate_ledger ___________________
+
+    def test_trial_export_does_not_mutate_ledger():
+        result = build_scientific_ledgers(run_id='r', outputs=[{'candidate': {
+            'hypothesis_id': 'h', 'generation_id': 'g'}}], timestamp='synthetic')
+        result['trial_records'][0]['limitations'].clear()
+>       assert result['scientific_ledger'].verify()
+E       assert False
+E        +  where False = verify()
+E        +    where verify = <research.research_os.scientific_store.AppendOnlyHashLedger object at 0x7f5dbec361e0>.verify
+
+tests/test_vertical_scientific_ledger_depth.py:37: AssertionError
+___________________ test_bad_payload_cannot_append[payload0] ___________________
+
+payload = {'x': nan}
+
+    @pytest.mark.parametrize('payload', [{'x': float('nan')}, {'x': float('inf')},
+                                         {'x': {1: 'ambiguous'}}, [], {'x': object()}])
+    def test_bad_payload_cannot_append(payload):
+        result = ledger()
+        before = copy.deepcopy(result.entries)
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:45: Failed
+___________________ test_bad_payload_cannot_append[payload1] ___________________
+
+payload = {'x': inf}
+
+    @pytest.mark.parametrize('payload', [{'x': float('nan')}, {'x': float('inf')},
+                                         {'x': {1: 'ambiguous'}}, [], {'x': object()}])
+    def test_bad_payload_cannot_append(payload):
+        result = ledger()
+        before = copy.deepcopy(result.entries)
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:45: Failed
+___________________ test_bad_payload_cannot_append[payload2] ___________________
+
+payload = {'x': {1: 'ambiguous'}}
+
+    @pytest.mark.parametrize('payload', [{'x': float('nan')}, {'x': float('inf')},
+                                         {'x': {1: 'ambiguous'}}, [], {'x': object()}])
+    def test_bad_payload_cannot_append(payload):
+        result = ledger()
+        before = copy.deepcopy(result.entries)
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:45: Failed
+___________________ test_bad_payload_cannot_append[payload3] ___________________
+
+payload = []
+
+    @pytest.mark.parametrize('payload', [{'x': float('nan')}, {'x': float('inf')},
+                                         {'x': {1: 'ambiguous'}}, [], {'x': object()}])
+    def test_bad_payload_cannot_append(payload):
+        result = ledger()
+        before = copy.deepcopy(result.entries)
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:45: Failed
+________________________ test_bad_kind_cannot_append[] _________________________
+
+kind = ''
+
+    @pytest.mark.parametrize('kind', ['', None, 1, True])
+    def test_bad_kind_cannot_append(kind):
+        result = ledger()
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:53: Failed
+______________________ test_bad_kind_cannot_append[None] _______________________
+
+kind = None
+
+    @pytest.mark.parametrize('kind', ['', None, 1, True])
+    def test_bad_kind_cannot_append(kind):
+        result = ledger()
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:53: Failed
+________________________ test_bad_kind_cannot_append[1] ________________________
+
+kind = 1
+
+    @pytest.mark.parametrize('kind', ['', None, 1, True])
+    def test_bad_kind_cannot_append(kind):
+        result = ledger()
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:53: Failed
+______________________ test_bad_kind_cannot_append[True] _______________________
+
+kind = True
+
+    @pytest.mark.parametrize('kind', ['', None, 1, True])
+    def test_bad_kind_cannot_append(kind):
+        result = ledger()
+>       with pytest.raises((TypeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (TypeError, ValueError)
+
+tests/test_vertical_scientific_ledger_depth.py:53: Failed
+_________________ test_malformed_chain_fails_closed[nonobject] _________________
+
+mutation = 'nonobject'
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_malformed_chain_fails_clo0')
+
+    @pytest.mark.parametrize('mutation', ['nonobject', 'bool_seq', 'extra', 'missing', 'nan'])
+    def test_malformed_chain_fails_closed(mutation, tmp_path):
+        result = ledger()
+        if mutation == 'nonobject':
+            result.entries[0] = None
+        elif mutation == 'bool_seq':
+            result.entries[0]['seq'] = True
+        elif mutation == 'extra':
+            result.entries[0]['unhashed'] = 'injected'
+        elif mutation == 'missing':
+            del result.entries[0]['payload']
+        else:
+            result.entries[0]['payload']['bad'] = float('nan')
+>       assert result.verify() is False
+               ^^^^^^^^^^^^^^^
+
+tests/test_vertical_scientific_ledger_depth.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <research.research_os.scientific_store.AppendOnlyHashLedger object at 0x7f5dbec32de0>
+
+    def verify(self) -> bool:
+        previous_hash = None
+        for index, entry in enumerate(self.entries, 1):
+>           if entry.get("seq") != index:
+               ^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'get'
+
+research/research_os/scientific_store.py:42: AttributeError
+_________________ test_malformed_chain_fails_closed[bool_seq] __________________
+
+mutation = 'bool_seq'
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_malformed_chain_fails_clo1')
+
+    @pytest.mark.parametrize('mutation', ['nonobject', 'bool_seq', 'extra', 'missing', 'nan'])
+    def test_malformed_chain_fails_closed(mutation, tmp_path):
+        result = ledger()
+        if mutation == 'nonobject':
+            result.entries[0] = None
+        elif mutation == 'bool_seq':
+            result.entries[0]['seq'] = True
+        elif mutation == 'extra':
+            result.entries[0]['unhashed'] = 'injected'
+        elif mutation == 'missing':
+            del result.entries[0]['payload']
+        else:
+            result.entries[0]['payload']['bad'] = float('nan')
+>       assert result.verify() is False
+E       assert True is False
+E        +  where True = verify()
+E        +    where verify = <research.research_os.scientific_store.AppendOnlyHashLedger object at 0x7f5dbec383e0>.verify
+
+tests/test_vertical_scientific_ledger_depth.py:71: AssertionError
+___________________ test_malformed_chain_fails_closed[extra] ___________________
+
+mutation = 'extra'
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_malformed_chain_fails_clo2')
+
+    @pytest.mark.parametrize('mutation', ['nonobject', 'bool_seq', 'extra', 'missing', 'nan'])
+    def test_malformed_chain_fails_closed(mutation, tmp_path):
+        result = ledger()
+        if mutation == 'nonobject':
+            result.entries[0] = None
+        elif mutation == 'bool_seq':
+            result.entries[0]['seq'] = True
+        elif mutation == 'extra':
+            result.entries[0]['unhashed'] = 'injected'
+        elif mutation == 'missing':
+            del result.entries[0]['payload']
+        else:
+            result.entries[0]['payload']['bad'] = float('nan')
+>       assert result.verify() is False
+E       assert True is False
+E        +  where True = verify()
+E        +    where verify = <research.research_os.scientific_store.AppendOnlyHashLedger object at 0x7f5dbec39010>.verify
+
+tests/test_vertical_scientific_ledger_depth.py:71: AssertionError
+__________________ test_malformed_chain_fails_closed[missing] __________________
+
+mutation = 'missing'
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_malformed_chain_fails_clo3')
+
+    @pytest.mark.parametrize('mutation', ['nonobject', 'bool_seq', 'extra', 'missing', 'nan'])
+    def test_malformed_chain_fails_closed(mutation, tmp_path):
+        result = ledger()
+        if mutation == 'nonobject':
+            result.entries[0] = None
+        elif mutation == 'bool_seq':
+            result.entries[0]['seq'] = True
+        elif mutation == 'extra':
+            result.entries[0]['unhashed'] = 'injected'
+        elif mutation == 'missing':
+            del result.entries[0]['payload']
+        else:
+            result.entries[0]['payload']['bad'] = float('nan')
+        assert result.verify() is False
+        path = tmp_path / 'ledger.jsonl'
+        path.write_text('previous\n')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_scientific_ledger_depth.py:74: Failed
+____________________ test_malformed_chain_fails_closed[nan] ____________________
+
+mutation = 'nan'
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_malformed_chain_fails_clo4')
+
+    @pytest.mark.parametrize('mutation', ['nonobject', 'bool_seq', 'extra', 'missing', 'nan'])
+    def test_malformed_chain_fails_closed(mutation, tmp_path):
+        result = ledger()
+        if mutation == 'nonobject':
+            result.entries[0] = None
+        elif mutation == 'bool_seq':
+            result.entries[0]['seq'] = True
+        elif mutation == 'extra':
+            result.entries[0]['unhashed'] = 'injected'
+        elif mutation == 'missing':
+            del result.entries[0]['payload']
+        else:
+            result.entries[0]['payload']['bad'] = float('nan')
+        assert result.verify() is False
+        path = tmp_path / 'ledger.jsonl'
+        path.write_text('previous\n')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_scientific_ledger_depth.py:74: Failed
+__________________ test_atomic_publication_failure_and_retry ___________________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_atomic_publication_failur0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5dbec3a270>
+
+    def test_atomic_publication_failure_and_retry(tmp_path, monkeypatch):
+        import os
+        result = ledger()
+        path = tmp_path / 'ledger.jsonl'
+        result.write_jsonl(path)
+        previous = path.read_bytes()
+        result.append('NEXT', {})
+        replace = os.replace
+        def fail(*args, **kwargs):
+            raise OSError('injected before publication')
+        with monkeypatch.context() as patch:
+            patch.setattr(os, 'replace', fail)
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests/test_vertical_scientific_ledger_depth.py:93: Failed
+___________________ test_append_serializes_hash_and_sequence ___________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5dbec32870>
+
+    def test_append_serializes_hash_and_sequence(monkeypatch):
+        import threading
+        from research.research_os import scientific_store
+        result = AppendOnlyHashLedger()
+        entered, release, second_started = threading.Event(), threading.Event(), threading.Event()
+        original = scientific_store.sha256_json
+        def held_hash(value):
+            if value == {'id': 1}:
+                entered.set()
+                assert release.wait(5)
+            return original(value)
+        monkeypatch.setattr(scientific_store, 'sha256_json', held_hash)
+        def second():
+            second_started.set()
+            return result.append('TEST', {'id': 2})
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            first = pool.submit(result.append, 'TEST', {'id': 1})
+            try:
+                assert entered.wait(5)
+                other = pool.submit(second)
+                assert second_started.wait(5)
+>               assert not other.done()
+E               assert not True
+E                +  where True = done()
+E                +    where done = <Future at 0x7f5dbec3bfe0 state=finished returned dict>.done
+
+tests/test_vertical_scientific_ledger_depth.py:138: AssertionError
+__________ test_fsync_failure_leaves_complete_old_or_new_document[1] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_fsync_failure_leaves_comp0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5dbec39430>
+failed_fsync = 1
+
+    @pytest.mark.parametrize('failed_fsync', [1, 2])
+    def test_fsync_failure_leaves_complete_old_or_new_document(tmp_path, monkeypatch, failed_fsync):
+        import os
+        result = ledger()
+        path = tmp_path / 'ledger.jsonl'
+        result.write_jsonl(path)
+        result.append('NEXT', {'unicode': 'é'})
+        original = os.fsync
+        calls = 0
+        def failing(fd):
+            nonlocal calls
+            calls += 1
+            if calls == failed_fsync:
+                raise OSError('injected fsync failure')
+            return original(fd)
+        with monkeypatch.context() as patch:
+            patch.setattr(os, 'fsync', failing)
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests/test_vertical_scientific_ledger_depth.py:163: Failed
+__________ test_fsync_failure_leaves_complete_old_or_new_document[2] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_fsync_failure_leaves_comp1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5dbec3af90>
+failed_fsync = 2
+
+    @pytest.mark.parametrize('failed_fsync', [1, 2])
+    def test_fsync_failure_leaves_complete_old_or_new_document(tmp_path, monkeypatch, failed_fsync):
+        import os
+        result = ledger()
+        path = tmp_path / 'ledger.jsonl'
+        result.write_jsonl(path)
+        result.append('NEXT', {'unicode': 'é'})
+        original = os.fsync
+        calls = 0
+        def failing(fd):
+            nonlocal calls
+            calls += 1
+            if calls == failed_fsync:
+                raise OSError('injected fsync failure')
+            return original(fd)
+        with monkeypatch.context() as patch:
+            patch.setattr(os, 'fsync', failing)
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests/test_vertical_scientific_ledger_depth.py:163: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_input_alias_is_detached
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_return_alias_is_detached
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_trial_export_does_not_mutate_ledger
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_payload_cannot_append[payload0]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_payload_cannot_append[payload1]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_payload_cannot_append[payload2]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_payload_cannot_append[payload3]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_kind_cannot_append[]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_kind_cannot_append[None]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_kind_cannot_append[1]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_bad_kind_cannot_append[True]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_malformed_chain_fails_closed[nonobject]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_malformed_chain_fails_closed[bool_seq]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_malformed_chain_fails_closed[extra]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_malformed_chain_fails_closed[missing]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_malformed_chain_fails_closed[nan]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_atomic_publication_failure_and_retry
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_append_serializes_hash_and_sequence
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_fsync_failure_leaves_complete_old_or_new_document[1]
+FAILED tests/test_vertical_scientific_ledger_depth.py::test_fsync_failure_leaves_complete_old_or_new_document[2]
+20 failed, 2 passed in 0.18s

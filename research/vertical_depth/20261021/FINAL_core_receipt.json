@@ -31,5 +31,5 @@
     "validator_hash": "3298ec7ea354f5f760fe30593fe1289d68bfb64c5e87c0f2da8e81ae12dd2f23"
   },
   "schema_version": "oracle-v2-core-exact-head-verification-v1",
-  "verified_commit_sha": "2584be09e8010aa33856e4e7fefa3b18a4e58f6d"
+  "verified_commit_sha": "ac78358b5d8a96f5f5ad7990cc7b51c6e6aa043f"
 }
