@@ -20,6 +20,7 @@ from .v2_bridge import adapt_engine_output_to_v2_candidate, adapt_existing_valid
 from .v2_independence import AXES, independent_context, process_identity
 from .v2_core import (
     V2ContractError,
+    _is_sha256,
     assert_epoch_blinding,
     assert_validator_candidate_binding,
     blinding_integrity,
@@ -110,7 +111,39 @@ def _validator_sidecar(snapshot, task: Mapping[str, Any]) -> Dict[str, Any]:
 
 def _trial_sidecar(snapshot, task: Mapping[str, Any]) -> Dict[str, Any]:
     path = (task.get("inputs") or {}).get("v2_trial") or v2_artifact_path(task, "research_trial.json")
+    if not isinstance(path, str) or not path.startswith(PREFIX + "artifacts/") or ".." in path.split("/"):
+        raise StageBlocked("V2_TRIAL_REFERENCE_REQUIRED")
     return snapshot.read(path)
+
+
+def _assert_native_trial_lineage(snapshot, task, epoch, candidate):
+    if (task.get("inputs") or {}).get("epoch_manifest_hash") != epoch["epoch_manifest_hash"]:
+        raise StageBlocked("V2_EPOCH_BINDING_CHANGED_BEFORE_VALIDATION")
+    trial = _trial_sidecar(snapshot, task)
+    try:
+        body = deepcopy(dict(trial))
+        declared_hash = body.pop("trial_hash", None)
+        rebuilt = build_research_trial(body)
+        valid = trial == rebuilt and canonical_hash(body) == declared_hash
+    except (V2ContractError, TypeError, ValueError):
+        valid = False
+    if not valid:
+        raise StageBlocked("V2_RESEARCH_TRIAL_INTEGRITY_MISMATCH")
+    if (candidate.get("research_epoch_id") != epoch["research_epoch_id"]
+            or trial["research_epoch_id"] != epoch["research_epoch_id"]):
+        raise StageBlocked("V2_RESEARCH_LINEAGE_EPOCH_MISMATCH")
+    if candidate.get("research_trial_id") != trial["research_trial_id"]:
+        raise StageBlocked("V2_CANDIDATE_TRIAL_BINDING_MISMATCH")
+    manifest = candidate.get("evidence_manifest") or {}
+    if (not isinstance(manifest, Mapping) or not _is_sha256(manifest.get("source_candidate_hash"))
+            or not _is_sha256(manifest.get("documentary_packet_hash"))):
+        raise StageBlocked("V2_TRIAL_SOURCE_PROPOSAL_BINDING_MISMATCH")
+    expected = {"hypothesis_id": candidate.get("hypothesis_id"), "generation_id": candidate.get("generation_id"),
+                "candidate_hash": manifest.get("source_candidate_hash")}
+    if (trial["source_packet_hash"] != manifest.get("documentary_packet_hash")
+            or not any(isinstance(p, Mapping) and all(p.get(k) == v for k, v in expected.items())
+                       for p in trial["generated_proposals"])):
+        raise StageBlocked("V2_TRIAL_SOURCE_PROPOSAL_BINDING_MISMATCH")
 
 
 class V2StageExecutor(CanonicalStageExecutor):
@@ -126,6 +159,8 @@ class V2StageExecutor(CanonicalStageExecutor):
         window = epoch["research_window"]
         if not _parse_time(window["start"]) <= _parse_time(now) < _parse_time(window["end"]):
             raise StageBlocked("V2_RESEARCH_WINDOW_CLOSED")
+        if lane == "independent_challenge":
+            _assert_native_trial_lineage(snapshot, task, epoch, _read_v2_candidate(snapshot, task))
         if stage == "claim_restriction":
             if _parse_time(now) >= _parse_time(epoch["export_cutoff"]):
                 raise StageBlocked("V2_EXPORT_CUTOFF_REACHED")
@@ -309,8 +344,6 @@ class V2StageExecutor(CanonicalStageExecutor):
 
         elif lane == "independent_challenge" and stage == "independent_validation":
             candidate = _read_v2_candidate(snapshot, task)
-            if (task.get("inputs") or {}).get("epoch_manifest_hash") != epoch["epoch_manifest_hash"]:
-                raise StageBlocked("V2_EPOCH_BINDING_CHANGED_BEFORE_VALIDATION")
             existing = (result.get("readiness") or {}).get("validator") or result.get("validation")
             if not isinstance(existing, dict):
                 raise StageBlocked("V2_EXISTING_VALIDATOR_RESULT_REQUIRED")

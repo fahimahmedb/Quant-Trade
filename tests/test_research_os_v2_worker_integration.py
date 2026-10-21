@@ -90,7 +90,8 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             "clock": "publication",
             "horizon": "5d",
             "economic_expression": {"instrument": "equity", "direction": "NOT_YET_MEASURABLE"},
-            "evidence_manifest": {"sources": ["S1"]},
+            "evidence_manifest": {"sources": ["S1"], "source_candidate_hash": "c" * 64,
+                                  "documentary_packet_hash": "e" * 64},
             "falsification_scope": "counterevidence",
             "decision_map": {"fails": "KILL", "survives": "EXPLORE"},
             "known_confounders": [],
@@ -102,6 +103,19 @@ class V2WorkerIntegrationTests(unittest.TestCase):
                 "business_driver": "services",
                 "valuation_transmission": "cash generation",
             },
+        })
+
+    def v2_trial(self, candidate):
+        return build_research_trial({
+            "research_trial_id": candidate["research_trial_id"], "research_epoch_id": candidate["research_epoch_id"],
+            "trial_type": "RESEARCH_GENERATION_TRIAL", "model_identity": "DETERMINISTIC_ENGINE",
+            "prompt_hash": "p", "context_hash": "c", "retrieval_manifest_hash": "r",
+            "source_packet_hash": candidate["evidence_manifest"]["documentary_packet_hash"],
+            "generated_at": "2026-10-20T02:00:00Z", "sampling_parameters": {"mode": "deterministic"},
+            "generated_proposals": [{"hypothesis_id": candidate["hypothesis_id"],
+                                     "generation_id": candidate["generation_id"],
+                                     "candidate_hash": candidate["evidence_manifest"]["source_candidate_hash"]}],
+            "discarded_proposals": [], "retry_count": 0,
         })
 
     def test_v2_worker_requires_explicit_contract_and_closed_authority(self):
@@ -174,7 +188,8 @@ class V2WorkerIntegrationTests(unittest.TestCase):
                 "research_epoch_id": "E1",
             },
         }
-        snapshot = FakeSnapshot({ACTIVE_EPOCH_PATH: self.epoch(), candidate_path: candidate})
+        snapshot = FakeSnapshot({ACTIVE_EPOCH_PATH: self.epoch(), candidate_path: candidate,
+                                 v2_artifact_path(task, "research_trial.json"): self.v2_trial(candidate)})
         from research.research_os.expansion.v2_core import build_epoch_manifest
         task["inputs"]["epoch_manifest_hash"] = build_epoch_manifest(self.epoch())["epoch_manifest_hash"]
         base = {
@@ -209,14 +224,9 @@ class V2WorkerIntegrationTests(unittest.TestCase):
                 "research_epoch_id": "E1",
             },
         }
-        trial = build_research_trial({
-            "research_trial_id": "T1", "research_epoch_id": "E1",
-            "trial_type": "RESEARCH_GENERATION_TRIAL", "model_identity": "DETERMINISTIC_ENGINE",
-            "prompt_hash": "p", "context_hash": "c", "retrieval_manifest_hash": "r",
-            "source_packet_hash": "s", "generated_at": "2026-10-20T02:00:00Z",
-            "sampling_parameters": {"mode": "deterministic"},
-            "generated_proposals": [{"id": "P1"}], "discarded_proposals": [], "retry_count": 0,
-        })
+        from research.research_os.expansion.v2_core import build_epoch_manifest
+        task["inputs"]["epoch_manifest_hash"] = build_epoch_manifest(self.epoch())["epoch_manifest_hash"]
+        trial = self.v2_trial(candidate)
         validator = build_validator_result({
             "hypothesis_id": "H1", "generation_id": "G1",
             "candidate_hash": candidate["candidate_hash"],

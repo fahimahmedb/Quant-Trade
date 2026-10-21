@@ -10,7 +10,7 @@ from unittest.mock import patch
 from research.research_os.engines.builtin import ENGINE_REGISTRY
 from research.research_os.engines.protocol import EngineContext
 from research.research_os.expansion.v2_bridge import adapt_engine_output_to_v2_candidate
-from research.research_os.expansion.v2_core import build_candidate, canonical_hash
+from research.research_os.expansion.v2_core import build_candidate, build_epoch_manifest, canonical_hash
 from research.research_os.expansion.v2_independence import AXES, independent_context
 from research.research_os.expansion.v2_stage_executor import ACTIVE_EPOCH_PATH, V2StageExecutor, v2_artifact_path
 from research.research_os.worker_stages import CanonicalStageExecutor, StageBlocked
@@ -115,8 +115,12 @@ class IndependentCandidateReconstructionTests(unittest.TestCase):
         candidate['claim'] = 'claim not present in the bound primary reconstruction'
         candidate = build_candidate(candidate)
         path = 'research/research_os/artifacts/PRODUCER/oracle-v2/candidate_frozen.json'
-        snapshot.values.update({ACTIVE_EPOCH_PATH: worker_fixtures.V2WorkerIntegrationTests().epoch(), path: candidate})
+        harness = worker_fixtures.V2WorkerIntegrationTests()
+        epoch = harness.epoch()
+        trial_path = 'research/research_os/artifacts/PRODUCER/oracle-v2/research_trial.json'
+        snapshot.values.update({ACTIVE_EPOCH_PATH: epoch, path: candidate, trial_path: harness.v2_trial(candidate)})
         task = {'task_id': 'VALIDATE-RECONSTRUCTION', 'task_type': 'VALIDATION', 'inputs': {'v2_candidate': path}}
+        task['inputs'].update(v2_trial=trial_path, epoch_manifest_hash=build_epoch_manifest(epoch)['epoch_manifest_hash'])
         before = deepcopy(snapshot.values)
         with patch('research.research_os.expansion.v2_independence.process_identity', return_value=VALIDATOR_PROCESS), \
                 patch.object(CanonicalStageExecutor, 'execute') as base:

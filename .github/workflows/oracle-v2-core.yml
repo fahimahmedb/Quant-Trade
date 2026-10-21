@@ -65,6 +65,7 @@ jobs:
             research.research_os.tests.test_economic_identity_portfolio_readiness \
             tests.test_research_os_v2_bridge \
             tests.test_research_os_independent_candidate_reconstruction \
+            tests.test_research_os_native_trial_lineage \
             tests.test_research_os_v2_pipeline \
             tests.test_research_os_v2_worker_integration \
             tests.test_research_os_implementability_contract \
