@@ -121,6 +121,11 @@ class IndependentCandidateReconstructionTests(unittest.TestCase):
         snapshot.values.update({ACTIVE_EPOCH_PATH: epoch, path: candidate, trial_path: harness.v2_trial(candidate)})
         task = {'task_id': 'VALIDATE-RECONSTRUCTION', 'task_type': 'VALIDATION', 'inputs': {'v2_candidate': path}}
         task['inputs'].update(v2_trial=trial_path, epoch_manifest_hash=build_epoch_manifest(epoch)['epoch_manifest_hash'])
+        source = snapshot.read(candidate['evidence_manifest']['source_path'])
+        output = ENGINE_REGISTRY['fundamental'].run(source, EngineContext(PRODUCER['task_id'], synthetic_only=False))
+        frozen_path, frozen_values = harness.canonical_freeze_values(candidate, output=output)
+        task['inputs']['frozen_hypothesis'] = frozen_path
+        snapshot.values.update(frozen_values)
         before = deepcopy(snapshot.values)
         with patch('research.research_os.expansion.v2_independence.process_identity', return_value=VALIDATOR_PROCESS), \
                 patch.object(CanonicalStageExecutor, 'execute') as base:

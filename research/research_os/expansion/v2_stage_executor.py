@@ -12,6 +12,7 @@ from research.research_os.worker_stages import (
     DEFAULT_SOURCES,
     PRODUCERS,
     StageBlocked,
+    _frozen,
     artifact_path,
 )
 
@@ -146,6 +147,23 @@ def _assert_native_trial_lineage(snapshot, task, epoch, candidate):
         raise StageBlocked("V2_TRIAL_SOURCE_PROPOSAL_BINDING_MISMATCH")
 
 
+def _canonical_freeze_binding(snapshot, task, candidate):
+    frozen, identity, output = _frozen(snapshot, task, "independent_challenge")
+    if not isinstance(output, Mapping):
+        raise StageBlocked("V2_CANONICAL_FROZEN_ENGINE_OUTPUT_REQUIRED")
+    source_hash = canonical_hash(output["candidate"])
+    if (candidate["hypothesis_id"] != identity["hypothesis_id"]
+            or candidate["generation_id"] != identity["generation_id"]
+            or source_hash != candidate["evidence_manifest"]["source_candidate_hash"]):
+        raise StageBlocked("V2_CANONICAL_FREEZE_CANDIDATE_BINDING_MISMATCH")
+    binding = {"frozen_hypothesis_ref": task["inputs"]["frozen_hypothesis"],
+               "frozen_hypothesis_hash": canonical_hash(frozen),
+               "hypothesis_id": identity["hypothesis_id"], "generation_id": identity["generation_id"],
+               "source_candidate_hash": source_hash, "v2_candidate_hash": candidate["candidate_hash"]}
+    binding["binding_hash"] = canonical_hash(binding)
+    return binding
+
+
 class V2StageExecutor(CanonicalStageExecutor):
     """Add V2 scientific contracts around the already-qualified V1 stages.
 
@@ -159,8 +177,11 @@ class V2StageExecutor(CanonicalStageExecutor):
         window = epoch["research_window"]
         if not _parse_time(window["start"]) <= _parse_time(now) < _parse_time(window["end"]):
             raise StageBlocked("V2_RESEARCH_WINDOW_CLOSED")
+        freeze_binding = None
         if lane == "independent_challenge":
-            _assert_native_trial_lineage(snapshot, task, epoch, _read_v2_candidate(snapshot, task))
+            candidate = _read_v2_candidate(snapshot, task)
+            _assert_native_trial_lineage(snapshot, task, epoch, candidate)
+            freeze_binding = _canonical_freeze_binding(snapshot, task, candidate)
         if stage == "claim_restriction":
             if _parse_time(now) >= _parse_time(epoch["export_cutoff"]):
                 raise StageBlocked("V2_EXPORT_CUTOFF_REACHED")
@@ -176,7 +197,8 @@ class V2StageExecutor(CanonicalStageExecutor):
                     raise StageBlocked("V2_" + str(exc)) from exc
         independence = None
         if lane == "independent_challenge" and stage == "independent_validation":
-            independence = independent_context(snapshot, _read_v2_candidate(snapshot, task))
+            independence = dict(independent_context(snapshot, _read_v2_candidate(snapshot, task)),
+                                canonical_freeze_binding=deepcopy(freeze_binding))
         if isinstance(getattr(self.backend, "calls", None), list):
             self.backend.calls.clear()
         if stage in ("mechanism_research", "document_or_fundamental_research"):
@@ -200,6 +222,8 @@ class V2StageExecutor(CanonicalStageExecutor):
         result["authority"] = dict(AUTHORITY)
         result["outcome_accessed"] = False
         result["economic_result"] = "NOT_OBSERVED"
+        if freeze_binding is not None:
+            result["v2_canonical_freeze_binding"] = freeze_binding
 
         if stage in ("mechanism_research", "document_or_fundamental_research") and result.get("engine_output"):
             engine_output = result["engine_output"]

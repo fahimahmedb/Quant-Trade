@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
@@ -17,7 +18,7 @@ from research.research_os.expansion.v2_stage_executor import (
     v2_artifact_path,
 )
 from research.research_os.oracle_worker_v2 import build_v2_worker
-from research.research_os.worker_stages import CanonicalStageExecutor, artifact_path
+from research.research_os.worker_stages import AUTHORITY, CanonicalStageExecutor, artifact_path
 
 
 class FakeSnapshot:
@@ -78,7 +79,7 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         }
 
     def v2_candidate(self):
-        return build_candidate({
+        candidate = build_candidate({
             "hypothesis_id": "H1",
             "generation_id": "G1",
             "research_trial_id": "T1",
@@ -104,6 +105,29 @@ class V2WorkerIntegrationTests(unittest.TestCase):
                 "valuation_transmission": "cash generation",
             },
         })
+        candidate["evidence_manifest"]["source_candidate_hash"] = canonical_hash(self.v1_output(candidate)["candidate"])
+        return build_candidate(candidate)
+
+    def v1_output(self, candidate):
+        output = ENGINE_REGISTRY["fundamental"].run(
+            {"source_ref": "synthetic://isolated-native-unit-contract"}, EngineContext("UNIT", synthetic_only=True))
+        output["candidate"].update(
+            hypothesis_id=candidate["hypothesis_id"], generation_id=candidate["generation_id"],
+            mechanism=candidate["mechanism_statement"], claim=candidate["claim"],
+            falsification_scope=deepcopy(candidate["falsification_scope"]),
+            decision_map=deepcopy(candidate["decision_map"]))
+        return output
+
+    def canonical_freeze_values(self, candidate, output=None):
+        output = deepcopy(output) if output is not None else self.v1_output(candidate)
+        raw = output["candidate"]
+        path = "research/research_os/hypotheses/" + raw["hypothesis_id"] + ".json"
+        engine_ref = "research/research_os/artifacts/UNIT-PRODUCER/oracle-worker/document_or_fundamental_research.json"
+        frozen = {key: deepcopy(raw[key]) for key in
+                  ("hypothesis_id", "generation_id", "mechanism", "claim", "falsification_scope", "decision_map")}
+        frozen.update(freeze_status="FROZEN", authority=dict(AUTHORITY), family_id=output["engine_family"], worker_provenance={
+            "lane": "fundamental_events", "engine_output_ref": engine_ref, "candidate_hash": canonical_hash(raw)})
+        return path, {path: frozen, engine_ref: {"engine_output": output}}
 
     def v2_trial(self, candidate):
         return build_research_trial({
@@ -192,6 +216,9 @@ class V2WorkerIntegrationTests(unittest.TestCase):
                                  v2_artifact_path(task, "research_trial.json"): self.v2_trial(candidate)})
         from research.research_os.expansion.v2_core import build_epoch_manifest
         task["inputs"]["epoch_manifest_hash"] = build_epoch_manifest(self.epoch())["epoch_manifest_hash"]
+        frozen_path, frozen_values = self.canonical_freeze_values(candidate)
+        task["inputs"]["frozen_hypothesis"] = frozen_path
+        snapshot.values.update(frozen_values)
         base = {
             "stage": "independent_validation",
             "validation": {"status": "PASS", "failures": []},
@@ -210,6 +237,7 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         self.assertEqual(validator["scientific_decision"], "PASS")
         self.assertNotEqual(validator["producer_identity_hash"], validator["validator_state_identity_hash"])
         self.assertEqual(result["v2_scientific_decision"], "PASS")
+        self.assertEqual(validator["independence_evidence"]["canonical_freeze_binding"], result["v2_canonical_freeze_binding"])
 
     def test_claim_restriction_can_emit_frozen_export_intent_without_evaluation(self):
         candidate = self.v2_candidate()
@@ -259,6 +287,9 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             validation_stage_path: {"readiness": readiness},
         }
         snapshot = FakeSnapshot(values)
+        frozen_path, frozen_values = self.canonical_freeze_values(candidate)
+        task["inputs"]["frozen_hypothesis"] = frozen_path
+        snapshot.values.update(frozen_values)
         with patch.object(CanonicalStageExecutor, "execute", return_value=({"stage": "claim_restriction", "blockers": []}, {}, "CONTINUE")):
             result, writes, _ = V2StageExecutor().execute(
                 snapshot, task, "independent_challenge", "claim_restriction",

@@ -169,13 +169,17 @@ def _frozen(snapshot, task, lane):
     if expected_generation is not None and expected_generation != identity['generation_id']:
         raise StageBlocked('HANDOFF_HYPOTHESIS_GENERATION_MISMATCH')
     output_ref = producer.get('engine_output_ref')
+    if output_ref and (not isinstance(output_ref, str) or not output_ref.startswith(PREFIX + 'artifacts/')
+                       or '..' in output_ref.split('/')):
+        raise StageBlocked('FROZEN_ENGINE_OUTPUT_REFERENCE_REQUIRED')
     output = snapshot.read(output_ref)['engine_output'] if output_ref else None
     if output:
         validate_engine_output(output)
         c = output['candidate']
         if (canonical_hash(c) != producer.get('candidate_hash')
                 or c['hypothesis_id'] != identity['hypothesis_id'] or c['generation_id'] != identity['generation_id']
-                or c['mechanism'] != frozen['mechanism'] or c['claim'] != frozen['claim']):
+                or any(c.get(key) != frozen.get(key) for key in
+                       ('mechanism', 'claim', 'falsification_scope', 'decision_map'))):
             raise StageBlocked('FROZEN_ENGINE_OUTPUT_BINDING_MISMATCH')
     return frozen, identity, output
 
