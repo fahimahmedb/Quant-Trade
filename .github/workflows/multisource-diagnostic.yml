@@ -29,3 +29,4 @@ jobs:
       - name: Preserve failure conclusion
         if: steps.focused.outcome != 'success'
         run: exit 1
+      # one-shot diagnostic; remove after focused qualification
