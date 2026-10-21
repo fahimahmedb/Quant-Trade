@@ -63,6 +63,9 @@ jobs:
       - name: W1 Data focused suite
         run: PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -p 'test_w1_data_*.py' -v
 
+      - name: Convergence trial-accounting identity binding
+        run: PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -p 'test_convergence_trial_accounting_identity_binding.py' -v
+
       - name: SEC P0 lane suite
         run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
 
