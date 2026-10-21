@@ -268,8 +268,15 @@ def forward_register(
 
 
 def decay_guard(registrations: List[Dict[str, Any]]) -> Dict[str, Any]:
-    assert all(r["observation_authorization"] == "NOT_AUTHORIZED" for r in registrations)
-    assert all(r["future_outcomes_consumed"] == 0 for r in registrations)
+    # Authority admission is runtime behavior, including under Python -O/-OO.
+    # Never report an inactive zero-consumption monitor over ambiguous or
+    # already-started observation state.
+    if any(not isinstance(r, dict)
+           or r.get("observation_authorization") != "NOT_AUTHORIZED"
+           or r.get("observation_started") is not False
+           or type(r.get("future_outcomes_consumed")) is not int
+           or r["future_outcomes_consumed"] != 0 for r in registrations):
+        raise PermissionError("decay guard requires closed, unstarted, zero-consumption registrations")
     return {
         "engine": "decay-monitor.v1",
         "status": "INACTIVE_BY_AUTHORITY",
