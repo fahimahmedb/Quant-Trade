@@ -1,7 +1,7 @@
-"""Connect current frozen experiments to the recovered Factory integrity contracts.
+"""Connect current frozen experiments to the canonical Factory integrity laws.
 
-This module is deliberately pure.  It does not persist a registry or own lifecycle
-truth.  It binds the current Canonical Research Core envelope/frozen protocol,
+This module is deliberately pure. It does not persist a registry or own lifecycle
+truth. It binds the current Canonical Research Core envelope/frozen protocol,
 existing DryRunExperimentRunner plan/receipt/replay, and current trial accounting
 into one immutable pre-outcome attestation.
 """
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from quant.factory.experiments import (
+from .experiment_registry import (
     ExperimentLifecycle,
     ExperimentRegistryError,
     bind_execution_plan,
@@ -18,9 +18,9 @@ from quant.factory.experiments import (
     canonical_hash,
     create_registry_entry,
 )
-from quant.factory.geometry import GeometryStatus, geometry_from_mapping
-from quant.factory.outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload
-from quant.factory.power import PowerStatus, power_from_mapping
+from .experiment_geometry import GeometryStatus, geometry_from_mapping
+from .experiment_outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload
+from .experiment_power import PowerStatus, power_from_mapping
 
 
 class ExperimentInfrastructureError(ValueError):
@@ -36,12 +36,7 @@ def bind_pre_outcome_infrastructure(
     geometry_declaration: Mapping[str, Any] | None = None,
     power_declaration: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Bind exact current artifacts without creating a second truth store.
-
-    Geometry/power are explicit UNKNOWN when not declared.  The binding itself can
-    still be verified, but the experiment records those declaration gaps rather
-    than fabricating planning inputs.
-    """
+    """Bind exact current artifacts without creating a second truth store."""
     try:
         assert_pre_outcome_payload(envelope)
         assert_pre_outcome_payload(plan)

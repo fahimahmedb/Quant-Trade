@@ -60,6 +60,14 @@ jobs:
       - name: Full unit suite
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
+      - name: W1 Factory experiment infrastructure suite
+        run: |
+          PYTHONPATH=src python3 -m unittest -v \
+            research.research_os.tests.test_w1_factory_experiment_infrastructure \
+            research.research_os.tests.test_w1_factory_experiment_bridge \
+            research.research_os.tests.test_w1_factory_economic_integration \
+            research.research_os.tests.test_w1_factory_firewall_hardening
+
       - name: SEC P0 lane suite
         run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
 
