@@ -134,7 +134,7 @@ jobs:
             set -e
             printf '%s\n' "$code" > "/tmp/${label}.exit"
             grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
-            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 > "/tmp/${label}.count" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
           }
           run_suite /tmp/wave2-base base
           run_suite "$GITHUB_WORKSPACE" head
@@ -142,7 +142,7 @@ jobs:
           cat /tmp/base.failures
           echo '--- D0 head failure signatures ---'
           cat /tmp/head.failures
-          echo '--- test counts ---'
+          echo '--- normalized test counts ---'
           cat /tmp/base.count
           cat /tmp/head.count
           diff -u /tmp/base.failures /tmp/head.failures
@@ -193,7 +193,7 @@ jobs:
               "head_exit_code": int(os.environ["HEAD_EXIT_CODE"]),
               "same_failure_signatures": True,
               "failure_signatures": failures,
-              "test_count_line": count,
+              "test_count": int(count) if count else None,
               "w1_files_mutated_by_d0": False,
               "result": "PASS_DIFFERENTIAL_NON_REGRESSION",
               "authority_opened": False,
