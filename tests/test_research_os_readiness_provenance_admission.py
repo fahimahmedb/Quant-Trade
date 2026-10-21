@@ -11,6 +11,61 @@ from research.research_os.tests.test_economic_readiness_validation import _fixtu
 
 
 class ReadinessProvenanceAdmissionTests(unittest.TestCase):
+    def test_complete_freeze_cannot_admit_data_after_the_declared_decision(self):
+        clocks = (
+            {'decision_time': '2026-10-15T08:00:00Z'},  # source itself arrives later
+            {'decision_time': '2026-10-15T09:59:59.999999Z'},  # cutoff arrives later
+            {'decision_time': '2026-10-15T10:00:00.000001+01:00'},
+            {'freeze_time': '2026-10-15T10:29:59.999999Z'},
+            {'data_cutoff': '2026-10-15T11:00:00.000001Z'},
+        )
+        for changed in clocks:
+            with self.subTest(changed=changed):
+                package = fixture()
+                package['runner_meta']['frozen_protocol']['clock'].update(changed)
+                before = deepcopy(package)
+                result = economic_test_readiness(package, legacy=legacy())
+                self.assertEqual(result['status'], 'BLOCK')
+                self.assertEqual(result['block_reasons'], ['BLOCK_CLOCK', 'CLOCK_DEFINITION_INVALID'])
+                self.assertEqual([k for k, v in result['validator']['checks'].items()
+                                  if v['status'] != 'PASS'], ['clock'])
+                self.assertFalse(result['outcome_accessed'])
+                self.assertTrue(all(v is False for v in result['authority'].values()))
+                self.assertEqual(package, before)
+
+    def test_independent_validator_checks_causality_inside_a_consistent_frozen_body(self):
+        # Rebind an entirely new declaration, rather than trip the projection guard.
+        package = json.loads(json.dumps(_fixture()))
+        changed = {'decision_time': '2026-10-15T08:00:00Z'}
+        package['clock'].update(changed)
+        payload = package['protocol']['protocol_payload']
+        payload['dataset_provenance']['protocol']['clock'].update(changed)
+        package['protocol']['protocol_hash'] = sha256_json(payload)
+        binding = package['reproducibility']['binding_payload']
+        binding['protocol_hash'] = package['protocol']['protocol_hash']
+        package['reproducibility']['binding_hash'] = sha256_json(binding)
+        result = self.assert_direct_block(package, 'CLOCK_DEFINITION_INVALID')
+        self.assertEqual([k for k, v in result['checks'].items() if v['status'] != 'PASS'], ['clock'])
+
+    def test_equal_and_offset_instants_preserve_ready_and_frozen_replay(self):
+        for clock in (
+            {'data_cutoff': '2026-10-15T10:00:00Z', 'decision_time': '2026-10-15T10:00:00Z',
+             'freeze_time': '2026-10-15T10:00:00Z'},
+            {'data_cutoff': '2026-10-15T12:00:00+02:00', 'decision_time': '2026-10-15T06:30:00-04:00',
+             'freeze_time': '2026-10-15T11:00:00Z'},
+        ):
+            with self.subTest(clock=clock):
+                package = fixture()
+                package['runner_meta']['frozen_protocol']['clock'].update(clock)
+                before = deepcopy(package)
+                result = economic_test_readiness(package, legacy=legacy())
+                self.assertEqual(result['status'], READY, result['block_reasons'])
+                self.assertEqual(economic_test_readiness(package, legacy=legacy(), frozen=result), result)
+                self.assertEqual(result['remaining_execution_blockers'], ['OWNER_AUTHORIZATION'])
+                self.assertFalse(result['outcome_accessed'])
+                self.assertEqual(result['trial_accounting']['effective_trials_status'], 'UNKNOWN')
+                self.assertEqual(package, before)
+
     def assert_direct_block(self, package, code):
         before = deepcopy(package)
         result = validate_economic_test_readiness(package)

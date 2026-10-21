@@ -296,9 +296,8 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and data_cutoff is not None
         and decision_time is not None
         and freeze_time is not None
-        and data_cutoff <= freeze_time
-        and decision_time <= freeze_time,
-        "Clock requires timezone-aware decision, data-cutoff, and freeze timestamps with coherent ordering.",
+        and data_cutoff <= decision_time <= freeze_time,
+        "Timezone-aware timestamps must satisfy data cutoff <= decision <= freeze; later information cannot support an earlier decision.",
     )
     add(
         "universe_definition",
