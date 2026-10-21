@@ -17,7 +17,7 @@ jobs:
       - name: Checkout immutable mission base
         uses: actions/checkout@v4
         with:
-          ref: a19ee49a6e87b3d95fa95b4c9f0e7b334a47d193
+          ref: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
           fetch-depth: 0
 
       - uses: actions/setup-python@v5
@@ -30,7 +30,7 @@ jobs:
 
       - name: Bind execution to exact base
         run: |
-          test "$(git rev-parse HEAD)" = "a19ee49a6e87b3d95fa95b4c9f0e7b334a47d193"
+          test "$(git rev-parse HEAD)" = "2b99d8aeb8a342f1ef32544247d366cb8a26037e"
           echo "BASE_RESULT_SHA=$(git rev-parse HEAD)"
           git status --short
 
@@ -182,7 +182,7 @@ jobs:
       - name: Write preflight summary
         run: |
           cat > /tmp/wave2-preflight-summary.txt <<EOF
-          BASE_SHA=a19ee49a6e87b3d95fa95b4c9f0e7b334a47d193
+          BASE_SHA=2b99d8aeb8a342f1ef32544247d366cb8a26037e
           SCHEMA_EXIT=${SCHEMA_EXIT:-99}
           STATUS_EXIT=${STATUS_EXIT:-99}
           ROOT_UNIT_EXIT=${ROOT_UNIT_EXIT:-99}
@@ -201,7 +201,7 @@ jobs:
       - name: Upload preflight logs
         uses: actions/upload-artifact@v4
         with:
-          name: wave2-seal-preflight-exact-base-a19ee49a-${{ github.run_id }}
+          name: wave2-seal-preflight-exact-base-2b99d8ae-${{ github.run_id }}
           path: |
             /tmp/wave2-preflight-summary.txt
             /tmp/schema.log
