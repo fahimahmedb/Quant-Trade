@@ -7,7 +7,9 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+from .research_action_planner import plan_research_action
 from .scientific_memory import ScientificMemoryIndex, normalize_legacy_record
+from .scientific_memory_feedback import qualified_legacy_memory_view, scientific_memory_feedback
 
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
@@ -26,18 +28,37 @@ def _tokens(*values: Iterable[str]) -> set[str]:
     return {t for t in out if len(t) >= 3}
 
 
+def _optional_json_object(path: Path) -> Dict[str, Any]:
+    """Load optional planning context without converting absence into availability."""
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text())
+    if not isinstance(payload, dict):
+        raise ValueError("research planning context must be a JSON object: " + str(path))
+    return payload
+
+
 class LegacyKnowledgeBase:
     """Legacy compatibility surface over CP069 provenance and canonical Scientific Memory.
 
-    CP069 remains authoritative for recovered-source review provenance.  W1 Scientific
+    CP069 remains authoritative for recovered-source review provenance. W1 Scientific
     Memory is additive: it normalizes the immutable imported ledger into the canonical
     fail-closed memory contract without replacing the CP069 source-review law.
+
+    Mega-A adds read-only semantic feedback and a next-research-action recommendation.
+    It does not create a second memory store or gain scheduler authority.
     """
 
-    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
+    def __init__(
+        self,
+        manifest: Dict[str, Any],
+        ledger: Optional[Dict[str, Any]] = None,
+        research_context: Optional[Dict[str, Any]] = None,
+    ):
         self.manifest = manifest
         self.ledger = ledger or {"records": []}
         self.records = list(self.ledger.get("records") or [])
+        self.research_context = research_context or {}
 
         # CP069 law: provenance recovery remains separate from the immutable ledger.
         self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
@@ -134,7 +155,12 @@ class LegacyKnowledgeBase:
                 raise ValueError("legacy ledger schema version mismatch")
             if ledger.get("governance", {}).get("historical_result_immutability") is not True:
                 raise ValueError("legacy ledger missing historical result immutability")
-        return cls(manifest, ledger)
+        context = {
+            "capability_registry": _optional_json_object(base / "runtime" / "CAPABILITY_REGISTRY.json"),
+            "workflow_lanes": _optional_json_object(base / "runtime" / "WORKFLOW_LANES.json"),
+            "control_plane": _optional_json_object(base / "runtime" / "CONTROL_PLANE.json"),
+        }
+        return cls(manifest, ledger, research_context=context)
 
     def scientific_memory_records(self, *, include_review: bool = False) -> List[Dict[str, Any]]:
         source = self._memory_all if include_review else self._memory_canonical
@@ -199,29 +225,10 @@ class LegacyKnowledgeBase:
         return source_matches
 
     def screen_candidate(self, candidate: Dict[str, Any]) -> Dict[str, Any]:
+        """Apply CP079/W1 memory law, then add Mega-A read-only semantic feedback."""
         cid = candidate.get("hypothesis_id")
         c_tokens = _tokens(candidate.get("mechanism", ""), candidate.get("economic_tags", []))
         source_matches = self._recovered_source_matches(cid, c_tokens)
-
-        if cid in self.by_id:
-            record = self.by_id[cid]
-            memory = self._memory_by_source_id[cid]
-            return {
-                # Compatibility status prevents accidental restart of an exact
-                # historical identifier. It is not an economic verdict.
-                "status": "BLOCK_EXACT_LEGACY_DUPLICATE",
-                "matched_hypothesis_id": record.get("HYPOTHESIS_ID"),
-                "scientific_memory": self._memory_public_view(memory),
-                "scientific_authority": (
-                    "CANONICAL_SCIENTIFIC_MEMORY" if memory["canonical"] else "REVIEW_STILL_REQUIRED"
-                ),
-                "historical_result": record.get("RESULT", "UNKNOWN"),
-                "historical_result_is_scientific_authority": False,
-                "historical_decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
-                "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
-                "recovered_source_matches": source_matches,
-                "recovered_source_reviews_hash": self._source_review_hash(),
-            }
 
         candidate_facets = {
             "mechanism": candidate.get("mechanism"),
@@ -235,9 +242,9 @@ class LegacyKnowledgeBase:
         }
         memory_matches = self._memory_index.structural_retrieval(candidate_facets)
 
-        # Legacy token overlap remains a review hint only. It is never semantic
-        # identity, empirical similarity, or empirical correlation.
+        # Preserve CP079 lexical review hints; they remain review metadata only.
         hints: List[Dict[str, Any]] = []
+        mega_matches: List[Dict[str, Any]] = []
         for record in self.records:
             r_tokens = _tokens(
                 record.get("MECHANISM", ""),
@@ -264,17 +271,113 @@ class LegacyKnowledgeBase:
                         "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
                     }
                 )
+                mega_matches.append(
+                    {
+                        "hypothesis_id": record.get("HYPOTHESIS_ID"),
+                        "research_family_id": record.get("RESEARCH_FAMILY_ID"),
+                        "overlap": round(overlap, 4),
+                        "historical_result": record.get("RESULT", "UNKNOWN"),
+                        "decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
+                        "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+                        "scientific_equivalence": "NOT_ESTABLISHED_BY_TOKEN_OVERLAP",
+                    }
+                )
         hints.sort(key=lambda x: x["structural_token_overlap_hint"], reverse=True)
+        mega_matches.sort(key=lambda x: x["overlap"], reverse=True)
 
-        review_required = bool(memory_matches or hints or source_matches)
+        # Mega-A's adapter is read-only and is not a replacement for W1 normalized memory.
+        memory_view = qualified_legacy_memory_view(self.records, self.manifest)
+        feedback = scientific_memory_feedback(candidate, memory_view["canonical_records"])
+        action_receipt = plan_research_action(feedback, self.research_context)
+
+        status_by_action = {
+            "NO_BUILD": "BLOCK_KNOWN_NEGATIVE_SAME_SEMANTIC_FAMILY",
+            "REPAIR_PROTOCOL": "BLOCK_INVALIDATED_PROTOCOL_REPAIR_REQUIRED",
+            "PARK": "BLOCK_HISTORICAL_BLOCKER_UNRESOLVED",
+            "ESCALATE_VALIDATION": "BLOCK_POSITIVE_INSUFFICIENT_VALIDATION_REQUIRED",
+        }
+
+        exact_record = self.by_id.get(cid)
+        if exact_record is not None:
+            memory = self._memory_by_source_id[cid]
+            scientific_memory = self._memory_public_view(memory)
+            scientific_memory.update(
+                {
+                    "view_hash": memory_view["view_hash"],
+                    "canonical_count": memory_view["canonical_count"],
+                    "review_count": memory_view["review_count"],
+                    "feedback": feedback,
+                    "persistent_store_created": False,
+                }
+            )
+            return {
+                # Operational identity collision remains fail-closed. It is not a
+                # scientific-equivalence claim.
+                "status": "BLOCK_EXACT_LEGACY_DUPLICATE",
+                "matched_hypothesis_id": exact_record.get("HYPOTHESIS_ID"),
+                "scientific_memory": scientific_memory,
+                "scientific_authority": (
+                    "CANONICAL_SCIENTIFIC_MEMORY"
+                    if memory["canonical"]
+                    else "REVIEW_STILL_REQUIRED"
+                ),
+                "historical_result": exact_record.get("RESULT", "UNKNOWN"),
+                "historical_result_is_scientific_authority": False,
+                "historical_decision": exact_record.get("RESEARCH_DECISION", "UNKNOWN"),
+                "next_legitimate_step": exact_record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+                "recovered_source_matches": source_matches,
+                "recovered_source_reviews_hash": self._source_review_hash(),
+                "matches": mega_matches[:5],
+                "lexical_review_required": bool(mega_matches or source_matches),
+                "lexical_review_status": (
+                    "REVIEW_LEGACY_OVERLAP"
+                    if mega_matches or source_matches
+                    else "NO_LEXICAL_OVERLAP_REVIEW"
+                ),
+                "novelty_status": "NOT_INFERRED_BY_LEGACY_GATE",
+                "next_research_action": action_receipt,
+                "identifier_collision_scientific_equivalence": (
+                    "NOT_ESTABLISHED_BY_IDENTIFIER_ALONE"
+                ),
+            }
+
+        if feedback.get("allow_candidate_progress") is not True and feedback.get("action") in status_by_action:
+            status = status_by_action[feedback["action"]]
+        elif feedback.get("action") == "ARCHAEOLOGY_LOOKUP" and (mega_matches or source_matches):
+            status = "REVIEW_LEGACY_OVERLAP"
+        elif memory_matches or hints or source_matches:
+            status = "REVIEW_LEGACY_OVERLAP"
+        else:
+            status = "NO_EXACT_LEGACY_CONFLICT"
+
         return {
-            "status": "REVIEW_LEGACY_OVERLAP" if review_required else "NO_EXACT_LEGACY_CONFLICT",
+            "status": status,
             "scientific_memory_matches": memory_matches,
             "legacy_overlap_hints": hints[:5],
             "recovered_source_matches": source_matches,
             "recovered_source_reviews_hash": self._source_review_hash(),
             "structural_overlap_is_empirical_correlation": False,
             "empirical_correlation": "UNKNOWN",
+            "matches": mega_matches[:5],
+            "lexical_review_required": bool(mega_matches or source_matches),
+            "lexical_review_status": (
+                "REVIEW_LEGACY_OVERLAP"
+                if mega_matches or source_matches
+                else "NO_LEXICAL_OVERLAP_REVIEW"
+            ),
+            "novelty_status": (
+                "UNRESOLVED_NOT_CLAIMED"
+                if feedback.get("action") == "ARCHAEOLOGY_LOOKUP"
+                else "NOT_INFERRED_BY_LEGACY_GATE"
+            ),
+            "scientific_memory": {
+                "view_hash": memory_view["view_hash"],
+                "canonical_count": memory_view["canonical_count"],
+                "review_count": memory_view["review_count"],
+                "feedback": feedback,
+                "persistent_store_created": False,
+            },
+            "next_research_action": action_receipt,
         }
 
     def summary(self) -> Dict[str, Any]:

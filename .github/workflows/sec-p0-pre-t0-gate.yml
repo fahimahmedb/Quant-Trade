@@ -53,6 +53,9 @@ jobs:
       - name: Full unit suite
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
+      - name: Mega-A Research Intelligence contracts
+        run: PYTHONPATH=src python3 -m unittest tests.mega_a_research_intelligence_contracts -v
+
       - name: W1 Scientific Memory focused suite
         run: |
           PYTHONPATH=src:. python3 -m unittest -v \

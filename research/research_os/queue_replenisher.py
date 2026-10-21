@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from .frontier_source_planner_v2 import plan_frontier_source
+from .research_refill_policy import evaluate_frontier_mandates
 
 
 ACTIVE_STATUSES = {"READY", "CLAIMED"}
@@ -31,12 +32,7 @@ def load_tasks(base: Path) -> List[Dict[str, Any]]:
 
 
 def load_source_catalog(base: Path) -> Dict[str, Any]:
-    """Load only root source JSON records; qualification decides admissibility.
-
-    Capture-support JSON may be present in the same directory. It is deliberately
-    not pre-classified here: the source planner rejects anything that does not
-    satisfy the authoritative documentary wrapper + family contract.
-    """
+    """Load only root source JSON records; qualification decides admissibility."""
     catalog: Dict[str, Any] = {}
     for path in sorted((base / "sources").glob("*.json")):
         try:
@@ -45,6 +41,18 @@ def load_source_catalog(base: Path) -> Dict[str, Any]:
             continue
         catalog[SOURCE_PREFIX + path.name] = {"record": record}
     return catalog
+
+
+def load_research_policy_context(base: Path) -> Dict[str, Any]:
+    """Load existing Control Plane capability/route contracts without inventing budget state."""
+    return {
+        "capability_registry": json.loads((base / "runtime" / "CAPABILITY_REGISTRY.json").read_text()),
+        "workflow_lanes": json.loads((base / "runtime" / "WORKFLOW_LANES.json").read_text()),
+        # These completion claims must be supplied explicitly by a qualified future
+        # convergence step. Their absence must never imply scientific exhaustion.
+        "search_space_complete": False,
+        "archaeology_complete": False,
+    }
 
 
 def queue_summary(tasks: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
@@ -104,6 +112,24 @@ def _source_plan_summary(plan: Mapping[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _policy_receipt(
+    entries: List[Dict[str, Any]],
+    *,
+    context: Mapping[str, Any],
+    source_plans: Optional[Mapping[str, Mapping[str, Any]]],
+    queue_active_count: int,
+) -> Dict[str, Any]:
+    return evaluate_frontier_mandates(
+        entries,
+        capability_registry=context.get("capability_registry") or {"capabilities": []},
+        workflow_lanes=context.get("workflow_lanes") or {"lanes": []},
+        source_plans=source_plans,
+        queue_active_count=queue_active_count,
+        search_space_complete=context.get("search_space_complete") is True,
+        archaeology_complete=context.get("archaeology_complete") is True,
+    )
+
+
 def derive_refill_task(
     *,
     frontier: Dict[str, Any],
@@ -111,16 +137,20 @@ def derive_refill_task(
     created_at: str,
     source_catalog: Optional[Mapping[str, Any]] = None,
     source_qualifier=None,
+    research_policy_context: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Derive at most one bounded producer task from Owner-governed frontier state.
 
-    This function never executes research. When a source catalog is supplied,
-    only a frontier with one unused engine-qualified documentary packet can be
-    scheduled. Sequence numbers alone therefore cannot manufacture scientific
-    novelty. Existing direct callers that do not supply a catalog retain legacy
-    derivation behavior; production workers and derive_from_repo supply one.
-    """
+    This function remains a deterministic scheduler adapter, never a research
+    executor.  When ``research_policy_context`` is supplied, Research Intelligence
+    preflights generation mandates before the existing queue authority may derive
+    a task.  The preflight itself never mutates scheduler state and never claims
+    unknown identity to be novel.
 
+    Existing direct callers without the context retain legacy derivation behavior.
+    Production V2 and ``derive_from_repo`` supply the current capability/route
+    contracts and therefore use the hardened semantics.
+    """
     items = list(tasks)
     summary = queue_summary(items)
     if frontier.get("status") != "ACTIVE":
@@ -140,35 +170,77 @@ def derive_refill_task(
 
     issued = _issued_counts(items)
     max_issued = int(frontier.get("max_issued_per_frontier", 0))
-    eligible = [
+    issued_eligible = [
         entry
         for entry in frontier.get("frontiers", [])
         if entry.get("enabled") is True and issued.get(entry["frontier_id"], 0) < max_issued
     ]
-    if not eligible:
-        return {"status": "NOOP_FRONTIER_EXHAUSTED", "queue": summary, "task": None}
+    if not issued_eligible:
+        if research_policy_context is None:
+            return {"status": "NOOP_FRONTIER_EXHAUSTED", "queue": summary, "task": None}
+        policy = _policy_receipt(
+            [],
+            context=research_policy_context,
+            source_plans=None,
+            queue_active_count=summary["active_count"],
+        )
+        return {
+            "status": policy["noop_status"],
+            "queue": summary,
+            "research_intelligence": policy,
+            "task": None,
+        }
 
     source_plans: Dict[str, Dict[str, Any]] = {}
     if source_catalog is not None:
-        source_eligible = []
-        for entry in eligible:
-            plan = plan_frontier_source(
+        for entry in issued_eligible:
+            source_plans[entry["frontier_id"]] = plan_frontier_source(
                 frontier_entry=entry,
                 tasks=items,
                 source_catalog=source_catalog,
                 qualifier=source_qualifier,
             )
-            source_plans[entry["frontier_id"]] = plan
-            if plan.get("status") == "SOURCE_SELECTED":
-                source_eligible.append(entry)
-        if not source_eligible:
+
+    policy = None
+    if research_policy_context is not None:
+        policy = _policy_receipt(
+            issued_eligible,
+            context=research_policy_context,
+            source_plans=source_plans if source_catalog is not None else None,
+            queue_active_count=summary["active_count"],
+        )
+        admitted = set(policy["admissible_frontier_ids"])
+        eligible = [entry for entry in issued_eligible if entry["frontier_id"] in admitted]
+        if not eligible:
+            return {
+                "status": policy["noop_status"],
+                "queue": summary,
+                **({
+                    "source_plans": {
+                        key: _source_plan_summary(value)
+                        for key, value in sorted(source_plans.items())
+                    }
+                } if source_catalog is not None else {}),
+                "research_intelligence": policy,
+                "task": None,
+            }
+    elif source_catalog is not None:
+        eligible = [
+            entry for entry in issued_eligible
+            if source_plans[entry["frontier_id"]].get("status") == "SOURCE_SELECTED"
+        ]
+        if not eligible:
             return {
                 "status": "NOOP_NO_ADMISSIBLE_NOVEL_SOURCE",
                 "queue": summary,
-                "source_plans": {key: _source_plan_summary(value) for key, value in sorted(source_plans.items())},
+                "source_plans": {
+                    key: _source_plan_summary(value)
+                    for key, value in sorted(source_plans.items())
+                },
                 "task": None,
             }
-        eligible = source_eligible
+    else:
+        eligible = issued_eligible
 
     eligible.sort(
         key=lambda entry: (
@@ -180,6 +252,19 @@ def derive_refill_task(
     selected = eligible[0]
     selected_plan = source_plans.get(selected["frontier_id"])
     selected_source = (selected_plan or {}).get("source")
+    selected_decision = None
+    research_policy_hash = None
+    if policy is not None:
+        selected_decision = next(
+            item for item in policy["decisions"]
+            if item["frontier_id"] == selected["frontier_id"]
+        )
+        if selected_decision.get("scheduler_mutation") is not False:
+            raise ValueError("research intelligence may not mutate scheduler state")
+        if selected_decision.get("action") != "GENERATE_MECHANISM" or selected_decision.get("executable") is not True:
+            raise ValueError("selected frontier is not research-intelligence admissible")
+        research_policy_hash = _canonical_hash(policy)
+
     sequence = issued.get(selected["frontier_id"], 0) + 1
     derivation_payload = {
         "schema_version": frontier.get("schema_version"),
@@ -197,12 +282,16 @@ def derive_refill_task(
             "packet_hash": selected_source["packet_hash"],
             "record_hash": selected_source["record_hash"],
         }
+    if research_policy_hash:
+        derivation_payload["research_policy_hash"] = research_policy_hash
+
     derivation_key = _canonical_hash(derivation_payload)
     if derivation_key in _existing_derivation_keys(items):
         return {
             "status": "NOOP_DERIVATION_ALREADY_EXISTS",
             "queue": summary,
             "derivation_key": derivation_key,
+            **({"research_intelligence": policy} if policy is not None else {}),
             "task": None,
         }
 
@@ -216,6 +305,15 @@ def derive_refill_task(
         "causal_distinctness_required": True,
         "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY",
     }
+    if selected_decision is not None:
+        inputs["research_intelligence_contract"] = {
+            "action_class": "GENERATE_MECHANISM",
+            "novelty_status": selected_decision["novelty_status"],
+            "semantic_identity_required_before_novelty": True,
+            "scientific_memory_applicability": selected_decision["memory_applicability"],
+            "research_policy_hash": research_policy_hash,
+        }
+
     source_binding = None
     if selected_source:
         source_binding = {
@@ -230,6 +328,23 @@ def derive_refill_task(
             "documentary_source_packet_hash": selected_source["packet_hash"],
             "documentary_source_record_hash": selected_source["record_hash"],
         })
+
+    derivation = {
+        "type": "EMPTY_QUEUE_FRONTIER_REFILL",
+        "frontier_id": selected["frontier_id"],
+        "sequence": sequence,
+        "derivation_key": derivation_key,
+        "selection_policy": frontier.get("selection_policy"),
+        "target_lane": selected["target_lane"],
+        "steward_lane": "integrator_portfolio",
+        **({"source_binding": source_binding} if source_binding else {}),
+    }
+    if selected_decision is not None:
+        derivation["research_intelligence"] = {
+            "policy_hash": research_policy_hash,
+            "frontier_state": policy["frontier_state"],
+            "decision": selected_decision,
+        }
 
     task = {
         "task_id": task_id,
@@ -253,16 +368,7 @@ def derive_refill_task(
         },
         "created_at": created_at,
         "updated_at": created_at,
-        "derivation": {
-            "type": "EMPTY_QUEUE_FRONTIER_REFILL",
-            "frontier_id": selected["frontier_id"],
-            "sequence": sequence,
-            "derivation_key": derivation_key,
-            "selection_policy": frontier.get("selection_policy"),
-            "target_lane": selected["target_lane"],
-            "steward_lane": "integrator_portfolio",
-            **({"source_binding": source_binding} if source_binding else {}),
-        },
+        "derivation": derivation,
     }
 
     validate_derived_task(task)
@@ -272,25 +378,29 @@ def derive_refill_task(
         "selected_frontier": selected["frontier_id"],
         "derivation_key": derivation_key,
         **({"source_plan": _source_plan_summary(selected_plan)} if selected_plan else {}),
+        **({"research_intelligence": policy} if policy is not None else {}),
         "task": task,
     }
 
 
 def validate_source_binding(task: Mapping[str, Any]) -> None:
-    """Verify the source selection survives in task inputs, at any lease state.
-
-    Historical tasks without explicit source selection remain supported. A
-    source-aware refill cannot silently shed its binding and use that fallback.
-    This checks selection integrity; it does not qualify source contents.
-    """
+    """Verify source selection survives in task inputs, at any lease state."""
     inputs = task.get("inputs") or {}
     derivation = task.get("derivation") or {}
     binding = derivation.get("source_binding")
-    source_fields = ("documentary_source", "documentary_source_blob",
-                     "documentary_source_packet_hash", "documentary_source_record_hash")
-    required = ("source_binding" in derivation or
-                (derivation.get("type") == "EMPTY_QUEUE_FRONTIER_REFILL"
-                 and any(key in inputs for key in source_fields)))
+    source_fields = (
+        "documentary_source",
+        "documentary_source_blob",
+        "documentary_source_packet_hash",
+        "documentary_source_record_hash",
+    )
+    required = (
+        "source_binding" in derivation
+        or (
+            derivation.get("type") == "EMPTY_QUEUE_FRONTIER_REFILL"
+            and any(key in inputs for key in source_fields)
+        )
+    )
     if not required:
         return
     if not isinstance(binding, Mapping) or not binding:
@@ -329,6 +439,18 @@ def validate_derived_task(task: Dict[str, Any]) -> None:
     if inputs.get("legacy_gate_required") is not True:
         raise ValueError("derived discovery task must require Legacy screening")
     validate_source_binding(task)
+    intelligence = (task.get("derivation") or {}).get("research_intelligence")
+    if intelligence:
+        decision = intelligence.get("decision") or {}
+        contract = inputs.get("research_intelligence_contract") or {}
+        if decision.get("scheduler_mutation") is not False:
+            raise ValueError("research intelligence may not mutate scheduler state")
+        if decision.get("action") != "GENERATE_MECHANISM" or decision.get("executable") is not True:
+            raise ValueError("derived task must bind an executable generation decision")
+        if contract.get("novelty_status") != "UNRESOLVED_NOT_CLAIMED":
+            raise ValueError("frontier refill may not claim unresolved identity as novel")
+        if contract.get("semantic_identity_required_before_novelty") is not True:
+            raise ValueError("semantic identity must be resolved before novelty")
     forbidden = " ".join(task.get("forbidden_actions") or []).lower()
     if "backtest" not in forbidden:
         raise ValueError("derived discovery task must explicitly forbid backtests")
@@ -342,4 +464,5 @@ def derive_from_repo(base: Path, *, created_at: str) -> Dict[str, Any]:
         tasks=load_tasks(base),
         created_at=created_at,
         source_catalog=load_source_catalog(base),
+        research_policy_context=load_research_policy_context(base),
     )
