@@ -6,6 +6,10 @@ from math import isfinite
 from typing import Any, Dict, List, Mapping, Optional
 
 from research.research_os.scientific_store import sha256_json
+from .experiment_geometry import geometry_from_mapping
+from .experiment_outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload
+from .experiment_power import power_from_mapping
+from .experiment_runner import DryRunExperimentRunner
 
 
 READY = "READY_FOR_AUTHORIZED_ECONOMIC_TEST"
@@ -24,12 +28,14 @@ CHECK_ORDER = (
     "protocol_freeze",
     "frozen_input_binding",
     "reproducibility_binding",
+    "experiment_infrastructure",
     "multiplicity_declaration",
     "trial_accounting",
     "cost_model_declaration",
     "capacity_declaration",
     "falsification",
     "decision_map",
+    "outcome_firewall",
     "no_outcome_access",
 )
 
@@ -46,14 +52,23 @@ REASON_CODES = {
     "protocol_freeze": "PROTOCOL_NOT_FROZEN",
     "frozen_input_binding": "FROZEN_INPUT_BINDING_FAILED",
     "reproducibility_binding": "REPRODUCIBILITY_BINDING_FAILED",
+    "experiment_infrastructure": "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
     "multiplicity_declaration": "MULTIPLICITY_DECLARATION_MISSING",
     "trial_accounting": "TRIAL_ACCOUNTING_INVALID",
     "cost_model_declaration": "COST_MODEL_DECLARATION_MISSING",
     "capacity_declaration": "CAPACITY_DECLARATION_MISSING",
     "falsification": "FALSIFICATION_SCOPE_MISSING",
     "decision_map": "DECISION_MAP_MISSING",
+    "outcome_firewall": "OUTCOME_FIREWALL_REJECTED",
     "no_outcome_access": "OUTCOME_ACCESS_FORBIDDEN",
 }
+
+_AUTHORITY_KEYS = (
+    "economic_experiment_authorized",
+    "prospective_observation_authorized",
+    "real_capital_authorized",
+    "live_trading_authorized",
+)
 
 
 def _present(value: Any) -> bool:
@@ -70,7 +85,11 @@ def _present(value: Any) -> bool:
 def _is_hash(value: Any) -> bool:
     if not isinstance(value, str) or len(value) != 64:
         return False
-    return all(char in "0123456789abcdefABCDEF" for char in value)
+    try:
+        int(value, 16)
+    except ValueError:
+        return False
+    return True
 
 
 def _identifier(value: Any) -> bool:
@@ -115,21 +134,16 @@ def _protocol_hash_valid(protocol: Mapping[str, Any]) -> bool:
 
 
 def _trial_accounting_valid(record: Mapping[str, Any]) -> bool:
-    observed = record.get("observed_attempt_count")
-    if type(observed) is not int or observed < 0:
+    from .experiment_registry import ExperimentRegistryError, validate_trial_accounting
+    try:
+        validate_trial_accounting(record)
+    except ExperimentRegistryError:
         return False
-    state = record.get("effective_trials_status")
-    estimate = record.get("estimated_effective_trials")
-    if state == "UNKNOWN":
-        return estimate is None
-    if state == "KNOWN":
-        return (type(estimate) in (int, float) and estimate >= 0
-                and (not isinstance(estimate, float) or isfinite(estimate)))
-    return False
+    return True
 
 
 def _frozen_input_binding(bundle: Mapping[str, Any], protocol: Mapping[str, Any]) -> bool:
-    """Reconstruct readiness inputs from the frozen body, not mutable projections."""
+    """Reconstruct readiness inputs from the frozen body, never mutable projections."""
     from .source_qualification import qualify_source_route
     try:
         payload = protocol["protocol_payload"]
@@ -183,6 +197,134 @@ def _frozen_input_binding(bundle: Mapping[str, Any], protocol: Mapping[str, Any]
         return False
 
 
+def _entry_hash_valid(record: Any) -> bool:
+    if not isinstance(record, Mapping) or not _is_hash(record.get("entry_hash")):
+        return False
+    payload = {key: value for key, value in record.items() if key != "entry_hash"}
+    return sha256_json(payload) == record.get("entry_hash")
+
+
+def _factory_declarations_match_frozen_protocol(
+    *, frozen_protocol: Mapping[str, Any], geometry: Mapping[str, Any],
+    power: Mapping[str, Any], protocol_hash: str,
+) -> bool:
+    try:
+        expected_geometry = geometry_from_mapping(protocol_hash, frozen_protocol.get("geometry_declaration"))
+        expected_power = power_from_mapping(protocol_hash, frozen_protocol.get("power_declaration"))
+    except (ValueError, TypeError):
+        return False
+    geometry_payload = {**expected_geometry.to_dict(), "declaration_hash": expected_geometry.declaration_hash}
+    power_payload = {**expected_power.to_dict(), "declaration_hash": expected_power.declaration_hash}
+    return dict(geometry) == geometry_payload and dict(power) == power_payload
+
+
+def _experiment_infrastructure_valid(
+    infrastructure: Mapping[str, Any], *, candidate_hash: str,
+    protocol_hash: Any, reproducibility_payload: Any, multiplicity_method: Any,
+    source_hashes: List[str], pit_rows: List[Mapping[str, Any]],
+    trial_accounting: Mapping[str, Any],
+) -> bool:
+    if infrastructure.get("status") != "PASS" or infrastructure.get("blockers") not in ([], ()):
+        return False
+    supplied_hash = infrastructure.get("infrastructure_hash")
+    if not _is_hash(supplied_hash):
+        return False
+    payload = {key: value for key, value in infrastructure.items() if key != "infrastructure_hash"}
+    if sha256_json(payload) != supplied_hash:
+        return False
+    if infrastructure.get("outcome_accessed") is not False or infrastructure.get("economic_result") != "NOT_OBSERVED":
+        return False
+    if any(infrastructure.get(key) is not False for key in _AUTHORITY_KEYS):
+        return False
+
+    registry = infrastructure.get("registry")
+    frozen_registry = infrastructure.get("frozen_registry")
+    frozen_protocol = infrastructure.get("frozen_protocol")
+    execution_plan = infrastructure.get("execution_plan")
+    replay = infrastructure.get("replay")
+    geometry = infrastructure.get("geometry")
+    power = infrastructure.get("power")
+    if not all(isinstance(item, Mapping) for item in (
+        registry, frozen_registry, frozen_protocol, execution_plan, replay, geometry, power
+    )):
+        return False
+    if not _entry_hash_valid(registry) or not _entry_hash_valid(frozen_registry):
+        return False
+    if registry.get("lifecycle") != "REPLAY_VERIFIED" or frozen_registry.get("lifecycle") != "FROZEN":
+        return False
+    if registry.get("candidate_hash") != candidate_hash or frozen_registry.get("candidate_hash") != candidate_hash:
+        return False
+    if registry.get("protocol_hash") != protocol_hash or frozen_registry.get("protocol_hash") != protocol_hash:
+        return False
+    if registry.get("registry_id") != frozen_registry.get("registry_id"):
+        return False
+
+    frozen_hash = sha256_json(frozen_protocol)
+    if registry.get("frozen_protocol_hash") != frozen_hash or frozen_registry.get("frozen_protocol_hash") != frozen_hash:
+        return False
+    if frozen_protocol.get("candidate_hash") != candidate_hash or frozen_protocol.get("protocol_hash") != protocol_hash:
+        return False
+    if frozen_protocol.get("multiplicity_method") != multiplicity_method:
+        return False
+    if sorted(frozen_protocol.get("source_snapshot_hashes") or []) != sorted(source_hashes):
+        return False
+    if frozen_protocol.get("source_pit_metadata") != pit_rows:
+        return False
+    if not _factory_declarations_match_frozen_protocol(
+        frozen_protocol=frozen_protocol, geometry=geometry, power=power,
+        protocol_hash=protocol_hash,
+    ):
+        return False
+    if registry.get("geometry_hash") != geometry.get("declaration_hash"):
+        return False
+    if registry.get("power_hash") != power.get("declaration_hash"):
+        return False
+    if registry.get("trial_accounting_hash") != sha256_json(dict(trial_accounting)):
+        return False
+
+    plan_frozen = execution_plan.get("frozen_protocol")
+    plan_bindings = execution_plan.get("binding_hashes")
+    if plan_frozen != frozen_protocol or not isinstance(plan_bindings, Mapping):
+        return False
+    if dict(registry.get("binding_hashes") or {}) != dict(plan_bindings):
+        return False
+    if dict(frozen_registry.get("binding_hashes") or {}) != dict(plan_bindings):
+        return False
+    expected_reproducibility_hash = sha256_json({
+        "source": plan_bindings.get("source"),
+        "pit": plan_bindings.get("pit"),
+        "code_environment": plan_bindings.get("code_environment"),
+    })
+    if registry.get("reproducibility_hash") != expected_reproducibility_hash:
+        return False
+    if frozen_registry.get("reproducibility_hash") != expected_reproducibility_hash:
+        return False
+
+    try:
+        replayed = DryRunExperimentRunner().replay(deepcopy(dict(execution_plan)))
+    except (ValueError, PermissionError, KeyError, TypeError):
+        return False
+    if replayed != dict(replay):
+        return False
+    receipt = execution_plan.get("pre_outcome_receipt")
+    if not isinstance(receipt, Mapping):
+        return False
+    if registry.get("execution_plan_hash") != execution_plan.get("execution_plan_hash"):
+        return False
+    if registry.get("receipt_hash") != receipt.get("receipt_hash"):
+        return False
+    if registry.get("replay_hash") != sha256_json(dict(replay)):
+        return False
+
+    if not isinstance(reproducibility_payload, Mapping):
+        return False
+    return (
+        reproducibility_payload.get("experiment_registry_id") == registry.get("registry_id")
+        and reproducibility_payload.get("experiment_registry_hash") == registry.get("entry_hash")
+        and reproducibility_payload.get("experiment_infrastructure_hash") == supplied_hash
+    )
+
+
 def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     """Decide only whether a frozen candidate is ready for a later authorized test."""
     candidate = bundle.get("candidate") if isinstance(bundle.get("candidate"), dict) else {}
@@ -196,6 +338,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     expression = bundle.get("economic_expression") if isinstance(bundle.get("economic_expression"), dict) else {}
     implementability = bundle.get("implementability") if isinstance(bundle.get("implementability"), dict) else {}
     reproducibility = bundle.get("reproducibility") if isinstance(bundle.get("reproducibility"), dict) else {}
+    infrastructure = bundle.get("experiment_infrastructure") if isinstance(bundle.get("experiment_infrastructure"), dict) else {}
     multiplicity = bundle.get("multiplicity") if isinstance(bundle.get("multiplicity"), dict) else {}
     trial_accounting = bundle.get("trial_accounting") if isinstance(bundle.get("trial_accounting"), dict) else {}
     cost_model = bundle.get("cost_model") if isinstance(bundle.get("cost_model"), dict) else {}
@@ -215,18 +358,11 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
 
     expression_spec = expression.get("spec") if isinstance(expression.get("spec"), dict) else {}
     expression_required = (
-        "instrument_rule",
-        "side_rule",
-        "entry_rule",
-        "exit_rule",
-        "horizon_rule",
-        "sizing_rule",
+        "instrument_rule", "side_rule", "entry_rule", "exit_rule", "horizon_rule", "sizing_rule",
     )
 
     protocol_candidate_hash = _protocol_candidate_hash(protocol)
     source_hashes = _source_hashes(source_bundle)
-    # Every declared source reference needs its own exact snapshot/PIT join.
-    # A repeated content address is an alias, not evidence of independent trials.
     pit_hashes = [row.get("snapshot_hash") for row in pit_rows if isinstance(row, dict)]
     pit_coverage = (bool(source_hashes) and len(pit_rows) == len(source_hashes)
                     and len(pit_hashes) == len(pit_rows) and all(_is_hash(v) for v in pit_hashes)
@@ -237,6 +373,11 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and _is_hash(reproducibility.get("binding_hash"))
         and sha256_json(reproducibility_payload) == reproducibility.get("binding_hash")
     )
+    firewall_error: str | None = None
+    try:
+        assert_pre_outcome_payload(bundle)
+    except OutcomeFirewallError as error:
+        firewall_error = str(error)
 
     checks: Dict[str, Dict[str, Any]] = {}
 
@@ -317,8 +458,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     )
     add(
         "implementability_declaration",
-        implementability.get("status") == "PASS"
-        and _is_hash(implementability.get("declaration_hash")),
+        implementability.get("status") == "PASS" and _is_hash(implementability.get("declaration_hash")),
         "Implementability must be explicitly PASS with a frozen declaration hash.",
     )
     add(
@@ -329,8 +469,11 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and protocol.get("outcome_opened") is False,
         "Protocol must be frozen, candidate-bound, hash-valid, and outcome-closed.",
     )
-    add("frozen_input_binding", _frozen_input_binding(bundle, protocol),
-        "Readiness projections must match the source, protocol and implementation declarations frozen in the envelope.")
+    add(
+        "frozen_input_binding",
+        _frozen_input_binding(bundle, protocol),
+        "Readiness projections must match the source, protocol and implementation declarations frozen in the envelope.",
+    )
     binding_payload_matches = (
         isinstance(reproducibility_payload, dict)
         and reproducibility_payload.get("candidate_hash") == actual_candidate_hash
@@ -343,6 +486,20 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and binding_hash_valid
         and binding_payload_matches,
         "Reproducibility binding must hash the same candidate, protocol, and source snapshots.",
+    )
+    add(
+        "experiment_infrastructure",
+        _experiment_infrastructure_valid(
+            infrastructure,
+            candidate_hash=actual_candidate_hash,
+            protocol_hash=protocol.get("protocol_hash"),
+            reproducibility_payload=reproducibility_payload,
+            multiplicity_method=multiplicity.get("method"),
+            source_hashes=source_hashes,
+            pit_rows=pit_rows,
+            trial_accounting=trial_accounting,
+        ),
+        "Registry, canonical runner plan/receipt/replay, geometry, power and trial accounting must form one exact pre-outcome attestation.",
     )
     add(
         "multiplicity_declaration",
@@ -381,6 +538,12 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         "Candidate must carry a preregistered decision map.",
     )
     add(
+        "outcome_firewall",
+        firewall_error is None,
+        "Entire Validator bundle is outcome-blind under the canonical firewall."
+        if firewall_error is None else f"Canonical outcome firewall rejected bundle: {firewall_error}",
+    )
+    add(
         "no_outcome_access",
         protocol.get("outcome_opened") is False
         and reproducibility.get("outcome_accessed") is False
@@ -391,13 +554,8 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     block_reasons = [
-        {
-            "code": checks[name]["reason_code"],
-            "check": name,
-            "detail": checks[name]["detail"],
-        }
-        for name in CHECK_ORDER
-        if checks[name]["status"] != "PASS"
+        {"code": checks[name]["reason_code"], "check": name, "detail": checks[name]["detail"]}
+        for name in CHECK_ORDER if checks[name]["status"] != "PASS"
     ]
     mutated = candidate != candidate_before
     if mutated and checks["candidate_immutability"]["status"] == "PASS":
@@ -406,14 +564,11 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
             "reason_code": REASON_CODES["candidate_immutability"],
             "detail": "Validator mutated candidate state while evaluating readiness.",
         }
-        block_reasons.insert(
-            0,
-            {
-                "code": REASON_CODES["candidate_immutability"],
-                "check": "candidate_immutability",
-                "detail": checks["candidate_immutability"]["detail"],
-            },
-        )
+        block_reasons.insert(0, {
+            "code": REASON_CODES["candidate_immutability"],
+            "check": "candidate_immutability",
+            "detail": checks["candidate_immutability"]["detail"],
+        })
 
     ready = not block_reasons
     return {
