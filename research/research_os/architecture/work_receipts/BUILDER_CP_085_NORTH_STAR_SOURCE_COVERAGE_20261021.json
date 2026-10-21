@@ -1,0 +1,1321 @@
+{
+  "qualified_source_sha": "e2527237336290bddeb508902abda3596499ea14",
+  "north_star_blob": "a328b4e6d7d71dafd532938888ebf9818b1b610f",
+  "scope": "SOURCE_CONTRACT_AUDIT_NOT_PRODUCTION_OR_ECONOMIC_COMPLETENESS",
+  "legend": {
+    "Q": "qualified source contract only",
+    "P": "partial/not proven",
+    "C": "authority closed; guard qualified, active capability not established"
+  },
+  "criterion_order": [
+    "capability",
+    "connected_edges",
+    "identity_provenance",
+    "fail_closed",
+    "durable_evidence",
+    "authority_ceiling",
+    "resume",
+    "single_truth"
+  ],
+  "nodes": [
+    {
+      "node": "owner_governance",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_research_os_epoch_blinding_admission.EpochBlindingAdmissionTests.test_direct_stage_requires_explicit_actor_blinding_before_base_work",
+        "tests.test_research_os_epoch_blinding_admission.EpochBlindingAdmissionTests.test_explicit_clean_blinded_fixture_keeps_exact_qualified_receipt",
+        "tests.test_research_os_epoch_blinding_admission.EpochBlindingAdmissionTests.test_pipeline_cannot_qualify_dirty_or_unproven_epoch_before_export",
+        "tests.test_research_os_epoch_blinding_admission.EpochBlindingAdmissionTests.test_real_git_worker_rejects_contamination_before_claim_or_model_call",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_authority_closed",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_blinding_contaminates_when_influencer_views_outcomes",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_complete_validator_must_decide",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_epoch_is_hashed_and_close_policy_freezes_after_export",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_epoch_rejects_bad_temporal_order",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_export_rejects_outcome_data",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_family_extension_mismatch_blocks",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_family_specific_candidate_contracts",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_feedback_only_releases_to_successor_after_close",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_model_pit_distinct_from_source_pit",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_model_policy",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_multidimensional_status",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_negative_memory_requires_scope_for_permanent_claim",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_priority_is_explainable_and_rejects_outcome_like_signal",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_reverse_channel_is_restricted",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_trial_accounting_counts_discarded_proposals",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_v2_qualification_blocks_missing_gate",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_v2_qualification_never_opens_authority",
+        "tests.test_research_os_v2_core.V2CoreContractTests.test_validator_infrastructure_failure_is_not_scientific_block"
+      ],
+      "source_references": [
+        {
+          "path": "QUANT_NORTH_STAR.md",
+          "sha256": "45bb3ac9368745667fa3119027e9dcfc2b9605e4b3963486441cb7998285a838"
+        },
+        {
+          "path": "research/research_os/expansion/v2_core.py",
+          "sha256": "7a8c2dab9d039583eeb0c6073eafd9b01664087f7fe08b639fcc38b92076cb5e"
+        },
+        {
+          "path": "tests/test_research_os_epoch_blinding_admission.py",
+          "sha256": "6a7120adcd08d91fa83522adbbfd73482b6d0e6bea3e66e55edb1455d5a7461e"
+        },
+        {
+          "path": "tests/test_research_os_v2_core.py",
+          "sha256": "9d68b72d0df56fba913d63f72daf2a781e70e2f74006d7bae1ebfd38debb94ea"
+        }
+      ],
+      "limit": "Source policy admission; no repository/CI state grants higher authority."
+    },
+    {
+      "node": "control_clock",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_quant_system.LivenessTests.test_data_arriving_while_idle_wakes_the_system",
+        "tests.test_quant_system.LivenessTests.test_serve_respects_an_operator_pause",
+        "tests.test_quant_system.LivenessTests.test_the_clock_waits_while_idle_instead_of_exiting",
+        "tests.test_quant_system.SystemTests.test_a_worker_fault_is_recorded_without_killing_the_system",
+        "tests.test_quant_system.SystemTests.test_append_only_data_does_not_rebuy_frozen_research",
+        "tests.test_quant_system.SystemTests.test_blocked_dependency_is_named_and_unblocks_when_data_arrives",
+        "tests.test_quant_system.SystemTests.test_boot_run_and_restart_preserve_one_continuous_system",
+        "tests.test_quant_system.SystemTests.test_identical_work_on_unchanged_data_is_not_repeated",
+        "tests.test_quant_system.SystemTests.test_idle_is_not_finished",
+        "tests.test_quant_system.SystemTests.test_interrupted_work_is_requeued_on_restart",
+        "tests.test_quant_system.SystemTests.test_pause_survives_restart_until_resume",
+        "tests.test_quant_system.SystemTests.test_status_and_brief_render_from_the_same_persistent_state",
+        "tests.test_quant_system.SystemTests.test_untradable_strategies_never_reach_the_capital_ledger",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_claim_restriction_can_emit_frozen_export_intent_without_evaluation",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_independent_validation_emits_separate_v2_validator_state",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_real_git_claim_counts_ideation_before_crash_and_replay",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_real_git_epoch_change_cannot_relabel_existing_trial",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_real_git_validator_requires_separate_process_and_reconstructs_primary_evidence",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_research_stage_adds_trial_candidate_and_leakage_sidecars_atomically",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_source_after_epoch_cutoff_is_blocked_before_model_generation",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_v2_worker_requires_explicit_contract_and_closed_authority",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_validation_handoff_binds_v2_candidate_trial_and_epoch"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/oracle_worker.py",
+          "sha256": "b1e49faa575c79106acf03bad989f4ecb48c0e3da0c06f0249c407cba43d254e"
+        },
+        {
+          "path": "src/quant/clock.py",
+          "sha256": "46504af2ece4d926ed693f41b5f8a327b7a26960951be37a8965a692458350c1"
+        },
+        {
+          "path": "tests/test_quant_system.py",
+          "sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e"
+        },
+        {
+          "path": "tests/test_research_os_v2_worker_integration.py",
+          "sha256": "92e035763bec51d709c920dd1848dda8d769a4340224315c9fed3df239a348be"
+        }
+      ],
+      "limit": "V1 continuous clock and native V2 bounded writer tested separately; composed VM release not deployed."
+    },
+    {
+      "node": "data_to_research",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_research_os_raw_evidence_capture.RawEvidenceCaptureTests.test_all_inputs_must_validate_before_any_raw_evidence_is_archived",
+        "tests.test_research_os_raw_evidence_capture.RawEvidenceCaptureTests.test_archival_uses_verified_bytes_even_if_caller_changes_a_file_mid_archive",
+        "tests.test_research_os_raw_evidence_capture.RawEvidenceCaptureTests.test_exact_raw_bytes_are_retrievable_idempotently_without_changing_packet",
+        "tests.test_research_os_raw_evidence_capture.RawEvidenceCaptureTests.test_existing_corrupt_raw_object_cannot_be_silently_reused_or_overwritten",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_both_clocks_require_explicit_timezones_in_direct_validator",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_complete_freeze_cannot_admit_data_after_the_declared_decision",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_equal_and_offset_instants_preserve_ready_and_frozen_replay",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_independent_validator_checks_causality_inside_a_consistent_frozen_body",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_one_old_pit_row_cannot_cover_two_rebound_source_snapshots",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_post_cutoff_route_cannot_hide_behind_older_snapshot_clock",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_producer_and_validator_must_be_explicit_literal_identifiers",
+        "tests.test_research_os_readiness_provenance_admission.ReadinessProvenanceAdmissionTests.test_valid_offset_clocks_and_declared_content_aliases_keep_their_scope",
+        "tests.test_research_os_source_pit_clocks.SourcePITClockTests.test_explicit_offsets_compare_as_instants_without_rewriting_route",
+        "tests.test_research_os_source_pit_clocks.SourcePITClockTests.test_invalid_availability_or_freeze_never_qualifies_pit",
+        "tests.test_research_os_source_pit_clocks.SourcePITClockTests.test_missing_availability_has_both_missing_and_pit_blockers",
+        "tests.test_research_os_source_pit_clocks.SourcePITClockTests.test_readiness_cannot_promote_missing_or_naive_source_availability"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/source_qualification.py",
+          "sha256": "f6d235cfb6fc72404a19fb9583cb78c43a6d1114f7c302c966986728fe4d6e77"
+        },
+        {
+          "path": "src/quant/dataplane/validation.py",
+          "sha256": "fb57d7497d48c18c2292cb474073ce2636b296101355aa3dbe1c5fbb2413875c"
+        },
+        {
+          "path": "tests/test_research_os_raw_evidence_capture.py",
+          "sha256": "104b00461701e6bd6cb239dbd3e7bf9dbcf8f0ed9b0f28d88276e2b3e200633a"
+        },
+        {
+          "path": "tests/test_research_os_readiness_provenance_admission.py",
+          "sha256": "af12699c53dec3ffa3d0dd4bcf6b81a47b24e32f771e508857c9cac51e8b80ec"
+        },
+        {
+          "path": "tests/test_research_os_source_pit_clocks.py",
+          "sha256": "e1ee1381aa157f2a3c38071969ff315dc078f68c233df7fc956ea31897b0677a"
+        }
+      ],
+      "limit": "Declared packet/raw-byte/PIT contracts; missing real routes and datasets remain missing."
+    },
+    {
+      "node": "data_to_control_recovery",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_quant_system.DataPlaneTests.test_changed_bytes_produce_a_new_fingerprint_and_availability",
+        "tests.test_quant_system.DataPlaneTests.test_changed_malformed_bytes_invalidate_previous_verdict",
+        "tests.test_quant_system.DataPlaneTests.test_validation_rejects_a_panel_with_a_missing_symbol",
+        "tests.test_v1_data_validation_followup.MarketBarIntegrityTests.test_invalid_session_date_is_not_accepted_as_market_time",
+        "tests.test_v1_data_validation_followup.MarketBarIntegrityTests.test_open_outside_daily_range_is_rejected"
+      ],
+      "source_references": [
+        {
+          "path": "src/quant/clock.py",
+          "sha256": "46504af2ece4d926ed693f41b5f8a327b7a26960951be37a8965a692458350c1"
+        },
+        {
+          "path": "src/quant/dataplane/adapters.py",
+          "sha256": "04ad50ed4e2957699ef7ca167fc257f75416c6eee1e88a572f09b7440ab49a55"
+        },
+        {
+          "path": "tests/test_quant_system.py",
+          "sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e"
+        },
+        {
+          "path": "tests/test_v1_data_validation_followup.py",
+          "sha256": "f30c13bc4a51eedefb37e44984fde9c632c883d1fac31bfe841a795bb9984858"
+        }
+      ],
+      "limit": "Disposable source failure -> durable dependency block -> recovery; no new market capture."
+    },
+    {
+      "node": "canonical_research_core",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_exact_legacy_duplicate_blocks_admission",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_experiment_registry_is_immutable",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_forward_generation_registry_rejects_mutation",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_forward_observation_is_forbidden",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_persistent_state_passes",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_pinned_legacy_is_loaded_when_materialized",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_scientific_ledger_covers_full_shape_and_verifies",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_trial_ledger_keeps_effective_trials_unknown",
+        "tests.test_research_os_canonical_identity.CanonicalIdentityTests.test_invalid_principal_identifiers_block_before_hashing",
+        "tests.test_research_os_canonical_identity.CanonicalIdentityTests.test_mutually_equal_null_references_cannot_qualify_whole_pipeline",
+        "tests.test_research_os_canonical_identity.CanonicalIdentityTests.test_nullable_root_ancestry_and_scientific_unknowns_remain_supported",
+        "tests.test_research_os_canonical_identity.CanonicalIdentityTests.test_valid_epoch_trial_and_four_family_hashes_are_unchanged",
+        "tests.test_research_os_frozen_trial_accounting.FrozenTrialAccountingTests.test_legacy_hash_valid_nonfinite_plan_cannot_replay_or_rebind",
+        "tests.test_research_os_frozen_trial_accounting.FrozenTrialAccountingTests.test_nonfinite_or_invalid_estimates_cannot_freeze",
+        "tests.test_research_os_frozen_trial_accounting.FrozenTrialAccountingTests.test_unknown_and_finite_estimates_preserve_freeze_and_rebinding"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/v2_core.py",
+          "sha256": "7a8c2dab9d039583eeb0c6073eafd9b01664087f7fe08b639fcc38b92076cb5e"
+        },
+        {
+          "path": "research/research_os/scientific_store.py",
+          "sha256": "362add2efa6449188f5765817cd942c2d441387802e15b0ea3f6e2b0bc5df086"
+        },
+        {
+          "path": "research/research_os/tests/test_persistent_final_shape.py",
+          "sha256": "66bf20c1b371329e4fc7279d70267406d48f477bb0499eeee77a6d50139dd4f4"
+        },
+        {
+          "path": "tests/test_research_os_canonical_identity.py",
+          "sha256": "8abb92ad23f0cae4ff6727593dc575e778929b06d05d165c43d90b67dc681db2"
+        },
+        {
+          "path": "tests/test_research_os_frozen_trial_accounting.py",
+          "sha256": "cbaec2b4d947b83ebfb816bb6bde563efd4b5205e97b619318ae49874ccdee93"
+        }
+      ],
+      "limit": "Identity/freeze/trials/ancestry; no retroactive rewriting of scientific memory."
+    },
+    {
+      "node": "producer_families",
+      "criteria": {
+        "capability": "P",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_documentary_dossier_depth.EventDossierDepthTests.test_event_binds_comparison_and_capture_clocks_without_promoting_novelty",
+        "research.research_os.tests.test_documentary_dossier_depth.EventDossierDepthTests.test_event_nonpositive_change_disconfirms_premise",
+        "research.research_os.tests.test_documentary_dossier_depth.EventDossierDepthTests.test_event_rejects_contradictory_sources_and_unsupported_novelty",
+        "research.research_os.tests.test_documentary_dossier_depth.FundamentalDossierDepthTests.test_candidate_claim_inflation_is_rejected_without_mutating_candidate",
+        "research.research_os.tests.test_documentary_dossier_depth.FundamentalDossierDepthTests.test_captured_facts_are_bound_and_unavailable_economic_premises_stay_blocked",
+        "research.research_os.tests.test_documentary_dossier_depth.FundamentalDossierDepthTests.test_nonpositive_accounting_premise_is_reported_as_disconfirmed",
+        "research.research_os.tests.test_documentary_dossier_depth.FundamentalDossierDepthTests.test_prose_placeholders_or_promoted_status_do_not_replace_documentary_support",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_all_initial_engines_present",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_authority_invariants",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_control_plane_is_production_workflow_and_economic_authority_stays_closed",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_cross_exam_does_not_mutate_or_generate",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_hash_chain_detects_tampering",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_learning_telemetry_does_not_invent_effective_trials",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_legacy_gate_blocks_exact_duplicate_when_ledger_loaded",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_legacy_source_is_pinned_and_read_only",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_pipeline_passes",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_portfolio_has_no_capital_authority",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_scientific_ledger_is_hash_chained",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_shadow_and_decay_respect_authority",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_trial_ledger_separates_attempts_and_effective_trials",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_validation_is_independent_and_clean",
+        "research.research_os.tests.test_multi_engine_pipeline.MultiEnginePipelineTests.test_worker_events_are_deterministic_and_native_shaped",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_actual_git_and_separate_interpreter_refuse_rehashed_projection_changes",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_correctly_rehashed_changes_cannot_borrow_the_original_source_proof",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_declared_documentary_families_reconstruct_without_filling_unknowns",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_native_validation_refuses_before_base_reasoning_or_writes"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/engines/builtin.py",
+          "sha256": "bb5bc5f90f91ec8b54bb7cf858fc88512b309b118d6dbc4de3dd3d93881eb41b"
+        },
+        {
+          "path": "research/research_os/expansion/v2_bridge.py",
+          "sha256": "01d2263c60a81d1ca26715cbf7bc0e8deae42cdfa053bf0e9ee667520d45375d"
+        },
+        {
+          "path": "research/research_os/tests/test_documentary_dossier_depth.py",
+          "sha256": "5066901e970473369ea2756734ea69c31173146002ceff74fcd4f15d86cddfa5"
+        },
+        {
+          "path": "research/research_os/tests/test_multi_engine_pipeline.py",
+          "sha256": "8150ce39b79c0ce254c6a1c9947d41fe9a8b0d205d7a3ee08cfbdb10d1f54db3"
+        },
+        {
+          "path": "tests/test_research_os_independent_candidate_reconstruction.py",
+          "sha256": "bb101d796ab3baf90f38f7bf6c8f262514a414c5d379da1d28fdfd97473c18db"
+        }
+      ],
+      "limit": "Four family paths; source-qualified distinct economic mechanisms and complete fundamental valuation remain partial."
+    },
+    {
+      "node": "archaeology_to_search",
+      "criteria": {
+        "capability": "P",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_deterministic_replay",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_exact_legacy_duplicate_stops_before_expensive_downstream",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_normal_path_passes_in_exact_canonical_order",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_task_authority_violation_is_rejected",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_task_route_mismatch_is_rejected",
+        "tests.test_research_os_historical_source_recovery.HistoricalSourceRecoveryTests.test_existing_ledger_identity_and_counts_are_unchanged",
+        "tests.test_research_os_historical_source_recovery.HistoricalSourceRecoveryTests.test_incomplete_ambiguous_or_metric_bearing_recovery_fails_closed",
+        "tests.test_research_os_historical_source_recovery.HistoricalSourceRecoveryTests.test_native_screen_and_preflight_bind_source_review_hash",
+        "tests.test_research_os_historical_source_recovery.HistoricalSourceRecoveryTests.test_no_recovery_entries_preserves_old_manifests",
+        "tests.test_research_os_historical_source_recovery.HistoricalSourceRecoveryTests.test_original_id_and_mechanism_route_to_scoped_review_not_scientific_kill"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/archaeology.py",
+          "sha256": "8e1fdab607587b42a538d78444b2accb4ec6ade5acc701853ca0c4af51663a25"
+        },
+        {
+          "path": "research/research_os/legacy.py",
+          "sha256": "47d4b9ca3914ed4a80a1e5a51c597cdfbbad72b37334ad0534a011d09dabd0c0"
+        },
+        {
+          "path": "research/research_os/tests/test_canonical_integration_spine.py",
+          "sha256": "87ca3c463136fb6bd50643adbb4e395f8d9b02d4651a4cec2683551e00cc09df"
+        },
+        {
+          "path": "tests/test_research_os_historical_source_recovery.py",
+          "sha256": "611764d19bf8b91d00e85415f654fa93a2f0d70c6d584efe7b4f8bf720cbed0f"
+        }
+      ],
+      "limit": "Pinned negative/blocked knowledge screens current candidates; full historical reconciliation unresolved."
+    },
+    {
+      "node": "early_implementability",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_candidate_is_never_mutated",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_dangerous_authority_flags_remain_false",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_fully_specified_implementability_can_pass",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_missing_cost_model_blocks",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_missing_exact_contract_never_becomes_implementable",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_missing_expression_blocks",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_missing_pit_blocks",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_source_unavailable_is_park_not_pass",
+        "research.research_os.tests.test_implementability_depth.ImplementabilityDepthTests.test_unobservable_capacity_unknown_is_explicit_and_blocks",
+        "tests.test_research_os_implementability_contract.ImplementabilityDeclarationTests.test_boolean_or_nonfinite_expression_declarations_cannot_pass",
+        "tests.test_research_os_implementability_contract.ImplementabilityDeclarationTests.test_declared_fallback_universe_and_horizon_still_work",
+        "tests.test_research_os_implementability_contract.ImplementabilityDeclarationTests.test_explicit_unknown_clock_states_are_not_exact_clocks"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/implementability_depth.py",
+          "sha256": "1541a2052aee055c7840c5edd6f69cf90ea08b537658e64a8a7a5a36534e3ae8"
+        },
+        {
+          "path": "research/research_os/tests/test_implementability_depth.py",
+          "sha256": "d22b238642555e7981f85f14f8a8d4dd3e26655d691ee10e290566d5971bc1fe"
+        },
+        {
+          "path": "tests/test_research_os_implementability_contract.py",
+          "sha256": "6a956ad6bad98051cb6eb51e855ddb28884fe6957013636702d5eff6fb8da30f"
+        }
+      ],
+      "limit": "Explicit declarations/tri-state blockers; feasibility declarations are not market evidence."
+    },
+    {
+      "node": "experiment_infrastructure",
+      "criteria": {
+        "capability": "P",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_candidate_mismatch_rejected",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_deterministic_replay",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_effective_trials_unknown_preserved",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_environment_and_code_binding",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_frozen_protocol_binds_complete_pre_outcome_package",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_generation_mismatch_rejected",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_legacy_plan_payload_remains_backward_compatible",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_outcome_remains_closed_and_receipt_is_bounded",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_pit_mismatch_rejected",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_protocol_mismatch_rejected",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_replay_rejects_frozen_protocol_mutation",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_replay_rejects_receipt_mutation",
+        "research.research_os.tests.test_experiment_runner_frozen_protocol.FrozenExperimentProtocolTests.test_source_mismatch_rejected",
+        "tests.test_research_os_frozen_readiness_inputs.FrozenReadinessInputTests.test_composed_readiness_freezes_the_actual_implementability_declaration",
+        "tests.test_research_os_frozen_readiness_inputs.FrozenReadinessInputTests.test_local_projection_rehashes_do_not_repair_a_changed_frozen_intent",
+        "tests.test_research_os_frozen_readiness_inputs.FrozenReadinessInputTests.test_missing_frozen_sources_protocol_or_implementation_is_not_inferred",
+        "tests.test_research_os_frozen_readiness_inputs.FrozenReadinessInputTests.test_optional_envelope_declaration_preserves_default_and_owns_a_copy",
+        "tests.test_research_os_frozen_readiness_inputs.FrozenReadinessInputTests.test_pit_row_order_and_explicit_content_aliases_do_not_invent_trial_counts",
+        "tests.test_research_os_frozen_readiness_inputs.FrozenReadinessInputTests.test_source_projection_cannot_be_swapped_even_with_rebound_reproducibility",
+        "tests.test_research_os_frozen_receipt_binding.FrozenReceiptBindingTests.test_foreign_receipt_cannot_replay_or_rebind",
+        "tests.test_research_os_frozen_receipt_binding.FrozenReceiptBindingTests.test_missing_receipt_and_rehashed_binding_changes_are_rejected",
+        "tests.test_research_os_frozen_receipt_binding.FrozenReceiptBindingTests.test_receipt_authority_must_be_explicitly_false_without_affecting_legacy"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/experiment_runner.py",
+          "sha256": "5453bf86980e7489d15e854969cbb713f77b23f486485dcb03545dae3166a95b"
+        },
+        {
+          "path": "research/research_os/expansion/validation_readiness.py",
+          "sha256": "747d47040927c589e3e4c778222d25c1a99d72fce8c86c2203a3d32477f6806b"
+        },
+        {
+          "path": "research/research_os/tests/test_experiment_runner_frozen_protocol.py",
+          "sha256": "2b2a212636a8953277fe0e1da572bb07329d052f4a25499a5472c9e92b085d6e"
+        },
+        {
+          "path": "tests/test_research_os_frozen_readiness_inputs.py",
+          "sha256": "103f6d1cfaf0060e7de18d60cdcf35d664cdcdd59a4257365c5969d49149386f"
+        },
+        {
+          "path": "tests/test_research_os_frozen_receipt_binding.py",
+          "sha256": "77d47180f9730edf06189e0309a3e95655da0fa05896528c0a4f1540c69e3c90"
+        }
+      ],
+      "limit": "Frozen deterministic dry-run; Factory geometry/power awaiting actual cohort/effect premises."
+    },
+    {
+      "node": "trial_to_native_challenge",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_actual_two_producer_handoff_in_distinct_process_cannot_misattribute_a_verdict",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_canonical_scientific_fields_cannot_drift_from_the_recorded_engine_output",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_native_requires_output_and_retains_a_hash_valid_existing_stage_binding",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_rehashed_subjects_and_source_hashes_cannot_borrow_the_canonical_freeze",
+        "tests.test_research_os_native_trial_lineage.NativeTrialLineageTests.test_actual_git_generated_trial_replays_and_foreign_reference_stops_before_model",
+        "tests.test_research_os_native_trial_lineage.NativeTrialLineageTests.test_manifest_and_trial_reference_scope_fail_before_outside_reads",
+        "tests.test_research_os_native_trial_lineage.NativeTrialLineageTests.test_rehashed_foreign_lineage_is_refused_at_each_native_challenge_stage",
+        "tests.test_research_os_native_trial_lineage.NativeTrialLineageTests.test_trial_hash_and_derived_counts_are_verified_before_trust"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/v2_stage_executor.py",
+          "sha256": "8addf78132ff6cbaeb6a63124d192f83cddd4942009d1dc8ff639746850046c6"
+        },
+        {
+          "path": "tests/test_research_os_canonical_freeze_v2_binding.py",
+          "sha256": "e6b1f6a8b1b0f0dee770ec7b7c6f1216b375f38f7eb283c971d6f02d718bedc1"
+        },
+        {
+          "path": "tests/test_research_os_native_trial_lineage.py",
+          "sha256": "9bbdbb471d02b6feb2437cc648d7c29c348e0273fac63d53b7faede521d85366"
+        }
+      ],
+      "limit": "Actual disposable Git/process producer and challenge joins; no canonical Oracle write."
+    },
+    {
+      "node": "cross_examination",
+      "criteria": {
+        "capability": "P",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_primary_flow_and_challenge.ActualDocumentaryChallengeTests.test_actual_artifacts_reconstruct_and_negative_rights_survive_repinning",
+        "research.research_os.tests.test_primary_flow_and_challenge.ActualDocumentaryChallengeTests.test_missing_disconfirmation_is_a_critical_failure_even_without_documentary_evidence",
+        "research.research_os.tests.test_primary_flow_and_challenge.PrimaryFlowTests.test_capture_refuses_a_number_without_actor_exception_or_status_context",
+        "research.research_os.tests.test_primary_flow_and_challenge.PrimaryFlowTests.test_constraint_is_not_a_measured_flow_or_binding_rule",
+        "research.research_os.tests.test_primary_flow_and_challenge.PrimaryFlowTests.test_rule_scope_and_capture_cannot_be_relabelled_or_backdated",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_claim_restriction_can_emit_frozen_export_intent_without_evaluation",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_independent_validation_emits_separate_v2_validator_state",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_real_git_claim_counts_ideation_before_crash_and_replay",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_real_git_epoch_change_cannot_relabel_existing_trial",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_real_git_validator_requires_separate_process_and_reconstructs_primary_evidence",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_research_stage_adds_trial_candidate_and_leakage_sidecars_atomically",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_source_after_epoch_cutoff_is_blocked_before_model_generation",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_v2_worker_requires_explicit_contract_and_closed_authority",
+        "tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests.test_validation_handoff_binds_v2_candidate_trial_and_epoch"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/v2_stage_executor.py",
+          "sha256": "8addf78132ff6cbaeb6a63124d192f83cddd4942009d1dc8ff639746850046c6"
+        },
+        {
+          "path": "research/research_os/tests/test_primary_flow_and_challenge.py",
+          "sha256": "93375e47064ffb94f6c35f70618fc2ae3e79a203146e323e56349b01b26a4a3e"
+        },
+        {
+          "path": "tests/test_research_os_v2_worker_integration.py",
+          "sha256": "92e035763bec51d709c920dd1848dda8d769a4340224315c9fed3df239a348be"
+        }
+      ],
+      "limit": "Structural/source challenge exists; diverse semantic/cognitive review NOT_PROVEN."
+    },
+    {
+      "node": "independent_validator",
+      "criteria": {
+        "capability": "P",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_block_on_missing_cost_or_capacity_declaration",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_block_on_missing_implementability",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_block_on_missing_multiplicity",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_block_on_missing_protocol_freeze",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_block_on_pit_or_source_failure",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_candidate_immutability_and_no_signal_repair",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_no_outcome_access",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_pass_when_every_precondition_is_present",
+        "research.research_os.tests.test_economic_readiness_validation.EconomicReadinessValidationTests.test_producer_must_differ_from_validator",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_actual_two_producer_handoff_in_distinct_process_cannot_misattribute_a_verdict",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_canonical_scientific_fields_cannot_drift_from_the_recorded_engine_output",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_native_requires_output_and_retains_a_hash_valid_existing_stage_binding",
+        "tests.test_research_os_canonical_freeze_v2_binding.CanonicalFreezeV2BindingTests.test_rehashed_subjects_and_source_hashes_cannot_borrow_the_canonical_freeze",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_actual_git_and_separate_interpreter_refuse_rehashed_projection_changes",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_correctly_rehashed_changes_cannot_borrow_the_original_source_proof",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_declared_documentary_families_reconstruct_without_filling_unknowns",
+        "tests.test_research_os_independent_candidate_reconstruction.IndependentCandidateReconstructionTests.test_native_validation_refuses_before_base_reasoning_or_writes"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/v2_stage_executor.py",
+          "sha256": "8addf78132ff6cbaeb6a63124d192f83cddd4942009d1dc8ff639746850046c6"
+        },
+        {
+          "path": "research/research_os/expansion/validation_v2.py",
+          "sha256": "1080a7432934c5299baa590145c8402581257c9a6a8093f6e805215e2929c5bc"
+        },
+        {
+          "path": "research/research_os/tests/test_economic_readiness_validation.py",
+          "sha256": "edca8f6819fe5fda70be84084ae112c1003a308c7de273b22ae1fa2ea1e1d730"
+        },
+        {
+          "path": "tests/test_research_os_canonical_freeze_v2_binding.py",
+          "sha256": "e6b1f6a8b1b0f0dee770ec7b7c6f1216b375f38f7eb283c971d6f02d718bedc1"
+        },
+        {
+          "path": "tests/test_research_os_independent_candidate_reconstruction.py",
+          "sha256": "bb101d796ab3baf90f38f7bf6c8f262514a414c5d379da1d28fdfd97473c18db"
+        }
+      ],
+      "limit": "Independent reconstruction and fail-closed native bindings; R0 is not economic validation or semantic diversity."
+    },
+    {
+      "node": "red_team",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_authority_barrier_rejects_every_authority_request",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_candidate_protocol_source_generation_and_code_mutation_fail_closed",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_cost_and_capacity_missing_invalid_or_unknown_block",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_exact_legacy_duplicate_or_unloaded_ledger_blocks",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_frozen_receipt_tampering_blocks",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_full_pre_outcome_path_and_deterministic_replay",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_implementability_missing_capacity_blocks",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_malformed_package_fails_closed",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_missing_multiplicity_and_trial_accounting_block_unknown_is_preserved",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_portfolio_retains_b4_diagnostics_alongside_canonical_summary",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_producer_cannot_self_validate",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_red_team_can_block_without_repair_or_retuning",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_source_pit_and_provenance_block",
+        "research.research_os.tests.test_economic_readiness_integration.EconomicReadinessIntegrationTests.test_structural_duplication_blocks_without_fabricating_empirical_correlation_or_allocation",
+        "tests.test_research_os_scientific_claim_admission.ScientificClaimAdmissionTests.test_outstanding_blockers_cannot_pass_directly_or_through_export_pipeline",
+        "tests.test_research_os_scientific_claim_admission.ScientificClaimAdmissionTests.test_source_pit_requires_boolean_and_preserves_hindsight_distinction",
+        "tests.test_research_os_scientific_claim_admission.ScientificClaimAdmissionTests.test_valid_pass_hash_and_block_failure_state_separation_are_preserved",
+        "tests.test_research_os_scientific_claim_admission.ScientificClaimAdmissionTests.test_validator_requires_attributable_subject_and_actor"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/red_team_v2.py",
+          "sha256": "94c011a0fea8a2dad53128247d2325d09db865690d9fd19ec550b0cefd1e72cf"
+        },
+        {
+          "path": "research/research_os/tests/test_economic_readiness_integration.py",
+          "sha256": "a75abee30cf06aeaa91ae9c6d62ba90896ae75afdbd5fd4e8c2d48b633e3f86c"
+        },
+        {
+          "path": "tests/test_research_os_scientific_claim_admission.py",
+          "sha256": "4920b0f75392f26c097117c81999243bfda27194d2f554d03d48ded23afb7384"
+        }
+      ],
+      "limit": "Machine-readable negative rights; no retuning to force profitability."
+    },
+    {
+      "node": "frozen_expression_to_identity",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_research_os_documentary_portfolio_scope.DocumentaryPortfolioScopeTests.test_explicit_generic_structural_declarations_keep_the_existing_golden_contract",
+        "tests.test_research_os_documentary_portfolio_scope.DocumentaryPortfolioScopeTests.test_same_issuer_pair_retains_issuer_diagnostic_without_known_instrument_or_exposure",
+        "tests.test_research_os_documentary_portfolio_scope.DocumentaryPortfolioScopeTests.test_three_documentary_families_preserve_support_without_promoting_aliases",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_actual_readiness_preserves_exact_frozen_expression_and_candidate_provenance",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_documentary_facts_and_declared_structure_keep_distinct_ceilings",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_foreign_stale_or_partially_rebound_declarations_fail_closed",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_identity_owns_declaration_and_projection_does_not_mutate_it",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_missing_horizon_stays_unknown_and_structured_clock_remains_literal",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_portfolio_consumes_declared_clock_for_same_exposure_review"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/economic_test_readiness_v1.py",
+          "sha256": "06129de4ddef9af5b081cc2ac65ef43412630b31863addd830a6d758dfddb8bb"
+        },
+        {
+          "path": "research/research_os/expansion/final_shape.py",
+          "sha256": "250514bd6c8541e68d4ad3f4d1024f117b003754f04e166cb8718bcbc703e06e"
+        },
+        {
+          "path": "tests/test_research_os_documentary_portfolio_scope.py",
+          "sha256": "20bad48ef31991bf29414a3e5e2eb7329cf3d2a0737edeb035b34a3581048e4b"
+        },
+        {
+          "path": "tests/test_research_os_frozen_portfolio_declarations.py",
+          "sha256": "abc4ec14b29f0ee819ad8b997fdd93dae57cc130619e2b0788ef5910a647954f"
+        }
+      ],
+      "limit": "CP084 transfers actual declarations with explicit ceiling; no source-fact or empirical promotion."
+    },
+    {
+      "node": "portfolio_map",
+      "criteria": {
+        "capability": "P",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_different_payer_and_mechanism_are_distinguishable",
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_every_structural_field_has_candidate_source_dossier_hash_generation_trace",
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_identity_and_documentary_candidate_remain_immutable",
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_missing_core_evidence_stays_unknown",
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_portfolio_contribution_remains_not_estimated_and_no_authority_exists",
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_same_mechanism_payer_clock_forces_high_overlap_review",
+        "research.research_os.tests.test_economic_identity_portfolio_readiness.EconomicIdentityPortfolioReadinessTests.test_structural_similarity_never_fabricates_empirical_correlation",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_actual_readiness_preserves_exact_frozen_expression_and_candidate_provenance",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_documentary_facts_and_declared_structure_keep_distinct_ceilings",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_foreign_stale_or_partially_rebound_declarations_fail_closed",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_identity_owns_declaration_and_projection_does_not_mutate_it",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_missing_horizon_stays_unknown_and_structured_clock_remains_literal",
+        "tests.test_research_os_frozen_portfolio_declarations.FrozenPortfolioDeclarationTests.test_portfolio_consumes_declared_clock_for_same_exposure_review",
+        "tests.test_research_os_structural_unknown_evidence.StructuralUnknownEvidenceTests.test_empty_or_all_null_structures_stay_unknown_but_real_numeric_facts_survive",
+        "tests.test_research_os_structural_unknown_evidence.StructuralUnknownEvidenceTests.test_known_overlap_and_real_native_projection_keep_golden_hashes_and_inputs",
+        "tests.test_research_os_structural_unknown_evidence.StructuralUnknownEvidenceTests.test_placeholder_tags_do_not_inflate_overlap_or_create_empirical_claims",
+        "tests.test_research_os_structural_unknown_evidence.StructuralUnknownEvidenceTests.test_semantic_nulls_cannot_prove_shared_core_exposure"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/portfolio_v2.py",
+          "sha256": "0ddf0f83c79682e9e94406b9dd5fef9d4b295dc67424fa97fe1564fcdb205c0e"
+        },
+        {
+          "path": "research/research_os/tests/test_economic_identity_portfolio_readiness.py",
+          "sha256": "f9692fb7d6a5ec06a33dc8d147ca9cd935f512c946f88b14bb80983a590b3fcd"
+        },
+        {
+          "path": "tests/test_research_os_frozen_portfolio_declarations.py",
+          "sha256": "abc4ec14b29f0ee819ad8b997fdd93dae57cc130619e2b0788ef5910a647954f"
+        },
+        {
+          "path": "tests/test_research_os_structural_unknown_evidence.py",
+          "sha256": "eee1d49c6a3e686ceb81185dcc28da2771aea61d8b27cb693ae90b6c8c76d00b"
+        }
+      ],
+      "limit": "Structural overlap only; empirical correlation and marginal contribution NOT_ESTIMATED."
+    },
+    {
+      "node": "shadow_prospective",
+      "criteria": {
+        "capability": "C",
+        "connected_edges": "C",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_exact_legacy_duplicate_blocks_admission",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_experiment_registry_is_immutable",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_forward_generation_registry_rejects_mutation",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_forward_observation_is_forbidden",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_persistent_state_passes",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_pinned_legacy_is_loaded_when_materialized",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_scientific_ledger_covers_full_shape_and_verifies",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_trial_ledger_keeps_effective_trials_unknown",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_each_technical_receipt_kind_is_accepted_for_its_expected_bundle",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_export_references_are_sha256_values_not_structured_side_payloads",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_missing_extra_or_outcome_fields_cannot_cross_reverse_interface",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_pipeline_checks_receipt_binding_even_when_receipt_self_hash_is_valid",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_pipeline_does_not_coerce_unqualified_proof_flags_to_true",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_pipeline_requires_coherent_source_model_classification_without_hindsight_upgrade",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_receipt_event_and_self_hash_cannot_be_tampered_with",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_valid_foreign_receipt_cannot_acknowledge_the_expected_export"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/forward_v2.py",
+          "sha256": "ec2159727bb8ef62923ca476cc0c96f8e63371656d33a6e1a9121a573e086f53"
+        },
+        {
+          "path": "research/research_os/tests/test_persistent_final_shape.py",
+          "sha256": "66bf20c1b371329e4fc7279d70267406d48f477bb0499eeee77a6d50139dd4f4"
+        },
+        {
+          "path": "tests/test_research_os_evaluation_membrane_admission.py",
+          "sha256": "33903416feee7917f76b040b84dd0cefd462a9fd3a652bf49f36094a8866b701"
+        }
+      ],
+      "limit": "Registration and denial qualified; observation inactive by Owner authority, not completed validation."
+    },
+    {
+      "node": "sealed_evaluation_feedback",
+      "criteria": {
+        "capability": "C",
+        "connected_edges": "C",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_each_technical_receipt_kind_is_accepted_for_its_expected_bundle",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_export_references_are_sha256_values_not_structured_side_payloads",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_missing_extra_or_outcome_fields_cannot_cross_reverse_interface",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_pipeline_checks_receipt_binding_even_when_receipt_self_hash_is_valid",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_pipeline_does_not_coerce_unqualified_proof_flags_to_true",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_pipeline_requires_coherent_source_model_classification_without_hindsight_upgrade",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_receipt_event_and_self_hash_cannot_be_tampered_with",
+        "tests.test_research_os_evaluation_membrane_admission.EvaluationMembraneAdmissionTests.test_valid_foreign_receipt_cannot_acknowledge_the_expected_export",
+        "tests.test_research_os_feedback_authorization.FeedbackAuthorizationTests.test_successor_and_feedback_reference_must_be_identified",
+        "tests.test_research_os_feedback_authorization.FeedbackAuthorizationTests.test_truthy_or_missing_policy_and_closure_are_not_authorization",
+        "tests.test_research_os_feedback_authorization.FeedbackAuthorizationTests.test_valid_future_metadata_keeps_successor_only_contract_and_event_shape",
+        "tests.test_research_os_frozen_export_identity.FrozenExportIdentityTests.test_bridge_records_exact_candidate_hash_without_claiming_real_independence",
+        "tests.test_research_os_frozen_export_identity.FrozenExportIdentityTests.test_export_auto_or_missing_fields_reuse_exact_candidate_facts",
+        "tests.test_research_os_frozen_export_identity.FrozenExportIdentityTests.test_export_cannot_change_validated_economic_meaning",
+        "tests.test_research_os_frozen_export_identity.FrozenExportIdentityTests.test_same_generation_cannot_reuse_validation_for_changed_candidate",
+        "tests.test_research_os_frozen_export_identity.FrozenExportIdentityTests.test_worker_blocks_unbound_tampered_or_contradictory_validator_before_export"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/v2_core.py",
+          "sha256": "7a8c2dab9d039583eeb0c6073eafd9b01664087f7fe08b639fcc38b92076cb5e"
+        },
+        {
+          "path": "tests/test_research_os_evaluation_membrane_admission.py",
+          "sha256": "33903416feee7917f76b040b84dd0cefd462a9fd3a652bf49f36094a8866b701"
+        },
+        {
+          "path": "tests/test_research_os_feedback_authorization.py",
+          "sha256": "143902a9d687910dc4ec9362110c2f5e5bc111b2f66ca91f599139e98e059d10"
+        },
+        {
+          "path": "tests/test_research_os_frozen_export_identity.py",
+          "sha256": "4ad0e0f98b6157b2ec9125cd9fbfbd07b84f674f10e3d59e21fb416b8862fbf2"
+        }
+      ],
+      "limit": "Seal/export/successor-only feedback guards tested with fixtures; no real outcomes opened."
+    },
+    {
+      "node": "decay_monitoring",
+      "criteria": {
+        "capability": "C",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "P",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_final_shape_registry.FinalShapeRegistryTests.test_authority_is_closed",
+        "research.research_os.tests.test_final_shape_registry.FinalShapeRegistryTests.test_auxiliary_schema_does_not_redefine_common_contracts",
+        "research.research_os.tests.test_final_shape_registry.FinalShapeRegistryTests.test_common_contracts_are_stable",
+        "research.research_os.tests.test_final_shape_registry.FinalShapeRegistryTests.test_full_chain_is_registered",
+        "research.research_os.tests.test_final_shape_registry.FinalShapeRegistryTests.test_intentionally_inactive_layers_are_explicit",
+        "research.research_os.tests.test_final_shape_registry.FinalShapeRegistryTests.test_produced_auxiliary_records_match_required_shapes",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_exact_legacy_duplicate_blocks_admission",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_experiment_registry_is_immutable",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_forward_generation_registry_rejects_mutation",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_forward_observation_is_forbidden",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_persistent_state_passes",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_pinned_legacy_is_loaded_when_materialized",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_scientific_ledger_covers_full_shape_and_verifies",
+        "research.research_os.tests.test_persistent_final_shape.PersistentFinalShapeTests.test_trial_ledger_keeps_effective_trials_unknown",
+        "tests.test_quant_system.LifecycleTests.test_evaluation_track_is_sized_but_not_tradable",
+        "tests.test_quant_system.LifecycleTests.test_lifecycle_transitions_are_restrictive",
+        "tests.test_quant_system.LifecycleTests.test_partition_and_trial_reservation_survive_append_and_retry",
+        "tests.test_quant_system.LifecycleTests.test_trial_counter_accumulates_across_lanes"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/final_shape.py",
+          "sha256": "250514bd6c8541e68d4ad3f4d1024f117b003754f04e166cb8718bcbc703e06e"
+        },
+        {
+          "path": "research/research_os/tests/test_final_shape_registry.py",
+          "sha256": "91750542a69fd41fe75b04604e93418db36a4a0a5b348221fc42ae3ffadb1977"
+        },
+        {
+          "path": "research/research_os/tests/test_persistent_final_shape.py",
+          "sha256": "66bf20c1b371329e4fc7279d70267406d48f477bb0499eeee77a6d50139dd4f4"
+        },
+        {
+          "path": "src/quant/factory/strategies.py",
+          "sha256": "ff73dd25c5aa3404695585e97dee21d8b1bccf8b9f9ca4c8b663033488cb66eb"
+        },
+        {
+          "path": "tests/test_quant_system.py",
+          "sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e"
+        }
+      ],
+      "limit": "Pre-outcome decay guard INACTIVE_BY_AUTHORITY; actual signal/cost/crowding decay detection NOT_PROVEN."
+    },
+    {
+      "node": "capital_desk_chain",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_quant_system.DeskRoutingTests.test_a_tradable_strategy_books_into_the_capital_ledger",
+        "tests.test_quant_system.DeskRoutingTests.test_every_stage_of_a_booked_ticket_is_traced",
+        "tests.test_quant_system.DeskRoutingTests.test_execution_delta_revalues_an_overnight_gap",
+        "tests.test_quant_system.DeskRoutingTests.test_one_strategy_fault_does_not_stop_an_independent_strategy",
+        "tests.test_quant_system.ExecutionTests.test_fill_happens_at_the_next_session_and_pays_the_spread",
+        "tests.test_quant_system.ExecutionTests.test_order_is_truncated_to_a_plausible_share_of_volume",
+        "tests.test_quant_system.RiskTests.test_a_strategy_is_not_charged_twice_for_its_own_sleeve",
+        "tests.test_quant_system.RiskTests.test_drawdown_throttles_then_halts",
+        "tests.test_quant_system.RiskTests.test_net_exposure_breach_is_vetoed",
+        "tests.test_quant_system.RiskTests.test_neutral_rebalance_that_closes_a_dropped_leg_is_approved",
+        "tests.test_quant_system.RiskTests.test_scaling_is_validated_on_the_scaled_portfolio",
+        "tests.test_quant_system.RiskTests.test_scaling_that_cannot_satisfy_a_hard_limit_is_vetoed",
+        "tests.test_quant_system.RiskTests.test_verify_final_rejects_a_truncated_execution_that_breaches_a_limit"
+      ],
+      "source_references": [
+        {
+          "path": "src/quant/desk/desk.py",
+          "sha256": "a287a8594d57f6ec4441e2e459503752186b7384ad02f1fbae51c0ab9cef64dc"
+        },
+        {
+          "path": "src/quant/desk/journal.py",
+          "sha256": "eeea8b7422d409acb0ab4b2e6527df4c603ce1cf08a6a6693774cd4c0c183c34"
+        },
+        {
+          "path": "tests/test_quant_system.py",
+          "sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e"
+        }
+      ],
+      "limit": "Existing V1 synthetic paper chain preserved; no V2 economic dispatch or new capital authority."
+    },
+    {
+      "node": "persistent_book",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_quant_system.CrashRecoveryTests.test_a_resumed_session_keeps_the_original_decision",
+        "tests.test_quant_system.CrashRecoveryTests.test_crash_after_durable_fills_does_not_duplicate_anything",
+        "tests.test_quant_system.CrashRecoveryTests.test_the_crash_really_left_durable_state_behind",
+        "tests.test_quant_system.LedgerTests.test_attribution_is_kept_per_strategy",
+        "tests.test_quant_system.LedgerTests.test_bankroll_and_nav_history_survive_restart",
+        "tests.test_quant_system.LedgerTests.test_fill_is_durable_before_the_next_mark",
+        "tests.test_quant_system.LedgerTests.test_marking_may_not_move_backward_in_time",
+        "tests.test_quant_system.LedgerTests.test_realized_pnl_on_closing_a_long_and_covering_a_short",
+        "tests.test_quant_system.LedgerTests.test_repeating_a_mark_restates_it_instead_of_adding_a_session",
+        "tests.test_quant_system.SleeveTests.test_one_strategy_exiting_leaves_the_other_untouched",
+        "tests.test_quant_system.SleeveTests.test_sleeves_survive_restart",
+        "tests.test_quant_system.SleeveTests.test_two_strategies_hold_opposing_exposure_without_corrupting_attribution"
+      ],
+      "source_references": [
+        {
+          "path": "src/quant/book/ledger.py",
+          "sha256": "12ea5af22c6d3f248900f18a60f0e312dfae8ff6d58cb41d7e4ab57d7d4b1298"
+        },
+        {
+          "path": "tests/test_quant_system.py",
+          "sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e"
+        }
+      ],
+      "limit": "Same bankroll/sleeves/journal idempotence in disposable fixtures; no production portfolio proof."
+    },
+    {
+      "node": "learning_to_search",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_claimed_task_also_blocks_refill",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_empty_queue_derives_exactly_one_safe_ready_task",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_frontier_exhaustion_stops_cleanly",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_no_recursive_same_state_invention",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_nonempty_queue_never_refills",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_selection_rotates_by_durable_issue_count",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_unsafe_authority_is_rejected",
+        "tests.test_quant_system.LearningTests.test_a_losing_rejection_is_scored_as_a_true_reject",
+        "tests.test_quant_system.LearningTests.test_a_profitable_rejection_is_scored_as_a_false_reject",
+        "tests.test_quant_system.LearningTests.test_build_tasks_capture_capability_gaps_once",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_blocked_task_does_not_prevent_executable_task",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_budget_exhaustion_pauses_with_explicit_reason",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_idle_is_not_stopped_and_heartbeat_persists",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_operator_pause_survives_restart_until_resume",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_rejected_ticket_promotes_followup_and_continues",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_restart_recovers_exact_state_without_duplicate_rerun",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_restart_recovers_interrupted_worker",
+        "tests.test_research_runtime.CampaignLifecycleTests.test_same_task_new_fingerprint_can_run"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/queue_replenisher.py",
+          "sha256": "fd92632f283eb308005e398c37bb544679b9506d6bc5f7bae46ff1e423634a87"
+        },
+        {
+          "path": "research/research_os/tests/test_queue_replenisher.py",
+          "sha256": "1acf1b80859e6e007623b1a9fb24e6ce9052a1adafc40693a90954d279657a0d"
+        },
+        {
+          "path": "src/quant/clock.py",
+          "sha256": "46504af2ece4d926ed693f41b5f8a327b7a26960951be37a8965a692458350c1"
+        },
+        {
+          "path": "src/quant/learning/store.py",
+          "sha256": "a48b12ac15ccce548118d357cc83ac0e999b6acd5233e210dbe16c32fb17ef0b"
+        },
+        {
+          "path": "tests/test_quant_system.py",
+          "sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e"
+        },
+        {
+          "path": "tests/test_research_runtime.py",
+          "sha256": "64993db0df6f7974351062cc50b737a058ac3c087d617a0fe04f20afde082836"
+        }
+      ],
+      "limit": "Durable failures/lessons/priorities/followups; live economic/decay learning absent by authority."
+    },
+    {
+      "node": "source_gap_acquisition_firewall",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "Q",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_all_authorities_remain_off",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_every_primary_engine_has_typed_pit_input_refs",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_forbidden_return_content_cannot_be_requested",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_outcome_bearing_raw_record_is_blocked",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_record_published_after_cutoff_is_blocked",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_registered_pit_record_cannot_be_silently_replaced",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_typed_registry_is_complete_and_immutable_by_contract",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_wave4_builds_five_typed_pit_records_without_network",
+        "research.research_os.tests.test_wave4_acquisition_firewall.Wave4AcquisitionFirewallTests.test_wave4_is_deterministic",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_control_wording_cannot_launder_extra_outcome_demands",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_declared_documentary_gap_projects_to_existing_firewall_plan",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_declared_route_with_missing_validated_adapter_is_unresolved",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_documentary_control_never_bypasses_content_adapter_or_pit_firewall",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_exact_documentary_control_with_explicit_route_is_plan_only",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_existing_producer_control_is_unresolved_not_an_outcome_request",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_forbidden_content_class_blocks_even_if_adapter_declares_it",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_missing_declared_route_is_unresolved_without_inventing_source",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_missing_or_naive_pit_cutoff_blocks_without_guessing",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_multiple_exact_routes_block_as_ambiguous",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_outcome_like_requirement_blocks_before_route_matching",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_projection_is_deterministic_and_declared_route_order_independent",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_readiness_hash_binding_and_outcome_boundary_fail_closed",
+        "tests.test_research_os_evidence_acquisition_intents_v2.EvidenceAcquisitionIntentsV2Tests.test_unknown_version_policy_blocks",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_alias_cannot_manufacture_a_refill_task",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_bound_source_change_fails_closed",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_capture_support_is_not_a_producer_source",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_consumption_is_frontier_scoped_and_new_version_is_eligible",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_derived_selection_mismatch_blocks_before_reading_source",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_event_and_fundamental_defaults_are_exhausted_only_after_producer_completion",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_institutional_faq_selected_only_after_default_rule_really_consumed",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_institutional_frontier_explicitly_authorizes_mechanism_research",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_preproducer_block_does_not_consume_institutional_default",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_quant_without_qualified_documentary_source_is_noop",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_renamed_reserved_content_is_not_novel_for_any_bound_identity",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_selection_and_lease_recheck_the_original_source_selection",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_source_aware_binding_cannot_downgrade_to_legacy_fallback",
+        "tests.test_research_os_frontier_source_planner_v2.FrontierSourcePlannerV2Test.test_source_aware_refill_binds_strongest_unused_institutional_source"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/acquisition_firewall_v1.py",
+          "sha256": "3b9ec3088675238f74563cce289d5b4e9c2c9cbe5cf87ea2ea1fcc962575417e"
+        },
+        {
+          "path": "research/research_os/expansion/evidence_acquisition_intents_v2.py",
+          "sha256": "6131422f7636ddc206241eb5d348c369837383cf726df267200511eda9968376"
+        },
+        {
+          "path": "research/research_os/tests/test_wave4_acquisition_firewall.py",
+          "sha256": "0d639555b5a4b80955d9922cd4b75a3cdd123cee96f8f4e5b0c6eebd3a9783f3"
+        },
+        {
+          "path": "tests/test_research_os_evidence_acquisition_intents_v2.py",
+          "sha256": "85ce095f2f1c3c2638d281b332c3e884af741ff902155e1e8ca1c2e0c3e1b62f"
+        },
+        {
+          "path": "tests/test_research_os_frontier_source_planner_v2.py",
+          "sha256": "6782a826c71ac6c15948e71a603fb1c946e1ca3adef0c5fd06de06226bda09d8"
+        }
+      ],
+      "limit": "Plan-only source intent and fail-closed routing; no permission/network availability invented."
+    },
+    {
+      "node": "durable_receipts_live_lab",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_oracle_live_composition.OracleLiveCompositionTests.test_completion_snapshot_and_duplicate_do_not_replay_business_motion",
+        "tests.test_oracle_live_composition.OracleLiveCompositionTests.test_late_old_site_generation_cannot_restart_a_completed_new_wake",
+        "tests.test_oracle_live_composition.OracleLiveCompositionTests.test_real_observer_packet_shapes_drive_factual_roles_and_unknown_progress",
+        "tests.test_oracle_live_composition.OracleLiveCompositionTests.test_runtime_and_frontend_share_exact_explicit_metadata_taxonomy",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_explicit_lane_activity_session_mapping_heartbeat_and_real_stdout_proof",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_failed_canonical_cas_never_opens_a_site_session",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_http_uncertain_event_retry_preserves_identity_and_never_logs_authorization",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_local_receipt_retention_is_bounded_and_never_replays_starts",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_real_git_claim_observed_only_after_cas_and_restart_uses_new_generation",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_site_failure_cannot_roll_back_science_and_stale_start_is_not_replayed",
+        "tests.test_oracle_live_projection.OracleLiveProjectionTests.test_unknown_activity_has_no_business_motion_and_economic_animation_is_absent",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_blocked_stage_uses_own_receipt_and_never_invents_dossier",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_head_and_task_blob_changes_alter_observation_identity",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_missing_dossier_blocks_but_native_fundamental_can_project_requirements",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_offline_cli_reads_exact_real_git_objects_without_changing_repository",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_outcome_injection_and_missing_markers_are_rejected",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_projects_only_bound_producer_evidence_with_exact_read_set",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_real_snapshot_rejects_modified_bytes",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_receipt_path_cannot_escape_task",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_source_candidate_and_lineage_bindings_are_checked",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_stale_receipt_or_open_assertion_is_rejected",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_traversal_and_cross_task_references_fail_before_artifact_read",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_uncommitted_stage_or_bad_content_hash_cannot_be_projected",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_unexecuted_task_has_no_manufactured_research_or_readiness",
+        "tests.test_research_os_edge_observation_reader_v2.EdgeObservationReaderTests.test_wrong_epoch_or_unsealed_policy_fails_closed"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/expansion/edge_observability_v2.py",
+          "sha256": "ebbe6bca19825daf51a3d006449393db2380e32e881e937098aa2367bf765f83"
+        },
+        {
+          "path": "research/research_os/expansion/live_receipts.py",
+          "sha256": "947edbd27e09a9d0a58837e02e9eb7edb41956c6e4260646f6ccb172be27379a"
+        },
+        {
+          "path": "tests/test_oracle_live_composition.py",
+          "sha256": "18b3fd421377e82efd2bed06df71d5a59b4f6fc7593a2d996431502ce1b44535"
+        },
+        {
+          "path": "tests/test_oracle_live_projection.py",
+          "sha256": "a875709724692baa0ddc8f530c9b2746952bfa6ecf8338f0a11be8fc698f15e9"
+        },
+        {
+          "path": "tests/test_research_os_edge_observation_reader_v2.py",
+          "sha256": "be0da37bdc466701e111d6768a3238e931181ff135802b8b214b9334b8243fbd"
+        }
+      ],
+      "limit": "Actual native Python -> JS mapping/reducer source contract; production Site/D1/SSE proof excluded."
+    },
+    {
+      "node": "build_release_resume",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "tests.test_oci_research_os_deploy.OciResearchOsDeployTests.test_failed_oci_request_is_never_interpreted_as_empty_collection",
+        "tests.test_oci_research_os_deploy.OciResearchOsDeployTests.test_invalid_json_and_missing_data_fail_closed",
+        "tests.test_oci_research_os_deploy.OciResearchOsDeployTests.test_known_empty_list_is_allowed_but_empty_get_is_blocked",
+        "tests.test_oci_research_os_deploy.OciResearchOsDeployTests.test_remote_bootstrap_is_small_and_pinned_to_exact_sha",
+        "tests.test_oci_research_os_deploy.OciResearchOsDeployTests.test_state_identity_is_keyed_by_vm_and_sha",
+        "tests.test_oci_research_os_deploy.OciResearchOsDeployTests.test_vm_and_sha_are_explicit_and_strict",
+        "tests.test_oracle_v2_bootstrap_admission.BootstrapAdmissionTests.test_cli_binds_both_ci_runs_and_rechecks_state_before_bootstrap",
+        "tests.test_oracle_v2_bootstrap_admission.BootstrapAdmissionTests.test_explicit_source_reaches_fresh_isolated_published_interpreter",
+        "tests.test_oracle_v2_bootstrap_admission.BootstrapAdmissionTests.test_root_and_observed_inactive_states_are_required_before_network_or_publication",
+        "tests.test_oracle_v2_bootstrap_admission.BootstrapAdmissionTests.test_unknown_source_choices_fail_before_any_network_or_child_process",
+        "tests.test_oracle_v2_release_provenance.ReleaseProvenanceTests.test_both_exact_workflows_bind_the_same_explicit_source_or_legacy_default",
+        "tests.test_oracle_v2_release_provenance.ReleaseProvenanceTests.test_explicit_preparation_keeps_active_v2_handoff_gate_and_closed_authorities",
+        "tests.test_oracle_v2_release_provenance.ReleaseProvenanceTests.test_foreign_mixed_or_unsuccessful_ci_cannot_qualify_a_release",
+        "tests.test_oracle_v2_release_provenance.ReleaseProvenanceTests.test_source_branch_permission_never_redirects_canonical_scientific_state",
+        "tests.test_oracle_v2_release_provenance.ReleaseProvenanceTests.test_unknown_or_ambiguous_source_is_rejected_before_network_access"
+      ],
+      "source_references": [
+        {
+          "path": ".github/workflows/oracle-v2-core.yml",
+          "sha256": "04712c21406d78b08def50f45e0bb248a847c888890fc580c9840f6f517154c1"
+        },
+        {
+          "path": "scripts/status_artifacts.py",
+          "sha256": "f8596756a6eb27a18f496291902fed15c7d46475165b47a36f6ee4fe2fbda570"
+        },
+        {
+          "path": "tests/test_oci_research_os_deploy.py",
+          "sha256": "838645a370c47eac25b0f5f9aa1379004c038d514c2c8edb918d380731a06752"
+        },
+        {
+          "path": "tests/test_oracle_v2_bootstrap_admission.py",
+          "sha256": "d9a3f303d3bbd19bd9f76d68d89400b0eb73f6f48bc7dd5a6f2ca4843c4bf6ab"
+        },
+        {
+          "path": "tests/test_oracle_v2_release_provenance.py",
+          "sha256": "14c54242b5a81622eb340a95c533369ee94d18bfe81cb2e68910a1cd3c511901"
+        }
+      ],
+      "limit": "Exact-source source qualification and active-V2 bootstrap refusal; no VM upgrade/deployment performed."
+    },
+    {
+      "node": "wide_cheap_narrow_deep",
+      "criteria": {
+        "capability": "Q",
+        "connected_edges": "P",
+        "identity_provenance": "Q",
+        "fail_closed": "Q",
+        "durable_evidence": "Q",
+        "authority_ceiling": "Q",
+        "resume": "Q",
+        "single_truth": "Q"
+      },
+      "tests": [
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_deterministic_replay",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_exact_legacy_duplicate_stops_before_expensive_downstream",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_normal_path_passes_in_exact_canonical_order",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_task_authority_violation_is_rejected",
+        "research.research_os.tests.test_canonical_integration_spine.CanonicalIntegrationSpineTests.test_task_route_mismatch_is_rejected",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_claimed_task_also_blocks_refill",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_empty_queue_derives_exactly_one_safe_ready_task",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_frontier_exhaustion_stops_cleanly",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_no_recursive_same_state_invention",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_nonempty_queue_never_refills",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_selection_rotates_by_durable_issue_count",
+        "research.research_os.tests.test_queue_replenisher.QueueReplenisherTests.test_unsafe_authority_is_rejected",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_alternate_generation_thesis_schema_is_normalized",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_asml_service_and_pricing_real_pair_requires_overlap_review",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_candidate_id_mechanism_family_schema_is_normalized",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_candidate_id_must_match_file_identity",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_candidate_screen_allows_low_observed_overlap_without_claiming_distinctness",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_candidate_screen_blocks_asml_rewording_against_current_corpus",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_candidate_screen_blocks_exact_existing_id",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_current_repository_corpus_normalizes_without_silent_omission",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_exact_current_id_duplicate_blocks",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_hypothesis_authority_must_remain_closed",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_low_overlap_with_missing_identity_does_not_claim_proven_distinctness",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_materialized_legacy_missing_or_wrong_blob_fails_closed",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_task_authority_and_status_fail_closed",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_unknown_identity_with_material_overlap_is_not_auto_distinct",
+        "research.research_os.tests.test_worker_preflight.WorkerPreflightTests.test_unsupported_generation_fails_closed"
+      ],
+      "source_references": [
+        {
+          "path": "research/research_os/queue_replenisher.py",
+          "sha256": "fd92632f283eb308005e398c37bb544679b9506d6bc5f7bae46ff1e423634a87"
+        },
+        {
+          "path": "research/research_os/tests/test_canonical_integration_spine.py",
+          "sha256": "87ca3c463136fb6bd50643adbb4e395f8d9b02d4651a4cec2683551e00cc09df"
+        },
+        {
+          "path": "research/research_os/tests/test_queue_replenisher.py",
+          "sha256": "1acf1b80859e6e007623b1a9fb24e6ce9052a1adafc40693a90954d279657a0d"
+        },
+        {
+          "path": "research/research_os/tests/test_worker_preflight.py",
+          "sha256": "3871274095033710b408deb1c266a399bd9b3e2df262f4cd45c573a8d8233fa5"
+        },
+        {
+          "path": "research/research_os/worker_stages.py",
+          "sha256": "f2edd9a04ecca365e295494a7e25a555a3d25a24c8b88685f471dabc5d8416b8"
+        }
+      ],
+      "limit": "Cheap duplicate/preflight/replenishment before expensive stages; economic VOI optimum not established."
+    }
+  ],
+  "suites_overlap": true,
+  "method": "Selectors resolved to real unittest IDs and exact-source file hashes. Execution evidence is in the adjacent exact-source qualification receipt; this index does not infer completeness from file presence or test count."
+}
