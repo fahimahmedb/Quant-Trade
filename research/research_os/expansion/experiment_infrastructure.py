@@ -7,6 +7,7 @@ into one immutable pre-outcome attestation.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any, Mapping
 
 from .experiment_registry import (
@@ -93,6 +94,7 @@ def bind_pre_outcome_infrastructure(
             "declaration_gaps": declaration_gaps,
             "registry": final_entry.to_dict(),
             "frozen_registry": frozen_entry.to_dict(),
+            "frozen_protocol": deepcopy(dict(frozen_protocol)),
             "geometry": geometry_payload,
             "power": power_payload,
             "outcome_accessed": False,

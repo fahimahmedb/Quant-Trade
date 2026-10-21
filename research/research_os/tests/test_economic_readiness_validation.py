@@ -40,6 +40,7 @@ def _fixture() -> dict:
         "horizon_rule": "fixture-horizon",
         "sizing_rule": "fixture-size",
     }
+    multiplicity_method = "all attempts counted before outcome access"
     binding_payload = {
         "candidate_hash": candidate_hash,
         "protocol_hash": protocol_hash,
@@ -101,7 +102,7 @@ def _fixture() -> dict:
         },
         "multiplicity": {
             "declared": True,
-            "method": "all attempts counted before outcome access",
+            "method": multiplicity_method,
         },
         "trial_accounting": {
             "observed_attempt_count": 0,
@@ -125,18 +126,41 @@ def _fixture() -> dict:
         },
     }
 
+    frozen_protocol = {
+        "candidate_hash": candidate_hash,
+        "protocol_hash": protocol_hash,
+        "multiplicity_method": multiplicity_method,
+    }
+    frozen_protocol_hash = sha256_json(frozen_protocol)
     geometry = {
-        "status": "UNKNOWN", "protocol_hash": protocol_hash,
-        "declaration_hash": sha256_json({"geometry": "explicit-unknown", "protocol_hash": protocol_hash}),
+        "protocol_hash": protocol_hash,
+        "status": "UNKNOWN",
+        "observation_unit": None,
+        "target_observations": None,
+        "dependence_assumption": None,
+        "cluster_key": None,
+        "max_cluster_share": None,
+        "sampling_rule": None,
+        "assumptions": [],
     }
+    geometry["declaration_hash"] = sha256_json(geometry)
     power = {
-        "status": "UNKNOWN", "protocol_hash": protocol_hash,
-        "declaration_hash": sha256_json({"power": "explicit-unknown", "protocol_hash": protocol_hash}),
+        "protocol_hash": protocol_hash,
+        "status": "UNKNOWN",
+        "minimum_detectable_effect": None,
+        "baseline_scale": None,
+        "significance_level": None,
+        "desired_power": None,
+        "required_observations": None,
+        "method": None,
+        "assumptions": [],
     }
+    power["declaration_hash"] = sha256_json(power)
     registry_payload = {
         "registry_id": "EXR-VALIDATOR-FIXTURE",
         "candidate_hash": candidate_hash,
         "protocol_hash": protocol_hash,
+        "frozen_protocol_hash": frozen_protocol_hash,
         "geometry_hash": geometry["declaration_hash"],
         "power_hash": power["declaration_hash"],
         "lifecycle": "REPLAY_VERIFIED",
@@ -146,6 +170,7 @@ def _fixture() -> dict:
         "registry_id": registry["registry_id"],
         "candidate_hash": candidate_hash,
         "protocol_hash": protocol_hash,
+        "frozen_protocol_hash": frozen_protocol_hash,
         "geometry_hash": geometry["declaration_hash"],
         "power_hash": power["declaration_hash"],
         "lifecycle": "FROZEN",
@@ -156,6 +181,7 @@ def _fixture() -> dict:
         "blockers": [],
         "registry": registry,
         "frozen_registry": frozen_registry,
+        "frozen_protocol": frozen_protocol,
         "geometry": geometry,
         "power": power,
         "outcome_accessed": False,
@@ -219,6 +245,34 @@ class EconomicReadinessValidationTests(unittest.TestCase):
         self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
         self.assertEqual(receipt["checks"]["experiment_infrastructure"]["reason_code"],
                          "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED")
+
+    def test_block_on_self_consistent_geometry_forgery_not_present_in_runner_freeze(self):
+        fixture = _fixture()
+        infrastructure = fixture["experiment_infrastructure"]
+        geometry = {
+            "protocol_hash": fixture["protocol"]["protocol_hash"],
+            "status": "DECLARED",
+            "observation_unit": "event",
+            "target_observations": 999,
+            "dependence_assumption": "forged after runner freeze",
+            "cluster_key": None,
+            "max_cluster_share": None,
+            "sampling_rule": "forged",
+            "assumptions": ["self-consistent hash but absent from frozen protocol"],
+        }
+        geometry["declaration_hash"] = sha256_json(geometry)
+        infrastructure["geometry"] = geometry
+        infrastructure["registry"]["geometry_hash"] = geometry["declaration_hash"]
+        infrastructure["frozen_registry"]["geometry_hash"] = geometry["declaration_hash"]
+        _rehash_infrastructure(fixture)
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
+
+    def test_block_on_multiplicity_method_drift_from_runner_freeze(self):
+        fixture = _fixture()
+        fixture["multiplicity"]["method"] = "different method after freeze"
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
 
     def test_block_on_missing_protocol_freeze(self):
         fixture = _fixture()
