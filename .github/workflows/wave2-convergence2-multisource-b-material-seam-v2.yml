@@ -12,7 +12,7 @@ permissions:
 env:
   SEALED_BASE: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
   HISTORICAL_B_START: 97165db2faa3300cef1f23de0045ed93d25eb9cb
-  MULTISOURCE_MATERIAL_HEAD: d0dac0b3c3fc4733a16fd744f68b4d2c44474a47
+  MULTISOURCE_MATERIAL_HEAD: db31779b851d465301804723823a09613e4524e6
   B_CODE_HEAD: 7ef088bb30ece88cf96f4514e8c581a95ca4b091
 
 jobs:
@@ -27,6 +27,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Install B qualification runtime
+        shell: bash
+        run: python -m pip install pytest
 
       - name: Reacquire immutable inputs
         shell: bash
@@ -53,6 +57,7 @@ jobs:
             research/research_os/multi_source_ideation.py \
             research/research_os/multi_source_ideation_bindings.py \
             research/research_os/multi_source_ideation_hardening.py \
+            research/research_os/policy_c_safe.py \
             research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md \
             research/research_os/tests/test_multi_source_ideation_v2.py \
             tests/ > /tmp/ms-v2.patch
@@ -70,13 +75,13 @@ jobs:
           git -C /tmp/msb-v2 apply --index /tmp/b-v2.patch
           echo 'MULTISOURCE_PLUS_B_SEMANTIC_TREE=BUILT' | tee -a /tmp/msb-v2.env
           echo 'MULTISOURCE_CONTRACT_DOC_INCLUDED=TRUE' | tee -a /tmp/msb-v2.env
+          echo 'MULTISOURCE_POLICY_C_SAFE_INCLUDED=TRUE' | tee -a /tmp/msb-v2.env
 
       - name: Normalize Multi-Source tests without touching semantics
         shell: bash
         run: |
           set -euo pipefail
           cd /tmp/msb-v2
-          # Root bridge duplicates the canonical Research OS class.
           rm -f tests/test_multi_source_ideation_v2.py
           shopt -s nullglob
           moved=0
@@ -88,10 +93,6 @@ jobs:
           done
           test "$moved" -gt 0
 
-          # Source test incorrectly rejected the word "scheduler" even when it
-          # appeared only in a negative boundary statement or zero side-effect
-          # counter. Replace that lexical proxy in this ephemeral qualification
-          # tree with a structural ownership test. Runtime source is unchanged.
           cat > research/research_os/tests/test_multi_source_ideation_v2_no_cross_lane.py <<'PY'
           from __future__ import annotations
 
@@ -104,6 +105,7 @@ jobs:
               multi_source_ideation,
               multi_source_ideation_bindings,
               multi_source_ideation_hardening,
+              policy_c_safe,
           )
           from research.research_os.multi_source_ideation import side_effect_zeroes
 
@@ -115,6 +117,7 @@ jobs:
                       multi_source_ideation,
                       multi_source_ideation_bindings,
                       multi_source_ideation_hardening,
+                      policy_c_safe,
                   )
                   forbidden_definition_fragments = (
                       "candidate", "experiment", "validator", "redteam", "red_team",
@@ -296,6 +299,7 @@ jobs:
               'exact_head_claimed':False,
               'material_code_seam_claimed':True,
               'contract_doc_included':'MULTISOURCE_CONTRACT_DOC_INCLUDED=TRUE' in env,
+              'policy_c_safe_included':'MULTISOURCE_POLICY_C_SAFE_INCLUDED=TRUE' in env,
               'lexical_false_positive_replaced_by_structural_probe':'LEXICAL_CROSS_LANE_FALSE_POSITIVE_REPLACED_BY_STRUCTURAL_PROBE=TRUE' in env,
               'multisource_focused_tests':n('/tmp/ms-v2-focused.log'),
               'b_focused_tests':n('/tmp/b-v2-focused.log'),
@@ -313,6 +317,7 @@ jobs:
           ms=receipt['multisource_focused_tests']
           receipt['material_seam_proven']=bool(
               receipt['contract_doc_included']
+              and receipt['policy_c_safe_included']
               and receipt['lexical_false_positive_replaced_by_structural_probe']
               and ms and ms > 20 and receipt['b_focused_tests'] == 49
               and receipt['root_tests'] == 799
