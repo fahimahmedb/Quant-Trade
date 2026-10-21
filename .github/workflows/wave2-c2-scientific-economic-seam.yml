@@ -53,9 +53,12 @@ jobs:
       - name: Regress W1 Economic structural law
         run: |
           python3 -m unittest -v \
-            research.research_os.tests.test_w1_economic_identity_v2 \
-            research.research_os.tests.test_w1_economic_portfolio_v2 \
-            research.research_os.tests.test_w1_economic_adversarial
+            research.research_os.tests.test_economic_identity_memory_context_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_readiness \
+            research.research_os.tests.test_economic_readiness_integration \
+            research.research_os.tests.test_economic_readiness_validation
 
       - name: Static no-authority seam membrane
         run: |
