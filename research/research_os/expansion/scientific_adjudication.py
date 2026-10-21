@@ -349,6 +349,11 @@ def adjudicate_scientific_candidate(
 ) -> Dict[str, Any]:
     """Compose exact pre-economic state into a provenance-preserving posture."""
     validate_factory_ref(factory_ref)
+    if cross_examination_ref is not None:
+        # Revalidate the public canonical contract here rather than relying only
+        # on the historical inner validator. This closes direct construction of
+        # a self-consistent but incomplete CrossExaminationRef.
+        validate_cross_examination_ref(cross_examination_ref, factory_ref)
     if cross_examination_ref is not None and validator_ref is not None:
         _require(cross_examination_ref.get("examiner_id") != validator_ref.get("validator_id"),
                  "cross-examiner and Validator must be distinct")
