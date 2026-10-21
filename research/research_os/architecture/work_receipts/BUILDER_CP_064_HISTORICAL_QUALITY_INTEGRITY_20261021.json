@@ -1,0 +1,16 @@
+{
+  "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+  "quality_source_path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json",
+  "quality_source_blob_sha": "6e56218941825491122d6ab6b860999da21b808d",
+  "original_result_path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.result.json",
+  "original_result_integrity_binding": {
+    "declared_sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+    "observed_raw_file_sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+    "status": "MATCH"
+  },
+  "classification": "PROTOCOL_INVALIDATION_NOT_ECONOMIC_NEGATIVE",
+  "historical_json_processed_for_declared_metadata_and_hash": true,
+  "numerical_economics_extracted": false,
+  "active_or_sealed_outcomes_accessed": false,
+  "runtime_or_ledger_mutation": false
+}
