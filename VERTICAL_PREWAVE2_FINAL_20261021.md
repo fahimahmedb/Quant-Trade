@@ -1,7 +1,7 @@
 # Quant-Trade — Vertical Depth Phase-A manifest
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-FINAL_SHA=e75c4ce83fcb6d292cd28dec6cef01bf5146c75d
+FINAL_SHA=2584be09e8010aa33856e4e7fefa3b18a4e58f6d
 BRANCH=codex/vertical-depth-prewave2-20261021
 NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
 
@@ -9,7 +9,7 @@ NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
 full-SHA checkpoint normalization, coverage table and final transcripts are
 committed in a documentation/evidence-only child so the manifest need not claim
 its own unknowable Git hash. The delivered branch tip is that child; its source
-and test/schema bytes must match the 29 fingerprints in
+and test/schema bytes must match the 32 fingerprints in
 `research/vertical_depth/20261021/FINAL_qualification.json`.
 
 MODULES_TOUCHED=12
@@ -26,18 +26,19 @@ no active rail/Oracle/Site was modified, and no future Wave-2 module was built.
 
 D1_COUNT=0
 D2_COUNT=8
-D3_COUNT=7
-D4_COUNT=2
+D3_COUNT=5
+D4_COUNT=4
 
 Counts describe the 17 newly deepened **scoped capability units** in
 `VERTICAL_MODULE_COVERAGE_20261021.md`, counted once at their maximum demonstrated
 depth. They are not full-module qualifications. D4 applies to tuple/serializer
-outcome-guard composition and optimized-interpreter closed decay admission.
+outcome-guard composition, optimized-interpreter closed decay admission, and the
+Book/DeskJournal mutation-failure/identity-read compositions in CP016.
 
-DEFECTS_REPAIRED=35
+DEFECTS_REPAIRED=46
 
-This is the number of enumerated repair items in the 13 checkpoint groups, not
-35 independent root causes or scientific observations. Shared roots and related
+This is the number of enumerated repair items in the 16 checkpoint groups, not
+46 independent root causes or scientific observations. Shared roots and related
 manifestations remain grouped and explained in each checkpoint:
 
 | Checkpoint | Repair items | Evidence/repair |
@@ -55,10 +56,13 @@ manifestations remain grouped and explained in each checkpoint:
 | CP011 | 2 | Qualification-to-actual-HEAD binding; dirty executable rejection |
 | CP012 | 6 | Frozen Desk intent/reopening; completion binding; alias isolation; failed-write recovery; stale publication fencing; terminal/recency admission |
 | CP013 | 1 | Exact economic payload bound to each durable Book replay token, with explicit legacy proof limits |
+| CP014 | 2 | LearningStore stale-writer fencing and whole-mutation thread isolation through publication/recovery |
+| CP015 | 3 | Queue stale/terminal fencing; shared-instance isolation; document-preparation and lock-setup recovery |
+| CP016 | 6 | Book/Journal shared-writer recovery, lock-setup retry and guarded durable identity reads |
 
 All repairs have concrete pre-repair failures and focused requalification.
 Full before/after transcripts and checkpoint source SHAs are durable under
-`research/vertical_depth/20261021/`. The new tests add **245 cases**. Existing
+`research/vertical_depth/20261021/`. The new tests add **286 cases**. Existing
 golden canonical hashes for fresh valid inputs and valid model behavior remain
 compatible; stricter rejection and explicit write conflicts are intentional.
 
@@ -68,11 +72,16 @@ applied legacy ID without a recoverable payload proof now blocks replay instead
 of claiming a match. No fingerprint is fabricated and no active Book is migrated.
 Older consumers require coordinated schema adoption before using these artifacts.
 
+Continuation from delivery `bcf7add94dc03589d3e3d5b44365281c51649ef7` retained
+the same immutable Phase-A base and branch. CP014–CP016 extend previously explicit
+concurrency limits. Earlier final manifests and qualification receipts remain in
+Git history; this revision replaces their current qualification summary.
+
 Final local regression at `FINAL_SHA`:
 
 | Suite | Passed | Additional evidence |
 | --- | ---: | --- |
-| Root Python | 1053 | 1077 subtests; two existing fork/thread deprecation warnings |
+| Root Python | 1094 | 1077 subtests; two existing fork/thread deprecation warnings |
 | Broader Research OS | 268 | 165 subtests; pinned Legacy fixture verified |
 | Edge Lab platform protocol harness | 11 | Local model/fixture tests |
 | Live Lab JavaScript | 57 | No production Site access |
@@ -85,8 +94,10 @@ No hosted CI success, VM reboot, deployment or production qualification is claim
 
 UNPROVEN_DEPTH=EXPLICITLY_RETAINED
 
-Priority limits: whole multi-file Desk transaction concurrency; competing local
-queue and LearningStore writers; changed content under an existing research ticket ID;
+Priority limits: whole multi-file Desk/research transactions; atomic local queue
+selection/claim; direct mutation of public objects; coherent reads of all state
+fields during mutation; mutating/reentrant callbacks; CampaignState competing
+writers; changed content under an existing research ticket ID;
 legacy Book replay tokens without recoverable exact payload proof;
 old ticket identities discarded before migration; hostile/migrating on-disk
 schemas; full epoch close/export/crash composition; scoped memory conflicts;
