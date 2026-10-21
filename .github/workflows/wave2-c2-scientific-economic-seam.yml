@@ -1,0 +1,101 @@
+name: Wave2 C2 Scientific Economic D0 Seam
+
+on:
+  push:
+    branches:
+      - builder/convergence-wave2-canonical-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  qualify-seam:
+    name: C0 to W1 Economic to D0 exact binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Canonical ancestry and North Star
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
+
+      - name: Compile seam surfaces
+        run: |
+          python3 -m py_compile \
+            research/research_os/expansion/scientific_adjudication.py \
+            research/research_os/expansion/economic_lifecycle.py \
+            research/research_os/expansion/wave2_scientific_economic_bridge.py \
+            tests/test_wave2_c2_scientific_economic_d0_seam.py
+
+      - name: Requalify C0 adversarial kernel
+        run: python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v
+
+      - name: Qualify C0 Economic D0 seam
+        run: python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_economic_d0_seam.py' -v
+
+      - name: Regress D0 lifecycle kernel
+        run: python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
+
+      - name: Regress W1 Economic structural law
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_w1_economic_identity_v2 \
+            research.research_os.tests.test_w1_economic_portfolio_v2 \
+            research.research_os.tests.test_w1_economic_adversarial
+
+      - name: Static no-authority seam membrane
+        run: |
+          python3 - <<'PY'
+          from research.research_os.expansion.economic_lifecycle import authority_state
+          from research.research_os.expansion.wave2_scientific_economic_bridge import WAVE2_IMMUTABLE_BASE_SHA
+          assert WAVE2_IMMUTABLE_BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          assert all(v is False for v in authority_state().values())
+          PY
+
+      - name: Clean working tree
+        shell: bash
+        run: test -z "$(git status --porcelain)"
+
+      - name: Emit seam receipt
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {
+              'mission': 'WAVE2_C2_CANONICAL_INTEGRATION',
+              'stage': 'C0_W1_ECON_D0_SEAM',
+              'qualified_head': os.environ['GITHUB_SHA'],
+              'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
+              'scientific_posture_required': 'QUALIFIED_WITH_CLAIM_CEILING',
+              'economic_identity_created_by_c0': False,
+              'exact_candidate_hash_continuity': True,
+              'w1_portfolio_empirical_layer_opened': False,
+              'd0_shadow_contract_only': True,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+              'outcome_accessed': False,
+          }
+          Path('/tmp/wave2-c2-scientific-economic-d0-seam.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c2-scientific-economic-d0-seam-${{ github.sha }}
+          path: /tmp/wave2-c2-scientific-economic-d0-seam.json
+          if-no-files-found: error
