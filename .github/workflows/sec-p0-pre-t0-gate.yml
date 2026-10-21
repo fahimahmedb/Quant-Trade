@@ -1,12 +1,7 @@
 name: SEC P0 pre-t0 gate
 
-# Blue's fourth finding was that "232 tests pass" was a PR claim with no workflow
-# run attached to the head. This workflow exists so the claim is an independently
-# observed CI result on the exact commit under review.
-#
-# It runs no network requests. Every SEC test uses a fake transport, and the
-# collector fails closed without QUANT_SEC_USER_AGENT, which CI deliberately does
-# not set - so a green run also demonstrates the fail-closed path.
+# Independently observed qualification on the exact head under review.
+# No network requests are made by the scientific qualification lanes.
 
 on:
   push:
@@ -43,10 +38,8 @@ jobs:
           if [ -n "${QUANT_SEC_USER_AGENT:-}" ]; then
             echo "CI must not configure a SEC identity"; exit 1
           fi
-          # A probe must refuse outright (exit 2) with no identity configured.
           PYTHONPATH=src python3 scripts/quant.py sec-probe --root . && rc=0 || rc=$?
           test "$rc" -eq 2
-          # And readiness must report not-ready (exit 1) rather than silently pass.
           PYTHONPATH=src python3 scripts/quant.py sec-readiness --root . && rrc=0 || rrc=$?
           test "$rrc" -eq 1
           echo "capture lane correctly fails closed without a declared identity"
@@ -60,8 +53,26 @@ jobs:
       - name: Full unit suite
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
 
+      - name: W1 Scientific Memory focused suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            research.research_os.tests.test_archaeology \
+            research.research_os.tests.test_legacy_scientific_memory \
+            research.research_os.tests.test_memory_archaeology_bridge \
+            research.research_os.tests.test_scientific_memory
+          node research/research_os/tests/contract-smoke.test.mjs
+
       - name: W1 Data focused suite
         run: PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -p 'test_w1_data_*.py' -v
+
+      - name: W1 Factory experiment infrastructure suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            research.research_os.tests.test_w1_factory_experiment_infrastructure \
+            research.research_os.tests.test_w1_factory_experiment_bridge \
+            research.research_os.tests.test_w1_factory_economic_integration \
+            research.research_os.tests.test_w1_factory_firewall_hardening \
+            research.research_os.tests.test_economic_readiness_validation
 
       - name: SEC P0 lane suite
         run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v

@@ -85,11 +85,7 @@ def _present(value: Any) -> bool:
 def _is_hash(value: Any) -> bool:
     if not isinstance(value, str) or len(value) != 64:
         return False
-    try:
-        int(value, 16)
-    except ValueError:
-        return False
-    return True
+    return all(char in "0123456789abcdefABCDEF" for char in value)
 
 
 def _identifier(value: Any) -> bool:
@@ -142,61 +138,6 @@ def _trial_accounting_valid(record: Mapping[str, Any]) -> bool:
     return True
 
 
-def _frozen_input_binding(bundle: Mapping[str, Any], protocol: Mapping[str, Any]) -> bool:
-    """Reconstruct readiness inputs from the frozen body, never mutable projections."""
-    from .source_qualification import qualify_source_route
-    try:
-        payload = protocol["protocol_payload"]
-        provenance = payload["dataset_provenance"]
-        declared, sources = provenance["protocol"], provenance["sources"]
-        implementation = payload["implementability_declaration"]
-        if not isinstance(sources, list) or not sources or not isinstance(implementation, dict):
-            return False
-        pit = []
-        for source in sources:
-            route = source["route"]
-            qualification = qualify_source_route(route, freeze_time=declared["clock"]["freeze_time"])
-            if qualification["status"] != "PASS":
-                return False
-            pit.append({"source_id": route["route_id"], "snapshot_hash": source["snapshot_hash"],
-                        "point_in_time_qualified": qualification["point_in_time_qualified"],
-                        "available_at": source["available_at"], "route_available_at": route["availability_start"],
-                        "revision_policy": route["revision_policy"]})
-        expression = declared["economic_expression"]
-        spec = {"instrument_rule": expression["instrument"], "side_rule": expression["direction_exposure_semantics"],
-                "entry_rule": expression["entry_clock"], "exit_rule": expression["exit_clock"],
-                "horizon_rule": expression["horizon"], "sizing_rule": expression["position_expression"]}
-        effective = declared["effective_trials"]
-        expected = {
-            "clock": declared["clock"], "universe": declared["universe"],
-            "economic_expression": {"status": "COMPLETE", "spec": spec, "expression_hash": sha256_json(spec)},
-            "implementability": {"status": implementation["status"], "declaration_hash": sha256_json(implementation)},
-            "multiplicity": {"declared": bool(declared["multiplicity_family"]), "method": declared["multiplicity_method"]},
-            "trial_accounting": {"observed_attempt_count": declared["observed_attempt_count"],
-                "effective_trials_status": "UNKNOWN" if effective == "UNKNOWN" else "KNOWN",
-                "estimated_effective_trials": None if effective == "UNKNOWN" else effective},
-        }
-        for name, key in (("cost_model", "cost_assumptions"), ("capacity", "capacity_assumptions")):
-            expected[name] = {"status": "DECLARED", "model_id": declared[key]["model_id"],
-                              "declaration_hash": sha256_json(declared[key])}
-        supplied = bundle["sources"]
-        if (supplied["manifest_hash"] != sha256_json(sources)
-                or sorted(supplied["snapshot_hashes"]) != sorted(s["snapshot_hash"] for s in sources)
-                or sorted(sha256_json(row) for row in supplied["pit_metadata"]) != sorted(sha256_json(row) for row in pit)):
-            return False
-        return (payload["candidate"] == bundle["candidate"]
-                and payload["hypothesis_id"] == bundle["candidate"]["hypothesis_id"]
-                and payload["generation_id"] == bundle["candidate"]["generation_id"]
-                and payload["declared_decision_map"] == bundle["candidate"]["decision_map"]
-                and all(bundle.get(key) == value for key, value in expected.items())
-                and declared["decision_map"] == bundle["candidate"]["decision_map"]
-                and declared["entry_definition"] == expression["entry_clock"]
-                and declared["exit_definition"] == expression["exit_clock"]
-                and declared["universe"]["universe_id"] == expression["universe"])
-    except (KeyError, TypeError, ValueError, AttributeError):
-        return False
-
-
 def _entry_hash_valid(record: Any) -> bool:
     if not isinstance(record, Mapping) or not _is_hash(record.get("entry_hash")):
         return False
@@ -209,8 +150,12 @@ def _factory_declarations_match_frozen_protocol(
     power: Mapping[str, Any], protocol_hash: str,
 ) -> bool:
     try:
-        expected_geometry = geometry_from_mapping(protocol_hash, frozen_protocol.get("geometry_declaration"))
-        expected_power = power_from_mapping(protocol_hash, frozen_protocol.get("power_declaration"))
+        expected_geometry = geometry_from_mapping(
+            protocol_hash, frozen_protocol.get("geometry_declaration")
+        )
+        expected_power = power_from_mapping(
+            protocol_hash, frozen_protocol.get("power_declaration")
+        )
     except (ValueError, TypeError):
         return False
     geometry_payload = {**expected_geometry.to_dict(), "declaration_hash": expected_geometry.declaration_hash}
@@ -325,6 +270,63 @@ def _experiment_infrastructure_valid(
     )
 
 
+def _frozen_input_binding(bundle: Mapping[str, Any], protocol: Mapping[str, Any]) -> bool:
+    """Reconstruct readiness inputs from the frozen body, not mutable projections."""
+    from .source_qualification import qualify_source_route
+    try:
+        payload = protocol["protocol_payload"]
+        provenance = payload["dataset_provenance"]
+        declared, sources = provenance["protocol"], provenance["sources"]
+        implementation = payload["implementability_declaration"]
+        if not isinstance(sources, list) or not sources or not isinstance(implementation, dict):
+            return False
+        pit = []
+        for source in sources:
+            route = source["route"]
+            qualification = qualify_source_route(route, freeze_time=declared["clock"]["freeze_time"])
+            if qualification["status"] != "PASS":
+                return False
+            pit.append({"source_id": route["route_id"], "snapshot_hash": source["snapshot_hash"],
+                        "point_in_time_qualified": qualification["point_in_time_qualified"],
+                        "available_at": source["available_at"], "route_available_at": route["availability_start"],
+                        "revision_policy": route["revision_policy"]})
+        expression = declared["economic_expression"]
+        spec = {"instrument_rule": expression["instrument"], "side_rule": expression["direction_exposure_semantics"],
+                "entry_rule": expression["entry_clock"], "exit_rule": expression["exit_clock"],
+                "horizon_rule": expression["horizon"], "sizing_rule": expression["position_expression"]}
+        effective = declared["effective_trials"]
+        expected = {
+            "clock": declared["clock"], "universe": declared["universe"],
+            "economic_expression": {"status": "COMPLETE", "spec": spec, "expression_hash": sha256_json(spec)},
+            "implementability": {"status": implementation["status"], "declaration_hash": sha256_json(implementation)},
+            "multiplicity": {"declared": bool(declared["multiplicity_family"]), "method": declared["multiplicity_method"]},
+            "trial_accounting": {"hypothesis_id": bundle["candidate"]["hypothesis_id"],
+                "generation_id": bundle["candidate"]["generation_id"],
+                "observed_attempt_count": declared["observed_attempt_count"],
+                "effective_trials_status": "UNKNOWN" if effective == "UNKNOWN" else "KNOWN",
+                "estimated_effective_trials": None if effective == "UNKNOWN" else effective},
+        }
+        for name, key in (("cost_model", "cost_assumptions"), ("capacity", "capacity_assumptions")):
+            expected[name] = {"status": "DECLARED", "model_id": declared[key]["model_id"],
+                              "declaration_hash": sha256_json(declared[key])}
+        supplied = bundle["sources"]
+        if (supplied["manifest_hash"] != sha256_json(sources)
+                or sorted(supplied["snapshot_hashes"]) != sorted(s["snapshot_hash"] for s in sources)
+                or sorted(sha256_json(row) for row in supplied["pit_metadata"]) != sorted(sha256_json(row) for row in pit)):
+            return False
+        return (payload["candidate"] == bundle["candidate"]
+                and payload["hypothesis_id"] == bundle["candidate"]["hypothesis_id"]
+                and payload["generation_id"] == bundle["candidate"]["generation_id"]
+                and payload["declared_decision_map"] == bundle["candidate"]["decision_map"]
+                and all(bundle.get(key) == value for key, value in expected.items())
+                and declared["decision_map"] == bundle["candidate"]["decision_map"]
+                and declared["entry_definition"] == expression["entry_clock"]
+                and declared["exit_definition"] == expression["exit_clock"]
+                and declared["universe"]["universe_id"] == expression["universe"])
+    except (KeyError, TypeError, ValueError, AttributeError):
+        return False
+
+
 def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     """Decide only whether a frozen candidate is ready for a later authorized test."""
     candidate = bundle.get("candidate") if isinstance(bundle.get("candidate"), dict) else {}
@@ -358,7 +360,12 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
 
     expression_spec = expression.get("spec") if isinstance(expression.get("spec"), dict) else {}
     expression_required = (
-        "instrument_rule", "side_rule", "entry_rule", "exit_rule", "horizon_rule", "sizing_rule",
+        "instrument_rule",
+        "side_rule",
+        "entry_rule",
+        "exit_rule",
+        "horizon_rule",
+        "sizing_rule",
     )
 
     protocol_candidate_hash = _protocol_candidate_hash(protocol)
@@ -458,7 +465,8 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     )
     add(
         "implementability_declaration",
-        implementability.get("status") == "PASS" and _is_hash(implementability.get("declaration_hash")),
+        implementability.get("status") == "PASS"
+        and _is_hash(implementability.get("declaration_hash")),
         "Implementability must be explicitly PASS with a frozen declaration hash.",
     )
     add(
@@ -469,11 +477,8 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and protocol.get("outcome_opened") is False,
         "Protocol must be frozen, candidate-bound, hash-valid, and outcome-closed.",
     )
-    add(
-        "frozen_input_binding",
-        _frozen_input_binding(bundle, protocol),
-        "Readiness projections must match the source, protocol and implementation declarations frozen in the envelope.",
-    )
+    add("frozen_input_binding", _frozen_input_binding(bundle, protocol),
+        "Readiness projections must match the source, protocol and implementation declarations frozen in the envelope.")
     binding_payload_matches = (
         isinstance(reproducibility_payload, dict)
         and reproducibility_payload.get("candidate_hash") == actual_candidate_hash
@@ -554,8 +559,13 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     block_reasons = [
-        {"code": checks[name]["reason_code"], "check": name, "detail": checks[name]["detail"]}
-        for name in CHECK_ORDER if checks[name]["status"] != "PASS"
+        {
+            "code": checks[name]["reason_code"],
+            "check": name,
+            "detail": checks[name]["detail"],
+        }
+        for name in CHECK_ORDER
+        if checks[name]["status"] != "PASS"
     ]
     mutated = candidate != candidate_before
     if mutated and checks["candidate_immutability"]["status"] == "PASS":
@@ -564,11 +574,14 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
             "reason_code": REASON_CODES["candidate_immutability"],
             "detail": "Validator mutated candidate state while evaluating readiness.",
         }
-        block_reasons.insert(0, {
-            "code": REASON_CODES["candidate_immutability"],
-            "check": "candidate_immutability",
-            "detail": checks["candidate_immutability"]["detail"],
-        })
+        block_reasons.insert(
+            0,
+            {
+                "code": REASON_CODES["candidate_immutability"],
+                "check": "candidate_immutability",
+                "detail": checks["candidate_immutability"]["detail"],
+            },
+        )
 
     ready = not block_reasons
     return {
