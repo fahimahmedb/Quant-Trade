@@ -38,6 +38,17 @@ FROZEN_PROTOCOL_FIELDS = (
     "multiplicity_family",
 )
 
+# These declarations were added after the original frozen-protocol contract. They
+# remain optional for byte-compatible replay of historical plans, but when a
+# current protocol carries them they are part of the runner's protocol identity.
+# Adding, removing or changing one after freeze must therefore move the protocol
+# binding rather than being left to a downstream sidecar check.
+FROZEN_PROTOCOL_IDENTITY_FIELDS = FROZEN_PROTOCOL_FIELDS + (
+    "multiplicity_method",
+    "geometry_declaration",
+    "power_declaration",
+)
+
 BINDING_ORDER = (
     "generation",
     "candidate",
@@ -264,7 +275,7 @@ class DryRunExperimentRunner:
                 item.get("route_hash") for item in qualifications if item.get("route_hash")
             ),
             "source_pit_metadata": deepcopy(source_pit_metadata),
-            **_copy_fields(declared, FROZEN_PROTOCOL_FIELDS),
+            **_copy_fields(declared, FROZEN_PROTOCOL_IDENTITY_FIELDS),
             "seed": runner_meta.get("seed"),
             "environment": runner_meta.get("environment"),
             "code_sha": runner_meta.get("code_sha"),
@@ -276,7 +287,7 @@ class DryRunExperimentRunner:
 
     @staticmethod
     def _binding_hashes(frozen_protocol: Mapping[str, Any]) -> Dict[str, str]:
-        protocol_fields = _copy_fields(frozen_protocol, FROZEN_PROTOCOL_FIELDS)
+        protocol_fields = _copy_fields(frozen_protocol, FROZEN_PROTOCOL_IDENTITY_FIELDS)
         return {
             "generation": sha256_json({"generation_id": frozen_protocol["generation_id"]}),
             "candidate": sha256_json({
