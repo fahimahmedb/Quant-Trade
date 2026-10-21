@@ -7,6 +7,11 @@ from copy import deepcopy
 from math import isfinite
 
 from research.research_os.scientific_store import sha256_json
+from .experiment_infrastructure import (
+    ExperimentInfrastructureError,
+    assert_same_infrastructure,
+    bind_pre_outcome_infrastructure,
+)
 from .experiment_runner import DryRunExperimentRunner
 from .final_shape import assess_implementability, economic_identity_v1, freeze_experiment_envelope
 from .portfolio_v2 import portfolio_diagnostics_v2, structural_identity
@@ -132,15 +137,47 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     except (ValueError, PermissionError) as error:
         reasons.append(str(error))
 
+    effective = protocol.get("effective_trials")
+    trial_accounting = {
+        "hypothesis_id": candidate.get("hypothesis_id"),
+        "generation_id": candidate.get("generation_id"),
+        "observed_attempt_count": protocol.get("observed_attempt_count"),
+        "effective_trials_status": "UNKNOWN" if effective == "UNKNOWN" else "KNOWN",
+        "estimated_effective_trials": None if effective == "UNKNOWN" else effective,
+    }
+    experiment_infrastructure = None
+    if plan.get("frozen_protocol_capability") == "READY" and plan.get("status") == "READY_FOR_REPRODUCIBLE_DRY_RUN":
+        try:
+            experiment_infrastructure = bind_pre_outcome_infrastructure(
+                envelope=envelope,
+                plan=plan,
+                replay=replay,
+                trial_accounting=trial_accounting,
+                geometry_declaration=protocol.get("geometry_declaration"),
+                power_declaration=protocol.get("power_declaration"),
+            )
+            reasons.extend(experiment_infrastructure["blockers"])
+            if frozen is not None:
+                assert_same_infrastructure(experiment_infrastructure, frozen.get("experiment_infrastructure"))
+        except ExperimentInfrastructureError as error:
+            reasons.append(f"EXPERIMENT_INFRASTRUCTURE_INVALID:{error}")
+    else:
+        reasons.append("EXPERIMENT_INFRASTRUCTURE_PREREQUISITE_NOT_READY")
+
     producer = build_producer_test_readiness(output, p.get("dossier_detail", {}),
         legacy_screen={"status": "PASS" if not reasons else "BLOCK", "new_claim": True})
     reasons.extend(producer["qualification"]["blockers"])
     binding = {"candidate_hash": sha256_json(candidate), "protocol_hash": envelope["protocol_hash"],
                "source_snapshot_hashes": source_hashes, "execution_plan_hash": plan["execution_plan_hash"]}
+    if experiment_infrastructure is not None:
+        binding.update({
+            "experiment_registry_id": experiment_infrastructure["registry"]["registry_id"],
+            "experiment_registry_hash": experiment_infrastructure["registry"]["entry_hash"],
+            "experiment_infrastructure_hash": experiment_infrastructure["infrastructure_hash"],
+        })
     spec = {"instrument_rule": expression.get("instrument"), "side_rule": expression.get("direction_exposure_semantics"),
             "entry_rule": expression.get("entry_clock"), "exit_rule": expression.get("exit_clock"),
             "horizon_rule": expression.get("horizon"), "sizing_rule": expression.get("position_expression")}
-    effective = protocol.get("effective_trials")
     bundle = {
         "candidate": candidate, "candidate_hash": sha256_json(candidate),
         "producer_id": output["engine_id"], "validator_id": p["validator_id"],
@@ -151,12 +188,11 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
         "economic_expression": {"status": "COMPLETE", "spec": spec, "expression_hash": sha256_json(spec)},
         "implementability": {"status": implementation["status"], "declaration_hash": sha256_json(implementation)},
         "protocol": envelope,
-        "reproducibility": {"status": "BOUND" if replay else "BLOCK", "binding_payload": binding,
-                            "binding_hash": sha256_json(binding), "outcome_accessed": False},
+        "reproducibility": {"status": "BOUND" if replay and experiment_infrastructure else "BLOCK",
+                            "binding_payload": binding, "binding_hash": sha256_json(binding), "outcome_accessed": False},
+        "experiment_infrastructure": experiment_infrastructure or {"status": "BLOCK", "blockers": ["MISSING"]},
         "multiplicity": {"declared": bool(protocol.get("multiplicity_family")), "method": protocol.get("multiplicity_method")},
-        "trial_accounting": {"observed_attempt_count": protocol.get("observed_attempt_count"),
-                             "effective_trials_status": "UNKNOWN" if effective == "UNKNOWN" else "KNOWN",
-                             "estimated_effective_trials": None if effective == "UNKNOWN" else effective},
+        "trial_accounting": trial_accounting,
         "cost_model": {"status": "DECLARED" if cost_valid else "BLOCK", "model_id": cost.get("model_id"),
                        "declaration_hash": sha256_json(cost)},
         "capacity": {"status": "DECLARED" if cap_valid else "BLOCK", "model_id": capacity.get("model_id"),
@@ -164,6 +200,23 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
         "outcome_access": {"opened": False, "consumed": False, "result": "NOT_OBSERVED"},
     }
     validator = validator_economic_readiness_v3(readiness_bundle=bundle)
+    # W1 makes experiment infrastructure an explicit Validator membrane even
+    # before validation_readiness's public schema is revised by another lane.
+    infra_pass = bool(experiment_infrastructure) and experiment_infrastructure.get("status") == "PASS"
+    validator.setdefault("checks", {})["experiment_infrastructure"] = {
+        "status": "PASS" if infra_pass else "FAIL",
+        "reason_code": None if infra_pass else "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
+        "detail": "Registry, geometry, power, receipt and replay must be bound before authorized economic-test readiness.",
+    }
+    if not infra_pass:
+        validator["status"] = "BLOCK"
+        validator["ready_for_authorized_economic_test"] = False
+        validator["claim_ceiling"] = "BLOCKED_PRE_OUTCOME"
+        validator.setdefault("block_reasons", []).append({
+            "code": "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
+            "check": "experiment_infrastructure",
+            "detail": validator["checks"]["experiment_infrastructure"]["detail"],
+        })
     reasons.extend(r["code"] for r in validator["block_reasons"])
     red = red_team_negative_rights_v2(validator, context=red_team_context)
     reasons.extend(red["negative_rights"])
@@ -206,7 +259,8 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
         "package_hash": sha256_json(p), "legacy_screen": legacy_screen,
         "implementability": implementation, "source_qualifications": qualifications,
         "producer_readiness": producer, "experiment_plan": plan, "deterministic_replay": replay,
+        "experiment_infrastructure": experiment_infrastructure,
         "validator": validator, "red_team": red, "identity": structural_identity(identity), "portfolio": portfolio,
         "authority": dict(AUTHORITY), "outcome_accessed": False, "economic_result": "NOT_OBSERVED",
-        "trial_accounting": bundle["trial_accounting"], "architecture_stop_build": ready,
+        "trial_accounting": trial_accounting, "architecture_stop_build": ready,
     }
