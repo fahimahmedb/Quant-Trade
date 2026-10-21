@@ -79,8 +79,8 @@ jobs:
           done
           test "$(git rev-parse HEAD:research/research_os/multi_source_ideation.py)" = "$(git rev-parse "${MULTISOURCE_OUTCOME_FIREWALL_REPAIR}:research/research_os/multi_source_ideation.py")"
           grep -F 'PENDING_EXACT_HEAD_CI' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
-          grep -F 'WAVE2_INTEGRATED=false' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
-          grep -F 'Policy C is advisory only' research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
+          grep -F 'not authorized to emit `WAVE2_INTEGRATED_SHA`' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
+          grep -F 'The backend is not truth, scheduler, Control Plane or scientific evidence.' research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
           grep -F 'def _reject_outcome_fields' research/research_os/multi_source_ideation.py
           echo 'MULTISOURCE_SEMANTIC_PORT_PLUS_SECURITY_REPAIR=PASS' | tee -a /tmp/ms-c2.env
 
