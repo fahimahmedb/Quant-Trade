@@ -33,7 +33,10 @@ Functional repair:
 - `research/research_os/expansion/validation_v2.py`
 
 Regression proof:
-- `tests/test_trial_accounting_identity_binding.py`
+- `research/research_os/tests/test_convergence_trial_accounting_identity_binding.py`
+
+CI binding for this diagnostic only:
+- `.github/workflows/sec-p0-pre-t0-gate.yml` adds one targeted unittest-discovery step for the diagnostic test file, after canonical V1 status freshness and the existing W1 Data suite.
 
 Semantic contract affected:
 - `readiness_bundle.candidate.{hypothesis_id,generation_id}`
@@ -52,10 +55,10 @@ The regression test covers:
 4. partial lineage (only one identifier) is rejected;
 5. the canonical validator converts a would-be READY core receipt to BLOCK on lineage drift with `TRIAL_ACCOUNTING_INVALID`.
 
-The test is placed in `tests/` so the repository's `SEC P0 pre-t0 gate` full-unit discovery executes it on push.
+The test is outside canonical V1 `tests/` accounting and is executed explicitly by the branch's `SEC P0 pre-t0 gate` diagnostic step, avoiding any artificial change to the canonical V1 proof inventory.
 
-Code/test checkpoint immediately before this documentation commit:
-`ddc6cea5715b544f47faa9524d1888b9c4577e33`
+Code/test/CI checkpoint immediately before this documentation refresh:
+`9e86117284e76bfb9520d4b62c8d24eb49dfd422`
 
 ## CP079 applicability
 
