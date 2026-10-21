@@ -348,7 +348,7 @@ def _scan_forbidden_outcome_keys(value: Any, path: str = "$") -> List[str]:
             if key_norm in FORBIDDEN_OUTCOME_KEYS:
                 hits.append(f"{path}.{key}")
             hits.extend(_scan_forbidden_outcome_keys(child, f"{path}.{key}"))
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for idx, child in enumerate(value):
             hits.extend(_scan_forbidden_outcome_keys(child, f"{path}[{idx}]"))
     return hits

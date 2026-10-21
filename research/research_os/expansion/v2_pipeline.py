@@ -39,7 +39,7 @@ def _reject_outcome_payload(value: Any, path: str = "$") -> None:
             if str(key).lower() in _FORBIDDEN_RESEARCH_KEYS:
                 raise V2ContractError(f"OUTCOME_DATA_VISIBLE_TO_RESEARCH:{path}.{key}")
             _reject_outcome_payload(child, f"{path}.{key}")
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for index, child in enumerate(value):
             _reject_outcome_payload(child, f"{path}[{index}]")
 
