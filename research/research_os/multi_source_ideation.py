@@ -29,11 +29,31 @@ DUPLICATE_CLASSES = {
     "EXACT_DUPLICATE", "ANCESTRY_MATCH", "LIKELY_SEMANTIC_DUPLICATE",
     "POSSIBLE_EXPRESSION_EQUIVALENCE", "DISTINCT", "UNKNOWN", "REVIEW_REQUIRED",
 }
+OUTCOME_BEARING_KEYS = {
+    "pnl", "pnl_series", "profit", "profitability", "return", "returns",
+    "return_series", "realized_return", "realized_return_series", "sharpe", "sortino",
+    "alpha", "covariance", "correlation", "empirical_correlation", "realized_pnl",
+    "unrealized_pnl", "price", "prices", "price_series", "fill", "fills",
+    "equity_curve", "win_rate", "hit_rate", "outcome", "outcomes", "economic_result",
+}
 
 
 def _hash(value: Any) -> str:
     raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()
     return hashlib.sha256(raw).hexdigest()
+
+
+def _reject_outcome_fields(value: Any, path: str = "payload") -> None:
+    """Keep ideation pre-outcome even when an external model/source is untrusted."""
+    if isinstance(value, Mapping):
+        for key, nested in value.items():
+            normalized = str(key).strip().lower()
+            if normalized in OUTCOME_BEARING_KEYS:
+                raise ValueError(f"outcome-bearing ideation field forbidden: {path}.{key}")
+            _reject_outcome_fields(nested, f"{path}.{key}")
+    elif isinstance(value, (list, tuple)):
+        for index, nested in enumerate(value):
+            _reject_outcome_fields(nested, f"{path}[{index}]")
 
 
 def build_context_snapshot(*, ideation_cycle_id: str, created_at: str, refs: Mapping[str, Any], relevant_schema_versions: Mapping[str, str]) -> dict:
@@ -77,9 +97,11 @@ def raw_artifact(*, policy_kind: str, status: str, context_snapshot_hash: str, a
         raise ValueError("seed terminal requires IDEATION_SEED")
     if status in {"SOURCE_UNAVAILABLE", "SOURCE_FAILED", "BLOCKED", "NO_ACTION", "NO_PROPOSAL", "NO_ADMISSIBLE_NOVEL_SOURCE", "FRONTIER_EXHAUSTED", "INVALID_INPUT"} and artifact_kind is not None:
         raise ValueError("non-emission terminal cannot carry proposal")
+    bounded_payload = deepcopy(dict(payload or {}))
+    _reject_outcome_fields(bounded_payload)
     return {
         "policy_kind": policy_kind, "status": status, "context_snapshot_hash": context_snapshot_hash,
-        "artifact_kind": artifact_kind, "payload": deepcopy(dict(payload or {})), "reason": reason,
+        "artifact_kind": artifact_kind, "payload": bounded_payload, "reason": reason,
     }
 
 
@@ -151,7 +173,14 @@ def policy_c(*, snapshot: Mapping[str, Any], backend: ModelBackend | None, manda
         return raw_artifact(policy_kind=POLICIES[2], status="SOURCE_UNAVAILABLE", context_snapshot_hash=h, reason="EXTERNAL_RUNTIME_MISSING"), None
     if mandate.get("outcome_accessed") not in (None, False):
         raise ValueError("divergent model may not receive outcome-bearing context")
+    _reject_outcome_fields(mandate, "mandate")
     response = backend.generate(deepcopy(dict(mandate)))
+    if not isinstance(response, Mapping):
+        return raw_artifact(policy_kind=POLICIES[2], status="SOURCE_FAILED", context_snapshot_hash=h, reason="MALFORMED_MODEL_OUTPUT"), None
+    try:
+        _reject_outcome_fields(response, "model_response")
+    except ValueError:
+        return raw_artifact(policy_kind=POLICIES[2], status="BLOCKED", context_snapshot_hash=h, reason="OUTCOME_BEARING_MODEL_OUTPUT_FORBIDDEN"), None
     alternatives = response.get("alternatives")
     selected = response.get("selected_alternative_index")
     if not isinstance(alternatives, list) or not 1 <= len(alternatives) <= 5 or not isinstance(selected, int) or selected < 0 or selected >= len(alternatives):
