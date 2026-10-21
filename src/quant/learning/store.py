@@ -39,6 +39,13 @@ class LearningStore:
         self.path = path
         payload = read_json(path, {}) or {}
         self.lessons: list[dict[str, Any]] = payload.get("lessons", [])
+        processed = payload.get("processed_research_tickets", [])
+        if not isinstance(processed, list) or any(
+                not isinstance(value, str) or not value.strip() for value in processed):
+            raise ValueError("invalid processed research ticket identities")
+        retained = {item["ticket_id"] for item in self.lessons
+                    if item.get("source") == "RESEARCH" and item.get("ticket_id")}
+        self.processed_research_tickets: set[str] = set(processed) | retained
         self.lane_priorities: dict[str, float] = payload.get("lane_priorities", {})
         self.decision_quality: dict[str, Any] = payload.get("decision_quality", {
             "strategies_evaluated": 0, "true_rejects": 0, "false_rejects": 0,
@@ -46,11 +53,18 @@ class LearningStore:
         self.build_tasks: dict[str, dict[str, Any]] = payload.get("build_tasks", {})
 
     def save(self) -> None:
-        write_json(self.path, {"version": 1, "updated_at": utc_now(),
-                               "lessons": self.lessons[-200:],
-                               "lane_priorities": self.lane_priorities,
-                               "decision_quality": self.decision_quality,
-                               "build_tasks": self.build_tasks})
+        try:
+            write_json(self.path, {"version": 1, "updated_at": utc_now(),
+                                   "lessons": self.lessons[-200:],
+                                   "processed_research_tickets": sorted(self.processed_research_tickets),
+                                   "lane_priorities": self.lane_priorities,
+                                   "decision_quality": self.decision_quality,
+                                   "build_tasks": self.build_tasks})
+        except BaseException:
+            # Retry decisions must reflect durable state even when replacement
+            # succeeded but its acknowledgement failed.
+            self.__init__(self.path)
+            raise
 
     # --- research ----------------------------------------------------------
     def record_research(self, lane_name: str, lane: str, result: dict[str, Any]) -> bool:
@@ -58,15 +72,17 @@ class LearningStore:
         if not result.get("lesson"):
             return False
         ticket_id = result.get("ticket_id")
-        if ticket_id and any(item.get("source") == "RESEARCH"
-                             and item.get("ticket_id") == ticket_id
-                             for item in self.lessons):
+        if ticket_id is not None and (not isinstance(ticket_id, str) or not ticket_id.strip()):
+            raise ValueError("research ticket identity must be a nonempty string")
+        if ticket_id and ticket_id in self.processed_research_tickets:
             return False
         self.lessons.append({"at": utc_now(), "source": "RESEARCH", "lane": lane,
                              "lane_name": lane_name, "outcome": result.get("outcome"),
                              "ticket_id": ticket_id,
                              "lesson": result["lesson"],
                              "next_action": result.get("next_action_hint")})
+        if ticket_id:
+            self.processed_research_tickets.add(ticket_id)
         current = self.lane_priorities.get(lane_name, 30.0)
         delta = 4.0 if result.get("outcome") == "VALIDATED" else -6.0
         self.lane_priorities[lane_name] = round(current + delta, 2)
