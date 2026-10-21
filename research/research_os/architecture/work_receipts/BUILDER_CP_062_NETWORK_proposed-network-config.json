@@ -1,0 +1,10 @@
+{
+  "config": {
+    "network": {
+      "allowed_domains": [
+        "api.github.com",
+        "quant-trade-lab.sassylime.chatgpt.site"
+      ]
+    }
+  }
+}

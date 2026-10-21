@@ -1,0 +1,17 @@
+{
+  "observed_at": "2026-10-21T08:36:13.061069+00:00",
+  "probes": [
+    {
+      "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs/39569916367",
+      "error_type": "URLError",
+      "reason": "Tunnel connection failed: 403 Forbidden",
+      "body_read": false
+    },
+    {
+      "url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+      "error_type": "URLError",
+      "reason": "Tunnel connection failed: 403 Forbidden",
+      "body_read": false
+    }
+  ]
+}
