@@ -60,6 +60,7 @@ class EconomicIdentityPortfolioDepthW1Tests(unittest.TestCase):
         self.assertEqual(pair["classification"], "UNKNOWN")
         self.assertEqual(pair["structural_overlap_score"], 0.0)
         self.assertFalse(pair["same_exposure_review_required"])
+        self.assertEqual(pair["relationship_signals"], [])
         portfolio = portfolio_diagnostics_v2([left, right])
         self.assertEqual(portfolio["structural_novelty"]["H1"], "UNKNOWN")
         self.assertEqual(portfolio["structural_novelty"]["H2"], "UNKNOWN")
@@ -90,12 +91,47 @@ class EconomicIdentityPortfolioDepthW1Tests(unittest.TestCase):
             "DIFFERENT",
         )
 
+    def test_partial_relationship_signals_are_explicit_and_non_empirical(self):
+        left = identity("H1")
+        right = identity(
+            "H2",
+            instrument="SOFR-FUTURE",
+            timing_clock="month-end-close",
+            horizon="5d",
+        )
+        pair = structural_pair(left, right)
+        self.assertIn("SAME_MECHANISM_DIFFERENT_INSTRUMENT", pair["relationship_signals"])
+        self.assertIn("SAME_PAYER_DIFFERENT_CLOCK", pair["relationship_signals"])
+        self.assertIn("SAME_EVENT_DEPENDENCY_DIFFERENT_HORIZON", pair["relationship_signals"])
+        self.assertIn("SAME_EXPOSURE_DIFFERENT_WRAPPER", pair["relationship_signals"])
+        self.assertEqual(pair["empirical_correlation"], "UNAVAILABLE")
+        self.assertFalse(pair["return_series_consumed"])
+
+    def test_same_exposure_different_wrapper_forces_related_exposure_review(self):
+        left = identity("H1", payer="UNKNOWN", mechanism="UNKNOWN", timing_clock="UNKNOWN", instrument="ETF-A")
+        right = identity("H2", payer="UNKNOWN", mechanism="UNKNOWN", timing_clock="UNKNOWN", instrument="FUTURE-B")
+        pair = structural_pair(left, right)
+        self.assertEqual(pair["classification"], "RELATED_EXPOSURE_REVIEW")
+        self.assertTrue(pair["same_exposure_review_required"])
+        self.assertEqual(pair["review_basis"], ["economic_exposure"])
+        self.assertIn("SAME_EXPOSURE_DIFFERENT_WRAPPER", pair["relationship_signals"])
+
+    def test_same_payer_actor_with_unknown_mechanism_is_not_declared_independent(self):
+        left = identity("H1", mechanism="UNKNOWN", timing_clock="UNKNOWN", source_identity="PACKET-A")
+        right = identity("H2", mechanism="UNKNOWN", timing_clock="UNKNOWN", source_identity="PACKET-B")
+        pair = structural_pair(left, right)
+        self.assertEqual(pair["classification"], "RELATED_EXPOSURE_REVIEW")
+        self.assertTrue(pair["same_exposure_review_required"])
+        self.assertIn("SAME_PAYER_ACTOR_MECHANISM_UNRESOLVED", pair["relationship_signals"])
+        self.assertTrue(pair["explanation"]["source_identity_difference_is_not_independence_evidence"])
+
     def test_different_source_packet_is_not_independence_evidence(self):
         left = identity("H1", timing_clock="UNKNOWN", source_identity="PACKET-A")
         right = identity("H2", timing_clock="UNKNOWN", source_identity="PACKET-B")
         pair = structural_pair(left, right)
         self.assertEqual(pair["classification"], "RELATED_EXPOSURE_REVIEW")
         self.assertTrue(pair["same_exposure_review_required"])
+        self.assertIn("SAME_MECHANISM_DIFFERENT_SOURCE_IDENTITY", pair["relationship_signals"])
         self.assertTrue(pair["explanation"]["source_identity_difference_is_not_independence_evidence"])
 
     def test_boolean_and_nonfinite_cost_capacity_are_unknown_not_evidence(self):
@@ -137,6 +173,21 @@ class EconomicIdentityPortfolioDepthW1Tests(unittest.TestCase):
         pair = structural_pair(left, identity("H2"))
         self.assertEqual(pair["classification"], "CONFLICTED_IDENTITY_REVIEW")
         self.assertTrue(pair["same_exposure_review_required"])
+
+    def test_contradictory_horizon_between_identity_and_bound_candidate_is_conflict(self):
+        value = identity("H1", horizon="1d")
+        value["candidate_snapshot"] = {
+            "hypothesis_id": "H1",
+            "generation_id": "GEN-1",
+            "horizon": "5d",
+        }
+        value["candidate_binding"] = {
+            "hypothesis_id": "H1",
+            "generation_id": "GEN-1",
+        }
+        projected = structural_identity(value)
+        self.assertEqual(projected["fields"]["horizon"]["status"], "CONFLICTED")
+        self.assertIn("FIELD_HORIZON_CONFLICTED", projected["identity_readiness"]["blockers"])
 
     def test_declared_candidate_binding_mismatch_is_rejected(self):
         value = identity("H1")
