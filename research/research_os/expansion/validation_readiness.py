@@ -68,11 +68,13 @@ def _present(value: Any) -> bool:
 def _is_hash(value: Any) -> bool:
     if not isinstance(value, str) or len(value) != 64:
         return False
-    try:
-        int(value, 16)
-    except ValueError:
-        return False
-    return True
+    return all(char in "0123456789abcdefABCDEF" for char in value)
+
+
+def _identifier(value: Any) -> bool:
+    return (isinstance(value, str) and _present(value)
+            and value.strip().upper() not in {"UNRESOLVED", "NOT_APPLICABLE", "NOT_YET_MEASURABLE",
+                                               "NONE", "NULL", "N/A"})
 
 
 def _iso(value: Any) -> Optional[datetime]:
@@ -145,7 +147,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     outcome = bundle.get("outcome_access") if isinstance(bundle.get("outcome_access"), dict) else {}
 
     producer_id = bundle.get("producer_id")
-    validator_id = bundle.get("validator_id") or "independent-validator.v3"
+    validator_id = bundle.get("validator_id")
     declared_candidate_hash = bundle.get("candidate_hash")
 
     pit_rows = source_bundle.get("pit_metadata", [])
@@ -166,6 +168,12 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
 
     protocol_candidate_hash = _protocol_candidate_hash(protocol)
     source_hashes = _source_hashes(source_bundle)
+    # Every declared source reference needs its own exact snapshot/PIT join.
+    # A repeated content address is an alias, not evidence of independent trials.
+    pit_hashes = [row.get("snapshot_hash") for row in pit_rows if isinstance(row, dict)]
+    pit_coverage = (bool(source_hashes) and len(pit_rows) == len(source_hashes)
+                    and len(pit_hashes) == len(pit_rows) and all(_is_hash(v) for v in pit_hashes)
+                    and sorted(pit_hashes) == source_hashes)
     reproducibility_payload = reproducibility.get("binding_payload")
     binding_hash_valid = (
         isinstance(reproducibility_payload, dict)
@@ -191,7 +199,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     )
     add(
         "producer_independence",
-        _present(producer_id) and _present(validator_id) and producer_id != validator_id,
+        _identifier(producer_id) and _identifier(validator_id) and producer_id != validator_id,
         "Producer and validator identities must both be explicit and different.",
     )
     add(
@@ -204,22 +212,24 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         _is_hash(source_bundle.get("manifest_hash"))
         and bool(source_hashes)
         and all(_is_hash(item) for item in source_hashes)
-        and bool(pit_rows),
-        "Source manifest, snapshot hashes, and PIT metadata must be bound.",
+        and pit_coverage,
+        "Source manifest and each snapshot reference must have exact PIT metadata coverage.",
     )
     add(
         "pit",
-        bool(pit_rows)
+        pit_coverage
         and all(
             isinstance(row, dict)
             and row.get("point_in_time_qualified") is True
-            and _present(row.get("source_id"))
+            and _identifier(row.get("source_id"))
             and _iso(row.get("available_at")) is not None
+            and _iso(row.get("route_available_at")) is not None and data_cutoff is not None
+            and _iso(row["route_available_at"]) <= data_cutoff
             for row in pit_rows
         )
         and data_cutoff is not None
         and all(ts is not None and ts <= data_cutoff for ts in source_times),
-        "Every source must be PIT-qualified and available no later than the declared data cutoff.",
+        "Each bound snapshot and its qualified route must be available by the data cutoff.",
     )
     decision_time = _iso(clock.get("decision_time"))
     freeze_time = _iso(clock.get("freeze_time"))

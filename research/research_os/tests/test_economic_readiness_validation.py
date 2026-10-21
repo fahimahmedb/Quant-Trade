@@ -60,8 +60,10 @@ def _fixture() -> dict:
             "pit_metadata": [
                 {
                     "source_id": "SRC-1",
+                    "snapshot_hash": source_hashes[0],
                     "point_in_time_qualified": True,
                     "available_at": "2026-10-15T09:00:00+00:00",
+                    "route_available_at": "2026-10-15T09:00:00+00:00",
                 }
             ],
         },

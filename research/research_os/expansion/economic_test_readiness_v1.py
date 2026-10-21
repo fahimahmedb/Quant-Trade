@@ -66,18 +66,24 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     require(expression == implementation["exact_expression_contract"], "EXPRESSION_CONTRACT_MISMATCH")
     require(output.get("outcome_accessed", False) is False, "PRODUCER_OUTCOME_ACCESS_FORBIDDEN")
     require(output.get("economic_result", "NOT_OBSERVED") == "NOT_OBSERVED", "PRODUCER_RESULT_FORBIDDEN")
+    require(type(output.get("synthetic_only")) is bool, "PRODUCER_SYNTHETIC_SCOPE_INVALID")
     require(all(p.get("authority", AUTHORITY).get(k) is False for k in AUTHORITY), "AUTHORITY_MUST_REMAIN_FALSE")
 
     qualifications = []
     pit = []
     for source in p["sources"]:
+        if (source["route"].get("source_class") == "SYNTHETIC_FIXTURE"
+                or source["route"].get("permission_state") == "FIXTURE_ONLY"):
+            require(output.get("synthetic_only") is True, "FIXTURE_SOURCE_REQUIRES_SYNTHETIC_SCOPE")
         q = qualify_source_route(source["route"], freeze_time=clock["freeze_time"])
         q["snapshot_hash"] = source["snapshot_hash"]
         qualifications.append(q)
         reasons.extend(q["blockers"])
         pit.append({"source_id": source["route"]["route_id"],
+                    "snapshot_hash": source["snapshot_hash"],
                     "point_in_time_qualified": q["point_in_time_qualified"],
                     "available_at": source["available_at"],
+                    "route_available_at": q["canonical_route"]["availability_start"],
                     "revision_policy": source["route"]["revision_policy"]})
     meta["source_pit_metadata"] = pit
     source_hashes = sorted(q["snapshot_hash"] for q in qualifications)
@@ -208,5 +214,6 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
         "producer_readiness": producer, "experiment_plan": plan, "deterministic_replay": replay,
         "validator": validator, "red_team": red, "identity": structural_identity(identity), "portfolio": portfolio,
         "authority": dict(AUTHORITY), "outcome_accessed": False, "economic_result": "NOT_OBSERVED",
+        "synthetic_only": output.get("synthetic_only"),
         "trial_accounting": bundle["trial_accounting"], "architecture_stop_build": ready,
     }
