@@ -4,9 +4,9 @@ STATUS: `FINAL`
 MISSION: `MEGA D0 — ECONOMIC LIFECYCLE KERNEL`
 BRANCH: `builder/mega-d0-economic-lifecycle-20261021`
 BASE_SHA: `97165db2faa3300cef1f23de0045ed93d25eb9cb`
-FINAL_HEAD_SHA: `d5c39d7e367c59ba715a32e4f290ffaf82f4b66f`
-FINAL_HEAD_SEMANTICS: final code/workflow-qualified head before documentary CP002/FINAL commits; this FINAL file cannot contain the SHA of the commit that creates itself
-DOCUMENTARY_PARENT_SHA: `db7ff86ef2e41b919f3a3b276afbf96437fd98ad`
+FINAL_HEAD_SHA: `ece62c2041bba7c7b9e6e58628f028ba02e0e1ef`
+FINAL_HEAD_SEMANTICS: final code-qualified D0 head; subsequent commits are documentary CP003/FINAL reseal only and do not modify qualified code
+DOCUMENTARY_PARENT_SHA: `a50771f666d39e6cb0cc7dd8a38d346f3596a605`
 AUTHORITATIVE_NORTH_STAR_BLOB: `a328b4e6d7d71dafd532938888ebf9818b1b610f`
 
 ## Exact W1 ECON refs consumed
@@ -83,7 +83,7 @@ Material changes require a new contract/observation identity. Retrospective rewr
 
 ## Future evaluation / evidence membrane
 
-D0 accepts no raw outcome payloads and rejects outcome-bearing metadata, including PnL, returns, alpha, Sharpe, covariance and empirical-correlation fields.
+D0 accepts no raw outcome payloads and rejects outcome-bearing metadata. The hardened membrane explicitly covers PnL and PnL series, profit/profitability, returns/return series/realized-return series, alpha, Sharpe, covariance, empirical correlation, realized and unrealized PnL, price/price series, fills, equity curves, win/hit rates, and generic outcome fields.
 
 A future decay-evidence reference must:
 
@@ -182,17 +182,19 @@ Authoritative D0 exact-head workflow:
 
 `MEGA D0 Exact Head Qualification`
 
-Qualified head:
+Final code-qualified head:
 
-`d5c39d7e367c59ba715a32e4f290ffaf82f4b66f`
+`ece62c2041bba7c7b9e6e58628f028ba02e0e1ef`
 
 Workflow run:
 
-`39623284525`
+`39623492690`
 
 Conclusion: `SUCCESS`.
 
-Evidence from that exact head:
+The immediately following documentary FINAL head `a61ed7946f0bee05aa0d394c344a9ab784d48a47` was also exact-head qualified successfully by run `39623510303`, proving the closure documents themselves did not disturb D0 or W1 ECON behavior before this reseal.
+
+Qualification evidence:
 
 - immutable base ancestry: PASS;
 - D0 focused tests: `32/32 PASS`;
@@ -202,7 +204,7 @@ Evidence from that exact head:
 - W1 ECON differential non-regression: `86` tests on sealed base vs `86` tests on D0 head with identical failure signatures and exit status: PASS;
 - W1 ECON owned implementation/test surfaces unchanged: PASS.
 
-The generic repository SEC P0 gate currently encounters a global/pre-existing status-artifact freshness dependency before reaching its full suite. D0 did not modify global campaign truth merely to silence that unrelated freshness condition. The lane-specific exact-head workflow above proves D0 and W1 ECON non-regression at the exact qualified D0 head.
+The generic repository SEC P0 gate has a global/pre-existing status-artifact freshness dependency. D0 did not modify global campaign truth merely to silence that unrelated freshness condition. The lane-specific exact-head workflow is the authoritative D0 closure evidence.
 
 ## Files in final D0 delta
 
@@ -211,6 +213,7 @@ Relative to `BASE_SHA`, the intended persistent D0 surfaces are:
 - `.github/workflows/mega-d0-exact-head-qualification.yml`
 - `MEGA_D0_CP_001_20261021.md`
 - `MEGA_D0_CP_002_20261021.md`
+- `MEGA_D0_CP_003_20261021.md`
 - `MEGA_D0_FINAL_20261021.md`
 - `research/research_os/expansion/economic_lifecycle.py`
 - `tests/test_mega_d0_economic_lifecycle.py`
