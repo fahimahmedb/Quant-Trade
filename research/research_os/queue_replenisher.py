@@ -11,7 +11,7 @@ from .research_refill_policy import evaluate_frontier_mandates
 
 
 ACTIVE_STATUSES = {"READY", "CLAIMED"}
-TERMINAL_STATUSES = {"COMPLETE", "BLOCKED", "CANCELLED", "KILLED"}
+TERMINAL_STATUSES = {"COMPLETE", "BLOCKED", "FAILED", "CANCELLED", "KILLED"}
 SOURCE_PREFIX = "research/research_os/sources/"
 
 
@@ -57,12 +57,14 @@ def load_research_policy_context(base: Path) -> Dict[str, Any]:
 
 def queue_summary(tasks: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     items = list(tasks)
+    known_statuses = ACTIVE_STATUSES | TERMINAL_STATUSES
     return {
         "task_count": len(items),
         "ready_count": sum(item.get("status") == "READY" for item in items),
         "claimed_count": sum(item.get("status") == "CLAIMED" for item in items),
         "active_count": sum(item.get("status") in ACTIVE_STATUSES for item in items),
         "terminal_count": sum(item.get("status") in TERMINAL_STATUSES for item in items),
+        "unknown_count": sum(item.get("status") not in known_statuses for item in items),
     }
 
 
@@ -164,6 +166,11 @@ def derive_refill_task(
     if frontier.get("recursive_refill_same_wake") is not False:
         raise ValueError("recursive refill is forbidden")
     authority = _safe_authority(frontier)
+
+    # Neither legacy derivation nor Research Intelligence can interpret an
+    # unsupported task state as proof that the canonical queue is empty.
+    if summary["unknown_count"]:
+        return {"status": "BLOCKED_UNKNOWN_TASK_STATUS", "queue": summary, "task": None}
 
     if summary["active_count"] > 0:
         return {"status": "NOOP_QUEUE_NOT_EMPTY", "queue": summary, "task": None}

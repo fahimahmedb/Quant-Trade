@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import unittest
 
 from research.research_os.queue_replenisher import derive_refill_task, validate_derived_task
@@ -67,6 +68,75 @@ def policy_context(*, route_active=True, search_complete=False, archaeology_comp
 
 
 class ResearchRefillPolicyTests(unittest.TestCase):
+    def test_c1_unknown_queue_states_refuse_both_legacy_and_mega_a_refill(self):
+        for task in ({'task_id': 'NO-STATUS'},
+                     {'task_id': 'UNKNOWN', 'status': 'UNKNOWN'},
+                     {'task_id': 'FUTURE', 'status': 'UNSUPPORTED_FUTURE_STATE'}):
+            for context in (None, policy_context()):
+                for catalog in (None, {}):
+                    with self.subTest(task=task, policy=context is not None, catalog=catalog):
+                        result = derive_refill_task(
+                            frontier=frontier(), tasks=[task], created_at='2026-10-21T10:00:00Z',
+                            research_policy_context=context, source_catalog=catalog,
+                        )
+                        self.assertEqual(result['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+                        self.assertEqual(result['queue']['unknown_count'], 1)
+                        self.assertIsNone(result['task'])
+
+    def test_c1_failed_attempt_is_terminal_and_keeps_mega_a_followup_policy(self):
+        result = derive_refill_task(
+            frontier=frontier(), tasks=[{'task_id': 'ATTEMPT', 'status': 'FAILED'}],
+            created_at='2026-10-21T10:00:00Z', research_policy_context=policy_context(),
+        )
+        self.assertEqual(result['queue']['terminal_count'], 1)
+        self.assertEqual(result['queue']['unknown_count'], 0)
+        self.assertEqual(result['status'], 'DERIVED_ONE_READY_TASK')
+        self.assertFalse(result['research_intelligence']['scientific_claims']['novelty_claimed'])
+        self.assertFalse(result['research_intelligence']['scheduler_mutation'])
+        self.assertIn('policy_hash', result['task']['derivation']['research_intelligence'])
+        self.assertTrue(all(result['task']['authority'][k] is False for k in (
+            'economic_experiment_authorized', 'prospective_observation_authorized',
+            'real_capital_authorized', 'live_trading_authorized')))
+
+    def test_c1_native_v2_unknown_queue_refusal_is_durable_and_resumable(self):
+        from tests.test_research_os_v2_worker_integration import V2WorkerIntegrationTests
+        from research.research_os.oracle_worker_v2 import build_v2_worker
+        from research.research_os.github_state import PREFIX
+        helper = V2WorkerIntegrationTests()
+        harness, worker = helper.real_worker()
+        self.addCleanup(helper.doCleanups)
+        def change_status(status):
+            def mutate(snapshot):
+                writes = {}
+                for task in snapshot.tasks():
+                    changed = deepcopy(task)
+                    changed['status'] = status
+                    writes[PREFIX + 'tasks/' + task['task_id'] + '.json'] = changed
+                return writes
+            harness.remote_change(mutate)
+        before = harness.count_paths('tasks/')
+        change_status('UNSUPPORTED_FUTURE_STATE')
+        result = worker.wake()
+        self.assertEqual(result['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+        self.assertEqual(result['queue']['unknown_count'], before)
+        with harness.store.snapshot() as snapshot:
+            wakes = [snapshot.read(p) for p in snapshot.blobs if '/runtime/worker_wakes/' in p]
+        self.assertTrue(any(w['status'] == 'BLOCKED_UNKNOWN_TASK_STATUS' for w in wakes))
+        restarted = build_v2_worker(helper.worker_config(), store=harness.store, backend=harness.model)
+        restarted.now = lambda: harness.now
+        self.assertEqual(restarted.wake()['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+        self.assertEqual(harness.count_paths('tasks/'), before)
+        self.assertEqual(harness.model.calls, 0)
+        change_status('FAILED')
+        corrected = restarted.wake()
+        self.assertNotEqual(corrected['status'], 'BLOCKED_UNKNOWN_TASK_STATUS')
+        from research.research_os.queue_replenisher import queue_summary
+        with harness.store.snapshot() as snapshot:
+            summary = queue_summary(snapshot.tasks())
+        self.assertEqual(summary['unknown_count'], 0)
+        self.assertEqual(summary['terminal_count'], before)
+        self.assertEqual(harness.model.calls, 0)
+
     def test_generation_mandate_does_not_claim_unknown_identity_novel(self):
         entry = frontier()["frontiers"][0]
         result = evaluate_frontier_mandates(

@@ -60,14 +60,17 @@ class EconomicIdentityPortfolioReadinessTests(unittest.TestCase):
             payer="index-fund",
             mechanism="index-rebalance",
             forced_constrained_actor="passive-indexer",
+            # W1 now reviews equal declared exposure even when labels differ.
+            economic_exposure="index-rebalance-pressure",
         )
         pair = structural_pair(left, right)
         self.assertEqual(pair["classification"], "STRUCTURALLY_DISTINGUISHABLE")
         self.assertFalse(pair["same_exposure_review_required"])
 
     def test_missing_core_evidence_stays_unknown(self):
-        left = identity("H1", payer="UNKNOWN", timing_clock="UNKNOWN")
-        right = identity("H2", payer="UNKNOWN", timing_clock="UNKNOWN")
+        # No known equal exposure may independently establish a related pair.
+        left = identity("H1", payer="UNKNOWN", timing_clock="UNKNOWN", economic_exposure="UNKNOWN")
+        right = identity("H2", payer="UNKNOWN", timing_clock="UNKNOWN", economic_exposure="UNKNOWN")
         pair = structural_pair(left, right)
         self.assertEqual(pair["classification"], "UNKNOWN")
         self.assertIn("payer", pair["unknown_dimensions"])

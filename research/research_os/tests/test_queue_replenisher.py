@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import unittest
 from copy import deepcopy
+import json
 from pathlib import Path
 
 from research.research_os.queue_replenisher import (
     derive_refill_task,
     load_frontier,
+    queue_summary,
     validate_derived_task,
 )
 
@@ -20,6 +22,16 @@ class QueueReplenisherTests(unittest.TestCase):
 
     def terminal_task(self, task_id: str = "OLD-001"):
         return {"task_id": task_id, "status": "COMPLETE"}
+
+    def test_c1_all_canonical_task_states_have_an_accounting_disposition(self):
+        contract = json.loads((self.base / 'contracts/research-task.schema.json').read_text())
+        for state in contract['properties']['status']['enum']:
+            with self.subTest(state=state):
+                summary = queue_summary([{'task_id': 'CANONICAL-STATE', 'status': state}])
+                self.assertEqual(summary['unknown_count'], 0)
+                self.assertEqual(summary['active_count'] + summary['terminal_count'], 1)
+                self.assertEqual(summary['active_count'], int(state in {'READY', 'CLAIMED'}))
+        self.assertEqual(queue_summary([{'status': 'KILLED'}])['terminal_count'], 1)
 
     def test_empty_queue_derives_exactly_one_safe_ready_task(self) -> None:
         result = derive_refill_task(
