@@ -10,7 +10,7 @@ import json
 from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
-from .multi_source_ideation import POLICIES, TERMINAL_STATES, barrier
+from .multi_source_ideation import POLICIES, TERMINAL_STATES, _reject_outcome_fields, barrier
 
 
 def _hash(value: Any) -> str:
@@ -20,6 +20,8 @@ def _hash(value: Any) -> str:
 def raw_proposal_receipt(*, cycle_id: str, artifact: Mapping[str, Any], provenance: Mapping[str, Any]) -> dict:
     if artifact.get("policy_kind") not in POLICIES or artifact.get("status") not in TERMINAL_STATES:
         raise ValueError("receipt requires a terminal bounded policy artifact")
+    bounded_provenance = deepcopy(dict(provenance))
+    _reject_outcome_fields(bounded_provenance, "receipt_provenance")
     body = {
         "schema_version": "raw-proposal-receipt-v2",
         "cycle_id": cycle_id,
@@ -28,7 +30,7 @@ def raw_proposal_receipt(*, cycle_id: str, artifact: Mapping[str, Any], provenan
         "artifact_kind": artifact.get("artifact_kind"),
         "context_snapshot_hash": artifact.get("context_snapshot_hash"),
         "artifact_hash": _hash(artifact),
-        "provenance": deepcopy(dict(provenance)),
+        "provenance": bounded_provenance,
         "outcome_accessed": False,
     }
     body["receipt_id"] = _hash(body)
@@ -36,9 +38,36 @@ def raw_proposal_receipt(*, cycle_id: str, artifact: Mapping[str, Any], provenan
 
 
 def ideation_cycle(*, cycle_id: str, context_snapshot: Mapping[str, Any], artifacts: Sequence[Mapping[str, Any]], receipts: Sequence[Mapping[str, Any]]) -> dict:
+    if context_snapshot.get("ideation_cycle_id") != cycle_id:
+        raise ValueError("cycle id does not match frozen ideation context")
+    if context_snapshot.get("outcome_accessed") is not False:
+        raise ValueError("OUTCOME_ACCESSED must remain false")
     h = context_snapshot.get("context_snapshot_hash")
+    if not h:
+        raise ValueError("frozen ideation context hash required")
     state = barrier(artifacts, str(h))
-    receipt_by_policy = {r.get("policy_kind"): r for r in receipts if r.get("cycle_id") == cycle_id}
+    artifacts_by_policy = {a.get("policy_kind"): a for a in artifacts}
+    receipt_by_policy: dict[str, Mapping[str, Any]] = {}
+    for receipt in receipts:
+        if receipt.get("cycle_id") != cycle_id:
+            continue
+        policy = receipt.get("policy_kind")
+        if policy not in POLICIES:
+            raise ValueError("receipt policy outside ideation contract")
+        if policy in receipt_by_policy:
+            if receipt_by_policy[policy] != receipt:
+                raise ValueError("conflicting receipts for one ideation policy")
+            continue
+        artifact = artifacts_by_policy.get(policy)
+        if artifact is None:
+            raise ValueError("receipt has no matching cycle artifact")
+        if receipt.get("context_snapshot_hash") != h:
+            raise ValueError("receipt context does not match frozen ideation context")
+        if receipt.get("artifact_hash") != _hash(artifact):
+            raise ValueError("receipt artifact hash mismatch")
+        if receipt.get("status") != artifact.get("status") or receipt.get("artifact_kind") != artifact.get("artifact_kind"):
+            raise ValueError("receipt does not describe matching policy artifact")
+        receipt_by_policy[policy] = receipt
     if state.get("intake_allowed"):
         missing = set(POLICIES) - set(receipt_by_policy)
         if missing:
