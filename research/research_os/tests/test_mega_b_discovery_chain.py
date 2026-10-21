@@ -109,3 +109,20 @@ def test_capability_mismatch_blocks_before_producer_execution():
     assert result["status"] == "BLOCKED_BEFORE_PRODUCER"
     assert result["producer_executed"] is False
     assert result["blockers"] == ["RESEARCH_INTELLIGENCE_PRODUCER_CAPABILITY_MISSING_OR_MISMATCH"]
+
+
+def test_selected_action_must_itself_be_run_producer():
+    decision = _decision()
+    decision["selected_action"]["action"] = "ARCHAEOLOGY_LOOKUP"
+    result = run_discovery_chain(
+        decision,
+        engine_key="quant",
+        source={"source_ref": "synthetic://mega-b-route"},
+        run_id="RUN-MEGA-B",
+        synthetic_only=True,
+        discovery_facts=_facts(),
+        dossier_detail=_quant_dossier_detail(),
+    )
+    assert result["status"] == "BLOCKED_BEFORE_PRODUCER"
+    assert result["producer_executed"] is False
+    assert result["blockers"] == ["RESEARCH_INTELLIGENCE_SELECTED_ACTION_MISMATCH"]
