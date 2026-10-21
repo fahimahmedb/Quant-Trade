@@ -7,6 +7,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+from .research_action_planner import plan_research_action
 from .scientific_memory_feedback import qualified_legacy_memory_view, scientific_memory_feedback
 
 
@@ -27,10 +28,12 @@ def _tokens(*values: Iterable[str]) -> set[str]:
 
 
 class LegacyKnowledgeBase:
-    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
+    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None,
+                 research_context: Optional[Dict[str, Any]] = None):
         self.manifest = manifest
         self.ledger = ledger or {"records": []}
         self.records = list(self.ledger.get("records") or [])
+        self.research_context = research_context or {}
         self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
         self._validate_source_reviews()
         self.by_id: Dict[str, Dict[str, Any]] = {}
@@ -90,7 +93,12 @@ class LegacyKnowledgeBase:
                 raise ValueError("legacy ledger schema version mismatch")
             if ledger.get("governance", {}).get("historical_result_immutability") is not True:
                 raise ValueError("legacy ledger missing historical result immutability")
-        return cls(manifest, ledger)
+        context = {
+            "capability_registry": json.loads((base / "runtime" / "CAPABILITY_REGISTRY.json").read_text()),
+            "workflow_lanes": json.loads((base / "runtime" / "WORKFLOW_LANES.json").read_text()),
+            "control_plane": json.loads((base / "runtime" / "CONTROL_PLANE.json").read_text()),
+        }
+        return cls(manifest, ledger, research_context=context)
 
     def screen_candidate(self, candidate: Dict[str, Any]) -> Dict[str, Any]:
         """Screen with semantic Scientific Memory; lexical overlap is review-only.
@@ -133,6 +141,7 @@ class LegacyKnowledgeBase:
 
         memory_view = qualified_legacy_memory_view(self.records, self.manifest)
         feedback = scientific_memory_feedback(candidate, memory_view["canonical_records"])
+        action_receipt = plan_research_action(feedback, self.research_context)
         status_by_action = {
             "ARCHAEOLOGY_LOOKUP": "BLOCK_SEMANTIC_IDENTITY_UNRESOLVED",
             "NO_BUILD": "BLOCK_KNOWN_NEGATIVE_SAME_SEMANTIC_FAMILY",
@@ -161,6 +170,7 @@ class LegacyKnowledgeBase:
                 "feedback": feedback,
                 "persistent_store_created": False,
             },
+            "next_research_action": action_receipt,
         }
         if exact_record is not None:
             result.update({
