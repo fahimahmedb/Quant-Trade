@@ -1,0 +1,189 @@
+FFFFFFFFFFFFFF.                                                          [100%]
+=================================== FAILURES ===================================
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-nan] __
+
+number = nan, kind = 'CASH'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-inf] __
+
+number = inf, kind = 'CASH'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-True] _
+
+number = True, kind = 'CASH'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-nan] _
+
+number = nan, kind = 'STOCK'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-inf] _
+
+number = inf, kind = 'STOCK'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-True] _
+
+number = True, kind = 'STOCK'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-nan] __
+
+number = nan, kind = 'SPIN'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-inf] __
+
+number = inf, kind = 'SPIN'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-True] _
+
+number = True, kind = 'SPIN'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-nan] _
+
+number = nan, kind = 'SPLIT'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-inf] _
+
+number = inf, kind = 'SPLIT'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+_ test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-True] _
+
+number = True, kind = 'SPLIT'
+
+    @pytest.mark.parametrize("number", [float("nan"), float("inf"), True])
+    @pytest.mark.parametrize("kind", ["CASH", "STOCK", "SPIN", "SPLIT"])
+    def test_nonfinite_and_boolean_terms_cannot_be_positive_consideration(number, kind):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_actions_depth.py:14: Failed
+______________ test_known_and_effective_order_follow_utc_instants ______________
+
+    def test_known_and_effective_order_follow_utc_instants():
+        earlier = event("earlier", "2026-10-20T13:00:00+02:00", "2026-10-21T13:00:00+02:00")
+        later = event("later", "2026-10-20T12:00:00Z", "2026-10-21T12:00:00Z")
+        book = CorporateActionBook([later, earlier])
+>       assert [e.event_id for e in book.known_as_of("2026-10-22")] == ["earlier", "later"]
+E       AssertionError: assert ['later', 'earlier'] == ['earlier', 'later']
+E         
+E         At index 0 diff: 'later' != 'earlier'
+E         Use -v to get more diff
+
+tests/test_vertical_pit_actions_depth.py:33: AssertionError
+_____________ test_equal_instants_use_stable_identity_tie_breaker ______________
+
+    def test_equal_instants_use_stable_identity_tie_breaker():
+        first = event("a", "2026-10-20T14:00:00+02:00", "2026-10-21T14:00:00+02:00")
+        second = event("b", "2026-10-20T12:00:00Z", "2026-10-21T12:00:00Z")
+        for entries in ([first, second], [second, first]):
+            book = CorporateActionBook(entries)
+>           assert [e.event_id for e in book.known_as_of("2026-10-22")] == ["a", "b"]
+E           AssertionError: assert ['b', 'a'] == ['a', 'b']
+E             
+E             At index 0 diff: 'b' != 'a'
+E             Use -v to get more diff
+
+tests/test_vertical_pit_actions_depth.py:42: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-nan]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-inf]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-True]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-nan]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-inf]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-True]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-nan]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-inf]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-True]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-nan]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-inf]
+FAILED tests/test_vertical_pit_actions_depth.py::test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-True]
+FAILED tests/test_vertical_pit_actions_depth.py::test_known_and_effective_order_follow_utc_instants
+FAILED tests/test_vertical_pit_actions_depth.py::test_equal_instants_use_stable_identity_tie_breaker
+14 failed, 1 passed in 0.07s
