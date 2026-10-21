@@ -1,0 +1,278 @@
+FFFFFFFF.FFFFFFFFF.                                                      [100%]
+=================================== FAILURES ===================================
+____________ test_unusable_adv_cannot_produce_an_unbounded_fill[0] _____________
+
+volume = 0
+
+    @pytest.mark.parametrize("volume", [0, -1, float("nan"), float("inf")])
+    def test_unusable_adv_cannot_produce_an_unbounded_fill(volume):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:19: Failed
+____________ test_unusable_adv_cannot_produce_an_unbounded_fill[-1] ____________
+
+volume = -1
+
+    @pytest.mark.parametrize("volume", [0, -1, float("nan"), float("inf")])
+    def test_unusable_adv_cannot_produce_an_unbounded_fill(volume):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:19: Failed
+___________ test_unusable_adv_cannot_produce_an_unbounded_fill[nan] ____________
+
+volume = nan
+
+    @pytest.mark.parametrize("volume", [0, -1, float("nan"), float("inf")])
+    def test_unusable_adv_cannot_produce_an_unbounded_fill(volume):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:19: Failed
+___________ test_unusable_adv_cannot_produce_an_unbounded_fill[inf] ____________
+
+volume = inf
+
+    @pytest.mark.parametrize("volume", [0, -1, float("nan"), float("inf")])
+    def test_unusable_adv_cannot_produce_an_unbounded_fill(volume):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:19: Failed
+___________ test_no_predecision_history_cannot_be_reported_as_liquid ___________
+
+    def test_no_predecision_history_cannot_be_reported_as_liquid():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:24: Failed
+______________ test_fill_must_occur_after_its_signal[2026-10-19] _______________
+
+execution_date = '2026-10-19'
+
+    @pytest.mark.parametrize("execution_date", ["2026-10-19", "2026-10-18"])
+    def test_fill_must_occur_after_its_signal(execution_date):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:30: Failed
+______________ test_fill_must_occur_after_its_signal[2026-10-18] _______________
+
+execution_date = '2026-10-18'
+
+    @pytest.mark.parametrize("execution_date", ["2026-10-19", "2026-10-18"])
+    def test_fill_must_occur_after_its_signal(execution_date):
+        with pytest.raises(ValueError):
+>           ExecutionModel().fill(panel(), "SYNTH", 1, "2026-10-19", execution_date)
+
+tests/test_vertical_execution_depth.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/quant/desk/execution.py:48: in fill
+    reference = panel.adjusted(execution_date, symbol, "open")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <quant.dataplane.panel.PricePanel object at 0x7f97ac8aa690>
+date = '2026-10-18', symbol = 'SYNTH', field = 'open'
+
+    def adjusted(self, date: str, symbol: str, field: str = "open") -> float:
+        """Put raw open/high/low on the same adjusted basis as ``adj_close``.
+    
+        Research returns, modelled fills and Book marks must share one price
+        basis, or the Book drifts against its own evidence every time a dividend
+        or split lands.
+        """
+>       bar = self.bars[(date, symbol)]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: ('2026-10-18', 'SYNTH')
+
+src/quant/dataplane/panel.py:128: KeyError
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes0] __________
+
+changes = {'max_participation': 0}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+        with pytest.raises(ValueError):
+>           replace(ExecutionModel(), **changes).fill(panel(), "SYNTH", 1, "2026-10-19", "2026-10-20")
+
+tests/test_vertical_execution_depth.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = ExecutionModel(commission_bps=0.5, half_spread_bps=1.0, impact_bps_at_full_participation=10.0, max_participation=0, adv_lookback_days=20)
+panel = <quant.dataplane.panel.PricePanel object at 0x7f97ac887500>
+symbol = 'SYNTH', quantity = 1, signal_date = '2026-10-19'
+execution_date = '2026-10-20'
+
+    def fill(self, panel: PricePanel, symbol: str, quantity: float, signal_date: str,
+             execution_date: str) -> dict[str, Any]:
+        """Model one order. Returns the (possibly capacity-truncated) fill."""
+        reference = panel.adjusted(execution_date, symbol, "open")
+        capacity = self.adv(panel, symbol, signal_date) * self.max_participation
+        requested_notional = abs(quantity) * reference
+        truncated = False
+        if capacity > 0 and requested_notional > capacity:
+            quantity = math.copysign(capacity / reference, quantity)
+            requested_notional = capacity
+            truncated = True
+        participation = (requested_notional / self.adv(panel, symbol, signal_date)
+                         if self.adv(panel, symbol, signal_date) > 0 else 0.0)
+        impact_bps = self.impact_bps_at_full_participation * math.sqrt(
+>           min(participation, 1.0) / self.max_participation) if participation > 0 else 0.0
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ZeroDivisionError: float division by zero
+
+src/quant/desk/execution.py:59: ZeroDivisionError
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes2] __________
+
+changes = {'max_participation': nan}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:40: Failed
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes3] __________
+
+changes = {'max_participation': 2}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:40: Failed
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes4] __________
+
+changes = {'commission_bps': -1}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:40: Failed
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes5] __________
+
+changes = {'half_spread_bps': inf}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:40: Failed
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes6] __________
+
+changes = {'adv_lookback_days': 0}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:40: Failed
+__________ test_invalid_model_parameters_cannot_make_a_fill[changes7] __________
+
+changes = {'adv_lookback_days': True}
+
+    @pytest.mark.parametrize("changes", [
+        {"max_participation": 0}, {"max_participation": -1}, {"max_participation": float("nan")},
+        {"max_participation": 2}, {"commission_bps": -1}, {"half_spread_bps": float("inf")},
+        {"adv_lookback_days": 0}, {"adv_lookback_days": True},
+    ])
+    def test_invalid_model_parameters_cannot_make_a_fill(changes):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:40: Failed
+_____________ test_nonfinite_or_boolean_quantity_is_rejected[nan] ______________
+
+quantity = nan
+
+    @pytest.mark.parametrize("quantity", [float("nan"), float("inf"), True])
+    def test_nonfinite_or_boolean_quantity_is_rejected(quantity):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:46: Failed
+_____________ test_nonfinite_or_boolean_quantity_is_rejected[inf] ______________
+
+quantity = inf
+
+    @pytest.mark.parametrize("quantity", [float("nan"), float("inf"), True])
+    def test_nonfinite_or_boolean_quantity_is_rejected(quantity):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:46: Failed
+_____________ test_nonfinite_or_boolean_quantity_is_rejected[True] _____________
+
+quantity = True
+
+    @pytest.mark.parametrize("quantity", [float("nan"), float("inf"), True])
+    def test_nonfinite_or_boolean_quantity_is_rejected(quantity):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_execution_depth.py:46: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_execution_depth.py::test_unusable_adv_cannot_produce_an_unbounded_fill[0]
+FAILED tests/test_vertical_execution_depth.py::test_unusable_adv_cannot_produce_an_unbounded_fill[-1]
+FAILED tests/test_vertical_execution_depth.py::test_unusable_adv_cannot_produce_an_unbounded_fill[nan]
+FAILED tests/test_vertical_execution_depth.py::test_unusable_adv_cannot_produce_an_unbounded_fill[inf]
+FAILED tests/test_vertical_execution_depth.py::test_no_predecision_history_cannot_be_reported_as_liquid
+FAILED tests/test_vertical_execution_depth.py::test_fill_must_occur_after_its_signal[2026-10-19]
+FAILED tests/test_vertical_execution_depth.py::test_fill_must_occur_after_its_signal[2026-10-18]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes0]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes2]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes3]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes4]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes5]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes6]
+FAILED tests/test_vertical_execution_depth.py::test_invalid_model_parameters_cannot_make_a_fill[changes7]
+FAILED tests/test_vertical_execution_depth.py::test_nonfinite_or_boolean_quantity_is_rejected[nan]
+FAILED tests/test_vertical_execution_depth.py::test_nonfinite_or_boolean_quantity_is_rejected[inf]
+FAILED tests/test_vertical_execution_depth.py::test_nonfinite_or_boolean_quantity_is_rejected[True]
+17 failed, 2 passed in 0.10s
