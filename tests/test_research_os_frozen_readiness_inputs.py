@@ -7,6 +7,7 @@ from research.research_os.expansion import economic_test_readiness_v1 as compose
 from research.research_os.expansion.validation_readiness import validate_economic_test_readiness, READY
 from research.research_os.expansion.final_shape import assess_implementability, freeze_experiment_envelope
 from research.research_os.scientific_store import sha256_json
+from research.research_os.tests.factory_infrastructure_fixture import rebind_factory_infrastructure
 from research.research_os.tests.test_economic_readiness_integration import fixture, legacy
 
 
@@ -72,7 +73,7 @@ class FrozenReadinessInputTests(unittest.TestCase):
                     bundle[field]['observed_attempt_count'] += 1
                 result = self.assert_projection_block(bundle)
                 self.assertTrue(all(v['status'] == 'PASS' for k, v in result['checks'].items()
-                                    if k != 'frozen_input_binding'), result['checks'])
+                                    if k not in {'frozen_input_binding', 'experiment_infrastructure'}), result['checks'])
 
     def test_source_projection_cannot_be_swapped_even_with_rebound_reproducibility(self):
         baseline = self.bundle()
@@ -93,7 +94,7 @@ class FrozenReadinessInputTests(unittest.TestCase):
                     row[field] = ('2026-10-15T09:30:00Z' if field.endswith('_at') else 'DIFFERENT')
                 result = self.assert_projection_block(bundle)
                 self.assertTrue(all(v['status'] == 'PASS' for k, v in result['checks'].items()
-                                    if k != 'frozen_input_binding'), result['checks'])
+                                    if k not in {'frozen_input_binding', 'experiment_infrastructure'}), result['checks'])
 
     def test_missing_frozen_sources_protocol_or_implementation_is_not_inferred(self):
         baseline = self.bundle()
@@ -113,6 +114,7 @@ class FrozenReadinessInputTests(unittest.TestCase):
         package['runner_meta']['dataset_manifest_hash'] = sha256_json(package['sources'])
         bundle = self.bundle(package)
         bundle['sources']['pit_metadata'].reverse()
+        rebind_factory_infrastructure(bundle)
         result = validate_economic_test_readiness(bundle)
         self.assertEqual(result['status'], READY, result['block_reasons'])
         self.assertEqual(bundle['trial_accounting']['effective_trials_status'], 'UNKNOWN')
