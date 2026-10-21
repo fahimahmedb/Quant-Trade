@@ -1,0 +1,356 @@
+FFFFFFFFFFFFF                                                            [100%]
+=================================== FAILURES ===================================
+_____________ test_two_atomic_writers_do_not_share_a_staging_file ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_two_atomic_writers_do_not0')
+
+    def test_two_atomic_writers_do_not_share_a_staging_file(tmp_path):
+        destination = tmp_path / "object"
+        gate = threading.Barrier(2)
+        original = os.replace
+    
+        def together(source, target):
+            gate.wait(timeout=5)
+            original(source, target)
+    
+        with patch.object(evidence.os, "replace", side_effect=together):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                futures = [pool.submit(evidence._atomic_write, destination, b"fixture") for _ in range(2)]
+                for future in futures:
+>                   future.result(timeout=10)
+
+tests/test_vertical_evidence_depth.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/quant/dataplane/evidence.py:152: in _atomic_write
+    os.replace(temporary, path)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1139: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1143: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1204: in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = PosixPath('/tmp/pytest-of-agent/pytest-3/test_two_atomic_writers_do_not0/.object.6244.tmp')
+target = PosixPath('/tmp/pytest-of-agent/pytest-3/test_two_atomic_writers_do_not0/object')
+
+    def together(source, target):
+        gate.wait(timeout=5)
+>       original(source, target)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-agent/pytest-3/test_two_atomic_writers_do_not0/.object.6244.tmp' -> '/tmp/pytest-of-agent/pytest-3/test_two_atomic_writers_do_not0/object'
+
+tests/test_vertical_evidence_depth.py:25: FileNotFoundError
+_____ test_identical_concurrent_ingestion_has_one_receipt_and_index_entry ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_identical_concurrent_inge0')
+
+    def test_identical_concurrent_ingestion_has_one_receipt_and_index_entry(tmp_path):
+        stores = [EvidenceStore(tmp_path) for _ in range(8)]
+        gate = threading.Barrier(len(stores))
+    
+        def ingest(store):
+            gate.wait(timeout=5)
+            return store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+    
+        with ThreadPoolExecutor(max_workers=len(stores)) as pool:
+>           records = list(pool.map(ingest, stores))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_evidence_depth.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_vertical_evidence_depth.py:41: in ingest
+    return store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/quant/dataplane/evidence.py:277: in put_bytes
+    _atomic_write(destination, payload)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_identical_concurrent_inge0/objects/sha256/f1/f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d')
+payload = b'fixture'
+
+    def _atomic_write(path: Path, payload: bytes) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.parent / f".{path.name}.{os.getpid()}.tmp"
+        try:
+            with temporary.open("wb") as handle:
+                handle.write(payload)
+                handle.flush()
+                os.fsync(handle.fileno())
+>           os.replace(temporary, path)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-agent/pytest-3/test_identical_concurrent_inge0/objects/sha256/f1/.f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d.6244.tmp' -> '/tmp/pytest-of-agent/pytest-3/test_identical_concurrent_inge0/objects/sha256/f1/f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d'
+
+src/quant/dataplane/evidence.py:152: FileNotFoundError
+___________ test_index_check_and_append_are_one_exclusive_operation ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_index_check_and_append_ar0')
+
+    def test_index_check_and_append_are_one_exclusive_operation(tmp_path):
+        store = EvidenceStore(tmp_path)
+        entered, release, second_checked = threading.Event(), threading.Event(), threading.Event()
+        original_append = evidence._append_jsonl
+        original_read = evidence._read_jsonl_strict
+    
+        def delayed_append(path, record):
+            entered.set()
+            assert release.wait(timeout=5)
+            return original_append(path, record)
+    
+        def observed_read(path):
+            if threading.current_thread().name == "second-index-writer":
+                second_checked.set()
+            return original_read(path)
+    
+        record = {"kind": "raw_object", "sha256": "fixture", "size_bytes": 0}
+        with patch.object(evidence, "_append_jsonl", side_effect=delayed_append), \
+                patch.object(evidence, "_read_jsonl_strict", side_effect=observed_read):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                first = pool.submit(store._append_manifest_once, record, "sha256")
+                assert entered.wait(timeout=5)
+    
+                def second():
+                    threading.current_thread().name = "second-index-writer"
+                    store._append_manifest_once(record, "sha256")
+    
+                other = pool.submit(second)
+                try:
+                    # While first publication is paused, second must not inspect an
+                    # empty manifest and decide to publish the same identity again.
+>                   assert not second_checked.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f3f78775d00: set>.wait
+
+tests/test_vertical_evidence_depth.py:83: AssertionError
+______ test_validation_lookup_requires_exact_typed_identity[validation:*] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_validation_lookup_require0')
+reference = 'validation:*'
+
+    @pytest.mark.parametrize("reference", ["validation:*", "*", "validation:?", "validation:[a-f]*",
+                                            "wrong:{digest}", "{digest}"])
+    def test_validation_lookup_requires_exact_typed_identity(tmp_path, reference):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        valid = store.validate_object(raw.sha256, parser_name="fixture", parser_version="1",
+                                      validator=lambda _: ValidationOutcome("VALID"), validated_at=T0)
+        reference = reference.format(digest=valid.validation_id.split(":")[1])
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:99: Failed
+___________ test_validation_lookup_requires_exact_typed_identity[*] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_validation_lookup_require1')
+reference = '*'
+
+    @pytest.mark.parametrize("reference", ["validation:*", "*", "validation:?", "validation:[a-f]*",
+                                            "wrong:{digest}", "{digest}"])
+    def test_validation_lookup_requires_exact_typed_identity(tmp_path, reference):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        valid = store.validate_object(raw.sha256, parser_name="fixture", parser_version="1",
+                                      validator=lambda _: ValidationOutcome("VALID"), validated_at=T0)
+        reference = reference.format(digest=valid.validation_id.split(":")[1])
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:99: Failed
+______ test_validation_lookup_requires_exact_typed_identity[validation:?] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_validation_lookup_require2')
+reference = 'validation:?'
+
+    @pytest.mark.parametrize("reference", ["validation:*", "*", "validation:?", "validation:[a-f]*",
+                                            "wrong:{digest}", "{digest}"])
+    def test_validation_lookup_requires_exact_typed_identity(tmp_path, reference):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        valid = store.validate_object(raw.sha256, parser_name="fixture", parser_version="1",
+                                      validator=lambda _: ValidationOutcome("VALID"), validated_at=T0)
+        reference = reference.format(digest=valid.validation_id.split(":")[1])
+        with pytest.raises(ValueError):
+>           store.load_validation_record(reference)
+
+tests/test_vertical_evidence_depth.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <quant.dataplane.evidence.EvidenceStore object at 0x7f3f78776540>
+validation_id = 'validation:?'
+
+    def load_validation_record(self, validation_id: str) -> ValidatedObject:
+        """Load recorded assertions without granting them semantic authority."""
+        for path in self.validated_root.glob(f"*/{validation_id.split(':', 1)[-1]}.json"):
+            return self._load_validation_file(path)
+>       raise FileNotFoundError(validation_id)
+E       FileNotFoundError: validation:?
+
+src/quant/dataplane/evidence.py:409: FileNotFoundError
+___ test_validation_lookup_requires_exact_typed_identity[validation:[a-f]*] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_validation_lookup_require3')
+reference = 'validation:[a-f]*'
+
+    @pytest.mark.parametrize("reference", ["validation:*", "*", "validation:?", "validation:[a-f]*",
+                                            "wrong:{digest}", "{digest}"])
+    def test_validation_lookup_requires_exact_typed_identity(tmp_path, reference):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        valid = store.validate_object(raw.sha256, parser_name="fixture", parser_version="1",
+                                      validator=lambda _: ValidationOutcome("VALID"), validated_at=T0)
+        reference = reference.format(digest=valid.validation_id.split(":")[1])
+        with pytest.raises(ValueError):
+>           store.load_validation_record(reference)
+
+tests/test_vertical_evidence_depth.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <quant.dataplane.evidence.EvidenceStore object at 0x7f3f788c2c30>
+validation_id = 'validation:[a-f]*'
+
+    def load_validation_record(self, validation_id: str) -> ValidatedObject:
+        """Load recorded assertions without granting them semantic authority."""
+        for path in self.validated_root.glob(f"*/{validation_id.split(':', 1)[-1]}.json"):
+            return self._load_validation_file(path)
+>       raise FileNotFoundError(validation_id)
+E       FileNotFoundError: validation:[a-f]*
+
+src/quant/dataplane/evidence.py:409: FileNotFoundError
+_____ test_validation_lookup_requires_exact_typed_identity[wrong:{digest}] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_validation_lookup_require4')
+reference = 'wrong:490d698ee7faa438d21ae86403d6134684c18b24ef712363411df67aaa79c9e7'
+
+    @pytest.mark.parametrize("reference", ["validation:*", "*", "validation:?", "validation:[a-f]*",
+                                            "wrong:{digest}", "{digest}"])
+    def test_validation_lookup_requires_exact_typed_identity(tmp_path, reference):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        valid = store.validate_object(raw.sha256, parser_name="fixture", parser_version="1",
+                                      validator=lambda _: ValidationOutcome("VALID"), validated_at=T0)
+        reference = reference.format(digest=valid.validation_id.split(":")[1])
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:99: Failed
+________ test_validation_lookup_requires_exact_typed_identity[{digest}] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_validation_lookup_require5')
+reference = '490d698ee7faa438d21ae86403d6134684c18b24ef712363411df67aaa79c9e7'
+
+    @pytest.mark.parametrize("reference", ["validation:*", "*", "validation:?", "validation:[a-f]*",
+                                            "wrong:{digest}", "{digest}"])
+    def test_validation_lookup_requires_exact_typed_identity(tmp_path, reference):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        valid = store.validate_object(raw.sha256, parser_name="fixture", parser_version="1",
+                                      validator=lambda _: ValidationOutcome("VALID"), validated_at=T0)
+        reference = reference.format(digest=valid.validation_id.split(":")[1])
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:99: Failed
+____ test_derived_lookup_rejects_partial_foreign_and_traversal_reference[] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_derived_lookup_rejects_pa0')
+prefix = ''
+
+    @pytest.mark.parametrize("prefix", ["", "wrong:", "artifact:../derived/"])
+    def test_derived_lookup_rejects_partial_foreign_and_traversal_reference(tmp_path, prefix):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        derived = store.derive([raw.sha256], transform_name="fixture", transform_version="1",
+                               transform=lambda values, _: values[0], created_at=T0)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:110: Failed
+_ test_derived_lookup_rejects_partial_foreign_and_traversal_reference[wrong:] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_derived_lookup_rejects_pa1')
+prefix = 'wrong:'
+
+    @pytest.mark.parametrize("prefix", ["", "wrong:", "artifact:../derived/"])
+    def test_derived_lookup_rejects_partial_foreign_and_traversal_reference(tmp_path, prefix):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        derived = store.derive([raw.sha256], transform_name="fixture", transform_version="1",
+                               transform=lambda values, _: values[0], created_at=T0)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:110: Failed
+_ test_derived_lookup_rejects_partial_foreign_and_traversal_reference[artifact:../derived/] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_derived_lookup_rejects_pa2')
+prefix = 'artifact:../derived/'
+
+    @pytest.mark.parametrize("prefix", ["", "wrong:", "artifact:../derived/"])
+    def test_derived_lookup_rejects_partial_foreign_and_traversal_reference(tmp_path, prefix):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        derived = store.derive([raw.sha256], transform_name="fixture", transform_version="1",
+                               transform=lambda values, _: values[0], created_at=T0)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:110: Failed
+___________ test_nonfinite_assertions_cannot_become_durable_identity ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-3/test_nonfinite_assertions_cann0')
+
+    def test_nonfinite_assertions_cannot_become_durable_identity(tmp_path):
+        store = EvidenceStore(tmp_path)
+        raw = store.put_bytes(b"fixture", source_uri="synthetic://one", retrieved_at=T0)
+        before = store.read_manifest()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_evidence_depth.py:119: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_evidence_depth.py::test_two_atomic_writers_do_not_share_a_staging_file
+FAILED tests/test_vertical_evidence_depth.py::test_identical_concurrent_ingestion_has_one_receipt_and_index_entry
+FAILED tests/test_vertical_evidence_depth.py::test_index_check_and_append_are_one_exclusive_operation
+FAILED tests/test_vertical_evidence_depth.py::test_validation_lookup_requires_exact_typed_identity[validation:*]
+FAILED tests/test_vertical_evidence_depth.py::test_validation_lookup_requires_exact_typed_identity[*]
+FAILED tests/test_vertical_evidence_depth.py::test_validation_lookup_requires_exact_typed_identity[validation:?]
+FAILED tests/test_vertical_evidence_depth.py::test_validation_lookup_requires_exact_typed_identity[validation:[a-f]*]
+FAILED tests/test_vertical_evidence_depth.py::test_validation_lookup_requires_exact_typed_identity[wrong:{digest}]
+FAILED tests/test_vertical_evidence_depth.py::test_validation_lookup_requires_exact_typed_identity[{digest}]
+FAILED tests/test_vertical_evidence_depth.py::test_derived_lookup_rejects_partial_foreign_and_traversal_reference[]
+FAILED tests/test_vertical_evidence_depth.py::test_derived_lookup_rejects_partial_foreign_and_traversal_reference[wrong:]
+FAILED tests/test_vertical_evidence_depth.py::test_derived_lookup_rejects_partial_foreign_and_traversal_reference[artifact:../derived/]
+FAILED tests/test_vertical_evidence_depth.py::test_nonfinite_assertions_cannot_become_durable_identity
+13 failed in 0.27s
