@@ -134,7 +134,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PYTHONPATH="/tmp/mega-b/src:/tmp/mega-b" python - <<'PY'
+          (
+            cd /tmp/mega-b
+            PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
           from research.research_os.discovery_engine import AUTHORITY
           assert AUTHORITY == {
               "economic_experiment_authorized": False,
@@ -143,10 +145,14 @@ jobs:
               "live_trading_authorized": False,
           }, AUTHORITY
           PY
-          PYTHONPATH="/tmp/mega-d0/src:/tmp/mega-d0" python - <<'PY'
+          )
+          (
+            cd /tmp/mega-d0
+            PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
           from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE
           assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
           PY
+          )
 
       - name: Emit foreman receipt
         shell: bash
