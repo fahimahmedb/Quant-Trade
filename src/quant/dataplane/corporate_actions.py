@@ -9,6 +9,7 @@ replay from silently importing future corporate-action knowledge.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 from typing import Iterable
 
 from .identity import IdentityBook, parse_pit_instant, validate_evidence_hash
@@ -16,6 +17,10 @@ from .identity import IdentityBook, parse_pit_instant, validate_evidence_hash
 
 ACTION_TYPES = ("NAME_CHANGE", "MERGER", "SPLIT", "SPIN_OFF", "DELISTING")
 LEG_KINDS = ("CASH", "STOCK", "SPIN")
+
+
+def _positive_number(value: object) -> bool:
+    return type(value) in (int, float) and isfinite(value) and value > 0
 
 
 @dataclass(frozen=True)
@@ -32,7 +37,7 @@ class CorporateActionLeg:
         if self.kind not in LEG_KINDS:
             raise ValueError(f"unknown corporate-action leg kind: {self.kind}")
         if self.kind == "CASH":
-            if self.cash_per_source_share is None or self.cash_per_source_share <= 0:
+            if not _positive_number(self.cash_per_source_share):
                 raise ValueError("CASH leg requires positive cash_per_source_share")
             if not self.currency:
                 raise ValueError("CASH leg requires currency")
@@ -41,7 +46,7 @@ class CorporateActionLeg:
         else:
             if not self.target_security_id:
                 raise ValueError(f"{self.kind} leg requires target_security_id")
-            if self.units_per_source_share is None or self.units_per_source_share <= 0:
+            if not _positive_number(self.units_per_source_share):
                 raise ValueError(f"{self.kind} leg requires positive units_per_source_share")
             if self.cash_per_source_share is not None:
                 raise ValueError(f"{self.kind} leg cannot declare cash_per_source_share")
@@ -83,7 +88,7 @@ class CorporateActionEvent:
         elif self.action_type == "SPLIT":
             if not self.source_security_id:
                 raise ValueError("SPLIT requires source_security_id")
-            if self.split_ratio is None or self.split_ratio <= 0:
+            if not _positive_number(self.split_ratio):
                 raise ValueError("SPLIT requires positive split_ratio")
             if self.legs:
                 raise ValueError("SPLIT uses split_ratio, not consideration legs")
@@ -129,14 +134,15 @@ class CorporateActionBook:
         parse_pit_instant(as_of)
         return tuple(sorted(
             (event for event in self.events if event.known_as_of(as_of)),
-            key=lambda event: (event.knowledge_at, event.effective_at, event.event_id),
+            key=lambda event: (parse_pit_instant(event.knowledge_at),
+                               parse_pit_instant(event.effective_at), event.event_id),
         ))
 
     def effective_as_of(self, as_of: str) -> tuple[CorporateActionEvent, ...]:
         parse_pit_instant(as_of)
         return tuple(sorted(
             (event for event in self.events if event.effective_as_of(as_of)),
-            key=lambda event: (event.effective_at, event.event_id),
+            key=lambda event: (parse_pit_instant(event.effective_at), event.event_id),
         ))
 
     def events_for_security(
