@@ -1,155 +1,172 @@
 # WAVE 2 — CONVERGENCE #2 READINESS BOARD
 
-Foreman role: parallel pre-convergence accelerator only. This document is preparation evidence, not canonical integration truth and not a Wave2 integration seal.
+Foreman role: **parallel integration preparation only**. This file is not canonical Convergence #2, not a Wave 2 seal, and cannot emit `WAVE2_INTEGRATED_SHA`.
 
-## Canonical base
+## Base law observed by the foreman
 
-- `WAVE2_IMMUTABLE_BASE_SHA=2b99d8aeb8a342f1ef32544247d366cb8a26037e`
-- base tree `ba41b099eb681ed393c6a9b012b4b8372ab2b846`
-- historical B/D0 sibling start `97165db2faa3300cef1f23de0045ed93d25eb9cb`
-- North Star blob `a328b4e6d7d71dafd532938888ebf9818b1b610f`
-- foreman base-binding checkpoint `2bcf3bcd539b8d9937d50d12804e4c987363fbd5`
+- Formal base branch: `builder/convergence-cp079-wave2-base-20261021`
+- Formal base observed: `2b99d8aeb8a342f1ef32544247d366cb8a26037e`
+- Historical direct parent: `97165db2faa3300cef1f23de0045ed93d25eb9cb`
+- North Star blob: `a328b4e6d7d71dafd532938888ebf9818b1b610f`
+- Classification: **formal base observed, seal unproven**
 
-The foreman may not emit `WAVE2_INTEGRATED_SHA` and may not declare Convergence #2 complete.
+The foreman inspected the exact-base repair and searched repository text for a durable canonical `WAVE2_IMMUTABLE_BASE_SHA` declaration. The branch/ref and technical repair are real, but no independent durable seal artifact was found. Therefore this foreman does **not** self-authorize:
 
-## Current readiness
+`FORMAL_WAVE2_IMMUTABLE_BASE_SHA=UNPROVEN`
 
-| Lane | Qualified/current head | Base relationship | Current proof | Foreman disposition |
-|---|---|---|---|---|
-| Multi-Source | `2b99d8aeb8a342f1ef32544247d366cb8a26037e` | branch exists and is exactly the sealed base | no implementation delta; foreman acceptance contract prepared against existing source/Research-Intelligence law | `BRANCH_CREATED_NO_IMPLEMENTATION_DELTA` |
-| MEGA B | `7ef088bb30ece88cf96f4514e8c581a95ca4b091` | source lane rooted at `97165db2…`; semantic port to sealed base proven | local exact-head `39634367726`: 49 pass + 13 subtests; combined sealed-base simulation stays green | `PORT_PROVEN_AWAITING_CANONICAL_CONVERGENCE` |
-| MEGA C0 | `97165db2faa3300cef1f23de0045ed93d25eb9cb` | stale historical start, pre-sealed-base | no implementation delta; foreman C0 acceptance pack exact-head preflight green | `NOT_READY_PRIMARY_HARD_BLOCKER` |
-| MEGA D0 | closure `4262462e0c853d917f32e8f87c2423f93a313167`; code `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0` | source lane rooted at `97165db2…`; explicit immutable-base identity rebind required | source FINAL 33/33; sealed-base rebound port 33/33; W1 ECON unchanged | `PORT_PROVEN_WITH_REQUIRED_BASE_REBIND` |
-| MEGA E | `2d5ff9d3d629affc720b706405fc093d0ae81548` | directly rooted at sealed `2b99d8ae…` | exact-head `39635630231` SUCCESS; tri-lane sealed-base simulation SUCCESS | `QUALIFIED_AND_COMPATIBILITY_PROVEN_AWAITING_CANONICAL_CONVERGENCE` |
+All semantic replay planning nevertheless targets the observed formal base `2b99d8ae…`, because that is the current Wave-2 base branch head.
 
-No module-local `SAFE_TO_INTEGRATE` statement is canonical integration authority.
+## Frozen observation snapshot
 
-## Executable evidence
+| Lane | Branch | Base claimed by lane | Observed branch HEAD | Qualified/material head | Status | Safe-to-integrate evidence | Canonical-port disposition |
+|---|---|---|---|---|---|---|---|
+| Multi-Source | `builder/multi-source-ideation-intake-20261021` | `2b99d8ae…` | `c003dd97c58c842a9b6846aa8ebe160ad42d92cb` | `PENDING_EXACT_HEAD` | `FINAL_UNQUALIFIED` | manifest says `SAFE_TO_INTEGRATE=PENDING_EXACT_HEAD_CI` | **NOT READY** |
+| MEGA B | `builder/mega-b-discovery-engine-20261021` | `97165db2…` | `bfc9fad9c36790abce71f80aead2485d6e022cdb` | code `7ef088bb30ece88cf96f4514e8c581a95ca4b091` | `BLOCKED_CONTRACT` | lane manifest `SAFE_TO_INTEGRATE=TRUE`; focused/full qualification recorded | requires semantic replay on `2b99…` |
+| MEGA C0 | `builder/mega-c0-scientific-adjudication-20261021` | `97165db2…` | `6dc84f35e80aec709e67e3d5d3ce0cdcfaee3bcf` | qualified `be9124f6699e76dc606de6c35a73885212930d78`; material code `66bdd160…` | `BLOCKED_CONTRACT` | lane manifest `SAFE_TO_INTEGRATE=TRUE`, run `39662700165`, `34/34` | requires semantic replay on `2b99…` |
+| MEGA D0 | `builder/mega-d0-economic-lifecycle-20261021` | `97165db2…` | `4262462e0c853d917f32e8f87c2423f93a313167` | qualified code/test `84aa0f5f78aad9a5dfd50a20d34022b31d2fcdd9` | `BLOCKED_CONTRACT` | lane final records sealed `33/33` and `SAFE_TO_INTEGRATE=TRUE` | requires explicit base rebind + replay on `2b99…` |
+| MEGA E | `builder/mega-e-autonomous-runtime-20261021` | `2b99d8ae…` | `82da975878eb9b525e1845103fe7b35e7aeca404` | qualified `2d5ff9d3cbfd7c6cbd71f54bb71095b46edb2e42` | `READY_FOR_CANONICAL_PORT` | lane manifest `SAFE_TO_INTEGRATE=TRUE`; runtime qualification recorded | **READY lane-local**, whole convergence still blocked |
 
-### B + D0 + E sealed-base compatibility
+`observed branch HEAD` and `qualified/material head` are intentionally separate. Documentary tail commits are not silently substituted for the exact code/test identity.
 
-The foreman has already proven current qualified B, rebound D0 and qualified E coexist in one ephemeral tree derived from the sealed base without mutating the canonical branch.
+## Lane contract maps
 
-- source-lane preflight: run `39635040925` SUCCESS, checkpoint `5d24b0091090393679375bf0342ad5e306805100`
-- B+D0 simulation: run `39634814260` SUCCESS, checkpoint `bef33cdf7a1c33f53295aa54ba5938660520500e`
-- B+D0+E simulation: run `39635884974` SUCCESS, checkpoint `0bf796a35a17854f25e26e94dae855d8a7d36749`
-- B focused: 49 pass + 13 subtests
-- D0 focused: 33 pass
-- E focused: 75 pass
-- W1 ECON combined: 86 pass
-- Live Lab Python: 2 pass
-- Live Lab JS: 57 pass / 0 fail
-- sealed-base repair preserved
-- authority/outcome membrane closed
-- no canonical mutation
-- no `WAVE2_INTEGRATED_SHA`
+### Multi-Source Ideation Intake V2
 
-### MEGA E exact-head qualification
+- `lane`: Multi-Source Ideation
+- `observed_head`: `c003dd97c58c842a9b6846aa8ebe160ad42d92cb`
+- `head_status`: `FINAL_UNQUALIFIED`
+- `base_sha`: `2b99d8aeb8a342f1ef32544247d366cb8a26037e`
+- `input contracts`: qualified source planning; Research Intelligence context; Scientific Memory references; model-backend boundary
+- `output contracts`: ideation cycle/proposal envelope ending only at `ELIGIBLE_FOR_DISCOVERY`
+- `shared contracts touched`: Research Intelligence reuse boundary; source identity/provenance; Scientific Memory references
+- `new schemas/contracts`: V2 contract/manifest plus ideation records implemented in `multi_source_ideation.py`, bindings and hardening modules
+- `new enums/states`: terminal ideation dispositions including eligible/review/stale/blocked semantics; exact names remain lane-owned
+- `identity fields`: proposal/source/context/cycle identities; deterministic hashes
+- `provenance fields`: source claim, context snapshot, research-intelligence passthrough, policy/model receipt provenance
+- `authority fields`: all operational/economic/prospective/capital/live authority remains false
+- `persistence surfaces`: passive idempotent proposal ledger / source-claim durability; not a queue or lease registry
+- `global files touched`: none observed as canonical global truth
+- `runtime surfaces touched`: model-backend safety boundary only; no scheduler/Oracle mutation
+- `tests introduced`: broad V2 suite covering provenance, ancestry, context hashing, staleness, duplicate prevention, source claims, crash/restart, no Candidate, no READY, no outcome, no scheduler and authority
+- `known blockers`: `FINAL_SHA=PENDING_EXACT_HEAD`; exact-head CI not sealed; GPT-OSS external runtime unavailable and correctly not claimed live
+- `expected downstream consumers`: Research Intelligence / MEGA B discovery intake
 
-`Mega E Exact-Head Qualification`
+### MEGA B Discovery Engine
 
-- exact head `2d5ff9d3d629affc720b706405fc093d0ae81548`
-- run `39635630231` SUCCESS
-- root suite 799 pass
-- Research OS suite 427 pass
-- E focused 75 pass
-- queue/Control Plane safety PASS
-- Live Lab Python 2 pass
-- Live Lab JS 57 pass / 0 fail
-- `AUTHORITY_STATUS=CLOSED`
-- `OUTCOME_ACCESSED=FALSE`
-- working tree clean
+- `observed_head`: `bfc9fad9c36790abce71f80aead2485d6e022cdb`
+- `head_status`: lane `FINAL_QUALIFIED`, campaign `BLOCKED_CONTRACT`
+- `base_sha`: `97165db2faa3300cef1f23de0045ed93d25eb9cb`
+- `input contracts`: qualified `RUN_PRODUCER` Research Intelligence decision; producer family inputs; canonical Candidate law
+- `output contracts`: canonical Candidate enriched with discovery facts; `READY_FOR_FACTORY` / experiment-ready handoff, never operational task READY
+- `shared contracts touched`: Candidate; ResearchDecision ancestry; implementability; source/PIT clocks; Proposal Ledger integration
+- `new schemas`: no second Candidate dialect; discovery metadata is additive to canonical Candidate
+- `new enums/states`: `DRAFT → VALIDATING → ADMISSIBLE → PROMOTED | REJECTED | BLOCKED`
+- `identity fields`: hypothesis/generation/candidate hash, mechanism/expression/universe lineage
+- `provenance fields`: source lineage, Research Intelligence decision/evidence refs and clocks
+- `authority fields`: scheduler-neutral, outcome-blind, all authority false
+- `persistence surfaces`: discovery/Proposal Ledger paths only, not canonical task queue
+- `global files touched`: SEC pre-T0 workflow integration; no canonical global-state ownership
+- `runtime surfaces touched`: none as scheduler owner
+- `tests introduced`: discovery engine/chain, all producer routes, canonical gate, outcome firewall; final qualification records 47 focused and 670 full-suite at lane seal
+- `known blockers`: built from old `97165…`; must semantic-port/replay onto `2b99…`
+- `expected downstream consumers`: Factory then C0 adjudication
 
-### C0 acceptance contract
+### MEGA C0 Scientific Adjudication
 
-Foreman checkpoint `e239c55a5d3711f3b24f793b5d9cc0a079188c79` added:
+- `observed_head`: `6dc84f35e80aec709e67e3d5d3ce0cdcfaee3bcf`
+- `head_status`: lane `FINAL_QUALIFIED`, campaign `BLOCKED_CONTRACT`
+- `base_sha`: `97165db2faa3300cef1f23de0045ed93d25eb9cb`
+- `input contracts`: exact Candidate generation/hash; Factory protocol/freeze/registry; canonical Validator; canonical Red Team; independence ref; optional externally-qualified negative ref
+- `output contracts`: exact-bound scientific disposition `PROMOTE | PARK | KILL | BLOCK` toward Economic Identity only
+- `shared contracts touched`: CandidateScientificLink/adjudication identity, Factory refs, Validator/Red Team composition, scientific negative-memory semantics
+- `new schemas`: single additive C0 composition surface in `research/research_os/expansion/scientific_adjudication.py`
+- `new enums/states`: cross-examination `PASS | UNKNOWN | CONFLICTED | BLOCK`; verdict `PROMOTE | PARK | KILL | BLOCK`
+- `identity fields`: hypothesis/generation/candidate hash, protocol/frozen protocol, registry, cross-exam, Validator, Red Team, independence refs
+- `provenance fields`: exact evidence/adjudication refs, uncertainty/blocker state
+- `authority fields`: no scheduler/runtime/economic authority; all flags false
+- `persistence surfaces`: scientific disposition only; no EconomicIdentity or task queue creation
+- `global files touched`: none as canonical owner
+- `runtime surfaces touched`: none
+- `tests introduced`: `tests/test_mega_c0_scientific_adjudication.py`, exact-head workflow; `34/34` focused and upstream differential recorded
+- `known blockers`: old-base lineage requires replay on `2b99…`
+- `expected downstream consumers`: W1 Economic Identity / Portfolio Readiness, then D0
 
-- `handoff/WAVE2_C2_C0_ACCEPTANCE_PACK_20261021.md`
-- `handoff/fixtures/WAVE2_C0_ACCEPTANCE_MATRIX.v1.json`
-- `.github/workflows/wave2-convergence2-c0-acceptance-pack.yml`
+### MEGA D0 Economic Lifecycle
 
-`Wave2 C2 C0 Acceptance Pack Preflight` run `39660073926` is SUCCESS.
+- `observed_head`: `4262462e0c853d917f32e8f87c2423f93a313167`
+- `head_status`: lane `FINAL_QUALIFIED`, campaign `BLOCKED_CONTRACT`
+- `base_sha`: `97165db2faa3300cef1f23de0045ed93d25eb9cb`
+- `input contracts`: `EconomicIdentityRef + PortfolioReadinessRef` bound to qualified scientific subject
+- `output contracts`: Shadow Book/lifecycle readiness, review/decay/resize/park/retire state contracts without factual outcomes
+- `shared contracts touched`: economic identity refs, portfolio readiness refs, frozen expression, forward register, decay guard
+- `new schemas`: lifecycle/shadow state contracts; no replacement of W1 economic identity
+- `new enums/states`: lifecycle readiness and review transitions distinct from ResearchTask states
+- `identity fields`: lifecycle/observation/evidence lineage bound to upstream refs
+- `provenance fields`: qualified external evidence refs only
+- `authority fields`: prospective observation/economic/capital/live all false
+- `persistence surfaces`: Shadow Book/forward register/lifecycle records
+- `global files touched`: no canonical scheduler/global truth ownership
+- `runtime surfaces touched`: callable through canonical tasks only; no scheduler ownership
+- `tests introduced`: focused lifecycle suite, resealed `33/33`
+- `known blockers`: old base SHA is semantically embedded; explicit rebind + replay required on `2b99…`
+- `expected downstream consumers`: future authorized evaluation/runtime projection only
 
-The preflight proves that the sealed base already owns the primitives C0 must reuse: Factory experiment identity/freeze, independent Validator law, Red Team negative-rights law and W1 ECON composition. C0 must therefore extract/compose this law, not create a second Validator/Red Team or experiment registry.
+### MEGA E Autonomous Runtime
 
-`C0_ACCEPTANCE_PACK_READY=TRUE`
+- `observed_head`: `82da975878eb9b525e1845103fe7b35e7aeca404`
+- `head_status`: `READY_FOR_CANONICAL_PORT`
+- `base_sha`: `2b99d8aeb8a342f1ef32544247d366cb8a26037e`
+- `input contracts`: canonical ResearchTask/Control Plane, capability/authority/lease law
+- `output contracts`: durable runtime events/receipts/outbox/recovery and factual Live Lab projection
+- `shared contracts touched`: task/lease identity, capability registry, event/receipt/outbox/generation continuity
+- `new schemas`: no second semantic task/authority registry; runtime persistence/adapters only
+- `new enums/states`: runtime/lease/recovery states remain operational and separate from scientific states
+- `identity fields`: task, lease generation, worker/session/action, event/receipt/outbox identities
+- `provenance fields`: durable evidence/output commit/receipt lineage
+- `authority fields`: canonical fail-closed authority guards; all economic/prospective/capital/live false
+- `persistence surfaces`: canonical queue lease RPCs, durable outbox, generation/recovery state
+- `global files touched`: Control Plane/runtime-sensitive surfaces; final global truth must remain canonical-integrator-owned
+- `runtime surfaces touched`: Oracle/runtime adapter, worker launch, outbox, recovery, Live Lab factual bridge
+- `tests introduced`: runtime V2 `52/52`; wider retained qualification recorded; full-suite external `orchestrator` collection issue remains outside E scope
+- `known blockers`: none lane-local material; canonical whole-system port/regression still required
+- `expected downstream consumers`: Live Lab factual projection / operational observability
 
-`C0_IMPLEMENTATION_QUALIFIED=FALSE`
+## Readiness dimensions
 
-### Multi-Source acceptance contract
+| Lane | Contracts mapped | Conflicts known | Fixtures ready | Binding plan ready | Focused tests ready | Primary blocker | Canonical integration readiness |
+|---|---|---|---|---|---|---|---|
+| Multi-Source | YES | YES | PARTIAL | YES | YES lane-side; seam pending | exact-head final seal/CI pending | NO |
+| MEGA B | YES | YES | YES/spec+rehearsal | YES | YES | exact-base replay on `2b99…` | NO |
+| MEGA C0 | YES | YES | YES/spec | YES | YES | exact-base replay on `2b99…` | NO |
+| MEGA D0 | YES | YES | YES/spec+rehearsal | YES | YES | explicit base rebind + replay | NO |
+| MEGA E | YES | YES | YES | YES | YES | whole-chain convergence only | YES lane-local |
 
-The branch `builder/multi-source-ideation-intake-20261021` now exists, but its current head is exactly the sealed base `2b99d8ae…`; therefore no Multi-Source implementation has yet occurred.
+## Cross-lane blocker summary
 
-Foreman acceptance law is prepared in:
+1. Immutable-base **branch identity is observed**, but durable canonical seal evidence is still unproven by the foreman.
+2. Multi-Source has substantial implementation but intentionally remains non-self-certified: `FINAL_SHA=PENDING_EXACT_HEAD`, `SAFE_TO_INTEGRATE=PENDING_EXACT_HEAD_CI`.
+3. B, C0 and D0 were qualified from historical `97165…`, one commit behind the current formal base; they require semantic replay on `2b99…`, not sibling rebases.
+4. D0 additionally embeds the old base identity and therefore needs an explicit controlled rebind during canonical port.
+5. The live full chain Multi→B→C0→Economic→D0→E has not been qualified as one canonical exact head.
+6. Global truth files/config/registries remain canonical-integrator-owned.
 
-- `handoff/WAVE2_C2_MULTI_SOURCE_ACCEPTANCE_PACK_20261021.md`
-- `handoff/fixtures/WAVE2_MULTI_SOURCE_ACCEPTANCE_MATRIX.v1.json`
-- `.github/workflows/wave2-convergence2-multi-source-acceptance-pack.yml`
+## Cross-lane law that is already stable
 
-It binds Multi-Source to the already-existing source-aware chain:
+- `ELIGIBLE_FOR_DISCOVERY != READY`
+- `Candidate != ResearchTask`
+- `scientific decision != scheduler decision`
+- `Research Intelligence != Control Plane`
+- `ModelBackend != scheduler`
+- `Proposal Ledger != queue`
+- `IdeationSourceClaim != lease`
+- `BLOCKED != FAILED`
+- `UNEXECUTED != NEGATIVE`
+- `READY != PROFITABLE`
+- `UNKNOWN remains UNKNOWN`
 
-`qualified documentary source`
-→ `Multi-Source intake proposal`
-→ `Research Intelligence GENERATE_MECHANISM / semantic identity / Scientific Memory screening`
-→ `canonical operational admission when applicable`
-→ `Research Intelligence RUN_PRODUCER`
-→ `MEGA B`
+Operational `READY` may arise only from canonical Control Plane law: an explicitly authorized downstream handoff from the current claimed task, or deterministic `control_integrator` refill after fresh global proof `READY=0 && CLAIMED=0`.
 
-Multi-Source may not create a second replenisher, bypass Research Intelligence, mint ResearchTask `READY`, or treat file/path/source count as scientific novelty.
-
-## Current cross-lane law
-
-### Multi-Source -> Research Intelligence -> B
-
-Existing sealed-base source planning already binds documentary source identity using source ref, packet/content hash, record hash, blob identity when available, clocks and qualification. Content identity survives path rename/copy. Research Intelligence preserves UNKNOWN and Scientific Memory distinctions and later owns `RUN_PRODUCER`. B rejects any input that is not an executable, scheduler-neutral `RUN_PRODUCER` decision.
-
-### B -> C0
-
-B preserves one canonical Candidate and adds `candidate.discovery`. It emits `READY_FOR_FACTORY` / `EXPERIMENT_READY_HANDOFF`, never operational ResearchTask `READY`.
-
-C0 must bind the exact Candidate snapshot/generation/protocol identity without silently mutating B discovery facts or manufacturing a second Candidate dialect.
-
-### C0 -> W1 ECON -> D0
-
-The sealed base already composes `validator_economic_readiness_v3` and `red_team_negative_rights_v2` in W1 ECON. C0 must reuse/extract these canonical scientific primitives and emit one exact-subject disposition. W1 ECON retains independent economic-identity/structural-readiness veto power. D0 remains strictly downstream and consumes `EconomicIdentityRef + PortfolioReadinessRef` only.
-
-### Scientific chain -> E
-
-Scientific eligibility is not operational admission. E continues to rely on canonical Control Plane / ResearchTask authority. B/C0/D0/Multi-Source scientific states may not directly become queue `READY`.
-
-## Current blockers
-
-1. **MEGA C0 still has no implementation delta and remains on `97165db2…`.** Its acceptance contract is ready and machine-preflighted, but the sibling implementation itself is absent.
-2. **Multi-Source branch exists but equals the sealed base.** Its acceptance contract is ready; the sibling implementation itself is absent.
-3. The exact live seam `Multi-Source -> Research Intelligence -> RUN_PRODUCER -> B` is therefore not yet implementation-proven.
-4. The exact live seam `B -> C0 -> W1 ECON -> rebound D0` is not yet implementation-proven.
-5. B/D0/E compatibility remains ephemeral foreman proof; no canonical integrated head exists.
-6. No full canonical integrated exact-head regression or Wave2 integration manifest exists.
-
-## Next convergence prerequisites
-
-Before canonical Convergence #2, acquire exact qualified heads for Multi-Source and C0 and run them against the foreman acceptance packs. Only then build a fresh ephemeral whole-chain simulation on sealed `2b99d8ae…`:
-
-```text
-Multi-Source
--> Research Intelligence
--> B
--> Factory
--> C0
--> W1 ECON
--> rebound D0
--> E / canonical Control Plane projection
-```
-
-The simulation must remain outcome-blind and authority-neutral. It is still not authorization for the foreman to create a canonical integration SHA.
-
-## Durable handoffs
-
-- `handoff/WAVE2_C2_CURRENT_PORT_PROOF_20261021.md`
-- `handoff/WAVE2_C2_C0_ACCEPTANCE_PACK_20261021.md`
-- `handoff/WAVE2_C2_MULTI_SOURCE_ACCEPTANCE_PACK_20261021.md`
-
-## Authority
+## Authority / outcome state
 
 `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
 
@@ -163,4 +180,4 @@ The simulation must remain outcome-blind and authority-neutral. It is still not 
 
 `READY_FOR_CANONICAL_CONVERGENCE2=FALSE`
 
-`WAVE2_INTEGRATED_SHA=NOT_AUTHORIZED_TO_EMIT`
+`WAVE2_INTEGRATED_SHA_EMITTED=FALSE`
