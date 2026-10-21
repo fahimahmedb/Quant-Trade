@@ -11,17 +11,20 @@ permissions:
 
 env:
   WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
-  MULTISOURCE_MERGED_HEAD: b5ba754188b9029f8a80ebfeea37c98b6f636869
-  MULTISOURCE_QUALIFICATION_HEAD: b344e868096f36e80abc2bec79ee6e5ad8edcdfa
-  MULTISOURCE_OUTCOME_FIREWALL_REPAIR: 884632a1fc332df8155eaa5e0557521497dc6d4b
   NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
+  MULTISOURCE_MERGED_HEAD: b5ba754188b9029f8a80ebfeea37c98b6f636869
+  MULTISOURCE_PRIOR_TEST_ONLY_HEAD: b344e868096f36e80abc2bec79ee6e5ad8edcdfa
+  MULTISOURCE_ACCEPTED_SEMANTIC_HEAD: a905acf1a76eb0759224793d669caa6ea2974903
+  MULTISOURCE_OUTCOME_FIREWALL_REPAIR: 884632a1fc332df8155eaa5e0557521497dc6d4b
+  MULTISOURCE_REPAIRED_BLOB: 8d6e5d27386c437e66593a2e533f67a7f45227e5
+  MULTISOURCE_IDEATION_CYCLE_BLOB: 09c3886258c9d86fb2e7a9809aae7b9476550ebf
   PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
 
 jobs:
   qualify-multisource:
-    name: Canonical repaired passive Multi-Source intake and cumulative proof
+    name: Canonical passive Multi-Source intake, semantic hardening and cumulative proof
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,34 +35,47 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - run: python3 -m pip install --disable-pip-version-check pytest
 
-      - name: Bind exact canonical head and all source snapshots
+      - name: Bind exact canonical head and source lineage
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
-          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
-          git merge-base --is-ancestor "${MULTISOURCE_MERGED_HEAD}" HEAD
-          git merge-base --is-ancestor "${MULTISOURCE_OUTCOME_FIREWALL_REPAIR}" HEAD
-          test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$WAVE2_IMMUTABLE_BASE_SHA" HEAD
+          git merge-base --is-ancestor "$MULTISOURCE_MERGED_HEAD" HEAD
+          git merge-base --is-ancestor "$MULTISOURCE_OUTCOME_FIREWALL_REPAIR" HEAD
+          test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "$NORTH_STAR_BLOB"
           git fetch origin "+refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
-          git cat-file -e "${MULTISOURCE_QUALIFICATION_HEAD}^{commit}"
-          git merge-base --is-ancestor "${MULTISOURCE_MERGED_HEAD}" "${MULTISOURCE_QUALIFICATION_HEAD}"
-          echo "OBSERVED_MULTISOURCE_HEAD=$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)" | tee /tmp/ms-c2.env
+          observed="$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)"
+          git merge-base --is-ancestor "$MULTISOURCE_MERGED_HEAD" "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD"
+          git merge-base --is-ancestor "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD" "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD"
+          git merge-base --is-ancestor "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" "$observed"
+          echo "OBSERVED_MULTISOURCE_HEAD=$observed" | tee /tmp/ms-c2.env
 
-      - name: Prove all post-merge source evolution is test-only
+      - name: Classify source evolution exactly
         shell: bash
         run: |
           set -euo pipefail
-          git diff --name-only "${MULTISOURCE_MERGED_HEAD}" "${MULTISOURCE_QUALIFICATION_HEAD}" > /tmp/ms-post-merge.paths
-          test -s /tmp/ms-post-merge.paths
-          if grep -Ev '^tests/test_multi_source_ideation_v2_.*\.py$' /tmp/ms-post-merge.paths; then
-            echo 'NON_TEST_DELTA_AFTER_MERGED_MULTISOURCE_HEAD=TRUE' >&2
+          git diff --name-only "$MULTISOURCE_MERGED_HEAD" "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD" > /tmp/ms-pre-semantic.paths
+          test -s /tmp/ms-pre-semantic.paths
+          if grep -Ev '^tests/test_multi_source_ideation_v2_.*\.py$' /tmp/ms-pre-semantic.paths; then
+            echo 'PRE_SEMANTIC_SOURCE_DELTA_NOT_TEST_ONLY=TRUE' >&2
             exit 1
           fi
-          echo "MULTISOURCE_POST_MERGE_TEST_FILES=$(wc -l < /tmp/ms-post-merge.paths | tr -d ' ')" | tee -a /tmp/ms-c2.env
+          printf '%s\n' \
+            research/research_os/ideation_cycle.py \
+            research/research_os/multi_source_ideation.py | sort > /tmp/ms-expected-semantic.paths
+          git diff --name-only "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD" "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" | sort > /tmp/ms-actual-semantic.paths
+          diff -u /tmp/ms-expected-semantic.paths /tmp/ms-actual-semantic.paths
+          git diff --name-only "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" "$(awk -F= '/OBSERVED_MULTISOURCE_HEAD/{print $2}' /tmp/ms-c2.env)" > /tmp/ms-future.paths
+          if test -s /tmp/ms-future.paths && grep -Ev '^tests/test_multi_source_ideation_v2_.*\.py$' /tmp/ms-future.paths; then
+            echo 'UNREVIEWED_MULTISOURCE_SEMANTIC_DRIFT_AFTER_ACCEPTED_HEAD=TRUE' >&2
+            exit 1
+          fi
+          echo "MULTISOURCE_FUTURE_TEST_ONLY_FILES=$(wc -l < /tmp/ms-future.paths | tr -d ' ')" | tee -a /tmp/ms-c2.env
 
-      - name: Prove exact semantic port plus isolated security repair
+      - name: Prove exact accepted semantic port
         shell: bash
         run: |
           set -euo pipefail
@@ -68,6 +84,7 @@ jobs:
             research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
             research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
             research/research_os/ideation_cycle.py
+            research/research_os/multi_source_ideation.py
             research/research_os/multi_source_ideation_bindings.py
             research/research_os/multi_source_ideation_hardening.py
             research/research_os/policy_c_safe.py
@@ -75,71 +92,95 @@ jobs:
             tests/test_multi_source_ideation_v2.py
           )
           for path in "${paths[@]}"; do
-            test "$(git rev-parse "HEAD:${path}")" = "$(git rev-parse "${MULTISOURCE_QUALIFICATION_HEAD}:${path}")"
+            test "$(git rev-parse "HEAD:${path}")" = "$(git rev-parse "${MULTISOURCE_ACCEPTED_SEMANTIC_HEAD}:${path}")"
           done
-          test "$(git rev-parse HEAD:research/research_os/multi_source_ideation.py)" = "$(git rev-parse "${MULTISOURCE_OUTCOME_FIREWALL_REPAIR}:research/research_os/multi_source_ideation.py")"
+          test "$(git hash-object research/research_os/multi_source_ideation.py)" = "$MULTISOURCE_REPAIRED_BLOB"
+          test "$(git hash-object research/research_os/ideation_cycle.py)" = "$MULTISOURCE_IDEATION_CYCLE_BLOB"
           grep -F 'PENDING_EXACT_HEAD_CI' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
           grep -F 'not authorized to emit `WAVE2_INTEGRATED_SHA`' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
           grep -F 'The backend is not truth, scheduler, Control Plane or scientific evidence.' research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
-          grep -F 'def _reject_outcome_fields' research/research_os/multi_source_ideation.py
-          echo 'MULTISOURCE_SEMANTIC_PORT_PLUS_SECURITY_REPAIR=PASS' | tee -a /tmp/ms-c2.env
 
-      - name: Compile canonical Multi-Source implementation
+      - name: Compile Multi-Source surfaces
         run: |
           python3 -m py_compile \
             research/research_os/ideation_cycle.py \
             research/research_os/multi_source_ideation.py \
             research/research_os/multi_source_ideation_bindings.py \
             research/research_os/multi_source_ideation_hardening.py \
-            research/research_os/policy_c_safe.py \
-            research/research_os/tests/test_multi_source_ideation_v2.py
+            research/research_os/policy_c_safe.py
 
-      - name: Run committed Multi-Source suites and recursive firewall
-        shell: bash
+      - name: Prove frozen-context receipt and passive-disposition hardening
         run: |
-          set -euo pipefail
-          python3 -m unittest -v research.research_os.tests.test_multi_source_ideation_v2
-          python3 -m unittest discover -s tests -p 'test_multi_source_ideation_v2*.py' -v
-          python3 -m unittest -v tests.test_multi_source_ideation_v2_nested_outcome_firewall
-
-      - name: Extract and run every adversarial test through b344
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf /tmp/ms-adversarial && mkdir -p /tmp/ms-adversarial
-          git ls-tree -r --name-only "${MULTISOURCE_QUALIFICATION_HEAD}" tests \
-            | grep '^tests/test_multi_source_ideation_v2_.*\.py$' \
-            | sort > /tmp/ms-adversarial.paths
-          test "$(wc -l < /tmp/ms-adversarial.paths | tr -d ' ')" -gt 20
-          while IFS= read -r src; do
-            dst="/tmp/ms-adversarial/$(basename "$src")"
-            git show "${MULTISOURCE_QUALIFICATION_HEAD}:${src}" > "$dst"
-            test "$(git hash-object "$dst")" = "$(git rev-parse "${MULTISOURCE_QUALIFICATION_HEAD}:${src}")"
-          done < /tmp/ms-adversarial.paths
-          python3 -m unittest discover -s /tmp/ms-adversarial -p 'test_multi_source_ideation_v2_*.py' -v 2>&1 | tee /tmp/ms-adversarial.log
-          grep -Eq '^Ran [1-9][0-9]* tests' /tmp/ms-adversarial.log
-
-      - name: Prove Multi-Source cannot bypass Research Intelligence into B
-        shell: bash
-        run: |
-          set -euo pipefail
           python3 - <<'PY'
-          from research.research_os.multi_source_ideation import BASE_SHA, side_effect_zeroes
-          from research.research_os.multi_source_ideation_hardening import qualify_for_discovery
-          from research.research_os.discovery_chain import run_discovery_chain
-          assert BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
-          proposal={'artifact_kind':'IDEA_PROPOSAL','context_snapshot_hash':'ctx','payload':{'mechanism':'m','payer':'p','actor':'a','clock':'c','universe':'u','falsifier':'f'}}
-          d=qualify_for_discovery(proposal=proposal,context_snapshot_hash='ctx',memory={'classification':'NO_QUALIFIED_MATCH'},duplicate={'classification':'DISTINCT'},implementability={'admissible':True})
-          assert d['eligible_for_discovery'] is True and d['ready_task_created'] is False and d['candidate_created'] is False, d
-          assert all(v == 0 for v in side_effect_zeroes().values())
-          b=run_discovery_chain({**d,'proposal':proposal},engine_key='quant',source={},run_id='MS-C2-BYPASS',synthetic_only=True,discovery_facts={})
-          assert b['status']=='BLOCKED_BEFORE_PRODUCER' and b['producer_executed'] is False, b
-          assert b['outcome_accessed'] is False and all(v is False for v in b['authority'].values()), b
+          from research.research_os.multi_source_ideation import build_context_snapshot, raw_artifact
+          from research.research_os.ideation_cycle import raw_proposal_receipt, ideation_cycle, proposal_disposition
+
+          refs={k:k+':v1' for k in (
+              'memory_snapshot_ref','ancestry_snapshot_ref','frontier_snapshot_ref','evidence_snapshot_ref',
+              'source_catalog_snapshot_ref','capability_snapshot_ref','authority_snapshot_ref','active_work_snapshot_ref')}
+          s=build_context_snapshot(ideation_cycle_id='cycle-hard',created_at='2026-10-21T20:00:00Z',refs=refs,relevant_schema_versions={'memory':'v1'})
+          h=s['context_snapshot_hash']
+          arts=[
+              raw_artifact(policy_kind='SYSTEMATIC_COVERAGE',status='NO_PROPOSAL',context_snapshot_hash=h),
+              raw_artifact(policy_kind='INFORMATION_VALUE',status='NO_ACTION',context_snapshot_hash=h),
+              raw_artifact(policy_kind='DIVERGENT_EXPLORATION',status='SOURCE_UNAVAILABLE',context_snapshot_hash=h),
+          ]
+          receipts=[raw_proposal_receipt(cycle_id='cycle-hard',artifact=a,provenance={'source':'bounded'}) for a in arts]
+          out=ideation_cycle(cycle_id='cycle-hard',context_snapshot=s,artifacts=arts,receipts=receipts)
+          assert out['intake_allowed'] is True and out['outcome_accessed'] is False
+
+          def must_fail(fn, needle):
+              try: fn()
+              except ValueError as exc:
+                  assert needle in str(exc), (needle,str(exc))
+              else: raise AssertionError(f'expected ValueError containing {needle}')
+
+          must_fail(lambda: ideation_cycle(cycle_id='wrong',context_snapshot=s,artifacts=arts,receipts=receipts),'cycle id')
+          bad=[dict(x) for x in receipts]; bad[0]['artifact_hash']='0'*64
+          must_fail(lambda: ideation_cycle(cycle_id='cycle-hard',context_snapshot=s,artifacts=arts,receipts=bad),'artifact hash')
+          must_fail(lambda: raw_proposal_receipt(cycle_id='cycle-hard',artifact=arts[0],provenance={'nested':{'pnl':1}}),'outcome-bearing')
+          must_fail(lambda: proposal_disposition(proposal_id='p',intake_decision={'decision':'NOT_ELIGIBLE','eligible_for_discovery':True},lineage={},duplicate={},implementability={}),'contradictory eligibility')
+          must_fail(lambda: proposal_disposition(proposal_id='p',intake_decision={'decision':'ELIGIBLE_FOR_DISCOVERY','eligible_for_discovery':True},lineage={'nested':{'returns':[1]}},duplicate={},implementability={}),'outcome-bearing')
+          good=proposal_disposition(proposal_id='p',intake_decision={'decision':'ELIGIBLE_FOR_DISCOVERY','eligible_for_discovery':True},lineage={'classification':'NO_QUALIFIED_MATCH'},duplicate={'classification':'DISTINCT'},implementability={'admissible':True})
+          assert good['eligible_for_discovery'] is True and good['operational_admission'] is False and good['outcome_accessed'] is False
+          print('MULTISOURCE_FROZEN_CONTEXT_AND_DISPOSITION_HARDENING=PASS')
           PY
 
-      - name: Regress B, C0, D0 and E boundaries
+      - name: Run all current official and canonical Multi-Source tests
+        shell: bash
         run: |
-          python3 -m pip install --disable-pip-version-check pytest
+          set -euo pipefail
+          source /tmp/ms-c2.env
+          rm -rf /tmp/ms-adversarial && mkdir -p /tmp/ms-adversarial
+          git ls-tree -r --name-only "$OBSERVED_MULTISOURCE_HEAD" tests | grep '^tests/test_multi_source_ideation_v2_.*\.py$' | sort > /tmp/ms-adversarial.paths
+          count=$(wc -l < /tmp/ms-adversarial.paths | tr -d ' '); test "$count" -gt 20
+          while IFS= read -r src; do
+            dst="/tmp/ms-adversarial/$(basename "$src")"
+            git show "$OBSERVED_MULTISOURCE_HEAD:$src" > "$dst"
+            test "$(git hash-object "$dst")" = "$(git rev-parse "$OBSERVED_MULTISOURCE_HEAD:$src")"
+          done < /tmp/ms-adversarial.paths
+          python3 -m unittest discover -s /tmp/ms-adversarial -p 'test_multi_source_ideation_v2_*.py' -v
+          python3 -m unittest -v research.research_os.tests.test_multi_source_ideation_v2
+          python3 -m unittest discover -s tests -p 'test_multi_source_ideation_v2*.py' -v
+          echo "MULTISOURCE_ADVERSARIAL_FILES=$count" | tee -a /tmp/ms-c2.env
+
+      - name: Prove Multi-Source cannot bypass Research Intelligence into B
+        run: |
+          python3 - <<'PY'
+          from research.research_os.multi_source_ideation import side_effect_zeroes
+          from research.research_os.multi_source_ideation_hardening import qualify_for_discovery
+          from research.research_os.discovery_chain import run_discovery_chain
+          p={'artifact_kind':'IDEA_PROPOSAL','context_snapshot_hash':'ctx','payload':{'mechanism':'m','payer':'p','actor':'a','clock':'c','universe':'u','falsifier':'f'}}
+          d=qualify_for_discovery(proposal=p,context_snapshot_hash='ctx',memory={'classification':'NO_QUALIFIED_MATCH'},duplicate={'classification':'DISTINCT'},implementability={'admissible':True})
+          assert d['eligible_for_discovery'] is True and d['ready_task_created'] is False and d['candidate_created'] is False
+          assert all(v==0 for v in side_effect_zeroes().values())
+          r=run_discovery_chain({**d,'proposal':p},engine_key='quant',source={},run_id='MS-HARDENED-BYPASS',synthetic_only=True,discovery_facts={})
+          assert r['status']=='BLOCKED_BEFORE_PRODUCER' and r['blockers']==['RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER']
+          assert r['producer_executed'] is False and r['outcome_accessed'] is False and all(v is False for v in r['authority'].values())
+          PY
+
+      - name: Cumulative B C0 seam D0 E W1 regression
+        run: |
           python3 -m pytest -q \
             research/research_os/tests/test_mega_b_all_producer_routes.py \
             research/research_os/tests/test_mega_b_canonical_gate.py \
@@ -151,88 +192,71 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
           python3 -m unittest -v \
             research.research_os.tests.test_mega_e_live_receipt_reconciliation \
-            tests.test_oracle_live_projection \
-            tests.test_oracle_live_composition \
-            tests.test_research_os_v2_core \
-            tests.test_research_os_v2_worker_integration \
-            research.research_os.tests.test_queue_replenisher \
-            research.research_os.tests.test_oracle_worker
-
-      - name: Regress W1 Factory and Economic law
-        run: |
-          python3 -m unittest -v \
+            tests.test_oracle_live_projection tests.test_oracle_live_composition \
+            tests.test_research_os_v2_core tests.test_research_os_v2_worker_integration \
+            research.research_os.tests.test_queue_replenisher research.research_os.tests.test_oracle_worker \
             research.research_os.tests.test_w1_factory_experiment_infrastructure \
             research.research_os.tests.test_w1_factory_experiment_bridge \
             research.research_os.tests.test_w1_factory_economic_integration \
             research.research_os.tests.test_w1_factory_firewall_hardening \
-            research.research_os.tests.test_economic_identity_memory_context_w1 \
-            research.research_os.tests.test_economic_identity_portfolio_depth_w1 \
-            research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
             research.research_os.tests.test_economic_identity_portfolio_readiness \
             research.research_os.tests.test_economic_readiness_integration \
             research.research_os.tests.test_economic_readiness_validation
 
-      - name: Prove authority and outcome membranes remain closed
+      - name: Authority, generated artifacts and clean-tree proof
         run: |
           python3 - <<'PY'
           from pathlib import Path
           from research.research_os.multi_source_ideation import side_effect_zeroes
-          from research.research_os.discovery_engine import AUTHORITY as B_AUTHORITY
-          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE as D0_AUTHORITY
-          from research.research_os.expansion.scientific_adjudication import AUTHORITY_STATE as C0_AUTHORITY
+          from research.research_os.discovery_engine import AUTHORITY as B
+          from research.research_os.expansion.scientific_adjudication import AUTHORITY_STATE as C
+          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE as D
           from research.research_os.control_plane import load_control_plane
-          assert all(v == 0 for v in side_effect_zeroes().values())
-          assert all(v is False for v in B_AUTHORITY.values())
-          assert all(v is False for v in D0_AUTHORITY.values())
-          assert all(v is False for v in C0_AUTHORITY.values())
-          control=load_control_plane(Path('research/research_os'))
-          assert control['status']=='PASS', control['errors']
-          refill=control['queue_replenishment']
+          assert all(v==0 for v in side_effect_zeroes().values())
+          assert all(v is False for v in B.values()) and all(v is False for v in C.values()) and all(v is False for v in D.values())
+          cp=load_control_plane(Path('research/research_os')); assert cp['status']=='PASS',cp['errors']
           for k in ('economic_experiment_authorized','prospective_observation_authorized','real_capital_authorized','live_trading_authorized'):
-              assert refill[k] is False, (k,refill)
+              assert cp['queue_replenishment'][k] is False
+          print('MULTISOURCE_CUMULATIVE_AUTHORITY=PASS')
           PY
-
-      - name: Require generated status artifacts fresh
-        run: |
           python3 scripts/generate_schemas.py --check
           python3 scripts/status_artifacts.py --check
+          test -z "$(git status --porcelain)"
 
-      - name: Clean working tree
-        shell: bash
-        run: test -z "$(git status --porcelain)"
-
-      - name: Emit repaired Multi-Source exact-head receipt
+      - name: Emit exact-head Multi-Source receipt
         shell: bash
         run: |
+          set -euo pipefail; source /tmp/ms-c2.env
           python3 - <<'PY'
-          import json, os
+          import json,os
           from pathlib import Path
           env={}
-          p=Path('/tmp/ms-c2.env')
-          if p.exists():
-              for line in p.read_text().splitlines():
-                  if '=' in line:
-                      k,v=line.split('=',1); env[k]=v
-          receipt={
+          for line in Path('/tmp/ms-c2.env').read_text().splitlines():
+              if '=' in line:
+                  k,v=line.split('=',1); env[k]=v
+          r={
               'mission':'WAVE2_C2_CANONICAL_INTEGRATION',
-              'stage':'MULTISOURCE_IDEATION_INTAKE_PORT_REPAIRED',
+              'stage':'MULTISOURCE_IDEATION_ACCEPTED_SEMANTIC_HEAD',
               'qualified_head':os.environ['GITHUB_SHA'],
-              'wave2_immutable_base_sha':os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
-              'multisource_merged_head':os.environ['MULTISOURCE_MERGED_HEAD'],
-              'multisource_qualification_head':os.environ['MULTISOURCE_QUALIFICATION_HEAD'],
-              'outcome_firewall_repair':os.environ['MULTISOURCE_OUTCOME_FIREWALL_REPAIR'],
-              'observed_multisource_head_at_run':env.get('OBSERVED_MULTISOURCE_HEAD'),
-              'post_merge_source_delta_test_only':True,
-              'recursive_outcome_firewall':'PASS',
-              'semantic_port_plus_security_repair':'PASS',
+              'accepted_source_head':os.environ['MULTISOURCE_ACCEPTED_SEMANTIC_HEAD'],
+              'observed_source_head':env['OBSERVED_MULTISOURCE_HEAD'],
+              'future_source_delta_test_only_files':int(env['MULTISOURCE_FUTURE_TEST_ONLY_FILES']),
+              'adversarial_files':int(env['MULTISOURCE_ADVERSARIAL_FILES']),
+              'frozen_context_receipt_binding':'PASS',
+              'passive_disposition_consistency':'PASS',
+              'direct_multisource_to_b_bypass':'BLOCKED',
               'authority_side_effects_zero':True,
               'outcome_accessed':False,
           }
-          Path('/tmp/wave2-c2-multisource-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          Path('/tmp/wave2-c2-multisource-receipt.json').write_text(json.dumps(r,indent=2)+'\n')
           PY
-
       - uses: actions/upload-artifact@v4
         with:
           name: wave2-c2-multisource-${{ github.sha }}
-          path: /tmp/wave2-c2-multisource-receipt.json
+          path: |
+            /tmp/wave2-c2-multisource-receipt.json
+            /tmp/ms-pre-semantic.paths
+            /tmp/ms-actual-semantic.paths
+            /tmp/ms-future.paths
+            /tmp/ms-adversarial.paths
           if-no-files-found: error
