@@ -40,9 +40,11 @@ NEGATIVE_KNOWLEDGE_SCOPES = {
     "EXPLICIT_MECHANISM_SCOPE", "EXPLICIT_IMPLEMENTATION_SCOPE",
 }
 FORBIDDEN_OUTCOME_KEYS = {
-    "pnl", "profit", "profitability", "return", "returns", "sharpe", "alpha",
-    "covariance", "empirical_correlation", "realized_pnl", "realized_return",
-    "outcome", "outcomes",
+    "pnl", "pnl_series", "profit", "profitability", "return", "returns",
+    "return_series", "realized_return_series", "sharpe", "alpha", "covariance",
+    "empirical_correlation", "realized_pnl", "unrealized_pnl", "realized_return",
+    "price", "prices", "price_series", "fill", "fills", "equity_curve",
+    "win_rate", "hit_rate", "outcome", "outcomes",
 }
 
 
