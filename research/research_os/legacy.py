@@ -345,9 +345,9 @@ class LegacyKnowledgeBase:
             status = status_by_action[feedback["action"]]
         elif feedback.get("action") == "ARCHAEOLOGY_LOOKUP" and (mega_matches or source_matches):
             status = "REVIEW_LEGACY_OVERLAP"
-        elif memory_matches or hints or source_matches:
-            status = "REVIEW_LEGACY_OVERLAP"
         else:
+            # Structural and lexical overlap remain review metadata. They cannot by
+            # themselves establish scientific equivalence or upgrade the top-level gate.
             status = "NO_EXACT_LEGACY_CONFLICT"
 
         return {
