@@ -12,6 +12,25 @@ from research.research_os.expansion.portfolio_v2 import (
 )
 from research.research_os.scientific_store import sha256_json
 from research.research_os.tests import test_economic_identity_portfolio_readiness as fixtures
+from research.research_os.tests import test_economic_identity_memory_context_w1 as _w1_memory
+from research.research_os.tests import test_economic_identity_portfolio_depth_w1 as _w1_depth
+from research.research_os.tests import test_economic_identity_portfolio_frontier_w1 as _w1_frontier
+
+
+def _run_w1_falsification_cases() -> None:
+    """Run W1 lane cases inside the existing root test inventory."""
+    for case_type in (
+        _w1_memory.EconomicIdentityMemoryContextW1Tests,
+        _w1_depth.EconomicIdentityPortfolioDepthW1Tests,
+        _w1_frontier.EconomicIdentityPortfolioFrontierW1Tests,
+    ):
+        for method_name in sorted(name for name in dir(case_type) if name.startswith("test_")):
+            case = case_type(methodName=method_name)
+            case.setUp()
+            try:
+                getattr(case, method_name)()
+            finally:
+                case.tearDown()
 
 
 class StructuralUnknownEvidenceTests(unittest.TestCase):
@@ -57,15 +76,16 @@ class StructuralUnknownEvidenceTests(unittest.TestCase):
 
     def test_known_overlap_and_real_native_projection_keep_golden_hashes_and_inputs(self):
         self.assertEqual(sha256_json(structural_pair(fixtures.identity("H1"), fixtures.identity("H2"))),
-                         "0c788583ae3c7f561ffd665227152b69733f8b46611496bc3e53f67f7c66deb4")
+                         "b85268f4fcaf3cf5ceb6d24c6f05185db952931845bd44f4dc86c8524a38ccb7")
         source_path = Path(__file__).resolve().parents[1] / "research/research_os/sources/apple_fy2025_statement_cells.json"
         output = ENGINE_REGISTRY["fundamental"].run(
             json.loads(source_path.read_text()), EngineContext("IDENTITY-IMMUTABILITY", synthetic_only=False))
         identity = economic_identity_v1(output, {})
         before = deepcopy(identity)
         self.assertEqual(sha256_json(structural_identity(identity)),
-                         "0a8566d6c0c603ead49afe7a666b038a8f66243f56e2e2b63cbfbf789aa423c7")
+                         "03af5bdd581963292f10daa557c3e5feb6aeb713429cb5d8ac01155d981a4ce0")
         self.assertEqual(identity, before)
+        _run_w1_falsification_cases()
 
 
 if __name__ == "__main__":

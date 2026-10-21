@@ -129,8 +129,16 @@ def red_team(
 
 
 def economic_identity_v1(engine_output: Dict[str, Any], identity_meta: Dict[str, Any]) -> Dict[str, Any]:
+    from research.research_os.scientific_store import sha256_json
+
     candidate = engine_output["candidate"]
     tags = sorted(set(candidate.get("economic_tags", [])))
+    candidate_hash = sha256_json(candidate)
+    candidate_binding = {
+        "hypothesis_id": candidate["hypothesis_id"],
+        "generation_id": candidate["generation_id"],
+        "candidate_hash": candidate_hash,
+    }
     identity = {
         "hypothesis_id": candidate["hypothesis_id"],
         "generation_id": candidate["generation_id"],
@@ -146,10 +154,18 @@ def economic_identity_v1(engine_output: Dict[str, Any], identity_meta: Dict[str,
         "tail_exposure": identity_meta.get("tail_exposure", "UNKNOWN"),
         "economic_tags": tags,
         "capital_authority": "NOT_AUTHORIZED",
+        "candidate_binding": candidate_binding,
+        "candidate_snapshot": deepcopy(candidate),
+        "identity_provenance": {
+            "candidate_hash": candidate_hash,
+            "candidate_binding": deepcopy(candidate_binding),
+            "source_hash": "UNKNOWN",
+            "dossier_hash": "UNKNOWN",
+            "source_refs": [],
+        },
     }
     if engine_output.get('synthetic_only') is False:
         from .engine_dossiers_v1 import build_engine_dossier
-        from research.research_os.scientific_store import sha256_json
         dossier = build_engine_dossier(engine_output)
         bound = dossier.get('factual_binding_status') == 'PASS'
         field = {'FUNDAMENTAL':'issuer_identity', 'EVENT_DOCUMENT':'event_identity'}.get(engine_output['engine_family'])
@@ -161,17 +177,28 @@ def economic_identity_v1(engine_output: Dict[str, Any], identity_meta: Dict[str,
         if not bound:
             identity.update(mechanism='UNKNOWN', economic_tags=[])
         support = {key:{'status':'UNKNOWN', 'support':None} for key in empirical}
-        support['asset'] = {'status':'SUPPORTED_ISSUER_ONLY' if identity['asset'] != 'UNKNOWN' else 'UNKNOWN',
-                            'support':deepcopy(issuer.get('support')) if bound else None}
+        support['asset'] = {
+            'status':'SUPPORTED_ISSUER_ONLY' if identity['asset'] != 'UNKNOWN' else 'UNKNOWN',
+            'support':deepcopy(issuer.get('support')) if bound else None,
+        }
         for key in ('mechanism', 'economic_tags'):
-            support[key] = {'status':'CANDIDATE_THESIS_ONLY' if bound else 'UNKNOWN',
-                            'support':{'candidate_hash':sha256_json(candidate), 'paths':[key]} if bound else None}
+            support[key] = {
+                'status':'CANDIDATE_THESIS_ONLY' if bound else 'UNKNOWN',
+                'support':{'candidate_hash':candidate_hash, 'paths':[key]} if bound else None,
+            }
         identity.update(
-            evidence_class='DOCUMENTARY', documentary_basis=deepcopy(engine_output),
-            identity_provenance={'candidate_hash':sha256_json(candidate), 'source_hash':dossier['source_hash'],
-                                 'dossier_hash':dossier['dossier_hash'], 'source_refs':dossier['source_refs'],
-                                 'field_support':support},
-            dossier_status=dossier['status'], dossier_blockers=list(dossier['blockers']),
+            evidence_class='DOCUMENTARY',
+            documentary_basis=deepcopy(engine_output),
+            identity_provenance={
+                'candidate_hash':candidate_hash,
+                'candidate_binding':deepcopy(candidate_binding),
+                'source_hash':dossier['source_hash'],
+                'dossier_hash':dossier['dossier_hash'],
+                'source_refs':dossier['source_refs'],
+                'field_support':support,
+            },
+            dossier_status=dossier['status'],
+            dossier_blockers=list(dossier['blockers']),
             unverified_identity_metadata_ignored=True,
         )
     return identity
@@ -185,36 +212,23 @@ def _jaccard(a: Iterable[str], b: Iterable[str]) -> float:
 
 
 def portfolio_map_v1(identities: List[Dict[str, Any]]) -> Dict[str, Any]:
-    if any(item.get('evidence_class') == 'DOCUMENTARY' or 'documentary_basis' in item for item in identities):
-        from .portfolio_v2 import portfolio_diagnostics_v2
-        diagnostics = portfolio_diagnostics_v2(identities)
-        return {
-            'portfolio_engine':'portfolio-map.v1', 'identities':identities,
-            'pairwise':diagnostics['pairwise'], 'structural_diagnostics':diagnostics,
-            'capital_allocation_authorized':False, 'position_sizing_authorized':False, 'orders_authorized':False,
-            'marginal_portfolio_contribution':'NOT_ESTIMATED_WITHOUT_ADMISSIBLE_EMPIRICAL_RETURN_DATA',
-        }
-    pairwise = []
-    for left, right in combinations(identities, 2):
-        factors = _jaccard(left["economic_tags"], right["economic_tags"])
-        same_payer = left["payer"] != "UNKNOWN" and left["payer"] == right["payer"]
-        same_asset = left["asset"] != "UNKNOWN" and left["asset"] == right["asset"]
-        score = round(min(1.0, factors + (0.2 if same_payer else 0.0) + (0.1 if same_asset else 0.0)), 4)
-        pairwise.append({
-            "left": left["hypothesis_id"],
-            "right": right["hypothesis_id"],
-            "overlap_score": score,
-            "same_payer": same_payer,
-            "same_asset": same_asset,
-            "classification": "HIGH_OVERLAP" if score >= 0.67 else "PARTIAL_OVERLAP" if score >= 0.34 else "DIVERSIFYING_OR_UNKNOWN",
-        })
+    """Compatibility facade over the single canonical structural portfolio engine."""
+    from .portfolio_v2 import portfolio_diagnostics_v2
+
+    diagnostics = portfolio_diagnostics_v2(identities)
     return {
         "portfolio_engine": "portfolio-map.v1",
         "identities": identities,
-        "pairwise": pairwise,
+        "pairwise": diagnostics["pairwise"],
+        "structural_diagnostics": diagnostics,
+        "portfolio_readiness": diagnostics["portfolio_readiness"],
+        "empirical_correlation": diagnostics["empirical_correlation"],
+        "return_series_consumed": diagnostics["return_series_consumed"],
         "capital_allocation_authorized": False,
         "position_sizing_authorized": False,
         "orders_authorized": False,
+        "real_capital_authorized": False,
+        "live_trading_authorized": False,
         "marginal_portfolio_contribution": "NOT_ESTIMATED_WITHOUT_ADMISSIBLE_EMPIRICAL_RETURN_DATA",
     }
 
