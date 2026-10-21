@@ -1,0 +1,206 @@
+name: Wave2 Seal Preflight Exact Base
+
+on:
+  push:
+    branches:
+      - builder/wave2-seal-preflight-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-base-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout immutable mission base
+        uses: actions/checkout@v4
+        with:
+          ref: f4be6953e3ec71eae38bd99903b3787a542c615c
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Bind execution to exact base
+        run: |
+          test "$(git rev-parse HEAD)" = "f4be6953e3ec71eae38bd99903b3787a542c615c"
+          echo "BASE_RESULT_SHA=$(git rev-parse HEAD)"
+          git status --short
+
+      - name: Schema drift and freshness preflight
+        run: |
+          set +e
+          python3 scripts/generate_schemas.py --check > /tmp/schema.log 2>&1
+          schema=$?
+          python3 scripts/status_artifacts.py --check > /tmp/status.log 2>&1
+          status=$?
+          cat /tmp/schema.log
+          cat /tmp/status.log
+          echo "SCHEMA_EXIT=$schema" >> "$GITHUB_ENV"
+          echo "STATUS_EXIT=$status" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Root unit suite
+        run: |
+          set +e
+          PYTHONPATH=src python3 -m unittest discover -s tests -v > /tmp/root-units.log 2>&1
+          code=$?
+          cat /tmp/root-units.log
+          echo "ROOT_UNIT_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Research OS suite
+        run: |
+          set +e
+          PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -v > /tmp/research-os.log 2>&1
+          code=$?
+          cat /tmp/research-os.log
+          echo "RESEARCH_OS_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Mega-A focused contract
+        run: |
+          set +e
+          PYTHONPATH=src:. python3 -m unittest tests.mega_a_research_intelligence_contracts -v > /tmp/mega-a.log 2>&1
+          code=$?
+          cat /tmp/mega-a.log
+          echo "MEGA_A_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Oracle and Control Plane non-regression
+        run: |
+          set +e
+          PYTHONPATH=src:. python3 -m unittest -v \
+            tests.test_research_os_queue_replenishment \
+            tests.test_oracle_v2_core \
+            tests.test_research_os_oracle_control_plane \
+            tests.test_research_os_control_plane_hardening \
+            tests.test_research_os_v2_worker_integration > /tmp/control-oracle.log 2>&1
+          code=$?
+          cat /tmp/control-oracle.log
+          echo "CONTROL_ORACLE_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: V1 demo proof
+        run: |
+          set +e
+          python3 scripts/demo_quant_system.py > /tmp/v1-demo.log 2>&1
+          code=$?
+          cat /tmp/v1-demo.log
+          echo "V1_DEMO_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Research OS JS contract smoke
+        run: |
+          set +e
+          node --test research/research_os/tests/*.test.mjs > /tmp/research-js.log 2>&1
+          code=$?
+          cat /tmp/research-js.log
+          echo "RESEARCH_JS_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Live Lab contract non-regression
+        run: |
+          set +e
+          PYTHONPATH=src:. python3 -m unittest research.research_os.tests.test_live_lab_contract -v > /tmp/live-contract.log 2>&1
+          pycode=$?
+          node --test research/live_lab_ux/tests/*.test.js > /tmp/live-js.log 2>&1
+          jscode=$?
+          cat /tmp/live-contract.log
+          cat /tmp/live-js.log
+          echo "LIVE_CONTRACT_EXIT=$pycode" >> "$GITHUB_ENV"
+          echo "LIVE_JS_EXIT=$jscode" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Authority and outcome membrane checks
+        run: |
+          set +e
+          python3 - <<'PY' > /tmp/authority.log 2>&1
+          import json
+          from pathlib import Path
+          policy = json.loads(Path('research/research_os/runtime/V2_CORE_POLICY.json').read_text())
+          epoch = json.loads(Path('research/research_os/runtime/V2_ACTIVE_EPOCH.json').read_text())
+          authority = policy['authority']
+          required = ('economic_experiment_authorized','prospective_observation_authorized','real_capital_authorized','live_trading_authorized')
+          assert all(authority[k] is False for k in required), authority
+          membrane = policy['evaluation_membrane']
+          assert membrane['status'] == 'SEALED', membrane
+          assert membrane['research_outcome_read_capability'] is False, membrane
+          assert membrane['research_supervisor_outcome_read_capability'] is False, membrane
+          assert membrane['evaluation_research_write_capability'] is False, membrane
+          assert epoch['owner_outcome_blinding_status'] == 'BLINDED', epoch
+          assert epoch['supervisor_outcome_blinding_status'] == 'BLINDED', epoch
+          assert epoch['first_evaluation_export_accepted'] is False, epoch
+          print('AUTHORITY_STATUS=CLOSED')
+          print('OUTCOME_ACCESSED=FALSE')
+          PY
+          code=$?
+          cat /tmp/authority.log
+          echo "AUTHORITY_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Exact-base working tree cleanliness
+        run: |
+          git status --short
+          if test -z "$(git status --porcelain)"; then echo "CLEAN_EXIT=0" >> "$GITHUB_ENV"; else echo "CLEAN_EXIT=1" >> "$GITHUB_ENV"; fi
+
+      - name: Write machine-readable-ish summary
+        run: |
+          cat > /tmp/wave2-preflight-summary.txt <<EOF
+          BASE_SHA=f4be6953e3ec71eae38bd99903b3787a542c615c
+          SCHEMA_EXIT=${SCHEMA_EXIT:-99}
+          STATUS_EXIT=${STATUS_EXIT:-99}
+          ROOT_UNIT_EXIT=${ROOT_UNIT_EXIT:-99}
+          RESEARCH_OS_EXIT=${RESEARCH_OS_EXIT:-99}
+          MEGA_A_EXIT=${MEGA_A_EXIT:-99}
+          CONTROL_ORACLE_EXIT=${CONTROL_ORACLE_EXIT:-99}
+          V1_DEMO_EXIT=${V1_DEMO_EXIT:-99}
+          RESEARCH_JS_EXIT=${RESEARCH_JS_EXIT:-99}
+          LIVE_CONTRACT_EXIT=${LIVE_CONTRACT_EXIT:-99}
+          LIVE_JS_EXIT=${LIVE_JS_EXIT:-99}
+          AUTHORITY_EXIT=${AUTHORITY_EXIT:-99}
+          CLEAN_EXIT=${CLEAN_EXIT:-99}
+          EOF
+          cat /tmp/wave2-preflight-summary.txt
+
+      - name: Upload preflight logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave2-seal-preflight-exact-base-f4be6953
+          path: |
+            /tmp/wave2-preflight-summary.txt
+            /tmp/schema.log
+            /tmp/status.log
+            /tmp/root-units.log
+            /tmp/research-os.log
+            /tmp/mega-a.log
+            /tmp/control-oracle.log
+            /tmp/v1-demo.log
+            /tmp/research-js.log
+            /tmp/live-contract.log
+            /tmp/live-js.log
+            /tmp/authority.log
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail preflight if any base check failed
+        run: |
+          test "${SCHEMA_EXIT:-99}" = 0
+          test "${STATUS_EXIT:-99}" = 0
+          test "${ROOT_UNIT_EXIT:-99}" = 0
+          test "${RESEARCH_OS_EXIT:-99}" = 0
+          test "${MEGA_A_EXIT:-99}" = 0
+          test "${CONTROL_ORACLE_EXIT:-99}" = 0
+          test "${V1_DEMO_EXIT:-99}" = 0
+          test "${RESEARCH_JS_EXIT:-99}" = 0
+          test "${LIVE_CONTRACT_EXIT:-99}" = 0
+          test "${LIVE_JS_EXIT:-99}" = 0
+          test "${AUTHORITY_EXIT:-99}" = 0
+          test "${CLEAN_EXIT:-99}" = 0
