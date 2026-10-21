@@ -158,16 +158,21 @@ class EconomicReadinessIntegrationTests(unittest.TestCase):
         self.assertEqual(result["status"], "BLOCK")
         self.assertIn("BLOCK_UNRESOLVED_CURRENT_EXPOSURE_OVERLAP", result["block_reasons"])
         portfolio = result["portfolio"]
-        self.assertEqual(portfolio["same_exposure_review_pairs"], [])
+        self.assertEqual(portfolio["same_exposure_review_pairs"], [{
+            "left": "TEST-IMPLEMENTABILITY-001",
+            "right": "PEER",
+            "basis": ["payer", "mechanism"],
+        }])
         self.assertTrue(portfolio["readiness_blocking_review_pairs"])
         blocker = portfolio["readiness_blocking_review_pairs"][0]
-        self.assertEqual(blocker["basis"], "SAME_PAYER_MECHANISM_CLOCK_UNKNOWN")
+        self.assertEqual(blocker["basis"], "EXPLICIT_REVIEW")
+        self.assertEqual(blocker["classification"], "RELATED_EXPOSURE_REVIEW")
         self.assertEqual(blocker["payer"], 1.0)
         self.assertEqual(blocker["mechanism"], 1.0)
         self.assertIsNone(blocker["timing_clock"])
         self.assertEqual(
             portfolio["pairwise"][0]["economic_structure"]["classification"],
-            "UNKNOWN",
+            "RELATED_EXPOSURE_REVIEW",
         )
         self.assertEqual(portfolio["empirical_correlation"], "UNAVAILABLE")
         self.assertEqual(portfolio["marginal_portfolio_contribution"], "NOT_ESTIMATED")
