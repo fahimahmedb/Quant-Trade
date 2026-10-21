@@ -6,31 +6,60 @@ from typing import Any, Dict, List, Optional
 import json
 import os
 import tempfile
+from threading import RLock
 
 from research.research_os.legacy import LegacyKnowledgeBase
 from research.research_os.scientific_store import build_scientific_ledgers, sha256_json
 from .live_receipts import run_with_live_receipts
 
 
+def _json_object(payload: Any) -> Dict[str, Any]:
+    if not isinstance(payload, dict):
+        raise ValueError("immutable payload must be an object")
+
+    def check(value: Any) -> None:
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if not isinstance(key, str):
+                    raise ValueError("immutable object keys must be strings")
+                check(item)
+        elif isinstance(value, (list, tuple)):
+            for item in value:
+                check(item)
+
+    check(payload)
+    return json.loads(json.dumps(payload, allow_nan=False, ensure_ascii=False))
+
+
+def _unique_fields(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate immutable JSON field")
+        result[key] = value
+    return result
+
+
 def write_immutable_json(path: Path, payload: Dict[str, Any]) -> None:
-    """Publish complete content once. Concurrent identical writers are idempotent.
+    """Publish complete content once; replay requires the same canonical hash.
 
     A hard link exposes only a fully fsynced file and refuses replacement. The
     caller must use a filesystem supporting atomic hard links within a directory.
     """
+    frozen = _json_object(payload)
+    record = {"payload_hash": sha256_json(frozen), "payload": frozen}
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    record = {"payload_hash": sha256_json(payload), "payload": deepcopy(payload)}
     fd, temporary = tempfile.mkstemp(prefix=".immutable-", dir=path.parent)
     try:
-        with os.fdopen(fd, "w") as stream:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
             json.dump(record, stream, sort_keys=True, allow_nan=False)
             stream.flush()
             os.fsync(stream.fileno())
         try:
             os.link(temporary, path)
         except FileExistsError:
-            if read_immutable_json(path) != payload:
+            if sha256_json(read_immutable_json(path)) != record["payload_hash"]:
                 raise ValueError("immutable checkpoint mutation rejected")
         directory_fd = os.open(path.parent, os.O_RDONLY)
         try:
@@ -42,10 +71,13 @@ def write_immutable_json(path: Path, payload: Dict[str, Any]) -> None:
 
 
 def read_immutable_json(path: Path) -> Dict[str, Any]:
-    record = json.loads(Path(path).read_text())
-    if set(record) != {"payload_hash", "payload"} or record["payload_hash"] != sha256_json(record["payload"]):
+    record = json.loads(Path(path).read_text(encoding="utf-8"), object_pairs_hook=_unique_fields)
+    if not isinstance(record, dict) or set(record) != {"payload_hash", "payload"}:
+        raise ValueError("checkpoint envelope invalid")
+    frozen = _json_object(record["payload"])
+    if record["payload_hash"] != sha256_json(frozen):
         raise ValueError("checkpoint hash mismatch")
-    return record["payload"]
+    return frozen
 
 
 class ImmutableArtifactRegistry:
@@ -54,30 +86,36 @@ class ImmutableArtifactRegistry:
     def __init__(self, registry_id: str) -> None:
         self.registry_id = registry_id
         self._entries: Dict[str, Dict[str, Any]] = {}
+        self._lock = RLock()
 
     def register(self, artifact_id: str, payload: Dict[str, Any]) -> Dict[str, Any]:
-        artifact_hash = sha256_json(payload)
-        current = self._entries.get(artifact_id)
-        if current is not None:
-            if current["artifact_hash"] != artifact_hash:
-                raise ValueError(f"immutable artifact mutation rejected: {artifact_id}")
-            return deepcopy(current)
-        record = {
-            "artifact_id": artifact_id,
-            "artifact_hash": artifact_hash,
-            "payload": deepcopy(payload),
-        }
-        self._entries[artifact_id] = record
-        return deepcopy(record)
+        with self._lock:
+            if not isinstance(artifact_id, str) or not artifact_id:
+                raise ValueError("artifact identity must be a nonempty string")
+            frozen = _json_object(payload)
+            artifact_hash = sha256_json(frozen)
+            current = self._entries.get(artifact_id)
+            if current is not None:
+                if current["artifact_hash"] != artifact_hash:
+                    raise ValueError(f"immutable artifact mutation rejected: {artifact_id}")
+                return deepcopy(current)
+            record = {
+                "artifact_id": artifact_id,
+                "artifact_hash": artifact_hash,
+                "payload": frozen,
+            }
+            self._entries[artifact_id] = record
+            return deepcopy(record)
 
     def snapshot(self) -> Dict[str, Any]:
-        entries = [deepcopy(self._entries[key]) for key in sorted(self._entries)]
-        return {
-            "registry_id": self.registry_id,
-            "entry_count": len(entries),
-            "entries": entries,
-            "immutable": True,
-        }
+        with self._lock:
+            entries = [deepcopy(self._entries[key]) for key in sorted(self._entries)]
+            return {
+                "registry_id": self.registry_id,
+                "entry_count": len(entries),
+                "entries": entries,
+                "immutable": True,
+            }
 
 
 class ForwardGenerationRegistry(ImmutableArtifactRegistry):
