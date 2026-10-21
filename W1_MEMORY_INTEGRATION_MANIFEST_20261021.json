@@ -1,0 +1,93 @@
+{
+  "schema_version": "w1-memory-integration-manifest-v1",
+  "base_sha": "fecd09e0839f1208d9f876c311331221bde3ab7d",
+  "pre_final_code_head_sha": "4e412e9d0969d0b37ad50d005eb9bf74760c1854",
+  "final_head_sha": "SELF_RESOLVE_BRANCH_HEAD",
+  "branch": "builder/w1-scientific-memory-depth-20261021",
+  "module_scope": "ARCHAEOLOGY -> SCIENTIFIC MEMORY -> canonical reusable research knowledge",
+  "safe_to_integrate": true,
+  "safe_to_continue_this_module": false,
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed_new_or_prospective": false
+  },
+  "qualified_capabilities": [
+    "fail_closed_scientific_memory_v1",
+    "existing_append_only_hash_ledger_integration",
+    "semantic_identity_and_provenance",
+    "negative_blocked_unexecuted_positive_insufficient_protocol_invalid_distinctions",
+    "owner_governance_separate_from_evidence",
+    "proof_required_supersession",
+    "queryable_memory_facets",
+    "structural_overlap_without_empirical_correlation",
+    "legacy_ingress_hardening",
+    "immutable_archaeology_qualification",
+    "identity_safe_archaeology_memory_binding",
+    "f2_blocked_unknown_preservation",
+    "f1_stage_a_stage_b_distinct_provenance",
+    "weather_v2_protocol_review_provenance"
+  ],
+  "partial_capabilities": [
+    "f1_structured_memory_import",
+    "box_office_primary_recovery",
+    "mlb_soccer_weather_primary_replication_recovery",
+    "eurusd_frozen_proxy_recovery",
+    "v1_causal_timing_exact_recovery",
+    "forced_flows_empirical_identity"
+  ],
+  "shared_surfaces_touched": [
+    "research/research_os/legacy.py",
+    "research/research_os/tests/contract-smoke.test.mjs"
+  ],
+  "public_contracts_changed": [
+    "scientific-memory-v1",
+    "LegacyKnowledgeBase scientific-memory accessors",
+    "ArchaeologyCatalog provenance-only API",
+    "identity-safe archaeology-memory binding API"
+  ],
+  "schemas_changed": [
+    "research/research_os/contracts/scientific-memory.schema.json"
+  ],
+  "tests": {
+    "focused": "PASS 34/34",
+    "python_compile": "PASS",
+    "json_schema_draft_2020_12": "PASS",
+    "broader_practical_regression": "PASS_WITH_EXPLICIT_HOSTED_CI_LIMITATION"
+  },
+  "historical_sources": [
+    "north_star_blob:a328b4e6d7d71dafd532938888ebf9818b1b610f",
+    "legacy_reconciliation_commit:183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "legacy_ledger_blob:ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+    "f1_stage_a_report_blob:c83a9cf0eca3edf44c81beec9c791fc99becd073",
+    "f1_stage_b_report_blob:cceb75f9623a14e094fd6eaab19a587b480135c3",
+    "weather_v2_reaudit_blob:957d28e7e923c210729a934d61174430f78b0a58",
+    "weather_v2_audited_candidate_commit:94b59348d5b79cd3c53dcba0b791ce1daeb75d60",
+    "nearby_v1_memory_blob:79ab74c28c05c7cfd688ecdfe1c41dcc4c773717"
+  ],
+  "remaining_gap_classification": {
+    "f1_structured_import": "PARTIAL_WITH_EXPLICIT_BLOCKER_REVIEW_STILL_REQUIRED",
+    "box_office": "PARTIAL_WITH_EXPLICIT_BLOCKER_EXTERNAL_ACCESS_REQUIRED",
+    "mlb_soccer_weather": "PARTIAL_WITH_EXPLICIT_BLOCKER_EXTERNAL_ACCESS_REQUIRED",
+    "eurusd": "PARTIAL_WITH_EXPLICIT_BLOCKER_REVIEW_STILL_REQUIRED",
+    "v1_causal_timing": "PARTIAL_WITH_EXPLICIT_BLOCKER_REVIEW_STILL_REQUIRED",
+    "forced_flows": "PARTIAL_WITH_EXPLICIT_BLOCKER_STRUCTURAL_ONLY",
+    "full_hosted_ci": "EXTERNAL_ACCESS_REQUIRED"
+  },
+  "expected_integration_conflicts": [
+    "research/research_os/legacy.py",
+    "research/research_os/tests/contract-smoke.test.mjs"
+  ],
+  "scientific_claim_limits": [
+    "no economic edge/profitability claim",
+    "BLOCKED != NEGATIVE",
+    "UNEXECUTED != FAILED",
+    "INVALIDATED_PROTOCOL != economic failure",
+    "POSITIVE_BUT_INSUFFICIENT <= SIGNAL_NOT_PROOF",
+    "STRUCTURAL_OVERLAP != EMPIRICAL_CORRELATION",
+    "structural mechanism != empirical success",
+    "unknown remains unknown"
+  ]
+}
