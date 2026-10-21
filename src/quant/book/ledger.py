@@ -32,6 +32,11 @@ Two ledgers share this implementation:
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+from copy import deepcopy
+from datetime import date as calendar_date
+import fcntl
+import math
+import os
 from pathlib import Path
 from typing import Any
 
@@ -43,6 +48,10 @@ AUTHORITIES = ("CAPITAL", "EVALUATION")
 
 class BackwardInTime(ValueError):
     """A mark was dated before the Book's last marked session."""
+
+
+class LedgerConflict(RuntimeError):
+    """Another writer changed the Book; reconsider the operation before retrying."""
 
 
 @dataclass
@@ -105,7 +114,9 @@ class Ledger:
         if authority not in AUTHORITIES:
             raise ValueError(f"unknown ledger authority: {authority}")
         self.path = path
+        self._detached = False
         payload = read_json(path)
+        self._persisted = deepcopy(payload)
         if payload is None:
             self.state = LedgerState(ledger_id=ledger_id, authority=authority,
                                      initial_capital=initial_capital, cash=initial_capital,
@@ -130,7 +141,8 @@ class Ledger:
         """
         ledger = cls.__new__(cls)
         ledger.path = Path("__detached_decision_ledger__")
-        ledger.state = LedgerState(**document)
+        ledger._detached = True
+        ledger.state = LedgerState(**deepcopy(document))
         ledger.sleeves = {
             strategy: {symbol: Position(**position)
                        for symbol, position in holdings.items()}
@@ -139,14 +151,49 @@ class Ledger:
         return ledger
 
     # --- persistence -------------------------------------------------------
+    def _assert_writable(self) -> None:
+        if self._detached:
+            raise RuntimeError("DETACHED_LEDGER_IS_READ_ONLY")
+
+    def _restore(self, document: dict[str, Any]) -> None:
+        self._persisted = deepcopy(document)
+        self.state = LedgerState(**deepcopy(document))
+        self.sleeves = {
+            strategy: {symbol: Position(**position) for symbol, position in holdings.items()}
+            for strategy, holdings in self.state.sleeves.items()}
+        self._applied = set(self.state.applied_operations)
+
     def save(self) -> None:
+        self._assert_writable()
         self.state.sleeves = {
             strategy: {symbol: position.to_dict() for symbol, position in holdings.items()
                        if abs(position.quantity) > 1e-9}
             for strategy, holdings in self.sleeves.items()}
         self.state.sleeves = {strategy: holdings
                               for strategy, holdings in self.state.sleeves.items() if holdings}
-        write_json(self.path, self.state.to_dict())
+        # Atomic replacement alone does not prevent a stale writer from erasing
+        # acknowledged fills. Compare the complete observed state under the same
+        # lock used for publication; a conflict requires a fresh caller decision.
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            try:
+                if read_json(self.path) != self._persisted:
+                    raise LedgerConflict("BOOK_CHANGED_SINCE_READ")
+                document = self.state.to_dict()
+                write_json(self.path, document)
+                self._persisted = deepcopy(document)
+            except BaseException:
+                # A failed write may precede replacement or follow it (lost
+                # acknowledgement). Recover the actual durable state in either
+                # case, including the idempotency set, before permitting retry.
+                durable = read_json(self.path)
+                if durable is not None:
+                    self._restore(durable)
+                raise
+        finally:
+            os.close(fd)
 
     def has_applied(self, operation_id: str) -> bool:
         return operation_id in self._applied
@@ -160,6 +207,17 @@ class Ledger:
         ``operation_id`` must be deterministic for the economic event, so that a
         replay after a crash is recognised rather than applied twice.
         """
+        self._assert_writable()
+        for label, value in (("symbol", symbol), ("strategy_id", strategy_id),
+                             ("operation_id", operation_id)):
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"invalid fill {label}")
+        self._validate_date(date)
+        for label, value in (("quantity", quantity), ("price", price), ("cost", cost)):
+            if type(value) not in (int, float) or not math.isfinite(value):
+                raise ValueError(f"invalid fill {label}")
+        if quantity == 0 or price <= 0 or cost < 0:
+            raise ValueError("fill requires nonzero quantity, positive price and nonnegative cost")
         if operation_id in self._applied:
             return {"symbol": symbol, "quantity": 0.0, "price": price, "cost": 0.0,
                     "realized_pnl": 0.0, "cash_after": self.state.cash,
@@ -206,6 +264,11 @@ class Ledger:
 
     def mark_to_market(self, date: str, prices: dict[str, float]) -> dict[str, Any]:
         """Revalue every sleeve and record one point in the persistent NAV history."""
+        self._assert_writable()
+        self._validate_date(date)
+        if any(type(value) not in (int, float) or not math.isfinite(value) or value <= 0
+               for value in prices.values()):
+            raise ValueError("marks require finite positive prices")
         if self.state.last_session_date and date < self.state.last_session_date:
             raise BackwardInTime(
                 f"cannot mark {date}: the Book is already marked through "
@@ -240,6 +303,11 @@ class Ledger:
             + [float(item["nav"]) for item in self.state.nav_history])
         self.save()
         return point
+
+    @staticmethod
+    def _validate_date(value: str) -> None:
+        if not isinstance(value, str) or calendar_date.fromisoformat(value).isoformat() != value:
+            raise ValueError("ledger date must be ISO YYYY-MM-DD")
 
     # --- views -------------------------------------------------------------
     def _positions(self) -> list[Position]:
