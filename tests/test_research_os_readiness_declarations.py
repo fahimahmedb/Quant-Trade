@@ -5,6 +5,7 @@ import unittest
 from research.research_os.expansion.economic_test_readiness_v1 import economic_test_readiness, READY
 from research.research_os.expansion.validation_readiness import validate_economic_test_readiness
 from research.research_os.scientific_store import sha256_json
+from research.research_os.tests.factory_infrastructure_fixture import rebind_factory_infrastructure
 from research.research_os.tests.test_economic_readiness_integration import fixture, legacy
 from research.research_os.tests.test_economic_readiness_validation import _fixture
 
@@ -72,6 +73,7 @@ class EconomicDeclarationTests(unittest.TestCase):
         bundle["protocol"]["protocol_hash"] = sha256_json(bundle["protocol"]["protocol_payload"])
         bundle["reproducibility"]["binding_payload"]["protocol_hash"] = bundle["protocol"]["protocol_hash"]
         bundle["reproducibility"]["binding_hash"] = sha256_json(bundle["reproducibility"]["binding_payload"])
+        rebind_factory_infrastructure(bundle)
         self.assertEqual(validate_economic_test_readiness(bundle)["status"], READY)
 
     def test_nonfinite_effective_trials_cannot_be_claimed_known(self):
