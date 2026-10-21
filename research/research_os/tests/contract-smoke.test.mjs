@@ -21,7 +21,8 @@ const contractPaths=[
   'contracts/trial-ledger.schema.json',
   'contracts/prospective-contract.schema.json',
   'contracts/decision-record.schema.json',
-  'contracts/portfolio-map-entry.schema.json'
+  'contracts/portfolio-map-entry.schema.json',
+  'contracts/scientific-memory.schema.json'
 ];
 
 test('all final-shape thin contracts parse as JSON',async()=>{
@@ -47,14 +48,8 @@ test('autonomy canary is terminal PASS and stayed non-economic',async()=>{
 
 test('native-shaped worker event remains consumable by the existing Live Lab mapper',()=>{
   const event={
-    event_id:'evt-sim-1',
-    session_id:'session-sim',
-    worker_id:'simulated-worker',
-    action_id:'SIM-TASK',
-    event_type:'ACTION_STARTED',
-    event_seq:1,
-    generation:1,
-    emitted_at:'2026-10-15T00:00:00Z',
+    event_id:'evt-sim-1', session_id:'session-sim', worker_id:'simulated-worker', action_id:'SIM-TASK',
+    event_type:'ACTION_STARTED', event_seq:1, generation:1, emitted_at:'2026-10-15T00:00:00Z',
     payload:{label:'Synthetic architecture simulation',detail:'Contract-only preprod flow'}
   };
   const mapped=mapNativeWorkerEvent(event);
