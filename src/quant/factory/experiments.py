@@ -14,10 +14,11 @@ from research.research_os.expansion.experiment_registry import (
     bind_replay,
     canonical_hash,
     create_registry_entry,
+    validate_trial_accounting,
 )
 
 __all__ = [
     "ExperimentLifecycle", "ExperimentRegistryEntry", "ExperimentRegistryError",
     "assert_registry_matches", "bind_execution_plan", "bind_receipt", "bind_replay",
-    "canonical_hash", "create_registry_entry",
+    "canonical_hash", "create_registry_entry", "validate_trial_accounting",
 ]

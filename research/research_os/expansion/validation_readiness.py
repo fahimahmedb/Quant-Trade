@@ -123,17 +123,12 @@ def _protocol_hash_valid(protocol: Mapping[str, Any]) -> bool:
 
 
 def _trial_accounting_valid(record: Mapping[str, Any]) -> bool:
-    observed = record.get("observed_attempt_count")
-    if type(observed) is not int or observed < 0:
+    from .experiment_registry import ExperimentRegistryError, validate_trial_accounting
+    try:
+        validate_trial_accounting(record)
+    except ExperimentRegistryError:
         return False
-    state = record.get("effective_trials_status")
-    estimate = record.get("estimated_effective_trials")
-    if state == "UNKNOWN":
-        return estimate is None
-    if state == "KNOWN":
-        return (type(estimate) in (int, float) and estimate >= 0
-                and (not isinstance(estimate, float) or isfinite(estimate)))
-    return False
+    return True
 
 
 def _entry_hash_valid(record: Any) -> bool:

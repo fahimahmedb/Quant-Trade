@@ -60,12 +60,21 @@ def _require_hash(name: str, value: Any) -> str:
     return value
 
 
-def _validate_trial_record(trial: Mapping[str, Any], *, hypothesis_id: str, generation_id: str) -> None:
+def validate_trial_accounting(
+    trial: Mapping[str, Any], *, hypothesis_id: str | None = None, generation_id: str | None = None,
+) -> None:
+    """Validate the canonical Trial Ledger status/value law.
+
+    Identity checks are applied when the caller supplies the expected hypothesis or
+    generation. UNKNOWN must carry no estimate. KNOWN, ESTIMATED and
+    PARTIALLY_BOUNDED all require a finite non-negative numeric estimate; booleans
+    are never accepted as numbers.
+    """
     if not isinstance(trial, Mapping):
         raise ExperimentRegistryError("trial_accounting must be a mapping")
-    if trial.get("hypothesis_id") not in (None, hypothesis_id):
+    if hypothesis_id is not None and trial.get("hypothesis_id") not in (None, hypothesis_id):
         raise ExperimentRegistryError("TRIAL_HYPOTHESIS_BINDING_MISMATCH")
-    if trial.get("generation_id") not in (None, generation_id):
+    if generation_id is not None and trial.get("generation_id") not in (None, generation_id):
         raise ExperimentRegistryError("TRIAL_GENERATION_BINDING_MISMATCH")
     attempts = trial.get("observed_attempt_count")
     if isinstance(attempts, bool) or not isinstance(attempts, int) or attempts < 0:
@@ -210,7 +219,7 @@ def create_registry_entry(
         raise ExperimentRegistryError("CANONICAL_BINDINGS_INCOMPLETE")
     for key in _BINDING_KEYS:
         _require_hash(f"binding_hashes.{key}", binding_hashes[key])
-    _validate_trial_record(trial_accounting, hypothesis_id=hypothesis_id, generation_id=generation_id)
+    validate_trial_accounting(trial_accounting, hypothesis_id=hypothesis_id, generation_id=generation_id)
     if geometry.protocol_hash != protocol_hash:
         raise ExperimentRegistryError("GEOMETRY_PROTOCOL_BINDING_MISMATCH")
     if power.protocol_hash != protocol_hash:

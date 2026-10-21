@@ -13,6 +13,7 @@ from quant.factory.experiments import (
     bind_replay,
     canonical_hash,
     create_registry_entry,
+    validate_trial_accounting,
 )
 from quant.factory.geometry import GeometryDeclarationError, GeometryStatus, geometry_from_mapping
 from quant.factory.outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload, read_outcomes
@@ -132,6 +133,23 @@ class RegistryBindingTests(unittest.TestCase):
                   "status": "REPLAY_MATCH", "outcome_accessed": False, "economic_result": "NOT_OBSERVED"}
         with self.assertRaisesRegex(ExperimentRegistryError, "FOREIGN_EXPERIMENT_REPLAY"):
             bind_replay(bound, replay)
+
+    def test_trial_accounting_statuses_use_one_canonical_law(self):
+        base = {"observed_attempt_count": 2}
+        validate_trial_accounting({**base, "effective_trials_status": "UNKNOWN", "estimated_effective_trials": None})
+        for status in ("KNOWN", "ESTIMATED", "PARTIALLY_BOUNDED"):
+            with self.subTest(status=status):
+                validate_trial_accounting({**base, "effective_trials_status": status, "estimated_effective_trials": 1.5})
+        invalid = (
+            {**base, "effective_trials_status": "UNKNOWN", "estimated_effective_trials": 1.0},
+            {**base, "effective_trials_status": "ESTIMATED", "estimated_effective_trials": True},
+            {**base, "effective_trials_status": "PARTIALLY_BOUNDED", "estimated_effective_trials": float("nan")},
+            {**base, "effective_trials_status": "KNOWN", "estimated_effective_trials": float("inf")},
+            {**base, "effective_trials_status": "OTHER", "estimated_effective_trials": 1.0},
+        )
+        for record in invalid:
+            with self.subTest(record=record), self.assertRaises(ExperimentRegistryError):
+                validate_trial_accounting(record)
 
 
 class PowerGeometryTests(unittest.TestCase):
