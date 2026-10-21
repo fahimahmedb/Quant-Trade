@@ -5,12 +5,11 @@
 BASE_SHA: `4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090`
 NORTH_STAR_BLOB: `a328b4e6d7d71dafd532938888ebf9818b1b610f`
 W1_SCIENTIFIC_MEMORY_SEALED_SHA: `9d92c9f859efd39fdfd94372b10ba91ad73c31b4`
-VALIDATED_CODE_SHA: `4e6858bd833145dbaed207a36bfc0fff3d0a067d`
-CP005_CLOSURE_SHA: `f4e42e2a7ae573b6b3b9d65cc44cf710a7f6ec64`
-VALIDATED_CODE_RUN: `39592943006`
-VALIDATED_CODE_JOB: `119198155948`
-VERIFICATION_ARTIFACT_ID: `12343320739`
-VERIFICATION_ARTIFACT_SHA256: `3cc4661fbb302cf87d1507f8ce5e77eda5c84333c09b76f24ac21e8e950d4440`
+VALIDATED_CODE_SHA: `75c3351b0ec4fefdc1c9d0e67efcef1a412c8501`
+VALIDATED_CODE_RUN: `39594809701`
+VALIDATED_CODE_JOB: `119204378203`
+VERIFICATION_ARTIFACT_ID: `12342894544`
+VERIFICATION_ARTIFACT_SHA256: `9e3402e0904d6911656be6315ab8db2a8e24926e662bd88ce640c7a78e3e3aed`
 
 TECHNICAL_INTEGRATION_VALIDATION: `PASS`
 ECONOMIC_OUTCOME_VALIDATION: `NOT_AUTHORIZED / NOT_PERFORMED`
@@ -18,25 +17,26 @@ SAFE_TO_INTEGRATE: `TRUE` for the Mega-A technical rail, subject to target-rail 
 
 ## Exact green proof
 
-Canonical GitHub Actions run `39592943006` completed `SUCCESS` on exact code SHA `4e6858bd833145dbaed207a36bfc0fff3d0a067d`.
+Canonical GitHub Actions run `39594809701` completed `SUCCESS` on exact code SHA `75c3351b0ec4fefdc1c9d0e67efcef1a412c8501`.
 
 Proof inventory:
 
 - historical V1 unit suite: **773/773 PASS**;
-- Mega-A Research Intelligence contract suite: **90/90 PASS**;
+- Mega-A Research Intelligence contract suite: **91/91 PASS**;
 - SEC P0 lane suite: **267/267 PASS**;
 - V1 end-to-end regression: **35/35 PASS**;
 - exact-head verification: `all_passed=true`;
-- verified SHA: `4e6858bd833145dbaed207a36bfc0fff3d0a067d`;
-- verification artifact uploaded;
+- verified SHA: `75c3351b0ec4fefdc1c9d0e67efcef1a412c8501`;
+- verification artifact ID: `12342894544`;
+- artifact digest: `sha256:9e3402e0904d6911656be6315ab8db2a8e24926e662bd88ce640c7a78e3e3aed`;
 - committed verification placeholder restored;
 - working tree clean.
 
-This FINAL document is a documentation-only descendant. Its own push intentionally triggers the same canonical gate so final-HEAD integrity can be checked independently from the validated code package.
+This FINAL document is a documentation-only descendant of the exact validated code package. Its own branch HEAD must clear the same canonical gate before the documentation seal itself is treated as final-head clean.
 
 ## Delivered architecture
 
-Mega-A now provides a fail-closed, evidence-aware Research Intelligence layer over the existing ResearchOS control plane.
+Mega-A provides a fail-closed, evidence-aware Research Intelligence layer over the existing ResearchOS control plane.
 
 Implemented chain:
 
@@ -59,8 +59,11 @@ Key contracts:
 13. Scientific exhaustion requires explicit `search_space_complete=true` and `archaeology_complete=true` plus no actionable dependency.
 14. Research Intelligence is recommendation/policy-only and does not create a second scheduler or control plane.
 15. Hypothesis priority and information value are pre-outcome research-design metadata, not performance-derived scores.
-16. Ranking is priority descending, information value descending, admitted cost ascending, with deterministic tie-breaks only after those inputs.
-17. Missing ranking metadata remains `UNKNOWN`; fallback ordering is not represented as scientific dominance.
+16. Complete cross-candidate ranking is priority descending, information value descending, admitted cost ascending, with deterministic tie-breaks only after those inputs.
+17. Missing ranking metadata remains `UNKNOWN`; it is never numerically imputed.
+18. With multiple executable candidates, incomplete comparison metadata fails closed to `NO_ACTION`; candidate-id or action-class ordering cannot substitute for scientific comparison facts.
+19. With exactly one executable candidate, incomplete ranking metadata may still yield a recommendation because no cross-candidate dominance is asserted; the receipt explicitly records `SINGLE_EXECUTABLE_NO_COMPARISON`.
+20. Outcome/performance-shaped fields are ignored by the ranking layer and cannot drive research priority.
 
 ## Durable package chronology
 
@@ -79,12 +82,13 @@ Key contracts:
 - Exact sealed-W1 archaeology catalog restoration: `cf26ff9c32feb05473f313906e3f234b0eaac499`
 - Priority / information-value / cost chain package: `4e6858bd833145dbaed207a36bfc0fff3d0a067d`
 - CP005 proof closure: `f4e42e2a7ae573b6b3b9d65cc44cf710a7f6ec64`
+- Documentation-only precursor seal: `c77d4743f53b41687d054d29516b5a11a60f0338`
+- Final incomplete-ranking fail-closed hardening: `75c3351b0ec4fefdc1c9d0e67efcef1a412c8501`
+- CP006: final proof and ownership-boundary closure.
 
 ## Sealed W1 provenance identity
 
-`research/research_os/legacy/archaeology_source_catalog.json` is imported as exact Git blob:
-
-`5330f9f9874a0263fe524bd5d7db3704091bbc33`
+`research/research_os/legacy/archaeology_source_catalog.json` is imported as exact Git blob `5330f9f9874a0263fe524bd5d7db3704091bbc33`.
 
 The catalog is provenance-only. It is not an economic truth store, does not authorize outcome access, and does not promote historical review material into economic evidence.
 
@@ -124,6 +128,8 @@ The canonical Mega-A suite covers, among other cases:
 - second-scheduler prohibition;
 - priority -> information-value -> cost ordering;
 - outcome-shaped fields ignored by ranking;
+- multiple executable candidates with incomplete ranking metadata fail closed to `NO_ACTION`;
+- single executable candidate with incomplete ranking metadata is explicitly non-comparative;
 - no scheduler or persistent-memory mutation by the recommendation chain.
 
 ## Ownership-boundary decisions
@@ -136,9 +142,12 @@ Classification: `NO_BUILD_REQUIRED / OWNERSHIP_BOUNDARY`.
 
 ### Incomplete ranking metadata
 
-`ranking_complete=false` remains explicit when pre-outcome priority or information-value metadata is missing. Deterministic fallback is permitted only as stable recommendation ordering; it is not scientific evidence of dominance and does not authorize scheduling.
+`ranking_complete=false` remains explicit when required pre-outcome comparison metadata is missing.
 
-Classification: `SAFE_FAIL_CLOSED_RECOMMENDATION`.
+- If **multiple executable candidates** exist, incomplete ranking now blocks cross-candidate choice with `NO_ACTION`; deterministic identifiers are not allowed to masquerade as scientific ordering.
+- If **one executable candidate** exists, it may be recommended without a comparison claim, and the receipt explicitly records that no cross-candidate ranking occurred.
+
+Classification: `FAIL_CLOSED`.
 
 ### Cross-lane identity/provenance work
 
@@ -170,6 +179,12 @@ Validator, economic evaluation, prospective observation and live trading remain 
 
 Classification: `SEALED_BY_AUTHORITY / OUT_OF_SCOPE`.
 
+## Build-chain exhaustion decision
+
+The **Mega-A technical build chain is exhausted within its declared ownership boundary**. No additional internal scheduler, truth store, outcome service, Validator, producer runtime, arbitrary candidate generator or authority surface is justified by the evidence available to this mission.
+
+This does **not** assert that the scientific opportunity space is exhausted. Runtime scientific exhaustion remains separately gated by explicit Search/Archaeology completion facts and absence of actionable dependencies.
+
 ## Scientific claim limits
 
 This mission makes **no** claim of alpha, profitability, positive expected value, covariance/correlation behavior, provider availability, economic success, production deployment success or live-trading readiness.
@@ -188,9 +203,10 @@ No economic outcome was accessed.
 
 MEGA_A_TECHNICAL_STATUS: `PASS`
 MEGA_A_INTEGRATION_STATUS: `READY_FOR_CONVERGENCE`
+MEGA_A_BUILD_CHAIN_STATUS: `EXHAUSTED_WITHIN_SCOPE`
 MEGA_A_ECONOMIC_STATUS: `NOT_EVALUATED / NOT_AUTHORIZED`
 SECOND_CONTROL_PLANE_CREATED: `FALSE`
 SECOND_TRUTH_STORE_CREATED: `FALSE`
 FABRICATED_OUTCOME_OR_AUTHORITY: `FALSE`
 
-The Mega-A Research Intelligence rail is technically ready for convergence once this FINAL documentation-only HEAD itself clears the canonical exact-head gate.
+The Mega-A Research Intelligence code rail is technically validated at `75c3351b0ec4fefdc1c9d0e67efcef1a412c8501`. The documentation-only descendant containing CP006 and this FINAL must itself clear the canonical exact-head gate before the branch HEAD is declared fully sealed.
