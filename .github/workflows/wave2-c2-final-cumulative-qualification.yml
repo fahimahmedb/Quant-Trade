@@ -84,7 +84,7 @@ jobs:
           done
           test "$(git rev-parse "$observed:research/research_os/multi_source_ideation.py")" = "$MULTISOURCE_ORIGINAL_BLOB"
           grep -F PENDING_EXACT_HEAD_CI research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
-          grep -F WAVE2_INTEGRATED=false research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
+          grep -F 'not authorized to emit `WAVE2_INTEGRATED_SHA`' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
           echo "OBSERVED_MULTISOURCE_HEAD=$observed" | tee -a /tmp/final.env
           echo "MULTISOURCE_POST_MERGE_TEST_ONLY_FILES=$(wc -l < /tmp/ms-live-delta.paths | tr -d ' ')" | tee -a /tmp/final.env
 
