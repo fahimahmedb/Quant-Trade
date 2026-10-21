@@ -302,10 +302,19 @@ class MegaC0ScientificAdjudicationTests(unittest.TestCase):
         with self.assertRaisesRegex(ScientificAdjudicationError, "outside negative-rights"):
             bind_red_team_ref(self.factory, self.validator, receipt)
 
-    def test_independence_primary_reconstruction_counts_once(self):
+    def test_independence_primary_reconstruction_does_not_overclaim_semantic_confirmation(self):
         validate_independence_ref(self.independence, self.factory)
         self.assertEqual(self.independence["status"], "PASS")
-        self.assertEqual(self.independence["independent_confirmation_count"], 1)
+        self.assertEqual(self.independence["independent_confirmation_count"], 0)
+        self.assertFalse(self.independence["semantic_independent_confirmation_proven"])
+
+    def test_explicit_semantic_independence_can_count_once(self):
+        record = independence_record()
+        record["semantic_diverse_review"] = "PROVEN_INDEPENDENT_SEMANTIC_REVIEW"
+        ref = bind_independence_ref(self.factory, record)
+        validate_independence_ref(ref, self.factory)
+        self.assertTrue(ref["semantic_independent_confirmation_proven"])
+        self.assertEqual(ref["independent_confirmation_count"], 1)
 
     def test_duplicate_support_does_not_count_as_independent_confirmation(self):
         ref = bind_independence_ref(self.factory, independence_record("DUPLICATE"))
@@ -349,6 +358,8 @@ class MegaC0ScientificAdjudicationTests(unittest.TestCase):
         self.assertEqual(result["profitability_status"], "UNKNOWN")
         self.assertFalse(result["ready_is_profitable"])
         self.assertEqual(result["economic_result"], "NOT_OBSERVED")
+        self.assertFalse(result["semantic_independent_confirmation_proven"])
+        self.assertEqual(result["independent_confirmation_count"], 0)
 
     def test_qualified_scoped_external_negative_is_only_kill_path(self):
         negative = bind_qualified_negative_ref(self.factory, negative_record(self.factory))

@@ -415,7 +415,13 @@ def bind_independence_ref(factory_ref: Mapping[str, Any], record: Mapping[str, A
     support_relation = record.get("support_relation", "PRIMARY_SOURCE_RECONSTRUCTION")
     _require(support_relation in {"PRIMARY_SOURCE_RECONSTRUCTION", "DUPLICATE", "WRAPPER_EQUIVALENT", "UNKNOWN"},
              "invalid independence support relation")
-    independent_confirmation = structural_proven and support_relation == "PRIMARY_SOURCE_RECONSTRUCTION"
+    semantic_diverse_review = record.get("semantic_diverse_review", "NOT_PROVEN")
+    semantic_review_proven = semantic_diverse_review == "PROVEN_INDEPENDENT_SEMANTIC_REVIEW"
+    independent_confirmation = (
+        structural_proven
+        and support_relation == "PRIMARY_SOURCE_RECONSTRUCTION"
+        and semantic_review_proven
+    )
     ref = {
         "schema_version": "scientific-independence-ref-v1",
         "factory_ref_hash": factory_ref["ref_hash"],
@@ -428,7 +434,8 @@ def bind_independence_ref(factory_ref: Mapping[str, Any], record: Mapping[str, A
         "structural_independence_proven": structural_proven,
         "support_relation": support_relation,
         "independent_confirmation_count": 1 if independent_confirmation else 0,
-        "semantic_diverse_review": record.get("semantic_diverse_review", "NOT_PROVEN"),
+        "semantic_diverse_review": semantic_diverse_review,
+        "semantic_independent_confirmation_proven": semantic_review_proven,
         "information_scope": record.get("information_scope"),
         "cognitive_scope": record.get("cognitive_scope"),
         "record_hash": sha256_json(dict(record)),
@@ -450,6 +457,9 @@ def validate_independence_ref(ref: Mapping[str, Any], factory_ref: Mapping[str, 
     if ref.get("support_relation") in {"DUPLICATE", "WRAPPER_EQUIVALENT", "UNKNOWN"}:
         _require(ref.get("independent_confirmation_count") == 0,
                  "duplicate/wrapper/unknown support cannot count as independent confirmation")
+    if ref.get("semantic_independent_confirmation_proven") is not True:
+        _require(ref.get("independent_confirmation_count") == 0,
+                 "unproven semantic review cannot count as independent confirmation")
     _assert_authority_closed(ref, "IndependenceRef")
     _validate_self_hash(ref, "ref_hash", "IndependenceRef")
 
@@ -611,6 +621,10 @@ def adjudicate_scientific_candidate(
         "negative_knowledge_global": False,
         "independent_confirmation_count": (
             independence_ref.get("independent_confirmation_count", 0) if independence_ref else 0
+        ),
+        "semantic_independent_confirmation_proven": (
+            independence_ref.get("semantic_independent_confirmation_proven", False)
+            if independence_ref else False
         ),
         "scientific_negative_claim": verdict == "KILL",
         "raw_outcomes_consumed": 0,
