@@ -1,0 +1,372 @@
+name: Wave2 C2 C0 Sealed-Base Port Challenge
+
+on:
+  push:
+    branches:
+      - builder/wave2-convergence2-foreman-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SEALED_BASE: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  HISTORICAL_START: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  C0_SOURCE_HEAD: 8160764b39fde86a7f29cebd5a97f5cec0cb2b81
+
+jobs:
+  challenge:
+    name: Challenge C0 semantic port without canonical mutation
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Reacquire exact C0 source and sealed base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "+refs/heads/builder/convergence-cp079-wave2-base-20261021:refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021"
+          git fetch origin "+refs/heads/builder/mega-c0-scientific-adjudication-20261021:refs/remotes/origin/builder/mega-c0-scientific-adjudication-20261021"
+          test "$(git rev-parse refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021)" = "$SEALED_BASE"
+          git cat-file -e "${C0_SOURCE_HEAD}^{commit}"
+          test "$(git merge-base "$SEALED_BASE" "$C0_SOURCE_HEAD")" = "$HISTORICAL_START"
+          printf 'OBSERVED_C0_BRANCH_HEAD=%s\n' "$(git rev-parse refs/remotes/origin/builder/mega-c0-scientific-adjudication-20261021)" | tee /tmp/c0-port.env
+          printf 'PINNED_C0_SOURCE_HEAD=%s\n' "$C0_SOURCE_HEAD" | tee -a /tmp/c0-port.env
+
+      - name: Build ephemeral sealed-base C0 port
+        shell: bash
+        run: |
+          set -euo pipefail
+          git worktree add --detach /tmp/c0-port "$SEALED_BASE"
+          git worktree add --detach /tmp/c0-base "$SEALED_BASE"
+          git diff --binary "$HISTORICAL_START" "$C0_SOURCE_HEAD" -- \
+            research/research_os/expansion/scientific_adjudication.py \
+            tests/test_mega_c0_scientific_adjudication.py \
+            > /tmp/c0-semantic.patch
+          test -s /tmp/c0-semantic.patch
+          git -C /tmp/c0-port apply --index /tmp/c0-semantic.patch
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('/tmp/c0-port/research/research_os/expansion/scientific_adjudication.py')
+          text = path.read_text()
+          old = 'WAVE2_IMMUTABLE_BASE_SHA = "97165db2faa3300cef1f23de0045ed93d25eb9cb"'
+          new = 'WAVE2_IMMUTABLE_BASE_SHA = "2b99d8aeb8a342f1ef32544247d366cb8a26037e"'
+          assert text.count(old) == 1, text.count(old)
+          path.write_text(text.replace(old, new))
+          assert old not in path.read_text()
+          assert new in path.read_text()
+          PY
+          git -C /tmp/c0-port add research/research_os/expansion/scientific_adjudication.py
+          echo 'C0_SEMANTIC_PORT_APPLIED=TRUE' | tee -a /tmp/c0-port.env
+          echo 'C0_REBOUND_TO_SEALED_BASE=TRUE' | tee -a /tmp/c0-port.env
+          echo 'SIBLING_WORKFLOW_AND_CHECKPOINT_DOC_EXCLUDED=TRUE' | tee -a /tmp/c0-port.env
+
+      - name: Prove sealed-base repair remains byte-identical
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=/tmp/c0-port
+          test "$(git -C "$root" hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+          test "$(git -C "$root" hash-object research/research_os/tests/test_economic_identity_portfolio_readiness.py)" = 4c163e5c1276e4909b4be3e97990e899c9079234
+          test "$(git -C "$root" hash-object research/research_os/tests/test_economic_readiness_integration.py)" = 8b64c95695abfc661e636b20deb20713d391d5e5
+          echo 'SEALED_BASE_REPAIR_PRESERVED=TRUE' | tee -a /tmp/c0-port.env
+
+      - name: Run C0 focused suite after sealed-base rebind
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/c0-port
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest discover -s tests -p 'test_mega_c0_scientific_adjudication.py' -v 2>&1 | tee /tmp/c0-focused-port.log
+          grep -E '^Ran [0-9]+ tests' /tmp/c0-focused-port.log | tail -1
+
+      - name: Challenge producer-validator independence at C0 receipt boundary
+        id: independence
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/c0-port
+          PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.scientific_store import sha256_json
+          from research.research_os.expansion.scientific_adjudication import (
+              ScientificAdjudicationError,
+              bind_factory_ref,
+              bind_validator_ref,
+          )
+
+          candidate = {
+              'hypothesis_id': 'H-C0-FOREMAN-INDEPENDENCE',
+              'generation_id': 'G1',
+              'mechanism': 'bounded-mechanism',
+              'falsification_scope': ['source contradiction'],
+              'decision_map': {'pass': 'continue', 'fail': 'stop'},
+          }
+          candidate_hash = sha256_json(candidate)
+          protocol_hash = sha256_json({'protocol': 'P1', 'candidate_hash': candidate_hash})
+          frozen_protocol = {
+              'candidate_hash': candidate_hash,
+              'protocol_hash': protocol_hash,
+              'protocol_version': 'P1',
+              'outcome_opened': False,
+          }
+          frozen_hash = sha256_json(frozen_protocol)
+          registry = {
+              'registry_id': 'REG-FOREMAN-INDEPENDENCE',
+              'candidate_hash': candidate_hash,
+              'protocol_hash': protocol_hash,
+              'frozen_protocol_hash': frozen_hash,
+          }
+          infrastructure = {
+              'status': 'PASS',
+              'blockers': [],
+              'registry': registry,
+              'frozen_registry': dict(registry),
+              'frozen_protocol': frozen_protocol,
+              'outcome_accessed': False,
+              'economic_result': 'NOT_OBSERVED',
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+          }
+          infrastructure['infrastructure_hash'] = sha256_json(infrastructure)
+          factory = bind_factory_ref(candidate, infrastructure)
+
+          actor = 'same-producer-and-validator.foreman-probe'
+          receipt = {
+              'hypothesis_id': factory['hypothesis_id'],
+              'generation_id': factory['generation_id'],
+              'validator': actor,
+              'producer_id': actor,
+              'status': 'READY_FOR_AUTHORIZED_ECONOMIC_TEST',
+              'ready_for_authorized_economic_test': True,
+              'checks': {'candidate_immutability': {'status': 'PASS'}},
+              'block_reasons': [],
+              'candidate_hash': factory['candidate_hash'],
+              'protocol_hash': factory['protocol_hash'],
+              'economic_test_authorized': False,
+              'economic_claim_authorized': False,
+              'outcome_access_authorized': False,
+              'candidate_mutated': False,
+              'signal_repair_attempted': False,
+              'parameter_optimization_attempted': False,
+          }
+
+          blocked = False
+          error = None
+          try:
+              bind_validator_ref(factory, receipt)
+          except ScientificAdjudicationError as exc:
+              blocked = True
+              error = str(exc)
+
+          result = {
+              'acceptance_case': 'C0-A02',
+              'producer_id': actor,
+              'validator_id': actor,
+              'expected': 'BLOCK',
+              'actual': 'BLOCK' if blocked else 'ACCEPTED',
+              'producer_self_validation_blocked': blocked,
+              'error': error,
+              'acceptance_pass': blocked,
+          }
+          Path('/tmp/c0-self-validator-challenge.json').write_text(json.dumps(result, indent=2, sort_keys=True) + '\n')
+          print(json.dumps(result, indent=2, sort_keys=True))
+          PY
+          pass="$(python - <<'PY'
+          import json
+          print(str(json.load(open('/tmp/c0-self-validator-challenge.json'))['acceptance_pass']).lower())
+          PY
+          )"
+          echo "acceptance_pass=$pass" >> "$GITHUB_OUTPUT"
+          if [ "$pass" = true ]; then
+            echo 'C0_A02_PRODUCER_SELF_VALIDATION_BLOCKED=TRUE' | tee -a /tmp/c0-port.env
+          else
+            echo 'C0_A02_PRODUCER_SELF_VALIDATION_BLOCKED=FALSE' | tee -a /tmp/c0-port.env
+            echo 'C0_PORT_ACCEPTANCE_BLOCKER=PRODUCER_SELF_VALIDATION_ACCEPTED' | tee -a /tmp/c0-port.env
+          fi
+
+      - name: Factory Validator Red Team differential remains stable
+        shell: bash
+        run: |
+          set -euo pipefail
+          modules=(
+            research.research_os.tests.test_w1_factory_experiment_infrastructure
+            research.research_os.tests.test_w1_factory_firewall_hardening
+            research.research_os.tests.test_w1_factory_experiment_bridge
+            research.research_os.tests.test_experiment_runner_frozen_protocol
+            research.research_os.tests.test_economic_readiness_validation
+          )
+          run_suite() {
+            local root="$1" label="$2"
+            set +e
+            (cd "$root" && PYTHONPATH="$root:$root/src" python -m unittest -v "${modules[@]}") > "/tmp/${label}.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\n' "$code" > "/tmp/${label}.exit"
+            grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
+          }
+          run_suite /tmp/c0-base c0-base-upstream
+          run_suite /tmp/c0-port c0-port-upstream
+          diff -u /tmp/c0-base-upstream.failures /tmp/c0-port-upstream.failures
+          diff -u /tmp/c0-base-upstream.count /tmp/c0-port-upstream.count
+          test "$(cat /tmp/c0-base-upstream.exit)" = 0
+          test "$(cat /tmp/c0-port-upstream.exit)" = 0
+          echo 'FACTORY_VALIDATOR_RED_TEAM_DIFFERENTIAL=PASS' | tee -a /tmp/c0-port.env
+
+      - name: W1 ECON differential remains identical
+        shell: bash
+        run: |
+          set -euo pipefail
+          modules=(
+            research.research_os.tests.test_economic_identity_memory_context_w1
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1
+            research.research_os.tests.test_economic_identity_portfolio_readiness
+            research.research_os.tests.test_economic_readiness_validation
+            research.research_os.tests.test_producer_economic_readiness
+            research.research_os.tests.test_economic_readiness_integration
+            research.research_os.tests.test_w1_factory_economic_integration
+          )
+          run_suite() {
+            local root="$1" label="$2"
+            set +e
+            (cd "$root" && PYTHONPATH="$root:$root/src" python -m unittest -v "${modules[@]}") > "/tmp/${label}.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\n' "$code" > "/tmp/${label}.exit"
+            grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
+          }
+          run_suite /tmp/c0-base c0-base-econ
+          run_suite /tmp/c0-port c0-port-econ
+          diff -u /tmp/c0-base-econ.failures /tmp/c0-port-econ.failures
+          diff -u /tmp/c0-base-econ.count /tmp/c0-port-econ.count
+          test "$(cat /tmp/c0-base-econ.exit)" = 0
+          test "$(cat /tmp/c0-port-econ.exit)" = 0
+          echo 'W1_ECON_DIFFERENTIAL=PASS' | tee -a /tmp/c0-port.env
+
+      - name: Verify C0 authority outcome and downstream membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/c0-port
+          PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
+          from research.research_os.expansion.scientific_adjudication import (
+              AUTHORITY_STATE,
+              PROMOTION_TARGET,
+              WAVE2_IMMUTABLE_BASE_SHA,
+          )
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          assert WAVE2_IMMUTABLE_BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          assert PROMOTION_TARGET == 'ECONOMIC_IDENTITY'
+          print('C0_AUTHORITY_MEMBRANE=CLOSED')
+          print('OUTCOME_ACCESSED=FALSE')
+          print('C0_PROMOTION_TARGET=ECONOMIC_IDENTITY_ONLY')
+          PY
+          echo 'AUTHORITY_OPENED=FALSE' | tee -a /tmp/c0-port.env
+          echo 'OUTCOME_ACCESSED=FALSE' | tee -a /tmp/c0-port.env
+
+      - name: Emit diagnostic port receipt
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re, subprocess
+          from pathlib import Path
+
+          def unittest_count(path):
+              p = Path(path)
+              if not p.exists():
+                  return None
+              values = re.findall(r'^Ran ([0-9]+) tests.*$', p.read_text(), flags=re.MULTILINE)
+              return int(values[-1]) if values else None
+
+          challenge_path = Path('/tmp/c0-self-validator-challenge.json')
+          challenge = json.loads(challenge_path.read_text()) if challenge_path.exists() else {
+              'acceptance_pass': False,
+              'actual': 'NOT_RUN',
+              'producer_self_validation_blocked': False,
+          }
+          source_branch = subprocess.check_output(
+              ['git', 'rev-parse', 'refs/remotes/origin/builder/mega-c0-scientific-adjudication-20261021'],
+              text=True,
+          ).strip()
+          port_exists = Path('/tmp/c0-port/research/research_os/expansion/scientific_adjudication.py').exists()
+          focused = unittest_count('/tmp/c0-focused-port.log')
+          base_up = Path('/tmp/c0-base-upstream.exit').read_text().strip() if Path('/tmp/c0-base-upstream.exit').exists() else None
+          port_up = Path('/tmp/c0-port-upstream.exit').read_text().strip() if Path('/tmp/c0-port-upstream.exit').exists() else None
+          base_econ = Path('/tmp/c0-base-econ.exit').read_text().strip() if Path('/tmp/c0-base-econ.exit').exists() else None
+          port_econ = Path('/tmp/c0-port-econ.exit').read_text().strip() if Path('/tmp/c0-port-econ.exit').exists() else None
+
+          port_tests_green = focused == 33 and base_up == port_up == '0' and base_econ == port_econ == '0'
+          acceptance = 'PORT_PROVEN_WITH_BASE_REBIND' if (port_tests_green and challenge.get('acceptance_pass') is True) else 'BLOCKED'
+          blockers = []
+          if not port_tests_green:
+              blockers.append('SEALED_BASE_PORT_REGRESSION_OR_FOCUSED_FAILURE')
+          if challenge.get('acceptance_pass') is not True:
+              blockers.append('C0_A02_PRODUCER_SELF_VALIDATION_NOT_BLOCKED')
+
+          receipt = {
+              'role': 'FOREMAN_DIAGNOSTIC_C0_SEALED_BASE_PORT_CHALLENGE_ONLY',
+              'foreman_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'sealed_base': '2b99d8aeb8a342f1ef32544247d366cb8a26037e',
+              'historical_start': '97165db2faa3300cef1f23de0045ed93d25eb9cb',
+              'pinned_c0_source_head': '8160764b39fde86a7f29cebd5a97f5cec0cb2b81',
+              'observed_c0_branch_head': source_branch,
+              'c0_source_local_qualification_run': 39661774158,
+              'c0_source_local_qualification_base': '97165db2faa3300cef1f23de0045ed93d25eb9cb',
+              'c0_semantic_port_materialized': port_exists,
+              'c0_rebound_to_sealed_base': port_exists,
+              'c0_focused_test_count_after_rebind': focused,
+              'factory_validator_red_team_differential_green': base_up == port_up == '0',
+              'w1_econ_differential_green': base_econ == port_econ == '0',
+              'c0_a02_producer_self_validation_blocked': challenge.get('producer_self_validation_blocked', False),
+              'c0_a02_actual': challenge.get('actual'),
+              'c0_port_acceptance': acceptance,
+              'blockers': blockers,
+              'authority_opened': False,
+              'outcome_accessed': False,
+              'canonical_branch_mutated': False,
+              'ready_for_canonical_convergence2': False,
+              'wave2_integrated_sha_emitted': False,
+          }
+          Path('/tmp/wave2-c0-sealed-port-challenge-receipt.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n'
+          )
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
+
+      - name: Prove foreman did not mutate canonical tree
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain)"
+          echo 'CANONICAL_BRANCH_MUTATED=FALSE'
+          echo 'WAVE2_INTEGRATED_SHA_EMITTED=FALSE'
+
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c0-sealed-port-challenge-${{ github.sha }}
+          path: |
+            /tmp/wave2-c0-sealed-port-challenge-receipt.json
+            /tmp/c0-self-validator-challenge.json
+            /tmp/c0-focused-port.log
+            /tmp/c0-port.env
+            /tmp/c0-base-upstream.log
+            /tmp/c0-port-upstream.log
+            /tmp/c0-base-econ.log
+            /tmp/c0-port-econ.log
+          if-no-files-found: warn
