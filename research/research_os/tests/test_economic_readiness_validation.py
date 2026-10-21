@@ -4,6 +4,8 @@ from copy import deepcopy
 import unittest
 
 from research.research_os.scientific_store import sha256_json
+from research.research_os.expansion.experiment_infrastructure import bind_pre_outcome_infrastructure
+from research.research_os.expansion.experiment_runner import DryRunExperimentRunner
 from research.research_os.expansion.validation_readiness import (
     BLOCK,
     READY,
@@ -24,14 +26,6 @@ def _fixture() -> dict:
     }
     candidate_hash = sha256_json(candidate)
     source_hashes = [sha256_json({"snapshot": "S1"})]
-    protocol_payload = {
-        "hypothesis_id": candidate["hypothesis_id"],
-        "generation_id": candidate["generation_id"],
-        "candidate": candidate,
-        "source_snapshot_hashes": source_hashes,
-        "outcome_access": "CLOSED",
-    }
-    protocol_hash = sha256_json(protocol_payload)
     expression_spec = {
         "instrument_rule": "fixture-instrument",
         "side_rule": "fixture-side",
@@ -40,10 +34,149 @@ def _fixture() -> dict:
         "horizon_rule": "fixture-horizon",
         "sizing_rule": "fixture-size",
     }
+    expression = dict(zip(
+        ("instrument", "direction_exposure_semantics", "entry_clock", "exit_clock", "horizon", "position_expression"),
+        expression_spec.values(),
+    ), universe="U-1")
+    clock = {
+        "timezone": "UTC",
+        "data_cutoff": "2026-10-15T10:00:00+00:00",
+        "decision_time": "2026-10-15T10:30:00+00:00",
+        "freeze_time": "2026-10-15T11:00:00+00:00",
+    }
+    universe = {
+        "status": "DEFINED",
+        "universe_id": "U-1",
+        "definition_hash": sha256_json({"universe": "fixture"}),
+        "membership_policy": "point-in-time-membership",
+    }
+    costs = {
+        "model_id": "COST-FIXTURE-V1",
+        "fees_bps": 0,
+        "spread_bps": 1,
+        "slippage_bps": 2,
+        "financing_bps": 0,
+        "borrow_bps": 0,
+    }
+    capacity = {
+        "model_id": "CAPACITY-FIXTURE-V1",
+        "max_adv_fraction": .01,
+        "evidence_ref": "fixture://declared-liquidity",
+    }
+    multiplicity_method = "all attempts counted before outcome access"
+    declared = {
+        "universe": deepcopy(universe),
+        "clock": deepcopy(clock),
+        "entry_definition": expression["entry_clock"],
+        "exit_definition": expression["exit_clock"],
+        "economic_expression": expression,
+        "benchmark": "fixture-benchmark",
+        "gross_metric": "gross",
+        "net_metric": "net",
+        "cost_assumptions": costs,
+        "capacity_assumptions": capacity,
+        "sample_definition": {"unit": "event"},
+        "sample_window": {"start": "2020-01-01", "end": "2025-12-31"},
+        "exclusions": [],
+        "missing_data_policy": "NO_IMPUTATION",
+        "revision_policy": "POINT_IN_TIME_ONLY",
+        "survivorship_policy": "POINT_IN_TIME_UNIVERSE",
+        "falsification_rule": candidate["falsification_scope"],
+        "decision_map": candidate["decision_map"],
+        "observed_attempt_count": 0,
+        "effective_trials": "UNKNOWN",
+        "multiplicity_family": "FAMILY-FIXTURE",
+        "multiplicity_method": multiplicity_method,
+    }
+    sources = [{
+        "snapshot_hash": source_hashes[0],
+        "available_at": "2026-10-15T09:00:00+00:00",
+        "route": {
+            "route_id": "SRC-1",
+            "source_class": "SYNTHETIC_FIXTURE",
+            "transport": "MEMORY",
+            "locator": "fixture://metadata",
+            "permission_state": "FIXTURE_ONLY",
+            "pit_mode": "VERSIONED_SNAPSHOT",
+            "revision_policy": "IMMUTABLE",
+            "survivorship_policy": "PIT_MEMBERSHIP",
+            "timezone": "UTC",
+            "availability_start": "2026-10-15T09:00:00+00:00",
+            "contains_outcome": False,
+        },
+    }]
+    implementation = {"status": "PASS", "basis": "SYNTHETIC_METADATA_ONLY"}
+    protocol_payload = {
+        "hypothesis_id": candidate["hypothesis_id"],
+        "generation_id": candidate["generation_id"],
+        "candidate": candidate,
+        "source_snapshot_hashes": source_hashes,
+        "outcome_access": "CLOSED",
+        "dataset_provenance": {"sources": sources, "protocol": declared},
+        "implementability_declaration": implementation,
+        "declared_decision_map": candidate["decision_map"],
+    }
+    protocol_hash = sha256_json(protocol_payload)
+    envelope = {
+        "experiment_id": "EXP-H-ECON-READY-001-G1",
+        "status": "FROZEN_READY_NO_OUTCOME",
+        "protocol_hash": protocol_hash,
+        "protocol_payload": protocol_payload,
+        "candidate_hash": candidate_hash,
+        "outcome_opened": False,
+        "result": "NOT_OBSERVED",
+    }
+    pit = [{
+        "source_id": "SRC-1",
+        "snapshot_hash": source_hashes[0],
+        "point_in_time_qualified": True,
+        "available_at": "2026-10-15T09:00:00+00:00",
+        "route_available_at": "2026-10-15T09:00:00+00:00",
+        "revision_policy": "IMMUTABLE",
+    }]
+    qualifications = [{
+        "status": "PASS",
+        "outcome_accessed": False,
+        "route_hash": sha256_json({"route": "SRC-1"}),
+        "snapshot_hash": source_hashes[0],
+    }]
+    runner_meta = {
+        "dataset_manifest_hash": sha256_json(sources),
+        "code_hash": sha256_json({"code": "fixture"}),
+        "environment_hash": sha256_json({"environment": "fixture"}),
+        "seed": 7,
+        "declared_metrics": ["gross", "net"],
+        "code_sha": "fixture-code-sha",
+        "environment": "fixture-python",
+        "dependency_fingerprint": sha256_json({"deps": "fixture"}),
+        "source_pit_metadata": pit,
+        "frozen_protocol": declared,
+    }
+    runner = DryRunExperimentRunner()
+    plan = runner.plan(envelope, qualifications, runner_meta)
+    assert plan["status"] == "READY_FOR_REPRODUCIBLE_DRY_RUN", plan["blockers"]
+    replay = runner.replay(plan)
+    trial_accounting = {
+        "hypothesis_id": candidate["hypothesis_id"],
+        "generation_id": candidate["generation_id"],
+        "observed_attempt_count": 0,
+        "effective_trials_status": "UNKNOWN",
+        "estimated_effective_trials": None,
+    }
+    infrastructure = bind_pre_outcome_infrastructure(
+        envelope=envelope,
+        plan=plan,
+        replay=replay,
+        trial_accounting=trial_accounting,
+    )
     binding_payload = {
         "candidate_hash": candidate_hash,
         "protocol_hash": protocol_hash,
         "source_snapshot_hashes": source_hashes,
+        "execution_plan_hash": plan["execution_plan_hash"],
+        "experiment_registry_id": infrastructure["registry"]["registry_id"],
+        "experiment_registry_hash": infrastructure["registry"]["entry_hash"],
+        "experiment_infrastructure_hash": infrastructure["infrastructure_hash"],
     }
     bundle = {
         "candidate": candidate,
@@ -55,30 +188,12 @@ def _fixture() -> dict:
             "evidence_hash": sha256_json({"legacy": "screened"}),
         },
         "sources": {
-            "manifest_hash": sha256_json({"manifest": source_hashes}),
+            "manifest_hash": sha256_json(sources),
             "snapshot_hashes": source_hashes,
-            "pit_metadata": [
-                {
-                    "source_id": "SRC-1",
-                    "snapshot_hash": source_hashes[0],
-                    "point_in_time_qualified": True,
-                    "available_at": "2026-10-15T09:00:00+00:00",
-                    "route_available_at": "2026-10-15T09:00:00+00:00",
-                }
-            ],
+            "pit_metadata": pit,
         },
-        "clock": {
-            "timezone": "UTC",
-            "data_cutoff": "2026-10-15T10:00:00+00:00",
-            "decision_time": "2026-10-15T10:30:00+00:00",
-            "freeze_time": "2026-10-15T11:00:00+00:00",
-        },
-        "universe": {
-            "status": "DEFINED",
-            "universe_id": "U-1",
-            "definition_hash": sha256_json({"universe": "fixture"}),
-            "membership_policy": "point-in-time-membership",
-        },
+        "clock": clock,
+        "universe": universe,
         "economic_expression": {
             "status": "COMPLETE",
             "spec": expression_spec,
@@ -86,39 +201,30 @@ def _fixture() -> dict:
         },
         "implementability": {
             "status": "PASS",
-            "declaration_hash": sha256_json({"implementability": "PASS"}),
+            "declaration_hash": sha256_json(implementation),
         },
-        "protocol": {
-            "status": "FROZEN_READY_NO_OUTCOME",
-            "protocol_hash": protocol_hash,
-            "protocol_payload": protocol_payload,
-            "candidate_hash": candidate_hash,
-            "outcome_opened": False,
-        },
+        "protocol": envelope,
         "reproducibility": {
             "status": "BOUND",
             "binding_payload": binding_payload,
             "binding_hash": sha256_json(binding_payload),
             "outcome_accessed": False,
         },
+        "experiment_infrastructure": infrastructure,
         "multiplicity": {
             "declared": True,
-            "method": "all attempts counted before outcome access",
+            "method": multiplicity_method,
         },
-        "trial_accounting": {
-            "observed_attempt_count": 0,
-            "effective_trials_status": "UNKNOWN",
-            "estimated_effective_trials": None,
-        },
+        "trial_accounting": trial_accounting,
         "cost_model": {
             "status": "DECLARED",
-            "model_id": "COST-FIXTURE-V1",
-            "declaration_hash": sha256_json({"cost_model": "fixture"}),
+            "model_id": costs["model_id"],
+            "declaration_hash": sha256_json(costs),
         },
         "capacity": {
             "status": "DECLARED",
-            "model_id": "CAPACITY-FIXTURE-V1",
-            "declaration_hash": sha256_json({"capacity": "fixture"}),
+            "model_id": capacity["model_id"],
+            "declaration_hash": sha256_json(capacity),
         },
         "outcome_access": {
             "opened": False,
@@ -126,38 +232,22 @@ def _fixture() -> dict:
             "result": "NOT_OBSERVED",
         },
     }
-
-
-    # Complete frozen metadata contract, still wholly synthetic and outcome-free.
-    expression = dict(zip(("instrument", "direction_exposure_semantics", "entry_clock", "exit_clock",
-                           "horizon", "position_expression"), expression_spec.values()), universe="U-1")
-    costs = {"model_id": "COST-FIXTURE-V1", "fees_bps": 0, "spread_bps": 1,
-             "slippage_bps": 2, "financing_bps": 0, "borrow_bps": 0}
-    capacity = {"model_id": "CAPACITY-FIXTURE-V1", "max_adv_fraction": .01,
-                "evidence_ref": "fixture://declared-liquidity"}
-    declared = {"clock": deepcopy(bundle["clock"]), "universe": deepcopy(bundle["universe"]),
-                "economic_expression": expression, "cost_assumptions": costs, "capacity_assumptions": capacity,
-                "multiplicity_family": "FAMILY-FIXTURE", "multiplicity_method": bundle["multiplicity"]["method"],
-                "observed_attempt_count": 0, "effective_trials": "UNKNOWN", "decision_map": candidate["decision_map"],
-                "entry_definition": expression["entry_clock"], "exit_definition": expression["exit_clock"]}
-    sources = [{"snapshot_hash": source_hashes[0], "available_at": "2026-10-15T09:00:00+00:00",
-                "route": {"route_id": "SRC-1", "source_class": "SYNTHETIC_FIXTURE", "transport": "MEMORY",
-                    "locator": "fixture://metadata", "permission_state": "FIXTURE_ONLY", "pit_mode": "VERSIONED_SNAPSHOT",
-                    "revision_policy": "IMMUTABLE", "survivorship_policy": "PIT_MEMBERSHIP", "timezone": "UTC",
-                    "availability_start": "2026-10-15T09:00:00+00:00", "contains_outcome": False}}]
-    implementation = {"status": "PASS", "basis": "SYNTHETIC_METADATA_ONLY"}
-    protocol_payload.update(dataset_provenance={"sources": sources, "protocol": declared},
-                            implementability_declaration=implementation,
-                            declared_decision_map=candidate["decision_map"])
-    bundle["sources"]["manifest_hash"] = sha256_json(sources)
-    bundle["sources"]["pit_metadata"][0]["revision_policy"] = "IMMUTABLE"
-    bundle["implementability"]["declaration_hash"] = sha256_json(implementation)
-    bundle["cost_model"]["declaration_hash"] = sha256_json(costs)
-    bundle["capacity"]["declaration_hash"] = sha256_json(capacity)
-    bundle["protocol"]["protocol_hash"] = sha256_json(protocol_payload)
-    binding_payload["protocol_hash"] = bundle["protocol"]["protocol_hash"]
-    bundle["reproducibility"]["binding_hash"] = sha256_json(binding_payload)
     return bundle
+
+
+def _rehash_infrastructure(fixture: dict) -> None:
+    infrastructure = fixture["experiment_infrastructure"]
+    for key in ("registry", "frozen_registry"):
+        record = infrastructure[key]
+        record["entry_hash"] = sha256_json({k: v for k, v in record.items() if k != "entry_hash"})
+    infrastructure["infrastructure_hash"] = sha256_json(
+        {k: v for k, v in infrastructure.items() if k != "infrastructure_hash"}
+    )
+    binding = fixture["reproducibility"]["binding_payload"]
+    binding["experiment_registry_id"] = infrastructure["registry"]["registry_id"]
+    binding["experiment_registry_hash"] = infrastructure["registry"]["entry_hash"]
+    binding["experiment_infrastructure_hash"] = infrastructure["infrastructure_hash"]
+    fixture["reproducibility"]["binding_hash"] = sha256_json(binding)
 
 
 class EconomicReadinessValidationTests(unittest.TestCase):
@@ -167,9 +257,65 @@ class EconomicReadinessValidationTests(unittest.TestCase):
         self.assertTrue(receipt["ready_for_authorized_economic_test"])
         self.assertFalse(receipt["economic_test_authorized"])
         self.assertEqual(receipt["block_reasons"], [])
+        self.assertEqual(receipt["checks"]["frozen_input_binding"]["status"], "PASS")
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "PASS")
+        self.assertEqual(receipt["checks"]["outcome_firewall"]["status"], "PASS")
         red = red_team_negative_rights_v2(receipt)
         self.assertEqual(red["status"], "PASS")
         self.assertEqual(red["negative_rights"], [])
+
+    def test_block_on_missing_or_foreign_experiment_infrastructure(self):
+        fixture = _fixture()
+        del fixture["experiment_infrastructure"]
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(
+            receipt["checks"]["experiment_infrastructure"]["reason_code"],
+            "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
+        )
+
+        fixture = _fixture()
+        foreign_hash = sha256_json({"candidate": "foreign-but-self-consistent"})
+        fixture["experiment_infrastructure"]["registry"]["candidate_hash"] = foreign_hash
+        fixture["experiment_infrastructure"]["frozen_registry"]["candidate_hash"] = foreign_hash
+        _rehash_infrastructure(fixture)
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
+
+    def test_block_on_self_consistent_geometry_forgery_not_present_in_runner_freeze(self):
+        fixture = _fixture()
+        infrastructure = fixture["experiment_infrastructure"]
+        geometry = {
+            "protocol_hash": fixture["protocol"]["protocol_hash"],
+            "status": "DECLARED",
+            "observation_unit": "event",
+            "target_observations": 999,
+            "dependence_assumption": "forged after runner freeze",
+            "cluster_key": None,
+            "max_cluster_share": None,
+            "sampling_rule": "forged",
+            "assumptions": ["self-consistent hash but absent from frozen protocol"],
+        }
+        geometry["declaration_hash"] = sha256_json(geometry)
+        infrastructure["geometry"] = geometry
+        infrastructure["registry"]["geometry_hash"] = geometry["declaration_hash"]
+        infrastructure["frozen_registry"]["geometry_hash"] = geometry["declaration_hash"]
+        _rehash_infrastructure(fixture)
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
+
+    def test_block_on_multiplicity_method_drift_from_runner_freeze(self):
+        fixture = _fixture()
+        fixture["multiplicity"]["method"] = "different method after freeze"
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
+
+    def test_block_when_embedded_runner_plan_is_tampered_even_if_outer_hashes_are_rebuilt(self):
+        fixture = _fixture()
+        plan = fixture["experiment_infrastructure"]["execution_plan"]
+        plan["plan"]["seed"] = 999
+        _rehash_infrastructure(fixture)
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
 
     def test_block_on_missing_protocol_freeze(self):
         fixture = _fixture()
@@ -215,6 +361,25 @@ class EconomicReadinessValidationTests(unittest.TestCase):
         self.assertEqual(receipt["checks"]["source_provenance"]["status"], "FAIL")
         self.assertIn("BLOCK_DATA", red_team_negative_rights_v2(receipt)["negative_rights"])
 
+    def test_pit_requires_exact_snapshot_join(self):
+        fixture = _fixture()
+        fixture["sources"]["pit_metadata"][0]["snapshot_hash"] = sha256_json({"snapshot": "OTHER"})
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["source_provenance"]["status"], "FAIL")
+        self.assertEqual(receipt["checks"]["pit"]["status"], "FAIL")
+
+    def test_clock_rejects_information_after_decision(self):
+        fixture = _fixture()
+        fixture["clock"]["data_cutoff"] = "2026-10-15T10:45:00+00:00"
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["clock"]["status"], "FAIL")
+
+    def test_frozen_input_binding_rejects_mutable_projection_drift(self):
+        fixture = _fixture()
+        fixture["clock"]["timezone"] = "Europe/Paris"
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["frozen_input_binding"]["status"], "FAIL")
+
     def test_producer_must_differ_from_validator(self):
         fixture = _fixture()
         fixture["producer_id"] = fixture["validator_id"]
@@ -224,6 +389,12 @@ class EconomicReadinessValidationTests(unittest.TestCase):
             receipt["checks"]["producer_independence"]["reason_code"],
             "PRODUCER_VALIDATOR_NOT_INDEPENDENT",
         )
+
+    def test_placeholder_validator_identity_is_not_independent(self):
+        fixture = _fixture()
+        fixture["validator_id"] = "UNRESOLVED"
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["producer_independence"]["status"], "FAIL")
 
     def test_candidate_immutability_and_no_signal_repair(self):
         fixture = _fixture()
