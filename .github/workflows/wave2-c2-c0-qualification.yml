@@ -56,7 +56,12 @@ jobs:
             tests/test_wave2_c2_scientific_adjudication.py
 
       - name: Canonical C0 adversarial suite
-        run: python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v
+        id: c0_adversarial
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v 2>&1 | tee /tmp/wave2-c2-c0-adversarial.log
 
       - name: Regress W1 Factory boundary
         run: |
@@ -109,6 +114,7 @@ jobs:
         run: test -z "$(git status --porcelain)"
 
       - name: Emit canonical C0 exact-head receipt
+        if: steps.c0_adversarial.outcome == 'success'
         shell: bash
         run: |
           python3 - <<'PY'
@@ -140,7 +146,15 @@ jobs:
           PY
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: wave2-c2-c0-${{ github.sha }}
-          path: /tmp/wave2-c2-c0-receipt.json
-          if-no-files-found: error
+          path: |
+            /tmp/wave2-c2-c0-adversarial.log
+            /tmp/wave2-c2-c0-receipt.json
+          if-no-files-found: warn
+
+      - name: Enforce canonical C0 adversarial gate
+        if: always()
+        shell: bash
+        run: test "${{ steps.c0_adversarial.outcome }}" = "success"
