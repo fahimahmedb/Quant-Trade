@@ -9,13 +9,30 @@ and rescored whenever genuinely new forward evidence arrives.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+from copy import deepcopy
+from functools import wraps
+import fcntl
+import os
 from pathlib import Path
+import threading
 from typing import Any
 
 from ..state import read_json, utc_now, write_json
 
 
 MATERIAL_COUNTERFACTUAL = 0.01
+
+
+class LearningConflict(RuntimeError):
+    """Durable learning state changed; refresh and reconsider the mutation."""
+
+
+def _serialized_mutation(method):
+    @wraps(method)
+    def serialized(self, *args, **kwargs):
+        with self._mutation_lock:
+            return method(self, *args, **kwargs)
+    return serialized
 
 
 @dataclass
@@ -36,8 +53,13 @@ class BuildTask:
 
 class LearningStore:
     def __init__(self, path: Path):
+        # Preserve this lock when failed publication reloads the same object.
+        if not hasattr(self, "_mutation_lock"):
+            self._mutation_lock = threading.RLock()
         self.path = path
-        payload = read_json(path, {}) or {}
+        observed = read_json(path)
+        self._persisted = deepcopy(observed)
+        payload = observed or {}
         self.lessons: list[dict[str, Any]] = payload.get("lessons", [])
         processed = payload.get("processed_research_tickets", [])
         if not isinstance(processed, list) or any(
@@ -52,21 +74,34 @@ class LearningStore:
             "undetermined": 0, "counterfactual_pnl": 0.0, "assessments": []})
         self.build_tasks: dict[str, dict[str, Any]] = payload.get("build_tasks", {})
 
+    @_serialized_mutation
     def save(self) -> None:
+        fd = None
         try:
-            write_json(self.path, {"version": 1, "updated_at": utc_now(),
-                                   "lessons": self.lessons[-200:],
-                                   "processed_research_tickets": sorted(self.processed_research_tickets),
-                                   "lane_priorities": self.lane_priorities,
-                                   "decision_quality": self.decision_quality,
-                                   "build_tasks": self.build_tasks})
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            if read_json(self.path) != self._persisted:
+                raise LearningConflict("LEARNING_CHANGED_SINCE_READ")
+            document = {"version": 1, "updated_at": utc_now(),
+                        "lessons": self.lessons[-200:],
+                        "processed_research_tickets": sorted(self.processed_research_tickets),
+                        "lane_priorities": self.lane_priorities,
+                        "decision_quality": self.decision_quality,
+                        "build_tasks": self.build_tasks}
+            write_json(self.path, document)
+            self._persisted = deepcopy(document)
         except BaseException:
             # Retry decisions must reflect durable state even when replacement
             # succeeded but its acknowledgement failed.
             self.__init__(self.path)
             raise
+        finally:
+            if fd is not None:
+                os.close(fd)
 
     # --- research ----------------------------------------------------------
+    @_serialized_mutation
     def record_research(self, lane_name: str, lane: str, result: dict[str, Any]) -> bool:
         """Record one scientific ticket once, even if its worker is replayed."""
         if not result.get("lesson"):
@@ -97,6 +132,7 @@ class LearningStore:
     def _assessment_core(item: dict[str, Any]) -> dict[str, Any]:
         return {key: value for key, value in item.items() if key != "assessed_at"}
 
+    @_serialized_mutation
     def assess_rejections(self, strategies: Any, evaluation_ledger: Any,
                           desk_stats: Any = None) -> list[dict[str, Any]]:
         """Refresh rejected-strategy quality only when its evidence changed.
@@ -161,6 +197,7 @@ class LearningStore:
         return changed
 
     # --- build plane -------------------------------------------------------
+    @_serialized_mutation
     def raise_build_task(self, task: BuildTask) -> BuildTask:
         if task.task_id not in self.build_tasks:
             self.build_tasks[task.task_id] = task.to_dict()
