@@ -9,6 +9,7 @@ from .v2_core import (
     assert_authority_closed,
     assert_epoch_blinding,
     assert_model_allowed,
+    assert_trial_epoch_window,
     assert_trial_proposal_binding,
     assert_validator_candidate_binding,
     build_candidate,
@@ -70,6 +71,7 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
         raise V2ContractError("CANDIDATE_TRIAL_BINDING_MISMATCH")
     assert_validator_candidate_binding(candidate, validator)
     assert_trial_proposal_binding(candidate, trial)
+    assert_trial_epoch_window(epoch, trial)
     if validator["execution_state"] != "COMPLETE" or validator.get("scientific_decision") != "PASS":
         raise V2ContractError("EXPORT_REQUIRES_COMPLETED_VALIDATOR_PASS")
     assert_model_allowed(epoch, trial["model_identity"])

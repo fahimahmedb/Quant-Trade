@@ -162,6 +162,21 @@ def assert_epoch_update(previous: Mapping[str, Any], current: Mapping[str, Any],
             raise V2ContractError("POST_EXPORT_EPOCH_MUTATION:" + ",".join(changed))
 
 
+def assert_trial_epoch_window(epoch: Mapping[str, Any], trial: Mapping[str, Any]) -> None:
+    """Bind declared generation time to the existing half-open research window."""
+    try:
+        window = epoch["research_window"]
+        if not isinstance(window, Mapping):
+            raise V2ContractError("INVALID_RESEARCH_WINDOW")
+        start = _parse_time(window["start"])
+        end = _parse_time(window["end"])
+        generated = _parse_time(trial["generated_at"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise V2ContractError("INVALID_TRIAL_EPOCH_TIME") from error
+    if not start <= generated < end:
+        raise V2ContractError("TRIAL_OUTSIDE_EPOCH_RESEARCH_WINDOW")
+
+
 def assert_model_allowed(epoch: Mapping[str, Any], model_identity: str) -> None:
     _require_identifiers({"model_identity": model_identity}, ("model_identity",), "MODEL")
     if model_identity not in epoch.get("allowed_model_set", []):

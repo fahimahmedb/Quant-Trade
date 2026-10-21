@@ -23,6 +23,7 @@ from .v2_core import (
     V2ContractError,
     _is_sha256,
     assert_epoch_blinding,
+    assert_trial_epoch_window,
     assert_validator_candidate_binding,
     assert_trial_proposal_binding,
     blinding_integrity,
@@ -136,6 +137,10 @@ def _assert_native_trial_lineage(snapshot, task, epoch, candidate):
         raise StageBlocked("V2_RESEARCH_LINEAGE_EPOCH_MISMATCH")
     if candidate.get("research_trial_id") != trial["research_trial_id"]:
         raise StageBlocked("V2_CANDIDATE_TRIAL_BINDING_MISMATCH")
+    try:
+        assert_trial_epoch_window(epoch, trial)
+    except V2ContractError as error:
+        raise StageBlocked("V2_" + str(error)) from error
     manifest = candidate.get("evidence_manifest") or {}
     if (not isinstance(manifest, Mapping) or not _is_sha256(manifest.get("source_candidate_hash"))
             or not _is_sha256(manifest.get("documentary_packet_hash"))):

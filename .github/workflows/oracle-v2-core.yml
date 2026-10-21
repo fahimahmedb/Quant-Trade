@@ -59,6 +59,7 @@ jobs:
             tests.test_research_os_canonical_identity \
             tests.test_research_os_epoch_blinding_admission \
             tests.test_research_os_epoch_model_admission \
+            tests.test_research_os_trial_epoch_window \
             tests.test_research_os_feedback_authorization \
             tests.test_research_os_scientific_claim_admission \
             tests.test_research_os_evaluation_membrane_admission \
