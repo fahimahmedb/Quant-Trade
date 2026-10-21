@@ -24,7 +24,9 @@ def parse_pit_instant(value: str) -> datetime:
         return datetime.combine(parsed_date, time.min, tzinfo=timezone.utc)
     normalized = candidate[:-1] + "+00:00" if candidate.endswith("Z") else candidate
     parsed = datetime.fromisoformat(normalized)
-    return parsed if parsed.tzinfo is not None else parsed.replace(tzinfo=timezone.utc)
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("point-in-time datetime must include an explicit timezone offset")
+    return parsed
 
 
 def _validate_interval(valid_from: str, valid_to: str | None) -> None:
