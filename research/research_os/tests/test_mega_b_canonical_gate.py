@@ -4,7 +4,7 @@ from copy import deepcopy
 import unittest
 
 from research.research_os.discovery_chain import ENGINE_ROUTES, run_discovery_chain
-from research.research_os.discovery_engine import UNKNOWN
+from research.research_os.discovery_engine import UNKNOWN, validate_discovery_handoff
 
 
 FAMILIES = {
@@ -107,7 +107,7 @@ def _facts(family: str, mechanism_identity: str | None = None, exposure: str | N
         "cost_model_requirements": "EX_ANTE_COST_BOUND",
         "capacity_requirements": "PARTICIPATION_CAP_REQUIRED",
         "data_requirements": "QUALIFIED_PIT_SOURCE",
-        "execution_assumptions": "ENTRY_AFTER_AVAILABLE_AND_EFFECTIVE_CLOCK",
+        "execution_assumptions": "ENTRY_AFTER_AVAILABLE_AND_EFFECTIVE_IF_REQUIRED",
         "falsification_relevant_implementation_conditions": "CLOCK_COST_OR_CAPACITY_BREACH_KILLS_GENERATION",
     }
 
@@ -164,6 +164,7 @@ class MegaBCanonicalGateTests(unittest.TestCase):
                 self.assertFalse(result["scheduler_mutation"])
                 self.assertFalse(result["outcome_accessed"])
                 self.assertTrue(all(value is False for value in result["authority"].values()))
+                validate_discovery_handoff(result)
 
     def test_document_change_is_not_edge(self):
         facts = _facts("EVENT_DOCUMENT")
@@ -199,6 +200,46 @@ class MegaBCanonicalGateTests(unittest.TestCase):
         self.assertIn("OUTCOME_LEAKAGE_DETECTED", result["blockers"])
         self.assertFalse(result["outcome_accessed"])
 
+    def test_recursive_outcome_aliases_fail_closed(self):
+        aliases = {
+            "pnl_series": [1.0],
+            "unrealized_pnl": 1.0,
+            "realized_return_series": [0.01],
+            "price_series": [100.0],
+            "fills": [{"px": 100.0}],
+            "equity_curve": [1.0],
+            "drawdown": -0.1,
+            "win_rate": 0.6,
+            "hit_rate": 0.6,
+        }
+        for key, value in aliases.items():
+            with self.subTest(key=key):
+                facts = _facts("QUANT_MECHANISM")
+                facts["nested_diagnostics"] = [{"payload": {key: value}}]
+                result = _run("quant", facts=facts)
+                self.assertIn("OUTCOME_LEAKAGE_DETECTED", result["blockers"])
+                self.assertEqual(result["factory_handoff"]["status"], "NOT_READY")
+                self.assertFalse(result["outcome_accessed"])
+
+    def test_future_effective_public_event_is_not_generic_time_leakage(self):
+        facts = _facts("EVENT_DOCUMENT")
+        facts["source_clocks"]["effective_at"] = "2026-02-01T00:00:00Z"
+        result = _run("event_document", facts=facts)
+        self.assertEqual(result["status"], "READY_FOR_FACTORY")
+        self.assertEqual(result["discovery"]["source_clocks"]["entry_effective_relation"], "BEFORE_EFFECTIVE")
+        self.assertNotIn("SOURCE_TIME_LEAKAGE:ENTRY_BEFORE_EFFECTIVE", result["blockers"])
+
+    def test_future_effective_binding_rule_can_be_anticipated_only_when_flow_evidence_is_qualified(self):
+        facts = _facts("INSTITUTIONAL_FLOW")
+        facts["source_clocks"]["effective_at"] = "2026-02-01T00:00:00Z"
+        qualified = _run("institutional_flow", facts=facts)
+        self.assertEqual(qualified["status"], "READY_FOR_FACTORY")
+        self.assertEqual(qualified["discovery"]["source_clocks"]["entry_effective_relation"], "BEFORE_EFFECTIVE")
+        facts["family_evidence"]["implementation_calendar_supported"] = False
+        blocked = _run("institutional_flow", facts=facts)
+        self.assertIn("RULE_EXISTS_NOT_FORCED_FLOW", blocked["blockers"])
+        self.assertIn("FLOW_IMPLEMENTATION_CALENDAR_SUPPORTED_MISSING", blocked["blockers"])
+
     def test_unknown_identity_stays_unknown(self):
         facts = _facts("QUANT_MECHANISM")
         facts["economic_identity_hints"]["mechanism_identity"] = UNKNOWN
@@ -222,6 +263,22 @@ class MegaBCanonicalGateTests(unittest.TestCase):
         ancestry = result["discovery"]["ancestry"]
         self.assertEqual(ancestry["research_origin_candidate_id"], "RESEARCH-CANDIDATE-7")
         self.assertNotEqual(ancestry["research_origin_candidate_id"], ancestry["hypothesis_id"])
+
+    def test_discovery_and_factory_bindings_are_tamper_evident(self):
+        result = _run("quant")
+        validate_discovery_handoff(result)
+        tampered = deepcopy(result)
+        tampered["discovery"]["payer"] = "TAMPERED-PAYER"
+        tampered["candidate"]["discovery"] = deepcopy(tampered["discovery"])
+        tampered["factory_handoff"]["candidate"] = deepcopy(tampered["candidate"])
+        tampered["factory_handoff"]["producer_output"]["candidate"] = deepcopy(tampered["candidate"])
+        with self.assertRaisesRegex(ValueError, "discovery binding hash mismatch"):
+            validate_discovery_handoff(tampered)
+
+        tampered_factory = deepcopy(result)
+        tampered_factory["factory_handoff"]["binding"]["candidate_hash"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "factory handoff binding hash mismatch"):
+            validate_discovery_handoff(tampered_factory)
 
     def test_selected_action_mismatch_blocks_before_producer(self):
         decision = _decision("quant_mechanisms")
