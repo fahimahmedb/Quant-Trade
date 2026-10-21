@@ -1,8 +1,8 @@
 """Canonical CI bridge for the fixed Mega-A Research Intelligence contract tests.
 
-The canonical GitHub Actions gate invokes this module explicitly.  Mega-A implementation
+The canonical GitHub Actions gate invokes this module explicitly. Mega-A implementation
 tests live beside Research OS under ``research/research_os/tests``; this bridge deliberately
-loads only the eight test modules introduced by Mega-A and therefore does not alter the V1
+loads only the nine test modules introduced by Mega-A and therefore does not alter the V1
 ``unittest discover -s tests`` proof inventory used by STATE.md.
 
 Most Mega-A modules use unittest.TestCase directly. ``test_research_intelligence.py``
@@ -19,7 +19,6 @@ import unittest
 from pathlib import Path
 from types import ModuleType
 
-
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 _MEGA_A_TEST_FILES = (
     "research/research_os/tests/test_archaeology.py",
@@ -30,6 +29,7 @@ _MEGA_A_TEST_FILES = (
     "research/research_os/tests/test_scientific_memory_feedback.py",
     "research/research_os/tests/test_research_action_planner.py",
     "research/research_os/tests/test_legacy_memory_compatibility.py",
+    "research/research_os/tests/test_research_chain.py",
 )
 
 
@@ -54,10 +54,6 @@ def load_tests(loader: unittest.TestLoader, standard_tests: unittest.TestSuite, 
     for index, relative_path in enumerate(_MEGA_A_TEST_FILES):
         module = _load_module(relative_path, index)
         suite.addTests(loader.loadTestsFromModule(module))
-
-        # unittest intentionally ignores free test functions. Mega-A's central
-        # Research Intelligence adversarial matrix uses zero-argument functions,
-        # so wrap exactly those functions rather than silently leaving them unproved.
         for name, value in sorted(vars(module).items()):
             if not name.startswith("test_") or not inspect.isfunction(value):
                 continue
@@ -65,18 +61,13 @@ def load_tests(loader: unittest.TestLoader, standard_tests: unittest.TestSuite, 
                 raise AssertionError(
                     f"Mega-A free test requires unsupported fixtures: {relative_path}::{name}"
                 )
-            suite.addTest(
-                unittest.FunctionTestCase(
-                    value,
-                    description=f"{relative_path}::{name}",
-                )
-            )
+            suite.addTest(unittest.FunctionTestCase(value, description=f"{relative_path}::{name}"))
     return suite
 
 
 class MegaAContractBridgeShapeTests(unittest.TestCase):
     def test_bridge_scope_is_fixed_and_all_sources_exist(self):
-        self.assertEqual(len(_MEGA_A_TEST_FILES), 8)
+        self.assertEqual(len(_MEGA_A_TEST_FILES), 9)
         self.assertEqual(len(set(_MEGA_A_TEST_FILES)), len(_MEGA_A_TEST_FILES))
         for relative_path in _MEGA_A_TEST_FILES:
             self.assertTrue((_REPO_ROOT / relative_path).is_file(), relative_path)
