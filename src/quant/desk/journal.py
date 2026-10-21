@@ -21,18 +21,28 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+from copy import deepcopy
+import fcntl
+import os
 
 from ..state import read_json, write_json
+from .opportunity import TERMINAL
 
 
 EMPTY_STATS = {"sessions": 0, "tickets": 0, "booked": 0, "no_trade": 0,
                "vetoed": 0, "blocked": 0, "last_rebalance_date": None}
 
 
+class JournalConflict(RuntimeError):
+    """Journal state or frozen intent differs; caller must reconsider/recover."""
+
+
 class DeskJournal:
     def __init__(self, path: Path):
         self.path = path
-        payload = read_json(path, {}) or {}
+        observed = read_json(path)
+        self._persisted = deepcopy(observed)
+        payload = observed or {}
         self.processed: set[str] = set(payload.get("processed", []))
         self.pending: dict[str, dict[str, Any]] = payload.get("pending", {})
         self.stats: dict[str, dict[str, Any]] = payload.get("stats", {})
@@ -42,35 +52,50 @@ class DeskJournal:
             "decision_snapshots", {})
 
     def save(self) -> None:
-        write_json(self.path, {"version": 2, "processed": sorted(self.processed),
-                               "pending": self.pending, "stats": self.stats,
-                               "outcomes": self.outcomes,
-                               "decision_snapshots": self.decision_snapshots,
-                               "last_session_date": self.last_session_date})
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            try:
+                if read_json(self.path) != self._persisted:
+                    raise JournalConflict("DESK_JOURNAL_CHANGED_SINCE_READ")
+                document = {"version": 2, "processed": sorted(self.processed),
+                            "pending": self.pending, "stats": self.stats,
+                            "outcomes": self.outcomes,
+                            "decision_snapshots": self.decision_snapshots,
+                            "last_session_date": self.last_session_date}
+                write_json(self.path, document)
+                self._persisted = deepcopy(document)
+            except BaseException:
+                # Includes publication success followed by a lost acknowledgement.
+                self.__init__(self.path)
+                raise
+        finally:
+            os.close(fd)
 
     # --- queries -----------------------------------------------------------
     def is_processed(self, opportunity_id: str) -> bool:
         return opportunity_id in self.processed
 
     def pending_plan(self, opportunity_id: str) -> dict[str, Any] | None:
-        return self.pending.get(opportunity_id)
+        return deepcopy(self.pending.get(opportunity_id))
 
     def stats_for(self, strategy_id: str) -> dict[str, Any]:
-        return self.stats.get(strategy_id, dict(EMPTY_STATS))
+        return deepcopy(self.stats.get(strategy_id, EMPTY_STATS))
 
     def decision_snapshot(self, session_date: str) -> dict[str, Any] | None:
-        return self.decision_snapshots.get(session_date)
+        return deepcopy(self.decision_snapshots.get(session_date))
 
     def begin_session(self, session_date: str, capital: dict[str, Any],
                       evaluation: dict[str, Any]) -> dict[str, Any]:
         """Freeze the close-time Book before any open(t+1) fill is modelled."""
         existing = self.decision_snapshots.get(session_date)
         if existing is not None:
-            return existing
-        snapshot = {"CAPITAL": capital, "EVALUATION": evaluation}
+            return deepcopy(existing)
+        snapshot = deepcopy({"CAPITAL": capital, "EVALUATION": evaluation})
         self.decision_snapshots[session_date] = snapshot
         self.save()
-        return snapshot
+        return deepcopy(snapshot)
 
     def close_session(self, session_date: str) -> None:
         if self.decision_snapshots.pop(session_date, None) is not None:
@@ -80,20 +105,39 @@ class DeskJournal:
     def begin(self, opportunity_id: str, strategy_id: str, session_date: str,
               ticket: dict[str, Any], fills: list[dict[str, Any]]) -> None:
         """Durably record what this session is about to do, before it does it."""
-        self.pending[opportunity_id] = {"strategy_id": strategy_id,
-                                        "session_date": session_date,
-                                        "ticket": ticket, "fills": fills}
+        if opportunity_id in self.processed:
+            raise JournalConflict("COMPLETED_OPPORTUNITY_CANNOT_REOPEN")
+        self._bind_ticket(ticket, opportunity_id, strategy_id, session_date)
+        plan = deepcopy({"strategy_id": strategy_id, "session_date": session_date,
+                         "ticket": ticket, "fills": fills})
+        if opportunity_id in self.pending:
+            if self.pending[opportunity_id] != plan:
+                raise JournalConflict("FROZEN_DESK_INTENT_CHANGED")
+            return
+        self.pending[opportunity_id] = plan
         self.save()
 
     def commit(self, opportunity_id: str, strategy_id: str, status: str,
                session_date: str, rebalanced: bool,
                ticket: dict[str, Any] | None = None) -> None:
         """Finish the opportunity: clear any intent and update the counters, atomically."""
+        if status not in TERMINAL:
+            raise ValueError("unknown terminal desk status")
+        if ticket is not None:
+            self._bind_ticket(ticket, opportunity_id, strategy_id, session_date)
+            if "status" in ticket and ticket["status"] != status:
+                raise JournalConflict("DESK_OUTCOME_STATUS_MISMATCH")
         if opportunity_id in self.processed:
             return
+        pending = self.pending.get(opportunity_id)
+        if pending is not None:
+            if (pending["strategy_id"] != strategy_id or pending["session_date"] != session_date
+                    or status != "BOOKED" or rebalanced is not True
+                    or (ticket is not None and "fills" in ticket and ticket["fills"] != pending["fills"])):
+                raise JournalConflict("DESK_COMPLETION_INTENT_MISMATCH")
         self.pending.pop(opportunity_id, None)
         if ticket is not None:
-            self.outcomes[opportunity_id] = ticket
+            self.outcomes[opportunity_id] = deepcopy(ticket)
         stats = self.stats.setdefault(strategy_id, dict(EMPTY_STATS))
         stats["sessions"] += 1
         stats["tickets"] += 1
@@ -102,11 +146,22 @@ class DeskJournal:
         if key:
             stats[key] += 1
         if rebalanced:
-            stats["last_rebalance_date"] = session_date
+            previous = stats["last_rebalance_date"]
+            stats["last_rebalance_date"] = max(previous, session_date) if previous else session_date
         self.processed.add(opportunity_id)
         if self.last_session_date is None or session_date > self.last_session_date:
             self.last_session_date = session_date
         self.save()
+
+    @staticmethod
+    def _bind_ticket(ticket: dict[str, Any], opportunity_id: str,
+                     strategy_id: str, session_date: str) -> None:
+        if not isinstance(ticket, dict):
+            raise ValueError("desk ticket must be an object")
+        for key, expected in (("opportunity_id", opportunity_id), ("strategy_id", strategy_id),
+                              ("session_date", session_date)):
+            if key in ticket and ticket[key] != expected:
+                raise JournalConflict("DESK_TICKET_IDENTITY_MISMATCH:" + key)
 
     #: An outcome that moves no money commits directly.
     record = commit
