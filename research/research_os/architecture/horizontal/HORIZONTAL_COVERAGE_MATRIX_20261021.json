@@ -458,10 +458,10 @@
           "limit": ""
         },
         {
-          "name": "MEGA A broad intelligence, diversity and richer NO_ACTION receipt",
-          "state": "FUTURE_WAVE2",
-          "ownership": "FUTURE_WAVE2_CAPABILITY",
-          "limit": "Separate current convergence / Wave-2 intelligence scope; idle wake already exists."
+          "name": "MEGA A intelligence convergence, diversity and richer NO_ACTION receipt",
+          "state": "PARTIAL",
+          "ownership": "INTENTIONALLY_DEFERRED",
+          "limit": "Separately integrating in CP079-first convergence; idle wake already exists. No convergence merge on this rail."
         }
       ],
       "input_state_coverage": {
@@ -506,7 +506,7 @@
       },
       "current_future_ownership": [
         "CURRENT_REQUIRED_CAPABILITY",
-        "FUTURE_WAVE2_CAPABILITY"
+        "INTENTIONALLY_DEFERRED"
       ],
       "contracts": [
         "research/research_os/runtime/RESEARCH_FRONTIER.json",
