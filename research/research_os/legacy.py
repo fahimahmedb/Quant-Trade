@@ -55,8 +55,11 @@ class LegacyKnowledgeBase:
             if entry["source_id"] in seen:
                 raise ValueError("LEGACY_SOURCE_REVIEW_DUPLICATE")
             seen.add(entry["source_id"])
-            if (entry["classification"] != "HISTORICAL_NEGATIVE_WITH_LIMITATIONS"
-                    or entry["researcher_decision"] != "KILL" or entry["judge_verdict"] != "REJECT"):
+            disposition = (entry["classification"], entry["researcher_decision"], entry["judge_verdict"])
+            if disposition not in {
+                ("HISTORICAL_NEGATIVE_WITH_LIMITATIONS", "KILL", "REJECT"),
+                ("HISTORICAL_DATA_BLOCK_WITH_LIMITATIONS", "PARK_DATA", "NOT_REPORTED"),
+            }:
                 raise ValueError("LEGACY_SOURCE_REVIEW_CLASSIFICATION_INVALID")
             for key in ("limitations", "revisit_conditions"):
                 if (not isinstance(entry[key], list) or not entry[key]
@@ -129,7 +132,11 @@ class LegacyKnowledgeBase:
             r_tokens = _tokens(entry["mechanism"])
             overlap = len(c_tokens & r_tokens) / len(c_tokens | r_tokens) if c_tokens and r_tokens else 0
             exact_id = cid == entry["historical_id"]
-            if exact_id or overlap >= 0.30:
+            # A historical source-access block is not a negative economic result
+            # and cannot veto another mechanism by word similarity alone.
+            negative_overlap = (entry["classification"] == "HISTORICAL_NEGATIVE_WITH_LIMITATIONS"
+                                and overlap >= 0.30)
+            if exact_id or negative_overlap:
                 source_matches.append(dict(deepcopy(entry), match_reason=(
                     "HISTORICAL_ID_REQUIRES_SCOPE_REVIEW" if exact_id else "MECHANISM_TOKEN_OVERLAP"),
                     overlap=round(overlap, 4), scientific_equivalence="NOT_ESTABLISHED"))

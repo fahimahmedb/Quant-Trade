@@ -50,7 +50,7 @@ class HistoricalSourceRecoveryTests(unittest.TestCase):
         self.assertEqual(summary['historical_research_items_found'], 33)
         self.assertEqual(summary['reconciliation_status'], 'PARTIAL_WITH_EXPLICIT_GAPS')
         self.assertEqual(summary['global_effective_trials'], 'UNKNOWN')
-        self.assertEqual(summary['recovered_source_review_count'], 1)
+        self.assertEqual(summary['recovered_source_review_count'], len(self.manifest['recovered_source_reviews']))
         self.assertEqual(ledger, before)
 
     def test_incomplete_ambiguous_or_metric_bearing_recovery_fails_closed(self):
@@ -95,7 +95,7 @@ class HistoricalSourceRecoveryTests(unittest.TestCase):
                              self.review['source_commit'])
             preflight = verify_materialized_legacy(base)
             self.assertEqual(preflight['loaded_record_count'], 1)
-            self.assertEqual(preflight['recovered_source_review_count'], 1)
+            self.assertEqual(preflight['recovered_source_review_count'], len(self.manifest['recovered_source_reviews']))
             self.assertEqual(preflight['recovered_source_reviews_hash'],
                              screen['legacy']['recovered_source_reviews_hash'])
             altered = deepcopy(manifest)

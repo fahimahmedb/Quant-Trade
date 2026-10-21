@@ -54,6 +54,7 @@ jobs:
             tests.test_data_source_admission \
             tests.test_research_os_raw_evidence_capture \
             tests.test_research_os_historical_source_recovery \
+            tests.test_research_os_historical_data_block_review \
             tests.test_research_os_v2_core \
             tests.test_research_os_canonical_identity \
             tests.test_research_os_epoch_blinding_admission \

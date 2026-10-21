@@ -57,6 +57,96 @@
           "blob_sha": "afeab9a43600b8da8db02e766a624f5210f75f5b"
         }
       ]
+    },
+    {
+      "source_id": "EDGE-DATA-BLOCK-disc-zf-auction-pressure-daily-l1-v1",
+      "historical_id": "disc-zf-auction-pressure-daily-l1-v1",
+      "mechanism": "U.S. five-year Treasury auction daily pressure and reversal proxy.",
+      "classification": "HISTORICAL_DATA_BLOCK_WITH_LIMITATIONS",
+      "researcher_decision": "PARK_DATA",
+      "judge_verdict": "NOT_REPORTED",
+      "failure_scope": "Historical frozen-source access block; economics were reported not computed, not a falsified auction mechanism.",
+      "limitations": [
+        "Reported historical source/data block, not an economic negative or V2 validation.",
+        "Scope is this exact historical protocol ID; no equivalence to imported family records or other versions is established.",
+        "Original execution provenance and exposure state remain unknown unless explicitly reported; preserve all original quarantine and no-replay restrictions."
+      ],
+      "revisit_conditions": [
+        "Review the original frozen protocol and source blocker before any continuation; never silently substitute a source, horizon, population or proxy.",
+        "A new source fact may justify scoped review, not automatic replay or a changed historical verdict.",
+        "Any economic test, prospective observation or successor execution requires separately granted authority and admissible unspent evidence."
+      ],
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "source_refs": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.result.json",
+          "blob_sha": "91c4aa4c55828aaaa6ce7f68e4264c3453ed8917"
+        },
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.md",
+          "blob_sha": "b21a860a6568935c98e8f93376e7c081ef3a2662"
+        }
+      ]
+    },
+    {
+      "source_id": "EDGE-DATA-BLOCK-disc-treasury-5y-auction-concession-l1-v1",
+      "historical_id": "disc-treasury-5y-auction-concession-l1-v1",
+      "mechanism": "Five-year Treasury auction supply concession and next-observation reversal proxy.",
+      "classification": "HISTORICAL_DATA_BLOCK_WITH_LIMITATIONS",
+      "researcher_decision": "PARK_DATA",
+      "judge_verdict": "NOT_REPORTED",
+      "failure_scope": "Historical frozen population/source adequacy block; decision was not eligible. Exposure/quarantine status is not inferred clean.",
+      "limitations": [
+        "Reported historical source/data block, not an economic negative or V2 validation.",
+        "Scope is this exact historical protocol ID; no equivalence to imported family records or other versions is established.",
+        "Original execution provenance and exposure state remain unknown unless explicitly reported; preserve all original quarantine and no-replay restrictions."
+      ],
+      "revisit_conditions": [
+        "Review the original frozen protocol and source blocker before any continuation; never silently substitute a source, horizon, population or proxy.",
+        "A new source fact may justify scoped review, not automatic replay or a changed historical verdict.",
+        "Any economic test, prospective observation or successor execution requires separately granted authority and admissible unspent evidence."
+      ],
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "source_refs": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.result.json",
+          "blob_sha": "1d5722b472261b0b828b4009a435d2ea3b291be3"
+        },
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.md",
+          "blob_sha": "cb43c8cfb25feae97276093632789c7ee40e93c2"
+        }
+      ]
+    },
+    {
+      "source_id": "EDGE-DATA-BLOCK-disc-france-oat-bund-l1-v1-public-daily-route",
+      "historical_id": "disc-france-oat-bund-l1-v1-public-daily-route",
+      "mechanism": "Delayed French fiscal-disclosure relative repricing versus German government yields.",
+      "classification": "HISTORICAL_DATA_BLOCK_WITH_LIMITATIONS",
+      "researcher_decision": "PARK_DATA",
+      "judge_verdict": "NOT_REPORTED",
+      "failure_scope": "Historical frozen France source required account/API-key access; economic look was reported unopened, not a falsified fiscal mechanism.",
+      "limitations": [
+        "Reported historical source/data block, not an economic negative or V2 validation.",
+        "Scope is this exact historical protocol ID; no equivalence to imported family records or other versions is established.",
+        "Original execution provenance and exposure state remain unknown unless explicitly reported; preserve all original quarantine and no-replay restrictions."
+      ],
+      "revisit_conditions": [
+        "Review the original frozen protocol and source blocker before any continuation; never silently substitute a source, horizon, population or proxy.",
+        "A new source fact may justify scoped review, not automatic replay or a changed historical verdict.",
+        "Any economic test, prospective observation or successor execution requires separately granted authority and admissible unspent evidence."
+      ],
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "source_refs": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.result.json",
+          "blob_sha": "9f64f51a144087b2aeae2b56d9ac0ce176c8a57f"
+        },
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.md",
+          "blob_sha": "ef4ef11f083d1b43dc8e1d3dcf2cbb50ec8ea4cb"
+        }
+      ]
     }
   ]
 }
