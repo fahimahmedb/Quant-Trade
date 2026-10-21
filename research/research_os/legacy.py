@@ -7,6 +7,8 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+from .scientific_memory_feedback import qualified_legacy_memory_view, scientific_memory_feedback
+
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 
@@ -29,7 +31,6 @@ class LegacyKnowledgeBase:
         self.manifest = manifest
         self.ledger = ledger or {"records": []}
         self.records = list(self.ledger.get("records") or [])
-        # Provenance recovery is separate from the immutable imported ledger.
         self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
         self._validate_source_reviews()
         self.by_id: Dict[str, Dict[str, Any]] = {}
@@ -92,25 +93,19 @@ class LegacyKnowledgeBase:
         return cls(manifest, ledger)
 
     def screen_candidate(self, candidate: Dict[str, Any]) -> Dict[str, Any]:
-        cid = candidate.get("hypothesis_id")
-        if cid in self.by_id:
-            record = self.by_id[cid]
-            return {
-                "status": "BLOCK_EXACT_LEGACY_DUPLICATE",
-                "matched_hypothesis_id": record.get("HYPOTHESIS_ID"),
-                "historical_result": record.get("RESULT", "UNKNOWN"),
-                "historical_decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
-                "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
-            }
+        """Screen with semantic Scientific Memory; lexical overlap is review-only.
 
+        Exact identifier reuse remains an operational collision requiring review,
+        but is not called scientific equivalence unless semantic memory establishes
+        that relation. BLOCKED/UNEXECUTED history is never reclassified NEGATIVE.
+        """
+        cid = candidate.get("hypothesis_id")
+        exact_record = self.by_id.get(cid)
         c_tokens = _tokens(candidate.get("mechanism", ""), candidate.get("economic_tags", []))
+
         matches: List[Dict[str, Any]] = []
         for record in self.records:
-            r_tokens = _tokens(
-                record.get("MECHANISM", ""),
-                record.get("TITLE", ""),
-                record.get("RESEARCH_FAMILY_ID", ""),
-            )
+            r_tokens = _tokens(record.get("MECHANISM", ""), record.get("TITLE", ""), record.get("RESEARCH_FAMILY_ID", ""))
             if not c_tokens or not r_tokens:
                 continue
             overlap = len(c_tokens & r_tokens) / len(c_tokens | r_tokens)
@@ -122,8 +117,10 @@ class LegacyKnowledgeBase:
                     "historical_result": record.get("RESULT", "UNKNOWN"),
                     "decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
                     "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+                    "scientific_equivalence": "NOT_ESTABLISHED_BY_TOKEN_OVERLAP",
                 })
         matches.sort(key=lambda x: x["overlap"], reverse=True)
+
         source_matches = []
         for entry in self.source_reviews:
             r_tokens = _tokens(entry["mechanism"])
@@ -133,12 +130,47 @@ class LegacyKnowledgeBase:
                 source_matches.append(dict(deepcopy(entry), match_reason=(
                     "HISTORICAL_ID_REQUIRES_SCOPE_REVIEW" if exact_id else "MECHANISM_TOKEN_OVERLAP"),
                     overlap=round(overlap, 4), scientific_equivalence="NOT_ESTABLISHED"))
-        return {
-            "status": "REVIEW_LEGACY_OVERLAP" if matches or source_matches else "NO_EXACT_LEGACY_CONFLICT",
+
+        memory_view = qualified_legacy_memory_view(self.records, self.manifest)
+        feedback = scientific_memory_feedback(candidate, memory_view["canonical_records"])
+        status_by_action = {
+            "ARCHAEOLOGY_LOOKUP": "BLOCK_SEMANTIC_IDENTITY_UNRESOLVED",
+            "NO_BUILD": "BLOCK_KNOWN_NEGATIVE_SAME_SEMANTIC_FAMILY",
+            "REPAIR_PROTOCOL": "BLOCK_INVALIDATED_PROTOCOL_REPAIR_REQUIRED",
+            "PARK": "BLOCK_HISTORICAL_BLOCKER_UNRESOLVED",
+            "ESCALATE_VALIDATION": "BLOCK_POSITIVE_INSUFFICIENT_VALIDATION_REQUIRED",
+        }
+        if feedback["allow_candidate_progress"] is not True:
+            status = status_by_action.get(feedback["action"], "BLOCK_SCIENTIFIC_MEMORY_REVIEW_REQUIRED")
+        elif exact_record is not None:
+            status = "BLOCK_LEGACY_ID_COLLISION_REQUIRES_SEMANTIC_REVIEW"
+        else:
+            status = "NO_EXACT_LEGACY_CONFLICT"
+
+        result = {
+            "status": status,
             "matches": matches[:5],
+            "lexical_review_required": bool(matches or source_matches),
+            "lexical_review_status": "REVIEW_LEGACY_OVERLAP" if matches or source_matches else "NO_LEXICAL_OVERLAP_REVIEW",
             "recovered_source_matches": source_matches,
             "recovered_source_reviews_hash": self._source_review_hash(),
+            "scientific_memory": {
+                "view_hash": memory_view["view_hash"],
+                "canonical_count": memory_view["canonical_count"],
+                "review_count": memory_view["review_count"],
+                "feedback": feedback,
+                "persistent_store_created": False,
+            },
         }
+        if exact_record is not None:
+            result.update({
+                "matched_hypothesis_id": exact_record.get("HYPOTHESIS_ID"),
+                "historical_result": exact_record.get("RESULT", "UNKNOWN"),
+                "historical_decision": exact_record.get("RESEARCH_DECISION", "UNKNOWN"),
+                "next_legitimate_step": exact_record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+                "identifier_collision_scientific_equivalence": "NOT_ESTABLISHED_BY_IDENTIFIER_ALONE",
+            })
+        return result
 
     def summary(self) -> Dict[str, Any]:
         return {
