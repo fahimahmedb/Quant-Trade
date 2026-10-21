@@ -304,8 +304,9 @@ def build_discovery_handoff(
     if research_decision.get("action") != "RUN_PRODUCER" or research_decision.get("executable") is not True or research_decision.get("scheduler_mutation") is not False:
         blockers.append("RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER")
     decision_candidate = research_decision.get("candidate_id")
-    if _known(decision_candidate) and decision_candidate != candidate.get("hypothesis_id"):
-        blockers.append("RESEARCH_INTELLIGENCE_CANDIDATE_BINDING_MISMATCH")
+    declared_origin = facts.get("research_origin_candidate_id")
+    if _known(declared_origin) and _known(decision_candidate) and declared_origin != decision_candidate:
+        blockers.append("RESEARCH_INTELLIGENCE_ORIGIN_BINDING_MISMATCH")
 
     if any(_outcome_payload_present(item) for item in (research_decision, output, dossier, facts)):
         blockers.append("OUTCOME_LEAKAGE_DETECTED")
@@ -389,6 +390,7 @@ def build_discovery_handoff(
 
     ancestry_raw = facts.get("ancestry") if isinstance(facts.get("ancestry"), Mapping) else {}
     ancestry = {
+        "research_origin_candidate_id": decision_candidate if _known(decision_candidate) else UNKNOWN,
         "hypothesis_id": candidate.get("hypothesis_id"),
         "generation_id": candidate.get("generation_id"),
         "parent_candidate_ids": sorted(set(_string_list(ancestry_raw.get("parent_candidate_ids")))),
