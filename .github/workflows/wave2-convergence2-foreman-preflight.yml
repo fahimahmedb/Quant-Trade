@@ -16,7 +16,7 @@ env:
   C0_BRANCH: builder/mega-c0-scientific-adjudication-20261021
   D0_BRANCH: builder/mega-d0-economic-lifecycle-20261021
   E_BRANCH: builder/mega-e-autonomous-runtime-20261021
-  B_EXPECTED_HEAD: ba80b8cd717a3239d92a005248a326462d6a5744
+  B_EXPECTED_HEAD: 7ef088bb30ece88cf96f4514e8c581a95ca4b091
   D0_EXPECTED_HEAD: 4262462e0c853d917f32e8f87c2423f93a313167
   D0_QUALIFIED_CODE_HEAD: 84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0
   PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
@@ -78,6 +78,7 @@ jobs:
           set -euo pipefail
           B_HEAD="$(git rev-parse "refs/remotes/origin/${B_BRANCH}")"
           D0_HEAD="$(git rev-parse "refs/remotes/origin/${D0_BRANCH}")"
+          E_HEAD="$(git rev-parse "refs/remotes/origin/${E_BRANCH}")"
           test "$(git merge-base "$SEALED_BASE" "$B_HEAD")" = "$HISTORICAL_START"
           test "$(git merge-base "$SEALED_BASE" "$D0_HEAD")" = "$HISTORICAL_START"
           git diff --name-only "$HISTORICAL_START".."$SEALED_BASE" | sort > /tmp/base-repair-paths.txt
@@ -89,6 +90,12 @@ jobs:
           test ! -s /tmp/d0-base-overlap.txt
           echo 'TEXTUAL_BASE_REPAIR_CONFLICT_B=FALSE' | tee /tmp/base-port-classification.env
           echo 'TEXTUAL_BASE_REPAIR_CONFLICT_D0=FALSE' | tee -a /tmp/base-port-classification.env
+          if [ "$E_HEAD" != "$HISTORICAL_START" ]; then
+            test "$(git merge-base "$SEALED_BASE" "$E_HEAD")" = "$SEALED_BASE"
+            echo 'E_SEALED_BASE_BOUND=TRUE' | tee -a /tmp/base-port-classification.env
+          else
+            echo 'E_SEALED_BASE_BOUND=FALSE' | tee -a /tmp/base-port-classification.env
+          fi
 
       - name: Materialize B and D0 worktrees
         shell: bash
@@ -138,12 +145,16 @@ jobs:
             cd /tmp/mega-b
             PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
           from research.research_os.discovery_engine import AUTHORITY
-          assert AUTHORITY == {
-              "economic_experiment_authorized": False,
-              "prospective_observation_authorized": False,
-              "real_capital_authorized": False,
-              "live_trading_authorized": False,
-          }, AUTHORITY
+          required = (
+              "economic_experiment_authorized",
+              "prospective_observation_authorized",
+              "real_capital_authorized",
+              "live_trading_authorized",
+          )
+          for key in required:
+              assert AUTHORITY.get(key) is False, (key, AUTHORITY)
+          assert AUTHORITY.get("outcome_accessed", False) is False, AUTHORITY
+          assert all(value is False for value in AUTHORITY.values()), AUTHORITY
           PY
           )
           (
@@ -189,8 +200,9 @@ jobs:
               "textual_base_repair_conflict_b": False,
               "textual_base_repair_conflict_d0": False,
               "d0_semantic_base_rebind_required": True,
+              "e_sealed_base_bound": env.get("E_SEALED_BASE_BOUND") == "TRUE",
               "authority_opened": False,
-              "outcome_access_opened": False,
+              "outcome_accessed": False,
               "ready_for_canonical_convergence2": False,
           }
           assert receipt["b_focused_tests"] is not None
