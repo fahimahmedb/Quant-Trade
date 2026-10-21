@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import threading
 import urllib.error
 import urllib.parse
@@ -19,6 +20,14 @@ import sys
 
 SITE = "https://quant-trade-lab.sassylime.chatgpt.site"
 PRINCIPAL = "oracle-research-live"
+OBSERVATION_PREFIX = "research/research_os/artifacts/live-observation/"
+MAX_LOCAL_RECEIPT_BYTES = 65536
+RECEIPT_KEYS = {"schema_version", "source", "site_session", "records", "authority", "canonical_terminal",
+                "source_events_mutated", "stale_starts_replayed", "credentials_included"}
+FORBIDDEN_RECEIPT_KEYS = {"authorization", "secret", "credential", "credentials", "ingress_key", "api_key",
+                          "access_token", "refresh_token", "bearer"}
+EVENT_TYPES = {"ACTION_STARTED", "ACTION_COMPLETED", "WORKER_HEARTBEAT", "SESSION_ENDED"}
+SHA40 = re.compile(r"^[a-f0-9]{40}$")
 LANES = {"market_discovery": ("researcher", "Oracle · Discovery"),
          "fundamental_events": ("researcher", "Oracle · Documents"),
          "independent_challenge": ("auditor", "Oracle · Validator"),
@@ -49,6 +58,174 @@ def persist(path, value):
     with pending.open("wb") as stream:
         os.chmod(pending, 0o600); stream.write(encode(value)); stream.flush(); os.fsync(stream.fileno())
     pending.replace(path)
+
+
+def _bounded_text(value, label, limit=256):
+    if not isinstance(value, str) or not value or len(value) > limit or "\x00" in value:
+        raise ValueError("LOCAL_OBSERVATION_" + label + "_INVALID")
+    return value
+
+
+def _reject_credential_keys(value):
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            if not isinstance(key, str) or key.lower() in FORBIDDEN_RECEIPT_KEYS:
+                raise ValueError("LOCAL_OBSERVATION_CREDENTIAL_FIELD_FORBIDDEN")
+            _reject_credential_keys(nested)
+    elif isinstance(value, list):
+        for nested in value:
+            _reject_credential_keys(nested)
+
+
+def validate_local_observation_receipt(value):
+    """Accept only the bounded observer receipt shape; never infer a Site ACK."""
+    if not isinstance(value, dict) or set(value) != RECEIPT_KEYS:
+        raise ValueError("LOCAL_OBSERVATION_RECEIPT_SHAPE_INVALID")
+    if len(encode(value)) > MAX_LOCAL_RECEIPT_BYTES:
+        raise ValueError("LOCAL_OBSERVATION_RECEIPT_TOO_LARGE")
+    _reject_credential_keys(value)
+    if (value.get("schema_version") != "oracle-live-projection-v1"
+            or value.get("authority") != "OBSERVATIONAL_ONLY"
+            or value.get("source_events_mutated") is not False
+            or value.get("stale_starts_replayed") is not False
+            or value.get("credentials_included") is not False):
+        raise ValueError("LOCAL_OBSERVATION_RECEIPT_AUTHORITY_OR_PROVENANCE_INVALID")
+
+    source = value.get("source")
+    if not isinstance(source, dict):
+        raise ValueError("LOCAL_OBSERVATION_SOURCE_INVALID")
+    required_source = {"event_id", "session_id", "worker_id", "action_id", "generation", "event_seq",
+                       "input_commit", "lane", "stage"}
+    if set(source) != required_source:
+        raise ValueError("LOCAL_OBSERVATION_SOURCE_SHAPE_INVALID")
+    for key in ("event_id", "session_id", "worker_id", "action_id", "lane", "stage"):
+        _bounded_text(source.get(key), "SOURCE_" + key.upper())
+    if not source["worker_id"].startswith("oracle-research.") or source["lane"] not in LANES:
+        raise ValueError("LOCAL_OBSERVATION_SOURCE_ROUTE_INVALID")
+    if type(source.get("generation")) is not int or source["generation"] < 1:
+        raise ValueError("LOCAL_OBSERVATION_SOURCE_GENERATION_INVALID")
+    if type(source.get("event_seq")) is not int or source["event_seq"] < 1:
+        raise ValueError("LOCAL_OBSERVATION_SOURCE_SEQUENCE_INVALID")
+    if not isinstance(source.get("input_commit"), str) or not SHA40.fullmatch(source["input_commit"]):
+        raise ValueError("LOCAL_OBSERVATION_SOURCE_COMMIT_INVALID")
+
+    session = value.get("site_session")
+    if not isinstance(session, dict) or set(session) != {"session_id", "generation", "lease_id", "heartbeat_interval_ms"}:
+        raise ValueError("LOCAL_OBSERVATION_SITE_SESSION_INVALID")
+    _bounded_text(session.get("session_id"), "SITE_SESSION_ID")
+    _bounded_text(session.get("lease_id"), "SITE_LEASE_ID")
+    if type(session.get("generation")) is not int or session["generation"] < 1:
+        raise ValueError("LOCAL_OBSERVATION_SITE_GENERATION_INVALID")
+    if type(session.get("heartbeat_interval_ms")) is not int or not 1000 <= session["heartbeat_interval_ms"] <= 20000:
+        raise ValueError("LOCAL_OBSERVATION_HEARTBEAT_INTERVAL_INVALID")
+
+    records = value.get("records")
+    if not isinstance(records, list) or not records or len(records) > 128:
+        raise ValueError("LOCAL_OBSERVATION_RECORDS_INVALID")
+    pending_ids, acknowledged = set(), 0
+    for record in records:
+        if not isinstance(record, dict) or record.get("state") not in ("PENDING", "ACKNOWLEDGED", "DELIVERY_BLOCKED"):
+            raise ValueError("LOCAL_OBSERVATION_RECORD_STATE_INVALID")
+        if record["state"] == "PENDING":
+            if set(record) != {"state", "packet"} or not isinstance(record["packet"], dict):
+                raise ValueError("LOCAL_OBSERVATION_PENDING_SHAPE_INVALID")
+            packet = record["packet"]
+            required_packet = {"principal", "event_id", "trace_id", "worker_id", "session_id", "generation",
+                               "lease_id", "event_seq", "event_type", "action_id", "emitted_at", "payload"}
+            if set(packet) not in (required_packet, required_packet | {"effect_proof"}):
+                raise ValueError("LOCAL_OBSERVATION_PACKET_SHAPE_INVALID")
+            if (packet.get("principal") != PRINCIPAL or packet.get("worker_id") != source["worker_id"]
+                    or packet.get("trace_id") != source["session_id"] or packet.get("action_id") != source["action_id"]
+                    or packet.get("session_id") != session["session_id"] or packet.get("generation") != session["generation"]
+                    or packet.get("lease_id") != session["lease_id"] or packet.get("event_type") not in EVENT_TYPES
+                    or type(packet.get("event_seq")) is not int or packet["event_seq"] < 1
+                    or not isinstance(packet.get("payload"), dict)):
+                raise ValueError("LOCAL_OBSERVATION_PACKET_BINDING_INVALID")
+            _bounded_text(packet.get("event_id"), "PACKET_EVENT_ID")
+            _bounded_text(packet.get("emitted_at"), "PACKET_EMITTED_AT")
+            if "effect_proof" in packet and not isinstance(packet["effect_proof"], dict):
+                raise ValueError("LOCAL_OBSERVATION_EFFECT_PROOF_INVALID")
+            pending_ids.add(packet["event_id"])
+        elif record["state"] == "ACKNOWLEDGED":
+            allowed = {"state", "event_id", "cursor", "status", "accepted_at"}
+            if set(record) != allowed or record.get("status") not in ("APPLIED", "DUPLICATE_IGNORED"):
+                raise ValueError("LOCAL_OBSERVATION_ACK_SHAPE_INVALID")
+            _bounded_text(record.get("event_id"), "ACK_EVENT_ID")
+            if record["event_id"] not in pending_ids or type(record.get("cursor")) is not int or record["cursor"] < 0:
+                raise ValueError("LOCAL_OBSERVATION_ACK_BINDING_INVALID")
+            if record.get("accepted_at") is not None:
+                _bounded_text(record["accepted_at"], "ACK_ACCEPTED_AT")
+            acknowledged += 1
+        else:
+            if set(record) != {"state", "error_type"}:
+                raise ValueError("LOCAL_OBSERVATION_BLOCKED_SHAPE_INVALID")
+            _bounded_text(record.get("error_type"), "BLOCKED_ERROR_TYPE", 128)
+
+    terminal = value.get("canonical_terminal")
+    if terminal is not None:
+        if (not isinstance(terminal, dict)
+                or set(terminal) - {"event_id", "session_id", "generation", "event_seq", "source_commit"}
+                or terminal.get("session_id") != source["session_id"]):
+            raise ValueError("LOCAL_OBSERVATION_TERMINAL_INVALID")
+        for key in ("event_id", "session_id"):
+            if key in terminal: _bounded_text(terminal[key], "TERMINAL_" + key.upper())
+        for key in ("generation", "event_seq"):
+            if key in terminal and (type(terminal[key]) is not int or terminal[key] < 1):
+                raise ValueError("LOCAL_OBSERVATION_TERMINAL_COUNTER_INVALID")
+        if "source_commit" in terminal and (not isinstance(terminal["source_commit"], str) or not SHA40.fullmatch(terminal["source_commit"])):
+            raise ValueError("LOCAL_OBSERVATION_TERMINAL_COMMIT_INVALID")
+    if acknowledged < 1:
+        raise ValueError("LOCAL_OBSERVATION_ACK_NOT_PROVEN")
+    # JSON round-trip yields a detached, canonical JSON-compatible object.
+    return json.loads(json.dumps(value, sort_keys=True, allow_nan=False))
+
+
+def durable_observation_path(receipt):
+    session_id = receipt["source"]["session_id"]
+    return OBSERVATION_PREFIX + hashlib.sha256(session_id.encode()).hexdigest() + ".json"
+
+
+def persist_durable_observation_receipt(store, receipt):
+    receipt = validate_local_observation_receipt(receipt)
+    path = durable_observation_path(receipt)
+    with store.snapshot() as snapshot:
+        if path in snapshot.blobs:
+            if snapshot.read(path) != receipt:
+                raise RuntimeError("LIVE_OBSERVATION_RECEIPT_CONFLICT")
+            return "ALREADY_DURABLE"
+        store.commit(snapshot, {path: receipt}, create_only=[path], message="Oracle native Site observation receipt")
+        return "RECONCILED"
+
+
+def reconcile_local_observation_receipts(store, state):
+    """Drain only proven Site ACK evidence into GitHub; never retransmit Site events."""
+    state = Path(state)
+    summary = {"reconciled": 0, "already_durable": 0, "pending_or_invalid": 0, "conflicts": 0, "unavailable": 0}
+    try:
+        paths = sorted(state.glob("*.json")) if state.exists() else []
+    except OSError:
+        summary["unavailable"] += 1
+        return summary
+    for path in paths[:255]:
+        if path.is_symlink() or not path.is_file():
+            summary["pending_or_invalid"] += 1
+            continue
+        try:
+            raw = path.read_bytes()
+            if not raw or len(raw) > MAX_LOCAL_RECEIPT_BYTES:
+                raise ValueError("LOCAL_OBSERVATION_FILE_SIZE_INVALID")
+            receipt = validate_local_observation_receipt(json.loads(raw))
+            status = persist_durable_observation_receipt(store, receipt)
+            summary["reconciled" if status == "RECONCILED" else "already_durable"] += 1
+            path.unlink(missing_ok=True)
+        except RuntimeError as exc:
+            if str(exc) == "LIVE_OBSERVATION_RECEIPT_CONFLICT":
+                summary["conflicts"] += 1
+            else:
+                summary["unavailable"] += 1
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            summary["pending_or_invalid"] += 1
+    return summary
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -95,8 +272,8 @@ class LiveProjection:
         self.lock, self.stop = threading.Lock(), threading.Event()
         self.session = self.source = self.terminal = self.thread = None
         self.closed = False
-        # Keep bounded local recovery evidence. GitHub preserves durable ACKs;
-        # old observer files never become a queue of starts to replay.
+        # Keep bounded local recovery evidence. Durable ACK reconciliation runs
+        # before this constructor; old files never become a queue of Site starts.
         try:
             if self.state.exists():
                 files = sorted(self.state.glob('*.json'), key=lambda p: p.stat().st_mtime, reverse=True)
@@ -243,13 +420,18 @@ def main():
         transport = SiteTransport(key, base)
     except ValueError:
         core_only()
-    from research.research_os.github_state import GitHubStateStore, PREFIX, StateConflict
+    from research.research_os.github_state import GitHubStateStore, StateConflict
     from research.research_os.oracle_worker import AUTHORITY, routing, next_stage
     from research.research_os.oracle_worker_v2 import build_v2_worker
     # Explicit runtime actor configuration, not a UI alias inferred from names.
     config = dict(config, worker_id="oracle-research")
-    projection = LiveProjection(transport, args.state_dir)
     store = GitHubStateStore(cache=Path(config["cache"]), repository=config["repository"], branch=config["branch"])
+    # Observation-only durability is repaired before any new scientific wake.
+    # This path never contacts the Site and therefore cannot replay stale starts.
+    reconciliation = reconcile_local_observation_receipts(store, args.state_dir)
+    if any(reconciliation.values()):
+        print("LIVE_RECEIPT_RECONCILIATION " + json.dumps(reconciliation, sort_keys=True), file=sys.stderr)
+    projection = LiveProjection(transport, args.state_dir)
     observed = ProjectionStore(store, projection, routing, next_stage)
     worker = build_v2_worker(config, store=observed)
     exit_code = 0
@@ -270,11 +452,7 @@ def main():
     # never changes HEAD while a stage is reasoning or holding a claim.
     if projection.source:
         try:
-            with store.snapshot() as snapshot:
-                name = hashlib.sha256(projection.source["session_id"].encode()).hexdigest()
-                path = PREFIX + "artifacts/live-observation/" + name + ".json"
-                if path not in snapshot.blobs:
-                    store.commit(snapshot, {path: projection.receipt()}, create_only=[path], message="Oracle native Site observation receipt")
+            persist_durable_observation_receipt(store, projection.receipt())
         except Exception:
             print("LIVE_RECEIPT_PENDING_LOCAL_DURABILITY_PRESERVED", file=sys.stderr)
     return exit_code
