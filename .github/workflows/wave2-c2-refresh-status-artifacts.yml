@@ -13,7 +13,7 @@ env:
 
 jobs:
   refresh:
-    if: ${{ !contains(github.event.head_commit.message, 'chore(wave2-c2): refresh generated status artifacts') }}
+    if: "!contains(github.event.head_commit.message, 'chore(wave2-c2): refresh generated status artifacts')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
