@@ -74,6 +74,14 @@ jobs:
             research.research_os.tests.test_w1_factory_firewall_hardening \
             research.research_os.tests.test_economic_readiness_validation
 
+      - name: W1 Economic structural portfolio suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            research.research_os.tests.test_economic_identity_memory_context_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
+            tests.test_research_os_structural_unknown_evidence
+
       - name: SEC P0 lane suite
         run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
 
