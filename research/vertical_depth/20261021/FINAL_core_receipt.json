@@ -1,0 +1,35 @@
+{
+  "fixture_path": "tests/fixtures/oracle_v2_core_fixture.json",
+  "fixture_sha256": "0bf7473a8d20a9e5cce7419ec9bbbaba3ac4814d74c0073d614ba9e47039af56",
+  "receipt": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "blinding": {
+      "epoch_blinding_integrity": "PASS",
+      "owner_outcome_blinding_status": "BLINDED",
+      "supervisor_outcome_blinding_status": "BLINDED"
+    },
+    "candidate_hash": "32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a",
+    "economic_claim_authorized": false,
+    "epoch_manifest_hash": "8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457",
+    "evaluation_ingest_receipt_hash": "664bc07ea33a07b6fe73571dc0e1e729e7e7fc3c3cd14644ffa9de33441e1460",
+    "export_bundle_hash": "ebc87a0a2ef0f3ff92eaa59bc11d059936266c364e630f57a76d56f2790a27d2",
+    "negative_knowledge_hash": "53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e",
+    "outcome_accessed": false,
+    "priority_decision_hash": "5cbb42581d10d2f6433aeffc47437d49b544657b939eda0c29ce17aaa0c83508",
+    "receipt_hash": "01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec",
+    "research_epoch_id": "V2-FIXTURE-EPOCH-001",
+    "research_trial_id": "V2-FIXTURE-TRIAL-001",
+    "schema_version": "oracle-v2-core-pre-outcome-receipt-v1",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY",
+    "system_qualification": "AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED",
+    "trial_hash": "dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b",
+    "validator_hash": "3298ec7ea354f5f760fe30593fe1289d68bfb64c5e87c0f2da8e81ae12dd2f23"
+  },
+  "schema_version": "oracle-v2-core-exact-head-verification-v1",
+  "verified_commit_sha": "e75c4ce83fcb6d292cd28dec6cef01bf5146c75d"
+}
