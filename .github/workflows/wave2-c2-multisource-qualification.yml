@@ -15,9 +15,13 @@ env:
   MULTISOURCE_MERGED_HEAD: b5ba754188b9029f8a80ebfeea37c98b6f636869
   MULTISOURCE_PRIOR_TEST_ONLY_HEAD: b344e868096f36e80abc2bec79ee6e5ad8edcdfa
   MULTISOURCE_ACCEPTED_SEMANTIC_HEAD: a905acf1a76eb0759224793d669caa6ea2974903
+  MULTISOURCE_LEDGER_SOURCE_HEAD: c9753460eeabfe2315e05a90495f319e57083ea3
   MULTISOURCE_OUTCOME_FIREWALL_REPAIR: 884632a1fc332df8155eaa5e0557521497dc6d4b
   MULTISOURCE_REPAIRED_BLOB: 8d6e5d27386c437e66593a2e533f67a7f45227e5
   MULTISOURCE_IDEATION_CYCLE_BLOB: 09c3886258c9d86fb2e7a9809aae7b9476550ebf
+  MULTISOURCE_LEDGER_SOURCE_BLOB: b20b22bc7541797d6c79b1c81073caa979461d3a
+  MULTISOURCE_LEDGER_REPAIR_BLOB: b67db15452417e49e50c5ca23c61f3cb70e7c1b8
+  MULTISOURCE_LEDGER_TEST_BLOB: e75be3af7f93fe392a39256de38149718404e4d8
   PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
 
 jobs:
@@ -50,7 +54,8 @@ jobs:
           observed="$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)"
           git merge-base --is-ancestor "$MULTISOURCE_MERGED_HEAD" "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD"
           git merge-base --is-ancestor "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD" "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD"
-          git merge-base --is-ancestor "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" "$observed"
+          git merge-base --is-ancestor "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" "$MULTISOURCE_LEDGER_SOURCE_HEAD"
+          git merge-base --is-ancestor "$MULTISOURCE_LEDGER_SOURCE_HEAD" "$observed"
           echo "OBSERVED_MULTISOURCE_HEAD=$observed" | tee /tmp/ms-c2.env
 
       - name: Classify source evolution exactly
@@ -63,19 +68,32 @@ jobs:
             echo 'PRE_SEMANTIC_SOURCE_DELTA_NOT_TEST_ONLY=TRUE' >&2
             exit 1
           fi
+
           printf '%s\n' \
             research/research_os/ideation_cycle.py \
             research/research_os/multi_source_ideation.py | sort > /tmp/ms-expected-semantic.paths
           git diff --name-only "$MULTISOURCE_PRIOR_TEST_ONLY_HEAD" "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" | sort > /tmp/ms-actual-semantic.paths
           diff -u /tmp/ms-expected-semantic.paths /tmp/ms-actual-semantic.paths
-          git diff --name-only "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" "$(awk -F= '/OBSERVED_MULTISOURCE_HEAD/{print $2}' /tmp/ms-c2.env)" > /tmp/ms-future.paths
+
+          cat > /tmp/ms-expected-ledger.paths <<'EOF'
+          .github/workflows/multisource-refresh-status.yml
+          STATE.md
+          research/research_os/multi_source_ideation_hardening.py
+          tests/test_multi_source_ideation_v2_ledger_truth_firewall.py
+          EOF
+          sed -i 's/^          //' /tmp/ms-expected-ledger.paths
+          sort -o /tmp/ms-expected-ledger.paths /tmp/ms-expected-ledger.paths
+          git diff --name-only "$MULTISOURCE_ACCEPTED_SEMANTIC_HEAD" "$MULTISOURCE_LEDGER_SOURCE_HEAD" | sort > /tmp/ms-actual-ledger.paths
+          diff -u /tmp/ms-expected-ledger.paths /tmp/ms-actual-ledger.paths
+
+          git diff --name-only "$MULTISOURCE_LEDGER_SOURCE_HEAD" "$(awk -F= '/OBSERVED_MULTISOURCE_HEAD/{print $2}' /tmp/ms-c2.env)" > /tmp/ms-future.paths
           if test -s /tmp/ms-future.paths && grep -Ev '^tests/test_multi_source_ideation_v2_.*\.py$' /tmp/ms-future.paths; then
-            echo 'UNREVIEWED_MULTISOURCE_SEMANTIC_DRIFT_AFTER_ACCEPTED_HEAD=TRUE' >&2
+            echo 'UNREVIEWED_MULTISOURCE_SEMANTIC_DRIFT_AFTER_LEDGER_HEAD=TRUE' >&2
             exit 1
           fi
           echo "MULTISOURCE_FUTURE_TEST_ONLY_FILES=$(wc -l < /tmp/ms-future.paths | tr -d ' ')" | tee -a /tmp/ms-c2.env
 
-      - name: Prove exact accepted semantic port
+      - name: Prove accepted semantic port and canonical ledger repair
         shell: bash
         run: |
           set -euo pipefail
@@ -86,7 +104,6 @@ jobs:
             research/research_os/ideation_cycle.py
             research/research_os/multi_source_ideation.py
             research/research_os/multi_source_ideation_bindings.py
-            research/research_os/multi_source_ideation_hardening.py
             research/research_os/policy_c_safe.py
             research/research_os/tests/test_multi_source_ideation_v2.py
             tests/test_multi_source_ideation_v2.py
@@ -96,6 +113,15 @@ jobs:
           done
           test "$(git hash-object research/research_os/multi_source_ideation.py)" = "$MULTISOURCE_REPAIRED_BLOB"
           test "$(git hash-object research/research_os/ideation_cycle.py)" = "$MULTISOURCE_IDEATION_CYCLE_BLOB"
+          test "$(git rev-parse "$MULTISOURCE_LEDGER_SOURCE_HEAD:research/research_os/multi_source_ideation_hardening.py")" = "$MULTISOURCE_LEDGER_SOURCE_BLOB"
+          test "$(git rev-parse "$MULTISOURCE_LEDGER_SOURCE_HEAD:tests/test_multi_source_ideation_v2_ledger_truth_firewall.py")" = "$MULTISOURCE_LEDGER_TEST_BLOB"
+          git show "$MULTISOURCE_LEDGER_SOURCE_HEAD:research/research_os/multi_source_ideation_hardening.py" \
+            | sed 's/from \.multi_source_ideation import OUTCOME_KEYS, POLICIES, _reject_outcome_fields/from .multi_source_ideation import OUTCOME_BEARING_KEYS, POLICIES, _reject_outcome_fields/' \
+            > /tmp/ms-ledger-source-repaired.py
+          test "$(git hash-object /tmp/ms-ledger-source-repaired.py)" = "$MULTISOURCE_LEDGER_REPAIR_BLOB"
+          test "$(git hash-object research/research_os/multi_source_ideation_hardening.py)" = "$MULTISOURCE_LEDGER_REPAIR_BLOB"
+          cmp /tmp/ms-ledger-source-repaired.py research/research_os/multi_source_ideation_hardening.py
+          test "$(git hash-object tests/test_multi_source_ideation_v2_ledger_truth_firewall.py)" = "$MULTISOURCE_LEDGER_TEST_BLOB"
           grep -F 'PENDING_EXACT_HEAD_CI' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
           grep -F 'not authorized to emit `WAVE2_INTEGRATED_SHA`' research/research_os/MULTISOURCE_IDEATION_V2_MANIFEST_20261021.md
           grep -F 'The backend is not truth, scheduler, Control Plane or scientific evidence.' research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md
@@ -108,6 +134,28 @@ jobs:
             research/research_os/multi_source_ideation_bindings.py \
             research/research_os/multi_source_ideation_hardening.py \
             research/research_os/policy_c_safe.py
+
+      - name: Prove ledger truth firewall and proposal identity remain pre-outcome
+        run: |
+          python3 -m unittest -v tests.test_multi_source_ideation_v2_ledger_truth_firewall
+          python3 - <<'PY'
+          from research.research_os.multi_source_ideation_hardening import DurableProposalLedger, proposal_identity
+
+          def must_fail(fn, needle):
+              try: fn()
+              except ValueError as exc:
+                  assert needle in str(exc), (needle, str(exc))
+              else:
+                  raise AssertionError(f'expected ValueError containing {needle}')
+
+          ledger=DurableProposalLedger()
+          ledger.persist({'proposal_id':'sentinel','outcome_accessed':False,'scientific_verdict':'NOT_PERFORMED','economic_result':'NOT_OBSERVED'})
+          must_fail(lambda: ledger.persist({'proposal_id':'pnl','nested':{'pnl':1.0}}),'outcome-bearing')
+          must_fail(lambda: ledger.persist({'proposal_id':'lease','nested':{'lease_owner':'worker'}}),'operational work semantics')
+          must_fail(lambda: proposal_identity(policy_kind='SYSTEMATIC_COVERAGE',context_snapshot_hash='ctx',payload={'nested':{'pnl':1}},provenance={'source':'x'}),'outcome-bearing')
+          must_fail(lambda: proposal_identity(policy_kind='SYSTEMATIC_COVERAGE',context_snapshot_hash='ctx',payload={'mechanism':'m'},provenance={'nested':{'returns':[1]}}),'outcome-bearing')
+          print('MULTISOURCE_LEDGER_TRUTH_FIREWALL=PASS')
+          PY
 
       - name: Prove frozen-context receipt and passive-disposition hardening
         run: |
@@ -236,12 +284,16 @@ jobs:
                   k,v=line.split('=',1); env[k]=v
           r={
               'mission':'WAVE2_C2_CANONICAL_INTEGRATION',
-              'stage':'MULTISOURCE_IDEATION_ACCEPTED_SEMANTIC_HEAD',
+              'stage':'MULTISOURCE_IDEATION_LEDGER_TRUTH_FIREWALL_REPAIRED',
               'qualified_head':os.environ['GITHUB_SHA'],
-              'accepted_source_head':os.environ['MULTISOURCE_ACCEPTED_SEMANTIC_HEAD'],
+              'accepted_semantic_source_head':os.environ['MULTISOURCE_ACCEPTED_SEMANTIC_HEAD'],
+              'ledger_source_head':os.environ['MULTISOURCE_LEDGER_SOURCE_HEAD'],
+              'ledger_source_blob':os.environ['MULTISOURCE_LEDGER_SOURCE_BLOB'],
+              'ledger_canonical_repair_blob':os.environ['MULTISOURCE_LEDGER_REPAIR_BLOB'],
               'observed_source_head':env['OBSERVED_MULTISOURCE_HEAD'],
               'future_source_delta_test_only_files':int(env['MULTISOURCE_FUTURE_TEST_ONLY_FILES']),
               'adversarial_files':int(env['MULTISOURCE_ADVERSARIAL_FILES']),
+              'ledger_truth_firewall':'PASS',
               'frozen_context_receipt_binding':'PASS',
               'passive_disposition_consistency':'PASS',
               'direct_multisource_to_b_bypass':'BLOCKED',
@@ -257,6 +309,8 @@ jobs:
             /tmp/wave2-c2-multisource-receipt.json
             /tmp/ms-pre-semantic.paths
             /tmp/ms-actual-semantic.paths
+            /tmp/ms-expected-ledger.paths
+            /tmp/ms-actual-ledger.paths
             /tmp/ms-future.paths
             /tmp/ms-adversarial.paths
           if-no-files-found: error
