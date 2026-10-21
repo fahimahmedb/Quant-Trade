@@ -362,6 +362,31 @@ def _eq_known(left: Any, right: Any) -> Any:
     return _field_relation(l, r)["overlap"]
 
 
+def _relationship_signals(rel: Dict[str, str]) -> List[str]:
+    """Named structural motifs. They are review diagnostics, never empirical evidence."""
+    signals: List[str] = []
+    if rel["mechanism"] == "SAME" and rel["instrument"] == "DIFFERENT":
+        signals.append("SAME_MECHANISM_DIFFERENT_INSTRUMENT")
+    if rel["payer"] == "SAME" and rel["timing_clock"] == "DIFFERENT":
+        signals.append("SAME_PAYER_DIFFERENT_CLOCK")
+    if rel["event_rule_dependency"] == "SAME" and rel["horizon"] == "DIFFERENT":
+        signals.append("SAME_EVENT_DEPENDENCY_DIFFERENT_HORIZON")
+    if rel["economic_exposure"] == "SAME" and rel["instrument"] == "DIFFERENT":
+        signals.append("SAME_EXPOSURE_DIFFERENT_WRAPPER")
+    if (
+        rel["payer"] == "SAME"
+        and rel["forced_constrained_actor"] == "SAME"
+        and rel["mechanism"] == "UNKNOWN"
+    ):
+        signals.append("SAME_PAYER_ACTOR_MECHANISM_UNRESOLVED")
+    if (
+        rel["mechanism"] == "SAME"
+        and rel["source_identity"] == "DIFFERENT"
+    ):
+        signals.append("SAME_MECHANISM_DIFFERENT_SOURCE_IDENTITY")
+    return sorted(signals)
+
+
 def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, Any]:
     left_struct = structural_identity(left)
     right_struct = structural_identity(right)
@@ -386,11 +411,14 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
     max_score = round(score + sum(_STRUCTURAL_WEIGHTS[key] for key in potentially_same), 4)
 
     rel = {key: relationships[key]["relation"] for key in relationships}
+    signals = _relationship_signals(rel)
     core_known = all(rel[key] in {"SAME", "DIFFERENT"} for key in _CORE_FIELDS)
     core_same = core_known and all(rel[key] == "SAME" for key in _CORE_FIELDS)
     conflicts = sorted(key for key, value in rel.items() if value == "CONFLICTED")
     payer_mechanism_same = rel["payer"] == "SAME" and rel["mechanism"] == "SAME"
     payer_and_mechanism_different = rel["payer"] == "DIFFERENT" and rel["mechanism"] == "DIFFERENT"
+    explicit_same_exposure = rel["economic_exposure"] == "SAME"
+    payer_actor_mechanism_unresolved = "SAME_PAYER_ACTOR_MECHANISM_UNRESOLVED" in signals
 
     review_basis: List[str] = []
     if conflicts:
@@ -405,6 +433,14 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
         classification = "RELATED_EXPOSURE_REVIEW"
         review_required = True
         review_basis = ["payer", "mechanism"]
+    elif explicit_same_exposure:
+        classification = "RELATED_EXPOSURE_REVIEW"
+        review_required = True
+        review_basis = ["economic_exposure"]
+    elif payer_actor_mechanism_unresolved:
+        classification = "RELATED_EXPOSURE_REVIEW"
+        review_required = True
+        review_basis = ["payer", "forced_constrained_actor", "mechanism:UNKNOWN"]
     elif payer_and_mechanism_different:
         classification = "STRUCTURALLY_DISTINGUISHABLE"
         review_required = False
@@ -431,6 +467,7 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
         "structural_overlap_score": score,
         "dimensions": dimensions,
         "field_relationships": relationships,
+        "relationship_signals": signals,
         "same_fields": same_fields,
         "different_fields": different_fields,
         "unknown_dimensions": sorted(set(unresolved) | {key for key, value in legacy_dimensions.items() if value is None}),
@@ -459,6 +496,7 @@ def structural_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
             "different_fields": different_fields,
             "unknown_fields": unknown_fields,
             "conflicted_fields": conflicts,
+            "relationship_signals": signals,
             "source_identity_difference_is_not_independence_evidence": rel["source_identity"] == "DIFFERENT",
         },
         "empirical_correlation": "UNAVAILABLE",
@@ -473,7 +511,7 @@ def _portfolio_pair(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, An
     """Preserve legacy seven-axis summary while retaining canonical economic structure."""
     pair = structural_pair(left, right)
     pair["economic_structure"] = {key: deepcopy(pair[key]) for key in (
-        "classification", "structural_overlap_score", "dimensions", "field_relationships",
+        "classification", "structural_overlap_score", "dimensions", "field_relationships", "relationship_signals",
         "same_fields", "different_fields", "unknown_dimensions", "conflicted_dimensions",
         "score_status", "overlap_score_interval", "same_exposure_review_required", "review_basis", "explanation",
     )}
