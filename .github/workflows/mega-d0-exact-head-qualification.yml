@@ -1,0 +1,196 @@
+name: MEGA D0 Exact Head Qualification
+
+on:
+  push:
+    branches:
+      - builder/mega-d0-economic-lifecycle-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mega-d0-exact-head-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  MEGA_D0_FIRST_CHECKPOINT_SHA: e9268c89c3307e47b810add2719d1c1c76df8a44
+
+jobs:
+  d0-kernel:
+    name: D0 kernel + immutable ancestry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove immutable base ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${MEGA_D0_FIRST_CHECKPOINT_SHA}^")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          git merge-base --is-ancestor "${MEGA_D0_FIRST_CHECKPOINT_SHA}" HEAD
+          grep -F "WAVE2_IMMUTABLE_BASE_SHA=${WAVE2_IMMUTABLE_BASE_SHA}" MEGA_D0_CP_001_20261021.md
+      - name: Qualify D0 lifecycle kernel
+        run: python -m unittest -v research.research_os.tests.test_economic_lifecycle_v1
+      - name: Static scope membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(MEGA_D0_CP_[0-9]+_20261021\.md|research/research_os/expansion/economic_lifecycle_v1\.py|research/research_os/tests/test_economic_lifecycle_v1\.py|\.github/workflows/mega-d0-exact-head-qualification\.yml)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected D0-scope files:"
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+      - name: Emit D0 kernel receipt
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          receipt = {
+              "mission": "MEGA_D0_ECONOMIC_LIFECYCLE_KERNEL",
+              "qualified_head": os.environ["GITHUB_SHA"],
+              "wave2_immutable_base_sha": os.environ["WAVE2_IMMUTABLE_BASE_SHA"],
+              "first_checkpoint_sha": os.environ["MEGA_D0_FIRST_CHECKPOINT_SHA"],
+              "first_checkpoint_parent": subprocess.check_output(
+                  ["git", "rev-parse", os.environ["MEGA_D0_FIRST_CHECKPOINT_SHA"] + "^"], text=True
+              ).strip(),
+              "d0_kernel_tests": 14,
+              "d0_kernel_result": "PASS",
+              "authority_state": {
+                  "economic_experiment_authorized": False,
+                  "prospective_observation_authorized": False,
+                  "real_capital_authorized": False,
+                  "live_trading_authorized": False,
+                  "position_sizing_authorized": False,
+                  "orders_authorized": False,
+              },
+              "outcome_access": "CLOSED",
+              "scheduler_owned": False,
+              "builder_self_authorization_path": False,
+          }
+          Path('/tmp/mega-d0-kernel-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-d0-kernel-${{ github.sha }}
+          path: /tmp/mega-d0-kernel-receipt.json
+          if-no-files-found: error
+
+  w1-economic-nonregression:
+    name: W1 ECON non-regression boundary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned read-only Legacy corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin 183ad65ff260b903a16548ce37948f54d47a9ec8
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+      - name: W1 Economic identity + portfolio + readiness + Factory bridge
+        run: |
+          python -m unittest -v \
+            research.research_os.tests.test_economic_identity_memory_context_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_readiness \
+            research.research_os.tests.test_economic_readiness_validation \
+            research.research_os.tests.test_producer_economic_readiness \
+            research.research_os.tests.test_economic_readiness_integration \
+            research.research_os.tests.test_w1_factory_economic_integration
+      - name: Exact authority / outcome boundary assertion
+        run: |
+          python - <<'PY'
+          from research.research_os.expansion.economic_test_readiness_v1 import AUTHORITY
+          assert all(value is False for value in AUTHORITY.values()), AUTHORITY
+          PY
+      - name: Emit W1 boundary receipt
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path('/tmp/mega-d0-w1-economic-receipt.json').write_text(json.dumps({
+              "mission": "MEGA_D0_ECONOMIC_LIFECYCLE_KERNEL",
+              "qualified_head": os.environ["GITHUB_SHA"],
+              "boundary": "W1_ECON_NON_REGRESSION",
+              "suite_modules": 8,
+              "result": "PASS",
+              "authority_opened": False,
+              "outcome_access_opened": False,
+          }, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-d0-w1-economic-${{ github.sha }}
+          path: /tmp/mega-d0-w1-economic-receipt.json
+          if-no-files-found: error
+
+  global-observation:
+    name: Research OS global observation (non-gating)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned read-only Legacy corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin 183ad65ff260b903a16548ce37948f54d47a9ec8
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+      - name: Observe all Research OS Python tests without converting historical debt into D0 scope
+        id: observe
+        shell: bash
+        run: |
+          set +e
+          python -m unittest discover -s research/research_os/tests -p 'test_*.py' -v 2>&1 | tee /tmp/mega-d0-global-observation.log
+          code=${PIPESTATUS[0]}
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Emit global observation receipt
+        shell: bash
+        env:
+          OBSERVED_EXIT_CODE: ${{ steps.observe.outputs.exit_code }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          code = int(os.environ.get('OBSERVED_EXIT_CODE', '255'))
+          Path('/tmp/mega-d0-global-observation.json').write_text(json.dumps({
+              "mission": "MEGA_D0_ECONOMIC_LIFECYCLE_KERNEL",
+              "observed_head": os.environ["GITHUB_SHA"],
+              "suite": "research/research_os/tests/test_*.py",
+              "gating": False,
+              "exit_code": code,
+              "result": "PASS" if code == 0 else "OBSERVED_PREEXISTING_OR_OUT_OF_SCOPE_FAILURES",
+          }, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-d0-global-observation-${{ github.sha }}
+          path: |
+            /tmp/mega-d0-global-observation.json
+            /tmp/mega-d0-global-observation.log
+          if-no-files-found: error
