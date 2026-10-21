@@ -1,14 +1,14 @@
 """Canonical CI bridge for the fixed Mega-A Research Intelligence contract tests.
 
-The repository's authoritative GitHub Actions gate runs ``unittest discover -s tests``.
-Mega-A implementation tests live beside Research OS under ``research/research_os/tests``
-so this bridge deliberately loads only the eight test modules introduced by Mega-A.
-It does not broaden CI into unrelated historical nested suites.
+The canonical GitHub Actions gate invokes this module explicitly.  Mega-A implementation
+tests live beside Research OS under ``research/research_os/tests``; this bridge deliberately
+loads only the eight test modules introduced by Mega-A and therefore does not alter the V1
+``unittest discover -s tests`` proof inventory used by STATE.md.
 
 Most Mega-A modules use unittest.TestCase directly. ``test_research_intelligence.py``
-contains zero-argument pytest-style functions; those are wrapped as FunctionTestCase
-so the canonical unittest gate proves those adversarial contracts too, without adding
-a pytest dependency or changing the production workflow.
+contains zero-argument pytest-style functions; those are wrapped as FunctionTestCase so the
+canonical unittest gate proves those adversarial contracts too, without adding a pytest
+dependency or creating another workflow.
 """
 from __future__ import annotations
 
@@ -48,8 +48,9 @@ def _load_module(relative_path: str, index: int) -> ModuleType:
 
 
 def load_tests(loader: unittest.TestLoader, standard_tests: unittest.TestSuite, pattern: str | None) -> unittest.TestSuite:
-    del standard_tests, pattern
+    del pattern
     suite = unittest.TestSuite()
+    suite.addTests(standard_tests)
     for index, relative_path in enumerate(_MEGA_A_TEST_FILES):
         module = _load_module(relative_path, index)
         suite.addTests(loader.loadTestsFromModule(module))
