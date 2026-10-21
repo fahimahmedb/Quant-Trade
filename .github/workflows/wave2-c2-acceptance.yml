@@ -129,9 +129,6 @@ jobs:
           assert all(value is False for value in AUTHORITY.values()), AUTHORITY
           PY
 
-      - name: V1 end-to-end non-regression
-        run: python3 scripts/demo_quant_system.py
-
       - name: Clean working tree
         shell: bash
         run: |
@@ -162,6 +159,7 @@ jobs:
               'live_trading_authorized': False,
               'outcome_accessed': False,
               'worktree_clean': True,
+              'v1_e2e': 'DEFERRED_TO_E_RUNTIME_PORT_AND_FINAL_C2',
               'status_artifact_freshness': 'DEFERRED_TO_GLOBAL_TRUTH_RECONCILIATION',
           }
           Path('/tmp/wave2-c2-stage-b-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
