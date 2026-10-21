@@ -128,7 +128,32 @@ def red_team(
     }
 
 
-def economic_identity_v1(engine_output: Dict[str, Any], identity_meta: Dict[str, Any]) -> Dict[str, Any]:
+def _frozen_identity_declaration(engine_output: Dict[str, Any], envelope: Dict[str, Any]) -> Dict[str, Any]:
+    """Bind a declaration to its existing freeze; do not qualify economic facts."""
+    payload = envelope["protocol_payload"]
+    candidate = engine_output["candidate"]
+    declared = payload["dataset_provenance"]["protocol"]
+    expression = declared["economic_expression"]
+    implementation = payload["implementability_declaration"]
+    if (envelope.get("status") != "FROZEN_READY_NO_OUTCOME"
+            or envelope.get("outcome_opened") is not False
+            or envelope.get("protocol_hash") != _hash(payload)
+            or payload["candidate"] != candidate
+            or payload["hypothesis_id"] != candidate["hypothesis_id"]
+            or payload["generation_id"] != candidate["generation_id"]
+            or payload["declared_decision_map"] != candidate["decision_map"]
+            or implementation.get("status") != "PASS"
+            or implementation.get("exact_expression_status") != "PASS"
+            or expression != implementation.get("exact_expression_contract")
+            or declared["entry_definition"] != expression["entry_clock"]
+            or declared["exit_definition"] != expression["exit_clock"]
+            or declared["universe"]["universe_id"] != expression["universe"]):
+        raise ValueError("FROZEN_IDENTITY_DECLARATION_BINDING_MISMATCH")
+    return {"envelope": deepcopy(envelope), "candidate_hash": _hash(candidate)}
+
+
+def economic_identity_v1(engine_output: Dict[str, Any], identity_meta: Dict[str, Any], *,
+                         frozen_envelope: Dict[str, Any] | None = None) -> Dict[str, Any]:
     candidate = engine_output["candidate"]
     tags = sorted(set(candidate.get("economic_tags", [])))
     identity = {
@@ -174,6 +199,8 @@ def economic_identity_v1(engine_output: Dict[str, Any], identity_meta: Dict[str,
             dossier_status=dossier['status'], dossier_blockers=list(dossier['blockers']),
             unverified_identity_metadata_ignored=True,
         )
+    if frozen_envelope is not None:
+        identity["frozen_declaration"] = _frozen_identity_declaration(engine_output, frozen_envelope)
     return identity
 
 

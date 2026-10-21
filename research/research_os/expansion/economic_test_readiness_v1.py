@@ -174,7 +174,10 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     reasons.extend(r["code"] for r in validator["block_reasons"])
     red = red_team_negative_rights_v2(validator, context=red_team_context)
     reasons.extend(red["negative_rights"])
-    identity = economic_identity_v1(output, p.get("identity_meta", {}))
+    # Preserve declarations only after upstream qualification and independent
+    # freeze binding. Keep original diagnostics for an unqualified producer.
+    identity = economic_identity_v1(output, p.get("identity_meta", {}),
+        frozen_envelope=envelope if not reasons else None)
     portfolio = portfolio_diagnostics_v2([identity, *deepcopy(list(peer_identities))])
 
     # Portfolio overlap is a pre-outcome scientific-integrity gate, never an

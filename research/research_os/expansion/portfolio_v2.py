@@ -94,12 +94,25 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
     the producer identity and candidate.
     """
     _verify_documentary_identity(identity)
+    declaration = identity.get("frozen_declaration")
+    if declaration is not None:
+        from .final_shape import _frozen_identity_declaration
+        envelope = declaration["envelope"]
+        frozen_candidate = envelope["protocol_payload"]["candidate"]
+        if (declaration != _frozen_identity_declaration({"candidate": frozen_candidate}, envelope)
+                or any(identity.get(key) != frozen_candidate.get(key)
+                       for key in ("hypothesis_id", "generation_id", "mechanism"))):
+            raise ValueError("FROZEN_IDENTITY_DECLARATION_BINDING_MISMATCH")
     candidate = _candidate_from_identity(identity)
     provenance = identity.get("identity_provenance", {})
     if not isinstance(provenance, dict):
         provenance = {}
 
     candidate_hash = provenance.get("candidate_hash")
+    if declaration is not None:
+        if _is_known(candidate_hash) and candidate_hash != declaration["candidate_hash"]:
+            raise ValueError("FROZEN_IDENTITY_CANDIDATE_BINDING_MISMATCH")
+        candidate_hash = declaration["candidate_hash"]
     if not _is_known(candidate_hash) and candidate:
         candidate_hash = sha256_json(candidate)
     if not _is_known(candidate_hash):
@@ -177,6 +190,13 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
         for name in ("instrument", "horizon", "economic_exposure"):
             field_choices[name] = ((identity.get(name), "identity." + name),)
 
+    declared_fields = {"instrument": "instrument", "universe": "universe",
+                       "timing_clock": "entry_clock", "horizon": "horizon"} if declaration is not None else {}
+    if declaration is not None:
+        expression = envelope["protocol_payload"]["dataset_provenance"]["protocol"]["economic_expression"]
+        for name, key in declared_fields.items():
+            field_choices[name] = ((expression.get(key), "frozen_protocol.economic_expression." + key),)
+
     fields: Dict[str, Any] = {}
     unknown_fields: List[str] = []
     for name, choices in field_choices.items():
@@ -208,6 +228,15 @@ def structural_identity(identity: Dict[str, Any]) -> Dict[str, Any]:
                 record = {"status": "CONTENT_IDENTITY_ONLY", "support": {"source_hash": source_hash}}
             fields[name]["documentary_evidence"] = dict(
                 record, identity_field=support_name, declared_value=deepcopy(declared_value))
+        if declaration is not None:
+            fields[name]["provenance"]["protocol_hash"] = envelope["protocol_hash"]
+        if name in declared_fields:
+            fields[name]["status"] = "DECLARED" if _is_known(value) else "UNKNOWN"
+            fields[name]["declaration_evidence"] = {
+                "status": "DECLARED_ONLY" if _is_known(value) else "UNKNOWN",
+                "protocol_hash": envelope["protocol_hash"], "candidate_hash": candidate_hash,
+                "source_path": path, "source_factual_qualification": False,
+            }
 
     return {
         "hypothesis_id": identity.get("hypothesis_id", "UNKNOWN"),
@@ -398,5 +427,7 @@ def _verify_documentary_identity(identity: Dict[str, Any]) -> None:
         basis = identity.get("documentary_basis")
         if not isinstance(basis, dict) or basis.get("synthetic_only") is not False:
             raise ValueError("documentary identity lacks its producer basis")
-        if identity != economic_identity_v1(basis, {}):
+        declaration = identity.get("frozen_declaration")
+        envelope = declaration["envelope"] if declaration is not None else None
+        if identity != economic_identity_v1(basis, {}, frozen_envelope=envelope):
             raise ValueError("documentary identity differs from reconstructed dossier support")

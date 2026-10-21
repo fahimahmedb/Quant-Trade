@@ -63,6 +63,7 @@ jobs:
             tests.test_research_os_frozen_export_identity \
             tests.test_research_os_structural_unknown_evidence \
             tests.test_research_os_documentary_portfolio_scope \
+            tests.test_research_os_frozen_portfolio_declarations \
             research.research_os.tests.test_economic_identity_portfolio_readiness \
             tests.test_research_os_v2_bridge \
             tests.test_research_os_independent_candidate_reconstruction \
