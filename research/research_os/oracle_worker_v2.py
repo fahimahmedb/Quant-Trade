@@ -50,6 +50,22 @@ class V2ResearchOSWorker(ResearchOSWorker):
         return catalog
 
     @staticmethod
+    def _research_policy_context(snapshot):
+        """Bind refill decisions to current Control Plane capability/route state.
+
+        No budget object exists in the CP063 runtime contract. Generation mandates
+        are zero-cost pre-outcome actions, so this context deliberately does not
+        invent a budget authority. Scientific/archaeology completion remains false
+        until a qualified producer explicitly persists those completion facts.
+        """
+        return {
+            "capability_registry": snapshot.read(PREFIX + "runtime/CAPABILITY_REGISTRY.json"),
+            "workflow_lanes": snapshot.read(PREFIX + "runtime/WORKFLOW_LANES.json"),
+            "search_space_complete": False,
+            "archaeology_complete": False,
+        }
+
+    @staticmethod
     def _verify_bound_source(snapshot, task):
         try:
             validate_source_binding(task)
@@ -97,13 +113,14 @@ class V2ResearchOSWorker(ResearchOSWorker):
             tasks=snapshot.tasks(),
             created_at=timestamp(self.now()),
             source_catalog=self._source_catalog(snapshot),
+            research_policy_context=self._research_policy_context(snapshot),
         )
         task = derived["task"]
         if task is None:
             return self._idle(snapshot, base_receipt, derived["status"])
 
         original_head = snapshot.head
-        # Reacquire both queue and documentary source identities before publish.
+        # Reacquire queue, documentary source and research-policy contracts before publish.
         with self.store.snapshot() as fresh:
             if fresh.head != original_head:
                 raise StateConflict("QUEUE_CHANGED_BEFORE_REFILL")
@@ -113,6 +130,7 @@ class V2ResearchOSWorker(ResearchOSWorker):
                 tasks=fresh.tasks(),
                 created_at=task["created_at"],
                 source_catalog=self._source_catalog(fresh),
+                research_policy_context=self._research_policy_context(fresh),
             )
             if confirmed != derived:
                 raise StateConflict("FRONTIER_DERIVATION_CHANGED")
@@ -120,6 +138,7 @@ class V2ResearchOSWorker(ResearchOSWorker):
             key = derived["derivation_key"]
             receipt_path = PREFIX + f"receipts/queue-refill/{key}.json"
             event_path = PREFIX + f"events/queue-refill/{key}.json"
+            intelligence = derived.get("research_intelligence") or {}
             event = {
                 "event_id": key,
                 "session_id": key,
@@ -136,6 +155,9 @@ class V2ResearchOSWorker(ResearchOSWorker):
                     "next_task_id": task["task_id"],
                     "next_lane": task["derivation"]["target_lane"],
                     "source_bound": bool((task.get("inputs") or {}).get("documentary_source")),
+                    "research_intelligence_preflight": bool(intelligence),
+                    "frontier_state": (intelligence.get("frontier_state") or {}).get("state"),
+                    "novelty_claimed": (intelligence.get("scientific_claims") or {}).get("novelty_claimed"),
                 },
             }
             receipt = dict(base_receipt, derivation=derived, producer_execution_same_wake=False)
@@ -144,7 +166,7 @@ class V2ResearchOSWorker(ResearchOSWorker):
                 fresh,
                 writes,
                 create_only=list(writes),
-                message="Research OS canonical source-aware queue refill " + key,
+                message="Research OS intelligence-preflight queue refill " + key,
             )
             return dict(
                 base_receipt,
@@ -162,15 +184,20 @@ def build_v2_worker(config, *, store=None, backend=None):
     store = store or GitHubStateStore(
         cache=Path(config["cache"]), repository=config["repository"], branch=config["branch"]
     )
-    store = V2StateStore(store, (config.get("model_backend") or {}).get("model", "DETERMINISTIC_ENGINE"),
-                         backend if isinstance(backend, V2ModelAudit) else None, config.get("lane", "auto"))
+    store = V2StateStore(
+        store,
+        (config.get("model_backend") or {}).get("model", "DETERMINISTIC_ENGINE"),
+        backend if isinstance(backend, V2ModelAudit) else None,
+        config.get("lane", "auto"),
+    )
     return V2ResearchOSWorker(
         store,
         lane=config.get("lane", "auto"),
         worker_id=config["worker_id"],
         release_sha=config["release_sha"],
         executor=V2StageExecutor(backend),
-        lease_seconds=config.get("lease_seconds", 600), expected_task_id=config.get("canary_task_id"),
+        lease_seconds=config.get("lease_seconds", 600),
+        expected_task_id=config.get("canary_task_id"),
     )
 
 
