@@ -22,8 +22,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 from copy import deepcopy
+from functools import wraps
 import fcntl
 import os
+import threading
 
 from ..state import read_json, write_json
 from .opportunity import TERMINAL
@@ -37,8 +39,18 @@ class JournalConflict(RuntimeError):
     """Journal state or frozen intent differs; caller must reconsider/recover."""
 
 
+def _serialized_access(method):
+    @wraps(method)
+    def serialized(self, *args, **kwargs):
+        with self._mutation_lock:
+            return method(self, *args, **kwargs)
+    return serialized
+
+
 class DeskJournal:
     def __init__(self, path: Path):
+        if not hasattr(self, "_mutation_lock"):
+            self._mutation_lock = threading.RLock()
         self.path = path
         observed = read_json(path)
         self._persisted = deepcopy(observed)
@@ -51,41 +63,48 @@ class DeskJournal:
         self.decision_snapshots: dict[str, dict[str, Any]] = payload.get(
             "decision_snapshots", {})
 
+    @_serialized_access
     def save(self) -> None:
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+        fd = None
         try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
             fcntl.flock(fd, fcntl.LOCK_EX)
-            try:
-                if read_json(self.path) != self._persisted:
-                    raise JournalConflict("DESK_JOURNAL_CHANGED_SINCE_READ")
-                document = {"version": 2, "processed": sorted(self.processed),
-                            "pending": self.pending, "stats": self.stats,
-                            "outcomes": self.outcomes,
-                            "decision_snapshots": self.decision_snapshots,
-                            "last_session_date": self.last_session_date}
-                write_json(self.path, document)
-                self._persisted = deepcopy(document)
-            except BaseException:
-                # Includes publication success followed by a lost acknowledgement.
-                self.__init__(self.path)
-                raise
+            if read_json(self.path) != self._persisted:
+                raise JournalConflict("DESK_JOURNAL_CHANGED_SINCE_READ")
+            document = {"version": 2, "processed": sorted(self.processed),
+                        "pending": self.pending, "stats": self.stats,
+                        "outcomes": self.outcomes,
+                        "decision_snapshots": self.decision_snapshots,
+                        "last_session_date": self.last_session_date}
+            write_json(self.path, document)
+            self._persisted = deepcopy(document)
+        except BaseException:
+            # Includes lock setup and publication success followed by ACK loss.
+            self.__init__(self.path)
+            raise
         finally:
-            os.close(fd)
+            if fd is not None:
+                os.close(fd)
 
     # --- queries -----------------------------------------------------------
+    @_serialized_access
     def is_processed(self, opportunity_id: str) -> bool:
         return opportunity_id in self.processed
 
+    @_serialized_access
     def pending_plan(self, opportunity_id: str) -> dict[str, Any] | None:
         return deepcopy(self.pending.get(opportunity_id))
 
+    @_serialized_access
     def stats_for(self, strategy_id: str) -> dict[str, Any]:
         return deepcopy(self.stats.get(strategy_id, EMPTY_STATS))
 
+    @_serialized_access
     def decision_snapshot(self, session_date: str) -> dict[str, Any] | None:
         return deepcopy(self.decision_snapshots.get(session_date))
 
+    @_serialized_access
     def begin_session(self, session_date: str, capital: dict[str, Any],
                       evaluation: dict[str, Any]) -> dict[str, Any]:
         """Freeze the close-time Book before any open(t+1) fill is modelled."""
@@ -97,11 +116,13 @@ class DeskJournal:
         self.save()
         return deepcopy(snapshot)
 
+    @_serialized_access
     def close_session(self, session_date: str) -> None:
         if self.decision_snapshots.pop(session_date, None) is not None:
             self.save()
 
     # --- transaction -------------------------------------------------------
+    @_serialized_access
     def begin(self, opportunity_id: str, strategy_id: str, session_date: str,
               ticket: dict[str, Any], fills: list[dict[str, Any]]) -> None:
         """Durably record what this session is about to do, before it does it."""
@@ -117,6 +138,7 @@ class DeskJournal:
         self.pending[opportunity_id] = plan
         self.save()
 
+    @_serialized_access
     def commit(self, opportunity_id: str, strategy_id: str, status: str,
                session_date: str, rebalanced: bool,
                ticket: dict[str, Any] | None = None) -> None:

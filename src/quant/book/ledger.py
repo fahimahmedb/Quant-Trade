@@ -34,11 +34,13 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from copy import deepcopy
 from datetime import date as calendar_date
+from functools import wraps
 import fcntl
 import hashlib
 import json
 import math
 import os
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -54,6 +56,14 @@ class BackwardInTime(ValueError):
 
 class LedgerConflict(RuntimeError):
     """Another writer changed the Book; reconsider the operation before retrying."""
+
+
+def _serialized_access(method):
+    @wraps(method)
+    def serialized(self, *args, **kwargs):
+        with self._mutation_lock:
+            return method(self, *args, **kwargs)
+    return serialized
 
 
 @dataclass
@@ -126,6 +136,7 @@ class Ledger:
                  authority: str = "CAPITAL", initial_capital: float = 1_000_000.0):
         if authority not in AUTHORITIES:
             raise ValueError(f"unknown ledger authority: {authority}")
+        self._mutation_lock = threading.RLock()
         self.path = path
         self._detached = False
         payload = read_json(path)
@@ -154,6 +165,7 @@ class Ledger:
         """
         ledger = cls.__new__(cls)
         ledger.path = Path("__detached_decision_ledger__")
+        ledger._mutation_lock = threading.RLock()
         ledger._detached = True
         ledger.state = LedgerState(**deepcopy(document))
         ledger.sleeves = {
@@ -176,42 +188,45 @@ class Ledger:
             for strategy, holdings in self.state.sleeves.items()}
         self._applied = set(self.state.applied_operations)
 
+    @_serialized_access
     def save(self) -> None:
         self._assert_writable()
-        self.state.sleeves = {
-            strategy: {symbol: position.to_dict() for symbol, position in holdings.items()
-                       if abs(position.quantity) > 1e-9}
-            for strategy, holdings in self.sleeves.items()}
-        self.state.sleeves = {strategy: holdings
-                              for strategy, holdings in self.state.sleeves.items() if holdings}
         # Atomic replacement alone does not prevent a stale writer from erasing
         # acknowledged fills. Compare the complete observed state under the same
         # lock used for publication; a conflict requires a fresh caller decision.
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+        fd = None
         try:
+            self.state.sleeves = {
+                strategy: {symbol: position.to_dict() for symbol, position in holdings.items()
+                           if abs(position.quantity) > 1e-9}
+                for strategy, holdings in self.sleeves.items()}
+            self.state.sleeves = {strategy: holdings
+                                  for strategy, holdings in self.state.sleeves.items() if holdings}
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
             fcntl.flock(fd, fcntl.LOCK_EX)
-            try:
-                if read_json(self.path) != self._persisted:
-                    raise LedgerConflict("BOOK_CHANGED_SINCE_READ")
-                document = self.state.to_dict()
-                write_json(self.path, document)
-                self._persisted = deepcopy(document)
-            except BaseException:
-                # A failed write may precede replacement or follow it (lost
-                # acknowledgement). Recover the actual durable state in either
-                # case, including the idempotency set, before permitting retry.
-                durable = read_json(self.path)
-                if durable is not None:
-                    self._restore(durable)
-                raise
+            if read_json(self.path) != self._persisted:
+                raise LedgerConflict("BOOK_CHANGED_SINCE_READ")
+            document = self.state.to_dict()
+            write_json(self.path, document)
+            self._persisted = deepcopy(document)
+        except BaseException:
+            # Includes failures setting up the lock, before/after replacement,
+            # and lost acknowledgement. Recover actual durable identity state.
+            durable = read_json(self.path)
+            if durable is not None:
+                self._restore(durable)
+            raise
         finally:
-            os.close(fd)
+            if fd is not None:
+                os.close(fd)
 
+    @_serialized_access
     def has_applied(self, operation_id: str) -> bool:
         return operation_id in self._applied
 
     # --- accounting --------------------------------------------------------
+    @_serialized_access
     def apply_fill(self, symbol: str, quantity: float, price: float, cost: float,
                    date: str, strategy_id: str, operation_id: str) -> dict[str, Any]:
         """Book a fill into one strategy's sleeve.
@@ -282,6 +297,7 @@ class Ledger:
                 "realized_pnl": realized, "cash_after": self.state.cash,
                 "operation_id": operation_id, "replayed": False}
 
+    @_serialized_access
     def mark_to_market(self, date: str, prices: dict[str, float]) -> dict[str, Any]:
         """Revalue every sleeve and record one point in the persistent NAV history."""
         self._assert_writable()
