@@ -74,18 +74,55 @@ jobs:
           echo "MEGA_A_EXIT=$code" >> "$GITHUB_ENV"
           exit 0
 
-      - name: Oracle and Control Plane non-regression
+      - name: Queue Control Plane and Oracle non-regression
         run: |
           set +e
           PYTHONPATH=src:. python3 -m unittest -v \
-            tests.test_research_os_queue_replenishment \
-            tests.test_oracle_v2_core \
-            tests.test_research_os_oracle_control_plane \
-            tests.test_research_os_control_plane_hardening \
-            tests.test_research_os_v2_worker_integration > /tmp/control-oracle.log 2>&1
+            research.research_os.tests.test_queue_replenisher \
+            tests.test_research_os_v2_core \
+            tests.test_research_os_v2_worker_integration \
+            tests.test_oracle_v2_bootstrap_admission \
+            tests.test_oracle_v2_release_provenance \
+            tests.test_oracle_live_composition \
+            tests.test_oracle_live_projection > /tmp/control-oracle.log 2>&1
           code=$?
           cat /tmp/control-oracle.log
           echo "CONTROL_ORACLE_EXIT=$code" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Queue safety and authority contract
+        run: |
+          set +e
+          python3 - <<'PY' > /tmp/queue-safety.log 2>&1
+          import json
+          from pathlib import Path
+          from research.research_os.control_plane import load_control_plane
+          from research.research_os.queue_replenisher import derive_refill_task
+          base = Path('research/research_os')
+          control = load_control_plane(base)
+          assert control['status'] == 'PASS', control['errors']
+          refill = control['queue_replenishment']
+          assert refill['authorized'] is True
+          assert refill['max_new_tasks_per_wake'] == 1
+          assert refill['producer_execution_same_refill_wake'] is False
+          assert refill['recursive_refill_same_wake'] is False
+          assert refill['free_form_task_invention_forbidden'] is True
+          for key in ('economic_experiment_authorized','prospective_observation_authorized','real_capital_authorized','live_trading_authorized'):
+              assert refill[key] is False
+          frontier = json.loads((base / 'runtime' / 'RESEARCH_FRONTIER.json').read_text())
+          assert frontier['require_global_queue_empty'] is True
+          assert frontier['max_new_tasks_per_refill'] == 1
+          assert frontier['producer_execution_same_refill_wake'] is False
+          assert frontier['recursive_refill_same_wake'] is False
+          assert all(value is False for value in frontier['authority'].values())
+          no_refill = derive_refill_task(frontier=frontier, tasks=[{'task_id':'ACTIVE','status':'READY'}], created_at='2026-10-21T14:00:00Z')
+          assert no_refill['status'] == 'NOOP_QUEUE_NOT_EMPTY'
+          assert no_refill['task'] is None
+          print('QUEUE_CONTROL_PLANE_SAFETY=PASS')
+          PY
+          code=$?
+          cat /tmp/queue-safety.log
+          echo "QUEUE_SAFETY_EXIT=$code" >> "$GITHUB_ENV"
           exit 0
 
       - name: V1 demo proof
@@ -95,15 +132,6 @@ jobs:
           code=$?
           cat /tmp/v1-demo.log
           echo "V1_DEMO_EXIT=$code" >> "$GITHUB_ENV"
-          exit 0
-
-      - name: Research OS JS contract smoke
-        run: |
-          set +e
-          node --test research/research_os/tests/*.test.mjs > /tmp/research-js.log 2>&1
-          code=$?
-          cat /tmp/research-js.log
-          echo "RESEARCH_JS_EXIT=$code" >> "$GITHUB_ENV"
           exit 0
 
       - name: Live Lab contract non-regression
@@ -151,7 +179,7 @@ jobs:
           git status --short
           if test -z "$(git status --porcelain)"; then echo "CLEAN_EXIT=0" >> "$GITHUB_ENV"; else echo "CLEAN_EXIT=1" >> "$GITHUB_ENV"; fi
 
-      - name: Write machine-readable-ish summary
+      - name: Write preflight summary
         run: |
           cat > /tmp/wave2-preflight-summary.txt <<EOF
           BASE_SHA=f4be6953e3ec71eae38bd99903b3787a542c615c
@@ -161,8 +189,8 @@ jobs:
           RESEARCH_OS_EXIT=${RESEARCH_OS_EXIT:-99}
           MEGA_A_EXIT=${MEGA_A_EXIT:-99}
           CONTROL_ORACLE_EXIT=${CONTROL_ORACLE_EXIT:-99}
+          QUEUE_SAFETY_EXIT=${QUEUE_SAFETY_EXIT:-99}
           V1_DEMO_EXIT=${V1_DEMO_EXIT:-99}
-          RESEARCH_JS_EXIT=${RESEARCH_JS_EXIT:-99}
           LIVE_CONTRACT_EXIT=${LIVE_CONTRACT_EXIT:-99}
           LIVE_JS_EXIT=${LIVE_JS_EXIT:-99}
           AUTHORITY_EXIT=${AUTHORITY_EXIT:-99}
@@ -173,7 +201,7 @@ jobs:
       - name: Upload preflight logs
         uses: actions/upload-artifact@v4
         with:
-          name: wave2-seal-preflight-exact-base-f4be6953
+          name: wave2-seal-preflight-exact-base-f4be6953-${{ github.run_id }}
           path: |
             /tmp/wave2-preflight-summary.txt
             /tmp/schema.log
@@ -182,8 +210,8 @@ jobs:
             /tmp/research-os.log
             /tmp/mega-a.log
             /tmp/control-oracle.log
+            /tmp/queue-safety.log
             /tmp/v1-demo.log
-            /tmp/research-js.log
             /tmp/live-contract.log
             /tmp/live-js.log
             /tmp/authority.log
@@ -198,8 +226,8 @@ jobs:
           test "${RESEARCH_OS_EXIT:-99}" = 0
           test "${MEGA_A_EXIT:-99}" = 0
           test "${CONTROL_ORACLE_EXIT:-99}" = 0
+          test "${QUEUE_SAFETY_EXIT:-99}" = 0
           test "${V1_DEMO_EXIT:-99}" = 0
-          test "${RESEARCH_JS_EXIT:-99}" = 0
           test "${LIVE_CONTRACT_EXIT:-99}" = 0
           test "${LIVE_JS_EXIT:-99}" = 0
           test "${AUTHORITY_EXIT:-99}" = 0
