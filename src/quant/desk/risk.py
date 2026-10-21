@@ -13,6 +13,7 @@ Two properties matter:
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from math import isfinite
 from typing import Any
 
 from ..book.ledger import Ledger
@@ -32,9 +33,23 @@ class RiskLimits:
         return asdict(self)
 
 
+def _require_finite(values: dict[str, Any]) -> None:
+    for name, value in values.items():
+        if type(value) not in (int, float) or not isfinite(value):
+            raise ValueError(f"RISK_NONFINITE_OR_INVALID_NUMBER:{name}")
+
+
 def project(ledger: Ledger, strategy_id: str,
             target_notional: dict[str, float], prices: dict[str, float] | None = None) -> dict[str, float]:
     """The portfolio that results if this strategy moves to ``target_notional``."""
+    # Validate before near-zero filtering: abs(NaN) > tolerance is false and
+    # would silently erase an unknown exposure from the proposed portfolio.
+    _require_finite(target_notional)
+    if prices is not None:
+        _require_finite(prices)
+    for holdings in ledger.sleeves.values():
+        for position in holdings.values():
+            _require_finite({"quantity": position.quantity, "last_price": position.last_price})
     resulting = dict(ledger.symbol_exposures_at(prices) if prices is not None else ledger.symbol_exposures())
     sleeve = ledger.sleeve_exposures_at(strategy_id, prices) if prices is not None else ledger.sleeve_exposures(strategy_id)
     for symbol, value in sleeve.items():
@@ -47,6 +62,9 @@ def project(ledger: Ledger, strategy_id: str,
 def assess(portfolio: dict[str, float], nav: float, drawdown: float,
            limits: RiskLimits, initial_capital: float) -> dict[str, Any]:
     """Check every hard limit against one concrete portfolio."""
+    _require_finite(portfolio)
+    _require_finite({"nav": nav, "drawdown": drawdown, "initial_capital": initial_capital})
+    _require_finite(limits.to_dict())
     gross = sum(abs(value) for value in portfolio.values())
     net = sum(portfolio.values())
     gross_ratio = gross / nav if nav else 0.0
