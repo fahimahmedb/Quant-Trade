@@ -1,0 +1,169 @@
+.FFFF...FFFF.                                                            [100%]
+=================================== FAILURES ===================================
+_ test_unterminated_tail_has_same_visibility_before_and_after_append[{"id":2}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_unterminated_tail_has_sam1')
+tail = b'{"id":2}'
+
+    @pytest.mark.parametrize("tail", [b'{"id":', b'{"id":2}', b'{"text":"\xe2',
+                                      b'\xff', b'{"id":2}\r'])
+    def test_unterminated_tail_has_same_visibility_before_and_after_append(tmp_path, tail):
+        path = tmp_path / "events.jsonl"
+        path.write_bytes(b'{"id":1}\n' + tail)
+        before = list(read_jsonl(path))
+>       assert before == [{"id": 1}]
+E       AssertionError: assert [{'id': 1}, {'id': 2}] == [{'id': 1}]
+E         
+E         Left contains one more item: {'id': 2}
+E         Use -v to get more diff
+
+tests/test_vertical_journal_depth.py:17: AssertionError
+_ test_unterminated_tail_has_same_visibility_before_and_after_append[{"text":"\xe2] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_unterminated_tail_has_sam2')
+tail = b'{"text":"\xe2'
+
+    @pytest.mark.parametrize("tail", [b'{"id":', b'{"id":2}', b'{"text":"\xe2',
+                                      b'\xff', b'{"id":2}\r'])
+    def test_unterminated_tail_has_same_visibility_before_and_after_append(tmp_path, tail):
+        path = tmp_path / "events.jsonl"
+        path.write_bytes(b'{"id":1}\n' + tail)
+>       before = list(read_jsonl(path))
+                 ^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_journal_depth.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _iterate() -> Iterator[dict[str, Any]]:
+        data = path.read_bytes()
+        if _sec_evidence_path(path) and data and not data.endswith(b"\n"):
+            raise ValueError("SEC_JOURNAL_TORN_TAIL")
+>       lines = data.decode("utf-8").splitlines(keepends=True)
+                ^^^^^^^^^^^^^^^^^^^^
+E       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe2 in position 18: unexpected end of data
+
+src/quant/state.py:158: UnicodeDecodeError
+___ test_unterminated_tail_has_same_visibility_before_and_after_append[\xff] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_unterminated_tail_has_sam3')
+tail = b'\xff'
+
+    @pytest.mark.parametrize("tail", [b'{"id":', b'{"id":2}', b'{"text":"\xe2',
+                                      b'\xff', b'{"id":2}\r'])
+    def test_unterminated_tail_has_same_visibility_before_and_after_append(tmp_path, tail):
+        path = tmp_path / "events.jsonl"
+        path.write_bytes(b'{"id":1}\n' + tail)
+>       before = list(read_jsonl(path))
+                 ^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_journal_depth.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _iterate() -> Iterator[dict[str, Any]]:
+        data = path.read_bytes()
+        if _sec_evidence_path(path) and data and not data.endswith(b"\n"):
+            raise ValueError("SEC_JOURNAL_TORN_TAIL")
+>       lines = data.decode("utf-8").splitlines(keepends=True)
+                ^^^^^^^^^^^^^^^^^^^^
+E       UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 9: invalid start byte
+
+src/quant/state.py:158: UnicodeDecodeError
+_ test_unterminated_tail_has_same_visibility_before_and_after_append[{"id":2}\r] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_unterminated_tail_has_sam4')
+tail = b'{"id":2}\r'
+
+    @pytest.mark.parametrize("tail", [b'{"id":', b'{"id":2}', b'{"text":"\xe2',
+                                      b'\xff', b'{"id":2}\r'])
+    def test_unterminated_tail_has_same_visibility_before_and_after_append(tmp_path, tail):
+        path = tmp_path / "events.jsonl"
+        path.write_bytes(b'{"id":1}\n' + tail)
+        before = list(read_jsonl(path))
+>       assert before == [{"id": 1}]
+E       AssertionError: assert [{'id': 1}, {'id': 2}] == [{'id': 1}]
+E         
+E         Left contains one more item: {'id': 2}
+E         Use -v to get more diff
+
+tests/test_vertical_journal_depth.py:17: AssertionError
+_____ test_rejected_append_cannot_repair_or_change_existing_bytes[record0] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_rejected_append_cannot_re0')
+record = []
+
+    @pytest.mark.parametrize("record", [[], None, {"value": float("nan")}])
+    def test_rejected_append_cannot_repair_or_change_existing_bytes(tmp_path, record):
+        path = tmp_path / "events.jsonl"
+        original = b'{"id":1}\n{"partial":'
+        path.write_bytes(original)
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_journal_depth.py:39: Failed
+______ test_rejected_append_cannot_repair_or_change_existing_bytes[None] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_rejected_append_cannot_re1')
+record = None
+
+    @pytest.mark.parametrize("record", [[], None, {"value": float("nan")}])
+    def test_rejected_append_cannot_repair_or_change_existing_bytes(tmp_path, record):
+        path = tmp_path / "events.jsonl"
+        original = b'{"id":1}\n{"partial":'
+        path.write_bytes(original)
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_journal_depth.py:39: Failed
+_____ test_rejected_append_cannot_repair_or_change_existing_bytes[record2] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_rejected_append_cannot_re2')
+record = {'value': nan}
+
+    @pytest.mark.parametrize("record", [[], None, {"value": float("nan")}])
+    def test_rejected_append_cannot_repair_or_change_existing_bytes(tmp_path, record):
+        path = tmp_path / "events.jsonl"
+        original = b'{"id":1}\n{"partial":'
+        path.write_bytes(original)
+        with pytest.raises((ValueError, TypeError)):
+            append_jsonl(path, record)
+>       assert path.read_bytes() == original
+E       assert b'{"id":1}\n' == b'{"id":1}\n{"partial":'
+E         
+E         Use -v to get more diff
+
+tests/test_vertical_journal_depth.py:41: AssertionError
+________ test_unicode_committed_records_survive_a_torn_multibyte_append ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-9/test_unicode_committed_records0')
+
+    def test_unicode_committed_records_survive_a_torn_multibyte_append(tmp_path):
+        path = tmp_path / "events.jsonl"
+        committed = {"text": "日本語"}
+        path.write_bytes((json.dumps(committed, ensure_ascii=False) + "\n").encode() + b'{"x":"\xe6\x97')
+>       assert list(read_jsonl(path)) == [committed]
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_journal_depth.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _iterate() -> Iterator[dict[str, Any]]:
+        data = path.read_bytes()
+        if _sec_evidence_path(path) and data and not data.endswith(b"\n"):
+            raise ValueError("SEC_JOURNAL_TORN_TAIL")
+>       lines = data.decode("utf-8").splitlines(keepends=True)
+                ^^^^^^^^^^^^^^^^^^^^
+E       UnicodeDecodeError: 'utf-8' codec can't decode bytes in position 28-29: unexpected end of data
+
+src/quant/state.py:158: UnicodeDecodeError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_journal_depth.py::test_unterminated_tail_has_same_visibility_before_and_after_append[{"id":2}]
+FAILED tests/test_vertical_journal_depth.py::test_unterminated_tail_has_same_visibility_before_and_after_append[{"text":"\xe2]
+FAILED tests/test_vertical_journal_depth.py::test_unterminated_tail_has_same_visibility_before_and_after_append[\xff]
+FAILED tests/test_vertical_journal_depth.py::test_unterminated_tail_has_same_visibility_before_and_after_append[{"id":2}\r]
+FAILED tests/test_vertical_journal_depth.py::test_rejected_append_cannot_repair_or_change_existing_bytes[record0]
+FAILED tests/test_vertical_journal_depth.py::test_rejected_append_cannot_repair_or_change_existing_bytes[None]
+FAILED tests/test_vertical_journal_depth.py::test_rejected_append_cannot_repair_or_change_existing_bytes[record2]
+FAILED tests/test_vertical_journal_depth.py::test_unicode_committed_records_survive_a_torn_multibyte_append
+8 failed, 5 passed in 0.07s
