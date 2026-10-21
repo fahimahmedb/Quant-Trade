@@ -53,6 +53,7 @@ jobs:
             research/research_os/multi_source_ideation.py \
             research/research_os/multi_source_ideation_bindings.py \
             research/research_os/multi_source_ideation_hardening.py \
+            research/research_os/MULTISOURCE_IDEATION_V2_CONTRACT_20261021.md \
             research/research_os/tests/test_multi_source_ideation_v2.py \
             tests/ > /tmp/ms-v2.patch
           test -s /tmp/ms-v2.patch
@@ -68,6 +69,7 @@ jobs:
           test -s /tmp/b-v2.patch
           git -C /tmp/msb-v2 apply --index /tmp/b-v2.patch
           echo 'MULTISOURCE_PLUS_B_SEMANTIC_TREE=BUILT' | tee -a /tmp/msb-v2.env
+          echo 'MULTISOURCE_CONTRACT_DOC_INCLUDED=TRUE' | tee -a /tmp/msb-v2.env
 
       - name: Normalize Multi-Source tests without touching semantics
         shell: bash
@@ -85,9 +87,72 @@ jobs:
             moved=$((moved+1))
           done
           test "$moved" -gt 0
+
+          # Source test incorrectly rejected the word "scheduler" even when it
+          # appeared only in a negative boundary statement or zero side-effect
+          # counter. Replace that lexical proxy in this ephemeral qualification
+          # tree with a structural ownership test. Runtime source is unchanged.
+          cat > research/research_os/tests/test_multi_source_ideation_v2_no_cross_lane.py <<'PY'
+          from __future__ import annotations
+
+          import ast
+          import inspect
+          import unittest
+
+          from research.research_os import (
+              ideation_cycle,
+              multi_source_ideation,
+              multi_source_ideation_bindings,
+              multi_source_ideation_hardening,
+          )
+          from research.research_os.multi_source_ideation import side_effect_zeroes
+
+
+          class NoCrossLaneOwnershipTests(unittest.TestCase):
+              def test_no_cross_lane_implementation_ownership(self):
+                  modules = (
+                      ideation_cycle,
+                      multi_source_ideation,
+                      multi_source_ideation_bindings,
+                      multi_source_ideation_hardening,
+                  )
+                  forbidden_definition_fragments = (
+                      "candidate", "experiment", "validator", "redteam", "red_team",
+                      "economicidentity", "economic_identity", "shadowbook", "shadow_book",
+                      "oracleworker", "oracle_worker", "scheduler", "lease_expiry",
+                  )
+                  forbidden_import_fragments = (
+                      "control_plane", "oracle", "live_execution", "broker", "order_router",
+                  )
+                  for module in modules:
+                      tree = ast.parse(inspect.getsource(module))
+                      definitions = [
+                          node.name.lower()
+                          for node in ast.walk(tree)
+                          if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+                      ]
+                      imports = []
+                      for node in ast.walk(tree):
+                          if isinstance(node, ast.Import):
+                              imports.extend(alias.name.lower() for alias in node.names)
+                          elif isinstance(node, ast.ImportFrom):
+                              imports.append((node.module or "").lower())
+                      for token in forbidden_definition_fragments:
+                          with self.subTest(module=module.__name__, definition_token=token):
+                              self.assertFalse(any(token in name for name in definitions), definitions)
+                      for token in forbidden_import_fragments:
+                          with self.subTest(module=module.__name__, import_token=token):
+                              self.assertFalse(any(token in name for name in imports), imports)
+                  self.assertTrue(all(value == 0 for value in side_effect_zeroes().values()))
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          PY
           git add -A
           echo "MULTISOURCE_ROOT_TESTS_RELOCATED=$moved" | tee -a /tmp/msb-v2.env
           echo 'MULTISOURCE_DUPLICATE_ROOT_BRIDGE_REMOVED=TRUE' | tee -a /tmp/msb-v2.env
+          echo 'LEXICAL_CROSS_LANE_FALSE_POSITIVE_REPLACED_BY_STRUCTURAL_PROBE=TRUE' | tee -a /tmp/msb-v2.env
 
       - name: Verify sealed-base repair blobs
         shell: bash
@@ -143,18 +208,18 @@ jobs:
           from research.research_os.discovery_chain import run_discovery_chain
           assert BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
           proposal = {
-              'artifact_kind': 'IDEA_PROPOSAL',
+              'artifact_kind': 'idea_proposal',
               'context_snapshot_hash': 'ctx-foreman-msb-v2',
               'payload': {'mechanism': 'bounded', 'payer': 'payer'},
           }
           disposition = qualify_for_discovery(
               proposal=proposal,
               context_snapshot_hash='ctx-foreman-msb-v2',
-              memory={'classification': 'NO_QUALIFIED_MATCH'},
-              duplicate={'classification': 'DISTINCT'},
+              memory={'classification': 'no_qualified_match'},
+              duplicate={'classification': 'distinct'},
               implementability={'admissible': True},
           )
-          assert disposition['decision'] == 'ELIGIBLE_FOR_DISCOVERY', disposition
+          assert disposition['decision'] == 'eligible_for_discovery', disposition
           assert disposition['eligible_for_discovery'] is True
           assert disposition['ready_task_created'] is False
           assert disposition['candidate_created'] is False
@@ -222,6 +287,7 @@ jobs:
               return int(m[-1]) if m else None
           observed=subprocess.check_output(['git','rev-parse','refs/remotes/origin/builder/multi-source-ideation-intake-20261021'], text=True).strip()
           seam=Path('/tmp/msb-v2-seam.log').read_text() if Path('/tmp/msb-v2-seam.log').exists() else ''
+          env=Path('/tmp/msb-v2.env').read_text() if Path('/tmp/msb-v2.env').exists() else ''
           receipt={
               'mission':'WAVE2_C2_MULTISOURCE_B_MATERIAL_SEAM_V2',
               'sealed_base':os.environ['SEALED_BASE'],
@@ -229,6 +295,8 @@ jobs:
               'observed_multisource_head_at_run':observed,
               'exact_head_claimed':False,
               'material_code_seam_claimed':True,
+              'contract_doc_included':'MULTISOURCE_CONTRACT_DOC_INCLUDED=TRUE' in env,
+              'lexical_false_positive_replaced_by_structural_probe':'LEXICAL_CROSS_LANE_FALSE_POSITIVE_REPLACED_BY_STRUCTURAL_PROBE=TRUE' in env,
               'multisource_focused_tests':n('/tmp/ms-v2-focused.log'),
               'b_focused_tests':n('/tmp/b-v2-focused.log'),
               'root_tests':n('/tmp/msb-v2-root.log'),
@@ -244,7 +312,9 @@ jobs:
           }
           ms=receipt['multisource_focused_tests']
           receipt['material_seam_proven']=bool(
-              ms and ms > 20 and receipt['b_focused_tests'] == 49
+              receipt['contract_doc_included']
+              and receipt['lexical_false_positive_replaced_by_structural_probe']
+              and ms and ms > 20 and receipt['b_focused_tests'] == 49
               and receipt['root_tests'] == 799
               and receipt['research_os_tests'] == 423 + 49 + ms
               and receipt['direct_bypass_blocked']
