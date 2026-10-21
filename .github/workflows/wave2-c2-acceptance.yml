@@ -1,0 +1,171 @@
+name: Wave2 C2 Canonical Acceptance
+
+on:
+  push:
+    branches:
+      - builder/convergence-wave2-canonical-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
+  MEGA_B_INPUT_SHA: ba80b8cd717a3239d92a005248a326462d6a5744
+  C2_B_PORT_SHA: 42203de5e82e72b619ab70af399208178b6631ef
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  stage-b:
+    name: Stage B semantic port qualification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prove canonical ancestry and North Star identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${C2_B_PORT_SHA}^")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          git merge-base --is-ancestor "${C2_B_PORT_SHA}" HEAD
+          test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
+
+      - name: Prove exact semantic B port scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"..."${C2_B_PORT_SHA}" | sort > /tmp/b-port.actual
+          cat > /tmp/b-port.expected <<'EOF'
+          .github/workflows/sec-p0-pre-t0-gate.yml
+          handoff/MEGA_B_CP_001_20261021.md
+          research/research_os/discovery_chain.py
+          research/research_os/discovery_engine.py
+          research/research_os/tests/test_mega_b_all_producer_routes.py
+          research/research_os/tests/test_mega_b_canonical_gate.py
+          research/research_os/tests/test_mega_b_discovery_chain.py
+          research/research_os/tests/test_mega_b_discovery_engine.py
+          research/research_os/tests/test_mega_b_outcome_firewall.py
+          EOF
+          sed -i 's/^          //' /tmp/b-port.expected
+          sort -o /tmp/b-port.expected /tmp/b-port.expected
+          diff -u /tmp/b-port.expected /tmp/b-port.actual
+
+      - name: Generated schema drift
+        run: python3 scripts/generate_schemas.py --check
+
+      - name: MEGA B focused suite
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_mega_b_all_producer_routes \
+            research.research_os.tests.test_mega_b_canonical_gate \
+            research.research_os.tests.test_mega_b_discovery_chain \
+            research.research_os.tests.test_mega_b_discovery_engine \
+            research.research_os.tests.test_mega_b_outcome_firewall
+
+      - name: Research Intelligence regression
+        run: |
+          python3 -m unittest -v \
+            tests.mega_a_research_intelligence_contracts \
+            research.research_os.tests.test_research_intelligence \
+            research.research_os.tests.test_research_refill_policy
+
+      - name: Scientific Memory focused regression
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_archaeology \
+            research.research_os.tests.test_legacy_scientific_memory \
+            research.research_os.tests.test_memory_archaeology_bridge \
+            research.research_os.tests.test_scientific_memory
+          node research/research_os/tests/contract-smoke.test.mjs
+
+      - name: Data and PIT focused regression
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_w1_data_evidence_ingest \
+            research.research_os.tests.test_w1_data_pit_strict
+
+      - name: Factory boundary regression
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_w1_factory_experiment_infrastructure \
+            research.research_os.tests.test_w1_factory_experiment_bridge \
+            research.research_os.tests.test_w1_factory_economic_integration \
+            research.research_os.tests.test_w1_factory_firewall_hardening \
+            research.research_os.tests.test_economic_readiness_validation
+
+      - name: Economic non-regression
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_economic_identity_memory_context_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_readiness \
+            research.research_os.tests.test_economic_readiness_integration \
+            research.research_os.tests.test_producer_economic_readiness \
+            tests.test_research_os_structural_unknown_evidence
+
+      - name: Authority and outcome membrane
+        run: |
+          python3 - <<'PY'
+          from research.research_os.discovery_engine import AUTHORITY
+          expected = {
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+          }
+          assert AUTHORITY == expected, AUTHORITY
+          assert all(value is False for value in AUTHORITY.values()), AUTHORITY
+          PY
+
+      - name: V1 end-to-end non-regression
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Clean working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short
+          test -z "$(git status --porcelain)"
+
+      - name: Emit Stage B exact-head receipt
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {
+              'mission': 'WAVE2_C2_CANONICAL_INTEGRATION',
+              'stage': 'B_PORT',
+              'qualified_head': os.environ['GITHUB_SHA'],
+              'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
+              'mega_b_input_sha': os.environ['MEGA_B_INPUT_SHA'],
+              'c2_b_port_sha': os.environ['C2_B_PORT_SHA'],
+              'semantic_port': 'PASS',
+              'focused_regression': 'PASS',
+              'schema_drift': 'PASS',
+              'authority_membrane': 'PASS',
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+              'outcome_accessed': False,
+              'worktree_clean': True,
+              'status_artifact_freshness': 'DEFERRED_TO_GLOBAL_TRUTH_RECONCILIATION',
+          }
+          Path('/tmp/wave2-c2-stage-b-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c2-stage-b-${{ github.sha }}
+          path: /tmp/wave2-c2-stage-b-receipt.json
+          if-no-files-found: error
