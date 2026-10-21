@@ -1,0 +1,287 @@
+FFFFFFF.F.F                                                              [100%]
+=================================== FAILURES ===================================
+________ test_stale_queue_add_cannot_erase_an_acknowledged_task[False] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_stale_queue_add_cannot_er0')
+same_identity = False
+
+    @pytest.mark.parametrize("same_identity", [False, True])
+    def test_stale_queue_add_cannot_erase_an_acknowledged_task(tmp_path, same_identity):
+        path = tmp_path / "queue.json"
+        first, stale = PersistentQueue(path), PersistentQueue(path)
+        assert first.add(task("first"))
+        identity = "first" if same_identity else "second"
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_queue_concurrency.py:22: Failed
+_________ test_stale_queue_add_cannot_erase_an_acknowledged_task[True] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_stale_queue_add_cannot_er1')
+same_identity = True
+
+    @pytest.mark.parametrize("same_identity", [False, True])
+    def test_stale_queue_add_cannot_erase_an_acknowledged_task(tmp_path, same_identity):
+        path = tmp_path / "queue.json"
+        first, stale = PersistentQueue(path), PersistentQueue(path)
+        assert first.add(task("first"))
+        identity = "first" if same_identity else "second"
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_queue_concurrency.py:22: Failed
+_____ test_stale_save_cannot_restore_pending_over_acknowledged_completion ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_stale_save_cannot_restore0')
+
+    def test_stale_save_cannot_restore_pending_over_acknowledged_completion(tmp_path):
+        path = tmp_path / "queue.json"
+        first = PersistentQueue(path)
+        first.add(task("one"))
+        stale = PersistentQueue(path)
+        first.tasks["one"].status = "COMPLETED"
+        first.save()
+        stale.tasks["one"].attempts += 1
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_queue_concurrency.py:36: Failed
+_ test_shared_queue_isolates_add_until_publication_or_recovery_finishes[none] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_shared_queue_isolates_add0')
+fault = 'none'
+
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_shared_queue_isolates_add_until_publication_or_recovery_finishes(tmp_path, fault):
+        path = tmp_path / "queue.json"
+        queue = PersistentQueue(path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-queue-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first publication failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first acknowledgement lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-queue-writer"
+            try:
+                return queue.add(task("first"))
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                return queue.add(task("second"))
+            finally:
+                second_done.set()
+    
+        with patch("autonomous_research.runtime._write_json", side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+>                   assert not second_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f52c2247200: set>.wait
+
+tests/test_vertical_queue_concurrency.py:82: AssertionError
+_ test_shared_queue_isolates_add_until_publication_or_recovery_finishes[before_write] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_shared_queue_isolates_add1')
+fault = 'before_write'
+
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_shared_queue_isolates_add_until_publication_or_recovery_finishes(tmp_path, fault):
+        path = tmp_path / "queue.json"
+        queue = PersistentQueue(path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-queue-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first publication failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first acknowledgement lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-queue-writer"
+            try:
+                return queue.add(task("first"))
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                return queue.add(task("second"))
+            finally:
+                second_done.set()
+    
+        with patch("autonomous_research.runtime._write_json", side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+>                   assert not second_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f52c1efe4b0: set>.wait
+
+tests/test_vertical_queue_concurrency.py:82: AssertionError
+_ test_shared_queue_isolates_add_until_publication_or_recovery_finishes[after_write] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_shared_queue_isolates_add2')
+fault = 'after_write'
+
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_shared_queue_isolates_add_until_publication_or_recovery_finishes(tmp_path, fault):
+        path = tmp_path / "queue.json"
+        queue = PersistentQueue(path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-queue-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first publication failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first acknowledgement lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-queue-writer"
+            try:
+                return queue.add(task("first"))
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                return queue.add(task("second"))
+            finally:
+                second_done.set()
+    
+        with patch("autonomous_research.runtime._write_json", side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+>                   assert not second_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f52c1efdb50: set>.wait
+
+tests/test_vertical_queue_concurrency.py:82: AssertionError
+_________ test_document_preparation_failure_does_not_poison_add_retry __________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_document_preparation_fail0')
+
+    def test_document_preparation_failure_does_not_poison_add_retry(tmp_path):
+        path = tmp_path / "queue.json"
+        queue = PersistentQueue(path)
+        queue.add(task("seed"))
+        before = path.read_bytes()
+        with pytest.raises((TypeError, ValueError)):
+            queue.add(task("retry", created_at=None))
+        assert path.read_bytes() == before
+>       assert set(queue.tasks) == {"seed"}
+E       AssertionError: assert {'retry', 'seed'} == {'seed'}
+E         
+E         Extra items in the left set:
+E         'retry'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_concurrency.py:102: AssertionError
+________ test_lock_setup_failure_does_not_poison_add_retry[fcntl.flock] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_lock_setup_failure_does_n1')
+target = 'fcntl.flock'
+
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_lock_setup_failure_does_not_poison_add_retry(tmp_path, target):
+        path = tmp_path / "queue.json"
+        queue = PersistentQueue(path)
+        queue.add(task("seed"))
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests/test_vertical_queue_concurrency.py:114: Failed
+_________ test_independent_processes_cannot_both_publish_a_stale_queue _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_independent_processes_can0')
+
+    def test_independent_processes_cannot_both_publish_a_stale_queue(tmp_path):
+        path = tmp_path / "queue.json"
+        code = """
+    import sys
+    from pathlib import Path
+    from autonomous_research.runtime import PersistentQueue, ResearchTask
+    queue = PersistentQueue(Path(sys.argv[1]))
+    print('READY', flush=True)
+    sys.stdin.readline()
+    try:
+        queue.add(ResearchTask(sys.argv[2], 'fixture', 1, 'synthetic', 'fixture'))
+    except RuntimeError:
+        print('CONFLICT')
+    else:
+        print('WRITTEN')
+    """
+        workers = [subprocess.Popen([sys.executable, "-c", code, str(path), str(index)],
+                                    stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE, text=True) for index in range(2)]
+        try:
+            for worker in workers:
+                assert worker.stdout.readline().strip() == "READY"
+            outcomes = []
+            for worker in workers:
+                stdout, stderr = worker.communicate("go\n", timeout=10)
+                assert worker.returncode == 0, stderr
+                outcomes.append(stdout.strip())
+>           assert sorted(outcomes) == ["CONFLICT", "WRITTEN"]
+E           AssertionError: assert ['WRITTEN', 'WRITTEN'] == ['CONFLICT', 'WRITTEN']
+E             
+E             At index 0 diff: 'WRITTEN' != 'CONFLICT'
+E             Use -v to get more diff
+
+tests/test_vertical_queue_concurrency.py:148: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_concurrency.py::test_stale_queue_add_cannot_erase_an_acknowledged_task[False]
+FAILED tests/test_vertical_queue_concurrency.py::test_stale_queue_add_cannot_erase_an_acknowledged_task[True]
+FAILED tests/test_vertical_queue_concurrency.py::test_stale_save_cannot_restore_pending_over_acknowledged_completion
+FAILED tests/test_vertical_queue_concurrency.py::test_shared_queue_isolates_add_until_publication_or_recovery_finishes[none]
+FAILED tests/test_vertical_queue_concurrency.py::test_shared_queue_isolates_add_until_publication_or_recovery_finishes[before_write]
+FAILED tests/test_vertical_queue_concurrency.py::test_shared_queue_isolates_add_until_publication_or_recovery_finishes[after_write]
+FAILED tests/test_vertical_queue_concurrency.py::test_document_preparation_failure_does_not_poison_add_retry
+FAILED tests/test_vertical_queue_concurrency.py::test_lock_setup_failure_does_not_poison_add_retry[fcntl.flock]
+FAILED tests/test_vertical_queue_concurrency.py::test_independent_processes_cannot_both_publish_a_stale_queue
+9 failed, 2 passed in 0.22s

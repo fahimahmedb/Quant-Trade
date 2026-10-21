@@ -1,0 +1,246 @@
+FFFFFFF                                                                  [100%]
+=================================== FAILURES ===================================
+_____ test_stale_learning_instance_cannot_erase_acknowledged_ticket[False] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_stale_learning_instance_c0')
+same_identity = False
+
+    @pytest.mark.parametrize("same_identity", [False, True])
+    def test_stale_learning_instance_cannot_erase_acknowledged_ticket(tmp_path, same_identity):
+        path = tmp_path / "learning.json"
+        first, stale = LearningStore(path), LearningStore(path)
+        assert record(first, "first")
+        identity = "first" if same_identity else "second"
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_learning_concurrency.py:26: Failed
+_____ test_stale_learning_instance_cannot_erase_acknowledged_ticket[True] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_stale_learning_instance_c1')
+same_identity = True
+
+    @pytest.mark.parametrize("same_identity", [False, True])
+    def test_stale_learning_instance_cannot_erase_acknowledged_ticket(tmp_path, same_identity):
+        path = tmp_path / "learning.json"
+        first, stale = LearningStore(path), LearningStore(path)
+        assert record(first, "first")
+        identity = "first" if same_identity else "second"
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_learning_concurrency.py:26: Failed
+_____________ test_stale_build_task_cannot_erase_a_research_lesson _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_stale_build_task_cannot_e0')
+
+    def test_stale_build_task_cannot_erase_a_research_lesson(tmp_path):
+        path = tmp_path / "learning.json"
+        first, stale = LearningStore(path), LearningStore(path)
+        record(first, "first")
+        task = BuildTask("build", "fixture", "synthetic", ["BUILD"], "fixture", 1)
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_learning_concurrency.py:39: Failed
+_ test_shared_instance_isolates_mutation_through_publication_and_recovery[none] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_shared_instance_isolates_0')
+fault = 'none'
+
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_shared_instance_isolates_mutation_through_publication_and_recovery(tmp_path, fault):
+        path = tmp_path / "learning.json"
+        store = LearningStore(path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-learner":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first publication failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first acknowledgement lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-learner"
+            try:
+                return record(store, "first")
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                return record(store, "second")
+            finally:
+                second_done.set()
+    
+        with patch("quant.learning.store.write_json", side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+>                   assert not second_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7fdb58d8a180: set>.wait
+
+tests/test_vertical_learning_concurrency.py:87: AssertionError
+_ test_shared_instance_isolates_mutation_through_publication_and_recovery[before_write] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_shared_instance_isolates_1')
+fault = 'before_write'
+
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_shared_instance_isolates_mutation_through_publication_and_recovery(tmp_path, fault):
+        path = tmp_path / "learning.json"
+        store = LearningStore(path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-learner":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first publication failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first acknowledgement lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-learner"
+            try:
+                return record(store, "first")
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                return record(store, "second")
+            finally:
+                second_done.set()
+    
+        with patch("quant.learning.store.write_json", side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+>                   assert not second_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7fdb58d8b5f0: set>.wait
+
+tests/test_vertical_learning_concurrency.py:87: AssertionError
+_ test_shared_instance_isolates_mutation_through_publication_and_recovery[after_write] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_shared_instance_isolates_2')
+fault = 'after_write'
+
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_shared_instance_isolates_mutation_through_publication_and_recovery(tmp_path, fault):
+        path = tmp_path / "learning.json"
+        store = LearningStore(path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-learner":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first publication failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first acknowledgement lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-learner"
+            try:
+                return record(store, "first")
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                return record(store, "second")
+            finally:
+                second_done.set()
+    
+        with patch("quant.learning.store.write_json", side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+>                   assert not second_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7fdb58d8a120: set>.wait
+
+tests/test_vertical_learning_concurrency.py:87: AssertionError
+__ test_independent_processes_with_one_observed_snapshot_cannot_both_publish ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-28/test_independent_processes_wit0')
+
+    def test_independent_processes_with_one_observed_snapshot_cannot_both_publish(tmp_path):
+        path = tmp_path / "learning.json"
+        code = """
+    import sys
+    from pathlib import Path
+    from quant.learning.store import LearningStore
+    store = LearningStore(Path(sys.argv[1]))
+    print('READY', flush=True)
+    sys.stdin.readline()
+    try:
+        store.record_research('fixture', 'FIXTURE', {'ticket_id': sys.argv[2],
+                              'lesson': 'synthetic negative', 'outcome': 'REJECTED'})
+    except RuntimeError:
+        print('CONFLICT')
+    else:
+        print('WRITTEN')
+    """
+        workers = [subprocess.Popen([sys.executable, "-c", code, str(path), str(index)],
+                                    stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE, text=True) for index in range(2)]
+        try:
+            for worker in workers:
+                assert worker.stdout.readline().strip() == "READY"
+            outcomes = []
+            for worker in workers:
+                stdout, stderr = worker.communicate("go\n", timeout=10)
+                assert worker.returncode == 0, stderr
+                outcomes.append(stdout.strip())
+>           assert sorted(outcomes) == ["CONFLICT", "WRITTEN"]
+E           AssertionError: assert ['WRITTEN', 'WRITTEN'] == ['CONFLICT', 'WRITTEN']
+E             
+E             At index 0 diff: 'WRITTEN' != 'CONFLICT'
+E             Use -v to get more diff
+
+tests/test_vertical_learning_concurrency.py:129: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_learning_concurrency.py::test_stale_learning_instance_cannot_erase_acknowledged_ticket[False]
+FAILED tests/test_vertical_learning_concurrency.py::test_stale_learning_instance_cannot_erase_acknowledged_ticket[True]
+FAILED tests/test_vertical_learning_concurrency.py::test_stale_build_task_cannot_erase_a_research_lesson
+FAILED tests/test_vertical_learning_concurrency.py::test_shared_instance_isolates_mutation_through_publication_and_recovery[none]
+FAILED tests/test_vertical_learning_concurrency.py::test_shared_instance_isolates_mutation_through_publication_and_recovery[before_write]
+FAILED tests/test_vertical_learning_concurrency.py::test_shared_instance_isolates_mutation_through_publication_and_recovery[after_write]
+FAILED tests/test_vertical_learning_concurrency.py::test_independent_processes_with_one_observed_snapshot_cannot_both_publish
+7 failed in 0.17s
