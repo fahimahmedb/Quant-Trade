@@ -221,8 +221,58 @@ def validator_portfolio_summary(records: Iterable[Dict[str, Any]]) -> Dict[str, 
     }
 
 
+def _trial_accounting_identity_matches_candidate(readiness_bundle: Dict[str, Any]) -> tuple[bool, str]:
+    """Bind optional enriched trial-accounting lineage to the frozen candidate.
+
+    Legacy CP069 packages do not carry lineage fields in ``trial_accounting`` and
+    remain valid.  Once either lineage field is present, both become mandatory
+    and must exactly match the candidate identity.  This closes the convergence
+    seam exposed by Factory-style enriched trial accounting without importing
+    the rest of Factory on this historical diagnostic branch.
+    """
+    candidate = readiness_bundle.get("candidate")
+    trial = readiness_bundle.get("trial_accounting")
+    if not isinstance(candidate, dict) or not isinstance(trial, dict):
+        return True, "Core readiness validation owns missing candidate/trial structure."
+
+    keys = ("hypothesis_id", "generation_id")
+    present = tuple(key in trial for key in keys)
+    if not any(present):
+        return True, "Legacy trial accounting carries no lineage identity."
+    if not all(present):
+        return False, "Enriched trial accounting must carry hypothesis_id and generation_id together."
+    if any(not isinstance(trial.get(key), str) or not trial[key].strip() for key in keys):
+        return False, "Enriched trial-accounting lineage identifiers must be non-empty strings."
+    if any(trial.get(key) != candidate.get(key) for key in keys):
+        return False, "Trial-accounting lineage must exactly match the frozen candidate identity."
+    return True, "Trial-accounting lineage matches the frozen candidate identity."
+
+
 def validator_economic_readiness_v3(*, readiness_bundle: Dict[str, Any]) -> Dict[str, Any]:
     """Primary validator entry point for a future frozen economic-test package."""
     from .validation_readiness import validate_economic_test_readiness
 
-    return validate_economic_test_readiness(readiness_bundle)
+    receipt = validate_economic_test_readiness(readiness_bundle)
+    identity_ok, identity_detail = _trial_accounting_identity_matches_candidate(readiness_bundle)
+    if identity_ok:
+        return receipt
+
+    # Preserve the existing public check/reason vocabulary.  This is an identity
+    # invariant inside trial accounting, not a new authorization surface.
+    check = receipt.setdefault("checks", {}).setdefault("trial_accounting", {})
+    check.update({
+        "status": "FAIL",
+        "reason_code": "TRIAL_ACCOUNTING_INVALID",
+        "detail": identity_detail,
+    })
+    reasons = receipt.setdefault("block_reasons", [])
+    if not any(reason.get("check") == "trial_accounting" for reason in reasons if isinstance(reason, dict)):
+        reasons.append({
+            "code": "TRIAL_ACCOUNTING_INVALID",
+            "check": "trial_accounting",
+            "detail": identity_detail,
+        })
+    receipt["status"] = "BLOCK"
+    receipt["ready_for_authorized_economic_test"] = False
+    receipt["claim_ceiling"] = "BLOCKED_PRE_OUTCOME"
+    return receipt
