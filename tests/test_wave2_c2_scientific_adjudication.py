@@ -23,7 +23,6 @@ from research.research_os.expansion.scientific_adjudication import (
     validate_qualified_negative_ref,
 )
 
-
 CANONICAL_BASE = "2b99d8aeb8a342f1ef32544247d366cb8a26037e"
 
 
@@ -82,10 +81,7 @@ def infrastructure(c, protocol_label="P-C2"):
 
 
 def cross_axes(default="PASS"):
-    return {
-        name: {"status": default, "reason_codes": []}
-        for name in CROSS_EXAMINATION_AXES
-    }
+    return {name: {"status": default, "reason_codes": []} for name in CROSS_EXAMINATION_AXES}
 
 
 def validator_receipt(factory, *, status="READY_FOR_AUTHORIZED_ECONOMIC_TEST", **overrides):
@@ -116,7 +112,6 @@ def validator_receipt(factory, *, status="READY_FOR_AUTHORIZED_ECONOMIC_TEST", *
 
 
 def red_team_receipt(factory, *, status="PASS", blockers=None, **overrides):
-    blockers = [] if blockers is None else list(blockers)
     value = {
         "hypothesis_id": factory["hypothesis_id"],
         "generation_id": factory["generation_id"],
@@ -125,7 +120,7 @@ def red_team_receipt(factory, *, status="PASS", blockers=None, **overrides):
         "frozen_protocol_hash": factory["frozen_protocol_hash"],
         "red_team": "independent-red-team.c2",
         "status": status,
-        "negative_rights": blockers,
+        "negative_rights": [] if blockers is None else list(blockers),
         "repair_attempted": False,
         "signal_repair_attempted": False,
         "candidate_mutated": False,
@@ -199,9 +194,7 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
             provenance_refs=["ref://primary/1", "ref://pit/frozen"],
         )
         self.validator = bind_validator_ref(self.factory, validator_receipt(self.factory))
-        self.red_team = bind_red_team_ref(
-            self.factory, self.validator, red_team_receipt(self.factory)
-        )
+        self.red_team = bind_red_team_ref(self.factory, self.validator, red_team_receipt(self.factory))
         self.independence = bind_independence_ref(self.factory, independence_record())
 
     def adjudicate(self, **overrides):
@@ -225,10 +218,9 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             AUTHORITY_STATE["real_capital_authorized"] = True
         result = self.adjudicate()
-        for key in AUTHORITY_STATE:
-            self.assertFalse(result[key])
+        self.assertTrue(all(result[key] is False for key in AUTHORITY_STATE))
 
-    def test_factory_ref_preserves_trial_epoch_expression_provenance_and_claim_ceiling(self):
+    def test_factory_ref_preserves_scientific_context(self):
         validate_factory_ref(self.factory)
         context = self.factory["scientific_context"]
         self.assertEqual(context["trial_id"], "TRIAL-001")
@@ -247,16 +239,19 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
         axes = cross_axes()
         axes.pop("factor_beta_exposure")
         with self.assertRaisesRegex(ScientificAdjudicationError, "axes are incomplete"):
-            build_cross_examination_ref(
-                self.factory, axes, examiner_id="cross.c2", provenance_refs=["ref://primary/1"]
-            )
+            build_cross_examination_ref(self.factory, axes, examiner_id="cross.c2", provenance_refs=["ref://primary/1"])
+
+    def test_forged_incomplete_cross_examination_ref_cannot_bypass_adjudication(self):
+        forged = deepcopy(self.cross)
+        forged["axes"].pop("factor_beta_exposure")
+        forged["ref_hash"] = sha256_json({k: v for k, v in forged.items() if k != "ref_hash"})
+        with self.assertRaisesRegex(ScientificAdjudicationError, "does not cover the canonical C2 axes"):
+            self.adjudicate(cross_examination_ref=forged)
 
     def test_unknown_cross_exam_is_inconclusive_not_negative(self):
         axes = cross_axes()
         axes["factor_beta_exposure"] = {"status": "UNKNOWN", "reason_codes": ["BETA_UNRESOLVED"]}
-        cross = build_cross_examination_ref(
-            self.factory, axes, examiner_id="cross.c2", provenance_refs=["ref://primary/1"]
-        )
+        cross = build_cross_examination_ref(self.factory, axes, examiner_id="cross.c2", provenance_refs=["ref://primary/1"])
         result = self.adjudicate(cross_examination_ref=cross)
         self.assertEqual(result["verdict"], "PARK")
         self.assertEqual(result["scientific_posture"], "INCONCLUSIVE")
@@ -266,9 +261,7 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
     def test_evidence_contradiction_blocks_but_does_not_become_negative(self):
         axes = cross_axes()
         axes["evidence_contradictions"] = {"status": "CONFLICTED", "reason_codes": ["PRIMARY_SOURCE_CONFLICT"]}
-        cross = build_cross_examination_ref(
-            self.factory, axes, examiner_id="cross.c2", provenance_refs=["ref://primary/1"]
-        )
+        cross = build_cross_examination_ref(self.factory, axes, examiner_id="cross.c2", provenance_refs=["ref://primary/1"])
         result = self.adjudicate(cross_examination_ref=cross)
         self.assertEqual(result["verdict"], "BLOCK")
         self.assertEqual(result["scientific_posture"], "BLOCKED")
@@ -282,33 +275,29 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
         self.assertFalse(result["unexecuted_is_negative"])
 
     def test_validator_self_validation_is_rejected(self):
-        receipt = validator_receipt(
-            self.factory,
-            producer_id="independent-validator.c2",
-            self_validation=True,
-        )
+        receipt = validator_receipt(self.factory, producer_id="independent-validator.c2", self_validation=True)
         with self.assertRaises(ScientificAdjudicationError):
             bind_validator_ref(self.factory, receipt)
 
     def test_validator_freeze_mismatch_is_rejected(self):
-        receipt = validator_receipt(self.factory, frozen_protocol_hash="0" * 64)
         with self.assertRaisesRegex(ScientificAdjudicationError, "frozen protocol hash mismatch"):
-            bind_validator_ref(self.factory, receipt)
+            bind_validator_ref(self.factory, validator_receipt(self.factory, frozen_protocol_hash="0" * 64))
 
     def test_validator_post_outcome_mutation_is_rejected(self):
-        receipt = validator_receipt(self.factory, post_outcome_mutation=True)
         with self.assertRaisesRegex(ScientificAdjudicationError, "post-outcome mutation"):
-            bind_validator_ref(self.factory, receipt)
+            bind_validator_ref(self.factory, validator_receipt(self.factory, post_outcome_mutation=True))
 
     def test_red_team_must_be_distinct_from_validator(self):
-        receipt = red_team_receipt(self.factory, red_team=self.validator["validator_id"])
         with self.assertRaisesRegex(ScientificAdjudicationError, "may not be the Validator"):
-            bind_red_team_ref(self.factory, self.validator, receipt)
+            bind_red_team_ref(
+                self.factory,
+                self.validator,
+                red_team_receipt(self.factory, red_team=self.validator["validator_id"]),
+            )
 
     def test_red_team_exact_frozen_identity_mismatch_is_rejected(self):
-        receipt = red_team_receipt(self.factory, candidate_hash="0" * 64)
         with self.assertRaisesRegex(ScientificAdjudicationError, "candidate_hash mismatch"):
-            bind_red_team_ref(self.factory, self.validator, receipt)
+            bind_red_team_ref(self.factory, self.validator, red_team_receipt(self.factory, candidate_hash="0" * 64))
 
     def test_cross_examiner_may_not_be_validator(self):
         cross = build_cross_examination_ref(
@@ -335,20 +324,13 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
 
     def test_negative_evidence_rejects_non_git_authority(self):
         with self.assertRaisesRegex(ScientificAdjudicationError, "immutable evaluator authority"):
-            bind_qualified_negative_ref(
-                self.factory,
-                negative_record(self.factory, evaluator_authority_kind="COMMENTARY"),
-            )
+            bind_qualified_negative_ref(self.factory, negative_record(self.factory, evaluator_authority_kind="COMMENTARY"))
 
     def test_negative_knowledge_scope_cannot_be_global(self):
-        with self.assertRaisesRegex(ScientificAdjudicationError, "global"):
+        with self.assertRaisesRegex(ScientificAdjudicationError, "scope must be bounded"):
             bind_qualified_negative_ref(
                 self.factory,
-                negative_record(
-                    self.factory,
-                    negative_knowledge_scope="GLOBAL",
-                    negative_knowledge_global=False,
-                ),
+                negative_record(self.factory, negative_knowledge_scope="GLOBAL", negative_knowledge_global=False),
             )
 
     def test_qualified_scoped_negative_can_reject_without_c0_outcome_access(self):
@@ -377,9 +359,7 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
     def test_unknown_claim_ceiling_cannot_receive_favorable_posture(self):
         c = candidate(claim_ceiling="UNKNOWN")
         factory = bind_factory_ref(c, infrastructure(c))
-        cross = build_cross_examination_ref(
-            factory, cross_axes(), examiner_id="cross.c2", provenance_refs=["ref://primary/1"]
-        )
+        cross = build_cross_examination_ref(factory, cross_axes(), examiner_id="cross.c2", provenance_refs=["ref://primary/1"])
         validator = bind_validator_ref(factory, validator_receipt(factory))
         red = bind_red_team_ref(factory, validator, red_team_receipt(factory))
         independence = bind_independence_ref(factory, independence_record())
@@ -395,9 +375,7 @@ class Wave2C2ScientificAdjudicationTests(unittest.TestCase):
         self.assertIn("CLAIM_CEILING_UNRESOLVED", result["reason_codes"])
 
     def test_duplicate_independence_never_counts_as_independent_confirmation(self):
-        ref = bind_independence_ref(
-            self.factory, independence_record(relation="DUPLICATE")
-        )
+        ref = bind_independence_ref(self.factory, independence_record(relation="DUPLICATE"))
         self.assertEqual(ref["independent_confirmation_count"], 0)
 
 
