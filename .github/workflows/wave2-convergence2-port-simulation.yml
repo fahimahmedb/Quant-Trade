@@ -12,7 +12,7 @@ permissions:
 env:
   SEALED_BASE: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
   HISTORICAL_START: 97165db2faa3300cef1f23de0045ed93d25eb9cb
-  B_SOURCE_HEAD: ba80b8cd717a3239d92a005248a326462d6a5744
+  B_SOURCE_HEAD: 7ef088bb30ece88cf96f4514e8c581a95ca4b091
   D0_SOURCE_CODE_HEAD: 84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0
   OLD_D0_BASE: 97165db2faa3300cef1f23de0045ed93d25eb9cb
 
@@ -54,15 +54,24 @@ jobs:
           git worktree add --detach /tmp/port-bd0 "$SEALED_BASE"
           git worktree add --detach /tmp/port-base "$SEALED_BASE"
 
-      - name: Materialize current B delta on sealed base
+      - name: Materialize current B semantic code delta on sealed base
         shell: bash
         run: |
           set -euo pipefail
-          git diff --binary "$HISTORICAL_START" "$B_SOURCE_HEAD" > /tmp/mega-b-source.patch
-          test -s /tmp/mega-b-source.patch
-          git -C /tmp/port-b apply --index /tmp/mega-b-source.patch
-          git -C /tmp/port-bd0 apply --index /tmp/mega-b-source.patch
-          echo 'B_EPHEMERAL_PORT_APPLIED=TRUE' | tee /tmp/port-simulation.env
+          git diff --binary "$HISTORICAL_START" "$B_SOURCE_HEAD" -- \
+            research/research_os/discovery_chain.py \
+            research/research_os/discovery_engine.py \
+            research/research_os/tests/test_mega_b_all_producer_routes.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py \
+            research/research_os/tests/test_mega_b_discovery_chain.py \
+            research/research_os/tests/test_mega_b_discovery_engine.py \
+            research/research_os/tests/test_mega_b_outcome_firewall.py \
+            > /tmp/mega-b-semantic-source.patch
+          test -s /tmp/mega-b-semantic-source.patch
+          git -C /tmp/port-b apply --index /tmp/mega-b-semantic-source.patch
+          git -C /tmp/port-bd0 apply --index /tmp/mega-b-semantic-source.patch
+          echo 'B_EPHEMERAL_SEMANTIC_PORT_APPLIED=TRUE' | tee /tmp/port-simulation.env
+          echo 'B_SOURCE_WORKFLOW_AND_HANDOFF_EXCLUDED_FROM_SEMANTIC_PORT=TRUE' | tee -a /tmp/port-simulation.env
 
       - name: Materialize D0 qualified code delta and rebind sealed base
         shell: bash
@@ -219,7 +228,9 @@ jobs:
           receipt = {
               'role': 'FOREMAN_EPHEMERAL_PORT_SIMULATION_ONLY',
               'sealed_base': '2b99d8aeb8a342f1ef32544247d366cb8a26037e',
-              'b_source_head': 'ba80b8cd717a3239d92a005248a326462d6a5744',
+              'b_source_head': '7ef088bb30ece88cf96f4514e8c581a95ca4b091',
+              'b_port_scope': 'SEMANTIC_CODE_AND_TESTS_ONLY',
+              'b_source_workflow_and_handoff_excluded': True,
               'd0_source_code_head': '84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0',
               'b_only_tests': pytest_count('/tmp/port-b-tests.log'),
               'd0_only_tests': unittest_count('/tmp/port-d0-tests.log'),
