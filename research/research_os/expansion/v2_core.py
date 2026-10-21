@@ -123,6 +123,8 @@ def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:
         raise V2ContractError("INVALID_CLOSE_POLICY")
     if not isinstance(payload["allowed_model_set"], list) or not payload["allowed_model_set"]:
         raise V2ContractError("EMPTY_ALLOWED_MODEL_SET")
+    for model in payload["allowed_model_set"]:
+        _require_identifiers({"allowed_model": model}, ("allowed_model",), "EPOCH")
     if not isinstance(payload["epoch_feedback_dependencies"], list):
         raise V2ContractError("INVALID_FEEDBACK_DEPENDENCIES")
     if type(payload["max_candidate_exports"]) is not int or payload["max_candidate_exports"] < 1:
@@ -161,6 +163,7 @@ def assert_epoch_update(previous: Mapping[str, Any], current: Mapping[str, Any],
 
 
 def assert_model_allowed(epoch: Mapping[str, Any], model_identity: str) -> None:
+    _require_identifiers({"model_identity": model_identity}, ("model_identity",), "MODEL")
     if model_identity not in epoch.get("allowed_model_set", []):
         raise V2ContractError("MODEL_OUTSIDE_EPOCH_POLICY")
 
