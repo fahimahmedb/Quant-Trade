@@ -30,7 +30,7 @@ R0_DETERMINISTIC_STRUCTURAL_CHECKS_ONLY throughout.
 the reconstructed V1 candidate's manifest hash. It does not compare the rebuilt
 V2 projection to the object receiving the proof. Native `independent_validation`
 then binds its V2 Validator result to that supplied object's candidate_hash.
-Existing CP038 candidate-to-Validator/export binding prevents reusing an old
+Existing CP044 candidate-to-Validator/export binding prevents reusing an old
 Validator after a change; it does not protect this earlier proof-creation edge.
 
 Do not add another parser or promote model commentary into source evidence.
