@@ -1,0 +1,42 @@
+name: Wave2 C2 Refresh Status Artifacts
+
+on:
+  push:
+    branches:
+      - builder/convergence-wave2-canonical-20261021
+
+permissions:
+  contents: write
+
+env:
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  refresh:
+    if: ${{ !contains(github.event.head_commit.message, 'chore(wave2-c2): refresh generated status artifacts') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: builder/convergence-wave2-canonical-20261021
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate canonical status artifacts
+        run: python3 scripts/status_artifacts.py --write
+      - name: Commit only deterministic generated delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "quant-wave2-c2-bot"
+          git config user.email "quant-wave2-c2-bot@users.noreply.github.com"
+          if git diff --quiet -- STATE.md CHIEF_BRIEF.md; then
+            echo "STATUS_ARTIFACTS_ALREADY_FRESH=TRUE"
+            exit 0
+          fi
+          unexpected="$(git diff --name-only | grep -Ev '^(STATE\.md|CHIEF_BRIEF\.md)$' || true)"
+          test -z "${unexpected}"
+          git add STATE.md CHIEF_BRIEF.md
+          git commit -m "chore(wave2-c2): refresh generated status artifacts"
+          git push origin HEAD:builder/convergence-wave2-canonical-20261021
