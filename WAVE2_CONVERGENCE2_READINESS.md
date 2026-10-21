@@ -16,9 +16,9 @@ The foreman may not emit `WAVE2_INTEGRATED_SHA` and may not declare Convergence 
 
 | Lane | Qualified/current head | Base relationship | Current proof | Foreman disposition |
 |---|---|---|---|---|
-| Multi-Source | `NOT_FOUND` | unknown | no exact branch/final contract reacquired | `BLOCKED_EXTERNAL` |
+| Multi-Source | `2b99d8aeb8a342f1ef32544247d366cb8a26037e` | branch exists and is exactly the sealed base | no implementation delta; foreman acceptance contract prepared against existing source/Research-Intelligence law | `BRANCH_CREATED_NO_IMPLEMENTATION_DELTA` |
 | MEGA B | `7ef088bb30ece88cf96f4514e8c581a95ca4b091` | source lane rooted at `97165db2…`; semantic port to sealed base proven | local exact-head `39634367726`: 49 pass + 13 subtests; combined sealed-base simulation stays green | `PORT_PROVEN_AWAITING_CANONICAL_CONVERGENCE` |
-| MEGA C0 | `97165db2faa3300cef1f23de0045ed93d25eb9cb` | stale historical start | no semantic delta | `NOT_READY_PRIMARY_HARD_BLOCKER` |
+| MEGA C0 | `97165db2faa3300cef1f23de0045ed93d25eb9cb` | stale historical start, pre-sealed-base | no implementation delta; foreman C0 acceptance pack exact-head preflight green | `NOT_READY_PRIMARY_HARD_BLOCKER` |
 | MEGA D0 | closure `4262462e0c853d917f32e8f87c2423f93a313167`; code `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0` | source lane rooted at `97165db2…`; explicit immutable-base identity rebind required | source FINAL 33/33; sealed-base rebound port 33/33; W1 ECON unchanged | `PORT_PROVEN_WITH_REQUIRED_BASE_REBIND` |
 | MEGA E | `2d5ff9d3d629affc720b706405fc093d0ae81548` | directly rooted at sealed `2b99d8ae…` | exact-head `39635630231` SUCCESS; tri-lane sealed-base simulation SUCCESS | `QUALIFIED_AND_COMPATIBILITY_PROVEN_AWAITING_CANONICAL_CONVERGENCE` |
 
@@ -26,32 +26,23 @@ No module-local `SAFE_TO_INTEGRATE` statement is canonical integration authority
 
 ## Executable evidence
 
-### Source-lane snapshot
+### B + D0 + E sealed-base compatibility
 
-`Wave2 Convergence2 Foreman Preflight`
+The foreman has already proven current qualified B, rebound D0 and qualified E coexist in one ephemeral tree derived from the sealed base without mutating the canonical branch.
 
-- run `39635040925` SUCCESS
-- checkpoint `5d24b0091090393679375bf0342ad5e306805100`
-- artifact digest `sha256:80c096f472e32132a255689e41f55291f897039ffc4ec9536236496170954ce7`
-- B 49 focused
-- D0 33 focused
-- no textual conflict between B/D0 and the three-file sealed-base repair
-- D0 semantic base rebind required
-- E was already proven descendant of sealed base
+- source-lane preflight: run `39635040925` SUCCESS, checkpoint `5d24b0091090393679375bf0342ad5e306805100`
+- B+D0 simulation: run `39634814260` SUCCESS, checkpoint `bef33cdf7a1c33f53295aa54ba5938660520500e`
+- B+D0+E simulation: run `39635884974` SUCCESS, checkpoint `0bf796a35a17854f25e26e94dae855d8a7d36749`
+- B focused: 49 pass + 13 subtests
+- D0 focused: 33 pass
+- E focused: 75 pass
+- W1 ECON combined: 86 pass
+- Live Lab Python: 2 pass
+- Live Lab JS: 57 pass / 0 fail
+- sealed-base repair preserved
 - authority/outcome membrane closed
-
-### B + D0 sealed-base simulation
-
-`Wave2 C2 Sealed-Base Port Simulation`
-
-- run `39634814260` SUCCESS
-- checkpoint `bef33cdf7a1c33f53295aa54ba5938660520500e`
-- B 49 pass + 13 subtests
-- D0 33 pass
-- W1 ECON 86 / 86 / 86 across base, D0, B+D0
-- three sealed-base repair blobs byte-identical
-- D0 rebound to `2b99d8ae…`
 - no canonical mutation
+- no `WAVE2_INTEGRATED_SHA`
 
 ### MEGA E exact-head qualification
 
@@ -59,97 +50,104 @@ No module-local `SAFE_TO_INTEGRATE` statement is canonical integration authority
 
 - exact head `2d5ff9d3d629affc720b706405fc093d0ae81548`
 - run `39635630231` SUCCESS
-- schema index fresh
-- `STATE.md` fresh
 - root suite 799 pass
 - Research OS suite 427 pass
-- E focused recovery/runtime 75 pass
+- E focused 75 pass
 - queue/Control Plane safety PASS
+- Live Lab Python 2 pass
+- Live Lab JS 57 pass / 0 fail
 - `AUTHORITY_STATUS=CLOSED`
 - `OUTCOME_ACCESSED=FALSE`
-- Live Lab Python 2 pass
-- Live Lab JS 57 pass / 0 fail
-- V1 E2E PASS
 - working tree clean
 
-An earlier E run exposed only a generated-status freshness issue because four E tests were initially placed under root `tests/`. The sibling repaired this by moving them into `research/research_os/tests/`, preserving the root inventory instead of gratuitously changing global state truth.
+### C0 acceptance contract
 
-### B + D0 + E combined sealed-base simulation
+Foreman checkpoint `e239c55a5d3711f3b24f793b5d9cc0a079188c79` added:
 
-`Wave2 C2 B-D0-E Semantic Port Simulation`
+- `handoff/WAVE2_C2_C0_ACCEPTANCE_PACK_20261021.md`
+- `handoff/fixtures/WAVE2_C0_ACCEPTANCE_MATRIX.v1.json`
+- `.github/workflows/wave2-convergence2-c0-acceptance-pack.yml`
 
-- run `39635884974` SUCCESS
-- checkpoint `0bf796a35a17854f25e26e94dae855d8a7d36749`
-- pinned B `7ef088bb30ece88cf96f4514e8c581a95ca4b091`
-- pinned D0 code `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0`
-- pinned E `2d5ff9d3d629affc720b706405fc093d0ae81548`
-- B 49 pass
-- D0 33 pass
-- E focused 75 pass
-- W1 ECON base 86 / combined 86
-- Live Lab Python 2 pass
-- Live Lab JS 57 pass / 0 fail
-- semantic textual overlap B/D0/E = FALSE
-- sealed-base repair preserved = TRUE
-- D0 rebound to sealed base = TRUE
-- authority opened = FALSE
-- outcome accessed = FALSE
-- canonical branch mutated = FALSE
-- `WAVE2_INTEGRATED_SHA` emitted = FALSE
+`Wave2 C2 C0 Acceptance Pack Preflight` run `39660073926` is SUCCESS.
 
-This proves B, rebound D0 and qualified E semantics coexist in one ephemeral tree derived from the sealed Wave2 base. It is deliberately not a canonical integration commit.
+The preflight proves that the sealed base already owns the primitives C0 must reuse: Factory experiment identity/freeze, independent Validator law, Red Team negative-rights law and W1 ECON composition. C0 must therefore extract/compose this law, not create a second Validator/Red Team or experiment registry.
+
+`C0_ACCEPTANCE_PACK_READY=TRUE`
+
+`C0_IMPLEMENTATION_QUALIFIED=FALSE`
+
+### Multi-Source acceptance contract
+
+The branch `builder/multi-source-ideation-intake-20261021` now exists, but its current head is exactly the sealed base `2b99d8ae…`; therefore no Multi-Source implementation has yet occurred.
+
+Foreman acceptance law is prepared in:
+
+- `handoff/WAVE2_C2_MULTI_SOURCE_ACCEPTANCE_PACK_20261021.md`
+- `handoff/fixtures/WAVE2_MULTI_SOURCE_ACCEPTANCE_MATRIX.v1.json`
+- `.github/workflows/wave2-convergence2-multi-source-acceptance-pack.yml`
+
+It binds Multi-Source to the already-existing source-aware chain:
+
+`qualified documentary source`
+→ `Multi-Source intake proposal`
+→ `Research Intelligence GENERATE_MECHANISM / semantic identity / Scientific Memory screening`
+→ `canonical operational admission when applicable`
+→ `Research Intelligence RUN_PRODUCER`
+→ `MEGA B`
+
+Multi-Source may not create a second replenisher, bypass Research Intelligence, mint ResearchTask `READY`, or treat file/path/source count as scientific novelty.
 
 ## Current cross-lane law
 
+### Multi-Source -> Research Intelligence -> B
+
+Existing sealed-base source planning already binds documentary source identity using source ref, packet/content hash, record hash, blob identity when available, clocks and qualification. Content identity survives path rename/copy. Research Intelligence preserves UNKNOWN and Scientific Memory distinctions and later owns `RUN_PRODUCER`. B rejects any input that is not an executable, scheduler-neutral `RUN_PRODUCER` decision.
+
 ### B -> C0
 
-B preserves one canonical Candidate and adds `candidate.discovery`. It emits scientific/Factory readiness (`READY_FOR_FACTORY` / `EXPERIMENT_READY_HANDOFF`), never operational ResearchTask `READY`.
+B preserves one canonical Candidate and adds `candidate.discovery`. It emits `READY_FOR_FACTORY` / `EXPERIMENT_READY_HANDOFF`, never operational ResearchTask `READY`.
 
 C0 must bind the exact Candidate snapshot/generation/protocol identity without silently mutating B discovery facts or manufacturing a second Candidate dialect.
 
 ### C0 -> W1 ECON -> D0
 
-D0 consumes canonical hash-bound `EconomicIdentityRef` and `PortfolioReadinessRef` and does not rebuild W1 ECON law. C0 must provide a provenance-preserving scientific disposition that can bind unambiguously to the same subject before the existing W1 ECON boundary is crossed.
+The sealed base already composes `validator_economic_readiness_v3` and `red_team_negative_rights_v2` in W1 ECON. C0 must reuse/extract these canonical scientific primitives and emit one exact-subject disposition. W1 ECON retains independent economic-identity/structural-readiness veto power. D0 remains strictly downstream and consumes `EconomicIdentityRef + PortfolioReadinessRef` only.
 
-### B / C0 -> E
+### Scientific chain -> E
 
-Scientific eligibility is not operational admission. E must continue to rely on canonical Control Plane / ResearchTask authority and may not convert B/C0 scientific statuses directly into queue `READY`.
-
-### D0 -> E
-
-D0 owns no scheduler/runtime. Review cadence/lifecycle state cannot become task admission and cannot imply prospective-observation authority.
-
-### E Live Lab
-
-E's receipt reconciliation is projection/delivery evidence only. It cannot create research truth, write outcomes, reopen authority or overwrite conflicting canonical evidence.
+Scientific eligibility is not operational admission. E continues to rely on canonical Control Plane / ResearchTask authority. B/C0/D0/Multi-Source scientific states may not directly become queue `READY`.
 
 ## Current blockers
 
-1. **MEGA C0 has no implementation delta.** This is now the principal blocker to closing the scientific chain.
-2. **Multi-Source exact branch/final contract is absent.** The source-provenance -> B seam remains specification-only.
-3. B/D0/E compatibility is proven only in ephemeral foreman simulations; no canonical integrated head exists.
-4. The exact B -> C0 -> W1 ECON -> D0 subject/protocol/verdict seam remains unproven.
-5. No full canonical integrated exact-head regression or Wave2 integration manifest exists.
+1. **MEGA C0 still has no implementation delta and remains on `97165db2…`.** Its acceptance contract is ready and machine-preflighted, but the sibling implementation itself is absent.
+2. **Multi-Source branch exists but equals the sealed base.** Its acceptance contract is ready; the sibling implementation itself is absent.
+3. The exact live seam `Multi-Source -> Research Intelligence -> RUN_PRODUCER -> B` is therefore not yet implementation-proven.
+4. The exact live seam `B -> C0 -> W1 ECON -> rebound D0` is not yet implementation-proven.
+5. B/D0/E compatibility remains ephemeral foreman proof; no canonical integrated head exists.
+6. No full canonical integrated exact-head regression or Wave2 integration manifest exists.
 
-## Next foreman action
+## Next convergence prerequisites
 
-Prepare a C0 acceptance pack that constrains the seam without implementing C0:
+Before canonical Convergence #2, acquire exact qualified heads for Multi-Source and C0 and run them against the foreman acceptance packs. Only then build a fresh ephemeral whole-chain simulation on sealed `2b99d8ae…`:
 
 ```text
-B canonical Candidate + candidate.discovery
--> exact subject/snapshot binding
--> Factory protocol/freeze identity reuse
--> independent cross-examination / Validator / Red Team composition
--> provenance/blocker/uncertainty-preserving scientific disposition
--> existing W1 ECON boundary
--> rebound D0 refs
+Multi-Source
+-> Research Intelligence
+-> B
+-> Factory
+-> C0
+-> W1 ECON
+-> rebound D0
+-> E / canonical Control Plane projection
 ```
 
-The pack must be fail-closed, fixture-driven, and authority-neutral. It must not mint scientific outcomes or define C0's internal implementation.
+The simulation must remain outcome-blind and authority-neutral. It is still not authorization for the foreman to create a canonical integration SHA.
 
-## Durable handoff
+## Durable handoffs
 
-See `handoff/WAVE2_C2_CURRENT_PORT_PROOF_20261021.md` for exact B/D0/E proof identities and receipts.
+- `handoff/WAVE2_C2_CURRENT_PORT_PROOF_20261021.md`
+- `handoff/WAVE2_C2_C0_ACCEPTANCE_PACK_20261021.md`
+- `handoff/WAVE2_C2_MULTI_SOURCE_ACCEPTANCE_PACK_20261021.md`
 
 ## Authority
 

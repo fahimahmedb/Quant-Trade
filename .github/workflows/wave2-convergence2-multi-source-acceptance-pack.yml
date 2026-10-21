@@ -1,0 +1,173 @@
+name: Wave2 C2 Multi-Source Acceptance Pack Preflight
+
+on:
+  push:
+    branches:
+      - builder/wave2-convergence2-foreman-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  multi-source-acceptance-pack-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout foreman exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch pinned B evidence head and Multi-Source branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 7ef088bb30ece88cf96f4514e8c581a95ca4b091
+          git fetch --no-tags origin refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021
+
+      - name: Verify Multi-Source acceptance pack against sealed intake law
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          BASE = "2b99d8aeb8a342f1ef32544247d366cb8a26037e"
+          B = "7ef088bb30ece88cf96f4514e8c581a95ca4b091"
+          MULTI_REF = "refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
+
+          def show(ref, path):
+              return subprocess.check_output(["git", "show", f"{ref}:{path}"], text=True)
+
+          matrix = json.loads(Path("handoff/fixtures/WAVE2_MULTI_SOURCE_ACCEPTANCE_MATRIX.v1.json").read_text())
+          assert matrix["schema_version"] == "wave2-multi-source-acceptance-matrix.v1"
+          assert matrix["wave2_immutable_base_sha"] == BASE
+          assert matrix["qualified_b_source_sha"] == B
+          assert all(value is False for value in matrix["authority"].values())
+          case_ids = [item["id"] for item in matrix["cases"]]
+          assert len(case_ids) >= 12 and len(case_ids) == len(set(case_ids))
+          assert matrix["canonical_integration_status"] == {
+              "multi_source_implementation_qualified": False,
+              "ready_for_canonical_convergence2": False,
+              "wave2_integrated_sha_emission_authorized": False,
+          }
+
+          # Documentary source qualification is already canonical sealed-base law.
+          source_planner = show(BASE, "research/research_os/frontier_source_planner_v2.py")
+          for needle in (
+              '"SOURCE_REF_BINDING_MISMATCH"',
+              '"PACKET_HASH_MISSING"',
+              '"NO_UNUSED_ADMISSIBLE_SOURCE"',
+              '"SOURCE_SELECTED"',
+              '"packet_hash"',
+              '"record_hash"',
+              "def _is_consumed",
+              "Content identity survives renames/copies",
+          ):
+              assert needle in source_planner, needle
+
+          sample = json.loads(show(BASE, "research/research_os/sources/sec_t1_operative_rule.json"))
+          packet = sample["documentary_packet"]
+          assert sample["source_ref"] == packet["source_ref"]
+          assert packet["evidence_class"] == "DOCUMENTARY"
+          assert isinstance(packet["content_hash"], str) and packet["content_hash"]
+          assert packet["published_at"] and packet["available_at"]
+          assert sample["freeze_time"]
+          assert packet["revision_status"]
+          assert packet["capture"]["retrieved_at"]
+          assert packet["capture"]["raw_sha256"]
+
+          # Frontier mandates do not establish novelty and never schedule by themselves.
+          refill_policy = show(BASE, "research/research_os/research_refill_policy.py")
+          for needle in (
+              '"GENERATE_MECHANISM"',
+              '"UNRESOLVED_NOT_CLAIMED"',
+              '"DEFERRED_UNTIL_CANDIDATE_IDENTITY"',
+              '"scheduler_mutation": False',
+              '"novelty_claimed": False',
+              '"economic_outcome_accessed": False',
+          ):
+              assert needle in refill_policy, needle
+
+          # Only the existing bounded replenisher owns task derivation in this seam.
+          replenisher = show(BASE, "research/research_os/queue_replenisher.py")
+          for needle in (
+              '"NOOP_NO_ADMISSIBLE_NOVEL_SOURCE"',
+              '"status": "READY"',
+              "def validate_source_binding",
+              "research intelligence may not mutate scheduler state",
+              "queue refill must be bounded to one task",
+              "producer work may not execute in the refill wake",
+              "recursive refill is forbidden",
+          ):
+              assert needle in replenisher, needle
+
+          # Canonical Research Intelligence owns semantic identity and memory screening.
+          intelligence = show(BASE, "research/research_os/research_intelligence.py")
+          for needle in (
+              '"RUN_PRODUCER"',
+              '"KNOWN_NEGATIVE_SAME_SEMANTIC_FAMILY"',
+              '"UNKNOWN_IDENTITY_IS_NOT_NOVELTY"',
+              "validate_memory_record(record, require_canonical=True)",
+              '"scheduler_mutation": False',
+          ):
+              assert needle in intelligence, needle
+
+          memory = show(BASE, "research/research_os/scientific_memory.py")
+          for needle in (
+              '"NEGATIVE"', '"BLOCKED"', '"UNEXECUTED"',
+              '"INVALIDATED_PROTOCOL"', '"POSITIVE_BUT_INSUFFICIENT"',
+              '"outcome_accessed": False',
+          ):
+              assert needle in memory, needle
+
+          # MEGA B must still reject any proposal/generation mandate that bypasses RUN_PRODUCER qualification.
+          b_src = show(B, "research/research_os/discovery_engine.py")
+          for needle in (
+              'research_decision.get("action") != "RUN_PRODUCER"',
+              'research_decision.get("executable") is not True',
+              'research_decision.get("scheduler_mutation") is not False',
+              'blockers.append("RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER")',
+              '"scheduler_mutation": False',
+              '"control_plane_mutation": False',
+              '"outcome_accessed": False',
+          ):
+              assert needle in b_src, needle
+
+          multi_head = subprocess.check_output(["git", "rev-parse", MULTI_REF], text=True).strip()
+          ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", BASE, multi_head]).returncode == 0
+          if not ancestry:
+              raise AssertionError("Multi-Source branch is not descended from sealed Wave2 base")
+
+          receipt = {
+              "FOREMAN_HEAD": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+              "WAVE2_IMMUTABLE_BASE_SHA": BASE,
+              "B_SOURCE_HEAD": B,
+              "MULTI_SOURCE_HEAD": multi_head,
+              "MULTI_SOURCE_DESCENDS_FROM_SEALED_BASE": ancestry,
+              "MULTI_SOURCE_BRANCH_CREATED_NO_IMPLEMENTATION_DELTA": multi_head == BASE,
+              "MULTI_SOURCE_ACCEPTANCE_PACK_READY": True,
+              "MULTI_SOURCE_IMPLEMENTATION_QUALIFIED": False,
+              "SOURCE_IDENTITY_LAW_REUSED": True,
+              "SCIENTIFIC_MEMORY_REUSE_REQUIRED": True,
+              "RESEARCH_INTELLIGENCE_GATE_REQUIRED": True,
+              "B_RUN_PRODUCER_GATE_PRESERVED": True,
+              "QUEUE_REPLENISHER_OWNERSHIP_PRESERVED": True,
+              "AUTHORITY_OPENED": False,
+              "OUTCOME_ACCESSED": False,
+              "READY_FOR_CANONICAL_CONVERGENCE2": False,
+              "WAVE2_INTEGRATED_SHA_EMITTED": False,
+          }
+          Path("wave2-multi-source-acceptance-pack-receipt.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+          )
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload preflight receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave2-multi-source-acceptance-pack-${{ github.sha }}
+          path: wave2-multi-source-acceptance-pack-receipt.json
