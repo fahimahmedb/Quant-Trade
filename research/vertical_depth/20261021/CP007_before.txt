@@ -1,0 +1,274 @@
+FFFFFFFF.FFFFFF                                                          [100%]
+=================================== FAILURES ===================================
+_ test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T13:00:00+02:00-True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_queue_due_boundary_compar0')
+due = '2026-10-20T13:00:00+02:00', eligible = True
+
+    @pytest.mark.parametrize("due,eligible", [
+        ("2026-10-20T13:00:00+02:00", True),
+        ("2026-10-20T11:00:00-02:00", False),
+        ("2026-10-20T14:00:00+02:00", True),
+    ])
+    def test_queue_due_boundary_compares_instants_not_iso_spelling(tmp_path, due, eligible):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=due))
+>       assert (queue.next_due("2026-10-20T12:00:00Z") is not None) is eligible
+E       AssertionError: assert (None is not None) is True
+E        +  where None = next_due('2026-10-20T12:00:00Z')
+E        +    where next_due = <autonomous_research.runtime.PersistentQueue object at 0x7f3ef575bc80>.next_due
+
+tests/test_vertical_queue_depth.py:29: AssertionError
+_ test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T11:00:00-02:00-False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_queue_due_boundary_compar1')
+due = '2026-10-20T11:00:00-02:00', eligible = False
+
+    @pytest.mark.parametrize("due,eligible", [
+        ("2026-10-20T13:00:00+02:00", True),
+        ("2026-10-20T11:00:00-02:00", False),
+        ("2026-10-20T14:00:00+02:00", True),
+    ])
+    def test_queue_due_boundary_compares_instants_not_iso_spelling(tmp_path, due, eligible):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=due))
+>       assert (queue.next_due("2026-10-20T12:00:00Z") is not None) is eligible
+E       AssertionError: assert (ResearchTask(task_id='one', lane='fixture', priority=1, reason='synthetic', worker='fixture', parent=None, required_re...ds=600, created_at='2026-10-20T00:00:00Z', updated_at='2026-10-21T14:24:28.955918+00:00', last_error=None, metadata={}) is not None) is False
+E        +  where ResearchTask(task_id='one', lane='fixture', priority=1, reason='synthetic', worker='fixture', parent=None, required_re...ds=600, created_at='2026-10-20T00:00:00Z', updated_at='2026-10-21T14:24:28.955918+00:00', last_error=None, metadata={}) = next_due('2026-10-20T12:00:00Z')
+E        +    where next_due = <autonomous_research.runtime.PersistentQueue object at 0x7f3ef4712930>.next_due
+
+tests/test_vertical_queue_depth.py:29: AssertionError
+_ test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T14:00:00+02:00-True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_queue_due_boundary_compar2')
+due = '2026-10-20T14:00:00+02:00', eligible = True
+
+    @pytest.mark.parametrize("due,eligible", [
+        ("2026-10-20T13:00:00+02:00", True),
+        ("2026-10-20T11:00:00-02:00", False),
+        ("2026-10-20T14:00:00+02:00", True),
+    ])
+    def test_queue_due_boundary_compares_instants_not_iso_spelling(tmp_path, due, eligible):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=due))
+>       assert (queue.next_due("2026-10-20T12:00:00Z") is not None) is eligible
+E       AssertionError: assert (None is not None) is True
+E        +  where None = next_due('2026-10-20T12:00:00Z')
+E        +    where next_due = <autonomous_research.runtime.PersistentQueue object at 0x7f3ef4712240>.next_due
+
+tests/test_vertical_queue_depth.py:29: AssertionError
+___ test_naive_or_malformed_due_clock_is_not_scheduled[2026-10-20T12:00:00] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_naive_or_malformed_due_cl0')
+instant = '2026-10-20T12:00:00'
+
+    @pytest.mark.parametrize("instant", ["2026-10-20T12:00:00", "UNKNOWN", "", "2026-99-20T00:00:00Z"])
+    def test_naive_or_malformed_due_clock_is_not_scheduled(tmp_path, instant):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=instant))
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:36: Failed
+_________ test_naive_or_malformed_due_clock_is_not_scheduled[UNKNOWN] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_naive_or_malformed_due_cl1')
+instant = 'UNKNOWN'
+
+    @pytest.mark.parametrize("instant", ["2026-10-20T12:00:00", "UNKNOWN", "", "2026-99-20T00:00:00Z"])
+    def test_naive_or_malformed_due_clock_is_not_scheduled(tmp_path, instant):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=instant))
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:36: Failed
+_____________ test_naive_or_malformed_due_clock_is_not_scheduled[] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_naive_or_malformed_due_cl2')
+instant = ''
+
+    @pytest.mark.parametrize("instant", ["2026-10-20T12:00:00", "UNKNOWN", "", "2026-99-20T00:00:00Z"])
+    def test_naive_or_malformed_due_clock_is_not_scheduled(tmp_path, instant):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=instant))
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:36: Failed
+___ test_naive_or_malformed_due_clock_is_not_scheduled[2026-99-20T00:00:00Z] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_naive_or_malformed_due_cl3')
+instant = '2026-99-20T00:00:00Z'
+
+    @pytest.mark.parametrize("instant", ["2026-10-20T12:00:00", "UNKNOWN", "", "2026-99-20T00:00:00Z"])
+    def test_naive_or_malformed_due_clock_is_not_scheduled(tmp_path, instant):
+        queue = PersistentQueue(tmp_path / "queue.json")
+        queue.add(task("one", due_at=instant))
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:36: Failed
+_________________ test_failed_add_can_be_retried_on_same_queue _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_failed_add_can_be_retried0')
+
+    def test_failed_add_can_be_retried_on_same_queue(tmp_path):
+        path = tmp_path / "queue.json"
+        queue = PersistentQueue(path)
+        with patch("autonomous_research.runtime._write_json", side_effect=OSError("disk full")):
+            with pytest.raises(OSError):
+                queue.add(task("one"))
+>       assert queue.add(task("one"))
+E       AssertionError: assert False
+E        +  where False = add(ResearchTask(task_id='one', lane='fixture', priority=1, reason='synthetic', worker='fixture', parent=None, required_re...ds=600, created_at='2026-10-20T00:00:00Z', updated_at='2026-10-21T14:24:28.977705+00:00', last_error=None, metadata={}))
+E        +    where add = <autonomous_research.runtime.PersistentQueue object at 0x7f3ef46f4950>.add
+E        +    and   ResearchTask(task_id='one', lane='fixture', priority=1, reason='synthetic', worker='fixture', parent=None, required_re...ds=600, created_at='2026-10-20T00:00:00Z', updated_at='2026-10-21T14:24:28.977705+00:00', last_error=None, metadata={}) = task('one')
+
+tests/test_vertical_queue_depth.py:46: AssertionError
+____________ test_atomic_campaign_writers_use_unique_staging_files _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_atomic_campaign_writers_u0')
+
+    def test_atomic_campaign_writers_use_unique_staging_files(tmp_path):
+        gate = threading.Barrier(2)
+        original = os.replace
+    
+        def together(source, target):
+            gate.wait(timeout=5)
+            return original(source, target)
+    
+        with patch("os.replace", side_effect=together):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                futures = [pool.submit(_write_json, tmp_path / "state.json", {"fixture": True})
+                           for _ in range(2)]
+                for future in futures:
+>                   future.result(timeout=5)
+
+tests/test_vertical_queue_depth.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/autonomous_research/runtime.py:22: in _write_json
+    os.replace(temporary, path)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1139: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1143: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1204: in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = PosixPath('/tmp/pytest-of-agent/pytest-14/test_atomic_campaign_writers_u0/state.json.tmp')
+target = PosixPath('/tmp/pytest-of-agent/pytest-14/test_atomic_campaign_writers_u0/state.json')
+
+    def together(source, target):
+        gate.wait(timeout=5)
+>       return original(source, target)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-agent/pytest-14/test_atomic_campaign_writers_u0/state.json.tmp' -> '/tmp/pytest-of-agent/pytest-14/test_atomic_campaign_writers_u0/state.json'
+
+tests/test_vertical_queue_depth.py:71: FileNotFoundError
+__________ test_unknown_queue_schema_cannot_be_silently_rewritten[0] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_unknown_queue_schema_cann0')
+version = 0
+
+    @pytest.mark.parametrize("version", [0, 2, True, "1"])
+    def test_unknown_queue_schema_cannot_be_silently_rewritten(tmp_path, version):
+        path = tmp_path / "queue.json"
+        write_json(path, {"version": version, "tasks": []})
+        before = path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:86: Failed
+__________ test_unknown_queue_schema_cannot_be_silently_rewritten[2] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_unknown_queue_schema_cann1')
+version = 2
+
+    @pytest.mark.parametrize("version", [0, 2, True, "1"])
+    def test_unknown_queue_schema_cannot_be_silently_rewritten(tmp_path, version):
+        path = tmp_path / "queue.json"
+        write_json(path, {"version": version, "tasks": []})
+        before = path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:86: Failed
+_________ test_unknown_queue_schema_cannot_be_silently_rewritten[True] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_unknown_queue_schema_cann2')
+version = True
+
+    @pytest.mark.parametrize("version", [0, 2, True, "1"])
+    def test_unknown_queue_schema_cannot_be_silently_rewritten(tmp_path, version):
+        path = tmp_path / "queue.json"
+        write_json(path, {"version": version, "tasks": []})
+        before = path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:86: Failed
+__________ test_unknown_queue_schema_cannot_be_silently_rewritten[1] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_unknown_queue_schema_cann3')
+version = '1'
+
+    @pytest.mark.parametrize("version", [0, 2, True, "1"])
+    def test_unknown_queue_schema_cannot_be_silently_rewritten(tmp_path, version):
+        path = tmp_path / "queue.json"
+        write_json(path, {"version": version, "tasks": []})
+        before = path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:86: Failed
+____________ test_conflicting_duplicate_task_records_are_ambiguous _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_conflicting_duplicate_tas0')
+
+    def test_conflicting_duplicate_task_records_are_ambiguous(tmp_path):
+        from dataclasses import asdict
+        path = tmp_path / "queue.json"
+        write_json(path, {"version": 1, "tasks": [asdict(task("one")),
+                                                  asdict(task("one", status="COMPLETED"))]})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_depth.py:96: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_depth.py::test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T13:00:00+02:00-True]
+FAILED tests/test_vertical_queue_depth.py::test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T11:00:00-02:00-False]
+FAILED tests/test_vertical_queue_depth.py::test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T14:00:00+02:00-True]
+FAILED tests/test_vertical_queue_depth.py::test_naive_or_malformed_due_clock_is_not_scheduled[2026-10-20T12:00:00]
+FAILED tests/test_vertical_queue_depth.py::test_naive_or_malformed_due_clock_is_not_scheduled[UNKNOWN]
+FAILED tests/test_vertical_queue_depth.py::test_naive_or_malformed_due_clock_is_not_scheduled[]
+FAILED tests/test_vertical_queue_depth.py::test_naive_or_malformed_due_clock_is_not_scheduled[2026-99-20T00:00:00Z]
+FAILED tests/test_vertical_queue_depth.py::test_failed_add_can_be_retried_on_same_queue
+FAILED tests/test_vertical_queue_depth.py::test_atomic_campaign_writers_use_unique_staging_files
+FAILED tests/test_vertical_queue_depth.py::test_unknown_queue_schema_cannot_be_silently_rewritten[0]
+FAILED tests/test_vertical_queue_depth.py::test_unknown_queue_schema_cannot_be_silently_rewritten[2]
+FAILED tests/test_vertical_queue_depth.py::test_unknown_queue_schema_cannot_be_silently_rewritten[True]
+FAILED tests/test_vertical_queue_depth.py::test_unknown_queue_schema_cannot_be_silently_rewritten[1]
+FAILED tests/test_vertical_queue_depth.py::test_conflicting_duplicate_task_records_are_ambiguous
+14 failed, 1 passed in 0.18s
