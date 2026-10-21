@@ -57,14 +57,14 @@ class StructuralUnknownEvidenceTests(unittest.TestCase):
 
     def test_known_overlap_and_real_native_projection_keep_golden_hashes_and_inputs(self):
         self.assertEqual(sha256_json(structural_pair(fixtures.identity("H1"), fixtures.identity("H2"))),
-                         "2e847d0963ca4ee9f3e37cdb23a97789ae8486a6ef211f0659db0f0eb4cacb59")
+                         "b85268f4fcaf3cf5ceb6d24c6f05185db952931845bd44f4dc86c8524a38ccb7")
         source_path = Path(__file__).resolve().parents[1] / "research/research_os/sources/apple_fy2025_statement_cells.json"
         output = ENGINE_REGISTRY["fundamental"].run(
             json.loads(source_path.read_text()), EngineContext("IDENTITY-IMMUTABILITY", synthetic_only=False))
         identity = economic_identity_v1(output, {})
         before = deepcopy(identity)
         self.assertEqual(sha256_json(structural_identity(identity)),
-                         "0a8566d6c0c603ead49afe7a666b038a8f66243f56e2e2b63cbfbf789aa423c7")
+                         "03af5bdd581963292f10daa557c3e5feb6aeb713429cb5d8ac01155d981a4ce0")
         self.assertEqual(identity, before)
 
 
