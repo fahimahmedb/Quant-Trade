@@ -83,6 +83,8 @@ def bind_pre_outcome_infrastructure(
             blockers.append("EXPERIMENT_REPLAY_NOT_VERIFIED")
 
         qualified = not blockers and final_entry.lifecycle is ExperimentLifecycle.REPLAY_VERIFIED
+        geometry_payload = {**geometry.to_dict(), "declaration_hash": geometry.declaration_hash}
+        power_payload = {**power.to_dict(), "declaration_hash": power.declaration_hash}
         payload = {
             "status": "PASS" if qualified else "BLOCK",
             "qualification": "QUALIFIED_CURRENT" if qualified else "PARTIAL_WITH_EXPLICIT_BLOCKER",
@@ -91,8 +93,8 @@ def bind_pre_outcome_infrastructure(
             "declaration_gaps": declaration_gaps,
             "registry": final_entry.to_dict(),
             "frozen_registry": frozen_entry.to_dict(),
-            "geometry": geometry.to_dict(),
-            "power": power.to_dict(),
+            "geometry": geometry_payload,
+            "power": power_payload,
             "outcome_accessed": False,
             "economic_result": "NOT_OBSERVED",
             "economic_experiment_authorized": False,

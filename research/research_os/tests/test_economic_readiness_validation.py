@@ -45,7 +45,7 @@ def _fixture() -> dict:
         "protocol_hash": protocol_hash,
         "source_snapshot_hashes": source_hashes,
     }
-    return {
+    bundle = {
         "candidate": candidate,
         "candidate_hash": candidate_hash,
         "producer_id": "candidate-producer.v1",
@@ -96,7 +96,7 @@ def _fixture() -> dict:
         "reproducibility": {
             "status": "BOUND",
             "binding_payload": binding_payload,
-            "binding_hash": sha256_json(binding_payload),
+            "binding_hash": "",
             "outcome_accessed": False,
         },
         "multiplicity": {
@@ -125,6 +125,71 @@ def _fixture() -> dict:
         },
     }
 
+    geometry = {
+        "status": "UNKNOWN", "protocol_hash": protocol_hash,
+        "declaration_hash": sha256_json({"geometry": "explicit-unknown", "protocol_hash": protocol_hash}),
+    }
+    power = {
+        "status": "UNKNOWN", "protocol_hash": protocol_hash,
+        "declaration_hash": sha256_json({"power": "explicit-unknown", "protocol_hash": protocol_hash}),
+    }
+    registry_payload = {
+        "registry_id": "EXR-VALIDATOR-FIXTURE",
+        "candidate_hash": candidate_hash,
+        "protocol_hash": protocol_hash,
+        "geometry_hash": geometry["declaration_hash"],
+        "power_hash": power["declaration_hash"],
+        "lifecycle": "REPLAY_VERIFIED",
+    }
+    registry = {**registry_payload, "entry_hash": sha256_json(registry_payload)}
+    frozen_payload = {
+        "registry_id": registry["registry_id"],
+        "candidate_hash": candidate_hash,
+        "protocol_hash": protocol_hash,
+        "geometry_hash": geometry["declaration_hash"],
+        "power_hash": power["declaration_hash"],
+        "lifecycle": "FROZEN",
+    }
+    frozen_registry = {**frozen_payload, "entry_hash": sha256_json(frozen_payload)}
+    infrastructure = {
+        "status": "PASS",
+        "blockers": [],
+        "registry": registry,
+        "frozen_registry": frozen_registry,
+        "geometry": geometry,
+        "power": power,
+        "outcome_accessed": False,
+        "economic_result": "NOT_OBSERVED",
+        "economic_experiment_authorized": False,
+        "prospective_observation_authorized": False,
+        "real_capital_authorized": False,
+        "live_trading_authorized": False,
+    }
+    infrastructure["infrastructure_hash"] = sha256_json(infrastructure)
+    bundle["experiment_infrastructure"] = infrastructure
+    binding_payload.update({
+        "experiment_registry_id": registry["registry_id"],
+        "experiment_registry_hash": registry["entry_hash"],
+        "experiment_infrastructure_hash": infrastructure["infrastructure_hash"],
+    })
+    bundle["reproducibility"]["binding_hash"] = sha256_json(binding_payload)
+    return bundle
+
+
+def _rehash_infrastructure(fixture: dict) -> None:
+    infrastructure = fixture["experiment_infrastructure"]
+    for key in ("registry", "frozen_registry"):
+        record = infrastructure[key]
+        record["entry_hash"] = sha256_json({k: v for k, v in record.items() if k != "entry_hash"})
+    infrastructure["infrastructure_hash"] = sha256_json(
+        {k: v for k, v in infrastructure.items() if k != "infrastructure_hash"}
+    )
+    binding = fixture["reproducibility"]["binding_payload"]
+    binding["experiment_registry_id"] = infrastructure["registry"]["registry_id"]
+    binding["experiment_registry_hash"] = infrastructure["registry"]["entry_hash"]
+    binding["experiment_infrastructure_hash"] = infrastructure["infrastructure_hash"]
+    fixture["reproducibility"]["binding_hash"] = sha256_json(binding)
+
 
 class EconomicReadinessValidationTests(unittest.TestCase):
     def test_pass_when_every_precondition_is_present(self):
@@ -133,9 +198,27 @@ class EconomicReadinessValidationTests(unittest.TestCase):
         self.assertTrue(receipt["ready_for_authorized_economic_test"])
         self.assertFalse(receipt["economic_test_authorized"])
         self.assertEqual(receipt["block_reasons"], [])
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "PASS")
         red = red_team_negative_rights_v2(receipt)
         self.assertEqual(red["status"], "PASS")
         self.assertEqual(red["negative_rights"], [])
+
+    def test_block_on_missing_or_foreign_experiment_infrastructure(self):
+        fixture = _fixture()
+        del fixture["experiment_infrastructure"]
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["reason_code"],
+                         "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED")
+
+        fixture = _fixture()
+        foreign_hash = sha256_json({"candidate": "foreign-but-self-consistent"})
+        fixture["experiment_infrastructure"]["registry"]["candidate_hash"] = foreign_hash
+        fixture["experiment_infrastructure"]["frozen_registry"]["candidate_hash"] = foreign_hash
+        _rehash_infrastructure(fixture)
+        receipt = validate_economic_test_readiness(fixture)
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["status"], "FAIL")
+        self.assertEqual(receipt["checks"]["experiment_infrastructure"]["reason_code"],
+                         "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED")
 
     def test_block_on_missing_protocol_freeze(self):
         fixture = _fixture()

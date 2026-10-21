@@ -200,23 +200,6 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
         "outcome_access": {"opened": False, "consumed": False, "result": "NOT_OBSERVED"},
     }
     validator = validator_economic_readiness_v3(readiness_bundle=bundle)
-    # W1 makes experiment infrastructure an explicit Validator membrane even
-    # before validation_readiness's public schema is revised by another lane.
-    infra_pass = bool(experiment_infrastructure) and experiment_infrastructure.get("status") == "PASS"
-    validator.setdefault("checks", {})["experiment_infrastructure"] = {
-        "status": "PASS" if infra_pass else "FAIL",
-        "reason_code": None if infra_pass else "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
-        "detail": "Registry, geometry, power, receipt and replay must be bound before authorized economic-test readiness.",
-    }
-    if not infra_pass:
-        validator["status"] = "BLOCK"
-        validator["ready_for_authorized_economic_test"] = False
-        validator["claim_ceiling"] = "BLOCKED_PRE_OUTCOME"
-        validator.setdefault("block_reasons", []).append({
-            "code": "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
-            "check": "experiment_infrastructure",
-            "detail": validator["checks"]["experiment_infrastructure"]["detail"],
-        })
     reasons.extend(r["code"] for r in validator["block_reasons"])
     red = red_team_negative_rights_v2(validator, context=red_team_context)
     reasons.extend(red["negative_rights"])

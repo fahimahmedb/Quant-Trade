@@ -23,6 +23,7 @@ CHECK_ORDER = (
     "implementability_declaration",
     "protocol_freeze",
     "reproducibility_binding",
+    "experiment_infrastructure",
     "multiplicity_declaration",
     "trial_accounting",
     "cost_model_declaration",
@@ -44,6 +45,7 @@ REASON_CODES = {
     "implementability_declaration": "IMPLEMENTABILITY_DECLARATION_MISSING_OR_BLOCKED",
     "protocol_freeze": "PROTOCOL_NOT_FROZEN",
     "reproducibility_binding": "REPRODUCIBILITY_BINDING_FAILED",
+    "experiment_infrastructure": "EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED",
     "multiplicity_declaration": "MULTIPLICITY_DECLARATION_MISSING",
     "trial_accounting": "TRIAL_ACCOUNTING_INVALID",
     "cost_model_declaration": "COST_MODEL_DECLARATION_MISSING",
@@ -52,6 +54,13 @@ REASON_CODES = {
     "decision_map": "DECISION_MAP_MISSING",
     "no_outcome_access": "OUTCOME_ACCESS_FORBIDDEN",
 }
+
+_AUTHORITY_KEYS = (
+    "economic_experiment_authorized",
+    "prospective_observation_authorized",
+    "real_capital_authorized",
+    "live_trading_authorized",
+)
 
 
 def _present(value: Any) -> bool:
@@ -124,6 +133,62 @@ def _trial_accounting_valid(record: Mapping[str, Any]) -> bool:
     return False
 
 
+def _entry_hash_valid(record: Any) -> bool:
+    if not isinstance(record, Mapping) or not _is_hash(record.get("entry_hash")):
+        return False
+    payload = {key: value for key, value in record.items() if key != "entry_hash"}
+    return sha256_json(payload) == record.get("entry_hash")
+
+
+def _experiment_infrastructure_valid(
+    infrastructure: Mapping[str, Any], *, candidate_hash: str,
+    protocol_hash: Any, reproducibility_payload: Any,
+) -> bool:
+    if infrastructure.get("status") != "PASS" or infrastructure.get("blockers") not in ([], ()):
+        return False
+    supplied_hash = infrastructure.get("infrastructure_hash")
+    if not _is_hash(supplied_hash):
+        return False
+    payload = {key: value for key, value in infrastructure.items() if key != "infrastructure_hash"}
+    if sha256_json(payload) != supplied_hash:
+        return False
+    if infrastructure.get("outcome_accessed") is not False or infrastructure.get("economic_result") != "NOT_OBSERVED":
+        return False
+    if any(infrastructure.get(key) is not False for key in _AUTHORITY_KEYS):
+        return False
+
+    registry = infrastructure.get("registry")
+    frozen_registry = infrastructure.get("frozen_registry")
+    geometry = infrastructure.get("geometry")
+    power = infrastructure.get("power")
+    if not all(isinstance(item, Mapping) for item in (registry, frozen_registry, geometry, power)):
+        return False
+    if not _entry_hash_valid(registry) or not _entry_hash_valid(frozen_registry):
+        return False
+    if registry.get("lifecycle") != "REPLAY_VERIFIED" or frozen_registry.get("lifecycle") != "FROZEN":
+        return False
+    if registry.get("candidate_hash") != candidate_hash or frozen_registry.get("candidate_hash") != candidate_hash:
+        return False
+    if registry.get("protocol_hash") != protocol_hash or frozen_registry.get("protocol_hash") != protocol_hash:
+        return False
+    if registry.get("registry_id") != frozen_registry.get("registry_id"):
+        return False
+    if geometry.get("protocol_hash") != protocol_hash or power.get("protocol_hash") != protocol_hash:
+        return False
+    if registry.get("geometry_hash") != geometry.get("declaration_hash"):
+        return False
+    if registry.get("power_hash") != power.get("declaration_hash"):
+        return False
+
+    if not isinstance(reproducibility_payload, Mapping):
+        return False
+    return (
+        reproducibility_payload.get("experiment_registry_id") == registry.get("registry_id")
+        and reproducibility_payload.get("experiment_registry_hash") == registry.get("entry_hash")
+        and reproducibility_payload.get("experiment_infrastructure_hash") == supplied_hash
+    )
+
+
 def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     """Decide only whether a frozen candidate is ready for a later authorized test."""
     candidate = bundle.get("candidate") if isinstance(bundle.get("candidate"), dict) else {}
@@ -137,6 +202,7 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
     expression = bundle.get("economic_expression") if isinstance(bundle.get("economic_expression"), dict) else {}
     implementability = bundle.get("implementability") if isinstance(bundle.get("implementability"), dict) else {}
     reproducibility = bundle.get("reproducibility") if isinstance(bundle.get("reproducibility"), dict) else {}
+    infrastructure = bundle.get("experiment_infrastructure") if isinstance(bundle.get("experiment_infrastructure"), dict) else {}
     multiplicity = bundle.get("multiplicity") if isinstance(bundle.get("multiplicity"), dict) else {}
     trial_accounting = bundle.get("trial_accounting") if isinstance(bundle.get("trial_accounting"), dict) else {}
     cost_model = bundle.get("cost_model") if isinstance(bundle.get("cost_model"), dict) else {}
@@ -275,6 +341,16 @@ def validate_economic_test_readiness(bundle: Dict[str, Any]) -> Dict[str, Any]:
         and binding_hash_valid
         and binding_payload_matches,
         "Reproducibility binding must hash the same candidate, protocol, and source snapshots.",
+    )
+    add(
+        "experiment_infrastructure",
+        _experiment_infrastructure_valid(
+            infrastructure,
+            candidate_hash=actual_candidate_hash,
+            protocol_hash=protocol.get("protocol_hash"),
+            reproducibility_payload=reproducibility_payload,
+        ),
+        "Registry, geometry, power, receipt and replay must form one hash-valid candidate/protocol-bound pre-outcome attestation.",
     )
     add(
         "multiplicity_declaration",
