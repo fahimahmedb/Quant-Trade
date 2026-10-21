@@ -1,380 +1,269 @@
 # WAVE 2 — CROSS-LANE BINDING PLAN
 
-Purpose: make cross-lane semantics executable before canonical Convergence #2. This plan does not integrate any sibling and does not authorize task creation, experiments, observation, capital or trading.
+Purpose: make Convergence #2 seams explicit before canonical integration. This document is a foreman artifact only; it does not merge siblings or confer operational/economic authority.
 
-## Binding law
+Observed formal base: `2b99d8aeb8a342f1ef32544247d366cb8a26037e` — **formal base observed, seal unproven**.
 
-Every seam must preserve all of the following:
-
-- exact subject identity;
-- source/evidence provenance;
-- point-in-time clocks where applicable;
-- generation/ancestry;
-- UNKNOWN as UNKNOWN;
-- blocker semantics;
-- authority state;
-- idempotency / duplicate prevention;
-- no outcome access;
-- no implicit operational promotion.
-
-The central membrane is:
+## Non-negotiable membrane
 
 ```text
-scientific eligibility != operational READY
+ELIGIBLE_FOR_DISCOVERY != READY
 Candidate != ResearchTask
 scientific decision != scheduler decision
 Research Intelligence != Control Plane
 ModelBackend != scheduler
-Proposal/Ideation ledger != queue
+Proposal Ledger != queue
 IdeationSourceClaim != lease
+scientific admission != operational admission
 ```
 
-## 1. MULTI-SOURCE → MEGA B
+Every seam must preserve exact subject identity, generation/ancestry, provenance, PIT clocks where present, UNKNOWN, blocker semantics, authority state, duplicate/idempotency law and outcome blindness.
 
-### Producer
+## 1. Multi-Source → Research Intelligence → MEGA B
 
-Multi-Source Ideation V2, exact branch/ref and final contract not yet reacquired.
+### Exact producer state observed
 
-### Consumer
+- branch HEAD: `c003dd97c58c842a9b6846aa8ebe160ad42d92cb`
+- base: `2b99d8ae…`
+- manifest: `FINAL_SHA=PENDING_EXACT_HEAD`
+- terminal boundary: `ELIGIBLE_FOR_DISCOVERY`
+- `READY_TASKS_CREATED=0`
+- `CANDIDATES_CREATED=0`
+- `CONTROL_PLANE_MUTATIONS=0`
+- `SCHEDULER_MUTATIONS=0`
+- `OUTCOME_ACCESSED=FALSE`
 
-MEGA B Discovery Engine.
+### Binding
 
-### Intended semantic transition
+Multi produces a provenance-bound ideation/proposal object, not a task and not a Candidate. Preserve:
 
-```text
-qualified ideation object
-status = ELIGIBLE_FOR_DISCOVERY
-        ↓
-MEGA B producer-level discovery intake
-```
+- proposal/seed identity and their semantic distinction;
+- exact `context_snapshot_hash` or equivalent deterministic context identity;
+- source identity/content hash/revision and source-claim identity;
+- Research Intelligence decision/reference and Scientific Memory relations used for screening;
+- policy/model-backend receipt identity where present;
+- ancestry and stale/requalification condition;
+- implementability hints as assumptions only.
 
-`ELIGIBLE_FOR_DISCOVERY` is a scientific intake eligibility state only. It MUST NOT create or imply a Research OS task with `status=READY`.
+`IdeationSourceClaim` remains passive scientific provenance. It has no lease expiry/claim authority semantics and cannot be converted into an operational lease.
 
-### Required identity/provenance transfer
+A changed context/source revision invalidates the old qualification path and forces producer-defined requalification. UNKNOWN provenance/identity remains UNKNOWN and cannot be promoted as novelty.
 
-Until the final Multi-Source schema is visible, the following are acceptance requirements rather than invented field names:
+B accepts only the qualified discovery intake semantics it owns. No direct Multi→ResearchTask `READY`; no direct Multi proposal→Candidate shortcut that bypasses B's discovery identity/admissibility law.
 
-- stable ideation/seed/proposal identity;
-- exact Research Intelligence decision/reference that admitted ideation;
-- context snapshot identity/hash, when present;
-- exact source/document identity and version;
-- `IdeationSourceClaim` or equivalent source claim identity;
-- public/available/effective clocks where the source contract carries them;
-- Scientific Memory/negative-knowledge references used to screen novelty;
-- source qualification state and stale/reopen condition;
-- generation/ancestry if ideation can be revised.
+### Required seam result
 
-### Required semantic distinctions
-
-- `IDEATION_SEED` and `IDEA_PROPOSAL` MUST remain distinct if the producer defines them distinctly.
-- A source claim is evidence/provenance, not a scheduler lease.
-- A source becoming stale MUST force the producer-defined requalification path; MEGA B may not silently treat stale provenance as current.
-- Multi-Source may declare an idea scientifically eligible; it may not route around MEGA B discovery or Control Plane task admission.
-
-### Binding adapter rule
-
-Prefer a pure, deterministic conversion/validation function that receives the final producer object and returns either:
-
-```text
-DISCOVERY_INTAKE_ACCEPTED
-```
-
-with preserved immutable refs, or an explicit scoped blocker such as:
-
-```text
-BLOCKED_MISSING_PROVENANCE
-BLOCKED_STALE_CONTEXT
-BLOCKED_IDENTITY_AMBIGUITY
-```
-
-Never convert a missing/unknown field into a negative assertion.
+`MULTI_B_BINDING_ACCEPTED` only if final Multi exact-head qualification is known and all identity/provenance/context invariants hold. Otherwise fail closed with scoped reasons such as stale context, missing provenance, ambiguous identity or non-final producer head.
 
 ### Current status
 
-`EXPECTED_MISSING_BINDING` because exact Multi-Source branch/schema/final manifest is unresolved.
+`EXPECTED_MISSING_BINDING`: implementation exists, but producer exact-head final seal/CI remains pending.
 
 ---
 
-## 2. MEGA B → MEGA C0
+## 2. MEGA B → Factory → MEGA C0
 
-### Producer
+### Producer identity
 
-MEGA B Discovery Engine.
+B lane qualified code head: `7ef088bb30ece88cf96f4514e8c581a95ca4b091`, documentary branch head `bfc9fad9…`, built from historical `97165…`.
 
-### Consumer
+B preserves the canonical Candidate and enriches discovery facts. It emits scientific/factory readiness, never operational task READY.
 
-MEGA C0 Scientific Adjudication.
+### Transfer contract
 
-### Canonical shared object
+C0 must bind, without mutation:
 
-`Candidate` from `research/research_os/engines/protocol.py` remains the canonical producer-level scientific object unless a final, explicitly versioned migration proves otherwise.
+1. exact Candidate snapshot/content hash;
+2. `hypothesis_id` and `generation_id`;
+3. mechanism/expression/universe identity;
+4. RI/Multi ancestry and source lineage;
+5. public/available/effective/freeze/entry/exit clocks when applicable;
+6. falsifiers/disconfirmation and evidence gaps;
+7. implementability assumptions/gaps;
+8. duplicate/wrapper/mechanism/exposure identity;
+9. Factory `protocol_hash`, `frozen_protocol_hash`, registry/freeze identity and trial/epoch identity where canonical law supplies them.
 
-Required existing core identity/claim fields:
+Material Candidate/protocol/freeze drift cannot mutate an adjudication in place. It creates a fresh generation/adjudication identity or blocks.
 
-- `hypothesis_id`
-- `generation_id`
-- `mechanism`
-- `claim`
-- `falsification_scope`
-- `decision_map`
-- `economic_tags`
+### C0 exact producer/consumer law
 
-Existing context also includes horizon, source refs/document evidence, research decision/evidence timing and no-observation authorization.
+C0 composes canonical Validator, Red Team and independence law. It emits only:
 
-MEGA B CP001 plans additive discovery metadata, not a second family-specific Candidate dialect.
+`PROMOTE | PARK | KILL | BLOCK`
 
-### Required transfer to C0
-
-C0 must receive/bind:
-
-1. exact Candidate snapshot or stable content hash;
-2. `hypothesis_id + generation_id`;
-3. mechanism identity and expression/universe identity when B supplies them;
-4. source lineage and all relevant source clocks;
-5. ancestry/duplicate-expression identity;
-6. falsifiers/disconfirmation already recorded;
-7. evidence gaps and claim ceiling;
-8. implementability assumptions/gaps;
-9. Research Intelligence / ideation ancestry as provenance, not adjudication evidence by itself.
-
-### Freeze/adjudication prerequisite
-
-C0 must not cross-examine a silently mutable idea. The seam must bind to the Factory/freeze identity:
-
-- frozen Candidate expression;
-- protocol hash;
-- generation/trial/epoch identity as defined by canonical Factory law;
-- explicit outcome firewall state.
-
-If B changes a material Candidate expression after freeze, the correct operation is a new generation, not in-place mutation.
-
-### Independence
-
-The B producer/discovery lane may not validate or Red Team its own hypothesis. C0 composes the independent challenge path; it does not hand validation authority back to B.
+- `PROMOTE` targets Economic Identity only.
+- `PARK` preserves bounded unresolved uncertainty.
+- `BLOCK` covers missing/unexecuted/mismatched/materially blocked requirements and is not negative evidence.
+- `KILL` requires scoped externally-qualified negative scientific evidence; C0 cannot self-issue it.
+- structural independence never silently becomes semantic independent confirmation.
 
 ### Current status
 
-`EXPECTED_SCHEMA_GAP`: canonical base Candidate/freeze semantics are known, but B implementation and C0 final input/verdict contracts are not yet final.
+`EXPECTED_SCHEMA_GAP_ON_CURRENT_BASE`: B and C0 are internally qualified but both require semantic replay from historical `97165…` onto observed formal base `2b99…`.
 
 ---
 
-## 3. MEGA C0 → ECONOMIC / MEGA D0
+## 3. C0 → W1 Economic → MEGA D0
 
-### Producer
+### Scientific envelope from C0
 
-MEGA C0 scientific disposition.
+Preserve exact:
 
-### Consumers
+- Candidate generation/hash;
+- frozen expression/protocol/registry identity;
+- cross-examination ref and axis states;
+- Validator ref;
+- Red Team ref/blockers;
+- independence ref and semantic-confirmation state;
+- negative-scientific ref, if externally qualified;
+- verdict, uncertainty, claim ceiling and provenance;
+- explicit no-outcome state.
 
-Existing Economic Identity / Portfolio Readiness law, then MEGA D0 lifecycle.
+No verdict carries economic authorization, prospective observation authorization, profitability or capital readiness.
 
-### Required scientific disposition identity
+### W1 Economic boundary
 
-The cross-lane envelope must bind all of:
-
-- exact scientific subject (Candidate snapshot/hash);
-- hypothesis/generation identity;
-- frozen expression/protocol hash;
-- experiment/trial/epoch identity where canonical Factory exposes it;
-- Validator disposition;
-- Red Team disposition/blockers;
-- claim restriction/claim ceiling;
-- uncertainty/evidence-gap state;
-- verdict provenance;
-- evidence refs used for adjudication;
-- explicit no-outcome/no-prospective-observation state.
-
-A favorable scientific disposition is not economic authorization and not prospective observation authorization.
-
-### Economic identity binding
-
-The existing Economic layer owns the structural economic identity. D0 must consume references equivalent to:
+W1 Economic retains sole ownership of canonical economic structural identity and portfolio readiness. C0 does not build them. D0 consumes only exact references equivalent to:
 
 ```text
 EconomicIdentityRef
++
 PortfolioReadinessRef
 ```
 
-that remain bound to the same Candidate generation/scientific subject.
+bound to the same upstream scientific subject/generation.
 
-D0 CP001 explicitly preserves:
+### D0 rules
 
-- existing economic fingerprint;
-- exact candidate/economic-identity binding;
-- KNOWN / UNKNOWN / NOT_APPLICABLE / CONFLICTED semantics;
-- structural overlap and wrapper equivalence;
-- portfolio readiness.
+D0 may construct lifecycle/shadow readiness and future-evidence binding contracts, but cannot synthesize future observations, decay, resize, park/retire outcomes or empirical facts.
 
-### Lifecycle admission rule
+D0's old base identity is a known controlled port defect: canonical integration must explicitly rebind `97165…` to the formally authorized Wave-2 base, then rerun D0 focused and seam qualification. This is a convergence repair, not sibling mutation.
 
-A D0 lifecycle object may be created only from a qualified scientific/economic boundary. Its initial readiness may describe contract preparation, but:
+Lifecycle readiness is not operational readiness:
 
-```text
-READY_AWAITING_OWNER_AUTHORITY != PROSPECTIVE_OBSERVATION_AUTHORIZED
-```
-
-No lifecycle transition may synthesize an observation, decay result, resize decision or retirement result from absent future evidence.
+`SHADOW_READY_AWAITING_AUTHORITY != ResearchTask READY`
 
 ### Current status
 
-`EXPECTED_SCHEMA_GAP`: C0 final disposition schema and D0 implementation are not yet observable.
+`EXPECTED_BASE_REPLAY`: C0/D0 lane-local qualifications exist; current formal-base seam is not yet canonical exact-head qualified.
 
 ---
 
-## 4. RESEARCH INTELLIGENCE / IDEATION / B → MEGA E CONTROL PLANE
+## 4. Scientific chain → Control Plane / MEGA E
 
-### Governing question
+### Sole operational-admission law
 
-**Where does scientific eligibility become operational work?**
+Operational work is canonical Research OS `ResearchTask` state. Scientific objects cannot self-promote.
 
-The base repository already answers the authority part: operational work is a canonical Research OS `ResearchTask`, and `READY` is a task state owned by the Control Plane/runtime protocol.
+A new `READY` task is legal only by one of two existing Control Plane routes:
 
-### Canonical admission routes
+1. an exact downstream handoff explicitly authorized by the currently claimed canonical task; or
+2. deterministic `control_integrator` refill after fresh proof that global `READY=0` and `CLAIMED=0`, with stable derivation identity, maximum one task and no same-wake producer execution.
 
-There are only two currently authorized patterns:
+The following can never directly mint READY:
 
-#### A. Explicit downstream handoff
+- Multi `ELIGIBLE_FOR_DISCOVERY`;
+- Proposal Ledger entry;
+- Candidate existence or B admissibility;
+- C0 `PROMOTE`;
+- Economic/D0 lifecycle readiness;
+- ModelBackend commentary;
+- Scientific Memory gap/negative knowledge;
+- source novelty.
 
-A currently claimed task may create a downstream task only when that exact handoff is explicitly authorized by the current task. The new task must preserve lineage identity and route to the destination lane/capability.
+### E boundary
 
-#### B. Deterministic empty-queue replenishment
+E qualified head is `2d5ff9d3cbfd7c6cbd71f54bb71095b46edb2e42` on base `2b99…`; branch documentary head `82da9758…`.
 
-Only the `integrator_portfolio` lane through capability `control_integrator` may derive one new READY producer task, and only after fresh proof that:
-
-```text
-READY_TASKS_GLOBAL = 0
-CLAIMED_TASKS_GLOBAL = 0
-```
-
-It derives from owner-governed `RESEARCH_FRONTIER.json`, uses a stable derivation key, may create at most one task, and MUST stop without executing the producer task in the same refill wake.
-
-### Forbidden promotions
-
-The following MUST NOT create a READY task directly:
-
-- `ELIGIBLE_FOR_DISCOVERY`;
-- Candidate existence;
-- Candidate scientific quality;
-- favorable C0 scientific verdict;
-- Research Intelligence recommendation;
-- Multi-Source Proposal Ledger entry;
-- GPT-OSS/ModelBackend suggestion;
-- source novelty alone;
-- Scientific Memory gap;
-- D0 review cadence metadata.
-
-### Task identity / authority payload
-
-When admission is authorized, the canonical operational object must conform to `research-task.schema.json` and carry:
-
-- `task_id`;
-- `task_type`;
-- required capability;
-- `status=READY` at admission;
-- priority;
-- explicit inputs;
-- allowed actions;
-- forbidden actions;
-- success condition;
-- task authority object;
-- initial lease object;
-- lineage and derivation identity when applicable.
-
-All four economic/prospective/capital/trading authority flags remain false.
-
-### Runtime ownership
-
-MEGA E must adapt the existing Research OS Control Plane/Oracle/task protocol. It is explicitly forbidden to create a second scheduler, second queue registry, second authority registry or second Oracle.
-
-The older `src/autonomous_research` `PersistentQueue`/`ResearchCampaign` path must be explicitly bridged, quarantined or retired from canonical authority; it may not silently become a competing scheduler.
+E must continue to use the canonical task identity, capability registry, authority state and lease semantics. No second scheduler, queue, authority registry or Oracle may appear during convergence.
 
 ### Current status
 
-`SPEC_READY / IMPLEMENTATION_PENDING_E`.
+`SPEC_AND_LANE_READY`; whole-chain operational handoff still requires integrated seam tests after the science ports.
 
 ---
 
-## 5. MEGA E → LIVE LAB
+## 5. MEGA E → Live Lab
 
-### Producer
+### Evidence chain
 
-Durable Research OS runtime state/events/receipts plus authenticated delivery path.
-
-### Consumer
-
-Existing factual native Live Lab projection.
-
-### Canonical evidence chain
-
-At minimum, factual runtime projection must retain continuity across:
+A projected runtime fact must preserve:
 
 ```text
 task_id
 → lease generation
 → worker/session/action identity
-→ WorkerEvent sequence/generation
+→ event_id + event_seq + generation
 → WorkerReceipt
-→ durable artifacts/output commit
-→ outbox/delivery identity (if E finalizes one)
-→ Live Lab event evidence ref
+→ artifact/output/evidence refs
+→ durable outbox delivery identity
+→ Live Lab factual projection
 ```
 
-### Existing event contract
+### Projection law
 
-Current supported WorkerEvent types are:
+- synthetic UI activity is never factual activity;
+- process inactivity is not proof of global queue IDLE;
+- global IDLE requires fresh queue proof `READY=0 && CLAIMED=0`;
+- stale/disconnected state remains stale/UNKNOWN until fresh evidence supersedes it;
+- retries/replay are idempotent by durable identity/generation/sequence;
+- outbox delivery never creates a second scientific/runtime fact;
+- authority assertions remain false in receipts and projection.
 
-- `ACTION_STARTED`
-- `ACTION_COMPLETED`
-- `WORKER_HEARTBEAT`
-- `SESSION_ENDED`
+### Recovery law
 
-with required `event_id`, `session_id`, `worker_id`, `action_id`, `event_type`, `event_seq`, `generation`, `emitted_at`, and payload.
-
-### Existing receipt contract
-
-WorkerReceipt binds `receipt_id`, `task_id`, worker/session, lease generation, start/end times, input head, terminal status, artifacts, evidence refs and an authority assertion whose economic/prospective/capital/trading performed fields are all const false.
-
-### Projection rules
-
-The Live Lab may show only facts proved by durable runtime evidence.
-
-- Never synthesize work because a UI animation expects it.
-- Never infer role/progress/economic result from worker identity/timing.
-- `UNKNOWN` is preferred to false `IDLE` or false progress.
-- Worker inactive/SESSION_ENDED is not by itself proof that the **global queue** is idle.
-- Global `IDLE` requires a fresh global queue proof with `READY=0` and `CLAIMED=0`.
-- A stale stream/session must remain explicitly stale/unknown until fresh evidence supersedes it.
-- Replay must be idempotent by event identity + stream generation/sequence.
-- Delivery retries/outbox state must not create duplicate scientific/runtime facts.
-
-### Crash/reboot requirement
-
-After crash/reboot, a fresh process must reconstruct from durable task/lease/event/receipt/outbox state. No fact needed for continuity may exist only in process/chat memory.
+Crash/reboot must reconstruct continuity from durable queue/lease/event/receipt/outbox state, not process/chat memory.
 
 ### Current status
 
-`SPEC_READY / FINAL_E_DELTA_PENDING`.
+`READY_FOR_INTEGRATED_SEAM_QUALIFICATION` after E canonical port.
 
 ---
 
-## Binding acceptance checklist
+## Fixture contract
 
-A seam cannot be declared ready for canonical port unless all applicable answers are YES:
+Foreman fixtures may be synthetic, deterministic, pre-outcome and non-economic only.
 
-- Exact producer FINAL/qualified head known?
-- Exact consumer contract known?
-- Stable subject identity crosses unchanged?
-- Generation/ancestry retained?
-- Source provenance retained?
-- PIT/source clocks retained?
-- UNKNOWN retained?
-- BLOCKED distinct from FAILED?
-- No scientific state maps directly to operational READY?
-- No new scheduler/queue/authority registry introduced?
-- Authority flags remain false?
-- Duplicate/idempotency semantics explicit?
-- Stale/requalification semantics explicit?
-- Fixture exists and is deterministic/pre-outcome/non-economic?
-- Seam test exists and runs on exact integrated head?
+Required fixture families:
 
-Until those hold, status remains `EXPECTED_MISSING_BINDING`, `EXPECTED_SCHEMA_GAP`, or `NOT_RUN`; tests must not be weakened to manufacture green.
+1. `MULTI_TO_B_ELIGIBLE`: good provenance/context; no READY field; duplicate and stale variants.
+2. `B_TO_C0_CANDIDATE`: exact Candidate generation + Factory refs; mutation/tamper/UNKNOWN variants.
+3. `C0_TO_D0_VERDICT`: PROMOTE/PARK/BLOCK and scoped negative ref variants; no outcome payload.
+4. `SCIENCE_TO_E_ADMISSION`: scientific eligibility object paired with authorized/unauthorized canonical task-handoff context; unauthorized path must create zero tasks.
+5. `E_TO_LIVELAB_RECEIPT`: ordered/replayed/stale/disconnected/reboot event+receipt sequences.
+
+Until final producer exact-head contracts are frozen, fixture state is `SPECIFIED_NOT_CANONICALLY_BOUND`, not fabricated green evidence.
+
+## Acceptance checklist
+
+A seam is canonical-port-ready only when all applicable checks are YES:
+
+- producer exact final/qualified head known;
+- producer built/replayed on formally authorized base;
+- exact consumer contract known;
+- subject identity/generation preserved;
+- provenance/PIT clocks preserved;
+- UNKNOWN preserved;
+- BLOCKED distinct from FAILED;
+- UNEXECUTED distinct from NEGATIVE;
+- no scientific→READY mapping;
+- no duplicate scheduler/queue/authority registry;
+- stale/requalification semantics explicit;
+- idempotency/duplicate prevention explicit;
+- authority flags false;
+- deterministic pre-outcome fixture exists;
+- focused seam test runs on exact integrated head.
+
+## Authority
+
+`ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
+
+`PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`
+
+`REAL_CAPITAL_AUTHORIZED=FALSE`
+
+`LIVE_TRADING_AUTHORIZED=FALSE`
+
+`OUTCOME_ACCESSED=FALSE`
+
+`WAVE2_INTEGRATED_SHA_EMITTED=FALSE`
