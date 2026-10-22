@@ -65,12 +65,24 @@ def red_team_negative_rights_v2(
 
     # Denial is monotonic: individual PASS checks cannot erase a blocked or
     # contradictory validator summary, including checks added by a newer schema.
-    if (validator_receipt.get("status") != "READY_FOR_AUTHORIZED_ECONOMIC_TEST"
-            or validator_receipt.get("ready_for_authorized_economic_test") is not True
-            or validator_receipt.get("block_reasons") != []
-            or validator_receipt.get("claim_ceiling") != "READY_FOR_AUTHORIZED_ECONOMIC_TEST"
-            or any(not isinstance(record, dict) or record.get("status") != "PASS"
-                   for record in checks.values())):
+    all_checks_pass = all(isinstance(record, dict) and record.get("status") == "PASS"
+                          for record in checks.values())
+    ready_summary = (validator_receipt.get("status") == "READY_FOR_AUTHORIZED_ECONOMIC_TEST"
+                     and validator_receipt.get("ready_for_authorized_economic_test") is True
+                     and validator_receipt.get("block_reasons") == []
+                     and validator_receipt.get("claim_ceiling") == "READY_FOR_AUTHORIZED_ECONOMIC_TEST"
+                     and all_checks_pass)
+    reasons = validator_receipt.get("block_reasons")
+    blocked_summary = (validator_receipt.get("status") == "BLOCK"
+                       and validator_receipt.get("ready_for_authorized_economic_test") is False
+                       and isinstance(reasons, list) and bool(reasons)
+                       and validator_receipt.get("claim_ceiling") == "BLOCKED_PRE_OUTCOME"
+                       and not all_checks_pass)
+    if (not (ready_summary or blocked_summary)
+            or any(key not in CHECK_TO_BLOCKER and (
+                not isinstance(record, dict) or record.get("status") != "PASS")
+                for key, record in checks.items())
+            or validator_receipt.get("status") == "BLOCK" and not blocks):
         blocks.append("BLOCK_CLAIM_LEVEL")
     if any(validator_receipt.get(key) is not False for key in (
             "economic_test_authorized", "economic_claim_authorized", "candidate_mutated",
