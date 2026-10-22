@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime, timezone
+from threading import RLock
 from typing import Any, Dict, Iterable, List
 
 from research.research_os.scientific_store import sha256_json
@@ -363,6 +364,13 @@ def build_producer_test_readiness(
     }
 
 
+def _qualified_route_text(value: Any) -> bool:
+    return (isinstance(value, str) and bool(value.strip()) and value.strip().upper() not in {
+        "UNKNOWN", "UNAVAILABLE", "UNRESOLVED", "CONFLICTED", "BLOCKED", "UNEXECUTED",
+        "INVALIDATED_PROTOCOL", "NONE", "NULL", "N/A",
+    })
+
+
 def qualify_source_route(route: Dict[str, Any], *, freeze_time: str) -> Dict[str, Any]:
     blockers: List[str] = []
     required = {
@@ -387,15 +395,18 @@ def qualify_source_route(route: Dict[str, Any], *, freeze_time: str) -> Dict[str
         blockers.append("PIT_MODE_NOT_ALLOWED")
     if route.get("permission_state") not in ALLOWED_PERMISSION_STATES:
         blockers.append("PERMISSION_NOT_QUALIFIED")
-    if not route.get("locator"):
+    for field in ("route_id", "transport"):
+        if not _qualified_route_text(route.get(field)):
+            blockers.append(field.upper() + "_INVALID")
+    if not _qualified_route_text(route.get("locator")):
         blockers.append("LOCATOR_MISSING")
     if route.get("contains_outcome") is not False:
         blockers.append("UNAUTHORIZED_OUTCOME_BEARING_ROUTE")
-    if route.get("revision_policy") in (None, "", "UNKNOWN"):
+    if not _qualified_route_text(route.get("revision_policy")):
         blockers.append("REVISION_POLICY_UNKNOWN")
-    if route.get("survivorship_policy") in (None, "", "UNKNOWN"):
+    if not _qualified_route_text(route.get("survivorship_policy")):
         blockers.append("SURVIVORSHIP_POLICY_UNKNOWN")
-    if route.get("timezone") in (None, "", "UNKNOWN"):
+    if not _qualified_route_text(route.get("timezone")):
         blockers.append("TIMEZONE_UNKNOWN")
 
     availability_start = route.get("availability_start")
@@ -446,28 +457,36 @@ def qualify_source_route(route: Dict[str, Any], *, freeze_time: str) -> Dict[str
 class ImmutableSourceRouteRegistry:
     def __init__(self) -> None:
         self._entries: Dict[str, Dict[str, Any]] = {}
+        self._lock = RLock()
 
     def register(self, qualification: Dict[str, Any]) -> Dict[str, Any]:
-        route_id = qualification["route_id"]
-        if not route_id:
-            raise ValueError("route_id required")
-        current = self._entries.get(route_id)
-        if current is not None:
-            if current["route_hash"] != qualification["route_hash"]:
-                raise ValueError(f"immutable source route mutation rejected: {route_id}")
-            return deepcopy(current)
-        self._entries[route_id] = deepcopy(qualification)
-        return deepcopy(qualification)
+        with self._lock:
+            try:
+                expected = qualify_source_route(qualification["canonical_route"],
+                                                freeze_time=qualification["freeze_time"])
+                route_id = qualification["route_id"]
+            except (KeyError, TypeError, AttributeError) as exc:
+                raise ValueError("source qualification malformed") from exc
+            if not _qualified_route_text(route_id) or qualification != expected:
+                raise ValueError("source qualification binding mismatch")
+            current = self._entries.get(route_id)
+            if current is not None:
+                if current != qualification:
+                    raise ValueError(f"immutable source qualification mutation rejected: {route_id}")
+                return deepcopy(current)
+            self._entries[route_id] = deepcopy(qualification)
+            return deepcopy(qualification)
 
     def register_many(self, qualifications: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
         return [self.register(item) for item in qualifications]
 
     def snapshot(self) -> Dict[str, Any]:
-        entries = [deepcopy(self._entries[key]) for key in sorted(self._entries)]
-        return {
-            "registry_id": "source-route-registry.v1",
-            "entry_count": len(entries),
-            "entries": entries,
-            "immutable": True,
-            "outcome_routes_authorized": False,
-        }
+        with self._lock:
+            entries = [deepcopy(self._entries[key]) for key in sorted(self._entries)]
+            return {
+                "registry_id": "source-route-registry.v1",
+                "entry_count": len(entries),
+                "entries": entries,
+                "immutable": True,
+                "outcome_routes_authorized": False,
+            }
