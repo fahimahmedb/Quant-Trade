@@ -76,6 +76,8 @@ class PricePanel:
         return str(int(round(value))) if field == "volume" else f"{value:.6f}"
 
     def write(self, path: Path) -> None:
+        if self.duplicate_keys:
+            raise ValueError("cannot export a panel with duplicate bars")
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.writer(handle)
@@ -96,7 +98,7 @@ class PricePanel:
                       if all((date, symbol) in self.bars for symbol in key)]
             self._aligned[key] = cached
             self._index[key] = {date: position for position, date in enumerate(cached)}
-        return cached
+        return list(cached)
 
     def aligned_index(self, symbols: Iterable[str], date: str) -> int | None:
         """Position of ``date`` in the aligned series, or None if it is not a session."""
@@ -110,7 +112,7 @@ class PricePanel:
         if cached is None:
             cached = [date for date in self.dates if (date, symbol) in self.bars]
             self._symbol_dates[symbol] = cached
-        return cached
+        return list(cached)
 
     def has(self, date: str, symbol: str) -> bool:
         return (date, symbol) in self.bars
@@ -142,7 +144,10 @@ class PricePanel:
             if wanted is not None and symbol not in wanted:
                 continue
             rows.append({"date": date, "symbol": symbol, **bar})
-        return PricePanel(rows)
+        selected = PricePanel(rows)
+        retained = {f"{date}:{symbol}" for date, symbol in selected.bars}
+        selected.duplicate_keys = [key for key in self.duplicate_keys if key in retained]
+        return selected
 
     def window(self, window: Window, symbols: Iterable[str] | None = None) -> "PricePanel":
         return self.restrict(window.start, window.end, symbols)
@@ -166,6 +171,10 @@ class PricePanel:
         The fractions must sum to 1. Windows never overlap, which is what makes
         a desk-reserved holdout enforceable.
         """
+        if (not fractions or any(type(value) not in (int, float)
+                                 or not math.isfinite(value) or not 0 < value <= 1
+                                 for value in fractions.values())):
+            raise ValueError("window fractions must be finite positive numbers")
         if abs(sum(fractions.values()) - 1.0) > 1e-9:
             raise ValueError("window fractions must sum to 1")
         dates = self.aligned_dates(symbols) if symbols is not None else self.dates
