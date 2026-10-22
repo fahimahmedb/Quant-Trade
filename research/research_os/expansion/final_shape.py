@@ -28,7 +28,7 @@ def freeze_experiment_envelope(
 ) -> Dict[str, Any]:
     candidate = engine_output["candidate"]
     can_freeze = implementability["status"] == "PASS"
-    protocol_payload = {
+    protocol_payload = deepcopy({
         "hypothesis_id": candidate["hypothesis_id"],
         "generation_id": candidate["generation_id"],
         "candidate": candidate,
@@ -37,16 +37,25 @@ def freeze_experiment_envelope(
         "code_version": experiment_meta.get("code_version", "UNSPECIFIED"),
         "declared_metrics": experiment_meta.get("declared_metrics", []),
         "declared_decision_map": candidate["decision_map"],
-    }
+    })
     if "implementability_declaration" in experiment_meta:
         protocol_payload["implementability_declaration"] = deepcopy(experiment_meta["implementability_declaration"])
+    freeze_status = "FROZEN_READY_NO_OUTCOME" if can_freeze else "NOT_FROZEN_BY_IMPLEMENTABILITY"
+    if can_freeze:
+        # A malformed declaration is a blocked freeze, preserving downstream
+        # diagnostics without inventing a hash or opening an outcome.
+        try:
+            json.dumps(protocol_payload, allow_nan=False)
+        except (ValueError, TypeError):
+            can_freeze = False
+            freeze_status = "NOT_FROZEN_INVALID_PROTOCOL"
     return {
         "experiment_id": f"EXP-{candidate['hypothesis_id']}-{candidate['generation_id']}",
         "hypothesis_generation": f"{candidate['hypothesis_id']}:{candidate['generation_id']}",
-        "status": "FROZEN_READY_NO_OUTCOME" if can_freeze else "NOT_FROZEN_BY_IMPLEMENTABILITY",
+        "status": freeze_status,
         "protocol_hash": _hash(protocol_payload) if can_freeze else None,
         "protocol_payload": protocol_payload if can_freeze else None,
-        "dataset_provenance": protocol_payload["dataset_provenance"],
+        "dataset_provenance": deepcopy(protocol_payload["dataset_provenance"]),
         "cost_model_version": protocol_payload["cost_model_version"],
         "code_version": protocol_payload["code_version"],
         "outcome_opened": False,
