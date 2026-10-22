@@ -1,0 +1,212 @@
+FFFFFFFFFFFFFF.                                                          [100%]
+=================================== FAILURES ===================================
+_ test_forward_identity_cannot_be_partial_even_after_rehash[None-contract_id] __
+
+field = 'contract_id', value = None
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+_ test_forward_identity_cannot_be_partial_even_after_rehash[None-hypothesis_id] _
+
+field = 'hypothesis_id', value = None
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+_ test_forward_identity_cannot_be_partial_even_after_rehash[None-generation_id] _
+
+field = 'generation_id', value = None
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+___ test_forward_identity_cannot_be_partial_even_after_rehash[-contract_id] ____
+
+field = 'contract_id', value = ''
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+__ test_forward_identity_cannot_be_partial_even_after_rehash[-hypothesis_id] ___
+
+field = 'hypothesis_id', value = ''
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+__ test_forward_identity_cannot_be_partial_even_after_rehash[-generation_id] ___
+
+field = 'generation_id', value = ''
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+_ test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-contract_id] _
+
+field = 'contract_id', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+_ test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-hypothesis_id] _
+
+field = 'hypothesis_id', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+_ test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-generation_id] _
+
+field = 'generation_id', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['contract_id','hypothesis_id','generation_id'])
+    @pytest.mark.parametrize('value',[None,'','UNKNOWN'])
+    def test_forward_identity_cannot_be_partial_even_after_rehash(field,value):
+        record=contract();record[field]=value;rehash(record)
+>       with pytest.raises(ValueError):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_forward_registry_depth.py:26: Failed
+_ test_zero_consumption_requires_exact_integer_proof[False-observation_count] __
+
+field = 'observation_count', value = False
+
+    @pytest.mark.parametrize('field',['observation_count','future_outcomes_consumed'])
+    @pytest.mark.parametrize('value',[False,0.0])
+    def test_zero_consumption_requires_exact_integer_proof(field,value):
+        record=contract();record[field]=value
+>       with pytest.raises((ValueError,PermissionError)):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, PermissionError)
+
+tests/test_vertical_forward_registry_depth.py:33: Failed
+_ test_zero_consumption_requires_exact_integer_proof[False-future_outcomes_consumed] _
+
+field = 'future_outcomes_consumed', value = False
+
+    @pytest.mark.parametrize('field',['observation_count','future_outcomes_consumed'])
+    @pytest.mark.parametrize('value',[False,0.0])
+    def test_zero_consumption_requires_exact_integer_proof(field,value):
+        record=contract();record[field]=value
+>       with pytest.raises((ValueError,PermissionError)):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, PermissionError)
+
+tests/test_vertical_forward_registry_depth.py:33: Failed
+__ test_zero_consumption_requires_exact_integer_proof[0.0-observation_count] ___
+
+field = 'observation_count', value = 0.0
+
+    @pytest.mark.parametrize('field',['observation_count','future_outcomes_consumed'])
+    @pytest.mark.parametrize('value',[False,0.0])
+    def test_zero_consumption_requires_exact_integer_proof(field,value):
+        record=contract();record[field]=value
+>       with pytest.raises((ValueError,PermissionError)):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, PermissionError)
+
+tests/test_vertical_forward_registry_depth.py:33: Failed
+_ test_zero_consumption_requires_exact_integer_proof[0.0-future_outcomes_consumed] _
+
+field = 'future_outcomes_consumed', value = 0.0
+
+    @pytest.mark.parametrize('field',['observation_count','future_outcomes_consumed'])
+    @pytest.mark.parametrize('value',[False,0.0])
+    def test_zero_consumption_requires_exact_integer_proof(field,value):
+        record=contract();record[field]=value
+>       with pytest.raises((ValueError,PermissionError)):forward.ForwardRegistryV2().register(record)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, PermissionError)
+
+tests/test_vertical_forward_registry_depth.py:33: Failed
+______ test_competing_contract_ids_cannot_double_register_one_generation _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f09fd702f00>
+
+    def test_competing_contract_ids_cannot_double_register_one_generation(monkeypatch):
+        one=contract();two=deepcopy(one);two['contract_id']='OTHER';rehash(two)
+        registry=forward.ForwardRegistryV2()
+        entered,release,started=threading.Event(),threading.Event(),threading.Event()
+        original=forward.deepcopy
+        def held(value):
+            if isinstance(value,dict) and value.get('contract_id')=='C':
+                entered.set();assert release.wait(5)
+            return original(value)
+        monkeypatch.setattr(forward,'deepcopy',held)
+        def second():started.set();return registry.register(two)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            first=pool.submit(registry.register,one)
+            try:
+                assert entered.wait(5);second_future=pool.submit(second);assert started.wait(5)
+>               assert not second_future.done()
+E               assert not True
+E                +  where True = done()
+E                +    where done = <Future at 0x7f09fd702600 state=finished returned dict>.done
+
+tests/test_vertical_forward_registry_depth.py:51: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[None-contract_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[None-hypothesis_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[None-generation_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[-contract_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[-hypothesis_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[-generation_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-contract_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-hypothesis_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-generation_id]
+FAILED tests/test_vertical_forward_registry_depth.py::test_zero_consumption_requires_exact_integer_proof[False-observation_count]
+FAILED tests/test_vertical_forward_registry_depth.py::test_zero_consumption_requires_exact_integer_proof[False-future_outcomes_consumed]
+FAILED tests/test_vertical_forward_registry_depth.py::test_zero_consumption_requires_exact_integer_proof[0.0-observation_count]
+FAILED tests/test_vertical_forward_registry_depth.py::test_zero_consumption_requires_exact_integer_proof[0.0-future_outcomes_consumed]
+FAILED tests/test_vertical_forward_registry_depth.py::test_competing_contract_ids_cannot_double_register_one_generation
+14 failed, 1 passed in 0.08s

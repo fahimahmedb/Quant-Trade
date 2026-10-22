@@ -1,0 +1,60 @@
+FFFF..                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks//task.json] _
+
+local_store = (<research.research_os.github_state.GitHubStateStore object at 0x7fcc8848a240>, Snapshot(head='31e7fd3c25fb6c1791ec4bdda202b948a9cd70b6', root=PosixPath('/tmp/pytest-of-agent/pytest-6/test_noncanonical_path_cannot_0'), blobs={}))
+suffix = 'tasks//task.json'
+
+    @pytest.mark.parametrize('suffix',['tasks//task.json','tasks/./task.json','tasks/task.json/','tasks/'])
+    def test_noncanonical_path_cannot_acknowledge_an_ignored_write(local_store,suffix):
+        store,snapshot=local_store
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_git_state_depth.py:30: Failed
+_ test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/./task.json] _
+
+local_store = (<research.research_os.github_state.GitHubStateStore object at 0x7fcc87e89d90>, Snapshot(head='3f5bc765408b579c295a23025fd535c719c4a805', root=PosixPath('/tmp/pytest-of-agent/pytest-6/test_noncanonical_path_cannot_1'), blobs={}))
+suffix = 'tasks/./task.json'
+
+    @pytest.mark.parametrize('suffix',['tasks//task.json','tasks/./task.json','tasks/task.json/','tasks/'])
+    def test_noncanonical_path_cannot_acknowledge_an_ignored_write(local_store,suffix):
+        store,snapshot=local_store
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_git_state_depth.py:30: Failed
+_ test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/task.json/] _
+
+local_store = (<research.research_os.github_state.GitHubStateStore object at 0x7fcc87e89a60>, Snapshot(head='3f5bc765408b579c295a23025fd535c719c4a805', root=PosixPath('/tmp/pytest-of-agent/pytest-6/test_noncanonical_path_cannot_2'), blobs={}))
+suffix = 'tasks/task.json/'
+
+    @pytest.mark.parametrize('suffix',['tasks//task.json','tasks/./task.json','tasks/task.json/','tasks/'])
+    def test_noncanonical_path_cannot_acknowledge_an_ignored_write(local_store,suffix):
+        store,snapshot=local_store
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_git_state_depth.py:30: Failed
+______ test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/] ______
+
+local_store = (<research.research_os.github_state.GitHubStateStore object at 0x7fcc87e8acf0>, Snapshot(head='3f5bc765408b579c295a23025fd535c719c4a805', root=PosixPath('/tmp/pytest-of-agent/pytest-6/test_noncanonical_path_cannot_3'), blobs={}))
+suffix = 'tasks/'
+
+    @pytest.mark.parametrize('suffix',['tasks//task.json','tasks/./task.json','tasks/task.json/','tasks/'])
+    def test_noncanonical_path_cannot_acknowledge_an_ignored_write(local_store,suffix):
+        store,snapshot=local_store
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_git_state_depth.py:30: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_git_state_depth.py::test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks//task.json]
+FAILED tests/test_vertical_git_state_depth.py::test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/./task.json]
+FAILED tests/test_vertical_git_state_depth.py::test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/task.json/]
+FAILED tests/test_vertical_git_state_depth.py::test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/]
+4 failed, 2 passed in 0.58s

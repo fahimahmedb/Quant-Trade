@@ -1,0 +1,37 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "downstream_executed": true,
+  "finding": "CROSS_AXIS_FINDING",
+  "fixture_scope": "SYNTHETIC_LOCAL_MEMORY_ONLY",
+  "from_module": "LegacyKnowledgeBase",
+  "legacy_screen": {
+    "match_reason": "AMBIGUOUS_LEGACY_IDENTITY",
+    "matches": [
+      {
+        "decision": "KILL",
+        "historical_result": "NEGATIVE",
+        "hypothesis_id": "A",
+        "next_legitimate_step": "UNKNOWN"
+      },
+      {
+        "decision": "PARK",
+        "historical_result": "BLOCKED",
+        "hypothesis_id": "B",
+        "next_legitimate_step": "UNKNOWN"
+      }
+    ],
+    "scientific_equivalence": "NOT_ESTABLISHED",
+    "status": "REVIEW_LEGACY_OVERLAP"
+  },
+  "observed_source_sha": "56744528c74f9f514e0540d2237fb7d88c6c6d1f",
+  "owner": "LONGITUDINAL",
+  "property": "Scoped legacy identity review remains unresolved at downstream admission",
+  "repair_status": "NOT_REPAIRED_OWNER_LONGITUDINAL",
+  "spine_status": "PASS",
+  "to_module": "canonical_spine"
+}

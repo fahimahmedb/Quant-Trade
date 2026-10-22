@@ -1,0 +1,370 @@
+FF....FFFFFFFFF...FFFFFFFFFFFF.....                                      [100%]
+=================================== FAILURES ===================================
+___ test_route_required_identity_and_policy_values_are_qualified[-route_id] ____
+
+field = 'route_id', value = ''
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+___ test_route_required_identity_and_policy_values_are_qualified[-transport] ___
+
+field = 'transport', value = ''
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+__ test_route_required_identity_and_policy_values_are_qualified[   -route_id] __
+
+field = 'route_id', value = '   '
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[   -transport] __
+
+field = 'transport', value = '   '
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+__ test_route_required_identity_and_policy_values_are_qualified[   -locator] ___
+
+field = 'locator', value = '   '
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[   -revision_policy] _
+
+field = 'revision_policy', value = '   '
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[   -survivorship_policy] _
+
+field = 'survivorship_policy', value = '   '
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+__ test_route_required_identity_and_policy_values_are_qualified[   -timezone] __
+
+field = 'timezone', value = '   '
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-route_id] _
+
+field = 'route_id', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-transport] _
+
+field = 'transport', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-locator] _
+
+field = 'locator', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-route_id] _
+
+field = 'route_id', value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-transport] _
+
+field = 'transport', value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-locator] _
+
+field = 'locator', value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-revision_policy] _
+
+field = 'revision_policy', value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-survivorship_policy] _
+
+field = 'survivorship_policy', value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+_ test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-timezone] _
+
+field = 'timezone', value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('field', ['route_id','transport','locator','revision_policy','survivorship_policy','timezone'])
+    @pytest.mark.parametrize('value', ['', '   ', 'UNKNOWN', 'CONFLICTED'])
+    def test_route_required_identity_and_policy_values_are_qualified(field,value):
+        item,freeze=route();item[field]=value
+>       assert source.qualify_source_route(item,freeze_time=freeze)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_source_route_depth.py:21: AssertionError
+___________ test_registry_cannot_trust_altered_qualification[status] ___________
+
+field = 'status'
+
+    @pytest.mark.parametrize('field', ['status','point_in_time_qualified','outcome_accessed'])
+    def test_registry_cannot_trust_altered_qualification(field):
+        item,freeze=route();qualification=source.qualify_source_route(item,freeze_time=freeze)
+        qualification[field]={'status':'BLOCK','point_in_time_qualified':False,'outcome_accessed':True}[field]
+>       with pytest.raises(ValueError):source.ImmutableSourceRouteRegistry().register(qualification)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_source_route_depth.py:28: Failed
+__ test_registry_cannot_trust_altered_qualification[point_in_time_qualified] ___
+
+field = 'point_in_time_qualified'
+
+    @pytest.mark.parametrize('field', ['status','point_in_time_qualified','outcome_accessed'])
+    def test_registry_cannot_trust_altered_qualification(field):
+        item,freeze=route();qualification=source.qualify_source_route(item,freeze_time=freeze)
+        qualification[field]={'status':'BLOCK','point_in_time_qualified':False,'outcome_accessed':True}[field]
+>       with pytest.raises(ValueError):source.ImmutableSourceRouteRegistry().register(qualification)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_source_route_depth.py:28: Failed
+______ test_registry_cannot_trust_altered_qualification[outcome_accessed] ______
+
+field = 'outcome_accessed'
+
+    @pytest.mark.parametrize('field', ['status','point_in_time_qualified','outcome_accessed'])
+    def test_registry_cannot_trust_altered_qualification(field):
+        item,freeze=route();qualification=source.qualify_source_route(item,freeze_time=freeze)
+        qualification[field]={'status':'BLOCK','point_in_time_qualified':False,'outcome_accessed':True}[field]
+>       with pytest.raises(ValueError):source.ImmutableSourceRouteRegistry().register(qualification)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_source_route_depth.py:28: Failed
+_________ test_registry_requalifies_body_not_just_supplied_route_hash __________
+
+    def test_registry_requalifies_body_not_just_supplied_route_hash():
+        item,freeze=route();qualification=source.qualify_source_route(item,freeze_time=freeze)
+        qualification['canonical_route']['contains_outcome']=True
+>       with pytest.raises(ValueError):source.ImmutableSourceRouteRegistry().register(qualification)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_source_route_depth.py:34: Failed
+___________ test_registry_does_not_replay_a_different_freeze_context ___________
+
+    def test_registry_does_not_replay_a_different_freeze_context():
+        item,freeze=route();registry=source.ImmutableSourceRouteRegistry()
+        qualification=source.qualify_source_route(item,freeze_time=freeze)
+        registry.register(qualification)
+        later=source.qualify_source_route(item,freeze_time='2026-10-16T15:00:00Z')
+        assert qualification['route_hash']==later['route_hash']
+>       with pytest.raises(ValueError):registry.register(later)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_source_route_depth.py:43: Failed
+_____________ test_registry_competing_contexts_do_not_both_succeed _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fd5e6ef3fe0>
+
+    def test_registry_competing_contexts_do_not_both_succeed(monkeypatch):
+        item,freeze=route();first=source.qualify_source_route(item,freeze_time=freeze)
+        later=source.qualify_source_route(item,freeze_time='2026-10-16T15:00:00Z')
+        registry=source.ImmutableSourceRouteRegistry()
+        entered,release,started=threading.Event(),threading.Event(),threading.Event()
+        original=source.deepcopy
+        def held(value):
+            if isinstance(value,dict) and value.get('freeze_time')==freeze:
+                entered.set();assert release.wait(5)
+            return original(value)
+        monkeypatch.setattr(source,'deepcopy',held)
+        def second():started.set();return registry.register(later)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            one=pool.submit(registry.register,first)
+            try:
+                assert entered.wait(5);two=pool.submit(second);assert started.wait(5)
+>               assert not two.done()
+E               assert not True
+E                +  where True = done()
+E                +    where done = <Future at 0x7fd5e6f01bb0 state=finished returned dict>.done
+
+tests/test_vertical_source_route_depth.py:62: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[-route_id]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[-transport]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[   -route_id]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[   -transport]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[   -locator]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[   -revision_policy]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[   -survivorship_policy]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[   -timezone]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-route_id]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-transport]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-locator]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-route_id]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-transport]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-locator]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-revision_policy]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-survivorship_policy]
+FAILED tests/test_vertical_source_route_depth.py::test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-timezone]
+FAILED tests/test_vertical_source_route_depth.py::test_registry_cannot_trust_altered_qualification[status]
+FAILED tests/test_vertical_source_route_depth.py::test_registry_cannot_trust_altered_qualification[point_in_time_qualified]
+FAILED tests/test_vertical_source_route_depth.py::test_registry_cannot_trust_altered_qualification[outcome_accessed]
+FAILED tests/test_vertical_source_route_depth.py::test_registry_requalifies_body_not_just_supplied_route_hash
+FAILED tests/test_vertical_source_route_depth.py::test_registry_does_not_replay_a_different_freeze_context
+FAILED tests/test_vertical_source_route_depth.py::test_registry_competing_contexts_do_not_both_succeed
+23 failed, 12 passed in 0.22s

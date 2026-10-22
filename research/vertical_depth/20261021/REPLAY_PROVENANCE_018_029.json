@@ -1,0 +1,118 @@
+{
+  "cases": [
+    {
+      "before_module_sha256": "eb78583c915adf320919bbb43fc4da64b1303ab69ff4cefb8365f10116cca468",
+      "before_result": "19 failed, 6 passed in 0.13s",
+      "checkpoint": "CP018",
+      "focused_result": "59 passed, 22 subtests passed in 2.03s",
+      "historical_source_sha": "9355b4e1351b0a730bf69369c4bf2fdac34f0f2c",
+      "module": "research/research_os/expansion/persistent_state.py",
+      "repaired_module_sha256": "63e21bda2d356130d400b3b8d314470c424e3fba372ca8dbeefa2d0b89d8b9e1"
+    },
+    {
+      "before_module_sha256": "47d4b9ca3914ed4a80a1e5a51c597cdfbbad72b37334ad0534a011d09dabd0c0",
+      "before_result": "12 failed, 1 passed in 0.07s",
+      "checkpoint": "CP019",
+      "focused_result": "60 passed, 31 subtests passed in 0.40s",
+      "historical_source_sha": "455112c523b99c1e55520ff056190cc2c60c1ad3",
+      "module": "research/research_os/legacy.py",
+      "repaired_module_sha256": "c13c66382481bc6fe89520886296496d4c89ebbd08733eb9e35101800ccb9cfb"
+    },
+    {
+      "before_module_sha256": "94c011a0fea8a2dad53128247d2325d09db865690d9fd19ec550b0cefd1e72cf",
+      "before_result": "50 failed, 19 passed in 0.19s",
+      "checkpoint": "CP020",
+      "focused_result": "100 passed, 18 subtests passed in 0.25s",
+      "historical_source_sha": "2c129a64f299d89d95350be017e32828a924a200",
+      "module": "research/research_os/expansion/red_team_v2.py",
+      "repaired_module_sha256": "65b3bb604ea8aeeec1e92151fd8d59d881ebfc7a227719787e43eedb61baa829"
+    },
+    {
+      "before_module_sha256": "d1223f520cfceff0912673116a3bcfc70b9e3f0437da57273cb3cd3fe66b35ee",
+      "before_result": "9 failed, 4 passed in 0.07s",
+      "checkpoint": "CP021",
+      "focused_result": "99 passed in 19.50s",
+      "historical_source_sha": "a7bd3e79f75b63058608f9e2f5626887e07e7790",
+      "module": "src/quant/dataplane/panel.py",
+      "repaired_module_sha256": "0b9954633ce8ab61befe6511ecc0aac455c31243cf0b42a8efd6976ea548bf98"
+    },
+    {
+      "before_module_sha256": "3b9ec3088675238f74563cce289d5b4e9c2c9cbe5cf87ea2ea1fcc962575417e",
+      "before_result": "35 failed, 6 passed in 0.16s",
+      "checkpoint": "CP022",
+      "focused_result": "50 passed in 2.22s",
+      "historical_source_sha": "08585a1a25ae8baa4eb61c0268ba3ef74533abc8",
+      "module": "research/research_os/expansion/acquisition_firewall_v1.py",
+      "repaired_module_sha256": "1abea2e4598bd866191ea053509991801569e875b4109468af69b13827ef2f74"
+    },
+    {
+      "before_module_sha256": "06c1333a1097cc3b64a80691c0b3e6fc84fcd24b86750dc3c93ad0245f2462af",
+      "before_result": "18 failed, 2 passed in 0.10s",
+      "checkpoint": "CP023",
+      "focused_result": "70 passed in 1.75s",
+      "historical_source_sha": "bb513a0cda2defab06ca3d29ab185562b37c13ef",
+      "module": "research/research_os/expansion/typed_pit_registry_v1.py",
+      "repaired_module_sha256": "86edb446ff8d64cf29fbf7e99fbc6b0cd99919b98926928e9ec6334bc556af70"
+    },
+    {
+      "before_module_sha256": "f6d235cfb6fc72404a19fb9583cb78c43a6d1114f7c302c966986728fe4d6e77",
+      "before_result": "23 failed, 12 passed in 0.22s",
+      "checkpoint": "CP024",
+      "focused_result": "61 passed, 67 subtests passed in 0.72s",
+      "historical_source_sha": "9e606c6cf585852e440ddf1818ed9931247176a3",
+      "module": "research/research_os/expansion/source_qualification.py",
+      "repaired_module_sha256": "28520b4398d871183924558364e4b6a1fac6b23b46bca4d48446db40e4ea8fe3"
+    },
+    {
+      "before_module_sha256": "1541a2052aee055c7840c5edd6f69cf90ea08b537658e64a8a7a5a36534e3ae8",
+      "before_result": "40 failed, 7 passed in 0.14s",
+      "checkpoint": "CP025",
+      "focused_result": "83 passed, 14 subtests passed in 0.15s",
+      "historical_source_sha": "f298e0654a23d6b6f9e4148bfd94207e908f7889",
+      "module": "research/research_os/expansion/implementability_depth.py",
+      "repaired_module_sha256": "75788e51b195addab42ffe7dbe4fe13095bc3e3bdab465853e7be9ff31bac598"
+    },
+    {
+      "before_module_sha256": "f85d44d05c87817c292da00a1dd4840e0ef40bdf8be393984c4876e7501b40b1",
+      "before_result": "25 failed, 2 passed in 0.16s",
+      "checkpoint": "CP026",
+      "focused_result": "75 passed in 0.12s",
+      "historical_source_sha": "f6f0cc84a156c33de68875573a404c203182726f",
+      "module": "research/research_os/expansion/v2_core.py",
+      "repaired_module_sha256": "70e577b7e19ea7274cab6e3672712883220d7dca346966d462746fedcb7bd62c"
+    },
+    {
+      "before_module_sha256": "0ddf0f83c79682e9e94406b9dd5fef9d4b295dc67424fa97fe1564fcdb205c0e",
+      "before_result": "19 failed, 8 passed in 0.11s",
+      "checkpoint": "CP027",
+      "focused_result": "55 passed, 9 subtests passed in 0.65s",
+      "historical_source_sha": "28fc242b2bdb8a55bc5f2fb680c8973b24351b9f",
+      "module": "research/research_os/expansion/portfolio_v2.py",
+      "repaired_module_sha256": "475c1c80c1e64db610118ef9ba1771b5ae692ca51b57560fa7d5560a216d2fbe"
+    },
+    {
+      "before_module_sha256": "83bb6567642320d88465d9a0c99de76917cdd2082f33589380b5ff3731949b84",
+      "before_result": "10 failed, 4 passed in 0.08s",
+      "checkpoint": "CP028",
+      "focused_result": "67 passed, 54 subtests passed in 2.43s",
+      "historical_source_sha": "56744528c74f9f514e0540d2237fb7d88c6c6d1f",
+      "module": "src/quant/edge_lab/store.py",
+      "repaired_module_sha256": "66a2cfc32d2147b2222bf5d411b95f4c4e474e58fce7e4b558e02ad5c0eb0643"
+    },
+    {
+      "before_module_sha256": "ec2159727bb8ef62923ca476cc0c96f8e63371656d33a6e1a9121a573e086f53",
+      "before_result": "14 failed, 1 passed in 0.08s",
+      "checkpoint": "CP029",
+      "focused_result": "75 passed, 19 subtests passed in 1.51s",
+      "historical_source_sha": "c56007c5fc27284a9721f33850e407f30a11da5f",
+      "module": "research/research_os/expansion/forward_v2.py",
+      "repaired_module_sha256": "b224da5b8809543f5099bd255db93944ef365c567783797d7574d3962428879a"
+    }
+  ],
+  "harness_source_sha": "ea50f6cf1caa1eba6eb141d9d62aa0107de91300",
+  "module_at_a_time": true,
+  "other_product_sources_restored_after_each_replay": true,
+  "physical_crash_qualification": false,
+  "reason": "Managed executor restart removed unarchived /tmp transcripts; all cases were regenerated, never inferred.",
+  "schema_version": "vertical-controlled-historical-module-replay-v1"
+}
