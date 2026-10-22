@@ -9,7 +9,8 @@ from research.research_os.scientific_store import sha256_json
 from .v2_core import SEMANTIC_NULLS
 
 
-_UNKNOWN = SEMANTIC_NULLS | {"", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE"}
+_UNKNOWN = SEMANTIC_NULLS | {"", "UNQUALIFIED", "NOT_QUALIFIED", "UNAVAILABLE",
+                             "CONFLICTED", "BLOCKED", "UNEXECUTED", "INVALIDATED_PROTOCOL"}
 
 # Structural weights are diagnostics only. They are deliberately not statistical
 # correlations and never consume returns. The three core economic-identity axes
@@ -39,19 +40,17 @@ def _is_known(value: Any) -> bool:
     if isinstance(value, float):
         return isfinite(value)
     if isinstance(value, dict):
-        return any(_is_known(item) for item in value.values())
+        return bool(value) and all(_is_known(item) for item in value.values())
     if isinstance(value, (list, tuple, set)):
-        return any(_is_known(item) for item in value)
+        return bool(value) and all(_is_known(item) for item in value)
     return value is not None
 
 
 def _stable_value(value: Any) -> Any:
     if isinstance(value, set):
         return sorted(value)
-    if isinstance(value, tuple):
-        return list(value)
-    if isinstance(value, list):
-        return sorted(value) if all(isinstance(v, str) for v in value) else value
+    if isinstance(value, (list, tuple)):
+        return sorted(value) if all(isinstance(v, str) for v in value) else list(value)
     return value
 
 
@@ -64,6 +63,8 @@ def _eq_known(left: Any, right: Any) -> Any:
 
 
 def _jaccard(left: Iterable[str], right: Iterable[str]) -> Any:
+    if isinstance(left, (str, dict)) or isinstance(right, (str, dict)):
+        raise ValueError("economic tags must be collections, not scalar text or mappings")
     a = {value for value in left or [] if _is_known(value)}
     b = {value for value in right or [] if _is_known(value)}
     if not a or not b:
