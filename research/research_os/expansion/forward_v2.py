@@ -155,4 +155,3 @@ class ForwardRegistryV2:
                 "future_outcomes_consumed": sum(item["future_outcomes_consumed"] for item in entries),
                 "immutable_generations": True,
             }
-
