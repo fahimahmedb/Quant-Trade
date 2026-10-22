@@ -20,9 +20,11 @@ FORBIDDEN_CONTENT_CLASSES = {
 
 
 def _parse_utc(value: str) -> datetime:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("explicit record clock required")
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("record clock requires an explicit timezone")
     return parsed.astimezone(timezone.utc)
 
 
@@ -55,6 +57,11 @@ def build_acquisition_plan(
         if request.get(field) in (None, "", [], {}):
             blockers.append(f"MISSING_{field.upper()}")
 
+    try:
+        _parse_utc(request.get("clock_cutoff"))
+    except ValueError:
+        blockers.append("INVALID_REQUEST_CLOCK")
+
     payload = {
         "request_id": request.get("request_id"),
         "adapter_id": validated_adapter.get("adapter_id"),
@@ -86,6 +93,12 @@ def content_firewall(plan: Dict[str, Any], raw_record: Dict[str, Any]) -> Dict[s
         blockers.append("ACQUISITION_PLAN_NOT_READY")
     if plan.get("network_call_performed") is not False:
         blockers.append("NETWORK_CALL_DETECTED")
+    body = plan.get("plan")
+    if not isinstance(body, dict) or plan.get("plan_hash") != sha256_json(body):
+        blockers.append("ACQUISITION_PLAN_HASH_MISMATCH")
+    if any(plan.get(key) is not False for key in (
+            "network_execution_authorized", "outcome_access_authorized", "outcome_accessed")):
+        blockers.append("ACQUISITION_AUTHORITY_NOT_CLOSED")
     if raw_record.get("fixture_only") is not True:
         blockers.append("NON_FIXTURE_RECORD_FORBIDDEN_IN_WAVE4")
     if raw_record.get("contains_outcome") is not False:
@@ -93,6 +106,8 @@ def content_firewall(plan: Dict[str, Any], raw_record: Dict[str, Any]) -> Dict[s
 
     content_classes = set(raw_record.get("content_classes") or [])
     requested = set((plan.get("plan") or {}).get("content_classes") or [])
+    if not content_classes:
+        blockers.append("NO_CONTENT_CLASS_PRESENT")
     forbidden_seen = sorted(content_classes & FORBIDDEN_CONTENT_CLASSES)
     undeclared = sorted(content_classes - requested)
     blockers.extend(f"FORBIDDEN_CONTENT_PRESENT:{item}" for item in forbidden_seen)
@@ -111,18 +126,36 @@ def content_firewall(plan: Dict[str, Any], raw_record: Dict[str, Any]) -> Dict[s
     }
     blockers.extend(f"MISSING_{field.upper()}" for field in sorted(required - raw_record.keys()))
 
+    for field in ("record_id", "source_version_id"):
+        if not isinstance(raw_record.get(field), str) or not raw_record[field].strip():
+            blockers.append(f"INVALID_{field.upper()}")
     cutoff = (plan.get("plan") or {}).get("clock_cutoff")
     try:
-        if cutoff and raw_record.get("published_at") and _parse_utc(raw_record["published_at"]) > _parse_utc(cutoff):
+        cutoff_clock = _parse_utc(cutoff)
+        published = _parse_utc(raw_record.get("published_at"))
+        captured = _parse_utc(raw_record.get("captured_at"))
+        _parse_utc(raw_record.get("effective_at"))
+        if published > cutoff_clock:
             blockers.append("RECORD_PUBLISHED_AFTER_CLOCK_CUTOFF")
-        if raw_record.get("captured_at") and raw_record.get("published_at") and _parse_utc(raw_record["captured_at"]) < _parse_utc(raw_record["published_at"]):
+        if captured < published:
             blockers.append("CAPTURE_PRECEDES_PUBLICATION")
     except ValueError:
         blockers.append("INVALID_RECORD_CLOCK")
 
-    payload = deepcopy(raw_record.get("payload") or {})
-    forbidden_keys = FORBIDDEN_CONTENT_CLASSES & set(payload.keys())
-    blockers.extend(f"FORBIDDEN_PAYLOAD_KEY:{item}" for item in sorted(forbidden_keys))
+    payload = raw_record.get("payload")
+    if not isinstance(payload, dict):
+        blockers.append("INVALID_RECORD_PAYLOAD")
+    else:
+        def forbidden_keys(value):
+            if isinstance(value, dict):
+                for key, item in value.items():
+                    if isinstance(key, str) and key.strip().lower() in FORBIDDEN_CONTENT_CLASSES:
+                        yield key
+                    yield from forbidden_keys(item)
+            elif isinstance(value, (list, tuple)):
+                for item in value:
+                    yield from forbidden_keys(item)
+        blockers.extend(f"FORBIDDEN_PAYLOAD_KEY:{key}" for key in sorted(set(forbidden_keys(payload))))
 
     return {
         "record_id": raw_record.get("record_id"),
@@ -140,7 +173,8 @@ def normalize_typed_pit_record(
     raw_record: Dict[str, Any],
     firewall_result: Dict[str, Any],
 ) -> Dict[str, Any]:
-    if firewall_result.get("status") != "PASS":
+    reproduced = content_firewall(plan, raw_record)
+    if reproduced["status"] != "PASS" or firewall_result != reproduced:
         return {
             "record_id": raw_record.get("record_id"),
             "status": "BLOCK",
@@ -152,6 +186,7 @@ def normalize_typed_pit_record(
         "record_id": raw_record["record_id"],
         "adapter_id": plan["adapter_id"],
         "plan_hash": plan["plan_hash"],
+        "raw_record_hash": reproduced["raw_record_hash"],
         "source_version_id": raw_record["source_version_id"],
         "effective_at": raw_record["effective_at"],
         "published_at": raw_record["published_at"],
@@ -182,6 +217,30 @@ def build_provenance_manifest(
         blockers.append("TYPED_RECORD_NOT_PASS")
     if plan.get("network_call_performed") is not False:
         blockers.append("NETWORK_SIDE_EFFECT_DETECTED")
+    # Bind the normalized body and the original (pre-normalization) raw bytes.
+    # Content-class ordering can change during normalization, so reconstructing
+    # a raw hash from the typed projection would lose original identity.
+    raw_fields = ("record_id", "source_version_id", "effective_at", "published_at",
+                  "captured_at", "content_classes", "payload")
+    typed_fields = raw_fields + ("adapter_id", "plan_hash", "record_origin", "raw_record_hash")
+    raw = {key: deepcopy(typed_record.get(key)) for key in raw_fields}
+    raw.update(fixture_only=typed_record.get("record_origin") == "SYNTHETIC_FIXTURE_ONLY",
+               contains_outcome=False)
+    try:
+        replayed = content_firewall(plan, raw)
+        body = {key: typed_record[key] for key in typed_fields}
+        if (replayed["status"] != "PASS"
+                or typed_record.get("typed_record_hash") != sha256_json(body)
+                or typed_record.get("raw_record_hash") != firewall_result.get("raw_record_hash")
+                or typed_record.get("record_id") != firewall_result.get("record_id")
+                or typed_record.get("adapter_id") != plan.get("adapter_id")
+                or typed_record.get("plan_hash") != plan.get("plan_hash")
+                or typed_record.get("point_in_time_record") is not True
+                or typed_record.get("outcome_accessed") is not False
+                or typed_record.get("network_origin") is not False):
+            blockers.append("TYPED_PROVENANCE_BINDING_MISMATCH")
+    except (TypeError, ValueError, KeyError, AttributeError):
+        blockers.append("TYPED_PROVENANCE_BINDING_MISMATCH")
     payload = {
         "request_id": plan.get("request_id"),
         "adapter_id": plan.get("adapter_id"),
