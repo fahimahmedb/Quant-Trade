@@ -5,6 +5,8 @@ from math import isfinite
 from typing import Any, Dict, List
 
 _UNKNOWN = "UNKNOWN"
+_UNQUALIFIED = {_UNKNOWN, "UNAVAILABLE", "UNSPECIFIED", "NOT_ESTIMATED",
+                "CONFLICTED", "BLOCKED", "UNEXECUTED", "INVALIDATED_PROTOCOL"}
 _REQUIRED_EXPRESSION_FIELDS = (
     "direction_exposure_semantics",
     "eligibility",
@@ -29,13 +31,13 @@ def _known(value: Any) -> bool:
     if value is None or isinstance(value, bool):
         return False
     if isinstance(value, str):
-        return bool(value.strip()) and value.strip().upper() not in {
-            _UNKNOWN, "UNAVAILABLE", "UNSPECIFIED", "NOT_ESTIMATED",
-        }
+        return bool(value.strip()) and value.strip().upper() not in _UNQUALIFIED
     if isinstance(value, float):
         return isfinite(value)
-    if isinstance(value, (list, tuple, set, dict)):
-        return bool(value)
+    if isinstance(value, dict):
+        return bool(value) and all(_known(item) for item in value.values())
+    if isinstance(value, (list, tuple, set)):
+        return bool(value) and all(_known(item) for item in value)
     return True
 
 
@@ -43,7 +45,7 @@ def _complexity(value: Any) -> str:
     if not isinstance(value, str) or not value.strip():
         return _UNKNOWN
     normalized = value.strip().upper()
-    return normalized if normalized != _UNKNOWN else _UNKNOWN
+    return normalized if normalized not in _UNQUALIFIED else _UNKNOWN
 
 
 def _expression_diagnostics(meta: Dict[str, Any]) -> Dict[str, Any]:
