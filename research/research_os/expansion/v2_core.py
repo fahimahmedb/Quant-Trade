@@ -292,6 +292,14 @@ def build_negative_memory(payload: Mapping[str, Any]) -> Dict[str, Any]:
         "failure_reason", "revisit_conditions", "revisit_policy",
     }
     _require(payload, required, "NEGATIVE_MEMORY")
+    _require_identifiers(payload, ("negative_knowledge_id", "failure_scope", "failure_reason", "revisit_policy"),
+                         "NEGATIVE_MEMORY")
+    for field in ("assumptions", "revisit_conditions"):
+        if not isinstance(payload[field], list):
+            raise V2ContractError("NEGATIVE_MEMORY_INVALID_LIST:" + field)
+    for field in ("regime_context", "source_context"):
+        if not isinstance(payload[field], Mapping):
+            raise V2ContractError("NEGATIVE_MEMORY_INVALID_CONTEXT:" + field)
     if payload.get("failure_reason") == "IDEA_FALSE_FOREVER" and not payload.get("logical_proof"):
         raise V2ContractError("UNSCOPED_PERMANENT_NEGATIVE_CLAIM")
     record = deepcopy(dict(payload))
