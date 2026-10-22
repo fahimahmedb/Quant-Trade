@@ -152,7 +152,9 @@ class GitHubStateStore:
         allowed = ('tasks/', 'events/', 'receipts/', 'artifacts/', 'hypotheses/', 'assessments/', 'runtime/worker_wakes/')
         for path in writes:
             tail = path.removeprefix(PREFIX)
-            if not path.startswith(PREFIX) or not tail.startswith(allowed) or '..' in PurePosixPath(path).parts or '\n' in path or '\t' in path:
+            if (not path.startswith(PREFIX) or not tail.startswith(allowed)
+                    or PurePosixPath(path).as_posix() != path or '..' in PurePosixPath(path).parts
+                    or '\n' in path or '\t' in path):
                 raise ValueError('STATE_WRITE_OUTSIDE_CANONICAL_WORKER_PATHS')
         with self._locked(), tempfile.TemporaryDirectory(prefix='quant-index-') as tmp:
             env = {'GIT_INDEX_FILE': str(Path(tmp) / 'index'),
