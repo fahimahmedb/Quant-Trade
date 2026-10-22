@@ -26,18 +26,32 @@ def _tokens(*values: Iterable[str]) -> set[str]:
 
 class LegacyKnowledgeBase:
     def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
-        self.manifest = manifest
-        self.ledger = ledger or {"records": []}
-        self.records = list(self.ledger.get("records") or [])
+        self.manifest = deepcopy(manifest)
+        self.ledger = deepcopy(ledger) if ledger is not None else {"records": []}
+        if not isinstance(self.ledger, dict):
+            raise ValueError("LEGACY_LEDGER_INVALID")
+        records = self.ledger.get("records", [])
+        if not isinstance(records, list) or any(not isinstance(r, dict) for r in records):
+            raise ValueError("LEGACY_RECORDS_INVALID")
+        self.records = list(records)
         # Provenance recovery is separate from the immutable imported ledger.
-        self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
+        self.source_reviews = deepcopy(self.manifest.get("recovered_source_reviews", []))
         self._validate_source_reviews()
         self.by_id: Dict[str, Dict[str, Any]] = {}
+        self._ambiguous_ids: Dict[str, List[Dict[str, Any]]] = {}
+        identities: Dict[str, List[Dict[str, Any]]] = {}
         for record in self.records:
             for key in ("HYPOTHESIS_ID", "LEGACY_ID_IF_ANY"):
                 value = record.get(key)
                 if isinstance(value, str) and value and value != "UNKNOWN":
-                    self.by_id[value] = record
+                    matches = identities.setdefault(value, [])
+                    if record not in matches:
+                        matches.append(record)
+        for value, matches in identities.items():
+            if len(matches) == 1:
+                self.by_id[value] = matches[0]
+            else:
+                self._ambiguous_ids[value] = sorted(matches, key=lambda r: json.dumps(r, sort_keys=True))
 
     def _validate_source_reviews(self) -> None:
         fields = {"source_id", "historical_id", "mechanism", "classification",
@@ -93,15 +107,27 @@ class LegacyKnowledgeBase:
 
     def screen_candidate(self, candidate: Dict[str, Any]) -> Dict[str, Any]:
         cid = candidate.get("hypothesis_id")
+        if cid in self._ambiguous_ids:
+            return {
+                "status": "REVIEW_LEGACY_OVERLAP",
+                "match_reason": "AMBIGUOUS_LEGACY_IDENTITY",
+                "matches": [deepcopy({
+                    "hypothesis_id": record.get("HYPOTHESIS_ID"),
+                    "historical_result": record.get("RESULT", "UNKNOWN"),
+                    "decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
+                    "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
+                }) for record in self._ambiguous_ids[cid]],
+                "scientific_equivalence": "NOT_ESTABLISHED",
+            }
         if cid in self.by_id:
             record = self.by_id[cid]
-            return {
+            return deepcopy({
                 "status": "BLOCK_EXACT_LEGACY_DUPLICATE",
                 "matched_hypothesis_id": record.get("HYPOTHESIS_ID"),
                 "historical_result": record.get("RESULT", "UNKNOWN"),
                 "historical_decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
                 "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
-            }
+            })
 
         c_tokens = _tokens(candidate.get("mechanism", ""), candidate.get("economic_tags", []))
         matches: List[Dict[str, Any]] = []
@@ -115,14 +141,14 @@ class LegacyKnowledgeBase:
                 continue
             overlap = len(c_tokens & r_tokens) / len(c_tokens | r_tokens)
             if overlap >= 0.30:
-                matches.append({
+                matches.append(deepcopy({
                     "hypothesis_id": record.get("HYPOTHESIS_ID"),
                     "research_family_id": record.get("RESEARCH_FAMILY_ID"),
                     "overlap": round(overlap, 4),
                     "historical_result": record.get("RESULT", "UNKNOWN"),
                     "decision": record.get("RESEARCH_DECISION", "UNKNOWN"),
                     "next_legitimate_step": record.get("NEXT_LEGITIMATE_STEP", "UNKNOWN"),
-                })
+                }))
         matches.sort(key=lambda x: x["overlap"], reverse=True)
         source_matches = []
         for entry in self.source_reviews:
@@ -141,7 +167,7 @@ class LegacyKnowledgeBase:
         }
 
     def summary(self) -> Dict[str, Any]:
-        return {
+        return deepcopy({
             "source_commit": self.manifest["source_commit"],
             "ledger_blob_sha": self.manifest["ledger_blob_sha"],
             "reconciliation_status": self.manifest["reconciliation_status"],
@@ -153,4 +179,4 @@ class LegacyKnowledgeBase:
             "recovered_source_review_count": len(self.source_reviews),
             "recovered_source_reviews_hash": self._source_review_hash(),
             "read_only": True,
-        }
+        })
