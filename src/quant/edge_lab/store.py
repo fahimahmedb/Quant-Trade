@@ -5,6 +5,7 @@ import copy
 import fcntl
 import hashlib
 import json
+import math
 import os
 from contextlib import contextmanager
 from pathlib import Path
@@ -31,8 +32,13 @@ def strict_json(path):
         return result
     def invalid(value):
         raise Refused(f"Non-finite JSON: {value}")
+    def finite_float(value):
+        number = float(value)
+        if not math.isfinite(number):
+            raise Refused("Non-finite JSON number")
+        return number
     return json.loads(Path(path).read_text(), object_pairs_hook=unique,
-                      parse_constant=invalid)
+                      parse_constant=invalid, parse_float=finite_float)
 
 
 def event(state, kind, payload):
@@ -46,13 +52,13 @@ def event(state, kind, payload):
 
 
 def verify(state):
-    if state.get("schema") != 1:
+    if type(state.get("schema")) is not int or state["schema"] != 1:
         raise Refused("Unknown state schema; do not reset or silently migrate")
     if state.get("integrity") != digest({k: v for k, v in state.items() if k != "integrity"}):
         raise Refused("State checksum failed; preserve the damaged evidence")
     previous = "0" * 64
     for sequence, row in enumerate(state["events"], 1):
-        if (row["sequence"] != sequence or row["previous"] != previous
+        if (type(row["sequence"]) is not int or row["sequence"] != sequence or row["previous"] != previous
                 or row["hash"] != digest({k: v for k, v in row.items() if k != "hash"})):
             raise Refused("Evidence chain failed")
         previous = row["hash"]
@@ -132,7 +138,8 @@ class Store:
 
     def control(self):
         control = strict_json(self.control_path)
-        if (type(control.get("paused")) is not bool or control.get("schema") != 1
+        if (type(control.get("paused")) is not bool or type(control.get("schema")) is not int
+                or control["schema"] != 1
                 or control.get("real_capital_authorized") is not False
                 or control.get("live_trading_authorized") is not False):
             raise Refused("Invalid controls; fail closed")
