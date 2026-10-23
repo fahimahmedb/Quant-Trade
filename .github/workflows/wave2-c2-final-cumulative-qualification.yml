@@ -17,7 +17,7 @@ env:
   C2_C0_CANONICAL_PORT_COMMIT: 14926055583ee13e9fd84aa52b3e660b5ce56844
   C2_MEGA_E_PORT_COMMIT: 8d7383be274797d3114c37f92cd11c6f90de1af0
   C2_MULTISOURCE_MERGE_COMMIT: 0722dc4d3a69e70b67b15962b9bfe1858f963408
-  MULTISOURCE_REVIEWED_SOURCE_HEAD: 5bc467ad1b5f4948470a7f084646466ff00999be
+  MULTISOURCE_REVIEWED_SOURCE_HEAD: bbdea6a794377f8cab54fa8bcb6ad2242616e426
   MULTISOURCE_CANONICAL_HARDENING_BLOB: 3a19c9568a5d3b6c7cd867cd6341f66463d69dc2
   MULTISOURCE_CANONICAL_FIREWALL_TEST_BLOB: 43c0f1a1de5797eed644266a2713f6951f866a89
   MULTISOURCE_NO_CROSS_TEST_BLOB: 30f20bbac415d328117c3a5cb9687b67ebf1d949
@@ -49,14 +49,14 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           for a in "$WAVE2_IMMUTABLE_BASE_SHA" "$C2_B_PORT_SHA" "$C2_D0_PORT_SHA" "$C2_C0_SOURCE_PRESERVATION_COMMIT" "$C2_C0_CANONICAL_PORT_COMMIT" "$C2_MEGA_E_PORT_COMMIT" "$C2_MULTISOURCE_MERGE_COMMIT"; do git merge-base --is-ancestor "$a" HEAD; done
           test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "$NORTH_STAR_BLOB"
-          test "$(git hash-object research/research_os/expansion/_scientific_adjudication_c0.py)" = "$C0_HISTORICAL_BLOB"
-          test "$(git hash-object deploy/oracle_live_projection.py)" = "$E_PROJECTION_BLOB"
-          test "$(git hash-object research/research_os/tests/test_mega_e_live_receipt_reconciliation.py)" = "$E_RECEIPT_TEST_BLOB"
-          test "$(git hash-object research/research_os/ideation_cycle.py)" = "$MULTISOURCE_IDEATION_CYCLE_BLOB"
-          test "$(git hash-object research/research_os/multi_source_ideation.py)" = "$MULTISOURCE_CORE_BLOB"
-          test "$(git hash-object research/research_os/multi_source_ideation_hardening.py)" = "$MULTISOURCE_CANONICAL_HARDENING_BLOB"
-          test "$(git hash-object tests/test_multi_source_ideation_v2_durable_ledger_truth_operational_firewall.py)" = "$MULTISOURCE_CANONICAL_FIREWALL_TEST_BLOB"
-          test "$(git hash-object tests/test_multi_source_ideation_v2_no_cross_lane.py)" = "$MULTISOURCE_NO_CROSS_TEST_BLOB"
+          test "$(git rev-parse HEAD:research/research_os/expansion/_scientific_adjudication_c0.py)" = "$C0_HISTORICAL_BLOB"
+          test "$(git rev-parse HEAD:deploy/oracle_live_projection.py)" = "$E_PROJECTION_BLOB"
+          test "$(git rev-parse HEAD:research/research_os/tests/test_mega_e_live_receipt_reconciliation.py)" = "$E_RECEIPT_TEST_BLOB"
+          test "$(git rev-parse HEAD:research/research_os/ideation_cycle.py)" = "$MULTISOURCE_IDEATION_CYCLE_BLOB"
+          test "$(git rev-parse HEAD:research/research_os/multi_source_ideation.py)" = "$MULTISOURCE_CORE_BLOB"
+          test "$(git rev-parse HEAD:research/research_os/multi_source_ideation_hardening.py)" = "$MULTISOURCE_CANONICAL_HARDENING_BLOB"
+          test "$(git rev-parse HEAD:tests/test_multi_source_ideation_v2_durable_ledger_truth_operational_firewall.py)" = "$MULTISOURCE_CANONICAL_FIREWALL_TEST_BLOB"
+          test "$(git rev-parse HEAD:tests/test_multi_source_ideation_v2_no_cross_lane.py)" = "$MULTISOURCE_NO_CROSS_TEST_BLOB"
           echo "CANDIDATE_HEAD=$GITHUB_SHA" | tee /tmp/final.env
 
       - name: Reacquire source and fail closed on future product drift
