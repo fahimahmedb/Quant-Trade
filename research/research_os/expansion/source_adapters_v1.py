@@ -7,6 +7,7 @@ from decimal import Decimal
 import hashlib
 import re
 import subprocess
+from threading import RLock
 
 from research.research_os.scientific_store import sha256_json
 
@@ -325,6 +326,13 @@ def assess_t1_rule_scope(transaction: Dict[str, Any]) -> Dict[str, Any]:
     return {'status':'CONDITIONALLY_WITHIN_RULE_SCOPE', 'reason':'DECLARED_ASSUMPTIONS_ONLY_NOT_ACTUAL_TRANSACTION_EVIDENCE'}
 
 
+def _adapter_text(value: Any) -> bool:
+    return (isinstance(value, str) and bool(value.strip()) and value.strip().upper() not in {
+        "UNKNOWN", "UNRESOLVED", "UNAVAILABLE", "CONFLICTED", "BLOCKED", "UNEXECUTED",
+        "INVALIDATED_PROTOCOL", "NONE", "NULL",
+    })
+
+
 def validate_adapter_spec(spec: Dict[str, Any]) -> Dict[str, Any]:
     blockers: List[str] = []
     required = {
@@ -350,8 +358,11 @@ def validate_adapter_spec(spec: Dict[str, Any]) -> Dict[str, Any]:
         blockers.append("NETWORK_ACCESS_FORBIDDEN_IN_WAVE3")
     if spec.get("contains_market_outcome") is not False:
         blockers.append("OUTCOME_BEARING_ADAPTER_FORBIDDEN")
+    for field in ("adapter_id", "provider_family"):
+        if not _adapter_text(spec.get(field)):
+            blockers.append(f"{field.upper()}_INVALID")
     for field in ("permission_model", "clock_semantics", "revision_policy", "survivorship_policy", "locator_template"):
-        if spec.get(field) in (None, "", "UNKNOWN"):
+        if not _adapter_text(spec.get(field)):
             blockers.append(f"{field.upper()}_UNKNOWN")
 
     canonical = {
@@ -384,31 +395,41 @@ def validate_adapter_spec(spec: Dict[str, Any]) -> Dict[str, Any]:
 class DesignOnlyAdapterRegistry:
     def __init__(self) -> None:
         self._entries: Dict[str, Dict[str, Any]] = {}
+        self._lock = RLock()
 
     def register(self, validated: Dict[str, Any]) -> Dict[str, Any]:
-        adapter_id = validated.get("adapter_id")
-        if not adapter_id:
-            raise ValueError("adapter_id required")
-        current = self._entries.get(adapter_id)
-        if current is not None:
-            if current["adapter_hash"] != validated["adapter_hash"]:
-                raise ValueError(f"adapter mutation rejected: {adapter_id}")
-            return deepcopy(current)
-        self._entries[adapter_id] = deepcopy(validated)
-        return deepcopy(validated)
+        with self._lock:
+            validated = deepcopy(validated)
+            adapter_id = validated.get("adapter_id")
+            if not _adapter_text(adapter_id):
+                raise ValueError("adapter_id required")
+            try:
+                expected = validate_adapter_spec(validated["canonical_spec"])
+            except (KeyError, TypeError, AttributeError) as exc:
+                raise ValueError("adapter qualification malformed") from exc
+            if validated != expected:
+                raise ValueError("adapter qualification binding mismatch")
+            current = self._entries.get(adapter_id)
+            if current is not None:
+                if current != validated:
+                    raise ValueError(f"adapter mutation rejected: {adapter_id}")
+                return deepcopy(current)
+            self._entries[adapter_id] = deepcopy(validated)
+            return deepcopy(validated)
 
     def register_many(self, records: Iterable[Dict[str, Any]]) -> None:
         for record in records:
             self.register(record)
 
     def snapshot(self) -> Dict[str, Any]:
-        entries = [deepcopy(self._entries[key]) for key in sorted(self._entries)]
-        return {
-            "registry_id": "design-only-source-adapters.v1",
-            "entry_count": len(entries),
-            "entries": entries,
-            "activated_count": sum(bool(item["activated"]) for item in entries),
-            "network_enabled_count": sum(bool(item["network_access"]) for item in entries),
-            "outcome_authorized_count": sum(bool(item["outcome_access_authorized"]) for item in entries),
-            "immutable": True,
-        }
+        with self._lock:
+            entries = [deepcopy(self._entries[key]) for key in sorted(self._entries)]
+            return {
+                "registry_id": "design-only-source-adapters.v1",
+                "entry_count": len(entries),
+                "entries": entries,
+                "activated_count": sum(bool(item["activated"]) for item in entries),
+                "network_enabled_count": sum(bool(item["network_access"]) for item in entries),
+                "outcome_authorized_count": sum(bool(item["outcome_access_authorized"]) for item in entries),
+                "immutable": True,
+            }
