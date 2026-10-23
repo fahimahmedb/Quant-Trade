@@ -61,6 +61,10 @@ class FrozenExperimentBindingError(ValueError):
     """Raised when a pre-outcome experiment freeze is incomplete or changes materially."""
 
 
+def _valid_observed_attempt_count(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
 def _valid_effective_trials(value: Any) -> bool:
     return value == UNKNOWN or (
         type(value) in (int, float) and value >= 0
@@ -236,7 +240,7 @@ class DryRunExperimentRunner:
 
         if "observed_attempt_count" in declared:
             attempts = declared.get("observed_attempt_count")
-            if isinstance(attempts, bool) or not isinstance(attempts, int) or attempts < 0:
+            if not _valid_observed_attempt_count(attempts):
                 blockers.append("FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID")
         if "effective_trials" in declared:
             effective = declared.get("effective_trials")
@@ -310,6 +314,8 @@ class DryRunExperimentRunner:
         runner_meta: Dict[str, Any],
     ) -> Dict[str, Any]:
         """Rebind a frozen plan and fail closed on any material pre-outcome change."""
+        # Keep the checked reference fixed while the new inputs are rebound.
+        plan = deepcopy(plan)
         self.replay(plan)
         if not isinstance(plan.get("frozen_protocol"), Mapping):
             raise FrozenExperimentBindingError("FROZEN_PROTOCOL_NOT_PRESENT")
@@ -346,24 +352,53 @@ class DryRunExperimentRunner:
         }
 
     def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:
+        plan = deepcopy(plan)
         if plan.get("status") != "READY_FOR_REPRODUCIBLE_DRY_RUN":
             raise ValueError("blocked execution plan cannot be replayed")
         self._assert_pre_outcome_closed(plan)
+        if plan["plan"].get("execution_mode") != "DRY_RUN_NO_OUTCOME":
+            raise ValueError("DRY_RUN_EXECUTION_MODE_REQUIRED")
         replay_hash = sha256_json(plan["plan"])
         if replay_hash != plan["execution_plan_hash"]:
             raise ValueError("execution plan mutation detected")
         if plan.get("experiment_id") != plan["plan"].get("experiment_id"):
             raise ValueError("EXPERIMENT_ID_BINDING_MISMATCH")
         frozen_protocol = plan.get("frozen_protocol")
+        frozen_claimed = (
+            any(field in plan["plan"] for field in
+                ("frozen_protocol_version", "frozen_protocol_hash", "binding_hashes"))
+            or plan.get("binding_hashes") is not None
+            or plan.get("frozen_protocol_capability") not in (None, "LEGACY_DRY_RUN_ONLY")
+        )
+        if frozen_claimed and not isinstance(frozen_protocol, Mapping):
+            raise ValueError("FROZEN_PROTOCOL_REQUIRED")
         if "frozen_protocol_version" in plan["plan"]:
             if plan["plan"]["frozen_protocol_version"] != FROZEN_PROTOCOL_VERSION:
                 raise ValueError("UNSUPPORTED_FROZEN_PROTOCOL_VERSION")
             if not isinstance(frozen_protocol, Mapping):
                 raise ValueError("FROZEN_PROTOCOL_REQUIRED")
         if frozen_protocol is not None:
+            if plan.get("frozen_protocol_capability") != "READY":
+                raise ValueError("FROZEN_PROTOCOL_CAPABILITY_MISMATCH")
             expected_frozen_hash = plan["plan"].get("frozen_protocol_hash")
             if expected_frozen_hash != sha256_json(frozen_protocol):
                 raise ValueError("frozen protocol mutation detected")
+            # Self-hashes prove internal bytes, not admission under this version's
+            # freeze contract. Reconstructed artifacts must retain its declarations.
+            for field in FROZEN_PROTOCOL_FIELDS:
+                if field not in frozen_protocol:
+                    raise ValueError(f"FROZEN_PROTOCOL_{field.upper()}_MISSING")
+            if (frozen_protocol.get("freeze_version") != FROZEN_PROTOCOL_VERSION
+                    or plan["plan"].get("frozen_protocol_version") != FROZEN_PROTOCOL_VERSION):
+                raise ValueError("UNSUPPORTED_FROZEN_PROTOCOL_VERSION")
+            if not _valid_observed_attempt_count(frozen_protocol["observed_attempt_count"]):
+                raise ValueError("FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID")
+            # Both bodies carry these identities. A valid receipt cannot make
+            # contradictory declarations describe one reproducible experiment.
+            for field in ("protocol_hash", "code_hash", "environment_hash", "seed", "source_route_hashes"):
+                if (field not in plan["plan"] or field not in frozen_protocol
+                        or sha256_json(plan["plan"][field]) != sha256_json(frozen_protocol[field])):
+                    raise ValueError(f"FROZEN_PLAN_{field.upper()}_BINDING_MISMATCH")
             computed_hashes = self._binding_hashes(frozen_protocol)
             if plan.get("binding_hashes") != computed_hashes:
                 raise ValueError("frozen binding hash mutation detected")
