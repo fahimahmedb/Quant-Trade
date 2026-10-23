@@ -1,0 +1,124 @@
+mutation=frozen_legacy_ambiguity
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=4f81f4beff0d4512e0ac47ab6317dfbccb924cfd7c533e6bd6e57d2b8ea3b54e
+................................................................FFFF.... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[frozen_hash] ___
+
+retained_claim = 'frozen_hash'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+_ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[payload_bindings] _
+
+retained_claim = 'payload_bindings'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+_ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[outer_bindings] _
+
+retained_claim = 'outer_bindings'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+___ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[capability] ___
+
+retained_claim = 'capability'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[frozen_hash]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[payload_bindings]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[outer_bindings]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[capability]
+4 failed, 69 passed in 0.17s

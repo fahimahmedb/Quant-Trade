@@ -1,0 +1,100 @@
+mutation=version_admission
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=244de3b13e0d1c2a3f605519bda45d71e846c3fae79a93ec0cdb6c2b12c2f0ce
+...............................FFFFF......................F............. [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[None] __
+
+version = None
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+___ test_embedded_version_cannot_disagree_with_declared_supported_version[] ____
+
+version = ''
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v0] _
+
+version = 'pre-outcome-frozen-protocol.v0'
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v99] _
+
+version = 'pre-outcome-frozen-protocol.v99'
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[False] _
+
+version = False
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+__________ test_reconstructed_freeze_cannot_drop_outer_version_marker __________
+
+    def test_reconstructed_freeze_cannot_drop_outer_version_marker():
+        runner, plan, *_ = frozen()
+        del plan['plan']['frozen_protocol_version']
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:190: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[None]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v99]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_freeze_cannot_drop_outer_version_marker
+6 failed, 67 passed in 0.18s

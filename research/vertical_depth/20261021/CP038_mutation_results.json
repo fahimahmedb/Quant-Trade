@@ -1,0 +1,77 @@
+{
+  "fixed_source_sha256": "f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7",
+  "mutants": [
+    {
+      "mutation": "attempt_admission",
+      "exit_code": 1,
+      "summary": "13 failed, 60 passed in 0.22s",
+      "log": "CP038_mutant_attempt_admission.txt",
+      "replace": "if not _valid_observed_attempt_count(frozen_protocol[\"observed_attempt_count\"]):",
+      "with": "if False:"
+    },
+    {
+      "mutation": "required_declarations",
+      "exit_code": 1,
+      "summary": "20 failed, 53 passed in 0.25s",
+      "log": "CP038_mutant_required_declarations.txt",
+      "replace": "if field not in frozen_protocol:\n                    raise ValueError(f\"FROZEN_PROTOCOL_{field.upper()}_MISSING\")",
+      "with": "if False:\n                    raise ValueError(f\"FROZEN_PROTOCOL_{field.upper()}_MISSING\")"
+    },
+    {
+      "mutation": "version_admission",
+      "exit_code": 1,
+      "summary": "6 failed, 67 passed in 0.18s",
+      "log": "CP038_mutant_version_admission.txt",
+      "replace": "if (frozen_protocol.get(\"freeze_version\") != FROZEN_PROTOCOL_VERSION\n                    or plan[\"plan\"].get(\"frozen_protocol_version\") != FROZEN_PROTOCOL_VERSION):",
+      "with": "if False:"
+    },
+    {
+      "mutation": "duplicate_identity",
+      "exit_code": 1,
+      "summary": "12 failed, 61 passed in 0.20s",
+      "log": "CP038_mutant_duplicate_identity.txt",
+      "replace": "or sha256_json(plan[\"plan\"][field]) != sha256_json(frozen_protocol[field])):",
+      "with": "or False):"
+    },
+    {
+      "mutation": "replay_snapshot",
+      "exit_code": 1,
+      "summary": "1 failed, 72 passed in 0.15s",
+      "log": "CP038_mutant_replay_snapshot.txt",
+      "replace": "def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:\n        plan = deepcopy(plan)",
+      "with": "def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:\n        # deliberately unfenced for mutation proof"
+    },
+    {
+      "mutation": "verify_snapshot",
+      "exit_code": 1,
+      "summary": "1 failed, 72 passed in 0.16s",
+      "log": "CP038_mutant_verify_snapshot.txt",
+      "replace": "# Keep the checked reference fixed while the new inputs are rebound.\n        plan = deepcopy(plan)",
+      "with": "# deliberately unfenced for mutation proof"
+    },
+    {
+      "mutation": "mode_admission",
+      "exit_code": 1,
+      "summary": "4 failed, 69 passed in 0.17s",
+      "log": "CP038_mutant_mode_admission.txt",
+      "replace": "if plan[\"plan\"].get(\"execution_mode\") != \"DRY_RUN_NO_OUTCOME\":",
+      "with": "if False:"
+    },
+    {
+      "mutation": "frozen_legacy_ambiguity",
+      "exit_code": 1,
+      "summary": "4 failed, 69 passed in 0.17s",
+      "log": "CP038_mutant_frozen_legacy_ambiguity.txt",
+      "replace": "if frozen_claimed and not isinstance(frozen_protocol, Mapping):",
+      "with": "if False:"
+    },
+    {
+      "mutation": "capability_state",
+      "exit_code": 1,
+      "summary": "3 failed, 70 passed in 0.18s",
+      "log": "CP038_mutant_capability_state.txt",
+      "replace": "if plan.get(\"frozen_protocol_capability\") != \"READY\":",
+      "with": "if False:"
+    }
+  ]
+}

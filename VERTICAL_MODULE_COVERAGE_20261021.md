@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 39 explicit capability units below the table.
+to the 40 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -52,8 +52,8 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | --- | --- | --- |
 | Book durable mutation/mark recovery, fencing and identity reads | D4 | CP001/CP016 |
 | Detached Book view write denial | D2 | CP001 |
-| Canonical artifact serialized reconstruction | D2 | CP002 |
-| Research export/qualification sequence-content guard | D4 | CP002/CP035 |
+| Canonical artifact serialized reconstruction and checked admission snapshot | D2 | CP002/CP041 |
+| Research export/qualification sequence-content guard | D4 | CP002/CP035/CP040 |
 | Evidence concurrent publication/index recovery | D3 | CP003 |
 | Evidence exact typed references/nonfinite admission | D2 | CP003 |
 | Learning retained replay, concurrent mutation and failed-write recovery | D3 | CP004/CP014 |
@@ -68,7 +68,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Desk journal frozen intent, completion, shared recovery and identity reads | D4 | CP012/CP016 |
 | Book replay token bound to exact durable economic payload | D3 | CP013 |
 | Scientific ledger detached append/verification and atomic snapshot publication | D3 | CP017 |
-| Immutable checkpoint canonical identity and atomic publish/retry | D3 | CP018 |
+| Immutable checkpoint canonical identity, atomic publish/retry and real process-death recovery | D3 | CP018/CP039 |
 | Immutable artifact registry same-instance uniqueness and detached content | D3 | CP018 |
 | Historical memory input/output isolation and ambiguous identity preservation | D2 | CP019 |
 | Red Team monotonic negative-rights admission | D2 | CP020 |
@@ -88,6 +88,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Design-only adapter reconstructed proof and concurrent immutable registry | D3 | CP033 |
 | Documentary execution detached input/PREPARED/COMPLETED/ACK-loss recovery | D4 | CP034 |
 | Reproducible planning nested environment/metric snapshot identity | D2 | CP037 |
+| Reconstructed frozen-plan schema, duplicate identity and checked replay reference | D2 | CP038 |
 | Pre-outcome observability scanned/projected snapshot identity | D2 | CP061 |
 
 These are evidence limits, not claims that every edge case or every function in
@@ -119,3 +120,14 @@ one repair-bearing checkpoint in this continuation. The 39 scoped-unit table is
 unchanged; no diagnostic label contributes to it. Numeric CP100 was reached,
 but substantive CP100 depth completion was not established. Work remains stopped;
 no CP101 is opened. See VERTICAL_DEPTH_CLAIM_CORRECTION_20261023.md.
+
+
+## Substantive rebuilding continues
+
+Owner clarified that CP100 was an instruction to sustain real work, not a quota
+of filenames. CP038–CP041 are rebuilt with 116 new cases and implementation-specific
+proofs. CP038 adds one scoped D2 frozen-replay unit; CP039 extends existing D3
+immutable publication with real process death/restart, CP040/CP041 extend existing
+Core guard/identity units. Fifteen guard-removal mutants are detected. There are
+58 unreconstructed diagnostic labels left (CP042–CP060 and CP062–CP100). They
+remain invalid depth checkpoints. Mission active; no claim of CP100 completion.

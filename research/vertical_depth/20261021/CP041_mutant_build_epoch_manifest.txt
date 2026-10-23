@@ -1,0 +1,123 @@
+removed_capture=build_epoch_manifest
+fixed_source_sha256=c5b537105728f8ff7def3ff1e82da58c765149866874a73eba339aa3626903c1
+F....F.........F                                                         [100%]
+=================================== FAILURES ===================================
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-epoch] _
+
+key = 'epoch', builder = <function build_epoch_manifest at 0x7f5c5d453c40>
+identity = 'research_epoch_id', required = 'research_policy_hash'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'research_ep...:00:00Z', ...} == {'research_ep...:00:00Z', ...}
+E
+E         Omitting 21 identical items, use -vv to show
+E         Differing items:
+E         {'research_epoch_id': None} != {'research_epoch_id': 'V2-FIXTURE-EPOCH-001'}
+E         {'epoch_manifest_hash': '139ccc1636af7ab96d3566253cc7d6acc3f84a727fa8c8f63b9817edc81bc499'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-epoch] _
+
+key = 'epoch', builder = <function build_epoch_manifest at 0x7f5c5d453c40>
+identity = 'research_epoch_id', required = 'research_policy_hash'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'research_ep...:00:00Z', ...} == {'research_ep...:00:00Z', ...}
+E
+E         Omitting 21 identical items, use -vv to show
+E         Differing items:
+E         {'epoch_manifest_hash': 'eb3d28de379bbe1cf6ea6108b83765ff23cc8044c104a76570b643dbaf815968'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E         Right contains 1 more item:
+E         {'research_policy_hash': 'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation _
+
+    def test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation():
+        supplied = bundle()['epoch']
+        expected = core.build_epoch_manifest(deepcopy(supplied))
+        parse = core._parse_time
+        calls = []
+
+        def change_after_last_checked_clock(value):
+            result = parse(value)
+            calls.append(value)
+            if len(calls) == 4:
+                supplied['max_candidate_exports'] = 0
+                supplied['allowed_model_set'].clear()
+            return result
+
+        with patch.object(core, '_parse_time', side_effect=change_after_last_checked_clock):
+            actual = core.build_epoch_manifest(supplied)
+        assert len(calls) == 4
+>       assert actual == expected
+E       AssertionError: assert {'research_ep...:00:00Z', ...} == {'research_ep...:00:00Z', ...}
+E
+E         Omitting 19 identical items, use -vv to show
+E         Differing items:
+E         {'max_candidate_exports': 0} != {'max_candidate_exports': 10}
+E         {'close_policy_hash': '1b0f5f570527f642c7863ff8d7a231fa0367c55d3336bf72e98b9b4d0dd487e0'} != {'close_policy_hash': '8affb69a984e4698c1c8658adedec0baa2017fea4394e9cecd28f00c66d5b819'}
+E         {'allowed_model_set': []} != {'allowed_model_set': ['gpt-oss-10.2b-q4-k-m']}
+E         {'epoch_manifest_hash': 'a574759e8d21444c2ddd616515a0142d2ad215326e5bdff4e388154b9ce27b8f'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:85: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-epoch]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-epoch]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation
+3 failed, 13 passed in 0.08s

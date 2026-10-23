@@ -36,3 +36,15 @@ This correction changes documentation/evidence classification only. Executable
 bytes, test outcomes and the exact-source receipt remain unchanged. All four
 Owner authority flags remain FALSE. LONGITUDINAL_001 remains unresolved for its
 owner. Work remains stopped; no CP101 or replacement hardening wave is opened.
+
+
+## Subsequent Owner clarification and rebuilding
+
+The Owner clarified that “until CP100” required sustained substantive work,
+not a stop on a filename count. The mission therefore continues. CP038–CP041 now
+replace four rejected replay entries with new adversarial fixtures and proof.
+CP039 finds no defect under actual process-death/recovery tests, a valid result
+with explicit scope. CP038/040/041 reproduce and narrowly repair internal defects.
+The prior replays remain supplemental historical evidence, not their justification.
+There are still 58 rejected labels; numeric CP100 depth completion remains false.
+The previous stopped state is superseded by the clarified instruction to continue.

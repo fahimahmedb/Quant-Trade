@@ -1,16 +1,20 @@
 # Quant-Trade — Vertical Depth Phase-A manifest
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-FINAL_SHA=18beb0fb823199074a3d563e2daa1d33d25f600e
+FINAL_SHA=1cc7aba361d33d58ab5c9229fda59ba2303a59ab
 CHECKPOINT_LABEL_COUNT=100
-REPAIR_BEARING_CHECKPOINT_COUNT=38
-INSUFFICIENT_DEPTH_LABEL_COUNT=62
+REPAIR_BEARING_CHECKPOINT_COUNT=41
+INSUFFICIENT_DEPTH_LABEL_COUNT=58
 CP100_DEPTH_COMPLETION=FALSE
-OWNER_REQUESTED_STOP=CP100
+OWNER_GOAL=SUBSTANTIVE_DEPTH_NOT_FILENAME_QUOTA
+MISSION_ACTIVE=TRUE
+LAST_REBUILT_SEQUENTIAL_CHECKPOINT=CP041
+PHASE_A_COMPLETE=FALSE
 BRANCH=codex/vertical-depth-prewave2-20261021
 NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
 
-**Owner-review correction:** CP038–CP060 and CP062–CP100 are 62 diagnostic labels,
+**Historical correction at bd86b47 (superseded in part by rebuilding below):**
+CP038–CP060 and CP062–CP100 were 62 diagnostic labels,
 not accepted vertical-depth checkpoints. They replay existing suites under runtime
 variants and do not contain the required new implementation descent/falsification
 investigation. Their previous D2-requalification wording is withdrawn. Reaching
@@ -24,13 +28,31 @@ checkpoint numbering as evidence of substantial work. See VERTICAL_DEPTH_CLAIM_C
 full-SHA checkpoint normalization, coverage table and final transcripts are
 committed in a documentation/evidence-only child so the manifest need not claim
 its own unknowable Git hash. The delivered branch tip is that child; its source
-and test/schema bytes must match the 71 fingerprints in
+and test/schema bytes must match the 75 fingerprints in
 `research/vertical_depth/20261021/FINAL_qualification.json`.
+
+
+**Subsequent rebuilding after Owner clarification:** “until CP100” meant sustained
+substantive work, not a filename quota. The mission is active; the numbered labels
+are not a stopping/completion criterion. CP038–CP041 now replace their old replay
+entries with implementation-specific evidence: 116 newly added cases, actual
+process-death/restart tests, three grouped frozen-plan weaknesses and two shared
+input-snapshot repairs. Before failures are CP038 64/73, CP040 6/10, CP041 11/16;
+CP039's 17 new process cases reproduce no defect. Fifteen deliberate guard removals
+are detected by the new fixtures. Focused counts overlap the full regression.
+
+There are now 42 substantive scoped checkpoint entries (CP001–CP041 plus the
+previous out-of-sequence CP061); 41 contain repair items and CP039 has no reproduced
+defect. These are bounded claims, not independent whole-module qualifications.
+The remaining CP042–CP060 and CP062–CP100 (58 labels) remain rejected as depth
+checkpoints. Earlier correction paragraphs below describe the prior delivery;
+they do not retroactively validate the discarded replay work. Next work must
+continue implementation-specific descent rather than fill these filenames.
 
 MODULES_TOUCHED=28
 SOURCE_FILES_CHANGED=29
 SCHEMAS_CHANGED=1
-CAPABILITIES_DEEPENED=39
+CAPABILITIES_DEEPENED=40
 
 Modules: Book; canonical Research Core; evidence storage; learning; shared state
 journals; RISK; local Campaign/Queue; model execution; PIT corporate actions;
@@ -44,11 +66,11 @@ canonical movement was followed, no active rail/Oracle/Site was modified, and no
 future Wave-2 module was built.
 
 D1_COUNT=0
-D2_COUNT=21
+D2_COUNT=22
 D3_COUNT=11
 D4_COUNT=7
 
-Counts describe the 39 newly deepened **scoped capability units** in
+Counts describe the 40 newly deepened **scoped capability units** in
 `VERTICAL_MODULE_COVERAGE_20261021.md`, counted once at their maximum demonstrated
 depth. They are not full-module qualifications. D4 applies to tuple/serializer
 outcome-guard composition, optimized-interpreter closed decay admission, and the
@@ -57,12 +79,12 @@ internal acquisition plan/content/proof-replay composition in CP022. CP032
 promotes the existing Forward registry unit for its tested input/authority/save
 composition; CP034 adds the documentary execute/PREPARED/COMPLETED/retry unit.
 
-DEFECTS_REPAIRED=99
+DEFECTS_REPAIRED=104
 
-This is the number of enumerated repair items in 38 repair-bearing checkpoint
-groups among 100 numbered entries, not 99 independent root causes or scientific
-observations. The other 62 continuation entries are insufficient-depth runtime
-replay diagnostics, not accepted vertical-depth checkpoints. Shared roots and related
+This is the number of enumerated repair items in 41 repair-bearing checkpoint
+groups, not 104 independent root causes or scientific observations. CP039 is
+additional no-defect process-recovery evidence. There remain 58 insufficient-depth
+runtime replay labels; their numeric presence is not mission completion. Shared roots and related
 manifestations remain grouped and explained in each checkpoint:
 
 | Checkpoint | Repair items | Evidence/repair |
@@ -104,11 +126,14 @@ manifestations remain grouped and explained in each checkpoint:
 | CP035 | 1 | One immutable input bundle across pre-outcome scan and final qualification |
 | CP036 | 2 | Forbidden content checked outside raw payload and in complete typed/provenance extensions |
 | CP037 | 1 | Nested plan environment and metric identity detached before hash construction |
+| CP038 | 3 | Reconstructed frozen admission; duplicate identity agreement; stable checked plan reference |
+| CP040 | 1 | Direct export checks and freezes one captured input body |
+| CP041 | 1 | Shared Core builder input/identity snapshot defect across five proven entrypoints |
 | CP061 | 1 | Observability displays the detached body that passed the pre-outcome scan |
 
 All repairs have concrete pre-repair failures and focused requalification.
 Full before/after transcripts and checkpoint source SHAs are durable under
-`research/vertical_depth/20261021/`. The new tests add **795 cases**. Existing
+`research/vertical_depth/20261021/`. The new tests add **911 cases**. Existing
 canonical Research Core fixture hashes and valid model behavior remain compatible;
 CP022's typed/provenance hash extension is explicit below. Stricter rejection and
 explicit write conflicts are intentional.
@@ -185,7 +210,7 @@ Final local regression at `FINAL_SHA`:
 
 | Suite | Passed | Additional evidence |
 | --- | ---: | --- |
-| Root Python | 1603 | 1077 subtests; two existing fork/thread deprecation warnings |
+| Root Python | 1719 | 1077 subtests; two existing fork/thread deprecation warnings |
 | Broader Research OS | 268 | 165 subtests; pinned Legacy fixture verified |
 | Edge Lab platform protocol harness | 11 | Local model/fixture tests |
 | Live Lab JavaScript | 57 | No production Site access |

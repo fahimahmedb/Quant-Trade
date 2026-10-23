@@ -1,0 +1,30 @@
+from pathlib import Path
+import os, subprocess, json, hashlib
+repo=Path('/workspace/Quant-Trade'); source=repo/'research/research_os/expansion/experiment_runner.py'; out=Path('/workspace/vertical_depth_cp038_rebuild')
+fixed=source.read_text()
+mutations=[
+ ('attempt_admission','if not _valid_observed_attempt_count(frozen_protocol["observed_attempt_count"]):','if False:'),
+ ('required_declarations','if field not in frozen_protocol:\n                    raise ValueError(f"FROZEN_PROTOCOL_{field.upper()}_MISSING")','if False:\n                    raise ValueError(f"FROZEN_PROTOCOL_{field.upper()}_MISSING")'),
+ ('version_admission','if (frozen_protocol.get("freeze_version") != FROZEN_PROTOCOL_VERSION\n                    or plan["plan"].get("frozen_protocol_version") != FROZEN_PROTOCOL_VERSION):','if False:'),
+ ('duplicate_identity','or sha256_json(plan["plan"][field]) != sha256_json(frozen_protocol[field])):','or False):'),
+ ('replay_snapshot','def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:\n        plan = deepcopy(plan)','def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:\n        # deliberately unfenced for mutation proof'),
+ ('verify_snapshot','# Keep the checked reference fixed while the new inputs are rebound.\n        plan = deepcopy(plan)','# deliberately unfenced for mutation proof'),
+ ('mode_admission','if plan["plan"].get("execution_mode") != "DRY_RUN_NO_OUTCOME":','if False:'),
+ ('frozen_legacy_ambiguity','if frozen_claimed and not isinstance(frozen_protocol, Mapping):','if False:'),
+ ('capability_state','if plan.get("frozen_protocol_capability") != "READY":','if False:'),
+]
+results=[]
+try:
+ for name,old,new in mutations:
+  assert fixed.count(old)==1,(name,fixed.count(old))
+  mutated=fixed.replace(old,new);source.write_text(mutated)
+  path=out/f'CP038_mutant_{name}.txt'
+  with path.open('w') as log:
+   log.write('mutation='+name+'\nfixed_source_sha256='+hashlib.sha256(fixed.encode()).hexdigest()+'\nmutated_source_sha256='+hashlib.sha256(mutated.encode()).hexdigest()+'\n');log.flush()
+   r=subprocess.run(['python','-m','pytest','-q','tests/test_vertical_frozen_replay_depth.py'],cwd=repo,env=dict(os.environ,PYTHONPATH='src:tests:.'),stdout=log,stderr=subprocess.STDOUT)
+  summary=next((s for s in reversed(path.read_text().splitlines()) if 'failed' in s),'MISSING')
+  results.append({'mutation':name,'exit_code':r.returncode,'summary':summary,'log':path.name,'replace':old,'with':new})
+  print(name,r.returncode,summary,flush=True)
+  assert r.returncode==1,(name,r.returncode)
+finally: source.write_text(fixed)
+(out/'CP038_mutation_results.json').write_text(json.dumps({'fixed_source_sha256':hashlib.sha256(fixed.encode()).hexdigest(),'mutants':results},indent=2)+'\n')

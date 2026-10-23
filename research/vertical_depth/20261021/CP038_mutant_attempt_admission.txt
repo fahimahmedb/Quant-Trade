@@ -1,0 +1,281 @@
+mutation=attempt_admission
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=baac0d8e2b6228e800987aed9749a7f6b51d16e34124b8c8ebf1962633966794
+FFFFFFFFFF......................................FFF..................... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[None] __
+
+attempts = None
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[False] _
+
+attempts = False
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[True] __
+
+attempts = True
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+__ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-1] ___
+
+attempts = -1
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-100000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+attempts = -10000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+__ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0.0] __
+
+attempts = 0.0
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+__ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[1.5] __
+
+attempts = 1.5
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+___ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0] ___
+
+attempts = '0'
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts8] _
+
+attempts = []
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts9] _
+
+attempts = {}
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_invalid_reconstructed_fre0')
+attempts = False
+
+    @pytest.mark.parametrize('attempts', [False, -1, '0'])
+    def test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint(tmp_path, attempts):
+        inputs = [{'engine_key': 'fundamental', 'source': sources()['fundamental']}]
+        runner, plan = execution_plan(inputs)
+        envelope, qualifications, meta = fixture()
+        # Build a frozen documentary plan without changing its actual executable binding.
+        meta.update({k: plan['plan'][k] for k in ('dataset_manifest_hash', 'code_hash', 'environment_hash', 'seed', 'declared_metrics')})
+        plan = runner.plan(envelope, qualifications, meta)
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:136: Failed
+_ test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[-1] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_invalid_reconstructed_fre1')
+attempts = -1
+
+    @pytest.mark.parametrize('attempts', [False, -1, '0'])
+    def test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint(tmp_path, attempts):
+        inputs = [{'engine_key': 'fundamental', 'source': sources()['fundamental']}]
+        runner, plan = execution_plan(inputs)
+        envelope, qualifications, meta = fixture()
+        # Build a frozen documentary plan without changing its actual executable binding.
+        meta.update({k: plan['plan'][k] for k in ('dataset_manifest_hash', 'code_hash', 'environment_hash', 'seed', 'declared_metrics')})
+        plan = runner.plan(envelope, qualifications, meta)
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:136: Failed
+_ test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[0] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-14/test_invalid_reconstructed_fre2')
+attempts = '0'
+
+    @pytest.mark.parametrize('attempts', [False, -1, '0'])
+    def test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint(tmp_path, attempts):
+        inputs = [{'engine_key': 'fundamental', 'source': sources()['fundamental']}]
+        runner, plan = execution_plan(inputs)
+        envelope, qualifications, meta = fixture()
+        # Build a frozen documentary plan without changing its actual executable binding.
+        meta.update({k: plan['plan'][k] for k in ('dataset_manifest_hash', 'code_hash', 'environment_hash', 'seed', 'declared_metrics')})
+        plan = runner.plan(envelope, qualifications, meta)
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:136: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[None]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[True]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-1]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-100000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0.0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[1.5]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts8]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts9]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[-1]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[0]
+13 failed, 60 passed in 0.22s

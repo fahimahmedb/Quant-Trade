@@ -1,0 +1,1214 @@
+historical_module_revision=bd86b47eb71b96ec3ed4b5d4a2299b9079cc4bcf
+module_sha256=1d608387867103c09c8daebecd7735fbaf60ce10baefe6b895a120a10143370f
+new_test_sha256=05a7fbd3cf16c86b4a293f15bda7d06ecc9a27bd87ba320a2d420b45473a6408
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFF.FFFFFFFFFFFFFFFFFFFFF.....FFFFFFF.FFFF.FFF [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[None] __
+
+attempts = None
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[False] _
+
+attempts = False
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[True] __
+
+attempts = True
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+__ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-1] ___
+
+attempts = -1
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-100000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+attempts = -10000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+__ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0.0] __
+
+attempts = 0.0
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+__ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[1.5] __
+
+attempts = 1.5
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+___ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0] ___
+
+attempts = '0'
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts8] _
+
+attempts = []
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts9] _
+
+attempts = {}
+
+    @pytest.mark.parametrize('attempts', [None, False, True, -1, -10**80, 0.0, 1.5, '0', [], {}])
+    def test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract(attempts):
+        runner, plan, envelope, qualifications, meta = frozen()
+        meta['frozen_protocol']['observed_attempt_count'] = attempts
+        initial = runner.plan(envelope, qualifications, meta)
+        assert initial['status'] == 'BLOCK'
+        assert 'FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID' in initial['blockers']
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+        for action in (lambda: runner.replay(json.loads(json.dumps(plan))),
+                       lambda: runner.verify_bindings(plan, envelope, qualifications, meta)):
+>           with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:51: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[universe] _
+
+field = 'universe'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[clock] _
+
+field = 'clock'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[entry_definition] _
+
+field = 'entry_definition'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exit_definition] _
+
+field = 'exit_definition'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[economic_expression] _
+
+field = 'economic_expression'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[benchmark] _
+
+field = 'benchmark'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[gross_metric] _
+
+field = 'gross_metric'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[net_metric] _
+
+field = 'net_metric'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[cost_assumptions] _
+
+field = 'cost_assumptions'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[capacity_assumptions] _
+
+field = 'capacity_assumptions'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_definition] _
+
+field = 'sample_definition'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_window] _
+
+field = 'sample_window'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exclusions] _
+
+field = 'exclusions'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[missing_data_policy] _
+
+field = 'missing_data_policy'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[revision_policy] _
+
+field = 'revision_policy'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[survivorship_policy] _
+
+field = 'survivorship_policy'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[falsification_rule] _
+
+field = 'falsification_rule'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[decision_map] _
+
+field = 'decision_map'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[observed_attempt_count] _
+
+field = 'observed_attempt_count'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[multiplicity_family] _
+
+field = 'multiplicity_family'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[None] __
+
+version = None
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+___ test_embedded_version_cannot_disagree_with_declared_supported_version[] ____
+
+version = ''
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v0] _
+
+version = 'pre-outcome-frozen-protocol.v0'
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v99] _
+
+version = 'pre-outcome-frozen-protocol.v99'
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_embedded_version_cannot_disagree_with_declared_supported_version[False] _
+
+version = False
+
+    @pytest.mark.parametrize('version', [None, '', 'pre-outcome-frozen-protocol.v0',
+                                         'pre-outcome-frozen-protocol.v99', False])
+    def test_embedded_version_cannot_disagree_with_declared_supported_version(version):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol']['freeze_version'] = version
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:72: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-protocol_hash-foreign-protocol] _
+
+field = 'protocol_hash', foreign = 'foreign-protocol', side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-code_hash-foreign-code] _
+
+field = 'code_hash', foreign = 'foreign-code', side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-environment_hash-foreign-environment] _
+
+field = 'environment_hash', foreign = 'foreign-environment', side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_____ test_rehashed_internal_duplicate_identity_must_agree[plan-seed-1729] _____
+
+field = 'seed', foreign = 1729, side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-source_route_hashes-foreign4] _
+
+field = 'source_route_hashes', foreign = ['foreign-route'], side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-protocol_hash-foreign-protocol] _
+
+field = 'protocol_hash', foreign = 'foreign-protocol', side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-code_hash-foreign-code] _
+
+field = 'code_hash', foreign = 'foreign-code', side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-environment_hash-foreign-environment] _
+
+field = 'environment_hash', foreign = 'foreign-environment'
+side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-seed-1729] _
+
+field = 'seed', foreign = 1729, side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-source_route_hashes-foreign4] _
+
+field = 'source_route_hashes', foreign = ['foreign-route']
+side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+____ test_replay_returns_identity_of_checked_snapshot_under_caller_mutation ____
+
+    def test_replay_returns_identity_of_checked_snapshot_under_caller_mutation():
+        runner, plan, *_ = frozen()
+        expected = runner.replay(deepcopy(plan))
+        check = runner._assert_pre_outcome_closed
+        calls = []
+
+        def change_after_receipt_check(value, **kwargs):
+            check(value, **kwargs)
+            calls.append(value)
+            if kwargs.get('require_authority_fields'):
+                plan['experiment_id'] = 'FOREIGN-AFTER-CHECK'
+
+        with patch.object(runner, '_assert_pre_outcome_closed', side_effect=change_after_receipt_check):
+            actual = runner.replay(plan)
+        assert len(calls) == 2
+>       assert actual == expected
+E       AssertionError: assert {'experiment_...': False, ...} == {'experiment_...': False, ...}
+E
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'experiment_id': 'FOREIGN-AFTER-CHECK'} != {'experiment_id': 'EXP-HYP-001-GEN-001'}
+E         Use -v to get more diff
+
+tests/test_vertical_frozen_replay_depth.py:105: AssertionError
+_ test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source __
+
+    def test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source():
+        runner, plan, envelope, qualifications, meta = frozen()
+        changed = deepcopy(qualifications)
+        changed[0]['snapshot_hash'] = 'foreign-snapshot'
+        replacement = runner.plan(envelope, changed, meta)
+        replay = runner.replay
+
+        def replay_then_swap(checked):
+            result = replay(checked)
+            plan.clear()
+            plan.update(deepcopy(replacement))
+            return result
+
+        with patch.object(runner, 'replay', side_effect=replay_then_swap):
+>           with pytest.raises(FrozenExperimentBindingError, match=BINDING_MISMATCH_ERRORS['source']):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE FrozenExperimentBindingError
+
+tests/test_vertical_frozen_replay_depth.py:122: Failed
+_ test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-23/test_invalid_reconstructed_fre0')
+attempts = False
+
+    @pytest.mark.parametrize('attempts', [False, -1, '0'])
+    def test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint(tmp_path, attempts):
+        inputs = [{'engine_key': 'fundamental', 'source': sources()['fundamental']}]
+        runner, plan = execution_plan(inputs)
+        envelope, qualifications, meta = fixture()
+        # Build a frozen documentary plan without changing its actual executable binding.
+        meta.update({k: plan['plan'][k] for k in ('dataset_manifest_hash', 'code_hash', 'environment_hash', 'seed', 'declared_metrics')})
+        plan = runner.plan(envelope, qualifications, meta)
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:136: Failed
+_ test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[-1] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-23/test_invalid_reconstructed_fre1')
+attempts = -1
+
+    @pytest.mark.parametrize('attempts', [False, -1, '0'])
+    def test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint(tmp_path, attempts):
+        inputs = [{'engine_key': 'fundamental', 'source': sources()['fundamental']}]
+        runner, plan = execution_plan(inputs)
+        envelope, qualifications, meta = fixture()
+        # Build a frozen documentary plan without changing its actual executable binding.
+        meta.update({k: plan['plan'][k] for k in ('dataset_manifest_hash', 'code_hash', 'environment_hash', 'seed', 'declared_metrics')})
+        plan = runner.plan(envelope, qualifications, meta)
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:136: Failed
+_ test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[0] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-23/test_invalid_reconstructed_fre2')
+attempts = '0'
+
+    @pytest.mark.parametrize('attempts', [False, -1, '0'])
+    def test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint(tmp_path, attempts):
+        inputs = [{'engine_key': 'fundamental', 'source': sources()['fundamental']}]
+        runner, plan = execution_plan(inputs)
+        envelope, qualifications, meta = fixture()
+        # Build a frozen documentary plan without changing its actual executable binding.
+        meta.update({k: plan['plan'][k] for k in ('dataset_manifest_hash', 'code_hash', 'environment_hash', 'seed', 'declared_metrics')})
+        plan = runner.plan(envelope, qualifications, meta)
+        plan['frozen_protocol']['observed_attempt_count'] = attempts
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_OBSERVED_ATTEMPT_COUNT_INVALID'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:136: Failed
+_ test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[plan] _
+
+side = 'plan'
+
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality(side):
+        runner, plan, *_ = frozen()
+        assert type(plan['plan']['seed']) is int
+        plan[side]['seed'] = float(plan[side]['seed'])
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_SEED_BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:182: Failed
+_ test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[frozen_protocol] _
+
+side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality(side):
+        runner, plan, *_ = frozen()
+        assert type(plan['plan']['seed']) is int
+        plan[side]['seed'] = float(plan[side]['seed'])
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_SEED_BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:182: Failed
+__________ test_reconstructed_freeze_cannot_drop_outer_version_marker __________
+
+    def test_reconstructed_freeze_cannot_drop_outer_version_marker():
+        runner, plan, *_ = frozen()
+        del plan['plan']['frozen_protocol_version']
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_VERSION'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:190: Failed
+________ test_rehashed_execution_mode_cannot_claim_dry_run_replay[LIVE] ________
+
+mode = 'LIVE'
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+______ test_rehashed_execution_mode_cannot_claim_dry_run_replay[UNKNOWN] _______
+
+mode = 'UNKNOWN'
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+________ test_rehashed_execution_mode_cannot_claim_dry_run_replay[None] ________
+
+mode = None
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+_______ test_rehashed_execution_mode_cannot_claim_dry_run_replay[False] ________
+
+mode = False
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+__ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[frozen_hash] ___
+
+retained_claim = 'frozen_hash'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+_ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[payload_bindings] _
+
+retained_claim = 'payload_bindings'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+_ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[outer_bindings] _
+
+retained_claim = 'outer_bindings'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+___ test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[capability] ___
+
+retained_claim = 'capability'
+
+    @pytest.mark.parametrize('retained_claim', ['version', 'frozen_hash', 'payload_bindings',
+                                               'outer_bindings', 'capability', 'receipt'])
+    def test_partial_frozen_state_cannot_be_misread_as_opaque_legacy(retained_claim):
+        runner, original, *_ = frozen()
+        plan = deepcopy(original)
+        remove_frozen_representation(plan)
+        if retained_claim == 'version':
+            plan['plan']['frozen_protocol_version'] = original['plan']['frozen_protocol_version']
+        elif retained_claim == 'frozen_hash':
+            plan['plan']['frozen_protocol_hash'] = original['plan']['frozen_protocol_hash']
+        elif retained_claim == 'payload_bindings':
+            plan['plan']['binding_hashes'] = original['plan']['binding_hashes']
+        elif retained_claim == 'outer_bindings':
+            plan['binding_hashes'] = original['binding_hashes']
+        elif retained_claim == 'capability':
+            plan['frozen_protocol_capability'] = 'READY'
+        else:
+            plan['pre_outcome_receipt'] = original['pre_outcome_receipt']
+        plan['execution_plan_hash'] = sha256_json(plan['plan'])
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_REQUIRED|PRE_OUTCOME_RECEIPT_WITHOUT_FROZEN_PROTOCOL'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:232: Failed
+_ test_frozen_body_cannot_carry_a_contradictory_capability_state[LEGACY_DRY_RUN_ONLY] _
+
+capability = 'LEGACY_DRY_RUN_ONLY'
+
+    @pytest.mark.parametrize('capability', ['LEGACY_DRY_RUN_ONLY', 'BLOCKED', 'UNKNOWN'])
+    def test_frozen_body_cannot_carry_a_contradictory_capability_state(capability):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol_capability'] = capability
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_CAPABILITY_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:240: Failed
+___ test_frozen_body_cannot_carry_a_contradictory_capability_state[BLOCKED] ____
+
+capability = 'BLOCKED'
+
+    @pytest.mark.parametrize('capability', ['LEGACY_DRY_RUN_ONLY', 'BLOCKED', 'UNKNOWN'])
+    def test_frozen_body_cannot_carry_a_contradictory_capability_state(capability):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol_capability'] = capability
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_CAPABILITY_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:240: Failed
+___ test_frozen_body_cannot_carry_a_contradictory_capability_state[UNKNOWN] ____
+
+capability = 'UNKNOWN'
+
+    @pytest.mark.parametrize('capability', ['LEGACY_DRY_RUN_ONLY', 'BLOCKED', 'UNKNOWN'])
+    def test_frozen_body_cannot_carry_a_contradictory_capability_state(capability):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol_capability'] = capability
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_CAPABILITY_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:240: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[None]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[True]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-1]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-100000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0.0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[1.5]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts8]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts9]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[universe]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[clock]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[entry_definition]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exit_definition]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[economic_expression]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[benchmark]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[gross_metric]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[net_metric]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[cost_assumptions]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[capacity_assumptions]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_definition]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_window]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exclusions]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[missing_data_policy]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[revision_policy]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[survivorship_policy]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[falsification_rule]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[decision_map]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[observed_attempt_count]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[multiplicity_family]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[None]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v99]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_embedded_version_cannot_disagree_with_declared_supported_version[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-protocol_hash-foreign-protocol]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-code_hash-foreign-code]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-environment_hash-foreign-environment]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-seed-1729]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-source_route_hashes-foreign4]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-protocol_hash-foreign-protocol]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-code_hash-foreign-code]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-environment_hash-foreign-environment]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-seed-1729]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-source_route_hashes-foreign4]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_replay_returns_identity_of_checked_snapshot_under_caller_mutation
+FAILED tests/test_vertical_frozen_replay_depth.py::test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source
+FAILED tests/test_vertical_frozen_replay_depth.py::test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[-1]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[0]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[plan]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[frozen_protocol]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_reconstructed_freeze_cannot_drop_outer_version_marker
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[LIVE]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[UNKNOWN]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[None]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[False]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[frozen_hash]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[payload_bindings]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[outer_bindings]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[capability]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_frozen_body_cannot_carry_a_contradictory_capability_state[LEGACY_DRY_RUN_ONLY]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_frozen_body_cannot_carry_a_contradictory_capability_state[BLOCKED]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_frozen_body_cannot_carry_a_contradictory_capability_state[UNKNOWN]
+64 failed, 9 passed in 0.43s

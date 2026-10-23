@@ -1,0 +1,397 @@
+mutation=required_declarations
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=3aeccf2b3196433b3b0b7d90fb7847a89fc58ced249bce84eda03ed0a836392d
+..........FFFFFFFFFFFFFFFFFFF.F......................................... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[universe] _
+
+field = 'universe'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[clock] _
+
+field = 'clock'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[entry_definition] _
+
+field = 'entry_definition'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exit_definition] _
+
+field = 'exit_definition'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[economic_expression] _
+
+field = 'economic_expression'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[benchmark] _
+
+field = 'benchmark'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[gross_metric] _
+
+field = 'gross_metric'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[net_metric] _
+
+field = 'net_metric'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[cost_assumptions] _
+
+field = 'cost_assumptions'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[capacity_assumptions] _
+
+field = 'capacity_assumptions'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_definition] _
+
+field = 'sample_definition'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_window] _
+
+field = 'sample_window'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exclusions] _
+
+field = 'exclusions'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[missing_data_policy] _
+
+field = 'missing_data_policy'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[revision_policy] _
+
+field = 'revision_policy'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[survivorship_policy] _
+
+field = 'survivorship_policy'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[falsification_rule] _
+
+field = 'falsification_rule'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[decision_map] _
+
+field = 'decision_map'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[observed_attempt_count] _
+
+field = 'observed_attempt_count'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+        with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+>           runner.replay(json.loads(json.dumps(plan)))
+
+tests/test_vertical_frozen_replay_depth.py:63:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <research.research_os.expansion.experiment_runner.DryRunExperimentRunner object at 0x7fc58b961160>
+plan = {'experiment_id': 'EXP-HYP-001-GEN-001', 'status': 'READY_FOR_REPRODUCIBLE_DRY_RUN', 'blockers': [], 'runner_version': 'dry-run-experiment-runner.v1', ...}
+
+    def replay(self, plan: Dict[str, Any]) -> Dict[str, Any]:
+        plan = deepcopy(plan)
+        if plan.get("status") != "READY_FOR_REPRODUCIBLE_DRY_RUN":
+            raise ValueError("blocked execution plan cannot be replayed")
+        self._assert_pre_outcome_closed(plan)
+        if plan["plan"].get("execution_mode") != "DRY_RUN_NO_OUTCOME":
+            raise ValueError("DRY_RUN_EXECUTION_MODE_REQUIRED")
+        replay_hash = sha256_json(plan["plan"])
+        if replay_hash != plan["execution_plan_hash"]:
+            raise ValueError("execution plan mutation detected")
+        if plan.get("experiment_id") != plan["plan"].get("experiment_id"):
+            raise ValueError("EXPERIMENT_ID_BINDING_MISMATCH")
+        frozen_protocol = plan.get("frozen_protocol")
+        frozen_claimed = (
+            any(field in plan["plan"] for field in
+                ("frozen_protocol_version", "frozen_protocol_hash", "binding_hashes"))
+            or plan.get("binding_hashes") is not None
+            or plan.get("frozen_protocol_capability") not in (None, "LEGACY_DRY_RUN_ONLY")
+        )
+        if frozen_claimed and not isinstance(frozen_protocol, Mapping):
+            raise ValueError("FROZEN_PROTOCOL_REQUIRED")
+        if "frozen_protocol_version" in plan["plan"]:
+            if plan["plan"]["frozen_protocol_version"] != FROZEN_PROTOCOL_VERSION:
+                raise ValueError("UNSUPPORTED_FROZEN_PROTOCOL_VERSION")
+            if not isinstance(frozen_protocol, Mapping):
+                raise ValueError("FROZEN_PROTOCOL_REQUIRED")
+        if frozen_protocol is not None:
+            if plan.get("frozen_protocol_capability") != "READY":
+                raise ValueError("FROZEN_PROTOCOL_CAPABILITY_MISMATCH")
+            expected_frozen_hash = plan["plan"].get("frozen_protocol_hash")
+            if expected_frozen_hash != sha256_json(frozen_protocol):
+                raise ValueError("frozen protocol mutation detected")
+            # Self-hashes prove internal bytes, not admission under this version's
+            # freeze contract. Reconstructed artifacts must retain its declarations.
+            for field in FROZEN_PROTOCOL_FIELDS:
+                if False:
+                    raise ValueError(f"FROZEN_PROTOCOL_{field.upper()}_MISSING")
+            if (frozen_protocol.get("freeze_version") != FROZEN_PROTOCOL_VERSION
+                    or plan["plan"].get("frozen_protocol_version") != FROZEN_PROTOCOL_VERSION):
+                raise ValueError("UNSUPPORTED_FROZEN_PROTOCOL_VERSION")
+>           if not _valid_observed_attempt_count(frozen_protocol["observed_attempt_count"]):
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'observed_attempt_count'
+
+research/research_os/expansion/experiment_runner.py:394: KeyError
+_ test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[multiplicity_family] _
+
+field = 'multiplicity_family'
+
+    @pytest.mark.parametrize('field', FROZEN_PROTOCOL_FIELDS)
+    def test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes(field):
+        runner, plan, envelope, qualifications, meta = frozen()
+        del meta['frozen_protocol'][field]
+        assert runner.plan(envelope, qualifications, meta)['status'] == 'BLOCK'
+        del plan['frozen_protocol'][field]
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_.*(MISSING|INVALID)'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:62: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[universe]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[clock]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[entry_definition]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exit_definition]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[economic_expression]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[benchmark]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[gross_metric]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[net_metric]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[cost_assumptions]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[capacity_assumptions]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_definition]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_window]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exclusions]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[missing_data_policy]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[revision_policy]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[survivorship_policy]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[falsification_rule]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[decision_map]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[observed_attempt_count]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[multiplicity_family]
+20 failed, 53 passed in 0.25s
