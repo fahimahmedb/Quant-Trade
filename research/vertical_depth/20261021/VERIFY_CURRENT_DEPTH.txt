@@ -7,9 +7,9 @@ sha = q['qualified_source_sha']
 assert q['checkpoint_label_count'] == 100
 assert q['work_stopped'] is False
 assert q['mission_active'] is True
-assert q['last_rebuilt_sequential_checkpoint'] == 42
+assert q['last_rebuilt_sequential_checkpoint'] == 43
 assert q['cp100_depth_completion'] is False
-assert q['insufficient_depth_label_count'] == 57
+assert q['insufficient_depth_label_count'] == 56
 assert q['cp101_opened'] is False
 assert not Path('VERTICAL_CP101_20261021.md').exists()
 for p, h in q['source_files_sha256'].items():
@@ -17,7 +17,7 @@ for p, h in q['source_files_sha256'].items():
     assert hashlib.sha256(subprocess.check_output(['git', 'show', f'{sha}:{p}'])).hexdigest() == h, p
 for p, h in q['evidence_sha256'].items():
     assert hashlib.sha256((E / p).read_bytes()).hexdigest() == h, p
-assert len(q['source_files_sha256']) == 76
+assert len(q['source_files_sha256']) == 78
 for cp in range(1, 101):
     p = Path(f'VERTICAL_CP{cp:03}_20261021.md'); text = p.read_text()
     assert q['base_sha'] in text, p
@@ -26,7 +26,7 @@ for cp in range(1, 101):
     subprocess.run(['git', 'merge-base', '--is-ancestor', head[1], sha], check=True)
     for key in q['authority']:
         assert f'{key.upper()}=FALSE' in text, (p, key)
-    phases = (['before', 'focused'] if cp == 38 else ['process_proof'] if cp == 39 else ['before', 'after'] if cp <= 42 or cp == 61 else ['standard', 'optimized'])
+    phases = (['before', 'focused'] if cp == 38 else ['process_proof'] if cp == 39 else ['before', 'after'] if cp <= 43 or cp == 61 else ['standard', 'optimized'])
     for phase in phases:
         assert (E / f'CP{cp:03}_{phase}.txt').is_file(), (p, phase)
 index = json.loads((E / 'CP038_100_INDEX.json').read_text())
@@ -43,7 +43,7 @@ coverage = Path('VERTICAL_MODULE_COVERAGE_20261021.md').read_text()
 c = collections.Counter(re.findall(r'\| (D[1-4]) \| CP', coverage))
 assert {k: c[k] for k in q['depth_counts']} == q['depth_counts'], c
 m = Path('VERTICAL_PREWAVE2_FINAL_20261021.md').read_text()
-assert sum(map(int, re.findall(r'\| CP\d+ \| (\d+) \|', m))) == q['defects_repaired'] == 107
+assert sum(map(int, re.findall(r'\| CP\d+ \| (\d+) \|', m))) == q['defects_repaired'] == 109
 for key in ['MODULES_TOUCHED', 'SOURCE_FILES_CHANGED', 'CAPABILITIES_DEEPENED', 'DEFECTS_REPAIRED']:
     assert f'{key}={q[key.lower()]}' in m
 assert 'MISSION_ACTIVE=TRUE' in m
@@ -51,9 +51,9 @@ assert 'PHASE_A_COMPLETE=FALSE' in m
 r = json.loads((E / 'FINAL_core_receipt.json').read_text())
 assert r['verified_commit_sha'] == sha
 assert r['receipt']['authority'] == q['authority'] and not any(q['authority'].values())
-for log, result in [('FINAL_root.txt','1753 passed'),('FINAL_research_os.txt','268 passed'),('FINAL_platform.txt','11 passed'),('FINAL_live_lab_js.txt','ℹ pass 57')]:
+for log, result in [('FINAL_root.txt','1800 passed'),('FINAL_research_os.txt','268 passed'),('FINAL_platform.txt','11 passed'),('FINAL_live_lab_js.txt','ℹ pass 57')]:
     assert result in (E / log).read_text(), log
 assert subprocess.check_output(['git','hash-object','QUANT_NORTH_STAR.md'],text=True).strip() == q['north_star_blob']
 changed = subprocess.check_output(['git','diff','--name-only',q['base_sha'],sha],text=True).splitlines()
 assert not any(p.endswith('/canonical_spine.py') for p in changed)
-print('PASS: rebuilt CP038–CP042 evidence/source integrity; mission ACTIVE; 57 numeric labels still unqualified.')
+print('PASS: rebuilt CP038–CP043 evidence/source integrity; mission ACTIVE; 56 numeric labels still unqualified.')

@@ -1,0 +1,20 @@
+{
+  "after_source_sha": "21a16038e4d712adf3c9d9cb0c71f03f79de25cd",
+  "before_source_sha": "2fce769a8ad8622b5c82e80d95dba3a58823bcef",
+  "first_repair_source_sha": "10a8740d85b517f09a5352b20119f67b54228ebf",
+  "module_fingerprints": {
+    "src/quant/dataplane/corporate_actions.py": {
+      "after": "a5b80126fa6da63d07e2191811dfb37765d7fa416470a6fcea02e53ef9f8c9c4",
+      "before": "92229db67b00ca23b5f6801760499d91ef124abd07a84eeb62d40f0cae279537",
+      "first_repair": "b2fee9c1faa7faa5ebb9a5ffbccdc9c514c283b80af1167214224449a255fddf"
+    },
+    "src/quant/dataplane/identity.py": {
+      "after": "fffae01bbeacb2043b4cf355ebbee7cff79ad9186633585dfb0156d66440ae82",
+      "before": "6cabc9faef761c5aa0b0f40c7e4709cdf545a10422d79e79ef5c9dd045b4f5a4",
+      "first_repair": "49554adddf9a7db3363e8abadca8103fd7c9c6000515feba26c24cbaf89ce80b"
+    }
+  },
+  "new_fixture_retained_with_previous_modules": true,
+  "test": "tests/test_vertical_pit_contract_immutability.py",
+  "test_sha256": "a0c3ccb072b2ce78d7ae4d810704062bafef129aaf6137327e10138f6337aedd"
+}

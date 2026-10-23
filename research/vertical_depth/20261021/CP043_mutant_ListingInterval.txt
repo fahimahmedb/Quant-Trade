@@ -1,0 +1,85 @@
+mutation=ListingInterval
+...F....F........F.............................                          [100%]
+=================================== FAILURES ===================================
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-ticker] _
+
+kind = 'ticker', mutation = 'clear'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:ddddddddddddddddddddddddddddddddddddd...
+E
+E         ...Full output truncated (4 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-ticker] _
+
+kind = 'ticker', mutation = 'inject_unvalidated_hash'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'unvalidated-after-construction') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbb...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_________ test_wire_reconstruction_preserves_contract_identity[ticker] _________
+
+kind = 'ticker'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert TickerInterva... venue='XNYS') == TickerInterva... venue='XNYS')
+E
+E         Omitting 5 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[ticker]
+3 failed, 44 passed in 0.07s

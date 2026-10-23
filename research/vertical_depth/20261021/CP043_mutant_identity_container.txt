@@ -1,0 +1,155 @@
+mutation=identity_container
+.................................FFFFF.FFFFF...                          [100%]
+=================================== FAILURES ===================================
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-issuer] _
+
+kind = 'issuer', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-security] _
+
+kind = 'security', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-name] __
+
+kind = 'name', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-ticker] _
+
+kind = 'ticker', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-listing] _
+
+kind = 'listing', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-issuer] ___
+
+kind = 'issuer', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[set-security] __
+
+kind = 'security', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+___ test_lineage_container_cannot_silently_drop_metadata_or_order[set-name] ____
+
+kind = 'name', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-ticker] ___
+
+kind = 'ticker', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-listing] __
+
+kind = 'listing', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-listing]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-listing]
+10 failed, 37 passed in 0.10s

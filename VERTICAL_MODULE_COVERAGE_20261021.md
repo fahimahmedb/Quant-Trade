@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 41 explicit capability units below the table.
+to the 43 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -64,6 +64,8 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | CampaignState observed-body publication, shared recovery and fresh-process restart | D3 | CP042 |
 | Execution causal capacity admission | D2 | CP008 |
 | PIT action order and finite terms | D2 | CP009 |
+| Identity assertion admitted lineage snapshot and wire reconstruction | D2 | CP043 |
+| Corporate-action admitted consideration/provenance sequences | D2 | CP043 |
 | Closed decay guard under optimized execution/state composition | D4 | CP010 |
 | Exact-source qualification receipt binding | D2 | CP011 |
 | Desk journal frozen intent, completion, shared recovery and identity reads | D4 | CP012/CP016 |
@@ -139,3 +141,10 @@ Its 34 new cases and seven detected guard-removal mutants are documented in the
 checkpoint. There remain 57 unqualified numeric labels; CP043 is next. Whole
 campaign/queue/memory transactions, physical power loss and unsynchronized public
 field mutation remain unproved.
+
+
+CP043 adds two scoped D2 PIT sequence/lineage units, with 47 new cases and ten
+detected guard removals. The first repair was itself falsified and narrowed to
+reject mapping/set containers. Identifier dictionaries, custom callbacks and
+whole identity storage remain outside that qualification. Next CP044; 56 old
+numeric entries remain rejected, and mission completion is false.
