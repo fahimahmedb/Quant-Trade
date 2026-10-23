@@ -1,7 +1,7 @@
 # Phase-A whole-system routing pass and retained depth limits
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-QUALIFIED_SOURCE_SHA=b5a35ef7560cc031becf4440e6f0ab3d9e3af8d2
+QUALIFIED_SOURCE_SHA=d15c2588a39928643c5f299790dc1abb886e1534
 SCOPE=EXISTING_PREWAVE2_CAPABILITIES_ONLY
 
 This continuation reacquired the 25 existing North Star nodes from the base's
@@ -10,7 +10,7 @@ table names the selected implementations, executed suites and unproved layers.
 A routing/reacquisition pass is complete for these nodes; exhaustive traversal of
 every function/capability and whole-module D3/D4 qualification are not claimed.
 Depth work remained weighted toward scientific consequence, authority,
-identity/provenance, mutable state and recovery. The 34 depth counts concern
+identity/provenance, mutable state and recovery. The 38 depth counts concern
 explicit capability slices, not the node count or total assertion count.
 
 | Existing node | Internal descent and current evidence | Retained limit |
@@ -23,20 +23,20 @@ explicit capability slices, not the node count or total assertion count.
 | Producer families | All four registered synthetic producers replay identically without input mutation; each rejects documentary relabel without evidence; documentary dossier suites | Economic validity and diverse cognitive independence |
 | Archaeology/search | Scoped historical/source review regression; CP019 duplicate identities retain both dispositions | Partial recovery, authenticated loader source and semantic equivalence |
 | Early implementability | CP025 nested unknown and conflicted complexity; exact tri-state and PARK controls | Real costs/capacity, prose semantics and complete nested schemas |
-| Experiment infrastructure | CP031 detached standalone freeze snapshots/nonfinite denial; existing immutable PREPARED/COMPLETED, execution/replay and mutated receipt suites | Whole scientific transaction and physical failure |
+| Experiment infrastructure | CP031 standalone freeze; CP034 durable documentary input/ACK-loss recovery; CP037 nested planning identity; existing immutable PREPARED/COMPLETED, execution/replay and mutated receipt suites | Whole scientific transaction and physical failure |
 | Native trial/challenge | Existing candidate/epoch/generation/trial binding, lineage and native challenge suites | No new cross-lane binding or future C0 adjudicator |
 | Cross-examination | Shared-tag challenge preserves all producer outputs; existing independent challenge suites | No proof of diverse semantic independence |
 | Independent validator | Reconstructed documentary support, source/clock/freeze/input-binding/readiness suites | Complete malformed nested scientific inputs and authenticated issuer |
 | Red Team | CP020 monotonic denial, missing frozen binding, all six optional contexts under seven unqualified states | Arbitrary new schema or top-level Python object behavior |
 | Economic identity | Existing documentary/frozen declaration provenance and declaration-versus-fact suites | Documentary content does not become an empirical edge |
 | Portfolio map | CP027 conservative nested/conflicted axes, scalar-tag denial, membership normalization; six candidate permutations | Correlation unavailable; marginal contribution not estimated |
-| Shadow/prospective | CP029 exact identity/counters, competing generation aliases, immutable save/reload; all public observations remain denied | No ingestion, authorization service or lifecycle family built |
-| Sealed evaluation/feedback | Existing tuple-hidden export/membrane and exact feedback predecessor/successor controls | Real process separation, covert prose channels and transport authentication |
+| Shadow/prospective | CP029/CP032 exact identity/counters, competing generations, caller authority injection and immutable save/reload; all public observations remain denied | No ingestion, authorization service or lifecycle family built |
+| Sealed evaluation/feedback | CP035 detached scanned bundle; existing tuple-hidden export/membrane and exact feedback predecessor/successor controls | Real process separation, covert prose channels and transport authentication |
 | Decay monitoring | Optimized guard CP010 and supplemental legacy alternate-path denial/inactive controls | No prospective observations consumed; active monitoring remains unauthorized |
 | Capital Desk | RISK nonfinite denial, causal execution/ADV and Journal frozen intent/concurrency/recovery | Whole multi-file Desk/Book/event transaction |
 | Persistent Book | Scoped D4 mutation/recovery/identity reads and exact replay fingerprints | Legacy replay without payload proof, raw views and hostile whole-state schema |
 | Learning/search | Retention-independent replay IDs, stale writer fencing and same-instance failed write recovery | Changed content under an old ticket and reentrant callbacks |
-| Acquisition firewall | CP022 same-module nested content/plan/replayed-proof composition; CP023 secondary typed registry guard | No live acquisition, free-text outcome detector or source authentication |
+| Acquisition firewall | CP022/CP036 full record/plan/proof composition; CP032 detached typed/source admission; CP033 inactive design registry | No live acquisition, free-text outcome detector or source authentication |
 | Receipts/Live Lab/status | Existing event/receipt/idempotency/projection suites, 57 JS tests; CP028 strict Edge Lab state/control parsing | No production Site, D1/SSE or whole remote projection proof |
 | Build/release/resume | CP011 actual clean HEAD receipt; existing bootstrap/install/release provenance suites | No deployment, hosted CI or authenticated artifact signer |
 | Wide/cheap -> narrow/deep | Existing worker/source/legacy preflight blockers and priority/replenishment suites run before expensive work in fixtures | Economic information-value optimality not proved |
@@ -83,7 +83,8 @@ revision. Repaired bodies were restored after each run, then focused suites and
 full regressions were rerun. Reproduction scripts are saved as text under the
 evidence directory. CP030/CP031 transcripts were written directly to persistent
 workspace storage; CP031 also reruns its final tests against the exact previous
-module version. This is engineering evidence, not physical crash qualification.
+module version. CP032–CP037 transcripts were also written directly to persistent workspace
+storage. This is engineering evidence, not physical crash qualification.
 
 ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
 PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE

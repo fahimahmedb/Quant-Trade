@@ -1,0 +1,248 @@
+FFFFFF.                                                                  [100%]
+=================================== FAILURES ===================================
+_ test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-append_input] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_prepared_binding_is_the_e0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f353887e300>
+mutation = 'append_input', lost_completion_ack = False
+
+    @pytest.mark.parametrize('mutation',['append_input','clear_inputs','experiment_identity'])
+    @pytest.mark.parametrize('lost_completion_ack',[False,True])
+    def test_prepared_binding_is_the_exact_body_executed_after_caller_mutation(tmp_path,monkeypatch,mutation,lost_completion_ack):
+        runner,plan,inputs=fixture();original_plan,original_inputs=deepcopy((plan,inputs))
+        entered,release=threading.Event(),threading.Event();write=persistence.write_immutable_json
+        def paused(path,payload):
+            write(path,payload)
+            if str(path).endswith('.prepared.json'):
+                entered.set();assert release.wait(5)
+            elif lost_completion_ack and str(path).endswith('.completed.json'):
+                raise OSError('injected loss of completed receipt ACK')
+        with monkeypatch.context() as patch:
+            patch.setattr(persistence,'write_immutable_json',paused)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future=pool.submit(runner.execute,plan,inputs,tmp_path)
+                try:
+                    assert entered.wait(5)
+                    if mutation=='append_input':inputs.append(deepcopy(inputs[0]))
+                    elif mutation=='clear_inputs':inputs.clear()
+                    else:plan['experiment_id']='FOREIGN'
+                finally:release.set()
+                if lost_completion_ack:
+                    with pytest.raises(OSError):future.result()
+                else:future.result()
+        completed=next(tmp_path.glob('*.completed.json'))
+        committed=persistence.read_immutable_json(completed)
+        assert committed['experiment_id']==original_plan['experiment_id']
+        assert committed['input_hash']==sha256_json(original_inputs)
+>       assert len(committed['records'])==len(original_inputs)==1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'candidate': {'claim': 'SYN-ISSUER 2026Q3: operating margin=0.12; free cash flow=12 USD_millions.', 'decision_map': ...: 'FUNDAMENTAL', 'engine_id': 'engine.fundamental.v0', 'source_refs': ['synthetic://documentary/fundamental/v1'], ...}])
+E        +  and   1 = len([{'engine_key': 'fundamental', 'source': {'source_ref': 'synthetic://documentary/fundamental/v1', 'freeze_time': '2026...': 'synthetic://documentary/fundamental/v1', 'issuer_id': 'SYN-ISSUER', 'published_at': '2026-10-14T10:00:00Z', ...}}}])
+
+tests/test_vertical_execution_input_isolation.py:48: AssertionError
+_ test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-clear_inputs] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_prepared_binding_is_the_e1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3538861310>
+mutation = 'clear_inputs', lost_completion_ack = False
+
+    @pytest.mark.parametrize('mutation',['append_input','clear_inputs','experiment_identity'])
+    @pytest.mark.parametrize('lost_completion_ack',[False,True])
+    def test_prepared_binding_is_the_exact_body_executed_after_caller_mutation(tmp_path,monkeypatch,mutation,lost_completion_ack):
+        runner,plan,inputs=fixture();original_plan,original_inputs=deepcopy((plan,inputs))
+        entered,release=threading.Event(),threading.Event();write=persistence.write_immutable_json
+        def paused(path,payload):
+            write(path,payload)
+            if str(path).endswith('.prepared.json'):
+                entered.set();assert release.wait(5)
+            elif lost_completion_ack and str(path).endswith('.completed.json'):
+                raise OSError('injected loss of completed receipt ACK')
+        with monkeypatch.context() as patch:
+            patch.setattr(persistence,'write_immutable_json',paused)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future=pool.submit(runner.execute,plan,inputs,tmp_path)
+                try:
+                    assert entered.wait(5)
+                    if mutation=='append_input':inputs.append(deepcopy(inputs[0]))
+                    elif mutation=='clear_inputs':inputs.clear()
+                    else:plan['experiment_id']='FOREIGN'
+                finally:release.set()
+                if lost_completion_ack:
+                    with pytest.raises(OSError):future.result()
+                else:future.result()
+        completed=next(tmp_path.glob('*.completed.json'))
+        committed=persistence.read_immutable_json(completed)
+        assert committed['experiment_id']==original_plan['experiment_id']
+        assert committed['input_hash']==sha256_json(original_inputs)
+>       assert len(committed['records'])==len(original_inputs)==1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +  and   1 = len([{'engine_key': 'fundamental', 'source': {'source_ref': 'synthetic://documentary/fundamental/v1', 'freeze_time': '2026...': 'synthetic://documentary/fundamental/v1', 'issuer_id': 'SYN-ISSUER', 'published_at': '2026-10-14T10:00:00Z', ...}}}])
+
+tests/test_vertical_execution_input_isolation.py:48: AssertionError
+_ test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-experiment_identity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_prepared_binding_is_the_e2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f353885ac00>
+mutation = 'experiment_identity', lost_completion_ack = False
+
+    @pytest.mark.parametrize('mutation',['append_input','clear_inputs','experiment_identity'])
+    @pytest.mark.parametrize('lost_completion_ack',[False,True])
+    def test_prepared_binding_is_the_exact_body_executed_after_caller_mutation(tmp_path,monkeypatch,mutation,lost_completion_ack):
+        runner,plan,inputs=fixture();original_plan,original_inputs=deepcopy((plan,inputs))
+        entered,release=threading.Event(),threading.Event();write=persistence.write_immutable_json
+        def paused(path,payload):
+            write(path,payload)
+            if str(path).endswith('.prepared.json'):
+                entered.set();assert release.wait(5)
+            elif lost_completion_ack and str(path).endswith('.completed.json'):
+                raise OSError('injected loss of completed receipt ACK')
+        with monkeypatch.context() as patch:
+            patch.setattr(persistence,'write_immutable_json',paused)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future=pool.submit(runner.execute,plan,inputs,tmp_path)
+                try:
+                    assert entered.wait(5)
+                    if mutation=='append_input':inputs.append(deepcopy(inputs[0]))
+                    elif mutation=='clear_inputs':inputs.clear()
+                    else:plan['experiment_id']='FOREIGN'
+                finally:release.set()
+                if lost_completion_ack:
+                    with pytest.raises(OSError):future.result()
+                else:future.result()
+        completed=next(tmp_path.glob('*.completed.json'))
+        committed=persistence.read_immutable_json(completed)
+>       assert committed['experiment_id']==original_plan['experiment_id']
+E       AssertionError: assert 'FOREIGN' == 'EXEC-DOC'
+E         
+E         - EXEC-DOC
+E         + FOREIGN
+
+tests/test_vertical_execution_input_isolation.py:46: AssertionError
+_ test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-append_input] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_prepared_binding_is_the_e3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3538859ee0>
+mutation = 'append_input', lost_completion_ack = True
+
+    @pytest.mark.parametrize('mutation',['append_input','clear_inputs','experiment_identity'])
+    @pytest.mark.parametrize('lost_completion_ack',[False,True])
+    def test_prepared_binding_is_the_exact_body_executed_after_caller_mutation(tmp_path,monkeypatch,mutation,lost_completion_ack):
+        runner,plan,inputs=fixture();original_plan,original_inputs=deepcopy((plan,inputs))
+        entered,release=threading.Event(),threading.Event();write=persistence.write_immutable_json
+        def paused(path,payload):
+            write(path,payload)
+            if str(path).endswith('.prepared.json'):
+                entered.set();assert release.wait(5)
+            elif lost_completion_ack and str(path).endswith('.completed.json'):
+                raise OSError('injected loss of completed receipt ACK')
+        with monkeypatch.context() as patch:
+            patch.setattr(persistence,'write_immutable_json',paused)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future=pool.submit(runner.execute,plan,inputs,tmp_path)
+                try:
+                    assert entered.wait(5)
+                    if mutation=='append_input':inputs.append(deepcopy(inputs[0]))
+                    elif mutation=='clear_inputs':inputs.clear()
+                    else:plan['experiment_id']='FOREIGN'
+                finally:release.set()
+                if lost_completion_ack:
+                    with pytest.raises(OSError):future.result()
+                else:future.result()
+        completed=next(tmp_path.glob('*.completed.json'))
+        committed=persistence.read_immutable_json(completed)
+        assert committed['experiment_id']==original_plan['experiment_id']
+        assert committed['input_hash']==sha256_json(original_inputs)
+>       assert len(committed['records'])==len(original_inputs)==1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'candidate': {'claim': 'SYN-ISSUER 2026Q3: operating margin=0.12; free cash flow=12 USD_millions.', 'decision_map': ...: 'FUNDAMENTAL', 'engine_id': 'engine.fundamental.v0', 'source_refs': ['synthetic://documentary/fundamental/v1'], ...}])
+E        +  and   1 = len([{'engine_key': 'fundamental', 'source': {'source_ref': 'synthetic://documentary/fundamental/v1', 'freeze_time': '2026...': 'synthetic://documentary/fundamental/v1', 'issuer_id': 'SYN-ISSUER', 'published_at': '2026-10-14T10:00:00Z', ...}}}])
+
+tests/test_vertical_execution_input_isolation.py:48: AssertionError
+_ test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-clear_inputs] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_prepared_binding_is_the_e4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f35389dab40>
+mutation = 'clear_inputs', lost_completion_ack = True
+
+    @pytest.mark.parametrize('mutation',['append_input','clear_inputs','experiment_identity'])
+    @pytest.mark.parametrize('lost_completion_ack',[False,True])
+    def test_prepared_binding_is_the_exact_body_executed_after_caller_mutation(tmp_path,monkeypatch,mutation,lost_completion_ack):
+        runner,plan,inputs=fixture();original_plan,original_inputs=deepcopy((plan,inputs))
+        entered,release=threading.Event(),threading.Event();write=persistence.write_immutable_json
+        def paused(path,payload):
+            write(path,payload)
+            if str(path).endswith('.prepared.json'):
+                entered.set();assert release.wait(5)
+            elif lost_completion_ack and str(path).endswith('.completed.json'):
+                raise OSError('injected loss of completed receipt ACK')
+        with monkeypatch.context() as patch:
+            patch.setattr(persistence,'write_immutable_json',paused)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future=pool.submit(runner.execute,plan,inputs,tmp_path)
+                try:
+                    assert entered.wait(5)
+                    if mutation=='append_input':inputs.append(deepcopy(inputs[0]))
+                    elif mutation=='clear_inputs':inputs.clear()
+                    else:plan['experiment_id']='FOREIGN'
+                finally:release.set()
+                if lost_completion_ack:
+                    with pytest.raises(OSError):future.result()
+                else:future.result()
+        completed=next(tmp_path.glob('*.completed.json'))
+        committed=persistence.read_immutable_json(completed)
+        assert committed['experiment_id']==original_plan['experiment_id']
+        assert committed['input_hash']==sha256_json(original_inputs)
+>       assert len(committed['records'])==len(original_inputs)==1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +  and   1 = len([{'engine_key': 'fundamental', 'source': {'source_ref': 'synthetic://documentary/fundamental/v1', 'freeze_time': '2026...': 'synthetic://documentary/fundamental/v1', 'issuer_id': 'SYN-ISSUER', 'published_at': '2026-10-14T10:00:00Z', ...}}}])
+
+tests/test_vertical_execution_input_isolation.py:48: AssertionError
+_ test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-experiment_identity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_prepared_binding_is_the_e5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f35389db800>
+mutation = 'experiment_identity', lost_completion_ack = True
+
+    @pytest.mark.parametrize('mutation',['append_input','clear_inputs','experiment_identity'])
+    @pytest.mark.parametrize('lost_completion_ack',[False,True])
+    def test_prepared_binding_is_the_exact_body_executed_after_caller_mutation(tmp_path,monkeypatch,mutation,lost_completion_ack):
+        runner,plan,inputs=fixture();original_plan,original_inputs=deepcopy((plan,inputs))
+        entered,release=threading.Event(),threading.Event();write=persistence.write_immutable_json
+        def paused(path,payload):
+            write(path,payload)
+            if str(path).endswith('.prepared.json'):
+                entered.set();assert release.wait(5)
+            elif lost_completion_ack and str(path).endswith('.completed.json'):
+                raise OSError('injected loss of completed receipt ACK')
+        with monkeypatch.context() as patch:
+            patch.setattr(persistence,'write_immutable_json',paused)
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future=pool.submit(runner.execute,plan,inputs,tmp_path)
+                try:
+                    assert entered.wait(5)
+                    if mutation=='append_input':inputs.append(deepcopy(inputs[0]))
+                    elif mutation=='clear_inputs':inputs.clear()
+                    else:plan['experiment_id']='FOREIGN'
+                finally:release.set()
+                if lost_completion_ack:
+                    with pytest.raises(OSError):future.result()
+                else:future.result()
+        completed=next(tmp_path.glob('*.completed.json'))
+        committed=persistence.read_immutable_json(completed)
+>       assert committed['experiment_id']==original_plan['experiment_id']
+E       AssertionError: assert 'FOREIGN' == 'EXEC-DOC'
+E         
+E         - EXEC-DOC
+E         + FOREIGN
+
+tests/test_vertical_execution_input_isolation.py:46: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_execution_input_isolation.py::test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-append_input]
+FAILED tests/test_vertical_execution_input_isolation.py::test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-clear_inputs]
+FAILED tests/test_vertical_execution_input_isolation.py::test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-experiment_identity]
+FAILED tests/test_vertical_execution_input_isolation.py::test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-append_input]
+FAILED tests/test_vertical_execution_input_isolation.py::test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-clear_inputs]
+FAILED tests/test_vertical_execution_input_isolation.py::test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-experiment_identity]
+6 failed, 1 passed in 0.11s

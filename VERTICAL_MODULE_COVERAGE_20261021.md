@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 34 explicit capability units below the table.
+to the 38 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -22,20 +22,20 @@ to the 34 explicit capability units below the table.
 | Producer families | engines/builtin/protocol, documentary dossiers; multi-engine, primary-event, operative-rule, independent-reconstruction suites | Existing four-family contracts and claim ceilings regressed. Semantic creativity/economic validity unproven; no missing-family implementation. |
 | Archaeology/search | Legacy knowledge base, archaeology; canonical-spine and historical-source recovery suites | Pinned imported ledger materialized and blob verified. CP019 preserves conflicting identities and detaches admitted history; historical distinctions regressed. Unrecovered provenance remains unresolved. |
 | Early implementability | implementability_depth and contract/readiness suites | CP025 keeps nested unknown requirements and conflicted complexity blocked; tri-state/park controls pass. Complete liquidity/cost/capacity truth for real candidates unproven. |
-| Experiment infrastructure | experiment_runner/persistent_state; freeze bindings, receipt, frozen-input and execute/replay suites | CP031 standalone snapshot isolation and malformed protocol denial; immutable PREPARED/COMPLETED, tamper/replay and denial cases pass. Concurrent whole-scientific freeze/physical crash coverage incomplete. |
+| Experiment infrastructure | experiment_runner/persistent_state; freeze bindings, receipt, frozen-input and execute/replay suites | CP031 standalone freeze; CP034 durable documentary input isolation/ACK loss; CP037 nested plan snapshots; immutable PREPARED/COMPLETED, tamper/replay and denial cases pass. Concurrent whole-scientific freeze/physical crash coverage incomplete. |
 | Native trial/challenge | native trial lineage and canonical-freeze binding suites | Candidate/epoch/generation/trial negative controls pass. No new cross-lane binding or future adjudication work. |
 | Cross-examination | engines/cross_exam and native independent-challenge suites | Existing source/structure challenge regressed. Diverse semantic/cognitive independence remains NOT_PROVEN. |
 | Independent validator | validation_v2/readiness, independent reconstruction suites | Existing malformed/foreign/changed-hash/claim ceiling and noncomplete decision cases pass. No economic validation claim. |
 | Red team | red_team_v2, economic-readiness and scientific-claim admission suites | CP020 preserves Validator denial, frozen input failures and unqualified context; machine-readable rights regressed. Exhaustive contradictory validator/context combinations unproven. |
 | Economic identity | final_shape/portfolio_v2; documentary scope and frozen declaration suites | Existing hashes/declarations and provenance ceilings pass. No new empirical or source-fact promotion. |
 | Portfolio map | structural UNKNOWN/overlap and economic-identity portfolio suites | CP027 partial/conflicted support stays UNKNOWN, collection identity is stable; empirical estimates remain unavailable. Extreme/malformed nested structural values not exhaustive. |
-| Shadow/prospective | shadow, ForwardRegistryV2; CP010 forged-import/save/reload tests and existing suites | CP029 fences concurrent generation aliases and exact identities/counters; observation denied through public entrypoints. Active ingestion inactive by authority; no absent future surface counted as defect. |
+| Shadow/prospective | shadow, ForwardRegistryV2; CP010 forged-import/save/reload tests and existing suites | CP029/CP032 fence generation aliases, caller input/authority races and exact identities/counters; observation denied through public entrypoints. Active ingestion inactive by authority; no absent future surface counted as defect. |
 | Sealed evaluation/feedback | v2_core/v2_pipeline; feedback, export and membrane suites | CP002 tuple guard bypass repaired. Actual process/transport isolation and covert prose channels unproven. |
 | Decay monitoring | final_shape.decay_guard and engines/decay | CP010 explicit denial under normal/-O/-OO. Active decay remains inactive; zero consumed is not a monitoring capability claim. |
 | Capital Desk chain | desk, risk, execution, journal; whole Quant and V1 red-team suites | CP006 numerical RISK, CP008 causal/capacity guards and CP012/CP016 journal fencing, frozen intent and shared-instance recovery/read composition. Entire multi-file concurrent Desk transaction remains unproven. No real orders. |
 | Persistent Book | ledger; CP001/CP013/CP016 and V1 end-to-end crash/replay tests | D4 for scoped mutation/recovery/identity-read composition; D3 exact-payload replay. Legacy applied IDs without payload proof block replay; raw state/view concurrency and hostile whole-Book schemas remain unproven. |
 | Learning/search | learning store, replenisher; CP004/CP014 and queue/research runtime suites | D3 identity replay across retention, stale-writer fencing and shared-instance publication/crash recovery. Already-discarded IDs, reentrant callbacks, unguarded attribute access and whole research transactions remain unproven. |
-| Acquisition firewall | acquisition_firewall/source adapters/intents/frontier planner suites | Existing plan-only route and permission/PIT/content denials regressed. No network acquisition or new Multi-Source family. |
+| Acquisition firewall | acquisition_firewall/source adapters/intents/frontier planner suites | CP033 reconstructs inactive design qualifications; CP036 scans full records/proofs; plan-only permission/PIT/content denials regressed. No network acquisition or new Multi-Source family. |
 | Receipts/Live Lab/status | EventLog/state, status projections, live_lab_contract; Python composition and 57 JS tests | CP005 journal recovery. Existing reducer/idempotency/projection tests and CP028 Edge Lab strict state/control parsing pass; no production Site/D1/SSE proof. |
 | Build/release/resume | release/bootstrap/provenance/deploy helpers and suites | CP011 exact-source generator binding repaired. No deployment, hosted CI, non-Git installed-release or authenticated attestation claim. |
 | Wide/cheap/narrow/deep | worker preflight, source planner, replenisher and canonical-spine suites | Existing duplicates/blockers run before expensive stages in regression fixtures. Economic information-value optimality unproven. |
@@ -53,7 +53,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Book durable mutation/mark recovery, fencing and identity reads | D4 | CP001/CP016 |
 | Detached Book view write denial | D2 | CP001 |
 | Canonical artifact serialized reconstruction | D2 | CP002 |
-| Research export/qualification sequence-content guard | D4 | CP002 |
+| Research export/qualification sequence-content guard | D4 | CP002/CP035 |
 | Evidence concurrent publication/index recovery | D3 | CP003 |
 | Evidence exact typed references/nonfinite admission | D2 | CP003 |
 | Learning retained replay, concurrent mutation and failed-write recovery | D3 | CP004/CP014 |
@@ -73,17 +73,21 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Historical memory input/output isolation and ambiguous identity preservation | D2 | CP019 |
 | Red Team monotonic negative-rights admission | D2 | CP020 |
 | PricePanel date/projection/split evidence integrity | D2 | CP021 |
-| Acquisition firewall internal content/plan/proof-replay composition | D4 | CP022 |
-| Typed PIT registry proof/authority admission and concurrent uniqueness | D3 | CP023 |
+| Acquisition firewall complete record content/plan/proof-replay composition | D4 | CP022/CP036 |
+| Typed PIT registry complete proof admission, caller isolation and concurrent uniqueness | D3 | CP023/CP032/CP036 |
 | Source route identity and declared policy admission | D2 | CP024 |
-| Source qualification immutable freeze context and concurrent registration | D3 | CP024 |
+| Source qualification immutable freeze context, caller isolation and concurrent registration | D3 | CP024/CP032 |
 | Implementability nested exact requirement/complexity admission | D2 | CP025 |
 | Canonical scoped negative memory shape and semantic identity | D2 | CP026 |
 | Structural portfolio partial/conflicted evidence and collection identity | D2 | CP027 |
 | Edge Lab state/control strict numeric and schema parsing | D2 | CP028 |
-| Forward registry generation identity, exact counters and concurrent uniqueness | D3 | CP029 |
+| Forward registry generation identity, caller isolation, authority and save/reload composition | D4 | CP029/CP032 |
 | Git state canonical write path/acknowledgement admission | D2 | CP030 |
 | Standalone experiment freeze detached snapshot and strict identity admission | D2 | CP031 |
+| Design adapter required identity and policy text | D2 | CP033 |
+| Design-only adapter reconstructed proof and concurrent immutable registry | D3 | CP033 |
+| Documentary execution detached input/PREPARED/COMPLETED/ACK-loss recovery | D4 | CP034 |
+| Reproducible planning nested environment/metric snapshot identity | D2 | CP037 |
 
 These are evidence limits, not claims that every edge case or every function in
 every listed module has been exhausted. Whole multi-file session concurrency,

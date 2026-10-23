@@ -1,0 +1,117 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[negative_list] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3b03409400>
+mutation = 'negative_list'
+
+    @pytest.mark.parametrize('mutation',['negative_list','negative_tuple','export_identity'])
+    def test_preoutcome_scan_and_final_receipt_use_one_detached_bundle(monkeypatch,mutation):
+        supplied=json.loads(Path('tests/fixtures/oracle_v2_core_fixture.json').read_text())
+        original=deepcopy(supplied)
+        expected=pipeline.run_pre_outcome_pipeline(original)
+        entered,release=threading.Event(),threading.Event();priority=pipeline.build_priority_decision
+        def paused(**kwargs):
+            result=priority(**kwargs)
+            entered.set();assert release.wait(5)
+            return result
+        monkeypatch.setattr(pipeline,'build_priority_decision',paused)
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future=pool.submit(pipeline.run_pre_outcome_pipeline,supplied)
+            try:
+                assert entered.wait(5)
+                if mutation=='export_identity':supplied['export']['research_head']='a'*40
+                else:
+                    hidden={'returns':'SYNTHETIC_FORBIDDEN_CONTENT'}
+                    supplied['negative_memory']['untrusted_extension']=[hidden] if mutation=='negative_list' else (hidden,)
+            finally:release.set()
+            observed=future.result()
+>       assert observed==expected
+E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
+E         
+E         Omitting 16 identical items, use -vv to show
+E         Differing items:
+E         {'receipt_hash': '87d5332311ea12e72f65547b4ca45ac0d874bcfdd5ea8c0a70d12b73f1674a19'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
+E         {'negative_knowledge_hash': '0a909535e75a43e524a6da1c3d1eab32eecf1ca91750de30d89f42fb24004246'} != {'negative_knowledge_hash': '53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e'}
+E         Use -v to get more diff
+
+tests/test_vertical_pipeline_input_isolation.py:33: AssertionError
+_ test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[negative_tuple] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3b0340a480>
+mutation = 'negative_tuple'
+
+    @pytest.mark.parametrize('mutation',['negative_list','negative_tuple','export_identity'])
+    def test_preoutcome_scan_and_final_receipt_use_one_detached_bundle(monkeypatch,mutation):
+        supplied=json.loads(Path('tests/fixtures/oracle_v2_core_fixture.json').read_text())
+        original=deepcopy(supplied)
+        expected=pipeline.run_pre_outcome_pipeline(original)
+        entered,release=threading.Event(),threading.Event();priority=pipeline.build_priority_decision
+        def paused(**kwargs):
+            result=priority(**kwargs)
+            entered.set();assert release.wait(5)
+            return result
+        monkeypatch.setattr(pipeline,'build_priority_decision',paused)
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future=pool.submit(pipeline.run_pre_outcome_pipeline,supplied)
+            try:
+                assert entered.wait(5)
+                if mutation=='export_identity':supplied['export']['research_head']='a'*40
+                else:
+                    hidden={'returns':'SYNTHETIC_FORBIDDEN_CONTENT'}
+                    supplied['negative_memory']['untrusted_extension']=[hidden] if mutation=='negative_list' else (hidden,)
+            finally:release.set()
+            observed=future.result()
+>       assert observed==expected
+E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
+E         
+E         Omitting 16 identical items, use -vv to show
+E         Differing items:
+E         {'receipt_hash': '87d5332311ea12e72f65547b4ca45ac0d874bcfdd5ea8c0a70d12b73f1674a19'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
+E         {'negative_knowledge_hash': '0a909535e75a43e524a6da1c3d1eab32eecf1ca91750de30d89f42fb24004246'} != {'negative_knowledge_hash': '53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e'}
+E         Use -v to get more diff
+
+tests/test_vertical_pipeline_input_isolation.py:33: AssertionError
+_ test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[export_identity] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f3b0340ba10>
+mutation = 'export_identity'
+
+    @pytest.mark.parametrize('mutation',['negative_list','negative_tuple','export_identity'])
+    def test_preoutcome_scan_and_final_receipt_use_one_detached_bundle(monkeypatch,mutation):
+        supplied=json.loads(Path('tests/fixtures/oracle_v2_core_fixture.json').read_text())
+        original=deepcopy(supplied)
+        expected=pipeline.run_pre_outcome_pipeline(original)
+        entered,release=threading.Event(),threading.Event();priority=pipeline.build_priority_decision
+        def paused(**kwargs):
+            result=priority(**kwargs)
+            entered.set();assert release.wait(5)
+            return result
+        monkeypatch.setattr(pipeline,'build_priority_decision',paused)
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future=pool.submit(pipeline.run_pre_outcome_pipeline,supplied)
+            try:
+                assert entered.wait(5)
+                if mutation=='export_identity':supplied['export']['research_head']='a'*40
+                else:
+                    hidden={'returns':'SYNTHETIC_FORBIDDEN_CONTENT'}
+                    supplied['negative_memory']['untrusted_extension']=[hidden] if mutation=='negative_list' else (hidden,)
+            finally:release.set()
+            observed=future.result()
+>       assert observed==expected
+E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
+E         
+E         Omitting 15 identical items, use -vv to show
+E         Differing items:
+E         {'receipt_hash': '39997218dd1089a23bad3b9582c08eaa83322d46f08ff73cc0d1140d5654c9c5'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
+E         {'evaluation_ingest_receipt_hash': 'bdfa5321d6fd114a59a08dcea1ece2952029d5e92bc6e36c5db02ce4a309c3ad'} != {'evaluation_ingest_receipt_hash': '664bc07ea33a07b6fe73571dc0e1e729e7e7fc3c3cd14644ffa9de33441e1460'}
+E         {'export_bundle_hash': 'c4cd9bcefee907571e15b39e26bd9528888ea3f43d04f0c45afda5128fb444d3'} != {'export_bundle_hash': 'ebc87a0a2ef0f3ff92...
+E         
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_pipeline_input_isolation.py:33: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pipeline_input_isolation.py::test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[negative_list]
+FAILED tests/test_vertical_pipeline_input_isolation.py::test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[negative_tuple]
+FAILED tests/test_vertical_pipeline_input_isolation.py::test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[export_identity]
+3 failed in 0.05s
