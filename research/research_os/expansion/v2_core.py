@@ -323,6 +323,7 @@ def _scan_forbidden_outcome_keys(value: Any, path: str = "$") -> List[str]:
 
 
 def build_frozen_export_intent(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    payload = deepcopy(dict(payload))
     required = {
         "candidate_hash", "research_trial_history_hash", "research_epoch_id", "epoch_manifest_hash",
         "protocol_hash", "source_snapshot_hashes", "pit_manifest_hash", "universe", "clock", "horizon",
