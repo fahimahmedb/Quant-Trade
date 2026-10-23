@@ -1,7 +1,9 @@
 # Quant-Trade — Vertical Depth Phase-A manifest
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-FINAL_SHA=d15c2588a39928643c5f299790dc1abb886e1534
+FINAL_SHA=18beb0fb823199074a3d563e2daa1d33d25f600e
+CHECKPOINT_COUNT=100
+OWNER_REQUESTED_STOP=CP100
 BRANCH=codex/vertical-depth-prewave2-20261021
 NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
 
@@ -9,13 +11,13 @@ NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
 full-SHA checkpoint normalization, coverage table and final transcripts are
 committed in a documentation/evidence-only child so the manifest need not claim
 its own unknowable Git hash. The delivered branch tip is that child; its source
-and test/schema bytes must match the 69 fingerprints in
+and test/schema bytes must match the 71 fingerprints in
 `research/vertical_depth/20261021/FINAL_qualification.json`.
 
-MODULES_TOUCHED=27
-SOURCE_FILES_CHANGED=28
+MODULES_TOUCHED=28
+SOURCE_FILES_CHANGED=29
 SCHEMAS_CHANGED=1
-CAPABILITIES_DEEPENED=38
+CAPABILITIES_DEEPENED=39
 
 Modules: Book; canonical Research Core; evidence storage; learning; shared state
 journals; RISK; local Campaign/Queue; model execution; PIT corporate actions;
@@ -23,17 +25,17 @@ closed decay admission; exact-source qualification; DeskJournal; scientific
 snapshot ledger; historical memory; Red Team; PricePanel; acquisition firewall;
 typed PIT registry; source route qualification; implementability; structural
 portfolio diagnostics; Edge Lab store; ForwardRegistryV2; Git state transactions; standalone experiment freeze snapshots; design-only adapter qualification;
-documentary plan/execution runner.
-These are logical module slices, not 27 whole-module deep qualifications. No later
+documentary plan/execution runner; pre-outcome observability projection.
+These are logical module slices, not 28 whole-module deep qualifications. No later
 canonical movement was followed, no active rail/Oracle/Site was modified, and no
 future Wave-2 module was built.
 
 D1_COUNT=0
-D2_COUNT=20
+D2_COUNT=21
 D3_COUNT=11
 D4_COUNT=7
 
-Counts describe the 38 newly deepened **scoped capability units** in
+Counts describe the 39 newly deepened **scoped capability units** in
 `VERTICAL_MODULE_COVERAGE_20261021.md`, counted once at their maximum demonstrated
 depth. They are not full-module qualifications. D4 applies to tuple/serializer
 outcome-guard composition, optimized-interpreter closed decay admission, and the
@@ -42,10 +44,12 @@ internal acquisition plan/content/proof-replay composition in CP022. CP032
 promotes the existing Forward registry unit for its tested input/authority/save
 composition; CP034 adds the documentary execute/PREPARED/COMPLETED/retry unit.
 
-DEFECTS_REPAIRED=98
+DEFECTS_REPAIRED=99
 
-This is the number of enumerated repair items in the 37 checkpoint groups, not
-98 independent root causes or scientific observations. Shared roots and related
+This is the number of enumerated repair items in 38 repair-bearing checkpoint
+groups among 100 total checkpoints, not 99 independent root causes or scientific
+observations. The other 62 continuation checkpoints are bounded requalification
+audits with no reproduced defect or speculative repair. Shared roots and related
 manifestations remain grouped and explained in each checkpoint:
 
 | Checkpoint | Repair items | Evidence/repair |
@@ -87,10 +91,11 @@ manifestations remain grouped and explained in each checkpoint:
 | CP035 | 1 | One immutable input bundle across pre-outcome scan and final qualification |
 | CP036 | 2 | Forbidden content checked outside raw payload and in complete typed/provenance extensions |
 | CP037 | 1 | Nested plan environment and metric identity detached before hash construction |
+| CP061 | 1 | Observability displays the detached body that passed the pre-outcome scan |
 
 All repairs have concrete pre-repair failures and focused requalification.
 Full before/after transcripts and checkpoint source SHAs are durable under
-`research/vertical_depth/20261021/`. The new tests add **789 cases**. Existing
+`research/vertical_depth/20261021/`. The new tests add **795 cases**. Existing
 canonical Research Core fixture hashes and valid model behavior remain compatible;
 CP022's typed/provenance hash extension is explicit below. Stricter rejection and
 explicit write conflicts are intentional.
@@ -118,7 +123,29 @@ are repaired without granting Owner authority or consuming an observation.
 Typed/source/design admission, documentary durable execution and planning now
 validate and retain detached input bodies. Whole-batch atomicity was not assumed
 or built: valid prefixes and idempotent resume retain their existing semantics.
-Depth counts now cover 38 scoped units; earlier 34-unit summaries remain in history.
+At CP037, depth counts covered 38 scoped units; earlier summaries remain in history.
+
+
+Owner stop continuation from delivery `97d2da61e93ac22b47a6d68be99d72efc574ba4a`:
+CP038–CP100 execute 63 existing scoped test surfaces under ordinary Python with
+PYTHONHASHSEED=0 and Python -OO with PYTHONHASHSEED=1729. All 126 invocations pass:
+714 overlapping existing tests per mode. They are reused tests, not 714 new cases,
+63 repairs, or 63 additional capability counts. Paired logs retain their actual
+source SHA; their index records exact commands, imports, test names and test-file
+fingerprints. Optimized parent tests do not imply every explicit child command
+uses -OO. D2 runtime-denial requalification does not promote whole modules to D3/D4.
+
+CP061 adds six new deterministic cases. Five failed against the exact previous
+observability module: mutation after the content scan could change readiness,
+remove blockers, alter support/Validator status, or inject a returns-bearing claim
+ceiling into the pre-outcome output. The input tuple is now detached before the
+scan, so the displayed body is the scanned body. Focused standard and -OO runs
+both pass 37 tests plus 28 subtests. This is one repair and one scoped D2 unit;
+the whole remote projection/delivery path is not qualified. All other continuation
+checkpoint audits found no new defect under their named runtime conditions.
+
+CP100 is the Owner's explicit stopping boundary. No CP101 is opened. Remaining
+unproven depth is retained below; the stop does not assert exhaustive falsification.
 
 
 An executor restart removed temporary transcripts before delivery. CP018–CP029
@@ -144,7 +171,7 @@ Final local regression at `FINAL_SHA`:
 
 | Suite | Passed | Additional evidence |
 | --- | ---: | --- |
-| Root Python | 1597 | 1077 subtests; two existing fork/thread deprecation warnings |
+| Root Python | 1603 | 1077 subtests; two existing fork/thread deprecation warnings |
 | Broader Research OS | 268 | 165 subtests; pinned Legacy fixture verified |
 | Edge Lab platform protocol harness | 11 | Local model/fixture tests |
 | Live Lab JavaScript | 57 | No production Site access |
@@ -197,7 +224,8 @@ AUTHORITY_BYPASSES_REPAIRED=TRUE
 Reproduced bypasses were internal: tuple-hidden outcome content admitted by the
 pre-outcome scanner, NaN-based RISK approval, and decay admission erased by Python
 optimization. Later counterexamples also exposed Forward authority import after
-validation and temporal/outside-payload pre-outcome content bypasses. None granted
+validation and temporal/outside-payload pre-outcome content bypasses, including
+observability content introduced after its guard. None granted
 Owner authority, consumed future/economic market
 observations or placed orders. Invalid provenance receipts are also rejected now.
 

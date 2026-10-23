@@ -1,7 +1,7 @@
 # Phase-A whole-system routing pass and retained depth limits
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-QUALIFIED_SOURCE_SHA=d15c2588a39928643c5f299790dc1abb886e1534
+QUALIFIED_SOURCE_SHA=18beb0fb823199074a3d563e2daa1d33d25f600e
 SCOPE=EXISTING_PREWAVE2_CAPABILITIES_ONLY
 
 This continuation reacquired the 25 existing North Star nodes from the base's
@@ -10,7 +10,7 @@ table names the selected implementations, executed suites and unproved layers.
 A routing/reacquisition pass is complete for these nodes; exhaustive traversal of
 every function/capability and whole-module D3/D4 qualification are not claimed.
 Depth work remained weighted toward scientific consequence, authority,
-identity/provenance, mutable state and recovery. The 38 depth counts concern
+identity/provenance, mutable state and recovery. The 39 depth counts concern
 explicit capability slices, not the node count or total assertion count.
 
 | Existing node | Internal descent and current evidence | Retained limit |
@@ -37,7 +37,7 @@ explicit capability slices, not the node count or total assertion count.
 | Persistent Book | Scoped D4 mutation/recovery/identity reads and exact replay fingerprints | Legacy replay without payload proof, raw views and hostile whole-state schema |
 | Learning/search | Retention-independent replay IDs, stale writer fencing and same-instance failed write recovery | Changed content under an old ticket and reentrant callbacks |
 | Acquisition firewall | CP022/CP036 full record/plan/proof composition; CP032 detached typed/source admission; CP033 inactive design registry | No live acquisition, free-text outcome detector or source authentication |
-| Receipts/Live Lab/status | Existing event/receipt/idempotency/projection suites, 57 JS tests; CP028 strict Edge Lab state/control parsing | No production Site, D1/SSE or whole remote projection proof |
+| Receipts/Live Lab/status | Existing event/receipt/idempotency/projection suites, 57 JS tests; CP028 strict Edge Lab state/control parsing; CP061 detached scanned observability inputs | No production Site, D1/SSE or whole remote projection proof |
 | Build/release/resume | CP011 actual clean HEAD receipt; existing bootstrap/install/release provenance suites | No deployment, hosted CI or authenticated artifact signer |
 | Wide/cheap -> narrow/deep | Existing worker/source/legacy preflight blockers and priority/replenishment suites run before expensive work in fixtures | Economic information-value optimality not proved |
 
@@ -90,3 +90,15 @@ ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
 PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
 REAL_CAPITAL_AUTHORIZED=FALSE
 LIVE_TRADING_AUTHORIZED=FALSE
+
+
+## Owner-requested stop at CP100
+
+CP038–CP100 record 63 paired existing-suite environmental audits at their exact
+recorded source SHA: normal Python/hash seed 0 and Python -OO/hash seed 1729.
+All 126 invocations pass, covering 714 overlapping existing tests per mode; these
+are not new cases or whole-module depth claims. CP061 separately reproduces and
+repairs projection input mutation after the content guard, adding six cases and
+one scoped D2 unit. Focused post-repair tests and full final regressions run at
+QUALIFIED_SOURCE_SHA. The paired original logs honestly retain their prior SHA.
+Stop boundary reached: CP100. No CP101 is opened; retained depth limits apply.

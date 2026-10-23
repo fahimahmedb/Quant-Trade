@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 38 explicit capability units below the table.
+to the 39 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -36,7 +36,7 @@ to the 38 explicit capability units below the table.
 | Persistent Book | ledger; CP001/CP013/CP016 and V1 end-to-end crash/replay tests | D4 for scoped mutation/recovery/identity-read composition; D3 exact-payload replay. Legacy applied IDs without payload proof block replay; raw state/view concurrency and hostile whole-Book schemas remain unproven. |
 | Learning/search | learning store, replenisher; CP004/CP014 and queue/research runtime suites | D3 identity replay across retention, stale-writer fencing and shared-instance publication/crash recovery. Already-discarded IDs, reentrant callbacks, unguarded attribute access and whole research transactions remain unproven. |
 | Acquisition firewall | acquisition_firewall/source adapters/intents/frontier planner suites | CP033 reconstructs inactive design qualifications; CP036 scans full records/proofs; plan-only permission/PIT/content denials regressed. No network acquisition or new Multi-Source family. |
-| Receipts/Live Lab/status | EventLog/state, status projections, live_lab_contract; Python composition and 57 JS tests | CP005 journal recovery. Existing reducer/idempotency/projection tests and CP028 Edge Lab strict state/control parsing pass; no production Site/D1/SSE proof. |
+| Receipts/Live Lab/status | EventLog/state, status projections, live_lab_contract; Python composition and 57 JS tests | CP005 journal recovery; CP061 detached scanned projection body. Existing reducer/idempotency/projection tests and CP028 Edge Lab strict state/control parsing pass; no production Site/D1/SSE proof. |
 | Build/release/resume | release/bootstrap/provenance/deploy helpers and suites | CP011 exact-source generator binding repaired. No deployment, hosted CI, non-Git installed-release or authenticated attestation claim. |
 | Wide/cheap/narrow/deep | worker preflight, source planner, replenisher and canonical-spine suites | Existing duplicates/blockers run before expensive stages in regression fixtures. Economic information-value optimality unproven. |
 
@@ -88,6 +88,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Design-only adapter reconstructed proof and concurrent immutable registry | D3 | CP033 |
 | Documentary execution detached input/PREPARED/COMPLETED/ACK-loss recovery | D4 | CP034 |
 | Reproducible planning nested environment/metric snapshot identity | D2 | CP037 |
+| Pre-outcome observability scanned/projected snapshot identity | D2 | CP061 |
 
 These are evidence limits, not claims that every edge case or every function in
 every listed module has been exhausted. Whole multi-file session concurrency,
@@ -98,3 +99,11 @@ future-module absences are not cross-axis findings in this Phase-A campaign.
 LONGITUDINAL_001 remains unresolved: a correct Legacy REVIEW screen loses blocking
 semantics in canonical_spine. See the final manifest and durable synthetic JSON
 reproduction. No handoff implementation was changed by this rail.
+
+
+CP038–CP100 add 63 bounded environmental audit checkpoints: each runs an existing
+structured adversarial suite normally and under Python -OO with another hash
+seed. The 714 per-mode existing tests overlap the full regression. Only CP061
+adds a repaired scoped capability unit and six new cases; the other 62 audits do
+not inflate capability/defect counts. See CP038_100_INDEX.json for the exact
+source revisions and invocations. Owner stopping boundary: CP100; no CP101 opened.
