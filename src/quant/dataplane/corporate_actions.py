@@ -69,6 +69,8 @@ class CorporateActionEvent:
     delisting_reason: str | None = None
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "evidence_hashes", tuple(self.evidence_hashes))
+        object.__setattr__(self, "legs", tuple(self.legs))
         if not self.event_id:
             raise ValueError("event_id is required")
         if self.action_type not in ACTION_TYPES:

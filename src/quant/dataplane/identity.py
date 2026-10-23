@@ -47,11 +47,13 @@ def validate_evidence_hash(value: str) -> None:
         raise ValueError(f"invalid sha256 evidence hash: {value!r}")
 
 
-def _validate_lineage(values: tuple[str, ...]) -> None:
-    if not values:
+def _validate_lineage(values: tuple[str, ...]) -> tuple[str, ...]:
+    frozen = tuple(values)
+    if not frozen:
         raise ValueError("identity assertions require at least one evidence hash")
-    for value in values:
+    for value in frozen:
         validate_evidence_hash(value)
+    return frozen
 
 
 @dataclass(frozen=True)
@@ -68,7 +70,7 @@ class IssuerIdentity:
         if not self.issuer_id:
             raise ValueError("issuer_id is required")
         _validate_interval(self.valid_from, self.valid_to)
-        _validate_lineage(self.evidence_hashes)
+        object.__setattr__(self, "evidence_hashes", _validate_lineage(self.evidence_hashes))
 
     def contains(self, as_of: str) -> bool:
         return _contains(self.valid_from, self.valid_to, as_of)
@@ -88,7 +90,7 @@ class IssuerNameInterval:
         if not self.name:
             raise ValueError("issuer name is required")
         _validate_interval(self.valid_from, self.valid_to)
-        _validate_lineage(self.evidence_hashes)
+        object.__setattr__(self, "evidence_hashes", _validate_lineage(self.evidence_hashes))
 
     def contains(self, as_of: str) -> bool:
         return _contains(self.valid_from, self.valid_to, as_of)
@@ -112,7 +114,7 @@ class SecurityIdentity:
         if not self.security_id or not self.issuer_id or not self.security_type:
             raise ValueError("security_id, issuer_id and security_type are required")
         _validate_interval(self.valid_from, self.valid_to)
-        _validate_lineage(self.evidence_hashes)
+        object.__setattr__(self, "evidence_hashes", _validate_lineage(self.evidence_hashes))
 
     def contains(self, as_of: str) -> bool:
         return _contains(self.valid_from, self.valid_to, as_of)
@@ -133,7 +135,7 @@ class TickerInterval:
         if not self.security_id or not self.ticker:
             raise ValueError("security_id and ticker are required")
         _validate_interval(self.valid_from, self.valid_to)
-        _validate_lineage(self.evidence_hashes)
+        object.__setattr__(self, "evidence_hashes", _validate_lineage(self.evidence_hashes))
 
     def contains(self, as_of: str) -> bool:
         return _contains(self.valid_from, self.valid_to, as_of)
@@ -155,7 +157,7 @@ class ListingInterval:
         if not self.security_id or not self.venue:
             raise ValueError("security_id and venue are required")
         _validate_interval(self.valid_from, self.valid_to)
-        _validate_lineage(self.evidence_hashes)
+        object.__setattr__(self, "evidence_hashes", _validate_lineage(self.evidence_hashes))
 
     def contains(self, as_of: str) -> bool:
         return _contains(self.valid_from, self.valid_to, as_of)
