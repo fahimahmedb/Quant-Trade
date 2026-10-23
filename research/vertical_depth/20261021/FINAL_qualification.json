@@ -277,7 +277,7 @@
     "FINAL_static_checks.txt": "9f45258d4fbecbd64a469075aeef616408d4e935a73b796979443f1bbf98786f",
     "LONGITUDINAL_001.json": "d19264724e58fff6e140d6e2c6380bfa0bff3b26d53f4000d605144c74ab73f5",
     "REBUILT_038_041_PROVENANCE.json": "afd1e9f4c1bc8d44ad6b22426220d21103f57fab2fd392f2e695f569e5f29260",
-    "REBUILT_038_041_optimized.txt": "0c6f4565dad709c2e0f3f67c93863f68791f85ecc4a0e5dd8e75571625fb45bb",
+    "REBUILT_038_041_optimized.txt": "d1908c7939035be26fd0bd521d9c186517a17756d154876a7e3433353d9950f4",
     "REPLAY_PROVENANCE_018_029.json": "bcdc10eb0780816a3e4d066451f65c4d6a8e57965f9c48fc9f8b257bf37bcfa3",
     "REPRODUCE_BEFORE_018_029.txt": "b148118b8ec3e4ec1261f8d42d9fc4849a2ff5bf4e018fdefab154f6926b2a9d",
     "REPRODUCE_FOCUSED_018_029.txt": "b6147b3987eb51d0fb3000463590bd0e19ea574f480b2e593a052537a47a1b2c",
@@ -558,6 +558,6 @@
     "scope": "REACQUISITION_NOT_EXHAUSTIVE_FUNCTION_OR_WHOLE_MODULE_DEPTH",
     "supplemental_controls": 45
   },
-  "transcript_normalization": "CP032-CP037 and CP061 diagnostic line trailing whitespace removed; content, counts and failure traces preserved",
+  "transcript_normalization": "Trailing diagnostic whitespace normalized in archived failure/optimization transcripts; trace text, commands and counts retained",
   "work_stopped": false
 }
