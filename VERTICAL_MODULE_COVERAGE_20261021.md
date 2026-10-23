@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 40 explicit capability units below the table.
+to the 41 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -61,6 +61,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | RISK numerical admission | D2 | CP006 |
 | Local queue clock/schema/identity admission | D2 | CP007 |
 | Local queue durable publication/retry and stale writer fencing | D3 | CP007/CP015 |
+| CampaignState observed-body publication, shared recovery and fresh-process restart | D3 | CP042 |
 | Execution causal capacity admission | D2 | CP008 |
 | PIT action order and finite terms | D2 | CP009 |
 | Closed decay guard under optimized execution/state composition | D4 | CP010 |
@@ -131,3 +132,10 @@ immutable publication with real process death/restart, CP040/CP041 extend existi
 Core guard/identity units. Fifteen guard-removal mutants are detected. There are
 58 unreconstructed diagnostic labels left (CP042–CP060 and CP062–CP100). They
 remain invalid depth checkpoints. Mission active; no claim of CP100 completion.
+
+
+CP042 extends Control/Clock with scoped D3 CampaignState persistence/fencing.
+Its 34 new cases and seven detected guard-removal mutants are documented in the
+checkpoint. There remain 57 unqualified numeric labels; CP043 is next. Whole
+campaign/queue/memory transactions, physical power loss and unsynchronized public
+field mutation remain unproved.

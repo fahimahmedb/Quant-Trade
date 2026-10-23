@@ -1,14 +1,14 @@
 # Quant-Trade — Vertical Depth Phase-A manifest
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-FINAL_SHA=1cc7aba361d33d58ab5c9229fda59ba2303a59ab
+FINAL_SHA=58ff147aa515a632189fa7e04b460eb586064a4f
 CHECKPOINT_LABEL_COUNT=100
-REPAIR_BEARING_CHECKPOINT_COUNT=41
-INSUFFICIENT_DEPTH_LABEL_COUNT=58
+REPAIR_BEARING_CHECKPOINT_COUNT=42
+INSUFFICIENT_DEPTH_LABEL_COUNT=57
 CP100_DEPTH_COMPLETION=FALSE
 OWNER_GOAL=SUBSTANTIVE_DEPTH_NOT_FILENAME_QUOTA
 MISSION_ACTIVE=TRUE
-LAST_REBUILT_SEQUENTIAL_CHECKPOINT=CP041
+LAST_REBUILT_SEQUENTIAL_CHECKPOINT=CP042
 PHASE_A_COMPLETE=FALSE
 BRANCH=codex/vertical-depth-prewave2-20261021
 NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
@@ -28,7 +28,7 @@ checkpoint numbering as evidence of substantial work. See VERTICAL_DEPTH_CLAIM_C
 full-SHA checkpoint normalization, coverage table and final transcripts are
 committed in a documentation/evidence-only child so the manifest need not claim
 its own unknowable Git hash. The delivered branch tip is that child; its source
-and test/schema bytes must match the 75 fingerprints in
+and test/schema bytes must match the 76 fingerprints in
 `research/vertical_depth/20261021/FINAL_qualification.json`.
 
 
@@ -52,7 +52,7 @@ continue implementation-specific descent rather than fill these filenames.
 MODULES_TOUCHED=28
 SOURCE_FILES_CHANGED=29
 SCHEMAS_CHANGED=1
-CAPABILITIES_DEEPENED=40
+CAPABILITIES_DEEPENED=41
 
 Modules: Book; canonical Research Core; evidence storage; learning; shared state
 journals; RISK; local Campaign/Queue; model execution; PIT corporate actions;
@@ -67,10 +67,10 @@ future Wave-2 module was built.
 
 D1_COUNT=0
 D2_COUNT=22
-D3_COUNT=11
+D3_COUNT=12
 D4_COUNT=7
 
-Counts describe the 40 newly deepened **scoped capability units** in
+Counts describe the 41 newly deepened **scoped capability units** in
 `VERTICAL_MODULE_COVERAGE_20261021.md`, counted once at their maximum demonstrated
 depth. They are not full-module qualifications. D4 applies to tuple/serializer
 outcome-guard composition, optimized-interpreter closed decay admission, and the
@@ -79,11 +79,11 @@ internal acquisition plan/content/proof-replay composition in CP022. CP032
 promotes the existing Forward registry unit for its tested input/authority/save
 composition; CP034 adds the documentary execute/PREPARED/COMPLETED/retry unit.
 
-DEFECTS_REPAIRED=104
+DEFECTS_REPAIRED=107
 
-This is the number of enumerated repair items in 41 repair-bearing checkpoint
-groups, not 104 independent root causes or scientific observations. CP039 is
-additional no-defect process-recovery evidence. There remain 58 insufficient-depth
+This is the number of enumerated repair items in 42 repair-bearing checkpoint
+groups, not 107 independent root causes or scientific observations. CP039 is
+additional no-defect process-recovery evidence. There remain 57 insufficient-depth
 runtime replay labels; their numeric presence is not mission completion. Shared roots and related
 manifestations remain grouped and explained in each checkpoint:
 
@@ -129,11 +129,12 @@ manifestations remain grouped and explained in each checkpoint:
 | CP038 | 3 | Reconstructed frozen admission; duplicate identity agreement; stable checked plan reference |
 | CP040 | 1 | Direct export checks and freezes one captured input body |
 | CP041 | 1 | Shared Core builder input/identity snapshot defect across five proven entrypoints |
+| CP042 | 3 | Campaign stale-writer fencing; failed-save/shared heartbeat recovery; unambiguous finite durable JSON |
 | CP061 | 1 | Observability displays the detached body that passed the pre-outcome scan |
 
 All repairs have concrete pre-repair failures and focused requalification.
 Full before/after transcripts and checkpoint source SHAs are durable under
-`research/vertical_depth/20261021/`. The new tests add **911 cases**. Existing
+`research/vertical_depth/20261021/`. The new tests add **945 cases**. Existing
 canonical Research Core fixture hashes and valid model behavior remain compatible;
 CP022's typed/provenance hash extension is explicit below. Stricter rejection and
 explicit write conflicts are intentional.
@@ -210,7 +211,7 @@ Final local regression at `FINAL_SHA`:
 
 | Suite | Passed | Additional evidence |
 | --- | ---: | --- |
-| Root Python | 1719 | 1077 subtests; two existing fork/thread deprecation warnings |
+| Root Python | 1753 | 1077 subtests; two existing fork/thread deprecation warnings |
 | Broader Research OS | 268 | 165 subtests; pinned Legacy fixture verified |
 | Edge Lab platform protocol harness | 11 | Local model/fixture tests |
 | Live Lab JavaScript | 57 | No production Site access |
@@ -225,8 +226,8 @@ UNPROVEN_DEPTH=EXPLICITLY_RETAINED
 
 Priority limits: whole multi-file Desk/research transactions; atomic local queue
 selection/claim; direct mutation of public objects; coherent reads of all state
-fields during mutation; mutating/reentrant callbacks; CampaignState competing
-writers; changed content under an existing research ticket ID;
+fields during mutation; mutating/reentrant callbacks; CampaignState ABA/cooperating-writer limits and direct unsynchronized
+public field mutation; changed content under an existing research ticket ID;
 legacy Book replay tokens without recoverable exact payload proof;
 old ticket identities discarded before migration; hostile/migrating on-disk
 schemas; full epoch close/export/crash composition; scoped memory conflicts;
@@ -306,3 +307,14 @@ The live GitHub dry-run script intentionally was not run: its configured mutable
 canonical branch would violate this mission's immutable-snapshot boundary.
 Native worker concurrency/recovery is exercised with real disposable local Git
 remotes instead. All outputs here are engineering/diagnostic evidence.
+
+
+Latest substantive continuation: CP042 adds 34 new cases and repairs three grouped
+CampaignState weaknesses: stale saves could undo pause/stop/completion, failed
+publication lacked coherent object recovery, and reads accepted ambiguous/nonfinite
+JSON. New unit D3 is bounded to local observed-body publication/recovery and real
+process restart. Seven guard-removal mutants are detected. Totals now describe
+43 substantive checkpoint entries, 42 repair-bearing groups, and 57 unreconstructed
+numeric labels. Mission active; next substantive sequential checkpoint CP043.
+Earlier continuation counts in historical paragraphs are superseded by these
+current counters, not silently relabelled as new work.

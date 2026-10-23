@@ -1,0 +1,147 @@
+mutation=file_lock
+fixed_source_sha256=03cc51f0ec5d566d36ba28cf6e7df4f67ca032553013cfea47581f03d885c5e8
+......F..................FFF......                                       [100%]
+=================================== FAILURES ===================================
+___ test_lock_setup_failure_restores_checked_state_before_retry[fcntl.flock] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-39/test_lock_setup_failure_restor1')
+target = 'fcntl.flock'
+
+    @pytest.mark.parametrize('target', ['os.open', 'fcntl.flock', 'pathlib.Path.mkdir'])
+    def test_lock_setup_failure_restores_checked_state_before_retry(tmp_path, target):
+        path, state = loaded(tmp_path)
+        before = asdict(state)
+        state.latest_lesson = 'must not pretend to be saved'
+        with patch(target, side_effect=OSError('injected lock setup failure')):
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests/test_vertical_campaign_state_depth.py:89: Failed
+_ test_unbound_competing_initial_publications_either_replay_or_conflict[False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-39/test_unbound_competing_initial0')
+same_payload = False
+
+    @pytest.mark.parametrize('same_payload', [False, True])
+    def test_unbound_competing_initial_publications_either_replay_or_conflict(tmp_path, same_payload):
+        path = tmp_path / 'new-campaign.json'
+        first = runtime.CampaignState('new')
+        other = runtime.CampaignState(**asdict(first))
+        if not same_payload:
+            other.status = 'PAUSED'
+        barrier = threading.Barrier(2)
+        calls = []
+
+        def publication(target, document):
+            calls.append(deepcopy_document(document))
+            write_json(target, document)
+
+        def publish(state):
+            barrier.wait(5)
+            try:
+                state.save(path)
+                return 'ACKNOWLEDGED'
+            except RuntimeError:
+                return 'CONFLICT'
+
+        with patch.object(runtime, '_write_json', side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(publish, [first, other]))
+>       assert results.count('ACKNOWLEDGED') == (2 if same_payload else 1)
+E       AssertionError: assert 2 == 1
+E        +  where 2 = <built-in method count of list object at 0x7fa04563f200>('ACKNOWLEDGED')
+E        +    where <built-in method count of list object at 0x7fa04563f200> = ['ACKNOWLEDGED', 'ACKNOWLEDGED'].count
+
+tests/test_vertical_campaign_state_depth.py:291: AssertionError
+_ test_unbound_competing_initial_publications_either_replay_or_conflict[True] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-39/test_unbound_competing_initial1')
+same_payload = True
+
+    @pytest.mark.parametrize('same_payload', [False, True])
+    def test_unbound_competing_initial_publications_either_replay_or_conflict(tmp_path, same_payload):
+        path = tmp_path / 'new-campaign.json'
+        first = runtime.CampaignState('new')
+        other = runtime.CampaignState(**asdict(first))
+        if not same_payload:
+            other.status = 'PAUSED'
+        barrier = threading.Barrier(2)
+        calls = []
+
+        def publication(target, document):
+            calls.append(deepcopy_document(document))
+            write_json(target, document)
+
+        def publish(state):
+            barrier.wait(5)
+            try:
+                state.save(path)
+                return 'ACKNOWLEDGED'
+            except RuntimeError:
+                return 'CONFLICT'
+
+        with patch.object(runtime, '_write_json', side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(publish, [first, other]))
+        assert results.count('ACKNOWLEDGED') == (2 if same_payload else 1)
+>       assert len(calls) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'campaign_id': 'new', 'status': 'IDLE', 'started_at': '2026-10-23T03:01:24.453502+00:00', 'last_heartbeat': '2026-10...: 'IDLE', 'started_at': '2026-10-23T03:01:24.453502+00:00', 'last_heartbeat': '2026-10-23T03:01:24.453509+00:00', ...}])
+
+tests/test_vertical_campaign_state_depth.py:292: AssertionError
+_ test_other_process_cannot_publish_while_first_persistence_is_unacknowledged __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-39/test_other_process_cannot_publ0')
+
+    def test_other_process_cannot_publish_while_first_persistence_is_unacknowledged(tmp_path):
+        path, _ = loaded(tmp_path)
+        done = tmp_path / 'second-done'
+        code = '''
+    import sys
+    from pathlib import Path
+    from autonomous_research import runtime
+    from quant.state import write_json
+    path, mode, done = Path(sys.argv[1]), sys.argv[2], Path(sys.argv[3])
+    state = runtime.CampaignState.load_or_create(path, 'ignored')
+    state.latest_lesson = mode
+    if mode == 'first':
+        def paused(target, payload):
+            print('IN_PERSISTENCE', flush=True)
+            sys.stdin.readline()
+            write_json(target, payload)
+        runtime._write_json = paused
+    else:
+        print('STARTING', flush=True)
+    try:
+        state.save(path)
+    except RuntimeError:
+        result = 'CONFLICT'
+    else:
+        result = 'ACKNOWLEDGED'
+    if mode == 'second':
+        done.write_text(result)
+    print(result, flush=True)
+    '''
+        first = subprocess.Popen([sys.executable, '-c', code, str(path), 'first', str(done)],
+                                 text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        second = None
+        try:
+            assert first.stdout.readline().strip() == 'IN_PERSISTENCE'
+            second = subprocess.Popen([sys.executable, '-c', code, str(path), 'second', str(done)],
+                                      text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            assert second.stdout.readline().strip() == 'STARTING'
+            threading.Event().wait(.15)  # allow the already-started competing call to advance
+>           assert not done.exists(), 'second process bypassed the publication lock'
+E           AssertionError: second process bypassed the publication lock
+E           assert not True
+E            +  where True = exists()
+E            +    where exists = PosixPath('/tmp/pytest-of-agent/pytest-39/test_other_process_cannot_publ0/second-done').exists
+
+tests/test_vertical_campaign_state_depth.py:338: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_state_depth.py::test_lock_setup_failure_restores_checked_state_before_retry[fcntl.flock]
+FAILED tests/test_vertical_campaign_state_depth.py::test_unbound_competing_initial_publications_either_replay_or_conflict[False]
+FAILED tests/test_vertical_campaign_state_depth.py::test_unbound_competing_initial_publications_either_replay_or_conflict[True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_other_process_cannot_publish_while_first_persistence_is_unacknowledged
+4 failed, 30 passed in 1.52s

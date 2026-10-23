@@ -1,0 +1,1011 @@
+historical_module_revision=f39b1bbce95942f2cd719ed719f3427f0944ccb2
+module_sha256=c0497d1f139e7ee7a8d853c0fb399eba98fc7cc76306f50bc8e53fe896a313ab
+new_test_sha256=8e43513bd9da0d147e63c88cd0db629e4b1dc346181a21f91836cb652df24398
+FFFFFFFFFFFFFFFF.FFFFFF.FFFFFFFFFF                                       [100%]
+=================================== FAILURES ===================================
+______ test_stale_heartbeat_cannot_undo_acknowledged_owner_state[PAUSED] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_stale_heartbeat_cannot_un0')
+terminal = 'PAUSED'
+
+    @pytest.mark.parametrize('terminal', ['PAUSED', 'STOPPED'])
+    def test_stale_heartbeat_cannot_undo_acknowledged_owner_state(tmp_path, terminal):
+        path, owner = loaded(tmp_path)
+        stale = runtime.CampaignState.load_or_create(path, 'ignored-existing-identity')
+        owner.status = terminal
+        owner.pause_reason = 'owner diagnostic hold'
+        owner.save(path)
+        durable = path.read_bytes()
+>       with pytest.raises(RuntimeError, match='CAMPAIGN_CHANGED_SINCE_READ'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_campaign_state_depth.py:30: Failed
+______ test_stale_heartbeat_cannot_undo_acknowledged_owner_state[STOPPED] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_stale_heartbeat_cannot_un1')
+terminal = 'STOPPED'
+
+    @pytest.mark.parametrize('terminal', ['PAUSED', 'STOPPED'])
+    def test_stale_heartbeat_cannot_undo_acknowledged_owner_state(tmp_path, terminal):
+        path, owner = loaded(tmp_path)
+        stale = runtime.CampaignState.load_or_create(path, 'ignored-existing-identity')
+        owner.status = terminal
+        owner.pause_reason = 'owner diagnostic hold'
+        owner.save(path)
+        durable = path.read_bytes()
+>       with pytest.raises(RuntimeError, match='CAMPAIGN_CHANGED_SINCE_READ'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_campaign_state_depth.py:30: Failed
+_________ test_stale_save_cannot_erase_completed_fingerprint_or_budget _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_stale_save_cannot_erase_c0')
+
+    def test_stale_save_cannot_erase_completed_fingerprint_or_budget(tmp_path):
+        path, first = loaded(tmp_path)
+        stale = runtime.CampaignState.load_or_create(path, 'ignored')
+        first.cycles_completed = 7
+        first.processed_data_fingerprints.append('ticket@data-v1')
+        first.budget_consumed['cycles'] = 7
+        first.save(path)
+        stale.latest_lesson = 'uncommitted stale view'
+>       with pytest.raises(RuntimeError, match='CAMPAIGN_CHANGED_SINCE_READ'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_campaign_state_depth.py:46: Failed
+_ test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion[False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_failed_save_recovers_actu0')
+after_commit = False
+
+    @pytest.mark.parametrize('after_commit', [False, True])
+    def test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion(tmp_path, after_commit):
+        path, state = loaded(tmp_path)
+        original = asdict(state)
+        state.cycles_completed = 3
+        state.budget_consumed['cycles'] = 3
+        attempted = asdict(state)
+
+        def fail(target, document):
+            if after_commit:
+                write_json(target, document)
+            raise OSError('injected persistence failure or lost ACK')
+
+        with patch.object(runtime, '_write_json', side_effect=fail):
+            with pytest.raises(OSError):
+                state.save(path)
+        expected = attempted if after_commit else original
+>       assert asdict(state) == expected
+E       AssertionError: assert {'campaign_id...9+00:00', ...} == {'campaign_id...9+00:00', ...}
+E
+E         Omitting 14 identical items, use -vv to show
+E         Differing items:
+E         {'budget_consumed': {'cycles': 3}} != {'budget_consumed': {'cycles': 0}}
+E         {'cycles_completed': 3} != {'cycles_completed': 0}
+E         Use -v to get more diff
+
+tests/test_vertical_campaign_state_depth.py:70: AssertionError
+_ test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion[True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_failed_save_recovers_actu1')
+after_commit = True
+
+    @pytest.mark.parametrize('after_commit', [False, True])
+    def test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion(tmp_path, after_commit):
+        path, state = loaded(tmp_path)
+        original = asdict(state)
+        state.cycles_completed = 3
+        state.budget_consumed['cycles'] = 3
+        attempted = asdict(state)
+
+        def fail(target, document):
+            if after_commit:
+                write_json(target, document)
+            raise OSError('injected persistence failure or lost ACK')
+
+        with patch.object(runtime, '_write_json', side_effect=fail):
+            with pytest.raises(OSError):
+                state.save(path)
+        expected = attempted if after_commit else original
+        assert asdict(state) == expected
+        assert asdict(runtime.CampaignState.load_or_create(path, 'ignored')) == expected
+        # Exact retry acknowledges the observed body without an unnecessary rewrite.
+        before = path.read_bytes()
+        with patch.object(runtime, '_write_json', side_effect=AssertionError('idempotent retry must not rewrite')):
+>           state.save(path)
+
+tests/test_vertical_campaign_state_depth.py:75:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src/autonomous_research/runtime.py:72: in save
+    _write_json(path, asdict(self))
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1139: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1143: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <MagicMock name='_write_json' id='139836000592064'>
+args = (PosixPath('/tmp/pytest-of-agent/pytest-44/test_failed_save_recovers_actu1/campaign.json'), {'campaign_id': 'SYN-CAMPA...: 'IDLE', 'started_at': '2026-10-23T03:02:13.301698+00:00', 'last_heartbeat': '2026-10-23T03:02:13.301704+00:00', ...})
+kwargs = {}
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+>               raise effect
+E               AssertionError: idempotent retry must not rewrite
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/mock.py:1198: AssertionError
+_____ test_lock_setup_failure_restores_checked_state_before_retry[os.open] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_lock_setup_failure_restor0')
+target = 'os.open'
+
+    @pytest.mark.parametrize('target', ['os.open', 'fcntl.flock', 'pathlib.Path.mkdir'])
+    def test_lock_setup_failure_restores_checked_state_before_retry(tmp_path, target):
+        path, state = loaded(tmp_path)
+        before = asdict(state)
+        state.latest_lesson = 'must not pretend to be saved'
+        with patch(target, side_effect=OSError('injected lock setup failure')):
+            with pytest.raises(OSError):
+                state.save(path)
+>       assert asdict(state) == before
+E       AssertionError: assert {'campaign_id...4+00:00', ...} == {'campaign_id...4+00:00', ...}
+E
+E         Omitting 15 identical items, use -vv to show
+E         Differing items:
+E         {'latest_lesson': 'must not pretend to be saved'} != {'latest_lesson': None}
+E         Use -v to get more diff
+
+tests/test_vertical_campaign_state_depth.py:91: AssertionError
+___ test_lock_setup_failure_restores_checked_state_before_retry[fcntl.flock] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_lock_setup_failure_restor1')
+target = 'fcntl.flock'
+
+    @pytest.mark.parametrize('target', ['os.open', 'fcntl.flock', 'pathlib.Path.mkdir'])
+    def test_lock_setup_failure_restores_checked_state_before_retry(tmp_path, target):
+        path, state = loaded(tmp_path)
+        before = asdict(state)
+        state.latest_lesson = 'must not pretend to be saved'
+        with patch(target, side_effect=OSError('injected lock setup failure')):
+>           with pytest.raises(OSError):
+                 ^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE OSError
+
+tests/test_vertical_campaign_state_depth.py:89: Failed
+_ test_lock_setup_failure_restores_checked_state_before_retry[pathlib.Path.mkdir] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_lock_setup_failure_restor2')
+target = 'pathlib.Path.mkdir'
+
+    @pytest.mark.parametrize('target', ['os.open', 'fcntl.flock', 'pathlib.Path.mkdir'])
+    def test_lock_setup_failure_restores_checked_state_before_retry(tmp_path, target):
+        path, state = loaded(tmp_path)
+        before = asdict(state)
+        state.latest_lesson = 'must not pretend to be saved'
+        with patch(target, side_effect=OSError('injected lock setup failure')):
+            with pytest.raises(OSError):
+                state.save(path)
+>       assert asdict(state) == before
+E       AssertionError: assert {'campaign_id...5+00:00', ...} == {'campaign_id...5+00:00', ...}
+E
+E         Omitting 15 identical items, use -vv to show
+E         Differing items:
+E         {'latest_lesson': 'must not pretend to be saved'} != {'latest_lesson': None}
+E         Use -v to get more diff
+
+tests/test_vertical_campaign_state_depth.py:91: AssertionError
+__________ test_unserializable_pending_state_does_not_poison_recovery __________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_unserializable_pending_st0')
+
+    def test_unserializable_pending_state_does_not_poison_recovery(tmp_path):
+        path, state = loaded(tmp_path)
+        before = asdict(state)
+        state.research_budget['max_cycles'] = float('nan')
+        with pytest.raises(ValueError):
+            state.save(path)
+>       assert asdict(state) == before
+E       AssertionError: assert {'campaign_id...5+00:00', ...} == {'campaign_id...5+00:00', ...}
+E
+E         Omitting 15 identical items, use -vv to show
+E         Differing items:
+E         {'research_budget': {'max_cycles': nan}} != {'research_budget': {'max_cycles': None}}
+E         Use -v to get more diff
+
+tests/test_vertical_campaign_state_depth.py:103: AssertionError
+_ test_independent_processes_cannot_both_acknowledge_conflicting_stale_campaigns _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_independent_processes_can0')
+
+    def test_independent_processes_cannot_both_acknowledge_conflicting_stale_campaigns(tmp_path):
+        path, _ = loaded(tmp_path)
+        code = '''
+    import sys
+    from pathlib import Path
+    from autonomous_research.runtime import CampaignState
+    state = CampaignState.load_or_create(Path(sys.argv[1]), 'ignored')
+    print('READY', flush=True)
+    sys.stdin.readline()
+    state.latest_lesson = sys.argv[2]
+    try:
+        state.save(Path(sys.argv[1]))
+    except RuntimeError:
+        print('CONFLICT', flush=True)
+    else:
+        print('ACKNOWLEDGED', flush=True)
+    '''
+        procs = [subprocess.Popen([sys.executable, '-c', code, str(path), str(i)],
+                                  text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                 for i in range(2)]
+        try:
+            for proc in procs:
+                assert proc.stdout.readline().strip() == 'READY'
+            results = []
+            for proc in procs:
+                out, err = proc.communicate('go\n', timeout=10)
+                assert proc.returncode == 0, err
+                results.append(out.strip())
+>           assert sorted(results) == ['ACKNOWLEDGED', 'CONFLICT']
+E           AssertionError: assert ['ACKNOWLEDGE...ACKNOWLEDGED'] == ['ACKNOWLEDGED', 'CONFLICT']
+E
+E             At index 1 diff: 'ACKNOWLEDGED' != 'CONFLICT'
+E             Use -v to get more diff
+
+tests/test_vertical_campaign_state_depth.py:135: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-None] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_shared_heartbeat_is_seria0')
+after_commit = None, first_method = 'heartbeat'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+>                   assert not second_done.wait(.15)
+E                   assert not True
+E                    +  where True = wait(0.15)
+E                    +    where wait = <threading.Event at 0x7f2e1b0fbef0: set>.wait
+
+tests/test_vertical_campaign_state_depth.py:186: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_shared_heartbeat_is_seria1')
+after_commit = False, first_method = 'heartbeat'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+>                   assert not second_done.wait(.15)
+E                   assert not True
+E                    +  where True = wait(0.15)
+E                    +    where wait = <threading.Event at 0x7f2e1b0f9760: set>.wait
+
+tests/test_vertical_campaign_state_depth.py:186: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_shared_heartbeat_is_seria2')
+after_commit = True, first_method = 'heartbeat'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+>                   assert not second_done.wait(.15)
+E                   assert not True
+E                    +  where True = wait(0.15)
+E                    +    where wait = <threading.Event at 0x7f2e1b0f9c40: set>.wait
+
+tests/test_vertical_campaign_state_depth.py:186: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-None] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_shared_heartbeat_is_seria3')
+after_commit = None, first_method = 'save'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+>                   assert not second_done.wait(.15)
+E                   assert not True
+E                    +  where True = wait(0.15)
+E                    +    where wait = <threading.Event at 0x7f2e1b0f89b0: set>.wait
+
+tests/test_vertical_campaign_state_depth.py:186: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_shared_heartbeat_is_seria4')
+after_commit = False, first_method = 'save'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+>                   assert not second_done.wait(.15)
+E                   assert not True
+E                    +  where True = wait(0.15)
+E                    +    where wait = <threading.Event at 0x7f2e1b0fa390: set>.wait
+
+tests/test_vertical_campaign_state_depth.py:186: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_shared_heartbeat_is_seria5')
+after_commit = True, first_method = 'save'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+>                   assert not second_done.wait(.15)
+E                   assert not True
+E                    +  where True = wait(0.15)
+E                    +    where wait = <threading.Event at 0x7f2e1b0f9670: set>.wait
+
+tests/test_vertical_campaign_state_depth.py:186: AssertionError
+__ test_snapshot_fence_distinguishes_serialized_numeric_policy_identity[True] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_snapshot_fence_distinguis0')
+alias = True
+
+    @pytest.mark.parametrize('alias', [True, 1.0])
+    def test_snapshot_fence_distinguishes_serialized_numeric_policy_identity(tmp_path, alias):
+        path, state = loaded(tmp_path)
+        state.research_budget['max_cycles'] = 1
+        state.save(path)
+        foreign = json.loads(path.read_text())
+        foreign['research_budget']['max_cycles'] = alias
+        write_json(path, foreign)
+        before = path.read_bytes()
+        state.latest_lesson = 'stale despite Python numeric equality'
+>       with pytest.raises(RuntimeError, match='CAMPAIGN_CHANGED_SINCE_READ'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_campaign_state_depth.py:215: Failed
+__ test_snapshot_fence_distinguishes_serialized_numeric_policy_identity[1.0] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_snapshot_fence_distinguis1')
+alias = 1.0
+
+    @pytest.mark.parametrize('alias', [True, 1.0])
+    def test_snapshot_fence_distinguishes_serialized_numeric_policy_identity(tmp_path, alias):
+        path, state = loaded(tmp_path)
+        state.research_budget['max_cycles'] = 1
+        state.save(path)
+        foreign = json.loads(path.read_text())
+        foreign['research_budget']['max_cycles'] = alias
+        write_json(path, foreign)
+        before = path.read_bytes()
+        state.latest_lesson = 'stale despite Python numeric equality'
+>       with pytest.raises(RuntimeError, match='CAMPAIGN_CHANGED_SINCE_READ'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_campaign_state_depth.py:215: Failed
+______ test_corrupt_existing_state_is_not_silently_repaired_by_save[null] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_corrupt_existing_state_is0')
+raw = 'null'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '{"campaign_id":', '{"campaign_id":"other","unsupported_field":true}'])
+    def test_corrupt_existing_state_is_not_silently_repaired_by_save(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+        state.latest_lesson = 'must not overwrite broken evidence'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_campaign_state_depth.py:226: Failed
+_______ test_corrupt_existing_state_is_not_silently_repaired_by_save[[]] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_corrupt_existing_state_is1')
+raw = '[]'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '{"campaign_id":', '{"campaign_id":"other","unsupported_field":true}'])
+    def test_corrupt_existing_state_is_not_silently_repaired_by_save(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+        state.latest_lesson = 'must not overwrite broken evidence'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_campaign_state_depth.py:226: Failed
+_ test_corrupt_existing_state_is_not_silently_repaired_by_save[{"campaign_id":] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_corrupt_existing_state_is2')
+raw = '{"campaign_id":'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '{"campaign_id":', '{"campaign_id":"other","unsupported_field":true}'])
+    def test_corrupt_existing_state_is_not_silently_repaired_by_save(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+        state.latest_lesson = 'must not overwrite broken evidence'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_campaign_state_depth.py:226: Failed
+_ test_corrupt_existing_state_is_not_silently_repaired_by_save[{"campaign_id":"other","unsupported_field":true}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_corrupt_existing_state_is3')
+raw = '{"campaign_id":"other","unsupported_field":true}'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '{"campaign_id":', '{"campaign_id":"other","unsupported_field":true}'])
+    def test_corrupt_existing_state_is_not_silently_repaired_by_save(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+        state.latest_lesson = 'must not overwrite broken evidence'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_campaign_state_depth.py:226: Failed
+_ test_actual_process_death_and_fresh_load_preserve_only_committed_pause[True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_actual_process_death_and_1')
+after_write = True
+
+    @pytest.mark.parametrize('after_write', [False, True])
+    def test_actual_process_death_and_fresh_load_preserve_only_committed_pause(tmp_path, after_write):
+        path, stale = loaded(tmp_path)
+        initial = asdict(stale)
+        code = '''
+    import os, sys
+    from pathlib import Path
+    from autonomous_research import runtime
+    from quant.state import write_json
+    path = Path(sys.argv[1])
+    state = runtime.CampaignState.load_or_create(path, 'ignored')
+    state.status = 'PAUSED'
+    state.pause_reason = 'synthetic owner pause'
+    def die(target, payload):
+        if sys.argv[2] == 'after':
+            write_json(target, payload)
+        os._exit(73)
+    runtime._write_json = die
+    state.save(path)
+    raise AssertionError('dead writer cannot return ACK')
+    '''
+        dead = subprocess.run([sys.executable, '-c', code, str(path), 'after' if after_write else 'before'],
+                              text=True, capture_output=True, timeout=10)
+        assert dead.returncode == 73, dead.stderr
+        assert dead.stdout == ''
+        restarted = runtime.CampaignState.load_or_create(path, 'ignored')
+        assert restarted.status == ('PAUSED' if after_write else initial['status'])
+        if after_write:
+>           with pytest.raises(RuntimeError, match='CAMPAIGN_CHANGED_SINCE_READ'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_campaign_state_depth.py:260: Failed
+_ test_unbound_competing_initial_publications_either_replay_or_conflict[False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_unbound_competing_initial0')
+same_payload = False
+
+    @pytest.mark.parametrize('same_payload', [False, True])
+    def test_unbound_competing_initial_publications_either_replay_or_conflict(tmp_path, same_payload):
+        path = tmp_path / 'new-campaign.json'
+        first = runtime.CampaignState('new')
+        other = runtime.CampaignState(**asdict(first))
+        if not same_payload:
+            other.status = 'PAUSED'
+        barrier = threading.Barrier(2)
+        calls = []
+
+        def publication(target, document):
+            calls.append(deepcopy_document(document))
+            write_json(target, document)
+
+        def publish(state):
+            barrier.wait(5)
+            try:
+                state.save(path)
+                return 'ACKNOWLEDGED'
+            except RuntimeError:
+                return 'CONFLICT'
+
+        with patch.object(runtime, '_write_json', side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(publish, [first, other]))
+>       assert results.count('ACKNOWLEDGED') == (2 if same_payload else 1)
+E       AssertionError: assert 2 == 1
+E        +  where 2 = <built-in method count of list object at 0x7f2e1b165f40>('ACKNOWLEDGED')
+E        +    where <built-in method count of list object at 0x7f2e1b165f40> = ['ACKNOWLEDGED', 'ACKNOWLEDGED'].count
+
+tests/test_vertical_campaign_state_depth.py:291: AssertionError
+_ test_unbound_competing_initial_publications_either_replay_or_conflict[True] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_unbound_competing_initial1')
+same_payload = True
+
+    @pytest.mark.parametrize('same_payload', [False, True])
+    def test_unbound_competing_initial_publications_either_replay_or_conflict(tmp_path, same_payload):
+        path = tmp_path / 'new-campaign.json'
+        first = runtime.CampaignState('new')
+        other = runtime.CampaignState(**asdict(first))
+        if not same_payload:
+            other.status = 'PAUSED'
+        barrier = threading.Barrier(2)
+        calls = []
+
+        def publication(target, document):
+            calls.append(deepcopy_document(document))
+            write_json(target, document)
+
+        def publish(state):
+            barrier.wait(5)
+            try:
+                state.save(path)
+                return 'ACKNOWLEDGED'
+            except RuntimeError:
+                return 'CONFLICT'
+
+        with patch.object(runtime, '_write_json', side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(publish, [first, other]))
+        assert results.count('ACKNOWLEDGED') == (2 if same_payload else 1)
+>       assert len(calls) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'campaign_id': 'new', 'status': 'IDLE', 'started_at': '2026-10-23T03:02:13.892607+00:00', 'last_heartbeat': '2026-10...: 'IDLE', 'started_at': '2026-10-23T03:02:13.892607+00:00', 'last_heartbeat': '2026-10-23T03:02:13.892613+00:00', ...}])
+
+tests/test_vertical_campaign_state_depth.py:292: AssertionError
+_ test_other_process_cannot_publish_while_first_persistence_is_unacknowledged __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_other_process_cannot_publ0')
+
+    def test_other_process_cannot_publish_while_first_persistence_is_unacknowledged(tmp_path):
+        path, _ = loaded(tmp_path)
+        done = tmp_path / 'second-done'
+        code = '''
+    import sys
+    from pathlib import Path
+    from autonomous_research import runtime
+    from quant.state import write_json
+    path, mode, done = Path(sys.argv[1]), sys.argv[2], Path(sys.argv[3])
+    state = runtime.CampaignState.load_or_create(path, 'ignored')
+    state.latest_lesson = mode
+    if mode == 'first':
+        def paused(target, payload):
+            print('IN_PERSISTENCE', flush=True)
+            sys.stdin.readline()
+            write_json(target, payload)
+        runtime._write_json = paused
+    else:
+        print('STARTING', flush=True)
+    try:
+        state.save(path)
+    except RuntimeError:
+        result = 'CONFLICT'
+    else:
+        result = 'ACKNOWLEDGED'
+    if mode == 'second':
+        done.write_text(result)
+    print(result, flush=True)
+    '''
+        first = subprocess.Popen([sys.executable, '-c', code, str(path), 'first', str(done)],
+                                 text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        second = None
+        try:
+            assert first.stdout.readline().strip() == 'IN_PERSISTENCE'
+            second = subprocess.Popen([sys.executable, '-c', code, str(path), 'second', str(done)],
+                                      text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            assert second.stdout.readline().strip() == 'STARTING'
+            threading.Event().wait(.15)  # allow the already-started competing call to advance
+>           assert not done.exists(), 'second process bypassed the publication lock'
+E           AssertionError: second process bypassed the publication lock
+E           assert not True
+E            +  where True = exists()
+E            +    where exists = PosixPath('/tmp/pytest-of-agent/pytest-44/test_other_process_cannot_publ0/second-done').exists
+
+tests/test_vertical_campaign_state_depth.py:338: AssertionError
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_restart_and_save_both_rej0')
+raw = '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_restart_and_save_both_rej1')
+raw = '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_restart_and_save_both_rej2')
+raw = '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_restart_and_save_both_rej3')
+raw = '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_restart_and_save_both_rej4')
+raw = '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-44/test_restart_and_save_both_rej5')
+raw = '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_state_depth.py::test_stale_heartbeat_cannot_undo_acknowledged_owner_state[PAUSED]
+FAILED tests/test_vertical_campaign_state_depth.py::test_stale_heartbeat_cannot_undo_acknowledged_owner_state[STOPPED]
+FAILED tests/test_vertical_campaign_state_depth.py::test_stale_save_cannot_erase_completed_fingerprint_or_budget
+FAILED tests/test_vertical_campaign_state_depth.py::test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion[False]
+FAILED tests/test_vertical_campaign_state_depth.py::test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion[True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_lock_setup_failure_restores_checked_state_before_retry[os.open]
+FAILED tests/test_vertical_campaign_state_depth.py::test_lock_setup_failure_restores_checked_state_before_retry[fcntl.flock]
+FAILED tests/test_vertical_campaign_state_depth.py::test_lock_setup_failure_restores_checked_state_before_retry[pathlib.Path.mkdir]
+FAILED tests/test_vertical_campaign_state_depth.py::test_unserializable_pending_state_does_not_poison_recovery
+FAILED tests/test_vertical_campaign_state_depth.py::test_independent_processes_cannot_both_acknowledge_conflicting_stale_campaigns
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-None]
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-False]
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-None]
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-False]
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_snapshot_fence_distinguishes_serialized_numeric_policy_identity[True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_snapshot_fence_distinguishes_serialized_numeric_policy_identity[1.0]
+FAILED tests/test_vertical_campaign_state_depth.py::test_corrupt_existing_state_is_not_silently_repaired_by_save[null]
+FAILED tests/test_vertical_campaign_state_depth.py::test_corrupt_existing_state_is_not_silently_repaired_by_save[[]]
+FAILED tests/test_vertical_campaign_state_depth.py::test_corrupt_existing_state_is_not_silently_repaired_by_save[{"campaign_id":]
+FAILED tests/test_vertical_campaign_state_depth.py::test_corrupt_existing_state_is_not_silently_repaired_by_save[{"campaign_id":"other","unsupported_field":true}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_actual_process_death_and_fresh_load_preserve_only_committed_pause[True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_unbound_competing_initial_publications_either_replay_or_conflict[False]
+FAILED tests/test_vertical_campaign_state_depth.py::test_unbound_competing_initial_publications_either_replay_or_conflict[True]
+FAILED tests/test_vertical_campaign_state_depth.py::test_other_process_cannot_publish_while_first_persistence_is_unacknowledged
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}]
+32 failed, 2 passed in 1.11s

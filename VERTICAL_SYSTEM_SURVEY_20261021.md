@@ -1,7 +1,7 @@
 # Phase-A whole-system routing pass and retained depth limits
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-QUALIFIED_SOURCE_SHA=1cc7aba361d33d58ab5c9229fda59ba2303a59ab
+QUALIFIED_SOURCE_SHA=58ff147aa515a632189fa7e04b460eb586064a4f
 SCOPE=EXISTING_PREWAVE2_CAPABILITIES_ONLY
 
 This continuation reacquired the 25 existing North Star nodes from the base's
@@ -10,7 +10,7 @@ table names the selected implementations, executed suites and unproved layers.
 A routing/reacquisition pass is complete for these nodes; exhaustive traversal of
 every function/capability and whole-module D3/D4 qualification are not claimed.
 Depth work remained weighted toward scientific consequence, authority,
-identity/provenance, mutable state and recovery. The 40 depth counts concern
+identity/provenance, mutable state and recovery. The 41 depth counts concern
 explicit capability slices, not the node count or total assertion count.
 
 | Existing node | Internal descent and current evidence | Retained limit |
@@ -126,3 +126,9 @@ Their 116 new cases and fifteen guard-removal checks are distinct from the old
 runtime replay logs. Remaining invalid labels: 58. Mission remains active; CP100
 substantive completion is false. Next sequential checkpoint requiring real depth:
 CP042. No later canonical movement or future Wave-2 surface is followed.
+
+
+CP042 now proves scoped D3 CampaignState stale-writer fencing and fresh-process
+recovery with 34 new fixtures; seven guard-removal mutants are detected. Owner
+clarification remains active: continue substantive depth work, not filename filling.
+Latest sequential rebuilt checkpoint CP042; 57 numeric labels still rejected.

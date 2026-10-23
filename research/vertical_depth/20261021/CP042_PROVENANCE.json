@@ -1,0 +1,10 @@
+{
+  "after_module_sha256": "03cc51f0ec5d566d36ba28cf6e7df4f67ca032553013cfea47581f03d885c5e8",
+  "after_source_sha": "58ff147aa515a632189fa7e04b460eb586064a4f",
+  "before_module_sha256": "c0497d1f139e7ee7a8d853c0fb399eba98fc7cc76306f50bc8e53fe896a313ab",
+  "before_source_sha": "f39b1bbce95942f2cd719ed719f3427f0944ccb2",
+  "module": "src/autonomous_research/runtime.py",
+  "new_fixture_retained_with_exact_previous_module": true,
+  "test": "tests/test_vertical_campaign_state_depth.py",
+  "test_sha256": "8e43513bd9da0d147e63c88cd0db629e4b1dc346181a21f91836cb652df24398"
+}
