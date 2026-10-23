@@ -161,6 +161,13 @@ def build_edge_observability_projection(
     catalogs mean no declared route/adapter, never implicit source discovery.
     Acquisition planning does not advance scientific or experiment maturity.
     """
+    (task, research, disconfirmation, frozen_candidate, validator, readiness,
+     negative_memory, export_intent, producer_readiness, declared_routes,
+     validated_adapters) = deepcopy((
+        task, research, disconfirmation, frozen_candidate, validator, readiness,
+        negative_memory, export_intent, producer_readiness, declared_routes,
+        validated_adapters,
+    ))
     inputs = {
         "task": task,
         "research": research,
