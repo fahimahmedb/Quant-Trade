@@ -48,6 +48,8 @@ def validate_evidence_hash(value: str) -> None:
 
 
 def _validate_lineage(values: tuple[str, ...]) -> tuple[str, ...]:
+    if not isinstance(values, (list, tuple)):
+        raise ValueError("identity lineage must be a sequence")
     frozen = tuple(values)
     if not frozen:
         raise ValueError("identity assertions require at least one evidence hash")

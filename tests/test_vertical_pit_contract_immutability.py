@@ -101,3 +101,21 @@ def test_knowledge_boundaries_and_resolved_lineage_keep_existing_semantics():
     assert result.status == 'RESOLVED' and result.security_id == 'S-SYN'
     assert len(result.lineage_hashes) == 4
     assert book.resolve_name('I-SYN', '2026-01-01').name == 'Synthetic issuer'
+
+
+@pytest.mark.parametrize('kind', KINDS)
+@pytest.mark.parametrize('container', ['mapping', 'set'])
+def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+    digest = 'sha256:' + 'a'*64
+    malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+    with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+        construct(kind, malformed)
+
+
+@pytest.mark.parametrize('container', ['mapping', 'set'])
+def test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence(container):
+    leg = CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')
+    malformed = {leg: 'ignored quantity'} if container == 'mapping' else {leg}
+    with pytest.raises(ValueError, match='legs.*sequence'):
+        CorporateActionEvent('EVENT-SYN', 'MERGER', '2026-01-02', '2026-01-03',
+                             ('sha256:' + 'a'*64,), source_security_id='S-SYN', legs=malformed)

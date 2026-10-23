@@ -69,6 +69,10 @@ class CorporateActionEvent:
     delisting_reason: str | None = None
 
     def __post_init__(self) -> None:
+        if not isinstance(self.evidence_hashes, (list, tuple)):
+            raise ValueError("corporate-action evidence must be a sequence")
+        if not isinstance(self.legs, (list, tuple)):
+            raise ValueError("corporate-action legs must be a sequence")
         object.__setattr__(self, "evidence_hashes", tuple(self.evidence_hashes))
         object.__setattr__(self, "legs", tuple(self.legs))
         if not self.event_id:
