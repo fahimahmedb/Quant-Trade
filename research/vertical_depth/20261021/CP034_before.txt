@@ -114,7 +114,7 @@ mutation = 'experiment_identity', lost_completion_ack = False
         committed=persistence.read_immutable_json(completed)
 >       assert committed['experiment_id']==original_plan['experiment_id']
 E       AssertionError: assert 'FOREIGN' == 'EXEC-DOC'
-E         
+E
 E         - EXEC-DOC
 E         + FOREIGN
 
@@ -233,7 +233,7 @@ mutation = 'experiment_identity', lost_completion_ack = True
         committed=persistence.read_immutable_json(completed)
 >       assert committed['experiment_id']==original_plan['experiment_id']
 E       AssertionError: assert 'FOREIGN' == 'EXEC-DOC'
-E         
+E
 E         - EXEC-DOC
 E         + FOREIGN
 

@@ -10,7 +10,7 @@ field = 'adapter_id', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -25,7 +25,7 @@ field = 'provider_family', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -40,7 +40,7 @@ field = 'permission_model', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -55,7 +55,7 @@ field = 'clock_semantics', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -70,7 +70,7 @@ field = 'revision_policy', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -85,7 +85,7 @@ field = 'survivorship_policy', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -100,7 +100,7 @@ field = 'locator_template', value = '   '
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -115,7 +115,7 @@ field = 'adapter_id', value = 'UNKNOWN'
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -130,7 +130,7 @@ field = 'provider_family', value = 'UNKNOWN'
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -145,7 +145,7 @@ field = 'adapter_id', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -160,7 +160,7 @@ field = 'provider_family', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -175,7 +175,7 @@ field = 'permission_model', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -190,7 +190,7 @@ field = 'clock_semantics', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -205,7 +205,7 @@ field = 'revision_policy', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -220,7 +220,7 @@ field = 'survivorship_policy', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -235,7 +235,7 @@ field = 'locator_template', value = True
         item=spec();item[field]=value
 >       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 

@@ -89,17 +89,17 @@
     "CP031_after.txt": "14e6494575d75b027b3602f6fb277f93d47b39fe893ad6dd7cdf67c1f61b6cfb",
     "CP031_before.txt": "ff05a99f15be0aeed84578236f9614ee1baf8d124eb79eff9b2c2382c6bd0e77",
     "CP032_after.txt": "a1e8a4d2f525a61f8326438eff50672a7762815f61c4fc768c41c50adf70e89d",
-    "CP032_before.txt": "02732e0d0bddc8f4c414ff1a1f695b1b0092e1f261d3a6e1e54f2f69445cb619",
+    "CP032_before.txt": "e58b1b84dd8993df07e96fa8624dfe3956414cc2a1eca0bcec7fda2389209a43",
     "CP033_after.txt": "b6080f1ff3c96b082e33f70a90ea4be951c717ea46629924163a3d3de5861aa1",
-    "CP033_before.txt": "5f980093e371330800fd3b7d807a8c72f7079b31af2e5cdddb1ec48a58b288fc",
+    "CP033_before.txt": "e9503adb938035ce9686de8323426c91483662da8c5e4b0362964271c0b5a334",
     "CP034_after.txt": "2bc377d633aad160f3491a22856866fdc650c074a518e1b751c856f8bba8ebf5",
-    "CP034_before.txt": "b9c99bf70cd0d0698e402328023196bd760cf2620f50dd4b1a58fc17ad8234f0",
+    "CP034_before.txt": "60adfbfabdf53b29234084df240734aea1620dda661d1a3e0cbd5538c5ce065b",
     "CP035_after.txt": "b611879228fe2fe0dcb9f2eb96ec8ddf90257024dcc51b7461b52624593930e5",
-    "CP035_before.txt": "268c79a21f3e2192fedc73693f61ff82992b4c9d37ad7a27c89215855d7ec651",
+    "CP035_before.txt": "41ac47182553827f2cefef49dacfc518e9bcd910d5b847fad31d926ad7532878",
     "CP036_after.txt": "5ddf3eef7c72ae69e9ef950882ddb991c99096ff6a95d476bd723378ea5c9303",
-    "CP036_before.txt": "dd393d049bd34add191fa32fb2d962a24e0df5059d2cef94ff47e648f341b8df",
+    "CP036_before.txt": "4a60d7f58dd9b32498c0b5e1eca8ca0b7ab2e1df7d315f7a1bd2b1b17db8acfe",
     "CP037_after.txt": "86ad763e33411424a3b30b91b9bf6963b926faf6a6a7433c61b020b23454a44d",
-    "CP037_before.txt": "88ba5650e5233367d69517a26008bd11ebb4073c226f2082478428fd8d5267de",
+    "CP037_before.txt": "0e8772e6321dbb57104d8129e66ccd83458325adb3bc9993929aa187161256f0",
     "FINAL_core_receipt.json": "3c492d81def7baa2a9e7f16a917f7db830722846fc15b8c9d07b646a8b56d3dd",
     "FINAL_live_lab_js.txt": "812fd71930e79416bd563812ab209a0393e0fd9702809d7f836e3bd39219e015",
     "FINAL_platform.txt": "a4ba6a0b833ef7026d4d291578c1a66aa7b84a732bb259d96dc88bdb89ae3418",
@@ -246,5 +246,6 @@
     "existing_north_star_nodes": 25,
     "scope": "REACQUISITION_NOT_EXHAUSTIVE_FUNCTION_OR_WHOLE_MODULE_DEPTH",
     "supplemental_controls": 45
-  }
+  },
+  "transcript_normalization": "CP032-CP037 diagnostic line trailing whitespace removed; content, counts and failure traces preserved"
 }

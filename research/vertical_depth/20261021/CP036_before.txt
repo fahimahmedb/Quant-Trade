@@ -12,7 +12,7 @@ key = 'returns', placement = 'top'
         else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
 >       assert content_firewall(plan,raw)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -29,7 +29,7 @@ key = 'future_outcomes', placement = 'top'
         else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
 >       assert content_firewall(plan,raw)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -46,7 +46,7 @@ key = 'execution_prices', placement = 'top'
         else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
 >       assert content_firewall(plan,raw)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -63,7 +63,7 @@ key = 'returns', placement = 'extension'
         else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
 >       assert content_firewall(plan,raw)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -80,7 +80,7 @@ key = 'future_outcomes', placement = 'extension'
         else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
 >       assert content_firewall(plan,raw)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -97,7 +97,7 @@ key = 'execution_prices', placement = 'extension'
         else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
 >       assert content_firewall(plan,raw)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 
@@ -109,7 +109,7 @@ _____ test_alternate_normalizer_cannot_certify_top_level_forbidden_content _____
         supplied=content_firewall(plan,raw)
 >       assert normalize_typed_pit_record(plan,raw,supplied)['status']=='BLOCK'
 E       AssertionError: assert 'PASS' == 'BLOCK'
-E         
+E
 E         - BLOCK
 E         + PASS
 

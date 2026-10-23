@@ -28,7 +28,7 @@ mutation = 'negative_list'
             observed=future.result()
 >       assert observed==expected
 E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
-E         
+E
 E         Omitting 16 identical items, use -vv to show
 E         Differing items:
 E         {'receipt_hash': '87d5332311ea12e72f65547b4ca45ac0d874bcfdd5ea8c0a70d12b73f1674a19'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
@@ -64,7 +64,7 @@ mutation = 'negative_tuple'
             observed=future.result()
 >       assert observed==expected
 E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
-E         
+E
 E         Omitting 16 identical items, use -vv to show
 E         Differing items:
 E         {'receipt_hash': '87d5332311ea12e72f65547b4ca45ac0d874bcfdd5ea8c0a70d12b73f1674a19'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
@@ -100,13 +100,13 @@ mutation = 'export_identity'
             observed=future.result()
 >       assert observed==expected
 E       AssertionError: assert {'schema_vers...OCH-001', ...} == {'schema_vers...OCH-001', ...}
-E         
+E
 E         Omitting 15 identical items, use -vv to show
 E         Differing items:
 E         {'receipt_hash': '39997218dd1089a23bad3b9582c08eaa83322d46f08ff73cc0d1140d5654c9c5'} != {'receipt_hash': '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'}
 E         {'evaluation_ingest_receipt_hash': 'bdfa5321d6fd114a59a08dcea1ece2952029d5e92bc6e36c5db02ce4a309c3ad'} != {'evaluation_ingest_receipt_hash': '664bc07ea33a07b6fe73571dc0e1e729e7e7fc3c3cd14644ffa9de33441e1460'}
 E         {'export_bundle_hash': 'c4cd9bcefee907571e15b39e26bd9528888ea3f43d04f0c45afda5128fb444d3'} != {'export_bundle_hash': 'ebc87a0a2ef0f3ff92...
-E         
+E
 E         ...Full output truncated (2 lines hidden), use '-vv' to show
 
 tests/test_vertical_pipeline_input_isolation.py:33: AssertionError

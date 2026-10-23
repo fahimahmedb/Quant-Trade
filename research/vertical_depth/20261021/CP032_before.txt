@@ -16,7 +16,7 @@ field = 'contract_id'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'contract_id...aaaaaaa', ...} == {'contract_id...aaaaaaa', ...}
-E         
+E
 E         Omitting 13 identical items, use -vv to show
 E         Differing items:
 E         {'contract_id': 'FOREIGN'} != {'contract_id': 'C'}
@@ -39,7 +39,7 @@ field = 'observation_scope'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'contract_id...aaaaaaa', ...} == {'contract_id...aaaaaaa', ...}
-E         
+E
 E         Omitting 13 identical items, use -vv to show
 E         Differing items:
 E         {'observation_scope': {'instrument': 'changed after checks'}} != {'observation_scope': {'instrument': 'SYNTHETIC_SOFTWARE_ONLY'}}
@@ -62,7 +62,7 @@ field = 'observation_count'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'contract_id...aaaaaaa', ...} == {'contract_id...aaaaaaa', ...}
-E         
+E
 E         Omitting 13 identical items, use -vv to show
 E         Differing items:
 E         {'observation_count': 1} != {'observation_count': 0}
@@ -107,7 +107,7 @@ field = 'source_version_id'
                              lambda:supplied.update({field:'changed after checks'}))
 >       assert returned[field]==expected[field]
 E       AssertionError: assert 'changed after checks' == 'SYN-ACCESSION-001-V1'
-E         
+E
 E         - SYN-ACCESSION-001-V1
 E         + changed after checks
 
@@ -132,7 +132,7 @@ field = 'published_at'
                              lambda:supplied.update({field:'changed after checks'}))
 >       assert returned[field]==expected[field]
 E       AssertionError: assert 'changed after checks' == '2026-10-15T12:00:00Z'
-E         
+E
 E         - 2026-10-15T12:00:00Z
 E         + changed after checks
 
@@ -157,7 +157,7 @@ field = 'record_id'
                              lambda:supplied.update({field:'changed after checks'}))
 >       assert returned[field]==expected[field]
 E       AssertionError: assert 'changed after checks' == 'PIT-REG-001'
-E         
+E
 E         - PIT-REG-001
 E         + changed after checks
 
@@ -191,7 +191,7 @@ field = 'status'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'route_id': ...667a17e', ...} == {'route_id': ...667a17e', ...}
-E         
+E
 E         Omitting 7 identical items, use -vv to show
 E         Differing items:
 E         {'status': 'BLOCK'} != {'status': 'PASS'}
@@ -227,7 +227,7 @@ field = 'freeze_time'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'route_id': ...667a17e', ...} == {'route_id': ...667a17e', ...}
-E         
+E
 E         Omitting 7 identical items, use -vv to show
 E         Differing items:
 E         {'freeze_time': '2026-10-20T00:00:00Z'} != {'freeze_time': '2026-10-15T13:20:00Z'}
@@ -263,7 +263,7 @@ field = 'canonical_route'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'route_id': ...667a17e', ...} == {'route_id': ...667a17e', ...}
-E         
+E
 E         Omitting 7 identical items, use -vv to show
 E         Differing items:
 E         {'canonical_route': {'route_id': 'SRC-SYN-QUANT-001', 'source_class': 'SYNTHETIC_FIXTURE', 'transport': 'fixture-json', 'locator': 'synthetic://pit/quant/liquidity-reversal-v1', ...}} != {'canonical_route': {'route_id': 'SRC-SYN-QUANT-001', 'source_class': 'SYNTHETIC_FIXTURE', 'transport': 'fixture-json', 'locator': 'synthetic://pit/quant/liquidity-reversal-v1', ...}}
@@ -299,7 +299,7 @@ field = 'route_id'
         returned=paused_call(lambda:registry.register(supplied),entered,release,mutate)
 >       assert returned==expected
 E       AssertionError: assert {'route_id': ...667a17e', ...} == {'route_id': ...667a17e', ...}
-E         
+E
 E         Omitting 7 identical items, use -vv to show
 E         Differing items:
 E         {'route_id': 'FOREIGN'} != {'route_id': 'SRC-SYN-QUANT-001'}
