@@ -109,6 +109,7 @@ def classify_model_pit(*, source_pit: bool, model_knowledge_cutoff_status: str) 
 
 
 def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    payload = deepcopy(dict(payload))
     required = {
         "research_epoch_id", "parent_epoch_id", "opened_at", "knowledge_cutoff", "research_window",
         "export_cutoff", "close_policy", "feedback_release_policy", "research_policy_hash",
@@ -167,6 +168,7 @@ def assert_model_allowed(epoch: Mapping[str, Any], model_identity: str) -> None:
 
 
 def build_research_trial(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    payload = deepcopy(dict(payload))
     required = {
         "research_trial_id", "research_epoch_id", "trial_type", "model_identity", "prompt_hash",
         "context_hash", "retrieval_manifest_hash", "source_packet_hash", "generated_at",
@@ -191,6 +193,7 @@ def build_research_trial(payload: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def build_candidate(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    payload = deepcopy(dict(payload))
     core_required = {
         "hypothesis_id", "generation_id", "research_trial_id", "research_epoch_id", "family", "claim",
         "mechanism_statement", "universe", "clock", "horizon", "economic_expression",
@@ -219,6 +222,7 @@ def build_candidate(payload: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def build_validator_result(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    payload = deepcopy(dict(payload))
     required = {
         "hypothesis_id", "generation_id", "validator_identity", "validator_version",
         "validator_model", "validator_prompt_hash", "validator_context_hash",
@@ -287,6 +291,7 @@ def build_priority_decision(*, policy_version: str, eligible: Sequence[Mapping[s
 
 
 def build_negative_memory(payload: Mapping[str, Any]) -> Dict[str, Any]:
+    payload = deepcopy(dict(payload))
     required = {
         "negative_knowledge_id", "failure_scope", "assumptions", "regime_context", "source_context",
         "failure_reason", "revisit_conditions", "revisit_policy",
