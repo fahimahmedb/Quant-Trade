@@ -45,7 +45,8 @@ class TypedPITRegistry:
             try:
                 body = {key: typed_record[key] for key in typed_fields}
                 json.dumps(body, allow_nan=False)
-                if (not isinstance(body["payload"], dict) or _contains_outcome(body["payload"])
+                if (not isinstance(body["payload"], dict) or _contains_outcome(typed_record)
+                        or _contains_outcome(provenance_manifest)
                         or not isinstance(body["content_classes"], list)
                         or not body["content_classes"]
                         or any(not isinstance(v, str) or v in FORBIDDEN_CONTENT_CLASSES

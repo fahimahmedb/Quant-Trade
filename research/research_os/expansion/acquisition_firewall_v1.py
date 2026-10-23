@@ -156,6 +156,8 @@ def content_firewall(plan: Dict[str, Any], raw_record: Dict[str, Any]) -> Dict[s
                 for item in value:
                     yield from forbidden_keys(item)
         blockers.extend(f"FORBIDDEN_PAYLOAD_KEY:{key}" for key in sorted(set(forbidden_keys(payload))))
+        extensions = {key: value for key, value in raw_record.items() if key != "payload"}
+        blockers.extend(f"FORBIDDEN_RECORD_KEY:{key}" for key in sorted(set(forbidden_keys(extensions))))
 
     return {
         "record_id": raw_record.get("record_id"),
