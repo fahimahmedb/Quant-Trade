@@ -48,6 +48,7 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
     fetch market results, prospective observations, positions, orders, or any
     Evaluation-side outcome store.
     """
+    bundle = deepcopy(bundle)
     _reject_outcome_payload(bundle)
     authority = deepcopy(bundle.get("authority", CLOSED_AUTHORITY))
     assert_authority_closed(authority)
