@@ -444,6 +444,7 @@ class DryRunExperimentRunner:
         from .archaeology import EdgeArchaeologyEngine
         from .persistent_state import write_immutable_json
 
+        plan, inputs = deepcopy((plan, inputs))
         self.replay(plan)
         payload = plan['plan']
         if payload.get('declared_metrics') != ['DOCUMENTARY_FACTS_V1']:
