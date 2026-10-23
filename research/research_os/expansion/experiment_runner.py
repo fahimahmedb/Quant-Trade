@@ -88,7 +88,7 @@ class DryRunExperimentRunner:
         source_qualifications: Iterable[Dict[str, Any]],
         runner_meta: Dict[str, Any],
     ) -> Dict[str, Any]:
-        qualifications = list(source_qualifications)
+        envelope, qualifications, runner_meta = deepcopy((envelope, list(source_qualifications), runner_meta))
         blockers: List[str] = []
         if envelope.get("status") != "FROZEN_READY_NO_OUTCOME":
             blockers.append("EXPERIMENT_ENVELOPE_NOT_FROZEN")
