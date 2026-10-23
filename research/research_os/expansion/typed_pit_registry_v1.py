@@ -30,6 +30,7 @@ class TypedPITRegistry:
         provenance_manifest: Dict[str, Any],
     ) -> Dict[str, Any]:
         with self._lock:
+            typed_record, provenance_manifest = deepcopy((typed_record, provenance_manifest))
             if typed_record.get("status") != "PASS":
                 raise ValueError("typed PIT record must PASS before registration")
             if provenance_manifest.get("status") != "PASS":

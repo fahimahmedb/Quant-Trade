@@ -461,6 +461,7 @@ class ImmutableSourceRouteRegistry:
 
     def register(self, qualification: Dict[str, Any]) -> Dict[str, Any]:
         with self._lock:
+            qualification = deepcopy(qualification)
             try:
                 expected = qualify_source_route(qualification["canonical_route"],
                                                 freeze_time=qualification["freeze_time"])

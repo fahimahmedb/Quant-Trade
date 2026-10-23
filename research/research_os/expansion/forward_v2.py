@@ -72,6 +72,7 @@ class ForwardRegistryV2:
 
     def register(self, contract: Dict[str, Any]) -> Dict[str, Any]:
         with self._lock:
+            contract = deepcopy(contract)
             payload_fields = ("contract_id", "hypothesis_id", "generation_id", "protocol_hash", "t0",
                               "observation_scope", "material_change_requires_new_generation")
             expected_fields = set(payload_fields) | {'state', 'contract_hash', 'owner_authorization',
