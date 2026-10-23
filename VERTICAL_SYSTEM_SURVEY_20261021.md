@@ -94,7 +94,7 @@ LIVE_TRADING_AUTHORIZED=FALSE
 
 ## Owner-requested stop at CP100
 
-CP038–CP100 record 63 paired existing-suite environmental audits at their exact
+CP038–CP100 record 63 paired existing-suite runtime replays at their exact
 recorded source SHA: normal Python/hash seed 0 and Python -OO/hash seed 1729.
 All 126 invocations pass, covering 714 overlapping existing tests per mode; these
 are not new cases or whole-module depth claims. CP061 separately reproduces and
@@ -102,3 +102,15 @@ repairs projection input mutation after the content guard, adding six cases and
 one scoped D2 unit. Focused post-repair tests and full final regressions run at
 QUALIFIED_SOURCE_SHA. The paired original logs honestly retain their prior SHA.
 Stop boundary reached: CP100. No CP101 is opened; retained depth limits apply.
+
+
+## Correction after Owner review
+
+CP038–CP060 and CP062–CP100 are insufficient-depth runtime replay diagnostics.
+Their D2-requalification wording is withdrawn; they do not count as 62 completed
+vertical checkpoints. Reusing existing suites with -OO/hash-seed changes does not
+establish the required new internal descent/invariant falsification. CP061 is the
+one repair-bearing checkpoint in this continuation. The 39 scoped-unit table is
+unchanged; no diagnostic label contributes to it. Numeric CP100 was reached,
+but substantive CP100 depth completion was not established. Work remains stopped;
+no CP101 is opened. See VERTICAL_DEPTH_CLAIM_CORRECTION_20261023.md.

@@ -4,7 +4,9 @@ import collections, hashlib, json, re, subprocess
 E = Path('research/vertical_depth/20261021')
 q = json.loads((E / 'FINAL_qualification.json').read_text())
 sha = q['qualified_source_sha']
-assert q['checkpoint_count'] == q['stopped_at_checkpoint'] == 100
+assert q['checkpoint_label_count'] == q['stopped_at_checkpoint'] == 100
+assert q['cp100_depth_completion'] is False
+assert q['insufficient_depth_label_count'] == 62
 assert q['cp101_opened'] is False
 assert not Path('VERTICAL_CP101_20261021.md').exists()
 for p, h in q['source_files_sha256'].items():
@@ -50,4 +52,4 @@ for log, result in [('FINAL_root.txt','1603 passed'),('FINAL_research_os.txt','2
 assert subprocess.check_output(['git','hash-object','QUANT_NORTH_STAR.md'],text=True).strip() == q['north_star_blob']
 changed = subprocess.check_output(['git','diff','--name-only',q['base_sha'],sha],text=True).splitlines()
 assert not any(p.endswith('/canonical_spine.py') for p in changed)
-print('PASS: CP001–CP100 ancestry/authority/evidence, 63 runtime pairs, scoped counts, exact source fingerprints and final receipt/suites.')
+print('PASS: evidence integrity and corrected classification; 100 labels are NOT substantive CP100 completion.')

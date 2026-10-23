@@ -1,6 +1,14 @@
+# Classification correction
+
+CP038–CP060 and CP062–CP100 are 62 insufficient-depth runtime replay diagnostics,
+not accepted vertical checkpoints. The logs below are real but their numbering
+is not evidence of deep mission completion. Prior D2-requalification wording is
+withdrawn. Only CP061 adds a new investigation, reproduced defect and repair.
+See the root VERTICAL_DEPTH_CLAIM_CORRECTION_20261023.md.
+
 # CP038–CP100 evidence and Owner stop
 
-These are 63 bounded audit checkpoints of test surfaces that exist on immutable
+These are 63 numbered test-run entries of test surfaces that exist on immutable
 base 01c2e520fa4116645870f96acf6770ea83f1881c. They are not 63 repairs. Each
 checkpoint records the exact existing adversaries and two runtime invocations;
 CP038_100_INDEX.json preserves the original HEAD and test file hashes. All 126

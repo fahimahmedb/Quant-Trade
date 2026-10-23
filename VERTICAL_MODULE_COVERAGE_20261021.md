@@ -101,9 +101,21 @@ semantics in canonical_spine. See the final manifest and durable synthetic JSON
 reproduction. No handoff implementation was changed by this rail.
 
 
-CP038–CP100 add 63 bounded environmental audit checkpoints: each runs an existing
+CP038–CP100 add 63 numbered entries (62 insufficient-depth runtime diagnostics and CP061): each runs an existing
 structured adversarial suite normally and under Python -OO with another hash
 seed. The 714 per-mode existing tests overlap the full regression. Only CP061
 adds a repaired scoped capability unit and six new cases; the other 62 audits do
 not inflate capability/defect counts. See CP038_100_INDEX.json for the exact
 source revisions and invocations. Owner stopping boundary: CP100; no CP101 opened.
+
+
+## Correction after Owner review
+
+CP038–CP060 and CP062–CP100 are insufficient-depth runtime replay diagnostics.
+Their D2-requalification wording is withdrawn; they do not count as 62 completed
+vertical checkpoints. Reusing existing suites with -OO/hash-seed changes does not
+establish the required new internal descent/invariant falsification. CP061 is the
+one repair-bearing checkpoint in this continuation. The 39 scoped-unit table is
+unchanged; no diagnostic label contributes to it. Numeric CP100 was reached,
+but substantive CP100 depth completion was not established. Work remains stopped;
+no CP101 is opened. See VERTICAL_DEPTH_CLAIM_CORRECTION_20261023.md.
