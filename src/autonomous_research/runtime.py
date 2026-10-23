@@ -16,6 +16,10 @@ from typing import Any
 from quant.state import read_json, write_json as _write_json
 
 
+class CampaignStateConflict(RuntimeError):
+    """Another campaign writer changed the snapshot this instance observed."""
+
+
 class QueueConflict(RuntimeError):
     """A durable queue update invalidated this writer's observed snapshot."""
 
@@ -60,17 +64,92 @@ class CampaignState:
     pause_reason: str | None = None
     stop_reason: str | None = None
 
+    def __post_init__(self) -> None:
+        # Runtime metadata is deliberately outside dataclass fields/wire state.
+        self._mutation_lock = threading.RLock()
+        self._persisted_by_path: dict[str, dict[str, Any]] = {}
+
+    @staticmethod
+    def _unique_fields(pairs):
+        document = {}
+        for name, value in pairs:
+            if name in document:
+                raise ValueError("duplicate campaign state field: " + name)
+            document[name] = value
+        return document
+
+    @classmethod
+    def _read_document(cls, path: Path) -> dict[str, Any] | None:
+        try:
+            document = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=cls._unique_fields)
+        except FileNotFoundError:
+            return None
+        if not isinstance(document, dict):
+            raise ValueError("campaign state must be an object")
+        json.dumps(document, allow_nan=False)  # Match the existing writer's finite JSON contract.
+        cls(**document)  # Preserve existing field/default admission; reject malformed shape.
+        return document
+
+    def _adopt(self, key: str, document: dict[str, Any]) -> None:
+        restored = type(self)(**deepcopy(document))
+        for name, value in asdict(restored).items():
+            setattr(self, name, value)
+        self._persisted_by_path[key] = deepcopy(document)
+
     @classmethod
     def load_or_create(cls, path: Path, campaign_id: str, max_cycles: int | None = None) -> "CampaignState":
-        if path.exists():
-            return cls(**json.loads(path.read_text(encoding="utf-8")))
+        path = Path(path)
+        document = cls._read_document(path)
+        if document is not None:
+            state = cls(**document)
+            state._persisted_by_path[str(path.resolve())] = deepcopy(document)
+            return state
         state = cls(campaign_id=campaign_id, research_budget={"max_cycles": max_cycles})
-        state.save(path)
+        try:
+            state.save(path)
+        except CampaignStateConflict:
+            # A concurrent creator won. Loading that truth matches the existing
+            # load_or_create contract; do not replace it with our fresh defaults.
+            document = cls._read_document(path)
+            if document is None:
+                raise
+            state._adopt(str(path.resolve()), document)
         return state
 
+    @_serialized_mutation
     def save(self, path: Path) -> None:
-        _write_json(path, asdict(self))
+        path = Path(path)
+        key = str(path.resolve())
+        fd = None
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(path.with_name(path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            current = self._read_document(path)
+            document = asdict(self)
+            # Serialized identity distinguishes bool/int/float aliases as well.
+            def encode(value: Any) -> str:
+                return json.dumps(value, sort_keys=True, allow_nan=False)
+            current_wire, document_wire = encode(current), encode(document)
+            if (current_wire != encode(self._persisted_by_path.get(key))
+                    and current_wire != document_wire):
+                raise CampaignStateConflict("CAMPAIGN_CHANGED_SINCE_READ")
+            if current_wire != document_wire:
+                _write_json(path, document)
+            self._persisted_by_path[key] = deepcopy(document)
+        except BaseException:
+            try:
+                durable = self._read_document(path)
+            except (OSError, ValueError, TypeError):
+                durable = self._persisted_by_path.get(key)
+            if durable is not None:
+                self._adopt(key, durable)
+            raise
+        finally:
+            if fd is not None:
+                os.close(fd)
 
+    @_serialized_mutation
     def heartbeat(self, path: Path) -> None:
         self.last_heartbeat = utc_now()
         self.save(path)
