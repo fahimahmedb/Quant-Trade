@@ -216,7 +216,10 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     # a disagreement block readiness instead of silently changing the object.
     frozen_protocol = plan.get("frozen_protocol") or {}
     expression = frozen_protocol.get("economic_expression") or {}
-    if frozen_protocol.get("candidate_hash") == sha256_json(output["candidate"]):
+    # Documentary identities are exact reconstructions of source dossiers.
+    # Their authority ceiling is owned by economic_identity_v1; a declared
+    # execution plan must not change that documentary evidence object.
+    if output.get("synthetic_only") is True and frozen_protocol.get("candidate_hash") == sha256_json(output["candidate"]):
         for field, source_field in (("instrument", "instrument"), ("universe", "universe"),
                                     ("timing_clock", "entry_clock"), ("horizon", "horizon")):
             declared = expression.get(source_field)

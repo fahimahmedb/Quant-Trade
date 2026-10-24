@@ -110,6 +110,12 @@
       "uncompressed_sha256": "1d3e1b48fdcfc950cf23153b299fc0ddc461a556f4fe6b8a9aa01e45a47dc4a0",
       "compressed_sha256": "c25f227a9897ec2acbe7e41c6260724f6a6572647348cfee8665d438a3475a44",
       "bytes": 236
+    },
+    {
+      "path": "governance/giga_q/evidence/documentary-neighbors.log.gz",
+      "uncompressed_sha256": "31c148d5a0185895caddff1bf5aa34d44b814b3f6aa39d920beeebaf61b96313",
+      "compressed_sha256": "b60e251f7611a67a320f5fae7536ac2f94ac9098b0e04e43a209534850b2f26b",
+      "bytes": 121
     }
   ],
   "retained_fixtures": [
