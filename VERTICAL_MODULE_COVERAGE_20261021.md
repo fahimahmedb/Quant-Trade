@@ -14,7 +14,7 @@ to the 45 explicit capability units below the table.
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
 | Owner/governance | v2_core/v2_state; epoch blinding, policy/preflight, membrane suites | CP002 guards; CP010 optimizer-safe denial. Authentication/transport and policy-change races unproven. |
-| Control/clock | local runtime, GitHubStateStore, native worker; oracle_worker/scheduler and V2 worker tests | CP007/CP015 local clocks, stale/terminal fencing and shared-instance publication recovery. CP030 refuses Git paths ignored by the index. Existing real local-Git lease races, expiry, owner rewind, lost ACK and restart tests pass. Local selection/claim is not atomic. No production reboot proof. |
+| Control/clock | local runtime, GitHubStateStore, native worker; oracle_worker/scheduler and V2 worker tests | CP007/CP015 local clocks, stale/terminal fencing and shared-instance publication recovery. CP042 adds state CAS/recovery; CP044 preserves pause through settlement; CP045 qualifies watchdog clocks; CP046 qualifies typed queue CAS/strict reads. CP030 refuses Git paths ignored by the index. Existing real local-Git lease races, expiry, owner rewind, lost ACK and restart tests pass. Local selection/claim is not atomic. No production reboot proof. |
 | Data/research | evidence, identity, source qualification, source-PIT clocks, raw-capture/admission suites | CP003 evidence/index; CP009 action boundaries; CP021 panel projections; CP022–CP024 firewall/PIT/source-context admission. Vendor/source truth and all identity interval conflicts unproven. |
 | Data/control recovery | Quant clock dependency recovery and V1 data-validation suites | Existing durable BLOCK/recovery behavior regressed. No new live capture or outage experiment. |
 | Scientific memory snapshots | scientific_store; CP017 alias, malformed chain, threaded append and atomic publication/retry tests | D3 for same-instance scientific hash ledger; public entries, independent publishers and authenticated rollback anchoring unproven. |
@@ -59,8 +59,8 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Learning retained replay, concurrent mutation and failed-write recovery | D3 | CP004/CP014 |
 | Generic journal recovery/concurrent append | D3 | CP005 |
 | RISK numerical admission | D2 | CP006 |
-| Local queue clock/schema/identity admission | D2 | CP007 |
-| Local queue durable publication/retry and stale writer fencing | D3 | CP007/CP015 |
+| Local queue clock/strict durable schema/identity admission | D2 | CP007/CP046 |
+| Local queue typed publication/retry, trusted recovery and stale writer fencing | D3 | CP007/CP015/CP046 |
 | CampaignState observed-body publication, shared recovery and fresh-process restart | D3 | CP042 |
 | Campaign pause/resume through local dispatch, settlement and publication/ACK recovery | D3 | CP044 |
 | Execution causal capacity admission | D2 | CP008 |
@@ -107,70 +107,19 @@ semantics in canonical_spine. See the final manifest and durable synthetic JSON
 reproduction. No handoff implementation was changed by this rail.
 
 
-CP038–CP100 add 63 numbered entries (62 insufficient-depth runtime diagnostics and CP061): each runs an existing
-structured adversarial suite normally and under Python -OO with another hash
-seed. The 714 per-mode existing tests overlap the full regression. Only CP061
-adds a repaired scoped capability unit and six new cases; the other 62 audits do
-not inflate capability/defect counts. See CP038_100_INDEX.json for the exact
-source revisions and invocations. Owner stopping boundary: CP100; no CP101 opened.
+## Current checkpoint disposition
 
+The old paired runtime replays in CP038_100_INDEX.json are supplemental regression
+only. After the Owner's correction, CP038–CP046 have been rebuilt with 339 new
+implementation-specific adversarial cases. They replace nine rejected labels;
+CP061 was already separately repair-bearing. There are 47 accepted scoped entries
+and 53 rejected labels. Reused runtime variants add no capability/depth units.
 
-## Correction after Owner review
-
-CP038–CP060 and CP062–CP100 are insufficient-depth runtime replay diagnostics.
-Their D2-requalification wording is withdrawn; they do not count as 62 completed
-vertical checkpoints. Reusing existing suites with -OO/hash-seed changes does not
-establish the required new internal descent/invariant falsification. CP061 is the
-one repair-bearing checkpoint in this continuation. The 39 scoped-unit table is
-unchanged; no diagnostic label contributes to it. Numeric CP100 was reached,
-but substantive CP100 depth completion was not established. Work remains stopped;
-no CP101 is opened. See VERTICAL_DEPTH_CLAIM_CORRECTION_20261023.md.
-
-
-## Substantive rebuilding continues
-
-Owner clarified that CP100 was an instruction to sustain real work, not a quota
-of filenames. CP038–CP041 are rebuilt with 116 new cases and implementation-specific
-proofs. CP038 adds one scoped D2 frozen-replay unit; CP039 extends existing D3
-immutable publication with real process death/restart, CP040/CP041 extend existing
-Core guard/identity units. Fifteen guard-removal mutants are detected. There are
-58 unreconstructed diagnostic labels left (CP042–CP060 and CP062–CP100). They
-remain invalid depth checkpoints. Mission active; no claim of CP100 completion.
-
-
-CP042 extends Control/Clock with scoped D3 CampaignState persistence/fencing.
-Its 34 new cases and seven detected guard-removal mutants are documented in the
-checkpoint. There remain 57 unqualified numeric labels; CP043 is next. Whole
-campaign/queue/memory transactions, physical power loss and unsynchronized public
-field mutation remain unproved.
-
-
-CP043 adds two scoped D2 PIT sequence/lineage units, with 47 new cases and ten
-detected guard removals. The first repair was itself falsified and narrowed to
-reject mapping/set containers. Identifier dictionaries, custom callbacks and
-whole identity storage remain outside that qualification. Next CP044; 56 old
-numeric entries remain rejected, and mission completion is false.
-
-
-CP044 adds a scoped D3 pause-control unit: 37 new cases, seven detected guard
-removals, including deeper failure of the first phase-preservation repair. No
-whole campaign transaction or multi-controller ownership proof. Next CP045;
-55 rejected numeric labels remain. Mission active.
-
-
-CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
-failed/13 passed, focused 138 passed, seven guard removals detected. Three
-grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
-Next CP046; 54 numeric labels remain rejected. Mission active.
-
-
-CP046 adds 49 queue document/fencing/recovery cases. Final before 45 failed/4
-passed; focused 159 passed; seven guard removals detected. The first repair was
-falsified by six deeper null/root-extension cases. Three grouped repairs extend
-existing D2 admission and D3 queue publication/retry units without inflating unit
-counts. This is the final checkpoint under the Owner's stop instruction.
-Next CP047; 53 numeric labels remain rejected. Mission active.
-
+CP044–CP046 add 142 new cases and detect 21 guard removals. CP044 adds one scoped
+D3 pause-control unit; CP045 adds one scoped D2 watchdog time-proof unit; CP046
+extends the existing D2/D3 queue admission and recovery units. Full-module
+concurrency, physical power loss and other retained limits are not proved.
 
 Owner-requested stop after qualified CP046. No substantive CP047 work is opened.
-Phase A is incomplete; prior continuation routing is historical.
+Phase A is incomplete. The coverage table records current scoped evidence; it
+is not permission to resume or an assertion that all functions were exhausted.

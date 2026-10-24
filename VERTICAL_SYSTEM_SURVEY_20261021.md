@@ -16,7 +16,7 @@ explicit capability slices, not the node count or total assertion count.
 | Existing node | Internal descent and current evidence | Retained limit |
 | --- | --- | --- |
 | Owner/governance | Core authority exact-FALSE, epoch/blinding, optimized decay guards; 12 additional nonboolean/open-authority controls | No real Owner authentication or transport isolation proof |
-| Control/clock | Local queue CAS/recovery/UTC; real local Git leases/lost ACK/rewind; CP030 index path acknowledgement | Atomic local selection/claim and physical reboot remain unproved |
+| Control/clock | Local queue typed CAS/strict-document recovery CP046; state CAS CP042; pause settlement CP044; watchdog clocks CP045; real local Git lease regressions; CP030 index path acknowledgement | Atomic local selection/claim and physical reboot remain unproved |
 | Data/research | Evidence atomic index; PIT actions; PricePanel duplicate/projection/date caches; source route boundary/context | Vendor truth, parser semantic equivalence and all revision intervals |
 | Data/control recovery | Existing Quant missing-data/block/resume and V1 lineage recovery cases executed in root suite | No real vendor outage or production data recovery |
 | Canonical research core | Canonical round-trip identity, immutable checkpoint hash/retry, scoped negative shape, existing epoch freeze/trial suites | Whole epoch concurrency/crash composition, formal scope/proof adjudication |
@@ -92,73 +92,23 @@ REAL_CAPITAL_AUTHORIZED=FALSE
 LIVE_TRADING_AUTHORIZED=FALSE
 
 
-## Owner-requested stop at CP100
+## Current disposition after substantive rebuilding
 
-CP038–CP100 record 63 paired existing-suite runtime replays at their exact
-recorded source SHA: normal Python/hash seed 0 and Python -OO/hash seed 1729.
-All 126 invocations pass, covering 714 overlapping existing tests per mode; these
-are not new cases or whole-module depth claims. CP061 separately reproduces and
-repairs projection input mutation after the content guard, adding six cases and
-one scoped D2 unit. Focused post-repair tests and full final regressions run at
-QUALIFIED_SOURCE_SHA. The paired original logs honestly retain their prior SHA.
-Stop boundary reached: CP100. No CP101 is opened; retained depth limits apply.
+The original CP038–CP100 paired runtime replay index is preserved as supplemental
+regression. Its 62 unsupported depth labels were withdrawn after Owner review;
+CP061 contained its own new repair. CP038–CP046 now replace nine discarded labels
+with 339 new adversarial cases and localized internal proof. CP039 has no product
+defect but adds real process-death/restart recovery. See the exact checkpoints,
+before/after transcripts and mutation manifests for their individual limits.
 
+There are 47 accepted scoped checkpoint entries and 53 rejected diagnostic labels.
+The 45 capability-unit counts retain their bounded meanings. CP044–CP046 add
+142 new cases: pause/settlement/ACK recovery, conservative watchdog clock proof,
+and typed queue fencing/strict durable admission/trusted recovery. Their first
+repairs were challenged further within the same checkpoint before qualification.
+No future Wave-2 capability or later canonical movement is included.
 
-## Correction after Owner review
-
-CP038–CP060 and CP062–CP100 are insufficient-depth runtime replay diagnostics.
-Their D2-requalification wording is withdrawn; they do not count as 62 completed
-vertical checkpoints. Reusing existing suites with -OO/hash-seed changes does not
-establish the required new internal descent/invariant falsification. CP061 is the
-one repair-bearing checkpoint in this continuation. The 39 scoped-unit table is
-unchanged; no diagnostic label contributes to it. Numeric CP100 was reached,
-but substantive CP100 depth completion was not established. Work remains stopped;
-no CP101 is opened. See VERTICAL_DEPTH_CLAIM_CORRECTION_20261023.md.
-
-
-## Rebuilt checkpoints after clarification
-
-The Owner's intent was uninterrupted substantive work, not a numeric-label quota.
-CP038–CP041 have now been reconstructed with new fixtures and internal evidence:
-frozen replay's contract/reference defects, real process-death checkpoint recovery,
-direct export input isolation, and five Core builders' checked snapshot identity.
-Their 116 new cases and fifteen guard-removal checks are distinct from the old
-runtime replay logs. Remaining invalid labels: 58. Mission remains active; CP100
-substantive completion is false. Next sequential checkpoint requiring real depth:
-CP042. No later canonical movement or future Wave-2 surface is followed.
-
-
-CP042 now proves scoped D3 CampaignState stale-writer fencing and fresh-process
-recovery with 34 new fixtures; seven guard-removal mutants are detected. Owner
-clarification remains active: continue substantive depth work, not filename filling.
-Latest sequential rebuilt checkpoint CP042; 57 numeric labels still rejected.
-
-
-CP043 descends into frozen PIT assertion provenance and corporate-action terms,
-including a deeper counterexample against its first repair. Final fixtures add
-47 cases; before 34 failed, focused after 78 passed, ten guard removals detected.
-Two scoped D2 units; no future identity persistence built. Next CP044. Mission
-active; 56 rejected runtime replay labels do not count as deep qualification.
-
-
-CP044 deepens existing local Campaign pause/control to scoped D3: 37 new cases,
-three grouped repairs, seven guard-removal controls. No new lease service or
-whole-runtime atomicity claim. Next CP045; 55 numeric labels remain rejected.
-
-
-CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
-failed/13 passed, focused 138 passed, seven guard removals detected. Three
-grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
-Next CP046; no future module is built. Mission active.
-
-
-CP046 adds 49 queue document/fencing/recovery cases. Final before 45 failed/4
-passed; focused 159 passed; seven guard removals detected. The first repair was
-falsified by six deeper null/root-extension cases. Three grouped repairs extend
-existing D2 admission and D3 queue publication/retry units without inflating unit
-counts. This is the final checkpoint under the Owner's stop instruction.
-Next CP047; no future module is built. Mission active.
-
-
-Owner-requested stop after qualified CP046. No substantive CP047 work is opened.
-Phase A is incomplete; prior continuation routing is historical.
+The Owner requested completion and stop at CP046. CP046 is qualified; no
+substantive CP047 work is opened. Phase A and whole-module depth are incomplete.
+Final source/regression/receipt identities are in FINAL_qualification.json; all
+four economic/prospective/capital/live permissions remain FALSE.

@@ -32,22 +32,15 @@ and test/schema bytes must match the 83 fingerprints in
 `research/vertical_depth/20261021/FINAL_qualification.json`.
 
 
-**Subsequent rebuilding after Owner clarification:** “until CP100” meant sustained
-substantive work, not a filename quota. The mission is active; the numbered labels
-are not a stopping/completion criterion. CP038–CP041 now replace their old replay
-entries with implementation-specific evidence: 116 newly added cases, actual
-process-death/restart tests, three grouped frozen-plan weaknesses and two shared
-input-snapshot repairs. Before failures are CP038 64/73, CP040 6/10, CP041 11/16;
-CP039's 17 new process cases reproduce no defect. Fifteen deliberate guard removals
-are detected by the new fixtures. Focused counts overlap the full regression.
-
-There are now 42 substantive scoped checkpoint entries (CP001–CP041 plus the
-previous out-of-sequence CP061); 41 contain repair items and CP039 has no reproduced
-defect. These are bounded claims, not independent whole-module qualifications.
-The remaining CP042–CP060 and CP062–CP100 (58 labels) remain rejected as depth
-checkpoints. Earlier correction paragraphs below describe the prior delivery;
-they do not retroactively validate the discarded replay work. Next work must
-continue implementation-specific descent rather than fill these filenames.
+**Current disposition after rebuilding and the Owner's stop instruction:**
+CP038–CP046 replace their rejected replay labels with implementation-specific
+falsification and 339 new cases. CP039 supplies actual process-death/restart proof
+without a reproduced product defect. The other rebuilt checkpoints contain
+localized repairs, before failures, focused requalification and sensitivity checks.
+There are 47 substantive checkpoint entries (CP001–CP046 plus the previously
+qualified, out-of-sequence CP061); 46 contain repair items. CP047–CP060 and
+CP062–CP100 remain 53 rejected diagnostic labels. The Owner requested completion
+and stop at CP046. No substantive CP047 work is opened; Phase A is incomplete.
 
 MODULES_TOUCHED=30
 SOURCE_FILES_CHANGED=32
@@ -313,59 +306,23 @@ Native worker concurrency/recovery is exercised with real disposable local Git
 remotes instead. All outputs here are engineering/diagnostic evidence.
 
 
-Latest substantive continuation: CP042 adds 34 new cases and repairs three grouped
-CampaignState weaknesses: stale saves could undo pause/stop/completion, failed
-publication lacked coherent object recovery, and reads accepted ambiguous/nonfinite
-JSON. New unit D3 is bounded to local observed-body publication/recovery and real
-process restart. Seven guard-removal mutants are detected. Totals now describe
-43 substantive checkpoint entries, 42 repair-bearing groups, and 57 unreconstructed
-numeric labels. Mission active; next substantive sequential checkpoint CP043.
-Earlier continuation counts in historical paragraphs are superseded by these
-current counters, not silently relabelled as new work.
-
-
-Latest substantive continuation: CP043 adds 47 new cases for immutable PIT
-lineage and consideration contracts. Mutable source arrays changed admitted
-facts; the first tuple repair then failed 14 deeper container adversaries and was
-refined before qualification. Final before: 34 failed/13 passed; focused after:
-78 passed; ten guard removals detected. Two scoped D2 units; no identity storage
-or whole-PIT D4 claim. Current totals: 44 substantive entries, 43 repair-bearing
-groups, 56 old numeric labels rejected. Next substantive sequential checkpoint:
-CP044. Mission remains active under the Owner's clarified intent.
-
-
-Latest substantive continuation: CP044 adds 37 new cases for acknowledged pause,
-worker success/failure, restart, publication failure and lost ACK. Its first
-repair was falsified by overlapping publication/settlement: completed-cycle truth
-could disappear. Final before 31 failed/6 passed; focused 85 passed; seven guard
-removals detected. One scoped D3 control unit. Current totals: 45 substantive
-entries, 44 repair-bearing groups, 55 rejected numeric labels; next CP045.
-All previous continuation counters are historical; mission remains active.
-
-
-Latest substantive continuation: CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
-failed/13 passed, focused 138 passed, seven guard removals detected. Three
-grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
-Current totals: 46 substantive entries, 45 repair-bearing groups,
-54 rejected numeric labels. Next substantive checkpoint CP046.
-Previous continuation counters are historical; mission remains active.
-
-
-Latest substantive continuation: CP046 adds 49 queue document/fencing/recovery cases. Final before 45 failed/4
-passed; focused 159 passed; seven guard removals detected. The first repair was
-falsified by six deeper null/root-extension cases. Three grouped repairs extend
-existing D2 admission and D3 queue publication/retry units without inflating unit
-counts. This is the final checkpoint under the Owner's stop instruction.
-Current totals: 47 substantive entries, 46 repair-bearing groups,
-53 rejected numeric labels. No further substantive checkpoint is opened.
-Previous continuation counters are historical; mission remains active.
-
+## Owner-requested stop after CP046
 
 STOPPED_AT_CHECKPOINT=CP046
 STOP_REASON=OWNER_REQUEST_20261024
 CP047_SUBSTANTIVE_WORK_OPENED=FALSE
 
-The Owner requested completion and stop at the current CP046. CP046 is qualified;
-Phase A is not complete. The 53 remaining rejected numeric labels have no newly
-accepted depth evidence. Prior mission-active/next-checkpoint paragraphs are
-historical and do not authorize continuation past this explicit stop.
+This session qualifies CP044–CP046 with 142 new cases. CP044 preserves operator
+pause through worker settlement and lost ACK, including a deeper failure of its
+first repair. CP045 makes malformed time/duration proof conservative without
+suppressing other liveness alerts. CP046 fences typed-equal stale queue changes,
+rejects ambiguous durable documents, and restores trusted state after failed
+publication/readback. Six deeper null/root-extension cases falsified its first
+repair before final qualification. These three checkpoints detect 21 deliberate
+guard removals; they enumerate nine grouped repair items, not independent roots.
+
+The final source is e98a1b22f98935302c26a749fdb84638ffbeac41. Full regression:
+1,942 root Python tests, 268 Research OS tests, 11 platform probes and 57 JavaScript
+tests pass; the Core receipt binds that exact source. No further substantive
+checkpoint is opened. Phase A and whole-module depth remain incomplete; the 53
+rejected numeric labels and retained limits are not converted into qualifications.
