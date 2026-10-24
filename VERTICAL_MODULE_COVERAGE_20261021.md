@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 43 explicit capability units below the table.
+to the 44 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -62,6 +62,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Local queue clock/schema/identity admission | D2 | CP007 |
 | Local queue durable publication/retry and stale writer fencing | D3 | CP007/CP015 |
 | CampaignState observed-body publication, shared recovery and fresh-process restart | D3 | CP042 |
+| Campaign pause/resume through local dispatch, settlement and publication/ACK recovery | D3 | CP044 |
 | Execution causal capacity admission | D2 | CP008 |
 | PIT action order and finite terms | D2 | CP009 |
 | Identity assertion admitted lineage snapshot and wire reconstruction | D2 | CP043 |
@@ -148,3 +149,9 @@ detected guard removals. The first repair was itself falsified and narrowed to
 reject mapping/set containers. Identifier dictionaries, custom callbacks and
 whole identity storage remain outside that qualification. Next CP044; 56 old
 numeric entries remain rejected, and mission completion is false.
+
+
+CP044 adds a scoped D3 pause-control unit: 37 new cases, seven detected guard
+removals, including deeper failure of the first phase-preservation repair. No
+whole campaign transaction or multi-controller ownership proof. Next CP045;
+55 rejected numeric labels remain. Mission active.

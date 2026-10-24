@@ -1,0 +1,54 @@
+{
+  "fixed_source_sha256": "16e60eb0d388face1f68e822e8a62c4733c1103a7dedbdfded6b4e6f04ed5b73",
+  "mutants": [
+    {
+      "mutation": "pause_requires_reason",
+      "exit_code": 1,
+      "summary": "18 failed, 19 passed in 0.95s",
+      "log": "CP044_mutant_pause_requires_reason.txt",
+      "mutant_sha256": "d685a8bf8962e9741cca35204a9ee6f6ca7f06cbe4b80d9c534cc39c22da5731"
+    },
+    {
+      "mutation": "activity_reopens_pause",
+      "exit_code": 1,
+      "summary": "23 failed, 14 passed in 1.27s",
+      "log": "CP044_mutant_activity_reopens_pause.txt",
+      "mutant_sha256": "1215fdf813334c44636a0103b3aad288a99beae501323bf99f9d239ddf32b9f0"
+    },
+    {
+      "mutation": "completion_reopens_pause",
+      "exit_code": 1,
+      "summary": "15 failed, 22 passed in 0.95s",
+      "log": "CP044_mutant_completion_reopens_pause.txt",
+      "mutant_sha256": "ed447b948a5ebb68b19bd237dddbab013985284d46e33308744cc3d9e8df7b1e"
+    },
+    {
+      "mutation": "failed_worker_reopens_pause",
+      "exit_code": 1,
+      "summary": "6 failed, 31 passed in 0.90s",
+      "log": "CP044_mutant_failed_worker_reopens_pause.txt",
+      "mutant_sha256": "34acb343430188a5bd72209cb71db64da188c610d8fb0a8743460902f7788b03"
+    },
+    {
+      "mutation": "idle_reopens_pause",
+      "exit_code": 1,
+      "summary": "1 failed, 36 passed in 0.89s",
+      "log": "CP044_mutant_idle_reopens_pause.txt",
+      "mutant_sha256": "2ca73b278e28e531afd40c2e82eec15fc82cb565561002d911e34844dd342207"
+    },
+    {
+      "mutation": "success_settlement_unsynchronized",
+      "exit_code": 1,
+      "summary": "2 failed, 35 passed in 0.28s",
+      "log": "CP044_mutant_success_settlement_unsynchronized.txt",
+      "mutant_sha256": "604ffede0dc4acec4ccd25eeadccd26e5a0b98c9b4e633ccbcb6730922d03503"
+    },
+    {
+      "mutation": "pause_unsynchronized",
+      "exit_code": 1,
+      "summary": "2 failed, 35 passed in 0.28s",
+      "log": "CP044_mutant_pause_unsynchronized.txt",
+      "mutant_sha256": "723222ffe5b2872a625394392dfbb3063b6ed05381e3fed5d8eae30643be6093"
+    }
+  ]
+}

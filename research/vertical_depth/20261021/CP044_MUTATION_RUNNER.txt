@@ -1,0 +1,31 @@
+from pathlib import Path
+import subprocess,os,json,hashlib
+R=Path('/workspace/Quant-Trade');P=R/'src/autonomous_research/orchestrator.py';L=Path('/workspace/vertical_depth_cp044_rebuild');fixed=P.read_text()
+def replace_once(s,old,new):
+ assert s.count(old)==1,(old,s.count(old))
+ return s.replace(old,new)
+def unwrap(s,start,end):
+ a=s.index(start);b=s.index(end,a);block=s[a:b];lines=block.splitlines(True)
+ assert lines[1].strip()=='with self._control_lock:',lines[:2]
+ return s[:a]+lines[0]+''.join(line[4:] if line.strip() else line for line in lines[2:])+s[b:]
+mutants={
+ 'pause_requires_reason':fixed.replace('if self.state.status == "PAUSED":','if self.state.status == "PAUSED" and self.state.pause_reason:').replace('if self.state.status in {"PAUSED", "STOPPED"}:','if self.state.status == "STOPPED" or (self.state.status == "PAUSED" and self.state.pause_reason):'),
+ 'activity_reopens_pause':replace_once(fixed,'if self.state.status in {"PAUSED", "STOPPED"}:','if self.state.status == "STOPPED":'),
+ 'completion_reopens_pause':replace_once(fixed,'            self._set_activity_status("RUNNING")','            self.state.status = "RUNNING"'),
+ 'failed_worker_reopens_pause':replace_once(fixed,'                    self._set_activity_status("IDLE")','                    self.state.status = "IDLE"'),
+ 'idle_reopens_pause':replace_once(fixed,'\n            self._set_activity_status("IDLE")','\n            self.state.status = "IDLE"'),
+ 'success_settlement_unsynchronized':replace_once(fixed,'        with self._control_lock:\n            task.status = "COMPLETED"','        if True:\n            task.status = "COMPLETED"'),
+ 'pause_unsynchronized':unwrap(fixed,'    def pause(self, reason: str) -> None:','\n    def resume(self) -> None:'),
+}
+results=[]
+try:
+ for name,mutated in mutants.items():
+  P.write_text(mutated);log=L/f'CP044_mutant_{name}.txt'
+  with log.open('w') as f:
+   f.write('mutation='+name+'\nfixed_source_sha256='+hashlib.sha256(fixed.encode()).hexdigest()+'\n');f.flush()
+   r=subprocess.run(['python','-m','pytest','-q','tests/test_vertical_campaign_pause_depth.py'],cwd=R,env=dict(os.environ,PYTHONPATH='src:tests:.'),stdout=f,stderr=subprocess.STDOUT)
+  summary=next((s for s in reversed(log.read_text().splitlines()) if 'failed' in s),'NO_FAILURE');print(name,r.returncode,summary,flush=True)
+  results.append({'mutation':name,'exit_code':r.returncode,'summary':summary,'log':log.name,'mutant_sha256':hashlib.sha256(mutated.encode()).hexdigest()})
+  assert r.returncode==1,(name,r.returncode)
+finally:P.write_text(fixed)
+(L/'CP044_mutation_results.json').write_text(json.dumps({'fixed_source_sha256':hashlib.sha256(fixed.encode()).hexdigest(),'mutants':results},indent=2)+'\n')
