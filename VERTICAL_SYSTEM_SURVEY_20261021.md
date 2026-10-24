@@ -1,7 +1,7 @@
 # Phase-A whole-system routing pass and retained depth limits
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-QUALIFIED_SOURCE_SHA=4868b150c1020b54f1814c9173ed188d98da5b32
+QUALIFIED_SOURCE_SHA=e98a1b22f98935302c26a749fdb84638ffbeac41
 SCOPE=EXISTING_PREWAVE2_CAPABILITIES_ONLY
 
 This continuation reacquired the 25 existing North Star nodes from the base's
@@ -150,3 +150,15 @@ CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
 failed/13 passed, focused 138 passed, seven guard removals detected. Three
 grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
 Next CP046; no future module is built. Mission active.
+
+
+CP046 adds 49 queue document/fencing/recovery cases. Final before 45 failed/4
+passed; focused 159 passed; seven guard removals detected. The first repair was
+falsified by six deeper null/root-extension cases. Three grouped repairs extend
+existing D2 admission and D3 queue publication/retry units without inflating unit
+counts. This is the final checkpoint under the Owner's stop instruction.
+Next CP047; no future module is built. Mission active.
+
+
+Owner-requested stop after qualified CP046. No substantive CP047 work is opened.
+Phase A is incomplete; prior continuation routing is historical.

@@ -162,3 +162,15 @@ CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
 failed/13 passed, focused 138 passed, seven guard removals detected. Three
 grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
 Next CP046; 54 numeric labels remain rejected. Mission active.
+
+
+CP046 adds 49 queue document/fencing/recovery cases. Final before 45 failed/4
+passed; focused 159 passed; seven guard removals detected. The first repair was
+falsified by six deeper null/root-extension cases. Three grouped repairs extend
+existing D2 admission and D3 queue publication/retry units without inflating unit
+counts. This is the final checkpoint under the Owner's stop instruction.
+Next CP047; 53 numeric labels remain rejected. Mission active.
+
+
+Owner-requested stop after qualified CP046. No substantive CP047 work is opened.
+Phase A is incomplete; prior continuation routing is historical.

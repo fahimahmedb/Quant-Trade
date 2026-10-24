@@ -1,0 +1,710 @@
+mutation=trusted_recovery
+fixed_source_sha256=276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6
+......................FFFFFFFFFFFFFFFFFFFFFF.....                        [100%]
+=================================== FAILURES ===================================
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_0')
+kind = 'duplicate_root', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_task] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_1')
+kind = 'duplicate_task', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_nested] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_2')
+kind = 'duplicate_nested', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-nonfinite] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_3')
+kind = 'nonfinite', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-bool_version] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_4')
+kind = 'bool_version', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-unknown_version] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_5')
+kind = 'unknown_version', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_identity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_6')
+kind = 'duplicate_identity', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-invalid_tasks_shape] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_7')
+kind = 'invalid_tasks_shape', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-truncated] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_8')
+kind = 'truncated', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-null_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_9')
+kind = 'null_root', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-unknown_root_field] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_10')
+kind = 'unknown_root_field', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...ed edit', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'reason': 'uncommitted edit'} != {'reason': 'durable proof only'}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_11')
+kind = 'duplicate_root', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_task] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_12')
+kind = 'duplicate_task', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_nested] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_13')
+kind = 'duplicate_nested', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-nonfinite] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_14')
+kind = 'nonfinite', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-bool_version] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_15')
+kind = 'bool_version', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-unknown_version] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_16')
+kind = 'unknown_version', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_identity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_17')
+kind = 'duplicate_identity', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-invalid_tasks_shape] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_18')
+kind = 'invalid_tasks_shape', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-truncated] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_19')
+kind = 'truncated', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-null_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_20')
+kind = 'null_root', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-unknown_root_field] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-34/test_invalid_durable_recovery_21')
+kind = 'unknown_root_field', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert {'next', 'original'} == {'original'}
+E
+E         Extra items in the left set:
+E         'next'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_task]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_nested]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-nonfinite]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-bool_version]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-unknown_version]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_identity]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-invalid_tasks_shape]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-truncated]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-null_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-unknown_root_field]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_task]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_nested]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-nonfinite]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-bool_version]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-unknown_version]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_identity]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-invalid_tasks_shape]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-truncated]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-null_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-unknown_root_field]
+22 failed, 27 passed in 0.24s

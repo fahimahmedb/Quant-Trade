@@ -1,0 +1,258 @@
+mutation=duplicate_field_admission
+fixed_source_sha256=276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6
+........FFFFFF........FFF........FFF.............                        [100%]
+=================================== FAILURES ===================================
+_ test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[False-root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_duplicate_fields_are_ambi0')
+where = 'root', same = False
+
+    @pytest.mark.parametrize('where', ['root', 'task', 'nested'])
+    @pytest.mark.parametrize('same', [False, True])
+    def test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match(tmp_path, where, same):
+        queue = setup_queue(tmp_path)
+        original = queue.path.read_text()
+        old, new = {'root': ('"version": 1', '"version": 1' if same else '"version": 2'),
+                    'task': ('"attempts": 0', '"attempts": 0' if same else '"attempts": 1'),
+                    'nested': ('"sequence": 0', '"sequence": 0' if same else '"sequence": 1')}[where]
+        queue.path.write_text(original.replace(old, new + ', ' + old))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError, match='duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:104: Failed
+_ test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[False-task] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_duplicate_fields_are_ambi1')
+where = 'task', same = False
+
+    @pytest.mark.parametrize('where', ['root', 'task', 'nested'])
+    @pytest.mark.parametrize('same', [False, True])
+    def test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match(tmp_path, where, same):
+        queue = setup_queue(tmp_path)
+        original = queue.path.read_text()
+        old, new = {'root': ('"version": 1', '"version": 1' if same else '"version": 2'),
+                    'task': ('"attempts": 0', '"attempts": 0' if same else '"attempts": 1'),
+                    'nested': ('"sequence": 0', '"sequence": 0' if same else '"sequence": 1')}[where]
+        queue.path.write_text(original.replace(old, new + ', ' + old))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError, match='duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:104: Failed
+_ test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[False-nested] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_duplicate_fields_are_ambi2')
+where = 'nested', same = False
+
+    @pytest.mark.parametrize('where', ['root', 'task', 'nested'])
+    @pytest.mark.parametrize('same', [False, True])
+    def test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match(tmp_path, where, same):
+        queue = setup_queue(tmp_path)
+        original = queue.path.read_text()
+        old, new = {'root': ('"version": 1', '"version": 1' if same else '"version": 2'),
+                    'task': ('"attempts": 0', '"attempts": 0' if same else '"attempts": 1'),
+                    'nested': ('"sequence": 0', '"sequence": 0' if same else '"sequence": 1')}[where]
+        queue.path.write_text(original.replace(old, new + ', ' + old))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError, match='duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:104: Failed
+_ test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[True-root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_duplicate_fields_are_ambi3')
+where = 'root', same = True
+
+    @pytest.mark.parametrize('where', ['root', 'task', 'nested'])
+    @pytest.mark.parametrize('same', [False, True])
+    def test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match(tmp_path, where, same):
+        queue = setup_queue(tmp_path)
+        original = queue.path.read_text()
+        old, new = {'root': ('"version": 1', '"version": 1' if same else '"version": 2'),
+                    'task': ('"attempts": 0', '"attempts": 0' if same else '"attempts": 1'),
+                    'nested': ('"sequence": 0', '"sequence": 0' if same else '"sequence": 1')}[where]
+        queue.path.write_text(original.replace(old, new + ', ' + old))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError, match='duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:104: Failed
+_ test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[True-task] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_duplicate_fields_are_ambi4')
+where = 'task', same = True
+
+    @pytest.mark.parametrize('where', ['root', 'task', 'nested'])
+    @pytest.mark.parametrize('same', [False, True])
+    def test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match(tmp_path, where, same):
+        queue = setup_queue(tmp_path)
+        original = queue.path.read_text()
+        old, new = {'root': ('"version": 1', '"version": 1' if same else '"version": 2'),
+                    'task': ('"attempts": 0', '"attempts": 0' if same else '"attempts": 1'),
+                    'nested': ('"sequence": 0', '"sequence": 0' if same else '"sequence": 1')}[where]
+        queue.path.write_text(original.replace(old, new + ', ' + old))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError, match='duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:104: Failed
+_ test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[True-nested] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_duplicate_fields_are_ambi5')
+where = 'nested', same = True
+
+    @pytest.mark.parametrize('where', ['root', 'task', 'nested'])
+    @pytest.mark.parametrize('same', [False, True])
+    def test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match(tmp_path, where, same):
+        queue = setup_queue(tmp_path)
+        original = queue.path.read_text()
+        old, new = {'root': ('"version": 1', '"version": 1' if same else '"version": 2'),
+                    'task': ('"attempts": 0', '"attempts": 0' if same else '"attempts": 1'),
+                    'nested': ('"sequence": 0', '"sequence": 0' if same else '"sequence": 1')}[where]
+        queue.path.write_text(original.replace(old, new + ', ' + old))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError, match='duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:104: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_invalid_durable_recovery_0')
+kind = 'duplicate_root', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_task] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_invalid_durable_recovery_1')
+kind = 'duplicate_task', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_nested] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_invalid_durable_recovery_2')
+kind = 'duplicate_nested', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_invalid_durable_recovery_11')
+kind = 'duplicate_root', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_task] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_invalid_durable_recovery_12')
+kind = 'duplicate_task', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_nested] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-30/test_invalid_durable_recovery_13')
+kind = 'duplicate_nested', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_document_depth.py::test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[False-root]
+FAILED tests/test_vertical_queue_document_depth.py::test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[False-task]
+FAILED tests/test_vertical_queue_document_depth.py::test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[False-nested]
+FAILED tests/test_vertical_queue_document_depth.py::test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[True-root]
+FAILED tests/test_vertical_queue_document_depth.py::test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[True-task]
+FAILED tests/test_vertical_queue_document_depth.py::test_duplicate_fields_are_ambiguous_even_if_the_last_value_or_both_values_match[True-nested]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_task]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-duplicate_nested]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_task]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-duplicate_nested]
+12 failed, 37 passed in 0.17s

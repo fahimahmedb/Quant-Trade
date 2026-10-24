@@ -456,7 +456,8 @@
         "exit_code": 0,
         "duration_seconds": 0.907,
         "summary": "8 passed, 1 warning, 7 subtests passed in 0.11s",
-        "log": "CP046_optimized.txt"
+        "log": "CP046_runtime_optimized.txt",
+        "original_log_name": "CP046_optimized.txt"
       }
     ]
   },

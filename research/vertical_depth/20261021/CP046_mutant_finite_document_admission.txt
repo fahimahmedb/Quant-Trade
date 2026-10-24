@@ -1,0 +1,224 @@
+mutation=finite_document_admission
+fixed_source_sha256=276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6
+..............FFFFFFFF...F..........F............                        [100%]
+=================================== FAILURES ===================================
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority-NaN] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is0')
+value = 'NaN', field = 'priority'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority-Infinity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is1')
+value = 'Infinity', field = 'priority'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority--Infinity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is2')
+value = '-Infinity', field = 'priority'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority-1e309] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is3')
+value = '1e309', field = 'priority'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata-NaN] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is4')
+value = 'NaN', field = 'metadata'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata-Infinity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is5')
+value = 'Infinity', field = 'metadata'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata--Infinity] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is6')
+value = '-Infinity', field = 'metadata'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata-1e309] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_nonfinite_durable_json_is7')
+value = '1e309', field = 'metadata'
+
+    @pytest.mark.parametrize('value', ['NaN', 'Infinity', '-Infinity', '1e309'])
+    @pytest.mark.parametrize('field', ['priority', 'metadata'])
+    def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_path, value, field):
+        queue = setup_queue(tmp_path)
+        old = '"priority": 1' if field == 'priority' else '"sequence": 0'
+        key = 'priority' if field == 'priority' else 'sequence'
+        queue.path.write_text(queue.path.read_text().replace(old, '"'+key+'": '+value))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:117: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-nonfinite] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_invalid_durable_recovery_3')
+kind = 'nonfinite', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...of only', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'metadata': {'identity': {'sequence': nan}}} != {'metadata': {'identity': {'sequence': 0}}}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-nonfinite] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-31/test_invalid_durable_recovery_14')
+kind = 'nonfinite', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+        assert set(queue.tasks) == {'original'}
+>       assert asdict(queue.tasks['original']) == trusted
+E       AssertionError: assert {'task_id': '...of only', ...} == {'task_id': '...of only', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'metadata': {'identity': {'sequence': nan}}} != {'metadata': {'identity': {'sequence': 0}}}
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:140: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority-NaN]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority-Infinity]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority--Infinity]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[priority-1e309]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata-NaN]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata-Infinity]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata--Infinity]
+FAILED tests/test_vertical_queue_document_depth.py::test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect[metadata-1e309]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-nonfinite]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-nonfinite]
+10 failed, 39 passed in 0.17s
