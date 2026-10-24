@@ -1,0 +1,89 @@
+{
+  "schema_version": "idea-feed-policy-v1",
+  "enabled": false,
+  "cohort": "giga-f-deterministic-20261023",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed": false
+  },
+  "priority": 70,
+  "max_requests_per_wake": 1,
+  "minimum_exploration_allocation": 1,
+  "thresholds": {
+    "eligible_target": 20,
+    "max_unprocessed": 50,
+    "max_discovery_backlog": 20,
+    "max_candidate_backlog": 20,
+    "max_experiment_backlog": 5,
+    "research_capacity": 1,
+    "validation_capacity": 1,
+    "max_age_seconds": 86400,
+    "min_source_diversity": 7,
+    "min_mechanism_diversity": 3,
+    "max_blocked_fraction": 0.9,
+    "max_duplicate_fraction": 0.9
+  },
+  "sources": [
+    {
+      "source_id": "fixture-F1",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f1.json",
+      "content_hash": "c97d639c34ac9f91cad59cd3bb0c2ddc840860c488f166c052050ce98fd0a8e4",
+      "budget": 10,
+      "max_seeds_per_request": 3
+    },
+    {
+      "source_id": "fixture-F2",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f2.json",
+      "content_hash": "794a77b7c6b38fe5e2670dc717f25b33ea471bb2c658efcbcb62fae36ab89846",
+      "budget": 10,
+      "max_seeds_per_request": 1
+    },
+    {
+      "source_id": "fixture-F3",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f3.json",
+      "content_hash": "1df6541833c5764872dc3575170a93625b0948126c80b27877c36458bc02d874",
+      "budget": 10,
+      "max_seeds_per_request": 4
+    },
+    {
+      "source_id": "fixture-F4",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f4.json",
+      "content_hash": "6ed242bdaa7d6b7a8b8f41f9c1f20222f57b2c6dad52f6ff742b0061ec571241",
+      "budget": 10,
+      "max_seeds_per_request": 1
+    },
+    {
+      "source_id": "fixture-F5",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f5.json",
+      "content_hash": "d33de90b952847c3fe2ba58c8bad1c769ef92c17dc7f070654962cc220fb7e13",
+      "budget": 10,
+      "max_seeds_per_request": 1
+    },
+    {
+      "source_id": "fixture-F6",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f6.json",
+      "content_hash": "d5f7d26e0422e90369f45beadea19c0f7347e02cae235029b6442a6de65d2d12",
+      "budget": 10,
+      "max_seeds_per_request": 1
+    },
+    {
+      "source_id": "fixture-F7",
+      "source_version": "v1",
+      "path": "research/research_os/sources/giga_f_fixture_f7.json",
+      "content_hash": "fb0f1446ded2364fe485102c8fb9a3ae4f1fe725322e76d24303436dd157a2dd",
+      "budget": 10,
+      "max_seeds_per_request": 1
+    }
+  ],
+  "deployment_note": "Deterministic fixture configuration. Enable only for isolated demonstration or replace with pinned admissible source packets.",
+  "max_compute_units_per_cohort": 50
+}

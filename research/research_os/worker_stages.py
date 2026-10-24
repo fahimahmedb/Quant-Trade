@@ -58,6 +58,8 @@ def lineage_key(task):
 
 def stage_plan(task, lane):
     kind = task['task_type']
+    if kind == 'SOURCE_QUALIFICATION' and task.get('inputs', {}).get('idea_feed_request'):
+        return ['source_ingestion', 'policy_intake']
     if kind in PRODUCERS:
         research = 'document_or_fundamental_research' if lane == 'fundamental_events' else 'mechanism_research'
         return ['legacy_duplicate_check', research, 'disconfirmation', 'freeze_hypothesis', 'validation_handoff']
@@ -75,6 +77,8 @@ def stage_plan(task, lane):
 def require_stage_authorized(task, stage):
     text = ' '.join(task.get('allowed_actions') or []).lower().replace('_', ' ')
     patterns = {
+        'source_ingestion': r'source ingestion',
+        'policy_intake': r'policy intake',
         'legacy_duplicate_check': r'legacy|duplicate',
         'mechanism_research': r'research|mechanism|discovery',
         'document_or_fundamental_research': r'research|document|fundamental',
@@ -207,6 +211,9 @@ class CanonicalStageExecutor:
 
     def execute(self, snapshot, task, lane, stage, now, worker_id):
         require_stage_authorized(task, stage)
+        if stage in ('source_ingestion', 'policy_intake'):
+            from .idea_feed.feeder import execute_stage
+            return execute_stage(snapshot, task, stage, now, self.backend)
         writes = {}
         result = {'stage': stage, 'authority': dict(AUTHORITY), 'outcome_accessed': False,
                   'economic_result': 'NOT_OBSERVED'}

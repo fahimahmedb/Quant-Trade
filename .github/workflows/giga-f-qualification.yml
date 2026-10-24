@@ -1,0 +1,30 @@
+name: GIGA F Exact Head Qualification
+on:
+  push:
+    branches: [builder/giga-f-idea-federation-autonomous-feed-20261023]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - run: python -m pip install --disable-pip-version-check pytest
+      - run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - run: python scripts/qualify_giga_f.py --remote-check --output /tmp/giga-f-exact-head.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: giga-f-qualification-${{ github.sha }}
+          path: |
+            /tmp/giga-f-exact-head.json
+            /tmp/giga-f-qualification-logs/

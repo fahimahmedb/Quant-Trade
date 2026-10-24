@@ -143,6 +143,9 @@ class GitHubStateStore:
     def commit(self, snapshot, writes, *, expected_blobs=None, create_only=(), message):
         if not writes:
             raise ValueError('EMPTY_STATE_TRANSACTION')
+        from .idea_feed.registry import JOURNAL, guard_append
+        if JOURNAL in writes:
+            guard_append(snapshot.read(JOURNAL) if JOURNAL in snapshot.blobs else None, writes[JOURNAL])
         for path, blob in (expected_blobs or {}).items():
             if snapshot.blobs.get(path) != blob:
                 raise StateConflict('TASK_CURRENT_BLOB_SHA_MISMATCH')

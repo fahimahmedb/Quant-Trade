@@ -130,6 +130,13 @@ class ResearchOSWorker:
             raise ValueError('INVALID_WAKE_MODE')
         with self.store.snapshot() as snapshot:
             preflight = run_worker_preflight(snapshot.base)
+            feed = None
+            if mode == 'run' and not self.expected_task_id and self.lane in ('auto', 'integrator_portfolio'):
+                from .idea_feed.feeder import replenish
+                feed = replenish(self.store, timestamp(self.now()))
+                if feed and feed.get('task') is not None:
+                    return dict(feed, release_sha=self.release_sha, authority=dict(AUTHORITY),
+                                producer_execution_same_wake=False)
             task, lane = self._select(snapshot)
             if task and self.expected_task_id and task['task_id'] != self.expected_task_id:
                 raise StateConflict('CANARY_SELECTED_A_DIFFERENT_TASK_ABORT')
@@ -137,6 +144,8 @@ class ResearchOSWorker:
                             'state_repository': self.store.repository, 'state_branch': self.store.branch,
                             'authority': dict(AUTHORITY), 'preflight': preflight,
                             'one_lineage_per_wake': True, 'hosted_model_calls': 0}
+            if feed is not None:
+                base_receipt['idea_frontier'] = feed
             if mode == 'dry-run':
                 return dict(base_receipt, status='DRY_RUN', writes=0,
                             selected_task=task['task_id'] if task else None, lane=lane)
@@ -246,7 +255,10 @@ class ResearchOSWorker:
                        'artifacts': [artifact], 'evidence_refs': [event_path], 'authority_assertion': dict(ASSERTION)}
             writes[execution['last_receipt']] = receipt
             self.fault('after_receipt_before_task_transition')
-            immutable = list(writes)
+            from .idea_feed.registry import JOURNAL
+            # This journal alone supports append-only growth; the store checks
+            # its entire immutable prefix under the same global HEAD lease.
+            immutable = [p for p in writes if p != JOURNAL]
             writes[task_path] = task
             commit = self.store.commit(snapshot, writes, expected_blobs={task_path: task_blob}, create_only=immutable,
                                        message=f'Research OS {stage} {session}')

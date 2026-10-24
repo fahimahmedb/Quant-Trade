@@ -36,7 +36,7 @@
       "title": "Evidence & Data",
       "capabilities": ["legacy_recovery", "data_provenance", "trial_accounting", "source_qualification"],
       "task_types": ["LEGACY_RECOVERY", "DATA_PROVENANCE", "TRIAL_ACCOUNTING", "SOURCE_QUALIFICATION"],
-      "same_lineage_stages": ["recover_or_qualify", "provenance_check", "trial_accounting", "gap_classification", "handoff"],
+      "same_lineage_stages": ["recover_or_qualify", "provenance_check", "trial_accounting", "gap_classification", "handoff", "source_ingestion", "policy_intake"],
       "forbidden_stages": ["new_economic_outcome", "verdict_rewrite", "portfolio_allocation", "queue_refill"]
     },
     {
