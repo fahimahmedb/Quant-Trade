@@ -131,12 +131,26 @@ def replenish(store, at):
 def execute_stage(snapshot, task, stage, at, backend):
     request=task['inputs']['idea_feed_request']; policy=snapshot.read(POLICY)
     if canonical_hash(policy)!=request['policy_hash']: raise ValueError('STALE_SOURCE_POLICY')
+    descriptor=request['source']
+    if request['cohort']!=policy['cohort'] or descriptor not in policy['sources']:
+        raise ValueError('SOURCE_REQUEST_OUTSIDE_QUALIFIED_POLICY')
+    key=canonical_hash({'cohort':request['cohort'],'source':descriptor,'policy':request['policy_hash']})
+    if task['task_id']!='IDEA-FEED-'+key[:24]:
+        raise ValueError('SOURCE_REQUEST_TASK_IDENTITY_MISMATCH')
     registry=SeedRegistry.load(snapshot)
     if stage=='source_ingestion':
+        used=Counter()
+        for event in registry.events:
+            if event['kind']=='SOURCE_WORK_COMPLETED' and event['payload']['cohort']==request['cohort']:
+                used[event['payload']['source_id']]+=event['payload']['budget_charged']
+        charge=descriptor['max_seeds_per_request']
+        if (used[descriptor['source_id']]+charge>descriptor['budget']
+                or sum(used.values())+charge>policy['max_compute_units_per_cohort']):
+            return {'status':'NOOP_BACKPRESSURE','reason':'EXECUTION_BUDGET_RECHECK'},{},'COMPLETE'
         state=health(registry,[t for t in snapshot.tasks() if t['task_id']!=task['task_id']],policy,at)
         if state['action'] in {'BACKPRESSURE','BLOCK'}:
             return {'status':'NOOP_BACKPRESSURE','frontier':state},{},'COMPLETE'
-        descriptor=request['source']; source=read_source(snapshot,descriptor,at)
+        source=read_source(snapshot,descriptor,at)
         if source['source_version']!=descriptor['source_version'] or source['source_id']!=descriptor['source_id']:
             raise ValueError('STALE_SOURCE_VERSION_OR_IDENTITY')
         drafts=generate(source,at=at,cohort=request['cohort'],budget=descriptor['max_seeds_per_request'],backend=backend)

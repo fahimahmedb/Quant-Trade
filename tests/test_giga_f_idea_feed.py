@@ -261,6 +261,15 @@ class CanonicalWorkerFeedTests(unittest.TestCase):
         policy=deepcopy(self.policy); policy['max_compute_units_per_cohort']=0
         with self.h.store.snapshot() as snapshot:
             self.assertEqual(derive_request(snapshot,policy,AT)['status'],'NOOP_BACKPRESSURE')
+            from research.research_os.idea_feed.feeder import execute_stage
+            request=derive_request(snapshot,self.policy,AT)['task']
+            altered=deepcopy(request)
+            altered['inputs']['idea_feed_request']['source']['max_seeds_per_request']+=1
+            with self.assertRaisesRegex(ValueError,'OUTSIDE_QUALIFIED_POLICY'):
+                execute_stage(snapshot,altered,'source_ingestion',AT,FixtureModel())
+            altered=deepcopy(request); altered['task_id']='ALTERED-TASK-IDENTITY'
+            with self.assertRaisesRegex(ValueError,'TASK_IDENTITY'):
+                execute_stage(snapshot,altered,'source_ingestion',AT,FixtureModel())
         for key in ('research_capacity','validation_capacity','max_unprocessed'):
             policy=deepcopy(self.policy); policy['thresholds'][key]=0
             self.assertEqual(health(SeedRegistry(),[],policy,AT)['action'],'BACKPRESSURE')
