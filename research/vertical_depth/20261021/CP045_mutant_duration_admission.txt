@@ -1,0 +1,190 @@
+mutation=duration_admission
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+...............FF.FFFFFF................................                 [100%]
+=================================== FAILURES ===================================
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[nan] ________
+
+lease = nan
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.584758+00:00', updated_at='2026-10-24T02:09:27.584759+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.584758+00:00', updated_at='2026-10-24T02:09:27.584759+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', nan)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[inf] ________
+
+lease = inf
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.600824+00:00', updated_at='2026-10-24T02:09:27.600827+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.600824+00:00', updated_at='2026-10-24T02:09:27.600827+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', inf)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+_ test_unqualified_lease_duration_cannot_prove_worker_health[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+lease = 100000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.607956+00:00', updated_at='2026-10-24T02:09:27.607958+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.607956+00:00', updated_at='2026-10-24T02:09:27.607958+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', 100000000000000000...0000000000000000000)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[None] _______
+
+lease = None
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.610952+00:00', updated_at='2026-10-24T02:09:27.610955+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A worker is healthy only with a qualified, unexpired start/duration.
+
+        Missing, malformed, future or timezone-ambiguous proof raises an alert rather
+        than hiding a genuinely dead worker. Equality with expiry is already stale.
+        """
+        age = _elapsed_seconds(getattr(task, "started_at", None), now)
+        duration = getattr(task, "lease_seconds", 600)
+>       return age is None or age >= duration
+                              ^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'float' and 'NoneType'
+
+src/autonomous_research/watchdog.py:42: TypeError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[600] ________
+
+lease = '600'
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.616101+00:00', updated_at='2026-10-24T02:09:27.616104+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A worker is healthy only with a qualified, unexpired start/duration.
+
+        Missing, malformed, future or timezone-ambiguous proof raises an alert rather
+        than hiding a genuinely dead worker. Equality with expiry is already stale.
+        """
+        age = _elapsed_seconds(getattr(task, "started_at", None), now)
+        duration = getattr(task, "lease_seconds", 600)
+>       return age is None or age >= duration
+                              ^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'float' and 'str'
+
+src/autonomous_research/watchdog.py:42: TypeError
+______ test_unqualified_lease_duration_cannot_prove_worker_health[lease6] ______
+
+lease = {}
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.620396+00:00', updated_at='2026-10-24T02:09:27.620399+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A worker is healthy only with a qualified, unexpired start/duration.
+
+        Missing, malformed, future or timezone-ambiguous proof raises an alert rather
+        than hiding a genuinely dead worker. Equality with expiry is already stale.
+        """
+        age = _elapsed_seconds(getattr(task, "started_at", None), now)
+        duration = getattr(task, "lease_seconds", 600)
+>       return age is None or age >= duration
+                              ^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'float' and 'dict'
+
+src/autonomous_research/watchdog.py:42: TypeError
+______ test_unqualified_lease_duration_cannot_prove_worker_health[lease7] ______
+
+lease = []
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.624369+00:00', updated_at='2026-10-24T02:09:27.624371+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A worker is healthy only with a qualified, unexpired start/duration.
+
+        Missing, malformed, future or timezone-ambiguous proof raises an alert rather
+        than hiding a genuinely dead worker. Equality with expiry is already stale.
+        """
+        age = _elapsed_seconds(getattr(task, "started_at", None), now)
+        duration = getattr(task, "lease_seconds", 600)
+>       return age is None or age >= duration
+                              ^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'float' and 'list'
+
+src/autonomous_research/watchdog.py:42: TypeError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[True] _______
+
+lease = True
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.628653+00:00', updated_at='2026-10-24T02:09:27.628656+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:27.628653+00:00', updated_at='2026-10-24T02:09:27.628656+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', True)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7f6dd53e63a0> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[nan]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[inf]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[None]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[600]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[lease6]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[lease7]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[True]
+8 failed, 48 passed in 0.16s

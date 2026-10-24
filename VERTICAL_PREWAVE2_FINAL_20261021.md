@@ -1,14 +1,14 @@
 # Quant-Trade — Vertical Depth Phase-A manifest
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-FINAL_SHA=696e330000eeae1f4fa17efbb63706db83f9a259
+FINAL_SHA=4868b150c1020b54f1814c9173ed188d98da5b32
 CHECKPOINT_LABEL_COUNT=100
-REPAIR_BEARING_CHECKPOINT_COUNT=44
-INSUFFICIENT_DEPTH_LABEL_COUNT=55
+REPAIR_BEARING_CHECKPOINT_COUNT=45
+INSUFFICIENT_DEPTH_LABEL_COUNT=54
 CP100_DEPTH_COMPLETION=FALSE
 OWNER_GOAL=SUBSTANTIVE_DEPTH_NOT_FILENAME_QUOTA
 MISSION_ACTIVE=TRUE
-LAST_REBUILT_SEQUENTIAL_CHECKPOINT=CP044
+LAST_REBUILT_SEQUENTIAL_CHECKPOINT=CP045
 PHASE_A_COMPLETE=FALSE
 BRANCH=codex/vertical-depth-prewave2-20261021
 NORTH_STAR_BLOB=a328b4e6d7d71dafd532938888ebf9818b1b610f
@@ -28,7 +28,7 @@ checkpoint numbering as evidence of substantial work. See VERTICAL_DEPTH_CLAIM_C
 full-SHA checkpoint normalization, coverage table and final transcripts are
 committed in a documentation/evidence-only child so the manifest need not claim
 its own unknowable Git hash. The delivered branch tip is that child; its source
-and test/schema bytes must match the 80 fingerprints in
+and test/schema bytes must match the 82 fingerprints in
 `research/vertical_depth/20261021/FINAL_qualification.json`.
 
 
@@ -49,10 +49,10 @@ checkpoints. Earlier correction paragraphs below describe the prior delivery;
 they do not retroactively validate the discarded replay work. Next work must
 continue implementation-specific descent rather than fill these filenames.
 
-MODULES_TOUCHED=29
-SOURCE_FILES_CHANGED=31
+MODULES_TOUCHED=30
+SOURCE_FILES_CHANGED=32
 SCHEMAS_CHANGED=1
-CAPABILITIES_DEEPENED=44
+CAPABILITIES_DEEPENED=45
 
 Modules: Book; canonical Research Core; evidence storage; learning; shared state
 journals; RISK; local Campaign/Queue; model execution; PIT corporate actions;
@@ -60,17 +60,17 @@ closed decay admission; exact-source qualification; DeskJournal; scientific
 snapshot ledger; historical memory; Red Team; PricePanel; acquisition firewall;
 typed PIT registry; source route qualification; implementability; structural
 portfolio diagnostics; Edge Lab store; ForwardRegistryV2; Git state transactions; standalone experiment freeze snapshots; design-only adapter qualification;
-documentary plan/execution runner; pre-outcome observability projection; PIT identity assertion contracts.
-These are logical module slices, not 29 whole-module deep qualifications. No later
+documentary plan/execution runner; pre-outcome observability projection; PIT identity assertion contracts; read-only watchdog liveness.
+These are logical module slices, not 30 whole-module deep qualifications. No later
 canonical movement was followed, no active rail/Oracle/Site was modified, and no
 future Wave-2 module was built.
 
 D1_COUNT=0
-D2_COUNT=24
+D2_COUNT=25
 D3_COUNT=13
 D4_COUNT=7
 
-Counts describe the 44 newly deepened **scoped capability units** in
+Counts describe the 45 newly deepened **scoped capability units** in
 `VERTICAL_MODULE_COVERAGE_20261021.md`, counted once at their maximum demonstrated
 depth. They are not full-module qualifications. D4 applies to tuple/serializer
 outcome-guard composition, optimized-interpreter closed decay admission, and the
@@ -79,11 +79,11 @@ internal acquisition plan/content/proof-replay composition in CP022. CP032
 promotes the existing Forward registry unit for its tested input/authority/save
 composition; CP034 adds the documentary execute/PREPARED/COMPLETED/retry unit.
 
-DEFECTS_REPAIRED=112
+DEFECTS_REPAIRED=115
 
-This is the number of enumerated repair items in 44 repair-bearing checkpoint
-groups, not 112 independent root causes or scientific observations. CP039 is
-additional no-defect process-recovery evidence. There remain 55 insufficient-depth
+This is the number of enumerated repair items in 45 repair-bearing checkpoint
+groups, not 115 independent root causes or scientific observations. CP039 is
+additional no-defect process-recovery evidence. There remain 54 insufficient-depth
 runtime replay labels; their numeric presence is not mission completion. Shared roots and related
 manifestations remain grouped and explained in each checkpoint:
 
@@ -132,11 +132,12 @@ manifestations remain grouped and explained in each checkpoint:
 | CP042 | 3 | Campaign stale-writer fencing; failed-save/shared heartbeat recovery; unambiguous finite durable JSON |
 | CP043 | 2 | Frozen PIT lineage/action sequence capture; refusal of ambiguous containers found after first repair |
 | CP044 | 3 | Reason-independent pause; activity preserves control phase; publication/settlement rollback serialization |
+| CP045 | 3 | Qualified time/duration proof; malformed-clock alert isolation; exact expiration |
 | CP061 | 1 | Observability displays the detached body that passed the pre-outcome scan |
 
 All repairs have concrete pre-repair failures and focused requalification.
 Full before/after transcripts and checkpoint source SHAs are durable under
-`research/vertical_depth/20261021/`. The new tests add **1029 cases**. Existing
+`research/vertical_depth/20261021/`. The new tests add **1085 cases**. Existing
 canonical Research Core fixture hashes and valid model behavior remain compatible;
 CP022's typed/provenance hash extension is explicit below. Stricter rejection and
 explicit write conflicts are intentional.
@@ -213,7 +214,7 @@ Final local regression at `FINAL_SHA`:
 
 | Suite | Passed | Additional evidence |
 | --- | ---: | --- |
-| Root Python | 1837 | 1077 subtests; two existing fork/thread deprecation warnings |
+| Root Python | 1893 | 1077 subtests; two existing fork/thread deprecation warnings |
 | Broader Research OS | 268 | 165 subtests; pinned Legacy fixture verified |
 | Edge Lab platform protocol harness | 11 | Local model/fixture tests |
 | Live Lab JavaScript | 57 | No production Site access |
@@ -339,3 +340,11 @@ could disappear. Final before 31 failed/6 passed; focused 85 passed; seven guard
 removals detected. One scoped D3 control unit. Current totals: 45 substantive
 entries, 44 repair-bearing groups, 55 rejected numeric labels; next CP045.
 All previous continuation counters are historical; mission remains active.
+
+
+Latest substantive continuation: CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
+failed/13 passed, focused 138 passed, seven guard removals detected. Three
+grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
+Current totals: 46 substantive entries, 45 repair-bearing groups,
+54 rejected numeric labels. Next substantive checkpoint CP046.
+Previous continuation counters are historical; mission remains active.

@@ -1,0 +1,61 @@
+mutation=timezone_admission
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+.........F.....................F......F.................                 [100%]
+=================================== FAILURES ===================================
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:59] _
+
+start = '2026-10-24T11:59:59'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.306750+00:00', updated_at='2026-10-24T02:09:29.306756+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.306750+00:00', updated_at='2026-10-24T02:09:29.306756+00:00', last_error=None, metadata={}) = running('2026-10-24T11:59:59')
+
+tests/test_vertical_watchdog_clock_depth.py:31: AssertionError
+_______ test_unqualified_observer_clock_cannot_prove_lease_health[now0] ________
+
+now = datetime.datetime(2026, 10, 24, 12, 0)
+
+    @pytest.mark.parametrize('now', [datetime(2026, 10, 24, 12), None, '2026-10-24T12:00:00Z'])
+    def test_unqualified_observer_clock_cannot_prove_lease_health(now):
+>       assert is_lease_stale(running(NOW.isoformat()), now) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.343549+00:00', updated_at='2026-10-24T02:09:29.343551+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.343549+00:00', updated_at='2026-10-24T02:09:29.343551+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00')
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7f6c54d7e2e0>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7f6c54d7e2e0> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:55: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-18/test_invalid_or_future_heartbe3')
+heartbeat = '2026-10-24T12:00:00'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'QUEUE_STARV...WORKER_STUCK'}
+E
+E         Extra items in the left set:
+E         'HEARTBEAT_MISSING'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:59]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_observer_clock_cannot_prove_lease_health[now0]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00]
+3 failed, 53 passed in 0.24s

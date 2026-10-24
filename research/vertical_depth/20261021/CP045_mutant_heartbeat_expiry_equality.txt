@@ -1,0 +1,36 @@
+mutation=heartbeat_expiry_equality
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+.............................................F.........F                 [100%]
+=================================== FAILURES ===================================
+______________ test_heartbeat_timeout_boundary_is_exact[300-True] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-20/test_heartbeat_timeout_boundar1')
+age = 300, missing = True
+
+    @pytest.mark.parametrize('age,missing', [(299.999999, False), (300, True), (300.000001, True), (0, False)])
+    def test_heartbeat_timeout_boundary_is_exact(tmp_path, age, missing):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        state = CampaignState('local', last_heartbeat=(NOW - timedelta(seconds=age)).isoformat())
+>       assert ('HEARTBEAT_MISSING' in {a['code'] for a in health(state, queue)}) is missing
+E       AssertionError: assert ('HEARTBEAT_MISSING' in set()) is True
+
+tests/test_vertical_watchdog_clock_depth.py:101: AssertionError
+____________ test_zero_timeout_explicitly_expires_current_heartbeat ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-20/test_zero_timeout_explicitly_e0')
+
+    def test_zero_timeout_explicitly_expires_current_heartbeat(tmp_path):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       assert health(state, queue, heartbeat_timeout_seconds=0) == [
+            {'code': 'HEARTBEAT_MISSING', 'detail': NOW.isoformat()}]
+E       AssertionError: assert [] == [{'code': 'HE...00:00+00:00'}]
+E
+E         Right contains one more item: {'code': 'HEARTBEAT_MISSING', 'detail': '2026-10-24T12:00:00+00:00'}
+E         Use -v to get more diff
+
+tests/test_vertical_watchdog_clock_depth.py:135: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_heartbeat_timeout_boundary_is_exact[300-True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_zero_timeout_explicitly_expires_current_heartbeat
+2 failed, 54 passed in 0.14s

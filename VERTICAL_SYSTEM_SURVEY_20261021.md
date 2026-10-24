@@ -1,7 +1,7 @@
 # Phase-A whole-system routing pass and retained depth limits
 
 BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
-QUALIFIED_SOURCE_SHA=696e330000eeae1f4fa17efbb63706db83f9a259
+QUALIFIED_SOURCE_SHA=4868b150c1020b54f1814c9173ed188d98da5b32
 SCOPE=EXISTING_PREWAVE2_CAPABILITIES_ONLY
 
 This continuation reacquired the 25 existing North Star nodes from the base's
@@ -10,7 +10,7 @@ table names the selected implementations, executed suites and unproved layers.
 A routing/reacquisition pass is complete for these nodes; exhaustive traversal of
 every function/capability and whole-module D3/D4 qualification are not claimed.
 Depth work remained weighted toward scientific consequence, authority,
-identity/provenance, mutable state and recovery. The 44 depth counts concern
+identity/provenance, mutable state and recovery. The 45 depth counts concern
 explicit capability slices, not the node count or total assertion count.
 
 | Existing node | Internal descent and current evidence | Retained limit |
@@ -144,3 +144,9 @@ active; 56 rejected runtime replay labels do not count as deep qualification.
 CP044 deepens existing local Campaign pause/control to scoped D3: 37 new cases,
 three grouped repairs, seven guard-removal controls. No new lease service or
 whole-runtime atomicity claim. Next CP045; 55 numeric labels remain rejected.
+
+
+CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
+failed/13 passed, focused 138 passed, seven guard removals detected. Three
+grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
+Next CP046; no future module is built. Mission active.

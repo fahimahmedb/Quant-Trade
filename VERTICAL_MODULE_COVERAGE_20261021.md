@@ -9,7 +9,7 @@ as an additional row in CP017. It does **not** inherit that index's Q labels as 
 qualification. All mapped tests were executed locally, along with the new
 vertical adversaries. No current capability is declared universally D3/D4 from
 aggregate green test counts. New depth counts in the final manifest refer only
-to the 44 explicit capability units below the table.
+to the 45 explicit capability units below the table.
 
 | Existing module/node | Reacquired implementation and executed evidence | Phase-A finding/depth boundary |
 | --- | --- | --- |
@@ -93,6 +93,7 @@ Newly deepened units, with counts assigned once at maximum scoped depth:
 | Documentary execution detached input/PREPARED/COMPLETED/ACK-loss recovery | D4 | CP034 |
 | Reproducible planning nested environment/metric snapshot identity | D2 | CP037 |
 | Reconstructed frozen-plan schema, duplicate identity and checked replay reference | D2 | CP038 |
+| Watchdog qualified time/duration proof and isolated liveness alerts | D2 | CP045 |
 | Pre-outcome observability scanned/projected snapshot identity | D2 | CP061 |
 
 These are evidence limits, not claims that every edge case or every function in
@@ -155,3 +156,9 @@ CP044 adds a scoped D3 pause-control unit: 37 new cases, seven detected guard
 removals, including deeper failure of the first phase-preservation repair. No
 whole campaign transaction or multi-controller ownership proof. Next CP045;
 55 rejected numeric labels remain. Mission active.
+
+
+CP045 adds 56 cases for existing watchdog clock/duration liveness. Before 43
+failed/13 passed, focused 138 passed, seven guard removals detected. Three
+grouped repairs; one scoped D2 unit. No runtime lease service or D3 claim.
+Next CP046; 54 numeric labels remain rejected. Mission active.
