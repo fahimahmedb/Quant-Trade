@@ -6,6 +6,7 @@ import hashlib
 import json
 from dataclasses import asdict
 from pathlib import Path
+from threading import RLock
 from typing import Any, Callable
 
 from .pipeline import run_discovery_cycle
@@ -18,6 +19,7 @@ class ResearchCampaign:
     def __init__(self, root: Path, campaign_id: str = "quant-research-v1",
                  max_cycles: int | None = None, workers: dict[str, Worker] | None = None):
         self.root = root
+        self._control_lock = RLock()
         self.runtime_dir = root / "runtime"
         self.state_path = self.runtime_dir / "campaign_state.json"
         self.queue = PersistentQueue(self.runtime_dir / "research_queue.json")
@@ -95,27 +97,34 @@ class ResearchCampaign:
         maximum = self.state.research_budget.get("max_cycles")
         return maximum is not None and self.state.budget_consumed.get("cycles", 0) >= maximum
 
+    def _set_activity_status(self, status: str, *, pause_reason: str | None = None) -> bool:
+        """Activity may advance, but cannot reopen an operator-closed campaign."""
+        with self._control_lock:
+            if self.state.status in {"PAUSED", "STOPPED"}:
+                return False
+            self.state.status = status
+            self.state.pause_reason = pause_reason if status == "PAUSED" else None
+            self.state.stop_reason = None
+            return True
+
     def run_once(self) -> str:
         if self.state.status == "STOPPED":
             self.state.heartbeat(self.state_path)
             return "STOPPED"
-        if self.state.status == "PAUSED" and self.state.pause_reason:
+        if self.state.status == "PAUSED":
             self.state.heartbeat(self.state_path)
             return "PAUSED"
-        self.state.pause_reason = None
-        self.state.stop_reason = None
         if self._budget_exhausted():
-            self.state.status = "PAUSED"
-            self.state.pause_reason = "configured cycle budget exhausted"
+            self._set_activity_status("PAUSED", pause_reason="configured cycle budget exhausted")
             self.state.heartbeat(self.state_path)
-            return "PAUSED"
+            return self.state.status
         task = self.queue.next_due()
         if task is None:
-            self.state.status = "IDLE"
+            self._set_activity_status("IDLE")
             self.state.next_action = self._next_action_description()
             self._sync_state()
             self.state.heartbeat(self.state_path)
-            return "IDLE"
+            return self.state.status
         worker = self.workers.get(task.worker)
         if worker is None:
             task.status = "BLOCKED"
@@ -124,41 +133,48 @@ class ResearchCampaign:
             self.queue.save()
             self._sync_state()
             return self.run_once()
-        self.state.status = "RUNNING"
-        task.status = "RUNNING"
-        task.attempts += 1
-        task.updated_at = utc_now()
-        self.queue.save()
-        self._sync_state()
-        try:
-            result = worker(task)
-        except Exception as exc:
-            task.status = "FAILED"
-            task.last_error = f"{type(exc).__name__}: {exc}"
+        with self._control_lock:
+            if not self._set_activity_status("RUNNING"):
+                self.state.heartbeat(self.state_path)
+                return self.state.status
+            task.status = "RUNNING"
+            task.attempts += 1
             task.updated_at = utc_now()
             self.queue.save()
             self._sync_state()
-            if self.queue.next_due() is not None:
+        try:
+            result = worker(task)
+        except Exception as exc:
+            with self._control_lock:
+                task.status = "FAILED"
+                task.last_error = f"{type(exc).__name__}: {exc}"
+                task.updated_at = utc_now()
+                self.queue.save()
+                self._sync_state()
+                has_due = self.queue.next_due() is not None
+                if not has_due:
+                    self._set_activity_status("IDLE")
+                    self.state.next_action = self._next_action_description()
+                    self.state.heartbeat(self.state_path)
+            if has_due:
                 return self.run_once()
-            self.state.status = "IDLE"
-            self.state.next_action = self._next_action_description()
-            self.state.heartbeat(self.state_path)
             return "FAILED"
-        task.status = "COMPLETED"
-        task.updated_at = utc_now()
-        task.metadata["result"] = result
-        self.state.cycles_completed += 1
-        self.state.budget_consumed["cycles"] = self.state.cycles_completed
-        self.state.last_completed_ticket_id = result.get("ticket_id", task.task_id)
-        self.state.latest_lesson = result.get("lesson")
-        if task.execution_key not in self.state.processed_data_fingerprints:
-            self.state.processed_data_fingerprints.append(task.execution_key)
-        self._promote_followup(task, result)
-        self.queue.save()
-        self.state.status = "RUNNING"
-        self._sync_state()
-        self.state.heartbeat(self.state_path)
-        return "COMPLETED"
+        with self._control_lock:
+            task.status = "COMPLETED"
+            task.updated_at = utc_now()
+            task.metadata["result"] = result
+            self.state.cycles_completed += 1
+            self.state.budget_consumed["cycles"] = self.state.cycles_completed
+            self.state.last_completed_ticket_id = result.get("ticket_id", task.task_id)
+            self.state.latest_lesson = result.get("lesson")
+            if task.execution_key not in self.state.processed_data_fingerprints:
+                self.state.processed_data_fingerprints.append(task.execution_key)
+            self._promote_followup(task, result)
+            self.queue.save()
+            self._set_activity_status("RUNNING")
+            self._sync_state()
+            self.state.heartbeat(self.state_path)
+            return "COMPLETED"
 
     def _promote_followup(self, task: ResearchTask, result: dict[str, Any]) -> None:
         followup = task.metadata.get("followup")
@@ -191,15 +207,17 @@ class ResearchCampaign:
         self.state.save(self.state_path)
 
     def pause(self, reason: str) -> None:
-        self.state.status = "PAUSED"
-        self.state.pause_reason = reason
-        self.state.heartbeat(self.state_path)
+        with self._control_lock:
+            self.state.status = "PAUSED"
+            self.state.pause_reason = reason
+            self.state.heartbeat(self.state_path)
 
     def resume(self) -> None:
-        self.state.status = "IDLE"
-        self.state.pause_reason = None
-        self.state.stop_reason = None
-        self.state.heartbeat(self.state_path)
+        with self._control_lock:
+            self.state.status = "IDLE"
+            self.state.pause_reason = None
+            self.state.stop_reason = None
+            self.state.heartbeat(self.state_path)
 
     def inspect(self) -> dict[str, Any]:
         return {"campaign": asdict(self.state), "queue_counts": self.queue.counts()}
