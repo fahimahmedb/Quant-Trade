@@ -13,9 +13,10 @@ def fixture():
     # Metadata only: no prices, returns, outcomes, task claims or runtime writes.
     output = _engine_output()
     output.update(engine_family="QUANT_MECHANISM", synthetic_only=True)
-    output["candidate"].update(payer="fixture-payer", horizon="one interval")
+    output["candidate"].update(payer="fixture-payer")
     impl = _complete_meta()
     expression = impl["economic_expression"]
+    output["candidate"]["horizon"] = expression["horizon"]
     _, _, meta = runner_fixture()
     protocol = meta["frozen_protocol"]
     protocol.update(

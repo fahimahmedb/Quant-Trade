@@ -33,6 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - run: python3 -m pip install --disable-pip-version-check pytest
 
       - name: Prove exact head, canonical ancestry and North Star
         shell: bash

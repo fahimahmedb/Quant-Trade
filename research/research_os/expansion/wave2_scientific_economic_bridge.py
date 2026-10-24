@@ -12,6 +12,7 @@ from typing import Any, Dict, Mapping, Optional
 
 from research.research_os.scientific_store import sha256_json
 from research.research_os.expansion.scientific_adjudication import validate_adjudication
+from research.research_os.expansion.experiment_outcome_firewall import assert_pre_outcome_payload
 from research.research_os.expansion.economic_lifecycle import (
     WAVE2_IMMUTABLE_BASE_SHA,
     authority_state,
@@ -114,12 +115,20 @@ def validate_scientific_economic_handoff(
     economic_identity_ref: Mapping[str, Any],
     portfolio_readiness_ref: Mapping[str, Any],
 ) -> None:
+    assert_pre_outcome_payload(ref)
     validate_adjudication(adjudication)
     validate_economic_identity_ref(economic_identity_ref)
     validate_portfolio_readiness_ref(portfolio_readiness_ref, economic_identity_ref)
     _require(isinstance(ref, Mapping) and ref.get("schema_version") == SCHEMA_VERSION, "unsupported scientific/economic handoff schema")
     _require(ref.get("wave2_base_sha") == WAVE2_IMMUTABLE_BASE_SHA, "handoff Wave2 base mismatch")
     identity = adjudication.get("identity") or {}
+    _require(adjudication.get("verdict") == "PROMOTE", "scientific verdict is not promotable")
+    _require(adjudication.get("promotion_target") == "ECONOMIC_IDENTITY", "scientific promotion target mismatch")
+    for key in ("hypothesis_id", "generation_id", "candidate_hash"):
+        _require(identity.get(key) == economic_identity_ref.get(key),
+                 f"scientific/economic {key} binding mismatch")
+    _require(adjudication.get("evaluation_binding", {}).get("candidate_hash") == economic_identity_ref.get("candidate_hash"),
+             "scientific evaluation binding candidate hash mismatch")
     expected = {
         "hypothesis_id": identity.get("hypothesis_id"),
         "generation_id": identity.get("generation_id"),
@@ -129,6 +138,10 @@ def validate_scientific_economic_handoff(
         "economic_identity_ref_hash": economic_identity_ref.get("ref_hash"),
         "economic_identity_hash": economic_identity_ref.get("identity_hash"),
         "portfolio_readiness_ref_hash": portfolio_readiness_ref.get("ref_hash"),
+        "scientific_posture": adjudication.get("scientific_posture"),
+        "claim_ceiling": adjudication.get("claim_ceiling"),
+        "portfolio_structural_mapping_status": portfolio_readiness_ref.get("structural_mapping_status"),
+        "portfolio_pre_outcome_decision_status": portfolio_readiness_ref.get("pre_outcome_decision_status"),
     }
     for key, value in expected.items():
         _require(ref.get(key) == value, f"handoff {key} mismatch")

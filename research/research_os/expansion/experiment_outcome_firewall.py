@@ -75,21 +75,23 @@ def _sources_are_lineage(value: Mapping[str, Any]) -> bool:
 def assert_pre_outcome_payload(value: Any, *, path: str = "$") -> None:
     """Reject outcome data/lineage while allowing preregistered definitions."""
     if isinstance(value, Mapping):
-        for role_key in _ROLE_KEYS:
-            role = value.get(role_key)
-            if isinstance(role, str) and role.upper() == "OUTCOME":
+        # Schema field names are semantic even in alternate serialized casing.
+        fields = {str(key).strip().lower(): item for key, item in value.items()}
+        for role_key, role in value.items():
+            if (str(role_key).strip().lower() in _ROLE_KEYS
+                    and isinstance(role, str) and role.strip().upper() == "OUTCOME"):
                 raise OutcomeFirewallError(f"OUTCOME_ROLE_FORBIDDEN:{path}.{role_key}")
         for marker in _OUTCOME_BOOLEAN_KEYS:
-            if value.get(marker) is True:
+            if fields.get(marker) is True:
                 raise OutcomeFirewallError(f"OUTCOME_MARKER_FORBIDDEN:{path}.{marker}")
-        role = value.get("role") or value.get("column_role") or value.get("field_role")
+        role = fields.get("role") or fields.get("column_role") or fields.get("field_role")
         if isinstance(role, str) and role.upper() == "DERIVED":
-            if not any(key in value for key in _LINEAGE_KEYS):
+            if not any(key in fields for key in _LINEAGE_KEYS):
                 raise OutcomeFirewallError(f"UNKNOWN_DERIVED_LINEAGE:{path}")
-        sources_are_lineage = _sources_are_lineage(value)
+        sources_are_lineage = _sources_are_lineage(fields)
         for raw_key, item in value.items():
             key = str(raw_key)
-            lowered = key.lower()
+            lowered = key.strip().lower()
             current = _path(path, key)
             if lowered in AUTHORITY_FIELDS and item is not False:
                 raise OutcomeFirewallError(f"AUTHORITY_MUST_REMAIN_FALSE:{current}")
@@ -117,6 +119,8 @@ def assert_pre_outcome_payload(value: Any, *, path: str = "$") -> None:
         return
     if isinstance(value, float) and not isfinite(value):
         raise OutcomeFirewallError(f"NONFINITE_PRE_OUTCOME_VALUE:{path}")
+    if value is not None and not isinstance(value, (str, bool, int, float)):
+        raise OutcomeFirewallError(f"UNINSPECTABLE_PRE_OUTCOME_VALUE:{path}")
 
 
 @dataclass(frozen=True)

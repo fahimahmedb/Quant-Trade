@@ -211,6 +211,22 @@ def _compose(package, *, legacy, frozen, peer_identities, red_team_context):
     red = red_team_negative_rights_v2(validator, context=red_team_context)
     reasons.extend(red["negative_rights"])
     identity = economic_identity_v1(output, p.get("identity_meta", {}))
+    # Execution declarations belong to the already-bound frozen protocol, not
+    # optional identity metadata. Preserve the candidate snapshot/hash and let
+    # a disagreement block readiness instead of silently changing the object.
+    frozen_protocol = plan.get("frozen_protocol") or {}
+    expression = frozen_protocol.get("economic_expression") or {}
+    if frozen_protocol.get("candidate_hash") == sha256_json(output["candidate"]):
+        for field, source_field in (("instrument", "instrument"), ("universe", "universe"),
+                                    ("timing_clock", "entry_clock"), ("horizon", "horizon")):
+            declared = expression.get(source_field)
+            if declared in (None, "", "UNKNOWN"):
+                continue
+            candidate_value = output["candidate"].get(field)
+            if candidate_value not in (None, "", "UNKNOWN") and candidate_value != declared:
+                require(False, "FROZEN_ECONOMIC_IDENTITY_MISMATCH:" + field)
+            identity[field] = deepcopy(declared)
+        identity["identity_provenance"]["frozen_protocol_hash"] = sha256_json(frozen_protocol)
     portfolio = portfolio_diagnostics_v2([identity, *deepcopy(list(peer_identities))])
 
     # Portfolio overlap is a pre-outcome scientific-integrity gate, never an

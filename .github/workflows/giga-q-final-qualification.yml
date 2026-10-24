@@ -1,0 +1,38 @@
+name: GIGA Q exact-head whole-system qualification
+
+on:
+  push:
+    branches: [builder/giga-q-final-whole-system-hardening-20261023]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install the proven test dependency
+        run: python3 -m pip install --disable-pip-version-check -r tests/requirements-giga-q.txt
+      - name: Reacquire immutable historical attack corpus
+        run: git fetch --no-tags origin 92c4ee0a5e2d9387167f6deec24e7edec1c15b6d
+      - name: Exact-head checks and mandatory falsification
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 scripts/qualify_giga_q.py --output-dir "$RUNNER_TEMP/giga-q-final" --verify-remote
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: giga-q-qualification-${{ github.sha }}
+          path: ${{ runner.temp }}/giga-q-final/
+          if-no-files-found: error

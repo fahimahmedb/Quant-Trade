@@ -11,7 +11,7 @@ from .research_refill_policy import evaluate_frontier_mandates
 
 
 ACTIVE_STATUSES = {"READY", "CLAIMED"}
-TERMINAL_STATUSES = {"COMPLETE", "BLOCKED", "CANCELLED", "KILLED"}
+TERMINAL_STATUSES = {"COMPLETE", "BLOCKED", "FAILED", "CANCELLED", "KILLED"}
 SOURCE_PREFIX = "research/research_os/sources/"
 
 
@@ -63,6 +63,7 @@ def queue_summary(tasks: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         "claimed_count": sum(item.get("status") == "CLAIMED" for item in items),
         "active_count": sum(item.get("status") in ACTIVE_STATUSES for item in items),
         "terminal_count": sum(item.get("status") in TERMINAL_STATUSES for item in items),
+        "unknown_count": sum(item.get("status") not in ACTIVE_STATUSES | TERMINAL_STATUSES for item in items),
     }
 
 
@@ -167,6 +168,8 @@ def derive_refill_task(
 
     if summary["active_count"] > 0:
         return {"status": "NOOP_QUEUE_NOT_EMPTY", "queue": summary, "task": None}
+    if summary["unknown_count"] > 0:
+        return {"status": "BLOCKED_UNKNOWN_TASK_STATUS", "queue": summary, "task": None}
 
     issued = _issued_counts(items)
     max_issued = int(frontier.get("max_issued_per_frontier", 0))

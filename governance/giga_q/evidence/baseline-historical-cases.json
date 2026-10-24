@@ -1,0 +1,3067 @@
+{
+  "production_head": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+  "fixture_sha": "92c4ee0a5e2d9387167f6deec24e7edec1c15b6d",
+  "counts": {
+    "failed": 764,
+    "passed": 230
+  },
+  "failed_cases": [
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_failed_shared_mutation_cannot_erase_a_successful_competitor[none-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_failed_shared_mutation_cannot_erase_a_successful_competitor[none-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_failed_shared_mutation_cannot_erase_a_successful_competitor[before_write-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_failed_shared_mutation_cannot_erase_a_successful_competitor[before_write-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_failed_shared_mutation_cannot_erase_a_successful_competitor[after_write-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_failed_shared_mutation_cannot_erase_a_successful_competitor[after_write-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_accounting_lock_setup_failure_restores_mutation_before_retry[os.open-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_accounting_lock_setup_failure_restores_mutation_before_retry[os.open-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_accounting_lock_setup_failure_restores_mutation_before_retry[fcntl.flock-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_accounting_lock_setup_failure_restores_mutation_before_retry[fcntl.flock-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_accounting_lock_setup_failure_restores_mutation_before_retry[pathlib.Path.mkdir-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_accounting_lock_setup_failure_restores_mutation_before_retry[pathlib.Path.mkdir-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_identity_query_waits_until_mutation_is_durable_or_rolled_back[False-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_identity_query_waits_until_mutation_is_durable_or_rolled_back[False-journal]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_identity_query_waits_until_mutation_is_durable_or_rolled_back[True-book]"
+    },
+    {
+      "module": "tests.test_vertical_accounting_isolation",
+      "test": "test_identity_query_waits_until_mutation_is_durable_or_rolled_back[True-journal]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -adapter_id]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -provider_family]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -permission_model]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -clock_semantics]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -revision_policy]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -survivorship_policy]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[   -locator_template]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[UNKNOWN-adapter_id]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[UNKNOWN-provider_family]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-adapter_id]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-provider_family]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-permission_model]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-clock_semantics]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-revision_policy]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-survivorship_policy]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_adapter_required_text_cannot_qualify_from_ambiguity[True-locator_template]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_registry_reconstructs_the_supplied_qualification[status-BLOCK]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_registry_reconstructs_the_supplied_qualification[activated-True]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_registry_reconstructs_the_supplied_qualification[network_access-True]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_registry_reconstructs_the_supplied_qualification[outcome_access_authorized-True]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_registry_reconstructs_the_supplied_qualification[adapter_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_registry_reconstructs_the_supplied_qualification[adapter_id-foreign]"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_changed_canonical_body_cannot_reuse_a_validated_hash"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_competing_designs_cannot_both_publish_same_adapter_identity"
+    },
+    {
+      "module": "tests.test_vertical_adapter_registry_depth",
+      "test": "test_design_batch_retains_only_valid_prefix_and_can_resume[False]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_decay_guard_rejects_inconsistent_authority_and_consumption[changes0]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_decay_guard_rejects_inconsistent_authority_and_consumption[changes1]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_decay_guard_rejects_inconsistent_authority_and_consumption[changes2]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_decay_guard_rejects_inconsistent_authority_and_consumption[changes3]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_decay_guard_rejects_inconsistent_authority_and_consumption[changes4]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_decay_guard_rejects_inconsistent_authority_and_consumption[changes5]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_guard_still_executes_when_python_assertions_are_removed[optimization0]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_guard_still_executes_when_python_assertions_are_removed[optimization1]"
+    },
+    {
+      "module": "tests.test_vertical_authority_depth",
+      "test": "test_guard_still_executes_when_python_assertions_are_removed[optimization2]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_failed_persist_does_not_turn_retry_into_false_success"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_competing_stale_writers_cannot_silently_erase_a_fill"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_stale_mark_cannot_erase_new_fill"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes0]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes1]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes2]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes3]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes4]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes5]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes6]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes7]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes8]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes9]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_fill_leaves_memory_and_disk_unchanged[changes10]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_detached_decision_view_cannot_write_or_mutate"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_marks_preserve_state[prices0]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_marks_preserve_state[prices1]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_marks_preserve_state[prices2]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_invalid_marks_preserve_state[prices3]"
+    },
+    {
+      "module": "tests.test_vertical_book_depth",
+      "test": "test_overflowing_fill_is_rolled_back"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_reused_operation_token_cannot_acknowledge_a_different_fill[changes0]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_reused_operation_token_cannot_acknowledge_a_different_fill[changes1]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_reused_operation_token_cannot_acknowledge_a_different_fill[changes2]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_reused_operation_token_cannot_acknowledge_a_different_fill[changes3]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_reused_operation_token_cannot_acknowledge_a_different_fill[changes4]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_reused_operation_token_cannot_acknowledge_a_different_fill[changes5]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_replay_is_bound_to_stored_book_identity[ledger_id-foreign]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_replay_is_bound_to_stored_book_identity[authority-CAPITAL]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_replay_is_bound_to_stored_book_identity[currency-EUR]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_replay_is_bound_to_stored_book_identity[mode-foreign]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_legacy_id_only_history_cannot_prove_a_payload_match"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_legacy_history_can_add_new_ids_without_fabricating_old_bindings"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_fill_and_identity_binding_have_one_publication_boundary[False]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_fill_and_identity_binding_have_one_publication_boundary[True]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_same_token_with_competing_payloads_cannot_claim_both_succeeded"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_fingerprint_does_not_collapse_distinct_large_integer_inputs"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_malformed_or_orphan_payload_bindings_fail_closed_on_reconstruction[None]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_malformed_or_orphan_payload_bindings_fail_closed_on_reconstruction[index1]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_malformed_or_orphan_payload_bindings_fail_closed_on_reconstruction[index2]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_malformed_or_orphan_payload_bindings_fail_closed_on_reconstruction[index3]"
+    },
+    {
+      "module": "tests.test_vertical_book_identity_depth",
+      "test": "test_malformed_or_orphan_payload_bindings_fail_closed_on_reconstruction[index4]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_stale_heartbeat_cannot_undo_acknowledged_owner_state[PAUSED]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_stale_heartbeat_cannot_undo_acknowledged_owner_state[STOPPED]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_stale_save_cannot_erase_completed_fingerprint_or_budget"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion[False]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_failed_save_recovers_actual_durable_truth_and_retry_does_not_invent_completion[True]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_lock_setup_failure_restores_checked_state_before_retry[os.open]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_lock_setup_failure_restores_checked_state_before_retry[fcntl.flock]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_lock_setup_failure_restores_checked_state_before_retry[pathlib.Path.mkdir]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_unserializable_pending_state_does_not_poison_recovery"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_independent_processes_cannot_both_acknowledge_conflicting_stale_campaigns"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-None]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-False]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[heartbeat-True]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-None]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-False]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-True]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_snapshot_fence_distinguishes_serialized_numeric_policy_identity[True]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_snapshot_fence_distinguishes_serialized_numeric_policy_identity[1.0]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_corrupt_existing_state_is_not_silently_repaired_by_save[null]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_corrupt_existing_state_is_not_silently_repaired_by_save[[]]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_corrupt_existing_state_is_not_silently_repaired_by_save[{\"campaign_id\":]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_corrupt_existing_state_is_not_silently_repaired_by_save[{\"campaign_id\":\"other\",\"unsupported_field\":true}]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_actual_process_death_and_fresh_load_preserve_only_committed_pause[True]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_unbound_competing_initial_publications_either_replay_or_conflict[False]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_unbound_competing_initial_publications_either_replay_or_conflict[True]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_other_process_cannot_publish_while_first_persistence_is_unacknowledged"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{\"campaign_id\":\"SYN-CAMPAIGN\",\"status\":\"PAUSED\",\"status\":\"IDLE\"}]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{\"campaign_id\":\"SYN-CAMPAIGN\",\"campaign_id\":\"FOREIGN\"}]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{\"campaign_id\":\"SYN-CAMPAIGN\",\"budget_consumed\":{\"cycles\":7,\"cycles\":0}}]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{\"campaign_id\":\"SYN-CAMPAIGN\",\"research_budget\":{\"max_cycles\":NaN}}]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{\"campaign_id\":\"SYN-CAMPAIGN\",\"research_budget\":{\"max_cycles\":Infinity}}]"
+    },
+    {
+      "module": "tests.test_vertical_campaign_state_depth",
+      "test": "test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{\"campaign_id\":\"SYN-CAMPAIGN\",\"research_budget\":{\"max_cycles\":1e309}}]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-epoch]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-trial]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-candidate]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-validator]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-negative_memory]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-epoch]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-trial]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-candidate]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-validator]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-negative_memory]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_valid_reconstruction_and_detached_returns_are_unchanged[epoch]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_valid_reconstruction_and_detached_returns_are_unchanged[trial]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_valid_reconstruction_and_detached_returns_are_unchanged[negative_memory]"
+    },
+    {
+      "module": "tests.test_vertical_core_admission_snapshot",
+      "test": "test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_canonical_build_survives_serialized_reconstruction[epoch-build_epoch_manifest-epoch_manifest_hash]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_canonical_build_survives_serialized_reconstruction[trial-build_research_trial-trial_hash]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_canonical_build_survives_serialized_reconstruction[negative_memory-build_negative_memory-negative_knowledge_hash]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_canonical_build_survives_serialized_reconstruction[export-build_frozen_export_intent-export_bundle_hash]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_export_guard_covers_nested_json_serializable_sequences[pnl-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_export_guard_covers_nested_json_serializable_sequences[RETURNS-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_export_guard_covers_nested_json_serializable_sequences[evaluation_result-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_export_guard_covers_nested_json_serializable_sequences[outcome-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_pipeline_cannot_accept_tuple_hidden_outcome_then_claim_no_outcome_access"
+    },
+    {
+      "module": "tests.test_vertical_core_depth",
+      "test": "test_clean_pipeline_stays_closed_after_replay"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_write_failure_and_lost_ack_recover_the_same_object[commit-False]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_write_failure_and_lost_ack_recover_the_same_object[begin_session-False]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_write_failure_and_lost_ack_recover_the_same_object[close_session-False]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_duplicate_intent_cannot_replace_a_frozen_plan[changes0]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_duplicate_intent_cannot_replace_a_frozen_plan[changes1]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_duplicate_intent_cannot_replace_a_frozen_plan[changes2]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_duplicate_intent_cannot_replace_a_frozen_plan[changes3]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_completed_opportunity_cannot_regain_a_pending_plan"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_completion_cannot_discard_intent_under_a_different_identity[changes0]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_completion_cannot_discard_intent_under_a_different_identity[changes1]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_completion_cannot_discard_intent_under_a_different_identity[changes2]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_completion_cannot_discard_intent_under_a_different_identity[changes3]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_completion_cannot_discard_intent_under_a_different_identity[changes4]"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_caller_and_returned_views_cannot_mutate_frozen_intent"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_competing_journal_writers_do_not_erase_processed_identities"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_out_of_order_completion_cannot_move_rebalance_recency_backward"
+    },
+    {
+      "module": "tests.test_vertical_desk_journal_depth",
+      "test": "test_unknown_terminal_state_cannot_be_recorded_as_a_processed_session"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_overflow_json_cannot_disable_control_budget[tokens_total]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_overflow_json_cannot_disable_control_budget[cpu_seconds_total]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_overflow_json_cannot_disable_control_budget[metadata_bytes_per_tick]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_control_schema_requires_exact_integer_version[True]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_control_schema_requires_exact_integer_version[1.0]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_state_schema_cannot_be_rehashed_as_boolean_or_float[True]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_state_schema_cannot_be_rehashed_as_boolean_or_float[1.0]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_event_sequence_requires_exact_integer_even_with_matching_hash[True]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_event_sequence_requires_exact_integer_even_with_matching_hash[1.0]"
+    },
+    {
+      "module": "tests.test_vertical_edge_store_depth",
+      "test": "test_strict_json_rejects_ambiguous_and_nonfinite_numbers[{\"x\":1e999}]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_two_atomic_writers_do_not_share_a_staging_file"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_identical_concurrent_ingestion_has_one_receipt_and_index_entry"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_index_check_and_append_are_one_exclusive_operation"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_validation_lookup_requires_exact_typed_identity[validation:*]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_validation_lookup_requires_exact_typed_identity[*]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_validation_lookup_requires_exact_typed_identity[validation:?]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_validation_lookup_requires_exact_typed_identity[validation:[a-f]*]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_validation_lookup_requires_exact_typed_identity[wrong:{digest}]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_validation_lookup_requires_exact_typed_identity[{digest}]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_derived_lookup_rejects_partial_foreign_and_traversal_reference[]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_derived_lookup_rejects_partial_foreign_and_traversal_reference[wrong:]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_derived_lookup_rejects_partial_foreign_and_traversal_reference[artifact:../derived/]"
+    },
+    {
+      "module": "tests.test_vertical_evidence_depth",
+      "test": "test_nonfinite_assertions_cannot_become_durable_identity"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_unusable_adv_cannot_produce_an_unbounded_fill[0]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_unusable_adv_cannot_produce_an_unbounded_fill[-1]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_unusable_adv_cannot_produce_an_unbounded_fill[nan]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_unusable_adv_cannot_produce_an_unbounded_fill[inf]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_no_predecision_history_cannot_be_reported_as_liquid"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_fill_must_occur_after_its_signal[2026-10-19]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_fill_must_occur_after_its_signal[2026-10-18]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes0]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes2]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes3]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes4]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes5]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes6]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_invalid_model_parameters_cannot_make_a_fill[changes7]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_nonfinite_or_boolean_quantity_is_rejected[nan]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_nonfinite_or_boolean_quantity_is_rejected[inf]"
+    },
+    {
+      "module": "tests.test_vertical_execution_depth",
+      "test": "test_nonfinite_or_boolean_quantity_is_rejected[True]"
+    },
+    {
+      "module": "tests.test_vertical_execution_input_isolation",
+      "test": "test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-append_input]"
+    },
+    {
+      "module": "tests.test_vertical_execution_input_isolation",
+      "test": "test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-clear_inputs]"
+    },
+    {
+      "module": "tests.test_vertical_execution_input_isolation",
+      "test": "test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[False-experiment_identity]"
+    },
+    {
+      "module": "tests.test_vertical_execution_input_isolation",
+      "test": "test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-append_input]"
+    },
+    {
+      "module": "tests.test_vertical_execution_input_isolation",
+      "test": "test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-clear_inputs]"
+    },
+    {
+      "module": "tests.test_vertical_execution_input_isolation",
+      "test": "test_prepared_binding_is_the_exact_body_executed_after_caller_mutation[True-experiment_identity]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_concurrent_caller_change_after_scan_cannot_enter_export[outcome_dict]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_concurrent_caller_change_after_scan_cannot_enter_export[outcome_tuple]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_concurrent_caller_change_after_scan_cannot_enter_export[identity]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_concurrent_caller_change_after_scan_cannot_enter_export[required_reference]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_required_schema_check_and_export_use_same_captured_body[candidate_hash]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_required_schema_check_and_export_use_same_captured_body[source_snapshot_hashes]"
+    },
+    {
+      "module": "tests.test_vertical_export_input_isolation",
+      "test": "test_existing_forbidden_content_never_receives_an_export_hash[hidden1]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[returns-dict]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[returns-list]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[returns-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-dict]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-list]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[execution_prices-dict]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[execution_prices-list]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_forbidden_payload_at_any_depth_is_blocked[execution_prices-tuple]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[-effective_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[-published_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[-captured_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[None-effective_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[None-published_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[None-captured_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[2026-10-15T12:00:00-effective_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[2026-10-15T12:00:00-published_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[2026-10-15T12:00:00-captured_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_record_clock_requires_qualified_value[invalid-effective_at]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_plan_body_mutation_cannot_reuse_ready_hash[clock_cutoff-2026-10-16T13:00:00Z]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_secondary_firewall_entry_rejects_open_authority[network_execution_authorized]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_secondary_firewall_entry_rejects_open_authority[outcome_access_authorized]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_secondary_firewall_entry_rejects_open_authority[outcome_accessed]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_presence_does_not_qualify_missing_required_values[record_id-]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_presence_does_not_qualify_missing_required_values[source_version_id-None]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_presence_does_not_qualify_missing_required_values[content_classes-value2]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_presence_does_not_qualify_missing_required_values[payload-value3]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_normalizer_cannot_reuse_pass_for_changed_raw_record"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_normalizer_cannot_trust_forged_pass_after_contamination"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_provenance_manifest_reconstructs_internal_proofs[typed_payload]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_provenance_manifest_reconstructs_internal_proofs[typed_hash]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_provenance_manifest_reconstructs_internal_proofs[manifest_plan]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_provenance_manifest_reconstructs_internal_proofs[foreign_firewall]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_plan_rejects_ambiguous_cutoff[invalid]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_depth",
+      "test": "test_plan_rejects_ambiguous_cutoff[2026-10-15T13:00:00]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_forbidden_record_content_cannot_hide_outside_payload[top-returns]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_forbidden_record_content_cannot_hide_outside_payload[top-future_outcomes]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_forbidden_record_content_cannot_hide_outside_payload[top-execution_prices]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_forbidden_record_content_cannot_hide_outside_payload[extension-returns]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_forbidden_record_content_cannot_hide_outside_payload[extension-future_outcomes]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_forbidden_record_content_cannot_hide_outside_payload[extension-execution_prices]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_alternate_normalizer_cannot_certify_top_level_forbidden_content"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions[typed_record]"
+    },
+    {
+      "module": "tests.test_vertical_firewall_record_scope",
+      "test": "test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions[provenance_manifest]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[None-contract_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[None-hypothesis_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[None-generation_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[-contract_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[-hypothesis_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[-generation_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-contract_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-hypothesis_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_forward_identity_cannot_be_partial_even_after_rehash[UNKNOWN-generation_id]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_zero_consumption_requires_exact_integer_proof[False-observation_count]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_zero_consumption_requires_exact_integer_proof[False-future_outcomes_consumed]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_zero_consumption_requires_exact_integer_proof[0.0-observation_count]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_zero_consumption_requires_exact_integer_proof[0.0-future_outcomes_consumed]"
+    },
+    {
+      "module": "tests.test_vertical_forward_registry_depth",
+      "test": "test_competing_contract_ids_cannot_double_register_one_generation"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[caller-mechanism]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[caller-decision_map]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[caller-dataset_provenance]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[caller-declared_metrics]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[receipt-mechanism]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[receipt-decision_map]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[receipt-dataset_provenance]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_freeze_detaches_all_admitted_mutable_identity[receipt-declared_metrics]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_nonfinite_protocol_cannot_receive_frozen_hash[nan]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_nonfinite_protocol_cannot_receive_frozen_hash[inf]"
+    },
+    {
+      "module": "tests.test_vertical_freeze_snapshot_depth",
+      "test": "test_exact_double_freeze_is_deterministic_and_detached"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[None]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[False]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[True]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-1]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[-100000000000000000000000000000000000000000000000000000000000000000000000000000000]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0.0]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[1.5]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[0]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts8]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_multiplicity_cannot_bypass_initial_freeze_contract[attempts9]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[universe]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[clock]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[entry_definition]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exit_definition]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[economic_expression]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[benchmark]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[gross_metric]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[net_metric]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[cost_assumptions]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[capacity_assumptions]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_definition]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[sample_window]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[exclusions]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[missing_data_policy]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[revision_policy]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[survivorship_policy]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[falsification_rule]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[decision_map]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[observed_attempt_count]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_serialized_missing_declarations_are_not_rehabilitated_by_valid_hashes[multiplicity_family]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_embedded_version_cannot_disagree_with_declared_supported_version[None]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_embedded_version_cannot_disagree_with_declared_supported_version[]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v0]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_embedded_version_cannot_disagree_with_declared_supported_version[pre-outcome-frozen-protocol.v99]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_embedded_version_cannot_disagree_with_declared_supported_version[False]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[plan-protocol_hash-foreign-protocol]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[plan-code_hash-foreign-code]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[plan-environment_hash-foreign-environment]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[plan-seed-1729]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[plan-source_route_hashes-foreign4]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-protocol_hash-foreign-protocol]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-code_hash-foreign-code]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-environment_hash-foreign-environment]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-seed-1729]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-source_route_hashes-foreign4]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_replay_returns_identity_of_checked_snapshot_under_caller_mutation"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[False]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[-1]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_invalid_reconstructed_freeze_is_denied_before_any_execution_checkpoint[0]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[plan]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[frozen_protocol]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_reconstructed_freeze_cannot_drop_outer_version_marker"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_execution_mode_cannot_claim_dry_run_replay[LIVE]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_execution_mode_cannot_claim_dry_run_replay[UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_execution_mode_cannot_claim_dry_run_replay[None]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_rehashed_execution_mode_cannot_claim_dry_run_replay[False]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[frozen_hash]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[payload_bindings]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[outer_bindings]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_partial_frozen_state_cannot_be_misread_as_opaque_legacy[capability]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_frozen_body_cannot_carry_a_contradictory_capability_state[LEGACY_DRY_RUN_ONLY]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_frozen_body_cannot_carry_a_contradictory_capability_state[BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_frozen_replay_depth",
+      "test": "test_frozen_body_cannot_carry_a_contradictory_capability_state[UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_git_state_depth",
+      "test": "test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks//task.json]"
+    },
+    {
+      "module": "tests.test_vertical_git_state_depth",
+      "test": "test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/./task.json]"
+    },
+    {
+      "module": "tests.test_vertical_git_state_depth",
+      "test": "test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/task.json/]"
+    },
+    {
+      "module": "tests.test_vertical_git_state_depth",
+      "test": "test_noncanonical_path_cannot_acknowledge_an_ignored_write[tasks/]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_replay_uses_hash_identity[first0-second0]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_replay_uses_hash_identity[first1-second1]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_replay_uses_hash_identity[first2-second2]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_tuple_replay_uses_wire_identity"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_and_registry_reject_noncanonical_objects[payload0]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_and_registry_reject_noncanonical_objects[None]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_and_registry_reject_noncanonical_objects[payload2]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_and_registry_reject_noncanonical_objects[payload3]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_and_registry_reject_noncanonical_objects[payload4]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_malformed_read_fails_closed[null]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_malformed_read_fails_closed[1]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_malformed_read_fails_closed[{\"payload_hash\":\"5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22\",\"payload\":{\"x\":0,\"x\":1}}]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_checkpoint_malformed_read_fails_closed[{\"payload_hash\": \"c238cb6e9ac5407491b0988102620ab9445290d2ed7713c516a2b28bd2388968\", \"payload\": {\"x\": NaN}}]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_registry_requires_exact_nonempty_identity[]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_registry_requires_exact_nonempty_identity[None]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_registry_requires_exact_nonempty_identity[1]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_registry_requires_exact_nonempty_identity[True]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_registry_deterministic_competing_payloads"
+    },
+    {
+      "module": "tests.test_vertical_immutable_depth",
+      "test": "test_registry_normalizes_and_detaches_wire_payload"
+    },
+    {
+      "module": "tests.test_vertical_immutable_process_recovery",
+      "test": "test_after_lost_ack_a_conflicting_fresh_writer_cannot_overwrite_published_truth[before_link]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_process_recovery",
+      "test": "test_after_lost_ack_a_conflicting_fresh_writer_cannot_overwrite_published_truth[after_link]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_process_recovery",
+      "test": "test_after_lost_ack_a_conflicting_fresh_writer_cannot_overwrite_published_truth[after_directory_fsync]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_process_recovery",
+      "test": "test_independent_process_publishers_have_one_typed_winner_and_no_partial_read[second1]"
+    },
+    {
+      "module": "tests.test_vertical_immutable_process_recovery",
+      "test": "test_independent_process_publishers_have_one_typed_winner_and_no_partial_read[second2]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-direction_exposure_semantics]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-eligibility]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-position_expression]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-cost_model_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-capacity_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-data_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-execution_assumptions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-falsification_relevant_implementation_conditions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value0-entry_clock]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-direction_exposure_semantics]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-eligibility]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-position_expression]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-cost_model_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-capacity_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-data_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-execution_assumptions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-falsification_relevant_implementation_conditions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value1-entry_clock]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-direction_exposure_semantics]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-eligibility]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-position_expression]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-cost_model_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-capacity_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-data_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-execution_assumptions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-falsification_relevant_implementation_conditions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value2-entry_clock]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-direction_exposure_semantics]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-eligibility]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-position_expression]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-cost_model_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-capacity_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-data_requirements]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-execution_assumptions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-falsification_relevant_implementation_conditions]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_nested_unknown_does_not_qualify_exact_expression[value3-entry_clock]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_unqualified_complexity_is_not_declared_known[CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_unqualified_complexity_is_not_declared_known[BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_unqualified_complexity_is_not_declared_known[UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_implementability_depth",
+      "test": "test_unqualified_complexity_is_not_declared_known[INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_unterminated_tail_has_same_visibility_before_and_after_append[{\"id\":2}]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_unterminated_tail_has_same_visibility_before_and_after_append[{\"text\":\"\\xe2]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_unterminated_tail_has_same_visibility_before_and_after_append[\\xff]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_unterminated_tail_has_same_visibility_before_and_after_append[{\"id\":2}\\r]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_rejected_append_cannot_repair_or_change_existing_bytes[record0]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_rejected_append_cannot_repair_or_change_existing_bytes[None]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_rejected_append_cannot_repair_or_change_existing_bytes[record2]"
+    },
+    {
+      "module": "tests.test_vertical_journal_depth",
+      "test": "test_unicode_committed_records_survive_a_torn_multibyte_append"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_stale_learning_instance_cannot_erase_acknowledged_ticket[False]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_stale_learning_instance_cannot_erase_acknowledged_ticket[True]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_stale_build_task_cannot_erase_a_research_lesson"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_shared_instance_isolates_mutation_through_publication_and_recovery[none]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_shared_instance_isolates_mutation_through_publication_and_recovery[before_write]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_shared_instance_isolates_mutation_through_publication_and_recovery[after_write]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_independent_processes_with_one_observed_snapshot_cannot_both_publish"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_lock_setup_failure_restores_prior_learning_before_retry[quant.learning.store.os.open]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_lock_setup_failure_restores_prior_learning_before_retry[quant.learning.store.fcntl.flock]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_lock_setup_failure_restores_prior_learning_before_retry[pathlib.Path.mkdir]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_process_death_releases_lock_and_replays_one_learning_delta[False]"
+    },
+    {
+      "module": "tests.test_vertical_learning_concurrency",
+      "test": "test_process_death_releases_lock_and_replays_one_learning_delta[True]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_replay_after_retention_and_restart_does_not_update_priority_twice"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_same_object_research_retry_recovers_actual_durable_state[False]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_failed_build_task_write_does_not_suppress_retry"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_invalid_ticket_identity_cannot_change_search_priority[]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_invalid_ticket_identity_cannot_change_search_priority[ ]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_invalid_ticket_identity_cannot_change_search_priority[True]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_invalid_ticket_identity_cannot_change_search_priority[1]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_invalid_ticket_identity_cannot_change_search_priority[identity4]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_invalid_ticket_identity_cannot_change_search_priority[identity5]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_malformed_replay_index_is_not_interpreted_as_valid_state[one]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_malformed_replay_index_is_not_interpreted_as_valid_state[identities1]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_malformed_replay_index_is_not_interpreted_as_valid_state[identities2]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_malformed_replay_index_is_not_interpreted_as_valid_state[identities3]"
+    },
+    {
+      "module": "tests.test_vertical_learning_depth",
+      "test": "test_malformed_replay_index_is_not_interpreted_as_valid_state[identities4]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_caller_cannot_rewrite_historical_decision_or_summary"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_conflicting_identity_is_reviewed_without_arbitrary_winner[False-False]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_conflicting_identity_is_reviewed_without_arbitrary_winner[False-True]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_conflicting_identity_is_reviewed_without_arbitrary_winner[True-False]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_conflicting_identity_is_reviewed_without_arbitrary_winner[True-True]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_malformed_corpus_is_rejected[None]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_malformed_corpus_is_rejected[records1]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_malformed_corpus_is_rejected[]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_malformed_corpus_is_rejected[records3]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_malformed_corpus_is_rejected[records4]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_malformed_corpus_is_rejected[records5]"
+    },
+    {
+      "module": "tests.test_vertical_legacy_depth",
+      "test": "test_exact_match_result_does_not_export_mutable_ledger_fields"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[-negative_knowledge_id]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[-failure_scope]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[-failure_reason]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[-revisit_policy]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[  -negative_knowledge_id]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[  -failure_scope]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[  -failure_reason]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[  -revisit_policy]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-negative_knowledge_id]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-failure_scope]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-failure_reason]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-revisit_policy]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[None-negative_knowledge_id]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[None-failure_scope]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[None-failure_reason]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[None-revisit_policy]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[True-negative_knowledge_id]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[True-failure_scope]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[True-failure_reason]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scoped_negative_requires_identity_scope_and_reason[True-revisit_policy]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scope_context_shape_is_explicit[assumptions-None]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scope_context_shape_is_explicit[assumptions-implicit]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scope_context_shape_is_explicit[regime_context-value2]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scope_context_shape_is_explicit[source_context-unbound]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_scope_context_shape_is_explicit[revisit_conditions-new evidence]"
+    },
+    {
+      "module": "tests.test_vertical_negative_memory_depth",
+      "test": "test_negative_memory_roundtrip_is_detached_and_hash_stable"
+    },
+    {
+      "module": "tests.test_vertical_observability_input_snapshot",
+      "test": "test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[ready]"
+    },
+    {
+      "module": "tests.test_vertical_observability_input_snapshot",
+      "test": "test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[ceiling_outcome]"
+    },
+    {
+      "module": "tests.test_vertical_observability_input_snapshot",
+      "test": "test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[remove_blocker]"
+    },
+    {
+      "module": "tests.test_vertical_observability_input_snapshot",
+      "test": "test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[support]"
+    },
+    {
+      "module": "tests.test_vertical_observability_input_snapshot",
+      "test": "test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[validator]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_date_view_mutation_cannot_corrupt_future_alignment[aligned_dates]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_date_view_mutation_cannot_corrupt_future_alignment[dates_for]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_duplicate_evidence_survives_same_panel_projection[restrict]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_duplicate_evidence_survives_same_panel_projection[window]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_export_cannot_silently_erase_duplicate_evidence"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_invalid_split_fractions_are_rejected[fractions0]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_invalid_split_fractions_are_rejected[fractions1]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_invalid_split_fractions_are_rejected[fractions2]"
+    },
+    {
+      "module": "tests.test_vertical_panel_depth",
+      "test": "test_invalid_split_fractions_are_rejected[fractions4]"
+    },
+    {
+      "module": "tests.test_vertical_pipeline_input_isolation",
+      "test": "test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[negative_list]"
+    },
+    {
+      "module": "tests.test_vertical_pipeline_input_isolation",
+      "test": "test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[negative_tuple]"
+    },
+    {
+      "module": "tests.test_vertical_pipeline_input_isolation",
+      "test": "test_preoutcome_scan_and_final_receipt_use_one_detached_bundle[export_identity]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-nan]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-inf]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[CASH-True]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-nan]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-inf]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[STOCK-True]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-nan]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-inf]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPIN-True]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-nan]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-inf]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_nonfinite_and_boolean_terms_cannot_be_positive_consideration[SPLIT-True]"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_known_and_effective_order_follow_utc_instants"
+    },
+    {
+      "module": "tests.test_vertical_pit_actions_depth",
+      "test": "test_equal_instants_use_stable_identity_tie_breaker"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-issuer]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-security]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-name]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-ticker]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-listing]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-issuer]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-security]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-name]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-ticker]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-listing]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_mutating_source_arrays_cannot_change_frozen_corporate_action[clear_legs]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_mutating_source_arrays_cannot_change_frozen_corporate_action[append_forbidden_spin]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_mutating_source_arrays_cannot_change_frozen_corporate_action[clear_lineage]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_mutating_source_arrays_cannot_change_frozen_corporate_action[append_bad_lineage]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_wire_reconstruction_preserves_contract_identity[issuer]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_wire_reconstruction_preserves_contract_identity[security]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_wire_reconstruction_preserves_contract_identity[name]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_wire_reconstruction_preserves_contract_identity[ticker]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_wire_reconstruction_preserves_contract_identity[listing]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_wire_reconstruction_preserves_contract_identity[action]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-issuer]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-security]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-name]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-ticker]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-listing]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-action]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[set-issuer]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[set-security]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[set-name]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[set-ticker]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[set-listing]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_lineage_container_cannot_silently_drop_metadata_or_order[set-action]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[mapping]"
+    },
+    {
+      "module": "tests.test_vertical_pit_contract_immutability",
+      "test": "test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[set]"
+    },
+    {
+      "module": "tests.test_vertical_plan_snapshot_depth",
+      "test": "test_planning_freezes_nested_environment_and_metric_identity[caller-environment]"
+    },
+    {
+      "module": "tests.test_vertical_plan_snapshot_depth",
+      "test": "test_planning_freezes_nested_environment_and_metric_identity[caller-declared_metrics]"
+    },
+    {
+      "module": "tests.test_vertical_plan_snapshot_depth",
+      "test": "test_planning_freezes_nested_environment_and_metric_identity[receipt-environment]"
+    },
+    {
+      "module": "tests.test_vertical_plan_snapshot_depth",
+      "test": "test_planning_freezes_nested_environment_and_metric_identity[receipt-declared_metrics]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[CONFLICTED-payer]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[CONFLICTED-mechanism]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[CONFLICTED-timing_clock]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[BLOCKED-payer]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[BLOCKED-mechanism]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[BLOCKED-timing_clock]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[UNEXECUTED-payer]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[UNEXECUTED-mechanism]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[UNEXECUTED-timing_clock]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[INVALIDATED_PROTOCOL-payer]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[INVALIDATED_PROTOCOL-mechanism]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_unqualified_core_axis_is_unknown[INVALIDATED_PROTOCOL-timing_clock]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_partially_unknown_object_cannot_make_complete_core_axis[value0]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_partially_unknown_object_cannot_make_complete_core_axis[value1]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_partially_unknown_object_cannot_make_complete_core_axis[value2]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_partially_unknown_object_cannot_make_complete_core_axis[value3]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_scalar_tag_text_is_not_compared_as_character_sets[payer]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_scalar_tag_text_is_not_compared_as_character_sets[UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_portfolio_depth",
+      "test": "test_scalar_tag_text_is_not_compared_as_character_sets[balance-sheet]"
+    },
+    {
+      "module": "tests.test_vertical_qualification_depth",
+      "test": "test_foreign_sha_cannot_label_a_successful_qualification[0000000000000000000000000000000000000000]"
+    },
+    {
+      "module": "tests.test_vertical_qualification_depth",
+      "test": "test_foreign_sha_cannot_label_a_successful_qualification[base]"
+    },
+    {
+      "module": "tests.test_vertical_qualification_depth",
+      "test": "test_dirty_executable_cannot_claim_the_committed_source_identity[research/research_os/expansion/v2_core.py]"
+    },
+    {
+      "module": "tests.test_vertical_qualification_depth",
+      "test": "test_dirty_executable_cannot_claim_the_committed_source_identity[scripts/qualify_oracle_v2_core.py]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_stale_queue_add_cannot_erase_an_acknowledged_task[False]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_stale_queue_add_cannot_erase_an_acknowledged_task[True]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_stale_save_cannot_restore_pending_over_acknowledged_completion"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_shared_queue_isolates_add_until_publication_or_recovery_finishes[none]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_shared_queue_isolates_add_until_publication_or_recovery_finishes[before_write]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_shared_queue_isolates_add_until_publication_or_recovery_finishes[after_write]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_document_preparation_failure_does_not_poison_add_retry"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_lock_setup_failure_does_not_poison_add_retry[os.open]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_lock_setup_failure_does_not_poison_add_retry[fcntl.flock]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_lock_setup_failure_does_not_poison_add_retry[pathlib.Path.mkdir]"
+    },
+    {
+      "module": "tests.test_vertical_queue_concurrency",
+      "test": "test_independent_processes_cannot_both_publish_a_stale_queue"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T13:00:00+02:00-True]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T11:00:00-02:00-False]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_queue_due_boundary_compares_instants_not_iso_spelling[2026-10-20T14:00:00+02:00-True]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_naive_or_malformed_due_clock_is_not_scheduled[2026-10-20T12:00:00]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_naive_or_malformed_due_clock_is_not_scheduled[UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_naive_or_malformed_due_clock_is_not_scheduled[]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_naive_or_malformed_due_clock_is_not_scheduled[2026-99-20T00:00:00Z]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_failed_add_can_be_retried_on_same_queue"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_atomic_campaign_writers_use_unique_staging_files"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_unknown_queue_schema_cannot_be_silently_rewritten[0]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_unknown_queue_schema_cannot_be_silently_rewritten[2]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_unknown_queue_schema_cannot_be_silently_rewritten[True]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_unknown_queue_schema_cannot_be_silently_rewritten[1]"
+    },
+    {
+      "module": "tests.test_vertical_queue_depth",
+      "test": "test_conflicting_duplicate_task_records_are_ambiguous"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_contradictory_validator_summary_cannot_pass[status-BLOCK-BLOCK_CLAIM_LEVEL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_contradictory_validator_summary_cannot_pass[block_reasons-value1-BLOCK_CLAIM_LEVEL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_contradictory_validator_summary_cannot_pass[ready_for_authorized_economic_test-False-BLOCK_CLAIM_LEVEL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_contradictory_validator_summary_cannot_pass[economic_test_authorized-True-BLOCK_CLAIM_LEVEL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_contradictory_validator_summary_cannot_pass[outcome_access_authorized-True-BLOCK_LEAKAGE]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_frozen_input_check_is_not_omitted"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-None]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-True]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-None]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-True]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-None]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-True]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-None]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-True]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-None]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-True]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-UNKNOWN]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-CONFLICTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-BLOCKED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-UNEXECUTED]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-INVALIDATED_PROTOCOL]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-None]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-True]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_each_known_check_missing_blocks[frozen_input_binding]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_each_known_check_missing_blocks[experiment_infrastructure]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_each_known_check_missing_blocks[outcome_firewall]"
+    },
+    {
+      "module": "tests.test_vertical_red_team_depth",
+      "test": "test_unknown_failed_validator_check_preserves_denial"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_forward_keeps_the_exact_validated_input[contract_id]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_forward_keeps_the_exact_validated_input[observation_scope]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_forward_keeps_the_exact_validated_input[observation_count]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_forward_caller_cannot_import_authority_after_admission"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_typed_registry_metadata_cannot_change_after_proof_validation[source_version_id]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_typed_registry_metadata_cannot_change_after_proof_validation[published_at]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_typed_registry_metadata_cannot_change_after_proof_validation[record_id]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_source_registry_copies_the_proof_it_validated[status]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_source_registry_copies_the_proof_it_validated[freeze_time]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_source_registry_copies_the_proof_it_validated[canonical_route]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_source_registry_copies_the_proof_it_validated[route_id]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_typed_batch_partial_prefix_has_exact_replay_and_recovery[False]"
+    },
+    {
+      "module": "tests.test_vertical_registry_input_isolation",
+      "test": "test_source_batch_partial_prefix_has_exact_replay_and_recovery[False]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[evaluate-nan]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[evaluate-inf]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[evaluate--inf]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[evaluate-True]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[verify_final-nan]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[verify_final-inf]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[verify_final--inf]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[verify_final-True]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[project-nan]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[project-inf]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[project--inf]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_target_cannot_disappear_during_projection[project-True]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[max_gross_ratio]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[max_net_ratio]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[max_symbol_ratio]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[drawdown_throttle]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[drawdown_halt]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[throttle_scale]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_nonfinite_limit_cannot_disable_a_comparison[min_nav_ratio]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_direct_assess_does_not_pass_nonfinite_accounting[nav]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_direct_assess_does_not_pass_nonfinite_accounting[drawdown]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_direct_assess_does_not_pass_nonfinite_accounting[initial_capital]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_direct_assess_does_not_pass_nonfinite_accounting[portfolio]"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_corrupt_sleeve_cannot_be_filtered_out_by_symbol_projection"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_invalid_valuation_vector_and_final_cash_adjustment_block"
+    },
+    {
+      "module": "tests.test_vertical_risk_depth",
+      "test": "test_no_nan_verdict_can_reach_a_book_mutation"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_input_alias_is_detached"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_return_alias_is_detached"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_trial_export_does_not_mutate_ledger"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_payload_cannot_append[payload0]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_payload_cannot_append[payload1]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_payload_cannot_append[payload2]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_payload_cannot_append[payload3]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_kind_cannot_append[]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_kind_cannot_append[None]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_kind_cannot_append[1]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_bad_kind_cannot_append[True]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_malformed_chain_fails_closed[nonobject]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_malformed_chain_fails_closed[bool_seq]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_malformed_chain_fails_closed[extra]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_malformed_chain_fails_closed[missing]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_malformed_chain_fails_closed[nan]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_atomic_publication_failure_and_retry"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_append_serializes_hash_and_sequence"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_fsync_failure_leaves_complete_old_or_new_document[1]"
+    },
+    {
+      "module": "tests.test_vertical_scientific_ledger_depth",
+      "test": "test_fsync_failure_leaves_complete_old_or_new_document[2]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[-route_id]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[-transport]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[   -route_id]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[   -transport]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[   -locator]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[   -revision_policy]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[   -survivorship_policy]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[   -timezone]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-route_id]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-transport]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[UNKNOWN-locator]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-route_id]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-transport]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-locator]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-revision_policy]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-survivorship_policy]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_route_required_identity_and_policy_values_are_qualified[CONFLICTED-timezone]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_registry_cannot_trust_altered_qualification[status]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_registry_cannot_trust_altered_qualification[point_in_time_qualified]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_registry_cannot_trust_altered_qualification[outcome_accessed]"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_registry_requalifies_body_not_just_supplied_route_hash"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_registry_does_not_replay_a_different_freeze_context"
+    },
+    {
+      "module": "tests.test_vertical_source_route_depth",
+      "test": "test_registry_competing_contexts_do_not_both_succeed"
+    },
+    {
+      "module": "tests.test_vertical_system_survey",
+      "test": "test_portfolio_order_does_not_change_pairwise_semantics[order1]"
+    },
+    {
+      "module": "tests.test_vertical_system_survey",
+      "test": "test_portfolio_order_does_not_change_pairwise_semantics[order2]"
+    },
+    {
+      "module": "tests.test_vertical_system_survey",
+      "test": "test_portfolio_order_does_not_change_pairwise_semantics[order3]"
+    },
+    {
+      "module": "tests.test_vertical_system_survey",
+      "test": "test_portfolio_order_does_not_change_pairwise_semantics[order4]"
+    },
+    {
+      "module": "tests.test_vertical_system_survey",
+      "test": "test_portfolio_order_does_not_change_pairwise_semantics[order5]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_registry_rejects_unbound_typed_fields[typed_record_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_registry_rejects_unbound_typed_fields[source_version_id-foreign]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_registry_rejects_unbound_typed_fields[published_at-2026-10-16T13:00:00Z]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_registry_rejects_unbound_typed_fields[point_in_time_record-False]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_registry_rejects_unbound_typed_fields[record_origin-NETWORK]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_even_rehashed_foreign_manifest_cannot_certify_record[typed_record_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_even_rehashed_foreign_manifest_cannot_certify_record[record_id-foreign]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_even_rehashed_foreign_manifest_cannot_certify_record[source_version_id-foreign]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_even_rehashed_foreign_manifest_cannot_certify_record[published_at-2026-10-16T00:00:00Z]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_even_rehashed_foreign_manifest_cannot_certify_record[raw_record_hash-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_even_rehashed_foreign_manifest_cannot_certify_record[origin-NETWORK]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_manifest_authority_flags_cannot_be_laundered[outcome_accessed]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_manifest_authority_flags_cannot_be_laundered[network_accessed]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_manifest_hash_must_be_verified"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_competing_registration_cannot_replace_different_content"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_secondary_registry_api_does_not_admit_fully_rehashed_outcome_content[returns]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_secondary_registry_api_does_not_admit_fully_rehashed_outcome_content[future_outcomes]"
+    },
+    {
+      "module": "tests.test_vertical_typed_registry_depth",
+      "test": "test_secondary_registry_api_does_not_admit_fully_rehashed_outcome_content[execution_prices]"
+    }
+  ],
+  "failure_count_is_independent_defect_count": false
+}

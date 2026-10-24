@@ -32,6 +32,9 @@ jobs:
           python3 --version
           echo "commit: ${{ github.sha }}"
 
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check -r tests/requirements-giga-q.txt
+
       - name: Fail-closed check (no SEC identity configured)
         run: |
           set -euo pipefail

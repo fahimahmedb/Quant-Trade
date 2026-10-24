@@ -151,6 +151,8 @@ class GitHubStateStore:
                 raise StateConflict('IMMUTABLE_ARTIFACT_ALREADY_EXISTS:' + path)
         allowed = ('tasks/', 'events/', 'receipts/', 'artifacts/', 'hypotheses/', 'assessments/', 'runtime/worker_wakes/')
         for path in writes:
+            if not isinstance(path, str) or path.endswith('/') or PurePosixPath(path).as_posix() != path:
+                raise ValueError('NONCANONICAL_STATE_WRITE_PATH')
             tail = path.removeprefix(PREFIX)
             if not path.startswith(PREFIX) or not tail.startswith(allowed) or '..' in PurePosixPath(path).parts or '\n' in path or '\t' in path:
                 raise ValueError('STATE_WRITE_OUTSIDE_CANONICAL_WORKER_PATHS')
