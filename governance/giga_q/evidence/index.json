@@ -116,6 +116,18 @@
       "uncompressed_sha256": "31c148d5a0185895caddff1bf5aa34d44b814b3f6aa39d920beeebaf61b96313",
       "compressed_sha256": "b60e251f7611a67a320f5fae7536ac2f94ac9098b0e04e43a209534850b2f26b",
       "bytes": 121
+    },
+    {
+      "path": "governance/giga_q/evidence/qualification-runtime-red.log.gz",
+      "uncompressed_sha256": "51e3d1e291542cae624afa841c09ce69e5a327cd4d99750c62314ae94f21863d",
+      "compressed_sha256": "3650a7a8176ba93aed9c3eb440e3d95dd8f0e6ddc5a1e9c058127ae8bb0eba41",
+      "bytes": 1039
+    },
+    {
+      "path": "governance/giga_q/evidence/q-final-focused-runtime.log.gz",
+      "uncompressed_sha256": "e14d808549e4ee6bd30a311141ed75c14e3d45b84559e15ed8d4860a0c3fcb4a",
+      "compressed_sha256": "3cb6f370900b75d51b97f3f189c6761b0eefc1091cfe29b92cec61d8357c3e0f",
+      "bytes": 236
     }
   ],
   "retained_fixtures": [
