@@ -13,7 +13,7 @@ from pathlib import Path
 import threading
 from typing import Any
 
-from quant.state import read_json, write_json as _write_json
+from quant.state import write_json as _write_json
 
 
 class CampaignStateConflict(RuntimeError):
@@ -190,18 +190,40 @@ class PersistentQueue:
         if not hasattr(self, "_mutation_lock"):
             self._mutation_lock = threading.RLock()
         self.path = path
-        self.tasks: dict[str, ResearchTask] = {}
-        observed = read_json(path)
-        self._persisted = deepcopy(observed)
-        if path.exists():
+        self._install_document(self._read_document())
+
+    @staticmethod
+    def _unique_fields(pairs):
+        document = {}
+        for name, value in pairs:
+            if name in document:
+                raise ValueError("duplicate queue field: " + name)
+            document[name] = value
+        return document
+
+    def _read_document(self) -> dict[str, Any] | None:
+        try:
+            document = json.loads(self.path.read_text(encoding="utf-8"), object_pairs_hook=self._unique_fields)
+        except FileNotFoundError:
+            return None
+        json.dumps(document, allow_nan=False)
+        return document
+
+    def _install_document(self, observed: dict[str, Any] | None) -> None:
+        # Prepare the entire recovered snapshot before replacing live fields.
+        restored: dict[str, ResearchTask] = {}
+        if observed is not None:
             if not isinstance(observed, dict):
                 raise ValueError("queue state must be an object")
-            payload = observed
-            if type(payload.get("version")) is not int or payload["version"] != 1:
+            if type(observed.get("version")) is not int or observed["version"] != 1:
                 raise ValueError("unknown queue schema version")
-            self.tasks = {item["task_id"]: ResearchTask(**item) for item in payload["tasks"]}
-            if len(self.tasks) != len(payload["tasks"]):
+            if not isinstance(observed.get("tasks"), list):
+                raise ValueError("queue tasks must be a list")
+            restored = {item["task_id"]: ResearchTask(**item) for item in observed["tasks"]}
+            if len(restored) != len(observed["tasks"]):
                 raise ValueError("duplicate queue task identity")
+        persisted = deepcopy(observed)
+        self.tasks, self._persisted = restored, persisted
 
     @_serialized_mutation
     def save(self) -> None:
@@ -210,14 +232,22 @@ class PersistentQueue:
             self.path.parent.mkdir(parents=True, exist_ok=True)
             fd = os.open(self.path.with_name(self.path.name + ".lock"), os.O_CREAT | os.O_RDWR, 0o600)
             fcntl.flock(fd, fcntl.LOCK_EX)
-            if read_json(self.path) != self._persisted:
+            current = self._read_document()
+            def encode(value: Any) -> str:
+                return json.dumps(value, sort_keys=True, allow_nan=False)
+            if encode(current) != encode(self._persisted):
                 raise QueueConflict("QUEUE_CHANGED_SINCE_READ")
             ordered = sorted(self.tasks.values(), key=lambda task: (task.created_at, task.task_id))
             document = {"version": 1, "tasks": [asdict(task) for task in ordered]}
             _write_json(self.path, document)
             self._persisted = deepcopy(document)
         except BaseException:
-            self.__init__(self.path)
+            try:
+                self._install_document(self._read_document())
+            except (OSError, ValueError, TypeError, KeyError):
+                # Corrupt durable input is not a new trusted observation. Keep
+                # the previous snapshot, refuse the write, and leave disk alone.
+                self._install_document(self._persisted)
             raise
         finally:
             if fd is not None:
