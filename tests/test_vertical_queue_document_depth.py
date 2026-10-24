@@ -68,6 +68,12 @@ def corrupt_document(document, kind):
         return encoded.replace('"attempts": 0', '"attempts": 2, "attempts": 0')
     if kind == 'duplicate_nested':
         return encoded.replace('"sequence": 0', '"sequence": 1, "sequence": 0')
+    if kind == 'null_root':
+        return 'null'
+    if kind == 'unknown_root_field':
+        document = deepcopy(document)
+        document['future_receipt'] = {'source': 'unrecognized extension'}
+        return json.dumps(document)
     if kind == 'nonfinite':
         return encoded.replace('"sequence": 0', '"sequence": NaN')
     if kind == 'bool_version':
@@ -115,7 +121,7 @@ def test_nonfinite_durable_json_is_denied_at_load_before_any_queue_effect(tmp_pa
 
 @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
                                   'bool_version', 'unknown_version', 'duplicate_identity',
-                                  'invalid_tasks_shape', 'truncated'])
+                                  'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
 @pytest.mark.parametrize('operation', ['save', 'add'])
 def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
     queue = setup_queue(tmp_path)
@@ -172,3 +178,13 @@ def test_strict_readback_preserves_exact_typed_new_task_after_publication_error(
     restored = PersistentQueue(queue.path)
     assert set(restored.tasks) == {'original', 'next'}
     assert restored.tasks['next'].metadata['identity']['sequence'] is False
+
+
+@pytest.mark.parametrize('kind', ['null_root', 'unknown_root_field'])
+def test_existing_null_or_unknown_root_is_not_a_missing_or_rewritable_queue(tmp_path, kind):
+    queue = setup_queue(tmp_path)
+    queue.path.write_text(corrupt_document(json.loads(queue.path.read_text()), kind))
+    before = queue.path.read_bytes()
+    with pytest.raises(ValueError):
+        PersistentQueue(queue.path)
+    assert queue.path.read_bytes() == before

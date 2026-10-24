@@ -206,6 +206,8 @@ class PersistentQueue:
             document = json.loads(self.path.read_text(encoding="utf-8"), object_pairs_hook=self._unique_fields)
         except FileNotFoundError:
             return None
+        if not isinstance(document, dict):
+            raise ValueError("queue state must be an object")
         json.dumps(document, allow_nan=False)
         return document
 
@@ -215,6 +217,8 @@ class PersistentQueue:
         if observed is not None:
             if not isinstance(observed, dict):
                 raise ValueError("queue state must be an object")
+            if set(observed) != {"version", "tasks"}:
+                raise ValueError("unknown or missing queue state fields")
             if type(observed.get("version")) is not int or observed["version"] != 1:
                 raise ValueError("unknown queue schema version")
             if not isinstance(observed.get("tasks"), list):
