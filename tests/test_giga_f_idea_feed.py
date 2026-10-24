@@ -106,6 +106,9 @@ class RegistryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'SCHEMA'): r.enrol(p,AT)
 
     def test_bad_availability_malformed_seed_and_partial_write(self):
+        malformed=source(); malformed['published_at']=123
+        with self.assertRaisesRegex(ValueError,'INVALID_TIMESTAMP'):
+            generate(malformed,at=AT,cohort='malformed',budget=1)
         p=draft(); p['published_at']='2026-10-25T00:00:00Z'
         with self.assertRaisesRegex(ValueError,'AVAILABILITY'): seed(p)
         p=draft(); p['extra']='untrusted'

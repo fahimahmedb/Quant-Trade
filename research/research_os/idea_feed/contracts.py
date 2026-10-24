@@ -28,6 +28,8 @@ REQUIRED = {'source_id', 'source_version', 'published_at', 'available_at', 'firs
 
 
 def clock(value):
+    if not isinstance(value,str) or not value.strip():
+        raise ValueError('INVALID_TIMESTAMP')
     parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
     if parsed.tzinfo is None:
         raise ValueError('TIMEZONE_REQUIRED')
