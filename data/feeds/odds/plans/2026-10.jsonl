@@ -127,3 +127,4 @@
 {"key": "2026-10-25T05:22:13+00:00", "kind": "observation", "observed_at": "2026-10-25T05:22:13+00:00", "record": {"last_remaining": 345, "plan": [["soccer_epl", "anchor"]], "used_month": 155, "used_today": 2}}
 {"key": "2026-10-25T10:10:54+00:00", "kind": "observation", "observed_at": "2026-10-25T10:10:54+00:00", "record": {"last_remaining": 344, "plan": [["soccer_korea_kleague1", "anchor"]], "used_month": 156, "used_today": 3}}
 {"key": "2026-10-25T14:35:17+00:00", "kind": "observation", "observed_at": "2026-10-25T14:35:17+00:00", "record": {"last_remaining": 344, "plan": [["basketball_nba", "anchor"]], "used_month": 156, "used_today": 3}}
+{"key": "2026-10-25T17:53:03+00:00", "kind": "observation", "observed_at": "2026-10-25T17:53:03+00:00", "record": {"last_remaining": 343, "plan": [["soccer_epl", "anchor"]], "used_month": 157, "used_today": 4}}
