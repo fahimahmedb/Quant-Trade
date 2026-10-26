@@ -8,6 +8,9 @@ from .v2_core import (
     V2ContractError,
     assert_authority_closed,
     assert_epoch_blinding,
+    assert_model_allowed,
+    assert_trial_epoch_window,
+    assert_trial_proposal_binding,
     assert_validator_candidate_binding,
     build_candidate,
     build_epoch_manifest,
@@ -36,7 +39,7 @@ def _reject_outcome_payload(value: Any, path: str = "$") -> None:
             if str(key).lower() in _FORBIDDEN_RESEARCH_KEYS:
                 raise V2ContractError(f"OUTCOME_DATA_VISIBLE_TO_RESEARCH:{path}.{key}")
             _reject_outcome_payload(child, f"{path}.{key}")
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for index, child in enumerate(value):
             _reject_outcome_payload(child, f"{path}[{index}]")
 
@@ -67,8 +70,12 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:
     if candidate["research_trial_id"] != trial["research_trial_id"]:
         raise V2ContractError("CANDIDATE_TRIAL_BINDING_MISMATCH")
     assert_validator_candidate_binding(candidate, validator)
+    assert_trial_proposal_binding(candidate, trial)
+    assert_trial_epoch_window(epoch, trial)
     if validator["execution_state"] != "COMPLETE" or validator.get("scientific_decision") != "PASS":
         raise V2ContractError("EXPORT_REQUIRES_COMPLETED_VALIDATOR_PASS")
+    assert_model_allowed(epoch, trial["model_identity"])
+    assert_model_allowed(epoch, validator["validator_model"])
     if bundle["status"]["scientific_maturity"] != "VALIDATED":
         raise V2ContractError("EXPORT_REQUIRES_VALIDATED_SCIENTIFIC_STATUS")
     if bundle["status"]["experiment_readiness"] != "READY":
