@@ -1,0 +1,82 @@
+{
+  "review_date": "2026-10-26",
+  "frozen_audit_sha": "f503b5f070bda6a61824d139ba8bb7b026892ebe",
+  "review_branch": "review/independent-architecture-challenger-20261026",
+  "required_files_present": true,
+  "csv_shapes_valid": true,
+  "local_links_valid": true,
+  "primary_snapshot_comparisons": 14,
+  "all_compared_snapshots_match": true,
+  "new_product_qualification": "NONE; 41 focused existing seam/D0 tests passed and metadata-only probes; no full-system qualification",
+  "product_code_or_research_state_modified": false,
+  "files": [
+    {
+      "path": "architecture-review/00_EVIDENCE_BOUNDARY.md",
+      "sha256": "33bc93d43944e3eba5a07d238611c7cd9651f34650e09d13fc95e7304611afac"
+    },
+    {
+      "path": "architecture-review/01_CURRENT_FUNCTIONAL_MACHINE.md",
+      "sha256": "2ffe46e2583e5f69534d249af7edbc992c1d512dbc40140d837e89df49725c09"
+    },
+    {
+      "path": "architecture-review/02_BOTTLENECK_HYPOTHESES.csv",
+      "sha256": "027e9c708b75bf55499568d9217fcb5be2d3a8a236fa9b7163761a3bf0477297"
+    },
+    {
+      "path": "architecture-review/03_CAPABILITY_OVERLAP_MATRIX.csv",
+      "sha256": "1ea9b0fbc5965a6ee7a38b0facb04f447e5bf473054a5d655ca5f6c0547d8abf"
+    },
+    {
+      "path": "architecture-review/04_FRONTIER_RENEWAL_ANALYSIS.md",
+      "sha256": "63986b7365ef146c09671a32f98e690a5ed2771f979d8a4e2808824f6dfe11fa"
+    },
+    {
+      "path": "architecture-review/05_POSITIVE_CONTINUATION_ANALYSIS.md",
+      "sha256": "e2bf1555c9cf994602f9d38f87c1abc699bfe05f9f688c8e3c7e56ce009ce7a5"
+    },
+    {
+      "path": "architecture-review/06_RESEARCH_TO_CAPITAL_ANALYSIS.md",
+      "sha256": "11d3972d86b0a1dd15dae42a685c6c123b8101584ba52310aafc58fb7a613686"
+    },
+    {
+      "path": "architecture-review/07_EXTERNAL_RESEARCH_COMPARISON.md",
+      "sha256": "fd1a06e93e722c33744b0e34554f335cb76a7a86c650cbd0a31f3259775718b9"
+    },
+    {
+      "path": "architecture-review/08_ADVANCED_RESEARCH_DECISION.md",
+      "sha256": "43ebe12dfad356dc4b61a0abd4a1ecaa6f2cf2f3b6ad8dbf2bda079bc11a5c91"
+    },
+    {
+      "path": "architecture-review/09_ARCHITECTURE_OPTIONS.csv",
+      "sha256": "519b1e8207864d4b3d29923e7b1acc5b0560abc738c7016fcb790c60e90e189e"
+    },
+    {
+      "path": "architecture-review/10_COUNTERFACTUAL_HISTORICAL_TEST.md",
+      "sha256": "cba71f6510e535f84db1b118be4689171534a175b050b59369089eac15d984b5"
+    },
+    {
+      "path": "architecture-review/11_MINIMAL_TARGET_ARCHITECTURE.md",
+      "sha256": "ceb6cb109fbff45560abb45b049539cb32c1d34ad07817143902913af0572391"
+    },
+    {
+      "path": "architecture-review/12_BUILD_SEQUENCE.md",
+      "sha256": "ede0ce62662bad18df00259273aed26acb9c7f900b77ff1f49e3a98e1c3a7603"
+    },
+    {
+      "path": "architecture-review/13_FINAL_DECISION_DIGEST.md",
+      "sha256": "e48d1e990dc6358c05de666b3fad8acbff08d7fd0018382c1b09a658333e390a"
+    },
+    {
+      "path": "architecture-review/14_SCIENTIFIC_QUALITY_AND_DENOMINATORS.md",
+      "sha256": "e00ed470bf1ef8e49c3d8450d318d7d4a33c1807dd311ce0b0a2918ff318b46b"
+    },
+    {
+      "path": "architecture-review/evidence/capital_identity_probe.json",
+      "sha256": "9943992a861a534e03033a3d418d925f635ca6f507dc15b6634b51e4c2274c5b"
+    },
+    {
+      "path": "architecture-review/evidence/primary_blob_checks.json",
+      "sha256": "839b609a2bb7eaaefddcc2864f81cba684fa6e3328309984f022bb7bd4e8519a"
+    }
+  ]
+}
