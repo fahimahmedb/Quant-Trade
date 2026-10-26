@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+from unittest.mock import patch
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -408,7 +409,7 @@ class IdeationIntakeV3Tests(unittest.TestCase):
             "source_ref": "https://example.invalid/document",
             "available_at": "2026-10-01T00:00:00+00:00",
         }
-        binding = source_binding_from_planner(selected)
+        binding = source_binding_from_planner(selected, qualified=True)
         self.assertEqual(binding.source_snapshot_identity, "sha256:" + "d" * 64)
         self.assertEqual(binding.source_identity, "https://example.invalid/document")
         self.assertEqual(binding.provenance_ref, selected["path"])
@@ -438,6 +439,35 @@ class IdeationIntakeV3Tests(unittest.TestCase):
                 handle.write(b'{"torn":')
             with self.assertRaises(ProposalLedgerCorruption):
                 ProposalLedger(path).entries()
+
+    def test_scientific_memory_unresolved_relation_cannot_be_called_novel(self):
+        with tempfile.TemporaryDirectory() as directory:
+            unresolved = {
+                "qualified": True,
+                "same_semantic_family": False,
+                "memory_id": "smem:ambiguous",
+                "mismatched_core_dimensions": [],
+                "unknown_core_dimensions": ["payer", "economic_exposure"],
+            }
+            with patch("research.research_os.ideation_intake.memory_relation", return_value=unresolved):
+                result = self.ledger(directory, scientific_memory=[{"memory_id": "smem:ambiguous"}]).admit(proposal())
+            self.assertEqual(result.proposal["novelty_disposition"], "UNKNOWN")
+            self.assertEqual(result.proposal["admission_disposition"], "REJECTED")
+            self.assertIn("INSUFFICIENT_INFORMATION", result.proposal["rejection_reasons"])
+
+    def test_malformed_assumptions_do_not_become_valid_by_sanitization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.ledger(directory).admit(proposal(assumptions="not-a-list"))
+            self.assertEqual(result.proposal["admission_disposition"], "REJECTED")
+            self.assertIn("MALFORMED", result.proposal["rejection_reasons"])
+
+    def test_planner_adapter_requires_explicit_qualification_assertion(self):
+        selected = {
+            "path": "research/research_os/sources/example.json",
+            "packet_hash": "d" * 64,
+        }
+        with self.assertRaises(TypeError):
+            source_binding_from_planner(selected)
 
 
 if __name__ == "__main__":

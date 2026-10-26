@@ -22,7 +22,7 @@ import os
 import re
 from contextlib import contextmanager
 from copy import deepcopy
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from datetime import datetime
 from itertools import islice
 from pathlib import Path
@@ -253,7 +253,7 @@ class SourceBinding:
         }
 
 
-def source_binding_from_planner(source: Mapping[str, Any], *, qualified: bool = True) -> SourceBinding:
+def source_binding_from_planner(source: Mapping[str, Any], *, qualified: bool) -> SourceBinding:
     """Adapt the existing frontier source planner output without re-qualifying it.
 
     The planner's ``packet_hash`` is already a content hash. Paths remain
@@ -332,12 +332,16 @@ class AdmissionResult:
 def _sanitize_untrusted_claims(raw: Mapping[str, Any]) -> dict[str, Any]:
     value = deepcopy(dict(raw))
     unsupported = value.pop("unsupported_claims", [])
-    assumptions = list(value.get("assumptions") or [])
+    existing = value.get("assumptions")
+    malformed_assumptions = existing is not None and not isinstance(existing, (list, tuple))
+    assumptions = list(existing or []) if not malformed_assumptions else [existing]
     if unsupported is not None:
         values = unsupported if isinstance(unsupported, (list, tuple, set)) else [unsupported]
         for claim in values:
             assumptions.append(f"UNSUPPORTED_GENERATOR_CLAIM:{claim}")
     value["assumptions"] = assumptions
+    if malformed_assumptions:
+        value["_malformed_assumptions"] = True
     return value
 
 
@@ -574,9 +578,10 @@ _RELATION_PRIORITY = {
 }
 
 
-def _memory_candidate(raw: Mapping[str, Any], identity: Mapping[str, Any], snapshot: str) -> dict[str, Any]:
+def _memory_probe(raw: Mapping[str, Any], identity: Mapping[str, Any], snapshot: str) -> dict[str, Any]:
+    # ``memory_relation`` accepts any mapping with an ``identity`` member; no
+    # downstream Candidate object or identifier is constructed here.
     return {
-        "candidate_id": None,
         "identity": {
             "mechanism": identity.get("mechanism"),
             "payer": identity.get("payer"),
@@ -622,15 +627,17 @@ def _classify_novelty(
             "prior_admission_disposition": prior.get("admission_disposition"),
         })
 
-    memory_candidate = _memory_candidate(raw, identity, snapshot)
+    memory_probe = _memory_probe(raw, identity, snapshot)
     for record in scientific_memory:
         if not isinstance(record, Mapping):
             continue
         try:
-            relation = memory_relation(memory_candidate, record)
+            relation = memory_relation(memory_probe, record)
         except (TypeError, ValueError):
             continue
-        if relation.get("qualified") is True and relation.get("same_semantic_family") is True:
+        if relation.get("qualified") is not True:
+            continue
+        if relation.get("same_semantic_family") is True:
             relations.append("SEMANTICALLY_EQUIVALENT")
             matches.append({
                 "kind": "SCIENTIFIC_MEMORY",
@@ -638,6 +645,18 @@ def _classify_novelty(
                 "relation": "SEMANTICALLY_EQUIVALENT",
                 "scientific_disposition": relation.get("scientific_disposition"),
                 "claim_ceiling": relation.get("claim_ceiling"),
+            })
+            continue
+        # Qualified memory that matches all known core dimensions but still has
+        # unresolved dimensions is a real ambiguity.  It must not be converted
+        # into a favorable novelty claim merely because the old record is sparse.
+        if not relation.get("mismatched_core_dimensions") and relation.get("unknown_core_dimensions"):
+            relations.append("UNKNOWN")
+            matches.append({
+                "kind": "SCIENTIFIC_MEMORY",
+                "memory_id": relation.get("memory_id"),
+                "relation": "UNKNOWN",
+                "unknown_core_dimensions": list(relation.get("unknown_core_dimensions") or []),
             })
 
     if not relations:
@@ -653,7 +672,7 @@ def _novelty_rejections(novelty: str, prior_rejected: bool, memory_match: bool) 
     elif novelty in {"LEXICALLY_DIFFERENT", "PARAMETER_VARIANT"}:
         reasons.append("NEAR_DUPLICATE")
     elif novelty == "UNKNOWN":
-        reasons.append("UNKNOWN_CRITICAL_FIELD")
+        reasons.extend(["UNKNOWN_CRITICAL_FIELD", "INSUFFICIENT_INFORMATION"])
     if prior_rejected or memory_match:
         reasons.append("ALREADY_EXPLORED")
     return sorted(set(reasons))
@@ -686,7 +705,7 @@ def _minimal_raw_reasons(raw: Mapping[str, Any]) -> list[str]:
         reasons.append("MALFORMED")
     if raw.get("parameters") is not None and not isinstance(raw.get("parameters"), Mapping):
         reasons.append("MALFORMED")
-    if "_malformed_raw" in raw:
+    if "_malformed_raw" in raw or raw.get("_malformed_assumptions") is True:
         reasons.append("MALFORMED")
     return reasons
 
@@ -773,7 +792,7 @@ class ProposalLedger:
         if proposal.get("admission_disposition") == "ELIGIBLE_FOR_DISCOVERY":
             try:
                 validate_evidence_hash(proposal.get("source_snapshot_identity"))
-            except (TypeError, ValueError) as exc:
+            except (AttributeError, TypeError, ValueError) as exc:
                 raise ProposalLedgerCorruption("ELIGIBLE_PROPOSAL_SNAPSHOT_INVALID") from exc
         try:
             _timestamp(str(proposal.get("created_at")))
@@ -991,7 +1010,11 @@ def run_intake_cycle(
     max_new_proposals_per_cycle: int = 8,
 ) -> dict[str, Any]:
     """Run bounded *proposal generation only*; no task, queue, or runtime mutation."""
-    if isinstance(max_new_proposals_per_cycle, bool) or max_new_proposals_per_cycle < 0:
+    if (
+        isinstance(max_new_proposals_per_cycle, bool)
+        or not isinstance(max_new_proposals_per_cycle, int)
+        or max_new_proposals_per_cycle < 0
+    ):
         raise ValueError("max_new_proposals_per_cycle must be a non-negative integer")
     if context.get("frontier_state") == "SCIENTIFICALLY_EXHAUSTED":
         return {
