@@ -1,0 +1,31 @@
+{
+  "snapshot_schema": "verified-autonomous-continuity-authority-v1",
+  "engineering_base_sha": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+  "captured_at": "2026-10-26T23:33+01:00",
+  "global_default": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed": false
+  },
+  "deployment": {
+    "deployment_authorized": false,
+    "default_branch_change_authorized": false,
+    "owner_canonical_promotion_authorized": false,
+    "merge_to_owner_canonical_rail_authorized": false,
+    "runtime_release_promotion_authorized": false
+  },
+  "ust": {
+    "lineage": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+    "specific_historical_grant_artifact_reported": true,
+    "broader_denial_artifacts_reported": true,
+    "normative_precedence_rule_proven": false,
+    "revocation_or_scope_resolution_proven": false,
+    "authority_status": "UNRESOLVED",
+    "protected_action_allowed": false,
+    "outcome_accessed_by_this_mission": false
+  },
+  "resolution_law": "PRESERVE_SCOPED_GRANT_AND_BROADER_DENIAL; STOP_AUTHORITY_REQUIRING_ACTION_WHEN_UNRESOLVED",
+  "authority_changed_by_this_mission": false
+}

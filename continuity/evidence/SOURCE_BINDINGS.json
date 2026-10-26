@@ -1,0 +1,26 @@
+{
+  "schema": "verified-autonomous-continuity-source-bindings-v1",
+  "engineering_base": {"sha":"ebc72b9fd14f91420c37e0b7607f9bfb584a289a","role":"IMMUTABLE_ENGINEERING_BASE"},
+  "review_evidence": {
+    "owner_recovery":"f503b5f070bda6a61824d139ba8bb7b026892ebe",
+    "owner_architecture_delta":"e97bb3834f2c1a1b3de3a5719c1e94b416c52d2e",
+    "independent_challenger":"642b551985f499b37286c3bc21b89c57294f63ca"
+  },
+  "semantic_rails": [
+    {"name":"GIGA_F","sha":"79329f15bbf02c25fa61e5d5ef6028e5abfb1493","relation_to_base":"DIRECT_DESCENDANT_3_COMMITS","authority":"SEMANTICS_TESTS_ONLY_NO_AUTO_ACTIVATION"},
+    {"name":"MULTI_SOURCE_V3","sha":"0691a4c1c905c8cfa1e68d521b12d66655ec4dd3","relation_to_base":"DIVERGED_FROM_2b99","authority":"ADMISSION_SEMANTICS_SOURCE_ONLY"},
+    {"name":"LATEST_QUALIFIED_C0","sha":"6dc84f35e80aec709e67e3d5d3ce0cdcfaee3bcf","relation_to_base":"DIVERGED_FROM_97165","authority":"HISTORICAL_SEMANTICS_TEST_SOURCE"},
+    {"name":"C0_SEMANTIC_INDEPENDENCE_REPAIR","sha":"66bdd16085a57e324f92cab4346362acf52d6f93","relation_to_base":"DIVERGED_FROM_97165","authority":"REPAIR_EVIDENCE_ONLY"},
+    {"name":"V2_FORWARD_CP099","sha":"ded4228de74ce3b6926d9ea3e3c2114ff1be8208","relation_to_base":"DIVERGED_FROM_cf593","authority":"SELECTIVE_CONTROL_SOURCE_ONLY"},
+    {"name":"LATEST_V_HARDENING","sha":"5d628db2949144ca6abf94327de3146f3983ecea","relation_to_base":"DIVERGED_FROM_cf593","authority":"ATTACK_REPAIR_EVIDENCE"},
+    {"name":"H_CONVERGENCE1","sha":"6d9dc40b5833442c597f7e7ab8aa631b3d481e83","relation_to_base":"DIVERGED_FROM_97165","authority":"ATTACK_REPAIR_EVIDENCE"},
+    {"name":"GIGA_Q","sha":"4efadddf694eff0c0df00925b5b4b89194f32f8e","relation_to_base":"DIRECT_DESCENDANT_3_COMMITS","authority":"PARTIAL_REPAIR_AND_ATTACK_SOURCE_NOT_GLOBAL_QUALIFICATION"}
+  ],
+  "witness_refs": {
+    "runtime_forensic_snapshot":"16eafd0b3c8d9e0c633ef01dd191cbd32ae50b42",
+    "ust_frozen_screen":"7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+    "ust_post_freeze_checkpoint":"ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+    "form144_result":"9faba4fe0639e6835ae2b9d43f81f37252f86e3d"
+  },
+  "binding_law":"NO_WHOLESALE_MERGE; PROVE_EQUIVALENCE_THEN_KEEP_WIRE_PORT_OR_REPLAY"
+}
