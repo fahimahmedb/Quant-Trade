@@ -1,0 +1,67 @@
+{
+  "schema_version": "verified-continuity-recovery-artifact-v1",
+  "artifact_kind": "RECOVERY_ARTIFACT",
+  "original_historical_receipt": false,
+  "historical_task_fabricated": false,
+  "lineage": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "generation": "G1",
+  "validation_disposition": "PASS_TO_TEST_DESIGN_BOUNDED",
+  "claim_scope": "Documented primary-dealer participation constraint plus a frozen 10Y auction-day local-curve mechanism/economic screen; no validated alpha, profitability, causality or capacity claim.",
+  "protocol": {
+    "protocol_id": "FLOW-UST-PRIMARY-DEALER-AUCTION-001-G1-ECON-SCREEN-V1",
+    "freeze_commit": "7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+    "post_freeze_checkpoint": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+    "frozen_before_outcome_access": true,
+    "retuning_allowed": false
+  },
+  "authority_facts": [
+    {
+      "source": "research/research_os/assessments/VALIDATE-FLOW-UST-PRIMARY-DEALER-AUCTION-001.json@ac3b32f",
+      "fact": "economic_experiment_authorized=false; prospective_observation_authorized=false; real_capital_authorized=false; live_trading_authorized=false; outcome/price-return data not accessed at validation"
+    },
+    {
+      "source": "frozen-economic-screen-v1.json@7b843ddd",
+      "fact": "owner_authorization text states bounded economic outcome access is authorized only after protocol commit; outcome_accessed=false at freeze"
+    },
+    {
+      "source": "ECON_TEST_FLOW_UST_AUCTION_CP2_POST_FREEZE.json@ac3b32f",
+      "fact": "checkpoint text records a scoped owner authorization and labels the next stage authorized outcome acquisition/execution"
+    },
+    {
+      "source": "engineering base ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "fact": "global current mission defaults close economic experiment, prospective observation, real capital and live trading authority"
+    }
+  ],
+  "normative_authority_resolution_found": false,
+  "authority_status": "UNRESOLVED",
+  "protected_action_executed_by_this_mission": false,
+  "outcome_accessed_by_this_mission": false,
+  "declared_obligation": {
+    "OBLIGATION_ID": "UST-G1-FROZEN-SCREEN-EXECUTION",
+    "PARENT_OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+    "OWNER": "CONTROL_PLANE_ORACLE",
+    "DESCRIPTION": "Resolve whether the already-frozen screen may lawfully proceed; execute only if exact current authority becomes explicit, applicable and non-contradictory."
+  },
+  "durable_closure": {
+    "CLOSURE_TYPE": "BLOCK",
+    "OBLIGATION_ID": "UST-G1-FROZEN-SCREEN-EXECUTION",
+    "PARENT_OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+    "OWNER": "CONTROL_PLANE_ORACLE",
+    "REASON_CODE": "AUTHORITY_UNRESOLVED",
+    "CLAIM_SCOPE": "FLOW-UST-PRIMARY-DEALER-AUCTION-001-G1 frozen mechanism/economic screen only",
+    "MISSING_CONDITION": "Normative current authority precedence/scope/revocation rule reconciling the historical scoped grant with closed Wave2 authority",
+    "OBSERVABLE_REOPEN_PREDICATE": "A repository-committed current authority artifact explicitly resolves scope, precedence, effective time and revocation for this exact protocol and permits the protected action",
+    "AUTHORITY_SCOPE": "ECONOMIC_EXPERIMENT_AND_PROTECTED_OUTCOME_ACCESS",
+    "DATA_SCOPE": "PROTECTED_OUTCOME_DATA_UNOPENED_BY_THIS_MISSION",
+    "SOURCE_SCOPE": "FROZEN_PROTOCOL_PREDECLARED_OFFICIAL_SOURCES_ONLY",
+    "CREATED_AT": "2026-10-26T23:33:00+01:00",
+    "IDEMPOTENCY_KEY": "ust-g1-authority-unresolved-v1",
+    "HISTORICAL_DISPOSITION_MUTATED": false,
+    "CLOSURE_HASH": "2a8c430972a5186bdd3a6dbfc221176d1487420ab2dca1c3724f62920a8169a7"
+  },
+  "witness_verdict": "LAWFUL_DURABLE_AUTHORITY_UNRESOLVED_BLOCK",
+  "silent_orphaning": false,
+  "candidate_retuned": false,
+  "historical_authorization_erased": false,
+  "authority_expanded": false
+}
