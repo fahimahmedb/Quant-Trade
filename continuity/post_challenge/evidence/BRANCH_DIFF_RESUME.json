@@ -1,0 +1,11 @@
+{
+ "base":"ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+ "head":"3be85e3314aa70d2fecfd1b145c3aaa9ab5df199",
+ "status":"ahead",
+ "ahead_by":6,
+ "behind_by":0,
+ "prechallenge_commits":["da549fd8d905915a550d3107634a3eb5a5ff635b","a06fa2d7c79f6b562101e15f555cb56bb1d025fe","acec18f007b079701ee55a620cf913ac960bdcfa","d35629b56362cd4704032925e4d6415102c6d28a","eae8eaef0cdf56ba195d1afa94431e113bdaea3a","3be85e3314aa70d2fecfd1b145c3aaa9ab5df199"],
+ "product_files":["research/research_os/expansion/v2_core.py","research/research_os/expansion/v2_pipeline.py","research/research_os/expansion/v2_stage_executor.py","research/research_os/idea_feed/__init__.py","research/research_os/idea_feed/primitives.py","research/research_os/ideation_intake.py","research/research_os/continuation.py","research/research_os/renewal_policy.py"],
+ "potential_mutation_domains":["SCIENTIFIC_INTEGRITY_V2","ADMISSION_PROPOSAL","IDENTITY_EXPOSURE","CONTROL_CONTINUATION","RESEARCH_PROGRAM_RENEWAL"],
+ "requires_scope_reduction":true
+}

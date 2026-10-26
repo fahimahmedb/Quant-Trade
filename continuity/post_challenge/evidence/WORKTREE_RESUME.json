@@ -1,0 +1,9 @@
+{
+ "execution_environment":"GITHUB_CONNECTOR_ONLY",
+ "local_worktree_available":false,
+ "local_branch_head":"NOT_AVAILABLE",
+ "worktree_clean":"NOT_VERIFIABLE_LOCALLY",
+ "remote_branch_verified":true,
+ "remote_head":"3be85e3314aa70d2fecfd1b145c3aaa9ab5df199",
+ "note":"No local repository checkout is available in this execution environment; no claim of local cleanliness is made."
+}

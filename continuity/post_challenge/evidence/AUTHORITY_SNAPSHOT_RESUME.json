@@ -1,0 +1,16 @@
+{
+  "snapshot_kind":"POST_CHALLENGE_RESUME",
+  "resume_head":"3be85e3314aa70d2fecfd1b145c3aaa9ab5df199",
+  "production_research_state_mutation_authorized":false,
+  "deployment_authorized":false,
+  "default_branch_change_authorized":false,
+  "owner_canonical_promotion_authorized":false,
+  "merge_to_owner_canonical_rail_authorized":false,
+  "runtime_release_promotion_authorized":false,
+  "real_capital_authorized":false,
+  "live_trading_authorized":false,
+  "outcome_accessed_by_resume_work":false,
+  "ust_authority_resolution":"ACTION_VECTOR_REQUIRED_NOT_GLOBAL_BOOLEAN",
+  "protected_outcome_access":"UNRESOLVED_OR_DENIED_UNTIL_ACTION_SPECIFIC_PRECEDENCE_PROVEN",
+  "authority_changed":false
+}
