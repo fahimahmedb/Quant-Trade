@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_PRIMARY_CLOCK_FOLLOWUP",
+  "family": "us-special-stock-dividend-duebill-entitlement",
+  "parent": "research/edge_lab/discovery/qualifications/us-special-stock-dividend-duebill-jagx-l0-2026-10-15.json",
+  "candidate": "Jaguar Health, Inc. Series R Convertible Preferred Stock Dividend",
+  "decision": "L1_FUTURE_ONLY_CURRENT_CASE_CONTAMINATED",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "current_case_economic_test_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "new_primary_fact": {
+    "source": "Nasdaq Trader Equity Corporate Actions Alert #2026-731",
+    "url": "https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-731",
+    "published": "2026-10-12",
+    "facts": [
+      "Nasdaq confirmed JAGX record date October 13, 2026 and payment date October 15, 2026.",
+      "Nasdaq described the special dividend as one Series R preferred share for each common share held.",
+      "Each Series R preferred share automatically converts into five common shares on November 2, 2026.",
+      "The alert initially listed the ex date as TBA, establishing that the exchange itself was managing the corporate-action clock."
+    ]
+  },
+  "issuer_update": {
+    "date": "2026-10-14",
+    "fact": "Jaguar later announced that Nasdaq set October 16, 2026 as the ex-dividend date and advised that common shares trade with due bills from the October 13 record date until the ex date; sellers during that period transfer the dividend right to buyers."
+  },
+  "clock_resolution": "The earlier blocker 'exact primary Nasdaq due-bill/ex-date route not preserved' is materially improved: Nasdaq Trader is now preserved as a primary exchange corporate-action source and the issuer's October 14 update states Nasdaq's October 16 ex-date/due-bill treatment. This validates the mechanism/clock class, not profitability.",
+  "current_case_contamination": {
+    "status": "NOT_PRISTINE_FOR_ECONOMIC_TEST",
+    "reason": "While locating the exchange clock, a third-party search result exposed a contemporaneous JAGX market-price snippet. Therefore this already-live October 2026 event cannot be promoted as a clean prospective economic observation under a protocol declared afterward. The price snippet is quarantined and must not be copied into research results or used to choose quantity, direction, entry, hedge, threshold or horizon.",
+    "economic_calculation_performed": false
+  },
+  "documentary_mechanism_status": "QUALIFIED_FOR_FUTURE_PROSPECTIVE_DESIGN",
+  "remaining_gates": [
+    "A future event must be declared before selected market-price exposure.",
+    "The distributed security/conversion terms must be reconstructible without outcome-dependent interpretation.",
+    "A lawful total-return route must value the common plus due-bill entitlement and later conversion shares, including dilution/corporate-action adjustments.",
+    "Beneficial-owner due-bill delivery and any restrictions on the distributed security must be publicly documentable.",
+    "A future protocol must forbid common-only pre/post-ex returns that omit the entitlement."
+  ],
+  "future_expression_boundary": "The only scientifically admissible future question is whether a newly announced large non-cash due-bill distribution is mispriced as a PACKAGE (common + transferable dividend right + eventual conversion/delivery), after fixed costs and dilution accounting. Direction is not assumed. A common-price drop by itself is not edge and cannot be treated as loss/profit without the entitlement leg.",
+  "disconfirmation": [
+    "Exchange due-bill mechanics are designed precisely to keep dividend entitlement attached to trades through the ex-date, reducing naive record-date arbitrage.",
+    "The preferred's automatic conversion into common shares makes the package economically linked to dilution rather than external cash value.",
+    "Broker processing and delivery delays can eliminate any theoretical package spread."
+  ],
+  "next_action": "Do not run JAGX October 2026 economics. Preserve the Nasdaq Trader route as reusable mechanism evidence. If a future causally similar due-bill special-stock dividend appears, preregister event selection, package valuation, clock, quantity, costs and one adversary before any selected price payload. Otherwise keep the family documentary-only.",
+  "inference_ceiling": [
+    "Primary due-bill clock class qualified",
+    "Current JAGX economics not qualified",
+    "No alpha/edge claim",
+    "No live or real-capital authorization"
+  ]
+}

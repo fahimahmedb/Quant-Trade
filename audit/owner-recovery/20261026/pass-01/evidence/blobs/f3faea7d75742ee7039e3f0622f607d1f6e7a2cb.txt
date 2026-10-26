@@ -1,0 +1,378 @@
+{
+ "capacity_1pct_min_leg_adv": {
+  "active_days": 70,
+  "per_leg_notional_usd_median": 63575.300833333335,
+  "per_leg_notional_usd_p10": 32714.308333333334
+ },
+ "outcome": {
+  "cost_bound": false,
+  "cost_diagnosis": {
+   "cost_is_binding_constraint": false,
+   "expressions_gross_positive_but_net_negative": 1,
+   "median_annual_turnover": 1.58048780487805
+  },
+  "lesson": "funding_spread_hold_l7_z0.25_w0.05_g1_b0.02 was rejected out of sample (-0.01% net). The signal was gross-positive (+0.08%) but 1x annual turnover cost 0.08%, so implementation, not direction, is the binding constraint. Its t-statistic of -0.03 is far below the 3.29 required after 50 expressions were tried on this dataset, so the result is indistinguishable from search luck. Market beta was +0.000 against a benchmark that returned -28.05%, so -0.01% of the result is passive exposure rather than skill.",
+  "next_action_hint": "attack turnover: test the same residual with a holding period and a no-trade band before abandoning the lane",
+  "outcome": "REJECT_RESEARCH",
+  "status": "LEARNED",
+  "strategy_id": "STR-PERP-FUNDING-SPREAD-HL-DYDX-HOLD-funding_spread_hold_l7_z0.25_w0.05_g1_b0.02",
+  "ticket_id": "PERP-FUNDING-SPREAD-HL-DYDX-HOLD-c06c33bf"
+ },
+ "ticket": {
+  "candidate_data": {
+   "benchmark": "HL.BTC",
+   "cost_bps_one_way": 6.0,
+   "cost_diagnosis": {
+    "cost_is_binding_constraint": false,
+    "expressions_gross_positive_but_net_negative": 1,
+    "median_annual_turnover": 1.58048780487805
+   },
+   "cumulative_expressions_tested_on_dataset": 50,
+   "expressions_declared": 6,
+   "prior_trials_charged": 44,
+   "pristine_after": "2026-09-25",
+   "ranked_expressions": [
+    {
+     "discovery": {
+      "annual_turnover": 2.546341463414633,
+      "gross_return": 0.00894751163758234,
+      "market_beta": 0.00020182954994512765,
+      "net_return": 0.005442626668723971,
+      "observations": 574,
+      "sharpe_zero_rate": 1.4919175853523254,
+      "t_statistic": 2.251648054954218
+     },
+     "expression": "funding_spread_hold_l7_z0.25_w0.05_g1_b0.02",
+     "spec": {
+      "calendar_symbol": "HL.BTC",
+      "carry_weight": 0.0,
+      "dataset_id": "perp_funding_hl_dydx_daily",
+      "direction": 1,
+      "diversification_multiplier": 1.0,
+      "family": "funding_spread_hold",
+      "forecast_cap": 2.0,
+      "gross_exposure": 1.0,
+      "holding_days": 1,
+      "lookback_days": 7,
+      "max_cost_sharpe": 0.0,
+      "max_weight": 0.05,
+      "min_abs_score": 0.25,
+      "no_trade_band": 0.02,
+      "trend_weight": 0.0,
+      "universe": [
+       "DX.BTC",
+       "DX.DOGE",
+       "DX.ETH",
+       "DX.SOL",
+       "DX.XRP",
+       "HL.BTC",
+       "HL.DOGE",
+       "HL.ETH",
+       "HL.SOL",
+       "HL.XRP"
+      ],
+      "vol_target": 0.0
+     }
+    },
+    {
+     "discovery": {
+      "annual_turnover": 0.08780487804878048,
+      "gross_return": 0.0006794710081650113,
+      "market_beta": -1.2645660393200965e-05,
+      "net_return": 0.0005593996401525025,
+      "observations": 574,
+      "sharpe_zero_rate": 1.2283679755246646,
+      "t_statistic": 1.8538908516216657
+     },
+     "expression": "funding_spread_hold_l7_z1_w0.05_g1_b0.02",
+     "spec": {
+      "calendar_symbol": "HL.BTC",
+      "carry_weight": 0.0,
+      "dataset_id": "perp_funding_hl_dydx_daily",
+      "direction": 1,
+      "diversification_multiplier": 1.0,
+      "family": "funding_spread_hold",
+      "forecast_cap": 2.0,
+      "gross_exposure": 1.0,
+      "holding_days": 1,
+      "lookback_days": 7,
+      "max_cost_sharpe": 0.0,
+      "max_weight": 0.05,
+      "min_abs_score": 1.0,
+      "no_trade_band": 0.02,
+      "trend_weight": 0.0,
+      "universe": [
+       "DX.BTC",
+       "DX.DOGE",
+       "DX.ETH",
+       "DX.SOL",
+       "DX.XRP",
+       "HL.BTC",
+       "HL.DOGE",
+       "HL.ETH",
+       "HL.SOL",
+       "HL.XRP"
+      ],
+      "vol_target": 0.0
+     }
+    },
+    {
+     "discovery": {
+      "annual_turnover": 0.6146341463414635,
+      "gross_return": 0.002477754555662459,
+      "market_beta": 0.00011079297041185326,
+      "net_return": 0.001636023689852717,
+      "observations": 574,
+      "sharpe_zero_rate": 1.1431341787644707,
+      "t_statistic": 1.7252533755467847
+     },
+     "expression": "funding_spread_hold_l7_z0.5_w0.05_g1_b0.02",
+     "spec": {
+      "calendar_symbol": "HL.BTC",
+      "carry_weight": 0.0,
+      "dataset_id": "perp_funding_hl_dydx_daily",
+      "direction": 1,
+      "diversification_multiplier": 1.0,
+      "family": "funding_spread_hold",
+      "forecast_cap": 2.0,
+      "gross_exposure": 1.0,
+      "holding_days": 1,
+      "lookback_days": 7,
+      "max_cost_sharpe": 0.0,
+      "max_weight": 0.05,
+      "min_abs_score": 0.5,
+      "no_trade_band": 0.02,
+      "trend_weight": 0.0,
+      "universe": [
+       "DX.BTC",
+       "DX.DOGE",
+       "DX.ETH",
+       "DX.SOL",
+       "DX.XRP",
+       "HL.BTC",
+       "HL.DOGE",
+       "HL.ETH",
+       "HL.SOL",
+       "HL.XRP"
+      ],
+      "vol_target": 0.0
+     }
+    },
+    {
+     "discovery": {
+      "annual_turnover": 1.58048780487805,
+      "gross_return": 0.0044173406608987165,
+      "market_beta": 3.137739934343013e-07,
+      "net_return": 0.0022501299669852592,
+      "observations": 574,
+      "sharpe_zero_rate": 1.0487099418656023,
+      "t_statistic": 1.5827454036311213
+     },
+     "expression": "funding_spread_hold_l3_z0.5_w0.05_g1_b0.02",
+     "spec": {
+      "calendar_symbol": "HL.BTC",
+      "carry_weight": 0.0,
+      "dataset_id": "perp_funding_hl_dydx_daily",
+      "direction": 1,
+      "diversification_multiplier": 1.0,
+      "family": "funding_spread_hold",
+      "forecast_cap": 2.0,
+      "gross_exposure": 1.0,
+      "holding_days": 1,
+      "lookback_days": 3,
+      "max_cost_sharpe": 0.0,
+      "max_weight": 0.05,
+      "min_abs_score": 0.5,
+      "no_trade_band": 0.02,
+      "trend_weight": 0.0,
+      "universe": [
+       "DX.BTC",
+       "DX.DOGE",
+       "DX.ETH",
+       "DX.SOL",
+       "DX.XRP",
+       "HL.BTC",
+       "HL.DOGE",
+       "HL.ETH",
+       "HL.SOL",
+       "HL.XRP"
+      ],
+      "vol_target": 0.0
+     }
+    },
+    {
+     "discovery": {
+      "annual_turnover": 5.882926829268281,
+      "gross_return": 0.010174534384975065,
+      "market_beta": 0.0003662932679949263,
+      "net_return": 0.0020850764250937015,
+      "observations": 574,
+      "sharpe_zero_rate": 0.3579604829427568,
+      "t_statistic": 0.5402450062133887
+     },
+     "expression": "funding_spread_hold_l3_z0.25_w0.05_g1_b0.02",
+     "spec": {
+      "calendar_symbol": "HL.BTC",
+      "carry_weight": 0.0,
+      "dataset_id": "perp_funding_hl_dydx_daily",
+      "direction": 1,
+      "diversification_multiplier": 1.0,
+      "family": "funding_spread_hold",
+      "forecast_cap": 2.0,
+      "gross_exposure": 1.0,
+      "holding_days": 1,
+      "lookback_days": 3,
+      "max_cost_sharpe": 0.0,
+      "max_weight": 0.05,
+      "min_abs_score": 0.25,
+      "no_trade_band": 0.02,
+      "trend_weight": 0.0,
+      "universe": [
+       "DX.BTC",
+       "DX.DOGE",
+       "DX.ETH",
+       "DX.SOL",
+       "DX.XRP",
+       "HL.BTC",
+       "HL.DOGE",
+       "HL.ETH",
+       "HL.SOL",
+       "HL.XRP"
+      ],
+      "vol_target": 0.0
+     }
+    }
+   ],
+   "research_cohort": "sha256:c06c33bf2ab255eaa69fc0d7d5189855d2bb0478d00725f1feabaa76fd5ec16a",
+   "windows": {
+    "DISCOVERY": {
+     "end": "2025-06-11",
+     "name": "DISCOVERY",
+     "start": "2023-11-13"
+    },
+    "SHADOW": {
+     "end": "2026-09-26",
+     "name": "SHADOW",
+     "start": "2026-04-22"
+    },
+    "VALIDATION": {
+     "end": "2026-04-21",
+     "name": "VALIDATION",
+     "start": "2025-06-12"
+    }
+   }
+  },
+  "created_at": "2026-09-27T02:44:42.621951+00:00",
+  "filter_result": {
+   "best_discovery_sharpe": 1.4919175853523254,
+   "best_expression": "funding_spread_hold_l7_z0.25_w0.05_g1_b0.02",
+   "passed": true
+  },
+  "hypothesis": {
+   "benchmark": "zero-return cash, with HL.BTC beta attributed",
+   "expression": "funding_spread_hold_l7_z0.25_w0.05_g1_b0.02",
+   "falsification": "Pre-registered H-002: reject unless validation net alpha t >= required_t_statistic(50), both halves positive, profitable at 2x cost, |beta to HL.BTC| < 0.15, unconcentrated; capacity >= 10k$ at 1% of min-leg ADV. 44 prior trials charged; lifecycle only moves after 2026-09-25.",
+   "mechanism": "Segmented leverage demand: retail longs on HL pay funding that dYdX-side arbitrageurs cannot fully compete away (capital lock-up, two-venue margin, ADL risk). Holding until the spread halves cuts the turnover that killed HL-vs-Bybit. Price exposure cancels in the pair.",
+   "selection_rule": "highest cost-adjusted Sharpe on the discovery window; selected before the validation window was read",
+   "timing": "signal formed on the close of session t; orders execute at the open of t+1"
+  },
+  "information_available_at": "2026-04-21T21:00:00Z",
+  "instruments": [
+   "DX.BTC",
+   "DX.DOGE",
+   "DX.ETH",
+   "DX.SOL",
+   "DX.XRP",
+   "HL.BTC",
+   "HL.DOGE",
+   "HL.ETH",
+   "HL.SOL",
+   "HL.XRP"
+  ],
+  "lane": "crypto_funding_carry",
+  "lesson": "funding_spread_hold_l7_z0.25_w0.05_g1_b0.02 was rejected out of sample (-0.01% net). The signal was gross-positive (+0.08%) but 1x annual turnover cost 0.08%, so implementation, not direction, is the binding constraint. Its t-statistic of -0.03 is far below the 3.29 required after 50 expressions were tried on this dataset, so the result is indistinguishable from search luck. Market beta was +0.000 against a benchmark that returned -28.05%, so -0.01% of the result is passive exposure rather than skill.",
+  "market": "crypto perpetuals, Hyperliquid vs dYdX v4",
+  "next_action_hint": "attack turnover: test the same residual with a holding period and a no-trade band before abandoning the lane",
+  "observation": "Does a same-coin short-high-funding / long-low-funding pair across Hyperliquid and dYdX v4, entered at an annualised trailing spread E and held until it falls below E/2, earn the funding difference net of maker costs?",
+  "observed_at": "2026-04-21",
+  "paper_decision": {
+   "decision": "NO_TRADE",
+   "reason": "validation failed; capital deployment prohibited"
+  },
+  "source_refs": [
+   "data/datasets/perp_funding_hl_dydx_daily.csv.gz",
+   "sha256:d8dcbbc1f5886203a7792f80fed6b2340db1c0a26e95f0e015ef0adb0d38ace9"
+  ],
+  "status": "LEARNED",
+  "test_result": {
+   "active_observations": 70,
+   "annual_mean_return": -4.446711238905712e-05,
+   "annual_turnover": 1.130769230769231,
+   "annual_volatility": 0.0014655867717638944,
+   "beta_explained_return": -7.223312736226792e-05,
+   "cost_bps": 6.0,
+   "first_entry_date": "2025-06-13",
+   "first_signal_date": "2025-06-12",
+   "gross_return": 0.0007839390236272781,
+   "hit_rate": 0.10897435897435898,
+   "last_exit_date": "2026-04-21",
+   "market_beta": 0.00025750431117737275,
+   "market_return_same_window": -0.28051230300572594,
+   "max_drawdown": -0.0015681147014091623,
+   "net_return": -5.637818013892737e-05,
+   "observations": 312,
+   "sharpe_zero_rate": -0.030340825426214177,
+   "t_statistic": -0.03376015394073465,
+   "timeline": "signal at close(t); entry at open(t+1); exit at open(t+2)",
+   "total_costs": 0.0008400000000000003
+  },
+  "ticket_id": "PERP-FUNDING-SPREAD-HL-DYDX-HOLD-c06c33bf",
+  "updated_at": "2026-09-27T02:44:43.006327+00:00",
+  "validation_result": {
+   "baseline_alpha_t": null,
+   "baseline_sharpe": null,
+   "beta_attribution": {
+    "benchmark": "HL.BTC",
+    "benchmark_return_same_window": -0.28051230300572594,
+    "market_beta": 0.00025750431117737275,
+    "residual_return": 1.585494722334055e-05,
+    "return_explained_by_beta": -7.223312736226792e-05
+   },
+   "decision": "REJECT_RESEARCH",
+   "expressions_tested_on_dataset": 50,
+   "failed_tests": [
+    "at_least_100_active_observations",
+    "net_profitable_after_modeled_costs",
+    "profitable_in_both_subperiods",
+    "still_profitable_at_2x_costs",
+    "t_statistic_survives_multiple_testing",
+    "top_5_days_below_half_of_gains"
+   ],
+   "net_return_at_stress_costs": -0.0008960401632971404,
+   "passed": false,
+   "required_t_statistic": 3.2905267314919255,
+   "strategy_sharpe": -0.03034082542621418,
+   "stress_cost_bps": 12.0,
+   "subperiod_returns": [
+    -0.00017003318688624258,
+    0.00011367433515774295
+   ],
+   "t_statistic": -0.03376015394073465,
+   "tests": {
+    "at_least_100_active_observations": false,
+    "market_beta_below_0_15": true,
+    "net_profitable_after_modeled_costs": false,
+    "profitable_in_both_subperiods": false,
+    "still_profitable_at_2x_costs": false,
+    "t_statistic_survives_multiple_testing": false,
+    "top_5_days_below_half_of_gains": false
+   },
+   "top_5_day_share_of_gains": 0.5423797287844585
+  }
+ },
+ "validation_gross_cost_net": {
+  "cost_sum": 0.0008400000000000003,
+  "gross_sum": 0.0007849454798992627,
+  "net_sum": -5.5054520100737304e-05
+ }
+}

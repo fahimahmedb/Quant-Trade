@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "One normalized Form-4 P/acquired candidate row with explicit qualification status.",
+  "properties": {
+    "accession": {
+      "type": "string"
+    },
+    "acquired_disposed_code": {
+      "type": "string"
+    },
+    "document_type": {
+      "type": "string"
+    },
+    "is_director": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "is_officer": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "issuer_cik": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "issuer_trading_symbol": {
+      "type": "string"
+    },
+    "owner_cik": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reason_codes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "reporting_owner_ciks": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "reporting_owner_rows": {
+      "type": "integer"
+    },
+    "row_id": {
+      "type": "string"
+    },
+    "source_period": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "transaction_code": {
+      "type": "string"
+    },
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "unresolved_owner_cik_rows": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "accession",
+    "row_id",
+    "source_period",
+    "document_type",
+    "issuer_cik",
+    "issuer_trading_symbol",
+    "owner_cik",
+    "reporting_owner_ciks",
+    "reporting_owner_rows",
+    "unresolved_owner_cik_rows",
+    "is_director",
+    "is_officer",
+    "transaction_date",
+    "transaction_code",
+    "acquired_disposed_code",
+    "status"
+  ],
+  "title": "sec_form4_candidate_record",
+  "type": "object"
+}

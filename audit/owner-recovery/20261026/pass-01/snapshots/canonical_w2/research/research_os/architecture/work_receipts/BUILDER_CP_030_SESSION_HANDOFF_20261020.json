@@ -1,0 +1,190 @@
+{
+  "canonical_convergence_performed": false,
+  "evidence_parent_sha": "c3d4738ea2f62df7b816c1aee8c3248beded2c61",
+  "four_authority_flags": "FALSE",
+  "fresh_observed_oracle_head": "53a23ccea016c7e98d390cc5536e8258c95106a9",
+  "hosted_step_proofs": {
+    "sec": {
+      "exact_commit": "ca3bd859e0fc48c2b8004b906f603b52b55ecac5",
+      "job": {
+        "job_id": "118895835292",
+        "observed_at": "2026-10-20T21:35:39.978175+00:00",
+        "page_sha256": "eac1fb8b1689cf62d127cc52d811521b0dd07179e496fd008c38a9972b27fdbe",
+        "run_id": "39500314201",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Record environment"
+          },
+          {
+            "conclusion": "success",
+            "name": "Fail-closed check (no SEC identity configured)"
+          },
+          {
+            "conclusion": "success",
+            "name": "Generated schema drift"
+          },
+          {
+            "conclusion": "success",
+            "name": "Status artifact freshness"
+          },
+          {
+            "conclusion": "success",
+            "name": "Full unit suite"
+          },
+          {
+            "conclusion": "success",
+            "name": "SEC P0 lane suite"
+          },
+          {
+            "conclusion": "success",
+            "name": "V1 end-to-end regression"
+          },
+          {
+            "conclusion": "success",
+            "name": "Generate exact-head verification artifact"
+          },
+          {
+            "conclusion": "success",
+            "name": "Upload exact-head verification artifact"
+          },
+          {
+            "conclusion": "success",
+            "name": "Restore committed verification placeholder"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean working tree"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job"
+          }
+        ],
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39500314201/job/118895835292"
+      },
+      "run_id": "39500314201",
+      "run_page_sha256": "d32f6d821d89694e68493b8d04dda69634dcb6a7e0dfc82b7afc20c472c07290"
+    },
+    "v2": {
+      "exact_commit": "ca3bd859e0fc48c2b8004b906f603b52b55ecac5",
+      "job": {
+        "job_id": "118895835448",
+        "observed_at": "2026-10-20T21:27:14.259740+00:00",
+        "page_sha256": "1b353a3fed4e5ba80d7e34771731fe16ba3aae9c7070df66834e3ed8e625be57",
+        "run_id": "39500314265",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Compile V2 Core"
+          },
+          {
+            "conclusion": "success",
+            "name": "V2 Core contract, bridge, worker and whole-loop tests"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify V2 policy remains fail-closed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify V2 claim ceiling"
+          },
+          {
+            "conclusion": "success",
+            "name": "Generate exact-head V2 qualification receipt"
+          },
+          {
+            "conclusion": "success",
+            "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled"
+          },
+          {
+            "conclusion": "success",
+            "name": "Upload exact-head V2 qualification receipt"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job"
+          }
+        ],
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39500314265/job/118895835448"
+      },
+      "run_id": "39500314265",
+      "run_page_sha256": "1490871bea34c3e20f3b691e8a6df604cbf5459ea8dd345e21948090c4d33b47"
+    }
+  },
+  "hosted_workflows": {
+    "observed_at": "2026-10-20T21:35:19.230564+00:00",
+    "page_sha256": "bfac03f6e41bfd0f00dfac8587bee0484e7e501c91438e9c75dc563f9ef359d0",
+    "runs": [
+      {
+        "id": "39500314265",
+        "name": "Oracle V2 Core",
+        "state": {
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+        },
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39500314265"
+      },
+      {
+        "id": "39500314201",
+        "name": "SEC P0 pre-t0 gate",
+        "state": {
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+        },
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39500314201"
+      }
+    ],
+    "source_url": "https://github.com/fahimahmedb/Quant-Trade/actions?query=branch%3Abuilder%2Fv2-forward-20261020",
+    "target_commit": "ca3bd859e0fc48c2b8004b906f603b52b55ecac5"
+  },
+  "implementation_after_tested_code": "NO_CHANGE_ONLY_EVIDENCE_RECEIPTS",
+  "local_qualification": "BUILDER_CP_027_QUALIFICATION_20261020.json",
+  "north_star_blob": "a328b4e6d7d71dafd532938888ebf9818b1b610f",
+  "outcome_accessed": false,
+  "qualified_code_sha": "ca3bd859e0fc48c2b8004b906f603b52b55ecac5",
+  "runtime_deployment_performed": false,
+  "schema_version": "builder-cp030-final-session-proof-v1",
+  "session_status": "QUALIFIED_BUILDER_HANDOFF_FULL_NORTH_STAR_NOT_CLAIMED"
+}

@@ -1,0 +1,106 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "branch": "builder/oracle-v2-core-20261020",
+  "entrypoint": "research.research_os.oracle_worker_v2",
+  "evidence_scope": "LIVE_ORACLE_GITHUB_READ_ONLY",
+  "executable_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "git_trace_sha256": "588c0104d54578018d332820f8b4a263a2791b6fe0adfb964ec9d825e9db9f09",
+  "github_state_head": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "github_writes": 0,
+  "hosted_model_calls": 0,
+  "instance": {
+    "id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+    "region": "eu-paris-1",
+    "shape": "VM.Standard.A1.Flex",
+    "shapeConfig": {
+      "maxVnicAttachments": 2,
+      "memoryInGBs": 12.0,
+      "networkingBandwidthInGbps": 2.0,
+      "ocpus": 2.0
+    }
+  },
+  "limitations": "Read-only integration proof; does not prove runtime activation or scientific throughput.",
+  "mocks_used": false,
+  "model_configured": false,
+  "push_attempts": 0,
+  "real_fetch_commands": 2,
+  "real_subprocess": true,
+  "repository": "fahimahmedb/Quant-Trade",
+  "research_contract_version": "v2-core",
+  "schema_version": "oracle-v2-real-github-dry-run-v1",
+  "status": "PASS",
+  "worker_result": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "hosted_model_calls": 0,
+    "input_head": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+    "lane": "independent_challenge",
+    "one_lineage_per_wake": true,
+    "preflight": {
+      "control_plane": {
+        "authority": {
+          "economic_experiment_authorized": false,
+          "live_trading_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false
+        },
+        "mode": "PRODUCTION_RESEARCH_WORKERS",
+        "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+      },
+      "current_corpus": {
+        "count": 14,
+        "overlap_map_hash": "db1cfb04810ce0f5f6abeaa53dff5e91025d0991306c09fbfe42ea7f1642cd74",
+        "review_count": 1,
+        "review_pairs": [
+          {
+            "basis": [
+              "entity",
+              "mechanism_tokens"
+            ],
+            "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+            "left": "FUND-ASML-CAPACITY-PRICING-001",
+            "mechanism_overlap": 0.2529,
+            "review_required": true,
+            "right": "FUND-ASML-CAPACITY-SERVICE-001"
+          }
+        ],
+        "snapshot_hash": "70d6b18961ed47c48295e160074cff29ebd3e85aa76d60288752ea1f8e6b1f0e"
+      },
+      "legacy": {
+        "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+        "loaded_record_count": 20,
+        "manifest_historical_research_items_found": 33,
+        "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+        "schema_version": "legacy-research-ledger-v1",
+        "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+        "status": "PASS"
+      },
+      "preflight_hash": "d66ca2070fc53bee8cbb956f4d851981a48bf45352f2c552a3e320e05907ea42",
+      "status": "PASS",
+      "task_authority": null
+    },
+    "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+    "research_contract_version": "v2-core",
+    "selected_task": "VALIDATE-DOC-FUND-9219d7f488ada3c2",
+    "state_branch": "builder/oracle-v2-core-20261020",
+    "state_repository": "fahimahmedb/Quant-Trade",
+    "status": "DRY_RUN",
+    "v2_preflight": {
+      "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
+      "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+      "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+      "snapshot_head": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+      "status": "PASS"
+    },
+    "writes": 0
+  }
+}

@@ -1,0 +1,51 @@
+name: Multi-Source Ideation Intake V3 CI
+
+on:
+  push:
+    branches:
+      - builder/multi-source-ideation-intake-v3-20261026
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact branch state
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify immutable ancestry
+        shell: bash
+        run: |
+          git cat-file -e 2b99d8aeb8a342f1ef32544247d366cb8a26037e^{commit}
+          git merge-base --is-ancestor 2b99d8aeb8a342f1ef32544247d366cb8a26037e HEAD
+
+      - name: Focused ideation intake contracts
+        env:
+          PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/src"
+        run: python -m unittest tests.multi_source_ideation_intake_v3_contracts -v
+
+      - name: Research Intelligence regression
+        env:
+          PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/src"
+        run: python -m unittest tests.mega_a_research_intelligence_contracts -v
+
+      - name: Data source admission regression
+        env:
+          PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/src"
+        run: python -m unittest tests.test_data_source_admission -v
+
+      - name: Full root regression
+        env:
+          PYTHONPATH: "${{ github.workspace }}:${{ github.workspace }}/src"
+        run: python -m unittest discover -s tests -v

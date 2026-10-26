@@ -1,0 +1,15 @@
+{
+  "event_id": "PROD-FLOWS-001-g1-e2",
+  "session_id": "PROD-FLOWS-001-g1",
+  "worker_id": "chatgpt-interactive-institutional-flows-worker",
+  "action_id": "PROD-FLOWS-001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 2,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:36:10Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Institutional flow mechanism frozen",
+    "detail": "FLOW-ADR-TERM-001 persisted and exactly one documentary validation task queued; no economic outcome, price, capital or live-trading action performed."
+  }
+}

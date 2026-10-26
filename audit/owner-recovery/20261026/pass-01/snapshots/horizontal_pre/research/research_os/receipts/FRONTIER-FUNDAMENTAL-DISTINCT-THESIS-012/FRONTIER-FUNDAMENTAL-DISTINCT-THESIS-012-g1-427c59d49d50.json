@@ -1,0 +1,24 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/oracle-worker/legacy_duplicate_check.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "completed_at": "2026-10-20T19:40:23Z",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012-g1-427c59d49d50-002.json"
+  ],
+  "input_head": "085a70c4f87db4f505f0fb009fc2c1264323610c",
+  "lease_generation": 1,
+  "receipt_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012-g1-427c59d49d50",
+  "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012-g1-427c59d49d50",
+  "started_at": "2026-10-20T19:40:16Z",
+  "status": "COMPLETE",
+  "summary": "legacy_duplicate_check: CONTINUE; task=READY; release=a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012",
+  "worker_id": "oracle-research.fundamental_events"
+}

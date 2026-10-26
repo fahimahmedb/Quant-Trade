@@ -1,0 +1,108 @@
+{
+  "code_commit": "347e49ccd14ae595a8d9e99e0bcf5884698882d3",
+  "fresh_observed_oracle_head": "903e327855f811153c8c1d52a7c9844638d3b5cf",
+  "limitations": "Hosted artifact step success observed; artifact archive not downloaded. Producer-task projection is not deployed Site integration.",
+  "local_full_suite": {
+    "failed": 0,
+    "passed": 651,
+    "skipped": 0
+  },
+  "observed_at": "2026-10-20T16:39:25.963719+00:00",
+  "page_sha256": "c22d0ac3861464f96898020ccca65441061c55f1c3fd731ac1f9f4dcaec597a1",
+  "runs": [
+    {
+      "id": "39457800674",
+      "name": "SEC P0 pre-t0 gate",
+      "state": {
+        "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+        "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+      },
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39457800674"
+    },
+    {
+      "id": "39457800493",
+      "name": "Oracle V2 Core",
+      "state": {
+        "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+        "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+      },
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39457800493"
+    }
+  ],
+  "schema_version": "builder-cp013-hosted-qualification-v1",
+  "scope": "INDEPENDENT_HOSTED_ACTIONS_PUBLIC_HTML",
+  "sec_job_page_sha256": "de6ee49ed64c3410e3ccf2542947a4fd7122687c945ecdfc2cc9afca3e54e22b",
+  "sec_job_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39457800674/job/118749122728",
+  "sec_steps": [
+    {
+      "conclusion": "success",
+      "name": "Set up job"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/checkout@v4"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/setup-python@v5"
+    },
+    {
+      "conclusion": "success",
+      "name": "Record environment"
+    },
+    {
+      "conclusion": "success",
+      "name": "Fail-closed check (no SEC identity configured)"
+    },
+    {
+      "conclusion": "success",
+      "name": "Generated schema drift"
+    },
+    {
+      "conclusion": "success",
+      "name": "Status artifact freshness"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full unit suite"
+    },
+    {
+      "conclusion": "success",
+      "name": "SEC P0 lane suite"
+    },
+    {
+      "conclusion": "success",
+      "name": "V1 end-to-end regression"
+    },
+    {
+      "conclusion": "success",
+      "name": "Generate exact-head verification artifact"
+    },
+    {
+      "conclusion": "success",
+      "name": "Upload exact-head verification artifact"
+    },
+    {
+      "conclusion": "success",
+      "name": "Restore committed verification placeholder"
+    },
+    {
+      "conclusion": "success",
+      "name": "Clean working tree"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/setup-python@v5"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@v4"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job"
+    }
+  ],
+  "source_url": "https://github.com/fahimahmedb/Quant-Trade/actions?query=branch%3Abuilder%2Fv2-forward-20261020",
+  "target_commit": "fd2c7f6286766e96535fef856a99f840ec0b572d"
+}

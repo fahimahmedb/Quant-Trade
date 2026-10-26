@@ -1,0 +1,270 @@
+name: Wave2 C2 Multi-Source B Material Seam V2
+
+on:
+  push:
+    branches:
+      - builder/wave2-convergence2-foreman-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SEALED_BASE: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  HISTORICAL_B_START: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  MULTISOURCE_MATERIAL_HEAD: d0dac0b3c3fc4733a16fd744f68b4d2c44474a47
+  B_CODE_HEAD: 7ef088bb30ece88cf96f4514e8c581a95ca4b091
+
+jobs:
+  seam:
+    name: Qualify material Multi-Source to B seam
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Reacquire immutable inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "+refs/heads/builder/convergence-cp079-wave2-base-20261021:refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021"
+          git fetch origin "+refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
+          git fetch origin "+refs/heads/builder/mega-b-discovery-engine-20261021:refs/remotes/origin/builder/mega-b-discovery-engine-20261021"
+          test "$(git rev-parse refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021)" = "$SEALED_BASE"
+          test "$(git merge-base "$SEALED_BASE" "$MULTISOURCE_MATERIAL_HEAD")" = "$SEALED_BASE"
+          test "$(git merge-base "$SEALED_BASE" "$B_CODE_HEAD")" = "$HISTORICAL_B_START"
+          echo "OBSERVED_MULTISOURCE_HEAD=$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)" | tee /tmp/msb-v2.env
+          echo "OBSERVED_B_HEAD=$(git rev-parse refs/remotes/origin/builder/mega-b-discovery-engine-20261021)" | tee -a /tmp/msb-v2.env
+          echo "MULTISOURCE_MATERIAL_HEAD=$MULTISOURCE_MATERIAL_HEAD" | tee -a /tmp/msb-v2.env
+          echo 'MULTISOURCE_MATERIAL_SEALED_BASE_BOUND=TRUE' | tee -a /tmp/msb-v2.env
+
+      - name: Build detached combined semantic tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git worktree add --detach /tmp/msb-v2 "$SEALED_BASE"
+          git diff --binary "$SEALED_BASE" "$MULTISOURCE_MATERIAL_HEAD" -- \
+            research/research_os/ideation_cycle.py \
+            research/research_os/multi_source_ideation.py \
+            research/research_os/multi_source_ideation_bindings.py \
+            research/research_os/multi_source_ideation_hardening.py \
+            research/research_os/tests/test_multi_source_ideation_v2.py \
+            tests/ > /tmp/ms-v2.patch
+          test -s /tmp/ms-v2.patch
+          git -C /tmp/msb-v2 apply --index /tmp/ms-v2.patch
+          git diff --binary "$HISTORICAL_B_START" "$B_CODE_HEAD" -- \
+            research/research_os/discovery_chain.py \
+            research/research_os/discovery_engine.py \
+            research/research_os/tests/test_mega_b_all_producer_routes.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py \
+            research/research_os/tests/test_mega_b_discovery_chain.py \
+            research/research_os/tests/test_mega_b_discovery_engine.py \
+            research/research_os/tests/test_mega_b_outcome_firewall.py > /tmp/b-v2.patch
+          test -s /tmp/b-v2.patch
+          git -C /tmp/msb-v2 apply --index /tmp/b-v2.patch
+          echo 'MULTISOURCE_PLUS_B_SEMANTIC_TREE=BUILT' | tee -a /tmp/msb-v2.env
+
+      - name: Normalize Multi-Source tests without touching semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/msb-v2
+          # Root bridge duplicates the canonical Research OS class.
+          rm -f tests/test_multi_source_ideation_v2.py
+          shopt -s nullglob
+          moved=0
+          for file in tests/test_multi_source_ideation_v2*.py; do
+            target="research/research_os/tests/$(basename "$file")"
+            test ! -e "$target"
+            mv "$file" "$target"
+            moved=$((moved+1))
+          done
+          test "$moved" -gt 0
+          git add -A
+          echo "MULTISOURCE_ROOT_TESTS_RELOCATED=$moved" | tee -a /tmp/msb-v2.env
+          echo 'MULTISOURCE_DUPLICATE_ROOT_BRIDGE_REMOVED=TRUE' | tee -a /tmp/msb-v2.env
+
+      - name: Verify sealed-base repair blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=/tmp/msb-v2
+          test "$(git -C "$root" hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+          test "$(git -C "$root" hash-object research/research_os/tests/test_economic_identity_portfolio_readiness.py)" = 4c163e5c1276e4909b4be3e97990e899c9079234
+          test "$(git -C "$root" hash-object research/research_os/tests/test_economic_readiness_integration.py)" = 8b64c95695abfc661e636b20deb20713d391d5e5
+          echo 'SEALED_BASE_REPAIR_PRESERVED=TRUE' | tee -a /tmp/msb-v2.env
+
+      - name: Multi-Source focused qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/msb-v2
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest discover -v \
+            -s research/research_os/tests -p 'test_multi_source_ideation_v2*.py' \
+            2>&1 | tee /tmp/ms-v2-focused.log
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          text=Path('/tmp/ms-v2-focused.log').read_text()
+          n=int(re.findall(r'^Ran ([0-9]+) tests', text, re.MULTILINE)[-1])
+          assert n > 20, n
+          Path('/tmp/ms-v2-focused.count').write_text(str(n))
+          print(f'MULTISOURCE_FOCUSED={n}_PASS')
+          PY
+
+      - name: MEGA B focused qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/msb-v2
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest -v \
+            research.research_os.tests.test_mega_b_all_producer_routes \
+            research.research_os.tests.test_mega_b_canonical_gate \
+            research.research_os.tests.test_mega_b_discovery_chain \
+            research.research_os.tests.test_mega_b_discovery_engine \
+            research.research_os.tests.test_mega_b_outcome_firewall \
+            2>&1 | tee /tmp/b-v2-focused.log
+          grep -F 'Ran 49 tests' /tmp/b-v2-focused.log
+          echo 'B_FOCUSED=49_PASS' | tee -a /tmp/msb-v2.env
+
+      - name: Prove Multi-Source cannot bypass Research Intelligence
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/msb-v2
+          PYTHONPATH="$PWD:$PWD/src" python - <<'PY' | tee /tmp/msb-v2-seam.log
+          from research.research_os.multi_source_ideation import BASE_SHA, side_effect_zeroes
+          from research.research_os.multi_source_ideation_hardening import qualify_for_discovery
+          from research.research_os.discovery_chain import run_discovery_chain
+          assert BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          proposal = {
+              'artifact_kind': 'IDEA_PROPOSAL',
+              'context_snapshot_hash': 'ctx-foreman-msb-v2',
+              'payload': {'mechanism': 'bounded', 'payer': 'payer'},
+          }
+          disposition = qualify_for_discovery(
+              proposal=proposal,
+              context_snapshot_hash='ctx-foreman-msb-v2',
+              memory={'classification': 'NO_QUALIFIED_MATCH'},
+              duplicate={'classification': 'DISTINCT'},
+              implementability={'admissible': True},
+          )
+          assert disposition['decision'] == 'ELIGIBLE_FOR_DISCOVERY', disposition
+          assert disposition['eligible_for_discovery'] is True
+          assert disposition['ready_task_created'] is False
+          assert disposition['candidate_created'] is False
+          assert all(v == 0 for v in side_effect_zeroes().values())
+          blocked = run_discovery_chain(
+              {**disposition, 'proposal': proposal},
+              engine_key='quant', source={}, run_id='FOREMAN-MS-B-V2',
+              synthetic_only=True, discovery_facts={},
+          )
+          assert blocked['status'] == 'BLOCKED_BEFORE_PRODUCER', blocked
+          assert blocked['producer_executed'] is False
+          assert blocked['blockers'] == ['RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER']
+          assert blocked['scheduler_mutation'] is False
+          assert blocked['control_plane_mutation'] is False
+          assert blocked['scientific_memory_mutation'] is False
+          assert blocked['outcome_accessed'] is False
+          assert all(v is False for v in blocked['authority'].values())
+          print('MULTISOURCE_BOUNDARY=ELIGIBLE_FOR_DISCOVERY_ONLY')
+          print('DIRECT_MULTISOURCE_TO_B_BYPASS=BLOCKED')
+          print('RESEARCH_INTELLIGENCE_REMAINS_REQUIRED=TRUE')
+          print('READY_TASK_CREATED=FALSE')
+          print('CANDIDATE_CREATED_BY_MULTISOURCE=FALSE')
+          print('OUTCOME_ACCESSED=FALSE')
+          PY
+
+      - name: Exact root inventory remains sealed
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/msb-v2
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest discover -s tests -p 'test_*.py' \
+            2>&1 | tee /tmp/msb-v2-root.log
+          grep -F 'Ran 799 tests' /tmp/msb-v2-root.log
+          echo 'ROOT_UNIT_SUITE=799_PASS' | tee -a /tmp/msb-v2.env
+
+      - name: Research OS aggregate is additive and green
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/msb-v2
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest discover -s research/research_os/tests -p 'test_*.py' \
+            2>&1 | tee /tmp/msb-v2-research-os.log
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          actual=int(re.findall(r'^Ran ([0-9]+) tests', Path('/tmp/msb-v2-research-os.log').read_text(), re.MULTILINE)[-1])
+          ms=int(Path('/tmp/ms-v2-focused.count').read_text())
+          expected=423 + 49 + ms
+          assert actual == expected, (actual, expected, ms)
+          Path('/tmp/msb-v2-research-os.count').write_text(str(actual))
+          print(f'RESEARCH_OS_SUITE={actual}_PASS')
+          PY
+
+      - name: Emit receipt
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          def n(path):
+              p=Path(path)
+              if not p.exists(): return None
+              m=re.findall(r'^Ran ([0-9]+) tests', p.read_text(), re.MULTILINE)
+              return int(m[-1]) if m else None
+          observed=subprocess.check_output(['git','rev-parse','refs/remotes/origin/builder/multi-source-ideation-intake-20261021'], text=True).strip()
+          seam=Path('/tmp/msb-v2-seam.log').read_text() if Path('/tmp/msb-v2-seam.log').exists() else ''
+          receipt={
+              'mission':'WAVE2_C2_MULTISOURCE_B_MATERIAL_SEAM_V2',
+              'sealed_base':os.environ['SEALED_BASE'],
+              'multisource_material_head':os.environ['MULTISOURCE_MATERIAL_HEAD'],
+              'observed_multisource_head_at_run':observed,
+              'exact_head_claimed':False,
+              'material_code_seam_claimed':True,
+              'multisource_focused_tests':n('/tmp/ms-v2-focused.log'),
+              'b_focused_tests':n('/tmp/b-v2-focused.log'),
+              'root_tests':n('/tmp/msb-v2-root.log'),
+              'research_os_tests':n('/tmp/msb-v2-research-os.log'),
+              'direct_bypass_blocked':'DIRECT_MULTISOURCE_TO_B_BYPASS=BLOCKED' in seam,
+              'research_intelligence_required':'RESEARCH_INTELLIGENCE_REMAINS_REQUIRED=TRUE' in seam,
+              'ready_task_created':False,
+              'candidate_created_by_multisource':False,
+              'authority_opened':False,
+              'outcome_accessed':False,
+              'canonical_branch_mutated':False,
+              'wave2_integrated_sha_emitted':False,
+          }
+          ms=receipt['multisource_focused_tests']
+          receipt['material_seam_proven']=bool(
+              ms and ms > 20 and receipt['b_focused_tests'] == 49
+              and receipt['root_tests'] == 799
+              and receipt['research_os_tests'] == 423 + 49 + ms
+              and receipt['direct_bypass_blocked']
+              and receipt['research_intelligence_required']
+          )
+          receipt['disposition']='PASS_MATERIAL_SEAM_NOT_EXACT_HEAD' if receipt['material_seam_proven'] else 'BLOCK'
+          Path('/tmp/msb-v2-receipt.json').write_text(json.dumps(receipt, indent=2, sort_keys=True)+'\n')
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wave2-c2-multisource-b-material-v2-${{ github.sha }}
+          path: |
+            /tmp/msb-v2-receipt.json
+            /tmp/msb-v2.env
+            /tmp/ms-v2-focused.log
+            /tmp/b-v2-focused.log
+            /tmp/msb-v2-seam.log
+            /tmp/msb-v2-root.log
+            /tmp/msb-v2-research-os.log
+          if-no-files-found: warn

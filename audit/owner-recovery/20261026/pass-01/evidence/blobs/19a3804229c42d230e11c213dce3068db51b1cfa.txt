@@ -1,0 +1,136 @@
+{
+  "schema_version": "builder-scoped-memory-audit-v1",
+  "oracle_head": "53a23ccea016c7e98d390cc5536e8258c95106a9",
+  "scope": "RESEARCH_STRUCTURAL_SIDECARS_ONLY_NO_EVALUATION",
+  "record_count": 11,
+  "records": [
+    {
+      "path": "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "3e4a38f58734af6c8ddfcdd50b304609fe81603672eb23a6f1cab160955b0573",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "d43904553053fda7de2724e6646f2cd7700f56d3480ba05c6e16d5d9e54016e7",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "03dfa44d48ae3afa313196f0e416f39aea16771343c818c5fb0fb68a56770d82",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "72c9671bc9c3c1570d01b3ee39f9c2fd3d476412ce648d7f232150361a72298c",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "672b0dcc2e55a57c07f712601776c02396487ea94780fa67140980e686660bf9",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "c54a678a87d7967c3b7cab35bdbc0f8a8302e42d79e72212e481230020f57917",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "66ac7d588be9e2cd849d5673bbeddbdf3278908844d65952c8ea6fdcee92a7c3",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "5a0a2b783454418e84ce33986f5c08ca76e23f70d23c6e064be073b09de8c3a5",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "35d24515c53bb096a74492a85b28fad7c53e3cc8ab00ef4ec77e8debb532f750",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "fee2af0f2e7324b4dbff6443b443d6c13313d2f750567117665044725497e0b3",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    },
+    {
+      "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/oracle-v2/negative_memory.json.json",
+      "negative_knowledge_hash": "e0dece74c44e74272d570fea776482278d851247ee30c00b720a8c39d1f5a5bf",
+      "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+      "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+      "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+      "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+      "screen_status": "BLOCK",
+      "source_blob_bound": true
+    }
+  ],
+  "failure_scopes": {
+    "CURRENT_STRUCTURAL_SCREEN": 11
+  },
+  "failure_reasons": {
+    "UNRESOLVED_OR_DUPLICATE_EXPOSURE": 11
+  },
+  "screen_statuses": {
+    "BLOCK": 11
+  },
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "evaluation_membrane": "SEALED",
+  "outcome_accessed": false,
+  "writes_to_oracle": 0
+}

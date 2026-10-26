@@ -1,0 +1,36 @@
+[
+  {
+    "id": "bitmex-schema",
+    "url": "https://www.bitmex.com/api/explorer/swagger.json",
+    "method": "GET",
+    "observed_at": "2026-10-11T12:34:11Z",
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "content_length": "197079",
+    "payload_bytes": 197079,
+    "sha256": "adc659ee4718e4ac2920cb7219bb45a794fe032d8b42e957946bbbc62185e17c",
+    "wall_seconds": 1.2885281019998729
+  },
+  {
+    "id": "bitmex-quote-endpoint-head",
+    "url": "https://www.bitmex.com/api/v1/quote/bucketed?symbol=XBTUSD&binSize=1h&count=1000&startTime=2025-01-01T00%3A00%3A00Z&endTime=2026-01-01T00%3A00%3A00Z",
+    "method": "HEAD",
+    "observed_at": "2026-10-11T12:34:13Z",
+    "status": 200,
+    "content_type": null,
+    "content_length": null,
+    "payload_bytes": 0,
+    "wall_seconds": 0.8211088970001583
+  },
+  {
+    "id": "bitmex-funding-endpoint-head",
+    "url": "https://www.bitmex.com/api/v1/funding?symbol=XBTUSD&count=1000&startTime=2025-01-01T00%3A00%3A00Z&endTime=2026-01-01T00%3A00%3A00Z",
+    "method": "HEAD",
+    "observed_at": "2026-10-11T12:34:13Z",
+    "status": 200,
+    "content_type": null,
+    "content_length": null,
+    "payload_bytes": 0,
+    "wall_seconds": 0.49212914500003535
+  }
+]

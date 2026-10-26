@@ -1,0 +1,106 @@
+{
+  "acquisition_requests": [
+    {
+      "request_id": "REQ-REG-001",
+      "adapter_id": "ADAPTER-REG-FILINGS-V1",
+      "entity_scope": {"entity": "SYN-ISSUER-001", "document_family": "filing"},
+      "content_classes": ["filing_metadata", "document_text", "filing_clock", "entity_identity"],
+      "clock_cutoff": "2026-10-15T13:00:00Z",
+      "version_policy": "ORIGINAL_AND_AMENDMENTS_SEPARATE",
+      "locator_parameters": {"entity": "SYN-ISSUER-001", "accession": "SYN-ACCESSION-001"}
+    },
+    {
+      "request_id": "REQ-IR-001",
+      "adapter_id": "ADAPTER-CORP-IR-V1",
+      "entity_scope": {"issuer": "SYN-ISSUER-001", "document_family": "earnings_and_guidance"},
+      "content_classes": ["earnings_release", "guidance", "presentation", "publication_clock"],
+      "clock_cutoff": "2026-10-15T13:00:00Z",
+      "version_policy": "FIRST_PUBLICATION_PLUS_VERSION_CHAIN",
+      "locator_parameters": {"issuer": "SYN-ISSUER-001", "document_id": "SYN-IR-001"}
+    },
+    {
+      "request_id": "REQ-EXCH-001",
+      "adapter_id": "ADAPTER-EXCHANGE-REF-V1",
+      "entity_scope": {"venue": "SYN-X", "instrument_family": "synthetic_equity"},
+      "content_classes": ["instrument_identity", "venue", "calendar", "reference_terms"],
+      "clock_cutoff": "2026-10-15T13:00:00Z",
+      "version_policy": "REFERENCE_VERSION_AS_KNOWN_AT_CUTOFF",
+      "locator_parameters": {"venue": "SYN-X", "instrument": "SYN-EQ-001"}
+    },
+    {
+      "request_id": "REQ-INDEX-001",
+      "adapter_id": "ADAPTER-INDEX-RULES-V1",
+      "entity_scope": {"index_family": "SYN-INDEX", "notice_family": "rebalance"},
+      "content_classes": ["rulebook", "announcement_clock", "effective_clock", "eligibility_terms"],
+      "clock_cutoff": "2026-10-15T13:00:00Z",
+      "version_policy": "RULEBOOK_AND_NOTICE_VERSION_AS_KNOWN",
+      "locator_parameters": {"family": "SYN-INDEX", "notice_id": "SYN-NOTICE-001"}
+    },
+    {
+      "request_id": "REQ-MACRO-001",
+      "adapter_id": "ADAPTER-OFFICIAL-MACRO-V1",
+      "entity_scope": {"publisher": "SYN-OFFICIAL", "release_family": "policy_or_statistics"},
+      "content_classes": ["release_metadata", "series_vintage", "policy_document", "release_clock"],
+      "clock_cutoff": "2026-10-15T13:00:00Z",
+      "version_policy": "VINTAGE_AS_FIRST_PUBLISHED_PLUS_REVISIONS",
+      "locator_parameters": {"publisher": "SYN-OFFICIAL", "series_or_release": "SYN-REL-001"}
+    }
+  ],
+  "raw_records": {
+    "REQ-REG-001": {
+      "record_id": "PIT-REG-001",
+      "source_version_id": "SYN-ACCESSION-001-V1",
+      "effective_at": "2026-10-15T11:50:00Z",
+      "published_at": "2026-10-15T12:00:00Z",
+      "captured_at": "2026-10-15T12:05:00Z",
+      "content_classes": ["filing_metadata", "document_text", "filing_clock", "entity_identity"],
+      "payload": {"entity_id": "SYN-ISSUER-001", "form_type": "SYN-FORM", "accession": "SYN-ACCESSION-001", "document_excerpt": "Synthetic filing text for architecture tests only."},
+      "fixture_only": true,
+      "contains_outcome": false
+    },
+    "REQ-IR-001": {
+      "record_id": "PIT-IR-001",
+      "source_version_id": "SYN-IR-001-V1",
+      "effective_at": "2026-10-15T11:55:00Z",
+      "published_at": "2026-10-15T12:10:00Z",
+      "captured_at": "2026-10-15T12:15:00Z",
+      "content_classes": ["earnings_release", "guidance", "presentation", "publication_clock"],
+      "payload": {"issuer_id": "SYN-ISSUER-001", "document_id": "SYN-IR-001", "guidance_text": "Synthetic guidance only.", "presentation_version": "V1"},
+      "fixture_only": true,
+      "contains_outcome": false
+    },
+    "REQ-EXCH-001": {
+      "record_id": "PIT-EXCH-001",
+      "source_version_id": "SYN-EXCH-REF-V1",
+      "effective_at": "2026-10-15T00:00:00Z",
+      "published_at": "2026-10-15T08:00:00Z",
+      "captured_at": "2026-10-15T08:05:00Z",
+      "content_classes": ["instrument_identity", "venue", "calendar", "reference_terms"],
+      "payload": {"instrument_id": "SYN-EQ-001", "venue_id": "SYN-X", "session_calendar": "SYN-CALENDAR-V1", "reference_terms_version": "V1"},
+      "fixture_only": true,
+      "contains_outcome": false
+    },
+    "REQ-INDEX-001": {
+      "record_id": "PIT-INDEX-001",
+      "source_version_id": "SYN-NOTICE-001-V1",
+      "effective_at": "2026-10-16T00:00:00Z",
+      "published_at": "2026-10-15T10:00:00Z",
+      "captured_at": "2026-10-15T10:05:00Z",
+      "content_classes": ["rulebook", "announcement_clock", "effective_clock", "eligibility_terms"],
+      "payload": {"index_family": "SYN-INDEX", "notice_id": "SYN-NOTICE-001", "rule_version": "V1", "eligibility_definition": "Synthetic eligibility terms."},
+      "fixture_only": true,
+      "contains_outcome": false
+    },
+    "REQ-MACRO-001": {
+      "record_id": "PIT-MACRO-001",
+      "source_version_id": "SYN-REL-001-V1",
+      "effective_at": "2026-10-15T09:00:00Z",
+      "published_at": "2026-10-15T09:30:00Z",
+      "captured_at": "2026-10-15T09:35:00Z",
+      "content_classes": ["release_metadata", "series_vintage", "policy_document", "release_clock"],
+      "payload": {"publisher": "SYN-OFFICIAL", "release_id": "SYN-REL-001", "vintage": "V1", "document_excerpt": "Synthetic official release metadata only."},
+      "fixture_only": true,
+      "contains_outcome": false
+    }
+  }
+}

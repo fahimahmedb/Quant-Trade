@@ -1,0 +1,68 @@
+name: Research OS aggressive final gate
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/**'
+      - '.github/workflows/research-os-aggressive-final-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned legacy ledger
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+      - name: Run aggressive architecture suites
+        run: |
+          python -m unittest research.research_os.tests.test_aggressive_architecture -v
+          python -m unittest research.research_os.tests.test_aggressive_live_receipts -v
+          python -m unittest research.research_os.tests.test_final_shape_registry -v
+          python -m unittest research.research_os.tests.test_persistent_final_shape -v
+      - name: Final exact-head assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.expansion.live_receipts import run_with_live_receipts
+          from research.research_os.expansion.persistent_state import build_persistent_final_shape
+          base = Path('research/research_os')
+          fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          live_a = run_with_live_receipts(fixture)
+          live_b = run_with_live_receipts(fixture)
+          assert live_a['integration_fingerprint'] == live_b['integration_fingerprint']
+          persistent = build_persistent_final_shape(
+              fixture,
+              legacy_ledger_path=base / 'legacy' / 'LEGACY_RESEARCH_LEDGER.imported.json',
+          )
+          assert persistent['status'] == 'PASS'
+          assert persistent['persistent_state_status'] == 'PASS'
+          assert persistent['legacy']['gate_status'] == 'PASS'
+          assert persistent['scientific_ledger']['verified'] is True
+          assert persistent['experiment_registry']['immutable'] is True
+          assert persistent['forward_registry']['immutable'] is True
+          assert persistent['live_lab_bridge']['status'] == 'PASS'
+          assert all(v is False for v in persistent['authority'].values())
+          assert all(e['outcome_opened'] is False for e in persistent['experiment_envelopes'])
+          assert all(r['observation_started'] is False for r in persistent['forward_farm'])
+          assert persistent['portfolio']['capital_allocation_authorized'] is False
+          assert persistent['portfolio']['orders_authorized'] is False
+          print('AGGRESSIVE_FINAL_GATE=PASS')
+          PY

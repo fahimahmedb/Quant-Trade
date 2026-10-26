@@ -1,0 +1,11 @@
+{
+  "event_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-g1-e001",
+  "session_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-g1",
+  "worker_id":"independent_challenge",
+  "action_id":"independent_validation",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-15T13:41:03Z",
+  "payload":{"task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001","hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001","generation_id":"G1","authority_scope":"INDEPENDENT_VALIDATION_ONLY"}
+}

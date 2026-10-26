@@ -1,0 +1,26 @@
+{
+  "assessment_id":"VALIDATE-EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001",
+  "candidate_id":"EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001",
+  "generation_id":"G1",
+  "lane":"independent_challenge",
+  "stage_results":{
+    "independent_validation":"PASS_DOCUMENTARY_MECHANISM",
+    "cross_examination":"PASS_WITH_CLASSIFICATION_RISK",
+    "red_team":["BLOCK_CLAIM_LEVEL"],
+    "claim_restriction":"Only the existence and reproducibility of an initial Schedule 13D public disclosure clock may be carried forward. No claim that Item 4 language identifies activist/control intent with economically useful precision, causes underreaction, predicts return direction, or survives costs is validated."
+  },
+  "primary_findings":[
+    "SEC guidance effective in the current regime requires an initial Schedule 13D within five business days after acquisition above 5 percent and states the clock runs from trade date.",
+    "EDGAR filing detail exposes an acceptance timestamp, so the public-document event clock is reproducible without price or return access.",
+    "Initial Schedule 13D can be separated from Schedule 13D/A at the filing-form level.",
+    "Item 4 is not a deterministic proxy for control intent: primary filings can contain investment-only/no-control language, reservations of future rights, or evolving intent. A classifier must therefore be frozen ex ante and validated independently before economic testing.",
+    "The shortened five-business-day deadline reduces the private accumulation interval versus the former ten-day regime, creating a regime break that must not be silently pooled.",
+    "Group formation, derivatives, anticipation and other public information can confound the interpretation of EDGAR acceptance as the first economically informative moment."
+  ],
+  "active_invalidation":"Attempted to invalidate the mechanism by testing whether Schedule 13D itself guarantees control intent. It does not. This invalidates the broad control-intent interpretation but not the narrower documentary disclosure-clock mechanism.",
+  "recommendation":"PASS_TO_TEST_DESIGN_WITH_BLOCK_CLAIM_LEVEL",
+  "integration_handoff_authorized":false,
+  "reason_no_handoff":"Challenge is not complete with no blocker; BLOCK_CLAIM_LEVEL remains until an ex-ante deterministic Item 4 taxonomy and regime handling are frozen and independently reproducible.",
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false,"outcome_accessed":false,"price_or_return_data_accessed":false},
+  "assessed_at":"2026-10-16T08:40:00Z"
+}

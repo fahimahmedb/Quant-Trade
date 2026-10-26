@@ -1,0 +1,31 @@
+{
+  "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001",
+  "stage": "legacy_duplicate_check",
+  "performed_at": "2026-10-16T06:53:00Z",
+  "pinned_legacy_source": {
+    "branch": "research/legacy-economic-reconciliation-20261015",
+    "commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "ledger": "LEGACY_RESEARCH_LEDGER.json",
+    "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS"
+  },
+  "screen_result": "NO_DIRECT_US_EQUITY_CLOSING_AUCTION_IMBALANCE_LINEAGE_FOUND_IN_REVIEWED_LEGACY_LEDGER",
+  "candidate_family": "us-equity-closing-auction-imbalance-pressure",
+  "nearest_legacy_families": [
+    "treasury-auction-concession: auction supply concession in Treasury/ZF, different instrument, clock and mechanism",
+    "crypto-orderbook-pressure: continuous crypto order-book imbalance, different venue structure and no scheduled single-price auction",
+    "month-end-pension-rebalance: institutional month-end flow proxy, not exchange-published security-level auction imbalance"
+  ],
+  "causal_distinctness": "The proposed mechanism uses exchange-published, security-level closing-auction imbalance and indicative clearing information immediately before a deterministic single-price closing cross. The hypothesized pressure is temporary auction-clearing demand/supply pressure and subsequent normalization, not a Treasury issuance concession, generic continuous-book imbalance, calendar-only pension proxy, weather, sports, or box-office mechanism.",
+  "negative_knowledge_respected": [
+    "No historical return or payoff was inspected.",
+    "No threshold was selected from realized returns.",
+    "Legacy reconciliation is partial; independent validation must re-check duplication before any stronger claim.",
+    "Treasury auction and crypto book-pressure families are not being reopened or relabeled."
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  }
+}

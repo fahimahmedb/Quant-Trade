@@ -1,0 +1,74 @@
+# W1 MEMORY CP002 — legacy bridge hardened to canonical memory
+
+STATUS: PASS_FOCUSED / CONTINUE
+
+BASE: `fecd09e0839f1208d9f876c311331221bde3ab7d`
+HEAD/PARENT: parent `84b4c0c568cc8cf406aa6e4f17f0b14476e5d44c` (CP001).
+
+## WHAT_GAP_WAS_PROVEN
+
+CP001 made scientific memory executable, but current Research OS consumers still entered history through `LegacyKnowledgeBase.screen_candidate()`, where raw legacy `RESULT` and a lexical Jaccard overlap were the visible interpretation surface. Without hardening that bridge, later Search could bypass the new fail-closed semantics.
+
+## WHAT_CHANGED
+
+- `LegacyKnowledgeBase` now normalizes its immutable records through `scientific-memory-v1` at load/initialization time.
+- Added queryable canonical-memory accessors and a normalization health report.
+- Exact duplicate suppression remains backward compatible for canonical-spine anti-restart behavior, but its raw `historical_result` is explicitly non-authoritative; the scientific disposition/epistemic status/claim ceiling are surfaced from canonical memory.
+- Structured memory retrieval is exposed before legacy token fallback.
+- Legacy token overlap is retained only as `LEGACY_TOKEN_OVERLAP_REVIEW_HINT_ONLY`; it explicitly computes no empirical similarity/correlation.
+- Unrecovered/incomplete historical records remain visible in review output but are excluded from the canonical memory index.
+- Summary remains read-only and now exposes memory normalization health as a vector of dispositions/review reasons, never a score.
+
+## WHAT_WAS_REUSED/IMPORTED
+
+- `LegacyKnowledgeBase`: `HARDEN_EXISTING`.
+- Existing exact duplicate status `BLOCK_EXACT_LEGACY_DUPLICATE`: `REUSE_CURRENT` only as anti-restart control; it is not an economic verdict.
+- Existing lexical token overlap: `REUSE_CURRENT` only as explicitly non-scientific review hint.
+- CP001 `ScientificMemoryIndex` and legacy normalizer: `REUSE_CURRENT`.
+- No historical branch implementation imported in this package.
+
+## TESTS / FALSIFICATION
+
+Focused cumulative local tests: 19/19 PASS.
+
+New integration falsification covers:
+- exact F2 duplicate is blocked from restart while scientific memory remains `BLOCKED / UNKNOWN / UNKNOWN_ONLY`;
+- canonical negative query returns the negative B2-like record and excludes F2;
+- unrecovered Box-Office-like record remains `REVIEW_STILL_REQUIRED` and cannot enter the canonical index;
+- normalization output is a disposition/review vector, not a scalar score;
+- non-exact lexical overlap is a review hint only with empirical correlation `UNKNOWN`;
+- legacy source records remain unmodified/read-only.
+
+Broader Research OS regression: still not claimed from hosted CI because existing workflows are branch-filtered to historical builder branches. Compatibility with canonical spine is preserved at the consumed status contract (`BLOCK_EXACT_LEGACY_DUPLICATE`). Full practical regression remains required before FINAL.
+
+## SCIENTIFIC CLAIM LIMIT
+
+The bridge interprets historical metadata already present in the pinned read-only source. It does not open outcomes, acquire new data, convert review assertions into evidence, compute empirical similarity/correlation, or authorize experiments/observation/capital/trading.
+
+## SHARED_SURFACES_TOUCHED
+
+- `research/research_os/legacy.py`
+
+WHY_REQUIRED: this is the current architectural ingress from historical truth into the canonical Research OS; leaving it raw would let consumers bypass scientific-memory semantics.
+
+CONTRACT_CHANGE: additive fields/methods on the legacy bridge; exact duplicate `status` remains compatible. Raw `historical_result` is retained only with `historical_result_is_scientific_authority=false`.
+
+EXPECTED_CROSS_LANE_IMPACT: canonical-spine consumers retain exact-duplicate behavior; Search/Prioritisation gains a canonical memory index and explicit review-only overlap hints.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+The current Research OS historical ingress now terminates in canonical scientific-memory semantics rather than raw result strings. The next material gap is historical coverage: recover/verify high-value named histories and classify each as canonical, review-required, superseded-with-proof, external, or authority-sealed without inventing missing evidence.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Perform bounded archaeology for the mission-critical histories (V1 causal-timing invalidation, F1 carry Stage A/B, Box Office, EURUSD unexecuted, Weather/MLB/Soccer replication, institutional/forced-flow, event/documents, SEC/Factory/Evidence lineages). Add an executable archaeology reconciliation surface that records exact source refs and terminal dispositions without creating a second store.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+- ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+- PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+- REAL_CAPITAL_AUTHORIZED=FALSE
+- LIVE_TRADING_AUTHORIZED=FALSE
+- OUTCOME_ACCESSED=FALSE

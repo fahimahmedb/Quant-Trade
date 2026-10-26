@@ -1,0 +1,20 @@
+{
+  "action_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9",
+  "emitted_at": "2026-10-20T00:49:26Z",
+  "event_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9-g3-b15c752621a7-2",
+  "event_seq": 2,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 3,
+  "payload": {
+    "active_count": 1,
+    "claimed_count": 0,
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "result": "COMPLETE",
+    "stage": "provenance_check",
+    "task_count": 31,
+    "terminal_count": 30
+  },
+  "session_id": "AAA-ORACLE-H24-CANARY-f3943830e20b05d9-g3-b15c752621a7",
+  "worker_id": "oracle-research-v1.evidence_data"
+}

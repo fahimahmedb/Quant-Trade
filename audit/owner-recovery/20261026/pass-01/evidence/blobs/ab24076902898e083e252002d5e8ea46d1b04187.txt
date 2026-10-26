@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "evaluated_utc": "2026-10-10 10:15:05 UTC",
+  "kind": "PUBLIC_SOURCE_QUALIFICATION_AND_SYNTHETIC_CAUSAL_REPAIR",
+  "candidate": "EURUSD-RANGE-GRID-001",
+  "status": "EXECUTABLE_SOURCE_GATE_UNMET; HISTDATA_QUOTE_PROXY_CANDIDATE",
+  "authorization": "Latest Owner Poursuis resumes autonomous two-axis research; no implicit data-rights grant, paid access, account, trading or old-result rerun.",
+  "entry_reference": {
+    "branch": "research/technical-signals-literature-2026-10-10",
+    "head": "8497c2d8c14192ad073184007512111a00175aae",
+    "pr22_head": "1e88c6b82d682ae6d6d71b0732cb1bdb232cea3a",
+    "pr26_head": "ea9d2d0e0e057199bb168249c963acbc88e89de5",
+    "prs_draft_open_unmerged": [
+      22,
+      26,
+      28
+    ]
+  },
+  "inspection_scope": {
+    "market_archives_downloaded": 0,
+    "market_archive_rows_parsed": 0,
+    "market_returns_or_pnl_computed": false,
+    "new_economic_looks": 0,
+    "atomic_look_reservations_claimed": 0,
+    "new_economic_families_activated": 0,
+    "read_only_catalogs_and_primary_documents": true,
+    "external_schema_example_exposure": "HistData official schema page contains illustrative EUR/USD rows dated 2012-02-01; viewed as format documentation, not acquired archives or Quant outcomes. Preserve this exposure; no clean-period claim."
+  },
+  "sources": [
+    {
+      "id": "DUKASCOPY",
+      "decision": "AUTOMATED_WEB_FEED_PERMISSION_NOT_ESTABLISHED",
+      "primary": [
+        {
+          "url": "https://www.dukascopy.com/swiss/english/legal-pages/terms-of-use/",
+          "read_scope": "Website TCU, restrictions/license sections; tool-rendered web reading, original-byte digest not claimed.",
+          "sha256": null
+        },
+        {
+          "url": "https://www.dukascopy.com/client/javadoc3/com/dukascopy/api/ITick.html",
+          "read_scope": "Best bid/ask and volume definitions; historical price-array depth is one, unlike live depth.",
+          "sha256": null
+        },
+        {
+          "url": "https://www.dukascopy.com/client/javadoc3/com/dukascopy/api/ITimedData.html",
+          "read_scope": "getTime denotes data-element time; no first-public-delivery guarantee authenticated.",
+          "sha256": null
+        }
+      ],
+      "rights": "TCU grants limited personal noncommercial download use while restricting database construction, redistribution/derivatives and automated acquisition absent prior express written consent. No such consent authenticated for this automated feed route. Separate JForex API terms grant limited personal use; their applicability to unauthenticated BI5 downloads is not established. XML licensing governs a different product and is not applied to BI5.",
+      "action": "No price feed or BI5 fetched. Do not bypass by third-party mirrors or infer consent from downloader code. No account opened or permission email sent.",
+      "executable_limit": "BBO is quote information, not guaranteed fills/queue position/history of delivery or attainable depth.",
+      "export_page_scope_note": "The public data-export wiki also links requester-pays S3 storage. No AWS account/request/fee incurred and no identity or rights of that separate route assumed."
+    },
+    {
+      "id": "FXCM",
+      "decision": "PUBLIC_TICK_DOCUMENTATION_FOUND; ACCESS_PROBES_403; EXECUTION_UNQUALIFIED",
+      "head": "924393dd545fab187527d95ef8b1178284b274b6",
+      "tree_complete": true,
+      "primary_readmes": [
+        {
+          "path": "README.md",
+          "sha256": "898bdda886b26efee50f4219f02d3264e9e57d71e91f76d4f6765a599b9d7aa6",
+          "bytes": 7753,
+          "local_path": "/workspace/scratch/fx-source-qualification-2026-10-10/fxcm_readme_0.md"
+        },
+        {
+          "path": "TickData/README.md",
+          "sha256": "2bb3cc09d41a7e632e2ff51d600ad42c8d5094768d8c513028ce8ed64f21fc21",
+          "bytes": 1510,
+          "local_path": "/workspace/scratch/fx-source-qualification-2026-10-10/fxcm_readme_1.md"
+        }
+      ],
+      "root_subdirectory_conflict": "Root README requests a tick email; TickData/README.md at the same pinned commit expressly offers free public weekly ticks from January 2019 and lists 2019..2023. The tick subdirectory is preserved: do not misreport no public tick route merely from the root README. Listed years are not verified coverage.",
+      "rights": "Tick README limits use to personal use under linked EULA. No repository license is identified by GitHub metadata; this alone is not a prohibition. Linked UK EULA page exposes a form, not the operative text. FXCM Apps EULA and AU MT5 EULA were read as related documents, not substituted for the exact dataset agreement. No public redistribution/commercial/live license asserted.",
+      "quotes": "Provider explicitly labels these as indicative, using lowest spreads available exclusively on Active Trader accounts, timestamps UTC. Do not import Dukascopy fees or zero-commission retail pricing into this source.",
+      "primary_urls": [
+        "https://github.com/fxcm/MarketData/blob/924393dd545fab187527d95ef8b1178284b274b6/TickData/README.md",
+        "https://www.fxcm.com/uk/forms/eula/",
+        "https://www.fxcmapps.com/en/legal/terms-and-conditions/",
+        "https://www.fxcm.com/au/forms/mt5-eula/"
+      ],
+      "head_metadata_probes": {
+        "retrieved_utc": "2026-10-10T10:08:28.144078+00:00",
+        "quotes_body_bytes_read": 0,
+        "selected_urls": [
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2019/1.csv.gz",
+            "method": "HEAD",
+            "response_body_read": false,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2023/1.csv.gz",
+            "method": "HEAD",
+            "response_body_read": false,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2025/1.csv.gz",
+            "method": "HEAD",
+            "response_body_read": false,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2026/1.csv.gz",
+            "method": "HEAD",
+            "response_body_read": false,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2026/40.csv.gz",
+            "method": "HEAD",
+            "response_body_read": false,
+            "status": 403
+          }
+        ]
+      },
+      "get_headers_metadata_probes": {
+        "retrieved_utc": "2026-10-10T10:09:28.367345+00:00",
+        "quotes_body_bytes_read": 0,
+        "selected_urls": [
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2019/1.csv.gz",
+            "method": "GET",
+            "range": "bytes=0-0",
+            "response_body_bytes_read": 0,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2023/1.csv.gz",
+            "method": "GET",
+            "range": "bytes=0-0",
+            "response_body_bytes_read": 0,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2025/1.csv.gz",
+            "method": "GET",
+            "range": "bytes=0-0",
+            "response_body_bytes_read": 0,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2026/1.csv.gz",
+            "method": "GET",
+            "range": "bytes=0-0",
+            "response_body_bytes_read": 0,
+            "status": 403
+          },
+          {
+            "url": "https://tickdata.fxcorporate.com/EURUSD/2026/40.csv.gz",
+            "method": "GET",
+            "range": "bytes=0-0",
+            "response_body_bytes_read": 0,
+            "status": 403
+          }
+        ]
+      },
+      "http_interpretation": "All five fixed URLs return HTTP 403 with both HEAD and range GET headers; zero response body bytes read and no archive opened. Cause not established: observation is scoped to these URLs/current environment, not proof all FXCM data are permanently unavailable.",
+      "loader_schema_note": "Pinned TickData34.py only retrieves/decompresses/prints file length; it authenticates URL layout, not column ordering. It was read, not executed.",
+      "loader_provenance": {
+        "url": "https://raw.githubusercontent.com/fxcm/MarketData/924393dd545fab187527d95ef8b1178284b274b6/TickData/TickData34.py",
+        "read_scope": "Static source only; no script execution.",
+        "bytes": 1817,
+        "sha256": "277ca4ebb9de723858b205d8013fa9aaf194b84bc8eb4142e832765ed83ff966",
+        "local_cache": "/workspace/scratch/fx-source-qualification-2026-10-10/fxcm_tick_reader.py",
+        "raw_published_in_git": false
+      }
+    },
+    {
+      "id": "HISTDATA",
+      "decision": "PERSONAL_BACKTEST_INTENT_AND_QUOTE_SCHEMA_DOCUMENTED; EXECUTABLE_GATE_UNMET",
+      "rights": "FAQ expressly offers free data to traders/developers for backtesting and download pages support generic applications. This supports the intended personal exploratory research use; no explicit prohibition invented merely from absence of an open-source license. Commercial/live use, raw redistribution and independently published datasets are not established. Raw files stay outside Git. Paid FTP/SFTP offers are outside scope.",
+      "schema": {
+        "format": "Generic ASCII ticks",
+        "fields": [
+          "DateTime",
+          "Bid",
+          "Ask",
+          "Volume"
+        ],
+        "timestamp": "YYYYMMDD HHMMSSNNN",
+        "resolution_documented": "millisecond",
+        "timezone": "fixed EST UTC-05:00, no daylight-saving adjustments; convert by adding five hours, not America/New_York",
+        "volume": "provider removes broker-specific volume; do not treat zero as signed or aggregate FX order flow",
+        "other_formats": "M1 and one-second tick bars are bid-only bars or separate side series, not this joint millisecond quote schema"
+      },
+      "catalog": {
+        "eurusd_year_labels": [
+          2000,
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "2025_month_labels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "2026_month_labels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "meaning": "HTML link labels only; October 2026 is current/partial and excluded from any completed-month claim. No archive existence/continuous quote coverage or file size authenticated."
+      },
+      "primary": [
+        {
+          "url": "https://www.histdata.com/f-a-q/",
+          "bytes": 40079,
+          "sha256": "4a6b1ac833aaa2ed0ae94452df0a3a5f663d24bdcbcbee6023d62e1b4508d125",
+          "local_path": "/workspace/scratch/fx-source-qualification-2026-10-10/histdata_faq.html"
+        },
+        {
+          "url": "https://www.histdata.com/f-a-q/data-files-detailed-specification/",
+          "bytes": 39292,
+          "sha256": "9b06ee58c987eac4934ab5da11577be2d824b9828047cde6ee1f2f9979626cc1",
+          "local_path": "/workspace/scratch/fx-source-qualification-2026-10-10/histdata_schema.html"
+        },
+        {
+          "url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025",
+          "bytes": 32790,
+          "sha256": "b91b5a4b6ce2d1ce6ea5a132e05a3e53fa2340848241e4f48c0d3caeaa147f59",
+          "local_path": "/workspace/scratch/fx-source-qualification-2026-10-10/histdata_eurusd_2025_catalog.html"
+        },
+        {
+          "url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026",
+          "bytes": 32270,
+          "sha256": "0be70a462892fd9ad44018e572a03d31fa3200e979d8e7d0131d47a76a77a472",
+          "local_path": "/workspace/scratch/fx-source-qualification-2026-10-10/histdata_eurusd_2026_catalog.html"
+        },
+        {
+          "url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/EURUSD",
+          "read_scope": "Year link labels only.",
+          "bytes": 36031,
+          "sha256": "f82d010824b2d2cf7fd371bc3b571c104460fe2d5625118a3e4e09e86d9ec9d2",
+          "local_cache": "/workspace/scratch/fx-source-qualification-2026-10-10/histdata_eurusd_catalog.html",
+          "raw_published_in_git": false
+        }
+      ],
+      "limits": [
+        "Originating broker/venue and historical account spread/commission tiers not authenticated from inspected primary documents.",
+        "Timezone and displayed precision do not establish first delivery, complete sampling, sequence within equal timestamps or executable size.",
+        "No warranty/certification; provider says per-file gap/status diagnostics exist. No gap/duplicate ratio or market-row count measured here.",
+        "Source therefore supports a conditional quote-proxy design, not proof of a capturable grid edge. Raw acquisition requires a published fixed manifest and QA/stop protocol before any outcome look."
+      ]
+    }
+  ],
+  "cost_and_risk_findings": {
+    "primary_fee_url": "https://www.dukascopy.com/swiss/english/about/fee-schedule/",
+    "primary_rollover_url": "https://www.dukascopy.com/swiss/english/forex/forex-trading-accounts/overnight/",
+    "current_fee_reference": "Dukascopy JForex self-trader entry tier: USD 35 per USD 1 million on each opening or closing leg. Two equal-USD-notional legs cost 0.7 basis points in commission before spread/slippage. Tier and venue are current; not a historical fee archive or a cost schedule for HistData/FXCM.",
+    "additional_conditions": "Account currency conversion/platform surcharges are separate; do not silently transfer a JForex schedule into MT4/MT5. Rollover changes by activity tier; multiple swaps on some dates; most FX changes trading day 21:00/22:00 GMT by US DST. No historical swap series acquired.",
+    "pre_result_design_option": "An explicitly intraday test that closes and cancels every basket before a frozen conservative cutoff could avoid normal overnight financing. This is an unregistered design choice before outcomes, not a cost exemption for missing quotes, forced failed exits or positions crossing rollover. Any remaining exposure requires a frozen adverse treatment or invalidates the pilot, never deletion of losing baskets.",
+    "fill_risk": "A quote touch does not prove a passive limit fill. Prospective replay must freeze price side, latency, staleness, equal-time ordering, gaps, executable-size limits and adverse fills; no best intrabar ordering, fake spread capture or stop-at-requested-price through gaps.",
+    "capital_risk": "Bound notional/margin/finite basket exposure ex ante; mark losses on all open positions. Grid wins are not independent observations and increasing size does not manufacture conditional positive expected returns."
+  },
+  "causal_volatility_repair": {
+    "path": "src/volatility.py",
+    "before_sha256": "43ed515a78d242ab8d8c09c9ea5e71e9a2cba158bb46a6e16c107c6eed0ec8cf",
+    "after_sha256": "b04613f5c671d1e9be2beaf4d9742dc3cf04f53820b6465b5cea8e580ae9b3bc",
+    "change": "garch_path accepts an explicit past initial variance; ewma_path requires explicit mean and variance together. Fixed past state avoids future-block demeaning/seeding and allows deterministic block restart. New causal usage requires parameters/state known before the processed block.",
+    "legacy_behavior": "Legacy defaults retained, clearly documented as unsuitable for a new OOS walk-forward. Old run_etape_c.py still uses those defaults and is not silently repaired or rerun; old script and report hashes unchanged. This does not measure the effect of the old defect, demonstrate forecasting skill, calibrate EUR/USD or authorize adopting GJR-t.",
+    "synthetic_validation": {
+      "command": "python -m pytest -q research/edge_search/test_volatility_causal_state.py",
+      "exit_code": 0,
+      "passed": 28,
+      "stdout": "28 passed in 1.74s",
+      "covers": [
+        "future suffix invariance",
+        "current-return/next-forecast ordering",
+        "saved-state block restart",
+        "empty block state",
+        "invalid/partial fixed state"
+      ],
+      "test_file_sha256": "9979d5af1c0b24e666a61f1b8fc793211b45bd92eeb96b9789542d54883fc513",
+      "versions": {
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "arch": "8.0.0",
+        "pytest": "9.1.1"
+      },
+      "ci_workflow": ".github/workflows/volatility-causal-state.yml; synthetic-only, dependencies isolated from core stdlib suite."
+    },
+    "old_script_sha256": "7031b95ef8c67618c0f02f4cff29e500ebb5917d26aa6006d0353f6de59baacc",
+    "old_report_sha256": "e876b2183fbfccc1bb395b9695ed3d41805ec7674ceab0d3d144724f570897ca"
+  },
+  "active_run_observation": [
+    {
+      "status_filter": "in_progress",
+      "total_count": 0,
+      "runs": []
+    },
+    {
+      "status_filter": "queued",
+      "total_count": 0,
+      "runs": []
+    },
+    {
+      "status_filter": "waiting",
+      "total_count": 0,
+      "runs": []
+    },
+    {
+      "status_filter": "pending",
+      "total_count": 0,
+      "runs": []
+    },
+    {
+      "status_filter": "requested",
+      "total_count": 0,
+      "runs": []
+    }
+  ],
+  "immutable_f1": {
+    "closure_commit": "ea9d2d0e0e057199bb168249c963acbc88e89de5",
+    "theta": 0.2,
+    "a_sha256": "554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03",
+    "b_sha256": "bcf2d7e8c75c42c9ea870eb30e553a39a2726471b588c4b54071bb2e621e16d3",
+    "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+    "old_results_recalculated": false
+  },
+  "verdict": {
+    "RESULT": "FX_SOURCE_QUALIFICATION_COMPLETED; executable source gate not passed; no economic result.",
+    "EFFECT_SIZE": "NOT_MEASURED; no Quant EUR/USD return, Sharpe or grid backtest.",
+    "UNCERTAINTY": "Broker provenance, attainable costs/fees, historical delivery/fills, quote gaps and conditional rebound remain unvalidated.",
+    "POWER_LIMITATION": "No independent basket population measured; public vendor 2013..2016, official 2012 schema illustrations, B4/NASDAQ/F1 and private UNKNOWN preserved. No clean-period/confirmation claim.",
+    "ECONOMIC_SIGNIFICANCE": "Reject cheap-spread/execution assumptions and full-future volatility seeds before spending economic looks; HistData is a lower-cost source candidate for a carefully labelled quote-proxy feasibility screen.",
+    "FAILED_CRITERIA": "Dukascopy automated web-feed permission absent; FXCM fixed metadata probes 403/exact linked EULA text unavailable; HistData broker/fill/complete sampling/historical costs unqualified. No frozen grid protocol/look yet.",
+    "LESSON": "Free quote access, millisecond labels and volatility forecasts do not establish net profitability. Keep source/access failure distinct from economic rejection; pay costs on every rung and show open losses.",
+    "FAMILY_STATUS": "NOT_ACTIVATED; EURUSD-RANGE-GRID-001 is the sole design candidate, with at most three counted economic expressions proposed. F1 REJECT, F2 BLOCKED_DATA_PERMISSION and Polymarket KILL unchanged.",
+    "NEXT_DECISION": "Prepare the smallest distinct exploratory intraday quote-proxy preregistration for HistData before any archives/outcomes: explicit proxy claim, one deterministic entry and finite grid, past-state sizing, adverse timing/gap/fill conventions, fixed central/stress cost assumptions, independent-day/basket uncertainty and counted diagnostic comparators. Apply rights/source-QA/challenge/atomic reservation gates. If no decision-useful admissible protocol is possible, park this untested grid with its source reason and select one genuinely accessible reserve; do not repeat these completed blocked probes or reactivate scoped failures."
+  }
+}

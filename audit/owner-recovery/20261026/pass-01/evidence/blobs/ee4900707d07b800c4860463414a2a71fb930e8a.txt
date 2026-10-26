@@ -1,0 +1,45 @@
+name: Research OS aggressive live receipts CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/expansion/live_receipts.py'
+      - 'research/research_os/tests/test_aggressive_live_receipts.py'
+      - '.github/workflows/research-os-aggressive-live-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-receipts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run aggressive live receipt tests
+        run: python -m unittest research.research_os.tests.test_aggressive_live_receipts -v
+      - name: Verify deterministic native event stream
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.expansion.live_receipts import run_with_live_receipts
+          base = Path('research/research_os')
+          fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          a = run_with_live_receipts(fixture)
+          b = run_with_live_receipts(fixture)
+          assert a['integration_fingerprint'] == b['integration_fingerprint']
+          assert a['worker_events'] == b['worker_events']
+          assert a['worker_receipts'] == b['worker_receipts']
+          assert a['live_lab_bridge']['status'] == 'PASS'
+          assert set(a['live_lab_bridge']['native_event_types']) == {'ACTION_STARTED', 'ACTION_COMPLETED'}
+          assert all(not r['real_capital_authorized'] for r in a['worker_receipts'])
+          assert all(not r['live_trading_authorized'] for r in a['worker_receipts'])
+          assert all(not r['prospective_observation_authorized'] for r in a['worker_receipts'])
+          print('AGGRESSIVE_LIVE_RECEIPTS=PASS')
+          PY

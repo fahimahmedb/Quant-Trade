@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:12:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before": "c81381976bdef7a62e704e7e26af715909790ff4",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "candidate": {
+    "issuer": "FortuneX Acquisition Corporation",
+    "cik": "0002121703",
+    "form": "8-K",
+    "accession": "0001829126-26-011104",
+    "saved_feed_updated": "2026-10-14T06:01:53-04:00",
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/fortunexacq_8k.htm",
+    "accepted_timestamp_primary_verified_this_pass": false
+  },
+  "primary_observed_fact": "The SEC primary 8-K reports only an amendment to FortuneX's existing Business Combination Agreement with WT Realty Group Inc. The amendment reduces aggregate merger consideration from 60,000,000 to 52,500,000 PubCo shares and otherwise leaves the business combination agreement in force. The filing contains no shareholder redemption notice, redemption deadline, trust-floor entitlement, extension vote redemption, or completion/redemption result.",
+  "decision": "INELIGIBLE_DOCUMENT_FOR_FROZEN_SPAC_REDEMPTION_PROTOCOL",
+  "decision_reason": "Being a SPAC is not sufficient. The frozen SPAC-redemption family requires the specific redemption mechanism/clock defined by its protocol. This document is a merger-consideration amendment, not a redemption event, so it is eliminated before any admissible market-price or redemption-value access.",
+  "protocol_implications": {
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no redemption mechanism or redemption clock is announced in this 8-K.",
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no issuer tender SC TO-I or odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split/fractional cash-in-lieu event.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split/fractional round-up event.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: not an ETF liquidation filing.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: not a CEF rights offering and predates that protocol T0."
+  },
+  "exposure_accounting": {
+    "economic_look_opened": false,
+    "selected_market_price_requested": false,
+    "incidental_unrequested_market_price_snippet_surfaced_in_search_results": true,
+    "incidental_exposure_note": "A broad filing search surfaced a third-party FortuneX warrant price/performance snippet. It was not used for eligibility or economic inference. Treat that 2026-10-14 FXACW price window as exposed/non-pristine for any future FortuneX-specific market study."
+  },
+  "ordering_effect": "FortuneX may be removed from the saved documentary queue. The unresolved earlier Calamos 497 accession remains the blocking chronology item for any later FIRST ETF-liquidation claim; FortuneX itself creates no SPAC-redemption claim.",
+  "next_action": "Continue documentary-only queue work without opening an economic look. Next saved candidates are HDFC Bank 6-K, SK hynix 6-K, Evotec 6-K, Banco Santander 6-K, Pharming 6-K, Transocean DEFM14A and Verastem 8-K. Preserve the Calamos unresolved-first-event restriction and do not substitute a later favorable ETF event.",
+  "inference_ceiling": [
+    "No SPAC redemption economics",
+    "No market-direction inference from the merger amendment",
+    "No claim of exhaustive prospective coverage",
+    "No live or real-capital authorization"
+  ]
+}

@@ -1,0 +1,9 @@
+source_sha=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+PYTHONHASHSEED=0
+PYTHONPATH=src:tests:.
+command=python -m pytest -q tests/test_sec_form4_capture.py
+......................................................... [ 27%]
+........................................................................................ [ 71%]
+............................................... [ 94%]
+............                                                             [100%]
+204 passed, 96 subtests passed in 2.44s

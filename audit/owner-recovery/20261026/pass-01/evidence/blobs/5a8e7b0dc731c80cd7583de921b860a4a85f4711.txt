@@ -1,0 +1,157 @@
+# QUANT-TRADE — MEGA A CP005 — 2026-10-21
+
+## Durable checkpoint
+
+BASE_SHA: `4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090`
+W1_SCIENTIFIC_MEMORY_SEALED_SHA: `9d92c9f859efd39fdfd94372b10ba91ad73c31b4`
+LAST_FULLY_GREEN_PACKAGE_SHA: `4e6858bd833145dbaed207a36bfc0fff3d0a067d`
+CURRENT_PACKAGE_SHA: `4e6858bd833145dbaed207a36bfc0fff3d0a067d`
+CHAIN_SCOPE: Research Intelligence Loop — qualified memory/archaeology feedback, explainable action recommendation, canonical CI enforcement, and explicit hypothesis-priority / information-value / cost ordering.
+
+## Package chronology since CP004
+
+1. `1445f03c7a4747d5fefac764f2339f385b8d2aa8` — structured next-research-action recommendation at Legacy screening.
+2. `c3fab00e28e1a8b104556085c123770b2d3cfbfa` — preserve legacy operational-gate compatibility while keeping semantic novelty unresolved under sparse identity.
+3. `342f5e138d5510e8907a0da7c2ed669f2b355d54` — missing runtime planning context becomes fail-closed recommendation rather than a crash.
+4. `7d12c4c60978736b1371139b355e6c74884910ba` / `8932e78a74e43a8afcbbbab83060e09676695848` / `c3f2f6c98b282683da280b096832f41f83067c0f` — CI bridge iteration and duplicate cleanup.
+5. `3d51968ad0e8b2ab99cc4ffa7d968b9b299d84a8` — Mega-A contracts are invoked explicitly by the existing canonical SEC gate; the historical V1 773-test inventory is not redefined.
+6. `cf26ff9c32feb05473f313906e3f234b0eaac499` — restore exact sealed-W1 archaeology source-catalog blob `5330f9f9874a0263fe524bd5d7db3704091bbc33` without rewriting it.
+7. `4e6858bd833145dbaed207a36bfc0fff3d0a067d` — add pure mission-level chain orchestration with explicit `hypothesis_priority -> information_value -> cost` ranking and ten adversarial tests.
+
+## Exact green proof for current package
+
+GitHub Actions run `39592943006`, job `119198155948`, completed `SUCCESS` on exact package HEAD `4e6858bd833145dbaed207a36bfc0fff3d0a067d`.
+
+Observed proof:
+
+- fail-closed SEC identity check: PASS;
+- generated schema drift: PASS;
+- status-artifact freshness: PASS;
+- full historical V1 unit suite: **773/773 PASS**;
+- explicit Mega-A Research Intelligence contracts: **90/90 PASS**;
+- SEC P0 lane suite: **267/267 PASS**;
+- V1 end-to-end regression: **35/35 PASS**;
+- exact-head verification: `all_passed=true`, `verified_sha=4e6858bd833145dbaed207a36bfc0fff3d0a067d`;
+- verification artifact uploaded as artifact id `12343320739`;
+- verification artifact ZIP SHA-256: `3cc4661fbb302cf87d1507f8ce5e77eda5c84333c09b76f24ac21e8e950d4440`;
+- committed verification placeholder restored: PASS;
+- clean working tree: PASS.
+
+This proof is scoped to the exact code package SHA above. The checkpoint document itself is a later documentation-only descendant and does not retroactively alter the tested code tree.
+
+## Current package — hypothesis priority / information value / cost
+
+`research/research_os/research_chain.py` is a pure recommendation layer. It does not create a task, mutate the scheduler, access an outcome, write Scientific Memory, or alter Control Plane authority.
+
+It reuses `research_intelligence.evaluate_search_space()` for semantic-memory, novelty/duplicate, capability, route, authority, budget and blocker admission, then ranks executable decisions by:
+
+1. explicit pre-outcome `hypothesis_priority` descending;
+2. explicit pre-outcome `information_value` descending;
+3. admitted `cost_units` ascending;
+4. action class and candidate id only as deterministic tie-breaks.
+
+Missing priority/information/cost values stay `UNKNOWN`; they are not assigned invented numeric values. Outcome/performance-shaped fields may be reported as present-but-ignored but are never ranking inputs.
+
+The complete receipt exposes the fixed chain:
+
+`SCIENTIFIC_MEMORY -> ARCHAEOLOGY -> CURRENT_FRONTIER -> EVIDENCE_GAPS -> AVAILABLE_CAPABILITIES -> SEARCH_SPACE -> NOVELTY_DUP_CONTROL -> HYPOTHESIS_PRIORITY -> INFORMATION_VALUE -> COST_BUDGET_BLOCKER -> NEXT_ACTION -> FRONTIER_EXHAUSTION_NOOP -> FEEDBACK`
+
+Required context surfaces fail closed when absent. Empty-but-present context is not rewritten as scientific exhaustion.
+
+## Current package tests
+
+`research/research_os/tests/test_research_chain.py` covers:
+
+1. higher explicit hypothesis priority beating a cheaper lower-priority candidate;
+2. information value breaking equal-priority ties before cost;
+3. cost breaking equal-priority/equal-information ties;
+4. UNKNOWN ranking metadata remaining UNKNOWN;
+5. blocked high-priority candidate never winning;
+6. alpha/sharpe-shaped outcome fields being ignored by ranking;
+7. incomplete chain context failing closed;
+8. queue-empty not becoming scientific exhaustion;
+9. scientific exhaustion requiring explicit Search + Archaeology completion facts;
+10. no scheduler or persistent-memory mutation.
+
+The canonical Mega-A bridge enumerates nine fixed module test files. The historical root `unittest discover -s tests` inventory remains separate and unchanged at 773 tests.
+
+## Sealed W1 archaeology provenance restoration
+
+The source-catalog dependency was reacquired from sealed W1 SHA `9d92c9f859efd39fdfd94372b10ba91ad73c31b4` and imported as exact Git blob `5330f9f9874a0263fe524bd5d7db3704091bbc33`.
+
+It is documentary provenance, not a truth store: it does not authorize outcome access or rewrite old review-only material into economic evidence.
+
+`research/research_os/archaeology.py` was also verified identical by Git blob identity between the sealed W1 source and this Mega-A package.
+
+## Historical Oracle reacquisition
+
+Concrete historical/current Oracle runtime evidence was reacquired even though literal commits/files named `CP003` through `CP009` were not found by commit/branch search.
+
+Observed Oracle wake-receipt head: `e25f949a74c704e79f48d2e2af2c492ec5e7094c`.
+Referenced runtime release: `a67ffec48fff895d5edc42171855e2213e49cf0d`.
+
+Observed contract:
+
+- bounded wake / one lineage per wake;
+- queue `72/72 terminal` produced `NOOP_FRONTIER_EXHAUSTED` operationally;
+- no task/write/model/economic authority was invented by that wake;
+- fixed controls are serialized and Validator isolation is external to Mega-A.
+
+Interpretation preserved by Mega-A:
+
+`NOOP_FRONTIER_EXHAUSTED` from Oracle means no remaining operational frontier mandate to emit. It is **not** accepted as proof that the scientific Search space is exhausted. Scientific exhaustion still requires explicit `search_space_complete=true` and `archaeology_complete=true` plus no actionable dependency.
+
+## Existing Control Plane preserved
+
+Mega-A does not replace the canonical scheduler, queue steward or operational exhaustion behavior. Research Intelligence remains advisory/policy-only and does not create a second control plane.
+
+Pre-freeze cross-lane identity/provenance work is not invented where no current handoff authorizes it. Follow-up creation remains constrained by the current task contract.
+
+## Design-boundary resolutions
+
+### Search-space construction
+
+`ARCHAEOLOGY`, `CURRENT_FRONTIER`, `EVIDENCE_GAPS` and `AVAILABLE_CAPABILITIES` are explicit bound inputs and are preserved in the chain receipt. Candidate construction remains upstream of this pure decision layer. Mega-A intentionally does **not** create a second generator/scheduler merely to make these inputs more active.
+
+Classification: `NO_BUILD_REQUIRED / OWNERSHIP_BOUNDARY`, unless a canonical producer contract later delegates candidate construction to Mega-A.
+
+### Incomplete ranking metadata
+
+When priority or information-value metadata is unknown, the receipt keeps `ranking_complete=false` and the unknown values remain explicit. Any deterministic fallback ordering is only a stable recommendation ordering; it is **not** a scientific claim that one hypothesis dominates another and carries no scheduler authority.
+
+Classification: `SAFE_FAIL_CLOSED_RECOMMENDATION`, not evidence of scientific priority.
+
+## Residual chain dependencies / classification
+
+1. Exact package CI proof: `RESOLVED / PASS`.
+2. Pre-freeze cross-lane identity/provenance task creation where no handoff authorizes it: `REVIEW_STILL_REQUIRED`; Mega-A must not invent a route.
+3. Durable authoritative `search_space_complete` / `archaeology_complete` facts: `REVIEW_STILL_REQUIRED`; current production code must not fabricate them.
+4. Non-zero research budget authority/state beyond caller-supplied context: `DEPENDENT / NO_BUILD_REQUIRED` until a canonical budget contract exists.
+5. Source acquisition/external provider access: `EXTERNAL_ACCESS_REQUIRED / OUT_OF_SCOPE`.
+6. Validator/economic/prospective/live outcomes: `SEALED_BY_AUTHORITY / OUT_OF_SCOPE`.
+
+No additional internal scheduler, truth store, outcome service, Validator or producer runtime is justified by the evidence currently available.
+
+## Scientific claim limits
+
+- No economic outcome accessed.
+- No alpha, profitability, return, covariance, correlation, provider availability or deployment success inferred.
+- Priority and information value are explicit research-design metadata, not outcome-derived scores.
+- UNKNOWN remains UNKNOWN.
+- Lexical overlap remains review metadata, not scientific equivalence.
+- Identifier equality remains an operational collision, not scientific-family proof.
+- BLOCKED is not NEGATIVE; UNEXECUTED is not FAILED.
+- Positive-but-insufficient is not automatic producer promotion.
+
+## Authority status
+
+- `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`
+- `REAL_CAPITAL_AUTHORIZED=FALSE`
+- `LIVE_TRADING_AUTHORIZED=FALSE`
+- `OUTCOME_ACCESSED=FALSE`
+
+TECHNICAL_INTEGRATION_VALIDATION: `PASS` for exact code SHA `4e6858bd833145dbaed207a36bfc0fff3d0a067d`.
+ECONOMIC_OUTCOME_VALIDATION: `NOT_AUTHORIZED / NOT_PERFORMED`.
+SAFE_TO_INTEGRATE: `TRUE` for the Mega-A technical rail, subject to normal convergence/conflict review against the target rail.
+SAFE_TO_CONTINUE_THIS_CHAIN: `TRUE` only when new authorized upstream facts or dependencies appear; no fabricated work is justified.

@@ -1,0 +1,38 @@
+...................................................................... [ 61%]
+...................... [ 81%]
+.......F.............                                 [100%]
+=================================== FAILURES ===================================
+_ CanonicalExecutedDepthTests.test_exact_legacy_duplicate_stops_before_runner __
+
+self = <test_work_build_depth.CanonicalExecutedDepthTests testMethod=test_exact_legacy_duplicate_stops_before_runner>
+
+    def test_exact_legacy_duplicate_stops_before_runner(self):
+>       ledger = json.loads((BASE / 'legacy/LEGACY_RESEARCH_LEDGER.imported.json').read_text())
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research/research_os/tests/test_work_build_depth.py:217:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/workspace/Quant-Trade/research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/workspace/Quant-Trade/research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=========================== short test summary info ============================
+FAILED research/research_os/tests/test_work_build_depth.py::CanonicalExecutedDepthTests::test_exact_legacy_duplicate_stops_before_runner
+1 failed, 112 passed, 71 subtests passed in 0.95s

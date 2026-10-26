@@ -1,0 +1,20 @@
+worst over calendars x fills x theta (20,000 each); NEW rule; joint with reach
+prices  dependence     L_W miss T1a     
+fav80   ar0.8_0.1      0.0150   0.0053
+fav80   ar0.9_0.1      0.0328   0.0142
+fav80   box15_0.1      0.0259   0.0100
+fav80   box30_0.05     0.0295   0.0123
+fav80   box30_0.1      0.0512   0.0230
+fav80   mk0.9_0.1      0.0295   0.0162
+fav80   none           0.0021   0.0004
+fav85   ar0.8_0.1      0.0173   0.0063
+fav85   ar0.9_0.1      0.0360   0.0154
+fav85   box15_0.1      0.0316   0.0114
+fav85   box30_0.05     0.0307   0.0139
+fav85   box30_0.1      0.0604   0.0263
+fav85   mk0.9_0.1      0.0307   0.0187
+fav85   none           0.0028   0.0005
+pt90    ar0.9_0.1      0.0431   0.0164
+pt90    box30_0.1      0.0555   0.0224
+pt90    mk0.9_0.1      0.0336   0.0181
+pt90    none           0.0066   0.0006

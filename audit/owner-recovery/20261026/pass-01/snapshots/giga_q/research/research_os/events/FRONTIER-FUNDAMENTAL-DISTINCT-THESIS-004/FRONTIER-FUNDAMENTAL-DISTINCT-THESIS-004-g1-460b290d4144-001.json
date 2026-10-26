@@ -1,0 +1,14 @@
+{
+  "action_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004",
+  "emitted_at": "2026-10-20T05:00:22Z",
+  "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004-g1-460b290d4144-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 1,
+  "payload": {
+    "lineage": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004",
+    "queue_state": "WORKING"
+  },
+  "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004-g1-460b290d4144",
+  "worker_id": "oracle-research-v1.fundamental_events"
+}

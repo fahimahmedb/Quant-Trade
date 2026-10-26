@@ -1,0 +1,324 @@
+FFFFFFFFFFF.                                                             [100%]
+=================================== FAILURES ===================================
+_____ test_freeze_detaches_all_admitted_mutable_identity[caller-mechanism] _____
+
+field = 'mechanism', direction = 'caller'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+>           assert frozen==original[2]
+E           AssertionError: assert {'experiment_...bf8019e', ...} == {'experiment_...bf8019e', ...}
+E             
+E             Omitting 13 identical items, use -vv to show
+E             Differing items:
+E             {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}} != {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}}
+E             Use -v to get more diff
+
+tests/test_vertical_freeze_snapshot_depth.py:36: AssertionError
+___ test_freeze_detaches_all_admitted_mutable_identity[caller-decision_map] ____
+
+field = 'decision_map', direction = 'caller'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+>           assert frozen==original[2]
+E           AssertionError: assert {'experiment_...bf8019e', ...} == {'experiment_...bf8019e', ...}
+E             
+E             Omitting 13 identical items, use -vv to show
+E             Differing items:
+E             {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}} != {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}}
+E             Use -v to get more diff
+
+tests/test_vertical_freeze_snapshot_depth.py:36: AssertionError
+_ test_freeze_detaches_all_admitted_mutable_identity[caller-dataset_provenance] _
+
+field = 'dataset_provenance', direction = 'caller'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+>           assert frozen==original[2]
+E           AssertionError: assert {'experiment_...bf8019e', ...} == {'experiment_...bf8019e', ...}
+E             
+E             Omitting 12 identical items, use -vv to show
+E             Differing items:
+E             {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...'claim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'rewritten'}]}, ...}} != {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}}
+E             {'dataset_provenance': {'sources...
+E             
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_freeze_snapshot_depth.py:36: AssertionError
+_ test_freeze_detaches_all_admitted_mutable_identity[caller-declared_metrics] __
+
+field = 'declared_metrics', direction = 'caller'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+>           assert frozen==original[2]
+E           AssertionError: assert {'experiment_...bf8019e', ...} == {'experiment_...bf8019e', ...}
+E             
+E             Omitting 13 identical items, use -vv to show
+E             Differing items:
+E             {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}} != {'protocol_payload': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'candidate': {'hypothesis_i...aim': 'synthetic claim description only', ...}, 'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, ...}}
+E             Use -v to get more diff
+
+tests/test_vertical_freeze_snapshot_depth.py:36: AssertionError
+____ test_freeze_detaches_all_admitted_mutable_identity[receipt-mechanism] _____
+
+field = 'mechanism', direction = 'receipt'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+            assert frozen==original[2]
+            assert frozen['protocol_hash']==_hash(frozen['protocol_payload'])
+        else:
+>           assert (output,meta)==original[:2]
+E           AssertionError: assert ({'engine_id'...e-code', ...}) == ({'engine_id'...e-code', ...})
+E             
+E             At index 0 diff: {'engine_id': 'test-producer.v1', 'candidate': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'mechanism': 'rewritten', 'claim': 'synthetic claim description only', 'falsification_scope': 'implementation contract only', 'decision_map': {'if_supported': 'future_test', 'if_rejected': 'discard'}}} != {'engine_id': 'test-producer.v1', 'candidate': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'mechanism': 'synthetic mechanism description only', 'claim': 'synthetic claim description only', 'falsification_scope':...
+E             
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_freeze_snapshot_depth.py:39: AssertionError
+___ test_freeze_detaches_all_admitted_mutable_identity[receipt-decision_map] ___
+
+field = 'decision_map', direction = 'receipt'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+            assert frozen==original[2]
+            assert frozen['protocol_hash']==_hash(frozen['protocol_payload'])
+        else:
+>           assert (output,meta)==original[:2]
+E           AssertionError: assert ({'engine_id'...e-code', ...}) == ({'engine_id'...e-code', ...})
+E             
+E             At index 0 diff: {'engine_id': 'test-producer.v1', 'candidate': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'mechanism': 'synthetic mechanism description only', 'claim': 'synthetic claim description only', 'falsification_scope': 'implementation contract only', 'decision_map': {}}} != {'engine_id': 'test-producer.v1', 'candidate': {'hypothesis_id': 'TEST-IMPLEMENTABILITY-001', 'generation_id': 'G1', 'mechanism': 'synthetic mechanism description only', 'claim': 'synthetic claim description only', 'falsification_scope': 'implementation contract on...
+E             
+E             ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_freeze_snapshot_depth.py:39: AssertionError
+_ test_freeze_detaches_all_admitted_mutable_identity[receipt-dataset_provenance] _
+
+field = 'dataset_provenance', direction = 'receipt'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+            assert frozen==original[2]
+            assert frozen['protocol_hash']==_hash(frozen['protocol_payload'])
+        else:
+>           assert (output,meta)==original[:2]
+E           AssertionError: assert ({'engine_id'...e-code', ...}) == ({'engine_id'...e-code', ...})
+E             
+E             At index 1 diff: {'dataset_provenance': {'sources': [{'version': 'rewritten'}]}, 'declared_metrics': [{'name': 'synthetic geometry', 'threshold': 1}], 'cost_model_version': 'fixture-cost', 'code_version': 'fixture-code', 'implementability_declaration': {'scope': ['software-only']}} != {'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, 'declared_metrics': [{'name': 'synthetic geometry', 'threshold': 1}], 'cost_model_version': 'fixture-cost', 'code_version': 'fixture-code', 'implementability_declaration': {'scope': ['software-only']}}
+E             Use -v to get more diff
+
+tests/test_vertical_freeze_snapshot_depth.py:39: AssertionError
+_ test_freeze_detaches_all_admitted_mutable_identity[receipt-declared_metrics] _
+
+field = 'declared_metrics', direction = 'receipt'
+
+    @pytest.mark.parametrize('field',['mechanism','decision_map','dataset_provenance','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_freeze_detaches_all_admitted_mutable_identity(field,direction):
+        output,impl,meta=fixture()
+        frozen=freeze_experiment_envelope(output,impl,meta)
+        original=deepcopy((output,meta,frozen))
+        if field=='mechanism':
+            target=output['candidate'] if direction=='caller' else frozen['protocol_payload']['candidate']
+            target['mechanism']='rewritten'
+        elif field=='decision_map':
+            target=output['candidate']['decision_map'] if direction=='caller' else frozen['protocol_payload']['candidate']['decision_map']
+            target.clear()
+        elif field=='dataset_provenance':
+            target=meta['dataset_provenance'] if direction=='caller' else frozen['dataset_provenance']
+            target['sources'][0]['version']='rewritten'
+        else:
+            target=meta['declared_metrics'] if direction=='caller' else frozen['protocol_payload']['declared_metrics']
+            target[0]['threshold']=2
+        if direction=='caller':
+            assert frozen==original[2]
+            assert frozen['protocol_hash']==_hash(frozen['protocol_payload'])
+        else:
+>           assert (output,meta)==original[:2]
+E           AssertionError: assert ({'engine_id'...e-code', ...}) == ({'engine_id'...e-code', ...})
+E             
+E             At index 1 diff: {'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, 'declared_metrics': [{'name': 'synthetic geometry', 'threshold': 2}], 'cost_model_version': 'fixture-cost', 'code_version': 'fixture-code', 'implementability_declaration': {'scope': ['software-only']}} != {'dataset_provenance': {'sources': [{'version': 'synthetic-v1'}]}, 'declared_metrics': [{'name': 'synthetic geometry', 'threshold': 1}], 'cost_model_version': 'fixture-cost', 'code_version': 'fixture-code', 'implementability_declaration': {'scope': ['software-only']}}
+E             Use -v to get more diff
+
+tests/test_vertical_freeze_snapshot_depth.py:39: AssertionError
+___________ test_nonfinite_protocol_cannot_receive_frozen_hash[nan] ____________
+
+value = nan
+
+    @pytest.mark.parametrize('value',[float('nan'),float('inf')])
+    def test_nonfinite_protocol_cannot_receive_frozen_hash(value):
+        output,impl,meta=fixture();meta['declared_metrics'][0]['threshold']=value
+        frozen=freeze_experiment_envelope(output,impl,meta)
+>       assert frozen['status']=='NOT_FROZEN_INVALID_PROTOCOL'
+E       AssertionError: assert 'FROZEN_READY_NO_OUTCOME' == 'NOT_FROZEN_INVALID_PROTOCOL'
+E         
+E         - NOT_FROZEN_INVALID_PROTOCOL
+E         + FROZEN_READY_NO_OUTCOME
+
+tests/test_vertical_freeze_snapshot_depth.py:46: AssertionError
+___________ test_nonfinite_protocol_cannot_receive_frozen_hash[inf] ____________
+
+value = inf
+
+    @pytest.mark.parametrize('value',[float('nan'),float('inf')])
+    def test_nonfinite_protocol_cannot_receive_frozen_hash(value):
+        output,impl,meta=fixture();meta['declared_metrics'][0]['threshold']=value
+        frozen=freeze_experiment_envelope(output,impl,meta)
+>       assert frozen['status']=='NOT_FROZEN_INVALID_PROTOCOL'
+E       AssertionError: assert 'FROZEN_READY_NO_OUTCOME' == 'NOT_FROZEN_INVALID_PROTOCOL'
+E         
+E         - NOT_FROZEN_INVALID_PROTOCOL
+E         + FROZEN_READY_NO_OUTCOME
+
+tests/test_vertical_freeze_snapshot_depth.py:46: AssertionError
+____________ test_exact_double_freeze_is_deterministic_and_detached ____________
+
+    def test_exact_double_freeze_is_deterministic_and_detached():
+        output,impl,meta=fixture()
+        first=freeze_experiment_envelope(output,impl,meta)
+        second=freeze_experiment_envelope(output,impl,meta)
+        assert first==second
+        first['protocol_payload']['candidate']['decision_map'].clear()
+>       assert second['protocol_hash']==_hash(second['protocol_payload'])
+E       AssertionError: assert '361f68c2ef93...7f4b8cbf8019e' == 'c3b93190d37f...c4323cd5ab69a'
+E         
+E         - c3b93190d37f21718a9ff0e321aa380a8b3dd4f21b4e352b4bac4323cd5ab69a
+E         + 361f68c2ef9378c1e5fff6374b9a0131f43fa10996d683780437f4b8cbf8019e
+
+tests/test_vertical_freeze_snapshot_depth.py:58: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[caller-mechanism]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[caller-decision_map]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[caller-dataset_provenance]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[caller-declared_metrics]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[receipt-mechanism]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[receipt-decision_map]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[receipt-dataset_provenance]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_freeze_detaches_all_admitted_mutable_identity[receipt-declared_metrics]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_nonfinite_protocol_cannot_receive_frozen_hash[nan]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_nonfinite_protocol_cannot_receive_frozen_hash[inf]
+FAILED tests/test_vertical_freeze_snapshot_depth.py::test_exact_double_freeze_is_deterministic_and_detached
+11 failed, 1 passed in 0.07s

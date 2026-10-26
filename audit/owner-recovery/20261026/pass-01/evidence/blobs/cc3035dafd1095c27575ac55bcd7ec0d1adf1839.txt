@@ -1,0 +1,65 @@
+# W1 MEMORY CP004 — identity-safe archaeology binding
+
+STATUS: PASS_FOCUSED / CONTINUE
+
+BASE: `fecd09e0839f1208d9f876c311331221bde3ab7d`
+HEAD/PARENT: parent `8b710401e4236b6d0318eab21fd41c3be7ade37d` (CP003).
+
+## WHAT_GAP_WAS_PROVEN
+
+CP003 could distinguish qualified immutable archaeology from review-only history, but a later consumer could still bind a valid source artifact to the wrong canonical memory record. That would preserve source authenticity while corrupting scientific identity. Supersession also needed a narrow bridge from archaeology proof refs to the existing memory supersession contract.
+
+## WHAT_CHANGED
+
+- Added `memory_archaeology_bridge.py` with `bind_qualified_provenance()`.
+- Binding is allowed only for `QUALIFIED_CURRENT` findings whose memory action permits canonical use.
+- The archaeology `subject_id` must already match canonical memory identity/source-identity fields; there is no fuzzy/branch-name binding.
+- Binding only appends immutable archaeology provenance refs.
+- Binding explicitly protects `scientific_disposition`, `epistemic_status`, `claim_ceiling`, `evidence`, and semantic `identity` from mutation, then re-validates the canonical memory contract.
+- Added `supersession_proof_refs()` so the existing `supersede_with_proof()` flow can consume archaeology refs only when the archaeology finding itself is explicitly `SUPERSEDED_WITH_PROOF` and has immutable proof.
+
+## WHAT_WAS_REUSED/IMPORTED
+
+- CP001 `validate_memory_record()`: `REUSE_CURRENT` as canonical memory guard.
+- CP003 `validate_finding()` and immutable source conversion: `REUSE_CURRENT`.
+- CP001 `supersede_with_proof()` remains the scientific-memory authority for supersession; archaeology supplies proof refs but does not implement a parallel supersession store.
+
+## TESTS / FALSIFICATION
+
+Focused cumulative local tests: 34/34 PASS.
+
+New bridge tests prove matching-only provenance binding, wrong-subject rejection, and explicit proof-only supersession refs.
+
+Broader current-architecture regression remains required before FINAL.
+
+## SCIENTIFIC CLAIM LIMIT
+
+This package changes provenance connectivity only. It does not derive, reclassify or score economic evidence and does not access new outcomes.
+
+## SHARED_SURFACES_TOUCHED
+
+- `research/research_os/memory_archaeology_bridge.py`
+
+WHY_REQUIRED: source authenticity is insufficient if source-to-memory identity binding is weak.
+
+CONTRACT_CHANGE: additive archaeology-to-memory binding helpers; no existing public status removed or renamed.
+
+EXPECTED_CROSS_LANE_IMPACT: future Search/Prioritisation can safely enrich memory provenance, but must present exact subject identity rather than relying on names/branches/fuzzy overlap.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+The chain `historical artifact -> immutable archaeology -> canonical scientific memory` is now executable and identity-safe. Archaeology cannot overwrite scientific evidence, and supersession proof is routed back through the existing scientific-memory contract.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Run the broadest practical current Research OS compatibility regression around canonical spine, legacy screen, contracts and scientific store. Then reassess the lane for any remaining actionable memory/archaeology gap; classify non-recovered histories explicitly and prepare FINAL if the frontier is exhausted.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+- ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+- PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+- REAL_CAPITAL_AUTHORIZED=FALSE
+- LIVE_TRADING_AUTHORIZED=FALSE
+- OUTCOME_ACCESSED=FALSE

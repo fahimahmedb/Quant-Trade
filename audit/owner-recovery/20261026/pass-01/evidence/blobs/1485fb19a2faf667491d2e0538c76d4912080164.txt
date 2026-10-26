@@ -1,0 +1,11 @@
+{
+  "event_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-001-g1-e2",
+  "session_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-001-g1",
+  "worker_id":"market-discovery-workflow",
+  "action_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-001",
+  "event_type":"ACTION_COMPLETED",
+  "event_seq":2,
+  "generation":1,
+  "emitted_at":"2026-10-16T07:00:15Z",
+  "payload":{"result":"NO_CANDIDATE_AFTER_DISCONFIRMATION","queue_state":"QUEUED","note":"Fresh task-directory observation shows other durable tasks exist; exact global READY count was not established."}
+}

@@ -1,0 +1,270 @@
+constants {'z_eff': 7.2, 'se_kappa_ceiling': 0.005, 'lambda_theta': 2.15, 'lambda_kappa': 1.8, 'max_R_theta': 7.193399602074174, 'max_R_kappa': 11.85353472745481, 'unattainable_t2': [], 'unattainable_neg': []}
+
+== power AT THE DESIGN OWN theta_PCE, given GO(theta-side) and INFO_SUFFICIENT ==
+  pce_new fav     m17  full GO&INFO reps 0 of 20000
+  pce_new fav     m17  thin GO&INFO reps 0 of 20000
+  pce_new fav     m35  full GO&INFO  17754 (0.888)  P(T2|GO&INFO) 0.976 [0.974, 0.979]  mean theta_PCE 0.101 realised thW 0.100
+  pce_new fav     m35  thin GO&INFO      8 (0.000)  P(T2|GO&INFO) 1.000 [0.676, 1.000]  mean theta_PCE 0.110 realised thW 0.100
+  pce_new fav     m55  full GO&INFO  13020 (0.651)  P(T2|GO&INFO) 0.982 [0.980, 0.984]  mean theta_PCE 0.091 realised thW 0.091
+  pce_new fav     m55  thin GO&INFO  13801 (0.690)  P(T2|GO&INFO) 0.995 [0.994, 0.996]  mean theta_PCE 0.100 realised thW 0.100
+  pce_new fav     m96  full GO&INFO   2316 (0.116)  P(T2|GO&INFO) 0.999 [0.997, 1.000]  mean theta_PCE 0.090 realised thW 0.090
+  pce_new fav     m96  thin GO&INFO   2375 (0.119)  P(T2|GO&INFO) 0.999 [0.996, 1.000]  mean theta_PCE 0.090 realised thW 0.090
+  pce_new fav80   m17  full GO&INFO   9271 (0.464)  P(T2|GO&INFO) 0.997 [0.995, 0.998]  mean theta_PCE 0.105 realised thW 0.100
+  pce_new fav80   m17  thin GO&INFO     16 (0.001)  P(T2|GO&INFO) 1.000 [0.806, 1.000]  mean theta_PCE 0.112 realised thW 0.100
+  pce_new fav80   m35  full GO&INFO  19607 (0.980)  P(T2|GO&INFO) 0.998 [0.997, 0.998]  mean theta_PCE 0.090 realised thW 0.090
+  pce_new fav80   m35  thin GO&INFO  19605 (0.980)  P(T2|GO&INFO) 0.997 [0.997, 0.998]  mean theta_PCE 0.090 realised thW 0.090
+  pce_new fav80   m55  full GO&INFO  16603 (0.830)  P(T2|GO&INFO) 0.998 [0.997, 0.998]  mean theta_PCE 0.080 realised thW 0.080
+  pce_new fav80   m55  thin GO&INFO  16614 (0.831)  P(T2|GO&INFO) 0.998 [0.997, 0.998]  mean theta_PCE 0.082 realised thW 0.082
+  pce_new fav80   m96  full GO&INFO   4993 (0.250)  P(T2|GO&INFO) 0.999 [0.997, 0.999]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new fav80   m96  thin GO&INFO   6087 (0.304)  P(T2|GO&INFO) 1.000 [0.999, 1.000]  mean theta_PCE 0.080 realised thW 0.080
+  pce_new fav85   m17  full GO&INFO  19996 (1.000)  P(T2|GO&INFO) 0.999 [0.999, 1.000]  mean theta_PCE 0.095 realised thW 0.095
+  pce_new fav85   m17  thin GO&INFO  18918 (0.946)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.101 realised thW 0.100
+  pce_new fav85   m35  full GO&INFO  19772 (0.989)  P(T2|GO&INFO) 0.999 [0.999, 1.000]  mean theta_PCE 0.080 realised thW 0.080
+  pce_new fav85   m35  thin GO&INFO  19761 (0.988)  P(T2|GO&INFO) 0.999 [0.998, 0.999]  mean theta_PCE 0.081 realised thW 0.081
+  pce_new fav85   m55  full GO&INFO  17791 (0.890)  P(T2|GO&INFO) 0.998 [0.998, 0.999]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new fav85   m55  thin GO&INFO  18396 (0.920)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.080 realised thW 0.080
+  pce_new fav85   m96  full GO&INFO   9024 (0.451)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new fav85   m96  thin GO&INFO   9138 (0.457)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new favmix  m17  full GO&INFO reps 0 of 20000
+  pce_new favmix  m17  thin GO&INFO reps 0 of 20000
+  pce_new favmix  m35  full GO&INFO reps 0 of 20000
+  pce_new favmix  m35  thin GO&INFO reps 0 of 20000
+  pce_new favmix  m55  full GO&INFO reps 0 of 20000
+  pce_new favmix  m55  thin GO&INFO reps 0 of 20000
+  pce_new favmix  m96  full GO&INFO reps 0 of 20000
+  pce_new favmix  m96  thin GO&INFO reps 0 of 20000
+  pce_new mid     m17  full GO&INFO reps 0 of 20000
+  pce_new mid     m17  thin GO&INFO reps 0 of 20000
+  pce_new mid     m35  full GO&INFO reps 0 of 20000
+  pce_new mid     m35  thin GO&INFO reps 0 of 20000
+  pce_new mid     m55  full GO&INFO reps 0 of 20000
+  pce_new mid     m55  thin GO&INFO reps 0 of 20000
+  pce_new mid     m96  full GO&INFO reps 0 of 20000
+  pce_new mid     m96  thin GO&INFO reps 0 of 20000
+  pce_new pm89    m17  full GO&INFO  19992 (1.000)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.090 realised thW 0.090
+  pce_new pm89    m17  thin GO&INFO  19997 (1.000)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.094 realised thW 0.094
+  pce_new pm89    m35  full GO&INFO  19825 (0.991)  P(T2|GO&INFO) 0.999 [0.998, 0.999]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new pm89    m35  thin GO&INFO  19874 (0.994)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.080 realised thW 0.080
+  pce_new pm89    m55  full GO&INFO  18808 (0.940)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new pm89    m55  thin GO&INFO  18788 (0.939)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.070 realised thW 0.070
+  pce_new pm89    m96  full GO&INFO  10498 (0.525)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.060 realised thW 0.060
+  pce_new pm89    m96  thin GO&INFO  12550 (0.627)  P(T2|GO&INFO) 1.000 [1.000, 1.000]  mean theta_PCE 0.070 realised thW 0.070
+  pce_old fav     m17  full GO&INFO  19923 (0.996)  P(T2|GO&INFO) 0.079 [0.075, 0.083]  mean theta_PCE 0.050 realised thW 0.050
+  pce_old fav     m17  thin GO&INFO  19936 (0.997)  P(T2|GO&INFO) 0.070 [0.067, 0.074]  mean theta_PCE 0.050 realised thW 0.050
+  pce_old fav     m35  full GO&INFO  17604 (0.880)  P(T2|GO&INFO) 0.060 [0.057, 0.064]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav     m35  thin GO&INFO  17604 (0.880)  P(T2|GO&INFO) 0.058 [0.054, 0.061]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav     m55  full GO&INFO   9093 (0.455)  P(T2|GO&INFO) 0.139 [0.132, 0.146]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav     m55  thin GO&INFO   9146 (0.457)  P(T2|GO&INFO) 0.119 [0.113, 0.126]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav     m96  full GO&INFO    655 (0.033)  P(T2|GO&INFO) 0.177 [0.150, 0.208]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav     m96  thin GO&INFO    782 (0.039)  P(T2|GO&INFO) 0.375 [0.341, 0.409]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav80   m17  full GO&INFO  19953 (0.998)  P(T2|GO&INFO) 0.097 [0.093, 0.101]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav80   m17  thin GO&INFO  19958 (0.998)  P(T2|GO&INFO) 0.080 [0.077, 0.084]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav80   m35  full GO&INFO  18494 (0.925)  P(T2|GO&INFO) 0.052 [0.049, 0.055]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav80   m35  thin GO&INFO  18684 (0.934)  P(T2|GO&INFO) 0.129 [0.124, 0.134]  mean theta_PCE 0.037 realised thW 0.037
+  pce_old fav80   m55  full GO&INFO  12072 (0.604)  P(T2|GO&INFO) 0.103 [0.097, 0.108]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav80   m55  thin GO&INFO  12132 (0.607)  P(T2|GO&INFO) 0.097 [0.092, 0.102]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav80   m96  full GO&INFO   1896 (0.095)  P(T2|GO&INFO) 0.307 [0.287, 0.329]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav80   m96  thin GO&INFO   1979 (0.099)  P(T2|GO&INFO) 0.293 [0.273, 0.313]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav85   m17  full GO&INFO  19980 (0.999)  P(T2|GO&INFO) 0.182 [0.177, 0.188]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav85   m17  thin GO&INFO  19967 (0.998)  P(T2|GO&INFO) 0.170 [0.165, 0.176]  mean theta_PCE 0.040 realised thW 0.040
+  pce_old fav85   m35  full GO&INFO  19090 (0.955)  P(T2|GO&INFO) 0.102 [0.098, 0.106]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav85   m35  thin GO&INFO  19123 (0.956)  P(T2|GO&INFO) 0.098 [0.094, 0.103]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav85   m55  full GO&INFO  14569 (0.728)  P(T2|GO&INFO) 0.174 [0.168, 0.180]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav85   m55  thin GO&INFO  14561 (0.728)  P(T2|GO&INFO) 0.159 [0.154, 0.166]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav85   m96  full GO&INFO   3652 (0.183)  P(T2|GO&INFO) 0.428 [0.412, 0.444]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old fav85   m96  thin GO&INFO   3612 (0.181)  P(T2|GO&INFO) 0.421 [0.405, 0.437]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old favmix  m17  full GO&INFO  19900 (0.995)  P(T2|GO&INFO) 0.032 [0.030, 0.035]  mean theta_PCE 0.066 realised thW 0.066
+  pce_old favmix  m17  thin GO&INFO  19921 (0.996)  P(T2|GO&INFO) 0.033 [0.031, 0.036]  mean theta_PCE 0.070 realised thW 0.070
+  pce_old favmix  m35  full GO&INFO  15919 (0.796)  P(T2|GO&INFO) 0.025 [0.023, 0.028]  mean theta_PCE 0.053 realised thW 0.053
+  pce_old favmix  m35  thin GO&INFO  16082 (0.804)  P(T2|GO&INFO) 0.041 [0.038, 0.044]  mean theta_PCE 0.060 realised thW 0.060
+  pce_old favmix  m55  full GO&INFO   5675 (0.284)  P(T2|GO&INFO) 0.056 [0.050, 0.062]  mean theta_PCE 0.050 realised thW 0.050
+  pce_old favmix  m55  thin GO&INFO   5851 (0.293)  P(T2|GO&INFO) 0.048 [0.042, 0.053]  mean theta_PCE 0.050 realised thW 0.050
+  pce_old favmix  m96  full GO&INFO    241 (0.012)  P(T2|GO&INFO) 0.187 [0.143, 0.241]  mean theta_PCE 0.050 realised thW 0.050
+  pce_old favmix  m96  thin GO&INFO    248 (0.012)  P(T2|GO&INFO) 0.173 [0.131, 0.225]  mean theta_PCE 0.050 realised thW 0.050
+  pce_old mid     m17  full GO&INFO  19771 (0.989)  P(T2|GO&INFO) 0.014 [0.013, 0.016]  mean theta_PCE 0.080 realised thW 0.080
+  pce_old mid     m17  thin GO&INFO  19762 (0.988)  P(T2|GO&INFO) 0.022 [0.020, 0.024]  mean theta_PCE 0.086 realised thW 0.086
+  pce_old mid     m35  full GO&INFO  13115 (0.656)  P(T2|GO&INFO) 0.021 [0.018, 0.023]  mean theta_PCE 0.069 realised thW 0.069
+  pce_old mid     m35  thin GO&INFO  13203 (0.660)  P(T2|GO&INFO) 0.020 [0.017, 0.022]  mean theta_PCE 0.070 realised thW 0.070
+  pce_old mid     m55  full GO&INFO   3046 (0.152)  P(T2|GO&INFO) 0.038 [0.032, 0.045]  mean theta_PCE 0.060 realised thW 0.060
+  pce_old mid     m55  thin GO&INFO   2997 (0.150)  P(T2|GO&INFO) 0.046 [0.039, 0.054]  mean theta_PCE 0.063 realised thW 0.063
+  pce_old mid     m96  full GO&INFO     43 (0.002)  P(T2|GO&INFO) 0.163 [0.081, 0.300]  mean theta_PCE 0.060 realised thW 0.060
+  pce_old mid     m96  thin GO&INFO     45 (0.002)  P(T2|GO&INFO) 0.178 [0.093, 0.313]  mean theta_PCE 0.060 realised thW 0.060
+  pce_old pm89    m17  full GO&INFO  19981 (0.999)  P(T2|GO&INFO) 0.094 [0.090, 0.098]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old pm89    m17  thin GO&INFO  19975 (0.999)  P(T2|GO&INFO) 0.242 [0.237, 0.248]  mean theta_PCE 0.039 realised thW 0.039
+  pce_old pm89    m35  full GO&INFO  19378 (0.969)  P(T2|GO&INFO) 0.158 [0.153, 0.163]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old pm89    m35  thin GO&INFO  19406 (0.970)  P(T2|GO&INFO) 0.148 [0.143, 0.153]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old pm89    m55  full GO&INFO  15985 (0.799)  P(T2|GO&INFO) 0.259 [0.252, 0.266]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old pm89    m55  thin GO&INFO  15957 (0.798)  P(T2|GO&INFO) 0.233 [0.227, 0.240]  mean theta_PCE 0.030 realised thW 0.030
+  pce_old pm89    m96  full GO&INFO   4228 (0.211)  P(T2|GO&INFO) 0.158 [0.147, 0.169]  mean theta_PCE 0.020 realised thW 0.020
+  pce_old pm89    m96  thin GO&INFO   5412 (0.271)  P(T2|GO&INFO) 0.510 [0.497, 0.523]  mean theta_PCE 0.030 realised thW 0.030
+== GO rates (old = cycle-2 GO; new = cycle-3 GO) per price law ==
+mid
+   m8   full GO_old 0.155  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03979 SE0k med 0.02075 thetaPCE_new med 0.29
+   m12  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03406 SE0k med 0.01776 thetaPCE_new med 0.25
+   m17  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03018 SE0k med 0.01574 thetaPCE_new med 0.22
+   m25  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02684 SE0k med 0.01399 thetaPCE_new med 0.2
+   m35  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02457 SE0k med 0.01281 thetaPCE_new med 0.18
+   m55  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02233 SE0k med 0.01164 thetaPCE_new med 0.17
+   m80  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.021 SE0k med 0.01095 thetaPCE_new med 0.16
+   m96  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02059 SE0k med 0.01074 thetaPCE_new med 0.15
+   m8   thin GO_old 0.077  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04261 SE0k med 0.02076 thetaPCE_new med 0.31
+   m12  thin GO_old 0.992  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03647 SE0k med 0.01776 thetaPCE_new med 0.27
+   m17  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03234 SE0k med 0.01573 thetaPCE_new med 0.24
+   m25  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02874 SE0k med 0.01399 thetaPCE_new med 0.21
+   m35  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02633 SE0k med 0.01281 thetaPCE_new med 0.19
+   m55  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02392 SE0k med 0.01164 thetaPCE_new med 0.18
+   m80  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0225 SE0k med 0.01095 thetaPCE_new med 0.17
+   m96  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02206 SE0k med 0.01074 thetaPCE_new med 0.16
+favmix
+   m8   full GO_old 0.875  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03213 SE0k med 0.01907 thetaPCE_new med 0.24
+   m12  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02751 SE0k med 0.01631 thetaPCE_new med 0.2
+   m17  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02439 SE0k med 0.01446 thetaPCE_new med 0.18
+   m25  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02169 SE0k med 0.01286 thetaPCE_new med 0.16
+   m35  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01985 SE0k med 0.01177 thetaPCE_new med 0.15
+   m55  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01804 SE0k med 0.01069 thetaPCE_new med 0.13
+   m80  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01697 SE0k med 0.01006 thetaPCE_new med 0.13
+   m96  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01664 SE0k med 0.00987 thetaPCE_new med 0.12
+   m8   thin GO_old 0.873  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03439 SE0k med 0.01907 thetaPCE_new med 0.25
+   m12  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02946 SE0k med 0.01632 thetaPCE_new med 0.22
+   m17  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02612 SE0k med 0.01446 thetaPCE_new med 0.19
+   m25  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02322 SE0k med 0.01285 thetaPCE_new med 0.17
+   m35  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02126 SE0k med 0.01177 thetaPCE_new med 0.16
+   m55  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01933 SE0k med 0.01069 thetaPCE_new med 0.14
+   m80  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01819 SE0k med 0.01006 thetaPCE_new med 0.14
+   m96  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01784 SE0k med 0.00986 thetaPCE_new med 0.13
+fav
+   m8   full GO_old 0.999  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02204 SE0k med 0.01722 thetaPCE_new med 0.16
+   m12  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01886 SE0k med 0.01474 thetaPCE_new med 0.14
+   m17  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01671 SE0k med 0.01306 thetaPCE_new med 0.13
+   m25  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01486 SE0k med 0.01161 thetaPCE_new med 0.11
+   m35  full GO_old 1.000  theta-side_new 0.932  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01361 SE0k med 0.01063 thetaPCE_new med 0.1
+   m55  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01236 SE0k med 0.00966 thetaPCE_new med 0.09
+   m80  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01163 SE0k med 0.00909 thetaPCE_new med 0.09
+   m96  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0114 SE0k med 0.00891 thetaPCE_new med 0.09
+   m8   thin GO_old 0.999  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0236 SE0k med 0.01722 thetaPCE_new med 0.17
+   m12  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0202 SE0k med 0.01474 thetaPCE_new med 0.15
+   m17  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0179 SE0k med 0.01306 thetaPCE_new med 0.13
+   m25  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01591 SE0k med 0.01161 thetaPCE_new med 0.12
+   m35  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01458 SE0k med 0.01063 thetaPCE_new med 0.11
+   m55  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01324 SE0k med 0.00966 thetaPCE_new med 0.1
+   m80  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01246 SE0k med 0.00909 thetaPCE_new med 0.09
+   m96  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01222 SE0k med 0.00891 thetaPCE_new med 0.09
+fav80
+   m8   full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01835 SE0k med 0.01549 thetaPCE_new med 0.14
+   m12  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01569 SE0k med 0.01325 thetaPCE_new med 0.12
+   m17  full GO_old 1.000  theta-side_new 0.469  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01391 SE0k med 0.01174 thetaPCE_new med 0.11
+   m25  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01237 SE0k med 0.01044 thetaPCE_new med 0.09
+   m35  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01133 SE0k med 0.00956 thetaPCE_new med 0.09
+   m55  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01029 SE0k med 0.00869 thetaPCE_new med 0.08
+   m80  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00968 SE0k med 0.00817 thetaPCE_new med 0.07
+   m96  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00949 SE0k med 0.00801 thetaPCE_new med 0.07
+   m8   thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01965 SE0k med 0.01548 thetaPCE_new med 0.15
+   m12  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01681 SE0k med 0.01325 thetaPCE_new med 0.13
+   m17  thin GO_old 1.000  theta-side_new 0.001  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0149 SE0k med 0.01174 thetaPCE_new med 0.11
+   m25  thin GO_old 1.000  theta-side_new 0.994  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01325 SE0k med 0.01044 thetaPCE_new med 0.1
+   m35  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01214 SE0k med 0.00956 thetaPCE_new med 0.09
+   m55  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01103 SE0k med 0.00868 thetaPCE_new med 0.08
+   m80  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01037 SE0k med 0.00817 thetaPCE_new med 0.08
+   m96  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01017 SE0k med 0.00801 thetaPCE_new med 0.08
+fav85
+   m8   full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01646 SE0k med 0.01437 thetaPCE_new med 0.12
+   m12  full GO_old 1.000  theta-side_new 0.308  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01409 SE0k med 0.0123 thetaPCE_new med 0.11
+   m17  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01248 SE0k med 0.0109 thetaPCE_new med 0.09
+   m25  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0111 SE0k med 0.00969 thetaPCE_new med 0.08
+   m35  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01016 SE0k med 0.00888 thetaPCE_new med 0.08
+   m55  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00923 SE0k med 0.00806 thetaPCE_new med 0.07
+   m80  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00869 SE0k med 0.00758 thetaPCE_new med 0.07
+   m96  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00852 SE0k med 0.00744 thetaPCE_new med 0.07
+   m8   thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01762 SE0k med 0.01437 thetaPCE_new med 0.13
+   m12  thin GO_old 1.000  theta-side_new 0.001  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0151 SE0k med 0.0123 thetaPCE_new med 0.11
+   m17  thin GO_old 1.000  theta-side_new 0.946  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01337 SE0k med 0.0109 thetaPCE_new med 0.1
+   m25  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01189 SE0k med 0.00969 thetaPCE_new med 0.09
+   m35  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01089 SE0k med 0.00887 thetaPCE_new med 0.08
+   m55  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00989 SE0k med 0.00806 thetaPCE_new med 0.08
+   m80  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00931 SE0k med 0.00758 thetaPCE_new med 0.07
+   m96  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00912 SE0k med 0.00744 thetaPCE_new med 0.07
+pm89
+   m8   full GO_old 1.000  theta-side_new 0.002  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01529 SE0k med 0.0136 thetaPCE_new med 0.12
+   m12  full GO_old 1.000  theta-side_new 0.974  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01309 SE0k med 0.01165 thetaPCE_new med 0.1
+   m17  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0116 SE0k med 0.01032 thetaPCE_new med 0.09
+   m25  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01031 SE0k med 0.00918 thetaPCE_new med 0.08
+   m35  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00944 SE0k med 0.0084 thetaPCE_new med 0.07
+   m55  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00858 SE0k med 0.00764 thetaPCE_new med 0.07
+   m80  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00807 SE0k med 0.00718 thetaPCE_new med 0.06
+   m96  full GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00791 SE0k med 0.00704 thetaPCE_new med 0.06
+   m8   thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01637 SE0k med 0.0136 thetaPCE_new med 0.12
+   m12  thin GO_old 1.000  theta-side_new 0.368  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01403 SE0k med 0.01165 thetaPCE_new med 0.11
+   m17  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01243 SE0k med 0.01032 thetaPCE_new med 0.09
+   m25  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01105 SE0k med 0.00918 thetaPCE_new med 0.08
+   m35  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.01012 SE0k med 0.00841 thetaPCE_new med 0.08
+   m55  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00919 SE0k med 0.00764 thetaPCE_new med 0.07
+   m80  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00865 SE0k med 0.00718 thetaPCE_new med 0.07
+   m96  thin GO_old 1.000  theta-side_new 1.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.00848 SE0k med 0.00704 thetaPCE_new med 0.07
+tail1
+   m8   full GO_old 0.046  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04608 SE0k med 0.02085 thetaPCE_new med 0.34
+   m12  full GO_old 0.554  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03955 SE0k med 0.01785 thetaPCE_new med 0.29
+   m17  full GO_old 0.903  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03534 SE0k med 0.01582 thetaPCE_new med 0.26
+   m25  full GO_old 0.999  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03153 SE0k med 0.01406 thetaPCE_new med 0.23
+   m35  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02894 SE0k med 0.01288 thetaPCE_new med 0.21
+   m55  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02632 SE0k med 0.0117 thetaPCE_new med 0.19
+   m80  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02478 SE0k med 0.011 thetaPCE_new med 0.18
+   m96  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02428 SE0k med 0.01079 thetaPCE_new med 0.18
+   m8   thin GO_old 0.021  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04772 SE0k med 0.02086 thetaPCE_new med 0.35
+   m12  thin GO_old 0.395  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04188 SE0k med 0.01785 thetaPCE_new med 0.31
+   m17  thin GO_old 0.717  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03749 SE0k med 0.01582 thetaPCE_new med 0.27
+   m25  thin GO_old 0.964  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03354 SE0k med 0.01406 thetaPCE_new med 0.25
+   m35  thin GO_old 0.999  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03089 SE0k med 0.01288 thetaPCE_new med 0.23
+   m55  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02811 SE0k med 0.0117 thetaPCE_new med 0.21
+   m80  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.02649 SE0k med 0.011 thetaPCE_new med 0.2
+   m96  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.026 SE0k med 0.01079 thetaPCE_new med 0.19
+tail3
+   m8   full GO_old 0.003  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0582 SE0k med 0.02108 thetaPCE_new med 0.42
+   m12  full GO_old 0.056  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04986 SE0k med 0.01804 thetaPCE_new med 0.36
+   m17  full GO_old 0.182  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04436 SE0k med 0.01598 thetaPCE_new med 0.32
+   m25  full GO_old 0.577  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03958 SE0k med 0.0142 thetaPCE_new med 0.29
+   m35  full GO_old 0.928  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03629 SE0k med 0.01301 thetaPCE_new med 0.27
+   m55  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.033 SE0k med 0.01182 thetaPCE_new med 0.24
+   m80  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03105 SE0k med 0.01112 thetaPCE_new med 0.23
+   m96  full GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03049 SE0k med 0.0109 thetaPCE_new med 0.22
+   m8   thin GO_old 0.002  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06125 SE0k med 0.02107 thetaPCE_new med 0.45
+   m12  thin GO_old 0.041  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05301 SE0k med 0.01803 thetaPCE_new med 0.39
+   m17  thin GO_old 0.107  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04736 SE0k med 0.01599 thetaPCE_new med 0.35
+   m25  thin GO_old 0.323  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.04224 SE0k med 0.01421 thetaPCE_new med 0.31
+   m35  thin GO_old 0.663  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03878 SE0k med 0.01301 thetaPCE_new med 0.28
+   m55  thin GO_old 0.974  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03533 SE0k med 0.01182 thetaPCE_new med 0.26
+   m80  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03328 SE0k med 0.01112 thetaPCE_new med 0.24
+   m96  thin GO_old 1.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.03264 SE0k med 0.0109 thetaPCE_new med 0.24
+wide
+   m8   full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.11222 SE0k med 0.01664 thetaPCE_new med 0.81
+   m12  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.09602 SE0k med 0.01424 thetaPCE_new med 0.7
+   m17  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0852 SE0k med 0.01263 thetaPCE_new med 0.62
+   m25  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.07572 SE0k med 0.01122 thetaPCE_new med 0.55
+   m35  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06937 SE0k med 0.01028 thetaPCE_new med 0.5
+   m55  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06304 SE0k med 0.00934 thetaPCE_new med 0.46
+   m80  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05928 SE0k med 0.00878 thetaPCE_new med 0.43
+   m96  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05813 SE0k med 0.00861 thetaPCE_new med 0.42
+   m8   thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.12018 SE0k med 0.01664 thetaPCE_new med 0.87
+   m12  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.10286 SE0k med 0.01424 thetaPCE_new med 0.75
+   m17  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.09123 SE0k med 0.01262 thetaPCE_new med 0.66
+   m25  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.08109 SE0k med 0.01122 thetaPCE_new med 0.59
+   m35  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.07434 SE0k med 0.01028 thetaPCE_new med 0.54
+   m55  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06752 SE0k med 0.00934 thetaPCE_new med 0.49
+   m80  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06353 SE0k med 0.00878 thetaPCE_new med 0.46
+   m96  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0623 SE0k med 0.00861 thetaPCE_new med 0.45
+low
+   m8   full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.10641 SE0k med 0.01679 thetaPCE_new med 0.77
+   m12  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.09113 SE0k med 0.01437 thetaPCE_new med 0.66
+   m17  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.08073 SE0k med 0.01274 thetaPCE_new med 0.59
+   m25  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.07179 SE0k med 0.01132 thetaPCE_new med 0.52
+   m35  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06577 SE0k med 0.01037 thetaPCE_new med 0.48
+   m55  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05975 SE0k med 0.00942 thetaPCE_new med 0.44
+   m80  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05621 SE0k med 0.00886 thetaPCE_new med 0.41
+   m96  full GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05512 SE0k med 0.00869 thetaPCE_new med 0.4
+   m8   thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.11393 SE0k med 0.0168 thetaPCE_new med 0.83
+   m12  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.09752 SE0k med 0.01437 thetaPCE_new med 0.71
+   m17  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0865 SE0k med 0.01273 thetaPCE_new med 0.63
+   m25  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.0769 SE0k med 0.01132 thetaPCE_new med 0.56
+   m35  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.07044 SE0k med 0.01037 thetaPCE_new med 0.51
+   m55  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06402 SE0k med 0.00942 thetaPCE_new med 0.47
+   m80  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.06022 SE0k med 0.00886 thetaPCE_new med 0.44
+   m96  thin GO_old 0.000  theta-side_new 0.000  kappa-side_new 0.000  GO_new 0.000 | SE0 med 0.05905 SE0k med 0.00869 thetaPCE_new med 0.43

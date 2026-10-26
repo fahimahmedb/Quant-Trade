@@ -1,0 +1,77 @@
+{
+  "adapter": "perp_funding_hl_dydx_derivation",
+  "availability": "AVAILABLE",
+  "caveats": [
+    "venue APIs fetched once at build time; a later refetch may differ if a venue revises history",
+    "survivorship: only coins listed on both venues at fetch time",
+    "universe chosen by trailing median notional on both venues (volume only)",
+    "no intraday margin, liquidation or auto-deleveraging modelling in the data",
+    "dYdX v4 volumes are thin; capacity is bound by the dYdX leg"
+  ],
+  "dataset_id": "perp_funding_hl_dydx_daily",
+  "expected_symbols": [
+    "DX.BTC",
+    "DX.DOGE",
+    "DX.ETH",
+    "DX.SOL",
+    "DX.XRP",
+    "HL.BTC",
+    "HL.DOGE",
+    "HL.ETH",
+    "HL.SOL",
+    "HL.XRP"
+  ],
+  "fingerprint": "sha256:d8dcbbc1f5886203a7792f80fed6b2340db1c0a26e95f0e015ef0adb0d38ace9",
+  "first_date": "2023-11-13",
+  "ingested_at": "2026-09-27T02:43:40.957443+00:00",
+  "kind": "daily_bars",
+  "last_date": "2026-09-26",
+  "license_note": "public venue APIs; research use",
+  "path": "data/datasets/perp_funding_hl_dydx_daily.csv.gz",
+  "point_in_time": {
+    "fill_convention": "open(d+1) = close(d+1): one full day of execution lag",
+    "information_available_at": "00:00 UTC after the dated day",
+    "min_rows_per_symbol": 60,
+    "minimum_decision_lag_days": 1,
+    "required_symbols": [
+      "HL.BTC",
+      "DX.BTC",
+      "HL.ETH",
+      "DX.ETH"
+    ]
+  },
+  "refreshed_at": "2026-09-27T02:43:41.179982+00:00",
+  "rows": 10416,
+  "source": "api.hyperliquid.xyz/info (fundingHistory, candleSnapshot 1d) + indexer.dydx.trade/v4 (historicalFunding, candles 1DAY); raw responses in data/raw/fast_rail/h002 with manifest.json (url, fetched_at, sha256)",
+  "symbols": [
+    "DX.BTC",
+    "DX.DOGE",
+    "DX.ETH",
+    "DX.SOL",
+    "DX.XRP",
+    "HL.BTC",
+    "HL.DOGE",
+    "HL.ETH",
+    "HL.SOL",
+    "HL.XRP"
+  ],
+  "validation": {
+    "aligned_dates": 1048,
+    "bars_per_symbol": {
+      "DX.BTC": 1048,
+      "DX.DOGE": 1032,
+      "DX.ETH": 1048,
+      "DX.SOL": 1047,
+      "DX.XRP": 1033,
+      "HL.BTC": 1048,
+      "HL.DOGE": 1032,
+      "HL.ETH": 1048,
+      "HL.SOL": 1047,
+      "HL.XRP": 1033
+    },
+    "passed": true,
+    "problems": [],
+    "rows": 10416,
+    "warnings": []
+  }
+}

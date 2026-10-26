@@ -1,0 +1,92 @@
+# Vertical CP038 — Reconstructed frozen plans must satisfy their original admission contract
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=d0ba3db096fda73b57720437909f3b127e966d29
+MISSION_CHECKPOINT_ACCEPTED=TRUE_SCOPED_EVIDENCE
+REPLACES_INSUFFICIENT_RUNTIME_REPLAY_LABEL=TRUE
+
+Module: `research/research_os/expansion/experiment_runner.py`.
+Existing capability: freeze a pre-outcome protocol, serialize it, replay it and
+rebind the exact scientific identity; documentary execute must reject an invalid
+plan before persisting PREPARED. North Star basis: immutable preregistration,
+complete multiplicity accounting, reproducible identity and closed authority.
+
+Starting depth: existing normal replay/tamper and effective-trial tests; the old
+CP038 was an insufficient runtime replay label. No inference of new depth is
+retained from that label. This checkpoint replaces it with new falsification.
+
+### Concrete failures and localization
+
+1. Replay trusted self-consistent hashes without reapplying parts of the freeze
+   contract. The producer rejected invalid observed attempt counts and missing
+   declarations, while reconstructed replay admitted them. Embedded/outer version,
+   execution mode, capability and partial frozen/legacy state could contradict
+   the claimed frozen artifact. Root: admission checks lived only in plan creation
+   or only one representation marker.
+2. Duplicate protocol/code/environment/seed/source-route identities in the plan
+   and frozen body were never compared. Rehashing each body/receipt could preserve
+   both contradictory claims. Python numeric equality also equates integer and
+   float seeds whose serialized identities differ. Root: per-body hashes were
+   checked without enforcing duplicate-field agreement.
+3. Replay and rebinding reread mutable caller plans after checking them. A
+   deterministic pause after receipt checking changed the returned experiment ID;
+   swapping the caller plan after replay could make a changed source match the
+   replacement. Root: the reference being checked was not captured at entry.
+
+Narrow repairs: replay requires the existing declarations and valid observed
+attempt count; checks v1 version/mode/capability and frozen/legacy representation;
+compares duplicated identities through canonical serialized hashes. Replay and
+verify_bindings capture their plan at entry. One observed-count predicate is
+shared with creation. Valid legacy opaque plans retain their own lower ceiling.
+No new schema family, signed origin, economic execution or state migration.
+
+### Adversarial proof
+
+`tests/test_vertical_frozen_replay_depth.py` adds **73 cases**:
+invalid/missing multiplicity, each required declaration removed, version drift,
+contradictory duplicate identities on both sides including int/float aliasing,
+caller mutation at checked read boundaries, invalid execute before persistence,
+huge valid counts with JSON reconstruction/retry/parallel reads, ambiguous
+partial frozen state, and valid legacy/closed-authority controls.
+
+Before: **64 failed / 9 passed**, using the exact previous module from
+bd86b47 with the final new test retained. Repaired focused suite:
+**130 passed / 71 subtests** in ordinary and optimized Python. Three invalid
+execute cases leave the checkpoint directory empty; no success is simulated.
+Reconstruction controls preserve valid fixture output and all authorities false.
+
+Nine deliberate guard removals are all detected. The mutation manifest records
+exact substitutions, fixed source checksum and each failing transcript:
+`research/vertical_depth/20261021/CP038_mutation_results.json`.
+Failures per mutant: attempt 13; required declarations 20; version 6;
+duplicate identity 12; replay snapshot 1; verify snapshot 1; mode 4;
+frozen/legacy ambiguity 4; capability state 3. These are oracle checks, not
+nine extra discovered defects or independent observations.
+
+Proof files: CP038_before.txt, CP038_focused.txt, CP038_optimized.txt,
+CP038_mutant_*.txt, CP038_MUTATION_RUNNER.txt under the evidence directory.
+The first focused attempt lacked the pinned historical ledger; its failure is
+retained separately as CP038_initial_missing_fixture.txt. Correct materialization
+and focused/full reruns followed. It is not counted as a product defect.
+
+Attained depth: D2 for reconstructed frozen-contract/identity admission, one new
+scoped capability unit. Parallel immutable reads do not prove concurrent mutable
+transactions or imply D3/D4. Durable documentary input recovery remains the
+separate CP034 unit. The checkpoint counts three grouped repair items, not
+64 independent root causes.
+
+Remaining unproven: simultaneous mutation during deepcopy; arbitrary custom
+objects, authenticated origin, whole epoch/Factory transactions, schema migration
+and power loss. A coherently rewritten self-hashed plan can replay; it is denied
+against its original freeze by verify_bindings. Without that external reference,
+self-hashes do not prove origin or prevent complete removal of a frozen history.
+That limit has an explicit passing control, not a fabricated authentication claim.
+
+Horizontal findings: none. Longitudinal findings: none new; LONGITUDINAL_001
+remains owned separately. Shared final regression/receipt bind to the latest
+qualified source in FINAL_qualification.json; focused evidence retains its SHA.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

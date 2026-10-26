@@ -1,0 +1,134 @@
+mutation=timeout_configuration_admission
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+................................................FFFFFF..                 [100%]
+=================================== FAILURES ===================================
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[nan] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_invalid_timeout_configura0')
+timeout = nan
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[inf] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_invalid_timeout_configura1')
+timeout = inf
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_invalid_timeout_configura2')
+timeout = True
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[-1] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_invalid_timeout_configura3')
+timeout = -1
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[300] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_invalid_timeout_configura4')
+timeout = '300'
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        with pytest.raises(ValueError, match='heartbeat timeout'):
+>           health(state, queue, heartbeat_timeout_seconds=timeout)
+
+tests/test_vertical_watchdog_clock_depth.py:109:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:09:31.928699+00:00', last_heartbeat='2026-...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fe2ecba8590>
+heartbeat_timeout_seconds = '300', max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+        heartbeat_age = _elapsed_seconds(state.last_heartbeat, now)
+        alerts: list[dict[str, str]] = []
+>       if heartbeat_age is None or heartbeat_age >= heartbeat_timeout_seconds:
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'float' and 'str'
+
+src/autonomous_research/watchdog.py:50: TypeError
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[None] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_invalid_timeout_configura5')
+timeout = None
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        with pytest.raises(ValueError, match='heartbeat timeout'):
+>           health(state, queue, heartbeat_timeout_seconds=timeout)
+
+tests/test_vertical_watchdog_clock_depth.py:109:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:09:31.933802+00:00', last_heartbeat='2026-...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fe2ecd1ab10>
+heartbeat_timeout_seconds = None, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+        heartbeat_age = _elapsed_seconds(state.last_heartbeat, now)
+        alerts: list[dict[str, str]] = []
+>       if heartbeat_age is None or heartbeat_age >= heartbeat_timeout_seconds:
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'float' and 'NoneType'
+
+src/autonomous_research/watchdog.py:50: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[nan]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[inf]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[-1]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[300]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[None]
+6 failed, 50 passed in 0.20s

@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"quant-trade://research-os/WorkerEvent",
+  "title":"WorkerEvent",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["event_id","session_id","worker_id","action_id","event_type","event_seq","generation","emitted_at","payload"],
+  "properties":{
+    "event_id":{"type":"string","minLength":1},
+    "session_id":{"type":"string","minLength":1},
+    "worker_id":{"type":"string","minLength":1},
+    "action_id":{"type":"string","minLength":1},
+    "event_type":{"enum":["ACTION_STARTED","ACTION_COMPLETED","WORKER_HEARTBEAT","SESSION_ENDED"]},
+    "event_seq":{"type":"integer","minimum":1},
+    "generation":{"type":"integer","minimum":1},
+    "emitted_at":{"type":"string","minLength":1},
+    "accepted_at":{"type":["string","null"]},
+    "payload":{"type":"object"}
+  }
+}

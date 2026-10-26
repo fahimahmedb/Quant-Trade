@@ -1,0 +1,102 @@
+{
+  "task_id": "DEPTH-EVENT-DOSSIER-002",
+  "status": "IN_PROGRESS",
+  "execution_phase": "IMPLEMENTED_AWAITING_EXACT_HEAD_CI",
+  "observed_head_before": "ec60c349436afe465e1c8c3fe1c3e825141d6102",
+  "implementation_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+  "remote_head_verified": "a22ca035cfe13b6bf5411407b979151529dd041e",
+  "scope": "Strengthen the existing Event/Documents dossier using admitted primary captures. Bind event identity, eligibility, comparative basis, confounders and disconfirmation. Documented distribution change must not become a claim of new information, consensus surprise, diffusion or market response without admissible support.",
+  "changed_files": [
+    "research/research_os/architecture/work_receipts/DEPTH_EVENT_DOSSIER_002_20261015.json",
+    "research/research_os/expansion/engine_dossiers_v1.py",
+    "research/research_os/tests/test_documentary_dossier_depth.py"
+  ],
+  "artifact": "DEPTH_EVENT_DOSSIER_002_20261015.json",
+  "local_validation": [
+    {
+      "command": "python -m unittest discover -s research/research_os/tests -p 'test_*.py' -q",
+      "result": "PASS, 130 tests"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "ci": [
+    {
+      "id": 38804087477,
+      "name": "SEC P0 pre-t0 gate",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087477"
+    },
+    {
+      "id": 38804087426,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087426"
+    },
+    {
+      "id": 38804087613,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087613"
+    },
+    {
+      "id": 38804087452,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087452"
+    },
+    {
+      "id": 38804087408,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087408"
+    },
+    {
+      "id": 38804087402,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087402"
+    },
+    {
+      "id": 38804087515,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087515"
+    },
+    {
+      "id": 38804087393,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "a22ca035cfe13b6bf5411407b979151529dd041e",
+      "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/38804087393"
+    }
+  ],
+  "evidence_class": "CAPTURED_DOCUMENTARY_FACTS_AND_ENGINEERING_CHECKS",
+  "limitations": [
+    "Internal depth remains PARTIAL. UNKNOWN/BLOCK retained. No independent scientific validation or economic outcomes.",
+    "CI conclusions refer only to their recorded implementation SHA."
+  ],
+  "next_admissible_task": "DEPTH-QUANT-FLOW-RULE-002",
+  "recorded_at": "2026-10-15T20:42:51.931682+00:00",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

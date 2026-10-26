@@ -1,0 +1,38 @@
+[
+  {
+    "rail": "canonical_w2",
+    "path": "research/research_os/runtime/CODEX_OWNER_AUTHORIZATION_20261019.json",
+    "field": "hard_scientific_and_capital_barriers.outcome_access_may_not_be_opened_by_this_authorization",
+    "value": true
+  },
+  {
+    "rail": "runtime_v2",
+    "path": "research/research_os/runtime/CODEX_OWNER_AUTHORIZATION_20261019.json",
+    "field": "hard_scientific_and_capital_barriers.outcome_access_may_not_be_opened_by_this_authorization",
+    "value": true
+  },
+  {
+    "rail": "giga_f",
+    "path": "research/research_os/runtime/CODEX_OWNER_AUTHORIZATION_20261019.json",
+    "field": "hard_scientific_and_capital_barriers.outcome_access_may_not_be_opened_by_this_authorization",
+    "value": true
+  },
+  {
+    "rail": "giga_q",
+    "path": "research/research_os/runtime/CODEX_OWNER_AUTHORIZATION_20261019.json",
+    "field": "hard_scientific_and_capital_barriers.outcome_access_may_not_be_opened_by_this_authorization",
+    "value": true
+  },
+  {
+    "rail": "intake_v3",
+    "path": "research/research_os/runtime/CODEX_OWNER_AUTHORIZATION_20261019.json",
+    "field": "hard_scientific_and_capital_barriers.outcome_access_may_not_be_opened_by_this_authorization",
+    "value": true
+  },
+  {
+    "rail": "edge_lab",
+    "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.result.json",
+    "field": "exposure_accounting.market_proxy_outcomes_accessed_after_predeclaration",
+    "value": true
+  }
+]

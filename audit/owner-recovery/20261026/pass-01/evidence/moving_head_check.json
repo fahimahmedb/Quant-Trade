@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-26T01:49:57.832184+00:00",
+  "changes": [
+    {
+      "branch": "builder/oracle-v2-core-20261020",
+      "anchor": "16eafd0b3c8d9e0c633ef01dd191cbd32ae50b42",
+      "end": "ce3ceb9746e0f65551b69bfc0df406e8f9836100"
+    },
+    {
+      "branch": "claude/data-feeds-6vr22g",
+      "anchor": "262102f049a887b9a1037f3cc490b666bc76cc0d",
+      "end": "9325ee62a40e90d7d0325b3b0198b26139ad9549"
+    }
+  ],
+  "frozen_mirror_updated": false
+}

@@ -1,0 +1,30 @@
+from pathlib import Path
+import json,hashlib,subprocess,os
+root=Path('/workspace/Quant-Trade');identity=root/'src/quant/dataplane/identity.py';action=root/'src/quant/dataplane/corporate_actions.py';out=Path('/workspace/vertical_depth_cp043_rebuild')
+a,b=identity.read_text(),action.read_text();results=[]
+mutants=[]
+for cls in ['IssuerIdentity','IssuerNameInterval','SecurityIdentity','TickerInterval','ListingInterval']:
+ start=a.index('class '+cls+':');end=a.find('\n\n@dataclass',start)
+ if end==-1:end=len(a)
+ section=a[start:end];old='object.__setattr__(self, "evidence_hashes", _validate_lineage(self.evidence_hashes))';assert section.count(old)==1,cls
+ mutants.append((cls,identity,a[:start]+section.replace(old,'_validate_lineage(self.evidence_hashes)')+a[end:]))
+for name,old in [('action_lineage','        object.__setattr__(self, "evidence_hashes", tuple(self.evidence_hashes))\n'),('action_legs','        object.__setattr__(self, "legs", tuple(self.legs))\n')]:
+ assert b.count(old)==1;mutants.append((name,action,b.replace(old,'')))
+for name,path,body,old in [
+ ('identity_container',identity,a,'if not isinstance(values, (list, tuple)):'),
+ ('action_evidence_container',action,b,'if not isinstance(self.evidence_hashes, (list, tuple)):'),
+ ('action_legs_container',action,b,'if not isinstance(self.legs, (list, tuple)):')]:
+ assert body.count(old)==1,name
+ mutants.append((name,path,body.replace(old,'if False:')))
+try:
+ for name,path,text in mutants:
+  identity.write_text(a);action.write_text(b);path.write_text(text);log=out/f'CP043_mutant_{name}.txt'
+  with log.open('w') as f:
+   f.write('mutation='+name+'\n');f.flush()
+   r=subprocess.run(['python','-m','pytest','-q','tests/test_vertical_pit_contract_immutability.py'],cwd=root,env=dict(os.environ,PYTHONPATH='src:tests:.'),stdout=f,stderr=subprocess.STDOUT)
+  summary=next(s for s in reversed(log.read_text().splitlines()) if 'failed' in s)
+  assert r.returncode==1,(name,r.returncode)
+  results.append({'mutation':name,'exit_code':r.returncode,'summary':summary,'log':log.name})
+  print(name,summary,flush=True)
+finally:identity.write_text(a);action.write_text(b)
+(out/'CP043_mutation_results.json').write_text(json.dumps({'fixed_source_sha256':{'src/quant/dataplane/identity.py':hashlib.sha256(a.encode()).hexdigest(),'src/quant/dataplane/corporate_actions.py':hashlib.sha256(b.encode()).hexdigest()},'mutants':results},indent=2)+'\n')

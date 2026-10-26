@@ -1,0 +1,425 @@
+
+==================== WEEKEND 2026-06-26 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-06-26 | FILM: Jackass: Best and Last | OPEN | key='Jackass'
+  [lane A] Deadline post 1236968254 section [PREVIOUSLY, FRIDAY AM] available by 2026-06-26T19:00:00+00:00
+     * 'Jackass: Best and Last' Paramount Meanwhile, Paramount's Jackass: Best and Last grossed $1.2M from Thursday previews across from more than 2,450 locations.
+     * RELATED: 'Jackass: Best And Last' Trailer: Johnny Knoxville And Company's Return For Their Final Installment In another good beat at the summer box office, Paramount Pictures and Miramax's Scary Movie crossed $100 million at the domestic box office Thursday, becoming the first R-rated comedy to reach the milestone since Girls Trip in 2017 (meaning 
+  [lane B] Deadline post 1236968254 section [FRIDAY PM] available by 2026-06-27T06:59:00+00:00
+     * Third place currently is looking like Paramount's Jackass: Best and Last at 2,855 theaters with $3.6M-$4.3M today (including last night's $1.2M previews) and 3-day between $8M-$10M .
+  [lane C] Deadline post 1236968254 section [SATURDAY AM] available by 2026-06-27T19:00:00+00:00
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), 3-day $70M+ (-56%), Total $297.2M/Wk 2 Supergirl (WB) 3,602 theaters, Fri $18M, 3-day $40M/Wk 1 Obsession (Foc) 2,965 (-88) theaters, Fri $2.97M (-37%) 3-day $9.4M (-30%) Total $233.5M/Wk 7 Jackass: Best and Last (Par) 2,855 theaters, Fri $3.8M 3-day $8.5M/Wk 1 69% guy skewing,
+  [lane C] Variety post 1236789996 pub 2026-06-27T15:43:23Z mod 2026-06-27T18:30:37Z STRICT :: Box Office: ‘Supergirl’ Flies to $18 Million on Opening Day
+     * "Toy Story 5" held on to Friday's box office crown, despite new competition from "Supergirl" and "Jackass: Best and Last." Disney and Pixar's "Toy Story 5" made $21 million domestically from 4,425 screens as it entered its second weekend in cinemas.
+     * "Jackass: Best and Last" landed in the No. 4 slot with $3.8 million from 2,855 North American theaters.
+     * While that ranks as the lowest opening in the franchise, the film only cost $10 million to produce, meaning it will have no problem recouping its budget and then some. 2022's "Jackass Forever" debuted to $23 million and ended its run with $80 million.
+  [lane D] Deadline post 1236968254 section [SUNDAY AM] available by 2026-06-28T19:00:00+00:00
+     * With the tepid opening of Paramount's Jackass: Best and Last , the lowest start ever in the franchise at $8.4M (though it was cheap at $10M before P&A), it's also possible that most people are saving their money to blow over July 4th when Illumination/Universal's Minions & Monsters is expected to rule with potential $100M over five days, if not mor
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), Sat $27M Sun $21.9M 3-day $70M (-56%), Total $297.2M /Wk 2 Supergirl (WB) 3,602 theaters, Fri $18M, Sat $10.7M Sun $9.1M 3-day $38M /Wk 1 Obsession (Foc) 2,965 (-88) theaters, Fri $3M (-36%) Sat $3.7M Sun $3M 3-day $9.8M (-27%) Total $233.9M /Wk 7 Jackass: Best and Last (Par) 2
+  [lane D] Variety post 1236797777 pub 2026-06-28T15:27:45Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Stumbles With $37 Million Debut, ‘Toy Story 5’ Remains No. 1 With 
+     * This weekend's other newcomer, "Jackass: Best and Last," also stumbled at the box office with $8.4 million from 2,855 venues.
+     * To compare, 2022's "Jackass Forever," the property's prior installment, debuted to $23 million domestically and ended up with $80 million globally.
+     * However, "Jackass 5" cost just $10 million to produce, so it doesn't need to earn much to turn a theatrical profit.
+     * "Obsession" slid to the No. 3 spot, ranking behind "Supergirl" and ahead of "Jackass: Best and Last." Now in its seventh weekend of release, the box office juggernaut has earned $9.8 million from 2,965 locations, a mere 27% decline in ticket sales.
+  [lane D] Variety post 1236797821 pub 2026-06-28T17:15:31Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Sputters Overseas With $25 Million, ‘Jackass: Best and Last’ Limps
+     * Paramount's outrageous comedy "Jackass: Best and Last" cratered with $1.9 million from 19 markets, representing 70% of the international footprint.
+     * Although it'll wind up as the lowest-grossing entry, "Jackass 5" cost just $10 million to produce, so it doesn't need to earn much to turn a theatrical profit.
+
+######## 2026-06-26 | FILM: Obsession | NTH | key='Obsession'
+  [lane A] Deadline post 1236968254 section [PREVIOUSLY, FRIDAY AM] available by 2026-06-26T19:00:00+00:00
+     * Here's what happened in the past week at the box office: Toy Story 5 (Dis) 4,425 theaters Wk $227.1M/Wk 1 Disclosure Day (Uni) 3,824 theaters, Wk $25M (-59%), Total $86.3M/Wk 2 Obsession (Focus) 3,053 theaters, Wk $22.4M (-30%), Total $224.1M/Wk 6 Backrooms (A24) 2,851 theaters, Wk $11.8M (-38%), Total $179.7M/Wk 4 Scary Movie (Par) 2,725 theaters,
+  [lane B] Deadline post 1236968254 section [FRIDAY PM] available by 2026-06-27T06:59:00+00:00
+     * RELATED: 'Supergirl' First Reactions: "Mixed" Reviews, Praise Milly Alcock & Jason Momoa's Roles & Highlight David Corenswet's Superman As "Peak Casting" Focus Features' seventh weekend of Obsession at 2,965 sites is looking at $8.5M , -37%, for a running cume of $232.6M .
+  [lane C] Deadline post 1236968254 section [SATURDAY AM] available by 2026-06-27T19:00:00+00:00
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), 3-day $70M+ (-56%), Total $297.2M/Wk 2 Supergirl (WB) 3,602 theaters, Fri $18M, 3-day $40M/Wk 1 Obsession (Foc) 2,965 (-88) theaters, Fri $2.97M (-37%) 3-day $9.4M (-30%) Total $233.5M/Wk 7 Jackass: Best and Last (Par) 2,855 theaters, Fri $3.8M 3-day $8.5M/Wk 1 69% guy skewing,
+  [lane C] Variety post 1236789996 pub 2026-06-27T15:43:23Z mod 2026-06-27T18:30:37Z STRICT :: Box Office: ‘Supergirl’ Flies to $18 Million on Opening Day
+     * Rounding out the top five this week were Steven Spielberg's "Disclosure Day" and Focus Features' "Obsession." "Obsession" took fourth with $2.9 million, and the horror thriller is expected to make $9.4 million by Sunday.
+     * Through seven weekends of release, Curry Barker's "Obsession," which was made for less than $1 million, will hit a North American tally of about $233 million.
+  [lane D] Deadline post 1236968254 section [SUNDAY AM] available by 2026-06-28T19:00:00+00:00
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), Sat $27M Sun $21.9M 3-day $70M (-56%), Total $297.2M /Wk 2 Supergirl (WB) 3,602 theaters, Fri $18M, Sat $10.7M Sun $9.1M 3-day $38M /Wk 1 Obsession (Foc) 2,965 (-88) theaters, Fri $3M (-36%) Sat $3.7M Sun $3M 3-day $9.8M (-27%) Total $233.9M /Wk 7 Jackass: Best and Last (Par) 2
+  [lane D] Variety post 1236797777 pub 2026-06-28T15:27:45Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Stumbles With $37 Million Debut, ‘Toy Story 5’ Remains No. 1 With 
+     * "Obsession" slid to the No. 3 spot, ranking behind "Supergirl" and ahead of "Jackass: Best and Last." Now in its seventh weekend of release, the box office juggernaut has earned $9.8 million from 2,965 locations, a mere 27% decline in ticket sales.
+     * The low-budget horror sensation has generated $233.9 million domestically and $370 million worldwide, making "Obsession" a wildly profitable success for both Focus Features and theater owners.
+
+######## 2026-06-26 | FILM: Supergirl | OPEN | key='Supergirl'
+  [lane A] Deadline post 1236968254 section [PREVIOUSLY, FRIDAY AM] available by 2026-06-26T19:00:00+00:00
+     * 'Supergirl' Takes Off With $13M First Day At Global Box Office DC Studios' second production under the James Gunn-Peter Safran administration, Supergirl , made $13M in its first day at the global box office, a number not far from the first day of Universal/Amblin's $115M Steven Spielberg movie Disclosure Day, which did $12M two weeks ago.
+     * Supergirl 's initial wave of foreign markets grossed $5.2M.
+     * As we told you, Supergirl has more than $100M in media value from its global promotional partner campaign, DC Studios' biggest ever.
+  [lane A] Variety post 1236790790 pub 2026-06-26T15:20:47Z mod 2026-06-26T15:56:15Z STRICT :: Box Office: ‘Supergirl’ Takes Off With $7.8 Million in Previews
+     * "Supergirl" is projected to make between $47 million and $50 million this weekend, but it'll be no match for last weekend's box office champion, Disney and Pixar's "Toy Story 5." The animated sequel is estimated to make $80 million to $90 million in its second week.
+     * "Supergirl" has a $170 million price tag, plus worldwide marketing costs.
+  [lane B] Deadline post 1236968254 section [FRIDAY PM] available by 2026-06-27T06:59:00+00:00
+     * RELATED: The 25 Highest-Grossing Animated Films Of All Time At The Global Box Office Warner Bros/DC Studios Supergirl right now is coming in at the low end with $40M at 3,602 after having her superpowers depleted by critics at 57% on Rotten Tomatoes.
+     * RELATED: 'Supergirl' First Reactions: "Mixed" Reviews, Praise Milly Alcock & Jason Momoa's Roles & Highlight David Corenswet's Superman As "Peak Casting" Focus Features' seventh weekend of Obsession at 2,965 sites is looking at $8.5M , -37%, for a running cume of $232.6M .
+  [lane C] Deadline post 1236968254 section [SATURDAY AM] available by 2026-06-27T19:00:00+00:00
+     * However, this weekend is about the upset of Warner Bros/DC Studios' $170M-$186M net production Supergirl , which is filing $40M domestic , another exhibit of how finicky fanboys and fangirls can be when it comes to big screen superhero properties.
+     * Note, Supergirl was never expected to be Superman ($125M).
+     * Tracking firms saw this coming before summer even fired off: If there were any wobbly event films there were was going to be Amazon MGM Studios' Masters of the Universe ($29.4M) , Supergirl and Universal Amblin's Disclosure Day .
+     * The AMC Lincoln Square in NYC is Supergirl 's top grossing theater with $88K.
+  [lane C] Variety post 1236789996 pub 2026-06-27T15:43:23Z mod 2026-06-27T18:30:37Z STRICT :: Box Office: ‘Supergirl’ Flies to $18 Million on Opening Day
+     * "Toy Story 5" held on to Friday's box office crown, despite new competition from "Supergirl" and "Jackass: Best and Last." Disney and Pixar's "Toy Story 5" made $21 million domestically from 4,425 screens as it entered its second weekend in cinemas.
+     * Waner Bros. and DC's "Supergirl" did the best of the newcomers on Friday, landing in second place with $18 million domestically from 3,602 theaters.
+     * "Supergirl" was a bit cheaper to produce at $170 million, but will still need to stick around in theaters to justify the pricetag.
+  [lane D] Deadline post 1236968254 section [SUNDAY AM] available by 2026-06-28T19:00:00+00:00
+     * Related Stories News 'Supergirl' Review: DC's Latest Superhero Pic Doesn't Fly High Enough News The 61 Movies That Have Made More Than $1 Billion At The Global Box Office Toy Story 5 's second weekend hold of -56% is spot on with that of Incredibles 2 .
+     * Meanwhile, Warner Bros/DC Studios' Supergirl became even more challenged over night with a $10.7M Saturday (-41% from Friday/previews), which is turning into a $38M domestic opening.
+     * Supergirl 's stateside start is lower than Disney/Marvel's lowest, The Marvels ($46.1M) and it's God awfully close to that DC disaster, Joker: Folie a Deux ($37.6M).
+     * The only nice thing to say about Supergirl is that she did very well in premium format screens with 51% of her gross coming from Imax ($7.4M) and PLFs.
+  [lane D] Variety post 1236797777 pub 2026-06-28T15:27:45Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Stumbles With $37 Million Debut, ‘Toy Story 5’ Remains No. 1 With 
+     * That would be a problem because "Supergirl" carries a substantial $170 million price tag, not including the mega marketing budget.
+     * A source close to the film says the breakeven point for "Supergirl" is closer to $300 million.
+     * "Obsession" slid to the No. 3 spot, ranking behind "Supergirl" and ahead of "Jackass: Best and Last." Now in its seventh weekend of release, the box office juggernaut has earned $9.8 million from 2,965 locations, a mere 27% decline in ticket sales.
+  [lane D] Variety post 1236797821 pub 2026-06-28T17:15:31Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Sputters Overseas With $25 Million, ‘Jackass: Best and Last’ Limps
+     * "Supergirl" also stumbled in North America with $37.1 million for a worldwide debut of $62.6 million.
+     * "Supergirl" is the follow-up to last year's modest hit "Superman," which took flight with $95 million overseas and ended up with $618 million worldwide.
+
+######## 2026-06-26 | FILM: Toy Story 5 | NTH | key='Toy Story 5'
+  [lane A] Deadline post 1236968254 section [PREVIOUSLY, FRIDAY AM] available by 2026-06-26T19:00:00+00:00
+     * Disney/Pixar's Toy Story 5 is expected to lead the weekend in its second frame with around $90M .
+     * Here's what happened in the past week at the box office: Toy Story 5 (Dis) 4,425 theaters Wk $227.1M/Wk 1 Disclosure Day (Uni) 3,824 theaters, Wk $25M (-59%), Total $86.3M/Wk 2 Obsession (Focus) 3,053 theaters, Wk $22.4M (-30%), Total $224.1M/Wk 6 Backrooms (A24) 2,851 theaters, Wk $11.8M (-38%), Total $179.7M/Wk 4 Scary Movie (Par) 2,725 theaters,
+  [lane A] Variety post 1236790790 pub 2026-06-26T15:20:47Z mod 2026-06-26T15:56:15Z STRICT :: Box Office: ‘Supergirl’ Takes Off With $7.8 Million in Previews
+     * "Supergirl" is projected to make between $47 million and $50 million this weekend, but it'll be no match for last weekend's box office champion, Disney and Pixar's "Toy Story 5." The animated sequel is estimated to make $80 million to $90 million in its second week.
+  [lane C] Deadline post 1236968254 section [SATURDAY AM] available by 2026-06-27T19:00:00+00:00
+     * Yes, Disney/Pixar's Toy Story 5 is still ruling the box office with a second weekend around $70M+ depending on how big the turnout from families remains today.
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), 3-day $70M+ (-56%), Total $297.2M/Wk 2 Supergirl (WB) 3,602 theaters, Fri $18M, 3-day $40M/Wk 1 Obsession (Foc) 2,965 (-88) theaters, Fri $2.97M (-37%) 3-day $9.4M (-30%) Total $233.5M/Wk 7 Jackass: Best and Last (Par) 2,855 theaters, Fri $3.8M 3-day $8.5M/Wk 1 69% guy skewing,
+  [lane C] Variety post 1236789996 pub 2026-06-27T15:43:23Z mod 2026-06-27T18:30:37Z STRICT :: Box Office: ‘Supergirl’ Flies to $18 Million on Opening Day
+     * "Toy Story 5" held on to Friday's box office crown, despite new competition from "Supergirl" and "Jackass: Best and Last." Disney and Pixar's "Toy Story 5" made $21 million domestically from 4,425 screens as it entered its second weekend in cinemas.
+     * Last weekend, "Toy Story 5" notched the biggest domestic debut of 2026 with $160 million, and pulled in a series best $312 million worldwide.
+  [lane D] Deadline post 1236968254 section [SUNDAY AM] available by 2026-06-28T19:00:00+00:00
+     * Toy Story 5 reigned supreme in its second weekend, not just in the U.S. with $70M , but around the world with a $159.1M WW take, raising the Disney/Pixar pic's cume to $585M .
+     * Related Stories News 'Supergirl' Review: DC's Latest Superhero Pic Doesn't Fly High Enough News The 61 Movies That Have Made More Than $1 Billion At The Global Box Office Toy Story 5 's second weekend hold of -56% is spot on with that of Incredibles 2 .
+     * Even though the overall domestic weekend for all movies at $158M is -32% off last weekend when Toy Story 5 rallied the biggest frame of the year with $231.3M, note the annual and summer box office is still wonderfully intact.
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $21M (-71% from previous Friday), Sat $27M Sun $21.9M 3-day $70M (-56%), Total $297.2M /Wk 2 Supergirl (WB) 3,602 theaters, Fri $18M, Sat $10.7M Sun $9.1M 3-day $38M /Wk 1 Obsession (Foc) 2,965 (-88) theaters, Fri $3M (-36%) Sat $3.7M Sun $3M 3-day $9.8M (-27%) Total $233.9M /Wk 7 Jackass: Best and Last (Par) 2
+  [lane D] Variety post 1236797777 pub 2026-06-28T15:27:45Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Stumbles With $37 Million Debut, ‘Toy Story 5’ Remains No. 1 With 
+     * And this one should be profitable, even without strong overseas business." Neither of the new releases was close to dethroning Disney and Pixar's "Toy Story 5," which ruled again with $70 million in its second weekend of release.
+     * "Toy Story 5" is also expected to wind up as the biggest entry in the 31-year-old franchise, a record that currently belongs to "Toy Story 4" with $1.07 billion.
+  [lane D] Variety post 1236797821 pub 2026-06-28T17:15:31Z mod 2026-06-30T00:00:07Z REVISABLE(modified after anchor) :: Box Office: ‘Supergirl’ Sputters Overseas With $25 Million, ‘Jackass: Best and Last’ Limps
+     * So far, "Toy Story 5" has earned $287 million internationally and $585 million globally after just 12 days in theaters.
+
+==================== WEEKEND 2026-07-03 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-07-03 | FILM: Supergirl | NTH | key='Supergirl'
+  [lane A] Deadline post 1236973852 section [FRIDAY AM] available by 2026-07-03T19:00:00+00:00
+     * Toy Story 5 was No. 2 yesterday with $8M, Supergirl No. 3 with $2.3M, Obsession No. 4 with $1.6M, and Disclosure Day No. 5 with $1.3M.
+     * Here's the top 6 pics at the weekly box office in North America: Toy Story 5 (Dis) 4,425 theaters, Wk $107.9M (-53%), Total $335.2M/Wk 2 Supergirl (WB) 3,602 theaters, Wk $48.8M/Wk 1 Minions & Monsters (Uni) 3,740 theaters Wk $25M/Wk 1 Obsession (Foc) 2,640 theaters, Wk $15.9M (-29%), Total $240M/Wk 7 Disclosure Day (Uni) 3,018 theaters, Wk $13M (-
+  [lane B] Deadline post 1236972754 section [FRIDAY PM UPDATE] available by 2026-07-04T06:59:00+00:00
+     * William Franklyn-Miller in 'Young Washington' Angel Studios Fourth goes Warner Bros/DC Studio's Supergirl at 3,602 locations with a second Friday that's $4M and a second estimated weekend of $10M , currently a -73% nosedive; not as bad as Joker: Folie a Deux 's -81% second frame drop, but the same as The Flash 's.
+  [lane D] Deadline post 1236972754 section [SUNDAY AM WRITETHRU] available by 2026-07-05T19:00:00+00:00
+     * Following Supergirl 's plummet to Earth last weekend, and the pain that's caused the James Gunn and Peter Safran's DC, the general media might be quick to declare the death of Illumination/Universal's Minions this weekend after the franchise's lowest result with $36.4M 3-day and $61.4M 5-day from Minions & Monsters .
+     * With the failure of Supergirl (current running global cume is $100.5M , and $9.6M domestic second weekend, golly gosh, a -74% free fall, a tad worse than The Flash 's -73%), it also doesn't help when there isn't another popular live-action film in the market to create more momentum in theaters.
+     * Minions & Monsters (Uni) 4,243 theaters, Fri $16.5M, Sat $9.4M Sun $10.4M  3-day $36.4M , 5-day $61.4M /Wk 1 Toy Story 5 (Dis) 3,975 (-450) theaters Fri $13.7M (-36% from prev Friday) Sat $7.5M Sun $9.8M, 3-day $31M (-56%), Total $366.3M /Wk 3 Young Washington (Angel) 2,700 theaters, Fri $7.5M Sat $7.6M Sun $5.6M 3-day $20.8M /Wk 1 Supergirl (WB) 3
+  [lane D] Variety post 1236801905 pub 2026-07-05T15:08:34Z mod 2026-07-06T18:26:29Z REVISABLE(modified after anchor) :: Box Office: ‘Minions & Monsters’ Fizzles Over July 4th Weekend With Franchise-Low $61 Mill
+     * "We look forward to a very long and lucrative run throughout the rest of the summer." Elsewhere at the domestic box office, "Supergirl" endured a tragic 77% decline with $8.6 million from 3,602 screens in its sophomore outing.
+     * Given its hefty $170 million budget, "Supergirl" is projected to lose at least $100 million to $120 million in its theatrical run - and that figure could be even higher if the film fails to reach $200 million globally.
+     * "Supergirl" ranked No. 4 on weekend charts behind "Young Washington," which opened in third with an impressive $19.3 million from 2,700 theaters.
+  [lane D] Variety post 1236801925 pub 2026-07-05T16:36:31Z mod 2026-07-06T19:39:28Z REVISABLE(modified after anchor) :: Box Office: ‘Minions & Monsters’ Nears $100 Million Overseas, ‘Toy Story 5’ Climbs to $764
+     * Meanwhile, "Supergirl" cratered with $9.4 million from 80 territories in its second weekend in theaters.
+     * "Supergirl" cost $170 million to produce and will lose at least $100 million to $120 million in its theatrical run.
+
+######## 2026-07-03 | FILM: Toy Story 5 | NTH | key='Toy Story 5'
+  [lane A] Deadline post 1236973852 section [FRIDAY AM] available by 2026-07-03T19:00:00+00:00
+     * Toy Story 5 was No. 2 yesterday with $8M, Supergirl No. 3 with $2.3M, Obsession No. 4 with $1.6M, and Disclosure Day No. 5 with $1.3M.
+     * Here's the top 6 pics at the weekly box office in North America: Toy Story 5 (Dis) 4,425 theaters, Wk $107.9M (-53%), Total $335.2M/Wk 2 Supergirl (WB) 3,602 theaters, Wk $48.8M/Wk 1 Minions & Monsters (Uni) 3,740 theaters Wk $25M/Wk 1 Obsession (Foc) 2,640 theaters, Wk $15.9M (-29%), Total $240M/Wk 7 Disclosure Day (Uni) 3,018 theaters, Wk $13M (-
+  [lane B] Deadline post 1236972754 section [FRIDAY PM UPDATE] available by 2026-07-04T06:59:00+00:00
+     * Second at the domestic B.O. goes to the third weekend of Disney/Pixar's Toy Story 5 at 3,975 theaters with $13M today, and an estimated 3-day of $30M , -58%, for a running cume by Sunday of $365.3M .
+  [lane D] Deadline post 1236972754 section [SUNDAY AM WRITETHRU] available by 2026-07-05T19:00:00+00:00
+     * While the overall marketplace at $123M is down -20% per Rentrak from last year's first weekend in July which did $155.6M (the holiday fell on a Friday), Minions and Monsters is facing very fierce competition from Disney/Pixar's just-as-popular Toy Story 5 which is putting up a strong third weekend with $31M .
+     * Minions & Monsters (Uni) 4,243 theaters, Fri $16.5M, Sat $9.4M Sun $10.4M  3-day $36.4M , 5-day $61.4M /Wk 1 Toy Story 5 (Dis) 3,975 (-450) theaters Fri $13.7M (-36% from prev Friday) Sat $7.5M Sun $9.8M, 3-day $31M (-56%), Total $366.3M /Wk 3 Young Washington (Angel) 2,700 theaters, Fri $7.5M Sat $7.6M Sun $5.6M 3-day $20.8M /Wk 1 Supergirl (WB) 3
+  [lane D] Variety post 1236801905 pub 2026-07-05T15:08:34Z mod 2026-07-06T18:26:29Z REVISABLE(modified after anchor) :: Box Office: ‘Minions & Monsters’ Fizzles Over July 4th Weekend With Franchise-Low $61 Mill
+     * After all, families didn't totally avoid the big screen: "Toy Story 5" earned almost as much over the Friday to Sunday stretch with $31 million from 3,975 venues in its third weekend of release.
+  [lane D] Variety post 1236801925 pub 2026-07-05T16:36:31Z mod 2026-07-06T19:39:28Z REVISABLE(modified after anchor) :: Box Office: ‘Minions & Monsters’ Nears $100 Million Overseas, ‘Toy Story 5’ Climbs to $764
+     * Scarcity seems to help in terms of "Toy Story 5," which added $69.3 million from 50 international markets in its third weekend of release.
+
+######## 2026-07-03 | FILM: Young Washington | OPEN | key='Young Washington'
+  [lane B] Deadline post 1236972754 section [FRIDAY PM UPDATE] available by 2026-07-04T06:59:00+00:00
+     * Third is Angel Studio/Wonder Project's Young Washington at 2,700 sites and ahead of its $15M projection with an estimated $16M-$17M .
+     * William Franklyn-Miller in 'Young Washington' Angel Studios Fourth goes Warner Bros/DC Studio's Supergirl at 3,602 locations with a second Friday that's $4M and a second estimated weekend of $10M , currently a -73% nosedive; not as bad as Joker: Folie a Deux 's -81% second frame drop, but the same as The Flash 's.
+  [lane D] Deadline post 1236972754 section [SUNDAY AM WRITETHRU] available by 2026-07-05T19:00:00+00:00
+     * Also, historical pic Young Washington is coming in well ahead of $15M forecasts with a $20.8M opening, which is Angel Studios' best opening for a live-action film ahead of Sound of Freedom 's $19.68M and their second overall behind animated pic David ($22M).
+     * Minions & Monsters (Uni) 4,243 theaters, Fri $16.5M, Sat $9.4M Sun $10.4M  3-day $36.4M , 5-day $61.4M /Wk 1 Toy Story 5 (Dis) 3,975 (-450) theaters Fri $13.7M (-36% from prev Friday) Sat $7.5M Sun $9.8M, 3-day $31M (-56%), Total $366.3M /Wk 3 Young Washington (Angel) 2,700 theaters, Fri $7.5M Sat $7.6M Sun $5.6M 3-day $20.8M /Wk 1 Supergirl (WB) 3
+  [lane D] Deadline post 1236974374 section [SUNDAY AM] available by 2026-07-05T19:00:00+00:00
+     * After winning over the heartland with the 2023 trafficking thriller Sound of Freedom , which posted a 3-day of $19.6M (and a six-day start of $41.6M), the faith-based media company posted its best opening for a live-action feature with Jon Erwin's historical period pic, Young Washington , which conquered its $15M forecast with a $20.8M opening.
+     * View this post on Instagram Young Washington ranks second among all of Angels Studios' domestic openings, behind only December's animated title David ($22M).
+     * On July 4th, Young Washington was No. 2 at the domestic B.O. with $7.6M behind Minions & Monsters ' $9.4M.
+  [lane D] Variety post 1236801905 pub 2026-07-05T15:08:34Z mod 2026-07-06T18:26:29Z REVISABLE(modified after anchor) :: Box Office: ‘Minions & Monsters’ Fizzles Over July 4th Weekend With Franchise-Low $61 Mill
+     * "Supergirl" ranked No. 4 on weekend charts behind "Young Washington," which opened in third with an impressive $19.3 million from 2,700 theaters.
+
+==================== WEEKEND 2026-07-10 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-07-10 | FILM: Evil Dead Burn | OPEN | key='Evil Dead Burn'
+  [lane B] Deadline post 1236979144 section [FRIDAY PM] available by 2026-07-11T06:59:00+00:00
+     * RELATED: The 61 Movies That Have Made More Than $1 Billion At The Global Box Office Fourth belongs to New Line's Evil Dead Burns at 3,004 with a $6M+ Friday including previews and a 3-day of $15M .
+     * Separately, New Line's Sam Raimi-produced Evil Dead Burn did $2.3M in previews, which is $200,000 shy of previous installment Evil Dead Rise 's $2.5M.
+  [lane C] Variety post 1236805237 pub 2026-07-11T16:37:49Z mod 2026-07-11T16:50:29Z STRICT :: Box Office: ‘Moana’ Makes $18 Million on Opening Day
+     * Thomas Kail, who helmed the theatrical release of "Hamilton" for Disney, directed the live-action "Moana." Friday brought two other major newcomers to the box office: "Evil Dead Burn" and "The Invite." "Evil Dead Burn" took second with $6.7 million from 3,004 domestic screens.
+  [lane D] Variety post 1236808979 pub 2026-07-12T15:02:06Z mod 2026-07-12T17:50:17Z STRICT :: Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio
+     * Another newcomer, Warner Bros. and New Line's "Evil Dead Burn," opened in fourth place with just $13.7 million from 3,004 theaters.
+     * Although those returns were below expectations, "Evil Dead Burn" was produced for $20 million, so the sequel won't take too much to justify its budget.
+     * "Evil Dead Burn" is the sixth entry in the "Evil Dead" franchise, which began with Sam Raimi's low-budget 1981 thriller "The Evil Dead." The series most recently returned to the big screen with 2023's "Evil Dead Rise," which launched to $24 million and ended its run with $147 million globally.
+  [lane D] Variety post 1236809109 pub 2026-07-12T17:42:31Z mod 2026-07-12T20:31:14Z REVISABLE(modified after anchor) :: Box Office: ‘Moana’ Struggles With $52 Million Overseas, ‘Toy Story 5’ Powers to $879 Mill
+     * Another new release, "Evil Dead Burn," earned just $13.3 million in its launch at the overseas box office.
+     * "Evil Dead Burn" had the biggest start in India with $1.5 million, followed by the United Kingdom with $1.2 million and Mexico with $1.1 million.
+     * Initial ticket sales were below the franchise's prior entry, 2023's "Evil Dead Rise," though "Evil Dead Burn" carries a modest $20 million production budget and won't require too much coinage to get out of the red.
+
+######## 2026-07-10 | FILM: Minions & Monsters | NTH | key='Minions & Monsters'
+  [lane B] Deadline post 1236979144 section [FRIDAY PM] available by 2026-07-11T06:59:00+00:00
+     * Second on the weekend is going to Illumination/Universal's second weekend of Minions & Monsters with a solid hold of -46%, or $20M , at 4,244 theaters off a second Friday of $6.3M and running total by Sunday of $107.8M .
+     * Minions & Monsters counts a nine-day total of $87.7M after launching on Wednesday, July 1, that total running 47% behind Despicable Me 4 (another Wednesday opener) over the same period.
+  [lane C] Variety post 1236805237 pub 2026-07-11T16:37:49Z mod 2026-07-11T16:50:29Z STRICT :: Box Office: ‘Moana’ Makes $18 Million on Opening Day
+     * Third place on Friday went to "Minions & Monsters," which added $6.5 million as it heads into its second weekend in North American theaters.
+  [lane D] Variety post 1236809109 pub 2026-07-12T17:42:31Z mod 2026-07-12T20:31:14Z REVISABLE(modified after anchor) :: Box Office: ‘Moana’ Struggles With $52 Million Overseas, ‘Toy Story 5’ Powers to $879 Mill
+     * However, "Moana" faced fierce competition from two other family-friendly sequels, "Toy Story 5" and "Minions & Monsters." Disney and Pixar's "Toy Story 5″ remained a draw in its fourth weekend with $45 million from 50 markets.
+
+######## 2026-07-10 | FILM: Moana (2026) | OPEN | key='Moana'
+  [lane B] Deadline post 1236979144 section [FRIDAY PM] available by 2026-07-11T06:59:00+00:00
+     * In regards to how far Disney's live-action take on Moana will go this weekend, this answer is not far, with afternoon estimates showing a previews/first Friday around $17 million at 3,875 theaters for a 3-day between $40M-$45M - well below the $60M-plus that was hoped for on the horizon.
+     * Related Stories Reviews 'Moana' Review: Disney's Live-Action Remake Runs Aground News 45 Of The Most Anticipated Movies Of 2026 At $40M-$45M stateside and sporting a $250M production cost before a hundred million more or so in P&A, not even a prayer to Maui himself will save this film, unless families decide to take the time to do so Saturday.
+     * PREVIOUSLY, Friday AM: Disney's live-action Moana made $4.5 million in previews from Thursday showtimes that began 2 p.m.
+     * Previews here for Moana are higher than Snow White ($3.5M, $42.2M opening) and Dumbo ($2.6M, $45.99M opening), but lower than Little Mermaid ($10.3M previews, $95.5M 3-day opening) and Aladdin ($7M previews, $91.5M 3-day opening).
+  [lane C] Variety post 1236805237 pub 2026-07-11T16:37:49Z mod 2026-07-11T16:50:29Z STRICT :: Box Office: ‘Moana’ Makes $18 Million on Opening Day
+     * "Moana" made just $18 million on Friday from 3,875 North American theaters.
+     * Rival estimates have it grossing $45 million through opening weekend, which is below the $56 million the original "Moana" earned over its debut in 2016.
+     * Disney shelled out $250 million for the live-action reprise, up from the $175 million spent on its animated older sibling, meaning "Moana" needs to stick around in theaters for a while to justify costs.
+     * "Moana 2," which was retooled from a scrapped made-for-streaming "Moana" TV show, set a Thanksgiving weekend record with a $225 million debut.
+  [lane D] Variety post 1236808979 pub 2026-07-12T15:02:06Z mod 2026-07-12T17:50:17Z STRICT :: Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio
+     * "Moana" failed to make a splash at the box office, earning $43 million from 3,827 North American theaters in its opening weekend.
+     * Those ticket sales, though enough for No. 1 on box office charts, are disastrous given the live-action "Moana" remake has a massive $250 million production budget - and that's before Disney's hefty marketing spend.
+     * "Moana" also floundered overseas with $52 million for a global launch of $95 million.
+     * After falling short of estimates, "Moana" is now contending with 2025's box office bomb "Snow White" ($42 million debut) for the unfortunate distinction of the lowest opening among Disney's live-action remakes.
+  [lane D] Variety post 1236809109 pub 2026-07-12T17:42:31Z mod 2026-07-12T20:31:14Z REVISABLE(modified after anchor) :: Box Office: ‘Moana’ Struggles With $52 Million Overseas, ‘Toy Story 5’ Powers to $879 Mill
+     * Apparently the call wasn't out there at all for "Moana," which brought in just $52 million in its international box office debut.
+     * Meanwhile, "Moana" bombed in China with $1.2 million.
+     * "Moana" stands as one of the worst starts among Disney's live-action remakes, joining the ranks of 2025's "Snow White," which ignited to $44 million overseas and $87 million globally.
+     * However, "Moana" faced fierce competition from two other family-friendly sequels, "Toy Story 5" and "Minions & Monsters." Disney and Pixar's "Toy Story 5″ remained a draw in its fourth weekend with $45 million from 50 markets.
+
+######## 2026-07-10 | FILM: Toy Story 5 | NTH | key='Toy Story 5'
+  [lane B] Deadline post 1236979144 section [FRIDAY PM] available by 2026-07-11T06:59:00+00:00
+     * Disney/Pixar's Toy Story 5 at 3,575 theaters is looking at a fourth Friday of $5.4M and 3-day of $18M , off 40%, which will make Buzz, Woody and Jessie fly past $400M by Sunday.
+     * Toy Story 5 (Dis) 3,965 theaters, Wk $49.8M (-54%), Total $385.2M/Wk 3 3.
+  [lane C] Variety post 1236805237 pub 2026-07-11T16:37:49Z mod 2026-07-11T16:50:29Z STRICT :: Box Office: ‘Moana’ Makes $18 Million on Opening Day
+     * Finally, "Toy Story 5" landed at No. 4 with $5.7 million.
+     * It's only a matter of time before "Toy Story 5" crosses the coveted $1 billion mark and overtakes "Toy Story 4" ($1.07 billion) as the highest-grossing film in the franchise.
+  [lane D] Variety post 1236808979 pub 2026-07-12T15:02:06Z mod 2026-07-12T17:50:17Z STRICT :: Box Office: ‘Moana’ Flounders With $43 Million Debut, Among Weakest of Disney’s Live-Actio
+     * "Moana" had competition with two major family-friendly franchises, Universal and Illumination's "Minions and Monsters" as well as Disney and Pixar's "Toy Story 5." Second place went to "Minions and Monsters" with $20.5 million from 4,244 venues in its second weekend, a 45% decline from its debut.
+     * "Toy Story 5," one of the summer's biggest hits, secured the No. 3 spot with $18.5 million in its fourth outing.
+     * "Toy Story 5" should overtake its predecessor, 2019's "Toy Story 4" ($1.07 billion), as the highest-grossing entry in the beloved franchise.
+  [lane D] Variety post 1236802496 pub 2026-07-12T15:28:16Z mod 2026-07-12T21:04:41Z REVISABLE(modified after anchor) :: ‘Michael’ Crosses $1 Billion, First Biopic to Surpass Coveted Box Office Milestone
+     * Disney's "Toy Story 5" has earned $879.1 million to date and should soon be the third of the year.
+  [lane D] Variety post 1236809109 pub 2026-07-12T17:42:31Z mod 2026-07-12T20:31:14Z REVISABLE(modified after anchor) :: Box Office: ‘Moana’ Struggles With $52 Million Overseas, ‘Toy Story 5’ Powers to $879 Mill
+     * However, "Moana" faced fierce competition from two other family-friendly sequels, "Toy Story 5" and "Minions & Monsters." Disney and Pixar's "Toy Story 5″ remained a draw in its fourth weekend with $45 million from 50 markets.
+
+==================== WEEKEND 2026-07-17 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-07-17 | FILM: Minions & Monsters | NTH | key='Minions & Monsters'
+  [lane B] Deadline post 1236993792 section [FRIDAY PM] available by 2026-07-18T06:59:00+00:00
+     * Disney is holding onto more than 500 PLF, Screen-X, and D-Box screens despite Odysseus invading multiplexes. 3.) Minions & Monsters (Uni) 3,505 theaters, Fri $4.6M, 3-day $14.5M (-31%), Total $137.2M/Wk 3 4.) Toy Story 5 (Dis) 3,400 theaters, Fri $4M, 3-day $13M (-32%), Total $429.1M/Wk 5 5.) Evil Dead Burn (NL) 3,004 theaters, Fri $1.6M, 3-day $5M
+     * RELATED: 10 Of The Best Christopher Nolan Movies & Where To Stream Them The chart: Moana (Dis) 3,875 theaters Wk $63M/Wk 1 Minions & Monsters (Uni) 4,244 theaters, Wk $35M (-44%), Total $122.8M/Wk 2 Toy Story 5 (Dis) 3,575 theaters, Wk $30.8M (-38%), Total $416.1M/Wk 4 Evil Dead Burn (NL/WB) 3,004 theaters, Wk $19.1M/Wk 1 Young Washington (Angel) 2
+  [lane C] Deadline post 1236993792 section [SATURDAY AM] available by 2026-07-18T19:00:00+00:00
+     * Overall weekend for the entire domestic marketplace is filing $187.7M, which is +40% from a year ago when DC/Warner's Superman was leading the B.O. in its second frame with $58.4M. 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.2M, 3-day $120.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday), 3-day $18.8M (-56%), 
+  [lane C] Variety post 1236815411 pub 2026-07-18T15:50:11Z mod 2026-07-18T15:57:54Z STRICT :: Box Office: ‘The Odyssey’ Has Epic Opening Day With $51 Million
+     * Speaking of "Minions & Monsters," that film added $4.3 million domestically on Friday for a third-place finish.
+     * "Minions & Monsters" is shaping up to be one of the lowest-earners in the franchise, but it was made for only $85 million, meaning Universal doesn't need much more to push "Minions & Monsters" into the green.
+  [lane D] Deadline post 1236993792 section [SUNDAY AM] available by 2026-07-19T19:00:00+00:00
+     * Chart updated with Sunday figures: 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.1M, Sat $41.66M Sun $31.7M 3-day $124.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday) Sat $7.6M Sun $5.9M 3-day $19M (-56%), Total $82M /Wk 2 3.) Toy Story 5 (Dis) 3,400 (-175) theaters, Fri $4.2M (-27%) Sat $5.9M Sun $4.7M 3-day $
+
+######## 2026-07-17 | FILM: Moana (2026) | NTH | key='Moana'
+  [lane B] Deadline post 1236993792 section [FRIDAY PM] available by 2026-07-18T06:59:00+00:00
+     * Top 5 for the weekend is as follows: 1.) The Odyssey (Uni) 3,919 theaters, Fri $50M, 3-day $117M/Wk 1 2.) Moana (Dis) 4,200 theaters, Fri $6M, 3-day $19M (-56%), Total $82M/Wk 2 Not a bad hold for live-action Moana if it can hold.
+     * In regards to the week, Disney's live-action Moana ends its with $63M at 3,875 theaters.
+     * RELATED: 10 Of The Best Christopher Nolan Movies & Where To Stream Them The chart: Moana (Dis) 3,875 theaters Wk $63M/Wk 1 Minions & Monsters (Uni) 4,244 theaters, Wk $35M (-44%), Total $122.8M/Wk 2 Toy Story 5 (Dis) 3,575 theaters, Wk $30.8M (-38%), Total $416.1M/Wk 4 Evil Dead Burn (NL/WB) 3,004 theaters, Wk $19.1M/Wk 1 Young Washington (Angel) 2
+  [lane C] Deadline post 1236993792 section [SATURDAY AM] available by 2026-07-18T19:00:00+00:00
+     * Overall weekend for the entire domestic marketplace is filing $187.7M, which is +40% from a year ago when DC/Warner's Superman was leading the B.O. in its second frame with $58.4M. 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.2M, 3-day $120.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday), 3-day $18.8M (-56%), 
+  [lane C] Variety post 1236815411 pub 2026-07-18T15:50:11Z mod 2026-07-18T15:57:54Z STRICT :: Box Office: ‘The Odyssey’ Has Epic Opening Day With $51 Million
+     * "Moana" landed at No. 2 on Friday with just $5.5 million as it heads into its second weekend in North American theaters.
+     * Variety reported that, factoring in its $250 million production budget, "Moana" could lose around $100 million for Disney if tides don't turn its way.
+  [lane D] Deadline post 1236993792 section [SUNDAY AM] available by 2026-07-19T19:00:00+00:00
+     * Chart updated with Sunday figures: 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.1M, Sat $41.66M Sun $31.7M 3-day $124.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday) Sat $7.6M Sun $5.9M 3-day $19M (-56%), Total $82M /Wk 2 3.) Toy Story 5 (Dis) 3,400 (-175) theaters, Fri $4.2M (-27%) Sat $5.9M Sun $4.7M 3-day $
+  [lane D] Variety post 1236815861 pub 2026-07-19T15:38:55Z mod 2026-07-20T01:04:13Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Stuns With $124 Million Opening Weekend, Third-Biggest Debut of 
+     * "With record pre-sales, critical and audience acclaim, and the way the film presents extraordinarily in Imax, we believe all the elements are in place for 'The Odyssey' to enjoy a very long and successful run." Thanks to "The Odyssey," the box office is rebounding after three consecutive duds: the Warner Bros. and DC adaptation "Supergirl," Univers
+     * "Moana" landed in a very distant second place with $19 million in its sophomore frame - a 56% decline from its disappointing $43 million debut.
+     * Since "Moana" was so expensive (it carries a $250 million price tag) and theater owners get to keep roughly half of revenues, the film is primed to lose at least $100 million in its theatrical run.
+     * Disney's summer has been mixed, with the studio fielding outsized hits like "The Devil Wears Prada 2" ($688 million) and "Toy Story 5" along with big-budget misfires like "Moana" and "Star Wars: The Mandalorian and Grogu" ($340 million against a $165 million budget).
+
+######## 2026-07-17 | FILM: The Odyssey | OPEN | key='Odyssey'
+  [lane A] Variety post 1236812480 pub 2026-07-17T14:36:55Z mod 2026-07-17T15:50:51Z STRICT :: Box Office: ‘The Odyssey’ Kicks Off With an Epic $17.6 Million in Previews
+     * "The Odyssey" is estimated to make between $90 million and $100 million in its opening weekend, which would be Nolan's biggest launch since "The Dark Knight Rises" racked up $160 million in 2012.
+     * An opening on the higher end would make "The Odyssey" the third movie this year to hit or surpass $100 million in its debut, joining "Toy Story 5″ ($159 million) and "The Super Mario Galaxy Movie" ($131 million).
+  [lane B] Deadline post 1236993792 section [FRIDAY PM] available by 2026-07-18T06:59:00+00:00
+     * Universal's Christopher Nolan epic The Odyssey is looking at a first Friday and previews of $50M which will catapult it to a $117M 3-day opening (note some rivals are see more in the $120M range) at 3,919 theaters.
+     * Other records: The Odyssey is charting the highest grossing opening weekend for an R-rated film YTD ahead of Backrooms ($81.4M).
+     * Top 5 for the weekend is as follows: 1.) The Odyssey (Uni) 3,919 theaters, Fri $50M, 3-day $117M/Wk 1 2.) Moana (Dis) 4,200 theaters, Fri $6M, 3-day $19M (-56%), Total $82M/Wk 2 Not a bad hold for live-action Moana if it can hold.
+     * Disney is holding onto more than 500 PLF, Screen-X, and D-Box screens despite Odysseus invading multiplexes. 3.) Minions & Monsters (Uni) 3,505 theaters, Fri $4.6M, 3-day $14.5M (-31%), Total $137.2M/Wk 3 4.) Toy Story 5 (Dis) 3,400 theaters, Fri $4M, 3-day $13M (-32%), Total $429.1M/Wk 5 5.) Evil Dead Burn (NL) 3,004 theaters, Fri $1.6M, 3-day $5M
+  [lane B] Deadline post 1236996979 section [FRIDAY UPDATE] available by 2026-07-18T06:59:00+00:00
+     * In Australia, The Odyssey counts a running total of $3.7M through Friday.
+     * RELATED: 'The Odyssey' World Premiere Red Carpet Photos: Matt Damon, Anne Hathaway, Zendaya, Tom Holland & More Italy piace Odyssey motto with $2.5M on Thursday, lording No. 1 with an 88% share of the total B.O.
+     * Muy arriba in Mexico for The Odyssey with the biggest Thursday ever for a Nolan pic at $1.5M, +70% above Oppenheimer .
+  [lane C] Deadline post 1236993792 section [SATURDAY AM] available by 2026-07-18T19:00:00+00:00
+     * Christopher Nolan's The Odyssey remains on course for the best live-action feature debut this year at the North American box office to date with $120.5M after Friday/previews of $51.2M .
+     * The Odyssey ranks behind Dark Knight Rise 's first Friday/previews of $75.7M and Dark Knight 's $67.1M.
+     * Overseas, The Odyssey is bound for $137.3M in 73 markets bringing its global opening to $257.8M , which is the third highest opening YTD after Super Mario Galaxy Movie ($372.5M) and Toy Story 5 ($312M).
+     * Here in the states, if these numbers hold, The Odyssey will rank as the fifth best opening for an R-rated movie after Deadpool & Wolverine ($211.4M), Deadpool ($132.4M), Deadpool 2 ($125.5M) and It: Chapter One ($123.4M).
+  [lane C] Variety post 1236815411 pub 2026-07-18T15:50:11Z mod 2026-07-18T15:57:54Z STRICT :: Box Office: ‘The Odyssey’ Has Epic Opening Day With $51 Million
+     * Christopher Nolan's "The Odyssey" earned $51 million on Friday from 3,919 North American screens.
+     * "The Odyssey" will soon become the third film in 2026 to open above $100 million after "Toy Story 5" ($159 million) and "The Super Mario Galaxy Movie" ($131 million).
+     * "The Odyssey" carries a hefty $250 million price tag.
+     * An $120 million opening for "The Odyssey" would rank as Nolan's best since "The Dark Knight Rises," which debuted to a staggering $160 million in 2012.
+  [lane D] Deadline post 1236993792 section [SUNDAY AM] available by 2026-07-19T19:00:00+00:00
+     * Universal's Christopher Nolan epic The Odyssey had a great hold on Saturday of $41.66M -17% off Friday/previews taking its overall weekend to $124.5M , which breaks a slew of records we've been telling you about over the weekend including the best domestic start YTD for a movie, the best ever opening for Matt Damon, record opening for a Universal R
+     * Average ticket prices for Odyssey were general at $15.32 (versus Oppenheimer 's $13.44), PLF at $19.07 (vs.
+     * The AMC Lincoln Square in NYC has now become the highest grossing venue for The Odyssey with more than $394K.
+     * Chart updated with Sunday figures: 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.1M, Sat $41.66M Sun $31.7M 3-day $124.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday) Sat $7.6M Sun $5.9M 3-day $19M (-56%), Total $82M /Wk 2 3.) Toy Story 5 (Dis) 3,400 (-175) theaters, Fri $4.2M (-27%) Sat $5.9M Sun $4.7M 3-day $
+  [lane D] Deadline post 1236996979 section [SUNDAY AM] available by 2026-07-19T19:00:00+00:00
+     * Odysseus' boatload of cash from his global voyage just got bigger with Universal's Christopher Nolan epic The Odyssey raking in $264.1M worldwide, again a record start for the director ahead of Dark Knight Rises ($249M WW).
+     * Argentina and Vietnam were the only notable territories to see The Odyssey open to 2 respectively with $1M and $602K.
+     * In Australia, The Odyssey opened to $9.3M, delivering the biggest opening of the year and Nolan's second biggest opening weekend (just off The Dark Knight Rises and well above Oppenheimer ).
+     * In Sweden, The Odyssey had the widest analogue release since cinema became digital with a $1.5M opening.
+  [lane D] Variety post 1236815861 pub 2026-07-19T15:38:55Z mod 2026-07-20T01:04:13Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Stuns With $124 Million Opening Weekend, Third-Biggest Debut of 
+     * Christopher Nolan's action epic "The Odyssey" ignited to $124.5 million from 3,919 domestic theaters over the weekend, defying expectations and setting up the R-rated spectacle for a long, long journey in theaters.
+     * At the international box office, "The Odyssey" collected $139.6 million from 73 markets for a stellar worldwide tally of $264.1 million.
+     * "With record pre-sales, critical and audience acclaim, and the way the film presents extraordinarily in Imax, we believe all the elements are in place for 'The Odyssey' to enjoy a very long and successful run." Thanks to "The Odyssey," the box office is rebounding after three consecutive duds: the Warner Bros. and DC adaptation "Supergirl," Univers
+  [lane D] Variety post 1236815981 pub 2026-07-19T17:47:17Z mod 2026-07-20T01:05:37Z REVISABLE(modified after anchor) :: ‘The Odyssey’ Becomes Christopher Nolan’s Biggest Global Debut of All Time With $264 Milli
+     * "The Odyssey" marks the biggest worldwide opening of Nolan's career, ahead of 2012's The Dark Knight Rises" with $249 million and 2009's "The Dark Knight" with $198 million.
+     * "The Odyssey" opened in 73 international markets, with top territories including the United Kingdom and Ireland with $17.4 million, France with $13.7 million and Italy with $11.5 million.
+
+######## 2026-07-17 | FILM: Toy Story 5 | NTH | key='Toy Story 5'
+  [lane A] Variety post 1236812480 pub 2026-07-17T14:36:55Z mod 2026-07-17T15:50:51Z STRICT :: Box Office: ‘The Odyssey’ Kicks Off With an Epic $17.6 Million in Previews
+     * It's the best result for preview screenings of the year, surpassing the $17.5 million that "Toy Story 5" netted.
+     * An opening on the higher end would make "The Odyssey" the third movie this year to hit or surpass $100 million in its debut, joining "Toy Story 5″ ($159 million) and "The Super Mario Galaxy Movie" ($131 million).
+  [lane B] Deadline post 1236993792 section [FRIDAY PM] available by 2026-07-18T06:59:00+00:00
+     * Overall, it's the third highest opening YTD behind Disney/Pixar's Toy Story 5 ($159.6M) and Illumination/Universal/Nintendo's Super Mario Galaxy Movie ($131.7M).
+     * Disney is holding onto more than 500 PLF, Screen-X, and D-Box screens despite Odysseus invading multiplexes. 3.) Minions & Monsters (Uni) 3,505 theaters, Fri $4.6M, 3-day $14.5M (-31%), Total $137.2M/Wk 3 4.) Toy Story 5 (Dis) 3,400 theaters, Fri $4M, 3-day $13M (-32%), Total $429.1M/Wk 5 5.) Evil Dead Burn (NL) 3,004 theaters, Fri $1.6M, 3-day $5M
+     * That's the best preview number of 2026 year to date, ahead of Toy Story 5 's $17.5M.
+     * RELATED: 10 Of The Best Christopher Nolan Movies & Where To Stream Them The chart: Moana (Dis) 3,875 theaters Wk $63M/Wk 1 Minions & Monsters (Uni) 4,244 theaters, Wk $35M (-44%), Total $122.8M/Wk 2 Toy Story 5 (Dis) 3,575 theaters, Wk $30.8M (-38%), Total $416.1M/Wk 4 Evil Dead Burn (NL/WB) 3,004 theaters, Wk $19.1M/Wk 1 Young Washington (Angel) 2
+  [lane C] Deadline post 1236993792 section [SATURDAY AM] available by 2026-07-18T19:00:00+00:00
+     * Overseas, The Odyssey is bound for $137.3M in 73 markets bringing its global opening to $257.8M , which is the third highest opening YTD after Super Mario Galaxy Movie ($372.5M) and Toy Story 5 ($312M).
+     * Overall weekend for the entire domestic marketplace is filing $187.7M, which is +40% from a year ago when DC/Warner's Superman was leading the B.O. in its second frame with $58.4M. 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.2M, 3-day $120.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday), 3-day $18.8M (-56%), 
+  [lane C] Variety post 1236815411 pub 2026-07-18T15:50:11Z mod 2026-07-18T15:57:54Z STRICT :: Box Office: ‘The Odyssey’ Has Epic Opening Day With $51 Million
+     * "The Odyssey" will soon become the third film in 2026 to open above $100 million after "Toy Story 5" ($159 million) and "The Super Mario Galaxy Movie" ($131 million).
+     * Rounding out the Friday top five were "Toy Story 5" and "Evil Dead Burn." "Toy Story 5" took fourth place with $4.2 million on Friday.
+  [lane D] Deadline post 1236993792 section [SUNDAY AM] available by 2026-07-19T19:00:00+00:00
+     * Chart updated with Sunday figures: 1.) The Odyssey (Uni) 3,919 theaters, Fri $51.1M, Sat $41.66M Sun $31.7M 3-day $124.5M /Wk 1 2.) Moana (Dis) 4,200 (+325) theaters, Fri $5.5M (-70% from previous Friday) Sat $7.6M Sun $5.9M 3-day $19M (-56%), Total $82M /Wk 2 3.) Toy Story 5 (Dis) 3,400 (-175) theaters, Fri $4.2M (-27%) Sat $5.9M Sun $4.7M 3-day $
+  [lane D] Variety post 1236815861 pub 2026-07-19T15:38:55Z mod 2026-07-20T01:04:13Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Stuns With $124 Million Opening Weekend, Third-Biggest Debut of 
+     * These ticket sales are notable as Nolan's biggest debut since 2012's "The Dark Knight Rises" ($160 million) as well as the industry's third-largest opening of the year following "Toy Story 5" ($159 million) and "The Super Mario Galaxy Movie" ($131 million).
+     * Disney's summer has been mixed, with the studio fielding outsized hits like "The Devil Wears Prada 2" ($688 million) and "Toy Story 5" along with big-budget misfires like "Moana" and "Star Wars: The Mandalorian and Grogu" ($340 million against a $165 million budget).
+     * "Minions and Monsters" tied with "Toy Story 5" for third place, with each film bringing in $14.8 million over the weekend.
+     * "Toy Story 5" is one summer's biggest hits with $430 million in North America and $958 million worldwide after five weekends of release.
+  [lane D] Variety post 1236815981 pub 2026-07-19T17:47:17Z mod 2026-07-20T01:05:37Z REVISABLE(modified after anchor) :: ‘The Odyssey’ Becomes Christopher Nolan’s Biggest Global Debut of All Time With $264 Milli
+     * (This benchmark comes with a caveat because ticket sales weren't adjusted for inflation.) It's also the third-biggest opening of the year behind "The Super Mario Galaxy Movie" ($372.5 million) and "Toy Story 5" ($312 million).
+
+==================== WEEKEND 2026-07-24 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-07-24 | FILM: Minions & Monsters | NTH | key='Minions & Monsters'
+  [lane C] Variety post 1236820845 pub 2026-07-25T15:15:23Z mod 2026-07-26T17:31:07Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Holds Strong With $25 Million on Friday
+     * Fifth place went to "Minions & Monsters," which added $2.8 million domestically on Friday.
+     * Despite being a relatively low earner compared to franchise favorites like 2015's "Minions" ($1.15 billion worldwide) and 2022's "Minions: The Rise of Gru" ($940 million worldwide), "Minions & Monsters" is holding strong, dropping just 30% from last week's total.
+  [lane D] Deadline post 1237002537 section [SUNDAY AM WRITETHRU] available by 2026-07-26T19:00:00+00:00
+     * Chart as of Sunday AM: The Odyssey (Uni) 3,924 (+23) theaters, Fri $25.9M (-49% from last Friday), 3-day $87M (-30%), Total $286.3M /Wk 2 Moana (Dis) 4,015 (-185) theaters, Fri $3.1M (-45%), Sat $4.1M, Sun $3.3M 3-day $10.5M (-41%), Total $102.4M /Wk 3 Toy Story 5 (Dis) 3,375 (-25) theaters, Fri $2.9M (-32%) Sat $4M Sun $3.1M 3-day $10M (-27%), Tot
+
+######## 2026-07-24 | FILM: Moana (2026) | NTH | key='Moana'
+  [lane B] Deadline post 1237002537 section [UPDATED, FRIDAY PM] available by 2026-07-25T06:59:00+00:00
+     * In second place this weekend will be Disney's Moana with a third Friday of $3M, a third weekend around $10M , -44%, at 4,015 sites.
+  [lane C] Variety post 1236820845 pub 2026-07-25T15:15:23Z mod 2026-07-26T17:31:07Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Holds Strong With $25 Million on Friday
+     * Disney's live-action "Moana" took third with just $3.1 million domestically on Friday.
+     * Through its third weekend, "Moana" is eyeing an estimated $10.8 million, which would push its domestic haul to $102 million.
+     * While they've scored with "The Devil Wears Prada 2" ($688 million) and "Toy Story 5," under-performers like "Moana" and "The Mandalorian and Grogu" ($340 million against a $165 million budget) have proved costly.
+  [lane D] Deadline post 1237002537 section [SUNDAY AM WRITETHRU] available by 2026-07-26T19:00:00+00:00
+     * Chart as of Sunday AM: The Odyssey (Uni) 3,924 (+23) theaters, Fri $25.9M (-49% from last Friday), 3-day $87M (-30%), Total $286.3M /Wk 2 Moana (Dis) 4,015 (-185) theaters, Fri $3.1M (-45%), Sat $4.1M, Sun $3.3M 3-day $10.5M (-41%), Total $102.4M /Wk 3 Toy Story 5 (Dis) 3,375 (-25) theaters, Fri $2.9M (-32%) Sat $4M Sun $3.1M 3-day $10M (-27%), Tot
+  [lane D] Variety post 1236821417 pub 2026-07-26T14:46:29Z mod 2026-08-02T15:47:15Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Sails to $90 Million in Massive Second Weekend
+     * "Moana" earned $10.5 million from 4,015 locations in its third weekend, a modest 40% decline.
+     * Disney spent $250 million to reimagine the oceanic-set movie, so "Moana" will struggle to swim to profitability in its theatrical run.
+     * "Moana" might not inspire a live-action sequel, but Disney has plenty to celebrate now that "Toy Story 5" is the highest-grossing movie of the year with $1.022 billion globally.
+
+######## 2026-07-24 | FILM: The Odyssey | NTH | key='Odyssey'
+  [lane A] Deadline post 1237002537 section [PREVIOUSLY, FRIDAY AM] available by 2026-07-24T19:00:00+00:00
+     * It's been double-digit millions every day for Universal's Christopher Nolan movie The Odyssey , which after a $17.6 million Thursday - a remarkably slim 3% dip from Wednesday's $18M - ends its first week at the North American box office with $199.3M at 3,919 theaters.
+     * Among Nolan movies in their first week, The Odyssey (similar to its $123.5M weekend opening) is third behind The Dark Knight ($238.6M) and The Dark Knight Rises ($225M) and ahead of Oppenheimer ($127.8M) and Inception ($100.1M).
+     * The second-weekend outlook for Odyssey is between $61M-$74M, but it's clear from the weekday grosses that this Matt Damon movie has momentum.
+  [lane B] Deadline post 1237002537 section [UPDATED, FRIDAY PM] available by 2026-07-25T06:59:00+00:00
+     * Well, it is clear the weekdays showed how much of a driving force Universal's The Odyssey would be, and the feature take of Homer's epic poem is headed for a second frame of $84.5 million , the best a Christopher Nolan film has ever seen.
+     * Among R-rated movies, The Odyssey is currently bound for the second-best second weekend ever behind Deadpool & Wolverine 's $96.8M in 2024.
+  [lane C] Variety post 1236820845 pub 2026-07-25T15:15:23Z mod 2026-07-26T17:31:07Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Holds Strong With $25 Million on Friday
+     * "The Odyssey" added $25.9 million domestically on Friday, and by Sunday it's expected to make $84.5 million.
+     * Through two weekends of release, "The Odyssey's" North American total should land around $283 million.
+     * Over opening weekend, "The Odyssey" earned $264.1 million worldwide, an outstanding feat considering it's an adult-skewing drama that clocks in at almost three hours.
+  [lane D] Deadline post 1237002537 section [SUNDAY AM WRITETHRU] available by 2026-07-26T19:00:00+00:00
+     * Universal's The Odyssey remained muscular after a near $26M Friday and $34.6M Saturday, posting Christopher Nolan's best second weekend ever at the domestic box office with $87 million .
+     * The Odyssey is already Universal's second highest grossing R-rated movie after Nolan's Oppenheimer ($330M) and ahead of Ted ($218.8M).
+     * With a running a domestic total of $286.3M , The Odyssey became the highest grossing R-Rated movie of the year, ahead of Curry Barker's Obsession ($259.8M).
+     * Speaking of the TCL Chinese Theatre, we hear that when it comes to actual sales plus pre-sales (through week 5), The Odyssey has become the all-time best grossing movie at the historic venue with $2.48M, topping Oppenheimer 's run which counted $2.38M.
+  [lane D] Variety post 1236821417 pub 2026-07-26T14:46:29Z mod 2026-08-02T15:47:15Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Sails to $90 Million in Massive Second Weekend
+     * UPDATED: "The Odyssey" continued its epic box office journey, scoring a sensational $90 million from 3,943 North American theaters in its second weekend of release.
+     * Ticket sales for "The Odyssey" declined just 27% from its sizable $123.5 million debut , a testament to the box office durability of director Christopher Nolan.
+     * To that end, the turnout for "The Odyssey" represents the second-biggest sophomore outing for an R-rated movie after Disney's "Deadpool & Wolverine," which earned $96 million in its second weekend after launching to a record-setting $221 million domestically.
+     * So far, "The Odyssey" has generated $140 million globally in Imax, including $78 million domestically and $62 million internationally.
+  [lane D] Variety post 1236818437 pub 2026-07-26T14:50:59Z mod 2026-07-26T15:40:17Z STRICT :: Box Office: ‘Toy Story 5’ Crosses $1 Billion, Becomes Highest-Grossing Movie of the Year
+     * Meanwhile, "The Odyssey," which has earned $639.6 million after just two weekends of release, is primed to be the fourth film to notch $1 billion.
+  [lane D] Variety post 1236821428 pub 2026-07-26T16:52:11Z mod 2026-07-27T18:20:43Z REVISABLE(modified after anchor) :: Box Office: ‘The Odyssey’ Soars to $652 Million Globally After Two Weekends, Including $14
+     * UPDATED: Christopher Nolan's star-studded adaptation of "The Odyssey" has surpassed $650 million globally after just two weekends of release.
+     * Over the weekend, "The Odyssey" generated $137 million from 81 overseas markets, a remarkable 3% decline in holdover territories.
+     * "The Odyssey" has already surpassed the international haul of this spring's hit "Project Hail Mary" ($340 million) and now ranks among the top five highest-grossing Hollywood releases of the year - and that's before opening in major foreign markets including China, Japan and Korea.
+     * Imax has contributed an incredible $140 million of global ticket sales for "The Odyssey," which is notable as the first feature shot entirely with Imax cameras.
+
+==================== WEEKEND 2026-07-31 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-07-31 | FILM: Spider-Man: Brand New Day | OPEN | key='Spider-Man'
+  [lane A] Deadline post 1237014268 section [FRIDAY AM] available by 2026-07-31T19:00:00+00:00
+     * We're told that in the late-evening hours, walk-up business exploded for Sony's Spider-Man: Brand New Day which now has a revised number of $72 million.
+     * What this means is that Brand New Day is destined for a $100M+ first Friday including previews, a feat only five other movies have accomplished previously: Avengers: Endgame ($157.4M), Spider-Man: No Way Home ($121.96M), Star Wars: The Force Awakens ($119.1M), Avengers: Infinity War ($106.3M) and Star Wars: Last Jedi ($104.6M).
+  [lane A] Variety post 1236824394 pub 2026-07-31T14:55:19Z mod 2026-07-31T15:17:16Z STRICT :: ‘Spider-Man: Brand New Day’ Sets Box Office Record With $72 Million in Previews, Beating ‘
+     * Sony and Marvel's "Brand New Day" is aiming to make between $260 million and $280 million in its opening weekend, which would make it the second biggest launch of all time - behind "Endgame" and above "Spider-Man: No Way Home." Some estimates even put the "Brand New Day" opening above $300 million, but Sony is playing it safe and offering a more co
+     * The other films are "Spider-Man: No Way Home," "Avengers: Infinity War," "Star Wars: The Force Awakens," "Star Wars: The Last Jedi," "Deadpool & Wolverine," "Jurassic World," "The Avengers" and "Black Panther." Internationally, "Spider-Man: Brand New Day" is estimated to add between $275 million to $300 million to its total, but it's likely the tal
+  [lane A] Variety post 1236824603 pub 2026-07-31T15:38:38Z mod 2026-07-31T17:03:31Z STRICT :: Olivia Wilde’s ‘The Invite’ Nears $40 Million Globally, Becoming a Rare Hit Summer Comedy
+     * Sandwiched between big-budget blockbusters like "The Odyssey" and "Spider-Man: Brand New Day," A24's "The Invite" has climbed to $20 million in North America and $15.7 million internationally from 36 markets after three weekends in wide release.
+  [lane B] Deadline post 1237014268 section [FRIDAY MIDDAY UPDATE] available by 2026-08-01T00:00:00+00:00
+     * Sony/Marvel Studios' Spider-Man: Brand New Day is heading for an all-time record opening day (including previews) between $167 million-$173 million .
+     * That easily would kick the first day/preview opening record of Avengers: Endgame ($157.4M) to the side, not to mention the U.S./Canada debut here is well ahead of Spider-Man: No Way Home 's first Friday/previews of $121.96M.
+  [lane C] Deadline post 1237014268 section [SATURDAY AM] available by 2026-08-01T19:00:00+00:00
+     * Spider-Man: Brand New Day continued to post an all-time record opening day/previews yesterday with $168M , feasibly outstripping the previous first day record owned by Avengers: Endgame ($157.4M).
+     * However this winds up, of course, it's the biggest ever domestic opening for Sony, stratospheres above Spider-Man: No Way Home's $260.1M.
+     * No doubt about it, theatrical is alive. 1.) Spider-Man: Brand New Day (Sony) 4,487 theaters, Fri $168M, 3-day $325M-$350M+ /Wk 1 2.) The Odyssey (Uni)  3,861 (-81) Fri $14.5M (-44% from last Friday), 3-day $51M (-43%), Total $395.5M /Wk 3 3.
+  [lane D] Deadline post 1237014268 section [SUNDAY AM] available by 2026-08-02T19:00:00+00:00
+     * It's close, oh, so close, as Sony/Marvel Studios' Spider-Man: Brand New Day with $355M nearly ended Avengers: Endgame run for the best opening weekend ever in North America, that Marvel Studios Russo Brothers pic still holding the 3-day title with $357.1M.
+     * But for Sony, there's no problem with being second, for they beat their own all-time studio record start previously owned by 2021's Spider-Man: No Way Home ($260.1M).
+     * Top 10 pics: 1.) Spider-Man: Brand New Day (Sony) 4,487 theaters, Fri $168M, Sat $101.5M Sun $84.2M 3-day $355M /Wk 1 2.) The Odyssey (Uni)  3,861 (-81) Fri $14.3M Sat $19.66M Sun $17M  3-day $51M (-43%), Total $395.5M /Wk 3 The Imax screens, which Odyssey retained all of, delivered $22.1M this past weekend or 43% of the weekend for a running cume 
+  [lane D] Variety post 1236825953 pub 2026-08-02T15:03:20Z mod 2026-08-03T01:33:08Z REVISABLE(modified after anchor) :: ‘Spider-Man: Brand New Day’ Swings to Mind-Blowing $355 Million Debut, Second-Biggest Open
+     * Sony and Marvel's comic book adventure "Spider-Man: Brand New Day" obliterated box office expectations, collecting a jaw-dropping $355 million from 4,487 North American theaters.
+     * The third-largest domestic opening belongs to 2021's "Spider-Man: No Way Home" with $260 million, followed by 2018's "Avengers: Infinity War" with $257 million.
+     * "Spider-Man: Brand New Day" collected $573 million at the international box office, bringing the grand total to a staggering $927 million worldwide and underscoring Peter Parker's broad, global appeal.
+     * "This debut reflects the enduring power of Marvel's characters, and the connection they continue to have with fans around the world - and, as audiences saw, it sets up exciting things to come." Even with the craze surrounding "Spider-Man: Brand New Day," Christopher Nolan's "The Odyssey" remained a draw with $51 million in its third frame.
+  [lane D] Variety post 1236825132 pub 2026-08-02T16:09:06Z mod 2026-08-03T01:37:10Z REVISABLE(modified after anchor) :: ‘Spider-Man: Brand New Day’ and ‘The Odyssey’ Power Biggest Collective Weekend in Box Offi
+     * A powerful one-two punch from "Spider-Man: Brand New Day" and "The Odyssey" has fueled the biggest collective weekend in box office history, with roughly $430 million across all movies in the marketplace.
+     * "This is now only the second $400 million-plus weekend in box office history." "Spider-Man: Brand New Day," the fourth comic-book adventure starring Holland as the web-slinging hero, exploded with $355 million in its domestic debut , ranking as the second-biggest opening of all time as well as the second movie in history to cross $300 million in a 
+     * (And some analysts believe "Brand New Day" could end up eclipsing "Endgame's" record when final numbers are tallied on Monday.) "Spider-Man: Brand New Day" already scored the largest preview haul with $72 million, as well as the biggest opening day with $168 million.
+     * "These are stunning numbers." "Spider-Man: Brand New Day" is the follow-up to 2021's behemoth "Spider-Man: No Way Home," which opened to $260 million (the third-biggest debut ever) and powered to $1.9 billion by the end of its run.
+  [lane D] Variety post 1236825975 pub 2026-08-02T16:46:52Z mod 2026-08-03T01:41:54Z REVISABLE(modified after anchor) :: ‘Spider-Man: Brand New Day’ Obliterates Expectations With $927 Million Global Debut
+     * Sony and Marvel's web-slinging adventure "Spider-Man: Brand New Day" climbed to $927 million globally, a mind-blowing, jaw-dropping and totally epic opening weekend haul.
+     * "Brand New Day," the fourth comic-book adaptation starring Tom Holland as Marvel's friendly, neighborhood Spider-Man, opened to $572 million internationally from 66 markets, as well as $355 million at the domestic box office .
+     * With such a significant launch in China, "Spider-Man: Brand New Day" could eventually surpass $2 billion at the global box office - a milestone that only seven movies in history have ever surpassed.
+     * "Spider-Man: No Way Home," the predecessor to "Brand New Day," fell just short while managing to generate a staggering $1.9 billion in 2021 without playing in China.
+
+######## 2026-07-31 | FILM: The Odyssey | NTH | key='Odyssey'
+  [lane A] Deadline post 1237014268 section [FRIDAY AM] available by 2026-07-31T19:00:00+00:00
+     * Yesterday with the arrival of Spidey, Universal's The Odyssey saw its lowest grossing day so far (which is still a great weekday number for a second Thursday) with an estimated $10.2M, -25% from Wednesday, and running cume of $344.4M.
+     * The Odyssey triumphs with the best second week for Christopher Nolan, ahead of Dark Knight 's second week which was $112.4M.
+     * Here's the week's top 5 Odyssey (Uni) 3,942 theaters, Wk $145M (-27%), Total $344.4M/Wk 2 Moana (Dis) 4,015 theaters, Wk $17.5M (-39%), Total $109.4M/Wk 3 Toy Story 5 (Dis) 3,375 theaters, Wk $16.8M (-25%), Total $455.3M/Wk 6 Minions & Monsters (Uni) 3,386 theaters, Wk $16.75M (-27%), Total $162.5M/Wk 4 Hadestown (BST) 1,949 theaters, Wk $16.2M/Wk 
+  [lane A] Variety post 1236824603 pub 2026-07-31T15:38:38Z mod 2026-07-31T17:03:31Z STRICT :: Olivia Wilde’s ‘The Invite’ Nears $40 Million Globally, Becoming a Rare Hit Summer Comedy
+     * Sandwiched between big-budget blockbusters like "The Odyssey" and "Spider-Man: Brand New Day," A24's "The Invite" has climbed to $20 million in North America and $15.7 million internationally from 36 markets after three weekends in wide release.
+  [lane B] Deadline post 1237014268 section [FRIDAY MIDDAY UPDATE] available by 2026-08-01T00:00:00+00:00
+     * Universal's The Odyssey is doing fantastic against the competition with an expected $52M weekend, -42%, the best third frame for Nolan since The Dark Knight at $42.6M.
+  [lane C] Deadline post 1237014268 section [SATURDAY AM] available by 2026-08-01T19:00:00+00:00
+     * No doubt about it, theatrical is alive. 1.) Spider-Man: Brand New Day (Sony) 4,487 theaters, Fri $168M, 3-day $325M-$350M+ /Wk 1 2.) The Odyssey (Uni)  3,861 (-81) Fri $14.5M (-44% from last Friday), 3-day $51M (-43%), Total $395.5M /Wk 3 3.
+  [lane D] Deadline post 1237014268 section [SUNDAY AM] available by 2026-08-02T19:00:00+00:00
+     * RELATED: Universal Becomes First Studio To Conquer $4B+ Worldwide In 2026 As 'Odyssey' Heads For $1B Global Other top theaters for Brand New Day included AMC Burbank, AMC Empire NYC, Regal Houston Marquee, AMC Orange, AMC Disney Springs Orlando, AMC Garden State Plaza NJ, Regal Edwards Ontario Palace, Regal Dania Pt Florida and Regal Times Square N
+     * Top 10 pics: 1.) Spider-Man: Brand New Day (Sony) 4,487 theaters, Fri $168M, Sat $101.5M Sun $84.2M 3-day $355M /Wk 1 2.) The Odyssey (Uni)  3,861 (-81) Fri $14.3M Sat $19.66M Sun $17M  3-day $51M (-43%), Total $395.5M /Wk 3 The Imax screens, which Odyssey retained all of, delivered $22.1M this past weekend or 43% of the weekend for a running cume 
+  [lane D] Variety post 1236825953 pub 2026-08-02T15:03:20Z mod 2026-08-03T01:33:08Z REVISABLE(modified after anchor) :: ‘Spider-Man: Brand New Day’ Swings to Mind-Blowing $355 Million Debut, Second-Biggest Open
+     * "This debut reflects the enduring power of Marvel's characters, and the connection they continue to have with fans around the world - and, as audiences saw, it sets up exciting things to come." Even with the craze surrounding "Spider-Man: Brand New Day," Christopher Nolan's "The Odyssey" remained a draw with $51 million in its third frame.
+     * Elsewhere, "The Odyssey" has surpassed $911 million at the box office, including $395.5 million domestically and $515 million overseas, after just three weekends in theaters.
+     * "The Odyssey" and "Spider-Man: Brand New Day" will imminently be the fourth and fifth releases of the year to surpass $1 billion, following June's "Toy Story 5" ($1.02 billion) and April's "The Super Mario Galaxy Movie" ($1.001 billion) and "Michael" ($1.001 billion).
+     * The staying power of "Spider-Man: Brand New Day" and "The Odyssey" will determine whether this summer will become the second since COVID to cross the coveted $4 billion milestone.
+  [lane D] Variety post 1236825132 pub 2026-08-02T16:09:06Z mod 2026-08-03T01:37:10Z REVISABLE(modified after anchor) :: ‘Spider-Man: Brand New Day’ and ‘The Odyssey’ Power Biggest Collective Weekend in Box Offi
+     * A powerful one-two punch from "Spider-Man: Brand New Day" and "The Odyssey" has fueled the biggest collective weekend in box office history, with roughly $430 million across all movies in the marketplace.
+     * "The Odyssey" remained a force in its third frame with $51 million, a remarkable haul given the all-out frenzy around Peter Parker.
+     * "The Odyssey" will also soon surpass "The Dark Knight" ($1.008 billion) and 2012's "The Dark Knight Rises" ($1.08 billion) as the director's highest-grossing film of all time.
+  [lane D] Variety post 1236825975 pub 2026-08-02T16:46:52Z mod 2026-08-03T01:41:54Z REVISABLE(modified after anchor) :: ‘Spider-Man: Brand New Day’ Obliterates Expectations With $927 Million Global Debut
+     * Although the movie didn't play on Imax screens in the U.S. - Christopher Nolan's "The Odyssey" has the entire domestic network for three weekends - the latest Spidey adventure debuted on the company's screens across China, Japan and South Korea, delivering a combined $23 million.

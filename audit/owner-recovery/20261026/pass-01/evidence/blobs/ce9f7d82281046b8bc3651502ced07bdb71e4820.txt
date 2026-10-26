@@ -1,0 +1,39 @@
+# Vertical CP022 — Acquisition firewall internal proof and outcome-content composition
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=bb513a0cda2defab06ca3d29ab185562b37c13ef
+
+Existing capability/module: Acquisition firewall internal proof and outcome-content composition. Starting depth: D1.
+North Star basis: scientific truth, persistent provenance/identity, explicit
+UNKNOWN/blocking distinctions and closed economic/capital authority. No future
+Wave-2 capability family is added.
+
+Enumerated repair items:
+
+1. Forbidden outcome keys hidden in nested dict/list/tuple payloads escaped the top-level scan.
+2. Empty/malformed required values and clocks without explicit timezones passed as qualified PIT input.
+3. A changed plan or opened authority flag could retain READY admission.
+4. Normalization/provenance trusted stale or foreign PASS receipts and unverified typed bodies.
+
+Narrow repair: Recursively reject named outcome keys; require explicit record clocks and required values; verify the plan hash and closed flags. Re-run the module's own firewall at normalization and bind the typed body to original raw_record_hash. Provenance verifies the typed hash, raw reference, plan and record identity plus policy/clock conditions.
+
+Adversarial evidence: **41 new pytest cases** in the corresponding
+`tests/test_vertical_*_depth.py` file. Before repair: **35 failed / 6 passed**.
+Focused requalification: **50 passed**. Full failures and focused transcripts are
+`research/vertical_depth/20261021/CP022_{before,after}.txt`.
+Tests cover the concrete failure modes listed above, exact valid controls,
+replay/input and output isolation, and deterministic concurrency or injected
+publication failure where applicable. These counts overlap existing regressions.
+
+Attained depth: **D4**, limited to these capability slices.
+Remaining unproven depth: D4 is narrowly the internal plan/content/proof-replay composition, not actual transport isolation. Adding raw_record_hash changes fresh typed/provenance hashes intentionally; old typed bodies without this proof are not silently certified. Raw content-class order cannot be reconstructed after normalization, which motivated the explicit binding. No adapter authenticity, free-text outcome detection, all malformed objects, real network/PIT capture or cross-module registry proof is claimed.
+
+Horizontal findings: none. Longitudinal findings: see the separately recorded
+cross-axis disposition in the final coverage/survey; no handoff repair here.
+Authority state: all Owner grants remain closed. No network acquisition,
+economic experiment, prospective observation or order was executed.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

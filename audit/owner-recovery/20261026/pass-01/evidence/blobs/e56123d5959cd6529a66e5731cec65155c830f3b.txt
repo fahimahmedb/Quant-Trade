@@ -1,0 +1,1289 @@
+{
+ "2Z": {
+  "days": 224,
+  "dydx": "2Z-USD",
+  "first_day": "2025-10-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "2Z",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 100.0
+ },
+ "AAVE": {
+  "days": 950,
+  "dydx": "AAVE-USD",
+  "first_day": "2024-02-13",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AAVE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "ADA": {
+  "days": 1036,
+  "dydx": "ADA-USD",
+  "first_day": "2023-11-22",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ADA",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "AERO": {
+  "days": 66,
+  "dydx": "AERO-USD",
+  "first_day": "2025-11-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AERO",
+  "last_day": "2026-02-17",
+  "price_scale_tokens": 10.0
+ },
+ "AI16Z": {
+  "days": 206,
+  "dydx": "AI16Z-USD",
+  "first_day": "2025-01-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AI16Z",
+  "last_day": "2025-11-06",
+  "price_scale_tokens": 100.0
+ },
+ "AIXBT": {
+  "days": 177,
+  "dydx": "AIXBT-USD",
+  "first_day": "2025-01-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AIXBT",
+  "last_day": "2026-03-13",
+  "price_scale_tokens": 100.0
+ },
+ "ALGO": {
+  "days": 657,
+  "dydx": "ALGO-USD",
+  "first_day": "2024-12-05",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ALGO",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "ALT": {
+  "days": 75,
+  "dydx": "ALT-USD",
+  "first_day": "2024-07-17",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ALT",
+  "last_day": "2025-09-16",
+  "price_scale_tokens": 100.0
+ },
+ "APE": {
+  "days": 928,
+  "dydx": "APE-USD",
+  "first_day": "2023-11-15",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "APE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "APT": {
+  "days": 1032,
+  "dydx": "APT-USD",
+  "first_day": "2023-11-15",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "APT",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "AR": {
+  "days": 362,
+  "dydx": "AR-USD",
+  "first_day": "2024-07-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AR",
+  "last_day": "2026-01-14",
+  "price_scale_tokens": 1.0
+ },
+ "ARB": {
+  "days": 1032,
+  "dydx": "ARB-USD",
+  "first_day": "2023-11-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ARB",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "ASTER": {
+  "days": 348,
+  "dydx": "ASTER-USD",
+  "first_day": "2025-09-23",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ASTER",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "ATOM": {
+  "days": 1031,
+  "dydx": "ATOM-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ATOM",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "AVAX": {
+  "days": 1035,
+  "dydx": "AVAX-USD",
+  "first_day": "2023-11-17",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AVAX",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "AVNT": {
+  "days": 203,
+  "dydx": "AVNT-USD",
+  "first_day": "2025-09-26",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "AVNT",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 100.0
+ },
+ "BABY": {
+  "days": 121,
+  "dydx": "BABY-USD",
+  "first_day": "2025-04-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BABY",
+  "last_day": "2025-12-30",
+  "price_scale_tokens": 100.0
+ },
+ "BANANA": {
+  "days": 125,
+  "dydx": "BANANA-USD",
+  "first_day": "2025-03-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BANANA",
+  "last_day": "2026-02-12",
+  "price_scale_tokens": 1.0
+ },
+ "BCH": {
+  "days": 1030,
+  "dydx": "BCH-USD",
+  "first_day": "2023-11-23",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BCH",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "BERA": {
+  "days": 348,
+  "dydx": "BERA-USD",
+  "first_day": "2025-02-07",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BERA",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 10.0
+ },
+ "BLAST": {
+  "days": 486,
+  "dydx": "BLAST-USD",
+  "first_day": "2024-07-05",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BLAST",
+  "last_day": "2026-05-18",
+  "price_scale_tokens": 10000.0
+ },
+ "BLUR": {
+  "days": 913,
+  "dydx": "BLUR-USD",
+  "first_day": "2023-11-23",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BLUR",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "BNB": {
+  "days": 954,
+  "dydx": "BNB-USD",
+  "first_day": "2024-02-13",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BNB",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "BOME": {
+  "days": 137,
+  "dydx": "BOME-USD",
+  "first_day": "2024-07-20",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BOME",
+  "last_day": "2025-12-04",
+  "price_scale_tokens": 10000.0
+ },
+ "BONK": {
+  "days": 924,
+  "dydx": "BONK-USD",
+  "first_day": "2024-02-27",
+  "hl_tokens_per_contract": 1000.0,
+  "hyperliquid": "kBONK",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1000000.0
+ },
+ "BRETT": {
+  "days": 398,
+  "dydx": "BRETT-USD",
+  "first_day": "2024-07-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BRETT",
+  "last_day": "2026-02-12",
+  "price_scale_tokens": 1000.0
+ },
+ "BTC": {
+  "days": 1046,
+  "dydx": "BTC-USD",
+  "first_day": "2023-11-13",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "BTC",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "CAKE": {
+  "days": 442,
+  "dydx": "CAKE-USD",
+  "first_day": "2024-07-08",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "CAKE",
+  "last_day": "2026-07-07",
+  "price_scale_tokens": 1.0
+ },
+ "COMP": {
+  "days": 947,
+  "dydx": "COMP-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "COMP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "CRV": {
+  "days": 991,
+  "dydx": "CRV-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "CRV",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "DOGE": {
+  "days": 1030,
+  "dydx": "DOGE-USD",
+  "first_day": "2023-11-29",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "DOGE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "DOT": {
+  "days": 1031,
+  "dydx": "DOT-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "DOT",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "DYDX": {
+  "days": 873,
+  "dydx": "DYDX-USD",
+  "first_day": "2024-04-22",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "DYDX",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "DYM": {
+  "days": 764,
+  "dydx": "DYM-USD",
+  "first_day": "2024-02-25",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "DYM",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "EIGEN": {
+  "days": 512,
+  "dydx": "EIGEN-USD",
+  "first_day": "2024-11-14",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "EIGEN",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "ENA": {
+  "days": 772,
+  "dydx": "ENA-USD",
+  "first_day": "2024-07-01",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ENA",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "ENS": {
+  "days": 635,
+  "dydx": "ENS-USD",
+  "first_day": "2024-07-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ENS",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 1.0
+ },
+ "ETC": {
+  "days": 981,
+  "dydx": "ETC-USD",
+  "first_day": "2024-01-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ETC",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "ETH": {
+  "days": 1046,
+  "dydx": "ETH-USD",
+  "first_day": "2023-11-13",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ETH",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "ETHFI": {
+  "days": 708,
+  "dydx": "ETHFI-USD",
+  "first_day": "2024-05-04",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ETHFI",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 10.0
+ },
+ "FET": {
+  "days": 105,
+  "dydx": "FET-USD",
+  "first_day": "2024-02-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "FET",
+  "last_day": "2024-06-11",
+  "price_scale_tokens": 1.0
+ },
+ "FIL": {
+  "days": 1032,
+  "dydx": "FIL-USD",
+  "first_day": "2023-11-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "FIL",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "FLOKI": {
+  "days": 597,
+  "dydx": "FLOKI-USD",
+  "first_day": "2024-07-02",
+  "hl_tokens_per_contract": 1000.0,
+  "hyperliquid": "kFLOKI",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 100000.0
+ },
+ "FTM": {
+  "days": 189,
+  "dydx": "FTM-USD",
+  "first_day": "2024-07-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "FTM",
+  "last_day": "2025-01-07",
+  "price_scale_tokens": 10.0
+ },
+ "GALA": {
+  "days": 323,
+  "dydx": "GALA-USD",
+  "first_day": "2024-07-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "GALA",
+  "last_day": "2026-02-14",
+  "price_scale_tokens": 1000.0
+ },
+ "GMX": {
+  "days": 226,
+  "dydx": "GMX-USD",
+  "first_day": "2024-08-23",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "GMX",
+  "last_day": "2026-01-13",
+  "price_scale_tokens": 1.0
+ },
+ "GOAT": {
+  "days": 158,
+  "dydx": "GOAT-USD",
+  "first_day": "2024-11-19",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "GOAT",
+  "last_day": "2026-03-31",
+  "price_scale_tokens": 100.0
+ },
+ "GRASS": {
+  "days": 214,
+  "dydx": "GRASS-USD",
+  "first_day": "2024-11-26",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "GRASS",
+  "last_day": "2026-02-27",
+  "price_scale_tokens": 10.0
+ },
+ "HBAR": {
+  "days": 875,
+  "dydx": "HBAR-USD",
+  "first_day": "2024-04-25",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "HBAR",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "HYPE": {
+  "days": 564,
+  "dydx": "HYPE-USD",
+  "first_day": "2025-02-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "HYPE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "ICP": {
+  "days": 317,
+  "dydx": "ICP-USD",
+  "first_day": "2025-11-09",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ICP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "IMX": {
+  "days": 861,
+  "dydx": "IMX-USD",
+  "first_day": "2024-03-07",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "IMX",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "INJ": {
+  "days": 933,
+  "dydx": "INJ-USD",
+  "first_day": "2024-03-05",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "INJ",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "IO": {
+  "days": 298,
+  "dydx": "IO-USD",
+  "first_day": "2024-07-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "IO",
+  "last_day": "2026-07-14",
+  "price_scale_tokens": 10.0
+ },
+ "IP": {
+  "days": 229,
+  "dydx": "IP-USD",
+  "first_day": "2025-02-15",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "IP",
+  "last_day": "2026-03-29",
+  "price_scale_tokens": 10.0
+ },
+ "JTO": {
+  "days": 888,
+  "dydx": "JTO-USD",
+  "first_day": "2024-02-19",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "JTO",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "JUP": {
+  "days": 957,
+  "dydx": "JUP-USD",
+  "first_day": "2024-02-08",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "JUP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "KAITO": {
+  "days": 359,
+  "dydx": "KAITO-USD",
+  "first_day": "2025-02-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "KAITO",
+  "last_day": "2026-07-03",
+  "price_scale_tokens": 10.0
+ },
+ "KAS": {
+  "days": 436,
+  "dydx": "KAS-USD",
+  "first_day": "2024-07-01",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "KAS",
+  "last_day": "2026-03-31",
+  "price_scale_tokens": 100.0
+ },
+ "LAYER": {
+  "days": 128,
+  "dydx": "LAYER-USD",
+  "first_day": "2025-02-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "LAYER",
+  "last_day": "2026-01-14",
+  "price_scale_tokens": 10.0
+ },
+ "LDO": {
+  "days": 995,
+  "dydx": "LDO-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "LDO",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "LINEA": {
+  "days": 70,
+  "dydx": "LINEA-USD",
+  "first_day": "2025-09-13",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "LINEA",
+  "last_day": "2026-04-04",
+  "price_scale_tokens": 1000.0
+ },
+ "LINK": {
+  "days": 1040,
+  "dydx": "LINK-USD",
+  "first_day": "2023-11-17",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "LINK",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "LIT": {
+  "days": 192,
+  "dydx": "LIT-USD",
+  "first_day": "2026-01-26",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "LIT",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "LTC": {
+  "days": 1031,
+  "dydx": "LTC-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "LTC",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "MATIC": {
+  "days": 283,
+  "dydx": "MATIC-USD",
+  "first_day": "2023-11-24",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MATIC",
+  "last_day": "2024-09-02",
+  "price_scale_tokens": 10.0
+ },
+ "MAVIA": {
+  "days": 62,
+  "dydx": "MAVIA-USD",
+  "first_day": "2024-08-07",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MAVIA",
+  "last_day": "2025-02-18",
+  "price_scale_tokens": 10.0
+ },
+ "ME": {
+  "days": 87,
+  "dydx": "ME-USD",
+  "first_day": "2025-02-09",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ME",
+  "last_day": "2026-03-31",
+  "price_scale_tokens": 100.0
+ },
+ "MET": {
+  "days": 169,
+  "dydx": "MET-USD",
+  "first_day": "2025-11-18",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MET",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 10.0
+ },
+ "MEW": {
+  "days": 239,
+  "dydx": "MEW-USD",
+  "first_day": "2024-07-24",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MEW",
+  "last_day": "2026-02-27",
+  "price_scale_tokens": 10000.0
+ },
+ "MKR": {
+  "days": 647,
+  "dydx": "MKR-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MKR",
+  "last_day": "2025-09-05",
+  "price_scale_tokens": 1.0
+ },
+ "MNT": {
+  "days": 488,
+  "dydx": "MNT-USD",
+  "first_day": "2024-07-18",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MNT",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 10.0
+ },
+ "MON": {
+  "days": 221,
+  "dydx": "MON-USD",
+  "first_day": "2025-11-25",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MON",
+  "last_day": "2026-09-19",
+  "price_scale_tokens": 100.0
+ },
+ "MOODENG": {
+  "days": 214,
+  "dydx": "MOODENG-USD",
+  "first_day": "2024-11-22",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MOODENG",
+  "last_day": "2026-01-27",
+  "price_scale_tokens": 100.0
+ },
+ "MORPHO": {
+  "days": 428,
+  "dydx": "MORPHO-USD",
+  "first_day": "2025-01-18",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MORPHO",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 10.0
+ },
+ "MOVE": {
+  "days": 362,
+  "dydx": "MOVE-USD",
+  "first_day": "2024-12-14",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "MOVE",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 1000.0
+ },
+ "NEAR": {
+  "days": 1032,
+  "dydx": "NEAR-USD",
+  "first_day": "2023-11-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "NEAR",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "NEIRO": {
+  "days": 104,
+  "dydx": "NEIRO-USD",
+  "first_day": "2024-10-27",
+  "hl_tokens_per_contract": 1000.0,
+  "hyperliquid": "kNEIRO",
+  "last_day": "2026-03-31",
+  "price_scale_tokens": 100000.0
+ },
+ "NEO": {
+  "days": 184,
+  "dydx": "NEO-USD",
+  "first_day": "2024-07-25",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "NEO",
+  "last_day": "2026-01-29",
+  "price_scale_tokens": 1.0
+ },
+ "NIL": {
+  "days": 135,
+  "dydx": "NIL-USD",
+  "first_day": "2025-03-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "NIL",
+  "last_day": "2026-01-29",
+  "price_scale_tokens": 100.0
+ },
+ "NOT": {
+  "days": 267,
+  "dydx": "NOT-USD",
+  "first_day": "2024-07-01",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "NOT",
+  "last_day": "2026-02-23",
+  "price_scale_tokens": 10000.0
+ },
+ "OM": {
+  "days": 216,
+  "dydx": "OM-USD",
+  "first_day": "2025-02-17",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "OM",
+  "last_day": "2026-01-29",
+  "price_scale_tokens": 100.0
+ },
+ "ONDO": {
+  "days": 765,
+  "dydx": "ONDO-USD",
+  "first_day": "2024-07-01",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ONDO",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "OP": {
+  "days": 1026,
+  "dydx": "OP-USD",
+  "first_day": "2023-11-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "OP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "ORDI": {
+  "days": 894,
+  "dydx": "ORDI-USD",
+  "first_day": "2024-02-19",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ORDI",
+  "last_day": "2026-09-23",
+  "price_scale_tokens": 1.0
+ },
+ "PAXG": {
+  "days": 524,
+  "dydx": "PAXG-USD",
+  "first_day": "2025-04-07",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PAXG",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "PENDLE": {
+  "days": 700,
+  "dydx": "PENDLE-USD",
+  "first_day": "2024-07-05",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PENDLE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "PENGU": {
+  "days": 575,
+  "dydx": "PENGU-USD",
+  "first_day": "2025-01-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PENGU",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1000.0
+ },
+ "PEOPLE": {
+  "days": 554,
+  "dydx": "PEOPLE-USD",
+  "first_day": "2024-07-05",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PEOPLE",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 1000.0
+ },
+ "PEPE": {
+  "days": 1021,
+  "dydx": "PEPE-USD",
+  "first_day": "2023-11-13",
+  "hl_tokens_per_contract": 1000.0,
+  "hyperliquid": "kPEPE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10000000.0
+ },
+ "PIXEL": {
+  "days": 63,
+  "dydx": "PIXEL-USD",
+  "first_day": "2024-07-17",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PIXEL",
+  "last_day": "2025-02-16",
+  "price_scale_tokens": 100.0
+ },
+ "PNUT": {
+  "days": 176,
+  "dydx": "PNUT-USD",
+  "first_day": "2024-11-22",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PNUT",
+  "last_day": "2026-01-15",
+  "price_scale_tokens": 100.0
+ },
+ "POL": {
+  "days": 653,
+  "dydx": "POL-USD",
+  "first_day": "2024-11-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "POL",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "POPCAT": {
+  "days": 540,
+  "dydx": "POPCAT-USD",
+  "first_day": "2024-07-06",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "POPCAT",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 100.0
+ },
+ "PROMPT": {
+  "days": 60,
+  "dydx": "PROMPT-USD",
+  "first_day": "2025-09-13",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PROMPT",
+  "last_day": "2026-01-31",
+  "price_scale_tokens": 100.0
+ },
+ "PROVE": {
+  "days": 68,
+  "dydx": "PROVE-USD",
+  "first_day": "2025-08-07",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PROVE",
+  "last_day": "2026-01-31",
+  "price_scale_tokens": 10.0
+ },
+ "PUMP": {
+  "days": 422,
+  "dydx": "PUMP-USD",
+  "first_day": "2025-07-15",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PUMP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1000.0
+ },
+ "PYTH": {
+  "days": 913,
+  "dydx": "PYTH-USD",
+  "first_day": "2024-02-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "PYTH",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "RENDER": {
+  "days": 757,
+  "dydx": "RENDER-USD",
+  "first_day": "2024-08-12",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "RENDER",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "REZ": {
+  "days": 137,
+  "dydx": "REZ-USD",
+  "first_day": "2025-03-07",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "REZ",
+  "last_day": "2026-01-19",
+  "price_scale_tokens": 1000.0
+ },
+ "RUNE": {
+  "days": 852,
+  "dydx": "RUNE-USD",
+  "first_day": "2024-03-17",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "RUNE",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "S": {
+  "days": 403,
+  "dydx": "S-USD",
+  "first_day": "2025-02-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "S",
+  "last_day": "2026-07-03",
+  "price_scale_tokens": 100.0
+ },
+ "SEI": {
+  "days": 1027,
+  "dydx": "SEI-USD",
+  "first_day": "2023-11-24",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SEI",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "SHIB": {
+  "days": 1025,
+  "dydx": "SHIB-USD",
+  "first_day": "2023-11-29",
+  "hl_tokens_per_contract": 1000.0,
+  "hyperliquid": "kSHIB",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1000000.0
+ },
+ "SKY": {
+  "days": 116,
+  "dydx": "SKY-USD",
+  "first_day": "2025-09-18",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SKY",
+  "last_day": "2026-07-03",
+  "price_scale_tokens": 100.0
+ },
+ "SNX": {
+  "days": 801,
+  "dydx": "SNX-USD",
+  "first_day": "2024-03-22",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SNX",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 10.0
+ },
+ "SOL": {
+  "days": 1045,
+  "dydx": "SOL-USD",
+  "first_day": "2023-11-14",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SOL",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "SOPH": {
+  "days": 79,
+  "dydx": "SOPH-USD",
+  "first_day": "2025-05-29",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SOPH",
+  "last_day": "2026-01-13",
+  "price_scale_tokens": 100.0
+ },
+ "SPX": {
+  "days": 422,
+  "dydx": "SPX-USD",
+  "first_day": "2025-02-06",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SPX",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 10.0
+ },
+ "STRK": {
+  "days": 881,
+  "dydx": "STRK-USD",
+  "first_day": "2024-02-26",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "STRK",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "STX": {
+  "days": 837,
+  "dydx": "STX-USD",
+  "first_day": "2024-03-04",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "STX",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 10.0
+ },
+ "SUI": {
+  "days": 1031,
+  "dydx": "SUI-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SUI",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "SUSHI": {
+  "days": 213,
+  "dydx": "SUSHI-USD",
+  "first_day": "2024-08-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SUSHI",
+  "last_day": "2026-03-04",
+  "price_scale_tokens": 10.0
+ },
+ "SYRUP": {
+  "days": 296,
+  "dydx": "SYRUP-USD",
+  "first_day": "2025-06-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "SYRUP",
+  "last_day": "2026-08-07",
+  "price_scale_tokens": 10.0
+ },
+ "TAO": {
+  "days": 790,
+  "dydx": "TAO-USD",
+  "first_day": "2024-07-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TAO",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "TIA": {
+  "days": 1000,
+  "dydx": "TIA-USD",
+  "first_day": "2023-12-23",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TIA",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "TON": {
+  "days": 768,
+  "dydx": "TON-USD",
+  "first_day": "2024-05-09",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TON",
+  "last_day": "2026-06-15",
+  "price_scale_tokens": 10.0
+ },
+ "TRB": {
+  "days": 120,
+  "dydx": "TRB-USD",
+  "first_day": "2024-08-09",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TRB",
+  "last_day": "2026-03-31",
+  "price_scale_tokens": 1.0
+ },
+ "TRUMP": {
+  "days": 593,
+  "dydx": "TRUMP-USD",
+  "first_day": "2025-01-20",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TRUMP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "TRX": {
+  "days": 1027,
+  "dydx": "TRX-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TRX",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "TURBO": {
+  "days": 199,
+  "dydx": "TURBO-USD",
+  "first_day": "2024-07-06",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "TURBO",
+  "last_day": "2026-01-04",
+  "price_scale_tokens": 10000.0
+ },
+ "UMA": {
+  "days": 195,
+  "dydx": "UMA-USD",
+  "first_day": "2024-08-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "UMA",
+  "last_day": "2026-02-13",
+  "price_scale_tokens": 10.0
+ },
+ "UNI": {
+  "days": 1031,
+  "dydx": "UNI-USD",
+  "first_day": "2023-11-27",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "UNI",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "USUAL": {
+  "days": 412,
+  "dydx": "USUAL-USD",
+  "first_day": "2024-12-21",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "USUAL",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 1000.0
+ },
+ "VINE": {
+  "days": 215,
+  "dydx": "VINE-USD",
+  "first_day": "2025-02-06",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "VINE",
+  "last_day": "2025-12-19",
+  "price_scale_tokens": 100.0
+ },
+ "VIRTUAL": {
+  "days": 267,
+  "dydx": "VIRTUAL-USD",
+  "first_day": "2025-01-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "VIRTUAL",
+  "last_day": "2026-01-05",
+  "price_scale_tokens": 10.0
+ },
+ "VVV": {
+  "days": 80,
+  "dydx": "VVV-USD",
+  "first_day": "2025-02-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "VVV",
+  "last_day": "2026-08-30",
+  "price_scale_tokens": 1.0
+ },
+ "W": {
+  "days": 698,
+  "dydx": "W-USD",
+  "first_day": "2024-06-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "W",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 1000.0
+ },
+ "WCT": {
+  "days": 78,
+  "dydx": "WCT-USD",
+  "first_day": "2025-04-16",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "WCT",
+  "last_day": "2025-12-18",
+  "price_scale_tokens": 100.0
+ },
+ "WIF": {
+  "days": 835,
+  "dydx": "WIF-USD",
+  "first_day": "2024-04-30",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "WIF",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "WLD": {
+  "days": 1030,
+  "dydx": "WLD-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "WLD",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "WLFI": {
+  "days": 373,
+  "dydx": "WLFI-USD",
+  "first_day": "2025-09-02",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "WLFI",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "XAI": {
+  "days": 165,
+  "dydx": "XAI-USD",
+  "first_day": "2024-08-10",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "XAI",
+  "last_day": "2026-01-29",
+  "price_scale_tokens": 100.0
+ },
+ "XLM": {
+  "days": 668,
+  "dydx": "XLM-USD",
+  "first_day": "2024-11-23",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "XLM",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "XMR": {
+  "days": 247,
+  "dydx": "XMR-USD",
+  "first_day": "2026-01-16",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "XMR",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "XPL": {
+  "days": 292,
+  "dydx": "XPL-USD",
+  "first_day": "2025-09-26",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "XPL",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 100.0
+ },
+ "XRP": {
+  "days": 1031,
+  "dydx": "XRP-USD",
+  "first_day": "2023-11-28",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "XRP",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ },
+ "ZEC": {
+  "days": 357,
+  "dydx": "ZEC-USD",
+  "first_day": "2025-10-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ZEC",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1.0
+ },
+ "ZEN": {
+  "days": 354,
+  "dydx": "ZEN-USD",
+  "first_day": "2024-07-15",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ZEN",
+  "last_day": "2026-09-23",
+  "price_scale_tokens": 1.0
+ },
+ "ZEREBRO": {
+  "days": 114,
+  "dydx": "ZEREBRO-USD",
+  "first_day": "2025-01-03",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ZEREBRO",
+  "last_day": "2026-03-31",
+  "price_scale_tokens": 1000.0
+ },
+ "ZK": {
+  "days": 703,
+  "dydx": "ZK-USD",
+  "first_day": "2024-06-29",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ZK",
+  "last_day": "2026-09-04",
+  "price_scale_tokens": 1000.0
+ },
+ "ZORA": {
+  "days": 325,
+  "dydx": "ZORA-USD",
+  "first_day": "2025-07-24",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ZORA",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 1000.0
+ },
+ "ZRO": {
+  "days": 740,
+  "dydx": "ZRO-USD",
+  "first_day": "2024-06-29",
+  "hl_tokens_per_contract": 1.0,
+  "hyperliquid": "ZRO",
+  "last_day": "2026-09-24",
+  "price_scale_tokens": 10.0
+ }
+}

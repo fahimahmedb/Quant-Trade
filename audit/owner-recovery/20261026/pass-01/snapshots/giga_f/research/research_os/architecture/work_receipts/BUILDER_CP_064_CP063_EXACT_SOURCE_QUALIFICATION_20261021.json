@@ -1,0 +1,273 @@
+{
+  "status": "QUALIFIED_SOURCE_NOT_OPERATIONAL_CONVERGENCE",
+  "qualified_source_sha": "4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090",
+  "source_branch": "builder/v2-forward-20261020",
+  "canonical_scientific_state_branch": "builder/oracle-v2-core-20261020",
+  "observed_at": "2026-10-21T09:06:27.499094+00:00",
+  "hosted": {
+    "target_commit": "4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090",
+    "source_url": "https://github.com/fahimahmedb/Quant-Trade/actions?query=branch%3Abuilder%2Fv2-forward-20261020",
+    "observed_at": "2026-10-21T09:05:10.838511+00:00",
+    "runs": [
+      {
+        "id": "39572787001",
+        "name": "Oracle V2 Core",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39572787001",
+        "state": {
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED",
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS"
+        }
+      },
+      {
+        "id": "39572787090",
+        "name": "SEC P0 pre-t0 gate",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39572787090",
+        "state": {
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED",
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS"
+        }
+      }
+    ],
+    "page_sha256": "f76e2b4204a5da5a78fe54bab13349758fde8ff0eb6cab7aa91330c67f890285"
+  },
+  "run_source_bindings": [
+    {
+      "run_id": "39572787001",
+      "source_commit": "4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090",
+      "unique_linked_commit_binding": "PASS",
+      "run_page_sha256": "af615c8af56d7d1ce20ea1284437c8f2f35ac635ef20327e0b8e4139f344ffe4"
+    },
+    {
+      "run_id": "39572787090",
+      "source_commit": "4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090",
+      "unique_linked_commit_binding": "PASS",
+      "run_page_sha256": "0b3655d0a99b94128e6e31ae35f12b12a18064f6f1db6fb48b6c7110cd973db4"
+    }
+  ],
+  "jobs": [
+    {
+      "run_id": "39572787001",
+      "job_id": "119130836577",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39572787001/job/119130836577",
+      "observed_at": "2026-10-21T08:57:45.636472+00:00",
+      "page_sha256": "642d9cd0ee2b20286df39e42dde2c131ab60afb57ad4b1ac70d32416668d1165",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compile V2 Core",
+          "conclusion": "success"
+        },
+        {
+          "name": "V2 Core contract, bridge, worker and whole-loop tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Qualify composed native Live Lab contracts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify V2 policy remains fail-closed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify V2 claim ceiling",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate exact-head V2 qualification receipt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload exact-head V2 qualification receipt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": "39572787090",
+      "job_id": "119130836583",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39572787090/job/119130836583",
+      "observed_at": "2026-10-21T09:05:40.135290+00:00",
+      "page_sha256": "ae77c2357d770d10a5b777d21791479d2f8191c8f79f66543eafee4e8bedb90d",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Record environment",
+          "conclusion": "success"
+        },
+        {
+          "name": "Fail-closed check (no SEC identity configured)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated schema drift",
+          "conclusion": "success"
+        },
+        {
+          "name": "Status artifact freshness",
+          "conclusion": "success"
+        },
+        {
+          "name": "Full unit suite",
+          "conclusion": "success"
+        },
+        {
+          "name": "SEC P0 lane suite",
+          "conclusion": "success"
+        },
+        {
+          "name": "V1 end-to-end regression",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate exact-head verification artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload exact-head verification artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Restore committed verification placeholder",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clean working tree",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "local_workflow": {
+    "sha": "4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090",
+    "scope": "LOCAL_EXECUTION_NOT_HOSTED_CI",
+    "adaptations": [
+      "github.sha",
+      "scope LOCAL",
+      "output paths"
+    ],
+    "steps": [
+      {
+        "name": "Compile V2 Core",
+        "exit_code": 0
+      },
+      {
+        "name": "V2 Core contract, bridge, worker and whole-loop tests",
+        "exit_code": 0
+      },
+      {
+        "name": "Qualify composed native Live Lab contracts",
+        "exit_code": 0
+      },
+      {
+        "name": "Verify V2 policy remains fail-closed",
+        "exit_code": 0
+      },
+      {
+        "name": "Verify V2 claim ceiling",
+        "exit_code": 0
+      },
+      {
+        "name": "Generate exact-head V2 qualification receipt",
+        "exit_code": 0
+      },
+      {
+        "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled",
+        "exit_code": 0
+      }
+    ]
+  },
+  "local_tests": {
+    "configured_root": 773,
+    "core_v2": 282,
+    "shared_python_metadata": 2,
+    "javascript": 57,
+    "suites_overlap": true
+  },
+  "earlier_broader_research_os": {
+    "count": 268,
+    "source_checkpoint": "CP059",
+    "not_rerun_on_CP063": true
+  },
+  "local_artifact_sha256s": {
+    "qualification.json": "867e72addc1d732df5af386fb378939635655ab3503449259c50f94d8b150d7e",
+    "dry-run.json": "5a01c310b0ab80620daa8c9b50c4a4bf0088b7bfb6d0c6f04924fe6e5f1fc7a9"
+  },
+  "root_test_log_sha256": "4e95abb5e71feefefdb4538c49f5beda296991d9e546dbae38968ae5e83e7bab",
+  "fresh_oracle_head": "b24aa39f78d66bb163ad1fe757d764513fd8f610",
+  "oracle_delta_since_integrated_d2e58a7": "59_WORKER_WAKE_RECEIPTS_NO_OTHER_PATHS",
+  "north_star_blob": "a328b4e6d7d71dafd532938888ebf9818b1b610f",
+  "hosted_artifact_payloads_downloaded": false,
+  "deployment_performed": false,
+  "economic_experiment_run": false,
+  "prospective_observation_run": false,
+  "authority": {
+    "ECONOMIC_EXPERIMENT_AUTHORIZED": false,
+    "PROSPECTIVE_OBSERVATION_AUTHORIZED": false,
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false
+  },
+  "network_draft_persistence": "UNCONFIRMED_STALE_BASE_VERSION_REQUIRES_NEW_SETUP_CHAT",
+  "transfer_archive": {
+    "path": "BUILDER_CP_064_NETWORK_ACCESS_PROPOSAL_20261021.tar.gz",
+    "sha256": "57228cb3de06eb18247f0dbe711e3a750b727611e13e406875cc6d8e06835b10"
+  }
+}

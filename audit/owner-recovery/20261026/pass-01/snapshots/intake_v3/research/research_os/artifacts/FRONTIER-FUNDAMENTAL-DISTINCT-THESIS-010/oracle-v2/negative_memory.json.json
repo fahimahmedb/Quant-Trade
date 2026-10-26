@@ -1,0 +1,50 @@
+{
+  "assumptions": {
+    "screen": {
+      "block_reasons": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "current": {
+        "block_reasons": [
+          "BLOCK_EXACT_CURRENT_DUPLICATE"
+        ],
+        "candidate_generation_id": "G1",
+        "candidate_hypothesis_id": "DOC-FUND-9219d7f488ada3c2",
+        "current_corpus_snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0",
+        "matches": [
+          {
+            "basis": [
+              "hypothesis_id"
+            ],
+            "classification": "BLOCK_EXACT_CURRENT_DUPLICATE",
+            "mechanism_overlap": 1.0,
+            "peer_generation_id": "G1",
+            "peer_hypothesis_id": "DOC-FUND-9219d7f488ada3c2",
+            "review_required": true
+          }
+        ],
+        "screen_hash": "ed0440492ac7c993b4397b06a2e1b27ff09ddce4f27cb157c805c5532338d950",
+        "status": "BLOCK"
+      },
+      "distinctness_claim": "NOT_ESTABLISHED_BY_LOW_TOKEN_OVERLAP",
+      "legacy": {
+        "matches": [],
+        "status": "NO_EXACT_LEGACY_CONFLICT"
+      },
+      "status": "BLOCK"
+    }
+  },
+  "failure_reason": "UNRESOLVED_OR_DUPLICATE_EXPOSURE",
+  "failure_scope": "CURRENT_STRUCTURAL_SCREEN",
+  "negative_knowledge_hash": "35d24515c53bb096a74492a85b28fad7c53e3cc8ab00ef4ec77e8debb532f750",
+  "negative_knowledge_id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010::G1::screen",
+  "regime_context": "PRE_OUTCOME_DOCUMENTARY_ONLY",
+  "revisit_conditions": [
+    "New evidence resolves the recorded structural blockers without rewriting frozen history"
+  ],
+  "revisit_policy": "NEW_GENERATION_WITH_EXPLICIT_DISTINCTNESS_EVIDENCE",
+  "source_context": {
+    "blob": "b798e52c217bc6c9ceea98c74bfc412b7e99c4f4",
+    "path": "research/research_os/sources/apple_fy2025_statement_cells.json"
+  }
+}

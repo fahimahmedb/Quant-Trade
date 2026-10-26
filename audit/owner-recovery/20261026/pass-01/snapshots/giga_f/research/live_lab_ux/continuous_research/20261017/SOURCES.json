@@ -1,0 +1,184 @@
+{
+  "reviewed_on": "2026-10-17",
+  "method": "Official public documentation read through web search/open; no provider account resource provisioning or billed inference tests. Engineering recommendations are distinguished from measured results.",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Codex non-interactive execution",
+      "url": "https://developers.openai.com/codex/noninteractive",
+      "relevance": "CLI scripts, JSON events, resume; saved authentication and automation-specific constraints."
+    },
+    {
+      "id": "S2",
+      "title": "Codex authentication",
+      "url": "https://developers.openai.com/codex/auth",
+      "relevance": "ChatGPT subscription versus API-key access, headless device flow; account readiness must be proved on target host."
+    },
+    {
+      "id": "S3",
+      "title": "ChatGPT plan usage and self-hosted VMs",
+      "url": "https://developers.openai.com/siwc/token-sharing-open-source/self-hosted-vms",
+      "relevance": "Documented protected credential transfer/host identity; eligibility and hosted-app restrictions remain."
+    },
+    {
+      "id": "S4",
+      "title": "Agents API overview",
+      "url": "https://developers.openai.com/api/docs/guides/agents-api/overview",
+      "relevance": "Managed Codex harness, durable sessions, model/tool/container API billing."
+    },
+    {
+      "id": "S5",
+      "title": "Agents API session webhooks",
+      "url": "https://developers.openai.com/api/docs/guides/agents-api/sessions/webhooks",
+      "relevance": "Signed lifecycle callbacks; idle/action_required can wake application controller."
+    },
+    {
+      "id": "S6",
+      "title": "Agents sandbox lifecycle",
+      "url": "https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle",
+      "relevance": "Session can outlive environment; application-owned compute reconciliation for self-hosted environments."
+    },
+    {
+      "id": "S7",
+      "title": "Cloudflare Workers limits",
+      "url": "https://developers.cloudflare.com/workers/platform/limits/",
+      "relevance": "Request lifetime is not durable autonomy; waitUntil extension bounded after response/disconnect."
+    },
+    {
+      "id": "S8",
+      "title": "Cloudflare Workflows limits",
+      "url": "https://developers.cloudflare.com/workflows/reference/limits/",
+      "relevance": "Durable waits; lifetime conditional on step/CPU/state/instance limits; eventual rollover required."
+    },
+    {
+      "id": "S9",
+      "title": "Durable Objects alarms",
+      "url": "https://developers.cloudflare.com/durable-objects/api/alarms/",
+      "relevance": "Persistent wake-ups with at-least-once delivery and retries; deduplication required."
+    },
+    {
+      "id": "S10",
+      "title": "Cloudflare Containers lifecycle",
+      "url": "https://developers.cloudflare.com/containers/concepts/architecture/",
+      "relevance": "External Linux compute, lifecycle distinct from durable control; deployment/access not present in current Sites manifest."
+    },
+    {
+      "id": "S11",
+      "title": "Cloud Run resource model",
+      "url": "https://docs.cloud.google.com/run/docs/resource-model",
+      "relevance": "Distinguishes request services, jobs and worker pools; persistent worker compute is a specific resource mode."
+    },
+    {
+      "id": "S12",
+      "title": "Temporal worker deployment",
+      "url": "https://docs.temporal.io/best-practices/worker",
+      "relevance": "Worker hosting, replay/recovery and Continue-As-New; cloud service does not imply activities are hosted for you."
+    },
+    {
+      "id": "S13",
+      "title": "Trigger.dev product documentation",
+      "url": "https://trigger.dev/product",
+      "relevance": "Managed task execution, waits, concurrency and retries; retry from beginning versus checkpoint semantics require correct decomposition."
+    },
+    {
+      "id": "S14",
+      "title": "Inngest durable execution",
+      "url": "https://www.inngest.com/docs/durable-execution",
+      "relevance": "Event-driven durable functions and memoized steps; choose hosting/compute for functions."
+    },
+    {
+      "id": "S15",
+      "title": "n8n queue mode",
+      "url": "https://docs.n8n.io/hosting/scaling/queue-mode/",
+      "relevance": "Workflow routing still requires worker processes/Redis and model access."
+    },
+    {
+      "id": "S16",
+      "title": "ChatGPT scheduled tasks",
+      "url": "https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt",
+      "relevance": "Scheduled/triggered tasks exist; documentation is not proof of an indefinite campaign with successful handoffs."
+    },
+    {
+      "id": "S17",
+      "title": "GitHub Actions limits and scheduling",
+      "url": "https://docs.github.com/en/actions/reference/limits",
+      "relevance": "GitHub-hosted job limits; schedule delay/dropped runs documented separately in troubleshooting-workflows."
+    },
+    {
+      "id": "S18",
+      "title": "Browser offline/background lifetime",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Offline_and_background_operation",
+      "relevance": "Service worker tasks may be stopped if too long; mobile page is not an uptime guarantee."
+    },
+    {
+      "id": "S19",
+      "title": "Render free deployment limits",
+      "url": "https://render.com/docs/free",
+      "relevance": "Free services may spin down; background-worker mode and paid-resource eligibility are distinct."
+    },
+    {
+      "id": "S20",
+      "title": "AWS Step Functions",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html",
+      "relevance": "Standard/Express workflow lifetimes and external activities; standard Lambda invocation timeout is not the lifetime of a durable workflow."
+    },
+    {
+      "id": "S21",
+      "title": "Azure Durable Functions",
+      "url": "https://learn.microsoft.com/en-us/azure/durable-task/durable-functions/durable-functions-overview",
+      "relevance": "Orchestration, checkpoints, retries and recovery with activities on configured compute."
+    },
+    {
+      "id": "S22",
+      "title": "LangGraph architecture and checkpoints",
+      "url": "https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph",
+      "relevance": "Graph and checkpoint mechanics; framework persistence does not itself provide a host."
+    },
+    {
+      "id": "S23",
+      "title": "Ollama FAQ",
+      "url": "https://docs.ollama.com/faq",
+      "relevance": "Local model/runtime considerations; quality, hardware capacity and uptime require separate tests."
+    },
+    {
+      "id": "S24",
+      "title": "Trigger Workspace Agent runs",
+      "url": "https://learn.chatgpt.com/workspace-agents/trigger-runs",
+      "relevance": "Native programmatic trigger option for eligible published agents; current account access not tested."
+    },
+    {
+      "id": "S25",
+      "title": "Responses background mode",
+      "url": "https://developers.openai.com/api/docs/guides/background",
+      "relevance": "Asynchronous model execution; application still owns continuation policy and external work."
+    },
+    {
+      "id": "S26",
+      "title": "Usage limits and shared allowances",
+      "url": "https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan",
+      "relevance": "Subscription model usage varies; allowance is not an unlimited continuous-inference commitment."
+    },
+    {
+      "id": "S27",
+      "title": "ChatGPT plan usage restrictions",
+      "url": "https://developers.openai.com/siwc/token-sharing-open-source",
+      "relevance": "Open-source/local application flow; remotely hosted/paid distribution has separate access requirements."
+    },
+    {
+      "id": "S28",
+      "title": "GitHub schedule caveats",
+      "url": "https://docs.github.com/en/actions/how-tos/troubleshoot-workflows",
+      "relevance": "Scheduled jobs can be delayed/dropped under load."
+    },
+    {
+      "id": "S29",
+      "title": "Standard Lambda timeout",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html",
+      "relevance": "Standard invocation maximum 900 seconds; do not generalize that to all AWS managed execution modes."
+    }
+  ],
+  "sites_capability_reference": {
+    "source": "sites skill recurring-updates and current native Sites tool schemas",
+    "finding": "Current schedule operation links a cloud task. Current Site manifest exposes D1/MCP, not an observed native workflow/queue/DO binding. Generic Cloudflare documentation is not proof such bindings are available through Sites."
+  }
+}

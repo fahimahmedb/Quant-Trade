@@ -1,0 +1,83 @@
+# W1 FACTORY CP010 — 2026-10-21
+
+STATUS: HARDEN_EXISTING — public Experiment Infrastructure contract synchronized to current canonical attestation
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF (commit containing this checkpoint)
+PARENT: 40162abf2de187f20500295a6030c52b9c94683a
+
+## WHAT_GAP_WAS_PROVEN
+
+The repository already had the correct public contract surface at `research/research_os/contracts/experiment-infrastructure.schema.json`; therefore creating another Experiment Infrastructure schema would have duplicated architecture. However the existing schema had become materially false after W1 hardening: with `additionalProperties:false` it rejected the current production attestation because it did not describe `frozen_protocol`, `execution_plan`, `replay`, or the now-explicit geometry/power `declaration_hash` fields. It also did not require the three lifecycle hashes that `ExperimentRegistryEntry.to_dict()` always emits.
+
+## WHAT_CHANGED
+
+- Reused and hardened the existing `experiment-infrastructure.schema.json`; no second contract was created.
+- Top-level contract now includes and requires the exact runner `frozen_protocol`, canonical `execution_plan`, deterministic `replay`, and all existing registry/declaration surfaces.
+- Registry contract now requires the always-present `execution_plan_hash`, `receipt_hash`, and `replay_hash` properties while still allowing null values for earlier lifecycle states.
+- Geometry and power contracts now require their explicit `declaration_hash`.
+- Added reusable definitions for the six canonical runner binding hashes, frozen protocol, pre-outcome receipt, execution plan and replay.
+- Kept the frozen protocol and inner plan extensible where the runner already has historical compatibility/evolution semantics; kept stable outer attestation, registry, receipt, replay, geometry and power surfaces fail-closed with `additionalProperties:false`.
+- Added a live contract-drift test that builds the current readiness package and requires exact key parity between the real attestation and the public schema for top-level, registry, geometry, power, replay and receipt; frozen protocol/execution plan required fields must be present.
+
+## WHAT_WAS_REUSED / IMPORTED
+
+REUSE_CURRENT / HARDEN_EXISTING: existing Research OS `experiment-infrastructure.schema.json`.
+NO_BUILD_REQUIRED: no second schema namespace, no generated duplicate and no alternate contract authority.
+REUSE_CURRENT: real `economic_test_readiness()` composition is the fixture source for contract-drift testing.
+
+## TESTS / FALSIFICATION
+
+Observed CP009 exact-head evidence while CP010 was assembled:
+- fail-closed SEC identity gate: PASS
+- generated schema drift: PASS
+- status artifact freshness: PASS
+- full canonical unit suite was still executing when this checkpoint was formed; no unobserved result is claimed.
+
+Pre-push diff inspection against CP009:
+- `research/research_os/contracts/experiment-infrastructure.schema.json`: +123 / -5
+- `research/research_os/tests/test_w1_factory_economic_integration.py`: +33 / -0
+- no unrelated files.
+
+New contract drift falsification:
+- exact top-level schema properties/required fields == exact real attestation keys;
+- exact registry schema properties/required fields == exact real frozen/replay-verified registry keys;
+- exact geometry/power schema properties/required fields == exact real declaration keys, including `declaration_hash`;
+- frozen protocol and execution plan carry every schema-required field;
+- exact replay and pre-outcome receipt keys match strict public definitions.
+
+Exact-head CP010 CI after push remains authoritative.
+
+## SCIENTIFIC CLAIM LIMIT
+
+This is contract/provenance hardening only. It does not convert a public schema into empirical evidence, authorize an economic experiment, open an outcome, estimate effect/power, or grant observation/capital/trading authority.
+
+## SHARED_SURFACES_TOUCHED
+
+SHARED_SURFACES_TOUCHED:
+- `research/research_os/contracts/experiment-infrastructure.schema.json`
+- `research/research_os/tests/test_w1_factory_economic_integration.py`
+
+WHY_REQUIRED: the public contract must describe the same exact attestation that the canonical Factory/Validator path now emits and verifies.
+
+CONTRACT_CHANGE: Experiment Infrastructure public schema now includes exact runner freeze/plan/replay and explicit declaration hashes; stable attestation surfaces remain strict.
+
+EXPECTED_CROSS_LANE_IMPACT: consumers validating current Experiment Infrastructure payloads now receive a truthful contract. Manual payload producers must supply canonical runner artifacts rather than the obsolete pre-CP007 sidecar shape.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+Implementation, Validator law and public contract now describe the same current Experiment Infrastructure capability. The module no longer has a public schema that rejects its own qualified canonical output.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Run exact-head CP010 CI and repair any regression. Reassess historical Factory dispositions and remaining schema/lifecycle surfaces. If no further material implementation gap is actionable, classify all remaining gaps and produce the FINAL lane checkpoint + Integration Manifest after a clean exact-head broader regression.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

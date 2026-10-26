@@ -1,0 +1,116 @@
+FFFF.                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_planning_freezes_nested_environment_and_metric_identity[caller-environment] _
+
+field = 'environment', direction = 'caller'
+
+    @pytest.mark.parametrize('field',['environment','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_planning_freezes_nested_environment_and_metric_identity(field,direction):
+        envelope,qualifications,meta=inputs();original=deepcopy((envelope,qualifications,meta))
+        runner=DryRunExperimentRunner();plan=runner.plan(envelope,qualifications,meta)
+        assert plan['status']=='READY_FOR_REPRODUCIBLE_DRY_RUN'
+        before=deepcopy(plan)
+        if direction=='caller':target=meta[field]
+        elif field=='environment':target=plan['frozen_protocol']['environment']
+        else:target=plan['plan']['declared_metrics']
+        if field=='environment':target['runtime']['python']='changed'
+        else:target[0]['rule']['geometry']='changed'
+        if direction=='caller':
+>           assert plan==before
+E           AssertionError: assert {'experiment_...nner.v1', ...} == {'experiment_...nner.v1', ...}
+E
+E             Omitting 14 identical items, use -vv to show
+E             Differing items:
+E             {'frozen_protocol': {'freeze_version': 'pre-outcome-frozen-protocol.v1', 'hypothesis_id': 'HYP-001', 'generation_id': 'GEN-001', 'candidate_hash': 'd02b334eaaa00d9632cf20890f77e53efe81c741d71a81a7451b32aa1a6f7dfa', ...}} != {'frozen_protocol': {'freeze_version': 'pre-outcome-frozen-protocol.v1', 'hypothesis_id': 'HYP-001', 'generation_id': 'GEN-001', 'candidate_hash': 'd02b334eaaa00d9632cf20890f77e53efe81c741d71a81a7451b32aa1a6f7dfa', ...}}
+E             Use -v to get more diff
+
+tests/test_vertical_plan_snapshot_depth.py:34: AssertionError
+_ test_planning_freezes_nested_environment_and_metric_identity[caller-declared_metrics] _
+
+field = 'declared_metrics', direction = 'caller'
+
+    @pytest.mark.parametrize('field',['environment','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_planning_freezes_nested_environment_and_metric_identity(field,direction):
+        envelope,qualifications,meta=inputs();original=deepcopy((envelope,qualifications,meta))
+        runner=DryRunExperimentRunner();plan=runner.plan(envelope,qualifications,meta)
+        assert plan['status']=='READY_FOR_REPRODUCIBLE_DRY_RUN'
+        before=deepcopy(plan)
+        if direction=='caller':target=meta[field]
+        elif field=='environment':target=plan['frozen_protocol']['environment']
+        else:target=plan['plan']['declared_metrics']
+        if field=='environment':target['runtime']['python']='changed'
+        else:target[0]['rule']['geometry']='changed'
+        if direction=='caller':
+>           assert plan==before
+E           AssertionError: assert {'experiment_...nner.v1', ...} == {'experiment_...nner.v1', ...}
+E
+E             Omitting 14 identical items, use -vv to show
+E             Differing items:
+E             {'plan': {'runner_version': 'dry-run-experiment-runner.v1', 'experiment_id': 'EXP-HYP-001-GEN-001', 'protocol_hash': '073de36e6e39abd10ccf1ed25f21324768f9136fca48d60fdb311f1c46a2799d', 'dataset_manifest_hash': 'manifest-001', ...}} != {'plan': {'runner_version': 'dry-run-experiment-runner.v1', 'experiment_id': 'EXP-HYP-001-GEN-001', 'protocol_hash': '073de36e6e39abd10ccf1ed25f21324768f9136fca48d60fdb311f1c46a2799d', 'dataset_manifest_hash': 'manifest-001', ...}}
+E             Use -v to get more diff
+
+tests/test_vertical_plan_snapshot_depth.py:34: AssertionError
+_ test_planning_freezes_nested_environment_and_metric_identity[receipt-environment] _
+
+field = 'environment', direction = 'receipt'
+
+    @pytest.mark.parametrize('field',['environment','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_planning_freezes_nested_environment_and_metric_identity(field,direction):
+        envelope,qualifications,meta=inputs();original=deepcopy((envelope,qualifications,meta))
+        runner=DryRunExperimentRunner();plan=runner.plan(envelope,qualifications,meta)
+        assert plan['status']=='READY_FOR_REPRODUCIBLE_DRY_RUN'
+        before=deepcopy(plan)
+        if direction=='caller':target=meta[field]
+        elif field=='environment':target=plan['frozen_protocol']['environment']
+        else:target=plan['plan']['declared_metrics']
+        if field=='environment':target['runtime']['python']='changed'
+        else:target[0]['rule']['geometry']='changed'
+        if direction=='caller':
+            assert plan==before
+            assert runner.replay(plan)['status']=='REPLAY_MATCH'
+>       else:assert (envelope,qualifications,meta)==original
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert ({'experiment...ed': 42, ...}) == ({'experiment...ed': 42, ...})
+E
+E         At index 2 diff: {'dataset_manifest_hash': 'manifest-001', 'code_hash': 'execution-code-001', 'environment_hash': 'environment-hash-001', 'seed': 42, 'declared_metrics': [{'name': 'gross_return', 'rule': {'geometry': 'predeclared'}}, {'name': 'net_return', 'rule': {'geometry': 'predeclared'}}], 'code_sha': 'b570973836e0e7daf50ca095a7559d63328f0a57', 'environment': {'runtime': {'python': 'changed'}, 'dependencies': ['synthetic-v1']}, 'dependency_fingerprint': 'deps-001', 'source_pit_metadata': [{'source_id': 'prices', 'available_at_rule': 'exchange_published_timestamp', ...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_plan_snapshot_depth.py:36: AssertionError
+_ test_planning_freezes_nested_environment_and_metric_identity[receipt-declared_metrics] _
+
+field = 'declared_metrics', direction = 'receipt'
+
+    @pytest.mark.parametrize('field',['environment','declared_metrics'])
+    @pytest.mark.parametrize('direction',['caller','receipt'])
+    def test_planning_freezes_nested_environment_and_metric_identity(field,direction):
+        envelope,qualifications,meta=inputs();original=deepcopy((envelope,qualifications,meta))
+        runner=DryRunExperimentRunner();plan=runner.plan(envelope,qualifications,meta)
+        assert plan['status']=='READY_FOR_REPRODUCIBLE_DRY_RUN'
+        before=deepcopy(plan)
+        if direction=='caller':target=meta[field]
+        elif field=='environment':target=plan['frozen_protocol']['environment']
+        else:target=plan['plan']['declared_metrics']
+        if field=='environment':target['runtime']['python']='changed'
+        else:target[0]['rule']['geometry']='changed'
+        if direction=='caller':
+            assert plan==before
+            assert runner.replay(plan)['status']=='REPLAY_MATCH'
+>       else:assert (envelope,qualifications,meta)==original
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert ({'experiment...ed': 42, ...}) == ({'experiment...ed': 42, ...})
+E
+E         At index 2 diff: {'dataset_manifest_hash': 'manifest-001', 'code_hash': 'execution-code-001', 'environment_hash': 'environment-hash-001', 'seed': 42, 'declared_metrics': [{'name': 'gross_return', 'rule': {'geometry': 'changed'}}, {'name': 'net_return', 'rule': {'geometry': 'predeclared'}}], 'code_sha': 'b570973836e0e7daf50ca095a7559d63328f0a57', 'environment': {'runtime': {'python': 'synthetic-version'}, 'dependencies': ['synthetic-v1']}, 'dependency_fingerprint': 'deps-001', 'source_pit_metadata': [{'source_id': 'prices', 'available_at_rule': 'exchange_published_timest...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_plan_snapshot_depth.py:36: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_plan_snapshot_depth.py::test_planning_freezes_nested_environment_and_metric_identity[caller-environment]
+FAILED tests/test_vertical_plan_snapshot_depth.py::test_planning_freezes_nested_environment_and_metric_identity[caller-declared_metrics]
+FAILED tests/test_vertical_plan_snapshot_depth.py::test_planning_freezes_nested_environment_and_metric_identity[receipt-environment]
+FAILED tests/test_vertical_plan_snapshot_depth.py::test_planning_freezes_nested_environment_and_metric_identity[receipt-declared_metrics]
+4 failed, 1 passed in 0.05s

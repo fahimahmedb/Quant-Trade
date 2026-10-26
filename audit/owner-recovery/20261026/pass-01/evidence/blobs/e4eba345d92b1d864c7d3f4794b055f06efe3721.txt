@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "candidate_id": "EVENT-DUEBILL-LARGE-DIST-001",
+  "generation_id": "G1",
+  "assessment_type": "PRE_OUTCOME_SOURCE_READINESS",
+  "status": "PARK_DATA",
+  "economic_outcome_accessed": false,
+  "economic_experiment_started": false,
+  "real_capital_used": false,
+  "live_trading_used": false,
+  "reason": "The documentary mechanism is valid, but the strongest admissible expression requires reproducible historical prices for both entitlement-bearing and non-entitlement-bearing claims. For the clean Gentherm THRM/THRMV event, Nasdaq documents THRMV and its when-issued entitlement semantics, but its historical page reports data unavailable. Other discovered public surfaces expose at most isolated last-price/volume metadata, not a reproducible historical series suitable for a frozen parity test.",
+  "clean_event_examined_for_source_feasibility": {
+    "issuer": "Gentherm Inc",
+    "ordinary_symbol": "THRM",
+    "when_issued_symbol": "THRMV",
+    "record_date": "2026-09-28",
+    "payment_date": "2026-10-07",
+    "ex_date": "2026-10-02",
+    "due_bill_redemption_date": "2026-10-02",
+    "when_issued_first_trade": "2026-09-28",
+    "when_issued_last_trade": "2026-10-01",
+    "special_cash_dividend_usd": 2.07
+  },
+  "source_findings": [
+    {
+      "source": "Nasdaq THRMV historical data page",
+      "finding": "Historical data currently unavailable."
+    },
+    {
+      "source": "Nasdaq THRMV quote page",
+      "finding": "Quote surface currently unavailable for historical reconstruction."
+    },
+    {
+      "source": "Finviz THRMV",
+      "finding": "Only isolated last-close information discovered; insufficient for reproducible multi-date parity reconstruction."
+    },
+    {
+      "source": "ChartExchange THRMV",
+      "finding": "Volume/listing metadata discovered, but no usable historical price series."
+    }
+  ],
+  "scientific_scope": "This is not an economic rejection. It only parks the candidate until a reproducible point-in-time price source for both legs is available. The due-bill legal mechanism remains documentary-validated.",
+  "next_action": "Rotate to another independently qualified candidate without converting Due Bill into a confounded ordinary-stock directional test."
+}

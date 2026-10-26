@@ -1,0 +1,50 @@
+[
+  {
+    "branch": "builder/mega-c0-scientific-adjudication-20261021",
+    "source": "research/research_os/expansion/scientific_adjudication.py",
+    "destination": "research/research_os/expansion/_scientific_adjudication_c0.py",
+    "source_blob": "d19b8679ace7b6867af0d517b537f872a3f09edd",
+    "destination_blob": "3f0e1b7bae53e9513f0061cabcfae2505a6795f3",
+    "byte_equal": false
+  },
+  {
+    "branch": "builder/mega-d0-economic-lifecycle-20261021",
+    "source": "research/research_os/expansion/economic_lifecycle.py",
+    "destination": "research/research_os/expansion/_economic_lifecycle_d0.py",
+    "source_blob": "a56b042ae52edf4b59e5d1b36b148b9bca440cbd",
+    "destination_blob": "a56b042ae52edf4b59e5d1b36b148b9bca440cbd",
+    "byte_equal": true
+  },
+  {
+    "branch": "builder/mega-a-research-intelligence-20261021",
+    "source": "research/research_os/research_intelligence.py",
+    "destination": "research/research_os/research_intelligence.py",
+    "source_blob": "c125b5999306c9524d83d0d389e0bacd26848eee",
+    "destination_blob": "c125b5999306c9524d83d0d389e0bacd26848eee",
+    "byte_equal": true
+  },
+  {
+    "branch": "builder/mega-b-discovery-engine-20261021",
+    "source": "research/research_os/discovery_engine.py",
+    "destination": "research/research_os/discovery_engine.py",
+    "source_blob": "2712e4e3b60df2a8a5e31bfb5dc968f634aa884a",
+    "destination_blob": "4e01a16e06c45d3a67d7b73dd1fc41b526d866df",
+    "byte_equal": false
+  },
+  {
+    "branch": "builder/mega-e-autonomous-runtime-20261021",
+    "source": "research/research_os/oracle_worker.py",
+    "destination": "research/research_os/oracle_worker.py",
+    "source_blob": "85f1e0d9233834b2a214a23c7ef88c79511411c7",
+    "destination_blob": "85f1e0d9233834b2a214a23c7ef88c79511411c7",
+    "byte_equal": true
+  },
+  {
+    "branch": "builder/multi-source-ideation-intake-20261021",
+    "source": "research/research_os/multi_source_ideation.py",
+    "destination": "research/research_os/multi_source_ideation.py",
+    "source_blob": "8d6e5d27386c437e66593a2e533f67a7f45227e5",
+    "destination_blob": "8d6e5d27386c437e66593a2e533f67a7f45227e5",
+    "byte_equal": true
+  }
+]

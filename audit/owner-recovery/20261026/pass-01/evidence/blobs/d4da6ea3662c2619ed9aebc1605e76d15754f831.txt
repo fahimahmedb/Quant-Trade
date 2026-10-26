@@ -1,0 +1,1 @@
+{"cursor": "CgYIoIuf1QYSFUtYR09MRDE1TS0yNlNFUDE0MDAxNQ", "pages": 337, "events_scanned": 67400, "kept": {"Sports": 36517, "Entertainment": 702, "World": 1}}

@@ -1,0 +1,13 @@
+{
+  "probe_id": "PROBE_2_SCHEDULED_WORKER",
+  "trace_id": "P2-SCHEDULED-CANARY-20261012T221243Z",
+  "started_at_utc": "2026-10-12T22:12:43.047567Z",
+  "finished_at_utc": null,
+  "executor_environment": "ChatGPT scheduled automation",
+  "provenance": "WRAPPED_PLATFORM",
+  "observed_fact": "A separately armed one-shot ChatGPT scheduled automation executed without human intervention after arming, read the target branch, created exactly one bounded canary file, and the effect is independently durable on GitHub. The canary records head_before=8e990173276065ec41b0d2355571f4b7fc3d3787; the resulting commit is 80e156edcab8c86b70d05ece837049d5389b13f9 whose parent is exactly that SHA. Automation metadata reports success and is_enabled=false after completion. No platform live-protocol session_id, lease_id, heartbeat, ACTION_STARTED event, ACTION_COMPLETED event, or SESSION_ENDED event was exposed to Builder Chat.",
+  "evidence_reference": "automation_id=6acd5b34dec8819187d5fa4bc79e6133; canary=research/edge_lab/platform_probes/scheduled_canaries/PLATFORM_SCHED_CANARY_20261013_15CFF3C5.json; commit=80e156edcab8c86b70d05ece837049d5389b13f9; parent=8e990173276065ec41b0d2355571f4b7fc3d3787",
+  "verdict": "PROVEN",
+  "first_broken_transition": "LIVE_SESSION_AND_LEASE_IDENTITY_NOT_EXPOSED",
+  "notes": "Sub-probe proof only. SHORT_RUN_PROVEN=true; LONG_SESSION_LEASE_PROOF=false. The automation schedule metadata contains DTSTART=20261012T221304Z while last_run_time=2026-10-12T22:12:43.047567Z and the Git commit timestamp is 2026-10-12T22:12:37Z. This timing discrepancy is preserved rather than normalized. WRAPPED_PLATFORM here is limited to the demonstrated scheduler-to-bounded-GitHub-action relationship; it does not establish a live emitter protocol. Top-level Probe 2 therefore remains BLOCKED_BY_CURRENT_ENVIRONMENT. ECONOMIC_GUARD_SCOPE=POLICY_ONLY; ECONOMIC_ACTIONS=UNSUPPORTED."
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "research-os-final-shape-module-registry-v1",
+  "status": "DEVELOPMENT_CONTRACT_SHAPE_PROVEN",
+  "source_branch": "builder/research-os-aggressive-architecture-20261015",
+  "base_production_research_branch": "builder/research-os-autonomous-loop-20261015",
+  "design_rule": "FINAL_INTERFACES_EARLY_SOPHISTICATION_LATER",
+  "canonical_shared_contracts": {
+    "status": "STABLE_DO_NOT_REDEFINE",
+    "contracts": [
+      "HypothesisContract",
+      "ResearchTask",
+      "ExperimentResult",
+      "EvidenceAssessment",
+      "CandidateEconomicIdentity",
+      "WorkerEvent"
+    ],
+    "execution_companion": "WorkerReceipt"
+  },
+  "modules": [
+    {"module_id": "canonical_core", "status": "INHERITED_ACTIVE", "depends_on": ["HypothesisContract", "ExperimentResult", "EvidenceAssessment"], "authority_boundary": "SCIENTIFIC_STATE_ONLY"},
+    {"module_id": "control_plane", "status": "INHERITED_ACTIVE", "depends_on": ["ResearchTask", "WorkerReceipt"], "authority_boundary": "TASK_AND_CAPABILITY_ROUTING"},
+    {"module_id": "quant_mechanisms", "status": "ACTIVE_THIN", "depends_on": ["HypothesisContract"], "authority_boundary": "CANDIDATE_PRODUCTION_ONLY"},
+    {"module_id": "event_document", "status": "ACTIVE_THIN", "depends_on": ["HypothesisContract"], "authority_boundary": "CANDIDATE_PRODUCTION_ONLY"},
+    {"module_id": "fundamental", "status": "ACTIVE_THIN", "depends_on": ["HypothesisContract"], "authority_boundary": "CANDIDATE_PRODUCTION_ONLY"},
+    {"module_id": "institutional_flows", "status": "ACTIVE_THIN", "depends_on": ["HypothesisContract"], "authority_boundary": "CANDIDATE_PRODUCTION_ONLY"},
+    {"module_id": "edge_archaeology", "status": "ACTIVE_THIN", "depends_on": ["HypothesisContract", "negative_knowledge"], "authority_boundary": "NO_SPENT_WINDOW_REPLAY"},
+    {"module_id": "early_implementability", "status": "ACTIVE_THIN", "depends_on": ["HypothesisContract", "ImplementabilityAssessment"], "authority_boundary": "PARK_OR_BLOCK_EXPENSIVE_WORK_NO_MECHANISM_REWRITE"},
+    {"module_id": "experiment_infrastructure", "status": "ACTIVE_THIN_NO_OUTCOME", "depends_on": ["ExperimentResult", "ExperimentEnvelope"], "authority_boundary": "FREEZE_AND_REPRODUCIBILITY_ONLY"},
+    {"module_id": "independent_validator", "status": "ACTIVE_THIN", "depends_on": ["EvidenceAssessment", "ExperimentEnvelope"], "authority_boundary": "PRODUCER_INDEPENDENT"},
+    {"module_id": "red_team", "status": "ACTIVE_THIN_NEGATIVE_RIGHTS", "depends_on": ["EvidenceAssessment"], "authority_boundary": "BLOCK_OR_RESTRICT_NO_SIGNAL_REPAIR"},
+    {"module_id": "economic_identity", "status": "ACTIVE_THIN", "depends_on": ["CandidateEconomicIdentity"], "authority_boundary": "IDENTITY_AND_EXPOSURE_MAPPING_ONLY"},
+    {"module_id": "portfolio_map", "status": "ACTIVE_THIN_NO_CAPITAL", "depends_on": ["CandidateEconomicIdentity"], "authority_boundary": "OVERLAP_MAPPING_NO_SIZING_NO_ORDERS"},
+    {"module_id": "forward_farm", "status": "READINESS_ONLY_AUTHORITY_OFF", "depends_on": ["ForwardRegistration"], "authority_boundary": "NO_FUTURE_OUTCOME_INGESTION"},
+    {"module_id": "decay_monitoring", "status": "INACTIVE_BY_AUTHORITY", "depends_on": ["DecayAssessment", "ForwardRegistration"], "authority_boundary": "REQUIRES_ADMISSIBLE_PROSPECTIVE_EVIDENCE"},
+    {"module_id": "learning_telemetry", "status": "ACTIVE_PROCESS_ONLY", "depends_on": ["EvidenceAssessment"], "authority_boundary": "NO_EDGE_INFERENCE_NO_AUTO_BUDGET_ALLOCATOR"},
+    {"module_id": "live_lab_bridge", "status": "ACTIVE_NATIVE_EVENTS_RECEIPTS", "depends_on": ["WorkerEvent", "WorkerReceipt"], "authority_boundary": "OBSERVABILITY_ONLY"}
+  ],
+  "global_authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "production_worker_note": "Production research workflows remain on the base production-research branch. This isolated build branch does not alter their schedules."
+}

@@ -1,0 +1,76 @@
+OLD (Z_80, theta-side)
+  mid      m17  thin  ngate 19999 GO&INFO 19743 P(T2|.)=0.0207 [0.0188,0.0227]
+  mid      m17  full  ngate 20000 GO&INFO 19765 P(T2|.)=0.0163 [0.0147,0.0182]
+  mid      m35  thin  ngate 20000 GO&INFO 13180 P(T2|.)=0.0227 [0.0203,0.0254]
+  mid      m35  full  ngate 20000 GO&INFO 13096 P(T2|.)=0.0202 [0.0180,0.0228]
+  mid      m55  thin  ngate 20000 GO&INFO  3067 P(T2|.)=0.0460 [0.0391,0.0540]
+  mid      m55  full  ngate 20000 GO&INFO  3065 P(T2|.)=0.0359 [0.0299,0.0431]
+  favmix   m17  thin  ngate 20000 GO&INFO 19916 P(T2|.)=0.0317 [0.0293,0.0342]
+  favmix   m17  full  ngate 20000 GO&INFO 19917 P(T2|.)=0.0309 [0.0286,0.0334]
+  favmix   m35  thin  ngate 20000 GO&INFO 16220 P(T2|.)=0.0436 [0.0406,0.0468]
+  favmix   m35  full  ngate 20000 GO&INFO 15939 P(T2|.)=0.0269 [0.0245,0.0295]
+  favmix   m55  thin  ngate 20000 GO&INFO  5774 P(T2|.)=0.0485 [0.0432,0.0543]
+  favmix   m55  full  ngate 20000 GO&INFO  5911 P(T2|.)=0.0567 [0.0511,0.0629]
+  fav      m17  thin  ngate 20000 GO&INFO 19951 P(T2|.)=0.0710 [0.0675,0.0746]
+  fav      m17  full  ngate 19999 GO&INFO 19942 P(T2|.)=0.0798 [0.0761,0.0836]
+  fav      m35  thin  ngate 20000 GO&INFO 17585 P(T2|.)=0.0519 [0.0487,0.0552]
+  fav      m35  full  ngate 20000 GO&INFO 17584 P(T2|.)=0.0643 [0.0608,0.0680]
+  fav      m55  thin  ngate 20000 GO&INFO  9027 P(T2|.)=0.1216 [0.1151,0.1285]
+  fav      m55  full  ngate 20000 GO&INFO  9164 P(T2|.)=0.1359 [0.1290,0.1430]
+  fav80    m17  thin  ngate 20000 GO&INFO 19959 P(T2|.)=0.0860 [0.0822,0.0900]
+  fav80    m17  full  ngate 20000 GO&INFO 19965 P(T2|.)=0.0935 [0.0895,0.0976]
+  fav80    m35  thin  ngate 20000 GO&INFO 18764 P(T2|.)=0.1259 [0.1213,0.1308]
+  fav80    m35  full  ngate 20000 GO&INFO 18615 P(T2|.)=0.0536 [0.0504,0.0569]
+  fav80    m55  thin  ngate 20000 GO&INFO 12105 P(T2|.)=0.0940 [0.0889,0.0993]
+  fav80    m55  full  ngate 20000 GO&INFO 12145 P(T2|.)=0.0977 [0.0926,0.1031]
+  fav85    m17  thin  ngate 20000 GO&INFO 19977 P(T2|.)=0.1655 [0.1605,0.1708]
+  fav85    m17  full  ngate 19999 GO&INFO 19973 P(T2|.)=0.1808 [0.1755,0.1862]
+  fav85    m35  thin  ngate 20000 GO&INFO 19152 P(T2|.)=0.0906 [0.0866,0.0947]
+  fav85    m35  full  ngate 20000 GO&INFO 19075 P(T2|.)=0.1042 [0.1000,0.1086]
+  fav85    m55  thin  ngate 20000 GO&INFO 14531 P(T2|.)=0.1595 [0.1536,0.1655]
+  fav85    m55  full  ngate 20000 GO&INFO 14377 P(T2|.)=0.1742 [0.1681,0.1805]
+  pm89     m17  thin  ngate 20000 GO&INFO 19975 P(T2|.)=0.2388 [0.2329,0.2448]
+  pm89     m17  full  ngate 20000 GO&INFO 19977 P(T2|.)=0.0961 [0.0921,0.1002]
+  pm89     m35  thin  ngate 20000 GO&INFO 19395 P(T2|.)=0.1519 [0.1470,0.1571]
+  pm89     m35  full  ngate 20000 GO&INFO 19421 P(T2|.)=0.1620 [0.1569,0.1673]
+  pm89     m55  thin  ngate 20000 GO&INFO 15960 P(T2|.)=0.2365 [0.2300,0.2432]
+  pm89     m55  full  ngate 20000 GO&INFO 15834 P(T2|.)=0.2485 [0.2418,0.2553]
+  WORST: (0.016342018719959526, ('mid', 17, 'full'), 19765, 0.014666086324499264, 0.018205925761428925)
+NEW (Z_EFF, theta-side)
+  mid      m17  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  mid      m17  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  mid      m35  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  mid      m35  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  mid      m55  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  mid      m55  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  favmix   m17  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  favmix   m17  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  favmix   m35  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  favmix   m35  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  favmix   m55  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  favmix   m55  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  fav      m17  thin  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  fav      m17  full  ngate     0 GO&INFO     0 (<2000: not evaluated)
+  fav      m35  thin  ngate     9 GO&INFO     9 (<2000: not evaluated)
+  fav      m35  full  ngate 18598 GO&INFO 17697 P(T2|.)=0.9738 [0.9714,0.9761]
+  fav      m55  thin  ngate 20000 GO&INFO 13884 P(T2|.)=0.9955 [0.9943,0.9965]
+  fav      m55  full  ngate 20000 GO&INFO 13145 P(T2|.)=0.9835 [0.9812,0.9855]
+  fav80    m17  thin  ngate    10 GO&INFO    10 (<2000: not evaluated)
+  fav80    m17  full  ngate  9319 GO&INFO  9308 P(T2|.)=0.9963 [0.9949,0.9974]
+  fav80    m35  thin  ngate 20000 GO&INFO 19620 P(T2|.)=0.9977 [0.9969,0.9982]
+  fav80    m35  full  ngate 20000 GO&INFO 19623 P(T2|.)=0.9979 [0.9972,0.9985]
+  fav80    m55  thin  ngate 20000 GO&INFO 16747 P(T2|.)=0.9979 [0.9970,0.9984]
+  fav80    m55  full  ngate 20000 GO&INFO 16433 P(T2|.)=0.9976 [0.9967,0.9982]
+  fav85    m17  thin  ngate 18840 GO&INFO 18835 P(T2|.)=1.0000 [0.9998,1.0000]
+  fav85    m17  full  ngate 20000 GO&INFO 19994 P(T2|.)=0.9995 [0.9991,0.9997]
+  fav85    m35  thin  ngate 20000 GO&INFO 19767 P(T2|.)=0.9992 [0.9987,0.9995]
+  fav85    m35  full  ngate 20000 GO&INFO 19765 P(T2|.)=0.9992 [0.9987,0.9995]
+  fav85    m55  thin  ngate 20000 GO&INFO 18447 P(T2|.)=1.0000 [0.9998,1.0000]
+  fav85    m55  full  ngate 20000 GO&INFO 17829 P(T2|.)=0.9984 [0.9977,0.9989]
+  pm89     m17  thin  ngate 20000 GO&INFO 19995 P(T2|.)=0.9999 [0.9997,1.0000]
+  pm89     m17  full  ngate 20000 GO&INFO 19998 P(T2|.)=1.0000 [0.9998,1.0000]
+  pm89     m35  thin  ngate 19999 GO&INFO 19885 P(T2|.)=1.0000 [0.9998,1.0000]
+  pm89     m35  full  ngate 19999 GO&INFO 19806 P(T2|.)=0.9985 [0.9979,0.9990]
+  pm89     m55  thin  ngate 20000 GO&INFO 18794 P(T2|.)=0.9998 [0.9995,0.9999]
+  pm89     m55  full  ngate 20000 GO&INFO 18820 P(T2|.)=0.9999 [0.9997,1.0000]
+  WORST: (0.9738373735661412, ('fav', 35, 'full'), 17697, 0.9713808001537293, 0.9760882738591133)

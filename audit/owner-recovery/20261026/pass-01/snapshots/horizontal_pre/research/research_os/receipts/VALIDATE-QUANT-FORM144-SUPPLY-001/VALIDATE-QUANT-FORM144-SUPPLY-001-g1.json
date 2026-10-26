@@ -1,0 +1,29 @@
+{
+  "receipt_id": "VALIDATE-QUANT-FORM144-SUPPLY-001-g1",
+  "task_id": "VALIDATE-QUANT-FORM144-SUPPLY-001",
+  "worker_id": "chatgpt-interactive-validator",
+  "session_id": "VALIDATE-QUANT-FORM144-SUPPLY-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T12:53:00Z",
+  "completed_at": "2026-10-15T12:55:10Z",
+  "input_head": "c8846f3925584d3b2001db54853ca8b018d6a8cc",
+  "output_commit": "e5fdfe8ecbd7207e391461422345eff1b9c20a9e",
+  "status": "COMPLETE",
+  "summary": "Independent documentary validation confirms Form 144 as a stronger near-term supply proxy than a generic sale permission because Rule 144(h) requires concurrent filing with the sale order/execution and bona fide intent to sell. Modern electronic EDGAR provides a public acceptance clock. Candidate is test-design ready, with strict repeat-filing, PIT-normalization and after-hours timing controls; no post-filing outcomes were accessed.",
+  "artifacts": [
+    "research/research_os/assessments/VALIDATE-QUANT-FORM144-SUPPLY-001.json",
+    "research/research_os/events/VALIDATE-QUANT-FORM144-SUPPLY-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "research/research_os/hypotheses/QUANT-FORM144-SUPPLY-001.json",
+    "https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/securities-act-rules",
+    "https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/file-form-144-electronically",
+    "https://www.sec.gov/files/form144.pdf"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}

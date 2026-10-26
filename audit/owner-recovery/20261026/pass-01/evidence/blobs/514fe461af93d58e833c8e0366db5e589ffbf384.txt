@@ -1,0 +1,59 @@
+"""Run from repository root: python research/vertical_depth/20261021/VERIFY_CURRENT_DEPTH.txt"""
+from pathlib import Path
+import collections, hashlib, json, re, subprocess
+E = Path('research/vertical_depth/20261021')
+q = json.loads((E / 'FINAL_qualification.json').read_text())
+sha = q['qualified_source_sha']
+assert q['checkpoint_label_count'] == 100
+assert q['work_stopped'] is False
+assert q['mission_active'] is True
+assert q['last_rebuilt_sequential_checkpoint'] == 45
+assert q['cp100_depth_completion'] is False
+assert q['insufficient_depth_label_count'] == 54
+assert q['cp101_opened'] is False
+assert not Path('VERTICAL_CP101_20261021.md').exists()
+for p, h in q['source_files_sha256'].items():
+    assert hashlib.sha256(Path(p).read_bytes()).hexdigest() == h, p
+    assert hashlib.sha256(subprocess.check_output(['git', 'show', f'{sha}:{p}'])).hexdigest() == h, p
+for p, h in q['evidence_sha256'].items():
+    assert hashlib.sha256((E / p).read_bytes()).hexdigest() == h, p
+assert len(q['source_files_sha256']) == 82
+for cp in range(1, 101):
+    p = Path(f'VERTICAL_CP{cp:03}_20261021.md'); text = p.read_text()
+    assert q['base_sha'] in text, p
+    head = re.search(r'HEAD_SHA[=: ]+`?([0-9a-f]{40})', text)
+    assert head, p
+    subprocess.run(['git', 'merge-base', '--is-ancestor', head[1], sha], check=True)
+    for key in q['authority']:
+        assert f'{key.upper()}=FALSE' in text, (p, key)
+    phases = (['before', 'focused'] if cp == 38 else ['process_proof'] if cp == 39 else ['before', 'after'] if cp <= 45 or cp == 61 else ['standard', 'optimized'])
+    for phase in phases:
+        assert (E / f'CP{cp:03}_{phase}.txt').is_file(), (p, phase)
+index = json.loads((E / 'CP038_100_INDEX.json').read_text())
+assert [e['checkpoint'] for e in index] == list(range(38, 101))
+assert sum(int(re.search(r'(\d+) passed', e['runs'][0]['summary'])[1]) for e in index) == 714
+for e in index:
+    assert hashlib.sha256(Path(e['test_file']).read_bytes()).hexdigest() == e['test_file_sha256']
+    assert len(e['runs']) == 2
+    for r in e['runs']:
+        assert r['exit_code'] == 0
+        text = (E / r['log']).read_text()
+        assert e['source_sha'] in text and r['summary'] in text
+coverage = Path('VERTICAL_MODULE_COVERAGE_20261021.md').read_text()
+c = collections.Counter(re.findall(r'\| (D[1-4]) \| CP', coverage))
+assert {k: c[k] for k in q['depth_counts']} == q['depth_counts'], c
+m = Path('VERTICAL_PREWAVE2_FINAL_20261021.md').read_text()
+assert sum(map(int, re.findall(r'\| CP\d+ \| (\d+) \|', m))) == q['defects_repaired'] == 115
+for key in ['MODULES_TOUCHED', 'SOURCE_FILES_CHANGED', 'CAPABILITIES_DEEPENED', 'DEFECTS_REPAIRED']:
+    assert f'{key}={q[key.lower()]}' in m
+assert 'MISSION_ACTIVE=TRUE' in m
+assert 'PHASE_A_COMPLETE=FALSE' in m
+r = json.loads((E / 'FINAL_core_receipt.json').read_text())
+assert r['verified_commit_sha'] == sha
+assert r['receipt']['authority'] == q['authority'] and not any(q['authority'].values())
+for log, result in [('FINAL_root.txt','1893 passed'),('FINAL_research_os.txt','268 passed'),('FINAL_platform.txt','11 passed'),('FINAL_live_lab_js.txt','ℹ pass 57')]:
+    assert result in (E / log).read_text(), log
+assert subprocess.check_output(['git','hash-object','QUANT_NORTH_STAR.md'],text=True).strip() == q['north_star_blob']
+changed = subprocess.check_output(['git','diff','--name-only',q['base_sha'],sha],text=True).splitlines()
+assert not any(p.endswith('/canonical_spine.py') for p in changed)
+print('PASS: rebuilt CP038–CP045 evidence/source integrity; mission ACTIVE; 54 numeric labels still unqualified.')

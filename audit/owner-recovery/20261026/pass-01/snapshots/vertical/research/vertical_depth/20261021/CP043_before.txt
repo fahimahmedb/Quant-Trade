@@ -1,0 +1,760 @@
+historical_module_revision=2fce769a8ad8622b5c82e80d95dba3a58823bcef
+new_test_sha256=a0c3ccb072b2ce78d7ae4d810704062bafef129aaf6137327e10138f6337aedd
+FFFFFFFFFFFFFFFFFFFF.............FFFFFFFFFFFFFF                          [100%]
+=================================== FAILURES ===================================
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-issuer] _
+
+kind = 'issuer', mutation = 'clear'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:ddddddddddddddddddddddddddddddddddddd...
+E
+E         ...Full output truncated (4 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-security] _
+
+kind = 'security', mutation = 'clear'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:ddddddddddddddddddddddddddddddddddddd...
+E
+E         ...Full output truncated (4 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+__ test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-name] __
+
+kind = 'name', mutation = 'clear'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+        assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+>       assert book.resolve_name('I-SYN', '2026-02-01') == expected_name
+E       AssertionError: assert NameResolutio...aaaaaaaaaa',)) == NameResolutio...ccccccccccc'))
+E
+E         Omitting 4 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',) != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')
+E           Right contains one more item: 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc'
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:53: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-ticker] _
+
+kind = 'ticker', mutation = 'clear'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:ddddddddddddddddddddddddddddddddddddd...
+E
+E         ...Full output truncated (4 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-listing] _
+
+kind = 'listing', mutation = 'clear'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:ddddddddddddddddddddddddddddddddddddd...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-issuer] _
+
+kind = 'issuer', mutation = 'inject_unvalidated_hash'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'unvalidated-after-construction') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbb...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-security] _
+
+kind = 'security', mutation = 'inject_unvalidated_hash'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'unvalidated-after-construction') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbb...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-name] _
+
+kind = 'name', mutation = 'inject_unvalidated_hash'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+        assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+>       assert book.resolve_name('I-SYN', '2026-02-01') == expected_name
+E       AssertionError: assert NameResolutio...onstruction')) == NameResolutio...ccccccccccc'))
+E
+E         Omitting 4 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc', 'unvalidated-after-construction') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')
+E           Left contains one more item: 'unvalidated-after-construction'
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:53: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-ticker] _
+
+kind = 'ticker', mutation = 'inject_unvalidated_hash'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'unvalidated-after-construction') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbb...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-listing] _
+
+kind = 'listing', mutation = 'inject_unvalidated_hash'
+
+    @pytest.mark.parametrize('kind', KINDS[:5])
+    @pytest.mark.parametrize('mutation', ['clear', 'inject_unvalidated_hash'])
+    def test_caller_lineage_list_cannot_change_admitted_pit_resolution(kind, mutation):
+        book, lineages = identity_fixture()
+        expected_ticker = book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS')
+        expected_name = book.resolve_name('I-SYN', '2026-02-01')
+        if mutation == 'clear':
+            lineages[kind].clear()
+        else:
+            lineages[kind].append('unvalidated-after-construction')
+>       assert book.resolve_ticker('SYN', as_of='2026-02-01', venue='XNYS') == expected_ticker
+E       AssertionError: assert IdentityResol..., reason=None) == IdentityResol..., reason=None)
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['lineage_hashes']
+E
+E         Drill down into differing attribute lineage_hashes:
+E           lineage_hashes: ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 'unvalidated-after-construction') != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'sha256:bbb...
+E
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:52: AssertionError
+_ test_mutating_source_arrays_cannot_change_frozen_corporate_action[clear_legs] _
+
+mutation = 'clear_legs'
+
+    @pytest.mark.parametrize('mutation', ['clear_legs', 'append_forbidden_spin', 'clear_lineage', 'append_bad_lineage'])
+    def test_mutating_source_arrays_cannot_change_frozen_corporate_action(mutation):
+        lineage = ['sha256:' + 'f'*64]
+        legs = [CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')]
+        action = CorporateActionEvent('EVENT-SYN', 'MERGER', '2026-01-02', '2026-01-03', lineage,
+                                      source_security_id='S-SYN', legs=legs)
+        book = CorporateActionBook([action])
+        expected_legs = tuple(action.legs)
+        expected_lineage = book.lineage_hashes()
+        if mutation == 'clear_legs':
+            legs.clear()
+        elif mutation == 'append_forbidden_spin':
+            legs.append(CorporateActionLeg('SPIN', target_security_id='S-FOREIGN', units_per_source_share=1))
+        elif mutation == 'clear_lineage':
+            lineage.clear()
+        else:
+            lineage.append('not-a-qualified-evidence-hash')
+>       assert tuple(action.legs) == expected_legs
+E       AssertionError: assert () == (CorporateAct...rency='USD'),)
+E
+E         Right contains one more item: CorporateActionLeg(kind='CASH', target_security_id=None, units_per_source_share=None, cash_per_source_share=1, currency='USD')
+E         Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:73: AssertionError
+_ test_mutating_source_arrays_cannot_change_frozen_corporate_action[append_forbidden_spin] _
+
+mutation = 'append_forbidden_spin'
+
+    @pytest.mark.parametrize('mutation', ['clear_legs', 'append_forbidden_spin', 'clear_lineage', 'append_bad_lineage'])
+    def test_mutating_source_arrays_cannot_change_frozen_corporate_action(mutation):
+        lineage = ['sha256:' + 'f'*64]
+        legs = [CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')]
+        action = CorporateActionEvent('EVENT-SYN', 'MERGER', '2026-01-02', '2026-01-03', lineage,
+                                      source_security_id='S-SYN', legs=legs)
+        book = CorporateActionBook([action])
+        expected_legs = tuple(action.legs)
+        expected_lineage = book.lineage_hashes()
+        if mutation == 'clear_legs':
+            legs.clear()
+        elif mutation == 'append_forbidden_spin':
+            legs.append(CorporateActionLeg('SPIN', target_security_id='S-FOREIGN', units_per_source_share=1))
+        elif mutation == 'clear_lineage':
+            lineage.clear()
+        else:
+            lineage.append('not-a-qualified-evidence-hash')
+>       assert tuple(action.legs) == expected_legs
+E       AssertionError: assert (CorporateAct...urrency=None)) == (CorporateAct...rency='USD'),)
+E
+E         Left contains one more item: CorporateActionLeg(kind='SPIN', target_security_id='S-FOREIGN', units_per_source_share=1, cash_per_source_share=None, currency=None)
+E         Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:73: AssertionError
+_ test_mutating_source_arrays_cannot_change_frozen_corporate_action[clear_lineage] _
+
+mutation = 'clear_lineage'
+
+    @pytest.mark.parametrize('mutation', ['clear_legs', 'append_forbidden_spin', 'clear_lineage', 'append_bad_lineage'])
+    def test_mutating_source_arrays_cannot_change_frozen_corporate_action(mutation):
+        lineage = ['sha256:' + 'f'*64]
+        legs = [CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')]
+        action = CorporateActionEvent('EVENT-SYN', 'MERGER', '2026-01-02', '2026-01-03', lineage,
+                                      source_security_id='S-SYN', legs=legs)
+        book = CorporateActionBook([action])
+        expected_legs = tuple(action.legs)
+        expected_lineage = book.lineage_hashes()
+        if mutation == 'clear_legs':
+            legs.clear()
+        elif mutation == 'append_forbidden_spin':
+            legs.append(CorporateActionLeg('SPIN', target_security_id='S-FOREIGN', units_per_source_share=1))
+        elif mutation == 'clear_lineage':
+            lineage.clear()
+        else:
+            lineage.append('not-a-qualified-evidence-hash')
+        assert tuple(action.legs) == expected_legs
+>       assert book.lineage_hashes() == expected_lineage
+E       AssertionError: assert () == ('sha256:ffff...fffffffffff',)
+E
+E         Right contains one more item: 'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+E         Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:74: AssertionError
+_ test_mutating_source_arrays_cannot_change_frozen_corporate_action[append_bad_lineage] _
+
+mutation = 'append_bad_lineage'
+
+    @pytest.mark.parametrize('mutation', ['clear_legs', 'append_forbidden_spin', 'clear_lineage', 'append_bad_lineage'])
+    def test_mutating_source_arrays_cannot_change_frozen_corporate_action(mutation):
+        lineage = ['sha256:' + 'f'*64]
+        legs = [CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')]
+        action = CorporateActionEvent('EVENT-SYN', 'MERGER', '2026-01-02', '2026-01-03', lineage,
+                                      source_security_id='S-SYN', legs=legs)
+        book = CorporateActionBook([action])
+        expected_legs = tuple(action.legs)
+        expected_lineage = book.lineage_hashes()
+        if mutation == 'clear_legs':
+            legs.clear()
+        elif mutation == 'append_forbidden_spin':
+            legs.append(CorporateActionLeg('SPIN', target_security_id='S-FOREIGN', units_per_source_share=1))
+        elif mutation == 'clear_lineage':
+            lineage.clear()
+        else:
+            lineage.append('not-a-qualified-evidence-hash')
+        assert tuple(action.legs) == expected_legs
+>       assert book.lineage_hashes() == expected_lineage
+E       AssertionError: assert ('not-a-quali...ffffffffffff') == ('sha256:ffff...fffffffffff',)
+E
+E         At index 0 diff: 'not-a-qualified-evidence-hash' != 'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+E         Left contains one more item: 'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+E         Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:74: AssertionError
+_________ test_wire_reconstruction_preserves_contract_identity[issuer] _________
+
+kind = 'issuer'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert IssuerIdentit...aaaaaaaaaaa']) == IssuerIdentit...aaaaaaaaaa',))
+E
+E         Omitting 4 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+________ test_wire_reconstruction_preserves_contract_identity[security] ________
+
+kind = 'security'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert SecurityIdent...currency=None) == SecurityIdent...currency=None)
+E
+E         Omitting 8 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+__________ test_wire_reconstruction_preserves_contract_identity[name] __________
+
+kind = 'name'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert IssuerNameInt...aaaaaaaaaaa']) == IssuerNameInt...aaaaaaaaaa',))
+E
+E         Omitting 4 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+_________ test_wire_reconstruction_preserves_contract_identity[ticker] _________
+
+kind = 'ticker'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert TickerInterva... venue='XNYS') == TickerInterva... venue='XNYS')
+E
+E         Omitting 5 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+________ test_wire_reconstruction_preserves_contract_identity[listing] _________
+
+kind = 'listing'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert ListingInterv...atus='LISTED') == ListingInterv...atus='LISTED')
+E
+E         Omitting 6 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)
+E           Use -v to get more diff
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+_________ test_wire_reconstruction_preserves_contract_identity[action] _________
+
+kind = 'action'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    def test_wire_reconstruction_preserves_contract_identity(kind):
+        original = construct(kind, ('sha256:' + 'a'*64,))
+        wire = json.loads(json.dumps(asdict(original), sort_keys=True))
+        if kind == 'action':
+            wire['legs'] = [CorporateActionLeg(**v) for v in wire['legs']]
+        restored = type(original)(**wire)
+>       assert restored == original
+E       AssertionError: assert CorporateActi...g_reason=None) == CorporateActi...g_reason=None)
+E
+E         Omitting 9 identical items, use -vv to show
+E         Differing attributes:
+E         ['evidence_hashes', 'legs']
+E
+E         Drill down into differing attribute evidence_hashes:
+E           evidence_hashes: ['sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] != ('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',)...
+E
+E         ...Full output truncated (5 lines hidden), use '-vv' to show
+
+tests/test_vertical_pit_contract_immutability.py:86: AssertionError
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-issuer] _
+
+kind = 'issuer', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-security] _
+
+kind = 'security', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-name] __
+
+kind = 'name', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-ticker] _
+
+kind = 'ticker', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-listing] _
+
+kind = 'listing', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-action] _
+
+kind = 'action', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-issuer] ___
+
+kind = 'issuer', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[set-security] __
+
+kind = 'security', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+___ test_lineage_container_cannot_silently_drop_metadata_or_order[set-name] ____
+
+kind = 'name', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-ticker] ___
+
+kind = 'ticker', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-listing] __
+
+kind = 'listing', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-action] ___
+
+kind = 'action', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+_ test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[mapping] _
+
+container = 'mapping'
+
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence(container):
+        leg = CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')
+        malformed = {leg: 'ignored quantity'} if container == 'mapping' else {leg}
+>       with pytest.raises(ValueError, match='legs.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:119: Failed
+_ test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[set] _
+
+container = 'set'
+
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence(container):
+        leg = CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')
+        malformed = {leg: 'ignored quantity'} if container == 'mapping' else {leg}
+>       with pytest.raises(ValueError, match='legs.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:119: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[clear-listing]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_caller_lineage_list_cannot_change_admitted_pit_resolution[inject_unvalidated_hash-listing]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_mutating_source_arrays_cannot_change_frozen_corporate_action[clear_legs]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_mutating_source_arrays_cannot_change_frozen_corporate_action[append_forbidden_spin]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_mutating_source_arrays_cannot_change_frozen_corporate_action[clear_lineage]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_mutating_source_arrays_cannot_change_frozen_corporate_action[append_bad_lineage]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[listing]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_wire_reconstruction_preserves_contract_identity[action]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-listing]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-action]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-issuer]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-security]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-name]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-ticker]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-listing]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-action]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[mapping]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[set]
+34 failed, 13 passed in 0.19s

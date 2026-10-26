@@ -1,0 +1,413 @@
+{
+  "archive": "OWNER_RECOVERY_FULL_PRESERVATION.zip",
+  "size": 422420123,
+  "sha256": "845a5465068e27fc8c913e03d4d61804eb6e36cca35e24abe947571633efabe9",
+  "parts": [
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part001",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part001",
+      "sha": "765ad11266b116d467429c895711ea4ae7fe5cca",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "479f187b9828bc356eac81cc46149a6e25a153dbf3db66cd575df59b8e0cc76d"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part002",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part002",
+      "sha": "7f173898637457898e21a81fd80783447c8a6145",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "0c3993d055ca27bf93bae6d94f668f8b1e00f5dd46f602ed39085079eb410448"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part003",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part003",
+      "sha": "c6818821400e6feb1935e37913ced6cf00880513",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "9c766c50650ab8437117c27705f8283ab209e6899e7b7573882f35a34e2be2f7"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part004",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part004",
+      "sha": "ee8f4954b68e814ecf0f9e44d0b235e60f94b342",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "bb2abb2e7416c8ebe6484bea8ee6d5854417473bae66bbee2a1aa92cb60e66f6"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part005",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part005",
+      "sha": "0875d50f22c2ac41eb333f3533ef01078394637f",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "e0e390174f0de489a575ffb0d97b45f6c35bd519ac416d2bd28f63983b5e1048"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part006",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part006",
+      "sha": "81125cc135ccc3c8e788d2676c4549cc2bb14a43",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "a253fe994caf7fe4a93b959ad4ba52e0b8c8311768adcdbc1edf4bff81ca2659"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part007",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part007",
+      "sha": "3d280efb21780f3807f3a8fd13a3f269aa9ea55d",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "3b80c986d9217875fce43fa697b6f09b3d67dca745805a01ff1368731884d551"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part008",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part008",
+      "sha": "98b221850c595a7d2e8ac8c1805c83ccfedc12c3",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "3971e01ce18760d6145b223d775de8c940adb2ceb23b022be1879a7ea079876d"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part009",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part009",
+      "sha": "c4a69781c9b1b0f239f5fda9b76c59559769c4c5",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "15d4c151003f6147ac5ef53a0e303fe9a4cc094265399aacf4ced8c5079c623f"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part010",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part010",
+      "sha": "693d54b6c5525424d42930533533fb9c6aae310d",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "da1e168dc75e848c8d907cbad715982e1f023eee05da4e77d46207bc7b1adfac"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part011",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part011",
+      "sha": "86dbdfdae1805ab5d00b4d3dea1192dd89339fb1",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "dfe33d6c81e666cabaec92d7f063118e676bce1661016dab8e945229060e7cb2"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part012",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part012",
+      "sha": "048d44493c1d811e1f90fc2fe034a5343168838d",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "2c7ae4ff2031d65a733fd437c958961fea8a62a474b24d9318c52651df228e6a"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part013",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part013",
+      "sha": "45e97e00097b60423a5bc641ec18eb09e8f32853",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "f581f5179b4760ef4801c320541181ec4eb2a35bbace6695cfc2d05451d28c83"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part014",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part014",
+      "sha": "1bbf3e4f8e866f17f367a2ea383b6b7b692a5e18",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "3610b24bd386389666a42b1159a53bb497b74f6d3af4139cec0ec8139f28b3b1"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part015",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part015",
+      "sha": "ed32079ff0fb3a4780ea46079201e66902bd50cc",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "6aa5383feac37c687ec2ca766440fd344ac4ce946b804802430f77f8df021849"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part016",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part016",
+      "sha": "d25da1e4d0da547f75e77a012d1210ad24aedd3c",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "baa5a7a4c3e6b28b64566c3c42e2811b917c252ab99031ba034e919675bdef0c"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part017",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part017",
+      "sha": "d0cf4d27188e3cdf289b318139a34e69b6ea84fb",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "fd0f4001f6a9fab56d5b69665d37d0a1d8634a5a0d52b5e7bb826491f769143d"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part018",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part018",
+      "sha": "612e74afa1db069e72b0e66da71237ff17fc050f",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "ab2bdcc2163ae85cd09ea0cc154d9976bbd7b30e454e95da5742a1cec616dc0c"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part019",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part019",
+      "sha": "72023171c4105e0ef4219136023f71b7560b8976",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "55fce733d2e891ff17204d500b6b9b50b0d91e102ee89731159e332c8d163aae"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part020",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part020",
+      "sha": "fa4b2cbd15db699cdb53eaa601fec4e3c9304bf8",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "8fef5d68af6c781dfd702fe64b593c81b04dfeb83025b1237c867bf3357b12b4"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part021",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part021",
+      "sha": "415e11ff74baf1058ce41db7b297a2eeaeb1d326",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "f5cb3464904cde7fa64ad62b2172107229dd60115204381c16af7b7243d7cfec"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part022",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part022",
+      "sha": "9da9f5128807a51c58fa710c29b32decc26aaadf",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "a0eaa919729bc7d167e1fa900a58d48139e03f45696edc5e60e318a9c8d9245a"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part023",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part023",
+      "sha": "675b25bc3cb32e04bdfa253e03f383198ad372fb",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "6ba1df39ea448706713eb8bdd675b53ad17ee767dffa15dbc5f052ddb8296fe8"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part024",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part024",
+      "sha": "84e1a4c3bff3106af9167993146f3d69428d4dc2",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "1c404f910e1fd70f4b2dd276d78f0f399231dd515a51dc0c3a16c6543efeef71"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part025",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part025",
+      "sha": "66e2c980d91bc67c46f08d86a27d92096af238a5",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "fb17e28abd591a71c28d9ed87b86c186a83019cc36425ddb665c4b9d6a0c5bf4"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part026",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part026",
+      "sha": "ead75a9d22ada89429e3122279c0f47796c1f265",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "7498d20510185ba8d728fc1ecf3c3816097f4e7ce6ac25e6a7a66aecc8dfbd11"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part027",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part027",
+      "sha": "b1a3cbc7b118b387e356579e57c251c6b7badf5a",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "30df5e5c09416c81614c47ac030ab340d9ae07dbf51391d3c465b743fac156a5"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part028",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part028",
+      "sha": "a9c2971ec063c971d0a8067cb34fb5ae2af4bcd4",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "a4ca775d08f1ff0356d8941af0916f40d65c22eacefc85bbc57384b45270dd07"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part029",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part029",
+      "sha": "5fd4148d657569ed04a7de1456ee01c96102c96f",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "a7b3e569e9e5a777f6c7d7b29055bb0f9b9d8784d5b7d4c3c8cf55a7e7e8baf3"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part030",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part030",
+      "sha": "b3ac04a5510dac2342b67a8b5f65c4da2d187f51",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "840365f51431172a27ef88e5821adcb7138c9af883e081504c9e73838c08f083"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part031",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part031",
+      "sha": "f634652cc10273127bc888ffa10b6afb7cd2d89d",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "0238f3f954be46593fd7f358fd66bdc442a7b9f70cbb6f3d6a3964fff792a654"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part032",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part032",
+      "sha": "6037178451081ad4ebf9e016558ad9b51bdecded",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "26a26a59354df6af585113b7b8a97cc4d59cdc54f14c43dff6516f94a1b84b50"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part033",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part033",
+      "sha": "c43ee23276616b041a87f1803e0ac80c264636a1",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "58b527d232b380734d8aa22b470e7a5bdc92fcb78beb09ff66faded4632ddea4"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part034",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part034",
+      "sha": "fbfd9ca8ee3dab7fbfb863a1cf3df99199505c05",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "7e9c1740734948e91503c808f1dc1d625dcda5f12ea1bc50e3488880e496c296"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part035",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part035",
+      "sha": "d17e0b6b4ba319451aef635e6a97c482a268e5c4",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "71a2ccdc2bf219b5f550643dced0e9e67e2eaec47687a4507aeb04bc4e39c741"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part036",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part036",
+      "sha": "1a5d812e238dab041bf765e9554d8d7b04729a41",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "647080092e585373e079646b100ae9f14777318d35282ec8bcb38ec38ab04c1a"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part037",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part037",
+      "sha": "91fb8754fec400928afe79d91301c83e9d2e80c5",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "9219f088fc765fa2269d0af55802d8ebb7ad498d3e3aa511dfaa4e2b75865503"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part038",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part038",
+      "sha": "7739468114d30acecbcf8bc3f174f4fac339b066",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "8a88f6b93e5ddf10f0f47e7d9aa45512ad203ab4e63582a4f6ced98706b7dcc8"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part039",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part039",
+      "sha": "b4aa87ed7418cac4d4bb1507313a954af08b268f",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "58f726b0c9d4f2bde0f4b62fde05b588ba40cd381d8cdf84917d27619ac24ef8"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part040",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part040",
+      "sha": "87c14f2f76ff7822a70ff2721e063cea65104873",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "a2193c4e944fbaab7e8651c787ae99262a2b70bc66cdbb412c76efcc6a601f11"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part041",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part041",
+      "sha": "e0aa54063a6d15d388e7b47954001be8f60bae6f",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "5c341eea6a36ab33e771eaaaf4d143065f8b536744a948ef51690aa930a32490"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part042",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part042",
+      "sha": "2706fdc2c52165d7acb45029eb0b26fd237610a4",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "fd68e0688a3e465f276843aad9ffdb3f91492e27d77d83f32c1cf238280dcb77"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part043",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part043",
+      "sha": "ee85ff64385f3144d5150395af91d8aa0f594bb2",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "d1a955ee73c4878d745c1ad000c17f6522709bfc4c65f672e929c94c26f08cd7"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part044",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part044",
+      "sha": "4ed01d63a14428aefe6b75ad0e6e08aa09363cc9",
+      "size": 9437184,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "dcfa896f3a8032386f09b8248cad3f681f4a8656dc7baeb6a90e2b519b12851f"
+    },
+    {
+      "path": "audit/owner-recovery/20261026/archives/full-preservation.zip.part045",
+      "local": "/workspace/quant-trade-publication/full-preservation.zip.part045",
+      "sha": "950de77d07f4a933988ddf4099a29fa9ee72f4c3",
+      "size": 7184027,
+      "mode": "100644",
+      "type": "blob",
+      "sha256": "a36579fd845816ce86250ec42a6faa5852b9fca45a2ca0a1fbe301b039cd09d5"
+    }
+  ],
+  "scope": "Complete original owner-recovery directory, including mirror, snapshots, all evidence and original delivery ZIP; no original bytes modified."
+}

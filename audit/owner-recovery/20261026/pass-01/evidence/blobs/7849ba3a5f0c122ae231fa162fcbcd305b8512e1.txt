@@ -1,0 +1,720 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.......                          [100%]
+=================================== FAILURES ===================================
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-direction_exposure_semantics] _
+
+field = 'direction_exposure_semantics', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value0-eligibility] ___
+
+field = 'eligibility', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-position_expression] _
+
+field = 'position_expression', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-cost_model_requirements] _
+
+field = 'cost_model_requirements', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-capacity_requirements] _
+
+field = 'capacity_requirements', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-data_requirements] _
+
+field = 'data_requirements', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-execution_assumptions] _
+
+field = 'execution_assumptions', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value0-falsification_relevant_implementation_conditions] _
+
+field = 'falsification_relevant_implementation_conditions', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value0-entry_clock] ___
+
+field = 'entry_clock', value = ['UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-direction_exposure_semantics] _
+
+field = 'direction_exposure_semantics', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value1-eligibility] ___
+
+field = 'eligibility', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-position_expression] _
+
+field = 'position_expression', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-cost_model_requirements] _
+
+field = 'cost_model_requirements', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-capacity_requirements] _
+
+field = 'capacity_requirements', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-data_requirements] _
+
+field = 'data_requirements', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-execution_assumptions] _
+
+field = 'execution_assumptions', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value1-falsification_relevant_implementation_conditions] _
+
+field = 'falsification_relevant_implementation_conditions'
+value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value1-entry_clock] ___
+
+field = 'entry_clock', value = {'value': 'UNKNOWN'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-direction_exposure_semantics] _
+
+field = 'direction_exposure_semantics', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value2-eligibility] ___
+
+field = 'eligibility', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-position_expression] _
+
+field = 'position_expression', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-cost_model_requirements] _
+
+field = 'cost_model_requirements', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-capacity_requirements] _
+
+field = 'capacity_requirements', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-data_requirements] _
+
+field = 'data_requirements', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-execution_assumptions] _
+
+field = 'execution_assumptions', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value2-falsification_relevant_implementation_conditions] _
+
+field = 'falsification_relevant_implementation_conditions'
+value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value2-entry_clock] ___
+
+field = 'entry_clock', value = ['declared', 'UNKNOWN']
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-direction_exposure_semantics] _
+
+field = 'direction_exposure_semantics'
+value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value3-eligibility] ___
+
+field = 'eligibility', value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-position_expression] _
+
+field = 'position_expression'
+value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-cost_model_requirements] _
+
+field = 'cost_model_requirements'
+value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-capacity_requirements] _
+
+field = 'capacity_requirements'
+value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-data_requirements] _
+
+field = 'data_requirements', value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-execution_assumptions] _
+
+field = 'execution_assumptions'
+value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+_ test_nested_unknown_does_not_qualify_exact_expression[value3-falsification_relevant_implementation_conditions] _
+
+field = 'falsification_relevant_implementation_conditions'
+value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+__ test_nested_unknown_does_not_qualify_exact_expression[value3-entry_clock] ___
+
+field = 'entry_clock', value = {'status': 'UNKNOWN', 'value': 'declared'}
+
+    @pytest.mark.parametrize('field',FIELDS)
+    @pytest.mark.parametrize('value', [['UNKNOWN'], {'value':'UNKNOWN'}, ['declared','UNKNOWN'],
+                                     {'status':'UNKNOWN','value':'declared'}])
+    def test_nested_unknown_does_not_qualify_exact_expression(field,value):
+        meta=_complete_meta();meta['economic_expression'][field]=deepcopy(value)
+        result=assess_implementability(_engine_output(),meta)
+>       assert result['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:20: AssertionError
+________ test_unqualified_complexity_is_not_declared_known[CONFLICTED] _________
+
+value = 'CONFLICTED'
+
+    @pytest.mark.parametrize('value',['CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL'])
+    def test_unqualified_complexity_is_not_declared_known(value):
+        meta=_complete_meta();meta['operational_complexity']=value
+>       assert assess_implementability(_engine_output(),meta)['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:28: AssertionError
+__________ test_unqualified_complexity_is_not_declared_known[BLOCKED] __________
+
+value = 'BLOCKED'
+
+    @pytest.mark.parametrize('value',['CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL'])
+    def test_unqualified_complexity_is_not_declared_known(value):
+        meta=_complete_meta();meta['operational_complexity']=value
+>       assert assess_implementability(_engine_output(),meta)['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:28: AssertionError
+________ test_unqualified_complexity_is_not_declared_known[UNEXECUTED] _________
+
+value = 'UNEXECUTED'
+
+    @pytest.mark.parametrize('value',['CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL'])
+    def test_unqualified_complexity_is_not_declared_known(value):
+        meta=_complete_meta();meta['operational_complexity']=value
+>       assert assess_implementability(_engine_output(),meta)['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:28: AssertionError
+___ test_unqualified_complexity_is_not_declared_known[INVALIDATED_PROTOCOL] ____
+
+value = 'INVALIDATED_PROTOCOL'
+
+    @pytest.mark.parametrize('value',['CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL'])
+    def test_unqualified_complexity_is_not_declared_known(value):
+        meta=_complete_meta();meta['operational_complexity']=value
+>       assert assess_implementability(_engine_output(),meta)['status']=='BLOCK_IMPLEMENTABILITY'
+E       AssertionError: assert 'PASS' == 'BLOCK_IMPLEMENTABILITY'
+E         
+E         - BLOCK_IMPLEMENTABILITY
+E         + PASS
+
+tests/test_vertical_implementability_depth.py:28: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-direction_exposure_semantics]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-eligibility]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-position_expression]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-cost_model_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-capacity_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-data_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-execution_assumptions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-falsification_relevant_implementation_conditions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value0-entry_clock]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-direction_exposure_semantics]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-eligibility]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-position_expression]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-cost_model_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-capacity_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-data_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-execution_assumptions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-falsification_relevant_implementation_conditions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value1-entry_clock]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-direction_exposure_semantics]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-eligibility]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-position_expression]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-cost_model_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-capacity_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-data_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-execution_assumptions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-falsification_relevant_implementation_conditions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value2-entry_clock]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-direction_exposure_semantics]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-eligibility]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-position_expression]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-cost_model_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-capacity_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-data_requirements]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-execution_assumptions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-falsification_relevant_implementation_conditions]
+FAILED tests/test_vertical_implementability_depth.py::test_nested_unknown_does_not_qualify_exact_expression[value3-entry_clock]
+FAILED tests/test_vertical_implementability_depth.py::test_unqualified_complexity_is_not_declared_known[CONFLICTED]
+FAILED tests/test_vertical_implementability_depth.py::test_unqualified_complexity_is_not_declared_known[BLOCKED]
+FAILED tests/test_vertical_implementability_depth.py::test_unqualified_complexity_is_not_declared_known[UNEXECUTED]
+FAILED tests/test_vertical_implementability_depth.py::test_unqualified_complexity_is_not_declared_known[INVALIDATED_PROTOCOL]
+40 failed, 7 passed in 0.14s

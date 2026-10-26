@@ -1,0 +1,31 @@
+{
+  "capture_commit": "0ba4c055dbf7a3c7301383e01aa71b680a4bbddd",
+  "capture_plan_sha256": "f7fbab497e616b28051536231c6fc593a02a87b048d3635ed6d4bc89cb461b85",
+  "capture_plan_evidence": {
+    "attempt_1_job_id": 113723632452,
+    "attempt_1_recorded_utc": "2026-10-09T07:59:06.5952219Z",
+    "attempt_2_job_id": 113827236322,
+    "attempt_2_recorded_utc": "2026-10-09T12:51:17.2570357Z",
+    "planned": 35789,
+    "reason": "Correct the reference extracted from synthetic Stage A tests (4a667147...) to the real Stage B capture-step plan; both acquisition attempts report the same real hash. Controller 37933198790 rejected the wrong reference before B look reservation or calculation."
+  },
+  "capture_resume_source": {
+    "artifact_id": 11616937050,
+    "artifact_sha256": "71c1d8a7dde06ed47367952b29598c89ef3e39225c1634588c4865d050810ae5",
+    "run_attempt": 1,
+    "reason": "Capture step reached its 300-minute limit; interrupted compressed archives persisted successfully. Prior controller skipped verification, look claim and economic evaluation. Resume the original plan before any B outcome."
+  },
+  "capture_run_attempt": 2,
+  "capture_run_id": 37901109334,
+  "confirmatory_claim_authorized": false,
+  "disposition": "EXECUTE_SINGLE_DOCUMENTED_EVALUATION",
+  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+  "legacy_private_history": "UNKNOWN",
+  "live_use_authorized": false,
+  "review_disposition": "No new decision-changing defect in persisted A result; authenticate exact A and completed B before its unique evaluation.",
+  "selected_theta": 0.2,
+  "stage": "STAGE_B",
+  "stage_a_publication_commit": "0b0f5b416f7c958b763216450d5889feea692cc3",
+  "stage_a_report_sha256": "3dc6389656edf0b5de847cacb85d22fea73d425913869f334d044d79daeb4922",
+  "stage_a_result_sha256": "554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03"
+}

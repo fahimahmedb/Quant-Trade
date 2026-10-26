@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "candidate": "EURUSD-RANGE-GRID-001",
+  "recorded_utc": "2026-10-10T14:29:07.610321+00:00",
+  "status": "CLOSED_PRE_PRICE_IMPLEMENTATION_CHALLENGE_PROXY_SCOPE",
+  "reviewer": "Current Codex implementation and adversarial synthetic self-review; not an independent replication or external execution audit.",
+  "parameter_parent_commit": "df8ecb32c2a5a84b42f0609c223aefe2f1591c07",
+  "immutable_preregistration_sha256": "d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96",
+  "immutable_manifest_sha256": "d4fabb7bb0fde3bf449a2f721f5ee38cf45a4e5472b40326cc4ee179a9b84b3b",
+  "implementation_sha256": {
+    "IMPLEMENTATION_NOTES.md": "5db1e0ecef4f347a78541980ba10a9e48bacbf991e573f07ab6cd290b99b41d8",
+    "PREREGISTRATION.md": "d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96",
+    "capture.py": "152f68d7611477f2caefb9a182a5249d80ba417a8f56bd26e25ce3362f3b3f19",
+    "challenge.json": "deb0b0052a9d1396a6a91677d2b7a5a0b54eec4c1c3f37754b3e8b97ea7712b8",
+    "engine.py": "98eec9c75e5da89079f65bc0f9efe68b006945e1bfa2f27fd9e8482afc7d84e5",
+    "manifest.json": "d4fabb7bb0fde3bf449a2f721f5ee38cf45a4e5472b40326cc4ee179a9b84b3b",
+    "result_schema.json": "4835bf1b7fa1927ede4851790527665502858f5d2de7bcf13754f55dc0eecad2",
+    "run.py": "44571c16f1f23dc970a5bcd08e47dd758fea3bdc8edde93369215a8a460c0bd3",
+    "safety_kernel.py": "c235810a8370cdc975a611af873dd62ebc56a28880132962cc54053ec6f65e0c",
+    "test_capture.py": "e77db9ce2287d639bc88b450e6abffeb8670f9eb9c4fdd4d537dbfe20bcdd758",
+    "test_engine.py": "2179122dc15e2c7d9ddfeff2e3081d737ae45b7b7e6a7af91384ede51fa5d6dd",
+    "test_run.py": "dea3c30f334d0f08acf0f6b91fb5546fd1443270a341f9623b35d73621d8c43a",
+    "test_safety_kernel.py": "6cc428d4bad20ac3a3d080e6657df84cbd1278c6e468bf1aee6bfe42afcb2dc2"
+  },
+  "evidence": {
+    "fx_synthetic_cases_passed": 70,
+    "past_volatility_state_cases_passed": 28,
+    "market_archives_opened": 0,
+    "market_price_rows": 0,
+    "economic_results": 0,
+    "look_reservations": 0,
+    "commands": [
+      "python -m unittest discover -s research/edge_search/eurusd_range_grid -p test_*.py -q",
+      "python -m pytest -q research/edge_search/test_volatility_causal_state.py"
+    ],
+    "python": "3.12.14"
+  },
+  "challenged_invariants": [
+    "Prior-bar signal and variance prefix invariant under changed future boundary quotes; exact timestamp millis and fixed EST versus New York DST.",
+    "Wilder RSI/ADX seeds, missing bars reset indicator warmup; EWMA/reference use only declared past returns and saved calibration precedes outcome access.",
+    "Equal-time adverse envelope/duplicates, ordered month/schema/asset validation, no sorting/forward fill or post-window price parse.",
+    "Delayed expiry/fills, one group cannot fill multiple adds; stop overrides pending add; anchor and finite rung quantity never expand.",
+    "All-rung stress loss, proforma equity after costs, gross/margin caps, opening-cost drawdown and path disable; gap losses never clipped.",
+    "Failed exit survives gaps, midnight and rollovers including triple financing; residual exposure and source failures retained.",
+    "Cash plus realised gross minus commission/spread/slippage/finance agrees for both directions and cost cases; weekday intervals retain weekend losses.",
+    "All six paths, paired comparator diagnostics and nine fields retained; missing weekdays not discarded; end-to-end synthetic sparse-source result fails source.",
+    "Code/runtime identity tampering blocked, advertised digest conflicts blocked, raw completed capture reused after interruption.",
+    "Atomic result/partial files and first attempt are exclusive; original claim identity checked; saved or partial outcomes always block replay."
+  ],
+  "limitations": [
+    "No real source archive parsed; provider/schema/sample/coverage/authentication gates are still empirical and may fail.",
+    "Historical bid/ask publication, broker and actual fills/costs remain unverified. Proxy clock and central/stress/financing/cash costs are explicitly assumed.",
+    "Existing source/preregistration challenge status fields are immutable historical records, superseded for complete-code readiness only by this record and freeze.json.",
+    "Production partial economic state is not checkpointed. An infrastructure retry requires published no-outcome reconciliation using the original reservation; any printed/saved/partial/source-failed result prohibits replay."
+  ],
+  "verdict": {
+    "RESULT": "HARNESS_FROZEN_SYNTHETIC_CHALLENGE_CLOSED; no market outcome",
+    "EFFECT_SIZE": "NOT_MEASURED",
+    "UNCERTAINTY": "Synthetic correctness does not authenticate source delivery, historical costs or executable fills; private predecessor UNKNOWN.",
+    "POWER_LIMITATION": "Fixed 433 weekdays; maximum three expressions/six cost paths, no confirmatory alpha or independent order N.",
+    "ECONOMIC_SIGNIFICANCE": "The exact bounded intraday rule can now be falsified on the labelled quote proxy, including all costs and failed exits. No capturable edge established.",
+    "FAILED_CRITERIA": "Remote synthetic CI, blind exact-manifest capture/identity, public capture evidence, prior-outcome reconciliation, atomic remote/local claim and actual source QA remain mandatory before price access.",
+    "LESSON": "Causal bar boundaries, adverse pending-order priority, post-cost capital caps and residual losses are part of an economic test; neither model sophistication nor synthetic P&L is alpha.",
+    "FAMILY_STATUS": "ONE_DESIGN_CANDIDATE; EURUSD-RANGE-GRID-001; 0 market archives/rows/results/looks in this batch; no old budget reset.",
+    "NEXT_DECISION": "Publish frozen bundle, allow automatic synthetic CI to finish and preserve all active runs. Then blind sequential HistData capture; publish hashes and atomically create the unique exploratory reservation before one price pass. Any real source/access failure is scoped, retained and cannot be evaded by tuning."
+  }
+}

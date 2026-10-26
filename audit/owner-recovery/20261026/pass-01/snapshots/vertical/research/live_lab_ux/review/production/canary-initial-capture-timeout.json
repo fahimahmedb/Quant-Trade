@@ -1,0 +1,94 @@
+{
+  "trace_id": "PROD-CANARY-64777943-4aa",
+  "scope": "WRAPPED_BENIGN_OPERATIONAL_CANARY_ONLY",
+  "base": "https://quant-trade-lab.sassylime.chatgpt.site",
+  "checks": [
+    {
+      "name": "production serves rebuilt release",
+      "release": "owner-ux-20261016-r1",
+      "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62"
+    },
+    {
+      "name": "anonymous ingress remains rejected"
+    },
+    {
+      "name": "public integrated WebGL and native stream connected idle"
+    },
+    {
+      "name": "real heartbeat creates no business animation",
+      "event_id": "PROD-CANARY-64777943-4aa-1"
+    },
+    {
+      "name": "authenticated ingress → D1 → public SSE → real reducer → visible active worker → post-frame ACK",
+      "event_id": "PROD-CANARY-64777943-4aa-2"
+    }
+  ],
+  "errors": [],
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "identity_claim": "No Codex/Owner/research identity claim",
+  "started_at": "2026-10-16T06:53:25.020Z",
+  "ux_commit_sha": "872ca38f036a2ebdf4b30289caa5c94952377f62",
+  "binding": {
+    "worker_id": "wrapped-production-canary-20261016",
+    "session_id": "992a8cf9-ee56-4245-958e-b3b44d216175",
+    "generation": 1
+  },
+  "start": {
+    "packet": {
+      "worker_id": "wrapped-production-canary-20261016",
+      "session_id": "992a8cf9-ee56-4245-958e-b3b44d216175",
+      "lease_id": "3d66e195-e6ab-4140-89f9-660e610dec93",
+      "session_generation": 1,
+      "sequence": 2,
+      "event_id": "PROD-CANARY-64777943-4aa-2",
+      "trace_id": "PROD-CANARY-64777943-4aa",
+      "scope": "PLATFORM_PROBE_ONLY",
+      "type": "ACTION_STARTED",
+      "action_id": "PROD-CANARY-64777943-4aa-sha256",
+      "label": "Production connectivity canary · benign SHA256",
+      "detail": "Actual wrapped Python subprocess; no research or economic action",
+      "ui_activity": "coding-testing"
+    },
+    "receipt": {
+      "status": "APPLIED",
+      "event_id": "PROD-CANARY-64777943-4aa-2",
+      "cursor": 55,
+      "server_received_at": 1792133653589
+    }
+  },
+  "render_ack": {
+    "ack": "POST_RENDER_ACK_RECORDED",
+    "event_id": "PROD-CANARY-64777943-4aa-2",
+    "server_to_render_ack_ms": 24559,
+    "limitation": "Browser render lifecycle evidence; not hardware pixel attestation."
+  },
+  "status": "FAIL",
+  "failure": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n",
+  "cleanup_error": "{\"status\":400,\"body\":{\"error\":\"effect_proof_required\"}}\n\n400 !== 200\n",
+  "end": {
+    "packet": {
+      "worker_id": "wrapped-production-canary-20261016",
+      "session_id": "992a8cf9-ee56-4245-958e-b3b44d216175",
+      "lease_id": "3d66e195-e6ab-4140-89f9-660e610dec93",
+      "session_generation": 1,
+      "sequence": 9,
+      "event_id": "PROD-CANARY-64777943-4aa-9",
+      "trace_id": "PROD-CANARY-64777943-4aa",
+      "scope": "PLATFORM_PROBE_ONLY",
+      "type": "SESSION_ENDED",
+      "action_id": "PROD-CANARY-64777943-4aa-sha256",
+      "label": "Production connectivity canary · benign SHA256",
+      "detail": "Actual wrapped Python subprocess; no research or economic action",
+      "ui_activity": "coding-testing"
+    },
+    "receipt": {
+      "status": "APPLIED",
+      "event_id": "PROD-CANARY-64777943-4aa-9",
+      "cursor": 61,
+      "server_received_at": 1792133708895
+    }
+  },
+  "finished_at": "2026-10-16T06:55:09.423Z"
+}

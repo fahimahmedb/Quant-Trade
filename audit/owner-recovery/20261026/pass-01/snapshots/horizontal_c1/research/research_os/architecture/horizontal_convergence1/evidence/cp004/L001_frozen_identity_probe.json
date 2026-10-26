@@ -1,0 +1,199 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "base_sha": "97165db2faa3300cef1f23de0045ed93d25eb9cb",
+  "clock_unresolved": true,
+  "direct_consumer_representation": {
+    "horizon": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": "one-declared-clock-interval",
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "UNKNOWN",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "HANDOFF-REPRESENTATION-PROBE",
+        "identity_hash": "d2ef39bf6bb40358a53c1135b262ae015f2ba499c67606395973c60479007c9b",
+        "source_hash": "UNKNOWN",
+        "source_path": "identity.horizon",
+        "source_refs": []
+      },
+      "status": "KNOWN",
+      "value": "one declared clock interval"
+    },
+    "instrument": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": "synthetic-test-instrument",
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "UNKNOWN",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "HANDOFF-REPRESENTATION-PROBE",
+        "identity_hash": "d2ef39bf6bb40358a53c1135b262ae015f2ba499c67606395973c60479007c9b",
+        "source_hash": "UNKNOWN",
+        "source_path": "identity.instrument",
+        "source_refs": []
+      },
+      "status": "KNOWN",
+      "value": "SYNTHETIC_TEST_INSTRUMENT"
+    },
+    "timing_clock": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": "first-eligible-clock-strictly-after-information-availability",
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "UNKNOWN",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "HANDOFF-REPRESENTATION-PROBE",
+        "identity_hash": "d2ef39bf6bb40358a53c1135b262ae015f2ba499c67606395973c60479007c9b",
+        "source_hash": "UNKNOWN",
+        "source_path": "identity.timing_clock",
+        "source_refs": []
+      },
+      "status": "KNOWN",
+      "value": "first eligible clock strictly after information availability"
+    },
+    "universe": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": "synthetic-eligible-universe",
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "UNKNOWN",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "HANDOFF-REPRESENTATION-PROBE",
+        "identity_hash": "d2ef39bf6bb40358a53c1135b262ae015f2ba499c67606395973c60479007c9b",
+        "source_hash": "UNKNOWN",
+        "source_path": "identity.universe",
+        "source_refs": []
+      },
+      "status": "KNOWN",
+      "value": "SYNTHETIC_ELIGIBLE_UNIVERSE"
+    }
+  },
+  "entrypoint": "economic_test_readiness",
+  "finding": "CROSS_AXIS_FINDING",
+  "finding_id": "L001",
+  "from_module": "EXPERIMENT_INFRASTRUCTURE_FROZEN_PROTOCOL",
+  "horizon_differs_from_frozen_declaration": true,
+  "instrument_lost": true,
+  "outcome_accessed": false,
+  "owner": "LONGITUDINAL",
+  "readiness_status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST",
+  "returned_identity": {
+    "horizon": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": "one-interval",
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "7f839a50f72059a6668303588056ed97071fb4e765bb43fb12598f7c776fc72d",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "TEST-IMPLEMENTABILITY-001",
+        "identity_hash": "b2e20049b0ac4c80d43e589bea13e2606e7fcf4f1c430c422db9c875a536da4d",
+        "source_hash": "UNKNOWN",
+        "source_path": "identity.horizon",
+        "source_refs": []
+      },
+      "status": "KNOWN",
+      "value": "one interval"
+    },
+    "instrument": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": null,
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "7f839a50f72059a6668303588056ed97071fb4e765bb43fb12598f7c776fc72d",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "TEST-IMPLEMENTABILITY-001",
+        "identity_hash": "b2e20049b0ac4c80d43e589bea13e2606e7fcf4f1c430c422db9c875a536da4d",
+        "source_hash": "UNKNOWN",
+        "source_path": "UNKNOWN",
+        "source_refs": []
+      },
+      "status": "UNKNOWN",
+      "value": "UNKNOWN"
+    },
+    "timing_clock": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": null,
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "7f839a50f72059a6668303588056ed97071fb4e765bb43fb12598f7c776fc72d",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "TEST-IMPLEMENTABILITY-001",
+        "identity_hash": "b2e20049b0ac4c80d43e589bea13e2606e7fcf4f1c430c422db9c875a536da4d",
+        "source_hash": "UNKNOWN",
+        "source_path": "UNKNOWN",
+        "source_refs": []
+      },
+      "status": "UNKNOWN",
+      "value": "UNKNOWN"
+    },
+    "universe": {
+      "assumption": null,
+      "canonical_id": null,
+      "canonical_value": null,
+      "conflict_values": [],
+      "evidence_refs": [],
+      "provenance": {
+        "candidate_hash": "7f839a50f72059a6668303588056ed97071fb4e765bb43fb12598f7c776fc72d",
+        "dossier_hash": "UNKNOWN",
+        "generation_id": "G1",
+        "hypothesis_id": "TEST-IMPLEMENTABILITY-001",
+        "identity_hash": "b2e20049b0ac4c80d43e589bea13e2606e7fcf4f1c430c422db9c875a536da4d",
+        "source_hash": "UNKNOWN",
+        "source_path": "UNKNOWN",
+        "source_refs": []
+      },
+      "status": "UNKNOWN",
+      "value": "UNKNOWN"
+    }
+  },
+  "scope": "METADATA_ONLY_DIAGNOSTIC_NOT_QUALIFICATION_OR_NEW_ECONOMIC_TRUTH",
+  "to_module": "ECONOMIC_IDENTITY_PORTFOLIO",
+  "universe_lost": true,
+  "upstream_frozen_clock": {
+    "data_cutoff": "2026-10-15T10:00:00Z",
+    "decision_time": "2026-10-15T10:30:00Z",
+    "freeze_time": "2026-10-15T11:00:00Z",
+    "timezone": "UTC"
+  },
+  "upstream_frozen_expression": {
+    "capacity_requirements": "observable liquidity/capacity input required before test",
+    "cost_model_requirements": "fees, spread, slippage and financing must be declared before test",
+    "data_requirements": "point-in-time universe, signal inputs and execution clocks",
+    "direction_exposure_semantics": "long one normalized unit when eligible",
+    "eligibility": "instrument must be in the frozen eligible universe at entry clock",
+    "entry_clock": "first eligible clock strictly after information availability",
+    "execution_assumptions": "declared clock proxy only; no live order semantics",
+    "exit_clock": "next declared evaluation clock",
+    "falsification_relevant_implementation_conditions": "reject if any PIT, clock, eligibility, cost or capacity premise cannot be reconstructed",
+    "horizon": "one declared clock interval",
+    "instrument": "SYNTHETIC_TEST_INSTRUMENT",
+    "position_expression": "one normalized unit; no sizing or optimization",
+    "universe": "SYNTHETIC_ELIGIBLE_UNIVERSE"
+  }
+}

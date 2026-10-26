@@ -1,0 +1,51 @@
+{
+  "schema": "A2_FROZEN_CONTENT_V1",
+  "kind": "InputManifest",
+  "fields": {
+    "input_id": "A2-DOC-IN-OWNER-A1-V1",
+    "manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+    "input_classification": "DOCUMENTATION_ONLY",
+    "source_provenance_class": "OWNER_GOVERNANCE_DECISION; commit=728cf23e7d69a373306f3c1a3fb5d11240210cda; path=research/weather_forward/v4/owner/OWNER_V4_PHASE_GATE_A1_DECISION_2026-10-04.md; blob=483907e4f719ec8bcb3851af0f184690cea96279",
+    "exact_permitted_fields": [
+      "document_commit_sha",
+      "document_path",
+      "document_blob_sha",
+      "authorized_documentary_scope_reference"
+    ],
+    "exact_prohibited_fields": [
+      "document_body",
+      "fixture_payload",
+      "real_observation",
+      "real_technical_metadata",
+      "operational_endpoint",
+      "operational_credential",
+      "actual_timestamp",
+      "cadence",
+      "latency",
+      "availability",
+      "delivery_pattern",
+      "efficacy",
+      "economic_outcome",
+      "performance_distribution",
+      "pnl",
+      "ranking",
+      "source_preference",
+      "station_preference",
+      "city_preference",
+      "model_preference"
+    ],
+    "permitted_reader_roles": [
+      "EXECUTOR"
+    ],
+    "raw_values_visible": "VISIBLE",
+    "timestamps_visible": "HIDDEN",
+    "frequency_or_count_information_visible": "HIDDEN",
+    "longitudinal_observation_allowed": "DENIED",
+    "aggregation_allowed": "DENIED",
+    "cross_source_comparison_allowed": "DENIED",
+    "efficacy_leakage_assessment": "CLEAR",
+    "access_logging_requirement": "REQUIRED",
+    "quarantine_on_ambiguity": "REQUIRED",
+    "owner_approval_required": "REQUIRED"
+  }
+}

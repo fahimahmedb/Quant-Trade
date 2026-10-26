@@ -1,0 +1,41 @@
+{
+  "source_id": "fixture-F3",
+  "source_version": "v1",
+  "origin_family": "BOUNDED_EMPIRICAL",
+  "origin": "DECLARED_EXPLORATION_FAMILY",
+  "discovery_method": "DOCUMENT_EXTRACTION",
+  "published_at": "2026-10-01T00:00:00Z",
+  "available_at": "2026-10-01T00:00:00Z",
+  "evidence_mode": "DETERMINISTIC_FIXTURE",
+  "observation_ref": "fixture://giga-f/F3/v1",
+  "seed_fields": {
+    "actor": "hypothesized-actor-F3",
+    "mechanism_family": "UNVERIFIED_MECHANISM_F3",
+    "mechanism_state": "HYPOTHESIS",
+    "universe": "FIXTURE_UNIVERSE",
+    "instruments": [
+      "FIXTURE_INSTRUMENT"
+    ],
+    "information_source": "fixture-F3",
+    "clock": "after source availability",
+    "horizon": "one declared session",
+    "constraint": "UNVERIFIED_CONSTRAINT_F3",
+    "possible_transfer": "UNKNOWN",
+    "rule_structure": "UNKNOWN"
+  },
+  "search": {
+    "domain": "DECLARED_FIXTURE_FEATURE_SPACE_NO_OUTCOMES",
+    "family": "fixture-exploration-F3",
+    "space": {
+      "window": [
+        5,
+        10
+      ],
+      "threshold": [
+        1,
+        2
+      ]
+    },
+    "stop_condition": "enumerate four plans; do not execute"
+  }
+}

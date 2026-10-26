@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"quant-trade://research-os/ExperimentResult",
+  "title":"ExperimentResult",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["experiment_id","hypothesis_generation","dataset_provenance","protocol_hash","result","observed_attempts","effective_trials_status","limitations","evidence_timing"],
+  "properties":{
+    "experiment_id":{"type":"string","minLength":1},
+    "hypothesis_generation":{"type":"string","minLength":1},
+    "dataset_provenance":{"type":"array","items":{"type":"string"}},
+    "protocol_hash":{"type":"string","minLength":1},
+    "result":{},
+    "observed_attempts":{"type":"integer","minimum":0},
+    "estimated_effective_trials":{"type":["number","null"],"minimum":0},
+    "effective_trials_status":{"enum":["KNOWN","ESTIMATED","PARTIALLY_BOUNDED","UNKNOWN"]},
+    "limitations":{"type":"array","items":{"type":"string"}},
+    "evidence_timing":{"enum":["RETROSPECTIVE","PROSPECTIVE","UNDETERMINED"]}
+  }
+}

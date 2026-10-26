@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Immutable SEC raw-response manifest row.",
+  "properties": {
+    "admissibility_state": {
+      "type": "string"
+    },
+    "byte_length": {
+      "type": "integer"
+    },
+    "capture_state": {
+      "type": "string"
+    },
+    "endpoint_class": {
+      "type": "string"
+    },
+    "first_received_at_utc": {
+      "type": "string"
+    },
+    "media_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sha256": {
+      "type": "string"
+    },
+    "visibility_state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "sha256",
+    "byte_length",
+    "first_received_at_utc",
+    "media_type",
+    "endpoint_class"
+  ],
+  "title": "sec_raw_object_record",
+  "type": "object"
+}

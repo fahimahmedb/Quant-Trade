@@ -1,0 +1,14 @@
+{
+  "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007",
+  "emitted_at": "2026-10-20T11:15:50Z",
+  "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007-g2-cbfcd16713b4-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 2,
+  "payload": {
+    "lineage": "FRONTIER-QUANT-MECHANISM-DISTINCT-007",
+    "queue_state": "WORKING"
+  },
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007-g2-cbfcd16713b4",
+  "worker_id": "oracle-research-v2.market_discovery"
+}

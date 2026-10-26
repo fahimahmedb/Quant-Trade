@@ -1,0 +1,30 @@
+{
+  "schema": "A2_FROZEN_CONTENT_V1",
+  "kind": "HarnessPolicy",
+  "fields": {
+    "expected_owner_authority_sha": "37e3b25f17a7c5d3b3bc8d37df730aa988585b6c",
+    "expected_harness_identity": "research/weather_forward/v4/a2_harness",
+    "expected_harness_version_or_commit_identity": "weather-v4-a2-doc-integration-v1",
+    "expected_manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+    "expected_input_manifest_id": "A2-DOC-IN-OWNER-A1-V1",
+    "expected_input_manifest_identity": "sha256:5c55b855b91a5c2b0bde86f3c0888905b500c086309a761ff454644d0cfbbd00",
+    "expected_output_manifest_id": "A2-DOC-OUT-STRUCTURAL-REPORT-V1",
+    "expected_output_manifest_identity": "sha256:b8157e4e15b4e03813b0ff43d52a2319ea589fc9aab9429f1c2894bcce990976",
+    "allowed_input_classifications": [
+      "DOCUMENTATION_ONLY"
+    ],
+    "prohibited_input_classifications": [
+      "NON_ECONOMIC_SYNTHETIC",
+      "REAL_TECHNICAL_METADATA",
+      "PROHIBITED",
+      "UNKNOWN"
+    ],
+    "fixture_provenance_contract": null,
+    "permitted_recipient_actor_roles": [
+      [
+        "project-owner.weather-v4.a2.doc-integration.v1",
+        "RESEARCH_VIEWER"
+      ]
+    ]
+  }
+}

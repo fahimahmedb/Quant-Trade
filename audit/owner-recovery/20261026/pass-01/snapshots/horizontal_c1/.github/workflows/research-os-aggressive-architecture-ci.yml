@@ -1,0 +1,51 @@
+name: Research OS aggressive architecture CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/expansion/**'
+      - 'research/research_os/simulations/aggressive_architecture_fixture.json'
+      - 'research/research_os/tests/test_aggressive_architecture.py'
+      - 'research/research_os/architecture/AGGRESSIVE_ARCHITECTURE_ATTACK_20261015.md'
+      - '.github/workflows/research-os-aggressive-architecture-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  aggressive-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run aggressive architecture pipeline
+        run: python -m research.research_os.expansion.run_aggressive_architecture
+      - name: Run architecture tests
+        run: python -m unittest research.research_os.tests.test_aggressive_architecture -v
+      - name: Verify deterministic replay and hard authority boundaries
+        run: |
+          cp research/research_os/simulations/aggressive_architecture_result.json /tmp/aggressive-first.json
+          python -m research.research_os.expansion.run_aggressive_architecture
+          cmp /tmp/aggressive-first.json research/research_os/simulations/aggressive_architecture_result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('research/research_os/simulations/aggressive_architecture_result.json')
+          d = json.loads(p.read_text())
+          assert d['status'] == 'PASS'
+          assert d['synthetic_only'] is True
+          assert all(v is False for v in d['authority'].values())
+          assert all(e['outcome_opened'] is False for e in d['experiment_envelopes'])
+          assert all(r['observation_started'] is False for r in d['forward_farm'])
+          assert all(r['future_outcomes_consumed'] == 0 for r in d['forward_farm'])
+          assert d['portfolio']['capital_allocation_authorized'] is False
+          assert d['portfolio']['position_sizing_authorized'] is False
+          assert d['portfolio']['orders_authorized'] is False
+          assert d['decay']['status'] == 'INACTIVE_BY_AUTHORITY'
+          print('AGGRESSIVE_ARCHITECTURE=PASS')
+          PY

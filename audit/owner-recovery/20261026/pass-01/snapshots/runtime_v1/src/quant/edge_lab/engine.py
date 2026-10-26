@@ -1,0 +1,726 @@
+"""Decision events first. Market outcomes require a durable, single-use look."""
+from __future__ import annotations
+
+import copy
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+from dataclasses import asdict
+from datetime import datetime, timezone
+from pathlib import Path
+
+from .compat import ResearchTask
+from .contracts import admission, outcome, DECISIONS
+from quant.state import utc_now, write_json
+from .seed import BRANCH, initial_control, initial_state
+from .store import Refused, Store, digest, event, strict_json, verify
+
+
+def timestamp(value):
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        raise Refused("Timezone is required")
+    return parsed.astimezone(timezone.utc)
+
+
+def question_due(decision, now=None):
+    """A source-declared future access window cannot be polled or claimed early."""
+    if decision["status"] != "OPEN":
+        return False
+    boundary = decision.get("not_before")
+    return boundary is None or timestamp(boundary) <= (now or datetime.now(timezone.utc))
+
+
+def overlap(left, right):
+    def boundary(value):
+        return timestamp(value + "T00:00:00Z" if len(value) == 10 else value)
+    return boundary(left[0]) < boundary(right[1]) and boundary(right[0]) < boundary(left[1])
+
+
+def initialize(directory):
+    store = Store(directory)
+    with store.lock():
+        if store.state_path.exists():
+            store.read()
+            store.control()
+            return store
+        if store.control_path.exists():
+            raise Refused("State missing with existing controls; restore, do not reset")
+        write_json(store.control_path, initial_control())
+        store.save(initial_state())
+    return store
+
+
+def budget_check(state, control):
+    if control["paused"]:
+        raise Refused("PAUSED: " + str(control["pause_reason"]))
+    for limit, meter in (("paid_usd_total", "paid_usd"), ("tokens_total", "tokens"),
+                         ("cpu_seconds_total", "cpu_seconds")):
+        cap, used = control["limits"][limit], state["usage"][meter]
+        if cap is not None and used is None:
+            raise Refused(f"BUDGET_UNMEASURED: {meter}")
+        if cap is not None and (used > cap or (meter != "paid_usd" and used >= cap)):
+            raise Refused(f"BUDGET_EXHAUSTED: {meter}")
+
+
+class Lab:
+    def __init__(self, directory):
+        self.store = Store(directory)
+
+    def snapshot(self):
+        with self.store.lock():
+            return self.store.read(), self.store.control()
+
+    def tick(self, observations=None, actor="manual", enabled_confirmed=False):
+        """No outcome worker is called by startup, heartbeat, CI, or a changed SHA."""
+        cpu_start, wall_start = time.process_time(), time.monotonic()
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            try:
+                budget_check(state, control)
+            except Refused as exc:
+                state["scheduler"]["last_tick"] = {"at": utc_now(), "actor": actor, "status": str(exc), "new_events": 0}
+                self.store.save(state)
+                return state
+            changes = 0
+            for identity, observation in (observations or {}).items():
+                # Only allowlisted branch-head metadata, never arbitrary URLs or files.
+                if identity not in state["families"] or observation["ref"] != state["families"][identity]["ref"]:
+                    raise Refused("Unregistered source")
+                if not re.fullmatch(r"[0-9a-f]{40}", observation["sha"]):
+                    raise Refused("Invalid source SHA")
+                prior = state["sources"].get(identity)
+                baseline = state["families"][identity]["sha"]
+                state["sources"][identity] = {**observation, "observed_at": utc_now()}
+                if observation["sha"] != (prior["sha"] if prior else baseline):
+                    decision_id = f"delta:{identity}:{observation['sha']}"
+                    if decision_id not in state["decisions"]:
+                        state["decisions"][decision_id] = {
+                            "status": "OPEN", "family": identity, "priority": state["families"][identity]["priority"],
+                            "question": "Lire le delta utile, rapprocher verdict/droits/réservations ; ne pas relancer un test.",
+                            "created_at": utc_now(), "evidence": [], "reason": "REMOTE_HEAD_CHANGED"}
+                        event(state, "SOURCE_CHANGED", {"id": identity, "old": prior["sha"] if prior else baseline,
+                                                        "new": observation["sha"]})
+                        changes += 1
+            now = datetime.now(timezone.utc)
+            for job in state["jobs"].values():
+                if job["status"] == "RUNNING" and (now - timestamp(job["started_at"])).total_seconds() > job["lease_seconds"]:
+                    job["status"] = "UNKNOWN_OUTCOME"
+                    job["blocked_reason"] = "Lease expired: preserve spent look, never auto-retry"
+                    look = state["looks"][job["metadata"]["look_id"]]
+                    look["status"] = "UNKNOWN_OUTCOME"
+                    event(state, "LOOK_QUARANTINED", {"job": job["task_id"], "look": look["id"]})
+            for identity, decision in state["decisions"].items():
+                if (decision["status"] == "RESEARCHING"
+                        and (now - timestamp(decision["claimed_at"])).total_seconds() > decision["lease_seconds"]):
+                    decision["status"] = "RECOVERY_NEEDED"
+                    event(state, "QUESTION_LEASE_EXPIRED", {"id": identity,
+                                                           "next": "Reconcile cached sources/partial receipt; no blind repeated review"})
+            if enabled_confirmed:
+                if state["scheduler"].get("enabled") is False:
+                    raise Refused("Owner-disabled scheduler: metadata flag cannot re-enable it")
+                state["scheduler"]["enabled_confirmed_at"] = utc_now()
+            state["scheduler"]["last_tick"] = {"at": utc_now(), "actor": actor, "status": "IDLE" if not changes else "DECISION_PENDING",
+                                                "new_events": changes}
+            state["usage"]["cpu_seconds"] += time.process_time() - cpu_start
+            state["usage"]["wall_seconds"] += time.monotonic() - wall_start
+            self.store.save(state)
+            return state
+
+    def scheduler_disabled(self, packet):
+        """Record the existing backend receipt; this method never calls an automation."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            if (packet.get("id") != state["scheduler"]["id"] or packet.get("enabled") is not False
+                    or packet.get("evidence_id") not in state["evidence"]):
+                raise Refused("Exact existing disabled automation receipt required")
+            timestamp(packet["observed_at"])
+            state["scheduler"].update(enabled=False, mode="manual_existing_automation_disabled",
+                disabled_confirmed_at=packet["observed_at"], disabled_evidence=packet["evidence_id"])
+            event(state, "SCHEDULER_DISABLED_OBSERVED", packet)
+            self.store.save(state)
+
+    def scheduler_configured(self, packet):
+        """Record a fresh Owner-authorized backend receipt, never enable via a tick.
+
+        Configuration is not a delivered run, heartbeat or economic worker.
+        This method does not call the scheduler or change its notification settings.
+        """
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            owner = state["evidence"].get(packet.get("owner_evidence_id"), {})
+            receipt = state["evidence"].get(packet.get("backend_evidence_id"), {})
+            observed = receipt.get("scheduler_receipt", {})
+            if (packet.get("id") != state["scheduler"]["id"]
+                    or packet.get("enabled") is not True
+                    or owner.get("owner_request", {}).get("autonomous_research_worker") is not True
+                    or owner.get("owner_request", {}).get("no_reminder_messages") is not True
+                    or owner.get("kind") != "METHOD" or receipt.get("kind") != "METHOD"
+                    or observed.get("id") != packet["id"] or observed.get("is_enabled") is not True
+                    or observed.get("updated_at") != packet.get("observed_at")):
+                raise Refused("Exact existing worker, explicit Owner resumption and fresh enabled backend receipt required")
+            timestamp(packet["observed_at"])
+            if (state["scheduler"].get("disabled_confirmed_at")
+                    and timestamp(packet["observed_at"]) <= timestamp(state["scheduler"]["disabled_confirmed_at"])):
+                raise Refused("Historical configuration cannot override a newer disabled receipt")
+            if (state["scheduler"].get("enabled") is True
+                    and state["scheduler"].get("enabled_evidence") == packet["backend_evidence_id"]
+                    and state["scheduler"].get("owner_resumption_evidence") == packet["owner_evidence_id"]):
+                return
+            state["scheduler"].update(enabled=True, mode="existing_autonomous_research_worker",
+                enabled_confirmed_at=packet["observed_at"], enabled_evidence=packet["backend_evidence_id"],
+                owner_resumption_evidence=packet["owner_evidence_id"],
+                notification_policy="RESULT_PROGRESS_EXTERNAL_BLOCK_ONLY; no reminder prompts",
+                external_run={"current_prompt_run_observed": False,
+                    "last_backend_run_time_observed": observed.get("last_run_time"),
+                    "next_backend_run_time_observed": observed.get("next_run_time"),
+                    "scope": "configuration_only; actual run must produce its own receipt"})
+            event(state, "RESEARCH_WORKER_CONFIGURED_OBSERVED", packet)
+            self.store.save(state)
+
+    def scheduler_run_observed(self, packet):
+        """Native last-run observation, distinct from signed delivery and independence."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            scheduler = state["scheduler"]
+            saved = state["evidence"].get(scheduler.get("enabled_evidence"), {}).get("scheduler_receipt", {})
+            proof = state["evidence"].get(packet.get("evidence_id"), {})
+            observed = proof.get("scheduler_receipt", {})
+            if (not scheduler.get("enabled") or packet.get("id") != scheduler["id"]
+                    or proof.get("kind") != "METHOD" or observed.get("id") != scheduler["id"]
+                    or not re.fullmatch(r"[0-9a-f]{64}", saved.get("prompt_sha256", ""))
+                    or observed.get("prompt_sha256") != saved["prompt_sha256"]
+                    or not observed.get("last_run_time")):
+                raise Refused("Exact native run receipt and current configured prompt hash required")
+            run_at = timestamp(observed["last_run_time"])
+            if run_at <= timestamp(scheduler["enabled_confirmed_at"]) or run_at > timestamp(packet["observed_at"]):
+                raise Refused("Historical/future last-run does not attest this configuration")
+            if scheduler.get("external_run", {}).get("run_evidence") == packet["evidence_id"]:
+                return
+            scheduler["external_run"] = {"current_prompt_run_observed": True,
+                "last_backend_run_time_observed": observed["last_run_time"],
+                "next_backend_run_time_observed": observed.get("next_run_time"),
+                "observed_at": packet["observed_at"], "run_evidence": packet["evidence_id"],
+                "delivery_signed_verified": False, "unattended_independence_verified": False,
+                "trigger": "UNKNOWN; immediate-launch API error and later backend observation are both retained",
+                "scope": "Provider last-run metadata; session receipts are separate, no 24/7 or process telemetry claim"}
+            event(state, "RESEARCH_WORKER_RUN_OBSERVED", packet)
+            self.store.save(state)
+
+    def evidence(self, packet):
+        """Cache versioned source passages; outcome packets must name a charged look."""
+        required = ("id", "url", "version", "passage", "fact", "limit", "kind")
+        if any(not packet.get(k) for k in required):
+            raise Refused("Evidence requires primary URL, version, passage, fact and limit")
+        if packet["kind"] not in ("ACCESS", "METHOD", "CONTRADICTION", "OUTCOME", "DATA_EXPOSURE"):
+            raise Refused("Unknown evidence kind")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            identity = packet["id"]
+            if identity in state["evidence"]:
+                if state["evidence"][identity] != packet:
+                    raise Refused("New evidence version needs a new ID")
+                return identity
+            if packet["kind"] in ("OUTCOME", "DATA_EXPOSURE"):
+                look = state["looks"].get(packet.get("look_id"))
+                if not look:
+                    raise Refused("Exposure must be reserved BEFORE outcomes are read")
+            state["evidence"][identity] = copy.deepcopy(packet)
+            event(state, "EVIDENCE_ADDED", {"id": identity, "digest": digest(packet), "kind": packet["kind"]})
+            self.store.save(state)
+        return identity
+
+    def claim_decision(self, identity, actor):
+        """Publish this claim with remote CAS BEFORE expensive external reasoning."""
+        if not actor:
+            raise Refused("Research actor required")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            decision = state["decisions"][identity]
+            if not question_due(decision):
+                raise Refused("Question already claimed/resolved; do not duplicate reasoning")
+            claim_id = digest({"id": identity, "actor": actor, "at": utc_now()})
+            decision.update(status="RESEARCHING", claim_id=claim_id, actor=actor,
+                            claimed_at=utc_now(), lease_seconds=600)
+            event(state, "QUESTION_CLAIMED", {"id": identity, "actor": actor, "claim_id": claim_id})
+            self.store.save(state)
+            return claim_id
+
+    def decide(self, identity, verdict, evidence_ids, next_action, claim_id=None):
+        if verdict not in ("WAIT", "CLOSED", "QUALIFIED", "REJECTED", "INSUFFICIENT_POWER", "INVALID_SOFTWARE"):
+            raise Refused("Decision type must distinguish economic, software and power outcomes")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            decision = state["decisions"][identity]
+            if decision["status"] not in ("OPEN", "RESEARCHING", "RECOVERY_NEEDED"):
+                raise Refused("Resolved question requires a new event, not another review")
+            if decision.get("claim_id") and decision["claim_id"] != claim_id:
+                raise Refused("Only the recorded claim may finish/reconcile this question")
+            if not evidence_ids or any(x not in state["evidence"] for x in evidence_ids):
+                raise Refused("Decision requires cached evidence")
+            if verdict in ("REJECTED", "INSUFFICIENT_POWER", "INVALID_SOFTWARE") and not any(
+                    state["evidence"][x]["kind"] == "OUTCOME" for x in evidence_ids):
+                raise Refused("Missing access/source is not an economic rejection")
+            if decision.get("look_id"):
+                look = state["looks"][decision["look_id"]]
+                result = state["jobs"]["execute:" + look["protocol"]]["metadata"]["result"]
+                if verdict not in DECISIONS[result["kind"]]:
+                    raise Refused("Decision contradicts the preserved outcome; do not promote a failed/source test")
+                family = state["families"][decision["family"]]
+                status = {"NEGATIVE": "REJECTED_CLOSED", "POSITIVE_EXPLORATORY": "VALIDATION_REQUIRED",
+                          "INSUFFICIENT_POWER": "INCONCLUSIVE_WAIT", "INVALID_SOFTWARE": "SOFTWARE_BLOCKED",
+                          "SOURCE_UNUSABLE": "BLOCKED_DATA_ACCESS", "PROSPECTIVE_OBSERVATION": "OBSERVATION_ONLY"}
+                family.update(status=status[result["kind"]], next=next_action,
+                              latest_lesson=result["lesson"], last_result_look=look["id"])
+            decision.update(status=verdict, evidence=list(evidence_ids), next_action=next_action, resolved_at=utc_now())
+            event(state, "DECISION", {"id": identity, "verdict": verdict, "evidence": evidence_ids, "next": next_action})
+            self.store.save(state)
+
+    def build_question(self, identity, parent_decision, question, decision_use, evidence_ids, not_before=None):
+        """Queue a distinct implementation gate; keep the blocked economic question intact."""
+        if any(not isinstance(value, str) or not value.strip()
+               for value in (identity, parent_decision, question, decision_use)):
+            raise Refused("Build question requires an identity, scope and decision use")
+        if not_before is not None:
+            if not isinstance(not_before, str):
+                raise Refused("Source access window requires an explicit timezone")
+            try:
+                not_before = timestamp(not_before).isoformat()
+            except ValueError as exc:
+                raise Refused("Invalid source access window") from exc
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            parent = state["decisions"].get(parent_decision)
+            if not parent or parent["status"] not in ("WAIT", "QUALIFIED"):
+                raise Refused("Build follow-up requires a resolved WAIT or QUALIFIED decision")
+            family_id = parent["family"]
+            family = state["families"][family_id]
+            if family["status"] == "REJECTED_CLOSED":
+                raise Refused("A closed economic family cannot be reopened as construction")
+            if not re.fullmatch(r"build:" + re.escape(family_id) + r":[a-z0-9][a-z0-9-]{0,79}", identity):
+                raise Refused("Build identity must remain in the parent family")
+            if (not isinstance(evidence_ids, list) or not evidence_ids
+                    or any(not isinstance(e, str) or e not in state["evidence"]
+                           or e not in parent["evidence"] for e in evidence_ids)):
+                raise Refused("Build follow-up requires the parent's cached evidence")
+            scope = digest({"parent": parent_decision, "question": " ".join(question.lower().split())})
+            if identity in state["decisions"] or any(
+                    d.get("construction_scope") == scope for d in state["decisions"].values()):
+                raise Refused("Build question/scope already recorded; do not rename or reset it")
+            if any(d.get("parent_decision") == parent_decision
+                   and d["status"] in ("OPEN", "RESEARCHING", "RECOVERY_NEEDED")
+                   for d in state["decisions"].values()):
+                raise Refused("A construction question for this parent is already pending")
+            state["decisions"][identity] = {
+                "status": "OPEN", "family": family_id, "priority": family["priority"],
+                "question": question, "decision_use": decision_use,
+                "parent_decision": parent_decision, "construction_scope": scope,
+                "created_at": utc_now(), "evidence": list(evidence_ids),
+                "reason": "CONSTRUCTION_ADMISSION", "outcome_access_authorized": False}
+            if not_before is not None:
+                state["decisions"][identity]["not_before"] = not_before
+            event(state, "BUILD_QUESTION_ADDED", {"id": identity, "parent": parent_decision,
+                  "family": family_id, "scope": scope, "evidence": list(evidence_ids),
+                  **({"not_before": not_before} if not_before is not None else {})})
+            self.store.save(state)
+
+    def family(self, identity, mechanism, dataset, evidence_ids):
+        """A novel mechanism needs provenance; variants keep the same family."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            if identity in state["families"] or not evidence_ids or any(e not in state["evidence"] for e in evidence_ids):
+                raise Refused("Existing family or missing provenance")
+            mechanism_hash = digest(" ".join(mechanism.lower().split()))
+            if any(f.get("mechanism_hash") == mechanism_hash for f in state["families"].values()):
+                raise Refused("Same mechanism: add a variant, do not reset trial history")
+            question_id = "qualify:" + identity
+            if question_id in state["decisions"]:
+                raise Refused("Existing admission question; do not overwrite or reopen it")
+            state["families"][identity] = {"label": mechanism, "mechanism_hash": mechanism_hash, "dataset": dataset,
+                "priority": 10, "status": "HYPOTHESIS", "next": "Choisir un test discriminant accessible.",
+                "wake": "Accès/horloge/coûts et protocole admissibles.", "evidence": evidence_ids}
+            state["decisions"][question_id] = {"status": "OPEN", "family": identity, "priority": 10,
+                "question": "Qualifier données/droits/horloge/coûts/ressources avant tout protocole ou look.",
+                "created_at": utc_now(), "evidence": list(evidence_ids), "reason": "NEW_MECHANISM_ADMISSION"}
+            event(state, "FAMILY_REGISTERED", {"id": identity, "mechanism_hash": mechanism_hash,
+                                               "dataset": dataset, "question": question_id})
+            self.store.save(state)
+
+    def freeze(self, protocol):
+        required = ("id", "family", "dataset", "stage", "window", "expressions", "cost_paths", "primary",
+                    "mechanism", "payer", "clock", "independent_unit", "benchmark", "costs", "rights",
+                    "decision_contract", "multiplicity_policy", "runner", "runner_sha256", "evidence_ids")
+        if any(not protocol.get(k) for k in required):
+            raise Refused("Incomplete economic protocol; no generic Sharpe target substitutes for a decision")
+        if protocol["stage"] not in ("EXPLORATION", "VALIDATION", "PROSPECTIVE"):
+            raise Refused("Capital decisions are not executable")
+        window = protocol["window"]
+        if len(window) != 2 or window[0] >= window[1]:
+            raise Refused("Invalid half-open window")
+        start, end = timestamp(window[0]), timestamp(window[1])
+        expressions, paths = protocol["expressions"], protocol["cost_paths"]
+        if any(not isinstance(items, list) or not items or any(not isinstance(x, str) or not x for x in items)
+               for items in (expressions, paths)):
+            raise Refused("Explicit lists of economic expressions and cost paths required")
+        if (len(set(expressions)) != len(expressions) or len(set(paths)) != len(paths)
+                or protocol["primary"] not in expressions):
+            raise Refused("Duplicate variants or undeclared primary")
+        if not re.fullmatch("[0-9a-f]{64}", protocol["runner_sha256"]):
+            raise Refused("Runner content must be pinned")
+        contract = protocol["decision_contract"]
+        if not all(contract.get(x) for x in ("positive", "negative", "inconclusive", "invalid")):
+            raise Refused("Every outcome needs a decision, including uncertainty")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            identity, family = protocol["id"], state["families"].get(protocol["family"])
+            if not family or family["status"] == "REJECTED_CLOSED":
+                raise Refused("Unknown or terminal family; no renamed restart")
+            if family["dataset"] != protocol["dataset"]:
+                raise Refused("Dataset identity cannot be changed by a new vendor")
+            # Legacy freezes are references, not editable templates. Adoption needs an exact reviewed adapter.
+            if family.get("sha"):
+                raise Refused("Legacy frozen protocol: use the upstream adapter; do not recreate or alter it")
+            if not protocol["evidence_ids"] or any(e not in state["evidence"] for e in protocol["evidence_ids"]):
+                raise Refused("Protocol needs primary evidence")
+            history = state["baseline"].get(protocol["dataset"], {})
+            if protocol["stage"] == "VALIDATION" and not history.get("history_complete"):
+                raise Refused("Historical exposure is UNKNOWN; cannot label this a pristine confirmation")
+            if protocol["stage"] == "PROSPECTIVE" and start <= datetime.now(timezone.utc):
+                raise Refused("Prospective observations must start AFTER the freeze")
+            protected = history.get("protected", [])
+            if any(overlap(window, w) for w in protected):
+                raise Refused("Reserved/closed holdout; neither exploration nor a new vendor clears it")
+            if protocol["stage"] == "VALIDATION" and any(overlap(window, w)
+                                                          for w in history.get("spent", [])):
+                raise Refused("Consumed validation window")
+            frozen = copy.deepcopy(protocol)
+            frozen.update(frozen_at=utc_now(), hash=digest(protocol))
+            if identity in state["protocols"]:
+                if state["protocols"][identity]["hash"] != frozen["hash"]:
+                    raise Refused("Frozen protocol cannot change")
+                return identity
+            state["protocols"][identity] = frozen
+            event(state, "PROTOCOL_FROZEN", {"id": identity, "hash": frozen["hash"], "stage": protocol["stage"]})
+            self.store.save(state)
+            return identity
+
+    def admit(self, protocol_id, packet):
+        """Immutable, evidenced admission separate from freezing and charging a look."""
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            protocol = state["protocols"][protocol_id]
+            admission(packet, protocol, state, control)
+            admitted = state.setdefault("admissions", {})
+            if protocol_id in admitted:
+                if admitted[protocol_id] != packet:
+                    raise Refused("Admission cannot be rewritten; preserve input/code identity")
+                return protocol_id
+            admitted[protocol_id] = copy.deepcopy(packet)
+            event(state, "PROTOCOL_ADMITTED", {"protocol": protocol_id, "digest": digest(packet)})
+            self.store.save(state)
+        return protocol_id
+
+    def reserve(self, protocol_id, data_fingerprint):
+        """Charge all paths conservatively; dependent paths are NOT independent N."""
+        if not data_fingerprint:
+            raise Refused("A specific acquired data version is required")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            protocol = state["protocols"][protocol_id]
+            if protocol["rights"].get("permitted") is not True:
+                raise Refused("BLOCKED_PERMISSION: rights are not qualified")
+            proof = state.get("admissions", {}).get(protocol_id)
+            if not proof or proof["data_fingerprint"] != data_fingerprint:
+                raise Refused("Qualified, exact input admission required before charging a look")
+            admission(proof, protocol, state, control)
+            # The protocol is single-use even when files, vendor or fingerprint change.
+            look_id = "look:" + protocol_id
+            if look_id in state["looks"]:
+                raise Refused("Look already spent/reserved; no opportunistic rerun")
+            if any(x["status"] in ("RESERVED_SPENT", "RUNNING_SPENT") or
+                   (x["status"] == "UNKNOWN_OUTCOME" and not state["jobs"]["execute:" + x["protocol"]]
+                    .get("metadata", {}).get("process_stopped")) for x in state["looks"].values()):
+                raise Refused("One active economic experiment at a time")
+            dataset, window = protocol["dataset"], protocol["window"]
+            if protocol["stage"] != "EXPLORATION" and any(
+                    x["dataset"] == dataset and overlap(window, x["window"]) for x in state["looks"].values()):
+                raise Refused("This outcome window has already been exposed")
+            rights = protocol["rights"]
+            if rights.get("permitted") is not True or not rights.get("url") or not rights.get("scope"):
+                raise Refused("BLOCKED_PERMISSION: rights are not qualified")
+            if protocol.get("paid_usd", 0) != 0:
+                raise Refused("Paid access is not authorized")
+            if state["families"][protocol["family"]]["status"] == "REJECTED_CLOSED":
+                raise Refused("A rejected expression cannot receive another look")
+            charge = len(protocol["expressions"]) * len(protocol["cost_paths"])
+            look = {"id": look_id, "protocol": protocol_id, "protocol_hash": protocol["hash"],
+                    "dataset": dataset, "window": window, "stage": protocol["stage"],
+                    "expressions": protocol["expressions"], "cost_paths": protocol["cost_paths"],
+                    "charged_paths": charge, "data_fingerprint": data_fingerprint,
+                    "reserved_at": utc_now(), "status": "RESERVED_SPENT"}
+            state["looks"][look_id] = look
+            state["trial_charges"][dataset] = state["trial_charges"].get(dataset, 0) + charge
+            task = ResearchTask(task_id="execute:" + protocol_id, lane=protocol["family"], priority=1,
+                                reason="Execute exactly one frozen protocol", worker="pinned_local_runner",
+                                data_fingerprint=data_fingerprint, status="RESERVED",
+                                metadata={"look_id": look_id, "protocol": protocol_id})
+            state["jobs"][task.task_id] = asdict(task)
+            event(state, "LOOK_RESERVED_SPENT", look)
+            self.store.save(state)
+            return look_id
+
+    def execute(self, protocol_id, repository, remote_snapshot, remote_claim):
+        """remote_snapshot() must freshly verify GitHub HEAD + controls + state.
+
+        Reservation is published BEFORE this call; remote_claim uses Git CAS to
+        publish RUNNING before launching the process. Only that winner executes.
+        A local state file or a claimed commit SHA is not a remote durability receipt.
+        """
+        authority = remote_snapshot()
+        if authority["control"].get("paused") is True:
+            raise Refused("PAUSED: remote authority")
+        verify(authority["state"])
+        look_id = "look:" + protocol_id
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            budget_check(authority["state"], authority["control"])
+            if (authority["control"].get("schema") != 1
+                    or authority["control"].get("real_capital_authorized") is not False
+                    or authority["control"].get("live_trading_authorized") is not False):
+                raise Refused("Remote controls are not qualified")
+            if authority["branch"] != BRANCH or not re.fullmatch("[0-9a-f]{40}", authority["sha"]):
+                raise Refused("Wrong remote authority")
+            look, remote_look = state["looks"][look_id], authority["state"]["looks"].get(look_id)
+            job = state["jobs"]["execute:" + protocol_id]
+            if (remote_look != look or look["status"] != "RESERVED_SPENT" or job["status"] != "RESERVED"):
+                raise Refused("Reservation not durable, already executing, or outcome uncertain")
+            protocol = state["protocols"][protocol_id]
+            if authority["state"]["protocols"].get(protocol_id) != protocol:
+                raise Refused("Remote protocol mismatch")
+            if authority.get("runner_versions", {}).get(protocol["runner"]) != protocol["runner_sha256"]:
+                raise Refused("Runner code is not published at the exact authority HEAD")
+            for path, expected in protocol.get("code_sha256", {}).items():
+                local = (Path(repository) / path).resolve()
+                if (Path(repository).resolve() not in local.parents or not local.is_file()
+                        or authority.get("runner_versions", {}).get(path) != expected
+                        or __import__("hashlib").sha256(local.read_bytes()).hexdigest() != expected):
+                    raise Refused("Frozen adapter dependency changed or unpublished")
+            proof = state.get("admissions", {}).get(protocol_id)
+            if proof != authority["state"].get("admissions", {}).get(protocol_id):
+                raise Refused("Admission is not durably published")
+            admission(proof or {}, protocol, state, control)
+            if protocol.get("legacy"):
+                from .legacy_adapter import check_inputs, original_authority
+                check_inputs(protocol, proof, original_authority())
+            if control["limits"]["cpu_seconds_total"] is not None:
+                raise Refused("BUDGET_UNMEASURED: full job/controller CPU accounting unavailable")
+            if protocol["stage"] == "PROSPECTIVE" and datetime.now(timezone.utc) < timestamp(protocol["window"][1]):
+                raise Refused("WAIT_OBSERVATIONS: do not inspect partial prospective outcomes")
+            root = Path(repository).resolve()
+            runner = (root / protocol["runner"]).resolve()
+            if root not in runner.parents or runner.suffix != ".py" or not runner.is_file():
+                raise Refused("Only a pinned Python runner inside this checkout is executable")
+            import hashlib
+            if hashlib.sha256(runner.read_bytes()).hexdigest() != protocol["runner_sha256"]:
+                raise Refused("Runner changed after freeze")
+            from .public_inputs import runner_environment
+            env = runner_environment(protocol, root)
+            job.update(status="RUNNING", started_at=utc_now(), lease_seconds=control["limits"]["job_wall_seconds"] + 30)
+            look["status"] = "RUNNING_SPENT"
+            start_event = event(state, "EXECUTION_STARTED", {"look": look_id, "durable_commit": authority["sha"]})
+            self.store.save(state)
+            # This happens under the stable local lock. Another host wins or loses
+            # against the same remote parent; a loser never reads outcomes.
+            try:
+                claim_sha = remote_claim(state, authority["sha"])
+            except Exception as exc:
+                job.update(status="UNKNOWN_OUTCOME", last_error="REMOTE_CLAIM_FAILED")
+                job["metadata"].update(process_stopped=True, execution_not_started=True)
+                look["status"] = "UNKNOWN_OUTCOME"
+                event(state, "CLAIM_FAILED_NO_EXECUTION", {"look": look_id, "error": type(exc).__name__})
+                self.store.save(state)
+                raise Refused("Remote claim rejected: do not execute or retry this look") from exc
+        # No secrets inherited, no shell, no old QuantSystem boot. Admission trusts pinned reviewed code.
+        started = time.monotonic()
+        import resource
+        child_before = resource.getrusage(resource.RUSAGE_CHILDREN)
+        artifacts = self.store.root / "receipts" / digest(look_id)
+        stdout_path, stderr_path = artifacts / "stdout.bin", artifacts / "stderr.bin"
+        output_limit = min(1048576, control["limits"]["metadata_bytes_per_tick"] // 2)
+        def child_limits():
+            resource.setrlimit(resource.RLIMIT_FSIZE, (output_limit, output_limit))
+            memory = proof["resources"]["memory_bytes_upper_bound"]
+            resource.setrlimit(resource.RLIMIT_AS, (memory, memory))
+        try:
+            artifacts.mkdir(parents=True, exist_ok=False)
+            with stdout_path.open("xb") as out, stderr_path.open("xb") as err:
+                subprocess.run([sys.executable, "-B", str(runner), "--protocol", protocol_id, "--look", look_id],
+                    cwd=root, env=env, stdout=out, stderr=err, preexec_fn=child_limits,
+                    timeout=control["limits"]["job_wall_seconds"], check=True)
+            error = None
+        except Exception as exc:
+            error = type(exc).__name__
+        # A complete printed receipt remains a result even if the process exits
+        # with an error afterwards. Partial/unparseable bytes remain saved too.
+        try:
+            result = strict_json(stdout_path)
+            outcome(result, protocol, look)
+        except Exception as exc:
+            result = None
+            error = error or type(exc).__name__
+        import hashlib
+        artifact_receipt = {"stdout": str(stdout_path), "stderr": str(stderr_path)}
+        for name, path in (("stdout", stdout_path), ("stderr", stderr_path)):
+            artifact_receipt[name + "_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+        child_after = resource.getrusage(resource.RUSAGE_CHILDREN)
+        cost = {"wall_seconds": time.monotonic() - started,
+                "cpu_seconds": child_after.ru_utime + child_after.ru_stime - child_before.ru_utime - child_before.ru_stime}
+        proof_receipt = {"schema": 1, "look_id": look_id, "protocol_hash": protocol["hash"],
+            "data_fingerprint": look["data_fingerprint"], "started_event_hash": start_event["hash"],
+            "running_commit": claim_sha, "process_stopped": True, "error": error,
+            "result_digest": digest(result) if result else None, "artifacts": artifact_receipt, "cost": cost}
+        if artifacts.is_dir() and not (artifacts / "receipt.json").exists():
+            write_json(artifacts / "receipt.json", proof_receipt)
+        artifact_receipt["receipt"] = str(artifacts / "receipt.json")
+        with self.store.lock():
+            state = self.store.read()
+            self._record_receipt(state, protocol, look_id, result, error, artifact_receipt, cost)
+            self.store.save(state)
+            try:
+                remote_claim(state, claim_sha)
+            except Exception as exc:
+                # Durable remote RUNNING stays spent; preserve local receipt/artifact.
+                # A newer Owner control or another commit is never overwritten.
+                return {"look_id": look_id, "result": result, "error": error,
+                        "publication": "PENDING_RECONCILIATION", "reason": type(exc).__name__}
+        return {"look_id": look_id, "result": result, "error": error}
+
+    def _record_receipt(self, state, protocol, look_id, result, error, artifacts, cost):
+        job = state["jobs"]["execute:" + protocol["id"]]
+        summary = ({k: result[k] for k in ("kind", "lesson", "next_decision") if k in result}
+                   if result else None)
+        if summary:
+            summary["receipt_digest"] = digest(result)
+        if state["looks"][look_id]["status"] != "UNKNOWN_OUTCOME":
+            state["looks"][look_id]["status"] = "COMPLETED_SPENT" if result else "UNKNOWN_OUTCOME"
+        job.update(status="COMPLETED" if result else "UNKNOWN_OUTCOME", last_error=error,
+            updated_at=utc_now(), metadata={**job["metadata"], "result": summary,
+                "process_stopped": True, "artifacts": artifacts})
+        for meter in ("wall_seconds", "cpu_seconds"):
+            state["usage"][meter] += cost[meter]
+        # Full result is kept once in immutable evidence, plus exact raw bytes.
+        event(state, "EXECUTION_RECEIPT", {"look": look_id, "result": summary, "error": error, "cost": cost})
+        if result and result["kind"] != "SOFTWARE_CHECK":
+            family = state["families"][protocol["family"]]
+            family.update(next=result["next_decision"], latest_lesson=result["lesson"])
+            packet = {"id": look_id, "kind": "OUTCOME", "look_id": look_id,
+                "url": "git:" + BRANCH + "/" + protocol["runner"], "version": protocol["hash"],
+                "passage": "Exact pinned receipt, nine verdict fields and all expressions/cost paths",
+                "fact": result, "limit": result["uncertainty"]}
+            state["evidence"][look_id] = packet
+            event(state, "EVIDENCE_ADDED", {"id": look_id, "digest": digest(packet), "kind": "OUTCOME"})
+            state["decisions"]["result:" + look_id] = {"status": "OPEN", "family": protocol["family"],
+                "priority": family["priority"], "question": result["next_decision"],
+                "reason": "ECONOMIC_RESULT_REQUIRES_DECISION", "created_at": utc_now(),
+                "evidence": [look_id], "look_id": look_id}
+
+    def reconcile(self, protocol_id, receipt_directory, remote_snapshot, remote_claim):
+        """Attach saved bytes to the original charged look; never start a process."""
+        authority = remote_snapshot()
+        if authority["control"].get("paused") is True:
+            raise Refused("PAUSED before receipt access")
+        verify(authority["state"])
+        if authority["branch"] != BRANCH or not re.fullmatch("[0-9a-f]{40}", authority["sha"]):
+            raise Refused("Wrong reconciliation authority")
+        with self.store.lock():
+            state, control = self.store.read(), self.store.control()
+            budget_check(state, control)
+            if state != authority["state"] or control != authority["control"]:
+                raise Refused("Hydrate a fresh exact checkout before reconciling; preserve receipt separately")
+            protocol = state["protocols"][protocol_id]
+            look_id = "look:" + protocol_id
+            look = state["looks"][look_id]
+            if look["status"] not in ("RUNNING_SPENT", "UNKNOWN_OUTCOME", "COMPLETED_SPENT"):
+                raise Refused("No published execution: cannot invent a saved outcome")
+            root = Path(receipt_directory).resolve()
+            for name in ("receipt.json", "stdout.bin", "stderr.bin"):
+                path = root / name
+                if path.is_symlink() or not path.is_file() or path.stat().st_size > control["limits"]["metadata_bytes_per_tick"]:
+                    raise Refused("Missing/unbounded/linked saved receipt")
+            proof = strict_json(root / "receipt.json")
+            if (proof.get("schema") != 1 or proof.get("look_id") != look_id
+                    or proof.get("protocol_hash") != protocol["hash"]
+                    or proof.get("data_fingerprint") != look["data_fingerprint"]
+                    or proof.get("process_stopped") is not True
+                    or not any(e["hash"] == proof.get("started_event_hash") and e["kind"] == "EXECUTION_STARTED"
+                        and e["payload"]["look"] == look_id for e in state["events"])):
+                raise Refused("Saved receipt does not belong to this durably running original look")
+            import hashlib
+            artifacts = {"receipt": str(root / "receipt.json")}
+            for name in ("stdout", "stderr"):
+                path = root / (name + ".bin")
+                sha = hashlib.sha256(path.read_bytes()).hexdigest()
+                if sha != proof["artifacts"].get(name + "_sha256"):
+                    raise Refused("Saved raw bytes changed; preserve contradiction, do not replay")
+                artifacts.update({name: str(path), name + "_sha256": sha})
+            if proof.get("result_digest"):
+                result = strict_json(root / "stdout.bin")
+                outcome(result, protocol, look)
+                if digest(result) != proof["result_digest"]:
+                    raise Refused("Saved result identity changed")
+            else:
+                result = None
+            job = state["jobs"]["execute:" + protocol_id]
+            existing = job.get("metadata", {}).get("artifacts", {})
+            if existing:
+                if existing.get("stdout_sha256") != artifacts["stdout_sha256"]:
+                    raise Refused("A different receipt is already saved; never replace it")
+                return {"look_id": look_id, "publication": "ALREADY_RECORDED", "executed": False}
+            cost = proof.get("cost", {})
+            if any(type(cost.get(k)) not in (int, float) or not 0 <= cost[k] < float("inf") for k in ("wall_seconds", "cpu_seconds")):
+                raise Refused("Missing observable original execution cost")
+            target = self.store.root / "receipts" / digest(look_id)
+            target.mkdir(parents=True, exist_ok=True)
+            if target.is_symlink() or self.store.root not in target.resolve().parents:
+                raise Refused("Reconciliation target escaped state directory")
+            for name in ("stdout.bin", "stderr.bin", "receipt.json", "original-stdout.bin", "original-result.json"):
+                source, destination = root / name, target / name
+                if source.is_file():
+                    if source.is_symlink() or source.stat().st_size > control["limits"]["metadata_bytes_per_tick"]:
+                        raise Refused("Unbounded/linked receipt artifact")
+                    data = source.read_bytes()
+                    if destination.exists():
+                        if destination.read_bytes() != data:
+                            raise Refused("Different retained artifact exists; never overwrite")
+                    else:
+                        with destination.open("xb") as stream:
+                            stream.write(data)
+            for name in ("stdout", "stderr", "receipt"):
+                artifacts[name] = str(target / (name + ".bin" if name != "receipt" else "receipt.json"))
+            self._record_receipt(state, protocol, look_id, result, proof.get("error"), artifacts, cost)
+            event(state, "RECEIPT_RECONCILED_NO_EXECUTION", {"look": look_id, "original_running_commit": proof["running_commit"]})
+            self.store.save(state)
+            remote_claim(state, authority["sha"])
+            return {"look_id": look_id, "publication": "RECONCILED", "executed": False}
+
+    def next_decision(self):
+        state, control = self.snapshot()
+        if control["paused"]:
+            return None
+        due = [(k, v) for k, v in state["decisions"].items() if question_due(v)]
+        return min(due, key=lambda x: (x[1]["priority"], x[1]["created_at"], x[0]), default=None)

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "forward_capture_state.json",
+  "title": "Forward Recorder Durable State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","mode","run_id","next_sequence","last_completed_utc","last_by_source"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "mode": {"enum": ["IDLE", "RUN"]},
+    "run_id": {"type": "string"},
+    "next_sequence": {"type": "integer", "minimum": 1},
+    "last_completed_utc": {"type": "string"},
+    "last_by_source": {"type": "object", "additionalProperties": {"type": "object"}}
+  }
+}

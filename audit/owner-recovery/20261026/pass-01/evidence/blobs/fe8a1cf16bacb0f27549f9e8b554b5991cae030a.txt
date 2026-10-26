@@ -1,0 +1,48 @@
+# Vertical CP033 — Design-only adapter qualification and immutable registry admission
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=7c975dd728c199638dbc42010206258c577d5ec4
+
+Starting depth: D1 for the existing design-only spec validator/registry. This
+work changes only source_adapters_v1, not live adapters or activation services.
+North Star basis: preserve immutable scientific identity and provenance, closed
+Owner authority, reproducible execution and pre-outcome separation.
+
+Enumerated repair items:
+
+1. Blank/sentinel/non-string required identity and policy text could qualify as a PASS design.
+2. Registry admission trusted supplied hashes, status, canonical bodies and activation/network/outcome flags instead of reproducing its own validator result.
+3. Competing designs could both report successful registration under the same immutable adapter ID.
+
+Narrow repair: Require qualified textual identities and declarations. Register a detached
+input only when it exactly matches validate_adapter_spec(canonical_spec); retain
+genuine blocked designs as blocked, inactive inventory. Instance RLocks serialize
+admission, exact replay and snapshot publication. register_many remains sequential
+and returns None as before.
+
+Adversarial cases: Exercise seven text fields, forged status/hash/body/authority flags, conflicting
+writers, exact replay and detached returns. Inject invalid second batch items and
+iterator failure; retry the valid prefix without duplicate entries. Genuine
+blocked design controls keep all activation/authorization counts zero.
+
+Tests: **32 new cases**; before **25 failed / 7 passed**; focused after **49 passed**.
+The exact failing and focused transcripts are preserved as
+`research/vertical_depth/20261021/CP033_{before,after}.txt`.
+
+Attained depth: D2 for required spec text; D3 for local immutable design qualification/registry
+admission and deterministic competing writers. These are two scoped units, not
+whole-adapter or acquisition-system qualification.
+
+Remaining unproven: No network activation, issuer authentication, actual permissions discovery,
+source-parser semantic truth, persistent/distributed registry, atomic whole batch
+or arbitrary Python object schema is proved. No missing Multi-Source family is
+built. Valid fresh design hashes remain unchanged.
+
+Horizontal findings: none. Longitudinal findings: none new in these internal
+admission/transition paths. Existing LONGITUDINAL_001 remains separately owned
+and unrepaired. No future Wave-2 modules, activation or authority grants added.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

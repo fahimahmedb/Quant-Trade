@@ -1,0 +1,40 @@
+{
+  "CP038": {
+    "after_module_sha256": "f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7",
+    "after_source_sha": "d0ba3db096fda73b57720437909f3b127e966d29",
+    "before_module_sha256": "1d608387867103c09c8daebecd7735fbaf60ce10baefe6b895a120a10143370f",
+    "before_source_sha": "bd86b47eb71b96ec3ed4b5d4a2299b9079cc4bcf",
+    "module": "research/research_os/expansion/experiment_runner.py",
+    "new_fixture_retained_with_previous_module": true,
+    "test": "tests/test_vertical_frozen_replay_depth.py",
+    "test_sha256": "05a7fbd3cf16c86b4a293f15bda7d06ecc9a27bd87ba320a2d420b45473a6408"
+  },
+  "CP039": {
+    "module": "research/research_os/expansion/persistent_state.py",
+    "module_sha256": "63e21bda2d356130d400b3b8d314470c424e3fba372ca8dbeefa2d0b89d8b9e1",
+    "product_modified": false,
+    "source_sha": "e7e73e79989e8125b0801ef961bd06b4918a3782",
+    "test": "tests/test_vertical_immutable_process_recovery.py",
+    "test_sha256": "48bdbc9c01c0e2cf4022e3ea61a5b7aa404279eaeb77658d4d7408a72b73d817"
+  },
+  "CP040": {
+    "after_module_sha256": "2ce842ac8a8c9b389395b8d07dba27b6f10ec922326f9db93302eff9c4a8f3dc",
+    "after_source_sha": "628d78150800b58286882b170bf5c497069daa40",
+    "before_module_sha256": "70e577b7e19ea7274cab6e3672712883220d7dca346966d462746fedcb7bd62c",
+    "before_source_sha": "e7e73e79989e8125b0801ef961bd06b4918a3782",
+    "module": "research/research_os/expansion/v2_core.py",
+    "new_fixture_retained_with_previous_module": true,
+    "test": "tests/test_vertical_export_input_isolation.py",
+    "test_sha256": "944fa2a110f35ff486ca9c0b30cccf224c9dd035fe89343ce73b7c4f97408d76"
+  },
+  "CP041": {
+    "after_module_sha256": "c5b537105728f8ff7def3ff1e82da58c765149866874a73eba339aa3626903c1",
+    "after_source_sha": "1cc7aba361d33d58ab5c9229fda59ba2303a59ab",
+    "before_module_sha256": "2ce842ac8a8c9b389395b8d07dba27b6f10ec922326f9db93302eff9c4a8f3dc",
+    "before_source_sha": "628d78150800b58286882b170bf5c497069daa40",
+    "module": "research/research_os/expansion/v2_core.py",
+    "new_fixture_retained_with_previous_module": true,
+    "test": "tests/test_vertical_core_admission_snapshot.py",
+    "test_sha256": "b781d1fe35d0ba4e8ad3290d1178cfad998f52d508305475587c32c193f99de2"
+  }
+}

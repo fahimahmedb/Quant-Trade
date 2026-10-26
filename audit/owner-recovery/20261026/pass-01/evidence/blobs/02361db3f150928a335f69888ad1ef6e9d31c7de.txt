@@ -1,0 +1,241 @@
+{
+  "recorded_at": "2026-10-13T23:23:26.815874+00:00",
+  "head_observed": "0735dd7e546c648bea889d21341553f763ef832d",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_scope": "One bounded corporate-rights admission action, not a return-based rejection or an economic test. The reviewed 8-K is ineligible under A-E; the separate 8-A12B body and overall first-event selection remain unresolved.",
+  "completed_question": {
+    "status": "COMPLETED",
+    "scope": "Both exact SEC clocks and the 8-K operative rights terms",
+    "decision": "8-K CURRENT_DOCUMENT_NOT_ELIGIBLE; 8-A12B BODY_UNREAD"
+  },
+  "RESULT": "XPONENTIAL_CONDITIONAL_STOCKHOLDER_RIGHTS_NOT_A_FIXED_A_E_EVENT; NO_EVENT_ADMITTED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Full 8-K summary read, incorporated exhibits and separate 8-A12B body not read. No assumption about their complete contents. Earlier partial/unread candidates and chronological coverage remain unresolved.",
+  "POWER_LIMITATION": "Two SEC indices and one complete legal 8-K, three requests. Zero economic cases, price observations, NAV observations or payoff calculations.",
+  "ECONOMIC_SIGNIFICANCE": "A record date for defensive preferred-stock purchase rights is not a fixed cash tender, common-stock reverse split or SPAC redemption. Conditional anti-dilution and hypothetical liquidation preferences do not create a current guaranteed cash entitlement for an ordinary share buyer. There is no basis here to open a price look.",
+  "FAILED_CRITERIA": [
+    {
+      "accession": "0001193125-26-419697",
+      "failure": "This is a stockholder Rights Agreement with exercise conditional on Distribution Time/acquiring-person events and redemption limits. No SC TO-I commencement; no fixed common-stock 1:R split; no qualifying SPAC cash-redemption deadline or ETF termination."
+    },
+    {
+      "accession": "0001193125-26-419698",
+      "failure": "Exact index obtained, but body not yet read; no admission from its form name or relationship to the earlier 8-K."
+    }
+  ],
+  "LESSON": "Read what a right is exercisable for and when. Fractional-unit cash, liquidation and redemption vocabulary inside a contingent anti-takeover instrument is not evidence of the simple cash/share event targeted by the frozen protocols.",
+  "FAMILY_STATUS": "A/B-v2/C-v2/D/E first-event admission unresolved; no economic family activated, rejected or promoted. Existing closed and parked dependencies unchanged.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "Xponential 8-K accepted 07:11:32 Eastern is reviewed: shareholder protection rights with conditional exercise and anti-dilution/fractional clauses, not an A-E fixed entitlement event. The 8-A12B accepted 07:15:51 Eastern index is complete; its separate body remains unread. Earlier partial/unread possibilities and bounded feed coverage remain unresolved. No first eligible event established.",
+    "question": "Finish the separate Xponential 8-A12B legal registration at https://www.sec.gov/Archives/edgar/data/1802156/000119312526419698/d162834d8a12b.htm, reusing its saved exact accepted clock and the completed 8-K review. Determine whether it merely registers the same conditional rights or supplies a genuinely different eligible event; no automatic equivalence. Read operative terms only, no selected prices/NAV/distribution/payoff payloads. If no admissible event is established, select one causally distinct L0 or non-outcome L1 preparation from accessible primary data; retain all unresolved admission limits and previous closures, no price look or historical issuer substitution.",
+    "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+    "reuse_reference": "qualifications/prospective-admission-xponential-conditional-rights-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN"
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1802156/000119312526419697/0001193125-26-419697-index.htm",
+      "observed_at": "2026-10-13T23:21:22.989658+00:00",
+      "scope": "SEC filing index metadata only; no document/NAV/market-price/performance/distribution payload",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 11207,
+      "sha256": "d136bc613d3539bac12f07ab2bfc743c487b818ad82e23771e90152f768e3af5",
+      "complete": true,
+      "document_links": [
+        "/ix?doc=/Archives/edgar/data/1802156/000119312526419697/d135071d8k.htm",
+        "/Archives/edgar/data/1802156/000119312526419697/d135071dex31.htm",
+        "/Archives/edgar/data/1802156/000119312526419697/d135071dex41.htm",
+        "/Archives/edgar/data/1802156/000119312526419697/d135071dex991.htm",
+        "/Archives/edgar/data/1802156/000119312526419697/g135071g1012084214668.jpg",
+        "/Archives/edgar/data/1802156/000119312526419697/0001193125-26-419697.txt",
+        "/Archives/edgar/data/1802156/000119312526419697/xpof-20261012.xsd",
+        "/Archives/edgar/data/1802156/000119312526419697/xpof-20261012_lab.xml",
+        "/Archives/edgar/data/1802156/000119312526419697/xpof-20261012_pre.xml",
+        "/Archives/edgar/data/1802156/000119312526419697/d135071d8k_htm.xml"
+      ],
+      "wall_seconds": 0.29523993500333745,
+      "metadata_excerpt": " Latest Filings Filings search tools Filing Detail SEC Home » Company Search » Current Page Form 8-K - Current report: SEC Accession No. 0001193125-26-419697 Filing Date 2026-10-13 Accepted 2026-10-13 07:11:32 Documents 15 Period of Report 2026-10-12 Items Item 1.01: Entry into a Material Definitive Agreement Item 3.03: Material Modifications to Rights of Security Holders Item 5.03: Amendments to Articles of Incorporation or Bylaws; Change in Fiscal Year Item 7.01: Regulation FD Disclosure Item 9.01: Financial Statements and Exhibits Interactive Data Document Format Files Seq Description Document Type Size 1 8-K d135071d8k.htm iXBRL 8-K 56367 2 EX-3.1 d135071dex31.htm EX-3.1 27917 3 EX-4.1 d135071dex41.htm EX-4.1 379503 4 EX-99.1 d135071dex991.htm EX-99.1 10624 8 GRAPHIC g135071g1012084214668.jpg GRAPHIC 6427 Complete submission text file 0001193125-26-419697.txt 706826 Data Files Seq Description Document Type Size 5 XBRL TAXONOMY EXTENSION SCHEMA xpof-20261012.xsd EX-101.SCH 3187 6 XBRL TAXONOMY EXTENSION LABEL LINKBASE xpof-20261012_lab.xml EX-101.LAB 18738 7 XBRL TAXONOMY EXTENSION PRESENTATION LINKBASE xpof-20261012_pre.xml EX-101.PRE 11712 18 EXTRACTED XBRL INSTANCE DOCUMENT d135071d8k_htm.xml XML 3858 Mailing Address 17877 VON KARMAN AVE SUITE 100 IRVINE CA 92614 Business Address 17877 VON KARMAN AVE SUITE 100 IRVINE CA 92614 949.346.3000 Xponential Fitness, Inc. (Filer) CIK : 0001802156 (see all company filings) EIN. : 844395129 | State of Incorp.: DE | Fiscal Year End: 1231 Type: 8-K | Act: 34 | File No.: 001-40638 | Film No.: 261454582 SIC : 7990 Services-Miscellaneous Amusement & Recreation (CF Office: 07 Trade & Services)"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1802156/000119312526419697/d135071d8k.htm",
+      "observed_at": "2026-10-13T23:21:36.070440+00:00",
+      "scope": "8-K operative corporate terms, vehicle/event qualification only; not a selected numeric market/NAV/distribution endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 56485,
+      "sha256": "c7823f46f45f95aae8803bb20a36899f2c9fdc71b11918a0fe31a8db73e54b35",
+      "complete": true,
+      "document_header": "8-K false 0001802156 --12-31 0001802156 2026-10-12 2026-10-12 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): October 12, 2026 XPONENTIAL FITNESS, INC. (Exact name of registrant as specified in its charter) Delaware 001-40638 84-4395129 (State or other jurisdiction of incorporatio",
+      "legal_excerpts": [
+        "The Rights are not exercisable until after the Distribution Time. The Rights will expire at the close of business on October 11, 2027 (the “ Final Expiration Date ”), unless earlier redeemed or exchanged by the Company as described below.",
+        "a person or group of affiliated or associated persons has become an “ Acquiring Person ”, which is defined as a person (or group of affiliated or associated persons) who, together with its affiliates and associates, is the beneficial owner of 19.9% or more of the shares of Common Stock then outstanding, subject to certain exceptions described below",
+        "No fractional Unit will be required to be issued upon exercise of the Rights and, in lieu thereof, a payment in cash equal to the fraction of the then-current value of a Unit may be made.",
+        "No Right may be exercised until the Company’s right of redemption has expired."
+      ],
+      "keyword_counts": {
+        "Rights Agreement": 26,
+        "Rights Plan": 0,
+        "exercise": 19,
+        "reverse stock split": 0,
+        "fractional": 2,
+        "Acquiring Person": 18,
+        "Distribution Date": 0,
+        "8-A": 0,
+        "liquidat": 6
+      },
+      "wall_seconds": 0.44205434499599505
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1802156/000119312526419698/0001193125-26-419698-index.htm",
+      "observed_at": "2026-10-13T23:21:58.224729+00:00",
+      "scope": "SEC filing index metadata only; no document/NAV/market-price/performance/distribution payload",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 7552,
+      "sha256": "14cd02fb843d0b3fed83ec37ff639be50911c99d5e1ff030644c12b2197ba91f",
+      "complete": true,
+      "document_links": [
+        "/Archives/edgar/data/1802156/000119312526419698/d162834d8a12b.htm",
+        "/Archives/edgar/data/1802156/000119312526419698/d162834dex31.htm",
+        "/Archives/edgar/data/1802156/000119312526419698/d162834dex41.htm",
+        "/Archives/edgar/data/1802156/000119312526419698/0001193125-26-419698.txt"
+      ],
+      "wall_seconds": 0.33835531599470414,
+      "metadata_excerpt": " Latest Filings Filings search tools Filing Detail SEC Home » Company Search » Current Page Form 8-A12B - Registration of securities [Section 12(b)]: SEC Accession No. 0001193125-26-419698 Filing Date 2026-10-13 Accepted 2026-10-13 07:15:51 Documents 3 Document Format Files Seq Description Document Type Size 1 8-A12B d162834d8a12b.htm 8-A12B 18210 2 EX-3.1 d162834dex31.htm EX-3.1 27924 3 EX-4.1 d162834dex41.htm EX-4.1 379575 Complete submission text file 0001193125-26-419698.txt 426757 Mailing Address 17877 VON KARMAN AVE SUITE 100 IRVINE CA 92614 Business Address 17877 VON KARMAN AVE SUITE 100 IRVINE CA 92614 949.346.3000 Xponential Fitness, Inc. (Filer) CIK : 0001802156 (see all company filings) EIN. : 844395129 | State of Incorp.: DE | Fiscal Year End: 1231 Type: 8-A12B | Act: 34 | File No.: 001-40638 | Film No.: 261454586 SIC : 7990 Services-Miscellaneous Amusement & Recreation (CF Office: 07 Trade & Services)"
+    }
+  ],
+  "ordering": {
+    "registrant_cik": "1802156",
+    "events": [
+      {
+        "accession": "0001193125-26-419697",
+        "form": "8-K",
+        "accepted_eastern": "2026-10-13 07:11:32",
+        "accepted_utc": "2026-10-13T11:11:32Z",
+        "report_period": "2026-10-12",
+        "document_qualification": "INELIGIBLE_CURRENT_8K"
+      },
+      {
+        "accession": "0001193125-26-419698",
+        "form": "8-A12B",
+        "accepted_eastern": "2026-10-13 07:15:51",
+        "accepted_utc": "2026-10-13T11:15:51Z",
+        "document_qualification": "BODY_UNREAD"
+      }
+    ],
+    "selected_event": null,
+    "claim": null
+  },
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json",
+    "sha256": "d574ee62d9aa354db94a7f7aba826bf6638cbd79cc647074e809312cda36bbca",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "original_metadata": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "latest_A_feed_reused": "2026-10-13T17:26Z snapshot; not refreshed in this batch and not a current absence proof"
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_statuses_preserved": {
+      "look:smard-2025-fixed-hours-proxy-v1": "UNKNOWN_OUTCOME",
+      "look:smard-2025-solar-noon-evening-proxy-v1": "COMPLETED_SPENT"
+    },
+    "legacy_unknown_not_resolved_or_replayed": true,
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "PRIMARY_SEC_METADATA_AND_CONDITIONAL_CORPORATE_RIGHTS",
+    "scope": "Xponential two indices and full 8-K rights summary read, including contractual exercise/par/dividend/liquidation-preference terms and conditional valuation formulas. Those are documentary exposures, not selected market quotes, NAV or realized liquidation/payoff payloads. No payoff calculated. Issuer/document history remains exposed; raw documents private, bounded legal excerpts published. The separate 8-A12B and exhibits remain unread.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "received_body_bytes": 75244,
+    "request_wall_seconds_sum": 1.0756495959940366,
+    "partial_documents": 0,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

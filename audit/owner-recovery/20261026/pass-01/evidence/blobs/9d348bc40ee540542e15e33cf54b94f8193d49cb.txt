@@ -1,0 +1,40 @@
+name: Research OS final-shape registry CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/architecture/FINAL_SHAPE_MODULE_REGISTRY.json'
+      - 'research/research_os/contracts/expansion-auxiliary.schema.json'
+      - 'research/research_os/tests/test_final_shape_registry.py'
+      - '.github/workflows/research-os-final-shape-registry-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-shape-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate final-shape registry
+        run: python -m unittest research.research_os.tests.test_final_shape_registry -v
+      - name: Assert registry authority boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base = Path('research/research_os')
+          registry = json.loads((base / 'architecture' / 'FINAL_SHAPE_MODULE_REGISTRY.json').read_text())
+          schema = json.loads((base / 'contracts' / 'expansion-auxiliary.schema.json').read_text())
+          assert registry['design_rule'] == 'FINAL_INTERFACES_EARLY_SOPHISTICATION_LATER'
+          assert registry['canonical_shared_contracts']['status'] == 'STABLE_DO_NOT_REDEFINE'
+          assert all(v is False for v in registry['global_authority'].values())
+          assert set(schema['$defs']) == {'ImplementabilityAssessment','ExperimentEnvelope','ForwardRegistration','DecayAssessment'}
+          print('FINAL_SHAPE_REGISTRY=PASS')
+          PY

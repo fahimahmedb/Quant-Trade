@@ -1,0 +1,161 @@
+{
+  "recorded_at": "2026-10-13T03:28:34.664293+00:00",
+  "publication_parent": "48669fda1faf7e05dc6b2e2377fa01e0b6513184",
+  "family": "hurricane-forecast-insurance-repricing",
+  "stage": "L0_DOCUMENTARY_SOURCE_QUALIFICATION",
+  "decision": "PARK_DATA",
+  "decision_scope": "Retrospective NHC-advisory insurance-repricing expression; source dependency only, not an economic rejection",
+  "RESULT": "PARK_DATA_HISTORICAL_ROUTE; NWS prospective-source documentation acquired as a separate useful fact",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Original NHC advisory clocks/history inaccessible in two bounded requests; no actual NWS API record tested. A document timestamp is not an authenticated first-public market-information clock. Insurer net catastrophe exposure, authorised price acquisition and transaction costs remain unqualified.",
+  "POWER_LIMITATION": "Zero storms selected, zero insurer observations/returns/losses and zero economic tests. No inference about pricing efficiency.",
+  "ECONOMIC_SIGNIFICANCE": "A usable public weather information route removes one documentary rights uncertainty; it does not show an investment edge. Public forecasting speed/competition and catastrophe risk could absorb any expected premium.",
+  "FAILED_CRITERIA": [
+    "NHC product and archive pages returned HTTP403; no archived issued-at protocol obtained",
+    "Documented NWS alerts retention is seven days, not the requested historical archive",
+    "No insurer exposure mapping or authorised equity-price route established within the three-request bound"
+  ],
+  "LESSON": "Do not substitute hindsight best-track landfalls or a rolling seven-day alert service for an unobserved historical release archive. Free weather information and insurer equity returns are different rights, clock and exposure problems.",
+  "FAMILY_STATUS": "Historical route PARK_DATA; prospective feasibility remains untested and requires a separate bounded question/declaration, not implicit L1 authority",
+  "NEXT_DECISION": {
+    "kind": "L0_MECHANISM",
+    "family": "hurricane-forecast-insurance-repricing",
+    "status": "OPEN",
+    "economic_access_authorized": false,
+    "question": "Prospective feasibility only: reuse qualified NWS API documentation, then decide whether publicly dated insurer coverage/reinsurance descriptions establish a signed exposure class BEFORE any alert, and whether a distinct free authorized equity-price route is documented. Read product/coverage/access documentation only, not insurer losses, historical alerts, selected prices or payout outcomes. If either dependency cannot be qualified in this bounded follow-up, PARK this family without another source cycle. No collector or L1 until a new frozen declaration.",
+    "parent_decision": "qualifications/hurricane-forecast-insurance-source-l0-2026-10-13.json",
+    "new_fact": "NWS API primary documentation explicitly permits free open-data use and documents an alerts endpoint, but retention is seven days, so only separately declared prospective capture is potentially feasible. API payload/access/clock not yet tested.",
+    "bounds": {
+      "max_agent_minutes": 15,
+      "max_primary_document_requests": 3,
+      "retries": 0,
+      "economic_payloads": 0
+    },
+    "do_not_repeat": [
+      "NHC aboutnhcprod.shtml 403",
+      "NHC archive index 403",
+      "Yahoo failed terms requests",
+      "CME/DataMine retrieval",
+      "cached NWS API documentation absent version delta"
+    ],
+    "prospective_priority": {
+      "not_before": "2026-10-13T10:00:00Z",
+      "protocols": "A/B-v2/C-v2/D/E",
+      "ordering": "earliest qualifying EDGAR accepted timestamp across A-E, then smaller CIK, original exclusions/ties unchanged"
+    }
+  },
+  "mechanism": {
+    "hypothesis": "Changes in forecast physical risk may require inventory reallocation in exposed insurer equities, potentially leaving brief risk-bearing or attention-related compensation.",
+    "who_pays": "Participants demanding immediacy after changed catastrophe risk; counterparties and liquidity suppliers bear news and tail risk. This is a hypothesis, not identified realized transfers.",
+    "why_persist": "Geographic exposure/reinsurance complexity and limited capital may slow some risk reassignment; public forecasts, specialist competition and rational risk compensation are direct alternatives.",
+    "causal_contradictions": [
+      "Gross geographic business exposure does not establish shareholder net loss sensitivity after reinsurance, reserves and future premium repricing.",
+      "Local WFO warnings/forecasts differ from NHC cyclone advisory products; they are not interchangeable timestamps or event definitions.",
+      "EOD equity prices would mix multiple public updates, market factors and insurer-specific news."
+    ]
+  },
+  "primary_document_receipts": [
+    {
+      "url": "https://www.nhc.noaa.gov/aboutnhcprod.shtml",
+      "observed_at": "2026-10-13T03:24:50.682445+00:00",
+      "error": "HTTP Error 403: Forbidden",
+      "wall_seconds": 0.5276224990011542,
+      "status": 403,
+      "error_body_read": false,
+      "source_version": null,
+      "source_sha256": null
+    },
+    {
+      "url": "https://www.nhc.noaa.gov/archive/",
+      "observed_at": "2026-10-13T03:24:51.210069+00:00",
+      "error": "HTTP Error 403: Forbidden",
+      "wall_seconds": 0.4188087530019402,
+      "status": 403,
+      "error_body_read": false,
+      "source_version": null,
+      "source_sha256": null
+    },
+    {
+      "url": "https://www.weather.gov/documentation/services-web-api",
+      "purpose": "Distinct NWS public API documentation; test whether it documents an admissible alternative forecast archive, not a retry of NHC pages. No API payload requested.",
+      "observed_at": "2026-10-13T03:25:33.727735+00:00",
+      "status": 200,
+      "bytes": 48970,
+      "sha256": "687c534041623c0a488718dcd3613eda3935b840939cb57f8690a91058a6fcf4",
+      "last_modified": null,
+      "final_url": "https://www.weather.gov/documentation/services-web-api",
+      "wall_seconds": 0.5673387660026492
+    }
+  ],
+  "qualified_documentary_facts": {
+    "url": "https://www.weather.gov/documentation/services-web-api",
+    "sha256": "687c534041623c0a488718dcd3613eda3935b840939cb57f8690a91058a6fcf4",
+    "version_basis": "Response acquired at the recorded UTC time and hash. Updates subsection says Updated 3/24/2026; not asserted to date the entire page or original publication.",
+    "passages_paraphrased": [
+      {
+        "section": "Pricing",
+        "fact": "The API documentation describes its information as open data, free for any purpose, with reasonable undisclosed rate limits."
+      },
+      {
+        "section": "Authentication",
+        "fact": "A identifying User-Agent is required; the page mentions a possible future API-key change, not a present key requirement."
+      },
+      {
+        "section": "How do I get the forecast?",
+        "fact": "WFO forecast products expose forecasts over the next seven days; this is not evidence of an as-issued historical NHC archive."
+      },
+      {
+        "section": "How do I get alerts?",
+        "fact": "/alerts contains the past seven days; the page refers users seeking an official CAP archive to NCEI. No NCEI access, quote or contact made."
+      }
+    ],
+    "qualified": "Documented free-use permission and described endpoints only",
+    "not_qualified": [
+      "Actual API availability/schema/ingestion clock",
+      "Complete hurricane advisory history",
+      "Insurer mapping or market-data rights"
+    ],
+    "no_substitution": "Do not silently replace a historical NHC event with active NWS alerts."
+  },
+  "prospective_check": {
+    "observed_at": "2026-10-13T03:28:34.664293+00:00",
+    "basis": "Still before October 13 10:00Z EDGAR opening; reuse official holiday/calendar receipt instead of duplicate feeds.",
+    "receipt": "qualifications/prospective-feed-check-2026-10-12T2106Z.json",
+    "receipt_sha256": "cad7e9d735507ab474d720c8b6b2bb630dbe566d47e2671fb4c15aa08baed96d",
+    "valid_protocol_hashes": {
+      "disc-us-issuer-oddlot-priority-prospective-l1-v1.md": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+      "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+      "disc-us-reverse-split-round-up-prospective-l1-v2.md": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+      "disc-us-spac-redemption-floor-prospective-l1-v1.md": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+      "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7"
+    },
+    "new_sec_requests": 0,
+    "event_selected": null,
+    "claim_created": false
+  },
+  "exposure": {
+    "type": "IDEA_AND_PUBLIC_DOCUMENTATION",
+    "scope": "Generic NWS product/API documentation, no historical storm values, selected issuers, prices, insurance losses or investment results",
+    "economic_look": false,
+    "new_variants_executed": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_document_requests": 3,
+    "successful_document_payload_bytes": 48970,
+    "error_bodies_read": 0,
+    "origin_total_network_bytes": null,
+    "request_wall_seconds_sum": 1.5137700180057436,
+    "paid_usd": 0,
+    "tokens": null,
+    "global_bill": null,
+    "new_market_requests": 0,
+    "weather_api_payload_requests": 0,
+    "economic_executions": 0,
+    "architecture_changes": 0
+  },
+  "stop_rule": "All three allowed requests consumed; no retry or alternate fetch of the blocked NHC URLs. New research requires a distinct fact/question, not permission inferred from HTTP200.",
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

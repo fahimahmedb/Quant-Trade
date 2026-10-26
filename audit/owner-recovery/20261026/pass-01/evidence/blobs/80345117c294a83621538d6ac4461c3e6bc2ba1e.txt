@@ -1,0 +1,57 @@
+wk,film,family,lane,value,lo,hi,flag,source,post_id,section_or_title,strictness,quote,note
+2025-10-17,Black Phone 2,OPEN,A,,,,,,,,,,"PREVIEWS_ONLY; lane A Variety STRICT 1236555520 gives only $2.6M previews/budget, no 3-day figure"
+2025-10-17,Black Phone 2,OPEN,B,23,23,23,,D,1236590286,FRIDAY MIDDAY UPDATE,LABEL,"Black Phone 2 , which is shaping up for a $23 million start",Smile 2 $23M comp ignored
+2025-10-17,Black Phone 2,OPEN,C,24.4,24.4,24.4,,V,1236555897,Box Office: 'Black Phone 2' Grabs $10.7 Million Opening Day,STRICT,projecting a three-day total of $24.4 million,no Deadline lane C section
+2025-10-17,Black Phone 2,OPEN,D,26.5,26.5,26.5,,D,1236590286,SUNDAY AM,LABEL,"Black Phone 2 (Uni) 3,411 theaters, Fri $11M, Sat $9.6M $5.8M 3-day $26.5M /Wk 1","prose $26.5M agrees; V:27.3 REVISABLE (post-anchor update, 1236556444); '3-day of $24.4M' line is older text"
+2025-10-17,Good Fortune,OPEN,A,7,6,8,RANGE,V,1236555520,Box Office: 'The Black Phone 2' Makes $2.6 Million in Previews,STRICT,is expected to open with $6 million to $8 million,no Deadline lane A section
+2025-10-17,Good Fortune,OPEN,B,6,6,6,,D,1236590286,FRIDAY MIDDAY UPDATE,LABEL,with $2.5M today and bad fortune at $6M,"$2.5M is daily, ignored"
+2025-10-17,Good Fortune,OPEN,C,5.9,5.9,5.9,,V,1236555897,Box Office: 'Black Phone 2' Grabs $10.7 Million Opening Day,STRICT,"forecasting an opening of $5.9 million from 2,985 locations",no Deadline lane C section
+2025-10-17,Good Fortune,OPEN,D,6.2,6.2,6.2,,D,1236590286,SUNDAY AM,LABEL,"Good Fortune (LG) 2,990 theaters, Fri $2.4M, Sat $2.2M Sun $1.55M 3-day $6.2M /Wk 1","prose $6.25M; embedded earlier chart '3-day $5.7M-$6.1M' (Fri only, earlier-day) ignored; V:6.2 REVISABLE"
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,OPEN,A,,,,,,,,,,PREVIEWS_ONLY; Deadline FRIDAY AM gives $3.4M previews only
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,OPEN,B,14,14,,PLUS,D,1236596417,FRIDAY PM,LABEL,what's shaping up to be a $14 million-plus weekend,$8M today is daily
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,OPEN,C,16,15,17,RANGE,D,1236596417,SATURDAY AM,LABEL,"Chainsaw Man (Sony) 3,003 theaters, Fri $8.5M, 3-day $15M-$17M/Wk 1",chart preferred; prose says $15.5M-$17M (mid 16.25); Variety STRICT gives no 3-day figure
+2025-10-24,Chainsaw Man - The Movie: Reze Arc,OPEN,D,17.2,17.2,17.2,,D,1236596417,SUNDAY AM,LABEL,"Chainsaw Man (Sony) 3,003 theaters, Fri $8.5M, Sat $5.2M Sun $3.5M 3-day $17.2M /Wk 1",V:18 REVISABLE (1236561362); V:17.2 STRICT (1236561522)
+2025-10-24,Regretting You,OPEN,A,10,9,11,RANGE,D,1236596417,FRIDAY AM,LABEL,Regretting You was forecasted at $9M-$11M this weekend,pre-release forecast restated in FRIDAY AM section
+2025-10-24,Regretting You,OPEN,B,11.4,10.8,12,RANGE,D,1236596417,FRIDAY PM,LABEL,"the second weekend of Universal/Blumhouse's Black Phone 2 (3,460 theaters) each looking at $10.8M-$12M","shared range stated for three films (Springsteen, Regretting You, Black Phone 2 wk2)"
+2025-10-24,Regretting You,OPEN,C,13,13,13,,D,1236596417,SATURDAY AM,LABEL,"Regretting You (Par) 3,393 theaters, Fri $5.2M 3-day $13M/Wk 1",prose $13M agrees
+2025-10-24,Regretting You,OPEN,D,12.85,12.85,12.85,,D,1236596417,SUNDAY AM,LABEL,"Regretting You (Par) 3,393 theaters, Fri $5.2M Sat $4.6M Sun $2.97M 3-day $12.85M /Wk 1",prose $12.8M; V:13.68 REVISABLE (1236561362)
+2025-10-24,Springsteen: Deliver Me from Nowhere,OPEN,A,,,,,,,,,,PREVIEWS_ONLY; Deadline FRIDAY AM gives $850K previews only
+2025-10-24,Springsteen: Deliver Me from Nowhere,OPEN,B,11.4,10.8,12,RANGE,D,1236596417,FRIDAY PM,LABEL,"Second is a three-way race between 20th Century Studios' Springsteen: Deliver Me From Nowhere (3,460 theaters)",shared range stated for three films
+2025-10-24,Springsteen: Deliver Me from Nowhere,OPEN,C,9.5,9,10,RANGE,D,1236596417,SATURDAY AM,LABEL,"Springsteen…(20th) 3,460 theaters, Fri $3.5M 3-day $9M-$10M/Wk 1",prose $9M-$10M (many are seeing $9M)
+2025-10-24,Springsteen: Deliver Me from Nowhere,OPEN,D,9.1,9.1,9.1,,D,1236596417,SUNDAY AM,LABEL,"Springsteen… (20th) 3,460 theaters, Fri $3.6M, Sat $3.1M Sun  $2.4M 3-day $9.1M /Wk 1",prose $9.1M agrees; Variety only intl/global
+2025-10-31,Black to the Future,OPEN,A,,,,,,,,,,NO_RELEASE; no source blocks in digest
+2025-10-31,Black to the Future,OPEN,B,,,,,,,,,,NO_RELEASE; no source blocks in digest
+2025-10-31,Black to the Future,OPEN,C,,,,,,,,,,NO_RELEASE; no source blocks in digest
+2025-10-31,Black to the Future,OPEN,D,,,,,,,,,,NO_RELEASE; no source blocks in digest
+2025-11-07,Predator: Badlands,OPEN,A,,,,,,,,,,PREVIEWS_ONLY; Deadline FRIDAY AM and Variety STRICT 1236572407 give $4.8M previews plus comparables only
+2025-11-07,Predator: Badlands,OPEN,B,33,33,33,,D,1236610703,FRIDAY AFTERNOON UPDATE,LABEL,second-best opening ever for a Predator movie at $33M,$14M is Friday daily
+2025-11-07,Predator: Badlands,OPEN,C,37,37,37,,D,1236610703,SATURDAY AM UPDATE,LABEL,"Predator: Badlands (Dis) 3,725 theaters, Fri $15.6M , 3-day $37M /Wk 1",chart; prose 'around $37M'; Variety STRICT no 3-day figure
+2025-11-07,Predator: Badlands,OPEN,D,40,40,40,,V,1236573309,'Predator: Badlands' Sets Franchise Record With $40 Million Debut,STRICT,collecting a better-than-expected $40 million in its domestic debut,"no Deadline lane D section; '$25M-$30M' is pre-weekend tracking, ignored"
+2025-11-14,Keeper,OPEN,A,,,,,,,,,,NO_RELEASE
+2025-11-14,Keeper,OPEN,B,,,,,,,,,,NO_RELEASE
+2025-11-14,Keeper,OPEN,C,2.5,2,3,RANGE,D,1236617534,SATURDAY AM,LABEL,"The Keeper , with $1M today and $2M-$3M opening",film called 'The Keeper' in prose; Variety REVISABLE daily only
+2025-11-14,Keeper,OPEN,D,,,,,,,,,,NO_FIGURE; Deadline SUNDAY AM chart excerpt truncated before Keeper
+2025-11-14,Now You See Me: Now You Don't,OPEN,A,22.5,20,25,RANGE,V,1236581467,Box Office: 'Now You See Me 3' Makes $2.1 Million in Previews,STRICT,both movies are predicted to open with $20 million to $25 million this weekend,shared range stated for NYSM3 and Running Man
+2025-11-14,Now You See Me: Now You Don't,OPEN,B,,,,,,,,,,"NO_RELEASE; a 'UPDATED, Friday midday' $20M-$24M passage appears only inside lane C SATURDAY AM section"
+2025-11-14,Now You See Me: Now You Don't,OPEN,C,22.5,21,24,RANGE,D,1236617534,SATURDAY AM,LABEL,the former the stronger with an estimated $21M-$24M opening,older 'Friday midday' text in same section: $20M-$24M; Variety REVISABLE daily only
+2025-11-14,Now You See Me: Now You Don't,OPEN,D,21.3,21.3,21.3,,D,1236617534,SUNDAY AM,LABEL,"Sunday numbers: Now You See Me: Now You Don't (LG) 3,403 theaters, Fri $8.4M Sat $7.7M Sun $5.2M 3-day $21.3M",
+2025-11-14,The Running Man,OPEN,A,22.5,20,25,RANGE,V,1236581467,Box Office: 'Now You See Me 3' Makes $2.1 Million in Previews,STRICT,both movies are predicted to open with $20 million to $25 million this weekend,shared range stated for NYSM3 and Running Man
+2025-11-14,The Running Man,OPEN,B,,,,,,,,,,NO_RELEASE
+2025-11-14,The Running Man,OPEN,C,17,16,18,RANGE;APPROX,D,1236617534,SATURDAY AM,LABEL,the upside on Running Man is $18M start (though some believe it's around $16M),AMBIGUOUS: $18M 'upside' vs 'around $16M'; no chart line; 'north of $20M' is pre-weekend tracking; 'around $15M apiece' likely older Friday text
+2025-11-14,The Running Man,OPEN,D,17,17,17,,D,1236617534,SUNDAY AM,LABEL,"Running Man (Par) 3,534 theaters, Fri $6.5M Sat $6.1M Sun $4.4M 3-day $17M",prose $17M agrees
+2025-11-21,Wicked: For Good,OPEN,A,165,150,180,RANGE,V,1236587612,Box Office: 'Wicked: For Good' Earns Huge $30.8 Million in Previews,STRICT,on track to make between $150 million and $180 million this weekend,no Deadline lane A section
+2025-11-21,Wicked: For Good,OPEN,B,150,150,150,,D,1236625569,FRIDAY MIDDAY,LABEL,"eyeing $68.5M today and $150M for the weekend at 4,115 theaters","later Deadline section [PREVIOUS, FRIDAY] 1236625726 has only international figures"
+2025-11-21,Wicked: For Good,OPEN,C,,,,,,,,,,"NO_FIGURE; Variety STRICT 1236588784 excerpts give only opening-day/previews, title truncated"
+2025-11-21,Wicked: For Good,OPEN,D,150,150,150,,D,1236625569,SUNDAY AM UPDATE,LABEL,sticking to a 3-day domestic opening of $150M,V:147 REVISABLE (1236590025)
+2025-12-05,Five Nights at Freddy's 2,OPEN,A,37.5,35,40,RANGE;PLUS,D,1236637393,FRIDAY AM,LABEL,the forecast for Five Nights at Freddy's 2 was $35M-$40M+,pre-day forecast ('heading into today')
+2025-12-05,Five Nights at Freddy's 2,OPEN,B,46,45,47,RANGE,D,1236637393,FRIDAY PM,LABEL,"opening to a No. 1 take of $45M-$47M at 3,412 theaters",'around $45M' belongs to Zootopia 2
+2025-12-05,Five Nights at Freddy's 2,OPEN,C,56.5,56.5,56.5,,D,1236637393,SATURDAY AM,LABEL,"Five Nights at Freddy's 2 (Uni) 3,412 theaters, Fri $29.8M, 3-day $56.5M /Wk 1",prose $56.5M agrees
+2025-12-05,Five Nights at Freddy's 2,OPEN,D,63,63,63,,D,1236637393,SUNDAY AM,LABEL,"Five Nights at Freddy's 2 (Uni) 3,412 theaters, Fri $29.9M, Sat $20.7M Sun $12.3M 3-day $63M /Wk 1",prose $63M agrees
+2025-12-05,Jujutsu Kaisen: Execution,OPEN,A,,,,,,,,,,PREVIEWS_ONLY; Deadline FRIDAY AM gives $1.6M previews only
+2025-12-05,Jujutsu Kaisen: Execution,OPEN,B,9,8,10,RANGE,D,1236637393,FRIDAY PM,LABEL,for a 3-day of $8M-$10M,$4.5M today is daily
+2025-12-05,Jujutsu Kaisen: Execution,OPEN,C,9.7,9.7,9.7,,D,1236637393,SATURDAY AM,LABEL,"Jujutsu Kasen: Execution (Gkids) 1,833 theaters Fri $4.9M 3-day $9.7M /Wk 1",chart line taken from FNAF2 block same section (misspelled 'Kasen'); prose 'near $10M' (APPROX)
+2025-12-05,Jujutsu Kaisen: Execution,OPEN,D,,,,,,,,,,NO_RELEASE; no lane D block for this film (FNAF2 Sunday chart excerpt truncated)
+2025-12-12,Ella McCay,OPEN,A,,,,,,,,,,NO_RELEASE
+2025-12-12,Ella McCay,OPEN,B,3,3,3,,D,1236647494,FRIDAY PM,LABEL,"$800K today, $3M opening at 2,500 theaters",
+2025-12-12,Ella McCay,OPEN,C,,,,,,,,,,NO_RELEASE
+2025-12-12,Ella McCay,OPEN,D,2.1,2.1,2.1,,V,1236608380,Box Office: 'Zootopia 2' Returns to No. 1 as 'Ella McCay' Suffers One of Worst Debuts Ever,REVISABLE,cratered with $2.1 million in its domestic debut,no Deadline lane D; Variety STRICT 1236608395 only intl/global

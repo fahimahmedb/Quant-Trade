@@ -1,0 +1,204 @@
+name: MEGA C0 Exact Head Qualification
+
+on:
+  push:
+    branches:
+      - builder/mega-c0-scientific-adjudication-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mega-c0-exact-head-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  MEGA_C0_FIRST_CHECKPOINT_SHA: d4e9c0e246f47fd5c402b6493717455793c12ce3
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  c0-kernel:
+    name: C0 kernel + immutable ancestry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove immutable base ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${MEGA_C0_FIRST_CHECKPOINT_SHA}^")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          git merge-base --is-ancestor "${MEGA_C0_FIRST_CHECKPOINT_SHA}" HEAD
+          grep -F 'WAVE2_IMMUTABLE_BASE_SHA:' MEGA_C0_CP_001_20261021.md | grep -F "${WAVE2_IMMUTABLE_BASE_SHA}"
+      - name: Qualify C0 adversarial kernel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_mega_c0_scientific_adjudication.py' -v 2>&1 | tee /tmp/mega-c0-focused.log
+          grep -E '^Ran [0-9]+ tests' /tmp/mega-c0-focused.log | tail -1
+      - name: Prove C0 scope membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(MEGA_C0_CP_[0-9]+_20261021\.md|MEGA_C0_FINAL_20261021\.md|research/research_os/expansion/scientific_adjudication\.py|tests/test_mega_c0_scientific_adjudication\.py|\.github/workflows/mega-c0-exact-head-qualification\.yml)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected C0-scope files:"
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+      - name: Prove authority and outcome membrane
+        run: |
+          python - <<'PY'
+          from research.research_os.expansion.scientific_adjudication import AUTHORITY_STATE
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          PY
+      - name: Prove clean tracked tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Emit C0 focused receipt
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          log = Path('/tmp/mega-c0-focused.log').read_text()
+          count = re.findall(r'^Ran ([0-9]+) tests', log, flags=re.MULTILINE)
+          receipt = {
+              "mission": "MEGA_C0_SCIENTIFIC_ADJUDICATION_KERNEL",
+              "qualified_head": os.environ["GITHUB_SHA"],
+              "wave2_immutable_base_sha": os.environ["WAVE2_IMMUTABLE_BASE_SHA"],
+              "first_checkpoint_sha": os.environ["MEGA_C0_FIRST_CHECKPOINT_SHA"],
+              "first_checkpoint_parent": subprocess.check_output(
+                  ["git", "rev-parse", os.environ["MEGA_C0_FIRST_CHECKPOINT_SHA"] + "^"], text=True
+              ).strip(),
+              "focused_test_count": int(count[-1]) if count else None,
+              "focused_result": "PASS",
+              "verdict_vocabulary": ["PROMOTE", "PARK", "KILL", "BLOCK"],
+              "promotion_target": "ECONOMIC_IDENTITY_ONLY",
+              "authority_opened": False,
+              "outcome_access_opened": False,
+              "runtime_owned": False,
+          }
+          Path('/tmp/mega-c0-focused-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-c0-focused-${{ github.sha }}
+          path: |
+            /tmp/mega-c0-focused.log
+            /tmp/mega-c0-focused-receipt.json
+          if-no-files-found: error
+
+  upstream-differential:
+    name: Factory / Validator / Red Team differential non-regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize sealed base worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git worktree add --detach /tmp/wave2-base "${WAVE2_IMMUTABLE_BASE_SHA}"
+      - name: Compare targeted upstream suite base vs C0 head
+        id: differential
+        shell: bash
+        run: |
+          set -euo pipefail
+          modules=(
+            research.research_os.tests.test_w1_factory_experiment_infrastructure
+            research.research_os.tests.test_w1_factory_firewall_hardening
+            research.research_os.tests.test_w1_factory_experiment_bridge
+            research.research_os.tests.test_experiment_runner_frozen_protocol
+            research.research_os.tests.test_economic_readiness_validation
+          )
+          run_suite() {
+            local root="$1" label="$2"
+            set +e
+            (cd "$root" && PYTHONPATH="$root/src:$root" python -m unittest -v "${modules[@]}") > "/tmp/${label}.log" 2>&1
+            local code=$?
+            set -e
+            printf '%s\n' "$code" > "/tmp/${label}.exit"
+            grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
+          }
+          run_suite /tmp/wave2-base base
+          run_suite "$GITHUB_WORKSPACE" head
+          echo '--- base failures ---'
+          cat /tmp/base.failures
+          echo '--- head failures ---'
+          cat /tmp/head.failures
+          echo '--- normalized counts ---'
+          cat /tmp/base.count
+          cat /tmp/head.count
+          diff -u /tmp/base.failures /tmp/head.failures
+          diff -u /tmp/base.count /tmp/head.count
+          test "$(cat /tmp/base.exit)" = "$(cat /tmp/head.exit)"
+          echo "base_exit=$(cat /tmp/base.exit)" >> "$GITHUB_OUTPUT"
+          echo "head_exit=$(cat /tmp/head.exit)" >> "$GITHUB_OUTPUT"
+          echo "count=$(cat /tmp/head.count)" >> "$GITHUB_OUTPUT"
+      - name: Prove upstream-owned implementation/test surfaces unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD -- \
+            research/research_os/expansion/experiment_infrastructure.py \
+            research/research_os/expansion/experiment_runner.py \
+            research/research_os/expansion/validation_readiness.py \
+            research/research_os/expansion/validation_v2.py \
+            research/research_os/expansion/red_team_v2.py \
+            research/research_os/expansion/v2_independence.py \
+            research/research_os/tests/test_w1_factory_experiment_infrastructure.py \
+            research/research_os/tests/test_w1_factory_firewall_hardening.py \
+            research/research_os/tests/test_w1_factory_experiment_bridge.py \
+            research/research_os/tests/test_experiment_runner_frozen_protocol.py \
+            research/research_os/tests/test_economic_readiness_validation.py)"
+      - name: Emit differential receipt
+        shell: bash
+        env:
+          BASE_EXIT: ${{ steps.differential.outputs.base_exit }}
+          HEAD_EXIT: ${{ steps.differential.outputs.head_exit }}
+          TEST_COUNT: ${{ steps.differential.outputs.count }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {
+              "mission": "MEGA_C0_SCIENTIFIC_ADJUDICATION_KERNEL",
+              "qualified_head": os.environ["GITHUB_SHA"],
+              "sealed_base": os.environ["WAVE2_IMMUTABLE_BASE_SHA"],
+              "boundary": "FACTORY_VALIDATOR_RED_TEAM_DIFFERENTIAL_NON_REGRESSION",
+              "test_count": int(os.environ["TEST_COUNT"]),
+              "base_exit_code": int(os.environ["BASE_EXIT"]),
+              "head_exit_code": int(os.environ["HEAD_EXIT"]),
+              "same_failure_signatures": True,
+              "upstream_owned_surfaces_mutated": False,
+              "result": "PASS_DIFFERENTIAL_NON_REGRESSION",
+          }
+          Path('/tmp/mega-c0-upstream-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-c0-upstream-${{ github.sha }}
+          path: |
+            /tmp/mega-c0-upstream-receipt.json
+            /tmp/base.log
+            /tmp/head.log
+            /tmp/base.failures
+            /tmp/head.failures
+          if-no-files-found: error

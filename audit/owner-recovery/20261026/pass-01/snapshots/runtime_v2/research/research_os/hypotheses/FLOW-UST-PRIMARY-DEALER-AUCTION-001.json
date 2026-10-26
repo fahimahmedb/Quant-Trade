@@ -1,0 +1,50 @@
+{
+  "hypothesis_id":"FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "family_id":"us-treasury-primary-dealer-auction-constraint",
+  "generation_id":"G1",
+  "parent_generation_ids":[],
+  "mechanism":"Federal Reserve Bank of New York primary-dealer standards expect each primary dealer to bid in every U.S. Treasury auction for at least its pro-rata share of the offered amount at reasonably competitive prices. Treasury auctions have pre-announced security, size and competitive close, creating a dated institutional inventory-risk transfer in which designated dealers cannot simply opt out without jeopardizing primary-dealer standing.",
+  "claim":"The primary-dealer participation expectation creates a causally explicit, pre-announced balance-sheet and inventory constraint around Treasury auctions. A separately authorized later test could ask whether a frozen auction-specific expression captures a repeatable concession associated with warehousing and distributing auction supply; no return or concession effect is claimed here.",
+  "prediction":"Before outcome access, official documents should establish the offered amount, auction clock, primary-dealer population, pro-rata participation expectation, competitive-bid rules and a point-in-time instrument mapping. Failure to reconstruct these fields before the auction blocks test design.",
+  "falsification_scope":"Mechanism usability is falsified if the primary-dealer expectation is not operationally binding enough to create meaningful inventory exposure, if customer/direct demand absorbs supply such that dealer exposure is not inferable ex ante, or if a candidate expression requires auction results or post-auction prices to define itself. A later negative economic test would falsify only the frozen expression, not the documented participation expectation.",
+  "decision_map":{
+    "forced_actor":"New York Fed primary dealers.",
+    "constraint":"Primary dealers are expected to bid in every Treasury auction for at least a pro-rata share of the offered amount, at reasonably competitive prices, as an ongoing condition of the counterparty relationship.",
+    "clock":"Treasury announcement fixes the auction date and competitive close; competitive bidding usually closes at 1:00 p.m. ET, with security-specific schedules published in advance.",
+    "affected_universe":"Marketable U.S. Treasury bills, notes, bonds, TIPS and FRNs auctioned under public Treasury terms; any later test must freeze one instrument/tenor family before outcome access.",
+    "capacity_intuition":"Auction sizes are large, but actual dealer inventory risk is reduced by direct and indirect customer demand, pre-auction when-issued trading, hedging, syndication-like distribution and deep Treasury liquidity. Gross issuance is not equivalent to dealer net exposure.",
+    "implementability_questions":[
+      "Can auction announcements, offered amount, competitive close and instrument identifiers be archived point-in-time?",
+      "Can the contemporaneous primary-dealer count be reconstructed before each auction without hindsight?",
+      "Can an expression be specified using only announcement/when-issued information and not auction results?",
+      "How should direct and indirect bidder demand be treated when it is unknown before the close?",
+      "Can financing, bid-ask, hedge and balance-sheet costs be frozen before outcome access?"
+    ],
+    "active_disconfirmation":[
+      "The New York Fed standard is an expectation governing the counterparty relationship, not a statutory obligation to receive a fixed allocation; dealers can bid at reasonable competitive levels and may receive less inventory than the pro-rata bid amount.",
+      "Treasury auctions are open to direct and indirect non-dealer demand, so primary dealers need not warehouse the full marginal supply.",
+      "When-issued markets allow pre-auction risk transfer and price discovery, potentially eliminating any systematic concession before the auction.",
+      "The mechanism can therefore be structurally real while producing no capturable alpha after financing, hedging, spread, impact and competition."
+    ],
+    "primary_documentary_evidence":[
+      {"source":"Federal Reserve Bank of New York — Primary Dealers","url":"https://www.newyorkfed.org/markets/primarydealers.html","fact":"Primary dealers are expected to bid on a pro-rata basis in all Treasury auctions at reasonably competitive prices; pro-rata is total amount auctioned divided by the number of primary dealers."},
+      {"source":"Federal Reserve Bank of New York — Primary Dealer Operating Policy","url":"https://www.newyorkfed.org/markets/pridealers_policies.html","fact":"Primary-dealer standards are ongoing counterparty expectations, including traditional primary-dealer functions."},
+      {"source":"U.S. Treasury — Auctions In Depth","url":"https://www.treasurydirect.gov/research-center/history-of-marketable-securities/auctions/auctions-indepth/","fact":"Treasury auctions are regular and announced in advance; competitive bids generally close at 1 p.m. ET and awards are determined by the auction rule."},
+      {"source":"U.S. Treasury — How Auctions Work","url":"https://www.treasurydirect.gov/auctions/how-auctions-work/","fact":"Auction announcements publish security, amount, auction date, issue date, maturity and closing times; competitive awards are capped at 35% per customer."}
+    ],
+    "legacy_distinctness":{
+      "screen_scope":"Current repository Legacy/research artifacts and frozen hypotheses searched for Treasury auction, primary-dealer, forced-flow and institutional-rebalance mechanisms before freeze.",
+      "screening_result":"NO_EXACT_PRIMARY_DEALER_TREASURY_AUCTION_PARTICIPATION_MECHANISM_FOUND",
+      "nearby_but_distinct":["Russell reconstitution benchmark flow: equity index-tracking constraint at a closing auction rather than dealer participation in sovereign issuance","month-end pension rebalance: asset-allocation flow rather than primary-market dealer auction obligation","generic rates/carry mechanisms: price/factor exposures rather than a designated-counterparty auction participation constraint"]
+    },
+    "next_validator_decision":{
+      "PASS_TO_TEST_DESIGN":"Official auction and dealer-status data permit a fully point-in-time expression defined before auction results or prices are inspected.",
+      "PARK_DATA":"Mechanism is documented but the required point-in-time when-issued/financing or dealer-population inputs cannot be reconstructed without leakage.",
+      "KILL_MECHANISM":"Participation expectations do not imply a sufficiently measurable ex-ante inventory constraint or any admissible expression necessarily depends on auction outcomes."
+    }
+  },
+  "freeze_status":"FROZEN",
+  "frozen_at":"2026-10-18T09:10:00Z",
+  "amendments":[],
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false,"outcome_data_accessed":false,"price_or_return_data_accessed":false,"scope":"DOCUMENTARY_MECHANISM_FREEZE_ONLY"}
+}

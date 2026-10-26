@@ -1,0 +1,15 @@
+{
+  "schema_version": "research-os-queue-refill-event-v1",
+  "event_type": "QUEUE_REFILL",
+  "event_id": "queue-refill:FUNDAMENTAL_DISTINCT_THESIS:2",
+  "emitted_at": "2026-10-16T08:46:05Z",
+  "steward_lane": "integrator_portfolio",
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002",
+  "frontier_id": "FUNDAMENTAL_DISTINCT_THESIS",
+  "sequence": 2,
+  "derivation_key": "ba7e2a886a8d8f61a7d8c05266422cd15b03fa6ec2dd1138cacfb6f62f981faf",
+  "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+  "queue_before": {"ready_count": 0, "claimed_count": 0},
+  "queue_after": {"ready_count": 1, "claimed_count": 0},
+  "producer_executed_same_wake": false
+}

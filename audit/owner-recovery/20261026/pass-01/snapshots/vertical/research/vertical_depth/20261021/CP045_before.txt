@@ -1,0 +1,1163 @@
+before_module_source_sha=61e45e8
+final_new_fixture_retained=true
+.F..F..FFFF..FFFF.FFFFFFFF.FFFFFFF.FFFFFFFFF.F..FFFFFFFF                 [100%]
+=================================== FAILURES ===================================
+____ test_lease_expiry_has_an_exact_boundary_and_no_future_start[600-True] _____
+
+age = 600, stale = True
+
+    @pytest.mark.parametrize('age,stale', [(599.999999, False), (600, True), (600.000001, True), (0, False), (-0.000001, True)])
+    def test_lease_expiry_has_an_exact_boundary_and_no_future_start(age, stale):
+>       assert is_lease_stale(running((NOW - timedelta(seconds=age)).isoformat()), NOW) is stale
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.200984+00:00', updated_at='2026-10-24T02:08:56.200987+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.200984+00:00', updated_at='2026-10-24T02:08:56.200987+00:00', last_error=None, metadata={}) = running('2026-10-24T11:50:00+00:00')
+E        +      where '2026-10-24T11:50:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf1a0d470>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf1a0d470> = (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) - datetime.timedelta(seconds=600)).isoformat
+E        +          where datetime.timedelta(seconds=600) = timedelta(seconds=600)
+
+tests/test_vertical_watchdog_clock_depth.py:24: AssertionError
+___ test_lease_expiry_has_an_exact_boundary_and_no_future_start[-1e-06-True] ___
+
+age = -1e-06, stale = True
+
+    @pytest.mark.parametrize('age,stale', [(599.999999, False), (600, True), (600.000001, True), (0, False), (-0.000001, True)])
+    def test_lease_expiry_has_an_exact_boundary_and_no_future_start(age, stale):
+>       assert is_lease_stale(running((NOW - timedelta(seconds=age)).isoformat()), NOW) is stale
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.215299+00:00', updated_at='2026-10-24T02:08:56.215300+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.215299+00:00', updated_at='2026-10-24T02:08:56.215300+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00.000001+00:00')
+E        +      where '2026-10-24T12:00:00.000001+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf1a0fc90>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf1a0fc90> = (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) - datetime.timedelta(days=-1, seconds=86399, microseconds=999999)).isoformat
+E        +          where datetime.timedelta(days=-1, seconds=86399, microseconds=999999) = timedelta(seconds=-1e-06)
+
+tests/test_vertical_watchdog_clock_depth.py:24: AssertionError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[not-a-clock] _
+
+start = 'not-a-clock'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:31:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.219370+00:00', updated_at='2026-10-24T02:08:56.219373+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: Invalid isoformat string: 'not-a-clock'
+
+src/autonomous_research/watchdog.py:19: ValueError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24] _
+
+start = '2026-10-24'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:31:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.222852+00:00', updated_at='2026-10-24T02:08:56.222859+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: can't subtract offset-naive and offset-aware datetimes
+
+src/autonomous_research/watchdog.py:19: TypeError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:59] _
+
+start = '2026-10-24T11:59:59'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:31:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.227293+00:00', updated_at='2026-10-24T02:08:56.227300+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: can't subtract offset-naive and offset-aware datetimes
+
+src/autonomous_research/watchdog.py:19: TypeError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[123] _
+
+start = 123
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:31:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.230720+00:00', updated_at='2026-10-24T02:08:56.230726+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: fromisoformat: argument must be str
+
+src/autonomous_research/watchdog.py:19: TypeError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[True] _
+
+start = True
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:31:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.235649+00:00', updated_at='2026-10-24T02:08:56.235652+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: fromisoformat: argument must be str
+
+src/autonomous_research/watchdog.py:19: TypeError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:60+00:00] _
+
+start = '2026-10-24T11:59:60+00:00'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:31:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.239523+00:00', updated_at='2026-10-24T02:08:56.239533+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: second must be in 0..59
+
+src/autonomous_research/watchdog.py:19: ValueError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[nan] ________
+
+lease = nan
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.247415+00:00', updated_at='2026-10-24T02:08:56.247418+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.247415+00:00', updated_at='2026-10-24T02:08:56.247418+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', nan)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[inf] ________
+
+lease = inf
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.252514+00:00', updated_at='2026-10-24T02:08:56.252517+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.252514+00:00', updated_at='2026-10-24T02:08:56.252517+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', inf)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+_ test_unqualified_lease_duration_cannot_prove_worker_health[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000] _
+
+lease = 100000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.256899+00:00', updated_at='2026-10-24T02:08:56.256901+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.256899+00:00', updated_at='2026-10-24T02:08:56.256901+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', 100000000000000000...0000000000000000000)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[None] _______
+
+lease = None
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.261066+00:00', updated_at='2026-10-24T02:08:56.261068+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+        age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+>       return age > getattr(task, "lease_seconds", 600)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'float' and 'NoneType'
+
+src/autonomous_research/watchdog.py:20: TypeError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[600] ________
+
+lease = '600'
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.267955+00:00', updated_at='2026-10-24T02:08:56.267958+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+        age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+>       return age > getattr(task, "lease_seconds", 600)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'float' and 'str'
+
+src/autonomous_research/watchdog.py:20: TypeError
+______ test_unqualified_lease_duration_cannot_prove_worker_health[lease6] ______
+
+lease = {}
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.278714+00:00', updated_at='2026-10-24T02:08:56.278716+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+        age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+>       return age > getattr(task, "lease_seconds", 600)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'float' and 'dict'
+
+src/autonomous_research/watchdog.py:20: TypeError
+______ test_unqualified_lease_duration_cannot_prove_worker_health[lease7] ______
+
+lease = []
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:37:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.285594+00:00', updated_at='2026-10-24T02:08:56.285597+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+        age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+>       return age > getattr(task, "lease_seconds", 600)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'float' and 'list'
+
+src/autonomous_research/watchdog.py:20: TypeError
+_______ test_unqualified_lease_duration_cannot_prove_worker_health[True] _______
+
+lease = True
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.290524+00:00', updated_at='2026-10-24T02:08:56.290527+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.290524+00:00', updated_at='2026-10-24T02:08:56.290527+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', True)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+______ test_unqualified_lease_duration_cannot_prove_worker_health[False] _______
+
+lease = False
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.297128+00:00', updated_at='2026-10-24T02:08:56.297131+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.297128+00:00', updated_at='2026-10-24T02:08:56.297131+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', False)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+________ test_unqualified_lease_duration_cannot_prove_worker_health[0] _________
+
+lease = 0
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.315064+00:00', updated_at='2026-10-24T02:08:56.315067+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.315064+00:00', updated_at='2026-10-24T02:08:56.315067+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', 0)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fcdf19ee310> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+____ test_valid_offset_spellings_are_the_same_instant[2026-10-24T12:00:00Z] ____
+
+start = '2026-10-24T12:00:00Z'
+
+    @pytest.mark.parametrize('start', ['2026-10-24T12:00:00Z', '2026-10-24T14:00:00+02:00',
+                                       '2026-10-24T05:00:00-07:00'])
+    def test_valid_offset_spellings_are_the_same_instant(start):
+        assert is_lease_stale(running(start, 0.25), NOW) is False
+>       assert is_lease_stale(running(start, 0.25), NOW + timedelta(seconds=0.25)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.321732+00:00', updated_at='2026-10-24T02:08:56.321733+00:00', last_error=None, metadata={}), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(microseconds=250000)))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.321732+00:00', updated_at='2026-10-24T02:08:56.321733+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00Z', 0.25)
+E        +    and   datetime.timedelta(microseconds=250000) = timedelta(seconds=0.25)
+
+tests/test_vertical_watchdog_clock_depth.py:44: AssertionError
+_ test_valid_offset_spellings_are_the_same_instant[2026-10-24T14:00:00+02:00] __
+
+start = '2026-10-24T14:00:00+02:00'
+
+    @pytest.mark.parametrize('start', ['2026-10-24T12:00:00Z', '2026-10-24T14:00:00+02:00',
+                                       '2026-10-24T05:00:00-07:00'])
+    def test_valid_offset_spellings_are_the_same_instant(start):
+        assert is_lease_stale(running(start, 0.25), NOW) is False
+>       assert is_lease_stale(running(start, 0.25), NOW + timedelta(seconds=0.25)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.327653+00:00', updated_at='2026-10-24T02:08:56.327654+00:00', last_error=None, metadata={}), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(microseconds=250000)))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.327653+00:00', updated_at='2026-10-24T02:08:56.327654+00:00', last_error=None, metadata={}) = running('2026-10-24T14:00:00+02:00', 0.25)
+E        +    and   datetime.timedelta(microseconds=250000) = timedelta(seconds=0.25)
+
+tests/test_vertical_watchdog_clock_depth.py:44: AssertionError
+_ test_valid_offset_spellings_are_the_same_instant[2026-10-24T05:00:00-07:00] __
+
+start = '2026-10-24T05:00:00-07:00'
+
+    @pytest.mark.parametrize('start', ['2026-10-24T12:00:00Z', '2026-10-24T14:00:00+02:00',
+                                       '2026-10-24T05:00:00-07:00'])
+    def test_valid_offset_spellings_are_the_same_instant(start):
+        assert is_lease_stale(running(start, 0.25), NOW) is False
+>       assert is_lease_stale(running(start, 0.25), NOW + timedelta(seconds=0.25)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.331312+00:00', updated_at='2026-10-24T02:08:56.331313+00:00', last_error=None, metadata={}), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(microseconds=250000)))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.331312+00:00', updated_at='2026-10-24T02:08:56.331313+00:00', last_error=None, metadata={}) = running('2026-10-24T05:00:00-07:00', 0.25)
+E        +    and   datetime.timedelta(microseconds=250000) = timedelta(seconds=0.25)
+
+tests/test_vertical_watchdog_clock_depth.py:44: AssertionError
+________________ test_missing_duration_retains_existing_default ________________
+
+    def test_missing_duration_retains_existing_default():
+        task = SimpleNamespace(started_at=(NOW - timedelta(seconds=599)).isoformat())
+        assert is_lease_stale(task, NOW) is False
+>       assert is_lease_stale(task, NOW + timedelta(seconds=1)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(namespace(started_at='2026-10-24T11:50:01+00:00'), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(seconds=1)))
+E        +    where datetime.timedelta(seconds=1) = timedelta(seconds=1)
+
+tests/test_vertical_watchdog_clock_depth.py:50: AssertionError
+_______ test_unqualified_observer_clock_cannot_prove_lease_health[now0] ________
+
+now = datetime.datetime(2026, 10, 24, 12, 0)
+
+    @pytest.mark.parametrize('now', [datetime(2026, 10, 24, 12), None, '2026-10-24T12:00:00Z'])
+    def test_unqualified_observer_clock_cannot_prove_lease_health(now):
+>       assert is_lease_stale(running(NOW.isoformat()), now) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:55:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.343709+00:00', updated_at='2026-10-24T02:08:56.343712+00:00', last_error=None, metadata={})
+now = datetime.datetime(2026, 10, 24, 12, 0)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: can't subtract offset-naive and offset-aware datetimes
+
+src/autonomous_research/watchdog.py:19: TypeError
+_______ test_unqualified_observer_clock_cannot_prove_lease_health[None] ________
+
+now = None
+
+    @pytest.mark.parametrize('now', [datetime(2026, 10, 24, 12), None, '2026-10-24T12:00:00Z'])
+    def test_unqualified_observer_clock_cannot_prove_lease_health(now):
+>       assert is_lease_stale(running(NOW.isoformat()), now) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:55:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.349967+00:00', updated_at='2026-10-24T02:08:56.349970+00:00', last_error=None, metadata={})
+now = None
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'datetime.datetime'
+
+src/autonomous_research/watchdog.py:19: TypeError
+_ test_unqualified_observer_clock_cannot_prove_lease_health[2026-10-24T12:00:00Z] _
+
+now = '2026-10-24T12:00:00Z'
+
+    @pytest.mark.parametrize('now', [datetime(2026, 10, 24, 12), None, '2026-10-24T12:00:00Z'])
+    def test_unqualified_observer_clock_cannot_prove_lease_health(now):
+>       assert is_lease_stale(running(NOW.isoformat()), now) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:55:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.355100+00:00', updated_at='2026-10-24T02:08:56.355102+00:00', last_error=None, metadata={})
+now = '2026-10-24T12:00:00Z'
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: unsupported operand type(s) for -: 'str' and 'datetime.datetime'
+
+src/autonomous_research/watchdog.py:19: TypeError
+___ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[None] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe0')
+heartbeat = None
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.364002+00:00', last_heartbeat=None, ...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a13d10>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+>       heartbeat = datetime.fromisoformat(state.last_heartbeat)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: fromisoformat: argument must be str
+
+src/autonomous_research/watchdog.py:26: TypeError
+_____ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe1')
+heartbeat = ''
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.377432+00:00', last_heartbeat='', cy...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a578c0>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+>       heartbeat = datetime.fromisoformat(state.last_heartbeat)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: Invalid isoformat string: ''
+
+src/autonomous_research/watchdog.py:26: ValueError
+__ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[broken] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe2')
+heartbeat = 'broken'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.383410+00:00', last_heartbeat='broke...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a55580>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+>       heartbeat = datetime.fromisoformat(state.last_heartbeat)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: Invalid isoformat string: 'broken'
+
+src/autonomous_research/watchdog.py:26: ValueError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe3')
+heartbeat = '2026-10-24T12:00:00'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.395137+00:00', last_heartbeat='2026-...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a55610>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+        heartbeat = datetime.fromisoformat(state.last_heartbeat)
+        alerts: list[dict[str, str]] = []
+>       if (now - heartbeat).total_seconds() > heartbeat_timeout_seconds:
+            ^^^^^^^^^^^^^^^
+E       TypeError: can't subtract offset-naive and offset-aware datetimes
+
+src/autonomous_research/watchdog.py:28: TypeError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe4')
+heartbeat = '2026-10-24'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.405198+00:00', last_heartbeat='2026-...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a549b0>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+        heartbeat = datetime.fromisoformat(state.last_heartbeat)
+        alerts: list[dict[str, str]] = []
+>       if (now - heartbeat).total_seconds() > heartbeat_timeout_seconds:
+            ^^^^^^^^^^^^^^^
+E       TypeError: can't subtract offset-naive and offset-aware datetimes
+
+src/autonomous_research/watchdog.py:28: TypeError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat5] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe5')
+heartbeat = {}
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.413223+00:00', last_heartbeat={}, cy...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a55580>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+>       heartbeat = datetime.fromisoformat(state.last_heartbeat)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: fromisoformat: argument must be str
+
+src/autonomous_research/watchdog.py:26: TypeError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat6] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe6')
+heartbeat = []
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.421066+00:00', last_heartbeat=[], cy...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a57dd0>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+>       heartbeat = datetime.fromisoformat(state.last_heartbeat)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: fromisoformat: argument must be str
+
+src/autonomous_research/watchdog.py:26: TypeError
+____ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[42] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe7')
+heartbeat = 42
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.427818+00:00', last_heartbeat=42, cy...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf1a55e20>
+heartbeat_timeout_seconds = 300, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+>       heartbeat = datetime.fromisoformat(state.last_heartbeat)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: fromisoformat: argument must be str
+
+src/autonomous_research/watchdog.py:26: TypeError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00.000001+00:00] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_or_future_heartbe8')
+heartbeat = '2026-10-24T12:00:00.000001+00:00'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+>       alerts = health(state, queue)
+                 ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:88:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/autonomous_research/watchdog.py:31: in inspect_health
+    if task.status == "RUNNING" and is_lease_stale(task, now):
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.438220+00:00', updated_at='2026-10-24T02:08:56.438226+00:00', last_error=None, metadata={})
+now = FixedClock(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: Invalid isoformat string: 'broken'
+
+src/autonomous_research/watchdog.py:19: ValueError
+______________ test_heartbeat_timeout_boundary_is_exact[300-True] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_heartbeat_timeout_boundar1')
+age = 300, missing = True
+
+    @pytest.mark.parametrize('age,missing', [(299.999999, False), (300, True), (300.000001, True), (0, False)])
+    def test_heartbeat_timeout_boundary_is_exact(tmp_path, age, missing):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        state = CampaignState('local', last_heartbeat=(NOW - timedelta(seconds=age)).isoformat())
+>       assert ('HEARTBEAT_MISSING' in {a['code'] for a in health(state, queue)}) is missing
+E       AssertionError: assert ('HEARTBEAT_MISSING' in set()) is True
+
+tests/test_vertical_watchdog_clock_depth.py:101: AssertionError
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[nan] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_timeout_configura0')
+timeout = nan
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[inf] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_timeout_configura1')
+timeout = inf
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_timeout_configura2')
+timeout = True
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[-1] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_timeout_configura3')
+timeout = -1
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       with pytest.raises(ValueError, match='heartbeat timeout'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_watchdog_clock_depth.py:108: Failed
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[300] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_timeout_configura4')
+timeout = '300'
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        with pytest.raises(ValueError, match='heartbeat timeout'):
+>           health(state, queue, heartbeat_timeout_seconds=timeout)
+
+tests/test_vertical_watchdog_clock_depth.py:109:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.477000+00:00', last_heartbeat='2026-...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf156b5f0>
+heartbeat_timeout_seconds = '300', max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+        heartbeat = datetime.fromisoformat(state.last_heartbeat)
+        alerts: list[dict[str, str]] = []
+>       if (now - heartbeat).total_seconds() > heartbeat_timeout_seconds:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'float' and 'str'
+
+src/autonomous_research/watchdog.py:28: TypeError
+_ test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[None] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_invalid_timeout_configura5')
+timeout = None
+
+    @pytest.mark.parametrize('timeout', [float('nan'), float('inf'), True, -1, '300', None])
+    def test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection(tmp_path, timeout):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        with pytest.raises(ValueError, match='heartbeat timeout'):
+>           health(state, queue, heartbeat_timeout_seconds=timeout)
+
+tests/test_vertical_watchdog_clock_depth.py:109:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = CampaignState(campaign_id='local', status='IDLE', started_at='2026-10-24T02:08:56.482276+00:00', last_heartbeat='2026-...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None)
+queue = <autonomous_research.runtime.PersistentQueue object at 0x7fcdf156a600>
+heartbeat_timeout_seconds = None, max_attempts = 3
+
+    def inspect_health(state: CampaignState, queue: PersistentQueue,
+                       heartbeat_timeout_seconds: int = 300, max_attempts: int = 3) -> list[dict[str, str]]:
+        now = datetime.now(timezone.utc)
+        heartbeat = datetime.fromisoformat(state.last_heartbeat)
+        alerts: list[dict[str, str]] = []
+>       if (now - heartbeat).total_seconds() > heartbeat_timeout_seconds:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>' not supported between instances of 'float' and 'NoneType'
+
+src/autonomous_research/watchdog.py:28: TypeError
+____ test_one_malformed_running_task_does_not_suppress_other_worker_alerts _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_one_malformed_running_tas0')
+
+    def test_one_malformed_running_task_does_not_suppress_other_worker_alerts(tmp_path):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        malformed = running('broken')
+        valid = running((NOW - timedelta(seconds=601)).isoformat())
+        valid.task_id = 'expired'
+        healthy = running(NOW.isoformat())
+        healthy.task_id = 'healthy'
+        for t in [malformed, valid, healthy]:
+            queue.add(t)
+        state = CampaignState('local', status='RUNNING', last_heartbeat=NOW.isoformat())
+        before = queue.path.read_bytes()
+        for _ in range(2):
+>           alerts = health(state, queue)
+                     ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_vertical_watchdog_clock_depth.py:124:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_vertical_watchdog_clock_depth.py:75: in health
+    return inspect_health(state, queue, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/autonomous_research/watchdog.py:31: in inspect_health
+    if task.status == "RUNNING" and is_lease_stale(task, now):
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:08:56.487970+00:00', updated_at='2026-10-24T02:08:56.487977+00:00', last_error=None, metadata={})
+now = FixedClock(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc)
+
+    def is_lease_stale(task, now: datetime) -> bool:
+        """A running worker is healthy until its lease expires.
+
+        A task with no recorded start cannot prove it is alive, so it is treated as
+        stale. That is the conservative direction: it raises an alert rather than
+        hiding a genuinely dead worker.
+        """
+        if not getattr(task, "started_at", None):
+            return True
+>       age = (now - datetime.fromisoformat(task.started_at)).total_seconds()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: Invalid isoformat string: 'broken'
+
+src/autonomous_research/watchdog.py:19: ValueError
+____________ test_zero_timeout_explicitly_expires_current_heartbeat ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-15/test_zero_timeout_explicitly_e0')
+
+    def test_zero_timeout_explicitly_expires_current_heartbeat(tmp_path):
+        state = CampaignState('local', last_heartbeat=NOW.isoformat())
+        queue = PersistentQueue(tmp_path / 'queue.json')
+>       assert health(state, queue, heartbeat_timeout_seconds=0) == [
+            {'code': 'HEARTBEAT_MISSING', 'detail': NOW.isoformat()}]
+E       AssertionError: assert [] == [{'code': 'HE...00:00+00:00'}]
+E
+E         Right contains one more item: {'code': 'HEARTBEAT_MISSING', 'detail': '2026-10-24T12:00:00+00:00'}
+E         Use -v to get more diff
+
+tests/test_vertical_watchdog_clock_depth.py:135: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_lease_expiry_has_an_exact_boundary_and_no_future_start[600-True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_lease_expiry_has_an_exact_boundary_and_no_future_start[-1e-06-True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[not-a-clock]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:59]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[123]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:60+00:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[nan]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[inf]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[None]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[600]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[lease6]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[lease7]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[False]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[0]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_valid_offset_spellings_are_the_same_instant[2026-10-24T12:00:00Z]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_valid_offset_spellings_are_the_same_instant[2026-10-24T14:00:00+02:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_valid_offset_spellings_are_the_same_instant[2026-10-24T05:00:00-07:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_duration_retains_existing_default
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_observer_clock_cannot_prove_lease_health[now0]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_observer_clock_cannot_prove_lease_health[None]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_observer_clock_cannot_prove_lease_health[2026-10-24T12:00:00Z]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[None]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[broken]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat5]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat6]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[42]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00.000001+00:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_heartbeat_timeout_boundary_is_exact[300-True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[nan]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[inf]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[-1]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[300]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_timeout_configuration_is_explicit_not_a_healthy_inspection[None]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_one_malformed_running_task_does_not_suppress_other_worker_alerts
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_zero_timeout_explicitly_expires_current_heartbeat
+43 failed, 13 passed in 0.48s

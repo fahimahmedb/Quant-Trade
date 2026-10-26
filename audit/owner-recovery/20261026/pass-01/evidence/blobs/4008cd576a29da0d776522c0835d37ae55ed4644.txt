@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "experiment_id": "disc-market-sentiment-cftc-es-leveraged-extremes-l1-v1",
+  "contract_commit": "c833b570eb3f6f4ab4e9e6ed2df0266cf7051db6",
+  "completed_at_date": "2026-10-14",
+  "typed_verdict": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_eligible": false,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "first_broken_transition": "BOUNDED_HISTORICAL_TFF_SAMPLE_NOT_RETRIEVABLE_FROM_FROZEN_CFTC_ROUTE",
+  "observed_fact": "The CFTC TFF Futures-Only dataset, field definitions, E-mini S&P 500 contract code 13874A and historical weekly viewable reports are publicly discoverable. However, in the current bounded environment the annual CFTC ZIP host is blocked by Cloudflare and the CFTC Socrata resource/export endpoint is not directly retrievable. Reconstructing the fixed 2019 warm-up plus 2020-2024 weekly sample by hundreds of individual HTML report pages would breach the bounded research budget and creates unnecessary transcription risk.",
+  "source_status": {
+    "cftc_historical_compressed": {
+      "dataset_exists": true,
+      "annual_tff_files_documented": true,
+      "direct_retrieval_status": "BLOCKED_BY_CURRENT_ENVIRONMENT_CLOUDFLARE"
+    },
+    "cftc_public_reporting_hub": {
+      "dataset_id": "gpe5-46if",
+      "table_rendering_public": true,
+      "api_export_status": "NOT_RETRIEVABLE_IN_CURRENT_ENVIRONMENT"
+    },
+    "cftc_historical_viewable": {
+      "weekly_pages_public": true,
+      "bounded_bulk_reconstruction": false
+    },
+    "fred_sp500": {
+      "series_id": "SP500",
+      "route_exists": true,
+      "outcome_sample_accessed": false
+    }
+  },
+  "exposure_accounting": {
+    "joined_2019_2024_positioning_sample_accessed": false,
+    "historical_thresholds_computed": false,
+    "joined_signal_return_pairs_accessed": false,
+    "economic_payoffs_computed": false,
+    "generic_cftc_rows_seen": true,
+    "economic_look_count_increment": 0,
+    "note": "The failure occurred before the frozen historical signal sample could be assembled, so no economic outcome was opened. Generic report rows remain prior source exposure only."
+  },
+  "decision_reason": "The contract forbids substituting another positioning source or rebuilding the signal from a different report family. The exact CFTC source is conceptually public but not bulk-retrievable within the present bounded runtime. Adequacy therefore fails before economics and PARK_DATA is mandatory.",
+  "next_action": "Do not change percentile, sample years, lag, category, source or horizon. Reopen this exact L1 only when the CFTC TFF dataset can be bulk-retrieved directly from the frozen official route within the bounded runtime. Otherwise pursue a causally distinct sentiment candidate with a source that is actually retrievable now.",
+  "inference_ceiling": [
+    "No conclusion on contrarian COT sentiment",
+    "No alpha/edge claim",
+    "No ES executability claim",
+    "No live or real-capital authorization"
+  ]
+}

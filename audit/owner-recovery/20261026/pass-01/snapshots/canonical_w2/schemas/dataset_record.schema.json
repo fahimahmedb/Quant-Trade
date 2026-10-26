@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Data lineage, validation and availability.",
+  "properties": {
+    "adapter": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "string"
+    },
+    "caveats": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "dataset_id": {
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "evidence_required": {
+      "type": "boolean"
+    },
+    "evidence_store_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "first_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ingested_at": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "last_date": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "license_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "path": {
+      "type": "string"
+    },
+    "point_in_time": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "refreshed_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "rows": {
+      "type": "integer"
+    },
+    "source": {
+      "type": "string"
+    },
+    "source_identity": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_product_identity": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "symbols": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "validation": {
+      "additionalProperties": {},
+      "type": "object"
+    }
+  },
+  "required": [
+    "dataset_id",
+    "source",
+    "adapter",
+    "path"
+  ],
+  "title": "dataset_record",
+  "type": "object"
+}

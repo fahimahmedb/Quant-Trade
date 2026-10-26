@@ -1,0 +1,50 @@
+mutation=capability_state
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=2f94d693a9cf8d4780e44c2f9126a95c76e611a195713a6da11482275d751a22
+.....................................................................FFF [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_frozen_body_cannot_carry_a_contradictory_capability_state[LEGACY_DRY_RUN_ONLY] _
+
+capability = 'LEGACY_DRY_RUN_ONLY'
+
+    @pytest.mark.parametrize('capability', ['LEGACY_DRY_RUN_ONLY', 'BLOCKED', 'UNKNOWN'])
+    def test_frozen_body_cannot_carry_a_contradictory_capability_state(capability):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol_capability'] = capability
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_CAPABILITY_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:240: Failed
+___ test_frozen_body_cannot_carry_a_contradictory_capability_state[BLOCKED] ____
+
+capability = 'BLOCKED'
+
+    @pytest.mark.parametrize('capability', ['LEGACY_DRY_RUN_ONLY', 'BLOCKED', 'UNKNOWN'])
+    def test_frozen_body_cannot_carry_a_contradictory_capability_state(capability):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol_capability'] = capability
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_CAPABILITY_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:240: Failed
+___ test_frozen_body_cannot_carry_a_contradictory_capability_state[UNKNOWN] ____
+
+capability = 'UNKNOWN'
+
+    @pytest.mark.parametrize('capability', ['LEGACY_DRY_RUN_ONLY', 'BLOCKED', 'UNKNOWN'])
+    def test_frozen_body_cannot_carry_a_contradictory_capability_state(capability):
+        runner, plan, *_ = frozen()
+        plan['frozen_protocol_capability'] = capability
+>       with pytest.raises(ValueError, match='FROZEN_PROTOCOL_CAPABILITY_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:240: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_frozen_body_cannot_carry_a_contradictory_capability_state[LEGACY_DRY_RUN_ONLY]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_frozen_body_cannot_carry_a_contradictory_capability_state[BLOCKED]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_frozen_body_cannot_carry_a_contradictory_capability_state[UNKNOWN]
+3 failed, 70 passed in 0.18s

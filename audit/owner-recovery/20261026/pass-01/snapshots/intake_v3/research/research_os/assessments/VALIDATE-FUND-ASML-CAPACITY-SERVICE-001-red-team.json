@@ -1,0 +1,22 @@
+{
+  "assessment_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001-red-team",
+  "task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
+  "hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001",
+  "generation_id":"G1",
+  "stage":"red_team",
+  "checks":{
+    "BLOCK_DATA":"NO_BLOCK_FOR_DOCUMENTARY_BUSINESS_MECHANISM; deeper normalized segment economics and backlog convertibility remain unresolved inputs",
+    "BLOCK_LEAKAGE":"NO_BLOCK; no subsequent price or return was used",
+    "BLOCK_MULTIPLICITY":"NO_ECONOMIC_TEST_EXECUTED; not applicable to current documentary validation",
+    "BLOCK_COST_MODEL":"NO_ECONOMIC_TEST_EXECUTED; not applicable to current documentary validation",
+    "BLOCK_CAPACITY":"NO_TRADING_CAPACITY_CLAIM_AUTHORIZED; operational production capacity is an open business risk, not a trading-capacity result",
+    "BLOCK_PORTFOLIO_DUPLICATION":"NOT_ASSESSED; integration/portfolio handoff not authorized by current task authority",
+    "BLOCK_CLAIM_LEVEL":"ACTIVE"
+  },
+  "decision":"ACCEPT_MECHANISM_BLOCK_STRONGER_CLAIMS",
+  "allowed_claim":"Primary disclosures independently support a bounded ASML business mechanism in which constrained advanced-lithography supply and material installed-base productivity upgrades may support earnings power, subject to conversion, concentration, export-control and normalization risks.",
+  "blocked_claims":["durable earnings-power expansion is established","2027-2028 demand visibility is guaranteed revenue","Q3 57.5% gross margin is normalized or sustainable","ASML equity is undervalued","the thesis has positive expected return or alpha"],
+  "integration_handoff":"NOT_AUTHORIZED_BY_CURRENT_TASK_AUTHORITY",
+  "frozen_generation_mutated":false,
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}
+}

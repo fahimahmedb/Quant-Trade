@@ -1,0 +1,630 @@
+FFFFFFFFFFFFFFFFFFF..F.FFFFFFFFFFFFF..FF.                                [100%]
+=================================== FAILURES ===================================
+_________ test_forbidden_payload_at_any_depth_is_blocked[returns-dict] _________
+
+container = 'dict', key = 'returns'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+_________ test_forbidden_payload_at_any_depth_is_blocked[returns-list] _________
+
+container = 'list', key = 'returns'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+________ test_forbidden_payload_at_any_depth_is_blocked[returns-tuple] _________
+
+container = 'tuple', key = 'returns'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+_____ test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-dict] _____
+
+container = 'dict', key = 'future_outcomes'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+_____ test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-list] _____
+
+container = 'list', key = 'future_outcomes'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+____ test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-tuple] _____
+
+container = 'tuple', key = 'future_outcomes'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+____ test_forbidden_payload_at_any_depth_is_blocked[execution_prices-dict] _____
+
+container = 'dict', key = 'execution_prices'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+____ test_forbidden_payload_at_any_depth_is_blocked[execution_prices-list] _____
+
+container = 'list', key = 'execution_prices'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+____ test_forbidden_payload_at_any_depth_is_blocked[execution_prices-tuple] ____
+
+container = 'tuple', key = 'execution_prices'
+
+    @pytest.mark.parametrize('container', ['dict','list','tuple'])
+    @pytest.mark.parametrize('key', ['returns','future_outcomes','execution_prices'])
+    def test_forbidden_payload_at_any_depth_is_blocked(container, key):
+        plan,raw = fixture()
+        hidden = {key: [0.1]}
+        raw['payload']['nested'] = hidden if container == 'dict' else [hidden] if container == 'list' else (hidden,)
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:33: AssertionError
+__________ test_record_clock_requires_qualified_value[-effective_at] ___________
+
+field = 'effective_at', value = ''
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+__________ test_record_clock_requires_qualified_value[-published_at] ___________
+
+field = 'published_at', value = ''
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+___________ test_record_clock_requires_qualified_value[-captured_at] ___________
+
+field = 'captured_at', value = ''
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+________ test_record_clock_requires_qualified_value[None-effective_at] _________
+
+field = 'effective_at', value = None
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+________ test_record_clock_requires_qualified_value[None-published_at] _________
+
+field = 'published_at', value = None
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+_________ test_record_clock_requires_qualified_value[None-captured_at] _________
+
+field = 'captured_at', value = None
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+_ test_record_clock_requires_qualified_value[2026-10-15T12:00:00-effective_at] _
+
+field = 'effective_at', value = '2026-10-15T12:00:00'
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+_ test_record_clock_requires_qualified_value[2026-10-15T12:00:00-published_at] _
+
+field = 'published_at', value = '2026-10-15T12:00:00'
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+_ test_record_clock_requires_qualified_value[2026-10-15T12:00:00-captured_at] __
+
+field = 'captured_at', value = '2026-10-15T12:00:00'
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+_______ test_record_clock_requires_qualified_value[invalid-effective_at] _______
+
+field = 'effective_at', value = 'invalid'
+
+    @pytest.mark.parametrize('field', ['effective_at','published_at','captured_at'])
+    @pytest.mark.parametrize('value', ['', None, '2026-10-15T12:00:00', 'invalid'])
+    def test_record_clock_requires_qualified_value(field, value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:41: AssertionError
+_ test_plan_body_mutation_cannot_reuse_ready_hash[clock_cutoff-2026-10-16T13:00:00Z] _
+
+field = 'clock_cutoff', value = '2026-10-16T13:00:00Z'
+
+    @pytest.mark.parametrize('field,value', [('clock_cutoff','2026-10-16T13:00:00Z'), ('content_classes',['returns'])])
+    def test_plan_body_mutation_cannot_reuse_ready_hash(field,value):
+        plan,raw = fixture()
+        plan['plan'][field] = value
+>       assert content_firewall(plan, raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:48: AssertionError
+_ test_secondary_firewall_entry_rejects_open_authority[network_execution_authorized] _
+
+field = 'network_execution_authorized'
+
+    @pytest.mark.parametrize('field', ['network_execution_authorized','outcome_access_authorized','outcome_accessed'])
+    def test_secondary_firewall_entry_rejects_open_authority(field):
+        plan,raw = fixture()
+        plan[field] = True
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:55: AssertionError
+_ test_secondary_firewall_entry_rejects_open_authority[outcome_access_authorized] _
+
+field = 'outcome_access_authorized'
+
+    @pytest.mark.parametrize('field', ['network_execution_authorized','outcome_access_authorized','outcome_accessed'])
+    def test_secondary_firewall_entry_rejects_open_authority(field):
+        plan,raw = fixture()
+        plan[field] = True
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:55: AssertionError
+____ test_secondary_firewall_entry_rejects_open_authority[outcome_accessed] ____
+
+field = 'outcome_accessed'
+
+    @pytest.mark.parametrize('field', ['network_execution_authorized','outcome_access_authorized','outcome_accessed'])
+    def test_secondary_firewall_entry_rejects_open_authority(field):
+        plan,raw = fixture()
+        plan[field] = True
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:55: AssertionError
+______ test_presence_does_not_qualify_missing_required_values[record_id-] ______
+
+field = 'record_id', value = ''
+
+    @pytest.mark.parametrize('field,value', [('record_id',''),('source_version_id',None),('content_classes',[]),('payload',[])])
+    def test_presence_does_not_qualify_missing_required_values(field,value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:62: AssertionError
+_ test_presence_does_not_qualify_missing_required_values[source_version_id-None] _
+
+field = 'source_version_id', value = None
+
+    @pytest.mark.parametrize('field,value', [('record_id',''),('source_version_id',None),('content_classes',[]),('payload',[])])
+    def test_presence_does_not_qualify_missing_required_values(field,value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:62: AssertionError
+_ test_presence_does_not_qualify_missing_required_values[content_classes-value2] _
+
+field = 'content_classes', value = []
+
+    @pytest.mark.parametrize('field,value', [('record_id',''),('source_version_id',None),('content_classes',[]),('payload',[])])
+    def test_presence_does_not_qualify_missing_required_values(field,value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:62: AssertionError
+____ test_presence_does_not_qualify_missing_required_values[payload-value3] ____
+
+field = 'payload', value = []
+
+    @pytest.mark.parametrize('field,value', [('record_id',''),('source_version_id',None),('content_classes',[]),('payload',[])])
+    def test_presence_does_not_qualify_missing_required_values(field,value):
+        plan,raw = fixture()
+        raw[field] = value
+>       assert content_firewall(plan,raw)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:62: AssertionError
+___________ test_normalizer_cannot_reuse_pass_for_changed_raw_record ___________
+
+    def test_normalizer_cannot_reuse_pass_for_changed_raw_record():
+        plan,raw = fixture()
+        proof = content_firewall(plan,raw)
+        raw['payload']['document_excerpt'] = 'changed documentary bytes'
+>       assert normalize_typed_pit_record(plan,raw,proof)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:69: AssertionError
+_________ test_normalizer_cannot_trust_forged_pass_after_contamination _________
+
+    def test_normalizer_cannot_trust_forged_pass_after_contamination():
+        plan,raw = fixture()
+        proof = content_firewall(plan,raw)
+        raw['payload']['future_outcomes'] = [1]
+>       assert normalize_typed_pit_record(plan,raw,proof)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:76: AssertionError
+_____ test_provenance_manifest_reconstructs_internal_proofs[typed_payload] _____
+
+mutation = 'typed_payload'
+
+    @pytest.mark.parametrize('mutation', ['typed_payload','typed_hash','manifest_plan','foreign_firewall'])
+    def test_provenance_manifest_reconstructs_internal_proofs(mutation):
+        plan,raw = fixture()
+        firewall = content_firewall(plan,raw)
+        typed = normalize_typed_pit_record(plan,raw,firewall)
+        if mutation == 'typed_payload':
+            typed['payload']['document_excerpt'] = 'rewritten'
+        elif mutation == 'typed_hash':
+            typed['typed_record_hash'] = 'a'*64
+        elif mutation == 'manifest_plan':
+            plan['plan_hash'] = 'a'*64
+        else:
+            firewall['raw_record_hash'] = 'b'*64
+>       assert build_provenance_manifest(plan,firewall,typed)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:92: AssertionError
+______ test_provenance_manifest_reconstructs_internal_proofs[typed_hash] _______
+
+mutation = 'typed_hash'
+
+    @pytest.mark.parametrize('mutation', ['typed_payload','typed_hash','manifest_plan','foreign_firewall'])
+    def test_provenance_manifest_reconstructs_internal_proofs(mutation):
+        plan,raw = fixture()
+        firewall = content_firewall(plan,raw)
+        typed = normalize_typed_pit_record(plan,raw,firewall)
+        if mutation == 'typed_payload':
+            typed['payload']['document_excerpt'] = 'rewritten'
+        elif mutation == 'typed_hash':
+            typed['typed_record_hash'] = 'a'*64
+        elif mutation == 'manifest_plan':
+            plan['plan_hash'] = 'a'*64
+        else:
+            firewall['raw_record_hash'] = 'b'*64
+>       assert build_provenance_manifest(plan,firewall,typed)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:92: AssertionError
+_____ test_provenance_manifest_reconstructs_internal_proofs[manifest_plan] _____
+
+mutation = 'manifest_plan'
+
+    @pytest.mark.parametrize('mutation', ['typed_payload','typed_hash','manifest_plan','foreign_firewall'])
+    def test_provenance_manifest_reconstructs_internal_proofs(mutation):
+        plan,raw = fixture()
+        firewall = content_firewall(plan,raw)
+        typed = normalize_typed_pit_record(plan,raw,firewall)
+        if mutation == 'typed_payload':
+            typed['payload']['document_excerpt'] = 'rewritten'
+        elif mutation == 'typed_hash':
+            typed['typed_record_hash'] = 'a'*64
+        elif mutation == 'manifest_plan':
+            plan['plan_hash'] = 'a'*64
+        else:
+            firewall['raw_record_hash'] = 'b'*64
+>       assert build_provenance_manifest(plan,firewall,typed)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:92: AssertionError
+___ test_provenance_manifest_reconstructs_internal_proofs[foreign_firewall] ____
+
+mutation = 'foreign_firewall'
+
+    @pytest.mark.parametrize('mutation', ['typed_payload','typed_hash','manifest_plan','foreign_firewall'])
+    def test_provenance_manifest_reconstructs_internal_proofs(mutation):
+        plan,raw = fixture()
+        firewall = content_firewall(plan,raw)
+        typed = normalize_typed_pit_record(plan,raw,firewall)
+        if mutation == 'typed_payload':
+            typed['payload']['document_excerpt'] = 'rewritten'
+        elif mutation == 'typed_hash':
+            typed['typed_record_hash'] = 'a'*64
+        elif mutation == 'manifest_plan':
+            plan['plan_hash'] = 'a'*64
+        else:
+            firewall['raw_record_hash'] = 'b'*64
+>       assert build_provenance_manifest(plan,firewall,typed)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_depth.py:92: AssertionError
+_________________ test_plan_rejects_ambiguous_cutoff[invalid] __________________
+
+value = 'invalid'
+
+    @pytest.mark.parametrize('value', ['', 'invalid', '2026-10-15T13:00:00'])
+    def test_plan_rejects_ambiguous_cutoff(value):
+        wave3=json.loads((BASE/'wave3_engine_depth_fixture.json').read_text())
+        wave4=json.loads((BASE/'wave4_acquisition_firewall_fixture.json').read_text())
+        request=wave4['acquisition_requests'][0]
+        spec=next(a for a in wave3['adapters'] if a['adapter_id']==request['adapter_id'])
+        request['clock_cutoff']=value
+>       assert build_acquisition_plan(validate_adapter_spec(spec),request)['status']=='BLOCK'
+E       AssertionError: assert 'READY_AWAITI...ION_AUTHORITY' == 'BLOCK'
+E         
+E         - BLOCK
+E         + READY_AWAITING_SOURCE_ACTIVATION_AUTHORITY
+
+tests/test_vertical_firewall_depth.py:114: AssertionError
+___________ test_plan_rejects_ambiguous_cutoff[2026-10-15T13:00:00] ____________
+
+value = '2026-10-15T13:00:00'
+
+    @pytest.mark.parametrize('value', ['', 'invalid', '2026-10-15T13:00:00'])
+    def test_plan_rejects_ambiguous_cutoff(value):
+        wave3=json.loads((BASE/'wave3_engine_depth_fixture.json').read_text())
+        wave4=json.loads((BASE/'wave4_acquisition_firewall_fixture.json').read_text())
+        request=wave4['acquisition_requests'][0]
+        spec=next(a for a in wave3['adapters'] if a['adapter_id']==request['adapter_id'])
+        request['clock_cutoff']=value
+>       assert build_acquisition_plan(validate_adapter_spec(spec),request)['status']=='BLOCK'
+E       AssertionError: assert 'READY_AWAITI...ION_AUTHORITY' == 'BLOCK'
+E         
+E         - BLOCK
+E         + READY_AWAITING_SOURCE_ACTIVATION_AUTHORITY
+
+tests/test_vertical_firewall_depth.py:114: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[returns-dict]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[returns-list]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[returns-tuple]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-dict]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-list]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[future_outcomes-tuple]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[execution_prices-dict]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[execution_prices-list]
+FAILED tests/test_vertical_firewall_depth.py::test_forbidden_payload_at_any_depth_is_blocked[execution_prices-tuple]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[-effective_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[-published_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[-captured_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[None-effective_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[None-published_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[None-captured_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[2026-10-15T12:00:00-effective_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[2026-10-15T12:00:00-published_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[2026-10-15T12:00:00-captured_at]
+FAILED tests/test_vertical_firewall_depth.py::test_record_clock_requires_qualified_value[invalid-effective_at]
+FAILED tests/test_vertical_firewall_depth.py::test_plan_body_mutation_cannot_reuse_ready_hash[clock_cutoff-2026-10-16T13:00:00Z]
+FAILED tests/test_vertical_firewall_depth.py::test_secondary_firewall_entry_rejects_open_authority[network_execution_authorized]
+FAILED tests/test_vertical_firewall_depth.py::test_secondary_firewall_entry_rejects_open_authority[outcome_access_authorized]
+FAILED tests/test_vertical_firewall_depth.py::test_secondary_firewall_entry_rejects_open_authority[outcome_accessed]
+FAILED tests/test_vertical_firewall_depth.py::test_presence_does_not_qualify_missing_required_values[record_id-]
+FAILED tests/test_vertical_firewall_depth.py::test_presence_does_not_qualify_missing_required_values[source_version_id-None]
+FAILED tests/test_vertical_firewall_depth.py::test_presence_does_not_qualify_missing_required_values[content_classes-value2]
+FAILED tests/test_vertical_firewall_depth.py::test_presence_does_not_qualify_missing_required_values[payload-value3]
+FAILED tests/test_vertical_firewall_depth.py::test_normalizer_cannot_reuse_pass_for_changed_raw_record
+FAILED tests/test_vertical_firewall_depth.py::test_normalizer_cannot_trust_forged_pass_after_contamination
+FAILED tests/test_vertical_firewall_depth.py::test_provenance_manifest_reconstructs_internal_proofs[typed_payload]
+FAILED tests/test_vertical_firewall_depth.py::test_provenance_manifest_reconstructs_internal_proofs[typed_hash]
+FAILED tests/test_vertical_firewall_depth.py::test_provenance_manifest_reconstructs_internal_proofs[manifest_plan]
+FAILED tests/test_vertical_firewall_depth.py::test_provenance_manifest_reconstructs_internal_proofs[foreign_firewall]
+FAILED tests/test_vertical_firewall_depth.py::test_plan_rejects_ambiguous_cutoff[invalid]
+FAILED tests/test_vertical_firewall_depth.py::test_plan_rejects_ambiguous_cutoff[2026-10-15T13:00:00]
+35 failed, 6 passed in 0.16s

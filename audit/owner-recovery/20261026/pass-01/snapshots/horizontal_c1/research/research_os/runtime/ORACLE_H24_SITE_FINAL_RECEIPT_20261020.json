@@ -1,0 +1,125 @@
+{
+  "ORACLE_H24_RESEARCH_LAB": "RUNNING",
+  "ORACLE_TO_LIVE_SITE": "CONNECTED_REAL_WORKERS",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "branch": "builder/oracle-v2-core-20261020",
+  "evidence_files": [
+    "v2_evidence/ORACLE_SITE_INSTALLED_INVENTORY_20261020.json",
+    "v2_evidence/ORACLE_SITE_REDUCER_PROOF_20261020.json",
+    "v2_evidence/ORACLE_SITE_REAL_SSE_20261020.json",
+    "v2_evidence/ORACLE_SITE_DUPLICATE_PROOF_20261020.json"
+  ],
+  "exact_observer_ci": {
+    "Oracle V2 Core": {
+      "conclusion": "success",
+      "run_id": 39452943539
+    },
+    "SEC P0 pre-t0 gate": {
+      "conclusion": "success",
+      "run_id": 39452943053
+    }
+  },
+  "local_tests": {
+    "asml_current_corpus_preflight": {
+      "passed": 15
+    },
+    "observer_and_installer": {
+      "passed": 10
+    },
+    "readiness_portfolio": {
+      "passed": 21
+    },
+    "unchanged_site_native_ingress": {
+      "passed": 5
+    }
+  },
+  "observed_github_head": "1e79d039f69da8bef11f935ed538918ef6cc9a1e",
+  "observer_sha": "c564699c8876bf1cf99ee5dd2387874b96a5baef",
+  "observer_sha256": "431fa165c6dd17e7aa4b042ac58a73467d3cde36a4ff387bc09f764262d66596",
+  "proofs": {
+    "actual_sse_frames_mapper_reducer_start_stop": true,
+    "browser_render_tested": false,
+    "economic_look_inactive": true,
+    "production_exact_duplicate": "DUPLICATE_IGNORED; cursor83 unchanged",
+    "public_sse_actual_worker_frames_cursors": [
+      84,
+      85,
+      86
+    ],
+    "real_github_observation_receipts": true,
+    "reload_does_not_replay_motion": true,
+    "safari_iphone_tested": false,
+    "two_distinct_native_wakes_no_duplicate_lineage": true
+  },
+  "real_wakes": [
+    {
+      "canonical_generation": 2,
+      "canonical_session": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010-g2-1e69fe9266e3",
+      "scientific_result": "BLOCKED",
+      "site_cursors": [
+        82,
+        83
+      ],
+      "site_generation": 1,
+      "source_claim_commit": "1c5fe8195259bc6770bfac194ec0930f0d580a13",
+      "source_terminal_commit": "f431a2bd61650e5ddfd153812c7540d6511427aa",
+      "worker_id": "oracle-research.fundamental_events"
+    },
+    {
+      "canonical_generation": 1,
+      "canonical_session": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c",
+      "scientific_result": "legacy_duplicate_check passed; stage persisted",
+      "site_cursors": [
+        84,
+        85,
+        86
+      ],
+      "site_generation": 1,
+      "source_claim_commit": "9513656c716c41bb78adf621e4cebd9d656998f8",
+      "source_terminal_commit": "c8d1992b1cc076ab5bbdc69d763d8a6d171c0b63",
+      "worker_id": "oracle-research.market_discovery"
+    }
+  ],
+  "remaining_operational_blockers": [],
+  "repository": "fahimahmedb/Quant-Trade",
+  "runtime": {
+    "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+    "environment_permissions_reported_by_owner_ssh": "root:quant-research 0640",
+    "local_gpt_oss_model_service": "active/enabled",
+    "local_model_health": "ok",
+    "normal_wake_requires_codex_chatgpt_work_or_paid_ai": false,
+    "one_lineage_per_wake": true,
+    "reboot_recovered": true,
+    "same_canonical_queue_and_lease": true,
+    "scientific_config_modified": false,
+    "scientific_core_modified": false,
+    "v1_timer": "inactive/disabled",
+    "v2_timer": "active/enabled",
+    "worker_environment_file": "/etc/quant-research/worker.env"
+  },
+  "schema_version": "oracle-h24-site-final-v1",
+  "scientific_claim_ceiling": "No economic/alpha/outcome qualification. Structural overlaps and unsupported schemas remain blocking under the qualified core.",
+  "scientific_core_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "scope": "AUTONOMOUS_PRE_OUTCOME_RESEARCH_AND_OBSERVATION_ONLY",
+  "site": {
+    "deployment_id": "appgdep_6ad78e0219288191a446d21fa7632ce1",
+    "environment_revision": 11,
+    "native_ingress": [
+      "/api/oracle/session",
+      "/api/oracle/event"
+    ],
+    "principal": "oracle-research-live",
+    "project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
+    "public_sse": "/api/work/events",
+    "secret_value_exported": false,
+    "source_sha": "7afac2cbfde65bd08bf64c0a4d6cf0ee6b62397a",
+    "url": "https://quant-trade-lab.sassylime.chatgpt.site",
+    "version": 25
+  },
+  "verified_at_utc": "2026-10-20T16:14:07.762395+00:00"
+}

@@ -1,0 +1,157 @@
+FFFFFFFFF.                                                               [100%]
+=================================== FAILURES ===================================
+____ test_forbidden_record_content_cannot_hide_outside_payload[top-returns] ____
+
+key = 'returns', placement = 'top'
+
+    @pytest.mark.parametrize('key',['returns','future_outcomes','execution_prices'])
+    @pytest.mark.parametrize('placement',['top','extension'])
+    def test_forbidden_record_content_cannot_hide_outside_payload(key,placement):
+        plan,raw=fixture()
+        if placement=='top':raw[key]='SYNTHETIC_FORBIDDEN_CONTENT'
+        else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
+>       assert content_firewall(plan,raw)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:17: AssertionError
+_ test_forbidden_record_content_cannot_hide_outside_payload[top-future_outcomes] _
+
+key = 'future_outcomes', placement = 'top'
+
+    @pytest.mark.parametrize('key',['returns','future_outcomes','execution_prices'])
+    @pytest.mark.parametrize('placement',['top','extension'])
+    def test_forbidden_record_content_cannot_hide_outside_payload(key,placement):
+        plan,raw=fixture()
+        if placement=='top':raw[key]='SYNTHETIC_FORBIDDEN_CONTENT'
+        else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
+>       assert content_firewall(plan,raw)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:17: AssertionError
+_ test_forbidden_record_content_cannot_hide_outside_payload[top-execution_prices] _
+
+key = 'execution_prices', placement = 'top'
+
+    @pytest.mark.parametrize('key',['returns','future_outcomes','execution_prices'])
+    @pytest.mark.parametrize('placement',['top','extension'])
+    def test_forbidden_record_content_cannot_hide_outside_payload(key,placement):
+        plan,raw=fixture()
+        if placement=='top':raw[key]='SYNTHETIC_FORBIDDEN_CONTENT'
+        else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
+>       assert content_firewall(plan,raw)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:17: AssertionError
+_ test_forbidden_record_content_cannot_hide_outside_payload[extension-returns] _
+
+key = 'returns', placement = 'extension'
+
+    @pytest.mark.parametrize('key',['returns','future_outcomes','execution_prices'])
+    @pytest.mark.parametrize('placement',['top','extension'])
+    def test_forbidden_record_content_cannot_hide_outside_payload(key,placement):
+        plan,raw=fixture()
+        if placement=='top':raw[key]='SYNTHETIC_FORBIDDEN_CONTENT'
+        else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
+>       assert content_firewall(plan,raw)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:17: AssertionError
+_ test_forbidden_record_content_cannot_hide_outside_payload[extension-future_outcomes] _
+
+key = 'future_outcomes', placement = 'extension'
+
+    @pytest.mark.parametrize('key',['returns','future_outcomes','execution_prices'])
+    @pytest.mark.parametrize('placement',['top','extension'])
+    def test_forbidden_record_content_cannot_hide_outside_payload(key,placement):
+        plan,raw=fixture()
+        if placement=='top':raw[key]='SYNTHETIC_FORBIDDEN_CONTENT'
+        else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
+>       assert content_firewall(plan,raw)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:17: AssertionError
+_ test_forbidden_record_content_cannot_hide_outside_payload[extension-execution_prices] _
+
+key = 'execution_prices', placement = 'extension'
+
+    @pytest.mark.parametrize('key',['returns','future_outcomes','execution_prices'])
+    @pytest.mark.parametrize('placement',['top','extension'])
+    def test_forbidden_record_content_cannot_hide_outside_payload(key,placement):
+        plan,raw=fixture()
+        if placement=='top':raw[key]='SYNTHETIC_FORBIDDEN_CONTENT'
+        else:raw['untrusted_extension']=({'nested':{key:'SYNTHETIC_FORBIDDEN_CONTENT'}},)
+>       assert content_firewall(plan,raw)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:17: AssertionError
+_____ test_alternate_normalizer_cannot_certify_top_level_forbidden_content _____
+
+    def test_alternate_normalizer_cannot_certify_top_level_forbidden_content():
+        plan,raw=fixture();raw['returns']='SYNTHETIC_FORBIDDEN_CONTENT'
+        supplied=content_firewall(plan,raw)
+>       assert normalize_typed_pit_record(plan,raw,supplied)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_firewall_record_scope.py:23: AssertionError
+_ test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions[typed_record] _
+
+location = 'typed_record'
+
+    @pytest.mark.parametrize('location',['typed_record','provenance_manifest'])
+    def test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions(location):
+        record,manifest=pair();before=deepcopy((record,manifest))
+        target=record if location=='typed_record' else manifest
+        target['untrusted_extension']=({'returns':'SYNTHETIC_FORBIDDEN_CONTENT'},)
+        registry=TypedPITRegistry()
+>       with pytest.raises(ValueError):registry.register(record,manifest)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_firewall_record_scope.py:32: Failed
+_ test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions[provenance_manifest] _
+
+location = 'provenance_manifest'
+
+    @pytest.mark.parametrize('location',['typed_record','provenance_manifest'])
+    def test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions(location):
+        record,manifest=pair();before=deepcopy((record,manifest))
+        target=record if location=='typed_record' else manifest
+        target['untrusted_extension']=({'returns':'SYNTHETIC_FORBIDDEN_CONTENT'},)
+        registry=TypedPITRegistry()
+>       with pytest.raises(ValueError):registry.register(record,manifest)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_firewall_record_scope.py:32: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_firewall_record_scope.py::test_forbidden_record_content_cannot_hide_outside_payload[top-returns]
+FAILED tests/test_vertical_firewall_record_scope.py::test_forbidden_record_content_cannot_hide_outside_payload[top-future_outcomes]
+FAILED tests/test_vertical_firewall_record_scope.py::test_forbidden_record_content_cannot_hide_outside_payload[top-execution_prices]
+FAILED tests/test_vertical_firewall_record_scope.py::test_forbidden_record_content_cannot_hide_outside_payload[extension-returns]
+FAILED tests/test_vertical_firewall_record_scope.py::test_forbidden_record_content_cannot_hide_outside_payload[extension-future_outcomes]
+FAILED tests/test_vertical_firewall_record_scope.py::test_forbidden_record_content_cannot_hide_outside_payload[extension-execution_prices]
+FAILED tests/test_vertical_firewall_record_scope.py::test_alternate_normalizer_cannot_certify_top_level_forbidden_content
+FAILED tests/test_vertical_firewall_record_scope.py::test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions[typed_record]
+FAILED tests/test_vertical_firewall_record_scope.py::test_registry_does_not_ignore_forbidden_content_in_unhashed_extensions[provenance_manifest]
+9 failed, 1 passed in 0.06s

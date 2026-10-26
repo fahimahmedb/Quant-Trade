@@ -1,0 +1,93 @@
+# Vertical CP045 — Watchdog liveness requires qualified time proof
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=4868b150c1020b54f1814c9173ed188d98da5b32
+MISSION_CHECKPOINT_ACCEPTED=TRUE_SCOPED_EVIDENCE
+REPLACES_INSUFFICIENT_RUNTIME_REPLAY_LABEL=TRUE
+
+Module: autonomous_research.watchdog, already present on immutable base.
+Capability: read-only stale lease / missing heartbeat detection, preserving other
+existing health alerts. North Star Research Control Plane leases and Control /
+Clock liveness/fault state; no future E Runtime service is added.
+Starting depth: D1 broad fault-class test; no malformed clock, finite duration,
+UTC-equivalence, exact expiry or healthy-neighbor controls.
+
+## Concrete failures and root causes
+
+The 56 new fixtures produce **43 failures / 13 passes** against the exact previous
+watchdog module, with the final fixture retained. Three grouped repair items:
+
+1. Unqualified timestamps: malformed/naive starts raised exceptions, aborting the
+   whole health inspection and hiding other worker/crash/starvation faults.
+   Future timestamps were accepted as healthy despite no causal start/heartbeat
+   proof. Missing starts alone were already conservative; malformed proof was not.
+2. Unqualified durations: NaN/infinity and bool aliases could report a healthy
+   worker or suppress missing-heartbeat detection. Type/overflow errors also
+   interrupted inspection. A bad timeout configuration lacked an explicit error.
+3. Exact expiry: age equal to its lease/heartbeat duration was treated as still
+   live. A zero duration consequently did not expire a current timestamp.
+
+The failures concern truth inside the existing watchdog, not a lost timestamp
+between producer/consumer modules. No actual worker or observation is executed.
+
+## Minimal semantic repair
+
+A local elapsed-time helper accepts aware timestamps and observer clocks, compares
+UTC instants and returns unknown for invalid, timezone-ambiguous or future proof.
+A lease is stale when time/duration cannot prove health, or age reaches expiry.
+Malformed heartbeat proof emits existing HEARTBEAT_MISSING and inspection continues
+through other existing alert classes. Its detail remains text, including malformed
+wire values. Lease duration and heartbeat timeout require finite nonnegative
+int/float values, excluding bool aliases and overflow. Missing lease duration
+retains the existing 600-second default. Invalid monitor timeout configuration
+raises ValueError explicitly; it cannot return an apparently healthy inspection.
+
+Compatibility: expiry equality now alerts; zero duration is valid immediate
+expiry. Ordinary positive durations, UTC/offset spellings and healthy workers
+retain their behavior. Existing alert codes/wire shape remain unchanged. This is
+a conservative diagnostic; it does not revoke leases, retry work or authorize it.
+
+## Adversarial evidence
+
+tests/test_vertical_watchdog_clock_depth.py adds **56 cases**:
+
+- Microsecond before/equal/after lease and heartbeat expiry, future clocks, zero
+  timeout, default lease duration and positive fractional duration.
+- Missing/empty/malformed/non-string/naive start and heartbeat, leap-second text,
+  unknown observer clock and twelve invalid lease-duration representations.
+- Equivalent UTC/Z/positive/negative offsets and fall-back daylight-saving fold.
+- Invalid timeout configuration explicitly refused instead of a healthy list.
+- A malformed running task beside an independently expired worker and a healthy
+  worker: both unhealthy identities alert, healthy identity does not, even after
+  durable queue reload and repeated inspection.
+- Malformed/future heartbeat beside stuck/crashed/due work: every independent
+  existing alert survives. State values and queue bytes remain unchanged.
+
+Focused after: **138 passed**, combining the new tests with original runtime and
+CP042/CP044 suites. Optimized interpreter/alternate hash seed: **138 passed**, with
+pytest's optimization warning. Seven guard removals are detected: duration
+admission 8 failures; future-clock admission 2; timezone admission 3; lease expiry
+comparison 6; heartbeat comparison 2; malformed-clock recovery 13; invalid timeout
+admission 6. Mutation failures overlap, not extra defects or economic evidence.
+
+Proof: CP045_before.txt, CP045_after.txt, CP045_optimized.txt,
+CP045_mutation_results.json, CP045_MUTATION_RUNNER.txt, CP045_PROVENANCE.json in
+research/vertical_depth/20261021. Full regression and exact-source Core receipt
+are separately bound to HEAD_SHA. All queues are disposable local fixtures.
+
+Attained depth: **D2** for this scoped clock/duration liveness unit. Disk reload
+is an input-path control, not D3 crash/recovery proof for a read-only monitor.
+
+Remaining unproven: malformed attempt counters/status/identity, hostile custom
+objects/tzinfo callbacks, distributed clock trust/skew policy, all queue-schema
+admission, concurrent writer/inspection coherence, actual operating-system or
+remote worker liveness, lease renewal/cancellation, every diagnostic class and
+all runtime-module behavior. No whole-watchdog or runtime D4 qualification.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains separately owned. Time proof cannot grant run authority.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

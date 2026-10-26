@@ -1,0 +1,70 @@
+FFFF.                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_foreign_sha_cannot_label_a_successful_qualification[0000000000000000000000000000000000000000] _
+
+checkout = PosixPath('/tmp/pytest-of-agent/pytest-19/test_foreign_sha_cannot_label_0/checkout')
+foreign = '0000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize("foreign", ["0" * 40, "base"])
+    def test_foreign_sha_cannot_label_a_successful_qualification(checkout, foreign):
+        if foreign == "base":
+            foreign = "01c2e520fa4116645870f96acf6770ea83f1881c"
+        result, output = qualify(checkout, foreign)
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '/tmp/pytest-of-age...OUTCOME_RESEARCH_PIPELINE_QUALIFIED", "verified_commit_sha": "0000000000000000000000000000000000000000"}\n', stderr='').returncode
+
+tests/test_vertical_qualification_depth.py:48: AssertionError
+________ test_foreign_sha_cannot_label_a_successful_qualification[base] ________
+
+checkout = PosixPath('/tmp/pytest-of-agent/pytest-19/test_foreign_sha_cannot_label_1/checkout')
+foreign = '01c2e520fa4116645870f96acf6770ea83f1881c'
+
+    @pytest.mark.parametrize("foreign", ["0" * 40, "base"])
+    def test_foreign_sha_cannot_label_a_successful_qualification(checkout, foreign):
+        if foreign == "base":
+            foreign = "01c2e520fa4116645870f96acf6770ea83f1881c"
+        result, output = qualify(checkout, foreign)
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '/tmp/pytest-of-age...OUTCOME_RESEARCH_PIPELINE_QUALIFIED", "verified_commit_sha": "01c2e520fa4116645870f96acf6770ea83f1881c"}\n', stderr='').returncode
+
+tests/test_vertical_qualification_depth.py:48: AssertionError
+_ test_dirty_executable_cannot_claim_the_committed_source_identity[research/research_os/expansion/v2_core.py] _
+
+checkout = PosixPath('/tmp/pytest-of-agent/pytest-19/test_dirty_executable_cannot_c0/checkout')
+path = 'research/research_os/expansion/v2_core.py'
+
+    @pytest.mark.parametrize("path", ["research/research_os/expansion/v2_core.py",
+                                     "scripts/qualify_oracle_v2_core.py"])
+    def test_dirty_executable_cannot_claim_the_committed_source_identity(checkout, path):
+        source = checkout / path
+        source.write_text(source.read_text() + "\n# disposable uncommitted change\n")
+        result, output = qualify(checkout, git(checkout, "rev-parse", "HEAD"))
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '/tmp/pytest-of-age...OUTCOME_RESEARCH_PIPELINE_QUALIFIED", "verified_commit_sha": "3e288f0722fe52d2102e53d95207a0e2b5f8a40f"}\n', stderr='').returncode
+
+tests/test_vertical_qualification_depth.py:59: AssertionError
+_ test_dirty_executable_cannot_claim_the_committed_source_identity[scripts/qualify_oracle_v2_core.py] _
+
+checkout = PosixPath('/tmp/pytest-of-agent/pytest-19/test_dirty_executable_cannot_c1/checkout')
+path = 'scripts/qualify_oracle_v2_core.py'
+
+    @pytest.mark.parametrize("path", ["research/research_os/expansion/v2_core.py",
+                                     "scripts/qualify_oracle_v2_core.py"])
+    def test_dirty_executable_cannot_claim_the_committed_source_identity(checkout, path):
+        source = checkout / path
+        source.write_text(source.read_text() + "\n# disposable uncommitted change\n")
+        result, output = qualify(checkout, git(checkout, "rev-parse", "HEAD"))
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '/tmp/pytest-of-age...OUTCOME_RESEARCH_PIPELINE_QUALIFIED", "verified_commit_sha": "3e288f0722fe52d2102e53d95207a0e2b5f8a40f"}\n', stderr='').returncode
+
+tests/test_vertical_qualification_depth.py:59: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_qualification_depth.py::test_foreign_sha_cannot_label_a_successful_qualification[0000000000000000000000000000000000000000]
+FAILED tests/test_vertical_qualification_depth.py::test_foreign_sha_cannot_label_a_successful_qualification[base]
+FAILED tests/test_vertical_qualification_depth.py::test_dirty_executable_cannot_claim_the_committed_source_identity[research/research_os/expansion/v2_core.py]
+FAILED tests/test_vertical_qualification_depth.py::test_dirty_executable_cannot_claim_the_committed_source_identity[scripts/qualify_oracle_v2_core.py]
+4 failed, 1 passed in 1.56s

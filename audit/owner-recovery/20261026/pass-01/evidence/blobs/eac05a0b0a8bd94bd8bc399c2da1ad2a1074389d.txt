@@ -1,0 +1,38 @@
+# Vertical CP018 — Immutable checkpoint and artifact registry
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=455112c523b99c1e55520ff056190cc2c60c1ad3
+
+Existing capability/module: Immutable checkpoint and artifact registry. Starting depth: D1.
+North Star basis: scientific truth, persistent provenance/identity, explicit
+UNKNOWN/blocking distinctions and closed economic/capital authority. No future
+Wave-2 capability family is added.
+
+Enumerated repair items:
+
+1. Python equality accepted distinct canonical checkpoint identities (True/1, integer/float, signed zero); tuple wire-equivalent replay was rejected.
+2. Invalid payload objects, ambiguous duplicate JSON fields and malformed envelopes were admitted or raised incidental type errors; snapshot normalization was inconsistent.
+3. Registry check/hash/insert was not serialized, allowing contradictory concurrent registrations.
+
+Narrow repair: Freeze strict JSON object payloads before hashing and publication; compare canonical hashes on replay; reject duplicate fields and malformed envelopes. Instance RLocks serialize registry registration and snapshots; hash and stored body use the same frozen representation. Existing atomic hard-link publication remains intact.
+
+Adversarial evidence: **25 new pytest cases** in the corresponding
+`tests/test_vertical_*_depth.py` file. Before repair: **19 failed / 6 passed**.
+Focused requalification: **59 passed; 22 subtests**. Full failures and focused transcripts are
+`research/vertical_depth/20261021/CP018_{before,after}.txt`.
+Tests cover the concrete failure modes listed above, exact valid controls,
+replay/input and output isolation, and deterministic concurrency or injected
+publication failure where applicable. These counts overlap existing regressions.
+
+Attained depth: **D3**, limited to these capability slices.
+Remaining unproven depth: Same-instance registry concurrency, detached wire identity, hard-link publication before/after ACK-loss and corrected retry are locally exercised. No authenticated anchoring, cross-process shared registry, real reboot/power-loss, caller concurrent mutation, hostile Python subclasses or filesystem migration is proved. Forward ingestion remains unimplemented and denied by authority.
+
+Horizontal findings: none. Longitudinal findings: see the separately recorded
+cross-axis disposition in the final coverage/survey; no handoff repair here.
+Authority state: all Owner grants remain closed. No network acquisition,
+economic experiment, prospective observation or order was executed.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

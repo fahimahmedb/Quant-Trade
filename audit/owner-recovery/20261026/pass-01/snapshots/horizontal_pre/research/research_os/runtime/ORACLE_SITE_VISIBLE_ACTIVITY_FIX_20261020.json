@@ -1,0 +1,25 @@
+{
+  "authority_opened": false,
+  "browser_render_tested": false,
+  "deployment_id": "appgdep_6ad7957857d48191b3f524ba3b28bdd8",
+  "environment_revision": 11,
+  "fixes": [
+    "Explicit Oracle identity survives reload after terminal packets, scoped to the same session/generation",
+    "Latest real event timestamp and factual activity history remain visible between wakes",
+    "Safari16 compatibility: removed Array.findLast dependency"
+  ],
+  "no_simulated_work": true,
+  "no_snapshot_animation_replay": true,
+  "oracle_runtime_modified": false,
+  "safari_iphone_device_tested": false,
+  "site_source_sha": "6e645157abc55b249dd967a669c2ab0d7e424f88",
+  "site_version": 26,
+  "status": "PUBLISHED",
+  "tests": {
+    "artifact_build_validation": "PASS",
+    "native_ingress_and_renderer_contracts": 10,
+    "native_mapper": 14,
+    "published_html_activity_panel": true,
+    "published_js_matches_source": true
+  }
+}

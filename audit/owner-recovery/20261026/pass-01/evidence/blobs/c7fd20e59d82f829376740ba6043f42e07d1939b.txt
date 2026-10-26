@@ -1,0 +1,43 @@
+{
+  "L2_I_candidate_verification": "NOT_PERFORMED_MISSING_DEPENDENCIES",
+  "calibration": {
+    "H": "sha256:54bfcafcca4d87b9771b905efe9fb12023fdce061fbccda155bcecb3a62253bf",
+    "expected": "sha256:54bfcafcca4d87b9771b905efe9fb12023fdce061fbccda155bcecb3a62253bf",
+    "scope": "TEST_ONLY_OUTPUT_MANIFEST",
+    "stdlib": "sha256:54bfcafcca4d87b9771b905efe9fb12023fdce061fbccda155bcecb3a62253bf"
+  },
+  "candidate_loaded": false,
+  "legacy": {
+    "collected": 279,
+    "errors": 0,
+    "expected_failures": 0,
+    "failures": 0,
+    "passed": 279,
+    "run": 279,
+    "skips": 0,
+    "unexpected_successes": 0
+  },
+  "legacy_verdict": "LEGACY_H_BASELINE_279_GREEN",
+  "new": {
+    "collected": 64,
+    "errors": 0,
+    "expected_failures": 0,
+    "failures": 0,
+    "passed": 64,
+    "run": 64,
+    "skips": 0,
+    "unexpected_successes": 0
+  },
+  "offline_audit": {
+    "allowed_reads": 96,
+    "expected_cache_refusals": 61,
+    "forbidden_file_attempts": 0,
+    "network_attempts": 0,
+    "subprocess_attempts": 0
+  },
+  "pinned_bytes_unchanged": true,
+  "real_configuration_evaluated": false,
+  "root_restored": true,
+  "verdict": "L2_B_SYNTHETIC_VERIFICATION_PASS",
+  "vm_accessed": false
+}

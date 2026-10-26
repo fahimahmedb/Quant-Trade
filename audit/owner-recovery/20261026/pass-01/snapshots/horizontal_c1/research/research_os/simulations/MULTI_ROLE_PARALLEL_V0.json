@@ -1,0 +1,37 @@
+{
+  "simulation_id": "MULTI_ROLE_PARALLEL_V0",
+  "mode": "SYNTHETIC_PREPROD",
+  "purpose": "Prove that multiple specialist capabilities can operate from shared durable state without shared conversation memory or production authority.",
+  "candidates": [
+    {"candidate_id":"SIM-QUANT-001","origin_capability":"quant_mechanisms","family_id":"SIM-MECH-QUANT","expected_handoff":"validator"},
+    {"candidate_id":"SIM-FUND-001","origin_capability":"fundamental","family_id":"SIM-MECH-FUND","expected_handoff":"validator"},
+    {"candidate_id":"SIM-EVENT-001","origin_capability":"event_document","family_id":"SIM-MECH-EVENT","expected_handoff":"validator"},
+    {"candidate_id":"SIM-FLOW-001","origin_capability":"institutional_flows","family_id":"SIM-MECH-FLOW","expected_handoff":"validator"}
+  ],
+  "shared_pipeline": [
+    "FROZEN_HYPOTHESIS",
+    "VALIDATOR",
+    "RED_TEAM",
+    "ECONOMIC_IDENTITY",
+    "PORTFOLIO_MAP",
+    "DECISION_RECORD"
+  ],
+  "duplicate_control": {
+    "rule": "same mechanism or implementation overlap must be linked before promotion",
+    "cross_candidate_overlap_check_required": true
+  },
+  "expected_results": [
+    {"candidate_id":"SIM-QUANT-001","decision":"EXPLORE"},
+    {"candidate_id":"SIM-FUND-001","decision":"PARK"},
+    {"candidate_id":"SIM-EVENT-001","decision":"EXPLORE"},
+    {"candidate_id":"SIM-FLOW-001","decision":"PARK"}
+  ],
+  "assertions": {
+    "shared_conversation_memory_required": false,
+    "production_workers_launched": false,
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  }
+}

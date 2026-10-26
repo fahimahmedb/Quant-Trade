@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "candidate": "EURUSD-RANGE-GRID-001",
+  "reviewer": "Codex current agent",
+  "independent": false,
+  "review_scope": "Pre-price design and synthetic safety kernel only; not complete harness or independent replication",
+  "reviewed_utc": "2026-10-10T10:46:25.662429+00:00",
+  "status": "DESIGN_CHALLENGE_CLOSED_HARNESS_CHALLENGE_OPEN",
+  "preregistration_sha256": "d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96",
+  "manifest_sha256": "d4fabb7bb0fde3bf449a2f721f5ee38cf45a4e5472b40326cc4ee179a9b84b3b",
+  "challenges": [
+    {
+      "id": "C01",
+      "issue": "Indicative/unknown-origin quote feed cannot establish capture or first delivery",
+      "resolution": "Restrict estimand to assumed-clock quote proxy; positive earns authentication, never confirmed/live; data source failure separate from economic reject",
+      "status": "RESOLVED_FOR_PROXY_SCOPE"
+    },
+    {
+      "id": "C02",
+      "issue": "Same timestamps can reverse stop/add ordering and create optimistic fills",
+      "resolution": "Symmetric adverse envelope, stop-first priority, delayed worse-of fill, no simultaneous retrospective rungs; full lifecycle synthetic challenge remains required",
+      "status": "DESIGN_RESOLVED_IMPLEMENTATION_PENDING"
+    },
+    {
+      "id": "C03",
+      "issue": "Past volatility state can be contaminated by whole OOS seed/de-mean",
+      "resolution": "January-only seed/reference, explicit mean 0 and variance; no fitting/OOS aggregate statistics; existing 28 causal-state tests unchanged",
+      "status": "DESIGN_RESOLVED_IMPLEMENTATION_PENDING"
+    },
+    {
+      "id": "C04",
+      "issue": "Finite grid can exceed declared risk through spread, delayed adds or stop gaps",
+      "resolution": "Equal finite q, stress all-rung loss sizing, fill-time decline not resizing, no loss clipping, marked equity drawdown and gross/margin caps; gaps disclosed unbounded by quote endpoints",
+      "status": "RESOLVED_FOR_DESIGN"
+    },
+    {
+      "id": "C05",
+      "issue": "Intraday label can hide failed cutoff exit or rollover finance",
+      "resolution": "Closes never expire, DST-aware rollover with triple Wednesday, preserve residual units; unresolved final exit SOURCE_FAILURE, any rollover risk rejection",
+      "status": "RESOLVED_FOR_DESIGN"
+    },
+    {
+      "id": "C06",
+      "issue": "UTC month filtering can omit five hours or treat outcome prefix as warmup",
+      "resolution": "Manifest source-local Jan..Sep, UTC row-bound filters, warmup ends Feb 1 00Z rather than end of Jan source file; no October rescue quote",
+      "status": "RESOLVED_FOR_DESIGN"
+    },
+    {
+      "id": "C07",
+      "issue": "Winner comparator, parameter sweeps and private UNKNOWN undermine inference",
+      "resolution": "Three fixed expressions/six cost paths, primary MAIN, all diagnostics reported, no replacement/no alpha reallocation/reset/no confirmation claim",
+      "status": "RESOLVED_FOR_DESIGN"
+    },
+    {
+      "id": "C08",
+      "issue": "Independent N and economic contribution may be overstated",
+      "resolution": "One shared daily opportunity, day-cluster/HAC uncertainty, basket count not order count, paired ablations and 433 scheduled weekdays; nominal proxy CI only",
+      "status": "RESOLVED_FOR_DESIGN"
+    },
+    {
+      "id": "C09",
+      "issue": "Broker fees, financing, margin and unit access unauthenticated",
+      "resolution": "Explicit invented central/stress costs, 4% cash hurdle, no fee borrowing from another broker, raw personal use only; feasibility not captured edge",
+      "status": "RESOLVED_FOR_PROXY_SCOPE"
+    },
+    {
+      "id": "C10",
+      "issue": "Incomplete runner might be mistaken for authorization to look",
+      "resolution": "Safety kernel has no data-reader/downloader/runner; economic_harness_sha256=null, price access and look disabled until full freeze, synthetic lifecycle review and atomic ref create",
+      "status": "OPEN_HARNESS_GATE"
+    }
+  ],
+  "synthetic_verification": {
+    "command": "python -m unittest discover -s research/edge_search/eurusd_range_grid -p 'test_*.py' -v",
+    "tests": 20,
+    "outcome": "PASS",
+    "market_files_opened": 0,
+    "pre_freeze_fixes": [
+      "Timestamp length corrected to 18 characters from synthetic fixed-EST case",
+      "DST fixture moved off Wednesday so triple-swap and DST are tested separately"
+    ]
+  },
+  "remaining_gates": [
+    "complete deterministic signal/bar/lifecycle/accounting harness",
+    "synthetic causality, lifecycle, missingness, final-open and ledger/statistic challenge",
+    "publish immutable full-harness/dependency/result-schema hash",
+    "no active run or concurrent capture",
+    "admissible capture with raw identity and source QA",
+    "atomic unique remote ref creation + local exclusive attempt/result before tick rows"
+  ],
+  "verdict": {
+    "RESULT": "INTRADAY_PREREGISTRATION_AND_MANIFEST_FROZEN; DESIGN_CHALLENGE_CLOSED; HARNESS_GATE_OPEN; no economic result",
+    "EFFECT_SIZE": "NOT_MEASURED",
+    "UNCERTAINTY": "Conditional rebound and fill/delivery/broker/cost assumptions unvalidated; proxy clock only",
+    "POWER_LIMITATION": "433 scheduled weekdays/about 20 months; dependence, few baskets and private UNKNOWN; no virgin sample or confirmation claim",
+    "ECONOMIC_SIGNIFICANCE": "Costed bounded-grid rule is falsifiable separately from risk scaling; comparator may invalidate complexity without becoming replacement winner",
+    "FAILED_CRITERIA": "Complete economic harness/dependency freeze/source QA/atomic reservation not yet satisfied; executable source remains unmet",
+    "LESSON": "Model failed exits, every rung cost and known exposure before outcomes; strong variance forecasts are not edge",
+    "FAMILY_STATUS": "ONE_DESIGN_CANDIDATE_NOT_ECONOMICALLY_ACTIVATED; 3 expressions/6 fixed cost paths planned; 0 archives/price rows/results/looks",
+    "NEXT_DECISION": "Build and challenge only the smallest registered FX harness, freeze/publicly hash it, then gate sequential capture and unique exploratory look; preserve any active runs and all old results"
+  }
+}

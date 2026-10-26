@@ -1,0 +1,2 @@
+{"domination_cases": 99310, "max_relative_violation": 7.189093237567694e-16}
+{"combos": 64, "reachable_product_states": 12, "violations": [], "core_adverse_but_info_flag_false": 16, "E1_and_E2_conditions_jointly_feasible_under_R1": false}

@@ -1,0 +1,3694 @@
+[
+  {
+    "checkpoint": 38,
+    "test_file": "tests/test_research_os_frozen_envelope_binding.py",
+    "test_functions": [
+      "test_payload_edit_with_stale_protocol_hash_cannot_freeze",
+      "test_rehashed_payload_still_requires_matching_hypothesis_and_generation",
+      "test_valid_frozen_and_opaque_legacy_envelopes_keep_their_ceilings"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.experiment_runner",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_experiment_runner_frozen_protocol"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "0bd77df69041a3ecafefe0f3dec5d19e93feeb0ad37f90078b5c60eb8b84f681",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_envelope_binding.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.48,
+        "summary": "3 passed, 6 subtests passed in 0.03s",
+        "log": "CP038_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_envelope_binding.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.595,
+        "summary": "3 passed, 1 warning, 6 subtests passed in 0.06s",
+        "log": "CP038_runtime_optimized.txt",
+        "original_log_name": "CP038_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 39,
+    "test_file": "tests/test_research_os_frozen_receipt_binding.py",
+    "test_functions": [
+      "test_foreign_receipt_cannot_replay_or_rebind",
+      "test_missing_receipt_and_rehashed_binding_changes_are_rejected",
+      "test_receipt_authority_must_be_explicitly_false_without_affecting_legacy"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.experiment_runner",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_experiment_runner_frozen_protocol"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "77d47180f9730edf06189e0309a3e95655da0fa05896528c0a4f1540c69e3c90",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_receipt_binding.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.558,
+        "summary": "3 passed, 26 subtests passed in 0.03s",
+        "log": "CP039_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_receipt_binding.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.907,
+        "summary": "3 passed, 1 warning, 26 subtests passed in 0.04s",
+        "log": "CP039_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 40,
+    "test_file": "tests/test_research_os_frozen_export_identity.py",
+    "test_functions": [
+      "test_export_cannot_change_validated_economic_meaning",
+      "test_export_auto_or_missing_fields_reuse_exact_candidate_facts",
+      "test_same_generation_cannot_reuse_validation_for_changed_candidate",
+      "test_bridge_records_exact_candidate_hash_without_claiming_real_independence",
+      "test_worker_blocks_unbound_tampered_or_contradictory_validator_before_export"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_bridge",
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_independence",
+      "research.research_os.expansion.v2_pipeline",
+      "research.research_os.worker_stages"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "4ad0e0f98b6157b2ec9125cd9fbfbd07b84f674f10e3d59e21fb416b8862fbf2",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_export_identity.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.491,
+        "summary": "5 passed, 24 subtests passed in 0.08s",
+        "log": "CP040_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_export_identity.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.135,
+        "summary": "5 passed, 1 warning, 24 subtests passed in 0.17s",
+        "log": "CP040_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 41,
+    "test_file": "tests/test_research_os_frozen_trial_accounting.py",
+    "test_functions": [
+      "test_legacy_hash_valid_nonfinite_plan_cannot_replay_or_rebind",
+      "test_nonfinite_or_invalid_estimates_cannot_freeze",
+      "test_unknown_and_finite_estimates_preserve_freeze_and_rebinding"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.experiment_runner",
+      "research.research_os.tests.test_experiment_runner_frozen_protocol"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "cbaec2b4d947b83ebfb816bb6bde563efd4b5205e97b619318ae49874ccdee93",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_trial_accounting.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.436,
+        "summary": "3 passed, 15 subtests passed in 0.05s",
+        "log": "CP041_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_trial_accounting.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.844,
+        "summary": "3 passed, 1 warning, 15 subtests passed in 0.05s",
+        "log": "CP041_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 42,
+    "test_file": "tests/test_research_os_epoch_blinding_admission.py",
+    "test_functions": [
+      "test_pipeline_cannot_qualify_dirty_or_unproven_epoch_before_export",
+      "test_direct_stage_requires_explicit_actor_blinding_before_base_work",
+      "test_real_git_worker_rejects_contamination_before_claim_or_model_call",
+      "test_explicit_clean_blinded_fixture_keeps_exact_qualified_receipt"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_pipeline",
+      "research.research_os.expansion.v2_stage_executor",
+      "research.research_os.worker_stages",
+      "research.research_os.tests"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "6a7120adcd08d91fa83522adbbfd73482b6d0e6bea3e66e55edb1455d5a7461e",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_epoch_blinding_admission.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.815,
+        "summary": "4 passed, 18 subtests passed in 0.42s",
+        "log": "CP042_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_epoch_blinding_admission.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.335,
+        "summary": "4 passed, 1 warning, 18 subtests passed in 0.47s",
+        "log": "CP042_runtime_optimized.txt",
+        "original_log_name": "CP042_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 43,
+    "test_file": "tests/test_research_os_feedback_authorization.py",
+    "test_functions": [
+      "test_truthy_or_missing_policy_and_closure_are_not_authorization",
+      "test_successor_and_feedback_reference_must_be_identified",
+      "test_valid_future_metadata_keeps_successor_only_contract_and_event_shape"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "143902a9d687910dc4ec9362110c2f5e5bc111b2f66ca91f599139e98e059d10",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_feedback_authorization.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.468,
+        "summary": "3 passed, 43 subtests passed in 0.03s",
+        "log": "CP043_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_feedback_authorization.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.128,
+        "summary": "3 passed, 1 warning, 43 subtests passed in 0.06s",
+        "log": "CP043_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 44,
+    "test_file": "tests/test_research_os_evaluation_membrane_admission.py",
+    "test_functions": [
+      "test_each_technical_receipt_kind_is_accepted_for_its_expected_bundle",
+      "test_missing_extra_or_outcome_fields_cannot_cross_reverse_interface",
+      "test_export_references_are_sha256_values_not_structured_side_payloads",
+      "test_receipt_event_and_self_hash_cannot_be_tampered_with",
+      "test_valid_foreign_receipt_cannot_acknowledge_the_expected_export",
+      "test_pipeline_checks_receipt_binding_even_when_receipt_self_hash_is_valid",
+      "test_pipeline_does_not_coerce_unqualified_proof_flags_to_true",
+      "test_pipeline_requires_coherent_source_model_classification_without_hindsight_upgrade"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_pipeline"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "33903416feee7917f76b040b84dd0cefd462a9fd3a652bf49f36094a8866b701",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_evaluation_membrane_admission.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.451,
+        "summary": "8 passed, 66 subtests passed in 0.07s",
+        "log": "CP044_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_evaluation_membrane_admission.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.862,
+        "summary": "8 passed, 1 warning, 66 subtests passed in 0.08s",
+        "log": "CP044_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 45,
+    "test_file": "tests/test_research_os_scientific_claim_admission.py",
+    "test_functions": [
+      "test_outstanding_blockers_cannot_pass_directly_or_through_export_pipeline",
+      "test_validator_requires_attributable_subject_and_actor",
+      "test_source_pit_requires_boolean_and_preserves_hindsight_distinction",
+      "test_valid_pass_hash_and_block_failure_state_separation_are_preserved"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_pipeline"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "4920b0f75392f26c097117c81999243bfda27194d2f554d03d48ded23afb7384",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_scientific_claim_admission.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.428,
+        "summary": "4 passed, 55 subtests passed in 0.04s",
+        "log": "CP045_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_scientific_claim_admission.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.912,
+        "summary": "4 passed, 1 warning, 55 subtests passed in 0.04s",
+        "log": "CP045_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 46,
+    "test_file": "tests/test_research_os_readiness_provenance_admission.py",
+    "test_functions": [
+      "test_complete_freeze_cannot_admit_data_after_the_declared_decision",
+      "test_independent_validator_checks_causality_inside_a_consistent_frozen_body",
+      "test_equal_and_offset_instants_preserve_ready_and_frozen_replay",
+      "test_post_cutoff_route_cannot_hide_behind_older_snapshot_clock",
+      "test_both_clocks_require_explicit_timezones_in_direct_validator",
+      "test_one_old_pit_row_cannot_cover_two_rebound_source_snapshots",
+      "test_producer_and_validator_must_be_explicit_literal_identifiers",
+      "test_valid_offset_clocks_and_declared_content_aliases_keep_their_scope"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.economic_test_readiness_v1",
+      "research.research_os.expansion.validation_readiness",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_economic_readiness_integration",
+      "research.research_os.tests.test_economic_readiness_validation"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "af12699c53dec3ffa3d0dd4bcf6b81a47b24e32f771e508857c9cac51e8b80ec",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_readiness_provenance_admission.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.908,
+        "summary": "8 passed, 7 subtests passed in 0.20s",
+        "log": "CP046_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_readiness_provenance_admission.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.907,
+        "summary": "8 passed, 1 warning, 7 subtests passed in 0.11s",
+        "log": "CP046_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 47,
+    "test_file": "tests/test_research_os_frozen_readiness_inputs.py",
+    "test_functions": [
+      "test_composed_readiness_freezes_the_actual_implementability_declaration",
+      "test_local_projection_rehashes_do_not_repair_a_changed_frozen_intent",
+      "test_source_projection_cannot_be_swapped_even_with_rebound_reproducibility",
+      "test_missing_frozen_sources_protocol_or_implementation_is_not_inferred",
+      "test_pit_row_order_and_explicit_content_aliases_do_not_invent_trial_counts",
+      "test_optional_envelope_declaration_preserves_default_and_owns_a_copy"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion",
+      "research.research_os.expansion.validation_readiness",
+      "research.research_os.expansion.final_shape",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_economic_readiness_integration"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "103f6d1cfaf0060e7de18d60cdcf35d664cdcdd59a4257365c5969d49149386f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_readiness_inputs.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.465,
+        "summary": "6 passed, 15 subtests passed in 0.08s",
+        "log": "CP047_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_readiness_inputs.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.877,
+        "summary": "6 passed, 1 warning, 15 subtests passed in 0.08s",
+        "log": "CP047_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 48,
+    "test_file": "tests/test_research_os_canonical_freeze_v2_binding.py",
+    "test_functions": [
+      "test_rehashed_subjects_and_source_hashes_cannot_borrow_the_canonical_freeze",
+      "test_canonical_scientific_fields_cannot_drift_from_the_recorded_engine_output",
+      "test_native_requires_output_and_retains_a_hash_valid_existing_stage_binding",
+      "test_actual_two_producer_handoff_in_distinct_process_cannot_misattribute_a_verdict"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_stage_executor",
+      "research.research_os.github_state",
+      "research.research_os.worker_stages"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "e6b1f6a8b1b0f0dee770ec7b7c6f1216b375f38f7eb283c971d6f02d718bedc1",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_canonical_freeze_v2_binding.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 3.564,
+        "summary": "4 passed, 21 subtests passed in 3.17s",
+        "log": "CP048_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_canonical_freeze_v2_binding.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 5.108,
+        "summary": "4 passed, 1 warning, 21 subtests passed in 4.28s",
+        "log": "CP048_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 49,
+    "test_file": "tests/test_research_os_canonical_identity.py",
+    "test_functions": [
+      "test_invalid_principal_identifiers_block_before_hashing",
+      "test_valid_epoch_trial_and_four_family_hashes_are_unchanged",
+      "test_nullable_root_ancestry_and_scientific_unknowns_remain_supported",
+      "test_mutually_equal_null_references_cannot_qualify_whole_pipeline"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_pipeline"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "8abb92ad23f0cae4ff6727593dc575e778929b06d05d165c43d90b67dc681db2",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_canonical_identity.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.49,
+        "summary": "4 passed, 91 subtests passed in 0.03s",
+        "log": "CP049_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_canonical_identity.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.047,
+        "summary": "4 passed, 1 warning, 91 subtests passed in 0.04s",
+        "log": "CP049_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 50,
+    "test_file": "tests/test_research_os_native_trial_lineage.py",
+    "test_functions": [
+      "test_rehashed_foreign_lineage_is_refused_at_each_native_challenge_stage",
+      "test_trial_hash_and_derived_counts_are_verified_before_trust",
+      "test_manifest_and_trial_reference_scope_fail_before_outside_reads",
+      "test_actual_git_generated_trial_replays_and_foreign_reference_stops_before_model"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_stage_executor",
+      "research.research_os.worker_stages"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "9bbdbb471d02b6feb2437cc648d7c29c348e0273fac63d53b7faede521d85366",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_native_trial_lineage.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 1.348,
+        "summary": "4 passed, 51 subtests passed in 0.95s",
+        "log": "CP050_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_native_trial_lineage.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.765,
+        "summary": "4 passed, 1 warning, 51 subtests passed in 0.95s",
+        "log": "CP050_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 51,
+    "test_file": "tests/test_research_os_independent_candidate_reconstruction.py",
+    "test_functions": [
+      "test_declared_documentary_families_reconstruct_without_filling_unknowns",
+      "test_correctly_rehashed_changes_cannot_borrow_the_original_source_proof",
+      "test_native_validation_refuses_before_base_reasoning_or_writes",
+      "test_actual_git_and_separate_interpreter_refuse_rehashed_projection_changes"
+    ],
+    "imported_modules": [
+      "research.research_os.engines.builtin",
+      "research.research_os.engines.protocol",
+      "research.research_os.expansion.v2_bridge",
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_independence",
+      "research.research_os.expansion.v2_stage_executor",
+      "research.research_os.worker_stages"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "bb101d796ab3baf90f38f7bf6c8f262514a414c5d379da1d28fdfd97473c18db",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_independent_candidate_reconstruction.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 1.322,
+        "summary": "4 passed, 60 subtests passed in 0.93s",
+        "log": "CP051_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_independent_candidate_reconstruction.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.744,
+        "summary": "4 passed, 1 warning, 60 subtests passed in 0.96s",
+        "log": "CP051_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 52,
+    "test_file": "tests/test_research_os_documentary_portfolio_scope.py",
+    "test_functions": [
+      "test_three_documentary_families_preserve_support_without_promoting_aliases",
+      "test_same_issuer_pair_retains_issuer_diagnostic_without_known_instrument_or_exposure",
+      "test_explicit_generic_structural_declarations_keep_the_existing_golden_contract"
+    ],
+    "imported_modules": [
+      "research.research_os.engines.builtin",
+      "research.research_os.engines.protocol",
+      "research.research_os.expansion.final_shape",
+      "research.research_os.expansion.portfolio_v2",
+      "research.research_os.scientific_store",
+      "research.research_os.tests"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "20bad48ef31991bf29414a3e5e2eb7329cf3d2a0737edeb035b34a3581048e4b",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_documentary_portfolio_scope.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.496,
+        "summary": "3 passed, 3 subtests passed in 0.04s",
+        "log": "CP052_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_documentary_portfolio_scope.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.051,
+        "summary": "3 passed, 1 warning, 3 subtests passed in 0.06s",
+        "log": "CP052_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 53,
+    "test_file": "tests/test_research_os_frozen_portfolio_declarations.py",
+    "test_functions": [
+      "test_actual_readiness_preserves_exact_frozen_expression_and_candidate_provenance",
+      "test_portfolio_consumes_declared_clock_for_same_exposure_review",
+      "test_documentary_facts_and_declared_structure_keep_distinct_ceilings",
+      "test_foreign_stale_or_partially_rebound_declarations_fail_closed",
+      "test_missing_horizon_stays_unknown_and_structured_clock_remains_literal",
+      "test_identity_owns_declaration_and_projection_does_not_mutate_it"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.final_shape",
+      "research.research_os.expansion.economic_test_readiness_v1",
+      "research.research_os.expansion.portfolio_v2",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_economic_readiness_integration",
+      "research.research_os.tests.test_economic_identity_portfolio_readiness"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "abc4ec14b29f0ee819ad8b997fdd93dae57cc130619e2b0788ef5910a647954f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_portfolio_declarations.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.983,
+        "summary": "6 passed, 8 subtests passed in 0.17s",
+        "log": "CP053_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frozen_portfolio_declarations.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.078,
+        "summary": "6 passed, 1 warning, 8 subtests passed in 0.08s",
+        "log": "CP053_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 54,
+    "test_file": "tests/test_research_os_fundamental_readiness.py",
+    "test_functions": [
+      "test_actual_accounting_support_stays_partial_without_valuation_or_trading_clock",
+      "test_fundamental_requirements_reach_existing_acquisition_bridge_without_routes",
+      "test_accounting_cannot_be_promoted_to_unsupported_economic_claims",
+      "test_existing_three_family_projection_hashes_remain_exactly_qualified",
+      "test_metadata_only_fundamental_package_can_freeze_replay_and_detect_mutation",
+      "test_real_native_blocked_dossier_cannot_use_metadata_fixture_to_become_ready"
+    ],
+    "imported_modules": [
+      "research.research_os.engines.builtin",
+      "research.research_os.engines.protocol",
+      "research.research_os.expansion.engine_dossiers_v1",
+      "research.research_os.expansion.economic_test_readiness_v1",
+      "research.research_os.expansion.evidence_acquisition_intents_v2",
+      "research.research_os.expansion.source_qualification",
+      "research.research_os.tests.test_economic_readiness_integration",
+      "research.research_os.tests.test_producer_economic_readiness"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "de5c4681880a07ca3a2ae2d65d8caf995b0a5e3da2e18203711ee4fca3fa67e4",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_fundamental_readiness.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.448,
+        "summary": "6 passed, 19 subtests passed in 0.07s",
+        "log": "CP054_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_fundamental_readiness.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.272,
+        "summary": "6 passed, 1 warning, 19 subtests passed in 0.13s",
+        "log": "CP054_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 55,
+    "test_file": "tests/test_research_os_implementability_contract.py",
+    "test_functions": [
+      "test_boolean_or_nonfinite_expression_declarations_cannot_pass",
+      "test_explicit_unknown_clock_states_are_not_exact_clocks",
+      "test_declared_fallback_universe_and_horizon_still_work"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.final_shape",
+      "research.research_os.expansion.implementability_depth",
+      "research.research_os.tests.test_implementability_depth"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "6a956ad6bad98051cb6eb51e855ddb28884fe6957013636702d5eff6fb8da30f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_implementability_contract.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.47,
+        "summary": "3 passed, 60 subtests passed in 0.04s",
+        "log": "CP055_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_implementability_contract.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.819,
+        "summary": "3 passed, 1 warning, 60 subtests passed in 0.04s",
+        "log": "CP055_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 56,
+    "test_file": "tests/test_research_os_source_pit_clocks.py",
+    "test_functions": [
+      "test_invalid_availability_or_freeze_never_qualifies_pit",
+      "test_missing_availability_has_both_missing_and_pit_blockers",
+      "test_explicit_offsets_compare_as_instants_without_rewriting_route",
+      "test_readiness_cannot_promote_missing_or_naive_source_availability"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.source_qualification",
+      "research.research_os.expansion.economic_test_readiness_v1",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_economic_readiness_integration",
+      "research.research_os.tests.test_producer_economic_readiness"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "e1ee1381aa157f2a3c38071969ff315dc078f68c233df7fc956ea31897b0677a",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_source_pit_clocks.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.428,
+        "summary": "4 passed, 23 subtests passed in 0.05s",
+        "log": "CP056_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_source_pit_clocks.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.834,
+        "summary": "4 passed, 1 warning, 23 subtests passed in 0.05s",
+        "log": "CP056_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 57,
+    "test_file": "tests/test_research_os_raw_evidence_capture.py",
+    "test_functions": [
+      "test_exact_raw_bytes_are_retrievable_idempotently_without_changing_packet",
+      "test_all_inputs_must_validate_before_any_raw_evidence_is_archived",
+      "test_existing_corrupt_raw_object_cannot_be_silently_reused_or_overwritten",
+      "test_archival_uses_verified_bytes_even_if_caller_changes_a_file_mid_archive"
+    ],
+    "imported_modules": [
+      "quant.dataplane.evidence",
+      "research.research_os.expansion.source_adapters_v1"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "104b00461701e6bd6cb239dbd3e7bf9dbcf8f0ed9b0f28d88276e2b3e200633a",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_raw_evidence_capture.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.446,
+        "summary": "4 passed in 0.05s",
+        "log": "CP057_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_raw_evidence_capture.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.859,
+        "summary": "4 passed, 1 warning in 0.07s",
+        "log": "CP057_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 58,
+    "test_file": "tests/test_research_os_evidence_acquisition_intents_v2.py",
+    "test_functions": [
+      "test_existing_producer_control_is_unresolved_not_an_outcome_request",
+      "test_exact_documentary_control_with_explicit_route_is_plan_only",
+      "test_documentary_control_never_bypasses_content_adapter_or_pit_firewall",
+      "test_control_wording_cannot_launder_extra_outcome_demands",
+      "test_declared_documentary_gap_projects_to_existing_firewall_plan",
+      "test_missing_declared_route_is_unresolved_without_inventing_source",
+      "test_declared_route_with_missing_validated_adapter_is_unresolved",
+      "test_outcome_like_requirement_blocks_before_route_matching",
+      "test_forbidden_content_class_blocks_even_if_adapter_declares_it",
+      "test_missing_or_naive_pit_cutoff_blocks_without_guessing",
+      "test_unknown_version_policy_blocks",
+      "test_multiple_exact_routes_block_as_ambiguous",
+      "test_projection_is_deterministic_and_declared_route_order_independent",
+      "test_readiness_hash_binding_and_outcome_boundary_fail_closed"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.evidence_acquisition_intents_v2",
+      "research.research_os.expansion.source_adapters_v1",
+      "research.research_os.expansion.source_qualification",
+      "research.research_os.expansion.source_qualification",
+      "research.research_os.tests.test_producer_economic_readiness"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "85ce095f2f1c3c2638d281b332c3e884af741ff902155e1e8ca1c2e0c3e1b62f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_evidence_acquisition_intents_v2.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.445,
+        "summary": "14 passed, 15 subtests passed in 0.05s",
+        "log": "CP058_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_evidence_acquisition_intents_v2.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.819,
+        "summary": "14 passed, 1 warning, 15 subtests passed in 0.04s",
+        "log": "CP058_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 59,
+    "test_file": "tests/test_research_os_frontier_source_planner_v2.py",
+    "test_functions": [
+      "test_preproducer_block_does_not_consume_institutional_default",
+      "test_institutional_faq_selected_only_after_default_rule_really_consumed",
+      "test_event_and_fundamental_defaults_are_exhausted_only_after_producer_completion",
+      "test_quant_without_qualified_documentary_source_is_noop",
+      "test_source_aware_refill_binds_strongest_unused_institutional_source",
+      "test_capture_support_is_not_a_producer_source",
+      "test_bound_source_change_fails_closed",
+      "test_institutional_frontier_explicitly_authorizes_mechanism_research",
+      "test_renamed_reserved_content_is_not_novel_for_any_bound_identity",
+      "test_consumption_is_frontier_scoped_and_new_version_is_eligible",
+      "test_alias_cannot_manufacture_a_refill_task",
+      "test_derived_selection_mismatch_blocks_before_reading_source",
+      "test_source_aware_binding_cannot_downgrade_to_legacy_fallback",
+      "test_selection_and_lease_recheck_the_original_source_selection"
+    ],
+    "imported_modules": [
+      "research.research_os.frontier_source_planner_v2",
+      "research.research_os.github_state",
+      "research.research_os.oracle_worker_v2",
+      "research.research_os.oracle_worker",
+      "research.research_os.queue_replenisher",
+      "research.research_os.worker_stages"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "6782a826c71ac6c15948e71a603fb1c946e1ca3adef0c5fd06de06226bda09d8",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frontier_source_planner_v2.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.461,
+        "summary": "14 passed, 15 subtests passed in 0.07s",
+        "log": "CP059_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_frontier_source_planner_v2.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.925,
+        "summary": "14 passed, 1 warning, 15 subtests passed in 0.11s",
+        "log": "CP059_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 60,
+    "test_file": "tests/test_research_os_edge_observation_reader_v2.py",
+    "test_functions": [
+      "test_projects_only_bound_producer_evidence_with_exact_read_set",
+      "test_blocked_stage_uses_own_receipt_and_never_invents_dossier",
+      "test_unexecuted_task_has_no_manufactured_research_or_readiness",
+      "test_missing_dossier_blocks_but_native_fundamental_can_project_requirements",
+      "test_traversal_and_cross_task_references_fail_before_artifact_read",
+      "test_uncommitted_stage_or_bad_content_hash_cannot_be_projected",
+      "test_real_snapshot_rejects_modified_bytes",
+      "test_wrong_epoch_or_unsealed_policy_fails_closed",
+      "test_stale_receipt_or_open_assertion_is_rejected",
+      "test_receipt_path_cannot_escape_task",
+      "test_outcome_injection_and_missing_markers_are_rejected",
+      "test_source_candidate_and_lineage_bindings_are_checked",
+      "test_head_and_task_blob_changes_alter_observation_identity",
+      "test_offline_cli_reads_exact_real_git_objects_without_changing_repository"
+    ],
+    "imported_modules": [
+      "research.research_os.github_state",
+      "research.research_os.worker_preflight",
+      "research.research_os.oracle_worker",
+      "research.research_os.expansion.edge_observation_reader_v2",
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_state",
+      "research.research_os.expansion.v2_stage_executor",
+      "research.research_os.tests.test_producer_economic_readiness",
+      "scripts.observe_edge_task_v2"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "be0da37bdc466701e111d6768a3238e931181ff135802b8b214b9334b8243fbd",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_edge_observation_reader_v2.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.761,
+        "summary": "14 passed, 16 subtests passed in 0.24s",
+        "log": "CP060_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_edge_observation_reader_v2.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.396,
+        "summary": "14 passed, 1 warning, 16 subtests passed in 0.41s",
+        "log": "CP060_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 61,
+    "test_file": "tests/test_research_os_edge_observability_v2.py",
+    "test_functions": [
+      "test_projection_exposes_missing_evidence_without_economic_claim",
+      "test_blocked_attempt_is_not_relabelled_failed",
+      "test_ready_package_remains_pre_outcome_and_authority_closed",
+      "test_rejects_outcome_payload",
+      "test_rejects_open_authority_or_observed_economic_result",
+      "test_ready_plan_composes_missing_evidence_without_promoting_maturity",
+      "test_missing_route_or_adapter_remains_unresolved_without_firewall_plan",
+      "test_firewall_block_is_visible_with_its_actual_reasons",
+      "test_invalid_pit_version_ambiguity_and_outcome_content_remain_blocked",
+      "test_forbidden_requirement_and_mixed_states_keep_separate_counts",
+      "test_no_explicit_gap_is_not_a_ready_acquisition_plan",
+      "test_readiness_and_intent_hashes_bind_exact_upstream_changes",
+      "test_rejects_cross_hypothesis_composition",
+      "test_rejects_outcomes_or_open_authority_in_new_inputs",
+      "test_composition_is_pure_and_performs_no_io",
+      "test_optional_catalogs_require_readiness_and_missing_catalogs_do_not_invent_routes",
+      "test_legacy_call_has_no_new_acquisition_fields"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.edge_observability_v2",
+      "research.research_os.expansion.source_adapters_v1",
+      "research.research_os.expansion.source_qualification"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "6e568121235672d85c59559d46a06e486d0e38b72eb2f71a84f9bdc76401f881",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_edge_observability_v2.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.757,
+        "summary": "17 passed, 12 subtests passed in 0.06s",
+        "log": "CP061_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_edge_observability_v2.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.897,
+        "summary": "17 passed, 1 warning, 12 subtests passed in 0.07s",
+        "log": "CP061_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 62,
+    "test_file": "tests/test_research_os_historical_source_recovery.py",
+    "test_functions": [
+      "test_original_id_and_mechanism_route_to_scoped_review_not_scientific_kill",
+      "test_existing_ledger_identity_and_counts_are_unchanged",
+      "test_incomplete_ambiguous_or_metric_bearing_recovery_fails_closed",
+      "test_native_screen_and_preflight_bind_source_review_hash",
+      "test_no_recovery_entries_preserves_old_manifests"
+    ],
+    "imported_modules": [
+      "research.research_os.legacy",
+      "research.research_os.worker_preflight",
+      "research.research_os.worker_stages"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "611764d19bf8b91d00e85415f654fa93a2f0d70c6d584efe7b4f8bf720cbed0f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_historical_source_recovery.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.62,
+        "summary": "5 passed, 22 subtests passed in 0.09s",
+        "log": "CP062_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_historical_source_recovery.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.979,
+        "summary": "5 passed, 1 warning, 22 subtests passed in 0.08s",
+        "log": "CP062_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 63,
+    "test_file": "tests/test_research_os_structural_unknown_evidence.py",
+    "test_functions": [
+      "test_semantic_nulls_cannot_prove_shared_core_exposure",
+      "test_empty_or_all_null_structures_stay_unknown_but_real_numeric_facts_survive",
+      "test_placeholder_tags_do_not_inflate_overlap_or_create_empirical_claims",
+      "test_known_overlap_and_real_native_projection_keep_golden_hashes_and_inputs"
+    ],
+    "imported_modules": [
+      "research.research_os.engines.builtin",
+      "research.research_os.engines.protocol",
+      "research.research_os.expansion.final_shape",
+      "research.research_os.expansion.portfolio_v2",
+      "research.research_os.scientific_store",
+      "research.research_os.tests"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "eee1d49c6a3e686ceb81185dcc28da2771aea61d8b27cb693ae90b6c8c76d00b",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_structural_unknown_evidence.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.439,
+        "summary": "4 passed, 23 subtests passed in 0.04s",
+        "log": "CP063_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_structural_unknown_evidence.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.828,
+        "summary": "4 passed, 1 warning, 23 subtests passed in 0.04s",
+        "log": "CP063_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 64,
+    "test_file": "tests/test_research_os_readiness_declarations.py",
+    "test_functions": [
+      "test_composition_rejects_invalid_model_and_evidence_identifiers",
+      "test_independent_validator_checks_declared_model_identifiers",
+      "test_independent_validator_rejects_invalid_expression_values_even_when_hashed",
+      "test_valid_identifiers_zero_costs_and_structured_rules_remain_admissible",
+      "test_nonfinite_effective_trials_cannot_be_claimed_known"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.economic_test_readiness_v1",
+      "research.research_os.expansion.validation_readiness",
+      "research.research_os.scientific_store",
+      "research.research_os.tests.test_economic_readiness_integration",
+      "research.research_os.tests.test_economic_readiness_validation"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "2fb83960f2114ad4fcc1b759c65893d51862e134c85f979c902a7112a9a30965",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_readiness_declarations.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.504,
+        "summary": "5 passed, 74 subtests passed in 0.13s",
+        "log": "CP064_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_readiness_declarations.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.925,
+        "summary": "5 passed, 1 warning, 74 subtests passed in 0.13s",
+        "log": "CP064_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 65,
+    "test_file": "tests/test_research_os_v2_worker_integration.py",
+    "test_functions": [
+      "test_v2_worker_requires_explicit_contract_and_closed_authority",
+      "test_research_stage_adds_trial_candidate_and_leakage_sidecars_atomically",
+      "test_validation_handoff_binds_v2_candidate_trial_and_epoch",
+      "test_independent_validation_emits_separate_v2_validator_state",
+      "test_claim_restriction_can_emit_frozen_export_intent_without_evaluation",
+      "test_real_git_claim_counts_ideation_before_crash_and_replay",
+      "test_real_git_epoch_change_cannot_relabel_existing_trial",
+      "test_source_after_epoch_cutoff_is_blocked_before_model_generation",
+      "test_real_git_validator_requires_separate_process_and_reconstructs_primary_evidence"
+    ],
+    "imported_modules": [
+      "research.research_os.engines.builtin",
+      "research.research_os.engines.protocol",
+      "research.research_os.expansion.economic_test_readiness_v1",
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_stage_executor",
+      "research.research_os.oracle_worker_v2",
+      "research.research_os.worker_stages",
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_core",
+      "research.research_os.tests",
+      "research.research_os.tests",
+      "research.research_os.expansion.v2_independence"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "92e035763bec51d709c920dd1848dda8d769a4340224315c9fed3df239a348be",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_worker_integration.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 2.816,
+        "summary": "9 passed in 2.41s",
+        "log": "CP065_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_worker_integration.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 4.002,
+        "summary": "9 passed, 1 warning in 3.19s",
+        "log": "CP065_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 66,
+    "test_file": "tests/test_research_os_v2_pipeline.py",
+    "test_functions": [
+      "test_end_to_end_pre_outcome_receipt",
+      "test_outcome_key_anywhere_in_research_bundle_fails_closed",
+      "test_validator_block_cannot_export",
+      "test_broken_blinding_cannot_export"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core",
+      "research.research_os.expansion.v2_pipeline"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "1273959b278364e14d4afadf69931dd9085522138f092ec69237877ed6973997",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_pipeline.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.417,
+        "summary": "4 passed in 0.03s",
+        "log": "CP066_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_pipeline.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.985,
+        "summary": "4 passed, 1 warning in 0.04s",
+        "log": "CP066_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 67,
+    "test_file": "tests/test_research_os_v2_core.py",
+    "test_functions": [
+      "test_authority_closed",
+      "test_epoch_is_hashed_and_close_policy_freezes_after_export",
+      "test_epoch_rejects_bad_temporal_order",
+      "test_model_policy",
+      "test_model_pit_distinct_from_source_pit",
+      "test_trial_accounting_counts_discarded_proposals",
+      "test_family_specific_candidate_contracts",
+      "test_family_extension_mismatch_blocks",
+      "test_validator_infrastructure_failure_is_not_scientific_block",
+      "test_complete_validator_must_decide",
+      "test_multidimensional_status",
+      "test_priority_is_explainable_and_rejects_outcome_like_signal",
+      "test_negative_memory_requires_scope_for_permanent_claim",
+      "test_export_rejects_outcome_data",
+      "test_reverse_channel_is_restricted",
+      "test_blinding_contaminates_when_influencer_views_outcomes",
+      "test_feedback_only_releases_to_successor_after_close",
+      "test_v2_qualification_never_opens_authority",
+      "test_v2_qualification_blocks_missing_gate"
+    ],
+    "imported_modules": [
+      "research.research_os.expansion.v2_core"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "9d68b72d0df56fba913d63f72daf2a781e70e2f74006d7bae1ebfd38debb94ea",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_core.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.466,
+        "summary": "19 passed in 0.04s",
+        "log": "CP067_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_core.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.841,
+        "summary": "19 passed, 1 warning in 0.04s",
+        "log": "CP067_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 68,
+    "test_file": "tests/test_research_os_v2_bridge.py",
+    "test_functions": [
+      "test_all_existing_primary_engines_bridge_to_v2",
+      "test_non_forced_flow_families_do_not_receive_fake_forced_actor",
+      "test_synthetic_bridge_keeps_unknowns_explicit",
+      "test_existing_validator_pass_maps_to_v2_complete_pass",
+      "test_existing_validator_block_preserves_blockers",
+      "test_validator_state_isolation_is_not_name_only"
+    ],
+    "imported_modules": [
+      "research.research_os.engines.builtin",
+      "research.research_os.engines.protocol",
+      "research.research_os.expansion.v2_bridge",
+      "research.research_os.expansion.v2_core"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "73d0d038d296fe5a60f242b09c3c6919c76fa59e86d99a84e937c2e6815da0c1",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_bridge.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.429,
+        "summary": "6 passed, 4 subtests passed in 0.04s",
+        "log": "CP068_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_os_v2_bridge.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.824,
+        "summary": "6 passed, 1 warning, 4 subtests passed in 0.05s",
+        "log": "CP068_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 69,
+    "test_file": "tests/test_edge_lab_scheduler.py",
+    "test_functions": [
+      "test_fresh_exact_receipt_configures_one_worker_without_spending_looks",
+      "test_metadata_tick_still_cannot_reactivate_owner_disabled_worker",
+      "test_other_worker_missing_owner_or_mismatched_receipt_refused",
+      "test_historical_receipt_cannot_override_newer_pause",
+      "test_paused_control_refuses_receipt_without_mutation",
+      "test_new_native_last_run_observation_is_not_independence_or_an_economic_look",
+      "test_old_future_or_different_prompt_cannot_attest_current_worker",
+      "test_pause_stops_native_run_receipt_without_rewriting_history"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "7cbdc81fc31f44ee19653afdc88f10770793cc7c2947befae965f9e48ebff3b1",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_scheduler.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.489,
+        "summary": "8 passed in 0.10s",
+        "log": "CP069_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_scheduler.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.915,
+        "summary": "8 passed, 1 warning in 0.12s",
+        "log": "CP069_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 70,
+    "test_file": "tests/test_edge_lab_dashboard_claim.py",
+    "test_functions": [
+      "test_new_family_queues_one_admission_question_without_economic_launch",
+      "test_cli_claim_succeeds_after_persisting_one_claim_without_next_action"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "e8efa97d3d55d6dbd82d0dcd59294b878295dd2c7a4054c8d32872923d256a72",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_dashboard_claim.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.516,
+        "summary": "2 passed in 0.12s",
+        "log": "CP070_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_dashboard_claim.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.909,
+        "summary": "2 passed, 1 warning in 0.13s",
+        "log": "CP070_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 71,
+    "test_file": "tests/test_edge_lab_construction.py",
+    "test_functions": [
+      "test_cli_queues_claimable_construction_with_economic_history_unchanged",
+      "test_duplicates_and_renamed_scopes_cannot_reopen_completed_build",
+      "test_qualified_metadata_can_queue_software_gate_without_outcome_authority",
+      "test_only_one_pending_build_per_parent_and_parent_provenance_required",
+      "test_paused_or_cross_family_build_is_refused_without_mutation",
+      "test_active_parent_or_rejected_family_cannot_be_reopened_as_build",
+      "test_source_declared_window_is_persisted_and_refuses_early_claim",
+      "test_past_source_window_is_due_without_resetting_parent_or_budget",
+      "test_ambiguous_or_malformed_access_window_is_refused_without_mutation"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "c69ad4cd11ecf52b53291482bf81dd23a4a451732b2385d3c87ff2de389b3c88",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_construction.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.559,
+        "summary": "9 passed in 0.19s",
+        "log": "CP071_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_construction.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.975,
+        "summary": "9 passed, 1 warning in 0.21s",
+        "log": "CP071_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 72,
+    "test_file": "tests/test_edge_lab_discovery_remote.py",
+    "test_functions": [
+      "test_two_hosts_cannot_publish_the_same_parent",
+      "test_pause_reads_no_discovery_or_runner_body",
+      "test_new_owner_pause_rejects_stale_claim"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.remote",
+      "quant.edge_lab.store",
+      "quant.edge_lab.discovery",
+      "quant.state",
+      "quant.edge_lab.seed"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "8909e01815472fef70780a7d9331c00616e9029de5699997dd5cec1f8bc556e4",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_discovery_remote.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 1.198,
+        "summary": "3 passed in 0.80s",
+        "log": "CP072_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_discovery_remote.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.912,
+        "summary": "3 passed, 1 warning in 0.90s",
+        "log": "CP072_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 73,
+    "test_file": "tests/test_edge_lab_dashboard.py",
+    "test_functions": [
+      "test_state_and_controls_persist_across_new_lab_instance",
+      "test_live_contract_is_machine_readable_and_distinguishes_tick_from_work",
+      "test_cross_origin_and_rebound_host_cannot_change_pause",
+      "test_view_does_not_claim_edge_or_active_economic_worker"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.dashboard",
+      "quant.edge_lab.engine"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "8bb931cbfa8dd63c03a998df89f7f654d272f82e582291d8ac88d4858dc5f2a1",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_dashboard.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 2.537,
+        "summary": "4 passed in 2.07s",
+        "log": "CP073_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_dashboard.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 2.88,
+        "summary": "4 passed, 1 warning in 2.11s",
+        "log": "CP073_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 74,
+    "test_file": "tests/test_edge_lab_worker.py",
+    "test_functions": [
+      "test_start_publishes_question_before_returning_work_without_economic_charge",
+      "test_cas_loser_receives_no_work_and_preserves_original_remote_state",
+      "test_pause_is_checked_before_state_or_local_session_access",
+      "test_stale_local_state_cannot_claim",
+      "test_owner_disabled_scheduler_is_not_reenabled_by_agent_start",
+      "test_parallel_session_or_reused_invocation_cannot_start",
+      "test_expired_interactive_claim_is_recovered_by_scheduler_without_new_claim",
+      "test_finish_requires_original_resolved_claim_and_preserves_finished_receipt",
+      "test_due_boundary_waits_and_expired_claim_requires_recovery"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store",
+      "quant.edge_lab.worker"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "c922ab9ca235bcf45ae556a9751baa4706bf257e6bbb830edad6b2856d2b161d",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_worker.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.443,
+        "summary": "9 passed in 0.07s",
+        "log": "CP074_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_worker.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.842,
+        "summary": "9 passed, 1 warning in 0.08s",
+        "log": "CP074_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 75,
+    "test_file": "tests/test_edge_lab_fiscal_vintages.py",
+    "test_functions": [
+      "test_late_receipt_cannot_inherit_earlier_publication_as_availability",
+      "test_same_bytes_after_restart_preserve_first_receipt_and_distinguish_byte_change",
+      "test_clock_regression_and_missing_timezone_fail_without_rewriting_index",
+      "test_real_source_or_unlabelled_empirical_bytes_are_refused_before_storage",
+      "test_interrupted_write_and_corrupted_saved_payload_are_not_automatically_recaptured",
+      "test_payload_bound_and_damaged_index_fail_closed"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.fiscal_vintages",
+      "quant.edge_lab.store"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "ed69f40f139ef73615a02353b031d171a503f2a7a0db608e2acdcfac6d1c7c05",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_fiscal_vintages.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.512,
+        "summary": "6 passed in 0.03s",
+        "log": "CP075_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_fiscal_vintages.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.79,
+        "summary": "6 passed, 1 warning in 0.03s",
+        "log": "CP075_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 76,
+    "test_file": "tests/test_edge_lab_discovery.py",
+    "test_functions": [
+      "test_missing_state_is_absent_and_saved_state_survives_restart",
+      "test_contract_requires_falsification_controls_and_bounded_claims",
+      "test_contract_costs_must_be_finite_and_red_team_must_be_predeclared",
+      "test_priority_favors_discriminating_low_friction_work_and_closed_families_stay_parked",
+      "test_projection_obeys_pause_and_due_boundary_without_mutating_state",
+      "test_running_and_expired_original_claim_both_block_a_new_claim",
+      "test_future_claim_timestamp_requires_recovery_and_cannot_hide_an_unfinished_attempt",
+      "test_invocation_cannot_complete_another_claim_or_replay_a_terminal_card",
+      "test_inadequate_sample_cannot_kill_or_promote_an_expression",
+      "test_expression_promotion_requires_fixed_red_team_and_cannot_exceed_contract",
+      "test_valid_expression_promotion_is_exploratory_and_capital_flags_are_refused",
+      "test_explicit_support_rights_cannot_override_the_frozen_claim_ceiling",
+      "test_completed_result_must_be_bound_to_its_exact_experiment",
+      "test_accounting_distinguishes_an_attempt_data_park_and_computed_economics",
+      "test_save_cannot_erase_prior_exposure_or_terminal_evidence",
+      "test_fresh_cas_is_published_before_runner_and_completion_is_exploratory",
+      "test_losing_cas_or_fresh_pause_never_invokes_runner",
+      "test_tampered_manifest_or_unpublished_code_stops_before_cas_and_runner",
+      "test_runner_failure_preserves_original_running_claim_and_refuses_retry",
+      "test_ready_discovery_precedes_active_and_expired_v3_sessions_without_v3_cas",
+      "test_documentary_l2_work_and_idle_never_fall_back_to_v3_recovery",
+      "test_cli_discovery_queue_is_read_only_and_execute_dispatches_bounded_arguments",
+      "test_saved_receipt_publishes_once_without_runner_or_new_attempt",
+      "test_pause_or_unbound_receipt_cannot_publish"
+    ],
+    "imported_modules": [
+      "quant.edge_lab",
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store",
+      "quant.edge_lab.worker"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "bd0ab9e6930f784ee77d82be61732c8053fa67327e20d95582455e95f71bc4f3",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_discovery.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.527,
+        "summary": "24 passed, 54 subtests passed in 0.14s",
+        "log": "CP076_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_discovery.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.969,
+        "summary": "24 passed, 1 warning, 54 subtests passed in 0.19s",
+        "log": "CP076_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 77,
+    "test_file": "tests/test_edge_lab_remote.py",
+    "test_functions": [
+      "test_only_one_host_can_publish_against_one_parent",
+      "test_owner_pause_commit_cannot_be_overwritten",
+      "test_real_git_idea_to_positive_validation_gate_without_market"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.remote",
+      "quant.edge_lab.seed",
+      "quant.edge_lab.store",
+      "quant.edge_lab.store",
+      "quant.edge_lab.store",
+      "quant.edge_lab.engine",
+      "quant.edge_lab.contracts"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "5f39c8795b32a31e1cfd17d2fa5ee1a4325c0f5f0cbae426cc4df6e2b826c2c8",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_remote.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 1.408,
+        "summary": "3 passed in 0.98s",
+        "log": "CP077_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_remote.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.877,
+        "summary": "3 passed, 1 warning in 0.96s",
+        "log": "CP077_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 78,
+    "test_file": "tests/test_edge_lab_workflow.py",
+    "test_functions": [
+      "test_positive_receipt_has_nine_fields_and_requires_new_validation",
+      "test_negative_receipt_closes_exact_family_and_preserves_cost_paths",
+      "test_source_receipt_is_wait_and_cannot_be_economic_rejection",
+      "test_partial_print_is_saved_exactly_and_cannot_be_replayed",
+      "test_unqualified_resources_and_missing_admission_do_not_charge",
+      "test_only_one_active_experiment_and_remote_runner_must_match",
+      "test_saved_partial_receipt_reconciles_after_cas_failure_without_execution_or_new_charge",
+      "test_fully_printed_result_survives_later_process_failure",
+      "test_disabled_scheduler_receipt_cannot_be_reenabled_by_tick_metadata"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.contracts",
+      "quant.edge_lab.store",
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store",
+      "quant.state"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "2e6afab53ca123c8b7de47e5d3faf235e8d81f01e459eccc5c62996227cb753e",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_workflow.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.894,
+        "summary": "9 passed in 0.45s",
+        "log": "CP078_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_workflow.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.313,
+        "summary": "9 passed, 1 warning in 0.39s",
+        "log": "CP078_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 79,
+    "test_file": "tests/test_edge_lab_smard.py",
+    "test_functions": [
+      "test_full_calendar_dst_no_missing_or_double_selected_hour",
+      "test_price_change_cannot_select_new_hours_or_omit_negative_day",
+      "test_loss_efficiency_asset_cost_and_benchmark_are_not_hidden",
+      "test_fixed_stress_is_required_for_positive_not_best_cost",
+      "test_complete_input_source_qa_and_identical_duplicates",
+      "test_null_gap_nonfinite_conflicting_revision_and_subhour_fail",
+      "test_weak_version_foreign_url_and_short_calendar_cannot_capture",
+      "test_capture_retains_raw_once_and_rejects_new_version_before_body",
+      "test_only_nonsecret_proxy_ca_enter_explicit_public_runner",
+      "test_real_entrypoint_never_imports_adjacent_historic_quant_script",
+      "test_generic_isolation_ignores_poisoned_neighbor_before_package_import",
+      "test_solar_uses_only_fixed_noon_and_evening_with_complete_losses",
+      "test_solar_entrypoint_actual_process_isolated"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.smard",
+      "quant.edge_lab.public_inputs",
+      "quant.edge_lab.store",
+      "quant.edge_lab.smard_solar",
+      "quant.edge_lab.smard"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "f32e3aed15f8e99ff337d07776cb18b9dd32ebe849e42448e87addeb2f5a48ef",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_smard.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.7,
+        "summary": "13 passed in 0.30s",
+        "log": "CP079_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_smard.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.085,
+        "summary": "13 passed, 1 warning in 0.31s",
+        "log": "CP079_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 80,
+    "test_file": "tests/test_edge_lab_planning.py",
+    "test_functions": [
+      "test_empty_due_queue_promotes_and_claims_once_in_the_same_cas",
+      "test_losing_cas_never_returns_work_or_changes_remote",
+      "test_resolved_option_cannot_return_as_hourly_work_or_renamed_source",
+      "test_due_existing_question_wins_and_future_window_does_not_block_other_source",
+      "test_exhausted_plan_records_honest_idle_and_future_date",
+      "test_known_blocked_source_changed_catalogue_and_tighter_bounds_fail_closed",
+      "test_existing_session_and_paused_authority_prevent_promotion",
+      "test_software_reconciliation_keeps_original_wait_and_economic_gate"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store",
+      "quant.edge_lab.planning",
+      "quant.edge_lab.worker"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "5f518fe461a5ebd49a225d2a7225b32a721285e23324f5ca6f6d3547f690451f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_planning.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.498,
+        "summary": "8 passed in 0.12s",
+        "log": "CP080_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_planning.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.914,
+        "summary": "8 passed, 1 warning in 0.12s",
+        "log": "CP080_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 81,
+    "test_file": "tests/test_edge_lab_vix.py",
+    "test_functions": [
+      "test_complete_short_pnl_costs_units_and_no_quote_redistribution",
+      "test_decimal_threshold_and_kill_boundaries",
+      "test_fixed_block_must_be_strictly_positive_and_cannot_filter_losses",
+      "test_one_adversary_stress_zero_parks_and_best_year_tie_is_earliest",
+      "test_endpoint_drawdown_starts_at_zero_and_bootstrap_is_whole_year",
+      "test_first_positive_after_target_inclusive_four_days_no_best_price_choice",
+      "test_csv_missing_duplicate_order_nonfinite_and_fifth_day_fail_without_economics",
+      "test_strictly_descending_csv_has_same_chronological_first_positive_endpoints",
+      "test_all36_exact_versions_and_frozen_population_rule_rights_are_required",
+      "test_manifest_rejected_before_any_body_or_network_access",
+      "test_run_sequential36_pinned_once_private_cache_reused_without_http",
+      "test_failure_preserves_partial_and_never_retries_or_publishes_early_economics",
+      "test_hash_mismatch_preserved_bytes_counted_and_not_replaced",
+      "test_missing_body_after_intent_never_requests_again",
+      "test_invalid_first_csv_stops_before_second_request_and_error_has_no_values",
+      "test_partial_transport_read_receipt_has_exact_retained_bytes",
+      "test_existing_prior_raw36_reuses_hashes_without_http",
+      "test_derived_usd_overflow_and_strict_csv_quote_fail_closed",
+      "test_full_body_then_timeout_never_reuses_failed_provenance",
+      "test_real_http_error_code_retained_without_response_body",
+      "test_metadata_reserve_refuses_total_cap_before_any_requests",
+      "test_redirect_status_encoding_and_payload_overflow_do_not_continue",
+      "test_whole_job_deadline_stops_sequential_fetches_without_result",
+      "test_hard_job_deadline_bypasses_post_expiry_persistence",
+      "test_v2_reader_exact_notice_with_at_most_three_blanks_preserves_expression",
+      "test_v2_unknown_repeated_late_or_after_header_notice_is_not_skipped",
+      "test_v2_reuses_only_exact_pinned_format_failure_and_preserves_v1_terminal"
+    ],
+    "imported_modules": [
+      "decimal",
+      "quant.edge_lab"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "c005f412da59f0970e3568865168ca34e0589310ebde96f1efb7fb563821bb12",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_vix.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.677,
+        "summary": "27 passed, 26 subtests passed in 0.30s",
+        "log": "CP081_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_vix.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.09,
+        "summary": "27 passed, 1 warning, 26 subtests passed in 0.32s",
+        "log": "CP081_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 82,
+    "test_file": "tests/test_edge_lab_resources.py",
+    "test_functions": [
+      "test_wrong_expired_or_paused_claim_stops_before_source_or_worker",
+      "test_unpublished_or_tampered_code_never_starts_worker",
+      "test_completed_capacity_sample_cannot_admit_protocol_or_mutate_history",
+      "test_timeout_is_saved_as_incomplete_without_worker_retry_or_look",
+      "test_global_cpu_ceiling_cannot_be_satisfied_by_a_child_only_meter",
+      "test_reader_cannot_reuse_the_calendar_probe_claim",
+      "test_reader_child_failure_is_retained_without_main_call_retry_or_history_change"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.resources",
+      "quant.edge_lab.store",
+      "quant.state"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "e07c7e9f68865fd84211a2a5ec81f5ec9b55b012d4fd5c20f4630e9ec43564e5",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_resources.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.466,
+        "summary": "7 passed in 0.09s",
+        "log": "CP082_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_resources.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.877,
+        "summary": "7 passed, 1 warning in 0.10s",
+        "log": "CP082_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 83,
+    "test_file": "tests/test_edge_lab_legacy.py",
+    "test_functions": [
+      "test_verified_fixture_remains_blocked_read_only_and_preserves_history",
+      "test_pause_wrong_claim_and_expired_claim_stop_before_any_git_access",
+      "test_unpublished_claim_or_code_tampering_cannot_pass",
+      "test_metadata_ceiling_stops_before_any_blob_body",
+      "test_missing_timezone_dependency_is_unqualified_not_a_launch"
+    ],
+    "imported_modules": [
+      "quant.edge_lab.engine",
+      "quant.edge_lab.legacy",
+      "quant.edge_lab.store",
+      "quant.state"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "338011a620ac44f77ce75ce29b985224ba91e385135c3f5856fecdb6bde415c1",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_legacy.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.538,
+        "summary": "5 passed in 0.08s",
+        "log": "CP083_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_legacy.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.041,
+        "summary": "5 passed, 1 warning in 0.08s",
+        "log": "CP083_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 84,
+    "test_file": "tests/test_edge_lab_legacy_adapter.py",
+    "test_functions": [
+      "test_existing_original_ref_and_no_prior_attempt_required_without_price_read",
+      "test_blind_complete_capture_hash_cannot_be_substituted",
+      "test_mapping_keeps_all_six_paths_nine_fields_and_original_increment_label",
+      "test_source_failure_is_not_an_economic_rejection_and_uncertainty_stays_wait",
+      "test_missing_admission_stops_adoption_before_original_ref_or_capture",
+      "test_conditional_adoption_mirrors_original_six_paths_without_rewriting_history"
+    ],
+    "imported_modules": [
+      "quant.edge_lab",
+      "quant.edge_lab.contracts",
+      "quant.edge_lab.engine",
+      "quant.edge_lab.store",
+      "quant.edge_lab.contracts"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "9030a9c5a06eff31cc57ec164662bd1b3fc35981068ffcff19b473aa267ee342",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_legacy_adapter.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.494,
+        "summary": "6 passed in 0.07s",
+        "log": "CP084_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_edge_lab_legacy_adapter.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.952,
+        "summary": "6 passed, 1 warning in 0.09s",
+        "log": "CP084_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 85,
+    "test_file": "tests/test_evidence_identity.py",
+    "test_functions": [
+      "test_content_addressed_bytes_and_provenance_receipts",
+      "test_torn_manifest_tail_is_recovered_and_rebuild_is_deterministic",
+      "test_committed_manifest_corruption_is_not_silently_repaired",
+      "test_torn_or_mutated_object_bytes_are_detected",
+      "test_validation_assertions_must_replay_from_raw_bytes",
+      "test_validation_sidecar_tamper_is_detected_by_its_own_content_address",
+      "test_derived_lineage_is_replayable_from_input_bytes",
+      "test_real_process_kill_after_object_commit_recovers_from_bytes",
+      "test_ticker_reuse_resolves_by_point_in_time_not_ticker_text",
+      "test_name_change_is_an_interval_not_a_retroactive_overwrite",
+      "test_ambiguous_mapping_is_returned_as_ambiguous_not_guessed",
+      "test_venue_is_part_of_resolution_context",
+      "test_synthetic_contracts_cover_merger_cash_stock_mix_split_spin_delist_and_name",
+      "test_pit_query_never_knows_late_reported_event_early",
+      "test_unknown_stable_identity_is_rejected_instead_of_ticker_guessing",
+      "test_builder_c_schemas_are_parseable_and_closed"
+    ],
+    "imported_modules": [
+      "quant.dataplane.corporate_actions",
+      "quant.dataplane.evidence",
+      "quant.dataplane.identity"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "3386984019210a75b4f034f59ecdc0acdfe759562edbf928ddd7a9047799ffed",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_evidence_identity.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.606,
+        "summary": "16 passed in 0.12s",
+        "log": "CP085_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_evidence_identity.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.941,
+        "summary": "16 passed, 1 warning in 0.14s",
+        "log": "CP085_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 86,
+    "test_file": "tests/test_data_source_admission.py",
+    "test_functions": [
+      "test_only_explicit_null_error_admits_a_successful_envelope",
+      "test_malformed_provider_envelopes_and_series_are_dependency_blocks",
+      "test_complete_bars_real_zero_volume_and_pit_caveats_are_preserved",
+      "test_missing_price_or_volume_drops_the_bar_without_interpolation",
+      "test_actual_ingestion_records_block_and_continues_snapshot_recovery"
+    ],
+    "imported_modules": [
+      "quant.dataplane.adapters",
+      "quant.dataplane",
+      "quant.dataplane.registry",
+      "quant.events",
+      "quant.paths"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "58608303833a23c11c902a24701f897c0cfd1c98d064e81631193a0723358bff",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_data_source_admission.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.482,
+        "summary": "5 passed, 29 subtests passed in 0.08s",
+        "log": "CP086_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_data_source_admission.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.856,
+        "summary": "5 passed, 1 warning, 29 subtests passed in 0.09s",
+        "log": "CP086_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 87,
+    "test_file": "tests/test_jsonl_recovery.py",
+    "test_functions": [
+      "test_torn_final_append_is_ignored_then_repaired_on_next_append",
+      "test_malformed_committed_line_remains_loud"
+    ],
+    "imported_modules": [
+      "quant.state"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "c1f446c57ff0b5e4332bbf322a31c1ae05af7fce069266b81e2a245bb4b2bb55",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_jsonl_recovery.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.405,
+        "summary": "2 passed in 0.02s",
+        "log": "CP087_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_jsonl_recovery.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.79,
+        "summary": "2 passed, 1 warning in 0.03s",
+        "log": "CP087_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 88,
+    "test_file": "tests/test_research_runtime.py",
+    "test_functions": [
+      "test_campaign_state_persists",
+      "test_queue_persists_priority_and_blocked_work",
+      "test_restart_recovers_exact_state_without_duplicate_rerun",
+      "test_same_task_new_fingerprint_can_run",
+      "test_rejected_ticket_promotes_followup_and_continues",
+      "test_idle_is_not_stopped_and_heartbeat_persists",
+      "test_blocked_task_does_not_prevent_executable_task",
+      "test_budget_exhaustion_pauses_with_explicit_reason",
+      "test_operator_pause_survives_restart_until_resume",
+      "test_restart_recovers_interrupted_worker",
+      "test_detects_required_fault_classes"
+    ],
+    "imported_modules": [
+      "autonomous_research.orchestrator",
+      "autonomous_research.runtime",
+      "autonomous_research.watchdog"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "64993db0df6f7974351062cc50b737a058ac3c087d617a0fe04f20afde082836",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_runtime.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.435,
+        "summary": "11 passed in 0.06s",
+        "log": "CP088_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_research_runtime.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.838,
+        "summary": "11 passed, 1 warning in 0.07s",
+        "log": "CP088_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 89,
+    "test_file": "tests/test_autonomous_research.py",
+    "test_functions": [
+      "test_state_machine_rejects_skipped_stage",
+      "test_memory_is_append_only_jsonl",
+      "test_signal_does_not_earn_same_day_return"
+    ],
+    "imported_modules": [
+      "autonomous_research.backtest",
+      "autonomous_research.memory",
+      "autonomous_research.ticket"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "f6248d7f8ad24a4c6f5f1adb27780e749965ed15a7665876c5c0de003b7007dc",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_autonomous_research.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.412,
+        "summary": "3 passed in 0.03s",
+        "log": "CP089_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_autonomous_research.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.811,
+        "summary": "3 passed, 1 warning in 0.04s",
+        "log": "CP089_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 90,
+    "test_file": "tests/test_quant_system.py",
+    "test_functions": [
+      "test_windows_are_contiguous_and_do_not_overlap",
+      "test_restrict_makes_future_bars_unreachable",
+      "test_aligned_dates_exclude_partially_covered_sessions",
+      "test_full_return_interval_must_fit_discovery",
+      "test_research_cannot_see_the_desk_reserved_window",
+      "test_return_interval_starts_at_the_earliest_possible_fill",
+      "test_the_fixture_really_is_adversarial",
+      "test_the_forbidden_interval_is_not_credited",
+      "test_costs_can_only_make_it_worse",
+      "test_target_weights_are_dollar_neutral_and_capped",
+      "test_insufficient_history_yields_no_signal_not_a_zero_signal",
+      "test_direction_flips_the_side_of_the_book",
+      "test_rebalance_rule_is_shared_and_respects_hold_and_band",
+      "test_required_significance_rises_with_the_number_of_expressions_tried",
+      "test_a_cost_destroyed_strategy_is_rejected_with_a_named_reason",
+      "test_beta_attribution_is_always_reported",
+      "test_fill_is_durable_before_the_next_mark",
+      "test_realized_pnl_on_closing_a_long_and_covering_a_short",
+      "test_bankroll_and_nav_history_survive_restart",
+      "test_attribution_is_kept_per_strategy",
+      "test_marking_may_not_move_backward_in_time",
+      "test_repeating_a_mark_restates_it_instead_of_adding_a_session",
+      "test_two_strategies_hold_opposing_exposure_without_corrupting_attribution",
+      "test_one_strategy_exiting_leaves_the_other_untouched",
+      "test_sleeves_survive_restart",
+      "test_replaying_an_operation_id_changes_nothing",
+      "test_journal_resumes_a_pending_plan_rather_than_re_deciding",
+      "test_net_exposure_breach_is_vetoed",
+      "test_neutral_rebalance_that_closes_a_dropped_leg_is_approved",
+      "test_a_strategy_is_not_charged_twice_for_its_own_sleeve",
+      "test_scaling_is_validated_on_the_scaled_portfolio",
+      "test_scaling_that_cannot_satisfy_a_hard_limit_is_vetoed",
+      "test_verify_final_rejects_a_truncated_execution_that_breaches_a_limit",
+      "test_drawdown_throttles_then_halts",
+      "test_fill_happens_at_the_next_session_and_pays_the_spread",
+      "test_order_is_truncated_to_a_plausible_share_of_volume",
+      "test_boot_run_and_restart_preserve_one_continuous_system",
+      "test_idle_is_not_finished",
+      "test_blocked_dependency_is_named_and_unblocks_when_data_arrives",
+      "test_a_worker_fault_is_recorded_without_killing_the_system",
+      "test_interrupted_work_is_requeued_on_restart",
+      "test_identical_work_on_unchanged_data_is_not_repeated",
+      "test_append_only_data_does_not_rebuy_frozen_research",
+      "test_pause_survives_restart_until_resume",
+      "test_untradable_strategies_never_reach_the_capital_ledger",
+      "test_status_and_brief_render_from_the_same_persistent_state",
+      "test_execution_delta_revalues_an_overnight_gap",
+      "test_one_strategy_fault_does_not_stop_an_independent_strategy",
+      "test_a_tradable_strategy_books_into_the_capital_ledger",
+      "test_every_stage_of_a_booked_ticket_is_traced",
+      "test_partition_and_trial_reservation_survive_append_and_retry",
+      "test_lifecycle_transitions_are_restrictive",
+      "test_evaluation_track_is_sized_but_not_tradable",
+      "test_trial_counter_accumulates_across_lanes",
+      "test_a_losing_rejection_is_scored_as_a_true_reject",
+      "test_a_profitable_rejection_is_scored_as_a_false_reject",
+      "test_build_tasks_capture_capability_gaps_once",
+      "test_committed_schemas_match_the_dataclasses",
+      "test_changed_malformed_bytes_invalidate_previous_verdict",
+      "test_validation_rejects_a_panel_with_a_missing_symbol",
+      "test_changed_bytes_produce_a_new_fingerprint_and_availability",
+      "test_crash_after_durable_fills_does_not_duplicate_anything",
+      "test_the_crash_really_left_durable_state_behind",
+      "test_a_resumed_session_keeps_the_original_decision",
+      "test_the_book_is_marked_on_the_execution_date",
+      "test_marks_never_run_backward_across_sessions",
+      "test_the_clock_waits_while_idle_instead_of_exiting",
+      "test_data_arriving_while_idle_wakes_the_system",
+      "test_serve_respects_an_operator_pause",
+      "test_healthy_running_work_is_not_reported_stuck",
+      "test_work_whose_lease_expired_is_reported_stuck",
+      "test_running_work_with_no_recorded_start_is_treated_as_stale",
+      "test_a_superseded_strategy_version_stays_inspectable"
+    ],
+    "imported_modules": [
+      "quant.book.ledger",
+      "quant.clock",
+      "quant.dataplane.panel",
+      "quant.dataplane.registry",
+      "quant.dataplane.validation",
+      "quant.desk.desk",
+      "quant.desk.execution",
+      "quant.desk.journal",
+      "quant.desk.risk",
+      "quant.events",
+      "quant.factory.evaluate",
+      "quant.factory.lanes",
+      "quant.factory.signals",
+      "quant.factory.strategies",
+      "quant.factory.workers",
+      "quant.learning.store",
+      "quant.paths",
+      "quant.state",
+      "quant.status.brief",
+      "quant.status.render"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "8b9dbf4a7c2545cec1c5d748381c57dbd511667e0739a12df097bdb23ddbac4e",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_quant_system.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 17.827,
+        "summary": "73 passed in 17.44s",
+        "log": "CP090_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_quant_system.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 17.982,
+        "summary": "73 passed, 1 warning in 17.18s",
+        "log": "CP090_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 91,
+    "test_file": "tests/test_sec_form4_capture.py",
+    "test_functions": [
+      "test_policy_fails_closed_without_declared_user_agent",
+      "test_user_agent_must_carry_a_contact_address",
+      "test_configured_rate_stays_far_below_the_documented_sec_ceiling",
+      "test_policy_records_the_consulted_authoritative_sources",
+      "test_backoff_schedule_is_the_frozen_bounded_ladder",
+      "test_exact_bytes_survive_store_and_reload",
+      "test_duplicate_identical_response_does_not_overwrite_prior_evidence",
+      "test_stored_objects_are_read_only_on_disk",
+      "test_conflicting_bytes_under_one_identity_create_an_explicit_version",
+      "test_identical_recapture_of_one_identity_is_not_a_conflict",
+      "test_corrupted_object_is_detected_rather_than_served",
+      "test_incomplete_bytes_live_outside_the_valid_object_namespace",
+      "test_disk_full_during_raw_write_raises_instead_of_acknowledging",
+      "test_capture_does_not_imply_visibility_or_admissibility",
+      "test_attempt_and_receipt_timestamps_are_distinct_and_durable",
+      "test_source_publication_time_is_never_the_local_receipt_time",
+      "test_committed_identities_are_exactly_the_envelopes_on_disk",
+      "test_identifying_locators_stay_out_of_the_firewall_safe_journals",
+      "test_requests_are_spaced_by_the_configured_rate_with_no_burst",
+      "test_the_budget_is_global_across_consumers_not_per_instance",
+      "test_cooldown_is_durable_across_restart_and_never_shortened",
+      "test_backoff_walks_the_frozen_ladder_with_jitter_and_stops_growing",
+      "test_retry_after_is_parsed_in_both_permitted_forms",
+      "test_a_spent_slot_is_durable_before_the_request_is_made",
+      "test_compressed_response_hashes_the_exact_received_bytes",
+      "test_body_that_lies_about_its_encoding_is_a_transport_failure",
+      "test_short_body_against_declared_length_is_marked_truncated",
+      "test_transport_errors_never_carry_response_content",
+      "test_known_form4_fixture_drives_discovery_to_raw_document_bytes",
+      "test_raw_document_locator_is_derived_without_crawling_the_filing",
+      "test_cursor_advances_only_after_every_task_is_acknowledged",
+      "test_guard_rejects_unearned_no_new_data",
+      "test_html_error_page_with_http_200_cannot_become_no_new_data",
+      "test_structurally_invalid_payloads_cannot_become_no_new_data",
+      "test_prefix_matched_non_ownership_forms_are_excluded_not_errors",
+      "test_an_unreadable_form_type_is_still_an_error",
+      "test_a_page_of_only_unwanted_forms_is_valid_but_yields_nothing",
+      "test_entry_missing_form_type_or_locator_is_an_error",
+      "test_disagreeing_accession_identities_are_an_error",
+      "test_more_entries_than_requested_breaks_continuation_arithmetic",
+      "test_no_new_data_is_earned_and_costs_exactly_one_request",
+      "test_pagination_walks_only_as_far_as_the_anchor_under_one_limiter",
+      "test_page_budget_exhaustion_is_coverage_unknown_not_complete",
+      "test_missing_intermediate_page_produces_durable_coverage_unknown",
+      "test_cursor_falling_out_of_the_window_is_coverage_unknown",
+      "test_healthy_heartbeat_never_upgrades_unproven_coverage",
+      "test_restart_during_pagination_is_unknown_then_resolved_by_proof",
+      "test_restart_during_pagination_stays_unknown_when_nothing_proves_it",
+      "test_daily_index_confirms_coverage_when_everything_expected_was_captured",
+      "test_daily_index_gap_is_detected_and_keeps_identities_restricted",
+      "test_unavailable_or_invalid_daily_index_never_confirms_coverage",
+      "test_daily_index_parser_rejects_shapes_it_cannot_account_for",
+      "test_reconciliation_targets_the_oldest_unreconciled_closed_weekday",
+      "test_one_accession_listed_once_per_filer_enqueues_one_task",
+      "test_429_enters_rate_limit_backoff_and_honours_retry_after",
+      "test_429_without_retry_after_falls_back_to_the_policy_floor",
+      "test_403_does_not_hot_loop_and_records_a_blocked_state",
+      "test_timeout_and_5xx_walk_the_bounded_backoff_ladder",
+      "test_a_successful_poll_resets_the_backoff_ladder",
+      "test_hung_request_leaves_a_diagnosable_liveness_state",
+      "test_truncated_transfer_never_becomes_a_capture",
+      "test_compressed_discovery_and_filing_hash_the_wire_bytes",
+      "test_permanent_4xx_is_recorded_with_bounded_retry_cooldown",
+      "test_no_new_data_request_failed_and_did_not_run_are_distinguishable",
+      "test_crash_between_discovery_and_queue_rediscovers_rather_than_skips",
+      "test_crash_between_raw_write_and_envelope_replays_safely",
+      "test_crash_between_envelope_and_acknowledgement_costs_no_refetch",
+      "test_crash_between_acknowledgement_and_cursor_advance_is_recoverable",
+      "test_disk_full_during_acquisition_cannot_acknowledge_anything",
+      "test_restart_preserves_append_only_history_and_all_lane_state",
+      "test_leak_detector_recognises_the_content_it_is_meant_to_catch",
+      "test_no_visible_surface_exposes_captured_form_4_content",
+      "test_telemetry_publishes_no_filing_counts",
+      "test_exceptions_and_error_classes_never_carry_response_content",
+      "test_discovery_invalid_reason_classes_are_bounded_not_echoed",
+      "test_transport_refuses_a_second_request_under_one_permit",
+      "test_the_permit_is_spent_even_when_the_request_fails",
+      "test_an_idle_connection_is_recycled_before_sending_not_retried_after",
+      "test_accounting_holds_across_a_normal_poll_and_drain",
+      "test_accounting_holds_across_every_failure_path",
+      "test_accounting_holds_while_paginating_and_reconciling",
+      "test_a_cooldown_suppressed_attempt_spends_no_reservation_and_no_request",
+      "test_the_transport_has_no_retry_construct_left",
+      "test_classification_covers_every_policy_field_exactly_once",
+      "test_every_noncritical_field_carries_a_frozen_rationale",
+      "test_an_unclassified_policy_field_blocks_fingerprint_generation",
+      "test_a_classification_for_a_removed_field_is_also_rejected",
+      "test_overlapping_classifications_are_rejected",
+      "test_canonical_policy_carries_the_fields_to_dict_omitted",
+      "test_requester_identity_is_bound_but_never_plaintext",
+      "test_two_identical_builds_produce_the_same_fingerprint",
+      "test_the_manifest_contains_every_mandated_v1_member",
+      "test_changing_a_timeout_changes_the_fingerprint",
+      "test_changing_a_retry_or_backoff_rule_changes_the_fingerprint",
+      "test_changing_discovery_or_coverage_settings_changes_the_fingerprint",
+      "test_changing_any_critical_policy_field_changes_the_fingerprint",
+      "test_changing_the_declared_sec_identity_changes_the_fingerprint",
+      "test_changing_acquisition_code_changes_the_fingerprint",
+      "test_changing_the_supervisor_restart_policy_changes_the_fingerprint",
+      "test_current_runtime_tree_change_moves_conservative_fingerprint",
+      "test_recording_a_newer_sec_documentation_revision_does_not_reset_t0",
+      "test_the_fingerprint_is_deterministic_json_not_dict_order",
+      "test_every_cadence_changing_event_records_a_transition",
+      "test_each_transition_carries_the_full_mandated_payload",
+      "test_next_due_at_reflects_cadence_backoff_and_pending_work",
+      "test_a_backoff_transition_is_prospective_not_post_hoc",
+      "test_a_blocked_lane_still_declares_its_state",
+      "test_scheduler_journal_is_append_only_across_restart",
+      "test_the_collector_never_attests_its_own_origin",
+      "test_a_supervisor_supplied_cause_is_recorded_verbatim",
+      "test_an_unrecognised_cause_is_not_silently_accepted",
+      "test_manual_start_is_flagged_as_invalidating",
+      "test_service_start_is_journalled_with_the_active_fingerprint",
+      "test_a_healthy_run_is_accountable",
+      "test_an_unattested_start_is_reported_not_assumed_benign",
+      "test_a_manual_start_is_reported_as_an_invalidating_intervention",
+      "test_a_changed_fingerprint_mid_window_is_detected",
+      "test_the_audit_never_infers_health_from_an_empty_journal",
+      "test_the_audit_reports_and_never_closes_the_continuity_state",
+      "test_capture_is_scheduled_ahead_of_replayable_research_and_desk_work",
+      "test_repeated_cycles_leave_liveness_evidence_with_no_new_filing",
+      "test_a_collector_that_stops_polling_becomes_observably_stale",
+      "test_losing_the_requester_identity_fails_closed_as_blocked",
+      "test_a_capture_fault_is_isolated_and_does_not_stop_the_system",
+      "test_restart_mid_service_resumes_without_mutating_prior_evidence",
+      "test_the_status_surface_stays_firewall_safe_with_the_new_provenance",
+      "test_the_fingerprint_manifest_never_carries_the_contact_address",
+      "test_a_fresh_install_can_boot_the_control_plane",
+      "test_an_attempt_before_the_due_time_does_not_satisfy_the_obligation",
+      "test_an_attempt_after_the_due_time_within_tolerance_does_satisfy_it",
+      "test_an_attempt_beyond_tolerance_does_not_satisfy_the_obligation",
+      "test_one_attempt_cannot_satisfy_two_due_obligations",
+      "test_two_attempts_satisfy_two_obligations",
+      "test_a_transition_after_a_missed_deadline_cannot_erase_the_hole",
+      "test_a_transition_before_the_due_time_supersedes_and_stays_accountable",
+      "test_supersession_requires_naming_the_obligation_it_replaces",
+      "test_supersession_requires_an_authorized_cause",
+      "test_one_transition_cannot_supersede_two_obligations",
+      "test_an_obligation_without_identity_fails_the_window",
+      "test_every_obligation_has_exactly_one_status",
+      "test_a_live_service_last_obligation_is_pending_not_a_hole",
+      "test_the_real_collector_emits_reconcilable_obligations",
+      "test_absence_of_provenance_is_manual",
+      "test_service_managed_first_launch_still_needs_authority",
+      "test_replacement_after_dead_supervisor_is_manual_even_immediately",
+      "test_only_same_supervisor_witness_can_attest_child_restart",
+      "test_deployment_requires_explicit_authority",
+      "test_legacy_replacement_supervisor_cause_is_invalidating",
+      "test_a_launch_without_a_service_manager_is_not_qualifying",
+      "test_an_authorized_service_managed_launch_can_be_qualifying",
+      "test_readiness_blocks_a_manual_start",
+      "test_qualifying_mode_refuses_a_poll_seconds_override",
+      "test_qualifying_mode_refuses_a_max_waits_override",
+      "test_qualifying_mode_refuses_a_manual_start",
+      "test_qualifying_mode_refuses_a_launch_without_a_service_manager",
+      "test_effective_runtime_configuration_is_bound_into_the_fingerprint",
+      "test_the_manifest_records_the_effective_service_invocation",
+      "test_the_unit_declares_the_service_manager_and_qualifying_mode",
+      "test_the_detector_catches_the_exact_field_blue_found",
+      "test_the_detector_catches_other_filing_count_shapes",
+      "test_operational_health_numbers_remain_permitted",
+      "test_booleans_are_never_treated_as_counts",
+      "test_historical_rodage_preserves_exposure_instead_of_rewriting_history",
+      "test_the_artifact_preserves_the_irreversible_exposure_provenance",
+      "test_historical_handoff_artifacts_are_content_free_but_may_record_known_proxies",
+      "test_current_public_projection_is_firewall_safe",
+      "test_live_telemetry_publishes_no_count_proxy",
+      "test_a_service_that_simply_stops_polling_is_not_accountable",
+      "test_a_stale_service_cannot_present_itself_as_healthy",
+      "test_an_invalid_discovery_leaves_an_accounted_attempt_and_no_false_coverage",
+      "test_a_cooldown_period_is_explained_rather_than_silent",
+      "test_a_restart_preserves_the_open_obligation",
+      "test_a_manual_restart_mid_window_is_reported_as_invalidating",
+      "test_no_publication_period_still_leaves_obligations_answered",
+      "test_operator_internal_journals_are_content_free_but_not_count_free",
+      "test_a_supersession_recorded_exactly_at_the_due_time_is_too_late",
+      "test_a_chain_of_supersessions_cannot_clear_an_older_missed_obligation",
+      "test_an_attempt_cannot_answer_an_obligation_created_after_it",
+      "test_many_attempts_cannot_cover_more_obligations_than_they_number",
+      "test_systemctl_restart_is_manual",
+      "test_host_reboot_does_not_prove_automaticity",
+      "test_fast_restart_after_failure_is_still_manual_for_new_supervisor",
+      "test_fingerprint_change_alone_is_not_deployment_authority",
+      "test_explicit_deployment_authority_is_distinct",
+      "test_the_host_boot_id_is_read_from_the_kernel",
+      "test_readiness_blocks_when_nothing_is_materialized",
+      "test_readiness_blocks_when_the_materialized_fingerprint_is_stale",
+      "test_telemetry_surfaces_the_mismatch_on_a_live_service",
+      "test_rematerializing_after_a_change_refuses_silent_repair",
+      "test_a_changed_acquisition_module_makes_the_materialized_fingerprint_stale"
+    ],
+    "imported_modules": [
+      "quant.dataplane.sec.budget",
+      "quant.dataplane.sec.policy",
+      "quant.dataplane.sec.store",
+      "quant.dataplane.sec",
+      "quant.dataplane.sec.fingerprint",
+      "quant.dataplane.sec.audit",
+      "quant.dataplane.sec.scheduler",
+      "quant.dataplane.sec.supervisor",
+      "quant.dataplane.sec.timebase",
+      "quant.dataplane.sec.visibility",
+      "quant.dataplane.sec.transport",
+      "quant.paths",
+      "quant.state",
+      "quant.dataplane.sec.collector",
+      "quant.dataplane.sec.discovery",
+      "quant.dataplane.sec.store",
+      "quant.clock",
+      "quant.status.brief",
+      "quant.status.render",
+      "quant.clock",
+      "autonomous_research.runtime",
+      "quant.clock",
+      "quant.status.render",
+      "quant.status.brief",
+      "quant.status.render",
+      "quant.clock",
+      "quant.clock",
+      "quant.status.brief",
+      "quant.status.render",
+      "quant.dataplane.sec.supervisor"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "5bb14a764c0a01140d899477d43a42f4148f5dd7eaace850e4c99799644a78b0",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_sec_form4_capture.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 2.856,
+        "summary": "204 passed, 96 subtests passed in 2.44s",
+        "log": "CP091_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_sec_form4_capture.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 3.681,
+        "summary": "204 passed, 1 warning, 96 subtests passed in 2.80s",
+        "log": "CP091_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 92,
+    "test_file": "tests/test_p0_adversarial.py",
+    "test_functions": [
+      "test_main_state_roundtrip_keeps_kernel_boot_distinct_from_child",
+      "test_same_living_supervisor_can_attest_child_failure_restart",
+      "test_corrupt_prior_supervisor_state_never_buys_clean_cause",
+      "test_double_supervisor_is_rejected_by_real_lock",
+      "test_runtime_import_closure_is_in_manifest",
+      "test_manifest_body_tamper_is_detected_even_if_string_fingerprint_is_unchanged",
+      "test_other_host_materialization_is_not_accepted",
+      "test_qualifying_request_refuses_stale_materialization_before_network",
+      "test_torn_sec_journal_is_never_silently_discarded",
+      "test_future_attempt_timestamp_is_not_live",
+      "test_http_200_non_form4_body_does_not_acknowledge_filing",
+      "test_public_telemetry_has_no_activity_volume_or_timing_proxy",
+      "test_real_transport_path_emits_exactly_one_request_per_permit",
+      "test_connection_failure_is_not_hiddenly_resent",
+      "test_network_intent_without_finished_attempt_invalidates_audit"
+    ],
+    "imported_modules": [
+      "quant.clock",
+      "quant.dataplane.sec.audit",
+      "quant.dataplane.sec.budget",
+      "quant.dataplane.sec.collector",
+      "quant.dataplane.sec.fingerprint",
+      "quant.dataplane.sec.policy",
+      "quant.dataplane.sec.store",
+      "quant.dataplane.sec.supervisor",
+      "quant.dataplane.sec.transport",
+      "quant.paths",
+      "quant.state",
+      "quant.dataplane.sec.visibility",
+      "quant.state"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "e4332d8681e15151f8319d925339fb0f99cac33c7ddda30e56337346d39fc49f",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_p0_adversarial.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.66,
+        "summary": "15 passed in 0.23s",
+        "log": "CP092_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_p0_adversarial.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.069,
+        "summary": "15 passed, 1 warning in 0.23s",
+        "log": "CP092_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 93,
+    "test_file": "tests/test_oracle_v2_release_provenance.py",
+    "test_functions": [
+      "test_both_exact_workflows_bind_the_same_explicit_source_or_legacy_default",
+      "test_unknown_or_ambiguous_source_is_rejected_before_network_access",
+      "test_foreign_mixed_or_unsuccessful_ci_cannot_qualify_a_release",
+      "test_source_branch_permission_never_redirects_canonical_scientific_state",
+      "test_explicit_preparation_keeps_active_v2_handoff_gate_and_closed_authorities"
+    ],
+    "imported_modules": [
+      "deploy"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "14c54242b5a81622eb340a95c533369ee94d18bfe81cb2e68910a1cd3c511901",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_v2_release_provenance.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.456,
+        "summary": "5 passed, 22 subtests passed in 0.07s",
+        "log": "CP093_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_v2_release_provenance.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.875,
+        "summary": "5 passed, 1 warning, 22 subtests passed in 0.12s",
+        "log": "CP093_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 94,
+    "test_file": "tests/test_oracle_release_install.py",
+    "test_functions": [
+      "test_deploy_sha_must_be_exact_40_hex",
+      "test_valid_pinned_legacy_payload_is_accepted_without_equating_census_and_records",
+      "test_wrong_blob_fails_closed",
+      "test_empty_ledger_fails_closed",
+      "test_schema_mismatch_fails_closed",
+      "test_ledger_cannot_open_real_capital_or_live_trading",
+      "test_historical_result_immutability_is_mandatory",
+      "test_manifest_governance_is_independently_enforced",
+      "test_manifest_historical_census_must_be_positive_but_not_record_equal",
+      "test_git_blob_sha_matches_git_object_encoding"
+    ],
+    "imported_modules": [],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "dcac2069901b6943c271f9bd1b2063889caa793213c956b0dd22ae397022fb5e",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_release_install.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.416,
+        "summary": "10 passed, 13 subtests passed in 0.04s",
+        "log": "CP094_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_release_install.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.864,
+        "summary": "10 passed, 1 warning, 13 subtests passed in 0.07s",
+        "log": "CP094_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 95,
+    "test_file": "tests/test_oracle_live_composition.py",
+    "test_functions": [
+      "test_runtime_and_frontend_share_exact_explicit_metadata_taxonomy",
+      "test_real_observer_packet_shapes_drive_factual_roles_and_unknown_progress",
+      "test_completion_snapshot_and_duplicate_do_not_replay_business_motion",
+      "test_late_old_site_generation_cannot_restart_a_completed_new_wake"
+    ],
+    "imported_modules": [
+      "deploy.oracle_live_projection",
+      "research.research_os.live_lab_contract"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "18b3fd421377e82efd2bed06df71d5a59b4f6fc7593a2d996431502ce1b44535",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_live_composition.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.789,
+        "summary": "4 passed, 5 subtests passed in 0.39s",
+        "log": "CP095_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_live_composition.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.127,
+        "summary": "4 passed, 1 warning, 5 subtests passed in 0.37s",
+        "log": "CP095_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 96,
+    "test_file": "tests/test_oracle_live_projection.py",
+    "test_functions": [
+      "test_explicit_lane_activity_session_mapping_heartbeat_and_real_stdout_proof",
+      "test_site_failure_cannot_roll_back_science_and_stale_start_is_not_replayed",
+      "test_failed_canonical_cas_never_opens_a_site_session",
+      "test_http_uncertain_event_retry_preserves_identity_and_never_logs_authorization",
+      "test_unknown_activity_has_no_business_motion_and_economic_animation_is_absent",
+      "test_local_receipt_retention_is_bounded_and_never_replays_starts",
+      "test_real_git_claim_observed_only_after_cas_and_restart_uses_new_generation"
+    ],
+    "imported_modules": [
+      "deploy.oracle_live_projection",
+      "research.research_os.tests",
+      "research.research_os.oracle_worker",
+      "research.research_os.oracle_worker_v2"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "a875709724692baa0ddc8f530c9b2746952bfa6ecf8338f0a11be8fc698f15e9",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_live_projection.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 1.06,
+        "summary": "7 passed in 0.67s",
+        "log": "CP096_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_live_projection.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.801,
+        "summary": "7 passed, 1 warning in 0.95s",
+        "log": "CP096_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 97,
+    "test_file": "tests/test_oracle_v2_bootstrap_admission.py",
+    "test_functions": [
+      "test_root_and_observed_inactive_states_are_required_before_network_or_publication",
+      "test_unknown_source_choices_fail_before_any_network_or_child_process",
+      "test_cli_binds_both_ci_runs_and_rechecks_state_before_bootstrap",
+      "test_explicit_source_reaches_fresh_isolated_published_interpreter"
+    ],
+    "imported_modules": [
+      "deploy",
+      "deploy"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "d9a3f303d3bbd19bd9f76d68d89400b0eb73f6f48bc7dd5a6f2ca4843c4bf6ab",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_v2_bootstrap_admission.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.751,
+        "summary": "4 passed, 16 subtests passed in 0.12s",
+        "log": "CP097_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_v2_bootstrap_admission.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.944,
+        "summary": "4 passed, 1 warning, 16 subtests passed in 0.14s",
+        "log": "CP097_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 98,
+    "test_file": "tests/test_oracle_local_backend_qualify.py",
+    "test_functions": [
+      "test_schema_valid_but_scientifically_wrong_answers_fail",
+      "test_first_choice_bias_cannot_qualify_and_production_policy_is_supplied",
+      "test_backend_failure_stops_actual_temporary_process_and_persists_blocker"
+    ],
+    "imported_modules": [
+      "deploy"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "800bb5c6a46b74b50e1d969192c8aecb5ce30d70d6be4aff63cbb9aa4a3c57b2",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_local_backend_qualify.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.433,
+        "summary": "3 passed in 0.06s",
+        "log": "CP098_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_local_backend_qualify.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 1.241,
+        "summary": "3 passed, 1 warning in 0.12s",
+        "log": "CP098_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 99,
+    "test_file": "tests/test_oracle_live_host_prepare.py",
+    "test_functions": [
+      "test_sealed_secret_strict_format",
+      "test_rotation_preserves_unrelated_settings_and_removes_old_oracle_values",
+      "test_exact_core_and_observer_lock_and_secret_file"
+    ],
+    "imported_modules": [
+      "deploy.oracle_live_host_prepare"
+    ],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "0215d66a3f87e871f0ca055912af982b5a55125026d1cf4fc4be4a6f68803126",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_live_host_prepare.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.465,
+        "summary": "3 passed in 0.04s",
+        "log": "CP099_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oracle_live_host_prepare.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.808,
+        "summary": "3 passed, 1 warning in 0.05s",
+        "log": "CP099_optimized.txt"
+      }
+    ]
+  },
+  {
+    "checkpoint": 100,
+    "test_file": "tests/test_oci_research_os_deploy.py",
+    "test_functions": [
+      "test_vm_and_sha_are_explicit_and_strict",
+      "test_remote_bootstrap_is_small_and_pinned_to_exact_sha",
+      "test_failed_oci_request_is_never_interpreted_as_empty_collection",
+      "test_known_empty_list_is_allowed_but_empty_get_is_blocked",
+      "test_invalid_json_and_missing_data_fail_closed",
+      "test_state_identity_is_keyed_by_vm_and_sha"
+    ],
+    "imported_modules": [],
+    "source_sha": "97d2da61e93ac22b47a6d68be99d72efc574ba4a",
+    "test_file_sha256": "838645a370c47eac25b0f5f9aa1379004c038d514c2c8edb918d380731a06752",
+    "runs": [
+      {
+        "mode": "standard",
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oci_research_os_deploy.py"
+        ],
+        "PYTHONHASHSEED": "0",
+        "exit_code": 0,
+        "duration_seconds": 0.422,
+        "summary": "6 passed, 3 subtests passed in 0.04s",
+        "log": "CP100_standard.txt"
+      },
+      {
+        "mode": "optimized",
+        "command": [
+          "python",
+          "-OO",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_oci_research_os_deploy.py"
+        ],
+        "PYTHONHASHSEED": "1729",
+        "exit_code": 0,
+        "duration_seconds": 0.826,
+        "summary": "6 passed, 1 warning, 3 subtests passed in 0.05s",
+        "log": "CP100_optimized.txt"
+      }
+    ]
+  }
+]

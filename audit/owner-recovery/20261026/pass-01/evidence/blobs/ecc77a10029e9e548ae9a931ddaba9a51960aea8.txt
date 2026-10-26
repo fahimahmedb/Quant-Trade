@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:35:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "DOCUMENTARY_L0_DISCONFIRMATION",
+  "family": "bank-capital-call-redemption-convergence",
+  "parent_seed": "qualifications/santander-6k-ae-admission-2026-10-15.json",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "economic_look_opened": false,
+  "economic_payloads_accessed": 0,
+  "decision": "DUPLICATE",
+  "classification": "DUPLICATE_EXISTING_FULL_CALL_CONVERGENCE_CLUSTER",
+  "MECHANISM": "After an irrevocable full redemption notice, a traded capital security converges toward contractual redemption consideration as the redemption date approaches.",
+  "WHO_PAYS": "Any putative rent would come from holders demanding immediacy before contractual payment, net of accrued distribution, credit/regulatory risk, settlement mechanics and trading frictions.",
+  "WHY_PERSIST": "Potentially thin trading and operational complexity can create nuisance-scale deviations, but Santander Series 10 is an institutional-size AT1 instrument rather than a small-denomination retail note.",
+  "CHEAP_DATA_NOW": "Primary Santander/SEC documentation establishes instrument identity, CUSIP/ISIN, $200,000 liquidation preference/denomination, perpetual AT1 structure and the optional redemption framework. The October 2026 filing already established an irrevocable redemption notice. No selected secondary-market price, yield, spread or payoff was read.",
+  "CHEAP_EXPRESSION": "None opened. A call-to-redemption convergence expression already exists in the prior US exchange-traded debt full-call L0 and remains PARK_DATA pending a complete mapped tradable-instrument/price/accrual chain.",
+  "FATAL_PROBLEM": "This is not a causally distinct research chance. It is the same contractual full-call convergence mechanism already represented by us-exchange-traded-debt-full-call-l0-2026-10-12.json. Santander Series 10 has $200,000 liquidation preference/denomination, so it also fails the small-actor nuisance-scale premise that motivated the earlier $25-note search. No evidence was established here of a small-denomination exchange-listed instrument route accessible to the intended research expression.",
+  "disconfirmation": [
+    "Primary prospectus supplement states the Dollar Notes have $200,000 liquidation preference each.",
+    "SEC supplemental-indenture material identifies Series 10 CUSIP 05971K AH2 / ISIN US05971KAH23 as perpetual Tier 1 securities, not common equity or a $25 exchange-traded baby bond.",
+    "The prior full-call convergence L0 already covers the same contractual principal/accrual convergence idea and is PARK_DATA; renaming the bank-capital instrument would not create a fresh independent trial."
+  ],
+  "source_receipts": [
+    {
+      "source": "Banco Santander primary prospectus supplement",
+      "url": "https://www.santander.com/content/dam/santander-com/es/documentos/emisiones/documentos/em-US05971KAH23-non-cumulative-contingent-conv-perp-preferred-tier-1-presfan-10.pdf",
+      "observed_fact": "$1bn Series 10 4.750% AT1 notes; $200,000 liquidation preference each; issued May 12, 2021."
+    },
+    {
+      "source": "SEC first supplemental indenture / note form",
+      "url": "https://www.sec.gov/Archives/edgar/data/891478/000119312521159120/d142732dex42.htm",
+      "observed_fact": "Identifies Series 10, CUSIP 05971K AH2 / ISIN US05971KAH23, perpetual structure and distribution/reset terms."
+    }
+  ],
+  "linked_existing_family": "qualifications/us-exchange-traded-debt-full-call-l0-2026-10-12.json",
+  "family_effect": "No new family, no new economic look, no multiplicity reset. Santander seed is closed and must not be reopened absent a genuinely distinct mechanism rather than merely a different callable security.",
+  "next_action": "Return search capacity to causally distinct mechanisms or already-frozen prospective protocols. Do not inspect Santander secondary-market prices or redemption PnL under a relabelled family.",
+  "inference_ceiling": [
+    "No Santander profitability conclusion",
+    "No AT1 alpha conclusion",
+    "No execution/capturability conclusion",
+    "No live or real-capital authorization"
+  ]
+}

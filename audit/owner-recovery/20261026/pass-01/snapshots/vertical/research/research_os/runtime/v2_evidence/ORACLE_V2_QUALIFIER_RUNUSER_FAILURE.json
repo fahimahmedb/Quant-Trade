@@ -1,0 +1,19 @@
+{
+  "instance_agent_command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaah3zbvarnqbwijfqhm2ha3l2bahh3kc3w33cvlrufv3xq",
+  "instance_id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+  "delivery_state": "ACKED",
+  "lifecycle_state": "FAILED",
+  "time_created": "2026-10-20T10:45:27.034000+00:00",
+  "time_updated": "2026-10-20T10:47:06.676000+00:00",
+  "sequence_number": 4932972,
+  "display_name": "Quant-Trade recovery qualification",
+  "content": {
+    "output_type": "TEXT",
+    "exit_code": 1,
+    "message": "{\"errs\":[\"exit status 1\"],\"execExitCode\":1,\"runtime\":\"768ms\"}",
+    "text": "{\"exit_code\": 1, \"stdout\": \"\", \"stderr\": \"ss.py\\\", line 1026, in __init__\\n    self._execute_child(args, executable, preexec_fn, close_fds,\\n  File \\\"/usr/lib/python3.12/subprocess.py\\\", line 1955, in _execute_child\\n    raise child_exception_type(errno_num, err_msg, err_filename)\\nFileNotFoundError: [Errno 2] No such file or directory: 'runuser'\\n\", \"log\": \"/var/lib/ocarun/.cache/quant-qualification/v2-root-qualifier.log\", \"sha256\": \"5817a2d0aeaad75bac15ccefabf0ae361b783b00db4b17b1bb4640a4af6d8f04\"}\n",
+    "text_sha256": ""
+  },
+  "oracle_request_id": "7946024361B148E19E48B679F19D9882/38C567EC28F0C2BBAD46D76A43444702/0957B65A8439787D8C9414F419D3B7B6",
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaah3zbvarnqbwijfqhm2ha3l2bahh3kc3w33cvlrufv3xq"
+}

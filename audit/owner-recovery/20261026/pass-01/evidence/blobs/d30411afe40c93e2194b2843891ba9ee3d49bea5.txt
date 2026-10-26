@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "candidate": {
+    "issuer": "Medtronic plc",
+    "ticker": "MDT",
+    "cik": "0001613103",
+    "form": "SC TO-I/A",
+    "accession": "0001628280-26-065823",
+    "accepted": "2026-10-14T08:20:00-04:00"
+  },
+  "decision": "INELIGIBLE_EXCHANGE_OFFER_AND_PRE_T0_COMMENCEMENT",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "market_price_or_exchange_value_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "protocol": "disc-us-issuer-oddlot-priority-prospective-l1-v1",
+  "primary_facts": [
+    "The October 14 amendment reports final results of Medtronic's previously commenced exchange offer, not commencement of a new fixed-cash issuer tender.",
+    "Qualifying holders of fewer than 100 Medtronic shares who tendered all shares were exempt from proration; all eligible odd-lot tenders were accepted.",
+    "Other tendered shares were subject to a final proration factor of 18.289133%.",
+    "Accepted Medtronic shares were exchanged for newly issued MiniMed common shares at the previously fixed exchange ratio, rather than purchased for a fixed cash price.",
+    "The original Schedule TO commenced on September 14, 2026 and the exchange offer expired October 9, both before protocol A's October 12 T0."
+  ],
+  "source": {
+    "url": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026065823/0001628280-26-065823-index.htm",
+    "result_exhibit": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026065596/a425-preliminaryresultsofe.htm"
+  },
+  "decision_reason": "Protocol A is deliberately limited to a first post-T0 Form SC TO-I issuer tender for exchange-listed operating-company common stock at a fixed CASH purchase price with explicit odd-lot priority. Medtronic is an issuer EXCHANGE offer delivering MiniMed shares, and the operative commencement occurred before T0. The October 14 result amendment cannot reset the event clock or convert the transaction into a cash tender.",
+  "contamination_guard": "The final proration and odd-lot acceptance results are documentary mechanics only. They must not be used to calibrate protocol A's economic hurdle or as a successful prospective odd-lot case because the event is outside both transaction type and clock.",
+  "outcome_exposure": {
+    "mdt_entry_price": false,
+    "mmed_value_at_entry": false,
+    "exchange_spread": false,
+    "economic_return": false,
+    "economic_look_count_increment": 0
+  },
+  "lesson": "Odd-lot priority is not sufficient by itself for family admission. Cash self-tenders and exchange offers have different payoff construction, hedging/execution risk and valuation; collapsing them would create a post-hoc family expansion.",
+  "next_action": "Clear Medtronic from protocol A's queue. Continue only with a genuinely new post-T0 commencement SC TO-I that states a fixed cash price and explicit odd-lot priority. Do not backtest this exchange offer under protocol A or create a new exchange-offer expression from its known final result.",
+  "inference_ceiling": [
+    "No Medtronic economic result",
+    "No protocol-A family evidence",
+    "No exchange-offer alpha conclusion",
+    "No live or real-capital authorization"
+  ]
+}

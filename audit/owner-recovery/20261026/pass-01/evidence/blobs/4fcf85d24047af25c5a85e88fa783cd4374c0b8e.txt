@@ -1,0 +1,41 @@
+# Fast Rail State — itération 1 (en cours) — 2026-09-27
+
+## REPRISE (lire en premier après une coupure)
+- Branche : `claude/new-session-3ujgeu` (= rail rapide ; base prototype + adoption Blue bd19712 vérifiée).
+- Étape en cours : **it.1, étape B** (vague parallèle). Les 4 agents de la vague 1 (H-002, H-004, H-006, Données) ont été tués par la limite de session le 2026-09-25 **avant tout commit** : aucun essai consommé, rien à récupérer.
+- Prochaine action : relancer la vague 1 avec **2 agents max** (H-006 puis H-002), chacun commit + push WIP sur `fast-wip/<H-id>` toutes les ~30 min.
+- Registre : `research/fast_rail/registry.jsonl` (déclarations H-001..H-006 faites avant données).
+
+## Budget : itérations 1/10, essais 0/200 consommés (14 déclarés : H-002 6, H-004 2, H-006 6)
+
+## En SHADOW
+| stratégie | depuis | forward | note |
+|---|---|---|---|
+| calendar_fomc_overnight (SPY MOC→MOO) | pristine_after 2026-09-11 | 1 événement (2026-09-16, +0,26 %) | laisser accumuler ; ne pas re-tester |
+
+## Verdicts de cette itération
+| H-id | niveau | motif |
+|---|---|---|
+| H-001 Pinnacle vs PM/Kalshi sport | BLOCKED(data) | secret `ODDS_API_KEY` absent du relais |
+| H-002 HL vs dYdX funding (hystérésis) | IDEA | agent interrompu, 0 essai |
+| H-004 Kalshi météo, P&L maker à règlement | IDEA | agent interrompu, 0 essai |
+| H-006 fade des listings HL | IDEA | agent interrompu, 0 essai |
+
+## Constats red team : ouverts HIGH 0 | reportés : aucun (pas encore de résultat)
+
+## Faits d'environnement (vérifiés 2026-09-25)
+- Réseau sortant ouvert depuis le sandbox : Hyperliquid (POST info), dYdX indexer, OKX, Polymarket, FRED, Kalshi (429 si trop rapide). EDGAR efts : 403. → l'historique se récupère directement, le relais sert au forward.
+
+## Backlog (suivants, classés)
+1. H-006 fade listings HL (léger, données accessibles)
+2. H-002 HL vs dYdX funding (moyen)
+3. H-004 Kalshi météo maker (mesure)
+4. Kalshi macro CPI/NFP vs nowcasts (consensus PIT à vérifier)
+5. SPAC trust arb (EDGAR hors `sec/`, efts 403 → tester www.sec.gov)
+BLOCKED : H-001 (ODDS_API_KEY).
+
+## Actions propriétaire en attente
+- Ajouter `ODDS_API_KEY` en **secret GitHub Actions** du repo (relais) et, si besoin en sandbox, en variable d'environnement de l'environnement Claude Code. Ne jamais la coller dans le chat ni dans un fichier commité.
+
+## Leçon de l'itération
+4 agents Opus en parallèle ont épuisé la limite de session en < 1 h et les worktrees non commités ont été perdus. Désormais : ≤ 2 agents, push WIP fréquent, checkpoint d'état avant chaque vague.

@@ -1,0 +1,66 @@
+name: Polymarket Neg-Risk Read-Only Screen
+
+on:
+  push:
+    branches:
+      - sol/scout-prediction-flb-nr
+    paths:
+      - .github/workflows/polymarket-neg-risk-readonly-screen.yml
+
+permissions:
+  contents: read
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout rerun implementation
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Verify frozen economic collector is byte-identical
+        shell: bash
+        run: |
+          test "$(git hash-object research/edge_search/scouts/polymarket_neg_risk/neg_risk_collector.py)" = "faffb23fc0c0fce0ad498b05681e2608d0f5b347"
+          git diff --exit-code
+
+      - name: Run frozen and measurement regression tests
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: python -m unittest -v test_neg_risk_collector.py test_frozen_screen_measurement.py
+
+      - name: Exact-entrypoint forced-failure diagnostic smoke
+        continue-on-error: true
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: |
+          python run_frozen_screen.py --mode smoke --simulate-failure --out-dir "$GITHUB_WORKSPACE/neg_risk_smoke_failure"
+
+      - name: Verify forced-failure diagnostic exists
+        if: always()
+        shell: bash
+        run: |
+          test -s neg_risk_smoke_failure/diagnostic.json
+          grep -q 'SIMULATED_ENTRYPOINT_FAILURE_FOR_DIAGNOSTIC_TEST' neg_risk_smoke_failure/diagnostic.json
+
+      - name: Exact-entrypoint live smoke
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: |
+          python run_frozen_screen.py --mode smoke --out-dir "$GITHUB_WORKSPACE/neg_risk_smoke"
+
+      - name: Execute same frozen 60x10s read-only screen
+        working-directory: research/edge_search/scouts/polymarket_neg_risk
+        run: |
+          python run_frozen_screen.py --mode run --out-dir "$GITHUB_WORKSPACE/neg_risk_rerun"
+
+      - name: Upload scientific audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: polymarket-neg-risk-readonly-screen-v2
+          path: |
+            neg_risk_smoke_failure/
+            neg_risk_smoke/
+            neg_risk_rerun/
+          if-no-files-found: error
+          retention-days: 30

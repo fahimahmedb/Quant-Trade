@@ -1,0 +1,77 @@
+{
+  "allowed_actions": [
+    "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+    "inspect public rules, institutional constraints, calendars and implementation mechanics",
+    "map forced actor, constraint, clock, affected universe, capacity and falsification",
+    "actively seek structural disconfirmation",
+    "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
+  },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006/oracle-worker/mechanism_research.json"
+    ],
+    "completed_at": "2026-10-20T09:40:19Z",
+    "receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006-g2-3240e638d3e5.json",
+    "result": "BLOCKED"
+  },
+  "created_at": "2026-10-20T09:20:18Z",
+  "derivation": {
+    "derivation_key": "16eff02adac12e0e7d64914db5a3af408c6acd897c6b805a320327abc2480935",
+    "frontier_id": "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM",
+    "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+    "sequence": 6,
+    "steward_lane": "integrator_portfolio",
+    "target_lane": "market_discovery",
+    "type": "EMPTY_QUEUE_FRONTIER_REFILL"
+  },
+  "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "legacy_duplicate_check": {
+        "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006/oracle-worker/legacy_duplicate_check.json",
+        "artifact_hash": "f57571a8a5ab13000266d39c130a0d380fd8433faf4b111ffc48663c507bb297"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006-g2-3240e638d3e5.json",
+    "lineage": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006",
+    "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+    "session_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006-g2-3240e638d3e5"
+  },
+  "forbidden_actions": [
+    "candidate return inspection",
+    "backtest",
+    "post-outcome event selection or tuning",
+    "prospective observation",
+    "capital allocation",
+    "order generation",
+    "live trading"
+  ],
+  "inputs": {
+    "causal_distinctness_required": true,
+    "derivation_key": "16eff02adac12e0e7d64914db5a3af408c6acd897c6b805a320327abc2480935",
+    "frontier_id": "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM",
+    "legacy_gate_required": true,
+    "objective": "Find exactly one causally distinct forced-flow or institutional-constraint mechanism from admissible public rules/documents, screen Legacy before freeze, and freeze at most one CandidateHypothesis without inspecting returns.",
+    "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
+  },
+  "lease": {
+    "claimed_at": "2026-10-20T09:40:14Z",
+    "expires_at": "2026-10-20T09:40:19Z",
+    "generation": 2,
+    "owner": "oracle-research-v1.market_discovery"
+  },
+  "priority": 70,
+  "required_capability": "institutional_flows",
+  "status": "BLOCKED",
+  "success_condition": "One Legacy-screened, causally distinct institutional-flow CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006",
+  "task_type": "INSTITUTIONAL_FLOW",
+  "updated_at": "2026-10-20T09:40:19Z"
+}

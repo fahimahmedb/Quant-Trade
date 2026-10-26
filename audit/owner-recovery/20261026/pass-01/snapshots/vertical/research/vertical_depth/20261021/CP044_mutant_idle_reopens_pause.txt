@@ -1,0 +1,46 @@
+mutation=idle_reopens_pause
+fixed_source_sha256=16e60eb0d388face1f68e822e8a62c4733c1103a7dedbdfded6b4e6f04ed5b73
+..............................F......                                    [100%]
+=================================== FAILURES ===================================
+_ test_pause_after_initial_entry_check_cannot_be_lost_before_dispatch_or_idle[False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-7/test_pause_after_initial_entry0')
+has_task = False
+
+    @pytest.mark.parametrize('has_task', [False, True])
+    def test_pause_after_initial_entry_check_cannot_be_lost_before_dispatch_or_idle(tmp_path, has_task):
+        calls = []
+        campaign = ResearchCampaign(tmp_path, workers={'fake': lambda t: (calls.append(t.task_id), result(t))[1]})
+        if has_task:
+            campaign.enqueue(task('one'))
+        selected, release = threading.Event(), threading.Event()
+        due = campaign.queue.next_due
+        visits = []
+
+        def pause_selection(*args, **kwargs):
+            answer = due(*args, **kwargs)
+            visits.append(True)
+            if len(visits) == 1:
+                selected.set()
+                assert release.wait(5)
+            return answer
+
+        with patch.object(campaign.queue, 'next_due', side_effect=pause_selection):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(campaign.run_once)
+                try:
+                    assert selected.wait(5)
+                    campaign.pause('')
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+                finally:
+                    release.set()
+>               assert future.result(timeout=5) == 'PAUSED'
+E               AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E                 - PAUSED
+E                 + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:137: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_pause_depth.py::test_pause_after_initial_entry_check_cannot_be_lost_before_dispatch_or_idle[False]
+1 failed, 36 passed in 0.89s

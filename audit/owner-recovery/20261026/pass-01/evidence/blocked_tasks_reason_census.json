@@ -1,0 +1,387 @@
+[
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-003",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-003/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-005",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-005/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-006",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-006/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-006",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-006/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "AAA-V2-CANARY-a67ffec48fff895d",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/live-qualification.json",
+      "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-012",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-012/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-005/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-006",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-006/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-009",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-009/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-009/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-010",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-010/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-010/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-007/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-011",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-011/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-011/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-004",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-004/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-006/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-008",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-008/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-008/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-012",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-012/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-012/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-004",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-004/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-009/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-005/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-007",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-007/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-007/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-004/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-003",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-003/oracle-worker/mechanism_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-007",
+    "reasons": [
+      "LEGACY_CONTEXT_REQUIRES_NEW_V2_TRIAL"
+    ],
+    "evidence": []
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-007",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-007/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-QUANT-MECHANISM-DISTINCT-011",
+    "reasons": [
+      "MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-011/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-011/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009",
+    "reasons": [
+      "BLOCK_EXACT_CURRENT_DUPLICATE",
+      "UNRESOLVED_OR_DUPLICATE_EXPOSURE"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/oracle-v2/negative_memory.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/oracle-v2/research_trial.json.json",
+      "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/oracle-worker/document_or_fundamental_research.json"
+    ]
+  },
+  {
+    "task": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008",
+    "reasons": [
+      "STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research"
+    ],
+    "evidence": [
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008/oracle-worker/mechanism_research.json",
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-008/oracle-v2/trial_intents/g000002-completion.json"
+    ]
+  }
+]

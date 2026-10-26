@@ -1,0 +1,94 @@
+{
+  "id": "smard-2025-solar-noon-evening-proxy-v1",
+  "family": "smard-fixed-flexibility",
+  "dataset": "smard-de-lu-day-ahead-energy",
+  "stage": "EXPLORATION",
+  "window": [
+    "2024-12-31T23:00:00Z",
+    "2025-12-31T23:00:00Z"
+  ],
+  "expressions": [
+    "solar_noon_18_eff80"
+  ],
+  "cost_paths": [
+    "central",
+    "stress"
+  ],
+  "primary": "solar_noon_18_eff80",
+  "design": {
+    "charge_local_hour": 12,
+    "discharge_local_hour": 18,
+    "input_mwh": 1,
+    "round_trip_efficiency": 0.8,
+    "central_all_in_eur": 100,
+    "stress_all_in_eur": 150
+  },
+  "mechanism": "Distinct fixed noon-to-evening physical supply-timing proxy: daylight PV supplies energy at noon; evening demand may pay for storage. Fixed12\u219218h before any price access, no optimal hour search or retry of failed03\u219218policy.",
+  "payer": "Hypothetical evening energy buyer compensates physical storage/daylight-supply timing; no actual contract/right/market fill claimed.",
+  "clock": "UTC epoch milliseconds mark start of each delivery interval; Europe/Berlin CET/CEST policy. Auction outcome prices and revised hourly averages used only as outcomes, never as signals. 15min market from2025-10-01 treated as equal-volume hourly-average proxy, not native executable hourly quote.",
+  "independent_unit": "365calendar days, dependent hours/policies. Descriptive Newey-West/Bartlett daily-meanHAC lag7; approximate95pct interval with no guaranteed coverage under seasonality/tails/private history.",
+  "benchmark": "Do nothing/no device/no order: incremental PnL0. No winning alternate hours or expressions.",
+  "costs": {
+    "efficiency": 0.8,
+    "central": {
+      "all_in_eur_per_input_mwh": 100,
+      "assumed_components": {
+        "annualized_asset": 50,
+        "degradation_operations": 20,
+        "grid_taxes_fees": 15,
+        "auction_execution_imbalance": 10,
+        "financing": 5
+      }
+    },
+    "stress": {
+      "all_in_eur_per_input_mwh": 150,
+      "assumed_components": {
+        "annualized_asset": 75,
+        "degradation_operations": 30,
+        "grid_taxes_fees": 22.5,
+        "auction_execution_imbalance": 15,
+        "financing": 7.5
+      }
+    },
+    "provenance": "Explicit hypothetical full-cost paths fixed before outcomes; not a quote/entitlement from any broker/storage/grid operator. Report gross break-even cost alongside both net paths.",
+    "failed_dispatch": "Not modeled as executable plant; absence of asset/auction fill guarantee prevents any live or survival interpretation. Incomplete source cannot assume successful dispatch or drop a day."
+  },
+  "risk": "1MW input/1MWh,0.8MWh output,one6h cycle/day; same asset/counterparty/grid/failed-dispatch limits as explicitly assumed physical proxy.",
+  "rights": {
+    "permitted": true,
+    "url": "https://www.smard.de/en/datennutzung",
+    "scope": "Open market data CC BY4.0; attribute Bundesnetzagentur | SMARD.de. Does not authorize market orders/plant access."
+  },
+  "decision_contract": {
+    "positive": "Stress daily-mean HAC95lower>0: positive exploratory proxy only; require distinct real asset/quotes/tariff/clock validation, no capital or survival claim.",
+    "negative": "Central HAC95daily-meanupper<0: close only this noon-to-evening policy under assumed100EUR full cost, not all storage or markets. No alternate-hour/cheaper-cost winner.",
+    "inconclusive": "Otherwise INSUFFICIENT_POWER/model separation, preserve values; no retuning/retry.",
+    "invalid": "Any missing hour/null/nonfinite/conflicting duplicate/version/size/deadline/schema => SOURCE_UNUSABLE; no period shrink/imputation/new dataset; preserve partial inputs, consumed look. Software missing receipt remains uncertain spent."
+  },
+  "multiplicity_policy": "Same family/data/history: original no-price infrastructure-failed nightpolicy2paths retained; this separate noonpolicy2dependent costpaths =>4charged total if reserved. No original policy recomputed. One family active/no parameter grid/no best after results/virgin history/private reset. M effectiveUNKNOWN, privateexposureUNKNOWN. N rawhours vs365days vs paths distinct.",
+  "runner": "scripts/smard_solar_flexibility.py",
+  "runner_sha256": "fa7ba9c280c50279e72548c7a92a14c8508ba4ed122fdc94b30788e3a8acf584",
+  "code_sha256": {
+    "src/quant/edge_lab/smard_solar.py": "9128557965cad110bbb9e2a249151f017c4b5a3c4c5f7f72fdfe88d8bfc75b6d",
+    "src/quant/edge_lab/smard.py": "a469aff0cc262f28d687e14a240d1588c1218baceaf22612c195fe646e1bd008",
+    "src/quant/edge_lab/public_inputs.py": "48fdd73d834dc15a57aceca5cbbf3194a3de268b5f9a1a916a4b915ac2a05491"
+  },
+  "evidence_ids": [
+    "smard-open-data-rights-20261011T1240Z",
+    "smard-open-source-clock-bounds-20261011",
+    "smard-safe-entrypoint-qa-20261011",
+    "smard-solar-policy-method-software-20261011"
+  ],
+  "input_manifest": "research/edge_lab/sources/smard-2025-header-manifest.json",
+  "public_inputs": {
+    "hosts": [
+      "www.smard.de"
+    ],
+    "max_input_bytes": 250000
+  },
+  "scope": "EXPLORATORY_PHYSICAL_COST_PROXY_NOT_FINANCIAL_ALPHA",
+  "input_exposure_window": [
+    "2024-12-29T23:00:00Z",
+    "2026-01-04T23:00:00Z"
+  ]
+}

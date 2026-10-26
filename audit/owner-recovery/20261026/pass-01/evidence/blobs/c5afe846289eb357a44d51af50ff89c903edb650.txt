@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "One SEC request attempt. The Day-1 liveness record, written whether or not bytes were received, carrying an opaque locator digest rather than an identifying locator.",
+  "properties": {
+    "attempt_id": {
+      "type": "string"
+    },
+    "attempt_kind": {
+      "type": "string"
+    },
+    "byte_length": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "collector_version": {
+      "type": "string"
+    },
+    "content_encoding": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "declared_content_length": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "duration_seconds": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "endpoint_class": {
+      "type": "string"
+    },
+    "error_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "git_commit": {
+      "type": "string"
+    },
+    "http_status": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "incomplete_object_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limiter_waited_seconds": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "media_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "page_start": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "poll_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_object_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "request_attempted_at_utc": {
+      "type": "string"
+    },
+    "response_received_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "result_state": {
+      "type": "string"
+    },
+    "retry_after_seconds": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "source_locator_digest": {
+      "type": "string"
+    },
+    "transfer_outcome": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "attempt_id",
+    "attempt_kind",
+    "endpoint_class",
+    "source_locator_digest",
+    "request_attempted_at_utc",
+    "result_state",
+    "collector_version",
+    "git_commit"
+  ],
+  "title": "sec_attempt_record",
+  "type": "object"
+}

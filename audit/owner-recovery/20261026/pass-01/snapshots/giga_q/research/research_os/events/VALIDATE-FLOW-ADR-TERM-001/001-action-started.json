@@ -1,0 +1,15 @@
+{
+  "event_id": "VALIDATE-FLOW-ADR-TERM-001-g1-e1",
+  "session_id": "VALIDATE-FLOW-ADR-TERM-001-g1",
+  "worker_id": "chatgpt-interactive-validator",
+  "action_id": "VALIDATE-FLOW-ADR-TERM-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:37:25Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "ADR termination documentary validation",
+    "detail": "Validating mechanism, event-clock feasibility and operational mapping without reading any price or return outcome."
+  }
+}

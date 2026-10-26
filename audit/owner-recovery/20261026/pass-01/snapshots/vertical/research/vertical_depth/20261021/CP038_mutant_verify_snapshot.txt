@@ -1,0 +1,30 @@
+mutation=verify_snapshot
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=278787ba1583a37bf23c83b063d13c04b2c243c1fd1fa7474962aac021396a42
+...............................................F........................ [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source __
+
+    def test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source():
+        runner, plan, envelope, qualifications, meta = frozen()
+        changed = deepcopy(qualifications)
+        changed[0]['snapshot_hash'] = 'foreign-snapshot'
+        replacement = runner.plan(envelope, changed, meta)
+        replay = runner.replay
+
+        def replay_then_swap(checked):
+            result = replay(checked)
+            plan.clear()
+            plan.update(deepcopy(replacement))
+            return result
+
+        with patch.object(runner, 'replay', side_effect=replay_then_swap):
+>           with pytest.raises(FrozenExperimentBindingError, match=BINDING_MISMATCH_ERRORS['source']):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE FrozenExperimentBindingError
+
+tests/test_vertical_frozen_replay_depth.py:122: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_verify_cannot_swap_validated_plan_after_replay_to_match_changed_source
+1 failed, 72 passed in 0.16s

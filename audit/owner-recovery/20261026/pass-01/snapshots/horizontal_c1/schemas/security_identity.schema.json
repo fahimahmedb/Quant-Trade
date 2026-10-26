@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_hashes": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "identifiers": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "issuer_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "security_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "security_type": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "share_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "valid_from": {
+      "type": "string"
+    },
+    "valid_to": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "security_id",
+    "issuer_id",
+    "security_type",
+    "valid_from",
+    "valid_to",
+    "identifiers",
+    "evidence_hashes"
+  ],
+  "title": "SecurityIdentity",
+  "type": "object"
+}

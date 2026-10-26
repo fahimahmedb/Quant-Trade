@@ -1,0 +1,31 @@
+{
+  "experiment_id": "disc-zf-auction-pressure-daily-l1-v1",
+  "invocation_id": "owner-v42-zf-daily-20261012-a1",
+  "typed_verdict": "PARK_DATA",
+  "decision": "PARK_DATA",
+  "economics_computed": false,
+  "edge_validated": false,
+  "claim_ceiling": "PROMOTE_EXPRESSION",
+  "attempt": 1,
+  "replay_allowed": false,
+  "predeclaration_commit": "c3605159c6dd7e60f3b41cbde88e0ed0ae255137",
+  "claim_path": "research/edge_lab/discovery/claims/disc-zf-auction-pressure-daily-l1-v1.owner-v42-zf-daily-20261012-a1.json",
+  "frozen_event_source": "U.S. Treasury FiscalData Treasury Securities Auctions Data / auctions_query",
+  "frozen_market_source": "U.S. Treasury Daily Treasury Par Yield Curve Rates 5Y",
+  "source_access": {
+    "event_population": "BLOCKED_IN_CURRENT_RUNTIME",
+    "market_proxy": "PARTIALLY_ACCESSIBLE_AFTER_CLAIM",
+    "exact_event_population_mechanically_retrieved": false,
+    "substitution_allowed": false
+  },
+  "failed_criteria": [
+    "Frozen official auctions_query event population could not be mechanically retrieved in the current runtime, so the >=40-event and >=90%-complete adequacy gates cannot be evaluated without substituting the predeclared source."
+  ],
+  "reason": "The claim was validly published before 5Y market-outcome access, but the exact frozen FiscalData auctions_query population was not retrievable as a complete mechanical rowset in the current runtime. Some official 5Y rate observations became accessible after the claim. Because event-source substitution or manual reconstruction after outcome access would violate the frozen design, no join, statistics, hurdle decision, or placebo was computed.",
+  "inference": "DATA_ACCESS_BLOCK_ONLY_NOT_ECONOMIC_REJECTION",
+  "outcome_access_note": "Partial official 5Y rate pages were inspected only after the durable claim; no event-level joined result or economic statistic was computed.",
+  "next": "Reactivate this exact expression only when the frozen FiscalData auctions_query rowset is mechanically accessible without changing population/source/window/thresholds. Otherwise spend the next research cycle on a causally distinct mechanism with data accessible now.",
+  "paid_usd": 0,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

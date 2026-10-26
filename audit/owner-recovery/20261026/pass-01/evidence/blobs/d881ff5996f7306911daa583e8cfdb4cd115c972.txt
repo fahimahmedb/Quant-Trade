@@ -1,0 +1,671 @@
+
+==================== WEEKEND 2026-05-01 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-05-01 | FILM: Animal Farm | OPEN | key='Animal Farm'
+  [lane C] Deadline post 1236877817 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * Animal Farm ( Angel) 2,600 theaters, Fri $1.1M, 3-day $3.3M /Wk 1 Andy Serkis' animated take of the George Orwell novel gets a C- and a very low 28% definite recommend from general audiences.
+  [lane D] Deadline post 1236877817 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * Animal Farm ( Angel) 2,600 theaters, Fri $1.1M, Sat $1.3M Sun $949K 3-day $3.4M /Wk 1 7.
+  [lane D] Variety post 1236732410 pub 2026-05-03T15:21:19Z mod 2026-05-04T15:12:25Z REVISABLE(modified after anchor) :: Box Office: ‘The Devil Wears Prada 2’ Dazzles With $77 Million Domestic Debut, Powers to $
+     * "So a 'B' score is excellent." "Animal Farm," this weekend's final newcomer, opened at No. 6 with $3.3 million from 2,600 screens.
+
+######## 2026-05-01 | FILM: Hokum | OPEN | key='Hokum'
+  [lane A] Deadline post 1236877817 section [FRIDAY AM UPDATE, AFTER EXCLUSIVE] available by 2026-05-01T19:00:00+00:00
+     * Adam Scott in 'Hokum' Neon Neon's Adam Scott horror film Hokum from Damian Mc Carthy posted great previews of $900K overall.
+  [lane B] Deadline post 1236877817 section [FRIDAY AFTERNOON] available by 2026-05-02T00:00:00+00:00
+     * NEON's horror film Hokum at 1,860 theaters is seeing an estimated $2.6M today and north of $6M for the weekend.
+  [lane C] Deadline post 1236877817 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * Project Hail Mary (Amz) 3,017 (-493) theaters, Fri $2.2M (-32%) 3-day $8.7M (-32%), Total $318.4M /Wk 7 Adam Scott in 'Hokum' Neon 5.
+     * Hokum (NEON) 1,860 theaters, Fri $2.6M, 3-day $6M /Wk 1 The Adam Scott-starring horror film gets a B CinemaScore which is high praise for one from the audience polling group.
+  [lane C] Variety post 1236736041 pub 2026-05-02T15:45:06Z mod 2026-05-02T17:57:02Z STRICT :: Box Office: ‘The Devil Wears Prada 2’ Struts to $32.5 Million on Opening Day
+     * Neon's newcomer "Hokum" took fourth place, earning an estimated $2.6 million domestically.
+  [lane D] Deadline post 1236877817 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * Hokum (NEON) 1,860 theaters, Fri $2.6M, Sat $2.2M Sun $1.55M 3-day $6.4M /Wk 1 6.
+  [lane D] Variety post 1236732410 pub 2026-05-03T15:21:19Z mod 2026-05-04T15:12:25Z REVISABLE(modified after anchor) :: Box Office: ‘The Devil Wears Prada 2’ Dazzles With $77 Million Domestic Debut, Powers to $
+     * Also new to theaters is Neon's indie thriller "Hokum," which debuted in fifth place with $6.4 million from 1,855 theaters.
+
+######## 2026-05-01 | FILM: Michael | NTH | key='Michael'
+  [lane A] Deadline post 1236877817 section [FRIDAY AM UPDATE, AFTER EXCLUSIVE] available by 2026-05-01T19:00:00+00:00
+     * RELATED: Horror Movies' Next Wave: What's Coming In 2026, From Auteur Nightmares To Indie Breakouts Here's how the week went: 1.) Michael (LG) 3,955 theaters, Wk $129.8M/Wk 1 2.) The Super Mario Galaxy Movie (Uni) 3,732 theaters, Wk $25.2M (-44%), Total $390.5M/Wk 4 3.) Project Hail Mary (AMZ) 3,510 theaters, Wk $17.5M (-36%), Total $309.7M/Wk 6 4.
+  [lane A] Variety post 1236734300 pub 2026-05-01T15:05:48Z mod 2026-05-01T15:08:44Z STRICT :: Box Office: ‘The Devil Wears Prada 2’ Makes $10 Million in Previews
+     * It's projected to earn between $75 million and $80 million in its opening weekend, but some estimates put it even higher at $90 million to $100 million due to the popularity of the original and the recent over-performance of Lionsgate's "Michael." Internationally, "The Devil Wears Prada" sequel has made $40.5 million in its first two days after ope
+     * Last week's Michael Jackson biopic was originally estimated to open to around $70 million then exceeded expectations with a huge $97.2 million debut.
+  [lane B] Deadline post 1236877817 section [FRIDAY AFTERNOON] available by 2026-05-02T00:00:00+00:00
+     * 'After Star Wars, this is the first time I'm truly excited about a sequel' paired with 'Feels like I'm watching 2006 again I can't wait.' captures that rare mix of reverence and hype, while 'First was legendary can't wait for this one' and 'Much more exciting than any superhero cheese' show it cutting through genre fatigue." Lionsgate's Michael is 
+  [lane C] Deadline post 1236877817 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * The Devil Wears Prada 2 and Michael are doing their jobs to make the start of summer a bountiful one, respectively with $75M-$80M and an excellent hold by the Lionsgate movie of -48% or $51M .
+     * Michael (LG) 3,955 theaters, Fri $14.4M (-63%), 3-day $51M (-48%), Total $180.8M /Wk 2 Pic's total cume easily becomes Lionsgate's second-highest grossing movie post-Covid, ahead of Hunger Games: Songbirds and Snakes ($166.3M U.S.) and behind John Wick: Chapter 4 ($187.1M). 3.
+  [lane C] Deadline post 1236878987 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * We told you yesterday that Lionsgate's Michael became the second-highest grossing musical biopic of all-time at $300M, surpassing Elvis and behind Bohemian Rhapsody ($911M).
+  [lane C] Variety post 1236736041 pub 2026-05-02T15:45:06Z mod 2026-05-02T17:57:02Z STRICT :: Box Office: ‘The Devil Wears Prada 2’ Struts to $32.5 Million on Opening Day
+     * Last weekend's champ, "Michael," fell to second place with $14.4 million domestically on its second Friday in theaters.
+     * Even if it falls short of that figure, "Michael" has an even better chance of legging out "The Hunger Games: Catching Fire" as the highest-grossing Lionsgate film of all time ($865 million).
+  [lane D] Deadline post 1236877817 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * View this post on Instagram Promo partners were rich, including Dior, Tiffany & Co, Diet Coke, Hilton (Waldorf), GE Cafe, Google, Grey Goose, Lancôme, L'Oréal Paris, Samsung, Smartwater, Starbucks, Zillow, TRESemmé, United Airlines and let's not forget Mercedes Benz, with their new Maybach S-Class in a post with Prada 2 star Lucy Liu: View this pos
+     * By EOD Monday, Michael will become Lionsgate's biggest pic stateside post Covid, kicking John Wick: Chapter 4 off the stage ($187.1M).
+     * Michael (LG) 3,955 theaters, Fri $14.4M (-63%) Sat $23.2M Sun $16.4M 3-day $54M (-44%), Total $183.8M /Wk 2 3.
+  [lane D] Deadline post 1236878987 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * The David Frankel-directed sequel was No. 1 in most markets except for France ($8M) , Spain ($5.2M) , Denmark, Sweden and Netherlands, where it was pushed to No. 2 by Universal's release of Michael , and Japan, where it was bested by Super Mario Galaxy Movie ($6.3M to $6.1M).
+     * Juliano Krue Valdi as Michael Jackson, Larenz Tate as Berry Gordy in 'Michael' (Glen Wilson/Lionsgate/Courtesy Everett Collection) Universal's foreign release of Lionsgate's Michael saw a huge second global weekend of $134.8M fueled by 82 offshore territories which did $80.8M , while domestic delivered a very strong second frame of $54M.
+     * In regards to reported B.O., Michael has become Lionsgate's second-highest grossing movie post-Covid after John Wick: Chapter 4 ($447M) and ahead of Hunger Games: Ballad of Songbirds & Snakes ($361.7M).
+  [lane D] Variety post 1236732410 pub 2026-05-03T15:21:19Z mod 2026-05-04T15:12:25Z REVISABLE(modified after anchor) :: Box Office: ‘The Devil Wears Prada 2’ Dazzles With $77 Million Domestic Debut, Powers to $
+     * They also rank as the fourth-best start of the year, behind "Michael" ($97.5 million), "The Super Mario Galaxy Movie" ($131 million) and "Project Hail Mary" ($80 million).
+     * The sequel secured the second-biggest worldwide debut of 2026, ahead of "Michael" ($217 million) and after "The Super Mario Galaxy Movie" ($372.5 million).
+     * Second place went to "Michael" with a massive $54 million from 3,955 venues in its second weekend, down just 44% from its debut.
+     * Lionsgate's musical biopic about Michael Jackson has been a major draw with $183.8 million in North America and $423 million globally after just 12 days in theaters.
+
+######## 2026-05-01 | FILM: The Devil Wears Prada 2 | OPEN | key='Devil Wears Prada 2'
+  [lane A] Deadline post 1236877817 section [FRIDAY AM UPDATE, AFTER EXCLUSIVE] available by 2026-05-01T19:00:00+00:00
+     * Disney is reporting $10M in Thursday night U.S. previews for 20th Century Studios' The Devil Wears Prada 2 .
+     * Related Stories Reviews 'The Devil Wears Prada 2' Review: More Is Less In Miranda Priestly's Underwhelming Return News The 60 Movies That Have Made More Than $1 Billion At The Global Box Office The Devil Wears Prada 2 has posted the highest opening day of 2026 to date in Brazil, Italy, Korea and Australia as well as Belgium, Bulgaria, Saudi Arabia,
+  [lane B] Deadline post 1236877817 section [FRIDAY AFTERNOON] available by 2026-05-02T00:00:00+00:00
+     * 20th Century Studios' Devil Wears Prada 2 is totally ready to wear for female moviegoers this weekend with an eye on a 3-day of $75M-$80M after a $33M Friday (including previews) at 4,150 theaters.
+  [lane C] Deadline post 1236877817 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * The Devil Wears Prada 2 and Michael are doing their jobs to make the start of summer a bountiful one, respectively with $75M-$80M and an excellent hold by the Lionsgate movie of -48% or $51M .
+     * Global B.O. for the $100M Devil Wears Prada 2 is up to $114.6M with $82.1M from overseas alone.
+     * Devil Wears Prada 2 's Friday came in at $32.5M, very close to where we saw it.
+     * Even if Devil Wears Prada 2 comes in at $75M, va bene.
+  [lane C] Deadline post 1236878987 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * Behold, summer is officially here with two movies that are slaying around the globe. 20th Century Studios/Disney's opener this weekend The Devil Wears Prada 2 currently counts $114.6M global through yesterday.
+  [lane C] Variety post 1236736041 pub 2026-05-02T15:45:06Z mod 2026-05-02T17:57:02Z STRICT :: Box Office: ‘The Devil Wears Prada 2’ Struts to $32.5 Million on Opening Day
+     * Everybody wants to be us." That's most likely the attitude at 20th Century Studios this weekend, because "The Devil Wears Prada 2" easily topped the box office charts on Friday with $32.5 million from 4,150 North American theaters.
+  [lane D] Deadline post 1236877817 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * 20th Century Studios/Disney's Devil Wears Prada 2 came in at $77M U.S., still above tracking's $73M.
+     * Remember, the global project was a near $180M for Devil Wears Prada 2 .
+     * The second Sunday for the Antoine Fuqua-directed movie will hold at -29% (with $16.4M) off Saturday's $23.2M (which by the way was very close to Devil Wears Prada 2 's Saturday of $25M, wowza).
+     * Devil Wears Prada 2 (20th/Dis) 4,150 theaters, Fri $32.5M, Sat $25M, Sun $19.5M 3-day $77M/ Wk 1 2.
+  [lane D] Deadline post 1236878987 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * 20th Century Studios/Disney's Devil Wears Prada 2 was an event women around the world were awaiting with a $156.6M offshore start, the 2nd best for a Hollywood movie YTD behind Super Mario Galaxy Movie ($182.4M), for what is also the second-best global debut of $233.6M WW YTD behind the Nintendo/Illumination movie ($372.5M WW).
+     * Europe counted $78M for Devil Wears Prada 2 , with the first frame already ahead of the original 2006 title's final cume in Albania, Armenia, Azerbaijan, Bahrain, Bosnia, Bulgaria, Croatia, Czechia, Egypt, Estonia, Georgia, Hungary, Iceland, Iraq, Jordan, Kazakhstan, Kuwait, Kyrgyzstan, Latvia, Lebanon, Lithuania, Nigeria, Oman, Qatar, Romania, Ser
+     * Japan, which was the highest grossing territory for the first Super Mario Bros Movie at a near $102M, posted a second weekend of $6.3M with Saturday and Sunday business outgrossing the opening of Devil Wears Prada 2 .
+  [lane D] Variety post 1236732410 pub 2026-05-03T15:21:19Z mod 2026-05-04T15:12:25Z REVISABLE(modified after anchor) :: Box Office: ‘The Devil Wears Prada 2’ Dazzles With $77 Million Domestic Debut, Powers to $
+     * Movie theaters are en vogue again - at least based on the blockbuster turnout for "The Devil Wears Prada 2." Disney's star-studded sequel has defied box office expectations with $77 million from 4,150 North American theaters in its opening weekend.
+
+######## 2026-05-01 | FILM: The Super Mario Galaxy Movie | NTH | key='Super Mario Galaxy Movie'
+  [lane A] Deadline post 1236877817 section [FRIDAY AM UPDATE, AFTER EXCLUSIVE] available by 2026-05-01T19:00:00+00:00
+     * RELATED: Horror Movies' Next Wave: What's Coming In 2026, From Auteur Nightmares To Indie Breakouts Here's how the week went: 1.) Michael (LG) 3,955 theaters, Wk $129.8M/Wk 1 2.) The Super Mario Galaxy Movie (Uni) 3,732 theaters, Wk $25.2M (-44%), Total $390.5M/Wk 4 3.) Project Hail Mary (AMZ) 3,510 theaters, Wk $17.5M (-36%), Total $309.7M/Wk 6 4.
+  [lane B] Deadline post 1236877817 section [FRIDAY AFTERNOON] available by 2026-05-02T00:00:00+00:00
+     * Third belongs to Illumination/Nintendo/Universal's Super Mario Galaxy Movie at 3,412 with $2.5M today and a fifth weekend of $11.2M , -45%.
+  [lane C] Deadline post 1236877817 section [SATURDAY AM] available by 2026-05-02T19:00:00+00:00
+     * Super Mario Galaxy Movie (Uni) 3,419 (-313) theaters Fri $2.7M (-41%), 3-day $12.1M (-41%), Total $402.6M /Wk 5 4.
+  [lane D] Deadline post 1236877817 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * Around the world, the Anne Hathaway-Meryl Streep-Emily Blunt-Stanley Tucci sequel was truly the thing, racking up massive $233.6M WW , which is the second-best start for an MPA title this year behind Super Mario Galaxy Movie ($372.5M) .
+     * Super Mario Galaxy Movie (Uni) 3,419 (-313) theaters Fri $2.7M (-41%) Sat $5.6M Sun $3.7M 3-day $12.1M (-41%), Total $402.6M /Wk 5 4.
+  [lane D] Deadline post 1236878987 section [SUNDAY AM] available by 2026-05-03T19:00:00+00:00
+     * 20th Century Studios/Disney's Devil Wears Prada 2 was an event women around the world were awaiting with a $156.6M offshore start, the 2nd best for a Hollywood movie YTD behind Super Mario Galaxy Movie ($182.4M), for what is also the second-best global debut of $233.6M WW YTD behind the Nintendo/Illumination movie ($372.5M WW).
+     * The David Frankel-directed sequel was No. 1 in most markets except for France ($8M) , Spain ($5.2M) , Denmark, Sweden and Netherlands, where it was pushed to No. 2 by Universal's release of Michael , and Japan, where it was bested by Super Mario Galaxy Movie ($6.3M to $6.1M).
+     * 'The Super Mario Galaxy Movie' Nintendo/Universal/Illumination Uni's Super Mario Galaxy Movie posted a fifth global weekend of $44.3M ($32.2M offshore from 84 territories, $12.1M domestic) with a huge running total of $894M .
+  [lane D] Variety post 1236732410 pub 2026-05-03T15:21:19Z mod 2026-05-04T15:12:25Z REVISABLE(modified after anchor) :: Box Office: ‘The Devil Wears Prada 2’ Dazzles With $77 Million Domestic Debut, Powers to $
+     * They also rank as the fourth-best start of the year, behind "Michael" ($97.5 million), "The Super Mario Galaxy Movie" ($131 million) and "Project Hail Mary" ($80 million).
+     * The sequel secured the second-biggest worldwide debut of 2026, ahead of "Michael" ($217 million) and after "The Super Mario Galaxy Movie" ($372.5 million).
+     * Universal's animated "The Super Mario Galaxy Movie" landed in third place with $12.1 million from 3,419 locations.
+
+==================== WEEKEND 2026-05-08 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-05-08 | FILM: Michael | NTH | key='Michael'
+  [lane A] Deadline post 1236887876 section [FRIDAY AM] available by 2026-05-08T19:00:00+00:00
+     * Michael (LG) 3,955 theaters, Wk $74.1M (-43%), Total $203.9M/Wk 2 3.
+  [lane A] Variety post 1236740576 pub 2026-05-08T15:05:57Z mod 2026-05-08T15:06:14Z STRICT :: Box Office: ‘Mortal Kombat II’ Makes $5.2 Million in Previews
+     * However, they'll fall behind Lionsgate's "Michael," which is expected to add a strong $35 million to $40 million in its third weekend.
+  [lane B] Deadline post 1236887876 section [FRIDAY PM UPDATE] available by 2026-05-09T06:59:00+00:00
+     * Lionsgate's Michael remains mutliplatinum with a third weekend around $35M at 3,550 theaters after a third Friday of $9M.
+  [lane C] Deadline post 1236887876 section [SATURDAY AM] available by 2026-05-09T19:00:00+00:00
+     * Also bound for a boost is Lionsgate's Michael with $35M (maybe more).
+     * While other distributors have attempted with female fare in the past (i.e. 2016's Jennifer Aniston-Julia Roberts-Kate Hudson comedy Mother's Day ), this weekend is a perfect storm of female films with Billie Eilish: Hit Me Hard & Soft at 81% ( $8M opening), Sheep Detectives at 56% female ( $14.9M opening), Devil Wears Prada 2 at 76% and Michael .
+     * Saturday AM estimates: Mortal Kombat II (NL) 3,503 theaters, Fri $17M (-70%), 3-day $40M-$42M/Wk 1 Devil Wears Prada 2 (20th) 4,200 (+50) theaters, Fri $9.8M, 3-day $40M-$42M (-47%), Total $141.8M-$143.8M/Wk 2 Michael (LG) 3,550 (-405) theaters, Fri $8.8M (-38%) 3-day $35M (-36%), Total $238.9M/Wk 1 Sheep Detectives (AMZ) 3,457 theaters, Fri $4M 3-
+  [lane C] Variety post 1236742341 pub 2026-05-09T15:45:20Z mod 2026-05-10T13:44:03Z REVISABLE(modified after anchor) :: Box Office: ‘Mortal Kombat II’ Lands Friday Fatality With $17 Million; In Close Race for N
+     * Finally, in the No. 3 slot was Lionsgate's "Michael," which added a stellar $8.8 million on its third Friday in theaters.
+     * By Sunday, it's expected to add $35 million, representing just a 36% drop from last weekend's numbers. $35 million would bring "Michael's" domestic total to $238.8 million.
+  [lane D] Deadline post 1236887876 section [SUNDAY EARLY AM] available by 2026-05-10T19:00:00+00:00
+     * Mortal Kombat II wasn't second on Saturday, rather third behind Lionsgate's third Saturday of Michael , with an estimated $12.7M to $14.5M .
+     * This will put Mortal Kombat II 's opening at $38.7M and Michael 's third weekend at $36.5M , -33% with a running cume by EOD tom'w of $240.4M .
+     * The global cume on Michael is expected to be north of $570M .
+     * Stateside, Michael has already beaten the domestic take of Bohemian Rhapsody ($216.6M).
+  [lane D] Variety post 1236743920 pub 2026-05-10T15:20:59Z mod 2026-05-10T18:46:11Z STRICT :: Box Office: ‘Devil Wears Prada 2’ Remains No. 1 With $43 Million, ‘Mortal Kombat II’ Launc
+     * Those movies opened behind Lionsgate's "Michael," which took the No. 3 slot with a remarkable $36.5 million from 3,550 theaters in its third outing, a scant 33% decline from last weekend.
+     * So far, the biopic about Michael Jackson has generated $240.4 million in North America and a massive $577 million globally.
+     * This weekend, "Michael" has outpaced the domestic gross of 2018's "Bohemian Rhapsody" ($216 million) to become the highest-grossing musical biopic of all time in North America.
+     * The Queen biopic remains far bigger at the worldwide box office with $911 million, though, at this rate, "Michael" could soon approach the global heights of Freddie Mercury.
+  [lane D] Variety post 1236743981 pub 2026-05-10T15:59:59Z mod 2026-05-10T17:30:06Z STRICT :: Box Office: ‘Devil Wears Prada 2’ Struts to $433 Million Globally, ‘Michael’ Powers to $57
+     * "Michael" has been another box office powerhouse with $58.5 million overseas in its third outing, down just 32% from the prior weekend.
+     * The Michael Jackson biopic, distributed by Universal internationally and Lionsgate domestically, has earned $336 million at the foreign box office and a mighty $577 million worldwide.
+     * At this pace, "Michael" could contend with 2018's sensation "Bohemian Rhapsody" ($910 million) as the highest-grossing musical biopic of all time.
+     * Either way, the $155 million-budgeted "Michael" is already a box office smash.
+
+######## 2026-05-08 | FILM: Mortal Kombat II | OPEN | key='Mortal Kombat II'
+  [lane A] Deadline post 1236887876 section [FRIDAY AM] available by 2026-05-08T19:00:00+00:00
+     * New Line's Mortal Kombat II stepped into the ring Thursday night and rang up $5.2M in previews, which isn't that far from the amount the studio clocked a year ago in previews from Final Destination Bloodlines ($5.5M).
+     * Forecasts for the R-rated Mortal Kombat II came down into the $40Ms, and the question remains whether the second weekend of The Devil Wears Prada 2 will beat it, with that sequel expected to get a big boost from Mother's Day.
+     * Still, a $40M+ start for the Simon McQuoid-directed sequel based on the Midway video game is a great start for Mortal Kombat II , considering the previous 2021 installment saw its opening and grosses siphoned from a Covid-era theatrical day-and-date release on HBO Max with $23.3M.
+  [lane A] Variety post 1236740576 pub 2026-05-08T15:05:57Z mod 2026-05-08T15:06:14Z STRICT :: Box Office: ‘Mortal Kombat II’ Makes $5.2 Million in Previews
+     * "Mortal Kombat II" is gearing up for a box office battle this weekend with last week's champ, "The Devil Wears Prada 2." The Warner Bros. and New Line action movie has made $5.2 million in Thursday previews.
+     * Based on the popular, violent video game franchise, "Mortal Kombat II" is expected to make $40 million to $45 million this weekend, though Warner Bros. is playing it safer with a $35 million prediction.
+  [lane B] Deadline post 1236887876 section [FRIDAY PM UPDATE] available by 2026-05-09T06:59:00+00:00
+     * The moms and their daughters will decide who reigns supreme at this weekend's box office with 20th Century Studios' heavily female-skewing The Devil Wears Prada 2 and the dude-dominant New Line/Atomic Monster/Broken Road/Fireside Films sequel Mortal Kombat II vying for No. 1 with around $40M-$42M apiece .
+     * New Line's $80M Mortal Kombat II is seeing a Friday and previews of $17.5M at 3,503 theaters, with Devil Wears Prada 2 eyeing $10M-$11M at 4,200.
+  [lane C] Deadline post 1236887876 section [SATURDAY AM] available by 2026-05-09T19:00:00+00:00
+     * It's still a close call between New Line's Mortal Kombat II , and 20th Century Studios' second weekend of The Devil Wears Prada 2 with $40M-$42M apiece.
+     * New Line's Mortal Kombat II led Friday with $17M .
+     * Saturday AM estimates: Mortal Kombat II (NL) 3,503 theaters, Fri $17M (-70%), 3-day $40M-$42M/Wk 1 Devil Wears Prada 2 (20th) 4,200 (+50) theaters, Fri $9.8M, 3-day $40M-$42M (-47%), Total $141.8M-$143.8M/Wk 2 Michael (LG) 3,550 (-405) theaters, Fri $8.8M (-38%) 3-day $35M (-36%), Total $238.9M/Wk 1 Sheep Detectives (AMZ) 3,457 theaters, Fri $4M 3-
+  [lane C] Variety post 1236742341 pub 2026-05-09T15:45:20Z mod 2026-05-10T13:44:03Z REVISABLE(modified after anchor) :: Box Office: ‘Mortal Kombat II’ Lands Friday Fatality With $17 Million; In Close Race for N
+     * "Mortal Kombat II" carries an $80 million price tag, a step up from the 2021 original, which cost $55 million.
+  [lane D] Deadline post 1236887876 section [SUNDAY EARLY AM] available by 2026-05-10T19:00:00+00:00
+     * 20th Century Studios/Disney's Devil Wears Prada 2 won Saturday with an estimated $14.9M per industry sources putting the sequel in pole position to best New Line's Mortal Kombat II over Mother's Day weekend.
+     * Mortal Kombat II wasn't second on Saturday, rather third behind Lionsgate's third Saturday of Michael , with an estimated $12.7M to $14.5M .
+     * This will put Mortal Kombat II 's opening at $38.7M and Michael 's third weekend at $36.5M , -33% with a running cume by EOD tom'w of $240.4M .
+  [lane D] Variety post 1236743920 pub 2026-05-10T15:20:59Z mod 2026-05-10T18:46:11Z STRICT :: Box Office: ‘Devil Wears Prada 2’ Remains No. 1 With $43 Million, ‘Mortal Kombat II’ Launc
+     * Disney's "The Devil Wears Prada 2" retained the No. 1 spot on domestic box office charts despite three major new releases, including the video game adaptation "Mortal Kombat II." The "Devil Wears Prada" sequel added $43 million from 4,200 North American theaters, declining just 44% from its debut while boosting its North American tally to $144.8 mi
+     * Second place went to the Warner Bros. martial-arts inspired sequel "Mortal Kombat II," which launched to $40 million from 3,503 venues.
+     * "Mortal Kombat II" was produced for $80 million, above the prior installment's $55 million price tag.
+  [lane D] Variety post 1236743981 pub 2026-05-10T15:59:59Z mod 2026-05-10T17:30:06Z STRICT :: Box Office: ‘Devil Wears Prada 2’ Struts to $433 Million Globally, ‘Michael’ Powers to $57
+     * In terms of new releases, the Warner Bros. sequel "Mortal Kombat II" debuted to a softer-than-expected $23 million from 78 overseas territories.
+
+######## 2026-05-08 | FILM: The Devil Wears Prada 2 | NTH | key='Devil Wears Prada 2'
+  [lane A] Deadline post 1236887876 section [FRIDAY AM] available by 2026-05-08T19:00:00+00:00
+     * Forecasts for the R-rated Mortal Kombat II came down into the $40Ms, and the question remains whether the second weekend of The Devil Wears Prada 2 will beat it, with that sequel expected to get a big boost from Mother's Day.
+     * Devil Wears Prada 2 ended the week with $101.8M, with the movie already past $300M worldwide.
+     * The Devil Wears Prada 2 (20th) 4,150 theaters, Wk $101.8M/Wk 1 2.
+  [lane A] Variety post 1236740576 pub 2026-05-08T15:05:57Z mod 2026-05-08T15:06:14Z STRICT :: Box Office: ‘Mortal Kombat II’ Makes $5.2 Million in Previews
+     * "Mortal Kombat II" is gearing up for a box office battle this weekend with last week's champ, "The Devil Wears Prada 2." The Warner Bros. and New Line action movie has made $5.2 million in Thursday previews.
+     * It'll be a close showdown with 20th Century Studios' "The Devil Wears Prada 2," which is looking to make $38 million to $42 million in its second weekend after opening to $77 million.
+     * Some projections have both movies making around $50 million this weekend, thanks to positive word-of-mouth and high Mother's Day turnout for "Devil Wears Prada 2." The previous "Mortal Kombat" movie released in 2021 in theaters and on HBO Max simultaneously amid the COVID-19 pandemic.
+  [lane B] Deadline post 1236887876 section [FRIDAY PM UPDATE] available by 2026-05-09T06:59:00+00:00
+     * The moms and their daughters will decide who reigns supreme at this weekend's box office with 20th Century Studios' heavily female-skewing The Devil Wears Prada 2 and the dude-dominant New Line/Atomic Monster/Broken Road/Fireside Films sequel Mortal Kombat II vying for No. 1 with around $40M-$42M apiece .
+     * Related Stories Culture 'Mortal Kombat 2' Character Posters: Karl Urban, Tati Gabrielle, Hiroyuki Sanada, Mehcad Brooks & More News The 60 Movies That Have Made More Than $1 Billion At The Global Box Office For Devil Wears Prada 2 , that's a 45%-48% decline, which is fantastic and not far from the -46% hold the 2006 original movie had.
+     * New Line's $80M Mortal Kombat II is seeing a Friday and previews of $17.5M at 3,503 theaters, with Devil Wears Prada 2 eyeing $10M-$11M at 4,200.
+  [lane C] Deadline post 1236887876 section [SATURDAY AM] available by 2026-05-09T19:00:00+00:00
+     * It's still a close call between New Line's Mortal Kombat II , and 20th Century Studios' second weekend of The Devil Wears Prada 2 with $40M-$42M apiece.
+     * While other distributors have attempted with female fare in the past (i.e. 2016's Jennifer Aniston-Julia Roberts-Kate Hudson comedy Mother's Day ), this weekend is a perfect storm of female films with Billie Eilish: Hit Me Hard & Soft at 81% ( $8M opening), Sheep Detectives at 56% female ( $14.9M opening), Devil Wears Prada 2 at 76% and Michael .
+     * Saturday AM estimates: Mortal Kombat II (NL) 3,503 theaters, Fri $17M (-70%), 3-day $40M-$42M/Wk 1 Devil Wears Prada 2 (20th) 4,200 (+50) theaters, Fri $9.8M, 3-day $40M-$42M (-47%), Total $141.8M-$143.8M/Wk 2 Michael (LG) 3,550 (-405) theaters, Fri $8.8M (-38%) 3-day $35M (-36%), Total $238.9M/Wk 1 Sheep Detectives (AMZ) 3,457 theaters, Fri $4M 3-
+  [lane C] Variety post 1236742341 pub 2026-05-09T15:45:20Z mod 2026-05-10T13:44:03Z REVISABLE(modified after anchor) :: Box Office: ‘Mortal Kombat II’ Lands Friday Fatality With $17 Million; In Close Race for N
+     * "The Devil Wears Prada 2" landed in second place with $9.8 million domestically on its second Friday at the box office. 20th Century Studios' sequel is projected to add about $41 million by Sunday.
+  [lane D] Deadline post 1236887876 section [SUNDAY EARLY AM] available by 2026-05-10T19:00:00+00:00
+     * 20th Century Studios/Disney's Devil Wears Prada 2 won Saturday with an estimated $14.9M per industry sources putting the sequel in pole position to best New Line's Mortal Kombat II over Mother's Day weekend.
+  [lane D] Variety post 1236743920 pub 2026-05-10T15:20:59Z mod 2026-05-10T18:46:11Z STRICT :: Box Office: ‘Devil Wears Prada 2’ Remains No. 1 With $43 Million, ‘Mortal Kombat II’ Launc
+     * Disney's "The Devil Wears Prada 2" retained the No. 1 spot on domestic box office charts despite three major new releases, including the video game adaptation "Mortal Kombat II." The "Devil Wears Prada" sequel added $43 million from 4,200 North American theaters, declining just 44% from its debut while boosting its North American tally to $144.8 mi
+  [lane D] Variety post 1236743981 pub 2026-05-10T15:59:59Z mod 2026-05-10T17:30:06Z STRICT :: Box Office: ‘Devil Wears Prada 2’ Struts to $433 Million Globally, ‘Michael’ Powers to $57
+     * "The Devil Wears Prada 2" remains a box office force with $433 million globally after two weekends of release.
+
+######## 2026-05-08 | FILM: The Sheep Detectives | OPEN | key='Sheep Detectives'
+  [lane A] Variety post 1236740576 pub 2026-05-08T15:05:57Z mod 2026-05-08T15:06:14Z STRICT :: Box Office: ‘Mortal Kombat II’ Makes $5.2 Million in Previews
+     * This weekend also sees the release of Amazon MGM's family friendly mystery "Sheep Detectives," which made $1.03 million in previews and aims to make $12 million to $15 million in its opening.
+  [lane B] Deadline post 1236887876 section [FRIDAY PM UPDATE] available by 2026-05-09T06:59:00+00:00
+     * RELATED: 25 Music Biopics About Whitney, Elvis, Tina, Elton, Queen & More, Plus Where To Stream Them Fourth place goes to Amazon MGM Studios' Hugh Jackman comedy, The Sheep Detectives, with $3.7M today including previews, and $13.6M over three days at 3,457 theaters.
+  [lane C] Deadline post 1236887876 section [SATURDAY AM] available by 2026-05-09T19:00:00+00:00
+     * While other distributors have attempted with female fare in the past (i.e. 2016's Jennifer Aniston-Julia Roberts-Kate Hudson comedy Mother's Day ), this weekend is a perfect storm of female films with Billie Eilish: Hit Me Hard & Soft at 81% ( $8M opening), Sheep Detectives at 56% female ( $14.9M opening), Devil Wears Prada 2 at 76% and Michael .
+     * Saturday AM estimates: Mortal Kombat II (NL) 3,503 theaters, Fri $17M (-70%), 3-day $40M-$42M/Wk 1 Devil Wears Prada 2 (20th) 4,200 (+50) theaters, Fri $9.8M, 3-day $40M-$42M (-47%), Total $141.8M-$143.8M/Wk 2 Michael (LG) 3,550 (-405) theaters, Fri $8.8M (-38%) 3-day $35M (-36%), Total $238.9M/Wk 1 Sheep Detectives (AMZ) 3,457 theaters, Fri $4M 3-
+  [lane C] Variety post 1236742341 pub 2026-05-09T15:45:20Z mod 2026-05-10T13:44:03Z REVISABLE(modified after anchor) :: Box Office: ‘Mortal Kombat II’ Lands Friday Fatality With $17 Million; In Close Race for N
+     * "The Sheep Detectives," based on the novel "Three Bags Full" by Leonie Swann, took fifth with $4 million from 3,457 North American theaters.
+  [lane D] Deadline post 1236887876 section [SUNDAY EARLY AM] available by 2026-05-10T19:00:00+00:00
+     * Also amazing is Amazon MGM Studios/Working Title's Sheep Detectives which did $5.2M on Saturday for what's shaping up to be a $14.8M opening.
+
+==================== WEEKEND 2026-05-15 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-05-15 | FILM: In the Grey | OPEN | key='In the Grey'
+  [lane D] Deadline post 1236906122 section [SUNDAY AM] available by 2026-05-17T19:00:00+00:00
+     * Project Hail Mary (AMZ) 2,177 (240) theaters Fri $1M Sat $1.7M Sun $1.1M 3-day $3.9M (-41%) Total $334.8M/Wk 9 8.) Top Gun 40th anniversary (Par) 2,295 theaters, Fri $815K Sat $1.4M Sun 3-day $3.25M, Total $4.9M/Wk 1 The AMC Lincoln Square is the top grossing theater with $47.5K since Wednesday. 9.) In the Grey (Black) 2,018 theaters Fri $1.1M Sat 
+     * Outside the top 5 are Black Bear's In the Grey with around $1.2M Friday and $3M for the weekend at 2,018 sites.
+  [lane D] Variety post 1236751550 pub 2026-05-17T14:42:57Z mod 2026-05-17T17:24:49Z STRICT :: Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $
+     * In a sign of its remarkable staying power, "Michael" towered over several more recent releases, such as "The Devil Wears Prada 2" and "Mortal Kombat II" as well as newcomers like the Focus Features horror film "Obsession," Amazon MGM's revenge thriller "Is God Is" and Black Bear's action adventure "In the Grey." So far, the Michael Jackson biopic h
+     * "In the Grey," starring Jake Gyllenhaal, Henry Cavill and Eiza González, opened at No. 9 with a muted $3 million from 2,018 locations.
+
+######## 2026-05-15 | FILM: Michael | NTH | key='Michael'
+  [lane A] Deadline post 1236906122 section [FRIDAY AM] available by 2026-05-15T19:00:00+00:00
+     * Heading into this weekend, literally as of Thursday, it was expected to be a faceoff between the fourth weekend of Lionsgate's Michael and the third weekend of The Devil Wears Prada 2 with about $20M+ each.
+     * Here's how the week went own at the B.O.: 1) The Devil Wears Prada 2 (Dis) 4,200 theaters, Wk $55.9M (-45%), Total $157.7M/Wk 2 2) Michael (LG) 3,550 theaters, Wk $52.6M (-29%), Total $256.6M/Wk 3 Note that Michael beat Prada 2 in weekdays on Monday, Wednesday and yesterday.
+  [lane D] Deadline post 1236906122 section [SUNDAY AM] available by 2026-05-17T19:00:00+00:00
+     * Michael remain not only the King of Pop but the King of the B.O. with $26.1M, and he won the world over as well with a global fourth frame of $83.8M.
+     * The global running cume for the Graham King produced movie keeps making a run at his previous 4x Oscar winning hit, Bohemian Rhapsody with Michael now at $703.9M. 20th Century Studio's Devil Wears Prada 2 came in lighter with $18M U.S. third weekend, likely losing women to Focus Features/Blumhouse' romance horror Obsession which came in much higher
+     * Here's the chart: 1.) Michael (LG) 3,560 (+10) theaters, Fri $7M Sat $10.9M Sun $8.1M 3-day $26.1M (-31%), Total $282.7M/Wk 4 2.) Devil Wears Prada 2 (20th) 3,830 (-370) theaters, Fri $5.3M Sat $7.1M Sun $5.6M 3-day $18M (-57%), Total $175.8M/Wk 3 3.) Obsession (Foc) 2,615 theaters, Fri $6.97M Sat $5.4M Sun $3.7M, 3-day $16.1M/Wk 1 The AMC Burbank 
+     * EARLY SATURDAY AM WRITETHRU after Friday Afternoon update : Lionsgate's Michael is the hit that keeps on giving with an expected No. 1 in weekend four of $27M per industry estimates, -29%, after what's looking like a $7M Friday at 3,560 theaters.
+  [lane D] Variety post 1236751550 pub 2026-05-17T14:42:57Z mod 2026-05-17T17:24:49Z STRICT :: Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $
+     * "Michael" has moonwalked back to No. 1 at the domestic box office, earning a strong $26 million in its fourth weekend of release.
+     * In a sign of its remarkable staying power, "Michael" towered over several more recent releases, such as "The Devil Wears Prada 2" and "Mortal Kombat II" as well as newcomers like the Focus Features horror film "Obsession," Amazon MGM's revenge thriller "Is God Is" and Black Bear's action adventure "In the Grey." So far, the Michael Jackson biopic h
+     * The Queen biopic is larger at the worldwide box office with $911 million, though "Michael" should eventually supplant that record, too.
+     * That's thanks to several overperforming blockbusters, such as "Michael" and "The Devil Wears Prada," as well as "The Super Mario Galaxy Movie" ($964 million globally) and "Project Hail Mary" ($667.9 million globally).
+  [lane D] Variety post 1236751625 pub 2026-05-17T16:09:44Z mod 2026-05-17T16:15:00Z STRICT :: ‘Michael’ Surpasses $700 Million Globally, ‘Devil Wears Prada 2’ Nears $550 Million Milest
+     * "Michael," a biopic about the musical icon, has cleared a major box office milestone with more than $700 million globally.
+     * So far, "Michael" has generated a towering $703 million worldwide, including $421 million overseas and $282 million domestically.
+     * With one significant market - Japan - yet to open, "Michael" could eclipse 2018's sensation "Bohemian Rhapsody" ($911 million) to stand as the highest-grossing musical biopic of all time.
+
+######## 2026-05-15 | FILM: Mortal Kombat II | NTH | key='Mortal Kombat II'
+  [lane A] Deadline post 1236906122 section [FRIDAY AM] available by 2026-05-15T19:00:00+00:00
+     * Tuesday was a close call with both grossing $4.7M each. 3.) Mortal Kombat II (NL) 3,503 theaters, Wk $48.8M/Wk 1 4.) The Sheep Detectives (AMZ) 3,457 theaters, Wk $20.3M/Wk 1 5.) Project Hail Mary (AMZ) 2,417 theaters, Wk $9.2M (-23%), Total $330.95M/Wk 8 Let the record show that Project Hail Mary, sans any Oscar nominations (yet), saw its domestic
+  [lane D] Deadline post 1236906122 section [SUNDAY AM] available by 2026-05-17T19:00:00+00:00
+     * Here's the chart: 1.) Michael (LG) 3,560 (+10) theaters, Fri $7M Sat $10.9M Sun $8.1M 3-day $26.1M (-31%), Total $282.7M/Wk 4 2.) Devil Wears Prada 2 (20th) 3,830 (-370) theaters, Fri $5.3M Sat $7.1M Sun $5.6M 3-day $18M (-57%), Total $175.8M/Wk 3 3.) Obsession (Foc) 2,615 theaters, Fri $6.97M Sat $5.4M Sun $3.7M, 3-day $16.1M/Wk 1 The AMC Burbank 
+     * RELATED: 45 Of The Most Anticipated Movies Of 2026 Fourth goes to the second weekend of New Line's Mortal Kombat II with $3.5M Friday and an estimated $12.7M - $13M 3-day, -66%, for a 10-day of $61.8M.
+  [lane D] Variety post 1236751550 pub 2026-05-17T14:42:57Z mod 2026-05-17T17:24:49Z STRICT :: Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $
+     * In a sign of its remarkable staying power, "Michael" towered over several more recent releases, such as "The Devil Wears Prada 2" and "Mortal Kombat II" as well as newcomers like the Focus Features horror film "Obsession," Amazon MGM's revenge thriller "Is God Is" and Black Bear's action adventure "In the Grey." So far, the Michael Jackson biopic h
+     * Elsewhere on domestic charts, "Mortal Kombat II" tumbled to fourth place with $13.4 million from 3,534 theaters in its sophomore outing.
+  [lane D] Variety post 1236751625 pub 2026-05-17T16:09:44Z mod 2026-05-17T16:15:00Z STRICT :: ‘Michael’ Surpasses $700 Million Globally, ‘Devil Wears Prada 2’ Nears $550 Million Milest
+     * Elsewhere at the box office, the Warner Bros. sequel "Mortal Kombat II" collected just $10 million from 79 overseas territories, marking a 53% decline from its opening weekend.
+
+######## 2026-05-15 | FILM: Obsession | OPEN | key='Obsession'
+  [lane A] Deadline post 1236906122 section [FRIDAY AM] available by 2026-05-15T19:00:00+00:00
+     * Curry Barker's romantic horror movie Obsession, which Focus Features/Blumhouse's picked up for $15M+ , has grossed $2.6M in previews between Thursday night and Wednesday shows.
+     * The pic's comps are indie horror movies like A24's Heretic and Talk to Me, and Obsession already has beaten those pics' Friday previews, which were $1.2M apiece.
+  [lane D] Deadline post 1236906122 section [SUNDAY AM] available by 2026-05-17T19:00:00+00:00
+     * The global running cume for the Graham King produced movie keeps making a run at his previous 4x Oscar winning hit, Bohemian Rhapsody with Michael now at $703.9M. 20th Century Studio's Devil Wears Prada 2 came in lighter with $18M U.S. third weekend, likely losing women to Focus Features/Blumhouse' romance horror Obsession which came in much higher
+     * Here's the chart: 1.) Michael (LG) 3,560 (+10) theaters, Fri $7M Sat $10.9M Sun $8.1M 3-day $26.1M (-31%), Total $282.7M/Wk 4 2.) Devil Wears Prada 2 (20th) 3,830 (-370) theaters, Fri $5.3M Sat $7.1M Sun $5.6M 3-day $18M (-57%), Total $175.8M/Wk 3 3.) Obsession (Foc) 2,615 theaters, Fri $6.97M Sat $5.4M Sun $3.7M, 3-day $16.1M/Wk 1 The AMC Burbank 
+     * Michael Johnston in 'Obsession' Focus Features Focus Features' Curry Barker horror movie Obsession scared up a $6.6M Friday for what's looking like a third-place take of $14M at 2,615 sites, well ahead of the $8M-$9M that was expected.
+     * AMC Burbank in California is Obsession 's top grossing location with $46K.
+  [lane D] Variety post 1236751550 pub 2026-05-17T14:42:57Z mod 2026-05-17T17:24:49Z STRICT :: Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $
+     * In a sign of its remarkable staying power, "Michael" towered over several more recent releases, such as "The Devil Wears Prada 2" and "Mortal Kombat II" as well as newcomers like the Focus Features horror film "Obsession," Amazon MGM's revenge thriller "Is God Is" and Black Bear's action adventure "In the Grey." So far, the Michael Jackson biopic h
+     * "Obsession" enjoyed the strongest start among new releases, landing in third place with $16 million from 2,615 theaters.
+
+######## 2026-05-15 | FILM: The Devil Wears Prada 2 | NTH | key='Devil Wears Prada 2'
+  [lane A] Deadline post 1236906122 section [FRIDAY AM] available by 2026-05-15T19:00:00+00:00
+     * Heading into this weekend, literally as of Thursday, it was expected to be a faceoff between the fourth weekend of Lionsgate's Michael and the third weekend of The Devil Wears Prada 2 with about $20M+ each.
+     * Here's how the week went own at the B.O.: 1) The Devil Wears Prada 2 (Dis) 4,200 theaters, Wk $55.9M (-45%), Total $157.7M/Wk 2 2) Michael (LG) 3,550 theaters, Wk $52.6M (-29%), Total $256.6M/Wk 3 Note that Michael beat Prada 2 in weekdays on Monday, Wednesday and yesterday.
+  [lane D] Deadline post 1236906122 section [SUNDAY AM] available by 2026-05-17T19:00:00+00:00
+     * The global running cume for the Graham King produced movie keeps making a run at his previous 4x Oscar winning hit, Bohemian Rhapsody with Michael now at $703.9M. 20th Century Studio's Devil Wears Prada 2 came in lighter with $18M U.S. third weekend, likely losing women to Focus Features/Blumhouse' romance horror Obsession which came in much higher
+     * Here's the chart: 1.) Michael (LG) 3,560 (+10) theaters, Fri $7M Sat $10.9M Sun $8.1M 3-day $26.1M (-31%), Total $282.7M/Wk 4 2.) Devil Wears Prada 2 (20th) 3,830 (-370) theaters, Fri $5.3M Sat $7.1M Sun $5.6M 3-day $18M (-57%), Total $175.8M/Wk 3 3.) Obsession (Foc) 2,615 theaters, Fri $6.97M Sat $5.4M Sun $3.7M, 3-day $16.1M/Wk 1 The AMC Burbank 
+     * Related Stories News The 60 Movies That Have Made More Than $1 Billion At The Global Box Office News 25 Music Biopics About Whitney, Elvis, Tina, Elton, Queen & More, Plus Where To Stream Them In second, it's 20th Century Studios/Disney's The Devil Wears Prada 2 at 3,830 theaters with an estimated $5.4M third Friday for what could be a $20M third w
+  [lane D] Variety post 1236751550 pub 2026-05-17T14:42:57Z mod 2026-05-17T17:24:49Z STRICT :: Box Office: ‘Michael’ Returns to No. 1 in Fourth Weekend, ‘Obsession’ Starts Strong With $
+     * In a sign of its remarkable staying power, "Michael" towered over several more recent releases, such as "The Devil Wears Prada 2" and "Mortal Kombat II" as well as newcomers like the Focus Features horror film "Obsession," Amazon MGM's revenge thriller "Is God Is" and Black Bear's action adventure "In the Grey." So far, the Michael Jackson biopic h
+     * "The Devil Wears Prada 2" has been a hit with $546.2 million in global ticket sales, including $175.9 million in North America and a massive $370 million internationally.
+  [lane D] Variety post 1236751625 pub 2026-05-17T16:09:44Z mod 2026-05-17T16:15:00Z STRICT :: ‘Michael’ Surpasses $700 Million Globally, ‘Devil Wears Prada 2’ Nears $550 Million Milest
+     * Another box office juggernaut is Disney's nostalgic sequel "The Devil Wears Prada 2," which is nearing $550 million globally - with ticket sales at $546.2 million to date.
+     * "The Devil Wears Prada 2" has been popular in North America with $175.9 million, but it's been especially huge at the international box office with $370.3 million to date.
+
+==================== WEEKEND 2026-05-22 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-05-22 | FILM: I Love Boosters | OPEN | key='I Love Boosters'
+  [lane B] Deadline post 1236918713 section [FRIDAY AFTERNOON] available by 2026-05-23T00:00:00+00:00
+     * Neon's I Love Boosters is at $1.5M today/previews, $4M 3-day, $5M for the Friday-Monday span at 1,750 sites.
+  [lane C] Deadline post 1236918713 section [SATURDAY AM] available by 2026-05-23T19:00:00+00:00
+     * Mortal Kombat II (NL) 2,726 (-808) theaters Fri $1.45M (-69%) 3-day $5.5M (-59%) 4-day $7.1M Total $73.6M /Wk 3 I Love Boosters (Neon) 1,750 theaters, Fri $1.5M 3-day $3.9M 4-day $4.6M /Wk 1 CinemaScore audiences give the Boots Riley movie a B.
+     * Super Mario Galaxy Movie (Uni) 2,005 (-788) theaters Fri $700K (-34%), 3-day $2.6M (-42%) 4-day $3.3M Total $423.8M /Wk 8 Project Hail Mary (Amz) 1,321 (-856) theaters Fri $617K (-44%) 3-day $2.4M (-41%) 4-day $3M , Total $339.9M /Wk 10 'I Love Boosters' Neon/Everett Collection
+  [lane D] Variety post 1236757827 pub 2026-05-24T15:10:17Z mod 2026-05-25T01:17:59Z REVISABLE(modified after anchor) :: Box Office: ‘Mandalorian and Grogu’ Lifts Off With $102 Million Over Memorial Day Holiday,
+     * "I Love Boosters" debuted in eighth place with $3.8 million over the weekend and an estimated $4.7 million through Monday.
+
+######## 2026-05-22 | FILM: Michael | NTH | key='Michael'
+  [lane B] Deadline post 1236918713 section [FRIDAY AFTERNOON] available by 2026-05-23T00:00:00+00:00
+     * Second still belongs to the guy who is a lover, not a fighter, that being Lionsgate's Michael at 3,306 theaters with about $5M today, a $17M - $20M fifth weekend, easing by 23%-35%, and estimated four-day of $21M-$25M and running cume of $317.2M by EOD Monday.
+     * Ya know what, the Antoine Fuqua-directed Michael Jackson biopic has to twirl past Oppenheimer at some point (final domestic $330M).
+  [lane C] Deadline post 1236918713 section [SATURDAY AM] available by 2026-05-23T19:00:00+00:00
+     * Michael still has moves around the globe, where he's nearing $800M ($788.8M by EOD Monday) with fifth frame take of $18.5M over 3-days (excellent -29% hold), and $23.6M over four days.
+     * Weekend estimates: Mandalorian and Grogu (Dis) 4,300 theaters, Fri $33M 3-day $81M-$82M 4-day $91M-$94M /Wk 1 Obsession (Foc) 2,655 (+40) theaters, Fri $6M 3-day $19.9M (+16%) 4-day $24.8M , Total $55.1M /Wk 2 Michael (LG) 3,306 (-254) theaters, Fri $5M (-29%) 3-day $18.5M (-29%) 4-day $23.6M , Total $317.8M/ Wk 5 Devil Wears Prada 2 (20th) 3,300 (
+  [lane D] Variety post 1236757827 pub 2026-05-24T15:10:17Z mod 2026-05-25T01:17:59Z REVISABLE(modified after anchor) :: Box Office: ‘Mandalorian and Grogu’ Lifts Off With $102 Million Over Memorial Day Holiday,
+     * Although this wasn't a Memorial Day weekend for the record books - last year's holiday was massive with "Lilo & Stitch" and "Mission: Impossible - The Final Reckoning" - the nation's movie theaters were bustling with a huge assist from holdover titles like "Obsession" and "Michael." This four-day weekend delivered $221 million across all films, whi
+     * Lionsgate's Michael Jackson biopic brought in $20 million over the weekend and an estimated $25.7 million through Monday, a huge tally for a film in its fifth weekend of release.
+     * So far, "Michael" has earned $319 million in North America and a staggering $788 million globally.
+  [lane D] Variety post 1236757876 pub 2026-05-24T17:16:14Z mod 2026-05-24T17:37:33Z STRICT :: Box Office: ‘Michael’ Nears $800 Million, ‘Devil Wears Prada 2’ Hits $600 Million Globally
+     * The musical biopic about Michael Jackson has generated $788 million globally and will soon eclipse the $800 million mark.
+     * Over the weekend, "Michael" added $28.5 million overseas in another strong showing.
+     * With one significant market - Japan - yet to open, "Michael" should eventually surpass 2018's sensation "Bohemian Rhapsody" ($911 million) to stand as the highest-grossing musical biopic of all time.
+
+######## 2026-05-22 | FILM: The Devil Wears Prada 2 | NTH | key='Devil Wears Prada 2'
+  [lane B] Deadline post 1236918713 section [FRIDAY AFTERNOON] available by 2026-05-23T00:00:00+00:00
+     * Fourth goes to the fourth weekend of 20th Century Studios/Disney's The Devil Wears Prada 2 at 3,300 sites with a $3M Friday, $10M-$11M 3-day, -37% to -43%, and $13M-$14M 4-day.
+  [lane C] Deadline post 1236918713 section [SATURDAY AM] available by 2026-05-23T19:00:00+00:00
+     * Weekend estimates: Mandalorian and Grogu (Dis) 4,300 theaters, Fri $33M 3-day $81M-$82M 4-day $91M-$94M /Wk 1 Obsession (Foc) 2,655 (+40) theaters, Fri $6M 3-day $19.9M (+16%) 4-day $24.8M , Total $55.1M /Wk 2 Michael (LG) 3,306 (-254) theaters, Fri $5M (-29%) 3-day $18.5M (-29%) 4-day $23.6M , Total $317.8M/ Wk 5 Devil Wears Prada 2 (20th) 3,300 (
+  [lane D] Variety post 1236757827 pub 2026-05-24T15:10:17Z mod 2026-05-25T01:17:59Z REVISABLE(modified after anchor) :: Box Office: ‘Mandalorian and Grogu’ Lifts Off With $102 Million Over Memorial Day Holiday,
+     * Disney's "The Devil Wears Prada 2" dropped to fourth place with $12.6 million over the weekend and a projected $16.5 million through Monday.
+  [lane D] Variety post 1236757876 pub 2026-05-24T17:16:14Z mod 2026-05-24T17:37:33Z STRICT :: Box Office: ‘Michael’ Nears $800 Million, ‘Devil Wears Prada 2’ Hits $600 Million Globally
+     * Disney's comedy sequel "The Devil Wears Prada 2" also surpassed a notable box office benchmark with more than $600 million worldwide.
+     * "The Devil Wears Prada 2" has been big in North America with nearly $200 million to date, but it's been especially popular at the international box office with $408 million.
+
+==================== WEEKEND 2026-05-29 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-05-29 | FILM: Backrooms | OPEN | key='Backrooms'
+  [lane A] Deadline post 1236929953 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-05-29T19:00:00+00:00
+     * A24/Chernin Entertainment's Backrooms is higher in its Thursday night previews with $10.4M , a figure that's close to another beloved fan IP-turned-big-screen pic, Five Nights at Freddy's ($10.3M in 2023).
+     * As we told you earlier this week , Backrooms also will be the best opening ever for A24 at the domestic box office, beating 2024's Civil War ($25.5M).
+     * Here's how the week went down: 1) Star Wars: The Mandalorian and Grogu (Dis) 4,300 theaters, Wk $112.3M/Wk 1 2) Obsession (Foc) 2,655 theaters, Wk $47.9M (+58%)/Total $78.3M/Wk 2 3) Michael (LG) 3,306 theaters, Wk $33.9M (-10%), Total $328.1M/Wk 5 4) The Devils Wears Prada 2 (Dis) 3,300 theaters, Wk $19.9M (-22%), Total $203.4M/Wk 4 5) The Sheep De
+  [lane A] Variety post 1236761452 pub 2026-05-29T14:50:43Z mod 2026-05-29T20:41:32Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Makes $10.4 Million in Previews, Shattering A24 Record
+     * With just a $10 million production budget, "Backrooms" will be a major financial success for A24 and 20-year-old Parsons, who's making his feature directorial debut.
+  [lane B] Deadline post 1236929953 section [FRIDAY AFTERNOON UPDATE] available by 2026-05-30T00:00:00+00:00
+     * Kane Parsons knows how to connect with the under-35 demo (a massive 87% turnout since Thursday night) with Backrooms now on track to hoard a $76M to $79M after a $33M-$35M Friday at 3,442 theaters, which includes thursday night's $10.4M.
+     * Related Stories News 'Backrooms' Review: Chiwetel Ejiofor & Renate Reinsve Open The Door To Terror In YouTuber Kane Parsons' Eerie Feature Debut News Horror Movies' Next Wave: What's Coming In 2026, From Auteur Nightmares To Indie Breakouts RELATED: 'Obsession' Review: Inde Navarrette Solidifies Scream Queen Status In Curry Barker's Horror Director
+  [lane C] Deadline post 1236929953 section [SATURDAY AM] available by 2026-05-30T19:00:00+00:00
+     * A24's Kane Parsons internet-born IP Backrooms continues to defy expectations with first day/previews of $38.4M on its way to an opening between $85M-$88M .
+     * What's jaw-dropping about Backrooms is that their campaign is laser-focused and finely curated to its fans, native to the internet with a spend in the ballpark of Neon's Longlegs (which was under $10M, though Backrooms is a bit higher I understand).
+     * Backrooms is playing evenly across the country with the top grossing venue being the AMC Burbank in LA with $93K.
+     * As we said, a lot of fathers, with the success of the under $10M budgeted Backrooms, not just Blumhouse, but there's the co-financier Chernin Entertainment, Shawn Levy's 21 Laps and Odd Fellow.
+  [lane D] Deadline post 1236929953 section [SUNDAY AM] available by 2026-05-31T19:00:00+00:00
+     * A24's Kane Parsons movie Backrooms is at $81.4M domestic, and $118M WW in what looks to be on a global basis this AM, the No. 1 movie.
+     * Backrooms (A24) 3,442 theaters, $38.4M Sat $24.7M Sun $18.3M Fri, 3-day $81.4M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.2M Sat $10.1M Sun $8M 3-day $26.4M (+10%) Total $104.7M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M Sat $10.3M Sun $8.2M 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3
+  [lane D] Variety post 1236763355 pub 2026-05-31T14:51:34Z mod 2026-05-31T20:39:39Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Stuns With $81 Million Debut, ‘Obsession’ Has Another Unprecedente
+     * A24's "Backrooms" collected a jaw-dropping, record-breaking $81 million from 3,442 North American theaters in its opening weekend.
+     * Despite playing on far more screens, "The Mandalorian and Grogu" landed in third place on weekend charts behind "Backrooms" and "Obsession." Directed by 20-year-old Kane Parsons, "Backrooms" has earned $118 million globally so far.
+     * "Backrooms" also set several box office benchmarks: It delivered the largest opening weekend ever for A24, crushing the record set by Alex Garland's 2024 thriller "Civil War" with $25.5 million.
+     * "What a time to be making scary movies." As "Backrooms" and "Obsession" generated the lion's share of attention, "The Mandalorian and Grogu" tumbled to third place with just $25 million from 4,300 venues in its sophomore outing.
+
+######## 2026-05-29 | FILM: Obsession | NTH | key='Obsession'
+  [lane A] Deadline post 1236929953 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-05-29T19:00:00+00:00
+     * RELATED: 25 Music Biopics About Whitney, Elvis, Tina, Elton, Queen & More, Plus Where To Stream Them Also, in continuing YouTube creator news, Curry Barker's Obsession beat Star Wars: The Mandalorian and Grogu again in its weekdays with a Thursday estimated win of $4.8M to $3.4M .
+     * Here's how the week went down: 1) Star Wars: The Mandalorian and Grogu (Dis) 4,300 theaters, Wk $112.3M/Wk 1 2) Obsession (Foc) 2,655 theaters, Wk $47.9M (+58%)/Total $78.3M/Wk 2 3) Michael (LG) 3,306 theaters, Wk $33.9M (-10%), Total $328.1M/Wk 5 4) The Devils Wears Prada 2 (Dis) 3,300 theaters, Wk $19.9M (-22%), Total $203.4M/Wk 4 5) The Sheep De
+  [lane A] Variety post 1236761452 pub 2026-05-29T14:50:43Z mod 2026-05-29T20:41:32Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Makes $10.4 Million in Previews, Shattering A24 Record
+     * Fellow horror movie "Obsession" is looking to make $15 million to $20 million in its third weekend after its huge second week surpassed its opening in a rare feat, especially for an indie feature.
+  [lane B] Deadline post 1236929953 section [FRIDAY AFTERNOON UPDATE] available by 2026-05-30T00:00:00+00:00
+     * Related Stories News 'Backrooms' Review: Chiwetel Ejiofor & Renate Reinsve Open The Door To Terror In YouTuber Kane Parsons' Eerie Feature Debut News Horror Movies' Next Wave: What's Coming In 2026, From Auteur Nightmares To Indie Breakouts RELATED: 'Obsession' Review: Inde Navarrette Solidifies Scream Queen Status In Curry Barker's Horror Director
+  [lane C] Deadline post 1236929953 section [SATURDAY AM] available by 2026-05-30T19:00:00+00:00
+     * Focus Features' Obsession continues to defy odds as the YouTube creators on the big screen takes effect, +19% in its third weekend with $28.5M in second place.
+     * One distribution source says, "Six weeks from now, it will be interesting to see the following: Mandalorian and Grogu will be at $180M, and Obsession and Backrooms not too far behind, if not ahead." Ten-day cume by EOD tom'w is $137.3M, -8% behind the same frame as Solo which ended its North American run at $213.7M.
+     * The chart as of Saturday AM: Backrooms (A24) 3,442 theaters, $38.4M Fri, 3-day $85M-$88M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.1M (+34%) 3-day $28.5M (+19%) Total $106.8M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M (-81%) 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3M (-34%) 3-day $
+  [lane D] Deadline post 1236929953 section [SUNDAY AM] available by 2026-05-31T19:00:00+00:00
+     * Focus Features' third frame of Obsession is coming in at $26.4M for a running total of $104.7M , the highest grossing movie ever stateside for the Universal specialty label.
+     * Obsession 's global haul stands at $148M from Universal and non-Universal territories.
+     * Backrooms (A24) 3,442 theaters, $38.4M Sat $24.7M Sun $18.3M Fri, 3-day $81.4M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.2M Sat $10.1M Sun $8M 3-day $26.4M (+10%) Total $104.7M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M Sat $10.3M Sun $8.2M 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3
+  [lane D] Variety post 1236763355 pub 2026-05-31T14:51:34Z mod 2026-05-31T20:39:39Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Stuns With $81 Million Debut, ‘Obsession’ Has Another Unprecedente
+     * That's as ticket sales for the Focus Features breakout "Obsession" jumped again in its third frame with $26.4 million from 2,781 cinemas - and crossed the $100 million mark domestically.
+     * Despite playing on far more screens, "The Mandalorian and Grogu" landed in third place on weekend charts behind "Backrooms" and "Obsession." Directed by 20-year-old Kane Parsons, "Backrooms" has earned $118 million globally so far.
+     * In fact, "Obsession" rose 10% from the prior weekend, which was already up a stunning 39% from its solid $17 million debut.
+     * After three weekends of release, "Obsession" has grossed $106 million domestically and $148 million worldwide against a mere $1 million production budget.
+
+######## 2026-05-29 | FILM: The Breadwinner | OPEN | key='Breadwinner'
+  [lane A] Variety post 1236761452 pub 2026-05-29T14:50:43Z mod 2026-05-29T20:41:32Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Makes $10.4 Million in Previews, Shattering A24 Record
+     * This weekend's other new releases include Sony and comedian Nate Bargatze's "The Breadwinner," which is aiming to debut with $8 million after making $750,000 in previews.
+  [lane B] Deadline post 1236929953 section [FRIDAY AFTERNOON UPDATE] available by 2026-05-30T00:00:00+00:00
+     * Sony's Nate Bargatze-led The Breadwinner is seeing $2.5M-$3M today, and $7.5M to $8M for the weekend at 3,252 sites.
+  [lane C] Deadline post 1236929953 section [SATURDAY AM] available by 2026-05-30T19:00:00+00:00
+     * And there are another two wide openers this weekend, and that's Sony's Nate Bargatze family movie The Breadwinner ( $7.5M in fifth place at 3,252 sites off the discounted "Nate-Rate" at cinemas) and Focus Features/StudioCanal's WWII movie Pressure ( $5.4M in 7th place at 1,829 theaters).
+     * 'The Breadwinner' Sony The upside with The Breadwinner is that Sony kept it cheap at a net $25M and it's getting an A- CinemaScore from the people who saw it with an OK 59% definite recommend.
+     * The chart as of Saturday AM: Backrooms (A24) 3,442 theaters, $38.4M Fri, 3-day $85M-$88M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.1M (+34%) 3-day $28.5M (+19%) Total $106.8M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M (-81%) 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3M (-34%) 3-day $
+  [lane D] Deadline post 1236929953 section [SUNDAY AM] available by 2026-05-31T19:00:00+00:00
+     * Backrooms (A24) 3,442 theaters, $38.4M Sat $24.7M Sun $18.3M Fri, 3-day $81.4M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.2M Sat $10.1M Sun $8M 3-day $26.4M (+10%) Total $104.7M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M Sat $10.3M Sun $8.2M 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3
+  [lane D] Variety post 1236763355 pub 2026-05-31T14:51:34Z mod 2026-05-31T20:39:39Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Stuns With $81 Million Debut, ‘Obsession’ Has Another Unprecedente
+     * "The Breadwinner" rounded out the top five on North American charts with $7.5 million from 2,352 theaters.
+
+######## 2026-05-29 | FILM: The Mandalorian and Grogu | NTH | key='Mandalorian and Grogu'
+  [lane A] Deadline post 1236929953 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-05-29T19:00:00+00:00
+     * RELATED: 25 Music Biopics About Whitney, Elvis, Tina, Elton, Queen & More, Plus Where To Stream Them Also, in continuing YouTube creator news, Curry Barker's Obsession beat Star Wars: The Mandalorian and Grogu again in its weekdays with a Thursday estimated win of $4.8M to $3.4M .
+     * Here's how the week went down: 1) Star Wars: The Mandalorian and Grogu (Dis) 4,300 theaters, Wk $112.3M/Wk 1 2) Obsession (Foc) 2,655 theaters, Wk $47.9M (+58%)/Total $78.3M/Wk 2 3) Michael (LG) 3,306 theaters, Wk $33.9M (-10%), Total $328.1M/Wk 5 4) The Devils Wears Prada 2 (Dis) 3,300 theaters, Wk $19.9M (-22%), Total $203.4M/Wk 4 5) The Sheep De
+  [lane A] Variety post 1236761452 pub 2026-05-29T14:50:43Z mod 2026-05-29T20:41:32Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Makes $10.4 Million in Previews, Shattering A24 Record
+     * Disney's "Mandalorian and Grogu" is also looking to make around $40 million in its second weekend, a standard 50% decline from its Memorial Day weekend launch.
+  [lane B] Deadline post 1236929953 section [FRIDAY AFTERNOON UPDATE] available by 2026-05-30T00:00:00+00:00
+     * Disney/Lucasfilm's Star Wars: The Mandalorian and Grogu , despite the force of Imax, is eyeing third with a second weekend of $24M after a $6.5M Friday at 4,300.
+     * RELATED: 'The Mandalorian And Grogu' Review: Latest In 'Star Wars' Franchise Makes Magic Of 'A New Hope' Seem Far, Far Away Lionsgate's Michael refuses to get off the dance floor with a fourth place and sixth weekend take of $13M-$16M at 3,118 locations after a $3M Friday for a running cume between $341.2M - $344.2M .
+  [lane C] Deadline post 1236929953 section [SATURDAY AM] available by 2026-05-30T19:00:00+00:00
+     * Not only is that far and away a record first day and opening weekend for A24, but people, these are higher numbers than Star Wars: The Mandalorian and Grogu last weekend ($33.7M first day, $81.6M 3-day), and that's mega IP fired up by a Disney near $100M P&A 360-degree domestic campaign.
+     * Droid Mercenary Guard, Sister Hutt, Brother Hutt and Droid Mercenary Guard in 'Star Wars: The Mandalorian and Grogu' Meanwhile, Disney/Lucasfilm's Mandalorian and Grogu is taking a big fall, -69%, maybe steeper, with $25M in weekend 2.
+     * One distribution source says, "Six weeks from now, it will be interesting to see the following: Mandalorian and Grogu will be at $180M, and Obsession and Backrooms not too far behind, if not ahead." Ten-day cume by EOD tom'w is $137.3M, -8% behind the same frame as Solo which ended its North American run at $213.7M.
+     * The chart as of Saturday AM: Backrooms (A24) 3,442 theaters, $38.4M Fri, 3-day $85M-$88M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.1M (+34%) 3-day $28.5M (+19%) Total $106.8M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M (-81%) 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3M (-34%) 3-day $
+  [lane D] Deadline post 1236929953 section [SUNDAY AM] available by 2026-05-31T19:00:00+00:00
+     * Average ticket price as $13.56 to Star Wars: Mandalorian and Grogu 's $16.27 average.
+     * Disney/Lucasfilm's Star Wars: Mandalorian and Grogu charted a $53M WW second weekend for a running worldwide cume of $246.6M ($109.2M of that from abroad).
+     * Backrooms (A24) 3,442 theaters, $38.4M Sat $24.7M Sun $18.3M Fri, 3-day $81.4M /Wk 1 Obsession (Foc) 2,781 (+126) theaters, Fri $8.2M Sat $10.1M Sun $8M 3-day $26.4M (+10%) Total $104.7M /Wk 3 Mandalorian and Grogu (Dis) 4,300 theaters, Fri $6.5M Sat $10.3M Sun $8.2M 3-day $25M (-69%) Total $137.3M /Wk 2 Michael (LG) 3,118 (-188) theaters, Fri $3.3
+  [lane D] Variety post 1236763355 pub 2026-05-31T14:51:34Z mod 2026-05-31T20:39:39Z REVISABLE(modified after anchor) :: Box Office: ‘Backrooms’ Stuns With $81 Million Debut, ‘Obsession’ Has Another Unprecedente
+     * Despite playing on far more screens, "The Mandalorian and Grogu" landed in third place on weekend charts behind "Backrooms" and "Obsession." Directed by 20-year-old Kane Parsons, "Backrooms" has earned $118 million globally so far.
+     * "What a time to be making scary movies." As "Backrooms" and "Obsession" generated the lion's share of attention, "The Mandalorian and Grogu" tumbled to third place with just $25 million from 4,300 venues in its sophomore outing.
+
+==================== WEEKEND 2026-06-05 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-06-05 | FILM: Backrooms | NTH | key='Backrooms'
+  [lane A] Variety post 1236767709 pub 2026-06-05T14:29:18Z mod 2026-06-05T22:30:16Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Makes $7.7 Million in Previews, ‘Masters of the Universe’ at $4.
+     * It may also swipe the box office crown from last week's winner, fellow horror movie "Backrooms," which is targeting $48 million to $50 million in its second weekend.
+  [lane B] Deadline post 1236941701 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-06T00:00:00+00:00
+     * RELATED: 'Masters Of The Universe' Review: Nicholas Galitzine Charms His Way Into He-Man Heroics In Amusing New Take On Mattel's Nostalgic Toys Lukita Maxwell and Finn Bennett in 'Backrooms' A24 A24/Chernin Entertainment/Atomic Monster-Blumhouse/21 Laps/Phobos' Backrooms at 3,565 locations is currently seeing $8.5M today and a second weekend around
+     * RELATED: 'Backrooms' Review: Chiwetel Ejiofor & Renate Reinsve Open The Door To Terror In YouTuber Kane Parsons' Eerie Feature Debut Michael Johnston in 'Obsession' Focus Features Fourth is Focus Features' mighty Curry Barker horror romance Obsession with an estimated fourth Friday of $7.5M and 3-day of $24.8M , -9% dip.
+  [lane C] Deadline post 1236941701 section [SATURDAY AM UPDATE] available by 2026-06-06T19:00:00+00:00
+     * A24's Backrooms came in with a second Friday of $7.9M in what's looking like a $25.7M second frame, -68%.
+     * OBSESSION, Inde Navarrette, 2025. © Focus Features /Courtesy Everett Collection The continued jaw dropper as far as its hold is Focus Features' Obsession from YouTube content creator Curry Barker, which in its fourth outing, is not far behind Backrooms with $24.8M , -9%; again the best fourth weekend ever for a horror movie, beating Blair Witch Pro
+     * The chart of this AM: Scary Movie (Par) 3,490 theaters, Fri $24.7M, 3-day $56M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M, 3-day $30.1M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), 3-day $25.7M (-68%), Total $134.8M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, Fri $7.4M (-9%) 3-day $24.8M (-9%) Total $151.3M/Wk 4
+  [lane C] Deadline post 1236942792 section [SATURDAY AM EXCLUSIVE] available by 2026-06-06T19:00:00+00:00
+     * In less than a year's time, A24 has beat its own records twice: Kane Parsons' viral-born Backrooms will become the New York studio's highest grossing movie ever this weekend, if not by Monday, overtaking the $191.2M global haul previously racked up by the Timothée Chalamet-starring Marty Supreme .
+     * And that's even with a steep drop this weekend for Backrooms in North America , estimated at -68% with a second frame of $25.7M .
+     * As we told you Wednesday, Backrooms became A24's highest grossing movie at the domestic box office, overtaking Marty Supreme ($96M) in its first six days of release.
+     * Again, this is a phenomenal achievement for A24: Backrooms cost under $10M, co-financed with Chernin Entertainment, with a domestic P&A in the teen millions.
+  [lane C] Variety post 1236768580 pub 2026-06-06T16:03:34Z mod 2026-06-06T16:48:19Z STRICT :: Box Office: ‘Scary Movie’ Starts Strong With $24.7 Million on Friday; ‘Masters of the Univ
+     * "Backrooms" landed at No. 3 with $7.9 million domestic on its second Friday in North American theaters.
+     * That represents a hefty 69% drop from its debut, but it hardly matters because A24 only spent about $10 million on "Backrooms," meaning it's already one of the most profitable films of the year.
+  [lane D] Deadline post 1236941701 section [SUNDAY AM] available by 2026-06-07T19:00:00+00:00
+     * Updated top 10 Scary Movie (Par) 3,490 theaters, Fri $24.8M, Sat $17.6M Sun $12.6M 3-day $55M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M,Sat $10M Sun $7.5M 3-day $29.3M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), Sat $10.4M Sun $7.5M 3-day $25.9M (-68%), Total $135M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, F
+  [lane D] Variety post 1236765638 pub 2026-06-07T14:50:25Z mod 2026-06-07T22:42:41Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive
+     * With $135 million in North America and $212.6 million globally to date, "Backrooms" now ranks as A24's highest grossing worldwide release over "Marty Supreme" ($191 million).
+
+######## 2026-06-05 | FILM: Masters of the Universe | OPEN | key='Masters of the Universe'
+  [lane A] Variety post 1236767709 pub 2026-06-05T14:29:18Z mod 2026-06-05T22:30:16Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Makes $7.7 Million in Previews, ‘Masters of the Universe’ at $4.
+     * Amazon MGM's "Masters of the Universe" is also opening this weekend and made $4.4 million in previews.
+  [lane B] Deadline post 1236941701 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-06T00:00:00+00:00
+     * Amazon MGM Studios' Masters of the Universe is calling dibs on second with $31.1M after a Friday/previews take of $12.1M at 3,677 sites.
+     * RELATED: 'Masters Of The Universe' Review: Nicholas Galitzine Charms His Way Into He-Man Heroics In Amusing New Take On Mattel's Nostalgic Toys Lukita Maxwell and Finn Bennett in 'Backrooms' A24 A24/Chernin Entertainment/Atomic Monster-Blumhouse/21 Laps/Phobos' Backrooms at 3,565 locations is currently seeing $8.5M today and a second weekend around
+  [lane C] Deadline post 1236941701 section [SATURDAY AM UPDATE] available by 2026-06-06T19:00:00+00:00
+     * Per iSpot, Amazon MGM Studios' Masters of the Universe outspent Paramount's linear campaign on Scary Movie , $12.3M to $2.8M.
+     * Camila Mendes as Teela in 'Masters of the Universe' (2026) (Giles Keyte/Amazon MGM Studios/Courtesy Everett Collection) Amazon MGM Studios' Masters of the Universe was lighter at $11.7M previews/first Friday with the studio believing there's still a path to $30.1M , which is where tracking was.
+     * The chart of this AM: Scary Movie (Par) 3,490 theaters, Fri $24.7M, 3-day $56M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M, 3-day $30.1M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), 3-day $25.7M (-68%), Total $134.8M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, Fri $7.4M (-9%) 3-day $24.8M (-9%) Total $151.3M/Wk 4
+  [lane C] Variety post 1236768580 pub 2026-06-06T16:03:34Z mod 2026-06-06T16:48:19Z STRICT :: Box Office: ‘Scary Movie’ Starts Strong With $24.7 Million on Friday; ‘Masters of the Univ
+     * This weekend's other major newcomer was Amazon MGM's "Masters of the Universe," which took second place on Friday with $11.7 million from 3,677 North American screens.
+  [lane D] Deadline post 1236941701 section [SUNDAY AM] available by 2026-06-07T19:00:00+00:00
+     * Amazon MGM Studios' Masters of the Universe , eh, not so good with $29.3M for a pic that cost $170M before P&A (Exhibit As - Tron Ares $33.2M opening domestic, $220M production cost; Joker: Folie a Deux $37.6M domestic opening, $190M production cost; Running Man $16.4M opening, $110M production cost).
+     * Still even with Masters of the Universe, and great turnout by Fathom Entertainment's YouTube craze The Amazing Digital Circus: The Last Act (from director Gooseworx and score by Alexander Burke), the overall weekend box office is the second best post Covid for weekend 23 with a near $183.2M, +61% from a year ago per Rentrak.
+     * Updated top 10 Scary Movie (Par) 3,490 theaters, Fri $24.8M, Sat $17.6M Sun $12.6M 3-day $55M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M,Sat $10M Sun $7.5M 3-day $29.3M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), Sat $10.4M Sun $7.5M 3-day $25.9M (-68%), Total $135M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, F
+  [lane D] Variety post 1236765638 pub 2026-06-07T14:50:25Z mod 2026-06-07T22:42:41Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive
+     * "It's also a huge bounce-back after the last [installment] in 2013 crashed when Anna Faris and Regina Hall were excluded." "Scary Movie" easily secured the No. 1 spot over this weekend's other major new release, Amazon MGM's sword-and-planet adventure "Masters of the Universe," which debuted at No. 2 with a soft $29.3 million in North America.
+
+######## 2026-06-05 | FILM: Obsession | NTH | key='Obsession'
+  [lane B] Deadline post 1236942231 section [FRIDAY UPDATE] available by 2026-06-06T06:59:00+00:00
+     * Last weekend, Focus Features saw its highest-grossing movie ever at the domestic B.O. in Curry Barker's Obsession, that horror romance now at $126.5M domestic, and well north of $171M+ worldwide.
+  [lane B] Deadline post 1236941701 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-06T00:00:00+00:00
+     * RELATED: 'Backrooms' Review: Chiwetel Ejiofor & Renate Reinsve Open The Door To Terror In YouTuber Kane Parsons' Eerie Feature Debut Michael Johnston in 'Obsession' Focus Features Fourth is Focus Features' mighty Curry Barker horror romance Obsession with an estimated fourth Friday of $7.5M and 3-day of $24.8M , -9% dip.
+  [lane C] Deadline post 1236941701 section [SATURDAY AM UPDATE] available by 2026-06-06T19:00:00+00:00
+     * OBSESSION, Inde Navarrette, 2025. © Focus Features /Courtesy Everett Collection The continued jaw dropper as far as its hold is Focus Features' Obsession from YouTube content creator Curry Barker, which in its fourth outing, is not far behind Backrooms with $24.8M , -9%; again the best fourth weekend ever for a horror movie, beating Blair Witch Pro
+     * The chart of this AM: Scary Movie (Par) 3,490 theaters, Fri $24.7M, 3-day $56M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M, 3-day $30.1M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), 3-day $25.7M (-68%), Total $134.8M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, Fri $7.4M (-9%) 3-day $24.8M (-9%) Total $151.3M/Wk 4
+  [lane C] Deadline post 1236942792 section [SATURDAY AM EXCLUSIVE] available by 2026-06-06T19:00:00+00:00
+     * Also, Focus Features' Obsession with more than $151M by tomorrow, is already that label's top grossing stateside, and is bound to outstrip their pure Focus label top global grossing release ever, Downton Abbey which ended its run at $194.6M WW.
+  [lane C] Variety post 1236768580 pub 2026-06-06T16:03:34Z mod 2026-06-06T16:48:19Z STRICT :: Box Office: ‘Scary Movie’ Starts Strong With $24.7 Million on Friday; ‘Masters of the Univ
+     * Fourth place went to Focus Features' "Obsession," which earned $7.4 domestic million domestic on its fourth Friday in theaters.
+  [lane D] Deadline post 1236941701 section [SUNDAY AM] available by 2026-06-07T19:00:00+00:00
+     * Updated top 10 Scary Movie (Par) 3,490 theaters, Fri $24.8M, Sat $17.6M Sun $12.6M 3-day $55M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M,Sat $10M Sun $7.5M 3-day $29.3M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), Sat $10.4M Sun $7.5M 3-day $25.9M (-68%), Total $135M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, F
+  [lane D] Variety post 1236765638 pub 2026-06-07T14:50:25Z mod 2026-06-07T22:42:41Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive
+     * Fourth place went to "Obsession" with $25 . 6 million in its fourth weekend of release, a mere 7% decline.
+     * Now the low-budget "Obsession" has generated $152.1 million in North America and will pass the $200 million mark globally this weekend.
+
+######## 2026-06-05 | FILM: Scary Movie | OPEN | key='Scary Movie'
+  [lane A] Variety post 1236767709 pub 2026-06-05T14:29:18Z mod 2026-06-05T22:30:16Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Makes $7.7 Million in Previews, ‘Masters of the Universe’ at $4.
+     * The latest horror parody in Paramount and Miramax's "Scary Movie" franchise is hitting theaters this weekend and has made $7.7 million in previews.
+     * Paramount is projecting a $40 million opening for "Scary Movie," though other estimates are between $45 million and $50 million.
+     * If lots of horror fans turn out to see just how their beloved films, like "Weapons," "Longlegs," "Sinners" and more, are parodied, then this "Scary Movie" could set a franchise record (beating 2006's "Scary Movie 4" which opened with $49.7 million).
+     * This weekend's other new release, Fathom Entertainment's "The Amazing Digital Circus: The Last Act," actually had the highest Thursday previews with $7.8 million, beating "Scary Movie." The film is based on a YouTube web series and marks Fathom's highest pre-sales ever.
+  [lane B] Deadline post 1236941701 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-06T00:00:00+00:00
+     * Paramount-Miramax's Scary Movie is backing the comedy movie back alive, bound for a franchise opening record of $52.7M per middays estimates off a first Friday and previews of $23.5M at 3,490 theaters.
+     * Related Stories News The 60 Movies That Have Made More Than $1 Billion At The Global Box Office News 15 Theatrical And Streaming Movies To Look Forward To This Summer It's also a sweet comeback moment for the Wayans Brothers, as the franchise architects have been away from their own IP following 2001's Scary Movie 2 (blame the then-Dimension admini
+  [lane C] Deadline post 1236941701 section [SATURDAY AM UPDATE] available by 2026-06-06T19:00:00+00:00
+     * Paramount-Miramax's Scary Movie got louder yesterday, taking its first day/previews to $24.7M , a great thing on a night when there was a fierce battle happening in night 2 of the NBA Finals between the NY Knicks and San Antonio Spurs, 105-104.
+     * Per iSpot, Amazon MGM Studios' Masters of the Universe outspent Paramount's linear campaign on Scary Movie , $12.3M to $2.8M.
+     * The chart of this AM: Scary Movie (Par) 3,490 theaters, Fri $24.7M, 3-day $56M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M, 3-day $30.1M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), 3-day $25.7M (-68%), Total $134.8M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, Fri $7.4M (-9%) 3-day $24.8M (-9%) Total $151.3M/Wk 4
+  [lane C] Variety post 1236768580 pub 2026-06-06T16:03:34Z mod 2026-06-06T16:48:19Z STRICT :: Box Office: ‘Scary Movie’ Starts Strong With $24.7 Million on Friday; ‘Masters of the Univ
+     * Paramount and Miramax's "Scary Movie 6," the first in the parody series helmed by the Wayans brothers since 2001's "Scary Movie 2," grossed $24.7 million domestic on Friday from 3,490 cinemas.
+     * By Sunday, the irreverent horror-comedy is expected to make $56 million, which is more than enough to earn the title of best opening in "Scary Movie" history.
+     * That record currently belongs to "Scary Movie 4," which debuted to $49.7 million in 2006.
+  [lane D] Deadline post 1236941701 section [SUNDAY AM] available by 2026-06-07T19:00:00+00:00
+     * Paramount-Miramax's Scary Movie didn't let go of its record this weekend with the best opening the Wayans Brothers franchise has ever seen in its 26-history with $55M , and even better, it marks the comedy fratellos return to the franchise after the original Scary Movie and Scary Movie 2.
+     * Updated top 10 Scary Movie (Par) 3,490 theaters, Fri $24.8M, Sat $17.6M Sun $12.6M 3-day $55M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M,Sat $10M Sun $7.5M 3-day $29.3M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), Sat $10.4M Sun $7.5M 3-day $25.9M (-68%), Total $135M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, F
+  [lane D] Variety post 1236765638 pub 2026-06-07T14:50:25Z mod 2026-06-07T22:42:41Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive
+     * Paramount's "Scary Movie" ruled at the box office with $55 million in its opening weekend, extending an unexpected streak for, well, scary movies in the height of summer movie season.
+     * The sixth installment in the 25-year-old series overtook the benchmark held by 2006's "Scary Movie 4" with $49.7 million (not adjusted for inflation).
+     * Miramax financed "Scary Movie" for $30 million, so the horror-comedy is poised to reap financial rewards.
+     * "It's also a huge bounce-back after the last [installment] in 2013 crashed when Anna Faris and Regina Hall were excluded." "Scary Movie" easily secured the No. 1 spot over this weekend's other major new release, Amazon MGM's sword-and-planet adventure "Masters of the Universe," which debuted at No. 2 with a soft $29.3 million in North America.
+
+######## 2026-06-05 | FILM: The Amazing Digital Circus: The Last Act | OPEN | key='Amazing Digital Circus'
+  [lane A] Variety post 1236767709 pub 2026-06-05T14:29:18Z mod 2026-06-05T22:30:16Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Makes $7.7 Million in Previews, ‘Masters of the Universe’ at $4.
+     * This weekend's other new release, Fathom Entertainment's "The Amazing Digital Circus: The Last Act," actually had the highest Thursday previews with $7.8 million, beating "Scary Movie." The film is based on a YouTube web series and marks Fathom's highest pre-sales ever.
+  [lane B] Deadline post 1236941701 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-06T00:00:00+00:00
+     * Forecasts for Amazing Digital Circus heading into the weekend was in the $15M-$18M range.
+  [lane C] Deadline post 1236941701 section [SATURDAY AM UPDATE] available by 2026-06-06T19:00:00+00:00
+     * Fathom Entertainment's The Amazing Digital Circus: The Last Act posted a $4.3M second day.
+     * The chart of this AM: Scary Movie (Par) 3,490 theaters, Fri $24.7M, 3-day $56M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M, 3-day $30.1M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), 3-day $25.7M (-68%), Total $134.8M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, Fri $7.4M (-9%) 3-day $24.8M (-9%) Total $151.3M/Wk 4
+  [lane D] Deadline post 1236941701 section [SUNDAY AM] available by 2026-06-07T19:00:00+00:00
+     * Still even with Masters of the Universe, and great turnout by Fathom Entertainment's YouTube craze The Amazing Digital Circus: The Last Act (from director Gooseworx and score by Alexander Burke), the overall weekend box office is the second best post Covid for weekend 23 with a near $183.2M, +61% from a year ago per Rentrak.
+     * Updated top 10 Scary Movie (Par) 3,490 theaters, Fri $24.8M, Sat $17.6M Sun $12.6M 3-day $55M/Wk 1 Masters of the Universe (Amz) 3,677 theaters, Fri $11.7M,Sat $10M Sun $7.5M 3-day $29.3M/Wk 1 Backrooms (A24) 3,565 (+123) theaters, Fri $7.9M (-79%), Sat $10.4M Sun $7.5M 3-day $25.9M (-68%), Total $135M /Wk 2 Obsession (Foc) 2,900 (+119) theaters, F
+  [lane D] Variety post 1236765638 pub 2026-06-07T14:50:25Z mod 2026-06-07T22:42:41Z REVISABLE(modified after anchor) :: Box Office: ‘Scary Movie’ Scores Franchise-Best $55 Million Opening, ‘Masters of the Unive
+     * Fathom Entertainment's "The Amazing Digital Circus: The Last Act" rounded out the top five, earning earning $19.4 million from 2,221 theaters.
+
+==================== WEEKEND 2026-06-12 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-06-12 | FILM: Backrooms | NTH | key='Backrooms'
+  [lane A] Deadline post 1236954426 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-06-12T19:00:00+00:00
+     * Scary Movie (Par) 3,490 theaters, Wk $70M/Wk 1 Obsession (Foc) 2,900 theaters, Wk $42.8M (-11%), Total $169.3M/Wk 4 Backrooms (A24) 3,565 theaters, Wk $39.6M (-64%)/Wk 2 Masters of the Universe (Amz) Wk $38M/Wk 1 Amazing Digital Circus: The Last Act (Fath) Wk $16.7M, Total $25.1M/Wk 1 This YouTube born adult animated craze is sticking around in the
+  [lane B] Deadline post 1236954426 section [FRIDAY MIDDAY] available by 2026-06-13T00:00:00+00:00
+     * Scary Movie (Par) 3,504 theaters, Fri $5M, 3-day $15.2M (-72%), Total $85.3M/Wk 2 Backrooms (A24) 3,404 theaters, Fri $3.8M, 3-day $12.4M (-53%), Total $161.1M Masters of the Universe (AMZ) 3,677 theaters, Fri $2.5M, 3-day $9.4M (-68%), Total $47.4M/Wk 2 Offshore, Thursday grossed another $5.3M , taking Disclosure Day 's foreign running cume to $11
+  [lane C] Deadline post 1236954426 section [SATURDAY AM] available by 2026-06-13T19:00:00+00:00
+     * Trailer below: Disclosure Day (Uni) 3,824 theaters, Fri $19M, 3-day $44M/Wk 1 Obsession (Foc) 3,068 (+168) theaters, Fri $6.2M (-17% from previous Friday), 3-day $21M (-17%), Total $190.3M/Wk 5 Scary Movie (Par) 3,504 theaters, Fri $4.8M (-80%), 3-day $14.6M (-73%), Total $84.6M/Wk 2 Backrooms (A24) 3,404 (-161) theaters, Fri $3.6M (-54%), 3-day $1
+  [lane D] Deadline post 1236954426 section [SUNDAY AM] available by 2026-06-14T19:00:00+00:00
+     * Backrooms (A24) 3,404 (-161) theaters, Fri $3.6M (-54%) Sat $4.3M Sun $3.3M 3-day $11.26M (-57%), Total $160M /Wk 3 Backrooms is $5M away from bypassing Star Wars: Mandalorian and Grogu at the domestic box office.
+  [lane D] Deadline post 1236955715 section [SUNDAY AM WRITE THROUGH] available by 2026-06-14T19:00:00+00:00
+     * The digital billboards enticed viewers with statements such as "The Truth is Here in Varginha - We Deserve to Know the Truth." Spain's No. 1 $2.7M was ahead of second place pic Backrooms and arrived in the territory on the last day of La Fiesta del Cine (all films at reduced prices for four days), dominating the market with a 39% share of total bus
+  [lane D] Variety post 1236780872 pub 2026-06-14T15:04:24Z mod 2026-06-14T18:24:20Z STRICT :: Box Office: Spielberg’s ‘Disclosure Day’ Opens to $44 Million, ‘Masters of the Universe’ S
+     * "Backrooms," another horror sensation, captured the No. 4 spot with $12 million from 3,404 venues in its third weekend.
+     * After less than two weekends on the big screen, "Backrooms" overtook "Marty Supreme" ($191 million) as A24's highest grossing movie of all time.
+
+######## 2026-06-12 | FILM: Disclosure Day | OPEN | key='Disclosure Day'
+  [lane A] Deadline post 1236954426 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-06-12T19:00:00+00:00
+     * Previews in North America for Universal and Amblin's Steven Spielberg movie Disclosure Day came in at $6.5 million , which takes the Thursday night and Wednesday offshore combined take to $12.5M .
+     * PREVIOUSLY, EXCLUSIVE: Sources are telling us that the first day worldwide of Steven Spielberg's alien feature Disclosure Day is around $12 million.
+     * Wednesday's foreign take of $6M includes all key markets except for China and Spain, where Disclosure Day bows Friday.
+     * The UK and Ireland's $1.2M Wednesday for Disclosure Day reps a strong 36% market share at No. 1 across 650 sites.
+  [lane A] Variety post 1236779679 pub 2026-06-12T14:33:33Z mod 2026-06-12T15:04:18Z STRICT :: Box Office: ‘Disclosure Day’ Makes $6.5 Million in Previews
+     * Director Steven Spielberg is back at the box office with an original alien thriller, "Disclosure Day." It has made $6.5 million at the box office in Thursday previews.
+     * Some box office analysts predict that "Disclosure Day" would need to open with $50 million to justify its cost, and that it will need to make $300 globally to be profitable.
+  [lane B] Deadline post 1236954426 section [FRIDAY MIDDAY] available by 2026-06-13T00:00:00+00:00
+     * Good news so far: Universal and Amblin's Steven Spielberg-directed Disclosure Day is coming in ahead of expectations (which had been $35 million at the domestic B.O.) with a $42.5M three-day cume at 3,824 screens after a Friday that's shaping up to be $18.5M including last night's previews.
+     * Related Stories Reviews 'Disclosure Day' Review: Steven Spielberg Wraps  New Close Encounters Into A Masterful '70s-Style Thriller That Demands Complex Answers To Otherworldly Mysteries News The 61 Movies That Have Made More Than $1 Billion At The Global Box Office Here are the domestic rankings to date: Disclosure Day (Uni) 3,824 theaters, Fri $18
+     * Scary Movie (Par) 3,504 theaters, Fri $5M, 3-day $15.2M (-72%), Total $85.3M/Wk 2 Backrooms (A24) 3,404 theaters, Fri $3.8M, 3-day $12.4M (-53%), Total $161.1M Masters of the Universe (AMZ) 3,677 theaters, Fri $2.5M, 3-day $9.4M (-68%), Total $47.4M/Wk 2 Offshore, Thursday grossed another $5.3M , taking Disclosure Day 's foreign running cume to $11
+     * Again, the expectation was a $65M global start, and it's likely Disclosure Day will best that.
+  [lane C] Deadline post 1236954426 section [SATURDAY AM] available by 2026-06-13T19:00:00+00:00
+     * Universal and Amblin's Steven Spielberg-helmed Disclosure Day is doing much better than anticipated with an expected $44M domestic opening, half of that fueled by Imax and PLFs - and that's a good thing.
+     * All films this weekend are ringing up $127.4M at the domestic B.O. with Universal repping 51% of that total between Disclosure Day and Obsession.
+     * Trailer below: Disclosure Day (Uni) 3,824 theaters, Fri $19M, 3-day $44M/Wk 1 Obsession (Foc) 3,068 (+168) theaters, Fri $6.2M (-17% from previous Friday), 3-day $21M (-17%), Total $190.3M/Wk 5 Scary Movie (Par) 3,504 theaters, Fri $4.8M (-80%), 3-day $14.6M (-73%), Total $84.6M/Wk 2 Backrooms (A24) 3,404 (-161) theaters, Fri $3.6M (-54%), 3-day $1
+  [lane D] Deadline post 1236954426 section [SUNDAY AM] available by 2026-06-14T19:00:00+00:00
+     * Universal and Amblin's Steven Spielberg movie Disclosure Day is filing in at $44M, which as you can see in the chart way down below, would rank as his fifth highest opening of all-time at the domestic B.O.
+     * This morning's chart: Disclosure Day (Uni) 3,824 theaters, Fri $19.2M, Sat $13.8M Sun $10.95M 3-day $44M /Wk 1 2.
+  [lane D] Deadline post 1236955715 section [SUNDAY AM WRITE THROUGH] available by 2026-06-14T19:00:00+00:00
+     * International delivered for Universal and Amblin's Steven Spielberg alien sci-fi movie, Disclosure Day, with the pic earning $48.8M in 73 territories, over indexing in English speaking and Latin American territories where the phenomenon of 'We are not alone' really sticks.
+     * All of this makes Disclosure Day , far and away the No. 1 movie at the global B.O. this weekend ahead of Focus Features' highest grossing movie ever Obsession ( $34.1M WW from 60 territories, $286.4M WW cume), Lionsgate's Michael ( $21.6M WW from 86 territories, $932.2M WW fueled by a Japan opening of $6.7M, the biggest opening for a live-action Ho
+     * Universal Disclosure Day was No. 1 in Italy with $2.2M and that's with cinema going impacted by sunny weather in the country (the summer box office can be a bear there despite the bullish effect we have here in the states).
+  [lane D] Variety post 1236780872 pub 2026-06-14T15:04:24Z mod 2026-06-14T18:24:20Z STRICT :: Box Office: Spielberg’s ‘Disclosure Day’ Opens to $44 Million, ‘Masters of the Universe’ S
+     * "Disclosure Day," a sci-fi adventure from Steven Spielberg, opened to No. 1 at the domestic box office with $44 million from 3,824 theaters.
+     * "Disclosure Day," one of the summer's biggest gambles, cost $115 million to produce and $80 million to market.
+     * Since theaters keep about half of revenues, "Disclosure Day" needs to earn about $300 million globally to be profitable.
+     * Internationally, "Disclosure Day" has generated $48.9 million from 73 markets for a global start of $92.9 million.
+  [lane D] Variety post 1236780903 pub 2026-06-14T16:36:05Z mod 2026-06-14T17:13:51Z STRICT :: Box Office: ‘Disclosure Day’ Launches to $93 Million Globally, ‘Michael’ Nears $950 Millio
+     * Steven Spielberg's alien conspiracy thriller "Disclosure Day" collected a leading $48.9 million from 73 territories in its international box office debut.
+     * Overseas audiences will be key in the theatrical longevity of "Disclosure Day," which Universal spent $115 million to produce and $80 million to market.
+     * Along with $44 million in North America, "Disclosure Day" has generated $92.9 million after three days of release.
+     * Top territories for "Disclosure Day" were the United Kingdom and Ireland with $7.6 million, Mexico with $3.9 million, China with $2.9 million and France with $2.9 million.
+
+######## 2026-06-12 | FILM: Obsession | NTH | key='Obsession'
+  [lane A] Deadline post 1236954426 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-06-12T19:00:00+00:00
+     * Scary Movie (Par) 3,490 theaters, Wk $70M/Wk 1 Obsession (Foc) 2,900 theaters, Wk $42.8M (-11%), Total $169.3M/Wk 4 Backrooms (A24) 3,565 theaters, Wk $39.6M (-64%)/Wk 2 Masters of the Universe (Amz) Wk $38M/Wk 1 Amazing Digital Circus: The Last Act (Fath) Wk $16.7M, Total $25.1M/Wk 1 This YouTube born adult animated craze is sticking around in the
+  [lane B] Deadline post 1236954426 section [FRIDAY MIDDAY] available by 2026-06-13T00:00:00+00:00
+     * Related Stories Reviews 'Disclosure Day' Review: Steven Spielberg Wraps  New Close Encounters Into A Masterful '70s-Style Thriller That Demands Complex Answers To Otherworldly Mysteries News The 61 Movies That Have Made More Than $1 Billion At The Global Box Office Here are the domestic rankings to date: Disclosure Day (Uni) 3,824 theaters, Fri $18
+  [lane C] Deadline post 1236954426 section [SATURDAY AM] available by 2026-06-13T19:00:00+00:00
+     * Obsession (outside its $17.1M opening weekend) has had four out of five $20M+ weekends with its cume outstripping that M.
+     * All films this weekend are ringing up $127.4M at the domestic B.O. with Universal repping 51% of that total between Disclosure Day and Obsession.
+     * Trailer below: Disclosure Day (Uni) 3,824 theaters, Fri $19M, 3-day $44M/Wk 1 Obsession (Foc) 3,068 (+168) theaters, Fri $6.2M (-17% from previous Friday), 3-day $21M (-17%), Total $190.3M/Wk 5 Scary Movie (Par) 3,504 theaters, Fri $4.8M (-80%), 3-day $14.6M (-73%), Total $84.6M/Wk 2 Backrooms (A24) 3,404 (-161) theaters, Fri $3.6M (-54%), 3-day $1
+  [lane D] Deadline post 1236954426 section [SUNDAY AM] available by 2026-06-14T19:00:00+00:00
+     * Interesting to point out that the arrival of Spielberg in conjunction with the holdover of Focus Features' top grossing movie of all-time, Obsession, ($19M) was enough to sink last weekend's wide entries Scary Movie and Masters of the Universe , both down by more than 70% in weekend 2.
+     * Obsession (Foc) 3,068 (+168) theaters, Fri $6.2M (-17% from previous Friday), Sat $6.9M Sun $5.86M 3-day $19M (-25%), Total $188.3M /Wk 5 In a rare feat, it's the fourth consecutive weekend that the film has out grossed its opening weekend ($17.2 million). 3.
+  [lane D] Deadline post 1236955715 section [SUNDAY AM WRITE THROUGH] available by 2026-06-14T19:00:00+00:00
+     * All of this makes Disclosure Day , far and away the No. 1 movie at the global B.O. this weekend ahead of Focus Features' highest grossing movie ever Obsession ( $34.1M WW from 60 territories, $286.4M WW cume), Lionsgate's Michael ( $21.6M WW from 86 territories, $932.2M WW fueled by a Japan opening of $6.7M, the biggest opening for a live-action Ho
+  [lane D] Variety post 1236780872 pub 2026-06-14T15:04:24Z mod 2026-06-14T18:24:20Z STRICT :: Box Office: Spielberg’s ‘Disclosure Day’ Opens to $44 Million, ‘Masters of the Universe’ S
+     * Meanwhile, "Obsession" continues to do unprecedented business with $19 million in its fifth weekend of release, a 25% decline, and enough for second place on box office charts.
+     * Now the low-budget "Obsession" has generated $188.3 million in North America and $265 million globally.
+
+######## 2026-06-12 | FILM: Scary Movie | NTH | key='Scary Movie'
+  [lane A] Deadline post 1236954426 section [FRIDAY AM UPDATE AFTER EXCLUSIVE] available by 2026-06-12T19:00:00+00:00
+     * Scary Movie (Par) 3,490 theaters, Wk $70M/Wk 1 Obsession (Foc) 2,900 theaters, Wk $42.8M (-11%), Total $169.3M/Wk 4 Backrooms (A24) 3,565 theaters, Wk $39.6M (-64%)/Wk 2 Masters of the Universe (Amz) Wk $38M/Wk 1 Amazing Digital Circus: The Last Act (Fath) Wk $16.7M, Total $25.1M/Wk 1 This YouTube born adult animated craze is sticking around in the
+     * Brazil had a good start with $231K on Wednesday at No. 2 behind Scary Movie , which is over-indexing in this market.
+  [lane B] Deadline post 1236954426 section [FRIDAY MIDDAY] available by 2026-06-13T00:00:00+00:00
+     * Scary Movie (Par) 3,504 theaters, Fri $5M, 3-day $15.2M (-72%), Total $85.3M/Wk 2 Backrooms (A24) 3,404 theaters, Fri $3.8M, 3-day $12.4M (-53%), Total $161.1M Masters of the Universe (AMZ) 3,677 theaters, Fri $2.5M, 3-day $9.4M (-68%), Total $47.4M/Wk 2 Offshore, Thursday grossed another $5.3M , taking Disclosure Day 's foreign running cume to $11
+  [lane C] Deadline post 1236954426 section [SATURDAY AM] available by 2026-06-13T19:00:00+00:00
+     * Trailer below: Disclosure Day (Uni) 3,824 theaters, Fri $19M, 3-day $44M/Wk 1 Obsession (Foc) 3,068 (+168) theaters, Fri $6.2M (-17% from previous Friday), 3-day $21M (-17%), Total $190.3M/Wk 5 Scary Movie (Par) 3,504 theaters, Fri $4.8M (-80%), 3-day $14.6M (-73%), Total $84.6M/Wk 2 Backrooms (A24) 3,404 (-161) theaters, Fri $3.6M (-54%), 3-day $1
+  [lane D] Deadline post 1236954426 section [SUNDAY AM] available by 2026-06-14T19:00:00+00:00
+     * Interesting to point out that the arrival of Spielberg in conjunction with the holdover of Focus Features' top grossing movie of all-time, Obsession, ($19M) was enough to sink last weekend's wide entries Scary Movie and Masters of the Universe , both down by more than 70% in weekend 2.
+     * Scary Movie (Par) 3,504 theaters, Fri $4.8M (-80%) Sat $5.5M Sun $4.1M, 3-day $14.5M (-73%), Total $84.5M /Wk 2 4.
+  [lane D] Variety post 1236780872 pub 2026-06-14T15:04:24Z mod 2026-06-14T18:24:20Z STRICT :: Box Office: Spielberg’s ‘Disclosure Day’ Opens to $44 Million, ‘Masters of the Universe’ S
+     * "Scary Movie" slid to third place with $14.5 million from 3,504 theaters, bringing domestic ticket sales to $84.5 million and $173.1 million worldwide.
+     * Despite the steep drop in attendance, "Scary Movie" cost just $30 million to produce and is poised to reap financial rewards.
+
+==================== WEEKEND 2026-06-19 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2026-06-19 | FILM: Disclosure Day | NTH | key='Disclosure Day'
+  [lane B] Deadline post 1236962629 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-20T00:00:00+00:00
+     * 'I thought this was gonna feel like a soulless cash grab sequel but I like the traditional play versus tech angle" and "This feels like it's going back to its roots.'" Top 5 weekend: Toy Story 5 (Dis) 4,425 theaters, Fri $71M, 3-day $160M-$170M/Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.6M, 3-day $16.5M (-63%), Total $77.7M/Wk 2 Obsession (Fo
+  [lane C] Deadline post 1236962629 section [SATURDAY AM] available by 2026-06-20T19:00:00+00:00
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $71M , 3-day $160M-$170M /Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.9M (-74% from last Friday), 3-day $17.2M (-61%), Total $78.4M /Wk 2 Obsession (Foc) 3,053 (-15) theaters, Fri $4.7M (-25%), 3-day $14.2M (-25%), Total $215.8M /Wk 6 Backrooms (A24) 2,851 (-553) theaters, Fri $2.47M (-32%), 3-day $7.5M (-
+  [lane C] Variety post 1236786188 pub 2026-06-20T15:34:17Z mod 2026-06-20T18:19:48Z STRICT :: Box Office: ‘Toy Story 5’ Soars to $71 Million on Opening Day
+     * Second place went to Steven Spielberg's "Disclosure Day," which made $4.9 million domestically on Friday as it heads into its second weekend in theaters.
+     * Universal spent $115 million to produce "Disclosure Day" and another $80 million on marketing.
+  [lane D] Deadline post 1236962629 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $71M, Sat $47.5M, Sun $41.5M 3-day $160M /Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.9M (-74% from last Friday) Sat $6.19M Sun $5.8M, 3-day $17M (-62%), Total $78.2M /Wk 2 While that might be an average hold for some films, it was a tad steep for Steven Spielberg, whose previous sci-fi pics saw better sec
+  [lane D] Deadline post 1236963295 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * They are followed by MPA titles (until Rentrak reports), Universal's Disclosure Day ( $35.7M WW second weekend, $160.4M WW cume ), Obsession ( $25.1M WW sixth weekend, $333.2M WW cume ), and Paramount's Scary Movie ( $15.8M WW third frame, $202M WW Cume ).
+     * Director Steven Spielberg's 'Disclosure Day' Disclosure Day did $18.7M in 81 territories, $17M stateside.
+     * In Mexico, Disclosure Day made $2M this weekend to reach $7.4M cume through Sunday, performing above Project Hail Mary and overtaking the lifetimes of Dune , One Battle After Another and Mad Max: Fury Road , to name a few.
+     * In Italy, Disclosure Day grossed $1M to reach a cume through Sunday of $3.8M, above Project Hail Mary , One Battle After Another and more than 3x Twisters at the same point.
+  [lane D] Variety post 1236786574 pub 2026-06-21T15:13:09Z mod 2026-06-22T09:32:28Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Scores Year’s Biggest Debut With $160 Million, Shattering Franch
+     * It's extremely impressive." In a distant second place, Steven Spielberg's sci-fi adventure "Disclosure Day" added $17 million from 3,824 locations, a sharp 62% drop from its debut.
+     * Younger generations, meanwhile, have been gravitating toward offerings from Gen Z filmmakers like Curry Barker's "Obsession" and Kane Parsons' "Backrooms." So far, "Disclosure Day" has generated $78 million domestically and $82 million internationally, bringing the global total to $160 million after two weekends of release.
+     * Since the PG-13 movie cost $115 million (and exhibitors keep about half of revenues), "Disclosure Day" is estimated to need around $300 million globally to be profitable.
+     * "Obsession," now in its sixth weekend of release, was surprisingly not far from "Disclosure Day" on box office charts with $14.2 million from 3,053 theaters.
+  [lane D] Variety post 1236786638 pub 2026-06-21T17:32:43Z mod 2026-06-22T09:33:41Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Ignites to Series-Best $312 Million Globally, ‘Obsession’ and ‘B
+     * Other notable releases include last weekend's champ, Universal's "Disclosure Day," which brought in $18.7 million from 81 markets, a 57% decline from its debut.
+     * Since the PG-13 movie cost $115 million (and exhibitors keep about half of revenues), "Disclosure Day" is estimated to need around $300 million globally to be profitable.
+
+######## 2026-06-19 | FILM: Obsession | NTH | key='Obsession'
+  [lane B] Deadline post 1236962629 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-20T00:00:00+00:00
+     * 'I thought this was gonna feel like a soulless cash grab sequel but I like the traditional play versus tech angle" and "This feels like it's going back to its roots.'" Top 5 weekend: Toy Story 5 (Dis) 4,425 theaters, Fri $71M, 3-day $160M-$170M/Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.6M, 3-day $16.5M (-63%), Total $77.7M/Wk 2 Obsession (Fo
+  [lane C] Deadline post 1236962629 section [SATURDAY AM] available by 2026-06-20T19:00:00+00:00
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $71M , 3-day $160M-$170M /Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.9M (-74% from last Friday), 3-day $17.2M (-61%), Total $78.4M /Wk 2 Obsession (Foc) 3,053 (-15) theaters, Fri $4.7M (-25%), 3-day $14.2M (-25%), Total $215.8M /Wk 6 Backrooms (A24) 2,851 (-553) theaters, Fri $2.47M (-32%), 3-day $7.5M (-
+  [lane D] Deadline post 1236962629 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * (-52%) and War of the Worlds (-53%) Obsession (Foc) 3,053 (-15) theaters, Fri $4.7M (-25%), Sat $5.1M Sun $4.3M 3-day $14.2M (-25%), Total $215.8M /Wk 6 Backrooms (A24) 2,851 (-553) theaters, Fri $2.47M (-32%) Sat $2.7M Sun $2M 3-day $7.3M (-37%), Total $175.1M /Wk 4 Scary Movie (Par) 2,725 (-779) theaters, Fri $2.1M (-56%) Sat $2.4M Sun $2.1M 3-da
+  [lane D] Deadline post 1236963295 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * They are followed by MPA titles (until Rentrak reports), Universal's Disclosure Day ( $35.7M WW second weekend, $160.4M WW cume ), Obsession ( $25.1M WW sixth weekend, $333.2M WW cume ), and Paramount's Scary Movie ( $15.8M WW third frame, $202M WW Cume ).
+     * Michael Johnston in 'Obsession' (2025) Nikki and Bear's toxic romance in Obsession continued to reap great wishes with a sixth weekend of $14.2M in North America with another near $11M overseas ($8.5M from Uni territories which have grossed $92.9M alone of the total $117.4M foreign haul).
+  [lane D] Variety post 1236786574 pub 2026-06-21T15:13:09Z mod 2026-06-22T09:32:28Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Scores Year’s Biggest Debut With $160 Million, Shattering Franch
+     * Younger generations, meanwhile, have been gravitating toward offerings from Gen Z filmmakers like Curry Barker's "Obsession" and Kane Parsons' "Backrooms." So far, "Disclosure Day" has generated $78 million domestically and $82 million internationally, bringing the global total to $160 million after two weekends of release.
+     * "Obsession," now in its sixth weekend of release, was surprisingly not far from "Disclosure Day" on box office charts with $14.2 million from 3,053 theaters.
+     * "Obsession" has generated a sensational $215 million domestically and $333 million worldwide, making the film a wildly profitable success.
+  [lane D] Variety post 1236786638 pub 2026-06-21T17:32:43Z mod 2026-06-22T09:33:41Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Ignites to Series-Best $312 Million Globally, ‘Obsession’ and ‘B
+     * Elsewhere at the global box office, the breakout horror movies "Obsession" and "Backrooms" each crossed $300 million, remarkable milestones for the low-budget indie sensations.
+     * Now in its sixth frame, "Obsession" collected $10.9 million from 64 overseas markets over the weekend.
+
+######## 2026-06-19 | FILM: The Death of Robin Hood | OPEN | key='Death of Robin Hood'
+  [lane A] Variety post 1236785315 pub 2026-06-19T14:56:08Z mod 2026-06-19T15:07:29Z STRICT :: Box Office: ‘Toy Story 5’ Opens to $17.5 Million, Best Preview Performance of 2026
+     * This weekend also sees the release of A24's "The Death of Robin Hood," starring Hugh Jackman, and Neon's horror film "Leviticus," which are both predicted to make $3 million to $4 million.
+  [lane B] Deadline post 1236962629 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-20T00:00:00+00:00
+     * 'I thought this was gonna feel like a soulless cash grab sequel but I like the traditional play versus tech angle" and "This feels like it's going back to its roots.'" Top 5 weekend: Toy Story 5 (Dis) 4,425 theaters, Fri $71M, 3-day $160M-$170M/Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.6M, 3-day $16.5M (-63%), Total $77.7M/Wk 2 Obsession (Fo
+  [lane C] Deadline post 1236962629 section [SATURDAY AM] available by 2026-06-20T19:00:00+00:00
+     * Death of Robin Hood (A24) 1762 theaters, Fri $1.1M, 3-day $ 2.5M /Wk 1 The Hugh Jackman-Jodie Comer starring, Michael Sarnoski period drama gets a C+.
+  [lane D] Deadline post 1236962629 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * (-52%) and War of the Worlds (-53%) Obsession (Foc) 3,053 (-15) theaters, Fri $4.7M (-25%), Sat $5.1M Sun $4.3M 3-day $14.2M (-25%), Total $215.8M /Wk 6 Backrooms (A24) 2,851 (-553) theaters, Fri $2.47M (-32%) Sat $2.7M Sun $2M 3-day $7.3M (-37%), Total $175.1M /Wk 4 Scary Movie (Par) 2,725 (-779) theaters, Fri $2.1M (-56%) Sat $2.4M Sun $2.1M 3-da
+  [lane D] Variety post 1236786574 pub 2026-06-21T15:13:09Z mod 2026-06-22T09:32:28Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Scores Year’s Biggest Debut With $160 Million, Shattering Franch
+     * Neon's festival breakout "Leviticus" opened at No. 8 with $2.74 million from 1,076 locations while A24's R-rated "The Death of Robin Hood," starring Hugh Jackman, was close behind in ninth place with $2.65 million from 1,782 locations.
+
+######## 2026-06-19 | FILM: Toy Story 5 | OPEN | key='Toy Story 5'
+  [lane A] Variety post 1236785315 pub 2026-06-19T14:56:08Z mod 2026-06-19T15:07:29Z STRICT :: Box Office: ‘Toy Story 5’ Opens to $17.5 Million, Best Preview Performance of 2026
+     * "Toy Story 5" is on track to make $145 million to $150 million this weekend, though some estimates place it even higher at $160 million to $175 million after glowing reviews from film critics.
+     * Internationally, "Toy Story 5" is on track to open with $135 million, putting its global haul at more than $275 million.
+  [lane B] Deadline post 1236962629 section [FRIDAY AFTERNOON UPDATE] available by 2026-06-20T00:00:00+00:00
+     * Disney/Pixar's Toy Story 5 is not only bound for the biggest opening of the year, but potentially the the largest over the last two years with a Friday-Sunday of $160M-$170M+ in U.S./Canada after a Friday that's growing with more than $71M at 4,425 theaters.
+     * 'I thought this was gonna feel like a soulless cash grab sequel but I like the traditional play versus tech angle" and "This feels like it's going back to its roots.'" Top 5 weekend: Toy Story 5 (Dis) 4,425 theaters, Fri $71M, 3-day $160M-$170M/Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.6M, 3-day $16.5M (-63%), Total $77.7M/Wk 2 Obsession (Fo
+  [lane C] Deadline post 1236962629 section [SATURDAY AM] available by 2026-06-20T19:00:00+00:00
+     * Disney/Pixar's Toy Story 5 came from very close - very close - to toppling the Incredibles 2 box office record for best first day for an animated movie with $71M yesterday (including previews).
+     * Toy Story 5 's previews/Friday are the best we've seen at the box office since 2024's Disney/Marvel movie Deadpool & Wolverine which did $96M.
+     * The 3-day guidance on Toy Story 5 stateside is still $160M-$170M , which would rep a franchise record, the best domestic opening of 2026 to date, and the second best 3-day opening ever for an animated movie behind Incredibles 2 's $182.6M.
+     * Worldwide running cume for Toy Story 5 since Wednesday is $129.3M .
+  [lane C] Deadline post 1236963295 section [SATURDAY AM] available by 2026-06-20T19:00:00+00:00
+     * Broken out that's $71M domestic for Toy Story 5 , which as we told you was the second best Friday ever for an animated movie behind Incredibles 2 's $71.2M, with another $58.3M currently from offshore.
+     * Toy Story 5 opened to either No. 1 or No. 1 non-local in all markets including Mexico ($11.4M), China, UK, France ($3M), Spain ($2.7M), Italy, Australia ($2M) and Brazil ($1.9M).
+  [lane C] Variety post 1236786188 pub 2026-06-20T15:34:17Z mod 2026-06-20T18:19:48Z STRICT :: Box Office: ‘Toy Story 5’ Soars to $71 Million on Opening Day
+     * Disney and Pixar's "Toy Story 5" easily claimed Friday's box office crown with $71 million from 4,425 North American theaters.
+     * Even at the lowest end of those estimates, "Toy Story 5" will easily cement the best opening weekend in franchise history, a record that currently belongs to "Toy Story 4" with $120 milion.
+  [lane D] Deadline post 1236962629 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * Disney/Pixar's Toy Story 5 is coming in at $160M , still the best opening any movie has seen this year, the second best opening ever for an animated film stateside behind Pixar's own Incredibles 2 ($182.6M) and the third best June has had following Universal's 2015 Jurassic World ($208.8M) and Incredibles 2 .
+     * EntTelligence reports that 11.5 million people saw Toy Story 5 this weekend off of average ticket prices of $15.25 general, $19.03 PLF, $13.12 child and $16.66 child PLF.
+     * In terms of global promotional partnerships, Toy Story 5 not only counts the biggest in franchise history, but it's bigger than Inside Out 2 and Zootopia 2 with $200M in media value.
+     * Toy Story 5 (Dis) 4,425 theaters, Fri $71M, Sat $47.5M, Sun $41.5M 3-day $160M /Wk 1 Disclosure Day (Uni) 3,824 theaters, Fri $4.9M (-74% from last Friday) Sat $6.19M Sun $5.8M, 3-day $17M (-62%), Total $78.2M /Wk 2 While that might be an average hold for some films, it was a tad steep for Steven Spielberg, whose previous sci-fi pics saw better sec
+  [lane D] Deadline post 1236963295 section [SUNDAY AM] available by 2026-06-21T19:00:00+00:00
+     * With a $312M global weekend opening, Disney/Pixar's Toy Story 5 is the second best for a Pixar movie (sans China) behind 2024's Inside Out 2 which debuted to $384M.
+     * That didn't stop Mexico from being Toy Story 5 's biggest territory outside the U.S. this weekend at $26.6M, and 2nd best bow YTD and 3rd bet for Pixar.
+     * Broken out, Toy Story 5 did $160M domestic and $152M international in its opening frame.
+     * If you back that out, Super Mario Galaxy 's weekend is at $302M, and yes, Toy Story 5 is at $312M.
+  [lane D] Variety post 1236786574 pub 2026-06-21T15:13:09Z mod 2026-06-22T09:32:28Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Scores Year’s Biggest Debut With $160 Million, Shattering Franch
+     * "Toy Story 5" ruled over the box office with $160 million from 4,425 North America theaters, landing on the higher end of expectations while securing the biggest domestic debut of the year over Universal's "Super Mario Galaxy Movie" ($131.7 million).
+     * If those films are any indication of the theatrical trajectory for "Toy Story 5," the newest entry is likely to end up as the highest grossing in the franchise (that's currently "Toy Story 4" with $1.07 billion), as well as one of the biggest movies of the year.
+  [lane D] Variety post 1236786638 pub 2026-06-21T17:32:43Z mod 2026-06-22T09:33:41Z REVISABLE(modified after anchor) :: Box Office: ‘Toy Story 5’ Ignites to Series-Best $312 Million Globally, ‘Obsession’ and ‘B
+     * "Toy Story 5" has ignited the box office with $312 million globally, ranking as the largest opening weekend in Disney and Pixar's storied animated series.
+     * Internationally, "Toy Story 5" stands as the second-highest debut for Pixar, following "Inside Out 2," as well as the second-biggest opening of the year, behind "The Super Mario Galaxy Movie." Top territories outside the U.S. and Canada were Mexico with $26.6 million, the United Kingdom with $20 million, China with $18 million and France with $7.2 
+     * "Toy Story 5" carries a mega $250 million budget but should easily justify its price tag.

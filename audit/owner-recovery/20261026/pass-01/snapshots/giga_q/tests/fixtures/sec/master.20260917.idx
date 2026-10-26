@@ -1,0 +1,12 @@
+Description:           Master Index of EDGAR Dissemination Feed by Item Type
+Last Data Received:    September 17, 2026
+Comments:              webmaster@sec.gov
+Anonymous FTP:         ftp://ftp.sec.gov/edgar/
+
+ 
+CIK|Company Name|Form Type|Date Filed|Filename
+--------------------------------------------------------------------------------
+320193|REFERENCE ISSUER CORP|4|2026-09-17|edgar/data/320193/0000320193-26-000044.txt
+320193|REFERENCE ISSUER CORP|8-K|2026-09-17|edgar/data/320193/0000320193-26-000043.txt
+789019|SECOND REFERENCE INC|4|2026-09-17|edgar/data/789019/0000789019-26-000111.txt
+1018724|THIRD REFERENCE PLC|10-Q|2026-09-17|edgar/data/1018724/0001018724-26-000300.txt

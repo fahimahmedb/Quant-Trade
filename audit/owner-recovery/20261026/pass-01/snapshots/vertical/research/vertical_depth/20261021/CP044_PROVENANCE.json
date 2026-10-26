@@ -1,0 +1,14 @@
+{
+  "after_source_sha": "696e330000eeae1f4fa17efbb63706db83f9a259",
+  "before_module_source_sha": "92c4ee0a5e2d9387167f6deec24e7edec1c15b6d",
+  "fixture": "tests/test_vertical_campaign_pause_depth.py",
+  "fixture_sha256": "622dac71a83445c7c63aa3e6a54d56e523312e1380e393bb51993ef055fb92fd",
+  "module_fingerprints": {
+    "src/autonomous_research/orchestrator.py": {
+      "after": "16e60eb0d388face1f68e822e8a62c4733c1103a7dedbdfded6b4e6f04ed5b73",
+      "before": "417baa50d722cd175ae64fa3e1928ca90c84c35c7de6bf5895375b008e197e27"
+    }
+  },
+  "new_final_fixture_retained_for_before": true,
+  "overlap_schedule": "real thread events; up to 200ms settlement turn; no timing expiry claim"
+}

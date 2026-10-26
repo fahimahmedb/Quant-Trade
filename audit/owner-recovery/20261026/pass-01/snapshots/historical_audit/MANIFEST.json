@@ -1,0 +1,27 @@
+[
+  {
+    "file": "README.md",
+    "bytes": 11800,
+    "sha256": "b34bf75400052dee243e9dfedba161860534aeac83f9ae71aca1ae27ca9b2b37"
+  },
+  {
+    "file": "RESUME.md",
+    "bytes": 1117,
+    "sha256": "46e8cc5c39606d536a3cefc9e4ff13365951c9ffc1f8334b61a9edd5cb0c28f9"
+  },
+  {
+    "file": "checkpoint.json",
+    "bytes": 1380,
+    "sha256": "b8d2edcf362c6dc8baa39550c25593e0a1a32b0775293c4b39e861f6e06e65c7"
+  },
+  {
+    "file": "refs-initial.csv",
+    "bytes": 119784,
+    "sha256": "6eb41a895f622540fb7a73e7f2d641015ace4b13ca9e83b4ce2a274d84ffdd68"
+  },
+  {
+    "file": "refs-initial.json",
+    "bytes": 183061,
+    "sha256": "5775971a96681d18180aa9f562db3b8d9735c2b112980f4f2648626556b7dade"
+  }
+]

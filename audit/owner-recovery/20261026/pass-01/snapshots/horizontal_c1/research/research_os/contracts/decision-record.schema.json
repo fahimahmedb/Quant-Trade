@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DecisionRecord",
+  "type": "object",
+  "required": ["decision_id","hypothesis_generation_id","decision","reason","evidence_refs","authority","decided_at"],
+  "properties": {
+    "decision_id": {"type":"string","minLength":1},
+    "hypothesis_generation_id": {"type":"string","minLength":1},
+    "decision": {"enum":["KILL","PARK","EXPLORE","PROMOTE","NO_OPPORTUNITY"]},
+    "reason": {"type":"string","minLength":1},
+    "evidence_refs": {"type":"array","items":{"type":"string"}},
+    "authority": {"type":"string","minLength":1},
+    "decided_at": {"type":"string","minLength":1},
+    "scope_of_falsification": {"type":["string","null"]},
+    "currently_implementable": {"enum":["YES","NO","UNKNOWN"]},
+    "research_value_despite_block": {"enum":["HIGH","MEDIUM","LOW","NOT_APPLICABLE","UNKNOWN"]},
+    "owner_decision_required": {"type":"boolean"}
+  },
+  "additionalProperties": false
+}

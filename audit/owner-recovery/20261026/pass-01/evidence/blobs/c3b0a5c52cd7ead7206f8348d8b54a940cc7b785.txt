@@ -1,0 +1,4845 @@
+{
+ "tag": "_feeall",
+ "coverage": {
+  "U1_A": {
+   "film_weekends": 85,
+   "with_signal": 25,
+   "with_exec": 20
+  },
+  "U1_B": {
+   "film_weekends": 85,
+   "with_signal": 54,
+   "with_exec": 47
+  },
+  "U1_C": {
+   "film_weekends": 85,
+   "with_signal": 43,
+   "with_exec": 36
+  },
+  "U1_D": {
+   "film_weekends": 85,
+   "with_signal": 64,
+   "with_exec": 53
+  },
+  "U2_B": {
+   "film_weekends": 67,
+   "with_signal": 38,
+   "with_exec": 30
+  },
+  "U2_C": {
+   "film_weekends": 67,
+   "with_signal": 26,
+   "with_exec": 19
+  },
+  "U2_D": {
+   "film_weekends": 67,
+   "with_signal": 50,
+   "with_exec": 34
+  }
+ },
+ "results": {
+  "U1_A": {
+   "signal_bracket_flip_rate_all_events": 0.697,
+   "R1_E1": {
+    "n_film_weekends": 18,
+    "n_event_trades": 21,
+    "gross_mean": -0.5252,
+    "fee_mean_per_$": 0.0332,
+    "net_mean": -0.5348,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": -1.0,
+    "pos_frac": 0.278,
+    "worst": -1.0,
+    "best": 2.1182,
+    "top3_share_abs": 0.252,
+    "flip_rate": 0.722,
+    "entry_price_median": 0.244,
+    "share_entry_ge_0.85": 0.056,
+    "cap_usd_60m_median": 6.4,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.8675,
+     "hi95": -0.1118,
+     "p_one_sided": 0.9929
+    },
+    "trend_net": {
+     "rho": -0.047,
+     "z": -0.19,
+     "n": 18
+    },
+    "trend_price": {
+     "rho": -0.421,
+     "z": -1.74,
+     "n": 18
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.581,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1258,
+       "p_one_sided": 0.9858
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5876,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2371,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.7492,
+      "net_median": -1.0,
+      "pos_frac": 0.167,
+      "entry_price_median": 0.119,
+      "flip_rate": 0.833,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2476,
+       "p_one_sided": 0.9908
+      }
+     },
+     "2026Q3": {
+      "n": 3,
+      "net_mean": 0.0394,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.152,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 1.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 2.1182,
+       "p_one_sided": 0.2975
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 18,
+    "n_event_trades": 21,
+    "gross_mean": -0.5252,
+    "fee_mean_per_$": 0.0332,
+    "net_mean": -0.5298,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": -1.0,
+    "pos_frac": 0.278,
+    "worst": -1.0,
+    "best": 2.1182,
+    "top3_share_abs": 0.25,
+    "flip_rate": 0.722,
+    "entry_price_median": 0.244,
+    "share_entry_ge_0.85": 0.056,
+    "cap_usd_60m_median": 6.4,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.8652,
+     "hi95": -0.1048,
+     "p_one_sided": 0.9918
+    },
+    "trend_net": {
+     "rho": -0.047,
+     "z": -0.19,
+     "n": 18
+    },
+    "trend_price": {
+     "rho": -0.421,
+     "z": -1.74,
+     "n": 18
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.5762,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1134,
+       "p_one_sided": 0.9842
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5761,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2717,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.745,
+      "net_median": -1.0,
+      "pos_frac": 0.167,
+      "entry_price_median": 0.119,
+      "flip_rate": 0.833,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2349,
+       "p_one_sided": 0.9908
+      }
+     },
+     "2026Q3": {
+      "n": 3,
+      "net_mean": 0.0394,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.152,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 1.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 2.1182,
+       "p_one_sided": 0.2975
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 18,
+    "n_event_trades": 21,
+    "gross_mean": -0.5252,
+    "fee_mean_per_$": 0.0332,
+    "net_mean": -0.5438,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": -1.0,
+    "pos_frac": 0.278,
+    "worst": -1.0,
+    "best": 2.0222,
+    "top3_share_abs": 0.248,
+    "flip_rate": 0.722,
+    "entry_price_median": 0.244,
+    "share_entry_ge_0.85": 0.056,
+    "cap_usd_60m_median": 6.4,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.869,
+     "hi95": -0.1326,
+     "p_one_sided": 0.994
+    },
+    "trend_net": {
+     "rho": -0.047,
+     "z": -0.19,
+     "n": 18
+    },
+    "trend_price": {
+     "rho": -0.421,
+     "z": -1.74,
+     "n": 18
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.5861,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1368,
+       "p_one_sided": 0.9858
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5925,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2225,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.7529,
+      "net_median": -1.0,
+      "pos_frac": 0.167,
+      "entry_price_median": 0.119,
+      "flip_rate": 0.833,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2586,
+       "p_one_sided": 0.9994
+      }
+     },
+     "2026Q3": {
+      "n": 3,
+      "net_mean": 0.0074,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.152,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 1.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 2.0222,
+       "p_one_sided": 0.2975
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 13,
+    "n_event_trades": 14,
+    "gross_mean": -0.5907,
+    "fee_mean_per_$": 0.031,
+    "net_mean": -0.5957,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.1483,
+    "pos_frac": 0.308,
+    "worst": -1.0,
+    "best": 0.5048,
+    "top3_share_abs": 0.293,
+    "flip_rate": 0.692,
+    "entry_price_median": 0.343,
+    "share_entry_ge_0.85": 0.077,
+    "cap_usd_60m_median": 3.0,
+    "cap_usd_to_next_median": 272.4,
+    "boot": {
+     "lo95": -0.9048,
+     "hi95": -0.2492,
+     "p_one_sided": 0.9997
+    },
+    "trend_net": {
+     "rho": -0.306,
+     "z": -1.06,
+     "n": 13
+    },
+    "trend_price": {
+     "rho": -0.515,
+     "z": -1.78,
+     "n": 13
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 5,
+      "net_mean": -0.4972,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.401,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 5.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.0491,
+       "p_one_sided": 0.94
+      }
+     },
+     "2026Q1": {
+      "n": 2,
+      "net_mean": -0.3814,
+      "net_median": -0.3814,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.572,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2371,
+       "p_one_sided": 0.7497
+      }
+     },
+     "2026Q2": {
+      "n": 4,
+      "net_mean": -0.6238,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.212,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 5.3,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.1286,
+       "p_one_sided": 0.948
+      }
+     },
+     "2026Q3": {
+      "n": 2,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.145,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 53.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -1.0,
+       "p_one_sided": 1.0
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 20,
+    "n_event_trades": 23,
+    "gross_mean": -0.4689,
+    "fee_mean_per_$": 0.0301,
+    "net_mean": -0.4777,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.0403,
+    "pos_frac": 0.35,
+    "worst": -1.0,
+    "best": 2.1182,
+    "top3_share_abs": 0.25,
+    "flip_rate": 0.65,
+    "entry_price_median": 0.326,
+    "share_entry_ge_0.85": 0.15,
+    "cap_usd_60m_median": 4.0,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.8109,
+     "hi95": -0.0831,
+     "p_one_sided": 0.9905
+    },
+    "trend_net": {
+     "rho": 0.057,
+     "z": 0.25,
+     "n": 20
+    },
+    "trend_price": {
+     "rho": -0.137,
+     "z": -0.6,
+     "n": 20
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.581,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1258,
+       "p_one_sided": 0.9858
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5876,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2371,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 7,
+      "net_mean": -0.6377,
+      "net_median": -1.0,
+      "pos_frac": 0.286,
+      "entry_price_median": 0.178,
+      "flip_rate": 0.714,
+      "cap_usd_60m_median": 9.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1401,
+       "p_one_sided": 0.993
+      }
+     },
+     "2026Q3": {
+      "n": 4,
+      "net_mean": 0.0396,
+      "net_median": -0.4799,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.231,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 0.8,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.3387,
+       "p_one_sided": 0.4354
+      }
+     }
+    }
+   }
+  },
+  "U1_B": {
+   "signal_bracket_flip_rate_all_events": 0.439,
+   "R1_E1": {
+    "n_film_weekends": 39,
+    "n_event_trades": 40,
+    "gross_mean": -0.3126,
+    "fee_mean_per_$": 0.0277,
+    "net_mean": -0.3274,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.3737,
+    "pos_frac": 0.385,
+    "worst": -1.0,
+    "best": 2.5466,
+    "top3_share_abs": 0.139,
+    "flip_rate": 0.615,
+    "entry_price_median": 0.45,
+    "share_entry_ge_0.85": 0.103,
+    "cap_usd_60m_median": 19.1,
+    "cap_usd_to_next_median": 655.2,
+    "boot": {
+     "lo95": -0.6085,
+     "hi95": -0.0292,
+     "p_one_sided": 0.9843
+    },
+    "trend_net": {
+     "rho": -0.112,
+     "z": -0.69,
+     "n": 39
+    },
+    "trend_price": {
+     "rho": -0.061,
+     "z": -0.38,
+     "n": 39
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2359,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.508,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 106.0,
+      "boot": {
+       "lo95": -0.784,
+       "hi95": 0.4353,
+       "p_one_sided": 0.7458
+      }
+     },
+     "2026Q1": {
+      "n": 10,
+      "net_mean": 0.0251,
+      "net_median": -0.475,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.507,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 16.0,
+      "boot": {
+       "lo95": -0.6418,
+       "hi95": 0.8072,
+       "p_one_sided": 0.4954
+      }
+     },
+     "2026Q2": {
+      "n": 12,
+      "net_mean": -0.5058,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.301,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 32.7,
+      "boot": {
+       "lo95": -0.8941,
+       "hi95": -0.0671,
+       "p_one_sided": 0.9861
+      }
+     },
+     "2026Q3": {
+      "n": 10,
+      "net_mean": -0.5299,
+      "net_median": -1.0,
+      "pos_frac": 0.3,
+      "entry_price_median": 0.402,
+      "flip_rate": 0.7,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.0381,
+       "p_one_sided": 0.9816
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 39,
+    "n_event_trades": 40,
+    "gross_mean": -0.3126,
+    "fee_mean_per_$": 0.0277,
+    "net_mean": -0.315,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.4898,
+    "pos_frac": 0.385,
+    "worst": -1.0,
+    "best": 2.459,
+    "top3_share_abs": 0.139,
+    "flip_rate": 0.615,
+    "entry_price_median": 0.45,
+    "share_entry_ge_0.85": 0.103,
+    "cap_usd_60m_median": 19.1,
+    "cap_usd_to_next_median": 655.2,
+    "boot": {
+     "lo95": -0.5986,
+     "hi95": -0.0134,
+     "p_one_sided": 0.9801
+    },
+    "trend_net": {
+     "rho": -0.112,
+     "z": -0.69,
+     "n": 39
+    },
+    "trend_price": {
+     "rho": -0.061,
+     "z": -0.38,
+     "n": 39
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2219,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.508,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 106.0,
+      "boot": {
+       "lo95": -0.784,
+       "hi95": 0.4519,
+       "p_one_sided": 0.7435
+      }
+     },
+     "2026Q1": {
+      "n": 10,
+      "net_mean": 0.0298,
+      "net_median": -0.475,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.507,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 16.0,
+      "boot": {
+       "lo95": -0.6283,
+       "hi95": 0.7994,
+       "p_one_sided": 0.4806
+      }
+     },
+     "2026Q2": {
+      "n": 12,
+      "net_mean": -0.5027,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.301,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 32.7,
+      "boot": {
+       "lo95": -0.8943,
+       "hi95": -0.0619,
+       "p_one_sided": 0.9871
+      }
+     },
+     "2026Q3": {
+      "n": 10,
+      "net_mean": -0.4998,
+      "net_median": -1.0,
+      "pos_frac": 0.3,
+      "entry_price_median": 0.402,
+      "flip_rate": 0.7,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.0333,
+       "p_one_sided": 0.9655
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 39,
+    "n_event_trades": 40,
+    "gross_mean": -0.3126,
+    "fee_mean_per_$": 0.0277,
+    "net_mean": -0.3404,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.3555,
+    "pos_frac": 0.385,
+    "worst": -1.0,
+    "best": 2.4225,
+    "top3_share_abs": 0.134,
+    "flip_rate": 0.615,
+    "entry_price_median": 0.45,
+    "share_entry_ge_0.85": 0.103,
+    "cap_usd_60m_median": 19.1,
+    "cap_usd_to_next_median": 655.2,
+    "boot": {
+     "lo95": -0.6157,
+     "hi95": -0.0498,
+     "p_one_sided": 0.9887
+    },
+    "trend_net": {
+     "rho": -0.112,
+     "z": -0.69,
+     "n": 39
+    },
+    "trend_price": {
+     "rho": -0.061,
+     "z": -0.38,
+     "n": 39
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2495,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.508,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 106.0,
+      "boot": {
+       "lo95": -0.7872,
+       "hi95": 0.4114,
+       "p_one_sided": 0.7794
+      }
+     },
+     "2026Q1": {
+      "n": 10,
+      "net_mean": 0.0008,
+      "net_median": -0.4802,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.507,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 16.0,
+      "boot": {
+       "lo95": -0.6484,
+       "hi95": 0.7564,
+       "p_one_sided": 0.5093
+      }
+     },
+     "2026Q2": {
+      "n": 12,
+      "net_mean": -0.5134,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.301,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 32.7,
+      "boot": {
+       "lo95": -0.8954,
+       "hi95": -0.0827,
+       "p_one_sided": 0.9882
+      }
+     },
+     "2026Q3": {
+      "n": 10,
+      "net_mean": -0.5377,
+      "net_median": -1.0,
+      "pos_frac": 0.3,
+      "entry_price_median": 0.402,
+      "flip_rate": 0.7,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.0541,
+       "p_one_sided": 0.9839
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 22,
+    "n_event_trades": 22,
+    "gross_mean": -0.1888,
+    "fee_mean_per_$": 0.0226,
+    "net_mean": -0.204,
+    "net_median": -0.475,
+    "p25": -1.0,
+    "p75": 0.2711,
+    "pos_frac": 0.5,
+    "worst": -1.0,
+    "best": 2.5466,
+    "top3_share_abs": 0.264,
+    "flip_rate": 0.5,
+    "entry_price_median": 0.564,
+    "share_entry_ge_0.85": 0.227,
+    "cap_usd_60m_median": 11.7,
+    "cap_usd_to_next_median": 848.1,
+    "boot": {
+     "lo95": -0.5737,
+     "hi95": 0.2067,
+     "p_one_sided": 0.8465
+    },
+    "trend_net": {
+     "rho": -0.072,
+     "z": -0.33,
+     "n": 22
+    },
+    "trend_price": {
+     "rho": 0.123,
+     "z": 0.56,
+     "n": 22
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 2,
+      "net_mean": -0.244,
+      "net_median": -0.244,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.37,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 63.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.512,
+       "p_one_sided": 0.7497
+      }
+     },
+     "2026Q1": {
+      "n": 9,
+      "net_mean": 0.0704,
+      "net_median": 0.05,
+      "pos_frac": 0.556,
+      "entry_price_median": 0.544,
+      "flip_rate": 0.444,
+      "cap_usd_60m_median": 8.4,
+      "boot": {
+       "lo95": -0.6238,
+       "hi95": 0.9023,
+       "p_one_sided": 0.4444
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.3605,
+      "net_median": -0.4495,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.525,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 37.3,
+      "boot": {
+       "lo95": -0.8165,
+       "hi95": 0.1279,
+       "p_one_sided": 0.8984
+      }
+     },
+     "2026Q3": {
+      "n": 5,
+      "net_mean": -0.4941,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.718,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.0554,
+       "p_one_sided": 0.938
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 47,
+    "n_event_trades": 53,
+    "gross_mean": -0.2144,
+    "fee_mean_per_$": 0.0214,
+    "net_mean": -0.2268,
+    "net_median": -0.4853,
+    "p25": -1.0,
+    "p75": 0.1558,
+    "pos_frac": 0.489,
+    "worst": -1.0,
+    "best": 2.5466,
+    "top3_share_abs": 0.147,
+    "flip_rate": 0.511,
+    "entry_price_median": 0.555,
+    "share_entry_ge_0.85": 0.255,
+    "cap_usd_60m_median": 20.0,
+    "cap_usd_to_next_median": 878.5,
+    "boot": {
+     "lo95": -0.4569,
+     "hi95": 0.0215,
+     "p_one_sided": 0.9638
+    },
+    "trend_net": {
+     "rho": -0.036,
+     "z": -0.25,
+     "n": 47
+    },
+    "trend_price": {
+     "rho": -0.008,
+     "z": -0.06,
+     "n": 47
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.164,
+      "net_median": 0.0034,
+      "pos_frac": 0.6,
+      "entry_price_median": 0.618,
+      "flip_rate": 0.4,
+      "cap_usd_60m_median": 24.4,
+      "boot": {
+       "lo95": -0.6316,
+       "hi95": 0.3212,
+       "p_one_sided": 0.7361
+      }
+     },
+     "2026Q1": {
+      "n": 11,
+      "net_mean": 0.071,
+      "net_median": 0.028,
+      "pos_frac": 0.545,
+      "entry_price_median": 0.58,
+      "flip_rate": 0.455,
+      "cap_usd_60m_median": 23.5,
+      "boot": {
+       "lo95": -0.5295,
+       "hi95": 0.7421,
+       "p_one_sided": 0.4291
+      }
+     },
+     "2026Q2": {
+      "n": 12,
+      "net_mean": -0.4636,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.335,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 32.7,
+      "boot": {
+       "lo95": -0.8357,
+       "hi95": -0.0348,
+       "p_one_sided": 0.9817
+      }
+     },
+     "2026Q3": {
+      "n": 14,
+      "net_mean": -0.3027,
+      "net_median": -0.2411,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.637,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.8,
+      "boot": {
+       "lo95": -0.6269,
+       "hi95": 0.0515,
+       "p_one_sided": 0.9566
+      }
+     }
+    }
+   }
+  },
+  "U1_C": {
+   "signal_bracket_flip_rate_all_events": 0.304,
+   "R1_E1": {
+    "n_film_weekends": 34,
+    "n_event_trades": 35,
+    "gross_mean": -0.1109,
+    "fee_mean_per_$": 0.0252,
+    "net_mean": -0.127,
+    "net_median": 0.1023,
+    "p25": -1.0,
+    "p75": 0.3722,
+    "pos_frac": 0.559,
+    "worst": -1.0,
+    "best": 2.7089,
+    "top3_share_abs": 0.192,
+    "flip_rate": 0.441,
+    "entry_price_median": 0.463,
+    "share_entry_ge_0.85": 0.118,
+    "cap_usd_60m_median": 23.2,
+    "cap_usd_to_next_median": 2479.8,
+    "boot": {
+     "lo95": -0.4174,
+     "hi95": 0.1946,
+     "p_one_sided": 0.7994
+    },
+    "trend_net": {
+     "rho": 0.044,
+     "z": 0.25,
+     "n": 34
+    },
+    "trend_price": {
+     "rho": -0.177,
+     "z": -1.02,
+     "n": 34
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.3437,
+      "net_median": -0.453,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7617,
+       "hi95": 0.08,
+       "p_one_sided": 0.9389
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.3277,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.437,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 18.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.0169,
+       "p_one_sided": 0.7404
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": 0.0547,
+      "net_median": 0.223,
+      "pos_frac": 0.733,
+      "entry_price_median": 0.623,
+      "flip_rate": 0.267,
+      "cap_usd_60m_median": 148.6,
+      "boot": {
+       "lo95": -0.3044,
+       "hi95": 0.3977,
+       "p_one_sided": 0.3782
+      }
+     },
+     "2026Q3": {
+      "n": 6,
+      "net_mean": -0.1198,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.22,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 20.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.1165,
+       "p_one_sided": 0.6342
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 34,
+    "n_event_trades": 35,
+    "gross_mean": -0.1109,
+    "fee_mean_per_$": 0.0252,
+    "net_mean": -0.1036,
+    "net_median": 0.0998,
+    "p25": -1.0,
+    "p75": 0.3883,
+    "pos_frac": 0.559,
+    "worst": -1.0,
+    "best": 2.7089,
+    "top3_share_abs": 0.207,
+    "flip_rate": 0.441,
+    "entry_price_median": 0.463,
+    "share_entry_ge_0.85": 0.118,
+    "cap_usd_60m_median": 23.2,
+    "cap_usd_to_next_median": 2479.8,
+    "boot": {
+     "lo95": -0.4035,
+     "hi95": 0.23,
+     "p_one_sided": 0.7462
+    },
+    "trend_net": {
+     "rho": 0.048,
+     "z": 0.28,
+     "n": 34
+    },
+    "trend_price": {
+     "rho": -0.177,
+     "z": -1.02,
+     "n": 34
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.34,
+      "net_median": -0.453,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7611,
+       "hi95": 0.0898,
+       "p_one_sided": 0.9363
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.3277,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.437,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 18.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.0169,
+       "p_one_sided": 0.7404
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": 0.1063,
+      "net_median": 0.223,
+      "pos_frac": 0.733,
+      "entry_price_median": 0.623,
+      "flip_rate": 0.267,
+      "cap_usd_60m_median": 148.6,
+      "boot": {
+       "lo95": -0.2891,
+       "hi95": 0.4962,
+       "p_one_sided": 0.3041
+      }
+     },
+     "2026Q3": {
+      "n": 6,
+      "net_mean": -0.1221,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.22,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 20.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.1142,
+       "p_one_sided": 0.6342
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 34,
+    "n_event_trades": 35,
+    "gross_mean": -0.1109,
+    "fee_mean_per_$": 0.0252,
+    "net_mean": -0.1422,
+    "net_median": 0.0908,
+    "p25": -1.0,
+    "p75": 0.354,
+    "pos_frac": 0.559,
+    "worst": -1.0,
+    "best": 2.5733,
+    "top3_share_abs": 0.188,
+    "flip_rate": 0.441,
+    "entry_price_median": 0.463,
+    "share_entry_ge_0.85": 0.118,
+    "cap_usd_60m_median": 23.2,
+    "cap_usd_to_next_median": 2479.8,
+    "boot": {
+     "lo95": -0.4261,
+     "hi95": 0.1707,
+     "p_one_sided": 0.8287
+    },
+    "trend_net": {
+     "rho": 0.044,
+     "z": 0.25,
+     "n": 34
+    },
+    "trend_price": {
+     "rho": -0.177,
+     "z": -1.02,
+     "n": 34
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.3523,
+      "net_median": -0.4587,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7645,
+       "hi95": 0.0649,
+       "p_one_sided": 0.9467
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.341,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.437,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 18.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.977,
+       "p_one_sided": 0.7404
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": 0.0393,
+      "net_median": 0.2086,
+      "pos_frac": 0.733,
+      "entry_price_median": 0.623,
+      "flip_rate": 0.267,
+      "cap_usd_60m_median": 148.6,
+      "boot": {
+       "lo95": -0.3144,
+       "hi95": 0.376,
+       "p_one_sided": 0.4099
+      }
+     },
+     "2026Q3": {
+      "n": 6,
+      "net_mean": -0.1464,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.22,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 20.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.0447,
+       "p_one_sided": 0.6342
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 16,
+    "n_event_trades": 17,
+    "gross_mean": -0.0638,
+    "fee_mean_per_$": 0.0195,
+    "net_mean": -0.076,
+    "net_median": 0.1409,
+    "p25": -1.0,
+    "p75": 0.3722,
+    "pos_frac": 0.688,
+    "worst": -1.0,
+    "best": 0.8037,
+    "top3_share_abs": 0.342,
+    "flip_rate": 0.312,
+    "entry_price_median": 0.669,
+    "share_entry_ge_0.85": 0.188,
+    "cap_usd_60m_median": 28.3,
+    "cap_usd_to_next_median": 2733.2,
+    "boot": {
+     "lo95": -0.4091,
+     "hi95": 0.2323,
+     "p_one_sided": 0.673
+    },
+    "trend_net": {
+     "rho": 0.105,
+     "z": 0.41,
+     "n": 16
+    },
+    "trend_price": {
+     "rho": -0.015,
+     "z": -0.06,
+     "n": 16
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2187,
+      "net_median": 0.1742,
+      "pos_frac": 0.571,
+      "entry_price_median": 0.548,
+      "flip_rate": 0.429,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -0.7423,
+       "hi95": 0.2967,
+       "p_one_sided": 0.7843
+      }
+     },
+     "2026Q2": {
+      "n": 8,
+      "net_mean": 0.1643,
+      "net_median": 0.2399,
+      "pos_frac": 0.875,
+      "entry_price_median": 0.717,
+      "flip_rate": 0.125,
+      "cap_usd_60m_median": 94.5,
+      "boot": {
+       "lo95": -0.2081,
+       "hi95": 0.4437,
+       "p_one_sided": 0.1678
+      }
+     },
+     "2026Q3": {
+      "n": 1,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.279,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 32.2,
+      "boot": null
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 36,
+    "n_event_trades": 45,
+    "gross_mean": -0.1356,
+    "fee_mean_per_$": 0.0216,
+    "net_mean": -0.148,
+    "net_median": 0.0433,
+    "p25": -1.0,
+    "p75": 0.3722,
+    "pos_frac": 0.583,
+    "worst": -1.0,
+    "best": 1.3593,
+    "top3_share_abs": 0.149,
+    "flip_rate": 0.417,
+    "entry_price_median": 0.574,
+    "share_entry_ge_0.85": 0.167,
+    "cap_usd_60m_median": 23.9,
+    "cap_usd_to_next_median": 3436.6,
+    "boot": {
+     "lo95": -0.3832,
+     "hi95": 0.0839,
+     "p_one_sided": 0.8896
+    },
+    "trend_net": {
+     "rho": 0.103,
+     "z": 0.61,
+     "n": 36
+    },
+    "trend_price": {
+     "rho": -0.092,
+     "z": -0.55,
+     "n": 36
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.3497,
+      "net_median": -0.4833,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7635,
+       "hi95": 0.0764,
+       "p_one_sided": 0.9433
+      }
+     },
+     "2026Q1": {
+      "n": 5,
+      "net_mean": -0.1881,
+      "net_median": 0.007,
+      "pos_frac": 0.6,
+      "entry_price_median": 0.483,
+      "flip_rate": 0.4,
+      "cap_usd_60m_median": 23.0,
+      "boot": {
+       "lo95": -0.7986,
+       "hi95": 0.4224,
+       "p_one_sided": 0.6294
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": 0.0452,
+      "net_median": 0.223,
+      "pos_frac": 0.733,
+      "entry_price_median": 0.715,
+      "flip_rate": 0.267,
+      "cap_usd_60m_median": 148.6,
+      "boot": {
+       "lo95": -0.2708,
+       "hi95": 0.3296,
+       "p_one_sided": 0.3802
+      }
+     },
+     "2026Q3": {
+      "n": 6,
+      "net_mean": -0.2613,
+      "net_median": -0.7498,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.398,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 20.1,
+      "boot": {
+       "lo95": -0.9166,
+       "hi95": 0.5251,
+       "p_one_sided": 0.7427
+      }
+     }
+    }
+   }
+  },
+  "U1_D": {
+   "signal_bracket_flip_rate_all_events": 0.171,
+   "R1_E1": {
+    "n_film_weekends": 27,
+    "n_event_trades": 29,
+    "gross_mean": -0.2136,
+    "fee_mean_per_$": 0.0168,
+    "net_mean": -0.2231,
+    "net_median": 0.066,
+    "p25": -1.0,
+    "p75": 0.1472,
+    "pos_frac": 0.593,
+    "worst": -1.0,
+    "best": 2.6534,
+    "top3_share_abs": 0.291,
+    "flip_rate": 0.407,
+    "entry_price_median": 0.818,
+    "share_entry_ge_0.85": 0.444,
+    "cap_usd_60m_median": 94.2,
+    "cap_usd_to_next_median": 5269.1,
+    "boot": {
+     "lo95": -0.4982,
+     "hi95": 0.0906,
+     "p_one_sided": 0.9219
+    },
+    "trend_net": {
+     "rho": 0.296,
+     "z": 1.51,
+     "n": 27
+    },
+    "trend_price": {
+     "rho": 0.104,
+     "z": 0.53,
+     "n": 27
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 4,
+      "net_mean": -0.7335,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.251,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 978.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2005,
+       "p_one_sided": 0.9966
+      }
+     },
+     "2026Q1": {
+      "n": 9,
+      "net_mean": -0.348,
+      "net_median": 0.0992,
+      "pos_frac": 0.556,
+      "entry_price_median": 0.807,
+      "flip_rate": 0.444,
+      "cap_usd_60m_median": 94.2,
+      "boot": {
+       "lo95": -0.7466,
+       "hi95": 0.036,
+       "p_one_sided": 0.9586
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.0761,
+      "net_median": 0.0924,
+      "pos_frac": 0.833,
+      "entry_price_median": 0.9,
+      "flip_rate": 0.167,
+      "cap_usd_60m_median": 92.5,
+      "boot": {
+       "lo95": -0.454,
+       "hi95": 0.1343,
+       "p_one_sided": 0.6697
+      }
+     },
+     "2026Q3": {
+      "n": 8,
+      "net_mean": 0.0624,
+      "net_median": 0.1068,
+      "pos_frac": 0.625,
+      "entry_price_median": 0.756,
+      "flip_rate": 0.375,
+      "cap_usd_60m_median": 35.8,
+      "boot": {
+       "lo95": -0.586,
+       "hi95": 0.9437,
+       "p_one_sided": 0.4568
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 27,
+    "n_event_trades": 29,
+    "gross_mean": -0.2136,
+    "fee_mean_per_$": 0.0168,
+    "net_mean": -0.2048,
+    "net_median": 0.0826,
+    "p25": -1.0,
+    "p75": 0.181,
+    "pos_frac": 0.593,
+    "worst": -1.0,
+    "best": 2.7089,
+    "top3_share_abs": 0.286,
+    "flip_rate": 0.407,
+    "entry_price_median": 0.818,
+    "share_entry_ge_0.85": 0.444,
+    "cap_usd_60m_median": 94.2,
+    "cap_usd_to_next_median": 5269.1,
+    "boot": {
+     "lo95": -0.4892,
+     "hi95": 0.1168,
+     "p_one_sided": 0.8994
+    },
+    "trend_net": {
+     "rho": 0.239,
+     "z": 1.22,
+     "n": 27
+    },
+    "trend_price": {
+     "rho": 0.104,
+     "z": 0.53,
+     "n": 27
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 4,
+      "net_mean": -0.7329,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.251,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 978.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1988,
+       "p_one_sided": 0.9966
+      }
+     },
+     "2026Q1": {
+      "n": 9,
+      "net_mean": -0.3049,
+      "net_median": 0.1056,
+      "pos_frac": 0.556,
+      "entry_price_median": 0.807,
+      "flip_rate": 0.444,
+      "cap_usd_60m_median": 94.2,
+      "boot": {
+       "lo95": -0.7297,
+       "hi95": 0.1032,
+       "p_one_sided": 0.9325
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.0757,
+      "net_median": 0.0883,
+      "pos_frac": 0.833,
+      "entry_price_median": 0.9,
+      "flip_rate": 0.167,
+      "cap_usd_60m_median": 92.5,
+      "boot": {
+       "lo95": -0.4549,
+       "hi95": 0.1337,
+       "p_one_sided": 0.6697
+      }
+     },
+     "2026Q3": {
+      "n": 8,
+      "net_mean": 0.075,
+      "net_median": 0.1089,
+      "pos_frac": 0.625,
+      "entry_price_median": 0.756,
+      "flip_rate": 0.375,
+      "cap_usd_60m_median": 35.8,
+      "boot": {
+       "lo95": -0.5864,
+       "hi95": 0.9702,
+       "p_one_sided": 0.4526
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 27,
+    "n_event_trades": 29,
+    "gross_mean": -0.2136,
+    "fee_mean_per_$": 0.0168,
+    "net_mean": -0.2351,
+    "net_median": 0.0553,
+    "p25": -1.0,
+    "p75": 0.1346,
+    "pos_frac": 0.593,
+    "worst": -1.0,
+    "best": 2.5218,
+    "top3_share_abs": 0.289,
+    "flip_rate": 0.407,
+    "entry_price_median": 0.818,
+    "share_entry_ge_0.85": 0.444,
+    "cap_usd_60m_median": 94.2,
+    "cap_usd_to_next_median": 5269.1,
+    "boot": {
+     "lo95": -0.5038,
+     "hi95": 0.0684,
+     "p_one_sided": 0.9362
+    },
+    "trend_net": {
+     "rho": 0.296,
+     "z": 1.51,
+     "n": 27
+    },
+    "trend_price": {
+     "rho": 0.104,
+     "z": 0.53,
+     "n": 27
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 4,
+      "net_mean": -0.7362,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.251,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 978.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2085,
+       "p_one_sided": 0.9966
+      }
+     },
+     "2026Q1": {
+      "n": 9,
+      "net_mean": -0.3553,
+      "net_median": 0.0877,
+      "pos_frac": 0.556,
+      "entry_price_median": 0.807,
+      "flip_rate": 0.444,
+      "cap_usd_60m_median": 94.2,
+      "boot": {
+       "lo95": -0.7493,
+       "hi95": 0.0245,
+       "p_one_sided": 0.9624
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.0859,
+      "net_median": 0.0811,
+      "pos_frac": 0.833,
+      "entry_price_median": 0.9,
+      "flip_rate": 0.167,
+      "cap_usd_60m_median": 92.5,
+      "boot": {
+       "lo95": -0.4597,
+       "hi95": 0.1221,
+       "p_one_sided": 0.6697
+      }
+     },
+     "2026Q3": {
+      "n": 8,
+      "net_mean": 0.0389,
+      "net_median": 0.0952,
+      "pos_frac": 0.625,
+      "entry_price_median": 0.756,
+      "flip_rate": 0.375,
+      "cap_usd_60m_median": 35.8,
+      "boot": {
+       "lo95": -0.5904,
+       "hi95": 0.8881,
+       "p_one_sided": 0.472
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 7,
+    "n_event_trades": 7,
+    "gross_mean": -0.0027,
+    "fee_mean_per_$": 0.0115,
+    "net_mean": -0.0096,
+    "net_median": 0.1336,
+    "p25": 0.05,
+    "p75": 0.1472,
+    "pos_frac": 0.857,
+    "worst": -1.0,
+    "best": 0.3271,
+    "top3_share_abs": 0.78,
+    "flip_rate": 0.143,
+    "entry_price_median": 0.866,
+    "share_entry_ge_0.85": 0.571,
+    "cap_usd_60m_median": 31.9,
+    "cap_usd_to_next_median": 2959.0,
+    "boot": {
+     "lo95": -0.354,
+     "hi95": 0.2044,
+     "p_one_sided": 0.5175
+    },
+    "trend_net": {
+     "rho": -0.679,
+     "z": -1.66,
+     "n": 7
+    },
+    "trend_price": {
+     "rho": 0.179,
+     "z": 0.44,
+     "n": 7
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 3,
+      "net_mean": 0.2026,
+      "net_median": 0.1472,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.866,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 294.8,
+      "boot": {
+       "lo95": 0.1336,
+       "hi95": 0.3271,
+       "p_one_sided": 0.0
+      }
+     },
+     "2026Q2": {
+      "n": 2,
+      "net_mean": 0.1374,
+      "net_median": 0.1374,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.875,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 24.2,
+      "boot": {
+       "lo95": 0.0938,
+       "hi95": 0.181,
+       "p_one_sided": 0.0
+      }
+     },
+     "2026Q3": {
+      "n": 2,
+      "net_mean": -0.475,
+      "net_median": -0.475,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.559,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 15.9,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.05,
+       "p_one_sided": 0.7497
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 53,
+    "n_event_trades": 61,
+    "gross_mean": -0.0756,
+    "fee_mean_per_$": 0.0081,
+    "net_mean": -0.0807,
+    "net_median": 0.015,
+    "p25": 0.001,
+    "p75": 0.0598,
+    "pos_frac": 0.792,
+    "worst": -1.0,
+    "best": 2.6534,
+    "top3_share_abs": 0.316,
+    "flip_rate": 0.208,
+    "entry_price_median": 0.951,
+    "share_entry_ge_0.85": 0.717,
+    "cap_usd_60m_median": 48.2,
+    "cap_usd_to_next_median": 5114.2,
+    "boot": {
+     "lo95": -0.2196,
+     "hi95": 0.0735,
+     "p_one_sided": 0.8633
+    },
+    "trend_net": {
+     "rho": 0.261,
+     "z": 1.88,
+     "n": 53
+    },
+    "trend_price": {
+     "rho": -0.218,
+     "z": -1.57,
+     "n": 53
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 14,
+      "net_mean": -0.1639,
+      "net_median": 0.0041,
+      "pos_frac": 0.786,
+      "entry_price_median": 0.981,
+      "flip_rate": 0.214,
+      "cap_usd_60m_median": 46.8,
+      "boot": {
+       "lo95": -0.3798,
+       "hi95": 0.0149,
+       "p_one_sided": 0.966
+      }
+     },
+     "2026Q1": {
+      "n": 14,
+      "net_mean": -0.185,
+      "net_median": 0.0101,
+      "pos_frac": 0.714,
+      "entry_price_median": 0.871,
+      "flip_rate": 0.286,
+      "cap_usd_60m_median": 71.0,
+      "boot": {
+       "lo95": -0.4405,
+       "hi95": 0.0311,
+       "p_one_sided": 0.9463
+      }
+     },
+     "2026Q2": {
+      "n": 14,
+      "net_mean": -0.0242,
+      "net_median": 0.0279,
+      "pos_frac": 0.929,
+      "entry_price_median": 0.965,
+      "flip_rate": 0.071,
+      "cap_usd_60m_median": 52.6,
+      "boot": {
+       "lo95": -0.1845,
+       "hi95": 0.0719,
+       "p_one_sided": 0.6387
+      }
+     },
+     "2026Q3": {
+      "n": 11,
+      "net_mean": 0.0859,
+      "net_median": 0.0106,
+      "pos_frac": 0.727,
+      "entry_price_median": 0.921,
+      "flip_rate": 0.273,
+      "cap_usd_60m_median": 31.9,
+      "boot": {
+       "lo95": -0.3858,
+       "hi95": 0.6983,
+       "p_one_sided": 0.4133
+      }
+     }
+    }
+   }
+  },
+  "U2_B": {
+   "signal_bracket_flip_rate_all_events": 0.425,
+   "R1_E1": {
+    "n_film_weekends": 22,
+    "n_event_trades": 22,
+    "gross_mean": -0.2409,
+    "fee_mean_per_$": 0.0287,
+    "net_mean": -0.2579,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.316,
+    "pos_frac": 0.409,
+    "worst": -1.0,
+    "best": 2.7814,
+    "top3_share_abs": 0.265,
+    "flip_rate": 0.591,
+    "entry_price_median": 0.355,
+    "share_entry_ge_0.85": 0.091,
+    "cap_usd_60m_median": 3.2,
+    "cap_usd_to_next_median": 246.9,
+    "boot": {
+     "lo95": -0.6628,
+     "hi95": 0.2014,
+     "p_one_sided": 0.8756
+    },
+    "trend_net": {
+     "rho": -0.153,
+     "z": -0.7,
+     "n": 22
+    },
+    "trend_price": {
+     "rho": -0.272,
+     "z": -1.25,
+     "n": 22
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 7,
+      "net_mean": -0.4072,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.426,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 1.0,
+      "boot": {
+       "lo95": -0.8453,
+       "hi95": 0.157,
+       "p_one_sided": 0.9193
+      }
+     },
+     "2026Q2": {
+      "n": 8,
+      "net_mean": -0.1487,
+      "net_median": -0.342,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.451,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 19.9,
+      "boot": {
+       "lo95": -0.6742,
+       "hi95": 0.5159,
+       "p_one_sided": 0.6427
+      }
+     },
+     "2026Q3": {
+      "n": 7,
+      "net_mean": -0.2333,
+      "net_median": -1.0,
+      "pos_frac": 0.286,
+      "entry_price_median": 0.24,
+      "flip_rate": 0.714,
+      "cap_usd_60m_median": 50.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.8471,
+       "p_one_sided": 0.7082
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 22,
+    "n_event_trades": 22,
+    "gross_mean": -0.2409,
+    "fee_mean_per_$": 0.0287,
+    "net_mean": -0.2741,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.316,
+    "pos_frac": 0.409,
+    "worst": -1.0,
+    "best": 2.7919,
+    "top3_share_abs": 0.245,
+    "flip_rate": 0.591,
+    "entry_price_median": 0.355,
+    "share_entry_ge_0.85": 0.091,
+    "cap_usd_60m_median": 3.2,
+    "cap_usd_to_next_median": 246.9,
+    "boot": {
+     "lo95": -0.667,
+     "hi95": 0.1708,
+     "p_one_sided": 0.8945
+    },
+    "trend_net": {
+     "rho": -0.153,
+     "z": -0.7,
+     "n": 22
+    },
+    "trend_price": {
+     "rho": -0.272,
+     "z": -1.25,
+     "n": 22
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 7,
+      "net_mean": -0.4012,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.426,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 1.0,
+      "boot": {
+       "lo95": -0.8453,
+       "hi95": 0.1707,
+       "p_one_sided": 0.8984
+      }
+     },
+     "2026Q2": {
+      "n": 8,
+      "net_mean": -0.1998,
+      "net_median": -0.342,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.451,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 19.9,
+      "boot": {
+       "lo95": -0.7371,
+       "hi95": 0.3867,
+       "p_one_sided": 0.7573
+      }
+     },
+     "2026Q3": {
+      "n": 7,
+      "net_mean": -0.2318,
+      "net_median": -1.0,
+      "pos_frac": 0.286,
+      "entry_price_median": 0.24,
+      "flip_rate": 0.714,
+      "cap_usd_60m_median": 50.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.8516,
+       "p_one_sided": 0.7082
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 22,
+    "n_event_trades": 22,
+    "gross_mean": -0.2409,
+    "fee_mean_per_$": 0.0287,
+    "net_mean": -0.2738,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.2994,
+    "pos_frac": 0.409,
+    "worst": -1.0,
+    "best": 2.6405,
+    "top3_share_abs": 0.259,
+    "flip_rate": 0.591,
+    "entry_price_median": 0.355,
+    "share_entry_ge_0.85": 0.091,
+    "cap_usd_60m_median": 3.2,
+    "cap_usd_to_next_median": 246.9,
+    "boot": {
+     "lo95": -0.6685,
+     "hi95": 0.172,
+     "p_one_sided": 0.8938
+    },
+    "trend_net": {
+     "rho": -0.153,
+     "z": -0.7,
+     "n": 22
+    },
+    "trend_price": {
+     "rho": -0.272,
+     "z": -1.25,
+     "n": 22
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 7,
+      "net_mean": -0.4158,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.426,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 1.0,
+      "boot": {
+       "lo95": -0.8469,
+       "hi95": 0.1375,
+       "p_one_sided": 0.9193
+      }
+     },
+     "2026Q2": {
+      "n": 8,
+      "net_mean": -0.1643,
+      "net_median": -0.3503,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.451,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 19.9,
+      "boot": {
+       "lo95": -0.6826,
+       "hi95": 0.4876,
+       "p_one_sided": 0.7024
+      }
+     },
+     "2026Q3": {
+      "n": 7,
+      "net_mean": -0.2569,
+      "net_median": -1.0,
+      "pos_frac": 0.286,
+      "entry_price_median": 0.24,
+      "flip_rate": 0.714,
+      "cap_usd_60m_median": 50.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.7832,
+       "p_one_sided": 0.7082
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 12,
+    "n_event_trades": 12,
+    "gross_mean": -0.4203,
+    "fee_mean_per_$": 0.0241,
+    "net_mean": -0.4283,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.1026,
+    "pos_frac": 0.417,
+    "worst": -1.0,
+    "best": 0.9646,
+    "top3_share_abs": 0.339,
+    "flip_rate": 0.583,
+    "entry_price_median": 0.513,
+    "share_entry_ge_0.85": 0.167,
+    "cap_usd_60m_median": 1.0,
+    "cap_usd_to_next_median": 197.4,
+    "boot": {
+     "lo95": -0.8001,
+     "hi95": -0.0089,
+     "p_one_sided": 0.9773
+    },
+    "trend_net": {
+     "rho": -0.304,
+     "z": -1.01,
+     "n": 12
+    },
+    "trend_price": {
+     "rho": 0.084,
+     "z": 0.28,
+     "n": 12
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 6,
+      "net_mean": -0.3084,
+      "net_median": -0.4587,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.462,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 1.0,
+      "boot": {
+       "lo95": -0.8196,
+       "hi95": 0.3465,
+       "p_one_sided": 0.8061
+      }
+     },
+     "2026Q2": {
+      "n": 5,
+      "net_mean": -0.4578,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.53,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.1002,
+       "p_one_sided": 0.9105
+      }
+     },
+     "2026Q3": {
+      "n": 1,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.584,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 93.7,
+      "boot": null
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 30,
+    "n_event_trades": 31,
+    "gross_mean": -0.1891,
+    "fee_mean_per_$": 0.0206,
+    "net_mean": -0.2018,
+    "net_median": 0.0057,
+    "p25": -1.0,
+    "p75": 0.0826,
+    "pos_frac": 0.533,
+    "worst": -1.0,
+    "best": 2.7814,
+    "top3_share_abs": 0.257,
+    "flip_rate": 0.467,
+    "entry_price_median": 0.592,
+    "share_entry_ge_0.85": 0.333,
+    "cap_usd_60m_median": 11.3,
+    "cap_usd_to_next_median": 293.4,
+    "boot": {
+     "lo95": -0.5035,
+     "hi95": 0.1289,
+     "p_one_sided": 0.8914
+    },
+    "trend_net": {
+     "rho": -0.198,
+     "z": -1.06,
+     "n": 30
+    },
+    "trend_price": {
+     "rho": -0.147,
+     "z": -0.79,
+     "n": 30
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 9,
+      "net_mean": -0.2583,
+      "net_median": 0.0096,
+      "pos_frac": 0.556,
+      "entry_price_median": 0.6,
+      "flip_rate": 0.444,
+      "cap_usd_60m_median": 1.0,
+      "boot": {
+       "lo95": -0.6544,
+       "hi95": 0.1689,
+       "p_one_sided": 0.8779
+      }
+     },
+     "2026Q2": {
+      "n": 10,
+      "net_mean": -0.1143,
+      "net_median": 0.0235,
+      "pos_frac": 0.6,
+      "entry_price_median": 0.594,
+      "flip_rate": 0.4,
+      "cap_usd_60m_median": 19.9,
+      "boot": {
+       "lo95": -0.611,
+       "hi95": 0.4139,
+       "p_one_sided": 0.6686
+      }
+     },
+     "2026Q3": {
+      "n": 11,
+      "net_mean": -0.2352,
+      "net_median": -1.0,
+      "pos_frac": 0.455,
+      "entry_price_median": 0.584,
+      "flip_rate": 0.545,
+      "cap_usd_60m_median": 23.1,
+      "boot": {
+       "lo95": -0.8151,
+       "hi95": 0.4905,
+       "p_one_sided": 0.7593
+      }
+     }
+    }
+   }
+  },
+  "U2_C": {
+   "signal_bracket_flip_rate_all_events": 0.259,
+   "R1_E1": {
+    "n_film_weekends": 16,
+    "n_event_trades": 16,
+    "gross_mean": 0.0588,
+    "fee_mean_per_$": 0.0212,
+    "net_mean": 0.0406,
+    "net_median": 0.1944,
+    "p25": -1.0,
+    "p75": 0.6887,
+    "pos_frac": 0.688,
+    "worst": -1.0,
+    "best": 1.1168,
+    "top3_share_abs": 0.294,
+    "flip_rate": 0.312,
+    "entry_price_median": 0.535,
+    "share_entry_ge_0.85": 0.188,
+    "cap_usd_60m_median": 3.7,
+    "cap_usd_to_next_median": 1614.5,
+    "boot": {
+     "lo95": -0.3371,
+     "hi95": 0.4045,
+     "p_one_sided": 0.4162
+    },
+    "trend_net": {
+     "rho": 0.009,
+     "z": 0.03,
+     "n": 16
+    },
+    "trend_price": {
+     "rho": 0.251,
+     "z": 0.97,
+     "n": 16
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 2,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.336,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -1.0,
+       "p_one_sided": 1.0
+      }
+     },
+     "2026Q2": {
+      "n": 10,
+      "net_mean": 0.1792,
+      "net_median": 0.2652,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.65,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 3.7,
+      "boot": {
+       "lo95": -0.2487,
+       "hi95": 0.5678,
+       "p_one_sided": 0.1943
+      }
+     },
+     "2026Q3": {
+      "n": 4,
+      "net_mean": 0.2146,
+      "net_median": 0.3708,
+      "pos_frac": 0.75,
+      "entry_price_median": 0.52,
+      "flip_rate": 0.25,
+      "cap_usd_60m_median": 8.7,
+      "boot": {
+       "lo95": -0.5778,
+       "hi95": 0.9027,
+       "p_one_sided": 0.299
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 16,
+    "n_event_trades": 16,
+    "gross_mean": 0.0588,
+    "fee_mean_per_$": 0.0212,
+    "net_mean": 0.0443,
+    "net_median": 0.2005,
+    "p25": -1.0,
+    "p75": 0.6887,
+    "pos_frac": 0.688,
+    "worst": -1.0,
+    "best": 1.1168,
+    "top3_share_abs": 0.294,
+    "flip_rate": 0.312,
+    "entry_price_median": 0.535,
+    "share_entry_ge_0.85": 0.188,
+    "cap_usd_60m_median": 3.7,
+    "cap_usd_to_next_median": 1614.5,
+    "boot": {
+     "lo95": -0.3351,
+     "hi95": 0.4085,
+     "p_one_sided": 0.4092
+    },
+    "trend_net": {
+     "rho": -0.001,
+     "z": -0.01,
+     "n": 16
+    },
+    "trend_price": {
+     "rho": 0.251,
+     "z": 0.97,
+     "n": 16
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 2,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.336,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -1.0,
+       "p_one_sided": 1.0
+      }
+     },
+     "2026Q2": {
+      "n": 10,
+      "net_mean": 0.1849,
+      "net_median": 0.2822,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.65,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 3.7,
+      "boot": {
+       "lo95": -0.2448,
+       "hi95": 0.5737,
+       "p_one_sided": 0.1872
+      }
+     },
+     "2026Q3": {
+      "n": 4,
+      "net_mean": 0.2147,
+      "net_median": 0.371,
+      "pos_frac": 0.75,
+      "entry_price_median": 0.52,
+      "flip_rate": 0.25,
+      "cap_usd_60m_median": 8.7,
+      "boot": {
+       "lo95": -0.5778,
+       "hi95": 0.9027,
+       "p_one_sided": 0.299
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 16,
+    "n_event_trades": 16,
+    "gross_mean": 0.0588,
+    "fee_mean_per_$": 0.0212,
+    "net_mean": 0.0244,
+    "net_median": 0.1807,
+    "p25": -1.0,
+    "p75": 0.6609,
+    "pos_frac": 0.688,
+    "worst": -1.0,
+    "best": 1.0727,
+    "top3_share_abs": 0.296,
+    "flip_rate": 0.312,
+    "entry_price_median": 0.535,
+    "share_entry_ge_0.85": 0.188,
+    "cap_usd_60m_median": 3.7,
+    "cap_usd_to_next_median": 1614.5,
+    "boot": {
+     "lo95": -0.347,
+     "hi95": 0.3811,
+     "p_one_sided": 0.4466
+    },
+    "trend_net": {
+     "rho": 0.009,
+     "z": 0.03,
+     "n": 16
+    },
+    "trend_price": {
+     "rho": 0.251,
+     "z": 0.97,
+     "n": 16
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 2,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.336,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -1.0,
+       "p_one_sided": 1.0
+      }
+     },
+     "2026Q2": {
+      "n": 10,
+      "net_mean": 0.1614,
+      "net_median": 0.2499,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.65,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 3.7,
+      "boot": {
+       "lo95": -0.2588,
+       "hi95": 0.5415,
+       "p_one_sided": 0.2128
+      }
+     },
+     "2026Q3": {
+      "n": 4,
+      "net_mean": 0.194,
+      "net_median": 0.3517,
+      "pos_frac": 0.75,
+      "entry_price_median": 0.52,
+      "flip_rate": 0.25,
+      "cap_usd_60m_median": 8.7,
+      "boot": {
+       "lo95": -0.5848,
+       "hi95": 0.8668,
+       "p_one_sided": 0.299
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 6,
+    "n_event_trades": 6,
+    "gross_mean": 0.3079,
+    "fee_mean_per_$": 0.0098,
+    "net_mean": 0.2928,
+    "net_median": 0.1944,
+    "p25": 0.0953,
+    "p75": 0.2624,
+    "pos_frac": 1.0,
+    "worst": 0.0529,
+    "best": 0.9516,
+    "top3_share_abs": 0.844,
+    "flip_rate": 0,
+    "entry_price_median": 0.833,
+    "share_entry_ge_0.85": 0.5,
+    "cap_usd_60m_median": 0.0,
+    "cap_usd_to_next_median": 1537.2,
+    "boot": {
+     "lo95": 0.109,
+     "hi95": 0.573,
+     "p_one_sided": 0.0
+    },
+    "trend_net": {
+     "rho": -0.551,
+     "z": -1.23,
+     "n": 6
+    },
+    "trend_price": {
+     "rho": 0.551,
+     "z": 1.23,
+     "n": 6
+    },
+    "by_quarter": {
+     "2026Q2": {
+      "n": 5,
+      "net_mean": 0.3408,
+      "net_median": 0.2624,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.784,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": 0.1361,
+       "hi95": 0.6499,
+       "p_one_sided": 0.0
+      }
+     },
+     "2026Q3": {
+      "n": 1,
+      "net_mean": 0.0529,
+      "net_median": 0.0529,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.947,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 0,
+      "boot": null
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 19,
+    "n_event_trades": 19,
+    "gross_mean": 0.0529,
+    "fee_mean_per_$": 0.018,
+    "net_mean": 0.0374,
+    "net_median": 0.0953,
+    "p25": -1.0,
+    "p75": 0.3516,
+    "pos_frac": 0.737,
+    "worst": -1.0,
+    "best": 1.1168,
+    "top3_share_abs": 0.293,
+    "flip_rate": 0.263,
+    "entry_price_median": 0.58,
+    "share_entry_ge_0.85": 0.316,
+    "cap_usd_60m_median": 5.8,
+    "cap_usd_to_next_median": 1794.7,
+    "boot": {
+     "lo95": -0.2797,
+     "hi95": 0.3483,
+     "p_one_sided": 0.4015
+    },
+    "trend_net": {
+     "rho": 0.049,
+     "z": 0.21,
+     "n": 19
+    },
+    "trend_price": {
+     "rho": 0.149,
+     "z": 0.63,
+     "n": 19
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 2,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.336,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -1.0,
+       "p_one_sided": 1.0
+      }
+     },
+     "2026Q2": {
+      "n": 12,
+      "net_mean": 0.1535,
+      "net_median": 0.1944,
+      "pos_frac": 0.833,
+      "entry_price_median": 0.755,
+      "flip_rate": 0.167,
+      "cap_usd_60m_median": 3.7,
+      "boot": {
+       "lo95": -0.2012,
+       "hi95": 0.4779,
+       "p_one_sided": 0.1877
+      }
+     },
+     "2026Q3": {
+      "n": 5,
+      "net_mean": 0.1736,
+      "net_median": 0.0529,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.58,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 10.0,
+      "boot": {
+       "lo95": -0.4603,
+       "hi95": 0.7328,
+       "p_one_sided": 0.2928
+      }
+     }
+    }
+   }
+  },
+  "U2_D": {
+   "signal_bracket_flip_rate_all_events": 0.094,
+   "R1_E1": {
+    "n_film_weekends": 26,
+    "n_event_trades": 26,
+    "gross_mean": 0.0705,
+    "fee_mean_per_$": 0.0124,
+    "net_mean": 0.0577,
+    "net_median": 0.1211,
+    "p25": 0.0501,
+    "p75": 0.2362,
+    "pos_frac": 0.808,
+    "worst": -1.0,
+    "best": 2.3301,
+    "top3_share_abs": 0.377,
+    "flip_rate": 0.192,
+    "entry_price_median": 0.83,
+    "share_entry_ge_0.85": 0.462,
+    "cap_usd_60m_median": 12.2,
+    "cap_usd_to_next_median": 5436.9,
+    "boot": {
+     "lo95": -0.1896,
+     "hi95": 0.3275,
+     "p_one_sided": 0.3475
+    },
+    "trend_net": {
+     "rho": -0.22,
+     "z": -1.1,
+     "n": 26
+    },
+    "trend_price": {
+     "rho": 0.212,
+     "z": 1.06,
+     "n": 26
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 8,
+      "net_mean": 0.293,
+      "net_median": 0.1885,
+      "pos_frac": 0.875,
+      "entry_price_median": 0.796,
+      "flip_rate": 0.125,
+      "cap_usd_60m_median": 21.2,
+      "boot": {
+       "lo95": -0.2549,
+       "hi95": 0.9794,
+       "p_one_sided": 0.1567
+      }
+     },
+     "2026Q2": {
+      "n": 9,
+      "net_mean": 0.0304,
+      "net_median": 0.1345,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.69,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 14.3,
+      "boot": {
+       "lo95": -0.378,
+       "hi95": 0.3829,
+       "p_one_sided": 0.4242
+      }
+     },
+     "2026Q3": {
+      "n": 9,
+      "net_mean": -0.1242,
+      "net_median": 0.0826,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.894,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 8.8,
+      "boot": {
+       "lo95": -0.4871,
+       "hi95": 0.1423,
+       "p_one_sided": 0.7578
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 26,
+    "n_event_trades": 26,
+    "gross_mean": 0.0705,
+    "fee_mean_per_$": 0.0124,
+    "net_mean": 0.0439,
+    "net_median": 0.1056,
+    "p25": 0.05,
+    "p75": 0.223,
+    "pos_frac": 0.808,
+    "worst": -1.0,
+    "best": 2.3301,
+    "top3_share_abs": 0.389,
+    "flip_rate": 0.192,
+    "entry_price_median": 0.83,
+    "share_entry_ge_0.85": 0.462,
+    "cap_usd_60m_median": 12.2,
+    "cap_usd_to_next_median": 5436.9,
+    "boot": {
+     "lo95": -0.2002,
+     "hi95": 0.3122,
+     "p_one_sided": 0.3851
+    },
+    "trend_net": {
+     "rho": -0.242,
+     "z": -1.21,
+     "n": 26
+    },
+    "trend_price": {
+     "rho": 0.212,
+     "z": 1.06,
+     "n": 26
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 8,
+      "net_mean": 0.2736,
+      "net_median": 0.1331,
+      "pos_frac": 0.875,
+      "entry_price_median": 0.796,
+      "flip_rate": 0.125,
+      "cap_usd_60m_median": 21.2,
+      "boot": {
+       "lo95": -0.2739,
+       "hi95": 0.9602,
+       "p_one_sided": 0.194
+      }
+     },
+     "2026Q2": {
+      "n": 9,
+      "net_mean": 0.0167,
+      "net_median": 0.1345,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.69,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 14.3,
+      "boot": {
+       "lo95": -0.3848,
+       "hi95": 0.3607,
+       "p_one_sided": 0.4491
+      }
+     },
+     "2026Q3": {
+      "n": 9,
+      "net_mean": -0.1331,
+      "net_median": 0.0607,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.894,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 8.8,
+      "boot": {
+       "lo95": -0.4893,
+       "hi95": 0.1335,
+       "p_one_sided": 0.7972
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 26,
+    "n_event_trades": 26,
+    "gross_mean": 0.0705,
+    "fee_mean_per_$": 0.0124,
+    "net_mean": 0.0425,
+    "net_median": 0.1091,
+    "p25": 0.0396,
+    "p75": 0.2215,
+    "pos_frac": 0.808,
+    "worst": -1.0,
+    "best": 2.2206,
+    "top3_share_abs": 0.38,
+    "flip_rate": 0.192,
+    "entry_price_median": 0.83,
+    "share_entry_ge_0.85": 0.462,
+    "cap_usd_60m_median": 12.2,
+    "cap_usd_to_next_median": 5436.9,
+    "boot": {
+     "lo95": -0.1991,
+     "hi95": 0.3035,
+     "p_one_sided": 0.3855
+    },
+    "trend_net": {
+     "rho": -0.22,
+     "z": -1.1,
+     "n": 26
+    },
+    "trend_price": {
+     "rho": 0.212,
+     "z": 1.06,
+     "n": 26
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 8,
+      "net_mean": 0.2695,
+      "net_median": 0.1749,
+      "pos_frac": 0.875,
+      "entry_price_median": 0.796,
+      "flip_rate": 0.125,
+      "cap_usd_60m_median": 21.2,
+      "boot": {
+       "lo95": -0.2635,
+       "hi95": 0.9302,
+       "p_one_sided": 0.1771
+      }
+     },
+     "2026Q2": {
+      "n": 9,
+      "net_mean": 0.0168,
+      "net_median": 0.1223,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.69,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 14.3,
+      "boot": {
+       "lo95": -0.3865,
+       "hi95": 0.3638,
+       "p_one_sided": 0.4512
+      }
+     },
+     "2026Q3": {
+      "n": 9,
+      "net_mean": -0.1336,
+      "net_median": 0.0715,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.894,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 8.8,
+      "boot": {
+       "lo95": -0.4928,
+       "hi95": 0.1298,
+       "p_one_sided": 0.809
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 7,
+    "n_event_trades": 7,
+    "gross_mean": 0.0631,
+    "fee_mean_per_$": 0.0075,
+    "net_mean": 0.053,
+    "net_median": 0.0826,
+    "p25": 0.0501,
+    "p75": 0.1345,
+    "pos_frac": 0.857,
+    "worst": -1.0,
+    "best": 0.6209,
+    "top3_share_abs": 0.864,
+    "flip_rate": 0.143,
+    "entry_price_median": 0.92,
+    "share_entry_ge_0.85": 0.714,
+    "cap_usd_60m_median": 5.9,
+    "cap_usd_to_next_median": 5579.4,
+    "boot": {
+     "lo95": -0.3333,
+     "hi95": 0.3502,
+     "p_one_sided": 0.3612
+    },
+    "trend_net": {
+     "rho": -0.75,
+     "z": -1.84,
+     "n": 7
+    },
+    "trend_price": {
+     "rho": 0.857,
+     "z": 2.1,
+     "n": 7
+    },
+    "by_quarter": {
+     "2026Q2": {
+      "n": 3,
+      "net_mean": 0.3939,
+      "net_median": 0.4264,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.69,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 5.9,
+      "boot": {
+       "lo95": 0.1345,
+       "hi95": 0.6209,
+       "p_one_sided": 0.0
+      }
+     },
+     "2026Q3": {
+      "n": 4,
+      "net_mean": -0.2028,
+      "net_median": 0.0531,
+      "pos_frac": 0.75,
+      "entry_price_median": 0.947,
+      "flip_rate": 0.25,
+      "cap_usd_60m_median": 61.2,
+      "boot": {
+       "lo95": -0.7359,
+       "hi95": 0.0745,
+       "p_one_sided": 0.682
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 34,
+    "n_event_trades": 34,
+    "gross_mean": 0.0606,
+    "fee_mean_per_$": 0.0098,
+    "net_mean": 0.0505,
+    "net_median": 0.0549,
+    "p25": 0.0294,
+    "p75": 0.1686,
+    "pos_frac": 0.853,
+    "worst": -1.0,
+    "best": 2.3301,
+    "top3_share_abs": 0.37,
+    "flip_rate": 0.147,
+    "entry_price_median": 0.887,
+    "share_entry_ge_0.85": 0.588,
+    "cap_usd_60m_median": 9.2,
+    "cap_usd_to_next_median": 5246.1,
+    "boot": {
+     "lo95": -0.1426,
+     "hi95": 0.2549,
+     "p_one_sided": 0.3069
+    },
+    "trend_net": {
+     "rho": -0.077,
+     "z": -0.44,
+     "n": 34
+    },
+    "trend_price": {
+     "rho": 0.021,
+     "z": 0.12,
+     "n": 34
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 1,
+      "net_mean": 0.0234,
+      "net_median": 0.0234,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.976,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 13.1,
+      "boot": null
+     },
+     "2026Q1": {
+      "n": 10,
+      "net_mean": 0.2388,
+      "net_median": 0.1037,
+      "pos_frac": 0.9,
+      "entry_price_median": 0.835,
+      "flip_rate": 0.1,
+      "cap_usd_60m_median": 13.4,
+      "boot": {
+       "lo95": -0.1938,
+       "hi95": 0.7898,
+       "p_one_sided": 0.16
+      }
+     },
+     "2026Q2": {
+      "n": 12,
+      "net_mean": 0.0284,
+      "net_median": 0.0779,
+      "pos_frac": 0.833,
+      "entry_price_median": 0.839,
+      "flip_rate": 0.167,
+      "cap_usd_60m_median": 10.6,
+      "boot": {
+       "lo95": -0.2811,
+       "hi95": 0.2982,
+       "p_one_sided": 0.4086
+      }
+     },
+     "2026Q3": {
+      "n": 11,
+      "net_mean": -0.0942,
+      "net_median": 0.0562,
+      "pos_frac": 0.818,
+      "entry_price_median": 0.92,
+      "flip_rate": 0.182,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -0.394,
+       "hi95": 0.1211,
+       "p_one_sided": 0.7326
+      }
+     }
+    }
+   }
+  },
+  "U1+U2_A": {
+   "signal_bracket_flip_rate_all_events": 0.697,
+   "R1_E1": {
+    "n_film_weekends": 18,
+    "n_event_trades": 21,
+    "gross_mean": -0.5252,
+    "fee_mean_per_$": 0.0332,
+    "net_mean": -0.5348,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": -1.0,
+    "pos_frac": 0.278,
+    "worst": -1.0,
+    "best": 2.1182,
+    "top3_share_abs": 0.252,
+    "flip_rate": 0.722,
+    "entry_price_median": 0.244,
+    "share_entry_ge_0.85": 0.056,
+    "cap_usd_60m_median": 6.4,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.8675,
+     "hi95": -0.1118,
+     "p_one_sided": 0.9929
+    },
+    "trend_net": {
+     "rho": -0.047,
+     "z": -0.19,
+     "n": 18
+    },
+    "trend_price": {
+     "rho": -0.421,
+     "z": -1.74,
+     "n": 18
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.581,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1258,
+       "p_one_sided": 0.9858
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5876,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2371,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.7492,
+      "net_median": -1.0,
+      "pos_frac": 0.167,
+      "entry_price_median": 0.119,
+      "flip_rate": 0.833,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2476,
+       "p_one_sided": 0.9908
+      }
+     },
+     "2026Q3": {
+      "n": 3,
+      "net_mean": 0.0394,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.152,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 1.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 2.1182,
+       "p_one_sided": 0.2975
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 18,
+    "n_event_trades": 21,
+    "gross_mean": -0.5252,
+    "fee_mean_per_$": 0.0332,
+    "net_mean": -0.5298,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": -1.0,
+    "pos_frac": 0.278,
+    "worst": -1.0,
+    "best": 2.1182,
+    "top3_share_abs": 0.25,
+    "flip_rate": 0.722,
+    "entry_price_median": 0.244,
+    "share_entry_ge_0.85": 0.056,
+    "cap_usd_60m_median": 6.4,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.8652,
+     "hi95": -0.1048,
+     "p_one_sided": 0.9918
+    },
+    "trend_net": {
+     "rho": -0.047,
+     "z": -0.19,
+     "n": 18
+    },
+    "trend_price": {
+     "rho": -0.421,
+     "z": -1.74,
+     "n": 18
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.5762,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1134,
+       "p_one_sided": 0.9842
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5761,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2717,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.745,
+      "net_median": -1.0,
+      "pos_frac": 0.167,
+      "entry_price_median": 0.119,
+      "flip_rate": 0.833,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2349,
+       "p_one_sided": 0.9908
+      }
+     },
+     "2026Q3": {
+      "n": 3,
+      "net_mean": 0.0394,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.152,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 1.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 2.1182,
+       "p_one_sided": 0.2975
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 18,
+    "n_event_trades": 21,
+    "gross_mean": -0.5252,
+    "fee_mean_per_$": 0.0332,
+    "net_mean": -0.5438,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": -1.0,
+    "pos_frac": 0.278,
+    "worst": -1.0,
+    "best": 2.0222,
+    "top3_share_abs": 0.248,
+    "flip_rate": 0.722,
+    "entry_price_median": 0.244,
+    "share_entry_ge_0.85": 0.056,
+    "cap_usd_60m_median": 6.4,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.869,
+     "hi95": -0.1326,
+     "p_one_sided": 0.994
+    },
+    "trend_net": {
+     "rho": -0.047,
+     "z": -0.19,
+     "n": 18
+    },
+    "trend_price": {
+     "rho": -0.421,
+     "z": -1.74,
+     "n": 18
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.5861,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1368,
+       "p_one_sided": 0.9858
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5925,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2225,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 6,
+      "net_mean": -0.7529,
+      "net_median": -1.0,
+      "pos_frac": 0.167,
+      "entry_price_median": 0.119,
+      "flip_rate": 0.833,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2586,
+       "p_one_sided": 0.9994
+      }
+     },
+     "2026Q3": {
+      "n": 3,
+      "net_mean": 0.0074,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.152,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 1.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 2.0222,
+       "p_one_sided": 0.2975
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 13,
+    "n_event_trades": 14,
+    "gross_mean": -0.5907,
+    "fee_mean_per_$": 0.031,
+    "net_mean": -0.5957,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.1483,
+    "pos_frac": 0.308,
+    "worst": -1.0,
+    "best": 0.5048,
+    "top3_share_abs": 0.293,
+    "flip_rate": 0.692,
+    "entry_price_median": 0.343,
+    "share_entry_ge_0.85": 0.077,
+    "cap_usd_60m_median": 3.0,
+    "cap_usd_to_next_median": 272.4,
+    "boot": {
+     "lo95": -0.9048,
+     "hi95": -0.2492,
+     "p_one_sided": 0.9997
+    },
+    "trend_net": {
+     "rho": -0.306,
+     "z": -1.06,
+     "n": 13
+    },
+    "trend_price": {
+     "rho": -0.515,
+     "z": -1.78,
+     "n": 13
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 5,
+      "net_mean": -0.4972,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.401,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 5.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.0491,
+       "p_one_sided": 0.94
+      }
+     },
+     "2026Q1": {
+      "n": 2,
+      "net_mean": -0.3814,
+      "net_median": -0.3814,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.572,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 0.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2371,
+       "p_one_sided": 0.7497
+      }
+     },
+     "2026Q2": {
+      "n": 4,
+      "net_mean": -0.6238,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.212,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 5.3,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.1286,
+       "p_one_sided": 0.948
+      }
+     },
+     "2026Q3": {
+      "n": 2,
+      "net_mean": -1.0,
+      "net_median": -1.0,
+      "pos_frac": 0.0,
+      "entry_price_median": 0.145,
+      "flip_rate": 1,
+      "cap_usd_60m_median": 53.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -1.0,
+       "p_one_sided": 1.0
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 20,
+    "n_event_trades": 23,
+    "gross_mean": -0.4689,
+    "fee_mean_per_$": 0.0301,
+    "net_mean": -0.4777,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.0403,
+    "pos_frac": 0.35,
+    "worst": -1.0,
+    "best": 2.1182,
+    "top3_share_abs": 0.25,
+    "flip_rate": 0.65,
+    "entry_price_median": 0.326,
+    "share_entry_ge_0.85": 0.15,
+    "cap_usd_60m_median": 4.0,
+    "cap_usd_to_next_median": 366.9,
+    "boot": {
+     "lo95": -0.8109,
+     "hi95": -0.0831,
+     "p_one_sided": 0.9905
+    },
+    "trend_net": {
+     "rho": 0.057,
+     "z": 0.25,
+     "n": 20
+    },
+    "trend_price": {
+     "rho": -0.137,
+     "z": -0.6,
+     "n": 20
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 6,
+      "net_mean": -0.581,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.264,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 6.4,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1258,
+       "p_one_sided": 0.9858
+      }
+     },
+     "2026Q1": {
+      "n": 3,
+      "net_mean": -0.5876,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.407,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2371,
+       "p_one_sided": 0.9627
+      }
+     },
+     "2026Q2": {
+      "n": 7,
+      "net_mean": -0.6377,
+      "net_median": -1.0,
+      "pos_frac": 0.286,
+      "entry_price_median": 0.178,
+      "flip_rate": 0.714,
+      "cap_usd_60m_median": 9.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1401,
+       "p_one_sided": 0.993
+      }
+     },
+     "2026Q3": {
+      "n": 4,
+      "net_mean": 0.0396,
+      "net_median": -0.4799,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.231,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 0.8,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 1.3387,
+       "p_one_sided": 0.4354
+      }
+     }
+    }
+   }
+  },
+  "U1+U2_B": {
+   "signal_bracket_flip_rate_all_events": 0.434,
+   "R1_E1": {
+    "n_film_weekends": 61,
+    "n_event_trades": 62,
+    "gross_mean": -0.2868,
+    "fee_mean_per_$": 0.028,
+    "net_mean": -0.3023,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.3951,
+    "pos_frac": 0.393,
+    "worst": -1.0,
+    "best": 2.7814,
+    "top3_share_abs": 0.125,
+    "flip_rate": 0.607,
+    "entry_price_median": 0.426,
+    "share_entry_ge_0.85": 0.098,
+    "cap_usd_60m_median": 15.6,
+    "cap_usd_to_next_median": 542.5,
+    "boot": {
+     "lo95": -0.5341,
+     "hi95": -0.0516,
+     "p_one_sided": 0.99
+    },
+    "trend_net": {
+     "rho": -0.131,
+     "z": -1.02,
+     "n": 61
+    },
+    "trend_price": {
+     "rho": -0.137,
+     "z": -1.06,
+     "n": 61
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2359,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.508,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 106.0,
+      "boot": {
+       "lo95": -0.784,
+       "hi95": 0.4353,
+       "p_one_sided": 0.7458
+      }
+     },
+     "2026Q1": {
+      "n": 17,
+      "net_mean": -0.1529,
+      "net_median": -1.0,
+      "pos_frac": 0.471,
+      "entry_price_median": 0.47,
+      "flip_rate": 0.529,
+      "cap_usd_60m_median": 5.0,
+      "boot": {
+       "lo95": -0.6192,
+       "hi95": 0.3723,
+       "p_one_sided": 0.7291
+      }
+     },
+     "2026Q2": {
+      "n": 20,
+      "net_mean": -0.363,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.341,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 28.7,
+      "boot": {
+       "lo95": -0.7153,
+       "hi95": 0.0253,
+       "p_one_sided": 0.9693
+      }
+     },
+     "2026Q3": {
+      "n": 17,
+      "net_mean": -0.4078,
+      "net_median": -1.0,
+      "pos_frac": 0.294,
+      "entry_price_median": 0.318,
+      "flip_rate": 0.706,
+      "cap_usd_60m_median": 15.6,
+      "boot": {
+       "lo95": -0.8512,
+       "hi95": 0.1381,
+       "p_one_sided": 0.9311
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 61,
+    "n_event_trades": 62,
+    "gross_mean": -0.2868,
+    "fee_mean_per_$": 0.028,
+    "net_mean": -0.3002,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.4898,
+    "pos_frac": 0.393,
+    "worst": -1.0,
+    "best": 2.7919,
+    "top3_share_abs": 0.119,
+    "flip_rate": 0.607,
+    "entry_price_median": 0.426,
+    "share_entry_ge_0.85": 0.098,
+    "cap_usd_60m_median": 15.6,
+    "cap_usd_to_next_median": 542.5,
+    "boot": {
+     "lo95": -0.53,
+     "hi95": -0.0516,
+     "p_one_sided": 0.9897
+    },
+    "trend_net": {
+     "rho": -0.131,
+     "z": -1.01,
+     "n": 61
+    },
+    "trend_price": {
+     "rho": -0.137,
+     "z": -1.06,
+     "n": 61
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2219,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.508,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 106.0,
+      "boot": {
+       "lo95": -0.784,
+       "hi95": 0.4519,
+       "p_one_sided": 0.7435
+      }
+     },
+     "2026Q1": {
+      "n": 17,
+      "net_mean": -0.1476,
+      "net_median": -1.0,
+      "pos_frac": 0.471,
+      "entry_price_median": 0.47,
+      "flip_rate": 0.529,
+      "cap_usd_60m_median": 5.0,
+      "boot": {
+       "lo95": -0.6136,
+       "hi95": 0.3693,
+       "p_one_sided": 0.7232
+      }
+     },
+     "2026Q2": {
+      "n": 20,
+      "net_mean": -0.3816,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.341,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 28.7,
+      "boot": {
+       "lo95": -0.7147,
+       "hi95": -0.0252,
+       "p_one_sided": 0.9812
+      }
+     },
+     "2026Q3": {
+      "n": 17,
+      "net_mean": -0.3894,
+      "net_median": -1.0,
+      "pos_frac": 0.294,
+      "entry_price_median": 0.318,
+      "flip_rate": 0.706,
+      "cap_usd_60m_median": 15.6,
+      "boot": {
+       "lo95": -0.8441,
+       "hi95": 0.1693,
+       "p_one_sided": 0.9201
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 61,
+    "n_event_trades": 62,
+    "gross_mean": -0.2868,
+    "fee_mean_per_$": 0.028,
+    "net_mean": -0.3164,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.3763,
+    "pos_frac": 0.393,
+    "worst": -1.0,
+    "best": 2.6405,
+    "top3_share_abs": 0.121,
+    "flip_rate": 0.607,
+    "entry_price_median": 0.426,
+    "share_entry_ge_0.85": 0.098,
+    "cap_usd_60m_median": 15.6,
+    "cap_usd_to_next_median": 542.5,
+    "boot": {
+     "lo95": -0.5424,
+     "hi95": -0.072,
+     "p_one_sided": 0.9927
+    },
+    "trend_net": {
+     "rho": -0.131,
+     "z": -1.02,
+     "n": 61
+    },
+    "trend_price": {
+     "rho": -0.137,
+     "z": -1.06,
+     "n": 61
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2495,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.508,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 106.0,
+      "boot": {
+       "lo95": -0.7872,
+       "hi95": 0.4114,
+       "p_one_sided": 0.7794
+      }
+     },
+     "2026Q1": {
+      "n": 17,
+      "net_mean": -0.1707,
+      "net_median": -1.0,
+      "pos_frac": 0.471,
+      "entry_price_median": 0.47,
+      "flip_rate": 0.529,
+      "cap_usd_60m_median": 5.0,
+      "boot": {
+       "lo95": -0.6251,
+       "hi95": 0.3386,
+       "p_one_sided": 0.7539
+      }
+     },
+     "2026Q2": {
+      "n": 20,
+      "net_mean": -0.3737,
+      "net_median": -1.0,
+      "pos_frac": 0.4,
+      "entry_price_median": 0.341,
+      "flip_rate": 0.6,
+      "cap_usd_60m_median": 28.7,
+      "boot": {
+       "lo95": -0.7192,
+       "hi95": 0.0067,
+       "p_one_sided": 0.9739
+      }
+     },
+     "2026Q3": {
+      "n": 17,
+      "net_mean": -0.4221,
+      "net_median": -1.0,
+      "pos_frac": 0.294,
+      "entry_price_median": 0.318,
+      "flip_rate": 0.706,
+      "cap_usd_60m_median": 15.6,
+      "boot": {
+       "lo95": -0.853,
+       "hi95": 0.1066,
+       "p_one_sided": 0.9447
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 34,
+    "n_event_trades": 34,
+    "gross_mean": -0.2705,
+    "fee_mean_per_$": 0.0232,
+    "net_mean": -0.2831,
+    "net_median": -1.0,
+    "p25": -1.0,
+    "p75": 0.2711,
+    "pos_frac": 0.471,
+    "worst": -1.0,
+    "best": 2.5466,
+    "top3_share_abs": 0.175,
+    "flip_rate": 0.529,
+    "entry_price_median": 0.537,
+    "share_entry_ge_0.85": 0.206,
+    "cap_usd_60m_median": 5.2,
+    "cap_usd_to_next_median": 609.5,
+    "boot": {
+     "lo95": -0.5591,
+     "hi95": 0.0158,
+     "p_one_sided": 0.9677
+    },
+    "trend_net": {
+     "rho": -0.134,
+     "z": -0.77,
+     "n": 34
+    },
+    "trend_price": {
+     "rho": 0.063,
+     "z": 0.36,
+     "n": 34
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 2,
+      "net_mean": -0.244,
+      "net_median": -0.244,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.37,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 63.0,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.512,
+       "p_one_sided": 0.7497
+      }
+     },
+     "2026Q1": {
+      "n": 15,
+      "net_mean": -0.0811,
+      "net_median": 0.05,
+      "pos_frac": 0.533,
+      "entry_price_median": 0.496,
+      "flip_rate": 0.467,
+      "cap_usd_60m_median": 5.0,
+      "boot": {
+       "lo95": -0.5705,
+       "hi95": 0.4757,
+       "p_one_sided": 0.6385
+      }
+     },
+     "2026Q2": {
+      "n": 11,
+      "net_mean": -0.4047,
+      "net_median": -1.0,
+      "pos_frac": 0.455,
+      "entry_price_median": 0.53,
+      "flip_rate": 0.545,
+      "cap_usd_60m_median": 15.0,
+      "boot": {
+       "lo95": -0.7731,
+       "hi95": -0.025,
+       "p_one_sided": 0.9835
+      }
+     },
+     "2026Q3": {
+      "n": 6,
+      "net_mean": -0.5784,
+      "net_median": -1.0,
+      "pos_frac": 0.333,
+      "entry_price_median": 0.651,
+      "flip_rate": 0.667,
+      "cap_usd_60m_median": 46.8,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1205,
+       "p_one_sided": 0.9849
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 77,
+    "n_event_trades": 84,
+    "gross_mean": -0.2046,
+    "fee_mean_per_$": 0.0211,
+    "net_mean": -0.2171,
+    "net_median": 0.0018,
+    "p25": -1.0,
+    "p75": 0.1558,
+    "pos_frac": 0.506,
+    "worst": -1.0,
+    "best": 2.7814,
+    "top3_share_abs": 0.128,
+    "flip_rate": 0.494,
+    "entry_price_median": 0.58,
+    "share_entry_ge_0.85": 0.286,
+    "cap_usd_60m_median": 19.1,
+    "cap_usd_to_next_median": 616.8,
+    "boot": {
+     "lo95": -0.4044,
+     "hi95": -0.0227,
+     "p_one_sided": 0.9845
+    },
+    "trend_net": {
+     "rho": -0.094,
+     "z": -0.82,
+     "n": 77
+    },
+    "trend_price": {
+     "rho": -0.048,
+     "z": -0.41,
+     "n": 77
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.164,
+      "net_median": 0.0034,
+      "pos_frac": 0.6,
+      "entry_price_median": 0.618,
+      "flip_rate": 0.4,
+      "cap_usd_60m_median": 24.4,
+      "boot": {
+       "lo95": -0.6316,
+       "hi95": 0.3212,
+       "p_one_sided": 0.7361
+      }
+     },
+     "2026Q1": {
+      "n": 20,
+      "net_mean": -0.0772,
+      "net_median": 0.0116,
+      "pos_frac": 0.55,
+      "entry_price_median": 0.583,
+      "flip_rate": 0.45,
+      "cap_usd_60m_median": 6.6,
+      "boot": {
+       "lo95": -0.4569,
+       "hi95": 0.3568,
+       "p_one_sided": 0.6569
+      }
+     },
+     "2026Q2": {
+      "n": 22,
+      "net_mean": -0.3048,
+      "net_median": -0.7466,
+      "pos_frac": 0.455,
+      "entry_price_median": 0.422,
+      "flip_rate": 0.545,
+      "cap_usd_60m_median": 28.7,
+      "boot": {
+       "lo95": -0.6167,
+       "hi95": 0.0412,
+       "p_one_sided": 0.9595
+      }
+     },
+     "2026Q3": {
+      "n": 25,
+      "net_mean": -0.273,
+      "net_median": -0.4853,
+      "pos_frac": 0.48,
+      "entry_price_median": 0.584,
+      "flip_rate": 0.52,
+      "cap_usd_60m_median": 22.4,
+      "boot": {
+       "lo95": -0.5861,
+       "hi95": 0.0974,
+       "p_one_sided": 0.9314
+      }
+     }
+    }
+   }
+  },
+  "U1+U2_C": {
+   "signal_bracket_flip_rate_all_events": 0.289,
+   "R1_E1": {
+    "n_film_weekends": 50,
+    "n_event_trades": 51,
+    "gross_mean": -0.0566,
+    "fee_mean_per_$": 0.0239,
+    "net_mean": -0.0733,
+    "net_median": 0.1066,
+    "p25": -1.0,
+    "p75": 0.3793,
+    "pos_frac": 0.6,
+    "worst": -1.0,
+    "best": 2.7089,
+    "top3_share_abs": 0.138,
+    "flip_rate": 0.4,
+    "entry_price_median": 0.492,
+    "share_entry_ge_0.85": 0.14,
+    "cap_usd_60m_median": 16.6,
+    "cap_usd_to_next_median": 2046.2,
+    "boot": {
+     "lo95": -0.3063,
+     "hi95": 0.17,
+     "p_one_sided": 0.7295
+    },
+    "trend_net": {
+     "rho": 0.053,
+     "z": 0.37,
+     "n": 50
+    },
+    "trend_price": {
+     "rho": -0.034,
+     "z": -0.24,
+     "n": 50
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.3437,
+      "net_median": -0.453,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7617,
+       "hi95": 0.08,
+       "p_one_sided": 0.9389
+      }
+     },
+     "2026Q1": {
+      "n": 5,
+      "net_mean": -0.5966,
+      "net_median": -1.0,
+      "pos_frac": 0.2,
+      "entry_price_median": 0.437,
+      "flip_rate": 0.8,
+      "cap_usd_60m_median": 2.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2102,
+       "p_one_sided": 0.9416
+      }
+     },
+     "2026Q2": {
+      "n": 25,
+      "net_mean": 0.1045,
+      "net_median": 0.2624,
+      "pos_frac": 0.76,
+      "entry_price_median": 0.623,
+      "flip_rate": 0.24,
+      "cap_usd_60m_median": 22.8,
+      "boot": {
+       "lo95": -0.1637,
+       "hi95": 0.3648,
+       "p_one_sided": 0.2202
+      }
+     },
+     "2026Q3": {
+      "n": 10,
+      "net_mean": 0.014,
+      "net_median": -0.4735,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.27,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 15.1,
+      "boot": {
+       "lo95": -0.6739,
+       "hi95": 0.7985,
+       "p_one_sided": 0.4872
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 50,
+    "n_event_trades": 51,
+    "gross_mean": -0.0566,
+    "fee_mean_per_$": 0.0239,
+    "net_mean": -0.0563,
+    "net_median": 0.106,
+    "p25": -1.0,
+    "p75": 0.462,
+    "pos_frac": 0.6,
+    "worst": -1.0,
+    "best": 2.7089,
+    "top3_share_abs": 0.148,
+    "flip_rate": 0.4,
+    "entry_price_median": 0.492,
+    "share_entry_ge_0.85": 0.14,
+    "cap_usd_60m_median": 16.6,
+    "cap_usd_to_next_median": 2046.2,
+    "boot": {
+     "lo95": -0.2956,
+     "hi95": 0.1951,
+     "p_one_sided": 0.676
+    },
+    "trend_net": {
+     "rho": 0.054,
+     "z": 0.38,
+     "n": 50
+    },
+    "trend_price": {
+     "rho": -0.034,
+     "z": -0.24,
+     "n": 50
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.34,
+      "net_median": -0.453,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7611,
+       "hi95": 0.0898,
+       "p_one_sided": 0.9363
+      }
+     },
+     "2026Q1": {
+      "n": 5,
+      "net_mean": -0.5966,
+      "net_median": -1.0,
+      "pos_frac": 0.2,
+      "entry_price_median": 0.437,
+      "flip_rate": 0.8,
+      "cap_usd_60m_median": 2.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.2102,
+       "p_one_sided": 0.9416
+      }
+     },
+     "2026Q2": {
+      "n": 25,
+      "net_mean": 0.1377,
+      "net_median": 0.2681,
+      "pos_frac": 0.76,
+      "entry_price_median": 0.623,
+      "flip_rate": 0.24,
+      "cap_usd_60m_median": 22.8,
+      "boot": {
+       "lo95": -0.1465,
+       "hi95": 0.4232,
+       "p_one_sided": 0.1724
+      }
+     },
+     "2026Q3": {
+      "n": 10,
+      "net_mean": 0.0126,
+      "net_median": -0.4733,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.27,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 15.1,
+      "boot": {
+       "lo95": -0.6753,
+       "hi95": 0.7972,
+       "p_one_sided": 0.4935
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 50,
+    "n_event_trades": 51,
+    "gross_mean": -0.0566,
+    "fee_mean_per_$": 0.0239,
+    "net_mean": -0.0889,
+    "net_median": 0.0949,
+    "p25": -1.0,
+    "p75": 0.361,
+    "pos_frac": 0.6,
+    "worst": -1.0,
+    "best": 2.5733,
+    "top3_share_abs": 0.135,
+    "flip_rate": 0.4,
+    "entry_price_median": 0.492,
+    "share_entry_ge_0.85": 0.14,
+    "cap_usd_60m_median": 16.6,
+    "cap_usd_to_next_median": 2046.2,
+    "boot": {
+     "lo95": -0.3166,
+     "hi95": 0.149,
+     "p_one_sided": 0.7774
+    },
+    "trend_net": {
+     "rho": 0.053,
+     "z": 0.37,
+     "n": 50
+    },
+    "trend_price": {
+     "rho": -0.034,
+     "z": -0.24,
+     "n": 50
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.3523,
+      "net_median": -0.4587,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7645,
+       "hi95": 0.0649,
+       "p_one_sided": 0.9467
+      }
+     },
+     "2026Q1": {
+      "n": 5,
+      "net_mean": -0.6046,
+      "net_median": -1.0,
+      "pos_frac": 0.2,
+      "entry_price_median": 0.437,
+      "flip_rate": 0.8,
+      "cap_usd_60m_median": 2.6,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.1862,
+       "p_one_sided": 0.9416
+      }
+     },
+     "2026Q2": {
+      "n": 25,
+      "net_mean": 0.0881,
+      "net_median": 0.2471,
+      "pos_frac": 0.76,
+      "entry_price_median": 0.623,
+      "flip_rate": 0.24,
+      "cap_usd_60m_median": 22.8,
+      "boot": {
+       "lo95": -0.1755,
+       "hi95": 0.3444,
+       "p_one_sided": 0.2536
+      }
+     },
+     "2026Q3": {
+      "n": 10,
+      "net_mean": -0.0102,
+      "net_median": -0.4788,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.27,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 15.1,
+      "boot": {
+       "lo95": -0.6791,
+       "hi95": 0.7502,
+       "p_one_sided": 0.5263
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 22,
+    "n_event_trades": 23,
+    "gross_mean": 0.0376,
+    "fee_mean_per_$": 0.0169,
+    "net_mean": 0.0246,
+    "net_median": 0.1503,
+    "p25": 0.0529,
+    "p75": 0.3002,
+    "pos_frac": 0.773,
+    "worst": -1.0,
+    "best": 0.9516,
+    "top3_share_abs": 0.285,
+    "flip_rate": 0.227,
+    "entry_price_median": 0.739,
+    "share_entry_ge_0.85": 0.273,
+    "cap_usd_60m_median": 9.7,
+    "cap_usd_to_next_median": 2239.7,
+    "boot": {
+     "lo95": -0.2303,
+     "hi95": 0.2648,
+     "p_one_sided": 0.409
+    },
+    "trend_net": {
+     "rho": -0.009,
+     "z": -0.04,
+     "n": 22
+    },
+    "trend_price": {
+     "rho": 0.178,
+     "z": 0.81,
+     "n": 22
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 7,
+      "net_mean": -0.2187,
+      "net_median": 0.1742,
+      "pos_frac": 0.571,
+      "entry_price_median": 0.548,
+      "flip_rate": 0.429,
+      "cap_usd_60m_median": 0,
+      "boot": {
+       "lo95": -0.7423,
+       "hi95": 0.2967,
+       "p_one_sided": 0.7843
+      }
+     },
+     "2026Q2": {
+      "n": 13,
+      "net_mean": 0.2322,
+      "net_median": 0.2624,
+      "pos_frac": 0.923,
+      "entry_price_median": 0.78,
+      "flip_rate": 0.077,
+      "cap_usd_60m_median": 14.5,
+      "boot": {
+       "lo95": -0.0255,
+       "hi95": 0.4438,
+       "p_one_sided": 0.0369
+      }
+     },
+     "2026Q3": {
+      "n": 2,
+      "net_mean": -0.4735,
+      "net_median": -0.4735,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.613,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 16.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": 0.0529,
+       "p_one_sided": 0.7497
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 55,
+    "n_event_trades": 64,
+    "gross_mean": -0.0705,
+    "fee_mean_per_$": 0.0203,
+    "net_mean": -0.084,
+    "net_median": 0.0529,
+    "p25": -1.0,
+    "p75": 0.3722,
+    "pos_frac": 0.636,
+    "worst": -1.0,
+    "best": 1.3593,
+    "top3_share_abs": 0.105,
+    "flip_rate": 0.364,
+    "entry_price_median": 0.58,
+    "share_entry_ge_0.85": 0.218,
+    "cap_usd_60m_median": 17.7,
+    "cap_usd_to_next_median": 2791.1,
+    "boot": {
+     "lo95": -0.2754,
+     "hi95": 0.1067,
+     "p_one_sided": 0.797
+    },
+    "trend_net": {
+     "rho": 0.1,
+     "z": 0.73,
+     "n": 55
+    },
+    "trend_price": {
+     "rho": 0.009,
+     "z": 0.07,
+     "n": 55
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 10,
+      "net_mean": -0.3497,
+      "net_median": -0.4833,
+      "pos_frac": 0.5,
+      "entry_price_median": 0.453,
+      "flip_rate": 0.5,
+      "cap_usd_60m_median": 11.7,
+      "boot": {
+       "lo95": -0.7635,
+       "hi95": 0.0764,
+       "p_one_sided": 0.9433
+      }
+     },
+     "2026Q1": {
+      "n": 7,
+      "net_mean": -0.4201,
+      "net_median": -1.0,
+      "pos_frac": 0.429,
+      "entry_price_median": 0.45,
+      "flip_rate": 0.571,
+      "cap_usd_60m_median": 18.1,
+      "boot": {
+       "lo95": -0.8561,
+       "hi95": 0.1599,
+       "p_one_sided": 0.8985
+      }
+     },
+     "2026Q2": {
+      "n": 27,
+      "net_mean": 0.0933,
+      "net_median": 0.223,
+      "pos_frac": 0.778,
+      "entry_price_median": 0.719,
+      "flip_rate": 0.222,
+      "cap_usd_60m_median": 22.8,
+      "boot": {
+       "lo95": -0.1429,
+       "hi95": 0.3142,
+       "p_one_sided": 0.2106
+      }
+     },
+     "2026Q3": {
+      "n": 11,
+      "net_mean": -0.0636,
+      "net_median": 0.0096,
+      "pos_frac": 0.545,
+      "entry_price_median": 0.517,
+      "flip_rate": 0.455,
+      "cap_usd_60m_median": 15.6,
+      "boot": {
+       "lo95": -0.5623,
+       "hi95": 0.4479,
+       "p_one_sided": 0.5982
+      }
+     }
+    }
+   }
+  },
+  "U1+U2_D": {
+   "signal_bracket_flip_rate_all_events": 0.141,
+   "R1_E1": {
+    "n_film_weekends": 53,
+    "n_event_trades": 55,
+    "gross_mean": -0.0742,
+    "fee_mean_per_$": 0.0146,
+    "net_mean": -0.0854,
+    "net_median": 0.0938,
+    "p25": -1.0,
+    "p75": 0.181,
+    "pos_frac": 0.698,
+    "worst": -1.0,
+    "best": 2.6534,
+    "top3_share_abs": 0.218,
+    "flip_rate": 0.302,
+    "entry_price_median": 0.818,
+    "share_entry_ge_0.85": 0.453,
+    "cap_usd_60m_median": 46.4,
+    "cap_usd_to_next_median": 5294.4,
+    "boot": {
+     "lo95": -0.281,
+     "hi95": 0.1243,
+     "p_one_sided": 0.7995
+    },
+    "trend_net": {
+     "rho": 0.099,
+     "z": 0.72,
+     "n": 53
+    },
+    "trend_price": {
+     "rho": 0.145,
+     "z": 1.04,
+     "n": 53
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 4,
+      "net_mean": -0.7335,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.251,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 978.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2005,
+       "p_one_sided": 0.9966
+      }
+     },
+     "2026Q1": {
+      "n": 17,
+      "net_mean": -0.0463,
+      "net_median": 0.1336,
+      "pos_frac": 0.706,
+      "entry_price_median": 0.807,
+      "flip_rate": 0.294,
+      "cap_usd_60m_median": 53.7,
+      "boot": {
+       "lo95": -0.3963,
+       "hi95": 0.3459,
+       "p_one_sided": 0.6098
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": -0.0122,
+      "net_median": 0.1056,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.84,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 46.4,
+      "boot": {
+       "lo95": -0.3006,
+       "hi95": 0.2398,
+       "p_one_sided": 0.5211
+      }
+     },
+     "2026Q3": {
+      "n": 17,
+      "net_mean": -0.0364,
+      "net_median": 0.0826,
+      "pos_frac": 0.706,
+      "entry_price_median": 0.853,
+      "flip_rate": 0.294,
+      "cap_usd_60m_median": 13.2,
+      "boot": {
+       "lo95": -0.4003,
+       "hi95": 0.4088,
+       "p_one_sided": 0.5876
+      }
+     }
+    }
+   },
+   "R1_E2": {
+    "n_film_weekends": 53,
+    "n_event_trades": 55,
+    "gross_mean": -0.0742,
+    "fee_mean_per_$": 0.0146,
+    "net_mean": -0.0828,
+    "net_median": 0.0826,
+    "p25": -1.0,
+    "p75": 0.1947,
+    "pos_frac": 0.698,
+    "worst": -1.0,
+    "best": 2.7089,
+    "top3_share_abs": 0.219,
+    "flip_rate": 0.302,
+    "entry_price_median": 0.818,
+    "share_entry_ge_0.85": 0.453,
+    "cap_usd_60m_median": 46.4,
+    "cap_usd_to_next_median": 5294.4,
+    "boot": {
+     "lo95": -0.2804,
+     "hi95": 0.1263,
+     "p_one_sided": 0.7925
+    },
+    "trend_net": {
+     "rho": 0.054,
+     "z": 0.39,
+     "n": 53
+    },
+    "trend_price": {
+     "rho": 0.145,
+     "z": 1.04,
+     "n": 53
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 4,
+      "net_mean": -0.7329,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.251,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 978.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.1988,
+       "p_one_sided": 0.9966
+      }
+     },
+     "2026Q1": {
+      "n": 17,
+      "net_mean": -0.0327,
+      "net_median": 0.1056,
+      "pos_frac": 0.706,
+      "entry_price_median": 0.807,
+      "flip_rate": 0.294,
+      "cap_usd_60m_median": 53.7,
+      "boot": {
+       "lo95": -0.387,
+       "hi95": 0.3621,
+       "p_one_sided": 0.5876
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": -0.0203,
+      "net_median": 0.1056,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.84,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 46.4,
+      "boot": {
+       "lo95": -0.3029,
+       "hi95": 0.2271,
+       "p_one_sided": 0.5462
+      }
+     },
+     "2026Q3": {
+      "n": 17,
+      "net_mean": -0.0352,
+      "net_median": 0.0607,
+      "pos_frac": 0.706,
+      "entry_price_median": 0.853,
+      "flip_rate": 0.294,
+      "cap_usd_60m_median": 13.2,
+      "boot": {
+       "lo95": -0.4054,
+       "hi95": 0.4175,
+       "p_one_sided": 0.586
+      }
+     }
+    }
+   },
+   "R1_E3": {
+    "n_film_weekends": 53,
+    "n_event_trades": 55,
+    "gross_mean": -0.0742,
+    "fee_mean_per_$": 0.0146,
+    "net_mean": -0.0989,
+    "net_median": 0.0824,
+    "p25": -1.0,
+    "p75": 0.1677,
+    "pos_frac": 0.698,
+    "worst": -1.0,
+    "best": 2.5218,
+    "top3_share_abs": 0.215,
+    "flip_rate": 0.302,
+    "entry_price_median": 0.818,
+    "share_entry_ge_0.85": 0.453,
+    "cap_usd_60m_median": 46.4,
+    "cap_usd_to_next_median": 5294.4,
+    "boot": {
+     "lo95": -0.2902,
+     "hi95": 0.105,
+     "p_one_sided": 0.8398
+    },
+    "trend_net": {
+     "rho": 0.099,
+     "z": 0.72,
+     "n": 53
+    },
+    "trend_price": {
+     "rho": 0.145,
+     "z": 1.04,
+     "n": 53
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 4,
+      "net_mean": -0.7362,
+      "net_median": -1.0,
+      "pos_frac": 0.25,
+      "entry_price_median": 0.251,
+      "flip_rate": 0.75,
+      "cap_usd_60m_median": 978.1,
+      "boot": {
+       "lo95": -1.0,
+       "hi95": -0.2085,
+       "p_one_sided": 0.9966
+      }
+     },
+     "2026Q1": {
+      "n": 17,
+      "net_mean": -0.0613,
+      "net_median": 0.1214,
+      "pos_frac": 0.706,
+      "entry_price_median": 0.807,
+      "flip_rate": 0.294,
+      "cap_usd_60m_median": 53.7,
+      "boot": {
+       "lo95": -0.4039,
+       "hi95": 0.318,
+       "p_one_sided": 0.6452
+      }
+     },
+     "2026Q2": {
+      "n": 15,
+      "net_mean": -0.0243,
+      "net_median": 0.094,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.84,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 46.4,
+      "boot": {
+       "lo95": -0.3084,
+       "hi95": 0.224,
+       "p_one_sided": 0.5592
+      }
+     },
+     "2026Q3": {
+      "n": 17,
+      "net_mean": -0.0525,
+      "net_median": 0.0715,
+      "pos_frac": 0.706,
+      "entry_price_median": 0.853,
+      "flip_rate": 0.294,
+      "cap_usd_60m_median": 13.2,
+      "boot": {
+       "lo95": -0.408,
+       "hi95": 0.3791,
+       "p_one_sided": 0.6164
+      }
+     }
+    }
+   },
+   "R2_E1": {
+    "n_film_weekends": 14,
+    "n_event_trades": 14,
+    "gross_mean": 0.0302,
+    "fee_mean_per_$": 0.0095,
+    "net_mean": 0.0217,
+    "net_median": 0.1137,
+    "p25": 0.0501,
+    "p75": 0.1472,
+    "pos_frac": 0.857,
+    "worst": -1.0,
+    "best": 0.6209,
+    "top3_share_abs": 0.609,
+    "flip_rate": 0.143,
+    "entry_price_median": 0.876,
+    "share_entry_ge_0.85": 0.643,
+    "cap_usd_60m_median": 19.7,
+    "cap_usd_to_next_median": 5388.6,
+    "boot": {
+     "lo95": -0.2289,
+     "hi95": 0.227,
+     "p_one_sided": 0.404
+    },
+    "trend_net": {
+     "rho": -0.711,
+     "z": -2.57,
+     "n": 14
+    },
+    "trend_price": {
+     "rho": 0.647,
+     "z": 2.33,
+     "n": 14
+    },
+    "by_quarter": {
+     "2026Q1": {
+      "n": 3,
+      "net_mean": 0.2026,
+      "net_median": 0.1472,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.866,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 294.8,
+      "boot": {
+       "lo95": 0.1336,
+       "hi95": 0.3271,
+       "p_one_sided": 0.0
+      }
+     },
+     "2026Q2": {
+      "n": 5,
+      "net_mean": 0.2913,
+      "net_median": 0.181,
+      "pos_frac": 1.0,
+      "entry_price_median": 0.84,
+      "flip_rate": 0,
+      "cap_usd_60m_median": 5.9,
+      "boot": {
+       "lo95": 0.1275,
+       "hi95": 0.4847,
+       "p_one_sided": 0.0
+      }
+     },
+     "2026Q3": {
+      "n": 6,
+      "net_mean": -0.2935,
+      "net_median": 0.05,
+      "pos_frac": 0.667,
+      "entry_price_median": 0.947,
+      "flip_rate": 0.333,
+      "cap_usd_60m_median": 15.9,
+      "boot": {
+       "lo95": -0.65,
+       "hi95": 0.063,
+       "p_one_sided": 0.9156
+      }
+     }
+    }
+   },
+   "R1_E1_nocap": {
+    "n_film_weekends": 87,
+    "n_event_trades": 95,
+    "gross_mean": -0.0224,
+    "fee_mean_per_$": 0.0088,
+    "net_mean": -0.0294,
+    "net_median": 0.0294,
+    "p25": 0.0019,
+    "p75": 0.1125,
+    "pos_frac": 0.816,
+    "worst": -1.0,
+    "best": 2.6534,
+    "top3_share_abs": 0.226,
+    "flip_rate": 0.184,
+    "entry_price_median": 0.935,
+    "share_entry_ge_0.85": 0.667,
+    "cap_usd_60m_median": 24.6,
+    "cap_usd_to_next_median": 5197.8,
+    "boot": {
+     "lo95": -0.1441,
+     "hi95": 0.0963,
+     "p_one_sided": 0.6916
+    },
+    "trend_net": {
+     "rho": 0.208,
+     "z": 1.93,
+     "n": 87
+    },
+    "trend_price": {
+     "rho": -0.193,
+     "z": -1.79,
+     "n": 87
+    },
+    "by_quarter": {
+     "2025Q4": {
+      "n": 15,
+      "net_mean": -0.1514,
+      "net_median": 0.0068,
+      "pos_frac": 0.8,
+      "entry_price_median": 0.978,
+      "flip_rate": 0.2,
+      "cap_usd_60m_median": 20.0,
+      "boot": {
+       "lo95": -0.3557,
+       "hi95": 0.0151,
+       "p_one_sided": 0.9667
+      }
+     },
+     "2026Q1": {
+      "n": 24,
+      "net_mean": -0.0084,
+      "net_median": 0.0443,
+      "pos_frac": 0.792,
+      "entry_price_median": 0.863,
+      "flip_rate": 0.208,
+      "cap_usd_60m_median": 31.1,
+      "boot": {
+       "lo95": -0.2514,
+       "hi95": 0.271,
+       "p_one_sided": 0.5448
+      }
+     },
+     "2026Q2": {
+      "n": 26,
+      "net_mean": 0.0001,
+      "net_median": 0.0345,
+      "pos_frac": 0.885,
+      "entry_price_median": 0.945,
+      "flip_rate": 0.115,
+      "cap_usd_60m_median": 41.3,
+      "boot": {
+       "lo95": -0.1624,
+       "hi95": 0.1444,
+       "p_one_sided": 0.4786
+      }
+     },
+     "2026Q3": {
+      "n": 22,
+      "net_mean": -0.0042,
+      "net_median": 0.05,
+      "pos_frac": 0.773,
+      "entry_price_median": 0.921,
+      "flip_rate": 0.227,
+      "cap_usd_60m_median": 11.6,
+      "boot": {
+       "lo95": -0.2768,
+       "hi95": 0.3229,
+       "p_one_sided": 0.5409
+      }
+     }
+    }
+   }
+  }
+ },
+ "holm_U1_R1_E1": {
+  "C": 1,
+  "D": 1,
+  "B": 1,
+  "A": 1
+ }
+}

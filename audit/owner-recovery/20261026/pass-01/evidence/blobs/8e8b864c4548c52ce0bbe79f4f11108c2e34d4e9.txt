@@ -1,0 +1,80 @@
+{
+  "source_index_path": "research/research_os/architecture/work_receipts/BUILDER_CP_062_EDGE_REPORTED_STATUS_INDEX_20261021.json",
+  "source_index_sha256": "808702ef11edb3d33fc7b5f8617566b544966fc7504c8e8547bc1946863fd51c",
+  "source_index_commit": "5d121267d5d27325039ef2a63714ac12a658b4a3",
+  "scope": "EXACT_HISTORICAL_ID_REVIEW_NOT_ECONOMIC_REVALIDATION",
+  "records": [
+    {
+      "historical_id": "disc-zf-auction-pressure-daily-l1-v1",
+      "metadata": {
+        "decision": "PARK_DATA",
+        "typed_verdict": "PARK_DATA",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": false,
+        "edge_validated": false
+      },
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "source_refs": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.result.json",
+          "blob_sha": "91c4aa4c55828aaaa6ce7f68e4264c3453ed8917"
+        },
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.md",
+          "blob_sha": "b21a860a6568935c98e8f93376e7c081ef3a2662"
+        }
+      ],
+      "original_execution_commit": "UNKNOWN",
+      "scientific_equivalence_to_ledger_family": "NOT_ESTABLISHED"
+    },
+    {
+      "historical_id": "disc-treasury-5y-auction-concession-l1-v1",
+      "metadata": {
+        "typed_verdict": "PARK_DATA",
+        "first_broken_transition": "FROZEN_POPULATION_SOURCE_ADEQUACY_NOT_PROVEN",
+        "decision_eligible": false
+      },
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "source_refs": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.result.json",
+          "blob_sha": "1d5722b472261b0b828b4009a435d2ea3b291be3"
+        },
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.md",
+          "blob_sha": "cb43c8cfb25feae97276093632789c7ee40e93c2"
+        }
+      ],
+      "original_execution_commit": "UNKNOWN",
+      "scientific_equivalence_to_ledger_family": "NOT_ESTABLISHED"
+    },
+    {
+      "historical_id": "disc-france-oat-bund-l1-v1-public-daily-route",
+      "metadata": {
+        "typed_verdict": "PARK_DATA",
+        "first_broken_transition": "FROZEN_FRANCE_HISTORICAL_SOURCE_REQUIRES_ACCOUNT_API_KEY",
+        "economic_look_opened": false,
+        "decision_eligible": false
+      },
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "source_refs": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.result.json",
+          "blob_sha": "9f64f51a144087b2aeae2b56d9ac0ce176c8a57f"
+        },
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.md",
+          "blob_sha": "ef4ef11f083d1b43dc8e1d3dcf2cbb50ec8ea4cb"
+        }
+      ],
+      "original_execution_commit": "UNKNOWN",
+      "scientific_equivalence_to_ledger_family": "NOT_ESTABLISHED"
+    }
+  ],
+  "result_payloads_read_this_checkpoint": false,
+  "protocol_declarations_read": true,
+  "numerical_economics_extracted": false,
+  "active_sealed_or_prospective_outcomes_accessed": false,
+  "immutable_ledger_rewritten": false,
+  "global_effective_trials": "UNKNOWN"
+}

@@ -1,0 +1,54 @@
+{
+  "fixed_source_sha256": "276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6",
+  "mutants": [
+    {
+      "mutation": "typed_stale_fence",
+      "exit_code": 1,
+      "summary": "10 failed, 39 passed in 0.18s",
+      "log": "CP046_mutant_typed_stale_fence.txt",
+      "mutant_sha256": "4e16b4112251e1cbbb966bf1f3797814fa6e9d3ff61cba2f5b7962ec452ecd72"
+    },
+    {
+      "mutation": "duplicate_field_admission",
+      "exit_code": 1,
+      "summary": "12 failed, 37 passed in 0.17s",
+      "log": "CP046_mutant_duplicate_field_admission.txt",
+      "mutant_sha256": "431bd470d2209169ff625b607fc989951e01c8d1928370b76be691b8c13f6c4b"
+    },
+    {
+      "mutation": "finite_document_admission",
+      "exit_code": 1,
+      "summary": "10 failed, 39 passed in 0.17s",
+      "log": "CP046_mutant_finite_document_admission.txt",
+      "mutant_sha256": "e152d3d214b1ff47b30c82eccf2c26769b09d7a7f1d1d5388bb9bf3a6f3dbb15"
+    },
+    {
+      "mutation": "existing_null_document_admission",
+      "exit_code": 1,
+      "summary": "3 failed, 46 passed in 0.15s",
+      "log": "CP046_mutant_existing_null_document_admission.txt",
+      "mutant_sha256": "5fa65c7900be5c81e7c32db1d826b68541c6d4cde02b9c135d358e1272194efd"
+    },
+    {
+      "mutation": "unknown_root_admission",
+      "exit_code": 1,
+      "summary": "3 failed, 46 passed in 0.16s",
+      "log": "CP046_mutant_unknown_root_admission.txt",
+      "mutant_sha256": "e195eb1cb6642ef99c9bae4ab67b44042dc307770136bda226f21ca9f423608b"
+    },
+    {
+      "mutation": "trusted_recovery",
+      "exit_code": 1,
+      "summary": "22 failed, 27 passed in 0.24s",
+      "log": "CP046_mutant_trusted_recovery.txt",
+      "mutant_sha256": "571117700e5f62dc82abb1bd4433063148dff5fb4857e8a179cdea7676a25fce"
+    },
+    {
+      "mutation": "durable_readback",
+      "exit_code": 1,
+      "summary": "9 failed, 40 passed in 0.21s",
+      "log": "CP046_mutant_durable_readback.txt",
+      "mutant_sha256": "f7d8d8cfc743783136533f3fab9d4145a2ba07d3aa74d3cea69b141e10f6a3aa"
+    }
+  ]
+}

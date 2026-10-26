@@ -1,0 +1,47 @@
+{
+  "task_id": "SIM-CANONICAL-SPINE-QUANT-001",
+  "task_type": "QUANT_MECHANISM",
+  "required_capability": "quant_mechanisms",
+  "status": "CLAIMED",
+  "priority": 100,
+  "inputs": {
+    "engine_key": "quant"
+  },
+  "allowed_actions": [
+    "read_canonical_state",
+    "produce_candidate",
+    "legacy_screen",
+    "implementability_assessment",
+    "freeze_experiment_envelope",
+    "independent_validation",
+    "red_team",
+    "economic_identity",
+    "portfolio_map",
+    "forward_readiness",
+    "persist_events_receipts"
+  ],
+  "forbidden_actions": [
+    "open_economic_outcome",
+    "start_prospective_observation",
+    "allocate_real_capital",
+    "live_trade",
+    "mutate_frozen_generation"
+  ],
+  "success_condition": "One canonical synthetic lineage traverses the final-shape spine with Legacy before downstream and all authority barriers intact.",
+  "authority": {
+    "scope": "ARCHITECTURE_SIMULATION_ONLY",
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "lease": {
+    "generation": 1,
+    "owner": "sim-canonical-worker",
+    "claimed_at": "2026-10-15T14:00:00Z",
+    "expires_at": "2026-10-15T15:00:00Z"
+  },
+  "created_at": "2026-10-15T14:00:00Z",
+  "updated_at": "2026-10-15T14:00:00Z",
+  "completion": null
+}

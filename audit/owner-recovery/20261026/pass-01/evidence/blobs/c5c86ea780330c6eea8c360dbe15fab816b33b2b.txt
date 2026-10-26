@@ -1,0 +1,491 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/oracle-worker/provenance_check.json",
+    "research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/oracle-worker/recover_or_qualify.json"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "completed_at": "2026-10-19T23:50:07.796958+00:00",
+  "config_hash": "fa6ecb5ec2109f564660af53690907d2c306d000a7d3062a9b190743751cafd2",
+  "dry_run": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "hosted_model_calls": 0,
+    "input_head": "a818869bb4c806c56ef6d71858616c5dd647c716",
+    "lane": null,
+    "one_lineage_per_wake": true,
+    "preflight": {
+      "control_plane": {
+        "authority": {
+          "economic_experiment_authorized": false,
+          "live_trading_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false
+        },
+        "mode": "PRODUCTION_RESEARCH_WORKERS",
+        "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+      },
+      "current_corpus": {
+        "count": 13,
+        "overlap_map_hash": "d7cdf881da5807aaec74287f3ea5fe407a0a717700bf1fd3db0714c8ab1c63ff",
+        "review_count": 1,
+        "review_pairs": [
+          {
+            "basis": [
+              "entity",
+              "mechanism_tokens"
+            ],
+            "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+            "left": "FUND-ASML-CAPACITY-PRICING-001",
+            "mechanism_overlap": 0.2529,
+            "review_required": true,
+            "right": "FUND-ASML-CAPACITY-SERVICE-001"
+          }
+        ],
+        "snapshot_hash": "8dc9f4b770152c60887540b0f8d8047202657fd38e607c8520153dd45fc2e544"
+      },
+      "legacy": {
+        "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+        "loaded_record_count": 20,
+        "manifest_historical_research_items_found": 33,
+        "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+        "schema_version": "legacy-research-ledger-v1",
+        "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+        "status": "PASS"
+      },
+      "preflight_hash": "ea4d3296b19ba0fab7d985d4242367d27979e223f660e6bc0b330bd3374e7fda",
+      "status": "PASS",
+      "task_authority": null
+    },
+    "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "selected_task": null,
+    "state_branch": "builder/oracle-economic-loop-recovery-20261019",
+    "state_repository": "fahimahmedb/Quant-Trade",
+    "status": "DRY_RUN",
+    "writes": 0
+  },
+  "evidence_scope": "LIVE_ORACLE_VM",
+  "exact_release_ci": {
+    "conclusion": "success",
+    "head_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39338286363",
+    "id": 39338286363,
+    "status": "completed"
+  },
+  "gates": {
+    "authority_closed": true,
+    "crash_after_claim": true,
+    "dry_run": true,
+    "exact_release_ci": true,
+    "expired_claim_recovered": true,
+    "github_receipts_verified": true,
+    "inventory_recorded": true,
+    "local_gpt_oss_health": true,
+    "local_structured_inference": true,
+    "no_duplicate_artifacts": true,
+    "oracle_instance_verified": true,
+    "readonly_noop": true,
+    "two_successive_wakes": true
+  },
+  "github_head": "003de2226ad2535e090e721c9ce895de15fce9c7",
+  "hosted_model_calls": 0,
+  "instance": {
+    "id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+    "region": "eu-paris-1",
+    "shape": "VM.Standard.A1.Flex",
+    "shapeConfig": {
+      "maxVnicAttachments": 2,
+      "memoryInGBs": 12.0,
+      "networkingBandwidthInGbps": 2.0,
+      "ocpus": 2.0
+    }
+  },
+  "inventory": {
+    "compatibility_verdict": "REQUIRES_REVIEW_AND_BOUNDED_INFERENCE_CANARY",
+    "cpu": {
+      "returncode": 0,
+      "stdout": "Architecture:                            aarch64\nCPU op-mode(s):                          32-bit, 64-bit\nByte Order:                              Little Endian\nCPU(s):                                  2\nOn-line CPU(s) list:                     0,1\nVendor ID:                               ARM\nModel name:                              Neoverse-N1\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                r3p1\nBogoMIPS:                                50.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0,1\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; CSV2, BHB\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n"
+    },
+    "cpu_count": 2,
+    "disk": {
+      "free": 28297904128,
+      "total": 47321268224
+    },
+    "evidence_scope": "LIVE_HOST_WHERE_EXECUTED",
+    "file_inventory_complete_for_requested_roots": true,
+    "file_scan_truncated": false,
+    "host_architecture": "aarch64",
+    "inspection_gaps": [],
+    "kernel": "6.17.0-1020-oracle",
+    "llama_properties": {
+      "model_alias": "gpt-oss-10.2b-q4-k-m",
+      "model_path": "/opt/quant-research-local-model/models/456fa90a60ea5249f26c0c2e5c69aab5a91d4676/gpt-oss-10b-q4_k_m.gguf",
+      "total_slots": 1
+    },
+    "loaded_models": {
+      "unavailable": "URLError"
+    },
+    "memory": {
+      "returncode": 0,
+      "stdout": "               total        used        free      shared  buff/cache   available\nMem:     12506759168  3285495808   114835456     5562368  9345261568  9221263360\nSwap:              0           0           0\n"
+    },
+    "model_files": [],
+    "models_downloaded": 0,
+    "mutations_performed": false,
+    "observed_at": "2026-10-19T23:46:38.398535+00:00",
+    "ollama_models": [],
+    "ollama_status": "URLError",
+    "openai_compatible_models": {
+      "data": [
+        {
+          "aliases": [
+            "gpt-oss-10.2b-q4-k-m"
+          ],
+          "architecture": {
+            "input_modalities": [
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ]
+          },
+          "created": 1792453598,
+          "id": "gpt-oss-10.2b-q4-k-m",
+          "meta": {
+            "ftype": "Q4_K - Medium",
+            "n_ctx": 8192,
+            "n_ctx_train": 131072,
+            "n_embd": 2880,
+            "n_params": 10160237712,
+            "n_vocab": 201088,
+            "size": 7710063168,
+            "vocab_type": 2
+          },
+          "object": "model",
+          "owned_by": "llamacpp",
+          "tags": []
+        }
+      ],
+      "models": [
+        {
+          "capabilities": [
+            "completion"
+          ],
+          "description": "",
+          "details": {
+            "families": [
+              ""
+            ],
+            "family": "",
+            "format": "gguf",
+            "parameter_size": "",
+            "parent_model": "",
+            "quantization_level": ""
+          },
+          "digest": "",
+          "model": "gpt-oss-10.2b-q4-k-m",
+          "modified_at": "",
+          "name": "gpt-oss-10.2b-q4-k-m",
+          "parameters": "",
+          "size": "",
+          "tags": [
+            ""
+          ],
+          "type": "model"
+        }
+      ],
+      "object": "list"
+    },
+    "processes": [],
+    "runtime_listeners": [],
+    "runtimes": {},
+    "schema_version": "oracle-local-model-inventory-v1",
+    "services": {
+      "gpt-oss.service": {
+        "returncode": 0,
+        "stdout": "MainPID=0\nMemoryCurrent=[not set]\nCPUUsageNSec=[not set]\nActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+      },
+      "llama-server.service": {
+        "returncode": 0,
+        "stdout": "MainPID=0\nMemoryCurrent=[not set]\nCPUUsageNSec=[not set]\nActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+      },
+      "ollama.service": {
+        "returncode": 0,
+        "stdout": "MainPID=0\nMemoryCurrent=[not set]\nCPUUsageNSec=[not set]\nActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+      },
+      "quant-research-worker.timer": {
+        "returncode": 0,
+        "stdout": "ActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+      }
+    }
+  },
+  "local_inference_seconds": 20.238,
+  "model_health": {
+    "local_only": true,
+    "metadata": {
+      "aliases": [
+        "gpt-oss-10.2b-q4-k-m"
+      ],
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ]
+      },
+      "created": 1792453598,
+      "id": "gpt-oss-10.2b-q4-k-m",
+      "meta": {
+        "ftype": "Q4_K - Medium",
+        "n_ctx": 8192,
+        "n_ctx_train": 131072,
+        "n_embd": 2880,
+        "n_params": 10160237712,
+        "n_vocab": 201088,
+        "size": 7710063168,
+        "vocab_type": 2
+      },
+      "object": "model",
+      "owned_by": "llamacpp",
+      "tags": []
+    },
+    "model": "gpt-oss-10.2b-q4-k-m",
+    "runtime": "openai_compatible",
+    "status": "PASS"
+  },
+  "model_installations": 0,
+  "noop": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "hosted_model_calls": 0,
+    "input_head": "a818869bb4c806c56ef6d71858616c5dd647c716",
+    "observed_at": "2026-10-19T23:48:12Z",
+    "one_lineage_per_wake": true,
+    "preflight": {
+      "control_plane": {
+        "authority": {
+          "economic_experiment_authorized": false,
+          "live_trading_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false
+        },
+        "mode": "PRODUCTION_RESEARCH_WORKERS",
+        "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+      },
+      "current_corpus": {
+        "count": 13,
+        "overlap_map_hash": "d7cdf881da5807aaec74287f3ea5fe407a0a717700bf1fd3db0714c8ab1c63ff",
+        "review_count": 1,
+        "review_pairs": [
+          {
+            "basis": [
+              "entity",
+              "mechanism_tokens"
+            ],
+            "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+            "left": "FUND-ASML-CAPACITY-PRICING-001",
+            "mechanism_overlap": 0.2529,
+            "review_required": true,
+            "right": "FUND-ASML-CAPACITY-SERVICE-001"
+          }
+        ],
+        "snapshot_hash": "8dc9f4b770152c60887540b0f8d8047202657fd38e607c8520153dd45fc2e544"
+      },
+      "legacy": {
+        "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+        "loaded_record_count": 20,
+        "manifest_historical_research_items_found": 33,
+        "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+        "schema_version": "legacy-research-ledger-v1",
+        "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+        "status": "PASS"
+      },
+      "preflight_hash": "ea4d3296b19ba0fab7d985d4242367d27979e223f660e6bc0b330bd3374e7fda",
+      "status": "PASS",
+      "task_authority": null
+    },
+    "queue": {
+      "active_count": 0,
+      "claimed_count": 0,
+      "ready_count": 0,
+      "task_count": 28,
+      "terminal_count": 28
+    },
+    "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "state_branch": "builder/oracle-economic-loop-recovery-20261019",
+    "state_repository": "fahimahmedb/Quant-Trade",
+    "status": "READ_ONLY_CANARY",
+    "writes": 0
+  },
+  "post_inference_resources": {
+    "mem_available_kib": 8968920,
+    "swap_free_kib": 0
+  },
+  "receipts": [
+    "research/research_os/receipts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/AAA-ORACLE-H24-CANARY-f138c980c94eea31-g2-516c23088e87.json",
+    "research/research_os/receipts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/AAA-ORACLE-H24-CANARY-f138c980c94eea31-g3-716bea9dd541.json"
+  ],
+  "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "representative_reasoning_seconds": 68.1,
+  "representative_worker_reasoning": {
+    "backend_health": {
+      "model": "gpt-oss-10.2b-q4-k-m",
+      "runtime": "openai_compatible",
+      "status": "PASS"
+    },
+    "backend_health_hash": "2e016a9248833a90c9f22f7f1a3b86aba9b480780c4223c4efc814ac6170cd80",
+    "classification": "UNVERIFIED_MODEL_COMMENTARY",
+    "content": {
+      "disconfirmations": [
+        "No evidence of a nonempty Legacy ledger",
+        "No evidence of pinned historical memory"
+      ],
+      "summary": "The claim that a verified nonempty Legacy ledger is required for new candidate screening is not supported by the supplied material. No evidence of a nonempty ledger or its necessity is provided. The mechanism of pinned historical memory is also unverified. Thus, the claim is falsified due to lack of evidence."
+    }
+  },
+  "restart_scope": "REAL_CHILD_PROCESS_EXIT_AND_EXPIRED_LEASE; VM reboot not claimed",
+  "scheduler_enabled": false,
+  "status": "PASS_PRE_ACTIVATION",
+  "task_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
+  "wake_1": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "hosted_model_calls": 0,
+    "input_head": "ea1e1ec181d578ee257316fe3dda17b9d81a6725",
+    "lane": "evidence_data",
+    "one_lineage_per_wake": true,
+    "output_commit": "4490b9b5045f5d3601932ee6eebdc8c62761cb93",
+    "preflight": {
+      "control_plane": {
+        "authority": {
+          "economic_experiment_authorized": false,
+          "live_trading_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false
+        },
+        "mode": "PRODUCTION_RESEARCH_WORKERS",
+        "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+      },
+      "current_corpus": {
+        "count": 13,
+        "overlap_map_hash": "d7cdf881da5807aaec74287f3ea5fe407a0a717700bf1fd3db0714c8ab1c63ff",
+        "review_count": 1,
+        "review_pairs": [
+          {
+            "basis": [
+              "entity",
+              "mechanism_tokens"
+            ],
+            "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+            "left": "FUND-ASML-CAPACITY-PRICING-001",
+            "mechanism_overlap": 0.2529,
+            "review_required": true,
+            "right": "FUND-ASML-CAPACITY-SERVICE-001"
+          }
+        ],
+        "snapshot_hash": "8dc9f4b770152c60887540b0f8d8047202657fd38e607c8520153dd45fc2e544"
+      },
+      "legacy": {
+        "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+        "loaded_record_count": 20,
+        "manifest_historical_research_items_found": 33,
+        "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+        "schema_version": "legacy-research-ledger-v1",
+        "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+        "status": "PASS"
+      },
+      "preflight_hash": "ea4d3296b19ba0fab7d985d4242367d27979e223f660e6bc0b330bd3374e7fda",
+      "status": "PASS",
+      "task_authority": null
+    },
+    "receipt": "research/research_os/receipts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/AAA-ORACLE-H24-CANARY-f138c980c94eea31-g2-516c23088e87.json",
+    "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g2-516c23088e87",
+    "stage": "recover_or_qualify",
+    "state_branch": "builder/oracle-economic-loop-recovery-20261019",
+    "state_repository": "fahimahmedb/Quant-Trade",
+    "status": "READY",
+    "task_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31"
+  },
+  "wake_2": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "hosted_model_calls": 0,
+    "input_head": "4490b9b5045f5d3601932ee6eebdc8c62761cb93",
+    "lane": "evidence_data",
+    "one_lineage_per_wake": true,
+    "output_commit": "003de2226ad2535e090e721c9ce895de15fce9c7",
+    "preflight": {
+      "control_plane": {
+        "authority": {
+          "economic_experiment_authorized": false,
+          "live_trading_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false
+        },
+        "mode": "PRODUCTION_RESEARCH_WORKERS",
+        "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+      },
+      "current_corpus": {
+        "count": 13,
+        "overlap_map_hash": "d7cdf881da5807aaec74287f3ea5fe407a0a717700bf1fd3db0714c8ab1c63ff",
+        "review_count": 1,
+        "review_pairs": [
+          {
+            "basis": [
+              "entity",
+              "mechanism_tokens"
+            ],
+            "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+            "left": "FUND-ASML-CAPACITY-PRICING-001",
+            "mechanism_overlap": 0.2529,
+            "review_required": true,
+            "right": "FUND-ASML-CAPACITY-SERVICE-001"
+          }
+        ],
+        "snapshot_hash": "8dc9f4b770152c60887540b0f8d8047202657fd38e607c8520153dd45fc2e544"
+      },
+      "legacy": {
+        "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+        "loaded_record_count": 20,
+        "manifest_historical_research_items_found": 33,
+        "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+        "schema_version": "legacy-research-ledger-v1",
+        "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+        "status": "PASS"
+      },
+      "preflight_hash": "ea4d3296b19ba0fab7d985d4242367d27979e223f660e6bc0b330bd3374e7fda",
+      "status": "PASS",
+      "task_authority": null
+    },
+    "receipt": "research/research_os/receipts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/AAA-ORACLE-H24-CANARY-f138c980c94eea31-g3-716bea9dd541.json",
+    "release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g3-716bea9dd541",
+    "stage": "provenance_check",
+    "state_branch": "builder/oracle-economic-loop-recovery-20261019",
+    "state_repository": "fahimahmedb/Quant-Trade",
+    "status": "COMPLETE",
+    "task_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31"
+  }
+}

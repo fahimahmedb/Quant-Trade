@@ -1,0 +1,20 @@
+{
+  "action_id": "AAA-V2-CANARY-a67ffec48fff895d",
+  "emitted_at": "2026-10-20T10:57:51Z",
+  "event_id": "AAA-V2-CANARY-a67ffec48fff895d-g3-432a0379274b-2",
+  "event_seq": 2,
+  "event_type": "SESSION_ENDED",
+  "generation": 3,
+  "payload": {
+    "active_count": 0,
+    "claimed_count": 0,
+    "queue_state": "IDLE",
+    "ready_count": 0,
+    "result": "BLOCKED",
+    "stage": "document_or_fundamental_research",
+    "task_count": 50,
+    "terminal_count": 50
+  },
+  "session_id": "AAA-V2-CANARY-a67ffec48fff895d-g3-432a0379274b",
+  "worker_id": "oracle-research-v2.fundamental_events"
+}

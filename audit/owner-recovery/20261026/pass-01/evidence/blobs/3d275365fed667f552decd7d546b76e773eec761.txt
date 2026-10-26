@@ -1,0 +1,130 @@
+{
+  "catalogs": [
+    {
+      "datasets": [
+        "data/futures/um/daily/aggTrades/",
+        "data/futures/um/daily/bookDepth/",
+        "data/futures/um/daily/bookTicker/",
+        "data/futures/um/daily/indexPriceKlines/",
+        "data/futures/um/daily/klines/",
+        "data/futures/um/daily/markPriceKlines/",
+        "data/futures/um/daily/metrics/",
+        "data/futures/um/daily/premiumIndexKlines/",
+        "data/futures/um/daily/trades/"
+      ],
+      "prefix": "data/futures/um/daily/",
+      "response_sha256": "38c28cc17f9a59a41572497486770dddd20bc519393c0a4359be62376ee79efd",
+      "truncated": "false",
+      "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fum%2Fdaily%2F&delimiter=%2F&max-keys=1000"
+    },
+    {
+      "datasets": [
+        "data/futures/um/monthly/aggTrades/",
+        "data/futures/um/monthly/bookTicker/",
+        "data/futures/um/monthly/fundingRate/",
+        "data/futures/um/monthly/indexPriceKlines/",
+        "data/futures/um/monthly/klines/",
+        "data/futures/um/monthly/markPriceKlines/",
+        "data/futures/um/monthly/premiumIndexKlines/",
+        "data/futures/um/monthly/trades/"
+      ],
+      "prefix": "data/futures/um/monthly/",
+      "response_sha256": "3aa37e6fcbb1bce5f41ab9a2049b14c6c8e93efe9783cb707085f0c907907c76",
+      "truncated": "false",
+      "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fum%2Fmonthly%2F&delimiter=%2F&max-keys=1000"
+    },
+    {
+      "datasets": [
+        "data/futures/cm/daily/aggTrades/",
+        "data/futures/cm/daily/bookDepth/",
+        "data/futures/cm/daily/bookTicker/",
+        "data/futures/cm/daily/indexPriceKlines/",
+        "data/futures/cm/daily/klines/",
+        "data/futures/cm/daily/liquidationSnapshot/",
+        "data/futures/cm/daily/markPriceKlines/",
+        "data/futures/cm/daily/metrics/",
+        "data/futures/cm/daily/premiumIndexKlines/",
+        "data/futures/cm/daily/trades/"
+      ],
+      "prefix": "data/futures/cm/daily/",
+      "response_sha256": "761e340821b43089f4cd9a867ed352b28a10869909dbb17e140526b8923232db",
+      "truncated": "false",
+      "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fdaily%2F&delimiter=%2F&max-keys=1000"
+    },
+    {
+      "datasets": [
+        "data/futures/cm/monthly/aggTrades/",
+        "data/futures/cm/monthly/bookTicker/",
+        "data/futures/cm/monthly/fundingRate/",
+        "data/futures/cm/monthly/indexPriceKlines/",
+        "data/futures/cm/monthly/klines/",
+        "data/futures/cm/monthly/markPriceKlines/",
+        "data/futures/cm/monthly/premiumIndexKlines/",
+        "data/futures/cm/monthly/trades/"
+      ],
+      "prefix": "data/futures/cm/monthly/",
+      "response_sha256": "a56b3193510fbe764a7fa0e119b2d1c14a89fb3fe08a4e03c250d1bad1316b51",
+      "truncated": "false",
+      "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fmonthly%2F&delimiter=%2F&max-keys=1000"
+    }
+  ],
+  "checked_utc": "2026-10-09T23:54:30Z",
+  "decision": "COIN-M liquidationSnapshot catalog exists; BTC/ETH date coverage checked by names only. No new family or economic look activated. Validate feed sampling and executable-price overlap before any preregistered pilot; never substitute this source into the frozen Hyperliquidation specification.",
+  "economic_look_consumed": false,
+  "f1_prior_verdict": {
+    "never_rerun": true,
+    "result_sha256": "bcf2d7e8c75c42c9ea870eb30e553a39a2726471b588c4b54071bb2e621e16d3",
+    "status": "REJECT"
+  },
+  "family_activated": false,
+  "liquidation_symbol_catalogs": [
+    {
+      "archive_count": 0,
+      "first_archive": null,
+      "last_archive": null,
+      "pages": [
+        {
+          "response_sha256": "7c74d6f6464890978afeaa2df638e0fbe607045b41fcc015576b96f7ded093d9",
+          "truncated": "false",
+          "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fdaily%2FliquidationSnapshot%2F&list-type=2&max-keys=1000&delimiter=%2F"
+        }
+      ],
+      "prefix": "data/futures/cm/daily/liquidationSnapshot/",
+      "symbol_examples": [
+        "data/futures/cm/daily/liquidationSnapshot/BTCUSD_PERP/",
+        "data/futures/cm/daily/liquidationSnapshot/ETHUSD_PERP/"
+      ],
+      "symbol_prefix_count": 118
+    },
+    {
+      "archive_count": 472,
+      "first_archive": "data/futures/cm/daily/liquidationSnapshot/BTCUSD_PERP/BTCUSD_PERP-liquidationSnapshot-2023-06-25.zip",
+      "last_archive": "data/futures/cm/daily/liquidationSnapshot/BTCUSD_PERP/BTCUSD_PERP-liquidationSnapshot-2024-10-14.zip",
+      "pages": [
+        {
+          "response_sha256": "d1882ebf0fb2c3bb7febd91999757634160bc1d87cac239621767b01c0f2a5c6",
+          "truncated": "false",
+          "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fdaily%2FliquidationSnapshot%2FBTCUSD_PERP%2F&list-type=2&max-keys=1000"
+        }
+      ],
+      "prefix": "data/futures/cm/daily/liquidationSnapshot/BTCUSD_PERP/",
+      "symbols": []
+    },
+    {
+      "archive_count": 474,
+      "first_archive": "data/futures/cm/daily/liquidationSnapshot/ETHUSD_PERP/ETHUSD_PERP-liquidationSnapshot-2023-06-25.zip",
+      "last_archive": "data/futures/cm/daily/liquidationSnapshot/ETHUSD_PERP/ETHUSD_PERP-liquidationSnapshot-2024-10-14.zip",
+      "pages": [
+        {
+          "response_sha256": "e6427b5641f8f74ae23ebae98db2fbe6477f91bbd9177a8c156040f840b710c9",
+          "truncated": "false",
+          "url": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision?prefix=data%2Ffutures%2Fcm%2Fdaily%2FliquidationSnapshot%2FETHUSD_PERP%2F&list-type=2&max-keys=1000"
+        }
+      ],
+      "prefix": "data/futures/cm/daily/liquidationSnapshot/ETHUSD_PERP/",
+      "symbols": []
+    }
+  ],
+  "next_action": "Qualify the primary COIN-M liquidation-snapshot documentation: event/publication timestamps, selection/sampling, duplicate identifiers and overlap with executable bid/ask archives for the fixed BTCUSD_PERP and ETHUSD_PERP sample. Register a separate pilot only if these source requirements pass; do not weaken or substitute the frozen Hyperliquidation experiment.",
+  "operation": "names-only catalog; no rows or economic look"
+}

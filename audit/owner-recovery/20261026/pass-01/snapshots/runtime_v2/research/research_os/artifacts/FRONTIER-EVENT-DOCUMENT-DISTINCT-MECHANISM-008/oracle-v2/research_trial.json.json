@@ -1,0 +1,39 @@
+{
+  "context_hash": "26f294ea74900d315386ebe80db2a55b9ab74a4e6b494dafbb983af406010882",
+  "discard_count": 1,
+  "discarded_proposals": [
+    {
+      "blockers": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce",
+      "reason": "STRUCTURAL_SCREEN_BLOCK"
+    }
+  ],
+  "earlier_attempt_proposals": "UNKNOWN_IF_NO_DURABLE_COMPLETION",
+  "executable_release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "generated_at": "2026-10-20T11:40:09Z",
+  "generated_proposals": [
+    {
+      "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+      "generation_id": "G1",
+      "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce"
+    }
+  ],
+  "ideation_intents": [
+    "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/trial_intents/g000002.json"
+  ],
+  "model_identity": "DETERMINISTIC_ENGINE",
+  "prompt_hash": "68682e0bdf6315b2ccebce7bef5392941d605380db2789c5bec5ec5fa6c071cd",
+  "proposal_count": 1,
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+  "research_trial_id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008::G1",
+  "retrieval_manifest_hash": "b18020ae2defcd1181c85d0ad8a15a0d1317f46eb90c5f5db0cc5cbdb3b3dd10",
+  "retry_count": 0,
+  "sampling_parameters": {
+    "mode": "DETERMINISTIC_REGISTERED_ENGINE"
+  },
+  "source_packet_hash": "d8d19dbf0b1291ce43d3c3f12254a2b9afb0258c27cadbaef9288fd666cee142",
+  "trial_hash": "6bc701b68243978f002ee30af40b51426eda3299f358f237bd59cf8e66e44c3a",
+  "trial_type": "RESEARCH_GENERATION_TRIAL"
+}

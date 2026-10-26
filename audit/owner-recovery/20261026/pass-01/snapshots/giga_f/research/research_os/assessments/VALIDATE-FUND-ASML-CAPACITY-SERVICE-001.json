@@ -1,0 +1,19 @@
+{
+  "assessment_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
+  "task_id":"VALIDATE-FUND-ASML-CAPACITY-SERVICE-001",
+  "hypothesis_id":"FUND-ASML-CAPACITY-SERVICE-001",
+  "generation_id":"G1",
+  "stage":"claim_restriction",
+  "decision":"PASS_BOUNDED_BUSINESS_MECHANISM_WITH_BLOCK_CLAIM_LEVEL",
+  "evidence_summary":"Q3 2026 primary disclosure confirms record sales, material Installed Base Management demand and management's 2027-2028 supply-shortfall view. Independent risk evidence shows material customer/geographic concentration, export-control exposure and non-guaranteed order/backlog conversion. FY2025 margin provides a lower normalization anchor than Q3 2026's 57.5%.",
+  "permitted_claim":"ASML G1 survives as a bounded business-mechanism thesis: constrained advanced-lithography supply plus installed-base productivity upgrades may support earnings power, conditional on conversion and normalization.",
+  "claim_ceiling":"BUSINESS_MECHANISM_ONLY",
+  "blocked_extensions":["established durable earnings expansion","assured backlog/demand conversion","normalized 57.5% gross margin","security valuation conclusion","positive-return or alpha conclusion"],
+  "downstream_handoff_created":false,
+  "downstream_handoff_reason":"Current task authority is INDEPENDENT_VALIDATION_ONLY and says downstream handoff only if separately authorized by a later authority state; no such authority is present.",
+  "frozen_generation_mutated":false,
+  "economic_experiment_authorized":false,
+  "prospective_observation_authorized":false,
+  "real_capital_authorized":false,
+  "live_trading_authorized":false
+}

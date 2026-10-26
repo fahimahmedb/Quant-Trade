@@ -1,0 +1,46 @@
+# Vertical CP004 — Learning replay after retention and failed persistence
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=4a95a83
+
+Module: `src/quant/learning/store.py`. Existing capability: record one research
+ticket once and update search priority from the lesson. North Star §§5, 7:
+negative memory must persist and learning must affect future search truthfully.
+Starting depth: D2/basic replay with a short retained history.
+
+Defects/root causes/repairs:
+
+1. Idempotency searched only lesson text retained in the last 200 records.
+   Replaying an older ticket after restart applied its priority delta twice.
+   Persist a separate ticket-identity set; bounded display history no longer
+   erases replay protection. Legacy state derives the initial set from retained
+   research lessons; already discarded identities cannot be reconstructed.
+2. Failed writes left in-memory lessons/build-task membership ahead of durable
+   state and suppressed retry. Reload durable state on save failure, including
+   acknowledgement loss after successful publication. All existing save callers
+   use this recovery behavior.
+
+Adversaries: 205 distinct negative tickets followed by restart/old replay;
+legacy-state migration; same-object retry before and after durable write;
+build-task retry after failed save; malformed/empty ticket identity and replay
+index. The index is additive to version-1 state; no existing memory is rewritten.
+
+Tests: initial fixtures **3 failed / 2 passed**. Final fixtures plus whole Quant
+and V1 red-team regressions: **102 passed** (16 new cases). Logs:
+`research/vertical_depth/20261021/CP004_{before,after}.txt`. Ruff F and whitespace
+checks pass. Attained depth: **D3**, scoped to replay across restart/retention and
+write failures; concurrent LearningStore instances remain unqualified.
+
+Remaining unproven depth: identities discarded before migration, long-run index
+size/compaction, changed content under the same ticket ID, concurrent writers,
+all quality-assessment failure boundaries, hardware power-loss behavior.
+Historical ticket IDs are not invented to fill migration gaps.
+
+Horizontal findings: none. Longitudinal findings: none.
+Authority bypass found here: FALSE. All lessons are synthetic bounded negatives;
+no outcomes, experiments or prospective observations were acquired.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

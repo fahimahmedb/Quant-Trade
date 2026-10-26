@@ -1,0 +1,28 @@
+{
+ "determinism": {
+  "one_slice": "a6ce06540e301103d15eced6c1d4dd50be1883036a49ff89785810c671c54489",
+  "three_slices": "a6ce06540e301103d15eced6c1d4dd50be1883036a49ff89785810c671c54489",
+  "seven_slices": "a6ce06540e301103d15eced6c1d4dd50be1883036a49ff89785810c671c54489",
+  "pass_": true
+ },
+ "resume": {
+  "cells_before_kill": 3,
+  "resume_log": "plan p1:m3_astra hash 0d0bfa6b6d5a cells 10 slice 0/1 mine 10 done 3 todo 7 torn_bytes_dropped 39 level SMOKE",
+  "second_rerun_log": "plan p1:m3_astra hash 0d0bfa6b6d5a cells 10 slice 0/1 mine 10 done 10 todo 0 torn_bytes_dropped 0 level SMOKE",
+  "digest_after_resume": "a6ce06540e301103d15eced6c1d4dd50be1883036a49ff89785810c671c54489",
+  "pass_": true
+ },
+ "merge_negative_tests": {
+  "results": {
+   "duplicate_cell": true,
+   "missing_cell": true,
+   "wrong_seed": true,
+   "wrong_schema": true,
+   "wrong_plan_hash": true,
+   "altered_spec": true,
+   "smoke_marked_evidence": true
+  },
+  "pass_": true
+ },
+ "verdict": "PASS"
+}

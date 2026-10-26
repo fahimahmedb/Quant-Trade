@@ -1,0 +1,110 @@
+name: SEC P0 pre-t0 gate
+
+# Independently observed qualification on the exact head under review.
+# No network requests are made by the scientific qualification lanes.
+
+on:
+  push:
+    branches:
+      - 'builder/**'
+      - 'blue/**'
+      - 'astra/**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Record environment
+        run: |
+          python3 --version
+          echo "commit: ${{ github.sha }}"
+
+      - name: Fail-closed check (no SEC identity configured)
+        run: |
+          set -euo pipefail
+          if [ -n "${QUANT_SEC_USER_AGENT:-}" ]; then
+            echo "CI must not configure a SEC identity"; exit 1
+          fi
+          PYTHONPATH=src python3 scripts/quant.py sec-probe --root . && rc=0 || rc=$?
+          test "$rc" -eq 2
+          PYTHONPATH=src python3 scripts/quant.py sec-readiness --root . && rrc=0 || rrc=$?
+          test "$rrc" -eq 1
+          echo "capture lane correctly fails closed without a declared identity"
+
+      - name: Generated schema drift
+        run: python3 scripts/generate_schemas.py --check
+
+      - name: Status artifact freshness
+        run: python3 scripts/status_artifacts.py --check
+
+      - name: Full unit suite
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+
+      - name: W1 Scientific Memory focused suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            research.research_os.tests.test_archaeology \
+            research.research_os.tests.test_legacy_scientific_memory \
+            research.research_os.tests.test_memory_archaeology_bridge \
+            research.research_os.tests.test_scientific_memory
+          node research/research_os/tests/contract-smoke.test.mjs
+
+      - name: W1 Data focused suite
+        run: PYTHONPATH=src:. python3 -m unittest discover -s research/research_os/tests -p 'test_w1_data_*.py' -v
+
+      - name: W1 Factory experiment infrastructure suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            research.research_os.tests.test_w1_factory_experiment_infrastructure \
+            research.research_os.tests.test_w1_factory_experiment_bridge \
+            research.research_os.tests.test_w1_factory_economic_integration \
+            research.research_os.tests.test_w1_factory_firewall_hardening \
+            research.research_os.tests.test_economic_readiness_validation
+
+      - name: W1 Economic structural portfolio suite
+        run: |
+          PYTHONPATH=src:. python3 -m unittest -v \
+            research.research_os.tests.test_economic_identity_memory_context_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1 \
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1 \
+            tests.test_research_os_structural_unknown_evidence
+
+      - name: SEC P0 lane suite
+        run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
+
+      - name: V1 end-to-end regression
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Generate exact-head verification artifact
+        run: |
+          PYTHONPATH=src python3 scripts/verify_p0.py --write
+          PYTHONPATH=src python3 scripts/verify_p0.py --check --sha "${{ github.sha }}"
+
+      - name: Upload exact-head verification artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-p0-verification-${{ github.sha }}
+          path: handoff/SEC_FORM4_P0_VERIFICATION.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Restore committed verification placeholder
+        run: git checkout -- handoff/SEC_FORM4_P0_VERIFICATION.json
+
+      - name: Clean working tree
+        run: |
+          git status --short
+          test -z "$(git status --porcelain)"

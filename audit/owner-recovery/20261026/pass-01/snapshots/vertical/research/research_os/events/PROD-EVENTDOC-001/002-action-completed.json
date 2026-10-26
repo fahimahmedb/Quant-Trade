@@ -1,0 +1,15 @@
+{
+  "event_id": "PROD-EVENTDOC-001-g1-e2",
+  "session_id": "PROD-EVENTDOC-001-g1",
+  "worker_id": "chatgpt-interactive-event-document-worker",
+  "action_id": "PROD-EVENTDOC-001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 2,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:44:40Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Due-bill event hypothesis frozen",
+    "detail": "EVENT-DUEBILL-LARGE-DIST-001 persisted with one independent validation handoff; no post-event market outcome, capital or live-trading action performed."
+  }
+}

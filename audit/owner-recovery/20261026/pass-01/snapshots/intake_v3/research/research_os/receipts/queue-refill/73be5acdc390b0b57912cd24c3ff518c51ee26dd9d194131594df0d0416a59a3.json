@@ -1,0 +1,127 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "derivation": {
+    "derivation_key": "73be5acdc390b0b57912cd24c3ff518c51ee26dd9d194131594df0d0416a59a3",
+    "queue": {
+      "active_count": 0,
+      "claimed_count": 0,
+      "ready_count": 0,
+      "task_count": 56,
+      "terminal_count": 56
+    },
+    "selected_frontier": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+    "status": "DERIVED_ONE_READY_TASK",
+    "task": {
+      "allowed_actions": [
+        "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+        "inspect admissible public primary documents and event rules",
+        "map event clock, causal mechanism, eligibility, confounders and falsification scope",
+        "actively seek documentary disconfirmation",
+        "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+      ],
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false,
+        "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
+      },
+      "created_at": "2026-10-20T13:20:16Z",
+      "derivation": {
+        "derivation_key": "73be5acdc390b0b57912cd24c3ff518c51ee26dd9d194131594df0d0416a59a3",
+        "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+        "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+        "sequence": 9,
+        "steward_lane": "integrator_portfolio",
+        "target_lane": "fundamental_events",
+        "type": "EMPTY_QUEUE_FRONTIER_REFILL"
+      },
+      "forbidden_actions": [
+        "candidate price or return inspection",
+        "backtest",
+        "post-outcome tuning",
+        "prospective observation",
+        "capital allocation",
+        "order generation",
+        "live trading"
+      ],
+      "inputs": {
+        "causal_distinctness_required": true,
+        "derivation_key": "73be5acdc390b0b57912cd24c3ff518c51ee26dd9d194131594df0d0416a59a3",
+        "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+        "legacy_gate_required": true,
+        "objective": "Find exactly one causally distinct event/document mechanism using admissible public primary or documentary evidence, screen Legacy before freeze, actively seek disconfirmation, and freeze at most one CandidateHypothesis without reading candidate returns or future outcomes.",
+        "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
+      },
+      "lease": {
+        "claimed_at": null,
+        "expires_at": null,
+        "generation": 0,
+        "owner": null
+      },
+      "priority": 70,
+      "required_capability": "event_document",
+      "research_contract_version": "v2-core",
+      "status": "READY",
+      "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
+      "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009",
+      "task_type": "EVENT_DOCUMENT",
+      "updated_at": "2026-10-20T13:20:16Z"
+    }
+  },
+  "hosted_model_calls": 0,
+  "input_head": "b8120ab49ec656f599b2159cad0fcd6449e7d86a",
+  "one_lineage_per_wake": true,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 15,
+      "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "af586f7116b275fd1ae69d9e1061d232d50ba628102f6be87bd0aee71d544b83",
+    "status": "PASS",
+    "task_authority": null
+  },
+  "producer_execution_same_wake": false,
+  "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "state_branch": "builder/oracle-v2-core-20261020",
+  "state_repository": "fahimahmedb/Quant-Trade"
+}

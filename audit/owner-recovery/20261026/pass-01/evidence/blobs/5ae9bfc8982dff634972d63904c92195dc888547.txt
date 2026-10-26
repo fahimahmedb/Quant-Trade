@@ -1,0 +1,84 @@
+new-law cells loaded: 1288 {'m3_astra': 10, 'm3_class': 900, 'm3_geo': 72, 'm3_m35': 240, 'm3_mix': 60, 'm3_probe3': 6}
+  lambda_theta 1.7 worst miss/size/uw [0.0683, 0.0469, 0.0083]
+  lambda_theta 1.75 worst miss/size/uw [0.0648, 0.0444, 0.0073]
+  lambda_theta 1.8 worst miss/size/uw [0.0608, 0.0417, 0.0066]
+  lambda_theta 1.9 worst miss/size/uw [0.0537, 0.0361, 0.0052]
+  lambda_theta 2.0 worst miss/size/uw [0.0474, 0.0316, 0.0041]
+lambda_theta (smallest >= 1.70 meeting 0.040 on miss/size/U_W): 2.15 worst miss/size/uw [0.0394, 0.0253, 0.0032]
+  lambda_kappa 1.6 worst T1a/NEG [0.0289, 0.0102]
+  lambda_kappa 1.65 worst T1a/NEG [0.0265, 0.0095]
+  lambda_kappa 1.7 worst T1a/NEG [0.0243, 0.0086]
+lambda_kappa (smallest >= 1.60 meeting 0.020): 1.8 worst T1a/NEG [0.0199, 0.0067]
+
+== failed candidate: cycle-2 lambda (1.70 / 1.60) over the enlarged class, worst new-law cells ==
+  L_W miss [(0.0683, 'pm89', 'trailing30/rv0.1', 'P0', 'full', 0.1, 35), (0.0681, 'pm89', 'trailing30/rv0.1', 'P30-rand', 'full', 0.1, 35), (0.0659, 'pm89', 'trailing30/rv0.1', 'P30-rand', 'thin', 0.1, 35)]
+  size (false REALIZED_WINDOW positive) [(0.0469, 'pm89', 'trailing30/rv0.1', 'P30-run', 'thin', 0.0, 17), (0.0452, 'pm89', 'trailing30/rv0.1', 'P30-run', 'thin', 0.0, 17), (0.0445, 'fav85', 'trailing30/rv0.1', 'P30-run', 'thin', 0.0, 17)]
+  U_W miss [(0.0083, 'pmmix10', 'two-state0.9/rv0.1', 'P30-run', 'thin', 0.0, 17), (0.0077, 'pmmix10', 'two-state0.9/rv0.1', 'P30-run', 'thin', 0.1, 17), (0.0063, 'pmmix10', 'two-state0.9/rv0.1', 'P0', 'thin', 0.0, 17)]
+  T1a false [(0.0289, 'pm89', 'trailing30/rv0.1', 'P30-run', 'thin', 0.0, 17), (0.0265, 'fav85', 'trailing30/rv0.1', 'P30-run', 'thin', 0.0, 17), (0.0261, 'pm89', 'trailing30/rv0.1', 'P30-run', 'full', 0.0, 17)]
+  NEG false [(0.0102, 'pmmix10', 'two-state0.9/rv0.1', 'P30-run', 'thin', 0.0, 17), (0.0085, 'pmmix10', 'two-state0.9/rv0.1', 'P0', 'thin', 0.0, 17), (0.0069, 'pmmix50', 'two-state0.9/rv0.1', 'P30-run', 'thin', 0.0, 17)]
+
+== adopted lambda_theta 2.15 / lambda_kappa 1.80: worst 3 new-law cells per surface (cells to confirm at 100k) ==
+  L_W miss
+     0.0394  pm89 trailing30/rv0.1 P0 thin th=0.1 m=35 reach=0.895  [m3_m35 231]
+     0.0394  pm89 trailing30/rv0.1 P0 full th=0.1 m=35 reach=0.894  [m3_m35 233]
+     0.0389  pm89 trailing30/rv0.1 P30-rand full th=0.1 m=35 reach=0.918  [m3_m35 238]
+  size (false REALIZED_WINDOW positive)
+     0.0253  pm89 trailing30/rv0.1 P30-run thin th=0.0 m=17 reach=0.791  [m3_class 896]
+     0.0231  pm89 trailing30/rv0.1 P30-run thin th=0.0 m=17 reach=0.786  [m3_astra 7]
+     0.0231  fav85 trailing30/rv0.1 P30-run thin th=0.0 m=17 reach=0.754  [m3_class 884]
+  U_W miss
+     0.0032  pmmix10 two-state0.9/rv0.1 P30-run thin th=0.0 m=17 reach=0.250  [m3_mix 10]
+     0.0024  pmmix10 two-state0.9/rv0.1 P30-run thin th=0.1 m=17 reach=0.404  [m3_mix 11]
+     0.0016  pmmix50 two-state0.9/rv0.1 P30-run thin th=0.0 m=17 reach=0.564  [m3_mix 30]
+  T1a false
+     0.0199  pm89 trailing30/rv0.1 P30-run thin th=0.0 m=17 reach=0.791  [m3_class 896]
+     0.0186  pm89 trailing30/rv0.1 P30-run full th=0.0 m=17 reach=0.783  [m3_class 898]
+     0.0184  fav85 trailing30/rv0.1 P30-run thin th=0.0 m=17 reach=0.754  [m3_class 884]
+  NEG false
+     0.0067  pmmix10 two-state0.9/rv0.1 P30-run thin th=0.0 m=17 reach=0.250  [m3_mix 10]
+     0.0052  pmmix10 two-state0.9/rv0.1 P0 thin th=0.0 m=17 reach=0.252  [m3_mix 8]
+     0.0037  pmmix50 two-state0.9/rv0.1 P30-run thin th=0.0 m=17 reach=0.564  [m3_mix 30]
+CONFIRM_CELLS [('m3_astra', 0), ('m3_astra', 1), ('m3_astra', 2), ('m3_astra', 3), ('m3_astra', 4), ('m3_astra', 5), ('m3_astra', 6), ('m3_astra', 7), ('m3_astra', 8), ('m3_astra', 9), ('m3_class', 884), ('m3_class', 896), ('m3_class', 898), ('m3_m35', 231), ('m3_m35', 233), ('m3_m35', 238), ('m3_mix', 8), ('m3_mix', 10), ('m3_mix', 11), ('m3_mix', 30)]
+
+== level tables at adopted lambda (old D_P* cells from run H, GRID <= 2.50; new-law cells from run J) ==
+ by dependence family
+   AR(1) phi 0.5                miss 0.0028 size 0.0021 U_W 0.0001 T1a 0.0011 NEG 0.0001 headline 0.0028
+   AR(1) phi 0.7                miss 0.0053 size 0.0029 U_W 0.0001 T1a 0.0018 NEG 0.0003 headline 0.0053
+   AR(1) phi 0.8                miss 0.0084 size 0.0053 U_W 0.0001 T1a 0.0038 NEG 0.0006 headline 0.0084
+   AR(1) phi 0.9                miss 0.0226 size 0.0143 U_W 0.0008 T1a 0.0112 NEG 0.0019 headline 0.0226
+   hemisphere AR phi 0.9        miss 0.0062 size 0.0050 U_W 0.0001 T1a 0.0032 NEG 0.0004 headline 0.0062
+   none                         miss 0.0010 size 0.0005 U_W 0.0000 T1a 0.0003 NEG 0.0001 headline 0.0010
+   station AR phi 0.9           miss 0.0008 size 0.0001 U_W 0.0000 T1a 0.0001 NEG 0.0000 headline 0.0008
+   trailing mean L=15           miss 0.0144 size 0.0097 U_W 0.0004 T1a 0.0073 NEG 0.0008 headline 0.0144
+   trailing mean L=30           miss 0.0394 size 0.0253 U_W 0.0014 T1a 0.0199 NEG 0.0032 headline 0.0394
+   two-state phi 0.8            miss 0.0067 size 0.0052 U_W 0.0004 T1a 0.0042 NEG 0.0009 headline 0.0067
+   two-state phi 0.9            miss 0.0199 size 0.0180 U_W 0.0034 T1a 0.0139 NEG 0.0073 headline 0.0199
+ by CORE price law
+   fav                          miss 0.0208 size 0.0173 U_W 0.0010 T1a 0.0136 NEG 0.0032 headline 0.0211
+   fav80                        miss 0.0281 size 0.0200 U_W 0.0006 T1a 0.0157 NEG 0.0027 headline 0.0282
+   fav85                        miss 0.0340 size 0.0231 U_W 0.0005 T1a 0.0184 NEG 0.0018 headline 0.0340
+   favmix                       miss 0.0120 size 0.0119 U_W 0.0020 T1a 0.0104 NEG 0.0050 headline 0.0139
+   mid                          miss 0.0107 size 0.0091 U_W 0.0034 T1a 0.0078 NEG 0.0073 headline 0.0137
+   pm89                         miss 0.0394 size 0.0253 U_W 0.0006 T1a 0.0199 NEG 0.0016 headline 0.0394
+   pmmix10                      miss 0.0112 size 0.0112 U_W 0.0032 T1a 0.0099 NEG 0.0067 headline 0.0143
+   pmmix50                      miss 0.0094 size 0.0094 U_W 0.0016 T1a 0.0092 NEG 0.0037 headline 0.0111
+   pmmix90                      miss 0.0167 size 0.0167 U_W 0.0006 T1a 0.0154 NEG 0.0020 headline 0.0170
+   tail1                        miss 0.0021 size 0.0015 U_W 0.0000 T1a 0.0016 NEG 0.0008 headline 0.0021
+   tail3                        miss 0.0012 size 0.0012 U_W 0.0000 T1a 0.0011 NEG 0.0008 headline 0.0012
+ by calendar
+   P0                           miss 0.0394 size 0.0215 U_W 0.0024 T1a 0.0161 NEG 0.0054 headline 0.0394
+   P30-rand                     miss 0.0389 size 0.0217 U_W 0.0018 T1a 0.0174 NEG 0.0043 headline 0.0389
+   P30-run                      miss 0.0358 size 0.0253 U_W 0.0034 T1a 0.0199 NEG 0.0073 headline 0.0358
+ by D
+   D120                         miss 0.0394 size 0.0253 U_W 0.0034 T1a 0.0199 NEG 0.0073 headline 0.0394
+   D60                          miss 0.0180 size 0.0180 U_W 0.0005 T1a 0.0109 NEG 0.0016 headline 0.0180
+   D90                          miss 0.0096 size 0.0095 U_W 0.0001 T1a 0.0042 NEG 0.0004 headline 0.0096
+ by m
+   m17                          miss 0.0358 size 0.0253 U_W 0.0034 T1a 0.0199 NEG 0.0073 headline 0.0358
+   m35                          miss 0.0394 size 0.0217 U_W 0.0015 T1a 0.0174 NEG 0.0024 headline 0.0394
+ all of D_P**
+   all                          miss 0.0394 size 0.0253 U_W 0.0034 T1a 0.0199 NEG 0.0073 headline 0.0394
+ conditional on reach (cells with reach >= 0.10):  {'miss': 0.1476, 'fpos': 0.1476, 'uw': 0.0208, 't1a': 0.1211, 'neg': 0.044}
+   top conditional L_W miss 0.1476 pm89 two-state0.9/rv0.1 P0 35 full reach 0.1016
+   top conditional L_W miss 0.1349 pm89 two-state0.9/rv0.1 P0 35 thin reach 0.10155
+   top conditional L_W miss 0.1232 fav two-state0.9/rv0.1 P0 35 full reach 0.11165

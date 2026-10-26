@@ -1,0 +1,138 @@
+name: MEGA B Exact Head Qualification
+
+on:
+  push:
+    branches:
+      - builder/mega-b-discovery-engine-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mega-b-exact-head-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  qualify:
+    name: Discovery contracts + immutable scope
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prove immutable base ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          grep -F 'BASE_SHA:' handoff/MEGA_B_CP_001_20261021.md | grep -F "${WAVE2_IMMUTABLE_BASE_SHA}"
+
+      - name: Compile canonical Discovery surfaces
+        run: |
+          python -m compileall -q \
+            research/research_os/discovery_engine.py \
+            research/research_os/discovery_chain.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py
+
+      - name: Run canonical adversarial Discovery gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v research.research_os.tests.test_mega_b_canonical_gate 2>&1 | tee /tmp/mega-b-focused.log
+          grep -E '^Ran [0-9]+ tests' /tmp/mega-b-focused.log | tail -1
+
+      - name: Verify four producer routes and closed authority
+        run: |
+          python - <<'PY'
+          from research.research_os.discovery_chain import ENGINE_ROUTES
+          from research.research_os.discovery_engine import AUTHORITY
+          expected = {
+              'quant': ('QUANT_MECHANISM', 'quant_mechanisms'),
+              'event_document': ('EVENT_DOCUMENT', 'event_document'),
+              'fundamental': ('FUNDAMENTAL', 'fundamental'),
+              'institutional_flow': ('INSTITUTIONAL_FLOW', 'institutional_flows'),
+          }
+          assert ENGINE_ROUTES == expected, ENGINE_ROUTES
+          assert all(value is False for value in AUTHORITY.values()), AUTHORITY
+          PY
+
+      - name: Static mission scope membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/sec-p0-pre-t0-gate\.yml|\.github/workflows/mega-b-exact-head-qualification\.yml|handoff/MEGA_B_CP_[0-9]+_20261021\.md|handoff/MEGA_B_FINAL_20261021\.md|research/research_os/discovery_chain\.py|research/research_os/discovery_engine\.py|research/research_os/tests/test_mega_b_[A-Za-z0-9_]+\.py)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected MEGA B scope files:'
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+
+      - name: Prove upstream owned laws were not mutated
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD -- \
+            research/research_os/engines/protocol.py \
+            research/research_os/expansion/implementability_depth.py \
+            research/research_os/expansion/portfolio_v2.py \
+            research/research_os/expansion/final_shape.py \
+            research/research_os/expansion/economic_test_readiness_v1.py)"
+
+      - name: Verify clean working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain)"
+
+      - name: Emit exact-head receipt
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          log = Path('/tmp/mega-b-focused.log').read_text()
+          count = re.findall(r'^Ran ([0-9]+) tests.*$', log, flags=re.MULTILINE)
+          receipt = {
+              'mission': 'MEGA_B_DISCOVERY_ENGINE',
+              'qualified_head': os.environ['GITHUB_SHA'],
+              'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
+              'canonical_test_count': int(count[-1]) if count else None,
+              'canonical_result': 'PASS',
+              'producer_families': [
+                  'QUANT_MECHANISM', 'EVENT_DOCUMENT', 'FUNDAMENTAL', 'INSTITUTIONAL_FLOW'
+              ],
+              'candidate_contract_additive': True,
+              'discovery_binding_tamper_evident': True,
+              'factory_handoff_binding_tamper_evident': True,
+              'outcome_accessed': False,
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+              'scheduler_owned': False,
+              'control_plane_mutated': False,
+              'upstream_law_mutated': False,
+              'clean_working_tree': True,
+          }
+          Path('/tmp/mega-b-exact-head-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-b-exact-head-${{ github.sha }}
+          path: |
+            /tmp/mega-b-exact-head-receipt.json
+            /tmp/mega-b-focused.log
+          if-no-files-found: error
+          retention-days: 90

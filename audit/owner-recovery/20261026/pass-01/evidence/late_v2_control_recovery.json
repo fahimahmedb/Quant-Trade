@@ -1,0 +1,57 @@
+{
+  "head": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
+  "cp_labels_reviewed": [
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99
+  ],
+  "repairs": [
+    81,
+    84,
+    87,
+    90,
+    93,
+    96,
+    99
+  ],
+  "finding_cps": [
+    80,
+    83,
+    86,
+    89,
+    92,
+    95,
+    98
+  ],
+  "qualification_cps": [
+    82,
+    85,
+    88,
+    91,
+    94,
+    97
+  ],
+  "exact_source_ci": 39660277404,
+  "scope": "Named composed control omissions verified statically; other patch equivalence remains unresolved.",
+  "source_diff": "diff --git a/research/research_os/expansion/v2_core.py b/research/research_os/expansion/v2_core.py\nindex 735e87bd..abfbd0d3 100644\n--- a/research/research_os/expansion/v2_core.py\n+++ b/research/research_os/expansion/v2_core.py\n@@ -123,6 +123,8 @@ def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:\n         raise V2ContractError(\"INVALID_CLOSE_POLICY\")\n     if not isinstance(payload[\"allowed_model_set\"], list) or not payload[\"allowed_model_set\"]:\n         raise V2ContractError(\"EMPTY_ALLOWED_MODEL_SET\")\n+    for model in payload[\"allowed_model_set\"]:\n+        _require_identifiers({\"allowed_model\": model}, (\"allowed_model\",), \"EPOCH\")\n     if not isinstance(payload[\"epoch_feedback_dependencies\"], list):\n         raise V2ContractError(\"INVALID_FEEDBACK_DEPENDENCIES\")\n     if type(payload[\"max_candidate_exports\"]) is not int or payload[\"max_candidate_exports\"] < 1:\n@@ -160,7 +162,23 @@ def assert_epoch_update(previous: Mapping[str, Any], current: Mapping[str, Any],\n             raise V2ContractError(\"POST_EXPORT_EPOCH_MUTATION:\" + \",\".join(changed))\n \n \n+def assert_trial_epoch_window(epoch: Mapping[str, Any], trial: Mapping[str, Any]) -> None:\n+    \"\"\"Bind declared generation time to the existing half-open research window.\"\"\"\n+    try:\n+        window = epoch[\"research_window\"]\n+        if not isinstance(window, Mapping):\n+            raise V2ContractError(\"INVALID_RESEARCH_WINDOW\")\n+        start = _parse_time(window[\"start\"])\n+        end = _parse_time(window[\"end\"])\n+        generated = _parse_time(trial[\"generated_at\"])\n+    except (KeyError, TypeError, ValueError) as error:\n+        raise V2ContractError(\"INVALID_TRIAL_EPOCH_TIME\") from error\n+    if not start <= generated < end:\n+        raise V2ContractError(\"TRIAL_OUTSIDE_EPOCH_RESEARCH_WINDOW\")\n+\n+\n def assert_model_allowed(epoch: Mapping[str, Any], model_identity: str) -> None:\n+    _require_identifiers({\"model_identity\": model_identity}, (\"model_identity\",), \"MODEL\")\n     if model_identity not in epoch.get(\"allowed_model_set\", []):\n         raise V2ContractError(\"MODEL_OUTSIDE_EPOCH_POLICY\")\n \n@@ -261,6 +279,31 @@ def assert_validator_candidate_binding(candidate: Mapping[str, Any], validator:\n         raise V2ContractError(\"VALIDATOR_HASH_MISMATCH\")\n \n \n+def assert_trial_proposal_binding(candidate: Mapping[str, Any], trial: Mapping[str, Any]) -> None:\n+    \"\"\"Join a generated proposal to its exact subject, not merely its trial ID.\n+\n+    Native producer trials reference the original source Candidate; generic V2\n+    trials reference the V2 Candidate itself. These hashes are not interchangeable.\n+    \"\"\"\n+    _require_identifiers(candidate, (\"hypothesis_id\", \"generation_id\"), \"TRIAL_CANDIDATE\")\n+    manifest = candidate.get(\"evidence_manifest\")\n+    if not isinstance(manifest, Mapping):\n+        raise V2ContractError(\"TRIAL_PROPOSAL_BINDING_MISMATCH\")\n+    reference = candidate.get(\"candidate_hash\")\n+    if \"source_candidate_hash\" in manifest or \"documentary_packet_hash\" in manifest:\n+        reference = manifest.get(\"source_candidate_hash\")\n+        packet_hash = manifest.get(\"documentary_packet_hash\")\n+        if not _is_sha256(packet_hash) or trial.get(\"source_packet_hash\") != packet_hash:\n+            raise V2ContractError(\"TRIAL_SOURCE_PACKET_BINDING_MISMATCH\")\n+    if not _is_sha256(reference):\n+        raise V2ContractError(\"TRIAL_PROPOSAL_BINDING_MISMATCH\")\n+    expected = {\"hypothesis_id\": candidate.get(\"hypothesis_id\"),\n+                \"generation_id\": candidate.get(\"generation_id\"), \"candidate_hash\": reference}\n+    if not any(isinstance(proposal, Mapping) and all(proposal.get(k) == v for k, v in expected.items())\n+               for proposal in trial[\"generated_proposals\"]):\n+        raise V2ContractError(\"TRIAL_PROPOSAL_BINDING_MISMATCH\")\n+\n+\n def build_priority_decision(*, policy_version: str, eligible: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:\n     if not policy_version or not eligible:\n         raise V2ContractError(\"PRIORITY_REQUIRES_POLICY_AND_ELIGIBLE_SET\")\n@@ -305,7 +348,7 @@ def _scan_forbidden_outcome_keys(value: Any, path: str = \"$\") -> List[str]:\n             if key_norm in FORBIDDEN_OUTCOME_KEYS:\n                 hits.append(f\"{path}.{key}\")\n             hits.extend(_scan_forbidden_outcome_keys(child, f\"{path}.{key}\"))\n-    elif isinstance(value, list):\n+    elif isinstance(value, (list, tuple)):\n         for idx, child in enumerate(value):\n             hits.extend(_scan_forbidden_outcome_keys(child, f\"{path}[{idx}]\"))\n     return hits\ndiff --git a/research/research_os/expansion/v2_pipeline.py b/research/research_os/expansion/v2_pipeline.py\nindex 52225ddb..55f6ce6a 100644\n--- a/research/research_os/expansion/v2_pipeline.py\n+++ b/research/research_os/expansion/v2_pipeline.py\n@@ -8,6 +8,9 @@ from .v2_core import (\n     V2ContractError,\n     assert_authority_closed,\n     assert_epoch_blinding,\n+    assert_model_allowed,\n+    assert_trial_epoch_window,\n+    assert_trial_proposal_binding,\n     assert_validator_candidate_binding,\n     build_candidate,\n     build_epoch_manifest,\n@@ -36,7 +39,7 @@ def _reject_outcome_payload(value: Any, path: str = \"$\") -> None:\n             if str(key).lower() in _FORBIDDEN_RESEARCH_KEYS:\n                 raise V2ContractError(f\"OUTCOME_DATA_VISIBLE_TO_RESEARCH:{path}.{key}\")\n             _reject_outcome_payload(child, f\"{path}.{key}\")\n-    elif isinstance(value, list):\n+    elif isinstance(value, (list, tuple)):\n         for index, child in enumerate(value):\n             _reject_outcome_payload(child, f\"{path}[{index}]\")\n \n@@ -67,8 +70,12 @@ def run_pre_outcome_pipeline(bundle: Mapping[str, Any]) -> Dict[str, Any]:\n     if candidate[\"research_trial_id\"] != trial[\"research_trial_id\"]:\n         raise V2ContractError(\"CANDIDATE_TRIAL_BINDING_MISMATCH\")\n     assert_validator_candidate_binding(candidate, validator)\n+    assert_trial_proposal_binding(candidate, trial)\n+    assert_trial_epoch_window(epoch, trial)\n     if validator[\"execution_state\"] != \"COMPLETE\" or validator.get(\"scientific_decision\") != \"PASS\":\n         raise V2ContractError(\"EXPORT_REQUIRES_COMPLETED_VALIDATOR_PASS\")\n+    assert_model_allowed(epoch, trial[\"model_identity\"])\n+    assert_model_allowed(epoch, validator[\"validator_model\"])\n     if bundle[\"status\"][\"scientific_maturity\"] != \"VALIDATED\":\n         raise V2ContractError(\"EXPORT_REQUIRES_VALIDATED_SCIENTIFIC_STATUS\")\n     if bundle[\"status\"][\"experiment_readiness\"] != \"READY\":\n",
+  "merge_base_with_w2": "cf593275e41d21435ac308a144570e1451148815",
+  "immutable_2b99_is_ancestor_of_forward": false,
+  "ancestry_note": "Forward continues the Builder CP079 source; cumulative2b99 has25 commits beyond shared source while forward has20. Do not draw2b99 as its Git parent."
+}

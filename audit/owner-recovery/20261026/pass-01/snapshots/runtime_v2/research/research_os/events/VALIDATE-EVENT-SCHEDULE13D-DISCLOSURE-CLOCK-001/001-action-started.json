@@ -1,0 +1,11 @@
+{
+  "event_id":"VALIDATE-EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001-g1-001",
+  "session_id":"VALIDATE-EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001-g1",
+  "worker_id":"chatgpt-independent-challenge",
+  "action_id":"VALIDATE-EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-16T08:36:06Z",
+  "payload":{"queue_state":"WORKING","lane":"independent_challenge","candidate_id":"EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001","outcome_accessed":false}
+}

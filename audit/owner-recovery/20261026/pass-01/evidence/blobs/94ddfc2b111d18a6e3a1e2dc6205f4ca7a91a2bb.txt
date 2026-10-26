@@ -1,0 +1,143 @@
+{
+  "schema_version": "wave2-c0-acceptance-matrix.v1",
+  "wave2_immutable_base_sha": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+  "qualified_b_source_sha": "7ef088bb30ece88cf96f4514e8c581a95ca4b091",
+  "qualified_d0_code_sha": "84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0",
+  "qualified_e_source_sha": "2d5ff9d3d629affc720b706405fc093d0ae81548",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed": false
+  },
+  "existing_primitives_to_reuse": [
+    "research/research_os/expansion/experiment_infrastructure.py",
+    "research/research_os/expansion/experiment_runner.py",
+    "research/research_os/expansion/validation_v2.py",
+    "research/research_os/expansion/validation_readiness.py",
+    "research/research_os/expansion/red_team_v2.py",
+    "research/research_os/expansion/economic_test_readiness_v1.py"
+  ],
+  "forbidden_duplicate_ownership": [
+    "experiment_registry",
+    "trial_accounting",
+    "freeze_semantics",
+    "outcome_firewall",
+    "deterministic_replay",
+    "pre_outcome_receipt_model",
+    "operational_scheduler",
+    "task_queue_or_lease_state",
+    "control_plane_admission",
+    "economic_identity",
+    "structural_portfolio_readiness"
+  ],
+  "required_subject_bindings": [
+    "hypothesis_id",
+    "generation_id",
+    "candidate_hash",
+    "protocol_hash",
+    "frozen_protocol_hash",
+    "source_binding",
+    "pit_binding",
+    "code_environment_binding",
+    "trial_accounting_binding",
+    "experiment_registry_identity",
+    "pre_outcome_receipt_identity"
+  ],
+  "cases": [
+    {
+      "id": "C0-A01",
+      "name": "exact_pre_outcome_subject_can_be_scientifically_adjudicated",
+      "mutation": "NONE",
+      "expected_scientific_disposition": "PASS_ALLOWED",
+      "expected_authority_opened": false,
+      "expected_operational_ready": false
+    },
+    {
+      "id": "C0-A02",
+      "name": "producer_cannot_self_validate",
+      "mutation": "validator_id_equals_producer_id",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_reason_family": "PRODUCER_VALIDATOR_NOT_INDEPENDENT"
+    },
+    {
+      "id": "C0-A03",
+      "name": "post_freeze_candidate_mutation_requires_new_generation",
+      "mutation": "candidate_changes_after_freeze",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_reason_family": "CANDIDATE_BINDING_OR_IMMUTABILITY"
+    },
+    {
+      "id": "C0-A04",
+      "name": "protocol_mutation_blocks",
+      "mutation": "frozen_protocol_changes",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_reason_family": "PROTOCOL_BINDING_OR_FREEZE"
+    },
+    {
+      "id": "C0-A05",
+      "name": "source_or_pit_binding_mutation_blocks",
+      "mutation": "source_snapshot_or_pit_changes",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_reason_family": "SOURCE_PROVENANCE_OR_PIT"
+    },
+    {
+      "id": "C0-A06",
+      "name": "code_environment_mutation_blocks",
+      "mutation": "code_or_environment_binding_changes",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_reason_family": "REPRODUCIBILITY_BINDING"
+    },
+    {
+      "id": "C0-A07",
+      "name": "outcome_bearing_input_is_rejected",
+      "mutation": "outcome_payload_present_or_outcome_access_opened",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_reason_family": "OUTCOME_FIREWALL"
+    },
+    {
+      "id": "C0-A08",
+      "name": "red_team_negative_rights_block_without_repair",
+      "mutation": "red_team_context_leakage_or_clock_or_pit_or_data_fail",
+      "expected_scientific_disposition": "BLOCK",
+      "expected_repair_attempted": false,
+      "expected_retuning_attempted": false
+    },
+    {
+      "id": "C0-A09",
+      "name": "identity_timing_source_ambiguity_is_not_upgraded",
+      "mutation": "material_identity_timing_or_source_ambiguity",
+      "expected_scientific_disposition": "BLOCK_OR_EXPLICIT_UNKNOWN",
+      "expected_favorable_inference": false
+    },
+    {
+      "id": "C0-A10",
+      "name": "multiplicity_or_trial_accounting_gap_fails_closed",
+      "mutation": "multiplicity_or_trial_accounting_missing",
+      "expected_scientific_disposition": "BLOCK_OR_EXPLICIT_UNKNOWN",
+      "expected_silent_default": false
+    },
+    {
+      "id": "C0-A11",
+      "name": "scientific_pass_never_becomes_operational_task_ready",
+      "mutation": "NONE",
+      "expected_scientific_disposition": "PASS_ALLOWED",
+      "expected_operational_ready": false,
+      "expected_scheduler_mutation": false,
+      "expected_control_plane_mutation": false
+    },
+    {
+      "id": "C0-A12",
+      "name": "w1_econ_retains_downstream_veto",
+      "mutation": "structural_or_economic_identity_conflict_after_c0_pass",
+      "expected_scientific_disposition": "PASS_ALLOWED",
+      "expected_downstream_economic_readiness": "BLOCK_ALLOWED",
+      "expected_c0_bypass": false
+    }
+  ],
+  "canonical_integration_status": {
+    "ready_for_canonical_convergence2": false,
+    "wave2_integrated_sha_emission_authorized": false
+  }
+}

@@ -1,0 +1,130 @@
+mutation=save_serialization
+fixed_source_sha256=03cc51f0ec5d566d36ba28cf6e7df4f67ca032553013cfea47581f03d885c5e8
+..............FF..................                                       [100%]
+=================================== FAILURES ===================================
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-41/test_shared_heartbeat_is_seria4')
+after_commit = False, first_method = 'save'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+                    assert not second_done.wait(.15)
+                finally:
+                    release.set()
+                assert a.result(timeout=5) == ('ok' if after_commit is None else 'error')
+                b.result(timeout=5)
+        assert asdict(state) == asdict(runtime.CampaignState.load_or_create(path, 'ignored'))
+>       assert state.last_heartbeat == '2026-10-23T00:00:02+00:00'
+E       AssertionError: assert '2026-10-23T0....529814+00:00' == '2026-10-23T00:00:02+00:00'
+E
+E         - 2026-10-23T00:00:02+00:00
+E         ?             ^  ^ -
+E         + 2026-10-23T03:01:28.529814+00:00
+E         ?             ^  ^  ++++++++
+
+tests/test_vertical_campaign_state_depth.py:192: AssertionError
+_ test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-41/test_shared_heartbeat_is_seria5')
+after_commit = True, first_method = 'save'
+
+    @pytest.mark.parametrize('after_commit', [None, False, True])
+    @pytest.mark.parametrize('first_method', ['heartbeat', 'save'])
+    def test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery(tmp_path, after_commit, first_method):
+        path, state = loaded(tmp_path)
+        state.latest_lesson = 'pending-first-writer'
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+
+        def publication(target, document):
+            if threading.current_thread().name == 'first-heartbeat':
+                entered.set()
+                assert release.wait(5)
+                if after_commit is False:
+                    raise OSError('before publication')
+                write_json(target, document)
+                if after_commit is True:
+                    raise OSError('after publication before ACK')
+            else:
+                write_json(target, document)
+
+        def first():
+            threading.current_thread().name = 'first-heartbeat'
+            try:
+                getattr(state, first_method)(path)
+            except OSError:
+                return 'error'
+            return 'ok'
+
+        def second():
+            second_started.set()
+            try:
+                state.heartbeat(path)
+            finally:
+                second_done.set()
+
+        with patch.object(runtime, '_write_json', side_effect=publication), \
+             patch.object(runtime, 'utc_now', side_effect=(['2026-10-23T00:00:01+00:00', '2026-10-23T00:00:02+00:00'] if first_method == 'heartbeat' else ['2026-10-23T00:00:02+00:00'])):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                try:
+                    assert entered.wait(5)
+                    b = pool.submit(second)
+                    assert second_started.wait(5)
+                    assert not second_done.wait(.15)
+                finally:
+                    release.set()
+                assert a.result(timeout=5) == ('ok' if after_commit is None else 'error')
+                b.result(timeout=5)
+        assert asdict(state) == asdict(runtime.CampaignState.load_or_create(path, 'ignored'))
+>       assert state.last_heartbeat == '2026-10-23T00:00:02+00:00'
+E       AssertionError: assert '2026-10-23T0....707633+00:00' == '2026-10-23T00:00:02+00:00'
+E
+E         - 2026-10-23T00:00:02+00:00
+E         + 2026-10-23T03:01:28.707633+00:00
+
+tests/test_vertical_campaign_state_depth.py:192: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-False]
+FAILED tests/test_vertical_campaign_state_depth.py::test_shared_heartbeat_is_serialized_through_persist_and_failure_recovery[save-True]
+2 failed, 32 passed in 1.75s

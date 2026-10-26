@@ -1,0 +1,42 @@
+[Unit]
+Description=Quant Research OS bounded fresh-state wake
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/quant-research/worker.json
+
+[Service]
+Type=oneshot
+User=quant-research
+Group=quant-research
+WorkingDirectory=/opt/quant-research/current
+StateDirectory=quant-research
+StateDirectoryMode=0700
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONNOUSERSITE=1
+Environment=GIT_TERMINAL_PROMPT=0
+EnvironmentFile=-/etc/quant-research/worker.env
+# Lock the stable directory inode. Git HEAD/task fencing also protects other VMs.
+ExecStart=/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research /usr/bin/python3.12 -m research.research_os.oracle_worker --config /etc/quant-research/worker.json
+TimeoutStartSec=8min
+Restart=no
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=quant-research-worker
+LogRateLimitIntervalSec=1h
+LogRateLimitBurst=60
+MemoryMax=768M
+MemorySwapMax=256M
+CPUQuota=75%
+TasksMax=48
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/quant-research

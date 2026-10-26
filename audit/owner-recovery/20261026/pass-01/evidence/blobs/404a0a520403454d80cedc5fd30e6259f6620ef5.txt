@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "candidate": "EURUSD-RANGE-GRID-001",
+  "required_top_level": ["schema", "candidate", "verdict", "paths", "paired_central", "qa", "opportunities", "sigma_reference", "history", "integrity"],
+  "verdict_fields": ["RESULT", "EFFECT_SIZE", "UNCERTAINTY", "POWER_LIMITATION", "ECONOMIC_SIGNIFICANCE", "FAILED_CRITERIA", "LESSON", "FAMILY_STATUS", "NEXT_DECISION"],
+  "path_keys": ["MAIN_CENTRAL", "MAIN_STRESS", "NO_ADDS_CENTRAL", "NO_ADDS_STRESS", "STATIC_GRID_CENTRAL", "STATIC_GRID_STRESS"],
+  "paired_central_keys": ["NO_ADDS_CENTRAL", "STATIC_GRID_CENTRAL"],
+  "result_file": "/workspace/scratch/eurusd-range-grid-001/result-exploratory-01/result.json",
+  "partial_file_policy": "Preserve any result*.tmp; it blocks replay like result.json.",
+  "allowed_results": ["SOURCE_GATE_FAILED", "PROXY_COST_REJECT_THIS_RULE", "PROXY_RISK_REJECT_THIS_RULE", "PROXY_INCONCLUSIVE", "PROXY_POSITIVE_NEEDS_EXECUTION_VALIDATION", "GRID_OR_ADAPTATION_INCREMENT_UNSUPPORTED"],
+  "claim_scope": "EXPLORATORY_QUOTE_PROXY_ONLY; private predecessor UNKNOWN; no confirmatory alpha, history reset, replacement winner or live authority."
+}

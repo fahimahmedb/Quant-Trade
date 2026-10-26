@@ -1,0 +1,18 @@
+{
+  "event_id": "QUEUE-REFILL-EVENT-DOCUMENT-DISTINCT-MECHANISM-001-e1",
+  "session_id": "QUEUE-REFILL-EVENT-DOCUMENT-DISTINCT-MECHANISM-001",
+  "worker_id": "integrator-portfolio-queue-steward-bootstrap",
+  "action_id": "queue-refill:event-document-distinct-mechanism:001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T17:50:36Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Deterministic empty-queue refill",
+    "detail": "Global queue was verified terminal-only; exactly one EVENT_DOCUMENT producer task was derived from RESEARCH_FRONTIER.json. No producer research, economic outcome access, prospective observation, capital or trading occurred in the refill wake.",
+    "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+    "derivation_key": "ed6a24b5c40decc71d4746383bb4df3008cdcd4fc22bc419769125716c3134c5",
+    "derived_task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-001"
+  }
+}

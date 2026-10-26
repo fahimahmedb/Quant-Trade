@@ -1,0 +1,27 @@
+from pathlib import Path
+import os,subprocess
+root=Path('/workspace/Quant-Trade');logs=Path('/workspace/vertical_depth_logs_20261022')
+cases=[
+(18,'455112c^','research/research_os/expansion/persistent_state.py','immutable'),
+(19,'2c129a6^','research/research_os/legacy.py','legacy'),
+(20,'a7bd3e7^','research/research_os/expansion/red_team_v2.py','red_team'),
+(21,'08585a1^','src/quant/dataplane/panel.py','panel'),
+(22,'bb513a0^','research/research_os/expansion/acquisition_firewall_v1.py','firewall'),
+(23,'5b11289^','research/research_os/expansion/typed_pit_registry_v1.py','typed_registry'),
+(24,'f298e06^','research/research_os/expansion/source_qualification.py','source_route'),
+(25,'f6f0cc8^','research/research_os/expansion/implementability_depth.py','implementability'),
+(26,'28fc242^','research/research_os/expansion/v2_core.py','negative_memory'),
+(27,'5674452^','research/research_os/expansion/portfolio_v2.py','portfolio'),
+(28,'c56007c^','src/quant/edge_lab/store.py','edge_store'),
+(29,'ef85ec5^','research/research_os/expansion/forward_v2.py','forward_registry'),
+]
+for n,revision,name,test in cases:
+ p=root/name;fixed=p.read_bytes();backup=logs/f'CP{n:03}_source_backup';backup.write_bytes(fixed)
+ try:
+  original=subprocess.check_output(['git','show',revision+':'+name],cwd=root)
+  p.write_bytes(original)
+  with (logs/f'CP{n:03}_before.txt').open('w') as output:
+   result=subprocess.run(['python','-m','pytest','-q',f'tests/test_vertical_{test}_depth.py'],cwd=root,env={**os.environ,'PYTHONPATH':'src:tests:.'},stdout=output,stderr=subprocess.STDOUT)
+  assert result.returncode==1,(n,result.returncode)
+ finally:p.write_bytes(fixed)
+ print(n,(logs/f'CP{n:03}_before.txt').read_text().splitlines()[-1],flush=True)

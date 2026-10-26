@@ -1,0 +1,286 @@
+# Plan de feature — Extension IA F10 à F19
+
+> Déplacé depuis `docs/IA scope.md` lors de la mise en place de
+> `docs/context-strategy.md`. Contenu inchangé, seul l'emplacement change.
+
+# Extension IA — Fonctionnalités F10 à F19
+
+**Complète** `specs-v2-ia-plan-test.md` (F5-F9) et `lot-ia-0-jeux-donnees-test.md` (jeux de test).
+**Ne remplace rien.** Les principes de la section 1 des specs V2 (explicabilité, humain décisionnaire, gate de données, mode ombre, zéro saisie obligatoire, feature flags, activation par ingrédient) s'appliquent intégralement à tout ce qui suit.
+
+---
+
+## 0. Avertissement avant la liste
+
+**Plus de fonctionnalités IA n'est pas automatiquement mieux.** Le risque réel de ce document est de produire une application que personne ne comprend, dans un segment dont la contrainte n°1 est la simplicité d'usage (§4 des instructions projet : « un outil trop lourd sera abandonné, quelle que soit la qualité de l'IA derrière »).
+
+Mon avis, à contester : **deux de ces dix fonctionnalités valent plus que les huit autres réunies.**
+
+- **F11 (comptage tournant intelligent)** — c'est la seule fonctionnalité IA du projet qui s'attaque directement à la friction n°1 identifiée depuis le brief initial. Toutes les autres améliorent ce que le gérant *lit* ; celle-ci réduit ce que le chef *fait*.
+- **F12 (alerte de marge érodée)** — protège directement la rentabilité, avec un argument commercial immédiatement chiffrable pour ta sœur.
+
+Les huit autres sont réelles mais secondaires. Elles sont spécifiées ici pour être prêtes, pas pour être toutes construites.
+
+---
+
+## 1. F10 — Criticité des ingrédients (classification ABC)
+
+**Objectif** : déterminer quels ingrédients méritent l'attention, et lesquels n'en méritent presque pas.
+**Pourquoi c'est un socle** : F11 en dépend entièrement, et F5 gagne à ne remonter des badges que sur ce qui compte.
+
+**Gate** : ≥ 4 semaines de ventes. Aucun comptage nécessaire.
+
+**Règles métier**
+- Valeur annuelle consommée par ingrédient = consommation moyenne quotidienne × prix courant × 365.
+- Classement Pareto : classe A = les ingrédients cumulant 80 % de la valeur ; classe B = les 15 % suivants ; classe C = le reste.
+- Un facteur de **volatilité** s'ajoute : coefficient de variation des écarts constatés (si ≥ 3 comptages). Un ingrédient de classe B très volatil remonte en A.
+- Affichage : jamais les lettres A/B/C seules (jargon logistique). Formulation métier : « 8 ingrédients représentent 80 % de votre coût matière ».
+- Le gérant peut forcer la classe d'un ingrédient manuellement (ex. produit sensible HACCP), le choix manuel prime toujours.
+
+**Critères d'acceptation**
+- AC-F10-1 : sur SYN-J (voir §11), la classification retrouve exactement la répartition injectée.
+- AC-F10-2 : un ingrédient sans historique suffisant est classé « non déterminé », jamais C par défaut.
+- AC-F10-3 : le forçage manuel survit à un recalcul.
+
+**Cas de test** : TC-F10-01 répartition nominale ; TC-F10-02 ingrédient à forte valeur mais consommation nulle depuis 3 semaines → signalé « dormant » et non A ; TC-F10-03 ingrédient volatil de classe B → remonte en A avec explication ; TC-F10-04 tous les ingrédients de même valeur → répartition dégradée proprement, pas d'erreur.
+
+---
+
+## 2. F11 — Comptage tournant intelligent ⭐
+
+**Objectif** : arrêter de compter 40 ingrédients à chaque fois. Compter chaque jour les 8 qui bougent et qui coûtent, le reste une fois par semaine ou par mois.
+**Valeur segment** : c'est le concept d'inventaire tournant (§5 des instructions projet), rendu automatique. Sur un comptage de 40 lignes à 15 minutes, une session ciblée de 10 lignes tombe sous les 5 minutes. **C'est la fonctionnalité qui décide si l'outil est utilisé tous les jours ou abandonné au bout de trois semaines.**
+
+**Gate** : F10 actif (≥ 4 semaines de ventes) et ≥ 3 comptages complets.
+
+**Règles métier**
+- Chaque ingrédient reçoit une **fréquence de comptage suggérée** : quotidienne, hebdomadaire, ou mensuelle.
+- Calcul : croisement de la criticité (F10) et de la stabilité (variance historique des écarts). Fort coût + écarts instables → quotidien. Faible coût + toujours conforme → mensuel.
+- **Un comptage complet reste imposé périodiquement** (défaut : toutes les 4 semaines, réglable). Sans ça, un ingrédient classé « mensuel » à tort dériverait sans jamais être détecté. Non négociable : c'est le garde-fou qui empêche l'optimisation de créer un angle mort.
+- L'écran de comptage propose par défaut la **session du jour** (les ingrédients dus), avec un accès permanent au comptage complet en un geste.
+- La suggestion est modifiable : le chef peut ajouter ou retirer un ingrédient de la session, et son choix est mémorisé.
+- Explication systématique : « Farine — comptée chaque semaine : conforme sur les 6 derniers comptages, 4 % de votre coût matière ».
+- Un ingrédient qui déclenche un badge F5 (perte récurrente ou anomalie) **repasse automatiquement en quotidien** jusqu'à retour à la normale sur 3 comptages.
+
+**Critères d'acceptation**
+- AC-F11-1 : sur SYN-K, la session du jour contient exactement les ingrédients attendus.
+- AC-F11-2 : le comptage complet reste accessible en un geste depuis l'écran de comptage.
+- AC-F11-3 : après 4 semaines sans comptage complet, l'application le réclame explicitement et ne propose plus de session partielle tant qu'il n'est pas fait.
+- AC-F11-4 : un ingrédient avec badge F5 apparaît dans la session du jour même s'il était classé mensuel.
+- AC-F11-5 : le temps de comptage moyen (indicateur existant) doit baisser après activation — mesuré, pas supposé.
+
+**Cas de test** : TC-F11-01 à 05 (les AC) ; TC-F11-06 nouvel ingrédient → quotidien par défaut jusqu'à avoir un historique ; TC-F11-07 le chef retire un ingrédient de la session → mémorisé, mais réintégré si un badge F5 apparaît ; TC-F11-08 tous les ingrédients classés mensuels → la session du jour est vide, message clair proposant le comptage complet ; TC-F11-09 rythme de comptage irrégulier (rien pendant 3 semaines) → recalcul cohérent, pas de division par zéro.
+
+**Angle mort** : cette fonctionnalité suppose qu'un chef acceptera de ne pas tout compter. Certains voudront tout compter par principe de contrôle. Le comptage complet doit rester à un geste, jamais enfoui.
+
+---
+
+## 3. F12 — Alerte de marge érodée ⭐
+
+**Objectif** : détecter qu'un plat n'est plus rentable parce que ses ingrédients ont augmenté, et le dire avant que la marge ne soit mangée.
+**Valeur segment** : les mercuriales bougent chaque semaine, les cartes sont réimprimées une fois par an. C'est l'écart le plus silencieux et le plus coûteux du métier. **Implication commerciale directe** : « l'outil vous a dit que votre burger avait perdu 4 points de marge en 3 mois » est l'argument le plus concret que ta sœur pourra utiliser en rendez-vous.
+
+**Prérequis** : F1 (historique des prix, déjà livré) et le prix de vente saisi sur la fiche plat (U7 du plan UX, non encore fait — **dépendance à signaler**).
+
+**Gate** : ≥ 2 relevés de prix sur au moins un ingrédient du plat. Pas de gate de comptage.
+
+**Règles métier**
+- Coefficient multiplicateur par plat = prix de vente HT / coût matière. Recalculé à chaque réception qui modifie un prix.
+- Alerte si le coefficient passe sous un seuil réglable (défaut : 3,0) **ou** s'il a baissé de plus de 10 % sur 90 jours.
+- L'alerte décompose : « Burger maison — coût matière passé de 2,32 € à 2,71 € en 2 mois (+17 %), dont steak haché +0,28 €. Coefficient tombé de 3,4 à 2,9. »
+- **Prix de vente suggéré**, jamais appliqué : celui qui restaurerait le coefficient d'origine, avec la mention explicite que c'est un calcul, pas une recommandation commerciale (le prix psychologique et la concurrence locale ne sont pas dans l'outil).
+- Vue « impact d'un ingrédient » : quand un prix bouge, la liste des plats touchés et de combien.
+
+**Critères d'acceptation**
+- AC-F12-1 : sur SYN-L, l'alerte se déclenche au franchissement exact du seuil, pas avant.
+- AC-F12-2 : un plat sans prix de vente est exclu, avec mention, sans bloquer les autres.
+- AC-F12-3 : la décomposition attribue correctement la hausse à chaque ingrédient.
+- AC-F12-4 : le prix suggéré restaure le coefficient d'origine au centime.
+- AC-F12-5 : aucun prix de vente n'est jamais modifié automatiquement.
+
+**Cas de test** : TC-F12-01 à 05 (les AC) ; TC-F12-06 hausse puis baisse revenant au point de départ → alerte levée puis retirée ; TC-F12-07 ingrédient partagé par 5 plats → les 5 listés avec impact différencié ; TC-F12-08 hausse de 40 % sur un ingrédient représentant 2 % du coût du plat → pas d'alerte (impact réel négligeable).
+
+---
+
+## 4. F13 — Prévision de mise en place
+
+**Objectif** : répondre à « combien je prépare demain », pas seulement « combien je commande ».
+**Valeur segment** : sur carte fixe, la sur-préparation de sauces, garnitures et fonds est une source de gaspillage quotidienne, distincte de la sur-commande.
+
+**Gate** : F6 actif pour les ingrédients concernés.
+
+**Règles métier**
+- Pour les ingrédients marqués « préparé en interne » (nouveau champ optionnel), prévision de la quantité à produire pour le service du lendemain, ou pour les N jours de conservation de la préparation.
+- Tient compte du reste en stock de la préparation précédente.
+- Affichage sous forme de liste de production imprimable ou consultable en cuisine.
+- Ajustement manuel systématiquement possible, avec mémorisation de l'écart entre prévision et décision réelle (indicateur de confiance).
+
+**Critères d'acceptation** : AC-F13-1 aucun ingrédient marqué préparé → fonctionnalité invisible ; AC-F13-2 sur SYN-A, la quantité prévue correspond à la consommation attendue du jour ±10 % ; AC-F13-3 stock de préparation existant déduit.
+
+**Cas de test** : TC-F13-01 à 03 (les AC) ; TC-F13-04 jour de fermeture le lendemain → aucune production suggérée ; TC-F13-05 conservation de 3 jours → production couvrant 3 jours, pas 1.
+
+---
+
+## 5. F14 — Risque de péremption
+
+**Objectif** : signaler le stock qui ne sera pas consommé à temps, **sans exiger la saisie d'une DLC par lot**.
+
+**Gate** : F6 actif OU moyenne glissante v1 disponible, et durée de conservation renseignée (champ optionnel déjà prévu en F7).
+
+**Règles métier**
+- Pour chaque ingrédient : à la consommation prévue, le stock actuel sera-t-il écoulé avant la fin de sa durée de conservation ?
+- Si non : « Il vous restera ~2,1 kg de tomates dans 5 jours, au-delà de leur conservation habituelle — environ 6,30 € ».
+- Suggestion d'action limitée à ce que l'outil sait faire : réduire la prochaine commande. **Pas** de suggestion de plat du jour ou de promotion — ce serait sortir du domaine de compétence de l'outil et de son explicabilité.
+- Se combine avec le plafond péremption de F7 : ici c'est le stock déjà présent, là c'est la commande à venir.
+
+**Critères d'acceptation** : AC-F14-1 aucune durée de conservation renseignée → fonctionnalité silencieuse ; AC-F14-2 sur SYN-M, l'alerte se déclenche au bon jour ; AC-F14-3 le montant en euros est exact.
+
+**Cas de test** : TC-F14-01 à 03 ; TC-F14-04 consommation nulle sur l'ingrédient → alerte immédiate, pas de division par zéro ; TC-F14-05 réception entre-temps → recalcul.
+
+---
+
+## 6. F15 — Contrôle d'intégrité des ventes importées
+
+**Objectif** : détecter qu'un import de ventes est incomplet ou anormal **avant** qu'il ne corrompe le stock théorique et, en cascade, toutes les prévisions.
+**Pourquoi c'est important** : Claude Code l'a signalé lui-même — un historique construit sur un import mal calé produirait des recommandations fausses avec assurance. C'est le garde-fou de tout l'édifice.
+
+**Gate** : ≥ 3 semaines d'imports pour établir une normale.
+
+**Règles métier**
+- À chaque import, comparaison au profil habituel : nombre de lignes, chiffre d'affaires, nombre de plats distincts, pour ce jour de semaine.
+- Alerte non bloquante si écart > 40 % (réglable) : « Ce fichier contient 12 ventes pour un vendredi, contre 80 habituellement. Import incomplet ? »
+- **Détection de jours manquants** : un trou dans l'historique est signalé explicitement (« aucune vente importée pour le 12 septembre — jour de fermeture ou import oublié ? ») avec la possibilité de marquer le jour comme fermé.
+- Détection de doublon de fichier déjà prévue en F8, conservée ici.
+- L'import reste toujours possible : l'outil alerte, ne bloque pas.
+
+**Critères d'acceptation** : AC-F15-1 import à −80 % du volume habituel → alerte, import possible après confirmation ; AC-F15-2 trou de 2 jours → signalé, marquable comme fermeture ; AC-F15-3 sous le gate → aucune alerte, aucun faux positif.
+
+**Cas de test** : TC-F15-01 à 03 ; TC-F15-04 premier import → aucune alerte ; TC-F15-05 restaurant en congés 2 semaines → détecté comme période exceptionnelle, proposé à l'exclusion (lien avec F6) ; TC-F15-06 jour habituellement fermé → pas d'alerte de trou.
+
+---
+
+## 7. F16 — Consolidation de commande par fournisseur
+
+**Objectif** : passer d'une liste de suggestions par ingrédient à une commande par fournisseur, respectant les minimums.
+**Valeur segment** : les minimums de commande et le franco de port sont une contrainte quotidienne (§4 des instructions projet). Une suggestion qui ignore le franco fait payer des frais de port inutiles.
+
+**Nouvelles données (optionnelles)** : fournisseur par ingrédient (le champ fournisseur existe déjà sur les réceptions — le rattacher à l'ingrédient), montant de franco de port, minimum de commande.
+
+**Gate** : aucun gate de données. Purement combinatoire.
+
+**Règles métier**
+- Les suggestions F7 sont regroupées par fournisseur, avec le total de la commande.
+- Si le total est sous le franco : « 42 € sur 80 € de franco. Ajouter 38 € ou reporter à jeudi ? » avec proposition d'anticiper les ingrédients du même fournisseur bientôt sous seuil.
+- **Jamais de sur-commande automatique pour atteindre un franco** : la proposition d'ajout est explicite et le plafond péremption de F7 s'applique toujours à chaque ligne ajoutée.
+- Export de la commande en texte simple, copiable dans un email ou un SMS au fournisseur. Pas d'envoi automatique (principe 2).
+
+**Critères d'acceptation** : AC-F16-1 aucun fournisseur renseigné → affichage F7 inchangé ; AC-F16-2 total sous franco → proposition d'ajout dont chaque ligne respecte le plafond péremption ; AC-F16-3 aucun envoi automatique, dans aucun chemin de code.
+
+**Cas de test** : TC-F16-01 à 03 ; TC-F16-04 ingrédient sans fournisseur → groupe « non attribué », pas d'erreur ; TC-F16-05 franco atteignable uniquement en dépassant la péremption → l'outil dit qu'il ne peut pas et propose le report.
+
+---
+
+## 8. F17 — Diagnostic de cause d'écart
+
+**Objectif** : F5 dit *qu'il y a* un écart récurrent. F17 propose *pourquoi*.
+
+**Gate** : ≥ 6 comptages, et ≥ 3 écarts avec motif saisi (le champ motif existe depuis le MVP).
+
+**Règles métier**
+Croisement de signaux internes uniquement, pour proposer une hypothèse — **jamais une conclusion** :
+- Écarts concentrés sur les jours de forte affluence → « portionnage sous le rush ? »
+- Écarts concentrés sur une zone de stockage → « conservation ou casse dans [zone] ? »
+- Écart apparu après une date précise → « quelque chose a changé le [date] : nouveau fournisseur, nouvelle équipe, recette modifiée ? »
+- Écart proportionnel aux ventes d'un plat → renvoi vers la proposition de dérive de fiche technique (F5).
+- Formulation systématiquement interrogative. L'outil n'a aucun moyen de savoir ce qui se passe en cuisine ; il signale une corrélation, le chef sait l'expliquer.
+
+**Critères d'acceptation** : AC-F17-1 sur SYN-N (écarts injectés uniquement le week-end), l'hypothèse « jours de forte affluence » est proposée ; AC-F17-2 aucun motif jamais saisi → fonctionnalité silencieuse, pas d'hypothèse hasardeuse ; AC-F17-3 toute hypothèse est formulée sous forme de question.
+
+**Cas de test** : TC-F17-01 à 03 ; TC-F17-04 écarts aléatoires sans structure → aucune hypothèse proposée (le test échoue si l'outil invente une corrélation) ; TC-F17-05 deux causes plausibles simultanées → les deux proposées, pas de choix arbitraire.
+
+---
+
+## 9. F18 — Indicateur de confiance des prévisions
+
+**Objectif** : montrer au gérant à quel point les prévisions ont été justes, pour que la confiance se construise sur des faits.
+**Lien avec les principes** : §8 des instructions projet — « la confiance se construit du semi-automatique vers l'automatique ». Cette fonctionnalité est la mesure de cette progression.
+
+**Gate** : ≥ 4 semaines de prévisions produites (y compris en mode ombre).
+
+**Règles métier**
+- Pour chaque ingrédient avec F6 actif : écart moyen entre prévision et réel sur les 4 dernières semaines, en clair (« prévisions justes à ±8 % en moyenne »).
+- Comparaison permanente avec la règle v1, y compris après bascule : si F6 se dégrade sous la v1 sur 3 semaines, **retour automatique à la v1** pour cet ingrédient, avec notification à l'équipe projet. C'est le pendant runtime du test IA-06.
+- Aucune métrique statistique jargonnante à l'écran (pas de MAPE, pas de RMSE) — l'équipe projet y a accès, pas le restaurateur.
+
+**Critères d'acceptation** : AC-F18-1 la dégradation sur 3 semaines déclenche le retour à v1 ; AC-F18-2 le retour est journalisé ; AC-F18-3 aucun terme statistique visible côté restaurateur.
+
+**Cas de test** : TC-F18-01 à 03 ; TC-F18-04 dégradation sur 2 semaines seulement → pas de retour ; TC-F18-05 retour à v1 puis réamélioration → réactivation possible, pas de bascule en boucle (hystérésis obligatoire).
+
+---
+
+## 10. F19 — Socle de l'effet réseau (structure seulement, aucune activation)
+
+**Objectif** : préparer, sans l'activer, la comparaison anonymisée entre établissements évoquée dans la vision du projet.
+
+**Statut** : **conception du modèle de données uniquement.** Aucune fonctionnalité visible, aucun transfert de données, aucune agrégation réelle tant qu'il n'y a qu'un seul restaurant — comparer un établissement à lui-même n'a aucun sens.
+
+**Ce qui est demandé dans ce lot**
+- Prévoir dans le schéma la possibilité d'exporter des métriques agrégées et non identifiantes (food cost moyen par catégorie d'ingrédient, écart moyen, saisonnalité hebdomadaire normalisée) — **sans les exporter**.
+- Aucune donnée nominative, aucun nom de plat propriétaire, aucun prix fournisseur négocié dans ce périmètre : ce sont des informations concurrentiellement sensibles.
+- Consentement explicite et révocable prévu dès la conception, jamais activé par défaut.
+
+**Implication commerciale** : quand plusieurs restaurants seront actifs, « votre food cost est à 32 % contre 29 % en médiane sur des établissements comparables » sera un argument fort. Mais c'est un argument de V3 : le promettre avant d'avoir les données serait une promesse en l'air.
+
+**Implication juridique, non tranchée** : dès qu'il y a mutualisation de données entre établissements, un cadre RGPD et contractuel est nécessaire (finalité, base légale, information, réversibilité). **À faire valider par un juriste avant toute activation** — je ne suis pas en mesure de trancher ce point, et il ne doit pas être traité comme un détail technique.
+
+---
+
+## 11. Jeux de données synthétiques additionnels
+
+À ajouter au générateur du lot IA-0, mêmes principes (graine fixe, vérité terrain interrogeable, bruit ±10 %).
+
+| Réf | Contenu | Cible |
+|---|---|---|
+| SYN-J | 20 ingrédients, répartition de valeur Pareto connue (3 ingrédients = 80 %) | F10 |
+| SYN-K | 20 ingrédients, moitié stables / moitié volatils, 8 comptages | F11 |
+| SYN-L | Plat à 4 ingrédients, hausse progressive injectée faisant passer le coefficient de 3,4 à 2,8 sur 90 jours | F12 |
+| SYN-M | Stock à rotation lente, conservation 5 jours, consommation connue | F14 |
+| SYN-N | Écarts injectés uniquement les vendredis et samedis | F17 |
+| SYN-O | Historique d'imports avec un jour manquant, un jour à −80 %, une période de congés de 2 semaines | F15 |
+
+---
+
+## 12. Séquencement recommandé
+
+| Priorité | Fonctionnalités | Justification |
+|---|---|---|
+| **1** | F10 puis F11 | F11 est la seule fonctionnalité IA qui réduit le travail du chef plutôt que d'enrichir la lecture du gérant. F10 en est le prérequis. |
+| **2** | F12 | Valeur métier et commerciale la plus directe. Dépend de U7 (prix de vente sur fiche), à faire avant. |
+| **3** | F15 | Garde-fou : protège la justesse de tout le reste. Peu coûteux. |
+| **4** | F18 | Sécurise la bascule de F6. À faire avant toute activation réelle, pas après. |
+| **5** | F14, F16 | Valeur réelle, dépendantes de champs optionnels que le pilote renseignera peut-être. |
+| **6** | F17, F13 | Confort. À construire seulement si le pilote les demande. |
+| **7** | F19 | Structure de données seulement. Aucune activation avant un second restaurant et une validation juridique. |
+
+---
+
+## 13. Ce que je continue d'écarter
+
+| Idée | Raison |
+|---|---|
+| Suggestion de plat du jour / promotion anti-gaspillage | Sort du domaine de compétence de l'outil : ça touche à la carte, au prix psychologique, à l'identité du restaurant. L'outil signale le risque (F14), le chef décide. |
+| Prévision par apprentissage automatique sur petites séries | Inchangé depuis les specs V2 : inexplicable, inutile à cette échelle. |
+| Signaux externes (météo, événements) | V3 au plus tôt, et seulement si la saisonnalité interne est maîtrisée. |
+| Commande envoyée automatiquement au fournisseur | Contraire au principe 2. F16 s'arrête à l'export copiable. |
+| Notation ou classement des employés à partir des écarts | Techniquement possible via le champ « comptage par ». **Refusé** : transformerait un outil de gestion en outil de surveillance, détruirait la confiance de l'équipe cuisine et la fiabilité des saisies. À ne jamais implémenter, même sur demande. |
+
+---
+
+## 14. Hypothèses et angles morts
+
+- **Le risque principal de ce document est son volume.** Dix fonctionnalités bien spécifiées peuvent produire une application illisible. La priorisation de la section 12 compte plus que l'exhaustivité des specs.
+- F11 suppose qu'un chef acceptera de ne pas tout compter — hypothèse de comportement, non vérifiée. Si le pilote refuse, F11 perd l'essentiel de sa valeur.
+- F12 dépend de U7 (prix de vente sur les fiches), non encore implémenté. Sans lui, F12 est inerte.
+- F13, F14 et F16 dépendent de champs optionnels. Le principe « zéro saisie obligatoire » garantit qu'ils dégradent proprement, mais garantit aussi qu'ils peuvent rester vides et donc inutiles. À observer au pilote.
+- Tous les seuils de ce document (80/15/5 du Pareto, 40 % d'écart d'import, coefficient 3,0, 10 % sur 90 jours) sont des valeurs de départ raisonnées, pas mesurées. À revoir après le pilote.
+- F19 comporte une question juridique que je ne peux pas trancher.

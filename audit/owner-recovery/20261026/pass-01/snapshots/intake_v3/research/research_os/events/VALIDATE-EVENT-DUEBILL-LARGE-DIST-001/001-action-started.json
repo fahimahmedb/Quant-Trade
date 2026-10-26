@@ -1,0 +1,15 @@
+{
+  "event_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001-g1-e1",
+  "session_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001-g1",
+  "worker_id": "chatgpt-interactive-validator",
+  "action_id": "VALIDATE-EVENT-DUEBILL-LARGE-DIST-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:45:50Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Due-bill entitlement documentary validation",
+    "detail": "Independently checking current FINRA rule semantics and issuer/exchange event-clock evidence without reading market outcomes."
+  }
+}

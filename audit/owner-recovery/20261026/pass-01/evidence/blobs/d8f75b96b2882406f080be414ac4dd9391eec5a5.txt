@@ -1,0 +1,39 @@
+name: Live Lab 3D CI
+
+on:
+  push:
+    branches:
+      - builder/live-lab-3d-full-build-20261015
+    paths:
+      - 'research/live_lab_ux/**'
+      - '.github/workflows/live-lab-3d-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-lab-3d-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: research/live_lab_ux
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run isolated Live Lab suite
+        run: node --test tests/*.test.js
+      - name: Syntax-check browser modules
+        run: find . -name '*.js' -type f -print0 | xargs -0 -n1 node --check
+      - name: Assert 3D integration boundaries
+        run: |
+          grep -q 'createResearchLab3D' app.js
+          grep -q 'createResearchLab3D' live-app.js
+          grep -q 'scene3d.css' index.html
+          grep -q 'scene3d.css' live.html
+          grep -q "getContext('webgl" ui/scene3d.js
+          grep -q 'state.animationRunning' ui/scene3d.js
+          grep -q 'escapeSceneText' ui/scene3d-policy.js

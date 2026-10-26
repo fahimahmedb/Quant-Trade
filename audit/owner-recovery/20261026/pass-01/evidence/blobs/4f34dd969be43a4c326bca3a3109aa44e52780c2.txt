@@ -1,0 +1,47 @@
+mutation=future_clock_admission
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+....F......................................F............                 [100%]
+=================================== FAILURES ===================================
+___ test_lease_expiry_has_an_exact_boundary_and_no_future_start[-1e-06-True] ___
+
+age = -1e-06, stale = True
+
+    @pytest.mark.parametrize('age,stale', [(599.999999, False), (600, True), (600.000001, True), (0, False), (-0.000001, True)])
+    def test_lease_expiry_has_an_exact_boundary_and_no_future_start(age, stale):
+>       assert is_lease_stale(running((NOW - timedelta(seconds=age)).isoformat()), NOW) is stale
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:28.194725+00:00', updated_at='2026-10-24T02:09:28.194727+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:28.194725+00:00', updated_at='2026-10-24T02:09:28.194727+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00.000001+00:00')
+E        +      where '2026-10-24T12:00:00.000001+00:00' = <built-in method isoformat of datetime.datetime object at 0x7f5ace0ed920>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7f5ace0ed920> = (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) - datetime.timedelta(days=-1, seconds=86399, microseconds=999999)).isoformat
+E        +          where datetime.timedelta(days=-1, seconds=86399, microseconds=999999) = timedelta(seconds=-1e-06)
+
+tests/test_vertical_watchdog_clock_depth.py:24: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00.000001+00:00] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-17/test_invalid_or_future_heartbe8')
+heartbeat = '2026-10-24T12:00:00.000001+00:00'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'QUEUE_STARV...WORKER_STUCK'}
+E
+E         Extra items in the left set:
+E         'HEARTBEAT_MISSING'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_lease_expiry_has_an_exact_boundary_and_no_future_start[-1e-06-True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00.000001+00:00]
+2 failed, 54 passed in 0.16s

@@ -1,0 +1,6 @@
+source_sha=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+PYTHONHASHSEED=0
+PYTHONPATH=src:tests:.
+command=python -m pytest -q tests/test_research_os_implementability_contract.py
+...          [100%]
+3 passed, 60 subtests passed in 0.04s

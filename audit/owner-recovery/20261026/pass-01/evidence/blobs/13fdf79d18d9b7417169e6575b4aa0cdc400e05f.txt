@@ -1,0 +1,97 @@
+name: SEC P0 pre-t0 gate
+
+# Blue's fourth finding was that "232 tests pass" was a PR claim with no workflow
+# run attached to the head. This workflow exists so the claim is an independently
+# observed CI result on the exact commit under review.
+#
+# It runs no network requests. Every SEC test uses a fake transport, and the
+# collector fails closed without QUANT_SEC_USER_AGENT, which CI deliberately does
+# not set - so a green run also demonstrates the fail-closed path.
+
+on:
+  push:
+    branches:
+      - 'builder/**'
+      - 'blue/**'
+      - 'astra/**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Record environment
+        run: |
+          python3 --version
+          echo "commit: ${{ github.sha }}"
+
+      - name: Fail-closed check (no SEC identity configured)
+        run: |
+          set -euo pipefail
+          if [ -n "${QUANT_SEC_USER_AGENT:-}" ]; then
+            echo "CI must not configure a SEC identity"; exit 1
+          fi
+          # A probe must refuse outright (exit 2) with no identity configured.
+          PYTHONPATH=src python3 scripts/quant.py sec-probe --root . && rc=0 || rc=$?
+          test "$rc" -eq 2
+          # And readiness must report not-ready (exit 1) rather than silently pass.
+          PYTHONPATH=src python3 scripts/quant.py sec-readiness --root . && rrc=0 || rrc=$?
+          test "$rrc" -eq 1
+          echo "capture lane correctly fails closed without a declared identity"
+
+      - name: Generated schema drift
+        run: python3 scripts/generate_schemas.py --check
+
+      - name: Status artifact freshness
+        run: python3 scripts/status_artifacts.py --check
+
+      - name: Full unit suite
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+
+      - name: W1 Factory experiment infrastructure suite
+        run: |
+          PYTHONPATH=src python3 -m unittest -v \
+            research.research_os.tests.test_w1_factory_experiment_infrastructure \
+            research.research_os.tests.test_w1_factory_experiment_bridge \
+            research.research_os.tests.test_w1_factory_economic_integration \
+            research.research_os.tests.test_w1_factory_firewall_hardening \
+            research.research_os.tests.test_economic_readiness_validation
+
+      - name: SEC P0 lane suite
+        run: PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture tests.test_p0_adversarial tests.test_astra_pre_t0 -v
+
+      - name: V1 end-to-end regression
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Generate exact-head verification artifact
+        run: |
+          PYTHONPATH=src python3 scripts/verify_p0.py --write
+          PYTHONPATH=src python3 scripts/verify_p0.py --check --sha "${{ github.sha }}"
+
+      - name: Upload exact-head verification artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-p0-verification-${{ github.sha }}
+          path: handoff/SEC_FORM4_P0_VERIFICATION.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Restore committed verification placeholder
+        run: git checkout -- handoff/SEC_FORM4_P0_VERIFICATION.json
+
+      - name: Clean working tree
+        run: |
+          git status --short
+          test -z "$(git status --porcelain)"

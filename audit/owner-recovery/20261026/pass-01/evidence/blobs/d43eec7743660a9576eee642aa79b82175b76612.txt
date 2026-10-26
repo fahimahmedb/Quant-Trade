@@ -1,0 +1,83 @@
+{
+  "lot_ids": [
+    "B01",
+    "B02"
+  ],
+  "status": "IN_PROGRESS",
+  "observed_head_before": "62bf644531bc38cb62cc8f5d35b392e9f7649d5f",
+  "implementation_sha": "91254ad77479ce0afbab61f2618248ba47098893",
+  "remote_head_verified": true,
+  "scope": "Synthetic structured documentary engine depth; no source-connector activation or schema migration",
+  "validation": {
+    "command": "python -m unittest discover -s research/research_os/tests -p 'test_*.py' -q",
+    "tests_passed": 89
+  },
+  "ci": [
+    {
+      "id": 38756029300,
+      "name": "Research OS wave4 acquisition firewall CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    },
+    {
+      "id": 38756029470,
+      "name": "Research OS aggressive architecture CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    },
+    {
+      "id": 38756029319,
+      "name": "Research OS canonical spine CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    },
+    {
+      "id": 38756029331,
+      "name": "Research OS wave2 hardening CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    },
+    {
+      "id": 38756029435,
+      "name": "Research OS wave3 engine depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    },
+    {
+      "id": 38756029220,
+      "name": "Research OS canonical depth CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    },
+    {
+      "id": 38756029351,
+      "name": "Research OS aggressive final gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "91254ad77479ce0afbab61f2618248ba47098893"
+    }
+  ],
+  "evidence_class": "SYNTHETIC",
+  "artifacts": [
+    "research/research_os/simulations/documentary_inputs_fixture.json",
+    "research/research_os/tests/test_work_build_depth.py"
+  ],
+  "limitations": [
+    "Real captured documents remain outside engine-adapter.schema.json: synthetic_only is const true.",
+    "Only Fundamental/Event numeric premises and declared constraint coverage are computed; no economic edge is inferred.",
+    "Archaeology still uses the existing pinned Legacy gate; no new historical outcome is opened."
+  ],
+  "blocker": "REAL_DOCUMENT_ADAPTER_CONTRACT_NOT_MIGRATED",
+  "exact_reopen_condition": "Review and qualify a documentary adapter contract and source provenance without weakening the frozen six common contracts.",
+  "next_admissible_lot": "B03",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

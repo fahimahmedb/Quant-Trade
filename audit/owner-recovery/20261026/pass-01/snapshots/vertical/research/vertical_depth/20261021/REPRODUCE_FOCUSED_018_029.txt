@@ -1,0 +1,22 @@
+from pathlib import Path
+import subprocess,os
+root=Path('/workspace/Quant-Trade');logs=Path('/workspace/vertical_depth_logs_20261022')
+cases={
+18:['tests/test_vertical_immutable_depth.py','research/research_os/tests/test_persistent_final_shape.py','research/research_os/tests/test_depth_qualification.py','research/research_os/tests/test_work_build_depth.py'],
+19:['tests/test_vertical_legacy_depth.py','tests/test_research_os_historical_source_recovery.py','research/research_os/tests/test_multi_engine_pipeline.py','research/research_os/tests/test_canonical_integration_spine.py','research/research_os/tests/test_persistent_final_shape.py','research/research_os/tests/test_economic_readiness_integration.py'],
+20:['tests/test_vertical_red_team_depth.py','research/research_os/tests/test_economic_readiness_validation.py','research/research_os/tests/test_economic_readiness_integration.py','tests/test_research_os_readiness_provenance_admission.py'],
+21:['tests/test_vertical_panel_depth.py','tests/test_quant_system.py','tests/test_v1_red_team.py','tests/test_v1_red_team_followup.py'],
+22:['tests/test_vertical_firewall_depth.py','research/research_os/tests/test_wave4_acquisition_firewall.py'],
+23:['tests/test_vertical_typed_registry_depth.py','tests/test_vertical_firewall_depth.py','research/research_os/tests/test_wave4_acquisition_firewall.py'],
+24:['tests/test_vertical_source_route_depth.py','research/research_os/tests/test_wave2_hardening.py','research/research_os/tests/test_primary_flow_and_challenge.py','research/research_os/tests/test_economic_readiness_integration.py'],
+25:['tests/test_vertical_implementability_depth.py','research/research_os/tests/test_implementability_depth.py','research/research_os/tests/test_economic_readiness_integration.py','research/research_os/tests/test_experiment_runner_frozen_protocol.py'],
+26:['tests/test_vertical_negative_memory_depth.py','tests/test_vertical_core_depth.py','tests/test_research_os_v2_core.py','tests/test_research_os_v2_pipeline.py'],
+27:['tests/test_vertical_portfolio_depth.py','research/research_os/tests/test_economic_identity_portfolio_readiness.py','research/research_os/tests/test_economic_readiness_integration.py','research/research_os/tests/test_wave2_hardening.py'],
+28:['tests/test_vertical_edge_store_depth.py','tests/test_edge_lab.py','tests/test_edge_lab_discovery.py','tests/test_edge_lab_dashboard.py'],
+29:['tests/test_vertical_forward_registry_depth.py','tests/test_vertical_authority_depth.py','research/research_os/tests/test_work_build_depth.py','research/research_os/tests/test_wave2_hardening.py'],
+}
+for n,tests in cases.items():
+ with (logs/f'CP{n:03}_after.txt').open('w') as log:
+  result=subprocess.run(['python','-m','pytest','-q',*tests],cwd=root,env={**os.environ,'PYTHONPATH':'src:tests:.'},stdout=log,stderr=subprocess.STDOUT)
+ assert result.returncode==0,(n,result.returncode)
+ print(n,(logs/f'CP{n:03}_after.txt').read_text().splitlines()[-1],flush=True)

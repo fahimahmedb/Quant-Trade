@@ -1,0 +1,426 @@
+..F.F.F.FFFFFFFFFFFFFF                                                   [100%]
+=================================== FAILURES ===================================
+____ test_write_failure_and_lost_ack_recover_the_same_object[commit-False] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_write_failure_and_lost_ac2')
+operation = 'commit', after_write = False
+
+    @pytest.mark.parametrize("after_write", [False, True])
+    @pytest.mark.parametrize("operation", ["begin", "commit", "begin_session", "close_session"])
+    def test_write_failure_and_lost_ack_recover_the_same_object(tmp_path, operation, after_write):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        if operation == "commit":
+            begin(journal)
+        if operation == "close_session":
+            journal.begin_session(DAY, {"cash": 100}, {"cash": 100})
+        actions = {
+            "begin": lambda: begin(journal),
+            "commit": lambda: journal.commit("one", "fixture", "BOOKED", DAY, True),
+            "begin_session": lambda: journal.begin_session(DAY, {"cash": 100}, {"cash": 100}),
+            "close_session": lambda: journal.close_session(DAY),
+        }
+    
+        def fail(path, payload):
+            if after_write:
+                write_json(path, payload)
+            raise OSError("fixture disk/ack failure")
+    
+        with patch("quant.desk.journal.write_json", side_effect=fail):
+            with pytest.raises(OSError):
+                actions[operation]()
+        # Identical retry must reach the same durable state as uninterrupted use.
+        actions[operation]()
+        recovered = DeskJournal(path)
+>       assert recovered.pending == journal.pending
+E       AssertionError: assert {'one': {'fil..._id': 'one'}}} == {}
+E         
+E         Left contains 1 more item:
+E         {'one': {'fills': [{'quantity': 1, 'symbol': 'SYNTH'}],
+E                  'session_date': '2026-10-20',
+E                  'strategy_id': 'fixture',
+E                  'ticket': {'opportunity_id': 'one'}}}
+E         Use -v to get more diff
+
+tests/test_vertical_desk_journal_depth.py:51: AssertionError
+_ test_write_failure_and_lost_ack_recover_the_same_object[begin_session-False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_write_failure_and_lost_ac4')
+operation = 'begin_session', after_write = False
+
+    @pytest.mark.parametrize("after_write", [False, True])
+    @pytest.mark.parametrize("operation", ["begin", "commit", "begin_session", "close_session"])
+    def test_write_failure_and_lost_ack_recover_the_same_object(tmp_path, operation, after_write):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        if operation == "commit":
+            begin(journal)
+        if operation == "close_session":
+            journal.begin_session(DAY, {"cash": 100}, {"cash": 100})
+        actions = {
+            "begin": lambda: begin(journal),
+            "commit": lambda: journal.commit("one", "fixture", "BOOKED", DAY, True),
+            "begin_session": lambda: journal.begin_session(DAY, {"cash": 100}, {"cash": 100}),
+            "close_session": lambda: journal.close_session(DAY),
+        }
+    
+        def fail(path, payload):
+            if after_write:
+                write_json(path, payload)
+            raise OSError("fixture disk/ack failure")
+    
+        with patch("quant.desk.journal.write_json", side_effect=fail):
+            with pytest.raises(OSError):
+                actions[operation]()
+        # Identical retry must reach the same durable state as uninterrupted use.
+        actions[operation]()
+        recovered = DeskJournal(path)
+        assert recovered.pending == journal.pending
+        assert recovered.processed == journal.processed
+>       assert recovered.decision_snapshots == journal.decision_snapshots
+E       AssertionError: assert {} == {'2026-10-20'...'cash': 100}}}
+E         
+E         Right contains 1 more item:
+E         {'2026-10-20': {'CAPITAL': {'cash': 100}, 'EVALUATION': {'cash': 100}}}
+E         Use -v to get more diff
+
+tests/test_vertical_desk_journal_depth.py:53: AssertionError
+_ test_write_failure_and_lost_ack_recover_the_same_object[close_session-False] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_write_failure_and_lost_ac6')
+operation = 'close_session', after_write = False
+
+    @pytest.mark.parametrize("after_write", [False, True])
+    @pytest.mark.parametrize("operation", ["begin", "commit", "begin_session", "close_session"])
+    def test_write_failure_and_lost_ack_recover_the_same_object(tmp_path, operation, after_write):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        if operation == "commit":
+            begin(journal)
+        if operation == "close_session":
+            journal.begin_session(DAY, {"cash": 100}, {"cash": 100})
+        actions = {
+            "begin": lambda: begin(journal),
+            "commit": lambda: journal.commit("one", "fixture", "BOOKED", DAY, True),
+            "begin_session": lambda: journal.begin_session(DAY, {"cash": 100}, {"cash": 100}),
+            "close_session": lambda: journal.close_session(DAY),
+        }
+    
+        def fail(path, payload):
+            if after_write:
+                write_json(path, payload)
+            raise OSError("fixture disk/ack failure")
+    
+        with patch("quant.desk.journal.write_json", side_effect=fail):
+            with pytest.raises(OSError):
+                actions[operation]()
+        # Identical retry must reach the same durable state as uninterrupted use.
+        actions[operation]()
+        recovered = DeskJournal(path)
+        assert recovered.pending == journal.pending
+        assert recovered.processed == journal.processed
+>       assert recovered.decision_snapshots == journal.decision_snapshots
+E       AssertionError: assert {'2026-10-20'...'cash': 100}}} == {}
+E         
+E         Left contains 1 more item:
+E         {'2026-10-20': {'CAPITAL': {'cash': 100}, 'EVALUATION': {'cash': 100}}}
+E         Use -v to get more diff
+
+tests/test_vertical_desk_journal_depth.py:53: AssertionError
+_________ test_duplicate_intent_cannot_replace_a_frozen_plan[changes0] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_duplicate_intent_cannot_r0')
+changes = {'strategy_id': 'foreign'}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"fills": [{"symbol": "SYNTH", "quantity": 9}]},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_duplicate_intent_cannot_replace_a_frozen_plan(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:74: Failed
+_________ test_duplicate_intent_cannot_replace_a_frozen_plan[changes1] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_duplicate_intent_cannot_r1')
+changes = {'session_date': '2026-10-21'}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"fills": [{"symbol": "SYNTH", "quantity": 9}]},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_duplicate_intent_cannot_replace_a_frozen_plan(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:74: Failed
+_________ test_duplicate_intent_cannot_replace_a_frozen_plan[changes2] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_duplicate_intent_cannot_r2')
+changes = {'fills': [{'symbol': 'SYNTH', 'quantity': 9}]}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"fills": [{"symbol": "SYNTH", "quantity": 9}]},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_duplicate_intent_cannot_replace_a_frozen_plan(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:74: Failed
+_________ test_duplicate_intent_cannot_replace_a_frozen_plan[changes3] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_duplicate_intent_cannot_r3')
+changes = {'ticket': {'opportunity_id': 'foreign'}}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"fills": [{"symbol": "SYNTH", "quantity": 9}]},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_duplicate_intent_cannot_replace_a_frozen_plan(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:74: Failed
+___________ test_completed_opportunity_cannot_regain_a_pending_plan ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_completed_opportunity_can0')
+
+    def test_completed_opportunity_cannot_regain_a_pending_plan(tmp_path):
+        journal = DeskJournal(tmp_path / "journal.json")
+        begin(journal)
+        journal.commit("one", "fixture", "BOOKED", DAY, True)
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_desk_journal_depth.py:84: Failed
+__ test_completion_cannot_discard_intent_under_a_different_identity[changes0] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_completion_cannot_discard0')
+changes = {'strategy_id': 'foreign'}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"status": "NO_TRADE"}, {"rebalanced": False},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_completion_cannot_discard_intent_under_a_different_identity(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+        args = dict(opportunity_id="one", strategy_id="fixture", status="BOOKED", session_date=DAY,
+                    rebalanced=True)
+        args.update(changes)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:102: Failed
+__ test_completion_cannot_discard_intent_under_a_different_identity[changes1] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_completion_cannot_discard1')
+changes = {'session_date': '2026-10-21'}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"status": "NO_TRADE"}, {"rebalanced": False},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_completion_cannot_discard_intent_under_a_different_identity(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+        args = dict(opportunity_id="one", strategy_id="fixture", status="BOOKED", session_date=DAY,
+                    rebalanced=True)
+        args.update(changes)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:102: Failed
+__ test_completion_cannot_discard_intent_under_a_different_identity[changes2] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_completion_cannot_discard2')
+changes = {'status': 'NO_TRADE'}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"status": "NO_TRADE"}, {"rebalanced": False},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_completion_cannot_discard_intent_under_a_different_identity(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+        args = dict(opportunity_id="one", strategy_id="fixture", status="BOOKED", session_date=DAY,
+                    rebalanced=True)
+        args.update(changes)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:102: Failed
+__ test_completion_cannot_discard_intent_under_a_different_identity[changes3] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_completion_cannot_discard3')
+changes = {'rebalanced': False}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"status": "NO_TRADE"}, {"rebalanced": False},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_completion_cannot_discard_intent_under_a_different_identity(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+        args = dict(opportunity_id="one", strategy_id="fixture", status="BOOKED", session_date=DAY,
+                    rebalanced=True)
+        args.update(changes)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:102: Failed
+__ test_completion_cannot_discard_intent_under_a_different_identity[changes4] __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_completion_cannot_discard4')
+changes = {'ticket': {'opportunity_id': 'foreign'}}
+
+    @pytest.mark.parametrize("changes", [
+        {"strategy_id": "foreign"}, {"session_date": "2026-10-21"},
+        {"status": "NO_TRADE"}, {"rebalanced": False},
+        {"ticket": {"opportunity_id": "foreign"}},
+    ])
+    def test_completion_cannot_discard_intent_under_a_different_identity(tmp_path, changes):
+        path = tmp_path / "journal.json"
+        journal = DeskJournal(path)
+        begin(journal)
+        before = read_json(path)
+        args = dict(opportunity_id="one", strategy_id="fixture", status="BOOKED", session_date=DAY,
+                    rebalanced=True)
+        args.update(changes)
+>       with pytest.raises((RuntimeError, ValueError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (RuntimeError, ValueError)
+
+tests/test_vertical_desk_journal_depth.py:102: Failed
+__________ test_caller_and_returned_views_cannot_mutate_frozen_intent __________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_caller_and_returned_views0')
+
+    def test_caller_and_returned_views_cannot_mutate_frozen_intent(tmp_path):
+        journal = DeskJournal(tmp_path / "journal.json")
+        fills = [{"symbol": "SYNTH", "quantity": 1}]
+        begin(journal, fills=fills)
+        fills[0]["quantity"] = 10
+        returned = journal.pending_plan("one")
+        returned["fills"][0]["quantity"] = 20
+>       assert journal.pending_plan("one")["fills"][0]["quantity"] == 1
+E       assert 20 == 1
+
+tests/test_vertical_desk_journal_depth.py:115: AssertionError
+_______ test_competing_journal_writers_do_not_erase_processed_identities _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_competing_journal_writers0')
+
+    def test_competing_journal_writers_do_not_erase_processed_identities(tmp_path):
+        path = tmp_path / "journal.json"
+        journals = [DeskJournal(path), DeskJournal(path)]
+        gate = threading.Barrier(2)
+    
+        def commit(index):
+            gate.wait(timeout=5)
+            try:
+                journals[index].commit(str(index), "fixture", "NO_TRADE", DAY, False)
+                return "written"
+            except RuntimeError:
+                return "conflict"
+    
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(commit, range(2)))
+>       assert sorted(results) == ["conflict", "written"]
+E       AssertionError: assert ['written', 'written'] == ['conflict', 'written']
+E         
+E         At index 0 diff: 'written' != 'conflict'
+E         Use -v to get more diff
+
+tests/test_vertical_desk_journal_depth.py:139: AssertionError
+_____ test_out_of_order_completion_cannot_move_rebalance_recency_backward ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_out_of_order_completion_c0')
+
+    def test_out_of_order_completion_cannot_move_rebalance_recency_backward(tmp_path):
+        journal = DeskJournal(tmp_path / "journal.json")
+        journal.commit("new", "fixture", "BOOKED", "2026-10-21", True)
+        journal.commit("old", "fixture", "BOOKED", DAY, True)
+>       assert journal.stats_for("fixture")["last_rebalance_date"] == "2026-10-21"
+E       AssertionError: assert '2026-10-20' == '2026-10-21'
+E         
+E         - 2026-10-21
+E         ?          ^
+E         + 2026-10-20
+E         ?          ^
+
+tests/test_vertical_desk_journal_depth.py:151: AssertionError
+____ test_unknown_terminal_state_cannot_be_recorded_as_a_processed_session _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-22/test_unknown_terminal_state_ca0')
+
+    def test_unknown_terminal_state_cannot_be_recorded_as_a_processed_session(tmp_path):
+        journal = DeskJournal(tmp_path / "journal.json")
+        before = deepcopy(journal.stats)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_desk_journal_depth.py:157: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_desk_journal_depth.py::test_write_failure_and_lost_ack_recover_the_same_object[commit-False]
+FAILED tests/test_vertical_desk_journal_depth.py::test_write_failure_and_lost_ack_recover_the_same_object[begin_session-False]
+FAILED tests/test_vertical_desk_journal_depth.py::test_write_failure_and_lost_ack_recover_the_same_object[close_session-False]
+FAILED tests/test_vertical_desk_journal_depth.py::test_duplicate_intent_cannot_replace_a_frozen_plan[changes0]
+FAILED tests/test_vertical_desk_journal_depth.py::test_duplicate_intent_cannot_replace_a_frozen_plan[changes1]
+FAILED tests/test_vertical_desk_journal_depth.py::test_duplicate_intent_cannot_replace_a_frozen_plan[changes2]
+FAILED tests/test_vertical_desk_journal_depth.py::test_duplicate_intent_cannot_replace_a_frozen_plan[changes3]
+FAILED tests/test_vertical_desk_journal_depth.py::test_completed_opportunity_cannot_regain_a_pending_plan
+FAILED tests/test_vertical_desk_journal_depth.py::test_completion_cannot_discard_intent_under_a_different_identity[changes0]
+FAILED tests/test_vertical_desk_journal_depth.py::test_completion_cannot_discard_intent_under_a_different_identity[changes1]
+FAILED tests/test_vertical_desk_journal_depth.py::test_completion_cannot_discard_intent_under_a_different_identity[changes2]
+FAILED tests/test_vertical_desk_journal_depth.py::test_completion_cannot_discard_intent_under_a_different_identity[changes3]
+FAILED tests/test_vertical_desk_journal_depth.py::test_completion_cannot_discard_intent_under_a_different_identity[changes4]
+FAILED tests/test_vertical_desk_journal_depth.py::test_caller_and_returned_views_cannot_mutate_frozen_intent
+FAILED tests/test_vertical_desk_journal_depth.py::test_competing_journal_writers_do_not_erase_processed_identities
+FAILED tests/test_vertical_desk_journal_depth.py::test_out_of_order_completion_cannot_move_rebalance_recency_backward
+FAILED tests/test_vertical_desk_journal_depth.py::test_unknown_terminal_state_cannot_be_recorded_as_a_processed_session
+17 failed, 5 passed in 0.33s

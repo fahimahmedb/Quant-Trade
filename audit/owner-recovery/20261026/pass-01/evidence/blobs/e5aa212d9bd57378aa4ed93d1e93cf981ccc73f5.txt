@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "probe_id": "PROBE_6_PUBLIC_RENDER_CANARY",
+  "trace_id": "P6-WORK-PLATFORM-20261013T041000Z",
+  "recorded_at_utc": "2026-10-13T04:12:01.747Z",
+  "executor_environment": "ChatGPT Work; native GitHub/Sites/Automations tools; Cloud Browser; managed Linux container",
+  "evidence_provenance": "Direct inspection receipts and bounded source/DOM observations. Platform logs are retrospective request evidence; none is relabeled as live worker emission.",
+  "verdict": "NOT_RUN",
+  "verdict_scope": "CURRENT_WORK_EXECUTION_ENVIRONMENT",
+  "first_broken_transition": "PREREQUISITE_REAL_EMITTER_INGRESS_LEASE_AUTH_AND_RENDER_ACK_NOT_PROVEN",
+  "observed_fact": "The benign public rendered-frame canary was not run. A genuine worker-to-authenticated-ingress path, live session/lease store, Owner mutation and post-render VISIBLE_ACK are not present/proven. The current public inline bundle has no VISIBLE_ACK, render_state_hash, last applied live event id, lease id or session generation. No DISPLAY_ONLY signal was used as worker/render-latency proof.",
+  "evidence_reference": [
+    "traces/work-probe-06-20261013T041000Z.json"
+  ],
+  "minimum_platform_requirement": "All earlier mandatory primitives plus canonical frontend application of real events and verified post-render/frame ACK with event id/state hash. Measure local-clock stages separately; never infer rendered ACK from network receipt.",
+  "worker_id": null,
+  "session_id": null,
+  "session_generation": null,
+  "lease_id": null,
+  "sequence": null,
+  "live_event_effect_proof": null,
+  "confidentiality": "No secret, token, cookie, identity email or research outcome payload retained.",
+  "scientific_state_modified": false,
+  "prerequisites_pass": false,
+  "measurements": {
+    "ACTION_TO_EMIT_DISPATCH": null,
+    "SERVER_RECEIVED": null,
+    "SERVER_RECEIVED_TO_VERIFIED_RENDER_ACK": null
+  }
+}

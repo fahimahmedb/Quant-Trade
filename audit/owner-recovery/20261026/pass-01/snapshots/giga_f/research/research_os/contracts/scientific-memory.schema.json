@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://quant-trade.local/contracts/scientific-memory.schema.json",
+  "title": "ScientificMemoryRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "memory_id", "semantic_key", "canonical",
+    "scientific_disposition", "epistemic_status", "claim_ceiling",
+    "record_status", "identity", "evidence", "provenance", "reason_codes",
+    "protocol_weaknesses", "query_facets", "supersession", "governance_refs",
+    "source_identity", "session_authority"
+  ],
+  "properties": {
+    "schema_version": {"const": "scientific-memory-v1"},
+    "memory_id": {"type": "string", "minLength": 1},
+    "semantic_key": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "canonical": {"type": "boolean"},
+    "scientific_disposition": {"enum": ["NEGATIVE", "BLOCKED", "UNEXECUTED", "POSITIVE_BUT_INSUFFICIENT", "INVALIDATED_PROTOCOL", "SCIENTIFIC_MEMORY_ONLY", "REVIEW_STILL_REQUIRED"]},
+    "epistemic_status": {"enum": ["KNOWN_NEGATIVE", "KNOWN_POSITIVE_INSUFFICIENT", "UNKNOWN", "PROTOCOL_INVALID", "STRUCTURAL_ONLY", "MEMORY_ONLY", "REVIEW_REQUIRED"]},
+    "claim_ceiling": {"enum": ["NEGATIVE_SCOPE_ONLY", "UNKNOWN_ONLY", "SIGNAL_NOT_PROOF", "PROTOCOL_WEAKNESS_ONLY", "STRUCTURAL_MECHANISM_ONLY", "MEMORY_ONLY", "REVIEW_ONLY"]},
+    "record_status": {"enum": ["ACTIVE", "SUPERSEDED_WITH_PROOF", "OWNER_GOVERNANCE_NORMALIZED", "REVIEW_STILL_REQUIRED"]},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["research_family_id", "mechanism", "protocol_id", "universe", "instrument", "timing_clock", "horizon", "evidence_identity", "evidence_time_boundary"],
+      "properties": {"research_family_id": {}, "mechanism": {}, "protocol_id": {}, "universe": {}, "instrument": {}, "timing_clock": {}, "horizon": {}, "evidence_identity": {}, "evidence_time_boundary": {}}
+    },
+    "evidence": {"type": "object"},
+    "provenance": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["kind", "ref"], "properties": {"kind": {"type": "string"}, "ref": {"type": "string", "minLength": 1}}}},
+    "reason_codes": {"type": "array", "items": {"type": "string"}},
+    "protocol_weaknesses": {"type": "array", "items": {"type": "string"}},
+    "query_facets": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mechanism", "payer", "constrained_actor", "timing_clock", "universe", "instrument", "evidence_identity", "failure_reason", "protocol_weakness", "source_family", "economic_exposure"],
+      "properties": {"mechanism": {}, "payer": {}, "constrained_actor": {}, "timing_clock": {}, "universe": {}, "instrument": {}, "evidence_identity": {}, "failure_reason": {}, "protocol_weakness": {}, "source_family": {}, "economic_exposure": {}}
+    },
+    "supersession": {"oneOf": [{"type": "null"}, {"type": "object", "additionalProperties": false, "required": ["superseding_memory_id", "proof_refs", "reason"], "properties": {"superseding_memory_id": {"type": "string", "minLength": 1}, "proof_refs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}, "reason": {"type": "string"}}}]},
+    "governance_refs": {"type": "array", "items": {"type": "object"}},
+    "source_identity": {"type": "object"},
+    "session_authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["economic_experiment_authorized", "prospective_observation_authorized", "real_capital_authorized", "live_trading_authorized", "outcome_accessed"],
+      "properties": {
+        "economic_experiment_authorized": {"const": false},
+        "prospective_observation_authorized": {"const": false},
+        "real_capital_authorized": {"const": false},
+        "live_trading_authorized": {"const": false},
+        "outcome_accessed": {"const": false}
+      }
+    }
+  }
+}

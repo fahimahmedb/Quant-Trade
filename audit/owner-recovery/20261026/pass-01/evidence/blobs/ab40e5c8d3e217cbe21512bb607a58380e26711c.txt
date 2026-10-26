@@ -1,0 +1,68 @@
+{
+  "exact_source_blobs": [
+    {
+      "git_blob": "1942c52f53987e0d96b690395a821803dd44bfae",
+      "path": "src/quant/dataplane/evidence.py"
+    },
+    {
+      "git_blob": "8566e8f990d6e01a0d797f27e1d44efb9161a084",
+      "path": "src/quant/dataplane/identity.py"
+    },
+    {
+      "git_blob": "0bdafad5cf0c2825f234142ba67a9bf1feae8659",
+      "path": "src/quant/dataplane/corporate_actions.py"
+    },
+    {
+      "git_blob": "4fc0c67fb2b91b696b491d13e7ebd007bfdb3df4",
+      "path": "tests/test_evidence_identity.py"
+    },
+    {
+      "git_blob": "edbb623459e0b02e0f1c67815db0afc1371963c5",
+      "path": "schemas/raw_object.schema.json"
+    },
+    {
+      "git_blob": "7e38b279a1eaec86410754b4c9a0a5a867e62401",
+      "path": "schemas/validated_object.schema.json"
+    },
+    {
+      "git_blob": "09891a56850d50d6effcc852cf70ea264f47f5a2",
+      "path": "schemas/derived_artifact.schema.json"
+    },
+    {
+      "git_blob": "00f07899fcf47c126b0d165050e52e06302522a0",
+      "path": "schemas/issuer_identity.schema.json"
+    },
+    {
+      "git_blob": "cd89f7fafa3ffcb44dcae62ea69be2b12103ea06",
+      "path": "schemas/issuer_name_interval.schema.json"
+    },
+    {
+      "git_blob": "8434594b8dd6ec25e575def5426ffaca19be6cdb",
+      "path": "schemas/security_identity.schema.json"
+    },
+    {
+      "git_blob": "b67b543382920a0f298c214c3ffa5456d0b19da9",
+      "path": "schemas/ticker_interval.schema.json"
+    },
+    {
+      "git_blob": "66926a373910e3cbabe0316c2bbd7f2ad9d5eaa1",
+      "path": "schemas/listing_interval.schema.json"
+    },
+    {
+      "git_blob": "17aaf296abef01e1650c61b4336c05a5bff6aac0",
+      "path": "schemas/corporate_action_leg.schema.json"
+    },
+    {
+      "git_blob": "184fea9fe2f6be2a5c558fb9b5d554469a55d59d",
+      "path": "schemas/corporate_action_event.schema.json"
+    }
+  ],
+  "network_capture_performed": false,
+  "new_capture_connection_tests": 4,
+  "operational_claim": "Optional offline raw archival only; no runtime/source activation or inferred identity mapping.",
+  "original_tests": 16,
+  "outcome_accessed": false,
+  "schema_version": "historical-capability-import-v1",
+  "science_store_replaced": false,
+  "source_commit": "b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba"
+}

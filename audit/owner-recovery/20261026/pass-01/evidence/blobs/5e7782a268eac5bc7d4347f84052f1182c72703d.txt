@@ -1,0 +1,52 @@
+# Vertical CP031 — Frozen experiment payload identity survives caller mutation
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=b5a35ef7560cc031becf4440e6f0ab3d9e3af8d2
+
+Module: existing final_shape.freeze_experiment_envelope. Capability: produce an
+immutable pre-outcome protocol snapshot and hash. North Star experiment
+infrastructure requires frozen intent and reproducible identity. Starting depth:
+D1 for the standalone builder; other runner/registry freeze capabilities retain
+their separate tested scope.
+
+Two repair items:
+
+1. The returned protocol and top-level provenance retained caller-owned candidate,
+   decision-map, dataset and metric objects. Mutation in either direction could
+   alter an already-hashed protocol, its original inputs, or a second identical
+   freeze. This is internal snapshot aliasing, not a Candidate/Validator handoff.
+2. Nonfinite protocol values could receive a FROZEN_READY_NO_OUTCOME identity.
+   A strict JSON guard now produces NOT_FROZEN_INVALID_PROTOCOL, with no protocol
+   hash or qualified payload, rather than certifying a malformed declaration.
+
+Narrow repair: snapshot the assembled protocol with deepcopy before hashing;
+return a detached top-level provenance projection. Check strict JSON only when a
+freeze would otherwise be admitted. An invalid declaration receives an explicit
+blocked freeze, preserving downstream cost/capacity diagnostics. No runtime,
+registry, adjudication or economic execution capability is added.
+
+Adversaries: mutate admitted candidate mechanism/decision map, source version or
+nested metric after freeze; mutate returned fields and check original inputs;
+double freeze followed by mutation; NaN/Infinity thresholds; existing detached
+implementation declaration. **11 failed / 1 passed** before repair; **56 passed,
+14 subtests** across 12 new cases and architecture/frozen-protocol/spine/readiness
+regressions. Durable transcripts are CP031_{before,after}.txt. The final test body
+was rerun against the exact pre-repair module at
+352bd51cb638cb4e829d9d136e1a3a412b2cb8c2, then the repaired bytes were restored.
+
+Attained depth: **D2** for the standalone snapshot/identity builder. It is a pure
+builder: repeated calls do not enforce generation history or durable uniqueness.
+Those require the existing registries/runner and are not inferred here. No
+concurrent mutation of caller objects, custom deepcopy behavior, outcome-content
+semantics, whole Factory transaction, actual crash or physical storage proof.
+Invalid input may remain in diagnostic projections, but never receives the
+frozen protocol hash/payload. No strict JSON durability is claimed for such raw
+invalid diagnostics.
+
+Horizontal findings: none. Longitudinal findings: none new; LONGITUDINAL_001
+remains separately owned and unresolved. All tests use synthetic metadata.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

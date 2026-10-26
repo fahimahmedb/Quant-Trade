@@ -1,0 +1,371 @@
+
+### A Polymarket Sep-2026, 1h before resolution: calibration by bucket (both tokens)
+                n  quote  realized  gap_pp
+b                                         
+[0.0, 0.05)   355  0.025     0.042   1.714
+[0.05, 0.1)   299  0.074     0.114   4.016
+[0.1, 0.2)    490  0.151     0.204   5.342
+[0.2, 0.35)   945  0.275     0.347   7.225
+[0.35, 0.5)  4262  0.471     0.480   0.879
+[0.5, 0.65)  4358  0.528     0.520  -0.816
+[0.65, 0.8)   945  0.724     0.651  -7.342
+[0.8, 0.9)    489  0.848     0.791  -5.660
+[0.9, 0.95)   299  0.925     0.890  -3.564
+[0.95, 1.0)   360  0.974     0.956  -1.873
+
+### A Polymarket 1h (mid quote): buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%   t_cl  simple_ann%
+    fav>0.9 taker  652       404    -2.78      -3.09  -2.49          NaN
+    fav>0.9 maker  652       404    -2.78      -2.85  -2.29          NaN
+    fav>0.8 taker 1141       616    -3.90      -4.27  -3.24          NaN
+    fav>0.8 maker 1141       616    -3.90      -3.80  -2.87          NaN
+mid .35-.65 taker 8614      3592     0.00      -3.26 -30.26          NaN
+mid .35-.65 maker 8614      3592     0.00      -0.74  -6.50          NaN
+   long<0.2 taker 1144       618     3.87      19.13   1.33          NaN
+   long<0.2 maker 1144       618     3.87      24.67   1.64          NaN
+   long<0.1 taker  654       406     2.77      32.57   1.36          NaN
+   long<0.1 maker  654       406     2.77      39.06   1.56          NaN
+
+### A Polymarket 1h (mid + 1c half-spread): buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%   t_cl  simple_ann%
+    fav>0.9 taker  652       404    -3.78      -4.03  -3.27          NaN
+    fav>0.9 maker  652       404    -3.78      -3.84  -3.11          NaN
+    fav>0.8 taker 1141       616    -4.90      -5.25  -4.02          NaN
+    fav>0.8 maker 1141       616    -4.90      -4.84  -3.69          NaN
+mid .35-.65 taker 8614      3592    -1.00      -5.10 -49.42          NaN
+mid .35-.65 maker 8614      3592    -1.00      -2.68 -24.66          NaN
+   long<0.2 taker 1144       618     2.87       2.61   0.23          NaN
+   long<0.2 maker 1144       618     2.87       7.31   0.61          NaN
+   long<0.1 taker  654       406     1.77       5.84   0.32          NaN
+   long<0.1 maker  654       406     1.77      10.95   0.58          NaN
+
+### A Polymarket Sep-2026, 24h before resolution: calibration by bucket (both tokens)
+                n  quote  realized  gap_pp
+b                                         
+[0.0, 0.05)   394  0.024     0.053   2.914
+[0.05, 0.1)   336  0.074     0.134   5.994
+[0.1, 0.2)    543  0.151     0.232   8.063
+[0.2, 0.35)  1176  0.277     0.336   5.857
+[0.35, 0.5)  4364  0.469     0.476   0.730
+[0.5, 0.65)  5151  0.526     0.519  -0.629
+[0.65, 0.8)  1195  0.720     0.664  -5.534
+[0.8, 0.9)    545  0.846     0.763  -8.290
+[0.9, 0.95)   333  0.924     0.862  -6.214
+[0.95, 1.0)   409  0.975     0.946  -2.868
+
+### A Polymarket 24h (mid quote): buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%   t_cl  simple_ann%
+    fav>0.9 taker  727       395    -4.39      -5.57  -3.88      -1813.0
+    fav>0.9 maker  727       395    -4.39      -5.33  -3.70      -1729.0
+    fav>0.8 taker 1268       631    -5.95      -8.28  -5.59      -2675.0
+    fav>0.8 maker 1268       631    -5.95      -7.81  -5.24      -2517.0
+mid .35-.65 taker 9482      3902     0.00      -3.17 -28.26      -1173.0
+mid .35-.65 maker 9482      3902     0.00      -0.64  -5.46       -252.0
+   long<0.2 taker 1273       635     5.92      67.99   4.10      28993.0
+   long<0.2 maker 1273       635     5.92      75.86   4.36      32108.0
+   long<0.1 taker  730       398     4.33      92.10   3.01      38633.0
+   long<0.1 maker  730       398     4.33     101.54   3.16      42353.0
+
+### A Polymarket 24h (mid + 1c half-spread): buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%   t_cl  simple_ann%
+    fav>0.9 taker  727       395    -5.39      -6.49  -4.57      -2150.0
+    fav>0.9 maker  727       395    -5.39      -6.30  -4.42      -2084.0
+    fav>0.8 taker 1268       631    -6.95      -9.22  -6.30      -3020.0
+    fav>0.8 maker 1268       631    -6.95      -8.81  -5.98      -2882.0
+mid .35-.65 taker 9482      3902    -1.00      -5.02 -46.69      -1849.0
+mid .35-.65 maker 9482      3902    -1.00      -2.59 -22.91       -965.0
+   long<0.2 taker 1273       635     4.92      41.42   3.30      15362.0
+   long<0.2 maker 1273       635     4.92      47.91   3.65      17774.0
+   long<0.1 taker  730       398     3.33      46.42   2.24      17329.0
+   long<0.1 maker  730       398     3.33      53.50   2.47      19949.0
+
+### A Polymarket Sep-2026, 168h before resolution: calibration by bucket (both tokens)
+                n  quote  realized  gap_pp
+b                                         
+[0.0, 0.05)   120  0.026     0.017  -0.938
+[0.05, 0.1)   273  0.074     0.103   2.838
+[0.1, 0.2)    412  0.154     0.206   5.181
+[0.2, 0.35)   897  0.276     0.294   1.848
+[0.35, 0.5)  1641  0.443     0.420  -2.240
+[0.5, 0.65)  2430  0.537     0.551   1.333
+[0.65, 0.8)   909  0.722     0.710  -1.213
+[0.8, 0.9)    407  0.843     0.789  -5.393
+[0.9, 0.95)   264  0.922     0.886  -3.598
+[0.95, 1.0)   142  0.970     0.986   1.599
+
+### A Polymarket 168h (mid quote): buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%  t_cl  simple_ann%
+    fav>0.9 taker  381       205    -1.50      -2.63 -1.43       -106.0
+    fav>0.9 maker  381       205    -1.50      -2.32 -1.25        -90.0
+    fav>0.8 taker  801       422    -3.32      -5.19 -2.87       -240.0
+    fav>0.8 maker  801       422    -3.32      -4.62 -2.53       -213.0
+mid .35-.65 taker 4050      1161     0.00      -3.16 -8.94       -183.0
+mid .35-.65 maker 4050      1161     0.00      -0.63 -1.70        -52.0
+   long<0.2 taker  805       426     3.47      16.82  1.35        748.0
+   long<0.2 maker  805       426     3.47      22.09  1.69       1020.0
+   long<0.1 taker  393       213     1.68      10.85  0.49        212.0
+   long<0.1 maker  393       213     1.68      16.15  0.70        473.0
+
+### A Polymarket 168h (mid + 1c half-spread): buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%   t_cl  simple_ann%
+    fav>0.9 taker  381       205    -2.50      -3.59  -1.97       -156.0
+    fav>0.9 maker  381       205    -2.50      -3.33  -1.82       -143.0
+    fav>0.8 taker  801       422    -4.32      -6.19  -3.45       -292.0
+    fav>0.8 maker  801       422    -4.32      -5.67  -3.15       -267.0
+mid .35-.65 taker 4050      1161    -1.00      -5.03 -14.85       -280.0
+mid .35-.65 maker 4050      1161    -1.00      -2.60  -7.30       -154.0
+   long<0.2 taker  805       426     2.47       7.02   0.62        190.0
+   long<0.2 maker  805       426     2.47      11.78   1.00        433.0
+   long<0.1 taker  393       213     0.68      -2.70  -0.14       -513.0
+   long<0.1 maker  393       213     0.68       1.90   0.09       -290.0
+
+### B Polymarket Oct25-Jul26 p_1d: calibration by bucket (both tokens)
+                n  quote  realized  gap_pp
+b                                         
+[0.0, 0.05)   503  0.021     0.012  -0.864
+[0.05, 0.1)   204  0.070     0.034  -3.608
+[0.1, 0.2)    266  0.147     0.139  -0.759
+[0.2, 0.35)   445  0.278     0.265  -1.236
+[0.35, 0.5)   936  0.434     0.460   2.678
+[0.5, 0.65)  1048  0.558     0.534  -2.344
+[0.65, 0.8)   453  0.721     0.731   1.016
+[0.8, 0.9)    263  0.852     0.863   1.110
+[0.9, 0.95)   201  0.928     0.965   3.711
+[0.95, 1.0)   511  0.979     0.986   0.733
+
+### B Polymarket p_1d: buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee    n  clusters  edge_pp  mean_ret%  t_cl  simple_ann%
+    fav>0.9 taker  703       263     1.61       0.77  0.76        531.0
+    fav>0.9 maker  703       263     1.61       0.97  0.96        598.0
+    fav>0.8 taker  970       370     1.46      -0.33 -0.23        402.0
+    fav>0.8 maker  970       370     1.46       0.08  0.05        528.0
+mid .35-.65 taker 1974       610     0.00      -2.55 -4.53      -1015.0
+mid .35-.65 maker 1974       610     0.00       0.01  0.01        -86.0
+   long<0.2 taker  973       373    -1.41     -25.89 -1.60     -16883.0
+   long<0.2 maker  973       373    -1.41     -22.44 -1.32     -15961.0
+   long<0.1 taker  707       266    -1.66     -42.47 -1.95     -21602.0
+   long<0.1 maker  707       266    -1.66     -39.64 -1.73     -20866.0
+
+### B Polymarket Oct25-Jul26 p_7d: calibration by bucket (both tokens)
+               n  quote  realized  gap_pp
+b                                        
+[0.0, 0.05)  388  0.022     0.023   0.143
+[0.05, 0.1)  141  0.073     0.057  -1.632
+[0.1, 0.2)   187  0.142     0.187   4.474
+[0.2, 0.35)  214  0.269     0.243  -2.611
+[0.35, 0.5)  255  0.427     0.361  -6.580
+[0.5, 0.65)  379  0.545     0.586   4.031
+[0.65, 0.8)  221  0.726     0.760   3.388
+[0.8, 0.9)   184  0.855     0.810  -4.547
+[0.9, 0.95)  141  0.925     0.936   1.135
+[0.95, 1.0)  393  0.978     0.977  -0.066
+
+### B Polymarket p_7d: buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee   n  clusters  edge_pp  mean_ret%  t_cl  simple_ann%
+    fav>0.9 taker 526       184     0.48       0.88  0.89         14.0
+    fav>0.9 maker 526       184     0.48       1.09  1.09         24.0
+    fav>0.8 taker 713       229    -0.85      -1.99 -1.19        -76.0
+    fav>0.8 maker 713       229    -0.85      -1.64 -0.97        -59.0
+mid .35-.65 taker 624       235     0.00      -3.06 -3.55       -192.0
+mid .35-.65 maker 624       235     0.00      -0.53 -0.59        -62.0
+   long<0.2 taker 716       229     0.92     -25.63 -1.76       -621.0
+   long<0.2 maker 716       229     0.92     -22.19 -1.45       -402.0
+   long<0.1 taker 529       184    -0.33     -49.95 -2.94      -1264.0
+   long<0.1 maker 529       184    -0.33     -47.51 -2.67      -1069.0
+
+### B Polymarket Oct25-Jul26 p_30d: calibration by bucket (both tokens)
+               n  quote  realized  gap_pp
+b                                        
+[0.0, 0.05)  224  0.022     0.027   0.497
+[0.05, 0.1)   98  0.073     0.112   3.961
+[0.1, 0.2)   104  0.140     0.154   1.387
+[0.2, 0.35)  111  0.279     0.315   3.593
+[0.35, 0.5)  122  0.428     0.279 -14.943
+[0.5, 0.65)  134  0.561     0.694  13.307
+[0.65, 0.8)  113  0.717     0.681  -3.530
+[0.8, 0.9)   101  0.857     0.851  -0.537
+[0.9, 0.95)   99  0.925     0.879  -4.628
+[0.95, 1.0)  228  0.978     0.974  -0.401
+
+### B Polymarket p_30d: buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee   n  clusters  edge_pp  mean_ret%  t_cl  simple_ann%
+    fav>0.9 taker 319       103    -1.66      -2.53 -1.14        -25.0
+    fav>0.9 maker 319       103    -1.66      -2.31 -1.04        -22.0
+    fav>0.8 taker 425       127    -1.56      -4.08 -1.59        -26.0
+    fav>0.8 maker 425       127    -1.56      -3.71 -1.44        -22.0
+mid .35-.65 taker 252        80     0.00      -6.91 -4.24        -85.0
+mid .35-.65 maker 252        80     0.00      -4.58 -2.67        -57.0
+   long<0.2 taker 426       128     1.51      41.79  1.08        781.0
+   long<0.2 maker 426       128     1.51      48.60  1.20        880.0
+   long<0.1 taker 322       103     1.55      54.42  0.92       1034.0
+   long<0.1 maker 322       103     1.55      62.08  1.00       1147.0
+
+### B stability by close quarter (p_1d, taker fee, mid quote)
+2025Q4 fav>0.9 54 20 2.24% t=4.50
+2025Q4 long<0.1 54 20 -100.00% t=nan
+2026Q1 fav>0.9 193 56 1.09% t=0.59
+2026Q1 long<0.1 193 56 -72.01% t=-2.79
+2026Q2 fav>0.9 255 110 0.39% t=0.24
+2026Q2 long<0.1 258 112 -50.41% t=-2.08
+2026Q3 fav>0.9 201 88 0.44% t=0.21
+2026Q3 long<0.1 202 89 0.02% t=0.00
+
+### C Polymarket executable ASK, 1.0h pre-resolution (7 events): calibration by bucket (both tokens)
+               n  quote  realized  gap_pp
+b                                        
+[0.0, 0.05)   84  0.014     0.024   0.970
+[0.05, 0.1)   56  0.072     0.036  -3.652
+[0.1, 0.2)    59  0.146     0.102  -4.451
+[0.2, 0.35)   74  0.274     0.216  -5.733
+[0.35, 0.5)   92  0.423     0.370  -5.393
+[0.5, 0.65)  135  0.549     0.541  -0.804
+[0.65, 0.8)   79  0.716     0.759   4.354
+[0.8, 0.9)    59  0.850     0.847  -0.268
+[0.9, 0.95)   34  0.923     0.971   4.738
+[0.95, 1.0)   44  0.972     0.932  -4.025
+
+### C executable ask 1.0h: buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee   n  clusters  edge_pp  mean_ret%  t_cl  simple_ann%
+    fav>0.9 taker  71        32    -1.21       2.84  2.08          NaN
+    fav>0.9 maker  71        32    -1.21       3.09  2.25          NaN
+    fav>0.8 taker 131        43    -0.40       2.82  0.84          NaN
+    fav>0.8 maker 131        43    -0.40       3.30  0.98          NaN
+mid .35-.65 taker 224        56    -2.68     -10.40 -2.15          NaN
+mid .35-.65 maker 224        56    -2.68      -8.07 -1.61          NaN
+   long<0.2 taker 199        54    -1.94     -63.84 -3.74          NaN
+   long<0.2 maker 199        54    -1.94     -62.18 -3.48          NaN
+   long<0.1 taker 140        41    -0.88     -70.89 -3.11          NaN
+   long<0.1 maker 140        41    -0.88     -69.43 -2.90          NaN
+
+### C Polymarket executable ASK, 6.0h pre-resolution (7 events): calibration by bucket (both tokens)
+              n  quote  realized  gap_pp
+b                                       
+[0.0, 0.05)  17  0.018     0.176  15.871
+[0.05, 0.1)  23  0.072     0.087   1.526
+[0.1, 0.2)   23  0.152     0.087  -6.465
+[0.2, 0.35)  19  0.267     0.316   4.926
+[0.35, 0.5)  28  0.420     0.286 -13.429
+[0.5, 0.65)  33  0.554     0.576   2.167
+[0.65, 0.8)  21  0.706     0.810  10.333
+[0.8, 0.9)   20  0.839     0.750  -8.870
+[0.9, 0.95)  17  0.923     0.941   1.829
+[0.95, 1.0)  18  0.970     0.833 -13.711
+
+### C executable ask 6.0h: buy-and-hold to resolution (return per $ staked, net of fee)
+     bucket   fee  n  clusters  edge_pp  mean_ret%  t_cl  simple_ann%
+    fav>0.9 taker 31         8    -8.25      -2.20 -0.43          NaN
+    fav>0.9 maker 31         8    -8.25      -1.93 -0.38          NaN
+    fav>0.8 taker 51        10    -7.32      -0.61 -0.12          NaN
+    fav>0.8 maker 51        10    -7.32      -0.16 -0.03          NaN
+mid .35-.65 taker 58        14    -3.44     -10.34 -2.08          NaN
+mid .35-.65 maker 58        14    -3.44      -8.05 -1.56          NaN
+   long<0.2 taker 63        14     2.48     712.75  0.97          NaN
+   long<0.2 maker 63        14     2.48     754.12  0.97          NaN
+   long<0.1 taker 40        10     7.62    1058.39  1.03          NaN
+   long<0.1 maker 40        10     7.62    1117.49  1.03          NaN
+
+### D EPL Bet365 (retail) (n matches=9120, seasons 2002-03..2025-26): bet at quoted odds, vig included
+                  n  fair_p  realized    ret      t
+b                                                  
+(0.0, 0.1]     1140   0.074     0.066 -0.177 -1.858
+(0.1, 0.2]     4040   0.156     0.148 -0.104 -3.006
+(0.2, 0.35]   12840   0.271     0.267 -0.066 -4.815
+(0.35, 0.5]    4684   0.421     0.419 -0.056 -3.442
+(0.5, 0.65]    2757   0.566     0.591 -0.010 -0.630
+(0.65, 0.75]   1201   0.696     0.716 -0.021 -1.203
+(0.75, 1.01]    698   0.798     0.819 -0.021 -1.200
+
+Bet365 by season: longshot(<0.2) vs favorite(>0.65) mean return
+grp        fav   long    mid
+season                      
+2002-03 -0.059 -0.358 -0.105
+2003-04 -0.037 -0.262 -0.053
+2004-05 -0.048 -0.322 -0.072
+2005-06  0.003 -0.469 -0.081
+2006-07 -0.003 -0.277 -0.079
+2007-08 -0.000 -0.355 -0.078
+2008-09 -0.021 -0.312 -0.040
+2009-10  0.036 -0.282 -0.061
+2010-11 -0.077 -0.004 -0.019
+2011-12 -0.048  0.065 -0.050
+2012-13  0.042 -0.338 -0.008
+2013-14  0.015  0.047 -0.086
+2014-15  0.046 -0.004 -0.041
+2015-16 -0.132  0.139  0.004
+2016-17 -0.017 -0.086 -0.088
+2017-18 -0.029 -0.003 -0.032
+2018-19  0.060 -0.203 -0.047
+2019-20 -0.049  0.128 -0.061
+2020-21 -0.153  0.280 -0.061
+2021-22 -0.028 -0.116 -0.073
+2022-23 -0.119 -0.008 -0.065
+2023-24  0.054 -0.199 -0.094
+2024-25 -0.028 -0.106 -0.047
+2025-26 -0.049 -0.119 -0.021
+
+### D EPL Pinnacle open (sharp) (n matches=5150, seasons 2012-13..2025-26): bet at quoted odds, vig included
+                 n  fair_p  realized    ret      t
+b                                                 
+(0.0, 0.1]     718   0.073     0.075 -0.017 -0.127
+(0.1, 0.2]    2504   0.156     0.151 -0.058 -1.281
+(0.2, 0.35]   6960   0.269     0.264 -0.042 -2.147
+(0.35, 0.5]   2476   0.421     0.418 -0.029 -1.247
+(0.5, 0.65]   1596   0.569     0.591  0.013  0.600
+(0.65, 0.75]   710   0.699     0.723  0.007  0.285
+(0.75, 1.01]   486   0.804     0.809 -0.023 -1.073
+/tmp/claude-0/-home-user-Quant-Trade/d2846cea-5e9b-54a8-9c49-75ba0ab48fd0/scratchpad/pm/flb_test.py:126: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  for s in ('home', 'draw', 'away'): D[f'pinc_1x2_{s}'] = D[f'pinnacle_1x2_{s}_close']
+/tmp/claude-0/-home-user-Quant-Trade/d2846cea-5e9b-54a8-9c49-75ba0ab48fd0/scratchpad/pm/flb_test.py:126: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  for s in ('home', 'draw', 'away'): D[f'pinc_1x2_{s}'] = D[f'pinnacle_1x2_{s}_close']
+/tmp/claude-0/-home-user-Quant-Trade/d2846cea-5e9b-54a8-9c49-75ba0ab48fd0/scratchpad/pm/flb_test.py:126: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  for s in ('home', 'draw', 'away'): D[f'pinc_1x2_{s}'] = D[f'pinnacle_1x2_{s}_close']
+
+### D EPL Pinnacle CLOSE (n matches=5150, seasons 2012-13..2025-26): bet at quoted odds, vig included
+                 n  fair_p  realized    ret      t
+b                                                 
+(0.0, 0.1]     739   0.073     0.066 -0.138 -1.120
+(0.1, 0.2]    2565   0.156     0.153 -0.032 -0.702
+(0.2, 0.35]   6906   0.270     0.266 -0.039 -2.007
+(0.35, 0.5]   2441   0.421     0.415 -0.036 -1.534
+(0.5, 0.65]   1598   0.571     0.592  0.012  0.582
+(0.65, 0.75]   683   0.698     0.716  0.001  0.022
+(0.75, 1.01]   518   0.805     0.817 -0.013 -0.628
+
+### D EPL best-available max odds (n matches=2660, seasons 2019-20..2025-26): bet at quoted odds, vig included
+                 n  fair_p  realized    ret      t
+b                                                 
+(0.0, 0.1]     361   0.071     0.086  0.158  0.750
+(0.1, 0.2]    1300   0.156     0.159  0.005  0.072
+(0.2, 0.35]   3546   0.266     0.264 -0.009 -0.336
+(0.35, 0.5]   1313   0.419     0.417 -0.005 -0.141
+(0.5, 0.65]    838   0.570     0.573  0.001  0.030
+(0.65, 0.75]   373   0.696     0.694 -0.004 -0.111
+(0.75, 1.01]   249   0.811     0.799 -0.019 -0.606
+/tmp/claude-0/-home-user-Quant-Trade/d2846cea-5e9b-54a8-9c49-75ba0ab48fd0/scratchpad/pm/flb_test.py:123: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  for s in ('home', 'draw', 'away'): D[f'maxc_1x2_{s}'] = D[f'market_max_1x2_{s}_close']
+/tmp/claude-0/-home-user-Quant-Trade/d2846cea-5e9b-54a8-9c49-75ba0ab48fd0/scratchpad/pm/flb_test.py:123: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  for s in ('home', 'draw', 'away'): D[f'maxc_1x2_{s}'] = D[f'market_max_1x2_{s}_close']
+/tmp/claude-0/-home-user-Quant-Trade/d2846cea-5e9b-54a8-9c49-75ba0ab48fd0/scratchpad/pm/flb_test.py:123: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  for s in ('home', 'draw', 'away'): D[f'maxc_1x2_{s}'] = D[f'market_max_1x2_{s}_close']
+
+### D EPL max close (n matches=2660, seasons 2019-20..2025-26): bet at quoted odds, vig included
+                 n  fair_p  realized    ret      t
+b                                                 
+(0.0, 0.1]     359   0.070     0.070  0.007  0.034
+(0.1, 0.2]    1336   0.156     0.163  0.059  0.877
+(0.2, 0.35]   3560   0.267     0.264 -0.009 -0.306
+(0.35, 0.5]   1253   0.421     0.423  0.011  0.340
+(0.5, 0.65]    866   0.571     0.580  0.020  0.657
+(0.65, 0.75]   350   0.698     0.694 -0.000 -0.002
+(0.75, 1.01]   256   0.813     0.793 -0.019 -0.604
+
+### D EPL Betfair exchange (gross of commission) (n matches=740, seasons 2024-25..2025-26): bet at quoted odds, vig included
+                 n  fair_p  realized    ret      t
+b                                                 
+(0.0, 0.1]      70   0.073     0.043 -0.457 -1.467
+(0.1, 0.2]     371   0.158     0.173  0.066  0.533
+(0.2, 0.35]   1006   0.264     0.279  0.063  1.154
+(0.35, 0.5]    364   0.419     0.426  0.011  0.178
+(0.5, 0.65]    254   0.569     0.508 -0.118 -2.144
+(0.65, 0.75]   104   0.697     0.663 -0.055 -0.835
+(0.75, 1.01]    51   0.807     0.765 -0.064 -0.868

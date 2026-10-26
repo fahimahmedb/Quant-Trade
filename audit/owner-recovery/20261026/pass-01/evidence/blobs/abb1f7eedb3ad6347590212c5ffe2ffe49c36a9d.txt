@@ -1,0 +1,163 @@
+name: MEGA D0 Exact Head Qualification
+
+on:
+  push:
+    branches:
+      - builder/mega-d0-economic-lifecycle-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  MEGA_D0_FIRST_CHECKPOINT_SHA: e9268c89c3307e47b810add2719d1c1c76df8a44
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  d0-kernel:
+    name: Canonical D0 kernel + immutable ancestry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove immutable base ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${MEGA_D0_FIRST_CHECKPOINT_SHA}^")" = "${WAVE2_IMMUTABLE_BASE_SHA}"
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          git merge-base --is-ancestor "${MEGA_D0_FIRST_CHECKPOINT_SHA}" HEAD
+          grep -F 'WAVE2_IMMUTABLE_BASE_SHA:' MEGA_D0_CP_001_20261021.md | grep -F "${WAVE2_IMMUTABLE_BASE_SHA}"
+      - name: Qualify canonical D0 lifecycle kernel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v 2>&1 | tee /tmp/mega-d0-focused.log
+          grep -E '^Ran [0-9]+ tests' /tmp/mega-d0-focused.log | tail -1
+      - name: Static scope membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(MEGA_D0_CP_[0-9]+_20261021\.md|MEGA_D0_FINAL_20261021\.md|research/research_os/expansion/economic_lifecycle\.py|tests/test_mega_d0_economic_lifecycle\.py|\.github/workflows/mega-d0-exact-head-qualification\.yml)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected D0-scope files:"
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+      - name: Verify authority and outcome membrane
+        run: |
+          python - <<'PY'
+          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          PY
+      - name: Verify clean working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain)"
+      - name: Emit D0 receipt
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          log = Path('/tmp/mega-d0-focused.log').read_text()
+          count = re.findall(r'^Ran [0-9]+ tests.*$', log, flags=re.MULTILINE)
+          receipt = {
+              "mission": "MEGA_D0_ECONOMIC_LIFECYCLE_KERNEL",
+              "qualified_head": os.environ["GITHUB_SHA"],
+              "wave2_immutable_base_sha": os.environ["WAVE2_IMMUTABLE_BASE_SHA"],
+              "first_checkpoint_sha": os.environ["MEGA_D0_FIRST_CHECKPOINT_SHA"],
+              "focused_test_count": count[-1] if count else "UNKNOWN",
+              "focused_result": "PASS",
+              "authority_opened": False,
+              "outcome_access_opened": False,
+              "scheduler_owned": False,
+              "runtime_owned": False,
+              "clean_working_tree": True,
+          }
+          Path('/tmp/mega-d0-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mega-d0-canonical-${{ github.sha }}
+          path: |
+            /tmp/mega-d0-receipt.json
+            /tmp/mega-d0-focused.log
+          if-no-files-found: error
+
+  w1-economic-nonregression:
+    name: W1 ECON differential non-regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize sealed base and pinned read-only Legacy corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin 183ad65ff260b903a16548ce37948f54d47a9ec8
+          git worktree add --detach /tmp/wave2-base "${WAVE2_IMMUTABLE_BASE_SHA}"
+          git show 183ad65ff260b903a16548ce37948f54d47a9ec8:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          git show 183ad65ff260b903a16548ce37948f54d47a9ec8:LEGACY_RESEARCH_LEDGER.json > /tmp/wave2-base/research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+          test "$(git -C /tmp/wave2-base hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+      - name: Compare exact W1 ECON suite at sealed base and D0 head
+        shell: bash
+        run: |
+          set -euo pipefail
+          modules=(
+            research.research_os.tests.test_economic_identity_memory_context_w1
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1
+            research.research_os.tests.test_economic_identity_portfolio_readiness
+            research.research_os.tests.test_economic_readiness_validation
+            research.research_os.tests.test_producer_economic_readiness
+            research.research_os.tests.test_economic_readiness_integration
+            research.research_os.tests.test_w1_factory_economic_integration
+          )
+          run_suite() {
+            local root="$1" label="$2"
+            set +e
+            (cd "$root" && PYTHONPATH="$root/src:$root" python -m unittest -v "${modules[@]}") > "/tmp/${label}.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\n' "$code" > "/tmp/${label}.exit"
+            grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
+          }
+          run_suite /tmp/wave2-base base
+          run_suite "$GITHUB_WORKSPACE" head
+          echo '--- normalized test counts ---'
+          cat /tmp/base.count
+          cat /tmp/head.count
+          diff -u /tmp/base.failures /tmp/head.failures
+          diff -u /tmp/base.count /tmp/head.count
+          test "$(cat /tmp/base.exit)" = "$(cat /tmp/head.exit)"
+      - name: Prove D0 did not mutate W1 ECON law
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD -- \
+            research/research_os/expansion/final_shape.py \
+            research/research_os/expansion/portfolio_v2.py \
+            research/research_os/expansion/economic_test_readiness_v1.py \
+            research/research_os/tests/test_economic_identity_memory_context_w1.py \
+            research/research_os/tests/test_economic_identity_portfolio_depth_w1.py \
+            research/research_os/tests/test_economic_identity_portfolio_frontier_w1.py \
+            research/research_os/tests/test_economic_identity_portfolio_readiness.py \
+            research/research_os/tests/test_economic_readiness_validation.py \
+            research/research_os/tests/test_producer_economic_readiness.py \
+            research/research_os/tests/test_economic_readiness_integration.py \
+            research/research_os/tests/test_w1_factory_economic_integration.py)"

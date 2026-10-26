@@ -1,0 +1,31 @@
+{
+  "receipt_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1",
+  "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001",
+  "worker_id": "manual-market-discovery-20261016",
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-16T06:50:00Z",
+  "completed_at": "2026-10-16T07:00:00Z",
+  "input_head": "7ba39ce5c4febac2186bd1025b72c38b1d6c4e70",
+  "status": "COMPLETE",
+  "summary": "Pinned Legacy research was screened before freeze. A structurally distinct US-equity closing-auction imbalance-pressure mechanism was documented and frozen from exchange market-structure sources. The signal uses only pre-cross imbalance, paired-liquidity and indicative/reference-price fields; historical data rights remain unqualified. No economic outcome, return, future price, prospective observation, capital allocation or live trading was accessed or performed. No validation handoff was created because this frontier task did not explicitly authorize one.",
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001/legacy-screen.json",
+    "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001/research-and-disconfirmation.json",
+    "research/research_os/hypotheses/QUANT-CLOSE-AUCTION-IMBALANCE-001.json",
+    "research/research_os/events/FRONTIER-QUANT-MECHANISM-DISTINCT-SIGNAL-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "LEGACY_RESEARCH_LEDGER.json@183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "https://www.nasdaqtrader.com/Trader.aspx?id=OpenClose",
+    "https://www.nasdaqtrader.com/content/technicalsupport/specifications/dataproducts/TVAggSpecification.pdf",
+    "https://www.nyse.com/trade/auctions",
+    "https://www.nyse.com/data-products/catalog/imbalances"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}

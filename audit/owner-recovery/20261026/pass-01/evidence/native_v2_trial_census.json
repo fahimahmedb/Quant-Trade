@@ -1,0 +1,178 @@
+[
+  {
+    "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/AAA-V2-CANARY-a67ffec48fff895d/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::AAA-V2-CANARY-a67ffec48fff895d::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 1,
+    "proposals": [
+      {
+        "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-008::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-012::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-008::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-010::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-012::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-FUND-9219d7f488ada3c2"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  },
+  {
+    "path": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009/oracle-v2/research_trial.json.json",
+    "id": "ORACLE-V2-EPOCH-20261020-001::FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-009::G1",
+    "type": "RESEARCH_GENERATION_TRIAL",
+    "proposal_count": 1,
+    "discard_count": 1,
+    "retry_count": 0,
+    "proposals": [
+      {
+        "candidate_hash": "80e6d92badb3170994cdbfd4b6367edc993ed16158fec3525a0fa130828a49f7",
+        "generation_id": "G1",
+        "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce"
+      }
+    ],
+    "model": "DETERMINISTIC_ENGINE"
+  }
+]

@@ -1,0 +1,94 @@
+name: Research OS queue replenishment CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-autonomous-loop-20261015
+    paths:
+      - 'research/research_os/queue_replenisher.py'
+      - 'research/research_os/runtime/RESEARCH_FRONTIER.json'
+      - 'research/research_os/runtime/CONTROL_PLANE.json'
+      - 'research/research_os/runtime/WORKFLOW_LANES.json'
+      - 'research/research_os/runtime/CAPABILITY_REGISTRY.json'
+      - 'research/research_os/runtime/SCHEDULED_WORKER_PROTOCOL.md'
+      - 'research/research_os/tests/test_queue_replenisher.py'
+      - 'research/research_os/control_plane.py'
+      - '.github/workflows/research-os-queue-replenishment-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  queue-replenishment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run queue replenisher unit tests
+        run: python -m unittest research.research_os.tests.test_queue_replenisher -v
+
+      - name: Validate production control plane and frontier safety
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.control_plane import load_control_plane
+          from research.research_os.queue_replenisher import derive_refill_task
+
+          base = Path('research/research_os')
+          control = load_control_plane(base)
+          assert control['status'] == 'PASS', control['errors']
+          refill = control['queue_replenishment']
+          assert refill['authorized'] is True
+          assert refill['steward_lane'] == 'integrator_portfolio'
+          assert refill['max_new_tasks_per_wake'] == 1
+          assert refill['producer_execution_same_refill_wake'] is False
+          assert refill['recursive_refill_same_wake'] is False
+          assert refill['free_form_task_invention_forbidden'] is True
+          assert refill['legacy_screen_required_before_candidate_freeze'] is True
+          for key in (
+              'economic_experiment_authorized',
+              'prospective_observation_authorized',
+              'real_capital_authorized',
+              'live_trading_authorized',
+          ):
+              assert refill[key] is False
+
+          frontier = json.loads((base / 'runtime' / 'RESEARCH_FRONTIER.json').read_text())
+          assert frontier['status'] == 'ACTIVE'
+          assert frontier['max_new_tasks_per_refill'] == 1
+          assert frontier['require_global_queue_empty'] is True
+          assert frontier['producer_execution_same_refill_wake'] is False
+          assert frontier['recursive_refill_same_wake'] is False
+          assert frontier['max_issued_per_frontier'] > 0
+          for key, value in frontier['authority'].items():
+              assert value is False, (key, value)
+
+          result = derive_refill_task(
+              frontier=frontier,
+              tasks=[{'task_id':'DONE-ONLY','status':'COMPLETE'}],
+              created_at='2026-10-15T17:40:00Z',
+          )
+          assert result['status'] == 'DERIVED_ONE_READY_TASK'
+          task = result['task']
+          assert task['status'] == 'READY'
+          assert task['lease']['generation'] == 0
+          assert task['lease']['owner'] is None
+          assert task['inputs']['legacy_gate_required'] is True
+          assert task['derivation']['steward_lane'] == 'integrator_portfolio'
+          assert all(v is False for k, v in task['authority'].items() if k.endswith('_authorized'))
+
+          no_refill = derive_refill_task(
+              frontier=frontier,
+              tasks=[{'task_id':'ACTIVE','status':'READY'}],
+              created_at='2026-10-15T17:40:00Z',
+          )
+          assert no_refill['status'] == 'NOOP_QUEUE_NOT_EMPTY'
+          assert no_refill['task'] is None
+
+          print('QUEUE_REPLENISHMENT_SAFETY=PASS')
+          PY

@@ -1,0 +1,26 @@
+{
+  "source_id": "fixture-F5",
+  "source_version": "v1",
+  "origin_family": "INSTRUMENT_RELATIONSHIP",
+  "origin": "CONTRACT_RELATIONSHIP",
+  "discovery_method": "DOCUMENT_EXTRACTION",
+  "published_at": "2026-10-01T00:00:00Z",
+  "available_at": "2026-10-01T00:00:00Z",
+  "evidence_mode": "DETERMINISTIC_FIXTURE",
+  "observation_ref": "fixture://giga-f/F5/v1",
+  "seed_fields": {
+    "actor": "hypothesized-actor-F5",
+    "mechanism_family": "UNVERIFIED_MECHANISM_F5",
+    "mechanism_state": "HYPOTHESIS",
+    "universe": "FIXTURE_UNIVERSE",
+    "instruments": [
+      "FIXTURE_INSTRUMENT"
+    ],
+    "information_source": "fixture-F5",
+    "clock": "after source availability",
+    "horizon": "one declared session",
+    "constraint": "UNVERIFIED_CONSTRAINT_F5",
+    "possible_transfer": "UNKNOWN",
+    "rule_structure": "UNKNOWN"
+  }
+}

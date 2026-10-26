@@ -1,0 +1,300 @@
+{
+ "layer": "A",
+ "ref": "origin/claude/charming-allen-948kd8",
+ "ref_blob_sha": {
+  "WEATHER_FORWARD_V2_D4_C3_M2_CAL_SIM_2026-10-01.py": "a4168d090796fff36ee825710358c315bcc14aec",
+  "WEATHER_FORWARD_V2_D4_C3_P1_GATE_SIM_2026-10-02.py": "bc46d877bd2e3f0c925ec4230d1aecaf87753a54",
+  "WEATHER_FORWARD_V2_D4_C3_P1_CONSTANTS_2026-10-02.json": "60155c7ae44281fe103c8ee60ab8d02ab19281c2"
+ },
+ "reps_per_cell": 400,
+ "cells": [
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": 0.1,
+    "pr": "mid",
+    "P": 0,
+    "lay": "rand"
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 397,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": 0.1,
+    "pr": "fav",
+    "P": 30,
+    "lay": "run",
+    "pk": "box",
+    "pp": 30,
+    "rv": 0.1
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 323,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "full",
+    "th": 0.0,
+    "pr": "mid",
+    "P": 0,
+    "lay": "rand",
+    "pk": "mk",
+    "pp": 0.9,
+    "rv": 0.05
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 257,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": 0.1,
+    "pr": "favmix",
+    "P": 30,
+    "lay": "rand",
+    "pk": "ar",
+    "pp": 0.9,
+    "rv": 0.1
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 301,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 35,
+    "cap": "full",
+    "th": 0.1,
+    "pr": "tail3",
+    "P": 0,
+    "lay": "rand"
+   },
+   "reps": 400,
+   "window_reps": 376,
+   "info_reps": 270,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": 0.05,
+    "pr": "tail1",
+    "P": 0,
+    "lay": "rand",
+    "pk": "hemi",
+    "pp": 0.9,
+    "rv": 0.1
+   },
+   "reps": 400,
+   "window_reps": 283,
+   "info_reps": 193,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 35,
+    "cap": "thin",
+    "th": 0.1,
+    "pr": "fav85",
+    "P": 0,
+    "lay": "rand",
+    "pk": "stn",
+    "pp": 0.9,
+    "rv": 0.05
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 399,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 55,
+    "cap": "thin",
+    "th": 0.1,
+    "pr": "pm89",
+    "P": 0,
+    "lay": "rand",
+    "go": "none",
+    "pk": "ar",
+    "pp": 0.5,
+    "rv": 0.02
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 392,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 35,
+    "cap": "full",
+    "th": "pce_old",
+    "pr": "fav80",
+    "P": 0,
+    "lay": "rand",
+    "go": "th_old"
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 364,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 96,
+    "cap": "thin",
+    "th": "pce_new",
+    "pr": "mid",
+    "P": 0,
+    "lay": "rand",
+    "go": "th_new"
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 1,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 96,
+    "cap": "full",
+    "th": "pce_new",
+    "pr": "pmmix50",
+    "P": 30,
+    "lay": "run",
+    "go": "new",
+    "pk": "ar",
+    "pp": 0.5,
+    "rv": 0.05
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 0,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 60,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": 0.1,
+    "pr": "mid",
+    "P": 30,
+    "lay": "run",
+    "pk": "mk",
+    "pp": 0.9,
+    "rv": 0.1
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 44,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 90,
+    "S": 48,
+    "m": 96,
+    "cap": "full",
+    "th": 0.12,
+    "pr": "fav",
+    "P": 0,
+    "lay": "rand",
+    "go": "none"
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 201,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": -0.12,
+    "pr": "mid",
+    "P": 0,
+    "lay": "rand",
+    "go": "none"
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 388,
+   "mismatches": 0,
+   "first": []
+  },
+  {
+   "cell": {
+    "D": 120,
+    "S": 48,
+    "m": 17,
+    "cap": "thin",
+    "th": 0.0,
+    "pr": "wide",
+    "P": 0,
+    "lay": "rand",
+    "go": "none"
+   },
+   "reps": 400,
+   "window_reps": 400,
+   "info_reps": 398,
+   "mismatches": 0,
+   "first": []
+  }
+ ],
+ "mismatches": 0,
+ "verdict": "PASS"
+}

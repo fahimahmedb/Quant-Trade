@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-10-16T07:02:53.322Z",
+  "checks": [
+    {
+      "name": "public connected iPhone portrait WebGL",
+      "status": "PASS",
+      "connectivity": "LIVE",
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852
+      }
+    },
+    {
+      "name": "public connected same-world fallback",
+      "status": "PASS",
+      "connectivity": "LIVE",
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852
+      }
+    }
+  ],
+  "errors": [],
+  "real_iPhone_hardware_verified": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "research-os-queue-refill-event-v1",
+  "event_type": "QUEUE_REFILL",
+  "event_id": "queue-refill:INSTITUTIONAL_FLOW_DISTINCT_MECHANISM:2",
+  "emitted_at": "2026-10-18T08:44:59Z",
+  "steward_lane": "integrator_portfolio",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-002",
+  "frontier_id": "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM",
+  "sequence": 2,
+  "derivation_key": "19cc3e61106d085aebc115c11d33a14c96aeb5dff30725433084c47a8a48883e",
+  "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+  "queue_before": {"ready_count": 0, "claimed_count": 0},
+  "queue_after": {"ready_count": 1, "claimed_count": 0},
+  "producer_executed_same_wake": false
+}

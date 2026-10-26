@@ -1,0 +1,70 @@
+name: Economic readiness validation CI
+
+on:
+  push:
+    branches:
+      - builder/econ-readiness-validation-20261016
+    paths:
+      - 'research/research_os/expansion/validation_v2.py'
+      - 'research/research_os/expansion/validation_readiness.py'
+      - 'research/research_os/expansion/red_team_v2.py'
+      - 'research/research_os/tests/test_economic_readiness_validation.py'
+      - '.github/workflows/econ-readiness-validation-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validation-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile owned Python surfaces
+        run: |
+          python -m py_compile \
+            research/research_os/expansion/validation_v2.py \
+            research/research_os/expansion/validation_readiness.py \
+            research/research_os/expansion/red_team_v2.py \
+            research/research_os/tests/test_economic_readiness_validation.py
+
+      - name: Run economic readiness validation tests
+        run: python -m unittest research.research_os.tests.test_economic_readiness_validation -v
+
+      - name: Run final-shape registry regression
+        run: python -m unittest research.research_os.tests.test_final_shape_registry -v
+
+      - name: Prove forbidden surfaces unchanged from mandatory base
+        env:
+          BASE_SHA: b570973836e0e7daf50ca095a7559d63328f0a57
+        run: |
+          git diff --exit-code "$BASE_SHA" -- \
+            research/research_os/expansion/experiment_runner.py \
+            research/research_os/expansion/portfolio_v2.py \
+            research/research_os/expansion/engine_dossiers_v1.py
+
+      - name: Authority remains closed
+        run: |
+          python - <<'PY'
+          from research.research_os.expansion.validation_readiness import READY
+          from research.research_os.expansion.red_team_v2 import ALLOWED_BLOCKERS
+          assert READY == 'READY_FOR_AUTHORIZED_ECONOMIC_TEST'
+          assert ALLOWED_BLOCKERS == {
+              'BLOCK_DATA', 'BLOCK_LEAKAGE', 'BLOCK_CLOCK', 'BLOCK_PIT',
+              'BLOCK_MULTIPLICITY', 'BLOCK_TRIAL_ACCOUNTING',
+              'BLOCK_IMPLEMENTABILITY', 'BLOCK_COST_MODEL', 'BLOCK_CAPACITY',
+              'BLOCK_CLAIM_LEVEL', 'BLOCK_REPRODUCIBILITY',
+              'BLOCK_ECONOMIC_IDENTITY', 'BLOCK_PORTFOLIO_DUPLICATION',
+          }
+          print('ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE')
+          print('PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE')
+          print('REAL_CAPITAL_AUTHORIZED=FALSE')
+          print('LIVE_TRADING_AUTHORIZED=FALSE')
+          PY

@@ -1,0 +1,68 @@
+{
+  "acquisition": {
+    "paid_usd": 0,
+    "payload_bytes": 41328,
+    "raw_cache_private": true,
+    "receipts": [
+      {
+        "contract": "H2013",
+        "error": null,
+        "payload_bytes": 13805,
+        "qa_passed": true,
+        "reused": false,
+        "sha256": "fec608165d22c39f327b5fbf9709e3954fc72bce667c7b700469197be79e61fe",
+        "status": 200,
+        "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_H13_VX.csv"
+      },
+      {
+        "contract": "M2013",
+        "error": null,
+        "payload_bytes": 13674,
+        "qa_passed": true,
+        "reused": false,
+        "sha256": "731321cfa8c54f5b9f64e76acf33b2d6bc21a2fed4fef365ea6faa44f3de86f5",
+        "status": 200,
+        "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_M13_VX.csv"
+      },
+      {
+        "contract": "U2013",
+        "error": "Required CSV date/settlement schema missing or ambiguous",
+        "payload_bytes": 13849,
+        "reused": false,
+        "sha256": "3cd8e7d68e910faa0aff589ff562189fe0913bb0d1d8e43dc3811ff00e7a6a6d",
+        "status": 200,
+        "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_U13_VX.csv"
+      }
+    ],
+    "wall_seconds": 0.5845395729998017
+  },
+  "adequacy_passed": false,
+  "claim_ceiling": "PROMOTE_EXPRESSION",
+  "claim_commit": "b858f37795c313730504c1d82b8c0f63ce0152b1",
+  "contract_sha256": "525fa2f6a5d624e746c37ecedbedcf58e3998b3ad1350eadd19c0a2962925ceb",
+  "decision": "PARK_DATA",
+  "economics_computed": false,
+  "experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+  "failed_criteria": [
+    "Required CSV date/settlement schema missing or ambiguous"
+  ],
+  "invocation_id": "owner-v42-vix-v1-20261012",
+  "label": "EXPLORATORY",
+  "manifest_sha256": "c230f44140054927b65ee9fb9b2433ad25f068bf8d206d9c3a9aab6df695a679",
+  "observable_cost": {
+    "cpu_seconds": 0.03363096500000001,
+    "network_total_bytes": null,
+    "paid_usd": 0,
+    "raw_payload_bytes": 41328,
+    "tokens": null,
+    "wall_seconds": 0.5847011459995883
+  },
+  "predeclaration_commit": "bd940660e4cea2e8c4fd7179b239d8a296c1d201",
+  "prior_exposures": "PRIVATE_UNKNOWN",
+  "red_team": {
+    "executed": false,
+    "passed": false
+  },
+  "source_manifest_sha256": "ca391057330f4fa0d4f65bbf6710a5b992aef9ddd168419da7d5abd6c36caf75",
+  "typed_verdict": "PARK_DATA"
+}

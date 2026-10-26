@@ -1,0 +1,49 @@
+# MEGA_A_CP_001_20261021
+
+BASE_SHA: `4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090`
+PACKAGE_HEAD_SHA: `fa385bc8f57b482a64617cb3d227c57c42645746`
+CHAIN_SCOPE: Scientific Memory convergence + provenance-only Archaeology recovery.
+
+CAPABILITIES_QUALIFIED:
+- Canonical Scientific Memory normalization/query semantics over the existing `AppendOnlyHashLedger`.
+- Provenance-only archaeology with immutable-anchor discipline.
+- Identity-safe memory/archaeology bridge.
+
+CAPABILITIES_REUSED:
+- Existing `research/research_os/scientific_store.py` append-only scientific ledger.
+
+CAPABILITIES_IMPORTED:
+- `research/research_os/scientific_memory.py` from sealed W1 HEAD `9d92c9f859efd39fdfd94372b10ba91ad73c31b4` (exact qualified blob).
+- Historical provenance-only `archaeology.py` and `memory_archaeology_bridge.py` plus their tests.
+
+NO_BUILD_DECISIONS:
+- No second memory truth store.
+- No second scheduler or orchestration authority.
+- No source acquisition runtime.
+
+HISTORICAL_SOURCES_USED:
+- W1 Scientific Memory sealed HEAD `9d92c9f859efd39fdfd94372b10ba91ad73c31b4`.
+- Historical Research OS provenance archaeology surfaces recovered semantically, not by blind branch merge.
+
+FILES_CHANGED:
+- `research/research_os/scientific_memory.py`
+- `research/research_os/archaeology.py`
+- `research/research_os/memory_archaeology_bridge.py`
+- `research/research_os/tests/test_scientific_memory.py`
+- `research/research_os/tests/test_archaeology.py`
+- `research/research_os/tests/test_memory_archaeology_bridge.py`
+
+SHARED_SURFACES_TOUCHED: canonical scientific ledger read/append API only through existing interfaces.
+PUBLIC_CONTRACTS_CHANGED: Scientific Memory and archaeology APIs restored on current convergence rail.
+SCHEMAS_CHANGED: none to CP063 runtime JSON contracts.
+TESTS_ADDED: imported qualified W1/historical adversarial tests.
+FOCUSED_TEST_RESULT: Hosted repository gate for this exact head is still `in_progress`; no pass is claimed. Historical test files were imported unchanged with the qualified implementation.
+BROADER_TEST_RESULT: Not yet concluded for this head; no green status is fabricated.
+SCIENTIFIC_CLAIM_LIMITS: no economic outcome, alpha, empirical correlation, source activation, provider fact, deployment proof, or authority is claimed.
+DEPENDENCIES: existing `AppendOnlyHashLedger`; immutable historical provenance anchors.
+EXPECTED_INTEGRATION_CONFLICTS: possible overlap with parallel branches restoring the same root archaeology/memory files; semantic identity should be reconciled before merge.
+REMAINING_GAPS: explainable Research Intelligence decision engine; semantic search identity; action priority; capability/route/budget/blocker admission; nuanced frontier exhaustion; Control Plane handoff.
+REMAINING_GAP_CLASSIFICATION: `BUILD_MISSING` for decision layer, `HARDEN_EXISTING` for refill/exhaustion semantics.
+AUTHORITY_STATUS: `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`, `PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`, `REAL_CAPITAL_AUTHORIZED=FALSE`, `LIVE_TRADING_AUTHORIZED=FALSE`, `OUTCOME_ACCESSED=FALSE`.
+SAFE_TO_INTEGRATE: YES, subject to normal conflict reconciliation and hosted tests completing.
+SAFE_TO_CONTINUE_THIS_CHAIN: YES.

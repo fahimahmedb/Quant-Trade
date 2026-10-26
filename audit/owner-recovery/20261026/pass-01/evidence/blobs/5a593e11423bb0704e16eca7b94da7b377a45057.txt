@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_PREOPERATIVE_WATCH",
+  "protocols": [
+    "disc-us-reverse-split-round-up-prospective-l1-v2",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2"
+  ],
+  "candidate": {
+    "issuer": "Healthcare Triangle, Inc.",
+    "ticker": "HCTI",
+    "cik": "0001839285",
+    "definitive_proxy_accession": "0001213900-26-109104",
+    "proxy_date": "2026-10-13",
+    "special_meeting_date": "2026-10-23"
+  },
+  "decision": "NOT_YET_ELIGIBLE_WAIT_FOR_OPERATIVE_RATIO_EFFECTIVE_TIME",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "market_price_payload_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "observed_documentary_facts": [
+    "The post-T0 definitive proxy asks shareholders to authorize one or more reverse splits with an aggregate ratio no greater than 1-for-25, exact ratio to be selected later by the board.",
+    "The proxy describes round-up treatment for fractional shares rather than cash-in-lieu if a reverse split is implemented.",
+    "The special meeting is scheduled for October 23, 2026.",
+    "The proxy does not itself fix the operative split ratio, effective time or first split-adjusted trading session.",
+    "Healthcare Triangle previously used participant-level fractional-share issuance in a February 2026 reverse split, but that historical implementation is contamination/documentary context only and cannot establish future nominee treatment."
+  ],
+  "primary_sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1839285/000121390026109104/ea0308415-def14a_healthcare.htm",
+      "facts": [
+        "October 23 special meeting",
+        "ratio range 1-for-2 through 1-for-25 with board discretion",
+        "future reverse-split authorization rather than current operative split"
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1839285/000121390026016390/ea027697001ex99-1_healthcare.htm",
+      "use": "HISTORICAL_MECHANICS_CONTEXT_ONLY",
+      "fact": "February 2026 prior split announcement; not prospective evidence for the new event."
+    }
+  ],
+  "protocol_effect": "Protocol C requires a fixed integer 1-for-R ratio plus explicit round-up treatment and enough operative timing to determine whether a post-event purchase can participate. The October 13 proxy supplies only shareholder authorization and a ratio range, so it cannot be EVENT_TIME and cannot authorize price access. Protocol B is facially inapplicable because the proposed treatment is round-up, not cash-in-lieu.",
+  "ordering_rule": "Do not reserve or select HCTI now. If, after the October 23 vote, a new primary filing fixes ratio + effective time + round-up terms, process that filing in chronological order against all other post-T0 operative candidates. Earlier qualifying events win. This watch creates no priority over another issuer.",
+  "failed_criteria": [
+    "No fixed ratio yet.",
+    "No operative effective/entitlement time yet.",
+    "No established post-announcement pre-entitlement trading window yet.",
+    "Future beneficial-owner aggregation/participant-level treatment must be read from the operative filing, not inferred from the February 2026 event."
+  ],
+  "next_action": "Wait for a genuinely new HCTI filing after the October 23 meeting that fixes implementation terms, or classify closed if the proposal fails/is not implemented. Do not inspect HCTI economic outcomes or design a quantity variant in advance; Q=1 remains frozen by protocol C.",
+  "inference_ceiling": [
+    "No HCTI prospective case admitted",
+    "No HCTI price/payoff result",
+    "No round-up family evidence",
+    "No live or real-capital authorization"
+  ]
+}

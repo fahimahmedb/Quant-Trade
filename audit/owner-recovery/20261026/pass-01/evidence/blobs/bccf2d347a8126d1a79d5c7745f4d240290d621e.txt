@@ -1,0 +1,55 @@
+name: Forward live smoke
+
+on:
+  push:
+    branches:
+      - blue/forward-finalization-2026-09-20
+    paths:
+      - scripts/forward_capture_runner.py
+      - .github/workflows/forward-live-smoke.yml
+      - src/quant/dataplane/forward_capture.py
+      - src/quant/dataplane/forward_recorder.py
+      - src/quant/dataplane/adapters.py
+
+permissions:
+  contents: read
+
+jobs:
+  live-forward-capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit-test the manual runner
+        run: |
+          PYTHONPATH=src python3 -m unittest tests.test_forward_capture_runner -v
+      - name: One real Yahoo capture attempt
+        id: live
+        shell: bash
+        run: |
+          set +e
+          ROOT="$RUNNER_TEMP/quant-forward-live"
+          EVIDENCE="$RUNNER_TEMP/forward-live-evidence"
+          mkdir -p "$EVIDENCE"
+          python3 scripts/forward_capture_runner.py \
+            --root "$ROOT" \
+            --symbols XLK \
+            --lookback-range 5d \
+            --attempt-id github-live-smoke \
+            --json-output "$EVIDENCE/summary.json"
+          code=$?
+          cp -f "$ROOT/var/forward_capture/attempts.jsonl" "$EVIDENCE/" 2>/dev/null || true
+          cp -f "$ROOT/var/forward_capture/tasks.json" "$EVIDENCE/" 2>/dev/null || true
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
+      - name: Upload truthful live-attempt evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forward-live-smoke-${{ github.sha }}
+          path: ${{ runner.temp }}/forward-live-evidence
+          if-no-files-found: error
+          retention-days: 30

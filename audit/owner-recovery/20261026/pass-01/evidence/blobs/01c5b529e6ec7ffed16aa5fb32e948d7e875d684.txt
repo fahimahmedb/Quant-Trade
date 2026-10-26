@@ -1,0 +1,22 @@
+{
+  "scope": "REAL_ORACLE_PUBLIC_SSE_FRAMES_THROUGH_PRODUCTION_SOURCE_MAPPER_REDUCER",
+  "source_sha": "7afac2cbfde65bd08bf64c0a4d6cf0ee6b62397a",
+  "worker_id": "oracle-research.market_discovery",
+  "event_ids": [
+    "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-1",
+    "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-010-g1-987e0f1a5f0c-2",
+    "closed-ea718f62b4b031761627f7af7881e0c0601a62bf3f3d08423b0ed210729c6ab2"
+  ],
+  "cursors": [
+    "84",
+    "85",
+    "86"
+  ],
+  "start_animates": true,
+  "completion_and_end_stop": true,
+  "duplicate_does_not_replay": true,
+  "reload_does_not_animate": true,
+  "economic_look_inactive": true,
+  "browser_render_tested": false,
+  "safari_iphone_tested": false
+}

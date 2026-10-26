@@ -1,0 +1,27 @@
+from pathlib import Path
+import hashlib,subprocess,os,json
+p=Path('/workspace/Quant-Trade/src/autonomous_research/runtime.py');fixed=p.read_text();out=Path('/workspace/vertical_depth_cp042_rebuild')
+a=fixed.index('@dataclass\nclass CampaignState:');b=fixed.index('\n\n@dataclass\nclass ResearchTask:',a);part=fixed[a:b]
+mutants=[
+('stale_fence','if (current_wire != encode(self._persisted_by_path.get(key))\n                    and current_wire != document_wire):','if False:'),
+('recovery','if durable is not None:\n                self._adopt(key, durable)','if durable is not None:\n                pass'),
+('file_lock','fcntl.flock(fd, fcntl.LOCK_EX)','pass  # deliberate missing cross-process lock'),
+('heartbeat_serialization','    @_serialized_mutation\n    def heartbeat','    def heartbeat'),
+('save_serialization','    @_serialized_mutation\n    def save','    def save'),
+('duplicate_key_admission','object_pairs_hook=cls._unique_fields','object_pairs_hook=dict'),
+('finite_read_admission','json.dumps(document, allow_nan=False)  # Match the existing writer\'s finite JSON contract.','pass  # deliberate read/write admission asymmetry'),
+]
+results=[]
+try:
+ for name,old,new in mutants:
+  assert part.count(old)==1,(name,part.count(old))
+  p.write_text(fixed[:a]+part.replace(old,new)+fixed[b:]);log=out/f'CP042_mutant_{name}.txt'
+  with log.open('w') as f:
+   f.write('mutation='+name+'\nfixed_source_sha256='+hashlib.sha256(fixed.encode()).hexdigest()+'\n');f.flush()
+   r=subprocess.run(['python','-m','pytest','-q','tests/test_vertical_campaign_state_depth.py'],cwd='/workspace/Quant-Trade',env=dict(os.environ,PYTHONPATH='src:tests:.'),stdout=f,stderr=subprocess.STDOUT)
+  summary=next((s for s in reversed(log.read_text().splitlines()) if 'failed' in s),'NO_FAILURE')
+  print(name,r.returncode,summary,flush=True)
+  results.append({'mutation':name,'exit_code':r.returncode,'summary':summary,'log':log.name,'replace':old,'with':new})
+  assert r.returncode==1,(name,r.returncode)
+finally:p.write_text(fixed)
+(out/'CP042_mutation_results.json').write_text(json.dumps({'fixed_source_sha256':hashlib.sha256(fixed.encode()).hexdigest(),'mutants':results},indent=2)+'\n')

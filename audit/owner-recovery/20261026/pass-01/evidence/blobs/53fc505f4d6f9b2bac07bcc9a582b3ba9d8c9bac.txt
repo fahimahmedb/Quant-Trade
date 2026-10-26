@@ -1,0 +1,242 @@
+mutation=duplicate_identity
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=c9e83e63f72f5ec55e1b2984e24e17f51c94e1b02acd25f3d60116c2a0927500
+....................................FFFFFFFFFF..........FF.............. [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-protocol_hash-foreign-protocol] _
+
+field = 'protocol_hash', foreign = 'foreign-protocol', side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-code_hash-foreign-code] _
+
+field = 'code_hash', foreign = 'foreign-code', side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-environment_hash-foreign-environment] _
+
+field = 'environment_hash', foreign = 'foreign-environment', side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_____ test_rehashed_internal_duplicate_identity_must_agree[plan-seed-1729] _____
+
+field = 'seed', foreign = 1729, side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[plan-source_route_hashes-foreign4] _
+
+field = 'source_route_hashes', foreign = ['foreign-route'], side = 'plan'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-protocol_hash-foreign-protocol] _
+
+field = 'protocol_hash', foreign = 'foreign-protocol', side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-code_hash-foreign-code] _
+
+field = 'code_hash', foreign = 'foreign-code', side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-environment_hash-foreign-environment] _
+
+field = 'environment_hash', foreign = 'foreign-environment'
+side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-seed-1729] _
+
+field = 'seed', foreign = 1729, side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-source_route_hashes-foreign4] _
+
+field = 'source_route_hashes', foreign = ['foreign-route']
+side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('field,foreign', [
+        ('protocol_hash', 'foreign-protocol'), ('code_hash', 'foreign-code'),
+        ('environment_hash', 'foreign-environment'), ('seed', 1729),
+        ('source_route_hashes', ['foreign-route']),
+    ])
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_rehashed_internal_duplicate_identity_must_agree(field, foreign, side):
+        runner, plan, *_ = frozen()
+        plan[side][field] = foreign
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_.*BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:86: Failed
+_ test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[plan] _
+
+side = 'plan'
+
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality(side):
+        runner, plan, *_ = frozen()
+        assert type(plan['plan']['seed']) is int
+        plan[side]['seed'] = float(plan[side]['seed'])
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_SEED_BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:182: Failed
+_ test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[frozen_protocol] _
+
+side = 'frozen_protocol'
+
+    @pytest.mark.parametrize('side', ['plan', 'frozen_protocol'])
+    def test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality(side):
+        runner, plan, *_ = frozen()
+        assert type(plan['plan']['seed']) is int
+        plan[side]['seed'] = float(plan[side]['seed'])
+        rehash(plan)
+>       with pytest.raises(ValueError, match='FROZEN_PLAN_SEED_BINDING_MISMATCH'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:182: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-protocol_hash-foreign-protocol]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-code_hash-foreign-code]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-environment_hash-foreign-environment]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-seed-1729]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[plan-source_route_hashes-foreign4]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-protocol_hash-foreign-protocol]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-code_hash-foreign-code]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-environment_hash-foreign-environment]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-seed-1729]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_internal_duplicate_identity_must_agree[frozen_protocol-source_route_hashes-foreign4]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[plan]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_duplicate_identity_comparison_uses_serialized_types_not_python_numeric_equality[frozen_protocol]
+12 failed, 61 passed in 0.20s

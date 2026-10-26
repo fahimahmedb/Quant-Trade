@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "One deterministic 2-insider/10-session crossing formation.",
+  "properties": {
+    "acceptance_timestamps": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "type": "array"
+    },
+    "accessions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "constituent_observation_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "event_time": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_time_status": {
+      "type": "string"
+    },
+    "event_time_timezone": {
+      "type": "string"
+    },
+    "formation_transaction_date": {
+      "type": "string"
+    },
+    "issuer_cik": {
+      "type": "string"
+    },
+    "owner_ciks": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "session_distance": {
+      "type": "integer"
+    },
+    "window_start_date": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "issuer_cik",
+    "formation_transaction_date",
+    "window_start_date",
+    "owner_ciks",
+    "constituent_observation_ids",
+    "accessions",
+    "session_distance"
+  ],
+  "title": "sec_form4_event",
+  "type": "object"
+}

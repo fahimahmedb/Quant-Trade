@@ -1,0 +1,13 @@
+{
+  "probe_id": "PROBE_3_PUBLIC_STREAM",
+  "trace_id": "P3-BUILDER-NETWORK-20261012T221118Z",
+  "started_at_utc": "2026-10-12T22:11:18.215678Z",
+  "finished_at_utc": "2026-10-12T22:11:23.229814Z",
+  "executor_environment": "Builder Chat web/container network",
+  "provenance": "UNVERIFIED",
+  "observed_fact": "The Builder container could not resolve quant-trade-lab.sassylime.chatgpt.site and the generic web fetch path could not retrieve the Site. This is an executor/network limitation and is not evidence that the public Site itself is down.",
+  "evidence_reference": "container getaddrinfo -> temporary failure in name resolution; web fetch -> inaccessible/cache miss",
+  "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+  "first_broken_transition": "PUBLIC_SITE_NETWORK_VERIFICATION_UNAVAILABLE_FROM_BUILDER",
+  "notes": "Historical repository evidence records a Site deployment and /api/live snapshot path, but no current public stream/SSE/WebSocket capability can be inferred from that historical record."
+}

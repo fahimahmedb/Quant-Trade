@@ -1,0 +1,275 @@
+{
+  "actual_artifact_upload_steps": "SUCCESS_CONTENTS_NOT_DOWNLOADED",
+  "code_head": "61d99a340034ae4cce9f1d00b767d28889cc74cb",
+  "deployment_performed": false,
+  "final_convergence_performed": false,
+  "frontier_reassessment_receipt": "BUILDER_CP_047_FRONTIER_REASSESSMENT_20261020.json",
+  "hosted_workflows": {
+    "observed_at": "2026-10-20T22:31:56.689544+00:00",
+    "page_sha256": "d66620164e60daafb436340ec1a585a454c37c9ff495dc2bac5f05a5f796f927",
+    "runs": [
+      {
+        "id": "39507711568",
+        "name": "Oracle V2 Core",
+        "state": {
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+        },
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711568"
+      },
+      {
+        "id": "39507711682",
+        "name": "SEC P0 pre-t0 gate",
+        "state": {
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+        },
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711682"
+      }
+    ],
+    "source_url": "https://github.com/fahimahmedb/Quant-Trade/actions?query=branch%3Abuilder%2Fv2-forward-20261020",
+    "target_commit": "61d99a340034ae4cce9f1d00b767d28889cc74cb"
+  },
+  "jobs": [
+    {
+      "commit_binding": {
+        "commits": [
+          "61d99a340034ae4cce9f1d00b767d28889cc74cb"
+        ],
+        "page_sha256": "ee6504f3bf271ca2230754fb04439f32f5eb2169884ba1d573a36e534dd7204d",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711568"
+      },
+      "job": {
+        "job_id": "118920710961",
+        "observed_at": "2026-10-20T22:32:09.483949+00:00",
+        "page_sha256": "1ea33361a61328b779789ecccfb7e3ee6727c9cab2e6574c61775cf064139161",
+        "run_id": "39507711568",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Compile V2 Core"
+          },
+          {
+            "conclusion": "success",
+            "name": "V2 Core contract, bridge, worker and whole-loop tests"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify V2 policy remains fail-closed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify V2 claim ceiling"
+          },
+          {
+            "conclusion": "success",
+            "name": "Generate exact-head V2 qualification receipt"
+          },
+          {
+            "conclusion": "success",
+            "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled"
+          },
+          {
+            "conclusion": "success",
+            "name": "Upload exact-head V2 qualification receipt"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job"
+          }
+        ],
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711568/job/118920710961"
+      },
+      "run": {
+        "id": "39507711568",
+        "name": "Oracle V2 Core",
+        "state": {
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+        },
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711568"
+      }
+    },
+    {
+      "commit_binding": {
+        "commits": [
+          "61d99a340034ae4cce9f1d00b767d28889cc74cb"
+        ],
+        "page_sha256": "d8e1dab9a3e41b520ac5515a27dacbf853ac522ebb83dc679aa838442e3248bc",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711682"
+      },
+      "job": {
+        "job_id": "118920712338",
+        "observed_at": "2026-10-20T22:32:09.659416+00:00",
+        "page_sha256": "0bc4839695a4a870cc56771e2c6c80ef827ae734aaf26c3daff882e1e15e658f",
+        "run_id": "39507711682",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Record environment"
+          },
+          {
+            "conclusion": "success",
+            "name": "Fail-closed check (no SEC identity configured)"
+          },
+          {
+            "conclusion": "success",
+            "name": "Generated schema drift"
+          },
+          {
+            "conclusion": "success",
+            "name": "Status artifact freshness"
+          },
+          {
+            "conclusion": "success",
+            "name": "Full unit suite"
+          },
+          {
+            "conclusion": "success",
+            "name": "SEC P0 lane suite"
+          },
+          {
+            "conclusion": "success",
+            "name": "V1 end-to-end regression"
+          },
+          {
+            "conclusion": "success",
+            "name": "Generate exact-head verification artifact"
+          },
+          {
+            "conclusion": "success",
+            "name": "Upload exact-head verification artifact"
+          },
+          {
+            "conclusion": "success",
+            "name": "Restore committed verification placeholder"
+          },
+          {
+            "conclusion": "success",
+            "name": "Clean working tree"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job"
+          }
+        ],
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711682/job/118920712338"
+      },
+      "run": {
+        "id": "39507711682",
+        "name": "SEC P0 pre-t0 gate",
+        "state": {
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS",
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED"
+        },
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39507711682"
+      }
+    }
+  ],
+  "local_qualification_receipt": "BUILDER_CP_047_LOCAL_QUALIFICATION_20261020.json",
+  "observed_at": "2026-10-20T22:32:24.167684+00:00",
+  "outcome_accessed": false,
+  "packages": {
+    "all_in_v2_workflow": true,
+    "new_test_modules": [
+      "tests/test_research_os_canonical_identity.py",
+      "tests/test_research_os_evaluation_membrane_admission.py",
+      "tests/test_research_os_feedback_authorization.py",
+      "tests/test_research_os_frozen_envelope_binding.py",
+      "tests/test_research_os_frozen_export_identity.py",
+      "tests/test_research_os_frozen_receipt_binding.py",
+      "tests/test_research_os_frozen_trial_accounting.py",
+      "tests/test_research_os_scientific_claim_admission.py",
+      "tests/test_research_os_structural_unknown_evidence.py"
+    ],
+    "packages": [
+      {
+        "checkpoint": "CP032",
+        "commit": "5a31b07936c07d970f67609a9db7e5b942065abc",
+        "title": "fix: qualify finite trial accounting at freeze and replay with CP032"
+      },
+      {
+        "checkpoint": "CP033",
+        "commit": "7878fecc1f4ab38ef4c787db9c8acd37b1496fa1",
+        "title": "fix: bind frozen receipts to exact plans and closed authority with CP033"
+      },
+      {
+        "checkpoint": "CP034",
+        "commit": "965ae24f65c6baf586c309e6d21c0d23ac13ed62",
+        "title": "fix: bind frozen envelopes to payload hash and candidate identity with CP034"
+      },
+      {
+        "checkpoint": "CP036",
+        "commit": "62a174897c42d80eb4aef9a9faeed201849f304c",
+        "title": "fix: require attributed epoch trial and candidate identities with CP036"
+      },
+      {
+        "checkpoint": "CP038",
+        "commit": "9113adb711ac882e1b7758cde1b3efc517830f6f",
+        "title": "fix: require explicit future feedback grants and identities with CP038"
+      },
+      {
+        "checkpoint": "CP040",
+        "commit": "6e286cd11817deffd7ab1affb539ff7329b8b32c",
+        "title": "fix: reject contradictory validator and PIT declarations with CP040"
+      },
+      {
+        "checkpoint": "CP042",
+        "commit": "e8ff9dfb552c7c019d8e98fe6ff6a902414389da",
+        "title": "fix: close technical receipt and pipeline admission gaps with CP042"
+      },
+      {
+        "checkpoint": "CP044",
+        "commit": "d6557df14ad4f3b9c24105ddd72d4fb977db17df",
+        "title": "fix: preserve exact validated candidate through frozen export with CP044"
+      },
+      {
+        "checkpoint": "CP046",
+        "commit": "61d99a340034ae4cce9f1d00b767d28889cc74cb",
+        "title": "fix: keep missing structural evidence unknown with CP046"
+      }
+    ],
+    "test_increment": 37
+  },
+  "schema_version": "builder-exact-head-hosted-proof-v1"
+}

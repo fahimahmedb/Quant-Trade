@@ -1,0 +1,32 @@
+{
+  "account_creation_performed": false,
+  "decision": "BLOCKED_DATA_PERMISSION",
+  "documentation_link": "https://docs.kalshi.com/welcome",
+  "family": "F2_KALSHI_FLB",
+  "market_data_acquisition_performed": false,
+  "official_landing_page": "https://kalshi.com/developer-agreement",
+  "outcome_exposure": false,
+  "paid_data_authorized": false,
+  "retrieved_utc": "2026-10-09T10:21:14.437703+00:00",
+  "scope": "Non-commercial credential-free historical research; F1 remains primary.",
+  "sources": [
+    {
+      "bytes": 125685,
+      "document": "developer_agreement",
+      "linked_from_official_landing_page": true,
+      "pages": 6,
+      "sha256": "9d3e33685c0f0a88d23895685107975b0745283aac96f8bf7d202f5ae4dc1fa6",
+      "url": "https://assets.kalshi.com/Kalshi-Developer-Agreement.pdf",
+      "version": "1.1"
+    },
+    {
+      "bytes": 52287,
+      "document": "data_terms",
+      "linked_from_official_landing_page": true,
+      "pages": 3,
+      "sha256": "d19a0f94ffd65aa51eccb80cc8c9a06fb842478c5bf4cbd5a31ec51dd0a3966f",
+      "url": "https://kalshi-public-docs.s3.amazonaws.com/kalshi-data-terms-of-service.pdf",
+      "version": null
+    }
+  ]
+}

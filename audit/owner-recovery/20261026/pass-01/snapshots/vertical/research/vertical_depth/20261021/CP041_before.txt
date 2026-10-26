@@ -1,0 +1,463 @@
+FFFFFFFFFF.....F                                                         [100%]
+=================================== FAILURES ===================================
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-epoch] _
+
+key = 'epoch', builder = <function build_epoch_manifest at 0x7fb31df9f7e0>
+identity = 'research_epoch_id', required = 'research_policy_hash'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'research_ep...:00:00Z', ...} == {'research_ep...:00:00Z', ...}
+E
+E         Omitting 21 identical items, use -vv to show
+E         Differing items:
+E         {'research_epoch_id': None} != {'research_epoch_id': 'V2-FIXTURE-EPOCH-001'}
+E         {'epoch_manifest_hash': '139ccc1636af7ab96d3566253cc7d6acc3f84a727fa8c8f63b9817edc81bc499'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-trial] _
+
+key = 'trial', builder = <function build_research_trial at 0x7fb31df9f9c0>
+identity = 'research_trial_id', required = 'model_identity'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'research_tr...-q4-k-m', ...} == {'research_tr...-q4-k-m', ...}
+E
+E         Omitting 14 identical items, use -vv to show
+E         Differing items:
+E         {'trial_hash': '78c0a550a0c93af51b7812a14078dc376ac93bad852767dca1743c88895670d0'} != {'trial_hash': 'dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b'}
+E         {'research_trial_id': None} != {'research_trial_id': 'V2-FIXTURE-TRIAL-001'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-candidate] _
+
+key = 'candidate', builder = <function build_candidate at 0x7fb31df9fa60>
+identity = 'hypothesis_id', required = 'claim'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'hypothesis_...OCH-001', ...} == {'hypothesis_...OCH-001', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'candidate_hash': '541c295533c3dacf57b5ebd43a0f60c78b886e829a3ab619bbe74ab2f99a9fe1'} != {'candidate_hash': '32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a'}
+E         {'hypothesis_id': None} != {'hypothesis_id': 'V2-FIXTURE-HYPOTHESIS-001'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-validator] _
+
+key = 'validator', builder = <function build_validator_result at 0x7fb31df9fb00>
+identity = 'validator_identity', required = 'validator_context_hash'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'hypothesis_...n': 'v2', ...} == {'hypothesis_...n': 'v2', ...}
+E
+E         Omitting 11 identical items, use -vv to show
+E         Differing items:
+E         {'validator_hash': 'f88f92173c06e1e31ea5acdf0fad904f981a0e416e945a0435c416c253cb2f1e'} != {'validator_hash': '3298ec7ea354f5f760fe30593fe1289d68bfb64c5e87c0f2da8e81ae12dd2f23'}
+E         {'validator_identity': None} != {'validator_identity': 'fixture-independent-validator'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-negative_memory] _
+
+key = 'negative_memory'
+builder = <function build_negative_memory at 0x7fb31df9fd80>
+identity = 'negative_knowledge_id', required = 'revisit_policy'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'negative_kn...ext': {}, ...} == {'negative_kn...ext': {}, ...}
+E
+E         Omitting 7 identical items, use -vv to show
+E         Differing items:
+E         {'negative_knowledge_id': None} != {'negative_knowledge_id': 'V2-FIXTURE-NEGATIVE-001'}
+E         {'negative_knowledge_hash': 'e445cb9d1646b3fa06136445e52356c0ae483de3ba24b526a7b9dd28290e00af'} != {'negative_knowledge_hash': '53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-epoch] _
+
+key = 'epoch', builder = <function build_epoch_manifest at 0x7fb31df9f7e0>
+identity = 'research_epoch_id', required = 'research_policy_hash'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'research_ep...:00:00Z', ...} == {'research_ep...:00:00Z', ...}
+E
+E         Omitting 21 identical items, use -vv to show
+E         Differing items:
+E         {'epoch_manifest_hash': 'eb3d28de379bbe1cf6ea6108b83765ff23cc8044c104a76570b643dbaf815968'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E         Right contains 1 more item:
+E         {'research_policy_hash': 'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-trial] _
+
+key = 'trial', builder = <function build_research_trial at 0x7fb31df9f9c0>
+identity = 'research_trial_id', required = 'model_identity'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'research_tr...ompt-v1', ...} == {'research_tr...-q4-k-m', ...}
+E
+E         Omitting 14 identical items, use -vv to show
+E         Differing items:
+E         {'trial_hash': 'cc8878f4a1eecf537c0cbc3cda6d3ea7e4d0e4d3dca993087824c1b0e1723670'} != {'trial_hash': 'dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b'}
+E         Right contains 1 more item:
+E         {'model_identity': 'gpt-oss-10.2b-q4-k-m'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-candidate] _
+
+key = 'candidate', builder = <function build_candidate at 0x7fb31df9fa60>
+identity = 'hypothesis_id', required = 'claim'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'hypothesis_...OCH-001', ...} == {'hypothesis_...OCH-001', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'candidate_hash': 'afecd213b3319005b6003e90f9f1d39b3c30923f3d4e6f592cc5fab291db3456'} != {'candidate_hash': '32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a'}
+E         Right contains 1 more item:
+E         {'claim': 'Fixture documentary premise only; no economic payoff is observed.'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-validator] _
+
+key = 'validator', builder = <function build_validator_result at 0x7fb31df9fb00>
+identity = 'validator_identity', required = 'validator_context_hash'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'hypothesis_...n': 'v2', ...} == {'hypothesis_...n': 'v2', ...}
+E
+E         Omitting 11 identical items, use -vv to show
+E         Differing items:
+E         {'validator_hash': 'fc130b6a4931c32bdd80ab878e950e22cebb7357229215fdab60c2fcf463d029'} != {'validator_hash': '3298ec7ea354f5f760fe30593fe1289d68bfb64c5e87c0f2da8e81ae12dd2f23'}
+E         Right contains 1 more item:
+E         {'validator_context_hash': 'fixture-validator-context-v1'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-negative_memory] _
+
+key = 'negative_memory'
+builder = <function build_negative_memory at 0x7fb31df9fd80>
+identity = 'negative_knowledge_id', required = 'revisit_policy'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'negative_kn...ext': {}, ...} == {'negative_kn...ext': {}, ...}
+E
+E         Omitting 7 identical items, use -vv to show
+E         Differing items:
+E         {'negative_knowledge_hash': '3edcf6c31cb4211a8672452933e6b4a7b02e70efe345a42b1582db8c1aa084fa'} != {'negative_knowledge_hash': '53c75e7fe5e5312f44f8bb9fec9f14cd28120f695c1cde543e0abed42d16d17e'}
+E         Right contains 1 more item:
+E         {'revisit_policy': 'ON_NEW_EVIDENCE'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation _
+
+    def test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation():
+        supplied = bundle()['epoch']
+        expected = core.build_epoch_manifest(deepcopy(supplied))
+        parse = core._parse_time
+        calls = []
+
+        def change_after_last_checked_clock(value):
+            result = parse(value)
+            calls.append(value)
+            if len(calls) == 4:
+                supplied['max_candidate_exports'] = 0
+                supplied['allowed_model_set'].clear()
+            return result
+
+        with patch.object(core, '_parse_time', side_effect=change_after_last_checked_clock):
+            actual = core.build_epoch_manifest(supplied)
+        assert len(calls) == 4
+>       assert actual == expected
+E       AssertionError: assert {'research_ep...:00:00Z', ...} == {'research_ep...:00:00Z', ...}
+E
+E         Omitting 19 identical items, use -vv to show
+E         Differing items:
+E         {'epoch_manifest_hash': 'a574759e8d21444c2ddd616515a0142d2ad215326e5bdff4e388154b9ce27b8f'} != {'epoch_manifest_hash': '8486b35bb1558efca9d33cbe74e331fa191227f7c458b213d3d95c385e759457'}
+E         {'max_candidate_exports': 0} != {'max_candidate_exports': 10}
+E         {'close_policy_hash': '1b0f5f570527f642c7863ff8d7a231fa0367c55d3336bf72e98b9b4d0dd487e0'} != {'close_policy_hash': '8affb69a984e4698c1c8658adedec0baa2017fea4394e9cecd28f00c66d5b819'}
+E         {'allowed_model_set': []} != {'allowed_model_set': ['gpt-oss-10.2b-q4-k-m']}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:85: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-epoch]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-trial]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-candidate]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-validator]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-negative_memory]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-epoch]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-trial]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-candidate]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-validator]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-negative_memory]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_epoch_policy_hash_and_fields_cannot_mix_snapshots_after_clock_validation
+11 failed, 5 passed in 0.10s

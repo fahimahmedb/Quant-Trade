@@ -1,0 +1,19 @@
+{
+  "mode": "SIMULATION_ONLY",
+  "production_scheduling_enabled": false,
+  "workers": [
+    {"worker_id":"legacy-01","capability":"LEGACY_RECOVERY","enabled":true},
+    {"worker_id":"quant-01","capability":"QUANT_MECHANISMS","enabled":true},
+    {"worker_id":"event-01","capability":"EVENT_DOCUMENT","enabled":true},
+    {"worker_id":"fundamental-01","capability":"FUNDAMENTAL_RESEARCH","enabled":true},
+    {"worker_id":"flows-01","capability":"INSTITUTIONAL_FLOWS","enabled":true},
+    {"worker_id":"validator-01","capability":"INDEPENDENT_VALIDATION","enabled":true},
+    {"worker_id":"portfolio-01","capability":"PORTFOLIO_MAP","enabled":true}
+  ],
+  "invariants": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "PROSPECTIVE_OBSERVATION_AUTHORIZED": false,
+    "ECONOMIC_EXPERIMENT_AUTHORIZED": false
+  }
+}

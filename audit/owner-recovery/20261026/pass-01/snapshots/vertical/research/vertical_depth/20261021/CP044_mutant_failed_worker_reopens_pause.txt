@@ -1,0 +1,382 @@
+mutation=failed_worker_reopens_pause
+fixed_source_sha256=16e60eb0d388face1f68e822e8a62c4733c1103a7dedbdfded6b4e6f04ed5b73
+........FF......FF......FF...........                                    [100%]
+=================================== FAILURES ===================================
+_ test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[none-False-True-] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_acknowledged_or_proven_du2')
+reason = '', worker_fails = True, next_task = False, pause_fault = 'none'
+
+    @pytest.mark.parametrize('reason', ['', 'maintenance'])
+    @pytest.mark.parametrize('worker_fails', [False, True])
+    @pytest.mark.parametrize('next_task', [False, True])
+    @pytest.mark.parametrize('pause_fault', ['none', 'before_write', 'after_write'])
+    def test_acknowledged_or_proven_durable_pause_survives_inflight_settlement(tmp_path, reason, worker_fails, next_task, pause_fault):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+
+        def worker(t):
+            calls.append(t.task_id)
+            if t.task_id == 'one':
+                entered.set()
+                assert release.wait(5)
+                if worker_fails:
+                    raise RuntimeError('synthetic worker failure')
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one', 2))
+        if next_task:
+            campaign.enqueue(task('two'))
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected and pause_fault != 'none':
+                injected.append(pause_fault)
+                if pause_fault == 'after_write':
+                    write_json(path, document)
+                raise OSError('injected pause persistence/ACK failure')
+            write_json(path, document)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(campaign.run_once)
+            try:
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    if pause_fault == 'none':
+                        campaign.pause(reason)
+                    else:
+                        with pytest.raises(OSError):
+                            campaign.pause(reason)
+                        if pause_fault == 'before_write':
+                            assert json.loads(campaign.state_path.read_text())['status'] == 'RUNNING'
+                            campaign.pause(reason)  # a real retry is necessary before claiming pause
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+            finally:
+                release.set()
+            assert future.result(timeout=5) in {'COMPLETED', 'FAILED', 'PAUSED'}
+        assert calls == ['one']
+>       assert campaign.state.status == 'PAUSED'
+E       AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E         - PAUSED
+E         + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:98: AssertionError
+_ test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[none-False-True-maintenance] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_acknowledged_or_proven_du3')
+reason = 'maintenance', worker_fails = True, next_task = False
+pause_fault = 'none'
+
+    @pytest.mark.parametrize('reason', ['', 'maintenance'])
+    @pytest.mark.parametrize('worker_fails', [False, True])
+    @pytest.mark.parametrize('next_task', [False, True])
+    @pytest.mark.parametrize('pause_fault', ['none', 'before_write', 'after_write'])
+    def test_acknowledged_or_proven_durable_pause_survives_inflight_settlement(tmp_path, reason, worker_fails, next_task, pause_fault):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+
+        def worker(t):
+            calls.append(t.task_id)
+            if t.task_id == 'one':
+                entered.set()
+                assert release.wait(5)
+                if worker_fails:
+                    raise RuntimeError('synthetic worker failure')
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one', 2))
+        if next_task:
+            campaign.enqueue(task('two'))
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected and pause_fault != 'none':
+                injected.append(pause_fault)
+                if pause_fault == 'after_write':
+                    write_json(path, document)
+                raise OSError('injected pause persistence/ACK failure')
+            write_json(path, document)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(campaign.run_once)
+            try:
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    if pause_fault == 'none':
+                        campaign.pause(reason)
+                    else:
+                        with pytest.raises(OSError):
+                            campaign.pause(reason)
+                        if pause_fault == 'before_write':
+                            assert json.loads(campaign.state_path.read_text())['status'] == 'RUNNING'
+                            campaign.pause(reason)  # a real retry is necessary before claiming pause
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+            finally:
+                release.set()
+            assert future.result(timeout=5) in {'COMPLETED', 'FAILED', 'PAUSED'}
+        assert calls == ['one']
+>       assert campaign.state.status == 'PAUSED'
+E       AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E         - PAUSED
+E         + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:98: AssertionError
+_ test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[before_write-False-True-] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_acknowledged_or_proven_du10')
+reason = '', worker_fails = True, next_task = False
+pause_fault = 'before_write'
+
+    @pytest.mark.parametrize('reason', ['', 'maintenance'])
+    @pytest.mark.parametrize('worker_fails', [False, True])
+    @pytest.mark.parametrize('next_task', [False, True])
+    @pytest.mark.parametrize('pause_fault', ['none', 'before_write', 'after_write'])
+    def test_acknowledged_or_proven_durable_pause_survives_inflight_settlement(tmp_path, reason, worker_fails, next_task, pause_fault):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+
+        def worker(t):
+            calls.append(t.task_id)
+            if t.task_id == 'one':
+                entered.set()
+                assert release.wait(5)
+                if worker_fails:
+                    raise RuntimeError('synthetic worker failure')
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one', 2))
+        if next_task:
+            campaign.enqueue(task('two'))
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected and pause_fault != 'none':
+                injected.append(pause_fault)
+                if pause_fault == 'after_write':
+                    write_json(path, document)
+                raise OSError('injected pause persistence/ACK failure')
+            write_json(path, document)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(campaign.run_once)
+            try:
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    if pause_fault == 'none':
+                        campaign.pause(reason)
+                    else:
+                        with pytest.raises(OSError):
+                            campaign.pause(reason)
+                        if pause_fault == 'before_write':
+                            assert json.loads(campaign.state_path.read_text())['status'] == 'RUNNING'
+                            campaign.pause(reason)  # a real retry is necessary before claiming pause
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+            finally:
+                release.set()
+            assert future.result(timeout=5) in {'COMPLETED', 'FAILED', 'PAUSED'}
+        assert calls == ['one']
+>       assert campaign.state.status == 'PAUSED'
+E       AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E         - PAUSED
+E         + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:98: AssertionError
+_ test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[before_write-False-True-maintenance] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_acknowledged_or_proven_du11')
+reason = 'maintenance', worker_fails = True, next_task = False
+pause_fault = 'before_write'
+
+    @pytest.mark.parametrize('reason', ['', 'maintenance'])
+    @pytest.mark.parametrize('worker_fails', [False, True])
+    @pytest.mark.parametrize('next_task', [False, True])
+    @pytest.mark.parametrize('pause_fault', ['none', 'before_write', 'after_write'])
+    def test_acknowledged_or_proven_durable_pause_survives_inflight_settlement(tmp_path, reason, worker_fails, next_task, pause_fault):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+
+        def worker(t):
+            calls.append(t.task_id)
+            if t.task_id == 'one':
+                entered.set()
+                assert release.wait(5)
+                if worker_fails:
+                    raise RuntimeError('synthetic worker failure')
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one', 2))
+        if next_task:
+            campaign.enqueue(task('two'))
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected and pause_fault != 'none':
+                injected.append(pause_fault)
+                if pause_fault == 'after_write':
+                    write_json(path, document)
+                raise OSError('injected pause persistence/ACK failure')
+            write_json(path, document)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(campaign.run_once)
+            try:
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    if pause_fault == 'none':
+                        campaign.pause(reason)
+                    else:
+                        with pytest.raises(OSError):
+                            campaign.pause(reason)
+                        if pause_fault == 'before_write':
+                            assert json.loads(campaign.state_path.read_text())['status'] == 'RUNNING'
+                            campaign.pause(reason)  # a real retry is necessary before claiming pause
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+            finally:
+                release.set()
+            assert future.result(timeout=5) in {'COMPLETED', 'FAILED', 'PAUSED'}
+        assert calls == ['one']
+>       assert campaign.state.status == 'PAUSED'
+E       AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E         - PAUSED
+E         + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:98: AssertionError
+_ test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[after_write-False-True-] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_acknowledged_or_proven_du18')
+reason = '', worker_fails = True, next_task = False, pause_fault = 'after_write'
+
+    @pytest.mark.parametrize('reason', ['', 'maintenance'])
+    @pytest.mark.parametrize('worker_fails', [False, True])
+    @pytest.mark.parametrize('next_task', [False, True])
+    @pytest.mark.parametrize('pause_fault', ['none', 'before_write', 'after_write'])
+    def test_acknowledged_or_proven_durable_pause_survives_inflight_settlement(tmp_path, reason, worker_fails, next_task, pause_fault):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+
+        def worker(t):
+            calls.append(t.task_id)
+            if t.task_id == 'one':
+                entered.set()
+                assert release.wait(5)
+                if worker_fails:
+                    raise RuntimeError('synthetic worker failure')
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one', 2))
+        if next_task:
+            campaign.enqueue(task('two'))
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected and pause_fault != 'none':
+                injected.append(pause_fault)
+                if pause_fault == 'after_write':
+                    write_json(path, document)
+                raise OSError('injected pause persistence/ACK failure')
+            write_json(path, document)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(campaign.run_once)
+            try:
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    if pause_fault == 'none':
+                        campaign.pause(reason)
+                    else:
+                        with pytest.raises(OSError):
+                            campaign.pause(reason)
+                        if pause_fault == 'before_write':
+                            assert json.loads(campaign.state_path.read_text())['status'] == 'RUNNING'
+                            campaign.pause(reason)  # a real retry is necessary before claiming pause
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+            finally:
+                release.set()
+            assert future.result(timeout=5) in {'COMPLETED', 'FAILED', 'PAUSED'}
+        assert calls == ['one']
+>       assert campaign.state.status == 'PAUSED'
+E       AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E         - PAUSED
+E         + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:98: AssertionError
+_ test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[after_write-False-True-maintenance] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_acknowledged_or_proven_du19')
+reason = 'maintenance', worker_fails = True, next_task = False
+pause_fault = 'after_write'
+
+    @pytest.mark.parametrize('reason', ['', 'maintenance'])
+    @pytest.mark.parametrize('worker_fails', [False, True])
+    @pytest.mark.parametrize('next_task', [False, True])
+    @pytest.mark.parametrize('pause_fault', ['none', 'before_write', 'after_write'])
+    def test_acknowledged_or_proven_durable_pause_survives_inflight_settlement(tmp_path, reason, worker_fails, next_task, pause_fault):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+
+        def worker(t):
+            calls.append(t.task_id)
+            if t.task_id == 'one':
+                entered.set()
+                assert release.wait(5)
+                if worker_fails:
+                    raise RuntimeError('synthetic worker failure')
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one', 2))
+        if next_task:
+            campaign.enqueue(task('two'))
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected and pause_fault != 'none':
+                injected.append(pause_fault)
+                if pause_fault == 'after_write':
+                    write_json(path, document)
+                raise OSError('injected pause persistence/ACK failure')
+            write_json(path, document)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(campaign.run_once)
+            try:
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    if pause_fault == 'none':
+                        campaign.pause(reason)
+                    else:
+                        with pytest.raises(OSError):
+                            campaign.pause(reason)
+                        if pause_fault == 'before_write':
+                            assert json.loads(campaign.state_path.read_text())['status'] == 'RUNNING'
+                            campaign.pause(reason)  # a real retry is necessary before claiming pause
+                    assert json.loads(campaign.state_path.read_text())['status'] == 'PAUSED'
+            finally:
+                release.set()
+            assert future.result(timeout=5) in {'COMPLETED', 'FAILED', 'PAUSED'}
+        assert calls == ['one']
+>       assert campaign.state.status == 'PAUSED'
+E       AssertionError: assert 'IDLE' == 'PAUSED'
+E
+E         - PAUSED
+E         + IDLE
+
+tests/test_vertical_campaign_pause_depth.py:98: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_pause_depth.py::test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[none-False-True-]
+FAILED tests/test_vertical_campaign_pause_depth.py::test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[none-False-True-maintenance]
+FAILED tests/test_vertical_campaign_pause_depth.py::test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[before_write-False-True-]
+FAILED tests/test_vertical_campaign_pause_depth.py::test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[before_write-False-True-maintenance]
+FAILED tests/test_vertical_campaign_pause_depth.py::test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[after_write-False-True-]
+FAILED tests/test_vertical_campaign_pause_depth.py::test_acknowledged_or_proven_durable_pause_survives_inflight_settlement[after_write-False-True-maintenance]
+6 failed, 31 passed in 0.90s

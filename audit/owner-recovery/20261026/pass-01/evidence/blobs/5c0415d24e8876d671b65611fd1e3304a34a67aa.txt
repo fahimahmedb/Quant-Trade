@@ -1,0 +1,33 @@
+{
+ "h014_inventory_metadata_only": true,
+ "fetched_at": "2026-09-29",
+ "source": "gamma-api.polymarket.com/events?series_id=<id>&closed=true",
+ "hourly_btc": {
+  "series_id": 11372,
+  "events": 4419,
+  "first_end": "2026-03-20T01:00:00Z",
+  "last_end": "2026-09-29T09:00:00Z",
+  "strikes_per_event": {
+   "10": 1614,
+   "20": 2805
+  }
+ },
+ "hourly_eth": {
+  "series_id": 11373,
+  "events": 4411,
+  "first_end": "2026-03-20T03:00:00Z",
+  "last_end": "2026-09-29T09:00:00Z",
+  "strikes_per_event": {
+   "10": 1613,
+   "16": 2798
+  }
+ },
+ "daily_btc_11strike": {
+  "series_id": 45,
+  "events": 367,
+  "first_end": "2025-09-03T16:00:00Z",
+  "last_end": "2026-09-28T16:00:00Z"
+ },
+ "distinct_hourly_resolution_times_btc_or_eth": 4429,
+ "resolution_source": "Binance BTCUSDT/ETHUSDT 1h candle Close (hourly, candle ending at title time ET); daily: Binance 1m candle Close at 12:00 ET"
+}

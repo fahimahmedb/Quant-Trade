@@ -1,0 +1,243 @@
+FFFFFF....                                                               [100%]
+=================================== FAILURES ===================================
+__ test_concurrent_caller_change_after_scan_cannot_enter_export[outcome_dict] __
+
+mutation = 'outcome_dict'
+
+    @pytest.mark.parametrize('mutation', ['outcome_dict', 'outcome_tuple', 'identity', 'required_reference'])
+    def test_concurrent_caller_change_after_scan_cannot_enter_export(mutation):
+        value = payload()
+        expected = core.build_frozen_export_intent(deepcopy(value))
+        scanned, release = threading.Event(), threading.Event()
+        scan = core._scan_forbidden_outcome_keys
+
+        def pause_after_scan(body, path='$'):
+            hits = scan(body, path)
+            if path == '$':
+                scanned.set()
+                assert release.wait(5)
+            return hits
+
+        with patch.object(core, '_scan_forbidden_outcome_keys', side_effect=pause_after_scan):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(core.build_frozen_export_intent, value)
+                try:
+                    assert scanned.wait(5)
+                    if mutation == 'outcome_dict':
+                        value['documentary_notes']['returns'] = [1.0]
+                    elif mutation == 'outcome_tuple':
+                        value['documentary_notes']['limitations'] = ({'pnl': 1.0},)
+                    elif mutation == 'identity':
+                        value['research_head'] = '9'*40
+                    else:
+                        del value['validator_artifact_hash']
+                finally:
+                    release.set()
+                result = future.result(timeout=5)
+>       assert result == expected
+E       AssertionError: assert {'candidate_h...ccccccc', ...} == {'candidate_h...ccccccc', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'documentary_notes': {'limitations': ['pre-outcome only'], 'returns': [1.0]}} != {'documentary_notes': {'limitations': ['pre-outcome only']}}
+E         {'export_bundle_hash': 'de9a39baa5d923f9dc7acf97c4a90ce0841219216803ba0146e7a8d8d046c57a'} != {'export_bundle_hash': 'dcc87991bf9841074f51706ad20d86d793f3ce9f0d3bbc7c11eca55245987588'}
+E         Use -v to get more diff
+
+tests/test_vertical_export_input_isolation.py:53: AssertionError
+_ test_concurrent_caller_change_after_scan_cannot_enter_export[outcome_tuple] __
+
+mutation = 'outcome_tuple'
+
+    @pytest.mark.parametrize('mutation', ['outcome_dict', 'outcome_tuple', 'identity', 'required_reference'])
+    def test_concurrent_caller_change_after_scan_cannot_enter_export(mutation):
+        value = payload()
+        expected = core.build_frozen_export_intent(deepcopy(value))
+        scanned, release = threading.Event(), threading.Event()
+        scan = core._scan_forbidden_outcome_keys
+
+        def pause_after_scan(body, path='$'):
+            hits = scan(body, path)
+            if path == '$':
+                scanned.set()
+                assert release.wait(5)
+            return hits
+
+        with patch.object(core, '_scan_forbidden_outcome_keys', side_effect=pause_after_scan):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(core.build_frozen_export_intent, value)
+                try:
+                    assert scanned.wait(5)
+                    if mutation == 'outcome_dict':
+                        value['documentary_notes']['returns'] = [1.0]
+                    elif mutation == 'outcome_tuple':
+                        value['documentary_notes']['limitations'] = ({'pnl': 1.0},)
+                    elif mutation == 'identity':
+                        value['research_head'] = '9'*40
+                    else:
+                        del value['validator_artifact_hash']
+                finally:
+                    release.set()
+                result = future.result(timeout=5)
+>       assert result == expected
+E       AssertionError: assert {'candidate_h...ccccccc', ...} == {'candidate_h...ccccccc', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'documentary_notes': {'limitations': ({'pnl': 1.0},)}} != {'documentary_notes': {'limitations': ['pre-outcome only']}}
+E         {'export_bundle_hash': '78ac66d5d8dd7f282b5d40125ab1b5b3b19624883e72de28a2367f53abda49e0'} != {'export_bundle_hash': 'dcc87991bf9841074f51706ad20d86d793f3ce9f0d3bbc7c11eca55245987588'}
+E         Use -v to get more diff
+
+tests/test_vertical_export_input_isolation.py:53: AssertionError
+____ test_concurrent_caller_change_after_scan_cannot_enter_export[identity] ____
+
+mutation = 'identity'
+
+    @pytest.mark.parametrize('mutation', ['outcome_dict', 'outcome_tuple', 'identity', 'required_reference'])
+    def test_concurrent_caller_change_after_scan_cannot_enter_export(mutation):
+        value = payload()
+        expected = core.build_frozen_export_intent(deepcopy(value))
+        scanned, release = threading.Event(), threading.Event()
+        scan = core._scan_forbidden_outcome_keys
+
+        def pause_after_scan(body, path='$'):
+            hits = scan(body, path)
+            if path == '$':
+                scanned.set()
+                assert release.wait(5)
+            return hits
+
+        with patch.object(core, '_scan_forbidden_outcome_keys', side_effect=pause_after_scan):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(core.build_frozen_export_intent, value)
+                try:
+                    assert scanned.wait(5)
+                    if mutation == 'outcome_dict':
+                        value['documentary_notes']['returns'] = [1.0]
+                    elif mutation == 'outcome_tuple':
+                        value['documentary_notes']['limitations'] = ({'pnl': 1.0},)
+                    elif mutation == 'identity':
+                        value['research_head'] = '9'*40
+                    else:
+                        del value['validator_artifact_hash']
+                finally:
+                    release.set()
+                result = future.result(timeout=5)
+>       assert result == expected
+E       AssertionError: assert {'candidate_h...ccccccc', ...} == {'candidate_h...ccccccc', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'research_head': '9999999999999999999999999999999999999999'} != {'research_head': '2222222222222222222222222222222222222222'}
+E         {'export_bundle_hash': '2ab5ab6a83209ccb171360da12041de10ab1e5a591fb8e7e40517bf77291f0b5'} != {'export_bundle_hash': 'dcc87991bf9841074f51706ad20d86d793f3ce9f0d3bbc7c11eca55245987588'}
+E         Use -v to get more diff
+
+tests/test_vertical_export_input_isolation.py:53: AssertionError
+_ test_concurrent_caller_change_after_scan_cannot_enter_export[required_reference] _
+
+mutation = 'required_reference'
+
+    @pytest.mark.parametrize('mutation', ['outcome_dict', 'outcome_tuple', 'identity', 'required_reference'])
+    def test_concurrent_caller_change_after_scan_cannot_enter_export(mutation):
+        value = payload()
+        expected = core.build_frozen_export_intent(deepcopy(value))
+        scanned, release = threading.Event(), threading.Event()
+        scan = core._scan_forbidden_outcome_keys
+
+        def pause_after_scan(body, path='$'):
+            hits = scan(body, path)
+            if path == '$':
+                scanned.set()
+                assert release.wait(5)
+            return hits
+
+        with patch.object(core, '_scan_forbidden_outcome_keys', side_effect=pause_after_scan):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(core.build_frozen_export_intent, value)
+                try:
+                    assert scanned.wait(5)
+                    if mutation == 'outcome_dict':
+                        value['documentary_notes']['returns'] = [1.0]
+                    elif mutation == 'outcome_tuple':
+                        value['documentary_notes']['limitations'] = ({'pnl': 1.0},)
+                    elif mutation == 'identity':
+                        value['research_head'] = '9'*40
+                    else:
+                        del value['validator_artifact_hash']
+                finally:
+                    release.set()
+                result = future.result(timeout=5)
+>       assert result == expected
+E       AssertionError: assert {'candidate_h...ccccccc', ...} == {'candidate_h...ccccccc', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'export_bundle_hash': '7ed63a2c9282bf0e2b2d6078eba57462598a45b734ee257dc189e160cf4f26f9'} != {'export_bundle_hash': 'dcc87991bf9841074f51706ad20d86d793f3ce9f0d3bbc7c11eca55245987588'}
+E         Right contains 1 more item:
+E         {'validator_artifact_hash': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}
+E         Use -v to get more diff
+
+tests/test_vertical_export_input_isolation.py:53: AssertionError
+_ test_required_schema_check_and_export_use_same_captured_body[candidate_hash] _
+
+reference = 'candidate_hash'
+
+    @pytest.mark.parametrize('reference', ['candidate_hash', 'source_snapshot_hashes'])
+    def test_required_schema_check_and_export_use_same_captured_body(reference):
+        value = payload()
+        expected = core.build_frozen_export_intent(deepcopy(value))
+        require = core._require
+
+        def remove_after_require(body, keys, label):
+            require(body, keys, label)
+            if label == 'EXPORT':
+                del value[reference]
+
+        with patch.object(core, '_require', side_effect=remove_after_require):
+            actual = core.build_frozen_export_intent(value)
+>       assert actual == expected
+E       AssertionError: assert {'research_tr...ddddddd', ...} == {'candidate_h...ccccccc', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'export_bundle_hash': 'eab86ef0ce9d15327b7b79ef813b1c133b7d4fc68542a47590270a8d87c5a3c6'} != {'export_bundle_hash': 'dcc87991bf9841074f51706ad20d86d793f3ce9f0d3bbc7c11eca55245987588'}
+E         Right contains 1 more item:
+E         {'candidate_hash': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}
+E         Use -v to get more diff
+
+tests/test_vertical_export_input_isolation.py:71: AssertionError
+_ test_required_schema_check_and_export_use_same_captured_body[source_snapshot_hashes] _
+
+reference = 'source_snapshot_hashes'
+
+    @pytest.mark.parametrize('reference', ['candidate_hash', 'source_snapshot_hashes'])
+    def test_required_schema_check_and_export_use_same_captured_body(reference):
+        value = payload()
+        expected = core.build_frozen_export_intent(deepcopy(value))
+        require = core._require
+
+        def remove_after_require(body, keys, label):
+            require(body, keys, label)
+            if label == 'EXPORT':
+                del value[reference]
+
+        with patch.object(core, '_require', side_effect=remove_after_require):
+            actual = core.build_frozen_export_intent(value)
+>       assert actual == expected
+E       AssertionError: assert {'candidate_h...ccccccc', ...} == {'candidate_h...ccccccc', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'export_bundle_hash': '6ad07ffd5c102d14443f02b1a088ad0233ef5fa3ca843ba483e96b29bd95d158'} != {'export_bundle_hash': 'dcc87991bf9841074f51706ad20d86d793f3ce9f0d3bbc7c11eca55245987588'}
+E         Right contains 1 more item:
+E         {'source_snapshot_hashes': ['eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee']}
+E         Use -v to get more diff
+
+tests/test_vertical_export_input_isolation.py:71: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_export_input_isolation.py::test_concurrent_caller_change_after_scan_cannot_enter_export[outcome_dict]
+FAILED tests/test_vertical_export_input_isolation.py::test_concurrent_caller_change_after_scan_cannot_enter_export[outcome_tuple]
+FAILED tests/test_vertical_export_input_isolation.py::test_concurrent_caller_change_after_scan_cannot_enter_export[identity]
+FAILED tests/test_vertical_export_input_isolation.py::test_concurrent_caller_change_after_scan_cannot_enter_export[required_reference]
+FAILED tests/test_vertical_export_input_isolation.py::test_required_schema_check_and_export_use_same_captured_body[candidate_hash]
+FAILED tests/test_vertical_export_input_isolation.py::test_required_schema_check_and_export_use_same_captured_body[source_snapshot_hashes]
+6 failed, 4 passed in 0.09s

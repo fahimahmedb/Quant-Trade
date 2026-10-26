@@ -1,0 +1,2 @@
+TARGET_COMMIT_OBJECT=7b03ced6a62938476ae8cd4828a36249f2f8354a
+NOTE=The branch still requires the final fast-forward integration commit carrying the four frozen blobs. This marker will be superseded by final branch-head verification.

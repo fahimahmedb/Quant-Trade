@@ -1,0 +1,624 @@
+﻿2026-10-24T02:29:56.3780228Z Current runner version: '2.338.0'
+2026-10-24T02:29:56.3798346Z ##[group]Runner Image Provisioner
+2026-10-24T02:29:56.3799000Z Hosted Compute Agent
+2026-10-24T02:29:56.3799360Z Version: 20261012.601
+2026-10-24T02:29:56.3799767Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-24T02:29:56.3800217Z Build Date: 2026-10-12T17:48:21Z
+2026-10-24T02:29:56.3800659Z Worker ID: {7dd81c0d-ceec-43b3-927b-76d8efcfdb31}
+2026-10-24T02:29:56.3801166Z Region: centralus
+2026-10-24T02:29:56.3801508Z Cloud: Azure
+2026-10-24T02:29:56.3801865Z ##[endgroup]
+2026-10-24T02:29:56.3803061Z ##[group]Operating System
+2026-10-24T02:29:56.3803439Z Ubuntu
+2026-10-24T02:29:56.3803894Z 24.04.5
+2026-10-24T02:29:56.3804206Z LTS
+2026-10-24T02:29:56.3804513Z ##[endgroup]
+2026-10-24T02:29:56.3804889Z ##[group]Runner Image
+2026-10-24T02:29:56.3805312Z Image: ubuntu-24.04
+2026-10-24T02:29:56.3805692Z Version: 20261012.334.1
+2026-10-24T02:29:56.3806451Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-24T02:29:56.3807347Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-24T02:29:56.3807967Z ##[endgroup]
+2026-10-24T02:29:56.3808864Z ##[group]GITHUB_TOKEN Permissions
+2026-10-24T02:29:56.3810251Z Contents: read
+2026-10-24T02:29:56.3810654Z Metadata: read
+2026-10-24T02:29:56.3810992Z ##[endgroup]
+2026-10-24T02:29:56.3812311Z Secret source: Actions
+2026-10-24T02:29:56.3813104Z Cache mode: write
+2026-10-24T02:29:56.3813508Z Prepare workflow directory
+2026-10-24T02:29:56.4027601Z Prepare all required actions
+2026-10-24T02:29:56.4069581Z Getting action download info
+2026-10-24T02:29:56.6308495Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-24T02:29:56.9814756Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-24T02:29:57.4969858Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-24T02:29:57.8668491Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-24T02:29:58.0779206Z Complete job name: exact-head
+2026-10-24T02:29:58.1298174Z ##[group]Run actions/checkout@v4
+2026-10-24T02:29:58.1298522Z with:
+2026-10-24T02:29:58.1298725Z   fetch-depth: 0
+2026-10-24T02:29:58.1299001Z   ref: builder/giga-f-idea-federation-autonomous-feed-20261023
+2026-10-24T02:29:58.1299311Z   repository: fahimahmedb/Quant-Trade
+2026-10-24T02:29:58.1300832Z   token: ***
+2026-10-24T02:29:58.1301031Z   ssh-strict: true
+2026-10-24T02:29:58.1301232Z   ssh-user: git
+2026-10-24T02:29:58.1301442Z   persist-credentials: true
+2026-10-24T02:29:58.1301659Z   clean: true
+2026-10-24T02:29:58.1301877Z   sparse-checkout-cone-mode: true
+2026-10-24T02:29:58.1302115Z   fetch-tags: false
+2026-10-24T02:29:58.1302327Z   show-progress: true
+2026-10-24T02:29:58.1302532Z   lfs: false
+2026-10-24T02:29:58.1302889Z   submodules: false
+2026-10-24T02:29:58.1303118Z   set-safe-directory: true
+2026-10-24T02:29:58.1303349Z   allow-unsafe-pr-checkout: false
+2026-10-24T02:29:58.1303665Z ##[endgroup]
+2026-10-24T02:29:58.1937226Z Syncing repository: fahimahmedb/Quant-Trade
+2026-10-24T02:29:58.1938211Z ##[group]Getting Git version info
+2026-10-24T02:29:58.1938529Z Working directory is '/home/runner/work/Quant-Trade/Quant-Trade'
+2026-10-24T02:29:58.1939015Z [command]/usr/bin/git version
+2026-10-24T02:29:58.2006658Z git version 2.55.0
+2026-10-24T02:29:58.2023144Z ##[endgroup]
+2026-10-24T02:29:58.2029491Z Temporarily overriding HOME='/home/runner/work/_temp/40e61e81-0491-4ab1-9489-5f31ba6f2339' before making global git config changes
+2026-10-24T02:29:58.2030526Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-24T02:29:58.2032576Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Quant-Trade/Quant-Trade
+2026-10-24T02:29:58.2075864Z Deleting the contents of '/home/runner/work/Quant-Trade/Quant-Trade'
+2026-10-24T02:29:58.2089678Z ##[group]Initializing the repository
+2026-10-24T02:29:58.2092870Z [command]/usr/bin/git init /home/runner/work/Quant-Trade/Quant-Trade
+2026-10-24T02:29:58.2165685Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-24T02:29:58.2166333Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-24T02:29:58.2166960Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-24T02:29:58.2167618Z hint: call:
+2026-10-24T02:29:58.2167890Z hint:
+2026-10-24T02:29:58.2168268Z hint: 	git config --global init.defaultBranch <name>
+2026-10-24T02:29:58.2168657Z hint:
+2026-10-24T02:29:58.2169050Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-24T02:29:58.2169652Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-24T02:29:58.2170126Z hint:
+2026-10-24T02:29:58.2170433Z hint: 	git branch -m <name>
+2026-10-24T02:29:58.2170749Z hint:
+2026-10-24T02:29:58.2171192Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-24T02:29:58.2171974Z Initialized empty Git repository in /home/runner/work/Quant-Trade/Quant-Trade/.git/
+2026-10-24T02:29:58.2177057Z [command]/usr/bin/git remote add origin https://github.com/fahimahmedb/Quant-Trade
+2026-10-24T02:29:58.2214903Z ##[endgroup]
+2026-10-24T02:29:58.2215440Z ##[group]Disabling automatic garbage collection
+2026-10-24T02:29:58.2217135Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-24T02:29:58.2244750Z ##[endgroup]
+2026-10-24T02:29:58.2245448Z ##[group]Setting up auth
+2026-10-24T02:29:58.2250194Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T02:29:58.2275347Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-24T02:29:58.2555055Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T02:29:58.2583353Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-24T02:29:58.2755527Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T02:29:58.2783217Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-24T02:29:58.2953621Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-24T02:29:58.2986793Z ##[endgroup]
+2026-10-24T02:29:58.2987271Z ##[group]Fetching the repository
+2026-10-24T02:29:58.2992823Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-24T02:30:02.9375127Z From https://github.com/fahimahmedb/Quant-Trade
+2026-10-24T02:30:02.9375560Z  * [new branch]        __temp_should_not_create__ -> origin/__temp_should_not_create__
+2026-10-24T02:30:02.9376143Z  * [new branch]        astra/checkpoint-gate-a-v2-independent-audit-2026-09-20 -> origin/astra/checkpoint-gate-a-v2-independent-audit-2026-09-20
+2026-10-24T02:30:02.9376740Z  * [new branch]        astra/first-vertical-independent-review-2026-09-21 -> origin/astra/first-vertical-independent-review-2026-09-21
+2026-10-24T02:30:02.9377560Z  * [new branch]        astra/gate-b-evidence-schema-false-pass-recheck-2026-09-21 -> origin/astra/gate-b-evidence-schema-false-pass-recheck-2026-09-21
+2026-10-24T02:30:02.9378394Z  * [new branch]        astra/gate-b-f11-lock-identity-recheck-2026-09-21 -> origin/astra/gate-b-f11-lock-identity-recheck-2026-09-21
+2026-10-24T02:30:02.9379353Z  * [new branch]        astra/gate-b-run-authority-mechanisms-independent-review-2026-09-21 -> origin/astra/gate-b-run-authority-mechanisms-independent-review-2026-09-21
+2026-10-24T02:30:02.9380411Z  * [new branch]        astra/gate-b-run-authority-mechanisms-recheck-2026-09-21 -> origin/astra/gate-b-run-authority-mechanisms-recheck-2026-09-21
+2026-10-24T02:30:02.9381248Z  * [new branch]        astra/gate-b-v4-transition-independent-preactivation-review-2026-09-21 -> origin/astra/gate-b-v4-transition-independent-preactivation-review-2026-09-21
+2026-10-24T02:30:02.9381842Z  * [new branch]        astra/p0-deep-adversarial-2026-09-19 -> origin/astra/p0-deep-adversarial-2026-09-19
+2026-10-24T02:30:02.9382233Z  * [new branch]        astra/p0-deep-adversarial-pre-t0 -> origin/astra/p0-deep-adversarial-pre-t0
+2026-10-24T02:30:02.9382666Z  * [new branch]        astra/p0-gate-a-v2-independent-audit-2026-09-20 -> origin/astra/p0-gate-a-v2-independent-audit-2026-09-20
+2026-10-24T02:30:02.9383393Z  * [new branch]        astra/p0-gate-a-v3-independent-audit-2026-09-20 -> origin/astra/p0-gate-a-v3-independent-audit-2026-09-20
+2026-10-24T02:30:02.9383871Z  * [new branch]        astra/p0-gate-a-v4-independent-audit-2026-09-20 -> origin/astra/p0-gate-a-v4-independent-audit-2026-09-20
+2026-10-24T02:30:02.9384477Z  * [new branch]        astra/p0-hybrid-fault-matrix-independent-review-2026-09-21 -> origin/astra/p0-hybrid-fault-matrix-independent-review-2026-09-21
+2026-10-24T02:30:02.9385056Z  * [new branch]        astra/p0-restart-burst-proof-recheck-2026-09-21 -> origin/astra/p0-restart-burst-proof-recheck-2026-09-21
+2026-10-24T02:30:02.9385606Z  * [new branch]        astra/weather-forward-v2-independent-reaudit-2026-09-29 -> origin/astra/weather-forward-v2-independent-reaudit-2026-09-29
+2026-10-24T02:30:02.9386339Z  * [new branch]        astra/weather-v4-a2-bounded-runtime-test-evidence-audit-2026-10-05 -> origin/astra/weather-v4-a2-bounded-runtime-test-evidence-audit-2026-10-05
+2026-10-24T02:30:02.9386950Z  * [new branch]        astra/weather-v4-a2-d1-d5-static-recheck-2026-10-05 -> origin/astra/weather-v4-a2-d1-d5-static-recheck-2026-10-05
+2026-10-24T02:30:02.9387573Z  * [new branch]        astra/weather-v4-a2-d5-type-repair-runtime-evidence-audit-2026-10-05 -> origin/astra/weather-v4-a2-d5-type-repair-runtime-evidence-audit-2026-10-05
+2026-10-24T02:30:02.9388417Z  * [new branch]        astra/weather-v4-a2-dedicated-harness-static-audit-2026-10-04 -> origin/astra/weather-v4-a2-dedicated-harness-static-audit-2026-10-04
+2026-10-24T02:30:02.9389056Z  * [new branch]        astra/weather-v4-a2-doc-integration-lot1-review-2026-10-07 -> origin/astra/weather-v4-a2-doc-integration-lot1-review-2026-10-07
+2026-10-24T02:30:02.9389661Z  * [new branch]        astra/weather-v4-a2-lot3-independent-review-2026-10-08 -> origin/astra/weather-v4-a2-lot3-independent-review-2026-10-08
+2026-10-24T02:30:02.9390270Z  * [new branch]        astra/weather-v4-a2-residual-d5-final-static-recheck-2026-10-05 -> origin/astra/weather-v4-a2-residual-d5-final-static-recheck-2026-10-05
+2026-10-24T02:30:02.9390928Z  * [new branch]        astra/weather-v4-edge-map-overfit-audit-2026-10-04 -> origin/astra/weather-v4-edge-map-overfit-audit-2026-10-04
+2026-10-24T02:30:02.9391603Z  * [new branch]        astra/weather-v4-pre-op-contract-audit-2026-10-04 -> origin/astra/weather-v4-pre-op-contract-audit-2026-10-04
+2026-10-24T02:30:02.9392127Z  * [new branch]        audit/forensic-checkpoint-20261019 -> origin/audit/forensic-checkpoint-20261019
+2026-10-24T02:30:02.9392585Z  * [new branch]        blue/checkpoint-gate-a-v2-audit-2026-09-20 -> origin/blue/checkpoint-gate-a-v2-audit-2026-09-20
+2026-10-24T02:30:02.9393347Z  * [new branch]        blue/forward-finalization-2026-09-20 -> origin/blue/forward-finalization-2026-09-20
+2026-10-24T02:30:02.9394208Z  * [new branch]        blue/gate-b-activation-seal-host-relay-2026-09-21 -> origin/blue/gate-b-activation-seal-host-relay-2026-09-21
+2026-10-24T02:30:02.9394925Z  * [new branch]        blue/gate-b-f11-final-integration-2026-09-21 -> origin/blue/gate-b-f11-final-integration-2026-09-21
+2026-10-24T02:30:02.9395398Z  * [new branch]        blue/gate-b-post-astra-convergence-2026-09-21 -> origin/blue/gate-b-post-astra-convergence-2026-09-21
+2026-10-24T02:30:02.9396056Z  * [new branch]        blue/gate-b-route1-seal-integration-2026-09-21 -> origin/blue/gate-b-route1-seal-integration-2026-09-21
+2026-10-24T02:30:02.9396582Z  * [new branch]        blue/gate-b-run-authority-repair-dispatch-2026-09-21 -> origin/blue/gate-b-run-authority-repair-dispatch-2026-09-21
+2026-10-24T02:30:02.9397146Z  * [new branch]        blue/gate-b-run-authority-repair-integration-2026-09-21 -> origin/blue/gate-b-run-authority-repair-integration-2026-09-21
+2026-10-24T02:30:02.9397739Z  * [new branch]        blue/gate-b-run-reservation-activation-preseal-2026-09-21 -> origin/blue/gate-b-run-reservation-activation-preseal-2026-09-21
+2026-10-24T02:30:02.9398397Z  * [new branch]        blue/gate-b-run-reservation-host-relay-preseal-2026-09-21 -> origin/blue/gate-b-run-reservation-host-relay-preseal-2026-09-21
+2026-10-24T02:30:02.9398955Z  * [new branch]        blue/integration-readiness-2026-09-20 -> origin/blue/integration-readiness-2026-09-20
+2026-10-24T02:30:02.9399369Z  * [new branch]        blue/long-horizon-research-2026-09-20 -> origin/blue/long-horizon-research-2026-09-20
+2026-10-24T02:30:02.9399720Z  * [new branch]        blue/master-v2-2026-09-20 -> origin/blue/master-v2-2026-09-20
+2026-10-24T02:30:02.9400091Z  * [new branch]        blue/p0-audit-authority-fix-2026-09-20 -> origin/blue/p0-audit-authority-fix-2026-09-20
+2026-10-24T02:30:02.9400503Z  * [new branch]        blue/p0-audit-authority-red-2026-09-20 -> origin/blue/p0-audit-authority-red-2026-09-20
+2026-10-24T02:30:02.9400969Z  * [new branch]        blue/p0-calendar-direct-reconcile-red-2026-09-20 -> origin/blue/p0-calendar-direct-reconcile-red-2026-09-20
+2026-10-24T02:30:02.9401420Z  * [new branch]        blue/p0-calendar-dst-proof-2026-09-20 -> origin/blue/p0-calendar-dst-proof-2026-09-20
+2026-10-24T02:30:02.9401856Z  * [new branch]        blue/p0-continuity-qualification-2026-09-20 -> origin/blue/p0-continuity-qualification-2026-09-20
+2026-10-24T02:30:02.9402291Z  * [new branch]        blue/p0-gate-a-long-history-2026-09-20 -> origin/blue/p0-gate-a-long-history-2026-09-20
+2026-10-24T02:30:02.9460627Z  * [new branch]        blue/p0-gate-a-v2-final-2026-09-20 -> origin/blue/p0-gate-a-v2-final-2026-09-20
+2026-10-24T02:30:02.9461415Z  * [new branch]        blue/p0-gate-a-v2-staging-2026-09-20 -> origin/blue/p0-gate-a-v2-staging-2026-09-20
+2026-10-24T02:30:02.9461956Z  * [new branch]        blue/p0-gate-a-v3-frozen-2026-09-20 -> origin/blue/p0-gate-a-v3-frozen-2026-09-20
+2026-10-24T02:30:02.9462503Z  * [new branch]        blue/p0-gate-a-v4-frozen-2026-09-20 -> origin/blue/p0-gate-a-v4-frozen-2026-09-20
+2026-10-24T02:30:02.9463335Z  * [new branch]        blue/p0-manual-operator-provenance-fix-2026-09-20 -> origin/blue/p0-manual-operator-provenance-fix-2026-09-20
+2026-10-24T02:30:02.9464105Z  * [new branch]        blue/p0-manual-probe-fix-2026-09-20 -> origin/blue/p0-manual-probe-fix-2026-09-20
+2026-10-24T02:30:02.9464626Z  * [new branch]        blue/p0-manual-probe-red-2026-09-20 -> origin/blue/p0-manual-probe-red-2026-09-20
+2026-10-24T02:30:02.9465047Z  * [new branch]        blue/weather-v3-orchestration-2026-10-02 -> origin/blue/weather-v3-orchestration-2026-10-02
+2026-10-24T02:30:02.9465509Z  * [new branch]        blue/weather-v4-a1-documentation-2026-10-04 -> origin/blue/weather-v4-a1-documentation-2026-10-04
+2026-10-24T02:30:02.9466057Z  * [new branch]        blue/weather-v4-a2-consolidated-preparation-2026-10-06 -> origin/blue/weather-v4-a2-consolidated-preparation-2026-10-06
+2026-10-24T02:30:02.9466668Z  * [new branch]        blue/weather-v4-a2-governance-configuration-draft-2026-10-05 -> origin/blue/weather-v4-a2-governance-configuration-draft-2026-10-05
+2026-10-24T02:30:02.9467236Z  * [new branch]        blue/weather-v4-a2-harness-attestation-2026-10-04 -> origin/blue/weather-v4-a2-harness-attestation-2026-10-04
+2026-10-24T02:30:02.9467816Z  * [new branch]        blue/weather-v4-a2-harness-suitability-assessment-2026-10-04 -> origin/blue/weather-v4-a2-harness-suitability-assessment-2026-10-04
+2026-10-24T02:30:02.9468555Z  * [new branch]        blue/weather-v4-od04-od12-decision-support-2026-10-04 -> origin/blue/weather-v4-od04-od12-decision-support-2026-10-04
+2026-10-24T02:30:02.9469125Z  * [new branch]        blue/weather-v4-phase-gate-decision-support-2026-10-04 -> origin/blue/weather-v4-phase-gate-decision-support-2026-10-04
+2026-10-24T02:30:02.9469674Z  * [new branch]        blue/weather-v4-research-design-repair-2026-10-04 -> origin/blue/weather-v4-research-design-repair-2026-10-04
+2026-10-24T02:30:02.9470217Z  * [new branch]        blue/weather-v4-structural-pre-op-contract-2026-10-04 -> origin/blue/weather-v4-structural-pre-op-contract-2026-10-04
+2026-10-24T02:30:02.9470750Z  * [new branch]        build-review/research-os-depth-64a6c455-20261015 -> origin/build-review/research-os-depth-64a6c455-20261015
+2026-10-24T02:30:02.9471174Z  * [new branch]        builder/__scratch-never-push -> origin/builder/__scratch-never-push
+2026-10-24T02:30:02.9471548Z  * [new branch]        builder/__scratch-never-push-2 -> origin/builder/__scratch-never-push-2
+2026-10-24T02:30:02.9471948Z  * [new branch]        builder/__scratch-never-push-3 -> origin/builder/__scratch-never-push-3
+2026-10-24T02:30:02.9472290Z  * [new branch]        builder/autonomy-e2e-20261012 -> origin/builder/autonomy-e2e-20261012
+2026-10-24T02:30:02.9472846Z  * [new branch]        builder/codex-p0-hybrid-fault-matrix-2026-09-21 -> origin/builder/codex-p0-hybrid-fault-matrix-2026-09-21
+2026-10-24T02:30:02.9473429Z  * [new branch]        builder/codex-p0-hybrid-known-bad-replay-2026-09-21 -> origin/builder/codex-p0-hybrid-known-bad-replay-2026-09-21
+2026-10-24T02:30:02.9474020Z  * [new branch]        builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21 -> origin/builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21
+2026-10-24T02:30:02.9474557Z  * [new branch]        builder/convergence-cp069-wave2-base-20261021 -> origin/builder/convergence-cp069-wave2-base-20261021
+2026-10-24T02:30:02.9475026Z  * [new branch]        builder/convergence-cp079-wave2-base-20261021 -> origin/builder/convergence-cp079-wave2-base-20261021
+2026-10-24T02:30:02.9475594Z  * [new branch]        builder/convergence-wave2-canonical-20261021 -> origin/builder/convergence-wave2-canonical-20261021
+2026-10-24T02:30:02.9476086Z  * [new branch]        builder/convergence2-multisource-pinned-b5ba7541 -> origin/builder/convergence2-multisource-pinned-b5ba7541
+2026-10-24T02:30:02.9476575Z  * [new branch]        builder/econ-readiness-experiment-20261016 -> origin/builder/econ-readiness-experiment-20261016
+2026-10-24T02:30:02.9477065Z  * [new branch]        builder/econ-readiness-identity-portfolio-20261016 -> origin/builder/econ-readiness-identity-portfolio-20261016
+2026-10-24T02:30:02.9477577Z  * [new branch]        builder/econ-readiness-implementability-20261016 -> origin/builder/econ-readiness-implementability-20261016
+2026-10-24T02:30:02.9478055Z  * [new branch]        builder/econ-readiness-integration-20261016 -> origin/builder/econ-readiness-integration-20261016
+2026-10-24T02:30:02.9478544Z  * [new branch]        builder/econ-readiness-producer-evidence-20261016 -> origin/builder/econ-readiness-producer-evidence-20261016
+2026-10-24T02:30:02.9479056Z  * [new branch]        builder/econ-readiness-validation-20261016 -> origin/builder/econ-readiness-validation-20261016
+2026-10-24T02:30:02.9479514Z  * [new branch]        builder/econ-test-flow-ust-auction-20261019 -> origin/builder/econ-test-flow-ust-auction-20261019
+2026-10-24T02:30:02.9479935Z  * [new branch]        builder/evidence-store-identity-v2 -> origin/builder/evidence-store-identity-v2
+2026-10-24T02:30:02.9480374Z  * [new branch]        builder/f1-decision-integrity-repair-2026-10-08 -> origin/builder/f1-decision-integrity-repair-2026-10-08
+2026-10-24T02:30:02.9480825Z  * [new branch]        builder/f1-persistent-stage-a-2026-10-08 -> origin/builder/f1-persistent-stage-a-2026-10-08
+2026-10-24T02:30:02.9481272Z  * [new branch]        builder/f1-sealed-stage-b-capture-2026-10-09 -> origin/builder/f1-sealed-stage-b-capture-2026-10-09
+2026-10-24T02:30:02.9481807Z  * [new branch]        builder/f1-stage-a-evidence-37900200192-1 -> origin/builder/f1-stage-a-evidence-37900200192-1
+2026-10-24T02:30:02.9482243Z  * [new branch]        builder/f1-stage-a-evidence-37903239892-1 -> origin/builder/f1-stage-a-evidence-37903239892-1
+2026-10-24T02:30:02.9482677Z  * [new branch]        builder/f1-stage-a-evidence-37915190172-1 -> origin/builder/f1-stage-a-evidence-37915190172-1
+2026-10-24T02:30:02.9483237Z  * [new branch]        builder/f1-stage-a-execution-2026-10-09 -> origin/builder/f1-stage-a-execution-2026-10-09
+2026-10-24T02:30:02.9483656Z  * [new branch]        builder/f1-stage-b-evidence-38006324356-1 -> origin/builder/f1-stage-b-evidence-38006324356-1
+2026-10-24T02:30:02.9484059Z  * [new branch]        builder/forward-market-recorder-v2 -> origin/builder/forward-market-recorder-v2
+2026-10-24T02:30:02.9484565Z  * [new branch]        builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21 -> origin/builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21
+2026-10-24T02:30:02.9485160Z  * [new branch]        builder/gate-b-evidence-reception-prestage-2026-09-21 -> origin/builder/gate-b-evidence-reception-prestage-2026-09-21
+2026-10-24T02:30:02.9485733Z  * [new branch]        builder/gate-b-evidence-schema-false-pass-fix-2026-09-21 -> origin/builder/gate-b-evidence-schema-false-pass-fix-2026-09-21
+2026-10-24T02:30:02.9486278Z  * [new branch]        builder/gate-b-f11-lock-identity-repair-2026-09-21 -> origin/builder/gate-b-f11-lock-identity-repair-2026-09-21
+2026-10-24T02:30:02.9486810Z  * [new branch]        builder/gate-b-lock-path-identity-repair-2026-09-21 -> origin/builder/gate-b-lock-path-identity-repair-2026-09-21
+2026-10-24T02:30:02.9487417Z  * [new branch]        builder/gate-b-offline-lifecycle-sanitization-prestage-2026-09-21 -> origin/builder/gate-b-offline-lifecycle-sanitization-prestage-2026-09-21
+2026-10-24T02:30:02.9488061Z  * [new branch]        builder/gate-b-route1-concrete-mutation-pack-2026-09-21 -> origin/builder/gate-b-route1-concrete-mutation-pack-2026-09-21
+2026-10-24T02:30:02.9488889Z  * [new branch]        builder/gate-b-run-authority-m1-m3-repair-2026-09-21 -> origin/builder/gate-b-run-authority-m1-m3-repair-2026-09-21
+2026-10-24T02:30:02.9489766Z  * [new branch]        builder/gate-b-run-authority-mechanisms-2026-09-21 -> origin/builder/gate-b-run-authority-mechanisms-2026-09-21
+2026-10-24T02:30:02.9490697Z  * [new branch]        builder/gate-b-run-authority-retention-prestage-2026-09-21 -> origin/builder/gate-b-run-authority-retention-prestage-2026-09-21
+2026-10-24T02:30:02.9491757Z  * [new branch]        builder/gate-b-v4-materialization-activation-prestage-2026-09-21 -> origin/builder/gate-b-v4-materialization-activation-prestage-2026-09-21
+2026-10-24T02:30:02.9492985Z  * [new branch]        builder/gate-c-prospective-event-plan-prestage-2026-09-21 -> origin/builder/gate-c-prospective-event-plan-prestage-2026-09-21
+2026-10-24T02:30:02.9494019Z  * [new branch]        builder/giga-f-idea-federation-autonomous-feed-20261023 -> origin/builder/giga-f-idea-federation-autonomous-feed-20261023
+2026-10-24T02:30:02.9495067Z  * [new branch]        builder/giga-q-final-whole-system-hardening-20261023 -> origin/builder/giga-q-final-whole-system-hardening-20261023
+2026-10-24T02:30:02.9495901Z  * [new branch]        builder/live-lab-3d-full-build-20261015 -> origin/builder/live-lab-3d-full-build-20261015
+2026-10-24T02:30:02.9496580Z  * [new branch]        builder/live-lab-full-autonomy-20261015 -> origin/builder/live-lab-full-autonomy-20261015
+2026-10-24T02:30:02.9497309Z  * [new branch]        builder/live-lab-native-integration-20261015 -> origin/builder/live-lab-native-integration-20261015
+2026-10-24T02:30:02.9498060Z  * [new branch]        builder/live-lab-oracle-canonical-20261020 -> origin/builder/live-lab-oracle-canonical-20261020
+2026-10-24T02:30:02.9498840Z  * [new branch]        builder/live-lab-oracle-integration-20261020 -> origin/builder/live-lab-oracle-integration-20261020
+2026-10-24T02:30:02.9499784Z  * [new branch]        builder/live-lab-owner-ux-rebuild-20261015 -> origin/builder/live-lab-owner-ux-rebuild-20261015
+2026-10-24T02:30:02.9500629Z  * [new branch]        builder/live-lab-owner-ux-rebuild-20261015-checkpoint -> origin/builder/live-lab-owner-ux-rebuild-20261015-checkpoint
+2026-10-24T02:30:02.9501623Z  * [new branch]        builder/live-lab-owner-ux-rebuild-20261015-checkpoint-2 -> origin/builder/live-lab-owner-ux-rebuild-20261015-checkpoint-2
+2026-10-24T02:30:02.9502448Z  * [new branch]        builder/live-lab-platform-probes-20261013 -> origin/builder/live-lab-platform-probes-20261013
+2026-10-24T02:30:02.9503218Z  * [new branch]        builder/live-lab-ux-vision-20261014 -> origin/builder/live-lab-ux-vision-20261014
+2026-10-24T02:30:02.9503933Z  * [new branch]        builder/mega-a-research-intelligence-20261021 -> origin/builder/mega-a-research-intelligence-20261021
+2026-10-24T02:30:02.9504695Z  * [new branch]        builder/mega-b-discovery-engine-20261021 -> origin/builder/mega-b-discovery-engine-20261021
+2026-10-24T02:30:02.9505454Z  * [new branch]        builder/mega-c0-scientific-adjudication-20261021 -> origin/builder/mega-c0-scientific-adjudication-20261021
+2026-10-24T02:30:02.9506226Z  * [new branch]        builder/mega-d0-economic-lifecycle-20261021 -> origin/builder/mega-d0-economic-lifecycle-20261021
+2026-10-24T02:30:02.9506958Z  * [new branch]        builder/mega-e-autonomous-runtime-20261021 -> origin/builder/mega-e-autonomous-runtime-20261021
+2026-10-24T02:30:02.9507702Z  * [new branch]        builder/multi-source-ideation-intake-20261021 -> origin/builder/multi-source-ideation-intake-20261021
+2026-10-24T02:30:02.9508538Z  * [new branch]        builder/multi-source-outcome-firewall-repair-20261021 -> origin/builder/multi-source-outcome-firewall-repair-20261021
+2026-10-24T02:30:02.9509398Z  * [new branch]        builder/oracle-economic-loop-recovery-20261019 -> origin/builder/oracle-economic-loop-recovery-20261019
+2026-10-24T02:30:02.9510097Z  * [new branch]        builder/oracle-v2-core-20261020 -> origin/builder/oracle-v2-core-20261020
+2026-10-24T02:30:02.9510993Z  * [new branch]        builder/oracle-v2-live-lab-bridge-20261020 -> origin/builder/oracle-v2-live-lab-bridge-20261020
+2026-10-24T02:30:02.9511518Z  * [new branch]        builder/p0-effective-unit-digest-stability-v4-2026-09-20 -> origin/builder/p0-effective-unit-digest-stability-v4-2026-09-20
+2026-10-24T02:30:02.9511969Z  * [new branch]        builder/p0-gate-a-v3-2026-09-20 -> origin/builder/p0-gate-a-v3-2026-09-20
+2026-10-24T02:30:02.9512401Z  * [new branch]        builder/p0-hybrid-qualification-harness-2026-09-20 -> origin/builder/p0-hybrid-qualification-harness-2026-09-20
+2026-10-24T02:30:02.9513110Z  * [new branch]        builder/post-p0-first-vertical-shadow-loop-2026-09-21 -> origin/builder/post-p0-first-vertical-shadow-loop-2026-09-21
+2026-10-24T02:30:02.9513635Z  * [new branch]        builder/post-p0-vertical-interface-map-2026-09-21 -> origin/builder/post-p0-vertical-interface-map-2026-09-21
+2026-10-24T02:30:02.9514068Z  * [new branch]        builder/research-factory-core-v2 -> origin/builder/research-factory-core-v2
+2026-10-24T02:30:02.9514527Z  * [new branch]        builder/research-os-aggressive-architecture-20261015 -> origin/builder/research-os-aggressive-architecture-20261015
+2026-10-24T02:30:02.9515100Z  * [new branch]        builder/research-os-autonomous-econ-readiness-port-20261016 -> origin/builder/research-os-autonomous-econ-readiness-port-20261016
+2026-10-24T02:30:02.9515627Z  * [new branch]        builder/research-os-autonomous-loop-20261015 -> origin/builder/research-os-autonomous-loop-20261015
+2026-10-24T02:30:02.9516139Z  * [new branch]        builder/research-os-econ-readiness-activation-20261017 -> origin/builder/research-os-econ-readiness-activation-20261017
+2026-10-24T02:30:02.9516628Z  * [new branch]        builder/research-os-vm-autonomy-20261019 -> origin/builder/research-os-vm-autonomy-20261019
+2026-10-24T02:30:02.9517003Z  * [new branch]        builder/sec-form4-census-v2a -> origin/builder/sec-form4-census-v2a
+2026-10-24T02:30:02.9517436Z  * [new branch]        builder/sec-form4-p0-raw-capture -> origin/builder/sec-form4-p0-raw-capture
+2026-10-24T02:30:02.9517765Z  * [new branch]        builder/site-e2e-20261012 -> origin/builder/site-e2e-20261012
+2026-10-24T02:30:02.9518067Z  * [new branch]        builder/v2-forward-20261020 -> origin/builder/v2-forward-20261020
+2026-10-24T02:30:02.9518623Z  * [new branch]        builder/w1-data-evidence-sec-depth-20261021 -> origin/builder/w1-data-evidence-sec-depth-20261021
+2026-10-24T02:30:02.9519355Z  * [new branch]        builder/w1-economic-portfolio-depth-20261021 -> origin/builder/w1-economic-portfolio-depth-20261021
+2026-10-24T02:30:02.9520113Z  * [new branch]        builder/w1-factory-experiment-depth-20261021 -> origin/builder/w1-factory-experiment-depth-20261021
+2026-10-24T02:30:02.9520696Z  * [new branch]        builder/w1-scientific-memory-depth-20261021 -> origin/builder/w1-scientific-memory-depth-20261021
+2026-10-24T02:30:02.9521110Z  * [new branch]        builder/wave2-base-repair-20261021 -> origin/builder/wave2-base-repair-20261021
+2026-10-24T02:30:02.9521580Z  * [new branch]        builder/wave2-c2-final-qualification-repair-20261021 -> origin/builder/wave2-c2-final-qualification-repair-20261021
+2026-10-24T02:30:02.9522098Z  * [new branch]        builder/wave2-c2-multisource-grep-repair-20261021 -> origin/builder/wave2-c2-multisource-grep-repair-20261021
+2026-10-24T02:30:02.9522571Z  * [new branch]        builder/wave2-convergence2-foreman-20261021 -> origin/builder/wave2-convergence2-foreman-20261021
+2026-10-24T02:30:02.9523144Z  * [new branch]        builder/wave2-seal-preflight-20261021 -> origin/builder/wave2-seal-preflight-20261021
+2026-10-24T02:30:02.9523640Z  * [new branch]        builder/weather-v4-a2-astra-d1-d5-static-repair-2026-10-05 -> origin/builder/weather-v4-a2-astra-d1-d5-static-repair-2026-10-05
+2026-10-24T02:30:02.9524246Z  * [new branch]        builder/weather-v4-a2-bounded-offline-harness-tests-2026-10-05 -> origin/builder/weather-v4-a2-bounded-offline-harness-tests-2026-10-05
+2026-10-24T02:30:02.9525020Z  * [new branch]        builder/weather-v4-a2-d5-public-state-type-repair-tests-2026-10-05 -> origin/builder/weather-v4-a2-d5-public-state-type-repair-tests-2026-10-05
+2026-10-24T02:30:02.9525672Z  * [new branch]        builder/weather-v4-a2-dedicated-harness-construction-2026-10-04 -> origin/builder/weather-v4-a2-dedicated-harness-construction-2026-10-04
+2026-10-24T02:30:02.9526303Z  * [new branch]        builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08 -> origin/builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08
+2026-10-24T02:30:02.9526886Z  * [new branch]        builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08 -> origin/builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08
+2026-10-24T02:30:02.9527417Z  * [new branch]        builder/weather-v4-a2-lot2-l2i-verification-2026-10-08 -> origin/builder/weather-v4-a2-lot2-l2i-verification-2026-10-08
+2026-10-24T02:30:02.9527930Z  * [new branch]        builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08 -> origin/builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08
+2026-10-24T02:30:02.9528441Z  * [new branch]        builder/weather-v4-a2-lot2-owner-package-2026-10-08 -> origin/builder/weather-v4-a2-lot2-owner-package-2026-10-08
+2026-10-24T02:30:02.9528996Z  * [new branch]        builder/weather-v4-a2-lot2-q22-host-attestation-2026-10-08 -> origin/builder/weather-v4-a2-lot2-q22-host-attestation-2026-10-08
+2026-10-24T02:30:02.9529540Z  * [new branch]        builder/weather-v4-a2-lot2-q27-retention-2026-10-08 -> origin/builder/weather-v4-a2-lot2-q27-retention-2026-10-08
+2026-10-24T02:30:02.9530175Z  * [new branch]        builder/weather-v4-a2-lot2-tooling-2026-10-07 -> origin/builder/weather-v4-a2-lot2-tooling-2026-10-07
+2026-10-24T02:30:02.9530914Z  * [new branch]        builder/weather-v4-a2-lot2-vm-kit-2026-10-08 -> origin/builder/weather-v4-a2-lot2-vm-kit-2026-10-08
+2026-10-24T02:30:02.9531949Z  * [new branch]        builder/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05 -> origin/builder/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05
+2026-10-24T02:30:02.9533133Z  * [new branch]        claude/charming-allen-948kd8 -> origin/claude/charming-allen-948kd8
+2026-10-24T02:30:02.9533686Z  * [new branch]        claude/confident-allen-xw7eb6 -> origin/claude/confident-allen-xw7eb6
+2026-10-24T02:30:02.9534258Z  * [new branch]        claude/confident-mendel-h4qqo4 -> origin/claude/confident-mendel-h4qqo4
+2026-10-24T02:30:02.9534787Z  * [new branch]        claude/data-feeds-6vr22g -> origin/claude/data-feeds-6vr22g
+2026-10-24T02:30:02.9535298Z  * [new branch]        claude/dazzling-dirac-foklrv -> origin/claude/dazzling-dirac-foklrv
+2026-10-24T02:30:02.9535921Z  * [new branch]        claude/deep-research-project-6vr22g -> origin/claude/deep-research-project-6vr22g
+2026-10-24T02:30:02.9536527Z  * [new branch]        claude/dreamy-franklin-1vki4t -> origin/claude/dreamy-franklin-1vki4t
+2026-10-24T02:30:02.9537042Z  * [new branch]        claude/epic-cannon-1sy39m -> origin/claude/epic-cannon-1sy39m
+2026-10-24T02:30:02.9537584Z  * [new branch]        claude/exciting-edison-w68tos -> origin/claude/exciting-edison-w68tos
+2026-10-24T02:30:02.9538135Z  * [new branch]        claude/exciting-planck-uq6rir -> origin/claude/exciting-planck-uq6rir
+2026-10-24T02:30:02.9538647Z  * [new branch]        claude/gallant-cerf-e0rpao -> origin/claude/gallant-cerf-e0rpao
+2026-10-24T02:30:02.9539142Z  * [new branch]        claude/hopeful-dirac-4ahy2z -> origin/claude/hopeful-dirac-4ahy2z
+2026-10-24T02:30:02.9539676Z  * [new branch]        claude/hopeful-hamilton-81rab1 -> origin/claude/hopeful-hamilton-81rab1
+2026-10-24T02:30:02.9540241Z  * [new branch]        claude/intelligent-gates-msidml -> origin/claude/intelligent-gates-msidml
+2026-10-24T02:30:02.9540801Z  * [new branch]        claude/magical-ramanujan-wsktyr -> origin/claude/magical-ramanujan-wsktyr
+2026-10-24T02:30:02.9541444Z  * [new branch]        claude/nasdaq-trading-model-design-h3mp4n -> origin/claude/nasdaq-trading-model-design-h3mp4n
+2026-10-24T02:30:02.9542028Z  * [new branch]        claude/new-session-0ydmkg -> origin/claude/new-session-0ydmkg
+2026-10-24T02:30:02.9542655Z  * [new branch]        claude/new-session-3ujgeu -> origin/claude/new-session-3ujgeu
+2026-10-24T02:30:02.9543688Z  * [new branch]        claude/new-session-3ujgeu-wip-h002 -> origin/claude/new-session-3ujgeu-wip-h002
+2026-10-24T02:30:02.9544320Z  * [new branch]        claude/new-session-3ujgeu-wip-h004 -> origin/claude/new-session-3ujgeu-wip-h004
+2026-10-24T02:30:02.9544698Z  * [new branch]        claude/new-session-3ujgeu-wip-h006 -> origin/claude/new-session-3ujgeu-wip-h006
+2026-10-24T02:30:02.9545031Z  * [new branch]        claude/new-session-8msq33 -> origin/claude/new-session-8msq33
+2026-10-24T02:30:02.9545359Z  * [new branch]        claude/new-session-kfwf1b -> origin/claude/new-session-kfwf1b
+2026-10-24T02:30:02.9545650Z  * [new branch]        claude/new-session-qr4nsz -> origin/claude/new-session-qr4nsz
+2026-10-24T02:30:02.9545944Z  * [new branch]        claude/new-session-z4pdlx -> origin/claude/new-session-z4pdlx
+2026-10-24T02:30:02.9546273Z  * [new branch]        claude/order-12b-anytime-valid -> origin/claude/order-12b-anytime-valid
+2026-10-24T02:30:02.9546642Z  * [new branch]        claude/project-review-audit-q5kfb9 -> origin/claude/project-review-audit-q5kfb9
+2026-10-24T02:30:02.9547058Z  * [new branch]        claude/prompt-recherche-praticiens-dfy1l0 -> origin/claude/prompt-recherche-praticiens-dfy1l0
+2026-10-24T02:30:02.9547508Z  * [new branch]        claude/prototype-futures-trend-carry-6vr22g -> origin/claude/prototype-futures-trend-carry-6vr22g
+2026-10-24T02:30:02.9547925Z  * [new branch]        claude/relaxed-johnson-mqca45 -> origin/claude/relaxed-johnson-mqca45
+2026-10-24T02:30:02.9548337Z  * [new branch]        claude/restaurant-stock-management-mvp-6oq43e -> origin/claude/restaurant-stock-management-mvp-6oq43e
+2026-10-24T02:30:02.9548750Z  * [new branch]        claude/two-speed-cleanup-6vr22g -> origin/claude/two-speed-cleanup-6vr22g
+2026-10-24T02:30:02.9549262Z  * [new branch]        claude/weather-v3-s0-compute-2026-10-02 -> origin/claude/weather-v3-s0-compute-2026-10-02
+2026-10-24T02:30:02.9549720Z  * [new branch]        claude/weather-v3-s1-data-archaeology-2026-10-02 -> origin/claude/weather-v3-s1-data-archaeology-2026-10-02
+2026-10-24T02:30:02.9550225Z  * [new branch]        claude/weather-v3-s2-capture-architecture-2026-10-02 -> origin/claude/weather-v3-s2-capture-architecture-2026-10-02
+2026-10-24T02:30:02.9550636Z  * [new branch]        claude/zen-einstein-9moyry -> origin/claude/zen-einstein-9moyry
+2026-10-24T02:30:02.9551162Z  * [new branch]        codex/horizontal-completeness-convergence1-20261021 -> origin/codex/horizontal-completeness-convergence1-20261021
+2026-10-24T02:30:02.9551992Z  * [new branch]        codex/horizontal-completeness-prewave2-20261021 -> origin/codex/horizontal-completeness-prewave2-20261021
+2026-10-24T02:30:02.9552585Z  * [new branch]        codex/test             -> origin/codex/test
+2026-10-24T02:30:02.9553287Z  * [new branch]        codex/vertical-depth-prewave2-20261021 -> origin/codex/vertical-depth-prewave2-20261021
+2026-10-24T02:30:02.9553695Z  * [new branch]        codex/weather-v3-s0-finish-2026-10-03 -> origin/codex/weather-v3-s0-finish-2026-10-03
+2026-10-24T02:30:02.9554142Z  * [new branch]        codex/weather-v3-s4-forecast-hindcast-2026-10-03 -> origin/codex/weather-v3-s4-forecast-hindcast-2026-10-03
+2026-10-24T02:30:02.9554627Z  * [new branch]        codex/weather-v3-s6-cohort-expansion-2026-10-03 -> origin/codex/weather-v3-s6-cohort-expansion-2026-10-03
+2026-10-24T02:30:02.9555043Z  * [new branch]        docs/owner-edge-audit-2026-10-10 -> origin/docs/owner-edge-audit-2026-10-10
+2026-10-24T02:30:02.9555475Z  * [new branch]        executor/f1-trailing-volume-ranking-fix-2026-10-08 -> origin/executor/f1-trailing-volume-ranking-fix-2026-10-08
+2026-10-24T02:30:02.9555901Z  * [new branch]        f1/crypto-carry-001-stage-a-look -> origin/f1/crypto-carry-001-stage-a-look
+2026-10-24T02:30:02.9556260Z  * [new branch]        f1/crypto-carry-001-stage-b-look -> origin/f1/crypto-carry-001-stage-b-look
+2026-10-24T02:30:02.9556853Z  * [new branch]        operator/gate-b-f5-route1-host-evidence-closure-2026-09-21 -> origin/operator/gate-b-f5-route1-host-evidence-closure-2026-09-21
+2026-10-24T02:30:02.9557410Z  * [new branch]        operator/gate-b-f5-route1-host-feasibility-2026-09-21 -> origin/operator/gate-b-f5-route1-host-feasibility-2026-09-21
+2026-10-24T02:30:02.9557907Z  * [new branch]        operator/gate-b-read-only-preflight-2026-09-21 -> origin/operator/gate-b-read-only-preflight-2026-09-21
+2026-10-24T02:30:02.9558425Z  * [new branch]        operator/gate-b-target-host-read-only-rebind-2026-09-21 -> origin/operator/gate-b-target-host-read-only-rebind-2026-09-21
+2026-10-24T02:30:02.9558883Z  * [new branch]        ops/oci-one-shot-install-20261019 -> origin/ops/oci-one-shot-install-20261019
+2026-10-24T02:30:02.9559421Z  * [new branch]        owner/weather-v4-a2-bounded-offline-harness-test-authority-2026-10-05 -> origin/owner/weather-v4-a2-bounded-offline-harness-test-authority-2026-10-05
+2026-10-24T02:30:02.9560102Z  * [new branch]        owner/weather-v4-a2-dedicated-harness-builder-decision-2026-10-04 -> origin/owner/weather-v4-a2-dedicated-harness-builder-decision-2026-10-04
+2026-10-24T02:30:02.9560705Z  * [new branch]        owner/weather-v4-a2-execution-authority-draft-2026-10-08 -> origin/owner/weather-v4-a2-execution-authority-draft-2026-10-08
+2026-10-24T02:30:02.9561257Z  * [new branch]        owner/weather-v4-a2-execution-authority-e-d2-2026-10-08 -> origin/owner/weather-v4-a2-execution-authority-e-d2-2026-10-08
+2026-10-24T02:30:02.9561831Z  * [new branch]        owner/weather-v4-a2-harness-attestation-decision-2026-10-04 -> origin/owner/weather-v4-a2-harness-attestation-decision-2026-10-04
+2026-10-24T02:30:02.9562421Z  * [new branch]        owner/weather-v4-a2-harness-suitability-decision-2026-10-04 -> origin/owner/weather-v4-a2-harness-suitability-decision-2026-10-04
+2026-10-24T02:30:02.9563190Z  * [new branch]        owner/weather-v4-a2-lot2-freezes-2026-10-08 -> origin/owner/weather-v4-a2-lot2-freezes-2026-10-08
+2026-10-24T02:30:02.9563710Z  * [new branch]        owner/weather-v4-a2-lot2-technical-authorization-2026-10-07 -> origin/owner/weather-v4-a2-lot2-technical-authorization-2026-10-07
+2026-10-24T02:30:02.9564314Z  * [new branch]        owner/weather-v4-a2-partial-configuration-decision-2026-10-06 -> origin/owner/weather-v4-a2-partial-configuration-decision-2026-10-06
+2026-10-24T02:30:02.9564985Z  * [new branch]        owner/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05 -> origin/owner/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05
+2026-10-24T02:30:02.9565645Z  * [new branch]        owner/weather-v4-a2-static-audit-repair-decision-2026-10-05 -> origin/owner/weather-v4-a2-static-audit-repair-decision-2026-10-05
+2026-10-24T02:30:02.9566217Z  * [new branch]        owner/weather-v4-a2-team-charter-ratification-2026-10-08 -> origin/owner/weather-v4-a2-team-charter-ratification-2026-10-08
+2026-10-24T02:30:02.9566732Z  * [new branch]        owner/weather-v4-od01-od03-decision-2026-10-04 -> origin/owner/weather-v4-od01-od03-decision-2026-10-04
+2026-10-24T02:30:02.9567249Z  * [new branch]        owner/weather-v4-od04-od12-structural-decision-2026-10-04 -> origin/owner/weather-v4-od04-od12-structural-decision-2026-10-04
+2026-10-24T02:30:02.9567782Z  * [new branch]        owner/weather-v4-phase-gate-a1-decision-2026-10-04 -> origin/owner/weather-v4-phase-gate-a1-decision-2026-10-04
+2026-10-24T02:30:02.9568416Z  * [new branch]        parallel/antigravity-gate-b-run-authority-adversarial-precheck-2026-09-21 -> origin/parallel/antigravity-gate-b-run-authority-adversarial-precheck-2026-09-21
+2026-10-24T02:30:02.9569133Z  * [new branch]        parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21 -> origin/parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21
+2026-10-24T02:30:02.9569791Z  * [new branch]        parallel/claude-economic-question-falsification-map-2026-09-21 -> origin/parallel/claude-economic-question-falsification-map-2026-09-21
+2026-10-24T02:30:02.9570393Z  * [new branch]        parallel/claude-economic-v2-2026-09-20 -> origin/parallel/claude-economic-v2-2026-09-20
+2026-10-24T02:30:02.9570870Z  * [new branch]        parallel/claude-first-slice-cohort-geometry-2026-09-21 -> origin/parallel/claude-first-slice-cohort-geometry-2026-09-21
+2026-10-24T02:30:02.9571345Z  * [new branch]        parallel/claude-forward-data-2026-09-20 -> origin/parallel/claude-forward-data-2026-09-20
+2026-10-24T02:30:02.9571827Z  * [new branch]        parallel/claude-post-p0-vertical-build-prep-2026-09-21 -> origin/parallel/claude-post-p0-vertical-build-prep-2026-09-21
+2026-10-24T02:30:02.9572444Z  * [new branch]        parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21 -> origin/parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21
+2026-10-24T02:30:02.9573288Z  * [new branch]        parallel/claude-s11-dependence-interval-challenge-2026-09-21 -> origin/parallel/claude-s11-dependence-interval-challenge-2026-09-21
+2026-10-24T02:30:02.9573837Z  * [new branch]        parallel/codex-wave1-economic-system-2026-09-19 -> origin/parallel/codex-wave1-economic-system-2026-09-19
+2026-10-24T02:30:02.9574288Z  * [new branch]        parallel/economic-acceleration-2026-09-21 -> origin/parallel/economic-acceleration-2026-09-21
+2026-10-24T02:30:02.9574689Z  * [new branch]        recovery/claude-sec-local-20260914 -> origin/recovery/claude-sec-local-20260914
+2026-10-24T02:30:02.9575122Z  * [new branch]        research/close-auction-source-readiness-20261017 -> origin/research/close-auction-source-readiness-20261017
+2026-10-24T02:30:02.9575576Z  * [new branch]        research/delta-research-pack-v1-20261015 -> origin/research/delta-research-pack-v1-20261015
+2026-10-24T02:30:02.9575913Z  * [new branch]        research/design-v1     -> origin/research/design-v1
+2026-10-24T02:30:02.9576269Z  * [new branch]        research/duebill-source-readiness-20261017 -> origin/research/duebill-source-readiness-20261017
+2026-10-24T02:30:02.9576854Z  * [new branch]        research/economic-reorientation-checkpoint-2026-09-29 -> origin/research/economic-reorientation-checkpoint-2026-09-29
+2026-10-24T02:30:02.9577361Z  * [new branch]        research/economic-test-form144-supply-20261017 -> origin/research/economic-test-form144-supply-20261017
+2026-10-24T02:30:02.9577759Z  * [new branch]        research/edge-lab-continuous -> origin/research/edge-lab-continuous
+2026-10-24T02:30:02.9578154Z  * [new branch]        research/f2-primary-terms-decision-2026-10-09 -> origin/research/f2-primary-terms-decision-2026-10-09
+2026-10-24T02:30:02.9578628Z  * [new branch]        research/legacy-economic-reconciliation-20261015 -> origin/research/legacy-economic-reconciliation-20261015
+2026-10-24T02:30:02.9579102Z  * [new branch]        research/paused-lanes-qualification-20261015 -> origin/research/paused-lanes-qualification-20261015
+2026-10-24T02:30:02.9579568Z  * [new branch]        research/technical-signals-literature-2026-10-10 -> origin/research/technical-signals-literature-2026-10-10
+2026-10-24T02:30:02.9579961Z  * [new branch]        reviewer/v1-final-red-team -> origin/reviewer/v1-final-red-team
+2026-10-24T02:30:02.9580285Z  * [new branch]        sol/scout-crypto-20261008-1847 -> origin/sol/scout-crypto-20261008-1847
+2026-10-24T02:30:02.9580591Z  * [new branch]        sol/scout-events-f413d -> origin/sol/scout-events-f413d
+2026-10-24T02:30:02.9580870Z  * [new branch]        sol/scout-macro-tauc-gfs -> origin/sol/scout-macro-tauc-gfs
+2026-10-24T02:30:02.9581173Z  * [new branch]        sol/scout-prediction-flb-nr -> origin/sol/scout-prediction-flb-nr
+2026-10-24T02:30:02.9581553Z  * [new branch]        team/weather-v4-a2-coordination-2026-10-08 -> origin/team/weather-v4-a2-coordination-2026-10-08
+2026-10-24T02:30:02.9581890Z  * [new branch]        ux/intake-20261015     -> origin/ux/intake-20261015
+2026-10-24T02:30:02.9583021Z ##[endgroup]
+2026-10-24T02:30:02.9583238Z ##[group]Determining the checkout info
+2026-10-24T02:30:02.9583543Z [command]/usr/bin/git branch --list --remote origin/builder/giga-f-idea-federation-autonomous-feed-20261023
+2026-10-24T02:30:02.9584073Z   origin/builder/giga-f-idea-federation-autonomous-feed-20261023
+2026-10-24T02:30:02.9584541Z ##[endgroup]
+2026-10-24T02:30:02.9584683Z [command]/usr/bin/git sparse-checkout disable
+2026-10-24T02:30:02.9585082Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-24T02:30:02.9585580Z ##[group]Checking out the ref
+2026-10-24T02:30:02.9586045Z [command]/usr/bin/git checkout --progress --force -B builder/giga-f-idea-federation-autonomous-feed-20261023 refs/remotes/origin/builder/giga-f-idea-federation-autonomous-feed-20261023
+2026-10-24T02:30:03.0797114Z Switched to a new branch 'builder/giga-f-idea-federation-autonomous-feed-20261023'
+2026-10-24T02:30:03.0799251Z branch 'builder/giga-f-idea-federation-autonomous-feed-20261023' set up to track 'origin/builder/giga-f-idea-federation-autonomous-feed-20261023'.
+2026-10-24T02:30:03.0817637Z ##[endgroup]
+2026-10-24T02:30:03.0860529Z [command]/usr/bin/git log -1 --format=%H
+2026-10-24T02:30:03.0883782Z 79329f15bbf02c25fa61e5d5ef6028e5abfb1493
+2026-10-24T02:30:03.1070559Z ##[group]Run actions/setup-python@v5
+2026-10-24T02:30:03.1070726Z with:
+2026-10-24T02:30:03.1070842Z   python-version: 3.12
+2026-10-24T02:30:03.1070973Z   check-latest: false
+2026-10-24T02:30:03.1072231Z   token: ***
+2026-10-24T02:30:03.1072351Z   update-environment: true
+2026-10-24T02:30:03.1072491Z   allow-prereleases: false
+2026-10-24T02:30:03.1072623Z   freethreaded: false
+2026-10-24T02:30:03.1072919Z ##[endgroup]
+2026-10-24T02:30:03.1905929Z ##[group]Installed versions
+2026-10-24T02:30:03.1967371Z (node:2100) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T02:30:03.1967906Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T02:30:03.1968248Z Successfully set up CPython (3.12.15)
+2026-10-24T02:30:03.1968929Z ##[endgroup]
+2026-10-24T02:30:03.2649732Z ##[group]Run actions/setup-node@v4
+2026-10-24T02:30:03.2649914Z with:
+2026-10-24T02:30:03.2650028Z   node-version: 20
+2026-10-24T02:30:03.2650146Z   always-auth: false
+2026-10-24T02:30:03.2650272Z   check-latest: false
+2026-10-24T02:30:03.2651682Z   token: ***
+2026-10-24T02:30:03.2651793Z env:
+2026-10-24T02:30:03.2651941Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:03.2652207Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T02:30:03.2652447Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:03.2652666Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:03.2653001Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:03.2653218Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T02:30:03.2653401Z ##[endgroup]
+2026-10-24T02:30:03.3859042Z Attempting to download 20...
+2026-10-24T02:30:03.3926757Z (node:2108) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T02:30:03.3927180Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T02:30:04.1319842Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-10-24T02:30:04.5812590Z Extracting ...
+2026-10-24T02:30:04.5898118Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/eef21c60-9620-4413-9976-e6b0eb8235f1 -f /home/runner/work/_temp/df2088ed-1848-48f5-9a08-159607bcbe95
+2026-10-24T02:30:05.3484358Z Adding to the cache ...
+2026-10-24T02:30:06.8853583Z ##[group]Environment details
+2026-10-24T02:30:07.0255618Z node: v20.20.2
+2026-10-24T02:30:07.0255872Z npm: 10.8.2
+2026-10-24T02:30:07.0256037Z yarn: 1.22.22
+2026-10-24T02:30:07.0256554Z ##[endgroup]
+2026-10-24T02:30:07.0453890Z ##[group]Run python -m pip install --disable-pip-version-check pytest
+2026-10-24T02:30:07.0454250Z [36;1mpython -m pip install --disable-pip-version-check pytest[0m
+2026-10-24T02:30:07.0655149Z shell: /usr/bin/bash -e {0}
+2026-10-24T02:30:07.0655306Z env:
+2026-10-24T02:30:07.0655467Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:07.0655715Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T02:30:07.0655955Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:07.0656168Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:07.0656387Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:07.0656601Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T02:30:07.0656781Z ##[endgroup]
+2026-10-24T02:30:07.9169928Z Collecting pytest
+2026-10-24T02:30:07.9948845Z   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+2026-10-24T02:30:08.0184981Z Collecting iniconfig>=1.0.1 (from pytest)
+2026-10-24T02:30:08.0284831Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+2026-10-24T02:30:08.0641281Z Collecting packaging>=22 (from pytest)
+2026-10-24T02:30:08.0740308Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-10-24T02:30:08.0945180Z Collecting pluggy<2,>=1.5 (from pytest)
+2026-10-24T02:30:08.1043786Z   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+2026-10-24T02:30:08.1294961Z Collecting pygments>=2.7.2 (from pytest)
+2026-10-24T02:30:08.1394733Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-24T02:30:08.1524028Z Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+2026-10-24T02:30:08.1968345Z Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+2026-10-24T02:30:08.2081143Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+2026-10-24T02:30:08.2219208Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-10-24T02:30:08.2345988Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-10-24T02:30:08.2664154Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 46.4 MB/s  0:00:00
+2026-10-24T02:30:08.3017541Z Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest
+2026-10-24T02:30:09.2649316Z 
+2026-10-24T02:30:09.2660377Z Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1
+2026-10-24T02:30:09.3244679Z ##[group]Run test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+2026-10-24T02:30:09.3245039Z [36;1mtest "$(git rev-parse HEAD)" = "$GITHUB_SHA"[0m
+2026-10-24T02:30:09.3300508Z shell: /usr/bin/bash -e {0}
+2026-10-24T02:30:09.3300651Z env:
+2026-10-24T02:30:09.3300799Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3301038Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T02:30:09.3301274Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3301483Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3301696Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3301922Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T02:30:09.3302101Z ##[endgroup]
+2026-10-24T02:30:09.3542661Z ##[group]Run python scripts/qualify_giga_f.py --remote-check --output /tmp/giga-f-exact-head.json
+2026-10-24T02:30:09.3543349Z [36;1mpython scripts/qualify_giga_f.py --remote-check --output /tmp/giga-f-exact-head.json[0m
+2026-10-24T02:30:09.3589215Z shell: /usr/bin/bash -e {0}
+2026-10-24T02:30:09.3589347Z env:
+2026-10-24T02:30:09.3589491Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3589731Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T02:30:09.3589961Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3590171Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3590381Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:30:09.3590591Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T02:30:09.3590777Z ##[endgroup]
+2026-10-24T02:30:09.4624184Z CHECK 1: /opt/hostedtoolcache/Python/3.12.15/x64/bin/python -m unittest discover -s tests -p test_*.py -v
+2026-10-24T02:31:09.9763671Z CHECK 2: /opt/hostedtoolcache/Python/3.12.15/x64/bin/python -m unittest discover -s research/research_os/tests -p test_*.py -v
+2026-10-24T02:31:28.0383046Z CHECK 3: /opt/hostedtoolcache/Python/3.12.15/x64/bin/python -m pytest --import-mode=importlib -q tests research/research_os/tests
+2026-10-24T02:32:39.7637512Z CHECK 4: bash -c node --test research/live_lab_ux/tests/*.test.js
+2026-10-24T02:32:39.9681067Z CHECK 5: /opt/hostedtoolcache/Python/3.12.15/x64/bin/python scripts/generate_schemas.py --check
+2026-10-24T02:32:40.0581940Z CHECK 6: /opt/hostedtoolcache/Python/3.12.15/x64/bin/python scripts/status_artifacts.py --check
+2026-10-24T02:34:25.8659349Z CHECK 7: /opt/hostedtoolcache/Python/3.12.15/x64/bin/python scripts/demo_quant_system.py
+2026-10-24T02:36:37.0055497Z {
+2026-10-24T02:36:37.0055736Z   "mission": "GIGA_F",
+2026-10-24T02:36:37.0056087Z   "qualified_head": "79329f15bbf02c25fa61e5d5ef6028e5abfb1493",
+2026-10-24T02:36:37.0056507Z   "base_sha": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+2026-10-24T02:36:37.0058065Z   "branch": "builder/giga-f-idea-federation-autonomous-feed-20261023",
+2026-10-24T02:36:37.0058416Z   "full_regression": "PASS",
+2026-10-24T02:36:37.0058667Z   "exact_head_qualification": "PASS",
+2026-10-24T02:36:37.0058899Z   "worktree_clean": true,
+2026-10-24T02:36:37.0059101Z   "remote_head_match": true,
+2026-10-24T02:36:37.0059306Z   "checks": [
+2026-10-24T02:36:37.0059472Z     {
+2026-10-24T02:36:37.0059635Z       "command": [
+2026-10-24T02:36:37.0059892Z         "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+2026-10-24T02:36:37.0060196Z         "-m",
+2026-10-24T02:36:37.0060366Z         "unittest",
+2026-10-24T02:36:37.0060548Z         "discover",
+2026-10-24T02:36:37.0060725Z         "-s",
+2026-10-24T02:36:37.0061042Z         "tests",
+2026-10-24T02:36:37.0061540Z         "-p",
+2026-10-24T02:36:37.0061714Z         "test_*.py",
+2026-10-24T02:36:37.0061900Z         "-v"
+2026-10-24T02:36:37.0062072Z       ],
+2026-10-24T02:36:37.0062246Z       "status": "PASS",
+2026-10-24T02:36:37.0062507Z       "log": "/tmp/giga-f-qualification-logs/01.log"
+2026-10-24T02:36:37.0062939Z     },
+2026-10-24T02:36:37.0063092Z     {
+2026-10-24T02:36:37.0063250Z       "command": [
+2026-10-24T02:36:37.0063516Z         "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+2026-10-24T02:36:37.0063814Z         "-m",
+2026-10-24T02:36:37.0063977Z         "unittest",
+2026-10-24T02:36:37.0064145Z         "discover",
+2026-10-24T02:36:37.0064313Z         "-s",
+2026-10-24T02:36:37.0064511Z         "research/research_os/tests",
+2026-10-24T02:36:37.0064764Z         "-p",
+2026-10-24T02:36:37.0064936Z         "test_*.py",
+2026-10-24T02:36:37.0065117Z         "-v"
+2026-10-24T02:36:37.0065282Z       ],
+2026-10-24T02:36:37.0065455Z       "status": "PASS",
+2026-10-24T02:36:37.0065726Z       "log": "/tmp/giga-f-qualification-logs/02.log"
+2026-10-24T02:36:37.0065981Z     },
+2026-10-24T02:36:37.0066136Z     {
+2026-10-24T02:36:37.0066296Z       "command": [
+2026-10-24T02:36:37.0066847Z         "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+2026-10-24T02:36:37.0067141Z         "-m",
+2026-10-24T02:36:37.0067321Z         "pytest",
+2026-10-24T02:36:37.0067548Z         "--import-mode=importlib",
+2026-10-24T02:36:37.0067783Z         "-q",
+2026-10-24T02:36:37.0067960Z         "tests",
+2026-10-24T02:36:37.0068177Z         "research/research_os/tests"
+2026-10-24T02:36:37.0068402Z       ],
+2026-10-24T02:36:37.0068581Z       "status": "PASS",
+2026-10-24T02:36:37.0068842Z       "log": "/tmp/giga-f-qualification-logs/03.log"
+2026-10-24T02:36:37.0069134Z     },
+2026-10-24T02:36:37.0069326Z     {
+2026-10-24T02:36:37.0069495Z       "command": [
+2026-10-24T02:36:37.0069686Z         "bash",
+2026-10-24T02:36:37.0069859Z         "-c",
+2026-10-24T02:36:37.0070114Z         "node --test research/live_lab_ux/tests/*.test.js"
+2026-10-24T02:36:37.0070391Z       ],
+2026-10-24T02:36:37.0070564Z       "status": "PASS",
+2026-10-24T02:36:37.0070844Z       "log": "/tmp/giga-f-qualification-logs/04.log"
+2026-10-24T02:36:37.0071118Z     },
+2026-10-24T02:36:37.0071277Z     {
+2026-10-24T02:36:37.0071445Z       "command": [
+2026-10-24T02:36:37.0071722Z         "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+2026-10-24T02:36:37.0072051Z         "scripts/generate_schemas.py",
+2026-10-24T02:36:37.0072281Z         "--check"
+2026-10-24T02:36:37.0072457Z       ],
+2026-10-24T02:36:37.0072634Z       "status": "PASS",
+2026-10-24T02:36:37.0073077Z       "log": "/tmp/giga-f-qualification-logs/05.log"
+2026-10-24T02:36:37.0073342Z     },
+2026-10-24T02:36:37.0073502Z     {
+2026-10-24T02:36:37.0073668Z       "command": [
+2026-10-24T02:36:37.0073939Z         "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+2026-10-24T02:36:37.0074261Z         "scripts/status_artifacts.py",
+2026-10-24T02:36:37.0074492Z         "--check"
+2026-10-24T02:36:37.0074674Z       ],
+2026-10-24T02:36:37.0074849Z       "status": "PASS",
+2026-10-24T02:36:37.0075119Z       "log": "/tmp/giga-f-qualification-logs/06.log"
+2026-10-24T02:36:37.0075389Z     },
+2026-10-24T02:36:37.0075550Z     {
+2026-10-24T02:36:37.0075719Z       "command": [
+2026-10-24T02:36:37.0075993Z         "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+2026-10-24T02:36:37.0076324Z         "scripts/demo_quant_system.py"
+2026-10-24T02:36:37.0076560Z       ],
+2026-10-24T02:36:37.0076741Z       "status": "PASS",
+2026-10-24T02:36:37.0077014Z       "log": "/tmp/giga-f-qualification-logs/07.log"
+2026-10-24T02:36:37.0077279Z     }
+2026-10-24T02:36:37.0077441Z   ],
+2026-10-24T02:36:37.0077622Z   "demo_reproduced": true,
+2026-10-24T02:36:37.0077891Z   "safe_for_post_wave2_convergence": true,
+2026-10-24T02:36:37.0078141Z   "authority": {
+2026-10-24T02:36:37.0078386Z     "economic_experiment_authorized": false,
+2026-10-24T02:36:37.0078682Z     "live_trading_authorized": false,
+2026-10-24T02:36:37.0079167Z     "outcome_accessed": false,
+2026-10-24T02:36:37.0079477Z     "prospective_observation_authorized": false,
+2026-10-24T02:36:37.0079781Z     "real_capital_authorized": false
+2026-10-24T02:36:37.0080019Z   }
+2026-10-24T02:36:37.0080187Z }
+2026-10-24T02:36:37.0167029Z ##[group]Run actions/upload-artifact@v4
+2026-10-24T02:36:37.0167196Z with:
+2026-10-24T02:36:37.0167379Z   name: giga-f-qualification-79329f15bbf02c25fa61e5d5ef6028e5abfb1493
+2026-10-24T02:36:37.0167661Z   path: /tmp/giga-f-exact-head.json
+/tmp/giga-f-qualification-logs/
+
+2026-10-24T02:36:37.0167874Z   if-no-files-found: warn
+2026-10-24T02:36:37.0168010Z   compression-level: 6
+2026-10-24T02:36:37.0168135Z   overwrite: false
+2026-10-24T02:36:37.0168256Z   include-hidden-files: false
+2026-10-24T02:36:37.0168387Z env:
+2026-10-24T02:36:37.0168530Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:36:37.0168770Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-24T02:36:37.0169039Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:36:37.0169261Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:36:37.0169482Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-24T02:36:37.0169718Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-24T02:36:37.0169900Z ##[endgroup]
+2026-10-24T02:36:37.1286728Z (node:28341) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T02:36:37.1287508Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T02:36:37.1333800Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-24T02:36:37.1334988Z The least common ancestor is /tmp. This will be the root directory of the artifact
+2026-10-24T02:36:37.1335559Z With the provided path, there will be 8 files uploaded
+2026-10-24T02:36:37.1339426Z Artifact name is valid!
+2026-10-24T02:36:37.1339922Z Root directory input is valid!
+2026-10-24T02:36:37.4404056Z Beginning upload of artifact content to blob storage
+2026-10-24T02:36:37.4645433Z (node:28341) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-24T02:36:37.6576689Z Uploaded bytes 54971
+2026-10-24T02:36:37.7121056Z Finished uploading artifact content to blob storage!
+2026-10-24T02:36:37.7121766Z SHA256 digest of uploaded artifact zip is 33d27d90e973d8c94fe0c2bcc8d717a6f68d2920715c5302d1b85e958caa65a5
+2026-10-24T02:36:37.7122400Z Finalizing artifact upload
+2026-10-24T02:36:38.1272242Z Artifact giga-f-qualification-79329f15bbf02c25fa61e5d5ef6028e5abfb1493.zip successfully finalized. Artifact ID 12544509089
+2026-10-24T02:36:38.1273092Z Artifact giga-f-qualification-79329f15bbf02c25fa61e5d5ef6028e5abfb1493 has been successfully uploaded! Final size is 54971 bytes. Artifact ID is 12544509089
+2026-10-24T02:36:38.1276911Z Artifact download URL: https://github.com/fahimahmedb/Quant-Trade/actions/runs/40054403097/artifacts/12544509089
+2026-10-24T02:36:38.1428450Z Post job cleanup.
+2026-10-24T02:36:38.2690526Z (node:28353) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T02:36:38.2691298Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T02:36:38.2844706Z Post job cleanup.
+2026-10-24T02:36:38.3664092Z (node:28361) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-24T02:36:38.3664549Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-24T02:36:38.3777738Z Post job cleanup.
+2026-10-24T02:36:38.4337300Z [command]/usr/bin/git version
+2026-10-24T02:36:38.4372812Z git version 2.55.0
+2026-10-24T02:36:38.4399025Z Temporarily overriding HOME='/home/runner/work/_temp/f9d1bc65-3ba2-4e99-a5db-2674c8ac721e' before making global git config changes
+2026-10-24T02:36:38.4399952Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-24T02:36:38.4403679Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Quant-Trade/Quant-Trade
+2026-10-24T02:36:38.4440328Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-24T02:36:38.4474235Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-24T02:36:38.4677034Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-24T02:36:38.4704554Z http.https://github.com/.extraheader
+2026-10-24T02:36:38.4722840Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-24T02:36:38.4780718Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-24T02:36:38.5026685Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-24T02:36:38.5065083Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-24T02:36:38.5374875Z Cleaning up orphan processes
+2026-10-24T02:36:38.5617486Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -1,0 +1,547 @@
+{
+  "schema": 1,
+  "candidate": "EURUSD-RANGE-GRID-001",
+  "version": 1,
+  "created_utc": "2026-10-10T10:46:25.661845+00:00",
+  "status": "FROZEN_PLAN_NO_ARCHIVES_OR_ROWS",
+  "claim_scope": "EXPLORATORY_QUOTE_PROXY_ONLY",
+  "instrument": "EURUSD",
+  "source_qualification_commit": "6203e58598b97c3fefc31853dd3bc266ce85d52b",
+  "source_qualification_file": "research/edge_search/scouts/eurusd_grid_source_qualification_2026-10-10.json",
+  "rights": "HistData personal-backtest intent documented; no raw redistribution/commercial/live grant; no paid download/account.",
+  "raw_root_template": "/workspace/scratch/eurusd-range-grid-001/capture-v1",
+  "utc_warmup": [
+    "2025-01-01T05:00:00Z",
+    "2025-02-01T00:00:00Z"
+  ],
+  "utc_outcome": [
+    "2025-02-01T00:00:00Z",
+    "2026-10-01T00:00:00Z"
+  ],
+  "bounds": "left inclusive, right exclusive; use UTC row time, not archive month role; no October price",
+  "catalog_proof": [
+    {
+      "file": "histdata_eurusd_2025_catalog.html",
+      "sha256": "b91b5a4b6ce2d1ce6ea5a132e05a3e53fa2340848241e4f48c0d3caeaa147f59"
+    },
+    {
+      "file": "histdata_eurusd_2026_catalog.html",
+      "sha256": "0be70a462892fd9ad44018e572a03d31fa3200e979d8e7d0131d47a76a77a472"
+    },
+    {
+      "file": "histdata_eurusd_2025_01_month_page.html",
+      "sha256": "80982cdaeed4bd0a1cec07fd8bee842561c538d53804ce200ecbe6bc758cd957"
+    }
+  ],
+  "month_page_probe": {
+    "utc": "2026-10-10T10:37:09.548651+00:00",
+    "archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202501.zip",
+    "post_endpoint": "/get.php",
+    "scope": "bounded HTML only; no form submitted, price body or ZIP"
+  },
+  "archive_jobs": [
+    {
+      "source_local_month": "2025-01",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/1",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202501",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202501.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-01-01T00:00:00-05:00",
+        "2025-02-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-02",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/2",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202502",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202502.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-02-01T00:00:00-05:00",
+        "2025-03-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-03",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/3",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202503",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202503.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-03-01T00:00:00-05:00",
+        "2025-04-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-04",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/4",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202504",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202504.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-04-01T00:00:00-05:00",
+        "2025-05-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-05",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/5",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202505",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202505.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-05-01T00:00:00-05:00",
+        "2025-06-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-06",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/6",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202506",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202506.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-06-01T00:00:00-05:00",
+        "2025-07-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-07",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/7",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202507",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202507.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-07-01T00:00:00-05:00",
+        "2025-08-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-08",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/8",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202508",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202508.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-08-01T00:00:00-05:00",
+        "2025-09-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-09",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/9",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202509",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202509.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-09-01T00:00:00-05:00",
+        "2025-10-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-10",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/10",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202510",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202510.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-10-01T00:00:00-05:00",
+        "2025-11-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-11",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/11",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202511",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202511.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-11-01T00:00:00-05:00",
+        "2025-12-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2025-12",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/12",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2025",
+        "datemonth": "202512",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202512.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2025-12-01T00:00:00-05:00",
+        "2026-01-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-01",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/1",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202601",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202601.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-01-01T00:00:00-05:00",
+        "2026-02-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-02",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/2",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202602",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202602.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-02-01T00:00:00-05:00",
+        "2026-03-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-03",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/3",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202603",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202603.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-03-01T00:00:00-05:00",
+        "2026-04-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-04",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/4",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202604",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202604.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-04-01T00:00:00-05:00",
+        "2026-05-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-05",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/5",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202605",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202605.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-05-01T00:00:00-05:00",
+        "2026-06-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-06",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/6",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202606",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202606.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-06-01T00:00:00-05:00",
+        "2026-07-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-07",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/7",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202607",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202607.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-07-01T00:00:00-05:00",
+        "2026-08-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-08",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/8",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202608",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202608.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-08-01T00:00:00-05:00",
+        "2026-09-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    },
+    {
+      "source_local_month": "2026-09",
+      "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2026/9",
+      "post_url": "https://www.histdata.com/get.php",
+      "post_fields": {
+        "date": "2026",
+        "datemonth": "202609",
+        "platform": "ASCII",
+        "timeframe": "T",
+        "fxpair": "EURUSD"
+      },
+      "ephemeral_form_field": "tk: obtain locally from this exact page; never commit value",
+      "expected_archive_name": "HISTDATA_COM_ASCII_EURUSD_T_202609.zip",
+      "archive_name_evidence": "2025-01 authenticated in bounded HTML; other months predeclared by that naming convention, not verified",
+      "source_local_bounds": [
+        "2026-09-01T00:00:00-05:00",
+        "2026-10-01T00:00:00-05:00"
+      ],
+      "expected_provider_sha256": null,
+      "acquired": false,
+      "raw_sha256": null
+    }
+  ],
+  "provider_checksum_policy": "None authenticated; if supplied verify before parsing. Otherwise disclose absence, pin local raw SHA256, CRC verify; not provider-authenticated.",
+  "transport": {
+    "mode": "one sequential capture; no concurrent active run",
+    "user_agent": "quant-research-personal-backtest/0.1",
+    "max_requests_per_second": 1,
+    "timeout_seconds": 30,
+    "repeat_403_429": "stop; no retry bypass",
+    "reuse": "reuse identical hash-pinned completed files; persist .part/status; never overwrite authenticated completed archive"
+  },
+  "price_row_access": "blocked pending frozen complete harness, closed challenge, atomic remote/local reservations; capture may not parse",
+  "reservation_ref": "refs/heads/looks/eurusd-range-grid-001-exploratory-01",
+  "trial_accounting": {
+    "primary": "MAIN",
+    "economic_expressions": [
+      "MAIN",
+      "NO_ADDS",
+      "STATIC_GRID"
+    ],
+    "cost_paths": [
+      "CENTRAL",
+      "STRESS"
+    ],
+    "planned_expressions": 3,
+    "planned_paths": 6,
+    "replacement_allowed": false,
+    "looks_claimed": 0,
+    "old_exposure": "B4/NASDAQ/F1/literature/vendor2013-2016/schema2012-02-01 spent; private predecessor UNKNOWN",
+    "alpha": "No confirmatory allocation; no reset/reallocation of original budgets"
+  },
+  "calendar": {
+    "outcome_weekdays": 433,
+    "days_sha256": "85f6d9b7ef47e2a57724e0a4566924ddd8583c5f0545630c171d7883d39ecaf1",
+    "fixed_split_utc": "2025-12-01T00:00:00Z"
+  },
+  "preregistration_sha256": "d825762fd2123a51ce4ecdd28af3be4bde2b23d781b4ce6a709412e709d41c96",
+  "safety_kernel_sha256": "c235810a8370cdc975a611af873dd62ebc56a28880132962cc54053ec6f65e0c",
+  "economic_harness_sha256": null,
+  "economic_run_ready": false,
+  "archives_acquired": 0,
+  "price_rows_opened": 0,
+  "results_produced": 0
+}

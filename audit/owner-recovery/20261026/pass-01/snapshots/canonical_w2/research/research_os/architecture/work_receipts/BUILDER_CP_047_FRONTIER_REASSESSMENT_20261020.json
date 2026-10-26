@@ -1,0 +1,175 @@
+{
+  "builder_code_head": "61d99a340034ae4cce9f1d00b767d28889cc74cb",
+  "checkout_unchanged": true,
+  "conflict_paths": [
+    ".github/workflows/oracle-v2-core.yml",
+    "STATE.md"
+  ],
+  "deployment_performed": false,
+  "final_convergence_performed": false,
+  "limits": "Static composition plus bounded local Git projection; no merged execution or VM proof.",
+  "merge_base": "7e2a6de231939f4b559a63fac3ea7eee28d81e1f",
+  "merge_tree_exit_code": 1,
+  "observations": [
+    {
+      "acquisition_projection_state": "NOT_PROJECTED_UPSTREAM_BLOCKED",
+      "artifact_status": "PRESENT_AND_BOUND",
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "blockers": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "catalog_applied": false,
+      "claim_ceiling": "DESIGN_ONLY",
+      "command": [
+        "scripts/observe_edge_task_v2.py",
+        "--commit",
+        "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+        "--task-id",
+        "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009"
+      ],
+      "json_sha256": "fce10eee24c12c3b7dd0324b52895e39cdd8dcf951dfa156a6b6b7de5a2a4978",
+      "network_call_performed": false,
+      "observation_hash": "80bc392386b0fb60e4bd82af1969c4549536cb3d9f17b9ef22870569276cf777",
+      "outcome_accessed": false,
+      "snapshot_head": "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+      "source_artifacts": {
+        "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/oracle-worker/document_or_fundamental_research.json": "8e7a3f3b8953f0425882f31065d0c4422a5ef0db",
+        "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009-g2-1f0dfeb69ba1.json": "06265ca5ab361b5d2ceb9e2a5ad2d2378e6bdd40",
+        "research/research_os/runtime/V2_ACTIVE_EPOCH.json": "fe8830dc08dd2751e0aa2ec482e55c65baea2fe6",
+        "research/research_os/runtime/V2_CORE_POLICY.json": "f2a469e87c256154adb45d60b98e107e5373a6de",
+        "research/research_os/tasks/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009.json": "42725dae683bc0b544bb0f57d05c610d81d61304"
+      },
+      "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-009",
+      "task_status": "BLOCKED"
+    },
+    {
+      "acquisition_projection_state": "NOT_PROJECTED_UPSTREAM_BLOCKED",
+      "artifact_status": "PRESENT_AND_BOUND",
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "blockers": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "catalog_applied": false,
+      "claim_ceiling": "DESIGN_ONLY",
+      "command": [
+        "scripts/observe_edge_task_v2.py",
+        "--commit",
+        "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+        "--task-id",
+        "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011"
+      ],
+      "json_sha256": "4fe24856a90aeda2c11c532e927d190c7b848553eb8ac97e27d70ba31f1e8b7f",
+      "network_call_performed": false,
+      "observation_hash": "06c053f873d0b0d84c4aa577825d796324f6567927d3b377aae1b3a342ba2b5a",
+      "outcome_accessed": false,
+      "snapshot_head": "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+      "source_artifacts": {
+        "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/oracle-worker/document_or_fundamental_research.json": "4879043311b8c527b88f36864d0cc2c3b4d25a88",
+        "research/research_os/receipts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011-g2-217153d80729.json": "cfe00d0b705387ae97f9aed45559ab4f8b14879d",
+        "research/research_os/runtime/V2_ACTIVE_EPOCH.json": "fe8830dc08dd2751e0aa2ec482e55c65baea2fe6",
+        "research/research_os/runtime/V2_CORE_POLICY.json": "f2a469e87c256154adb45d60b98e107e5373a6de",
+        "research/research_os/tasks/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011.json": "81abc7da484969f16b7d31916f46c3baf65705b1"
+      },
+      "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-011",
+      "task_status": "BLOCKED"
+    },
+    {
+      "acquisition_projection_state": "NOT_PROJECTED_UPSTREAM_BLOCKED",
+      "artifact_status": "PRESENT_AND_BOUND",
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "blockers": [
+        "BLOCK_EXACT_CURRENT_DUPLICATE"
+      ],
+      "catalog_applied": false,
+      "claim_ceiling": "DESIGN_ONLY",
+      "command": [
+        "scripts/observe_edge_task_v2.py",
+        "--commit",
+        "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+        "--task-id",
+        "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010"
+      ],
+      "json_sha256": "6099033df98acd4bbef8831da9d202b7205a4a82ab526a32d26298ec34260a2f",
+      "network_call_performed": false,
+      "observation_hash": "a626f7c17d171e7e5fee6d4fe93d242505f3ac9aad5c5a3360756a554bcb9427",
+      "outcome_accessed": false,
+      "snapshot_head": "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+      "source_artifacts": {
+        "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/oracle-worker/document_or_fundamental_research.json": "2be6bfc24fce3ab605e83c71f6529fb4ac7598cd",
+        "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010-g2-b9201ce2a13c.json": "0f49714d1ab32718e9f749b85c7bdb04c03bd807",
+        "research/research_os/runtime/V2_ACTIVE_EPOCH.json": "fe8830dc08dd2751e0aa2ec482e55c65baea2fe6",
+        "research/research_os/runtime/V2_CORE_POLICY.json": "f2a469e87c256154adb45d60b98e107e5373a6de",
+        "research/research_os/tasks/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010.json": "b92bfab19c62b6f25554993efedc2e6887e8ea95"
+      },
+      "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010",
+      "task_status": "BLOCKED"
+    }
+  ],
+  "observed_at": "2026-10-20T22:25:04.814535+00:00",
+  "oracle_head": "ffd4e9f5ef1f30e52220507938e0bd358d7b1631",
+  "oracle_only_blobs_preserved": 272,
+  "oracle_site_blobs_preserved": 23,
+  "outcome_accessed": false,
+  "preview_output_sha256": "7f2b84ad7fa7f75061977baf024f9f3841d9aaa1090ac7a21b1e405438400969",
+  "preview_tree": "bfca34d7d47d690e72c89ab6ea20cb18c5e3ee70",
+  "protected_surface_changes": [],
+  "python_syntax_compiled": 42,
+  "refs_unchanged_by_preview": true,
+  "resumed_base": "dec2fb804ef11a8d92f7c087d28e65f94387871a",
+  "resumed_changed_paths": [
+    ".github/workflows/oracle-v2-core.yml",
+    "STATE.md",
+    "research/research_os/architecture/ORACLE_V2_CORE_SPEC.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_031_FROZEN_TRIAL_ACCOUNTING_GAP_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_032_FROZEN_TRIAL_ACCOUNTING_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_033_FROZEN_RECEIPT_BINDING_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_034_ENVELOPE_INTEGRITY_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_035_CANONICAL_IDENTITY_GAP_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_036_CANONICAL_IDENTITY_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_037_FEEDBACK_AUTHORIZATION_GAP_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_038_FEEDBACK_AUTHORIZATION_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_039_VALIDATOR_CLAIM_ADMISSION_GAP_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_040_SCIENTIFIC_CLAIM_ADMISSION_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_041_RESEARCH_EVALUATION_ADMISSION_AUDIT_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_042_EVALUATION_MEMBRANE_ADMISSION_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_043_FROZEN_EXPORT_IDENTITY_AUDIT_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_044_EXACT_FROZEN_EXPORT_IDENTITY_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_045_STRUCTURAL_UNKNOWN_EVIDENCE_AUDIT_20261020.md",
+    "research/research_os/architecture/work_receipts/BUILDER_CP_046_STRUCTURAL_UNKNOWN_EVIDENCE_20261020.md",
+    "research/research_os/expansion/experiment_runner.py",
+    "research/research_os/expansion/portfolio_v2.py",
+    "research/research_os/expansion/v2_bridge.py",
+    "research/research_os/expansion/v2_core.py",
+    "research/research_os/expansion/v2_pipeline.py",
+    "research/research_os/expansion/v2_stage_executor.py",
+    "tests/fixtures/oracle_v2_core_fixture.json",
+    "tests/test_research_os_canonical_identity.py",
+    "tests/test_research_os_evaluation_membrane_admission.py",
+    "tests/test_research_os_feedback_authorization.py",
+    "tests/test_research_os_frozen_envelope_binding.py",
+    "tests/test_research_os_frozen_export_identity.py",
+    "tests/test_research_os_frozen_receipt_binding.py",
+    "tests/test_research_os_frozen_trial_accounting.py",
+    "tests/test_research_os_scientific_claim_admission.py",
+    "tests/test_research_os_structural_unknown_evidence.py",
+    "tests/test_research_os_v2_core.py",
+    "tests/test_research_os_v2_pipeline.py",
+    "tests/test_research_os_v2_worker_integration.py"
+  ],
+  "schema_version": "builder-frontier-reassessment-v1"
+}

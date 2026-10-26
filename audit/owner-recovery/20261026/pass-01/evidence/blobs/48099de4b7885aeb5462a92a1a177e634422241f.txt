@@ -1,0 +1,159 @@
+{"report": {"crypto_funding": {"duplicate": 0, "observation": 3114, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 0, "observation": 56, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 0, "observation": 90, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 1000, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured (paid/free-tier key required)", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}, "polymarket": {"duplicate": 0, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 0, "observation": 441, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-25T10:58:50+00:00"}
+{"report": {"crypto_funding": {"duplicate": 2941, "observation": 23, "restatement": 173, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 1000, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured (paid/free-tier key required)", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}, "polymarket": {"duplicate": 10, "observation": 20, "restatement": 90, "status": "OK"}, "yahoo_chart": {"duplicate": 433, "observation": 0, "restatement": 8, "status": "OK"}}, "run_at": "2026-09-25T10:59:38+00:00"}
+{"report": {"crypto_funding": {"duplicate": 2863, "observation": 7451, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 1000, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured (paid/free-tier key required)", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}, "polymarket": {"duplicate": 0, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 433, "observation": 0, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-25T11:17:32+00:00"}
+{"report": {"crypto_funding": {"duplicate": 9964, "observation": 272, "restatement": 178, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured (paid/free-tier key required)", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}, "polymarket": {"duplicate": 0, "observation": 120, "restatement": 100, "status": "OK"}, "yahoo_chart": {"duplicate": 0, "observation": 0, "restatement": 433, "status": "OK"}}, "run_at": "2026-09-25T11:36:45+00:00"}
+{"report": {"crypto_funding": {"duplicate": 5740, "observation": 4411, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 87, "observation": 3, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 399, "observation": 19, "restatement": 22, "status": "OK"}}, "run_at": "2026-09-27T03:58:34+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}}, "run_at": "2026-09-27T20:26:09+00:00"}
+{"report": {"crypto_funding": {"duplicate": 7801, "observation": 2513, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "error": "ODDS_API_KEY is not configured", "observation": 0, "restatement": 0, "status": "UNREACHABLE"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 424, "observation": 0, "restatement": 8, "status": "OK"}}, "run_at": "2026-09-27T21:24:54+00:00"}
+{"report": {"crypto_funding": {"duplicate": 9967, "observation": 347, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "observation": 23, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 424, "observation": 0, "restatement": 8, "status": "OK"}}, "run_at": "2026-09-27T22:19:04+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-27T23:25:17+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-28T02:00:19+00:00"}
+{"report": {"crypto_funding": {"duplicate": 8862, "observation": 1452, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 424, "observation": 0, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-28T05:31:05+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-28T08:58:40+00:00"}
+{"report": {"crypto_funding": {"duplicate": 8807, "observation": 1607, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "observation": 23, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 400, "observation": 0, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-28T14:05:10+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-28T17:49:46+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-28T23:50:39+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-29T02:46:43+00:00"}
+{"report": {"crypto_funding": {"duplicate": 8796, "observation": 1645, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 87, "observation": 3, "restatement": 0, "status": "OK"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 368, "observation": 20, "restatement": 12, "status": "OK"}}, "run_at": "2026-09-29T05:52:35+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-29T09:07:24+00:00"}
+{"report": {"crypto_funding": {"duplicate": 9867, "observation": 576, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "h001_forward_eval": {"matches": 0, "status": "OK", "verdict": "SHADOW_DIRECT"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 0, "observation": 1, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 400, "observation": 0, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-29T09:52:40+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-29T16:09:09+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 3, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-29T21:04:36+00:00"}
+{"report": {"odds_api": {"duplicate": 0, "observation": 170, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-30T00:47:01+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-30T06:09:24+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-30T13:13:01+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-30T18:35:40+00:00"}
+{"report": {"crypto_funding": {"duplicate": 6649, "observation": 3765, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 84, "observation": 6, "restatement": 0, "status": "OK"}, "h001_forward_eval": {"engagements": 0, "status": "OK", "verdict": "SHADOW_DIRECT"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 112, "observation": 3, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 52, "observation": 120, "restatement": 48, "status": "OK"}, "sports_fills": {"duplicate": 0, "observation": 0, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 367, "observation": 20, "restatement": 21, "status": "OK"}}, "run_at": "2026-09-30T22:21:03+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-09-30T22:48:04+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 58, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-01T01:36:21+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-01T07:50:04+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-01T15:41:53+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-01T20:33:14+00:00"}
+{"report": {"crypto_funding": {"duplicate": 7668, "observation": 2758, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 87, "observation": 3, "restatement": 0, "status": "OK"}, "h001_forward_eval": {"engagements": 0, "status": "OK", "verdict": "SHADOW_DIRECT"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 110, "observation": 59, "restatement": 2, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "sports_fills": {"duplicate": 0, "observation": 0, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 380, "observation": 20, "restatement": 8, "status": "OK"}}, "run_at": "2026-10-01T22:44:48+00:00"}
+{"report": {"odds_api": {"duplicate": 110, "observation": 59, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-02T00:15:51+00:00"}
+{"report": {"odds_api": {"duplicate": 108, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-02T06:17:06+00:00"}
+{"report": {"odds_api": {"duplicate": 108, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-02T13:15:31+00:00"}
+{"report": {"odds_api": {"duplicate": 108, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-02T18:43:22+00:00"}
+{"report": {"odds_api": {"duplicate": 108, "observation": 56, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-02T22:48:47+00:00"}
+{"report": {"odds_api": {"duplicate": 102, "observation": 35, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-03T01:28:32+00:00"}
+{"report": {"crypto_funding": {"duplicate": 7220, "observation": 3094, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 87, "observation": 3, "restatement": 0, "status": "OK"}, "h001_forward_eval": {"engagements": 0, "status": "OK", "verdict": "SHADOW_DIRECT"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 102, "observation": 28, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "sports_fills": {"duplicate": 0, "observation": 0, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 353, "observation": 40, "restatement": 27, "status": "OK"}}, "run_at": "2026-10-03T05:24:13+00:00"}
+{"report": {"odds_api": {"duplicate": 114, "observation": 1, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-03T07:07:09+00:00"}
+{"report": {"odds_api": {"duplicate": 114, "observation": 9, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-03T12:45:12+00:00"}
+{"report": {"odds_api": {"duplicate": 88, "observation": 111, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-03T16:57:08+00:00"}
+{"report": {"odds_api": {"duplicate": 72, "observation": 89, "restatement": 12, "status": "OK"}}, "run_at": "2026-10-03T19:32:05+00:00"}
+{"report": {"odds_api": {"duplicate": 60, "observation": 62, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-03T22:27:00+00:00"}
+{"report": {"odds_api": {"duplicate": 32, "observation": 52, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-04T02:00:18+00:00"}
+{"report": {"odds_api": {"duplicate": 30, "observation": 73, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-04T08:50:28+00:00"}
+{"report": {"odds_api": {"duplicate": 32, "observation": 74, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-04T14:59:36+00:00"}
+{"report": {"odds_api": {"duplicate": 40, "observation": 57, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-04T18:48:22+00:00"}
+{"report": {"odds_api": {"duplicate": 42, "observation": 89, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-04T22:32:24+00:00"}
+{"report": {"odds_api": {"duplicate": 42, "observation": 61, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-05T01:18:32+00:00"}
+{"report": {"crypto_funding": {"duplicate": 5461, "observation": 4876, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 90, "observation": 0, "restatement": 0, "status": "OK"}, "h001_forward_eval": {"engagements": 0, "status": "OK", "verdict": "SHADOW_DIRECT"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 48, "observation": 221, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "sports_fills": {"duplicate": 0, "observation": 0, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 404, "observation": 0, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-05T05:49:11+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 55, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-05T07:42:44+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 89, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-05T16:25:00+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 80, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-05T22:55:50+00:00"}
+{"report": {"odds_api": {"duplicate": 160, "observation": 61, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-06T03:21:06+00:00"}
+{"report": {"odds_api": {"duplicate": 160, "observation": 95, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-06T10:48:26+00:00"}
+{"report": {"odds_api": {"duplicate": 160, "observation": 116, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-06T17:25:42+00:00"}
+{"report": {"odds_api": {"duplicate": 160, "observation": 61, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-06T21:54:30+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 95, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-07T01:50:01+00:00"}
+{"report": {"odds_api": {"duplicate": 154, "observation": 78, "restatement": 4, "status": "OK"}}, "run_at": "2026-10-07T09:20:56+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 136, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-07T22:17:09+00:00"}
+{"report": {"crypto_funding": {"duplicate": 4278, "observation": 5736, "restatement": 0, "status": "OK"}, "fomc_calendar": {"duplicate": 56, "observation": 0, "restatement": 0, "status": "OK"}, "fred": {"duplicate": 81, "observation": 9, "restatement": 0, "status": "OK"}, "h001_forward_eval": {"engagements": 0, "status": "OK", "verdict": "SHADOW_DIRECT"}, "kalshi": {"duplicate": 0, "observation": 400, "restatement": 0, "status": "OK"}, "odds_api": {"duplicate": 154, "observation": 74, "restatement": 0, "status": "OK"}, "polymarket": {"duplicate": 100, "observation": 120, "restatement": 0, "status": "OK"}, "sports_fills": {"duplicate": 0, "observation": 0, "restatement": 0, "status": "OK"}, "yahoo_chart": {"duplicate": 358, "observation": 60, "restatement": 22, "status": "OK"}}, "run_at": "2026-10-07T23:09:23+00:00"}
+{"report": {"odds_api": {"duplicate": 154, "observation": 61, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-08T02:17:35+00:00"}
+{"report": {"odds_api": {"duplicate": 150, "observation": 78, "restatement": 4, "status": "OK"}}, "run_at": "2026-10-08T09:30:37+00:00"}
+{"report": {"odds_api": {"duplicate": 154, "observation": 95, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-08T16:58:30+00:00"}
+{"report": {"odds_api": {"duplicate": 154, "observation": 113, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-08T22:30:00+00:00"}
+{"report": {"odds_api": {"duplicate": 146, "observation": 61, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-09T02:35:12+00:00"}
+{"report": {"odds_api": {"duplicate": 140, "observation": 95, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-09T09:39:54+00:00"}
+{"report": {"odds_api": {"duplicate": 140, "observation": 75, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-09T16:37:50+00:00"}
+{"report": {"odds_api": {"duplicate": 140, "observation": 61, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-09T21:20:04+00:00"}
+{"report": {"odds_api": {"duplicate": 128, "observation": 129, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-10T01:18:16+00:00"}
+{"report": {"odds_api": {"duplicate": 122, "observation": 74, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-10T07:45:35+00:00"}
+{"report": {"odds_api": {"duplicate": 120, "observation": 83, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-10T13:59:36+00:00"}
+{"report": {"odds_api": {"duplicate": 86, "observation": 104, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-10T18:54:19+00:00"}
+{"report": {"odds_api": {"duplicate": 56, "observation": 82, "restatement": 8, "status": "OK"}}, "run_at": "2026-10-10T22:58:09+00:00"}
+{"report": {"odds_api": {"duplicate": 32, "observation": 76, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-11T02:13:50+00:00"}
+{"report": {"odds_api": {"duplicate": 28, "observation": 83, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-11T09:19:37+00:00"}
+{"report": {"odds_api": {"duplicate": 22, "observation": 69, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-11T15:58:26+00:00"}
+{"report": {"odds_api": {"duplicate": 30, "observation": 80, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-11T20:36:48+00:00"}
+{"report": {"odds_api": {"duplicate": 38, "observation": 101, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-12T00:00:55+00:00"}
+{"report": {"odds_api": {"duplicate": 44, "observation": 252, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-12T06:36:17+00:00"}
+{"report": {"odds_api": {"duplicate": 162, "observation": 83, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-12T16:10:08+00:00"}
+{"report": {"odds_api": {"duplicate": 160, "observation": 83, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-12T23:15:16+00:00"}
+{"report": {"odds_api": {"duplicate": 162, "observation": 77, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-13T03:54:48+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 95, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-13T12:12:53+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 125, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-13T19:33:54+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 133, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-13T23:27:00+00:00"}
+{"report": {"odds_api": {"duplicate": 166, "observation": 107, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-14T02:10:51+00:00"}
+{"report": {"odds_api": {"duplicate": 167, "observation": 83, "restatement": 3, "status": "OK"}}, "run_at": "2026-10-14T08:03:04+00:00"}
+{"report": {"odds_api": {"duplicate": 170, "observation": 73, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-14T14:04:38+00:00"}
+{"report": {"odds_api": {"duplicate": 170, "observation": 107, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-14T18:57:35+00:00"}
+{"report": {"odds_api": {"duplicate": 170, "observation": 131, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-14T22:40:46+00:00"}
+{"report": {"odds_api": {"duplicate": 166, "observation": 122, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-15T00:56:31+00:00"}
+{"report": {"odds_api": {"duplicate": 180, "observation": 109, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-15T06:29:41+00:00"}
+{"report": {"odds_api": {"duplicate": 182, "observation": 143, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-15T12:09:48+00:00"}
+{"report": {"odds_api": {"duplicate": 182, "observation": 119, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-15T17:36:53+00:00"}
+{"report": {"odds_api": {"duplicate": 184, "observation": 109, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-15T20:33:21+00:00"}
+{"report": {"odds_api": {"duplicate": 184, "observation": 165, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-15T23:19:45+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 143, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-16T01:41:26+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 116, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-16T06:26:12+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 109, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-16T12:02:07+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 143, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-16T17:14:25+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 127, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-16T20:06:29+00:00"}
+{"report": {"odds_api": {"duplicate": 180, "observation": 168, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-16T23:02:38+00:00"}
+{"report": {"odds_api": {"duplicate": 172, "observation": 115, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-17T01:34:57+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 143, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-17T06:15:20+00:00"}
+{"report": {"odds_api": {"duplicate": 166, "observation": 149, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-17T11:21:59+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 115, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-17T14:27:13+00:00"}
+{"report": {"odds_api": {"duplicate": 132, "observation": 111, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-17T17:33:11+00:00"}
+{"report": {"odds_api": {"duplicate": 112, "observation": 146, "restatement": 4, "status": "OK"}}, "run_at": "2026-10-17T19:43:40+00:00"}
+{"report": {"odds_api": {"duplicate": 108, "observation": 146, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-17T21:46:30+00:00"}
+{"report": {"odds_api": {"duplicate": 80, "observation": 141, "restatement": 8, "status": "OK"}}, "run_at": "2026-10-17T23:30:45+00:00"}
+{"report": {"odds_api": {"duplicate": 70, "observation": 136, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T01:33:58+00:00"}
+{"report": {"odds_api": {"duplicate": 52, "observation": 116, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T06:37:41+00:00"}
+{"report": {"odds_api": {"duplicate": 48, "observation": 125, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T11:47:02+00:00"}
+{"report": {"odds_api": {"duplicate": 42, "observation": 150, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T14:52:55+00:00"}
+{"report": {"odds_api": {"duplicate": 48, "observation": 117, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T18:17:10+00:00"}
+{"report": {"odds_api": {"duplicate": 50, "observation": 115, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T21:21:14+00:00"}
+{"report": {"odds_api": {"duplicate": 50, "observation": 138, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-18T23:41:49+00:00"}
+{"report": {"odds_api": {"duplicate": 62, "observation": 284, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-19T01:47:10+00:00"}
+{"report": {"odds_api": {"duplicate": 174, "observation": 164, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-19T08:06:34+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 140, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-19T15:53:18+00:00"}
+{"report": {"odds_api": {"duplicate": 186, "observation": 153, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-19T21:15:55+00:00"}
+{"report": {"odds_api": {"duplicate": 186, "observation": 131, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-20T00:42:18+00:00"}
+{"report": {"odds_api": {"duplicate": 190, "observation": 174, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-20T05:28:14+00:00"}
+{"report": {"odds_api": {"duplicate": 190, "observation": 153, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-20T10:26:47+00:00"}
+{"report": {"odds_api": {"duplicate": 190, "observation": 117, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-20T15:23:33+00:00"}
+{"report": {"odds_api": {"duplicate": 188, "observation": 120, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-20T19:38:18+00:00"}
+{"report": {"odds_api": {"duplicate": 186, "observation": 184, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-20T22:42:29+00:00"}
+{"report": {"odds_api": {"duplicate": 174, "observation": 144, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-21T01:00:55+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 117, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-21T06:36:28+00:00"}
+{"report": {"odds_api": {"duplicate": 174, "observation": 105, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-21T12:28:34+00:00"}
+{"report": {"odds_api": {"duplicate": 174, "observation": 152, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-21T17:48:18+00:00"}
+{"report": {"odds_api": {"duplicate": 178, "observation": 120, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-21T20:54:36+00:00"}
+{"report": {"odds_api": {"duplicate": 162, "observation": 107, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-22T00:15:35+00:00"}
+{"report": {"odds_api": {"duplicate": 144, "observation": 122, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-22T05:27:38+00:00"}
+{"report": {"odds_api": {"duplicate": 144, "observation": 90, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-22T10:40:21+00:00"}
+{"report": {"odds_api": {"duplicate": 144, "observation": 156, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-22T15:40:59+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 117, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-22T19:32:23+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 185, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-22T22:46:50+00:00"}
+{"report": {"odds_api": {"duplicate": 160, "observation": 149, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-23T01:02:09+00:00"}
+{"report": {"odds_api": {"duplicate": 158, "observation": 140, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-23T06:32:35+00:00"}
+{"report": {"odds_api": {"duplicate": 172, "observation": 109, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-23T12:16:39+00:00"}
+{"report": {"odds_api": {"duplicate": 172, "observation": 143, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-23T17:44:05+00:00"}
+{"report": {"odds_api": {"duplicate": 168, "observation": 99, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-23T20:40:02+00:00"}
+{"report": {"odds_api": {"duplicate": 154, "observation": 139, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-23T23:33:21+00:00"}
+{"report": {"odds_api": {"duplicate": 137, "observation": 93, "restatement": 5, "status": "OK"}}, "run_at": "2026-10-24T02:00:29+00:00"}
+{"report": {"odds_api": {"duplicate": 124, "observation": 84, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-24T07:36:49+00:00"}
+{"report": {"odds_api": {"duplicate": 122, "observation": 57, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-24T12:14:31+00:00"}
+{"report": {"odds_api": {"duplicate": 98, "observation": 173, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-24T16:32:07+00:00"}
+{"report": {"odds_api": {"duplicate": 114, "observation": 146, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-24T19:03:31+00:00"}
+{"report": {"odds_api": {"duplicate": 80, "observation": 130, "restatement": 2, "status": "OK"}}, "run_at": "2026-10-24T21:56:39+00:00"}
+{"report": {"odds_api": {"duplicate": 47, "observation": 106, "restatement": 1, "status": "OK"}}, "run_at": "2026-10-25T00:33:49+00:00"}
+{"report": {"odds_api": {"duplicate": 34, "observation": 95, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-25T05:22:13+00:00"}
+{"report": {"odds_api": {"duplicate": 34, "observation": 80, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-25T10:10:54+00:00"}
+{"report": {"odds_api": {"duplicate": 26, "observation": 105, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-25T14:35:17+00:00"}
+{"report": {"odds_api": {"duplicate": 38, "observation": 97, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-25T17:53:03+00:00"}
+{"report": {"odds_api": {"duplicate": 38, "observation": 252, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-25T21:25:59+00:00"}
+{"report": {"odds_api": {"duplicate": 137, "observation": 68, "restatement": 1, "status": "OK"}}, "run_at": "2026-10-25T23:35:32+00:00"}

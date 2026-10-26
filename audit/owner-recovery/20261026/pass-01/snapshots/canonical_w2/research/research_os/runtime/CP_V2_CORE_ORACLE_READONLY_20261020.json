@@ -1,0 +1,89 @@
+{
+  "schema_version": "oracle-v2-core-build-checkpoint-v1",
+  "recorded_at": "2026-10-20T02:55:10.079529+00:00",
+  "status": "CODE_AND_ORACLE_READONLY_QUALIFIED_ROOT_PREPARATION_REQUIRED",
+  "branch": "builder/oracle-v2-core-20261020",
+  "executable_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "ci": {
+    "oracle_v2_core": {
+      "conclusion": "success",
+      "databaseId": 39360664488,
+      "headSha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+      "name": "Oracle V2 Core",
+      "status": "completed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39360664488"
+    },
+    "sec_p0": {
+      "conclusion": "success",
+      "databaseId": 39360664487,
+      "headSha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+      "name": "SEC P0 pre-t0 gate",
+      "status": "completed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39360664487"
+    }
+  },
+  "local_tests": {
+    "v2_contract_bridge_pipeline_worker_and_deployment": 42,
+    "combined_worker_preflight_v2": 73,
+    "additional_portfolio_producer_readiness": 24,
+    "final_deployment_and_validator_subprocess": 13
+  },
+  "global_discovered_tests": 602,
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "evaluation_membrane": "SEALED",
+  "hosted_model_calls": 0,
+  "live_readonly": {
+    "status": "PASS",
+    "evidence_scope": "LIVE_ORACLE_GITHUB_READ_ONLY",
+    "github_state_head": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+    "github_writes": 0,
+    "push_attempts": 0,
+    "real_fetch_commands": 2,
+    "instance": {
+      "id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+      "region": "eu-paris-1",
+      "shape": "VM.Standard.A1.Flex",
+      "shapeConfig": {
+        "maxVnicAttachments": 2,
+        "memoryInGBs": 12.0,
+        "networkingBandwidthInGbps": 2.0,
+        "ocpus": 2.0
+      }
+    },
+    "report": "v2_evidence/ORACLE_V2_READONLY_A67FFEC.json",
+    "sha256": "02b1a16734c3a2a4c5a32cbe8c0889c2482c9664b90cbf22af4d002b60355e7b"
+  },
+  "last_qualified_v1_executable_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+  "v1_timer_observed": "active",
+  "root_execution_boundary": {
+    "uid": 999,
+    "general_sudo_exit": 1,
+    "v2_controls_present": false,
+    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaaezgbxhsjk6nrbhuw3k6msilbl4oojvnnq5ytonmlhv2a",
+    "oracle_request_id": "3B0F8D22D3DB4DCEB1D7881A60363342/81E5D0C3BBD20B98E3D7D66A43444764/93574B973F18A02653B27E297A727EE9",
+    "time_updated": "2026-10-20T02:54:26.651000+00:00"
+  },
+  "owner_command": "V2_OWNER_ROOT_PREPARATION_20261020.sh",
+  "owner_expected_status": "V2_PREPARED_V1_UNCHANGED",
+  "remaining": [
+    "Owner/root installs exact-SHA fixed controls and disabled V2 assets",
+    "Actual local GPT-OSS reasoning and eleven-gate V2 canary",
+    "Fresh canonical V1-to-V2 transfer with one active writer",
+    "Gated V2 timer activation",
+    "Two healthy natural V2 wakes with durable GitHub receipts",
+    "V2 post-reboot automatic wake and recovery proof"
+  ],
+  "scientific_limits": [
+    "R0 validator verifies structural evidence only; diverse semantic review NOT_PROVEN",
+    "Fixture end-to-end qualification is not live scientific throughput",
+    "Read-only proof does not prove V2 activation, model inference or V2 write recovery",
+    "No economic/prospective outcome, profit or alpha qualification"
+  ],
+  "final_target": "AUTONOMOUS_PRE_OUTCOME_RESEARCH_PIPELINE_QUALIFIED",
+  "final_target_achieved": false
+}

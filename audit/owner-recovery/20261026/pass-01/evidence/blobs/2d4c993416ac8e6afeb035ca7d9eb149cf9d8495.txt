@@ -1,0 +1,263 @@
+FFFFF.FFFFFFF                                                            [100%]
+=================================== FAILURES ===================================
+__________ test_caller_cannot_rewrite_historical_decision_or_summary ___________
+
+    def test_caller_cannot_rewrite_historical_decision_or_summary():
+        manifest = json.loads(MANIFEST.read_text())
+        record = {'HYPOTHESIS_ID': 'A', 'RESEARCH_DECISION': 'KILL', 'RESULT': 'NEGATIVE'}
+        data = {'records': [record]}
+        kb = LegacyKnowledgeBase(manifest, data)
+        expected = kb.summary()
+        record.update(RESEARCH_DECISION='PROMOTE', RESULT='POSITIVE')
+        manifest['global_effective_trials'] = 42
+>       assert kb.screen_candidate({'hypothesis_id': 'A'})['historical_decision'] == 'KILL'
+E       AssertionError: assert 'PROMOTE' == 'KILL'
+E         
+E         - KILL
+E         + PROMOTE
+
+tests/test_vertical_legacy_depth.py:21: AssertionError
+_ test_conflicting_identity_is_reviewed_without_arbitrary_winner[False-False] __
+
+reverse = False, primary_collision = False
+
+    @pytest.mark.parametrize('reverse', [False, True])
+    @pytest.mark.parametrize('primary_collision', [False, True])
+    def test_conflicting_identity_is_reviewed_without_arbitrary_winner(reverse, primary_collision):
+        records = [
+            {'HYPOTHESIS_ID': 'A', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'NEGATIVE', 'RESEARCH_DECISION': 'KILL'},
+            {'HYPOTHESIS_ID': 'A' if primary_collision else 'B', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'BLOCKED', 'RESEARCH_DECISION': 'WAIT'},
+        ]
+        if reverse:
+            records.reverse()
+        kb = LegacyKnowledgeBase({}, {'records': records})
+        candidate_id = 'A' if primary_collision else 'shared'
+        result = kb.screen_candidate({'hypothesis_id': candidate_id})
+>       assert result['status'] == 'REVIEW_LEGACY_OVERLAP'
+E       AssertionError: assert 'BLOCK_EXACT_LEGACY_DUPLICATE' == 'REVIEW_LEGACY_OVERLAP'
+E         
+E         - REVIEW_LEGACY_OVERLAP
+E         + BLOCK_EXACT_LEGACY_DUPLICATE
+
+tests/test_vertical_legacy_depth.py:37: AssertionError
+__ test_conflicting_identity_is_reviewed_without_arbitrary_winner[False-True] __
+
+reverse = True, primary_collision = False
+
+    @pytest.mark.parametrize('reverse', [False, True])
+    @pytest.mark.parametrize('primary_collision', [False, True])
+    def test_conflicting_identity_is_reviewed_without_arbitrary_winner(reverse, primary_collision):
+        records = [
+            {'HYPOTHESIS_ID': 'A', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'NEGATIVE', 'RESEARCH_DECISION': 'KILL'},
+            {'HYPOTHESIS_ID': 'A' if primary_collision else 'B', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'BLOCKED', 'RESEARCH_DECISION': 'WAIT'},
+        ]
+        if reverse:
+            records.reverse()
+        kb = LegacyKnowledgeBase({}, {'records': records})
+        candidate_id = 'A' if primary_collision else 'shared'
+        result = kb.screen_candidate({'hypothesis_id': candidate_id})
+>       assert result['status'] == 'REVIEW_LEGACY_OVERLAP'
+E       AssertionError: assert 'BLOCK_EXACT_LEGACY_DUPLICATE' == 'REVIEW_LEGACY_OVERLAP'
+E         
+E         - REVIEW_LEGACY_OVERLAP
+E         + BLOCK_EXACT_LEGACY_DUPLICATE
+
+tests/test_vertical_legacy_depth.py:37: AssertionError
+__ test_conflicting_identity_is_reviewed_without_arbitrary_winner[True-False] __
+
+reverse = False, primary_collision = True
+
+    @pytest.mark.parametrize('reverse', [False, True])
+    @pytest.mark.parametrize('primary_collision', [False, True])
+    def test_conflicting_identity_is_reviewed_without_arbitrary_winner(reverse, primary_collision):
+        records = [
+            {'HYPOTHESIS_ID': 'A', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'NEGATIVE', 'RESEARCH_DECISION': 'KILL'},
+            {'HYPOTHESIS_ID': 'A' if primary_collision else 'B', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'BLOCKED', 'RESEARCH_DECISION': 'WAIT'},
+        ]
+        if reverse:
+            records.reverse()
+        kb = LegacyKnowledgeBase({}, {'records': records})
+        candidate_id = 'A' if primary_collision else 'shared'
+        result = kb.screen_candidate({'hypothesis_id': candidate_id})
+>       assert result['status'] == 'REVIEW_LEGACY_OVERLAP'
+E       AssertionError: assert 'BLOCK_EXACT_LEGACY_DUPLICATE' == 'REVIEW_LEGACY_OVERLAP'
+E         
+E         - REVIEW_LEGACY_OVERLAP
+E         + BLOCK_EXACT_LEGACY_DUPLICATE
+
+tests/test_vertical_legacy_depth.py:37: AssertionError
+__ test_conflicting_identity_is_reviewed_without_arbitrary_winner[True-True] ___
+
+reverse = True, primary_collision = True
+
+    @pytest.mark.parametrize('reverse', [False, True])
+    @pytest.mark.parametrize('primary_collision', [False, True])
+    def test_conflicting_identity_is_reviewed_without_arbitrary_winner(reverse, primary_collision):
+        records = [
+            {'HYPOTHESIS_ID': 'A', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'NEGATIVE', 'RESEARCH_DECISION': 'KILL'},
+            {'HYPOTHESIS_ID': 'A' if primary_collision else 'B', 'LEGACY_ID_IF_ANY': 'shared', 'RESULT': 'BLOCKED', 'RESEARCH_DECISION': 'WAIT'},
+        ]
+        if reverse:
+            records.reverse()
+        kb = LegacyKnowledgeBase({}, {'records': records})
+        candidate_id = 'A' if primary_collision else 'shared'
+        result = kb.screen_candidate({'hypothesis_id': candidate_id})
+>       assert result['status'] == 'REVIEW_LEGACY_OVERLAP'
+E       AssertionError: assert 'BLOCK_EXACT_LEGACY_DUPLICATE' == 'REVIEW_LEGACY_OVERLAP'
+E         
+E         - REVIEW_LEGACY_OVERLAP
+E         + BLOCK_EXACT_LEGACY_DUPLICATE
+
+tests/test_vertical_legacy_depth.py:37: AssertionError
+___________________ test_malformed_corpus_is_rejected[None] ____________________
+
+records = None
+
+    @pytest.mark.parametrize('records', [None, {}, '', [None], [1], ['A']])
+    def test_malformed_corpus_is_rejected(records):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_legacy_depth.py:52: Failed
+_________________ test_malformed_corpus_is_rejected[records1] __________________
+
+records = {}
+
+    @pytest.mark.parametrize('records', [None, {}, '', [None], [1], ['A']])
+    def test_malformed_corpus_is_rejected(records):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_legacy_depth.py:52: Failed
+_____________________ test_malformed_corpus_is_rejected[] ______________________
+
+records = ''
+
+    @pytest.mark.parametrize('records', [None, {}, '', [None], [1], ['A']])
+    def test_malformed_corpus_is_rejected(records):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_legacy_depth.py:52: Failed
+_________________ test_malformed_corpus_is_rejected[records3] __________________
+
+records = [None]
+
+    @pytest.mark.parametrize('records', [None, {}, '', [None], [1], ['A']])
+    def test_malformed_corpus_is_rejected(records):
+        with pytest.raises(ValueError):
+>           LegacyKnowledgeBase({}, {'records': records})
+
+tests/test_vertical_legacy_depth.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <research.research_os.legacy.LegacyKnowledgeBase object at 0x7f0f13d13c80>
+manifest = {}, ledger = {'records': [None]}
+
+    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
+        self.manifest = manifest
+        self.ledger = ledger or {"records": []}
+        self.records = list(self.ledger.get("records") or [])
+        # Provenance recovery is separate from the immutable imported ledger.
+        self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
+        self._validate_source_reviews()
+        self.by_id: Dict[str, Dict[str, Any]] = {}
+        for record in self.records:
+            for key in ("HYPOTHESIS_ID", "LEGACY_ID_IF_ANY"):
+>               value = record.get(key)
+                        ^^^^^^^^^^
+E               AttributeError: 'NoneType' object has no attribute 'get'
+
+research/research_os/legacy.py:38: AttributeError
+_________________ test_malformed_corpus_is_rejected[records4] __________________
+
+records = [1]
+
+    @pytest.mark.parametrize('records', [None, {}, '', [None], [1], ['A']])
+    def test_malformed_corpus_is_rejected(records):
+        with pytest.raises(ValueError):
+>           LegacyKnowledgeBase({}, {'records': records})
+
+tests/test_vertical_legacy_depth.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <research.research_os.legacy.LegacyKnowledgeBase object at 0x7f0f13d10ce0>
+manifest = {}, ledger = {'records': [1]}
+
+    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
+        self.manifest = manifest
+        self.ledger = ledger or {"records": []}
+        self.records = list(self.ledger.get("records") or [])
+        # Provenance recovery is separate from the immutable imported ledger.
+        self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
+        self._validate_source_reviews()
+        self.by_id: Dict[str, Dict[str, Any]] = {}
+        for record in self.records:
+            for key in ("HYPOTHESIS_ID", "LEGACY_ID_IF_ANY"):
+>               value = record.get(key)
+                        ^^^^^^^^^^
+E               AttributeError: 'int' object has no attribute 'get'
+
+research/research_os/legacy.py:38: AttributeError
+_________________ test_malformed_corpus_is_rejected[records5] __________________
+
+records = ['A']
+
+    @pytest.mark.parametrize('records', [None, {}, '', [None], [1], ['A']])
+    def test_malformed_corpus_is_rejected(records):
+        with pytest.raises(ValueError):
+>           LegacyKnowledgeBase({}, {'records': records})
+
+tests/test_vertical_legacy_depth.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <research.research_os.legacy.LegacyKnowledgeBase object at 0x7f0f13cfc8c0>
+manifest = {}, ledger = {'records': ['A']}
+
+    def __init__(self, manifest: Dict[str, Any], ledger: Optional[Dict[str, Any]] = None):
+        self.manifest = manifest
+        self.ledger = ledger or {"records": []}
+        self.records = list(self.ledger.get("records") or [])
+        # Provenance recovery is separate from the immutable imported ledger.
+        self.source_reviews = deepcopy(manifest.get("recovered_source_reviews", []))
+        self._validate_source_reviews()
+        self.by_id: Dict[str, Dict[str, Any]] = {}
+        for record in self.records:
+            for key in ("HYPOTHESIS_ID", "LEGACY_ID_IF_ANY"):
+>               value = record.get(key)
+                        ^^^^^^^^^^
+E               AttributeError: 'str' object has no attribute 'get'
+
+research/research_os/legacy.py:38: AttributeError
+________ test_exact_match_result_does_not_export_mutable_ledger_fields _________
+
+    def test_exact_match_result_does_not_export_mutable_ledger_fields():
+        kb = LegacyKnowledgeBase({}, {'records': [{'HYPOTHESIS_ID': 'A',
+            'NEXT_LEGITIMATE_STEP': {'limitations': ['original']}}]})
+        result = kb.screen_candidate({'hypothesis_id': 'A'})
+        result['next_legitimate_step']['limitations'].clear()
+>       assert kb.screen_candidate({'hypothesis_id': 'A'})['next_legitimate_step'] == {'limitations': ['original']}
+E       AssertionError: assert {'limitations': []} == {'limitations': ['original']}
+E         
+E         Differing items:
+E         {'limitations': []} != {'limitations': ['original']}
+E         Use -v to get more diff
+
+tests/test_vertical_legacy_depth.py:61: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_legacy_depth.py::test_caller_cannot_rewrite_historical_decision_or_summary
+FAILED tests/test_vertical_legacy_depth.py::test_conflicting_identity_is_reviewed_without_arbitrary_winner[False-False]
+FAILED tests/test_vertical_legacy_depth.py::test_conflicting_identity_is_reviewed_without_arbitrary_winner[False-True]
+FAILED tests/test_vertical_legacy_depth.py::test_conflicting_identity_is_reviewed_without_arbitrary_winner[True-False]
+FAILED tests/test_vertical_legacy_depth.py::test_conflicting_identity_is_reviewed_without_arbitrary_winner[True-True]
+FAILED tests/test_vertical_legacy_depth.py::test_malformed_corpus_is_rejected[None]
+FAILED tests/test_vertical_legacy_depth.py::test_malformed_corpus_is_rejected[records1]
+FAILED tests/test_vertical_legacy_depth.py::test_malformed_corpus_is_rejected[]
+FAILED tests/test_vertical_legacy_depth.py::test_malformed_corpus_is_rejected[records3]
+FAILED tests/test_vertical_legacy_depth.py::test_malformed_corpus_is_rejected[records4]
+FAILED tests/test_vertical_legacy_depth.py::test_malformed_corpus_is_rejected[records5]
+FAILED tests/test_vertical_legacy_depth.py::test_exact_match_result_does_not_export_mutable_ledger_fields
+12 failed, 1 passed in 0.07s

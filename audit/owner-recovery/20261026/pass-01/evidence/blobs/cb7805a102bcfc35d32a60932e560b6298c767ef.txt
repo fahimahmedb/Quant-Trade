@@ -1,0 +1,70 @@
+{
+  "adequacy": {
+    "eligible_events": 120,
+    "endpoint_coverage": 1.0,
+    "requires_each_signal_at_least": 40,
+    "requires_total_at_least": 100,
+    "signal_counts": {
+      "+1": 37,
+      "-1": 83
+    },
+    "skipped_months": 0
+  },
+  "attempt": 1,
+  "claim_ceiling": "PROMOTE_EXPRESSION",
+  "claim_commit": "05c32f46b01ebaa2e933c34b0cb7dc913ff96aec",
+  "dataset_proof": {
+    "meta_fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "meta_first_date": "2016-09-12",
+    "meta_last_date": "2026-09-11",
+    "meta_rows": 30168,
+    "raw_csv_sha256_observed": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1"
+  },
+  "decision": "PARK_DATA",
+  "details": {
+    "eligible_events": 120,
+    "endpoint_coverage": 1.0,
+    "requires_each_signal_at_least": 40,
+    "requires_total_at_least": 100,
+    "signal_counts": {
+      "+1": 37,
+      "-1": 83
+    },
+    "skipped_months": 0
+  },
+  "economics_computed": false,
+  "edge_validated": false,
+  "experiment_id": "disc-monthend-pension-rebalance-spytlt-l1-v1",
+  "frozen": {
+    "central_roundtrip_cost": 0.0008,
+    "dataset": "data/datasets/us_sector_etf_daily.csv",
+    "expected_fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "payoff": "final-session SPY minus TLT open-to-close relative spread",
+    "signal": "negative sign of SPY minus TLT month-to-date raw close return at penultimate session",
+    "stress_roundtrip_cost": 0.0016,
+    "symbols": [
+      "SPY",
+      "TLT"
+    ]
+  },
+  "invocation_id": "owner-manual-20261012-a1",
+  "label": "EXPLORATORY",
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "predeclaration_commit": "6f4a2d5160ba9aef62b841057fee4a95a0df338f",
+  "real_capital_authorized": false,
+  "reason": "Frozen adequacy gate failed; no signal threshold, window, cost or instrument change is allowed.",
+  "replay_allowed": false,
+  "schema_checks": {
+    "aligned_sessions": 2514,
+    "first_date": "2016-09-12",
+    "last_date": "2026-09-11",
+    "max_abs_raw_close_to_close_return": 0.1094237347171908,
+    "max_abs_raw_close_to_close_where": {
+      "date": "2020-03-16",
+      "raw_close_to_close_return": -0.1094237347171908,
+      "symbol": "SPY"
+    }
+  },
+  "typed_verdict": "PARK_DATA"
+}

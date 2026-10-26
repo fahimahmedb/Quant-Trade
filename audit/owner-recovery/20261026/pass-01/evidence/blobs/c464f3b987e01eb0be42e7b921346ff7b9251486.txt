@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Deduplicated issuer/owner/date purchase observation used by the census.",
+  "properties": {
+    "accessions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "issuer_cik": {
+      "type": "string"
+    },
+    "issuer_symbols": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "observation_id": {
+      "type": "string"
+    },
+    "owner_cik": {
+      "type": "string"
+    },
+    "source_rows": {
+      "type": "integer"
+    },
+    "transaction_date": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "observation_id",
+    "issuer_cik",
+    "owner_cik",
+    "transaction_date",
+    "issuer_symbols",
+    "accessions",
+    "source_rows"
+  ],
+  "title": "sec_form4_purchase_observation",
+  "type": "object"
+}

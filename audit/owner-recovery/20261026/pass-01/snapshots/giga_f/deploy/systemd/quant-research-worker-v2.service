@@ -1,0 +1,41 @@
+[Unit]
+Description=Quant Research OS V2 bounded pre-outcome wake
+Wants=network-online.target quant-local-model.service
+After=network-online.target quant-local-model.service
+Conflicts=quant-research-worker.timer quant-research-worker.service
+ConditionPathExists=/etc/quant-research-v2/worker.json
+
+[Service]
+Type=oneshot
+User=quant-research
+Group=quant-research
+WorkingDirectory=/opt/quant-research-v2/current
+StateDirectory=quant-research-v2
+StateDirectoryMode=0700
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONNOUSERSITE=1
+Environment=GIT_TERMINAL_PROMPT=0
+ExecStart=/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research /usr/bin/python3.12 -m research.research_os.oracle_worker_v2 --config /etc/quant-research-v2/worker.json
+TimeoutStartSec=8min
+Restart=no
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=quant-research-worker-v2
+LogRateLimitIntervalSec=1h
+LogRateLimitBurst=60
+MemoryMax=768M
+MemorySwapMax=0
+CPUQuota=75%
+TasksMax=48
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/quant-research-v2

@@ -1,0 +1,68 @@
+mutation=mode_admission
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=270c2ed976e9630f3d09fd5155fdced8f2b1d0a8857e4239a816cd7e07870eb1
+...........................................................FFFF......... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_rehashed_execution_mode_cannot_claim_dry_run_replay[LIVE] ________
+
+mode = 'LIVE'
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+______ test_rehashed_execution_mode_cannot_claim_dry_run_replay[UNKNOWN] _______
+
+mode = 'UNKNOWN'
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+________ test_rehashed_execution_mode_cannot_claim_dry_run_replay[None] ________
+
+mode = None
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+_______ test_rehashed_execution_mode_cannot_claim_dry_run_replay[False] ________
+
+mode = False
+
+    @pytest.mark.parametrize('mode', ['LIVE', 'UNKNOWN', None, False])
+    def test_rehashed_execution_mode_cannot_claim_dry_run_replay(mode):
+        runner, plan, *_ = frozen()
+        plan['plan']['execution_mode'] = mode
+        rehash(plan)
+>       with pytest.raises(ValueError, match='DRY_RUN_EXECUTION_MODE_REQUIRED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_frozen_replay_depth.py:199: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[LIVE]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[UNKNOWN]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[None]
+FAILED tests/test_vertical_frozen_replay_depth.py::test_rehashed_execution_mode_cannot_claim_dry_run_replay[False]
+4 failed, 69 passed in 0.17s

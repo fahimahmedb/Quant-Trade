@@ -1,0 +1,75 @@
+mutation=duplicate_key_admission
+fixed_source_sha256=03cc51f0ec5d566d36ba28cf6e7df4f67ca032553013cfea47581f03d885c5e8
+............................FFF...                                       [100%]
+=================================== FAILURES ===================================
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_restart_and_save_both_rej0')
+raw = '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_restart_and_save_both_rej1')
+raw = '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+_ test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-42/test_restart_and_save_both_rej2')
+raw = '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}'
+
+    @pytest.mark.parametrize('raw', [
+        '{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}',
+        '{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}',
+        '{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":NaN}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":Infinity}}',
+        '{"campaign_id":"SYN-CAMPAIGN","research_budget":{"max_cycles":1e309}}',
+    ])
+    def test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign(tmp_path, raw):
+        path, state = loaded(tmp_path)
+        remembered = asdict(state)
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_campaign_state_depth.py:365: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","status":"PAUSED","status":"IDLE"}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","campaign_id":"FOREIGN"}]
+FAILED tests/test_vertical_campaign_state_depth.py::test_restart_and_save_both_reject_ambiguous_or_nonfinite_durable_campaign[{"campaign_id":"SYN-CAMPAIGN","budget_consumed":{"cycles":7,"cycles":0}}]
+3 failed, 31 passed in 1.51s

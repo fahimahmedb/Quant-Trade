@@ -1,0 +1,41 @@
+{
+  "fixed_source_sha256": "c5b537105728f8ff7def3ff1e82da58c765149866874a73eba339aa3626903c1",
+  "mutants": [
+    {
+      "removed_capture": "build_epoch_manifest",
+      "exit_code": 1,
+      "summary": "3 failed, 13 passed in 0.08s",
+      "log": "CP041_mutant_build_epoch_manifest.txt"
+    },
+    {
+      "removed_capture": "build_research_trial",
+      "exit_code": 1,
+      "summary": "3 failed, 13 passed in 0.08s",
+      "log": "CP041_mutant_build_research_trial.txt"
+    },
+    {
+      "removed_capture": "build_candidate",
+      "exit_code": 1,
+      "summary": "2 failed, 14 passed in 0.08s",
+      "log": "CP041_mutant_build_candidate.txt"
+    },
+    {
+      "removed_capture": "build_validator_result",
+      "exit_code": 1,
+      "summary": "2 failed, 14 passed in 0.08s",
+      "log": "CP041_mutant_build_validator_result.txt"
+    },
+    {
+      "removed_capture": "build_negative_memory",
+      "exit_code": 1,
+      "summary": "2 failed, 14 passed in 0.08s",
+      "log": "CP041_mutant_build_negative_memory.txt"
+    },
+    {
+      "removed_capture": "build_frozen_export_intent",
+      "exit_code": 1,
+      "summary": "6 failed, 4 passed in 0.09s",
+      "log": "CP041_mutant_build_frozen_export_intent.txt"
+    }
+  ]
+}

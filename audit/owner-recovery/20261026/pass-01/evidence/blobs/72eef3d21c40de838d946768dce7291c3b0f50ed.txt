@@ -1,0 +1,34 @@
+# OPERATOR — GATE B F5 ROUTE-1 HOST EVIDENCE CLOSURE — 2026-09-21
+
+MISSION_TYPE = TARGET_HOST READ-ONLY EVIDENCE CLOSURE
+
+Expected starting HEAD:
+f0c4e25300e8ad0536461f3ed5136d5e215c12c3
+
+Read first:
+1. QUANT_NORTH_STAR.md
+2. governance/BLUE_GATE_B_F5_ROUTE1_HOST_EVIDENCE_CLOSURE_2026-09-21.md
+3. prior F5 handoff:
+   operator/gate-b-f5-route1-host-feasibility-2026-09-21@a5493f052c458e1bbf76e00cbc4943dca8632e71
+4. governance/TARGET_HOST_GATE_B_ENTRANCE_CONTRACT_2026-09-21.md
+5. governance/TARGET_HOST_GATE_B_TO_GATE_C_RUNBOOK_2026-09-21.md
+
+Close ONLY N1 and N2 from the Blue spec on the actual target host.
+
+No mutation of any kind.
+
+Required public handoff:
+handoff/OPERATOR_GATE_B_F5_ROUTE1_HOST_EVIDENCE_CLOSURE_2026-09-21.md
+
+Final classification exactly one:
+F5_ROUTE1_HOST_EVIDENCE = PASS_ROUTE1_FEASIBLE
+or
+F5_ROUTE1_HOST_EVIDENCE = BLOCKED_ROUTE1_NOT_PROVEN
+
+Also state:
+ROUTE2_PRODUCTION_TESTABILITY_WORK_REQUIRED = TRUE
+or
+ROUTE2_PRODUCTION_TESTABILITY_WORK_REQUIRED = NOT_YET_PROVEN_REQUIRED
+
+Commit/push only public handoff/checkpoint docs.
+Return to Blue.

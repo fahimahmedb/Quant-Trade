@@ -1,0 +1,38 @@
+# Vertical CP021 — PricePanel immutable date views and duplicate evidence
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=08585a1a25ae8baa4eb61c0268ba3ef74533abc8
+
+Existing capability/module: PricePanel immutable date views and duplicate evidence. Starting depth: D1.
+North Star basis: scientific truth, persistent provenance/identity, explicit
+UNKNOWN/blocking distinctions and closed economic/capital authority. No future
+Wave-2 capability family is added.
+
+Enumerated repair items:
+
+1. Returned cached date lists could be mutated to corrupt later alignment and index coherence.
+2. restrict/window and CSV export silently discarded duplicate-bar evidence, allowing a rejected panel to appear clean.
+3. Negative, zero or boolean split fractions could produce apparently valid windows.
+
+Narrow repair: Return detached date views; retain duplicate evidence for selected keys in projections; reject export of a duplicate-bearing panel before touching its destination. Require finite positive numeric split fractions before the existing sum/window checks.
+
+Adversarial evidence: **13 new pytest cases** in the corresponding
+`tests/test_vertical_*_depth.py` file. Before repair: **9 failed / 4 passed**.
+Focused requalification: **99 passed**. Full failures and focused transcripts are
+`research/vertical_depth/20261021/CP021_{before,after}.txt`.
+Tests cover the concrete failure modes listed above, exact valid controls,
+replay/input and output isolation, and deterministic concurrency or injected
+publication failure where applicable. These counts overlap existing regressions.
+
+Attained depth: **D2**, limited to these capability slices.
+Remaining unproven depth: No change to valid price rounding or model semantics. Raw public bars/dates mutation, cache concurrency, atomic CSV export, all extreme arithmetic, parser/source truth and physical failure are unproven. Excluding a bad key can legitimately produce a clean subset.
+
+Horizontal findings: none. Longitudinal findings: see the separately recorded
+cross-axis disposition in the final coverage/survey; no handoff repair here.
+Authority state: all Owner grants remain closed. No network acquisition,
+economic experiment, prospective observation or order was executed.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

@@ -1,0 +1,33 @@
+{
+  "trace_id": "WORK-NATIVE-DISCOVERY-20261014",
+  "recorded_at_utc": "2026-10-14T01:29:38.539Z",
+  "mandatory_start_head": "0b3c180536937cc63b94fa0dedf8252405f56ef8",
+  "observed_remote_head": "0b3c180536937cc63b94fa0dedf8252405f56ef8",
+  "project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
+  "site_version": 14,
+  "site_source_head": "fdf8c50797a3198793920d9d50c4ebcfa5f06ed6",
+  "deployment_id": "appgdep_6acdcd691d588191a73c0790dcab35ca",
+  "deployment_status": "succeeded",
+  "database_binding": "DB",
+  "tables": [
+    "probe_acks",
+    "probe_commands",
+    "probe_deliveries",
+    "probe_events",
+    "probe_sessions"
+  ],
+  "observed_fact": "Site source advanced independently since previous Work inspection. Version 14 already contains an isolated native D1-backed probe endpoint family at /__platform_probe, schema migration, bearer worker ingress, generation/lease event trigger, SSE and double-rAF ACK client. Reuse and test this existing probe; do not rebuild the observer Site or research layer. Native DB provisioning/schema are empirically proven; end-to-end event semantics, Owner binding and actual runtime identity are not promoted by source existence.",
+  "source_scope": "worker/platform-probe.mjs; drizzle/0000_platform_probe.sql; test/platform-probe.test.mjs; probe hook only",
+  "codex_retry": {
+    "version": "0.159.2",
+    "exec_timeout_s": 45,
+    "observed_jsonl_session_events": 0,
+    "plugin_startup_http_status": 401,
+    "device_authorization_challenge_generated": true,
+    "device_code_persisted": false,
+    "owner_login_required": true
+  },
+  "paid_usd_total": 0,
+  "scientific_state_modified": false,
+  "old_traces_modified": false
+}

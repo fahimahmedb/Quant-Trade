@@ -1,0 +1,120 @@
+{
+  "source_files_sha256": {
+    "total": 83,
+    "passed": 83,
+    "missing_or_mismatch": []
+  },
+  "evidence_sha256": {
+    "total": 334,
+    "passed": 334,
+    "missing_or_mismatch": []
+  },
+  "q_logs": [
+    {
+      "path": "governance/giga_q/evidence/q-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/q-second-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/ledger-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/git-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/core-memory-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/live-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/failed-state-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/frozen-economic-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/q-neighbors.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/ledger-focused.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/ledger-neighbors.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/frozen-economic-focused.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/live-focused.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/wave1-wave2-functions.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/live-node.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/historical-replay.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/auxiliary-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/q-cumulative-focused.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/documentary-neighbors.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/qualification-runtime-red.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    },
+    {
+      "path": "governance/giga_q/evidence/q-final-focused-runtime.log.gz",
+      "compressed_match": true,
+      "uncompressed_match": true
+    }
+  ],
+  "vertical_executable_diff_tip_vs_qualified": []
+}

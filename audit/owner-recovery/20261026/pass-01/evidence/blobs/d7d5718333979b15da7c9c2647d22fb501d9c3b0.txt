@@ -1,0 +1,35 @@
+mutation=replay_snapshot
+fixed_source_sha256=f54c73ca38288769211c467663a3ed11705702db0a7f5d63a4f2847b6d2b3bb7
+mutated_source_sha256=31156ab0f97d1747a2dc42121d237d9087bc66e325bb857a20439036cb0bbdc5
+..............................................F......................... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_replay_returns_identity_of_checked_snapshot_under_caller_mutation ____
+
+    def test_replay_returns_identity_of_checked_snapshot_under_caller_mutation():
+        runner, plan, *_ = frozen()
+        expected = runner.replay(deepcopy(plan))
+        check = runner._assert_pre_outcome_closed
+        calls = []
+
+        def change_after_receipt_check(value, **kwargs):
+            check(value, **kwargs)
+            calls.append(value)
+            if kwargs.get('require_authority_fields'):
+                plan['experiment_id'] = 'FOREIGN-AFTER-CHECK'
+
+        with patch.object(runner, '_assert_pre_outcome_closed', side_effect=change_after_receipt_check):
+            actual = runner.replay(plan)
+        assert len(calls) == 2
+>       assert actual == expected
+E       AssertionError: assert {'experiment_...': False, ...} == {'experiment_...': False, ...}
+E
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'experiment_id': 'FOREIGN-AFTER-CHECK'} != {'experiment_id': 'EXP-HYP-001-GEN-001'}
+E         Use -v to get more diff
+
+tests/test_vertical_frozen_replay_depth.py:105: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_frozen_replay_depth.py::test_replay_returns_identity_of_checked_snapshot_under_caller_mutation
+1 failed, 72 passed in 0.15s

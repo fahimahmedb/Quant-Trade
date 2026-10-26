@@ -1,0 +1,159 @@
+{
+  "scope": "pre-repair and interim focused evidence; exact-final-HEAD CI receipt is separate",
+  "base": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+  "historical_source": "92c4ee0a5e2d9387167f6deec24e7edec1c15b6d",
+  "logs": [
+    {
+      "path": "governance/giga_q/evidence/q-red.log.gz",
+      "uncompressed_sha256": "3c6e9c0889b9bc85acb6c33deafd6ce39d07deb8fa0757320684ca057d6641e8",
+      "compressed_sha256": "373fae70e4119dd230f26248495cae3ca0e9a8c463608cd6a42f781b03b26d62",
+      "bytes": 17636
+    },
+    {
+      "path": "governance/giga_q/evidence/q-second-red.log.gz",
+      "uncompressed_sha256": "18a7bdf07c636c9813ac51ed06d6693950a10c6b2bcfb2ac89a4bd9fdf98d136",
+      "compressed_sha256": "109cb5c5fe95033143af67ea05f8ea6bef233c2b1d4c55497f2527336a1e33cc",
+      "bytes": 13766
+    },
+    {
+      "path": "governance/giga_q/evidence/ledger-red.log.gz",
+      "uncompressed_sha256": "6bb952a5cb1295c4d431624188ed55fefb7b1fe223a5a91a218bc2bc77f23a60",
+      "compressed_sha256": "369c9ff75c1ee9a8b85e33a106b5ad62b94d0cbfc3f3d8087bd7b5267e370c08",
+      "bytes": 18058
+    },
+    {
+      "path": "governance/giga_q/evidence/git-red.log.gz",
+      "uncompressed_sha256": "ddb07c1968bf260526778a85cf6cc0f33a39b7dbc9c60f206f76b0f48fb9a104",
+      "compressed_sha256": "ba497b1f56717313512f27ea3a2f020c4bc8808725c8167f0ee6b779659a0070",
+      "bytes": 3761
+    },
+    {
+      "path": "governance/giga_q/evidence/core-memory-red.log.gz",
+      "uncompressed_sha256": "bb8ab141879c52e9af2f10ce0e19b8d57aa0d8be909fe4658e181f04cf52c047",
+      "compressed_sha256": "4dc8df35a7c3e43aae55615a54011e806f3d51f34caea2072fdb56426a252d84",
+      "bytes": 27720
+    },
+    {
+      "path": "governance/giga_q/evidence/live-red.log.gz",
+      "uncompressed_sha256": "340873106deabc2cdcf44e9870faa00fe1d80a3a096173cf0f634efb806ef139",
+      "compressed_sha256": "ca7e900ed3248b5b0e4b2955fa5b56c20ac5f9efac81eea85640cd811af007d2",
+      "bytes": 2123
+    },
+    {
+      "path": "governance/giga_q/evidence/failed-state-red.log.gz",
+      "uncompressed_sha256": "3aea3e53b5708c8d31b4a21b7d26d30916bb6a66693668ada4b4c23cff3dc4b3",
+      "compressed_sha256": "b426a36ffde5f303797e43f7fcaa7d288583063266f4cdc14c462dfae453811d",
+      "bytes": 727
+    },
+    {
+      "path": "governance/giga_q/evidence/frozen-economic-red.log.gz",
+      "uncompressed_sha256": "80f2dc7af0b046debad1ae072470aaa28eb4a289eed969f2b2b71ba4be28a742",
+      "compressed_sha256": "005502c401f6aeb1869102d9a3b101f0f68ee263a288b157ecdbe9c4885e17e1",
+      "bytes": 2995
+    },
+    {
+      "path": "governance/giga_q/evidence/q-neighbors.log.gz",
+      "uncompressed_sha256": "e9eb7097524d2ab91905ba80b94764a23d187ca7c938e3543b0c5e65aeb75d80",
+      "compressed_sha256": "aaf140fb5fbd8a02c387c66dad3205f459571d79a3559c965e7de4d3db538c0e",
+      "bytes": 99
+    },
+    {
+      "path": "governance/giga_q/evidence/ledger-focused.log.gz",
+      "uncompressed_sha256": "d7951a3108dffc4184370c8a48ea74683e7ecba5ff9225c2d0f400d27c86c3ba",
+      "compressed_sha256": "ac9447233d96e5a92a34197553e28fce4357c59283a201dc7003f83253c8b82a",
+      "bytes": 99
+    },
+    {
+      "path": "governance/giga_q/evidence/ledger-neighbors.log.gz",
+      "uncompressed_sha256": "a8c8ce727c7126577a295692d48d3209e67ff46670e93d9746dc1da3ec7a0bae",
+      "compressed_sha256": "96adb86ec4788f6fb52fa187dfbfd7b8966ba8f97b7d52b7fbe821e349c7b0af",
+      "bytes": 160
+    },
+    {
+      "path": "governance/giga_q/evidence/frozen-economic-focused.log.gz",
+      "uncompressed_sha256": "59c3d195a174c6e3cb2253cf1fa6f4cccc698671513cc7a7b414014a04fcc976",
+      "compressed_sha256": "541e7c890565f234eb2b62f69d6f7d736e07972aab854affe493789d78736a45",
+      "bytes": 98
+    },
+    {
+      "path": "governance/giga_q/evidence/live-focused.log.gz",
+      "uncompressed_sha256": "dd89493061961af22394f81bb5063f78e7380649b45d34e92c8311f52a295fa1",
+      "compressed_sha256": "bcc79616527281a90c86f5b4820b0435ce0eda5e5decb7318cf1a7f816b9d19a",
+      "bytes": 98
+    },
+    {
+      "path": "governance/giga_q/evidence/wave1-wave2-functions.log.gz",
+      "uncompressed_sha256": "2652474cd74e1aa68e41397f4839055aaeb73b06561d71ed9df537574a76bb87",
+      "compressed_sha256": "6a47b1db7c7f5e610d34142585e197aa8009b38f074b0afc49079eb9d411551d",
+      "bytes": 246
+    },
+    {
+      "path": "governance/giga_q/evidence/live-node.log.gz",
+      "uncompressed_sha256": "dae47e786d8b5f60c6abb0ab75531ade7a9e3b2eb7df72931206840b39f79589",
+      "compressed_sha256": "ab8b80f994da613ec8ff337baf2a0a02cedaa92159cd0d0825140e4ce35b3680",
+      "bytes": 5038
+    },
+    {
+      "path": "governance/giga_q/evidence/historical-replay.log.gz",
+      "uncompressed_sha256": "2e8e70a30633828484c1a69e19ec5eaef0de074d50f77b397d1311790cb41bfa",
+      "compressed_sha256": "42d18c86a7b0b2c78f77f884b194ac7aa2fe7fe5139390eb3dd63733e5bf7ac1",
+      "bytes": 870916
+    },
+    {
+      "path": "governance/giga_q/evidence/auxiliary-red.log.gz",
+      "uncompressed_sha256": "85945b2fa28c291adfd7d022140635a87abfc2fb095557dc73db456e93eac486",
+      "compressed_sha256": "11e12b8c8aeea9a21e630bb4c6ff7a41b51e4f00e4644abc588b323c2c08d4e7",
+      "bytes": 26650
+    },
+    {
+      "path": "governance/giga_q/evidence/q-cumulative-focused.log.gz",
+      "uncompressed_sha256": "1d3e1b48fdcfc950cf23153b299fc0ddc461a556f4fe6b8a9aa01e45a47dc4a0",
+      "compressed_sha256": "c25f227a9897ec2acbe7e41c6260724f6a6572647348cfee8665d438a3475a44",
+      "bytes": 236
+    },
+    {
+      "path": "governance/giga_q/evidence/documentary-neighbors.log.gz",
+      "uncompressed_sha256": "31c148d5a0185895caddff1bf5aa34d44b814b3f6aa39d920beeebaf61b96313",
+      "compressed_sha256": "b60e251f7611a67a320f5fae7536ac2f94ac9098b0e04e43a209534850b2f26b",
+      "bytes": 121
+    },
+    {
+      "path": "governance/giga_q/evidence/qualification-runtime-red.log.gz",
+      "uncompressed_sha256": "51e3d1e291542cae624afa841c09ce69e5a327cd4d99750c62314ae94f21863d",
+      "compressed_sha256": "3650a7a8176ba93aed9c3eb440e3d95dd8f0e6ddc5a1e9c058127ae8bb0eba41",
+      "bytes": 1039
+    },
+    {
+      "path": "governance/giga_q/evidence/q-final-focused-runtime.log.gz",
+      "uncompressed_sha256": "e14d808549e4ee6bd30a311141ed75c14e3d45b84559e15ed8d4860a0c3fcb4a",
+      "compressed_sha256": "3cb6f370900b75d51b97f3f189c6761b0eefc1091cfe29b92cec61d8357c3e0f",
+      "bytes": 236
+    }
+  ],
+  "retained_fixtures": [
+    {
+      "historical_path": "tests/test_vertical_scientific_ledger_depth.py",
+      "current_path": "tests/test_giga_q_scientific_ledger.py",
+      "sha256": "8b93719e1040af1812abb9291019ce6e1eff78c2b92d07b8c253bf5e25c5e6f6",
+      "byte_identical": true
+    },
+    {
+      "historical_path": "tests/test_vertical_git_state_depth.py",
+      "current_path": "tests/test_giga_q_git_publication.py",
+      "sha256": "ef714a33cec8cf05942a6b6f2d8dc9d27bc424efc67e8a4040d8155a919057f7",
+      "byte_identical": true
+    },
+    {
+      "historical_path": "tests/test_vertical_negative_memory_depth.py",
+      "current_path": "tests/test_giga_q_negative_memory.py",
+      "sha256": "b514239177559b0df1b704b90df777d0a5282b6ff342044fa193372041786882",
+      "byte_identical": true
+    },
+    {
+      "historical_path": "tests/test_vertical_core_depth.py",
+      "current_path": "tests/test_giga_q_core_identity.py",
+      "sha256": "c72991f06b525b4652ec0e1be598a9f4fd3420ad6ed9ff318f37f2ff50b2644a",
+      "byte_identical": true
+    }
+  ]
+}

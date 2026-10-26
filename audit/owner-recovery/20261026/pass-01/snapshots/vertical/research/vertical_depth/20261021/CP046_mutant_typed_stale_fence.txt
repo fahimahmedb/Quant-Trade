@@ -1,0 +1,224 @@
+mutation=typed_stale_fence
+fixed_source_sha256=276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6
+FFFFFFFF..................F..........F...........                        [100%]
+=================================== FAILURES ===================================
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-priority] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang0')
+field = 'priority', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-attempts] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang1')
+field = 'attempts', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-lease] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang2')
+field = 'lease', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-metadata] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang3')
+field = 'metadata', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-priority] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang4')
+field = 'priority', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-attempts] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang5')
+field = 'attempts', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-lease] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang6')
+field = 'lease', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-metadata] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_typed_only_external_chang7')
+field = 'metadata', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+>       with pytest.raises(QueueConflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueueConflict
+
+tests/test_vertical_queue_document_depth.py:47: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-bool_version] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_invalid_durable_recovery_4')
+kind = 'bool_version', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-bool_version] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-29/test_invalid_durable_recovery_15')
+kind = 'bool_version', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+>       with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError, QueueConflict, KeyError)
+
+tests/test_vertical_queue_document_depth.py:132: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-priority]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-attempts]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-lease]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-metadata]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-priority]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-attempts]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-lease]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-metadata]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-bool_version]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-bool_version]
+10 failed, 39 passed in 0.18s

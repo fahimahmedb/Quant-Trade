@@ -1,0 +1,65 @@
+# Vertical CP046 — readiness provenance admission: optimized-runtime falsification
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+TESTED_STANDARD_AND_OPTIMIZED_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+CONTINUATION_DATE=2026-10-23
+
+Module/capability: the existing `tests/test_research_os_readiness_provenance_admission.py` contract and its explicit cases below.
+Implementation descent: `research.research_os.expansion.economic_test_readiness_v1`, `research.research_os.expansion.validation_readiness`, `research.research_os.scientific_store`.
+These interfaces and this test surface exist on the immutable Phase-A base.
+North Star basis: preserve scientific identity/provenance, causal clocks,
+reproducible durable truth, and fail-closed authority through alternate execution
+conditions; do not infer any economic permission from technical readiness.
+
+Starting depth: existing structured adversarial regression; invariance under
+optimized Python and a different process hash seed was not recorded here.
+This checkpoint adds environmental falsification evidence, not a new capability
+family, a new repair, or whole-module qualification.
+
+Adversaries executed (the full file is run, including parametrizations/subtests):
+
+- `test_complete_freeze_cannot_admit_data_after_the_declared_decision`
+- `test_independent_validator_checks_causality_inside_a_consistent_frozen_body`
+- `test_equal_and_offset_instants_preserve_ready_and_frozen_replay`
+- `test_post_cutoff_route_cannot_hide_behind_older_snapshot_clock`
+- `test_both_clocks_require_explicit_timezones_in_direct_validator`
+- `test_one_old_pit_row_cannot_cover_two_rebound_source_snapshots`
+- `test_producer_and_validator_must_be_explicit_literal_identifiers`
+- `test_valid_offset_clocks_and_declared_content_aliases_keep_their_scope`
+
+Runtime composition: execute these existing denial/identity/recovery fixtures
+with ordinary Python/PYTHONHASHSEED=0, then Python -OO/PYTHONHASHSEED=1729.
+Assertions in application modules may disappear in the latter; pytest-rewritten
+test assertions and unittest checks remain the oracle. The optimized run warns
+about disabled assertions in non-test modules, as expected. Explicit child
+commands in fixtures keep their own interpreter flags; this does not prove every
+child was optimized. All effects use local fixtures/mocks/disposable stores.
+No deployment, production Site operation or live source call is performed.
+
+- standard: `8 passed, 7 subtests passed in 0.20s`; exit 0; `research/vertical_depth/20261021/CP046_standard.txt`.
+- optimized: `8 passed, 1 warning, 7 subtests passed in 0.11s`; exit 0; `research/vertical_depth/20261021/CP046_optimized.txt`.
+
+Defect found: none reproduced by this bounded runtime composition.
+Root cause/repair: not applicable; no speculative product change.
+Attained evidence: D2 runtime/structured-edge requalification only. Where fixtures
+exercise durable retry/concurrency, their named scoped checks retain their prior
+limits; no new D3/D4 label or additional capability count follows from this run.
+
+Remaining unproven depth: arbitrary object graphs and schema migrations,
+noncooperating concurrent writers, physical power loss, real external authority
+and source truth, and failures outside the named fixtures. Different interpreter
+versions, all hash seeds and semantic equivalence of source facts are unproved.
+An unchanged green suite is not exhaustive falsification. Final regression and
+receipt evidence are shared in FINAL_qualification.json and the final manifest;
+714 per-mode existing tests across CP038–CP100 overlap other suites and are not
+new tests, independent observations, or 63 new capabilities.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains separately owned and unrepaired.
+Authority state: local diagnostic fixtures only; no Owner authority granted.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

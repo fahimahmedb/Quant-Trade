@@ -1,0 +1,52 @@
+{
+  "adapter": "calendar_legs_derivation",
+  "availability": "AVAILABLE",
+  "caveats": [
+    "open prices are consolidated opening prints, not executable MOO fills",
+    "the overnight leg includes ex-dividend gaps through the adjusted basis",
+    "holding <SYMBOL>_ON from open(d) to open(d+1) represents a MOC buy on d and a MOO sell on d+1; the Book charges both fills",
+    "inherits every caveat of the source ETF snapshot"
+  ],
+  "dataset_id": "us_calendar_legs_daily",
+  "expected_symbols": [
+    "SPY",
+    "TLT",
+    "SPY_ON",
+    "TLT_ON"
+  ],
+  "fingerprint": "sha256:29bc4d1820540d4bd5ef3b2d16d9fe5406a44db2830390493c066e2d8668ab3b",
+  "first_date": "2016-09-12",
+  "ingested_at": "2026-09-25T10:54:53.093186+00:00",
+  "kind": "daily_bars",
+  "last_date": "2026-09-11",
+  "license_note": "derived research dataset",
+  "path": "data/datasets/us_calendar_legs_daily.csv.gz",
+  "point_in_time": {
+    "calendar_features": "sessions_left_in_month and fomc_in_sessions are computed from the NYSE holiday rules and the published FOMC schedule, both known in advance",
+    "derivation": "base symbols copied; <SYMBOL>_ON is an overnight-leg index: ON(d+1) = ON(d) * adj_open(d+1) / adj_close(d), flat intraday",
+    "information_available_at": "the close of the dated session",
+    "minimum_decision_lag_days": 1
+  },
+  "refreshed_at": "2026-09-25T10:54:53.266390+00:00",
+  "rows": 10056,
+  "source": "derived from us_sector_etf_daily (sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1) and the scheduled FOMC calendar (82 decision days)",
+  "symbols": [
+    "SPY",
+    "SPY_ON",
+    "TLT",
+    "TLT_ON"
+  ],
+  "validation": {
+    "aligned_dates": 2514,
+    "bars_per_symbol": {
+      "SPY": 2514,
+      "SPY_ON": 2514,
+      "TLT": 2514,
+      "TLT_ON": 2514
+    },
+    "passed": true,
+    "problems": [],
+    "rows": 10056,
+    "warnings": []
+  }
+}

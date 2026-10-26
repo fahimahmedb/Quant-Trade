@@ -1,0 +1,562 @@
+..FFFFFFFFFFFFFF                                                         [100%]
+=================================== FAILURES ===================================
+_ test_failed_shared_mutation_cannot_erase_a_successful_competitor[before_write-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_failed_shared_mutation_ca2')
+kind = 'book', fault = 'before_write'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_failed_shared_mutation_cannot_erase_a_successful_competitor(tmp_path, kind, fault):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-accounting-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first write failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first ACK lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-accounting-writer"
+            try:
+                mutate(kind, value, "first")
+                return "written"
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                mutate(kind, value, "second")
+                return "written"
+            finally:
+                second_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+                    assert not second_done.wait(timeout=0.15)
+                finally:
+                    release.set()
+                assert a.result(timeout=5) == ("written" if fault == "none" else "failed")
+                assert b.result(timeout=5) == "written"
+        restored = create(kind, path)
+>       assert seen(kind, restored, "second")
+E       AssertionError: assert False
+E        +  where False = seen('book', <quant.book.ledger.Ledger object at 0x7f4acad03440>, 'second')
+
+tests/test_vertical_accounting_isolation.py:82: AssertionError
+_ test_failed_shared_mutation_cannot_erase_a_successful_competitor[before_write-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_failed_shared_mutation_ca3')
+kind = 'journal', fault = 'before_write'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_failed_shared_mutation_cannot_erase_a_successful_competitor(tmp_path, kind, fault):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-accounting-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first write failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first ACK lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-accounting-writer"
+            try:
+                mutate(kind, value, "first")
+                return "written"
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                mutate(kind, value, "second")
+                return "written"
+            finally:
+                second_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+                    assert not second_done.wait(timeout=0.15)
+                finally:
+                    release.set()
+                assert a.result(timeout=5) == ("written" if fault == "none" else "failed")
+                assert b.result(timeout=5) == "written"
+        restored = create(kind, path)
+>       assert seen(kind, restored, "second")
+E       AssertionError: assert False
+E        +  where False = seen('journal', <quant.desk.journal.DeskJournal object at 0x7f4acad02ed0>, 'second')
+
+tests/test_vertical_accounting_isolation.py:82: AssertionError
+_ test_failed_shared_mutation_cannot_erase_a_successful_competitor[after_write-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_failed_shared_mutation_ca4')
+kind = 'book', fault = 'after_write'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_failed_shared_mutation_cannot_erase_a_successful_competitor(tmp_path, kind, fault):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-accounting-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first write failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first ACK lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-accounting-writer"
+            try:
+                mutate(kind, value, "first")
+                return "written"
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                mutate(kind, value, "second")
+                return "written"
+            finally:
+                second_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+                    assert not second_done.wait(timeout=0.15)
+                finally:
+                    release.set()
+                assert a.result(timeout=5) == ("written" if fault == "none" else "failed")
+                assert b.result(timeout=5) == "written"
+        restored = create(kind, path)
+>       assert seen(kind, restored, "second")
+E       AssertionError: assert False
+E        +  where False = seen('book', <quant.book.ledger.Ledger object at 0x7f4acad03230>, 'second')
+
+tests/test_vertical_accounting_isolation.py:82: AssertionError
+_ test_failed_shared_mutation_cannot_erase_a_successful_competitor[after_write-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_failed_shared_mutation_ca5')
+kind = 'journal', fault = 'after_write'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("fault", ["none", "before_write", "after_write"])
+    def test_failed_shared_mutation_cannot_erase_a_successful_competitor(tmp_path, kind, fault):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, second_started, second_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            if threading.current_thread().name == "first-accounting-writer":
+                entered.set()
+                assert release.wait(timeout=5)
+                if fault == "before_write":
+                    raise OSError("first write failed")
+                write_json(path, document)
+                if fault == "after_write":
+                    raise OSError("first ACK lost")
+            else:
+                write_json(path, document)
+    
+        def first():
+            threading.current_thread().name = "first-accounting-writer"
+            try:
+                mutate(kind, value, "first")
+                return "written"
+            except OSError:
+                return "failed"
+    
+        def second():
+            second_started.set()
+            try:
+                mutate(kind, value, "second")
+                return "written"
+            finally:
+                second_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                a = pool.submit(first)
+                assert entered.wait(timeout=5)
+                b = pool.submit(second)
+                try:
+                    assert second_started.wait(timeout=5)
+                    assert not second_done.wait(timeout=0.15)
+                finally:
+                    release.set()
+                assert a.result(timeout=5) == ("written" if fault == "none" else "failed")
+                assert b.result(timeout=5) == "written"
+        restored = create(kind, path)
+>       assert seen(kind, restored, "second")
+E       AssertionError: assert False
+E        +  where False = seen('journal', <quant.desk.journal.DeskJournal object at 0x7f4acacf0710>, 'second')
+
+tests/test_vertical_accounting_isolation.py:82: AssertionError
+_ test_accounting_lock_setup_failure_restores_mutation_before_retry[os.open-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_accounting_lock_setup_fai0')
+kind = 'book', target = 'os.open'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_accounting_lock_setup_failure_restores_mutation_before_retry(tmp_path, kind, target):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+            with pytest.raises(OSError):
+                mutate(kind, value, "retry")
+        assert path.read_bytes() == before
+>       assert not seen(kind, value, "retry")
+E       AssertionError: assert not True
+E        +  where True = seen('book', <quant.book.ledger.Ledger object at 0x7f4acad02e70>, 'retry')
+
+tests/test_vertical_accounting_isolation.py:102: AssertionError
+_ test_accounting_lock_setup_failure_restores_mutation_before_retry[os.open-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_accounting_lock_setup_fai1')
+kind = 'journal', target = 'os.open'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_accounting_lock_setup_failure_restores_mutation_before_retry(tmp_path, kind, target):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+            with pytest.raises(OSError):
+                mutate(kind, value, "retry")
+        assert path.read_bytes() == before
+>       assert not seen(kind, value, "retry")
+E       AssertionError: assert not True
+E        +  where True = seen('journal', <quant.desk.journal.DeskJournal object at 0x7f4acacf3fe0>, 'retry')
+
+tests/test_vertical_accounting_isolation.py:102: AssertionError
+_ test_accounting_lock_setup_failure_restores_mutation_before_retry[fcntl.flock-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_accounting_lock_setup_fai2')
+kind = 'book', target = 'fcntl.flock'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_accounting_lock_setup_failure_restores_mutation_before_retry(tmp_path, kind, target):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+            with pytest.raises(OSError):
+                mutate(kind, value, "retry")
+        assert path.read_bytes() == before
+>       assert not seen(kind, value, "retry")
+E       AssertionError: assert not True
+E        +  where True = seen('book', <quant.book.ledger.Ledger object at 0x7f4acacf0fe0>, 'retry')
+
+tests/test_vertical_accounting_isolation.py:102: AssertionError
+_ test_accounting_lock_setup_failure_restores_mutation_before_retry[fcntl.flock-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_accounting_lock_setup_fai3')
+kind = 'journal', target = 'fcntl.flock'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_accounting_lock_setup_failure_restores_mutation_before_retry(tmp_path, kind, target):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+            with pytest.raises(OSError):
+                mutate(kind, value, "retry")
+        assert path.read_bytes() == before
+>       assert not seen(kind, value, "retry")
+E       AssertionError: assert not True
+E        +  where True = seen('journal', <quant.desk.journal.DeskJournal object at 0x7f4acad003e0>, 'retry')
+
+tests/test_vertical_accounting_isolation.py:102: AssertionError
+_ test_accounting_lock_setup_failure_restores_mutation_before_retry[pathlib.Path.mkdir-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_accounting_lock_setup_fai4')
+kind = 'book', target = 'pathlib.Path.mkdir'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_accounting_lock_setup_failure_restores_mutation_before_retry(tmp_path, kind, target):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+            with pytest.raises(OSError):
+                mutate(kind, value, "retry")
+        assert path.read_bytes() == before
+>       assert not seen(kind, value, "retry")
+E       AssertionError: assert not True
+E        +  where True = seen('book', <quant.book.ledger.Ledger object at 0x7f4acad036b0>, 'retry')
+
+tests/test_vertical_accounting_isolation.py:102: AssertionError
+_ test_accounting_lock_setup_failure_restores_mutation_before_retry[pathlib.Path.mkdir-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_accounting_lock_setup_fai5')
+kind = 'journal', target = 'pathlib.Path.mkdir'
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("target", ["os.open", "fcntl.flock", "pathlib.Path.mkdir"])
+    def test_accounting_lock_setup_failure_restores_mutation_before_retry(tmp_path, kind, target):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        before = path.read_bytes()
+        with patch(target, side_effect=OSError("lock setup failed")):
+            with pytest.raises(OSError):
+                mutate(kind, value, "retry")
+        assert path.read_bytes() == before
+>       assert not seen(kind, value, "retry")
+E       AssertionError: assert not True
+E        +  where True = seen('journal', <quant.desk.journal.DeskJournal object at 0x7f4acad230e0>, 'retry')
+
+tests/test_vertical_accounting_isolation.py:102: AssertionError
+_ test_identity_query_waits_until_mutation_is_durable_or_rolled_back[False-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_identity_query_waits_unti0')
+kind = 'book', failure = False
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("failure", [False, True])
+    def test_identity_query_waits_until_mutation_is_durable_or_rolled_back(tmp_path, kind, failure):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, reader_started, reader_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            entered.set()
+            assert release.wait(timeout=5)
+            if failure:
+                raise OSError("write failed")
+            write_json(path, document)
+    
+        def write():
+            try:
+                mutate(kind, value, "one")
+            except OSError:
+                return "failed"
+            return "written"
+    
+        def read():
+            reader_started.set()
+            try:
+                return seen(kind, value, "one")
+            finally:
+                reader_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                writer = pool.submit(write)
+                assert entered.wait(timeout=5)
+                reader = pool.submit(read)
+                try:
+                    assert reader_started.wait(timeout=5)
+>                   assert not reader_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f4acad22930: set>.wait
+
+tests/test_vertical_accounting_isolation.py:143: AssertionError
+_ test_identity_query_waits_until_mutation_is_durable_or_rolled_back[False-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_identity_query_waits_unti1')
+kind = 'journal', failure = False
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("failure", [False, True])
+    def test_identity_query_waits_until_mutation_is_durable_or_rolled_back(tmp_path, kind, failure):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, reader_started, reader_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            entered.set()
+            assert release.wait(timeout=5)
+            if failure:
+                raise OSError("write failed")
+            write_json(path, document)
+    
+        def write():
+            try:
+                mutate(kind, value, "one")
+            except OSError:
+                return "failed"
+            return "written"
+    
+        def read():
+            reader_started.set()
+            try:
+                return seen(kind, value, "one")
+            finally:
+                reader_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                writer = pool.submit(write)
+                assert entered.wait(timeout=5)
+                reader = pool.submit(read)
+                try:
+                    assert reader_started.wait(timeout=5)
+>                   assert not reader_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f4acad23110: set>.wait
+
+tests/test_vertical_accounting_isolation.py:143: AssertionError
+_ test_identity_query_waits_until_mutation_is_durable_or_rolled_back[True-book] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_identity_query_waits_unti2')
+kind = 'book', failure = True
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("failure", [False, True])
+    def test_identity_query_waits_until_mutation_is_durable_or_rolled_back(tmp_path, kind, failure):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, reader_started, reader_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            entered.set()
+            assert release.wait(timeout=5)
+            if failure:
+                raise OSError("write failed")
+            write_json(path, document)
+    
+        def write():
+            try:
+                mutate(kind, value, "one")
+            except OSError:
+                return "failed"
+            return "written"
+    
+        def read():
+            reader_started.set()
+            try:
+                return seen(kind, value, "one")
+            finally:
+                reader_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                writer = pool.submit(write)
+                assert entered.wait(timeout=5)
+                reader = pool.submit(read)
+                try:
+                    assert reader_started.wait(timeout=5)
+>                   assert not reader_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f4acabb53d0: set>.wait
+
+tests/test_vertical_accounting_isolation.py:143: AssertionError
+_ test_identity_query_waits_until_mutation_is_durable_or_rolled_back[True-journal] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-36/test_identity_query_waits_unti3')
+kind = 'journal', failure = True
+
+    @pytest.mark.parametrize("kind", ["book", "journal"])
+    @pytest.mark.parametrize("failure", [False, True])
+    def test_identity_query_waits_until_mutation_is_durable_or_rolled_back(tmp_path, kind, failure):
+        path = tmp_path / "state.json"
+        value = create(kind, path)
+        entered, release, reader_started, reader_done = (threading.Event() for _ in range(4))
+        target = "quant.book.ledger.write_json" if kind == "book" else "quant.desk.journal.write_json"
+    
+        def publication(path, document):
+            entered.set()
+            assert release.wait(timeout=5)
+            if failure:
+                raise OSError("write failed")
+            write_json(path, document)
+    
+        def write():
+            try:
+                mutate(kind, value, "one")
+            except OSError:
+                return "failed"
+            return "written"
+    
+        def read():
+            reader_started.set()
+            try:
+                return seen(kind, value, "one")
+            finally:
+                reader_done.set()
+    
+        with patch(target, side_effect=publication):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                writer = pool.submit(write)
+                assert entered.wait(timeout=5)
+                reader = pool.submit(read)
+                try:
+                    assert reader_started.wait(timeout=5)
+>                   assert not reader_done.wait(timeout=0.15)
+E                   assert not True
+E                    +  where True = wait(timeout=0.15)
+E                    +    where wait = <threading.Event at 0x7f4acacf0200: set>.wait
+
+tests/test_vertical_accounting_isolation.py:143: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_accounting_isolation.py::test_failed_shared_mutation_cannot_erase_a_successful_competitor[before_write-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_failed_shared_mutation_cannot_erase_a_successful_competitor[before_write-journal]
+FAILED tests/test_vertical_accounting_isolation.py::test_failed_shared_mutation_cannot_erase_a_successful_competitor[after_write-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_failed_shared_mutation_cannot_erase_a_successful_competitor[after_write-journal]
+FAILED tests/test_vertical_accounting_isolation.py::test_accounting_lock_setup_failure_restores_mutation_before_retry[os.open-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_accounting_lock_setup_failure_restores_mutation_before_retry[os.open-journal]
+FAILED tests/test_vertical_accounting_isolation.py::test_accounting_lock_setup_failure_restores_mutation_before_retry[fcntl.flock-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_accounting_lock_setup_failure_restores_mutation_before_retry[fcntl.flock-journal]
+FAILED tests/test_vertical_accounting_isolation.py::test_accounting_lock_setup_failure_restores_mutation_before_retry[pathlib.Path.mkdir-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_accounting_lock_setup_failure_restores_mutation_before_retry[pathlib.Path.mkdir-journal]
+FAILED tests/test_vertical_accounting_isolation.py::test_identity_query_waits_until_mutation_is_durable_or_rolled_back[False-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_identity_query_waits_until_mutation_is_durable_or_rolled_back[False-journal]
+FAILED tests/test_vertical_accounting_isolation.py::test_identity_query_waits_until_mutation_is_durable_or_rolled_back[True-book]
+FAILED tests/test_vertical_accounting_isolation.py::test_identity_query_waits_until_mutation_is_durable_or_rolled_back[True-journal]
+14 failed, 2 passed in 1.14s

@@ -1,0 +1,97 @@
+# W1 FACTORY CP011 — 2026-10-21
+
+STATUS: HARDEN_EXISTING — one canonical trial-accounting law shared by registry and Validator
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF (commit containing this checkpoint)
+PARENT: 9ea80d1823c254aa205fbaf0c0a8977dd0204296
+
+## WHAT_GAP_WAS_PROVEN
+
+The canonical Trial Ledger schema and Experiment Registry already distinguish four explicit effective-trial states: `UNKNOWN`, `KNOWN`, `ESTIMATED`, and `PARTIALLY_BOUNDED`. The registry accepted all four with strict finite/non-negative semantics, but Validator v3 had a second local implementation that accepted only `UNKNOWN` and `KNOWN`. The same Trial Ledger record could therefore be admissible to the registry and rejected by the Validator solely because two copies of the scientific law had drifted.
+
+## WHAT_CHANGED
+
+- Promoted the registry's existing trial-accounting validation into public canonical `validate_trial_accounting()`.
+- Registry creation now calls that canonical function directly; no behavior is weakened.
+- Validator's duplicate `_trial_accounting_valid` implementation is reduced to a boolean adapter over the same canonical function and error type.
+- The historical `quant.factory.experiments` compatibility surface re-exports the canonical function rather than introducing another implementation.
+- Added adversarial tests covering all four admissible states and invalid UNKNOWN-with-estimate, bool, NaN, Infinity, negative/unsupported-state semantics.
+
+Canonical semantics now are:
+- `UNKNOWN` => estimate MUST be null;
+- `KNOWN`, `ESTIMATED`, `PARTIALLY_BOUNDED` => estimate MUST be a real int/float, finite and >= 0;
+- bool is never numeric evidence;
+- observed attempt count MUST be a non-negative integer and never bool;
+- optional hypothesis/generation identity checks remain available to registry binding.
+
+## WHAT_WAS_REUSED / IMPORTED
+
+HARDEN_EXISTING / REUSE_CURRENT: registry trial-accounting law is the single implementation.
+REUSE_CURRENT: current Trial Ledger statuses and UNKNOWN semantics.
+NO_BUILD_REQUIRED: no second Trial Ledger, no second accounting store, no new trial state machine.
+
+## TESTS / FALSIFICATION
+
+Observed exact-head CP010 evidence before CP011 push:
+- fail-closed SEC identity gate: PASS
+- generated schema drift: PASS
+- status artifact freshness: PASS
+- full canonical unit suite: PASS
+- dedicated W1 Factory suite including public contract drift test: PASS
+- SEC P0 lane suite: PASS
+- V1 end-to-end regression was still executing when this checkpoint was formed; no unobserved completion result is claimed.
+
+Pre-push structural diff inspection against CP010:
+- `experiment_registry.py`: +13 / -4
+- `validation_readiness.py`: +6 / -11
+- `test_w1_factory_experiment_infrastructure.py`: +18 / -0
+- `src/quant/factory/experiments.py`: +2 / -1
+- no unrelated files.
+
+Adversarial trial-accounting tests:
+- UNKNOWN/null accepted;
+- KNOWN/ESTIMATED/PARTIALLY_BOUNDED finite non-negative estimates accepted;
+- UNKNOWN + estimate rejected;
+- ESTIMATED + bool rejected;
+- PARTIALLY_BOUNDED + NaN rejected;
+- KNOWN + Infinity rejected;
+- unsupported status rejected.
+
+Exact-head CP011 CI after push remains authoritative.
+
+## SCIENTIFIC CLAIM LIMIT
+
+`ESTIMATED` and `PARTIALLY_BOUNDED` are accounting-status semantics only. Accepting those states does not fabricate the estimate, claim significance, infer profitability, or convert an estimate into KNOWN. UNKNOWN remains UNKNOWN unless an explicitly supplied admissible record says otherwise.
+
+## SHARED_SURFACES_TOUCHED
+
+SHARED_SURFACES_TOUCHED:
+- `research/research_os/expansion/experiment_registry.py`
+- `research/research_os/expansion/validation_readiness.py`
+- `src/quant/factory/experiments.py`
+- `research/research_os/tests/test_w1_factory_experiment_infrastructure.py`
+
+WHY_REQUIRED: one Trial Ledger record must not receive contradictory validity judgments from registry and Validator.
+
+CONTRACT_CHANGE: `validate_trial_accounting()` is now the shared public law and historical compatibility import; no status values are newly invented.
+
+EXPECTED_CROSS_LANE_IMPACT: Validator now accepts the existing canonical `ESTIMATED` and `PARTIALLY_BOUNDED` Trial Ledger states when their numeric semantics are valid. Invalid/nonfinite/bool records remain fail-closed.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+Trial accounting no longer has adapter drift inside Experiment Infrastructure. Registry identity and Validator readiness use one canonical UNKNOWN/known-estimate law.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Run exact-head CP011 CI and repair any regression. Reassess the fixed module against historical Factory components, current public contracts, lifecycle and Validator membrane. If no further material actionable gap is evidenced, classify residual authority/external/no-build work and produce the FINAL lane checkpoint + Integration Manifest after exact-head broad regression and clean branch verification.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

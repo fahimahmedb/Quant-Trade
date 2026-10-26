@@ -1,0 +1,88 @@
+{
+  "body": {
+    "claims": {
+      "gate_a_v4_pass": "NOT_CLAIMED_BY_BUILDER",
+      "p14d_amendment": "NOT_CLAIMED_BY_BUILDER",
+      "real_capital_authorized": false,
+      "t0": "NOT_DECLARED",
+      "target_host_ready": "NOT_CLAIMED_BY_BUILDER"
+    },
+    "discriminating": true,
+    "fixture_source": "tests.test_astra_pre_t0.Phase8EffectiveUnitDigestStabilityCampaign",
+    "frozen_v4": {
+      "after_accepted": true,
+      "before_accepted": true,
+      "commit": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "error": null,
+      "launcher_blob_sha256": "sha256:26a3193ace6b9bc4a0d13fd7686be6b40a2d0fe145f9692e8617f07c1f699074",
+      "semantic_drift_detected": true,
+      "stable_across_transient_observations": true,
+      "unit_blob_sha256": "sha256:cfeeb12ac670b5e8f46932db113ba71ed153f389e28da0c3eb41f1c0581b15a9"
+    },
+    "frozen_v4_real_defects": 0,
+    "frozen_v4_result": "GREEN",
+    "frozen_v4_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+    "historical_branch_modified": false,
+    "historical_real_defects_reproduced": 1,
+    "known_bad": {
+      "after_accepted": true,
+      "before_accepted": true,
+      "commit": "2da079d8ad75c69eb3fc2990c512735cb4bdc02b",
+      "error": null,
+      "launcher_blob_sha256": "sha256:0f36fde63f1e5752a8511fe21296238d1d73f647f917ccc057c98f24e0172845",
+      "semantic_drift_detected": true,
+      "stable_across_transient_observations": false,
+      "unit_blob_sha256": "sha256:cfeeb12ac670b5e8f46932db113ba71ed153f389e28da0c3eb41f1c0581b15a9"
+    },
+    "known_bad_result": "RED",
+    "known_bad_sha": "2da079d8ad75c69eb3fc2990c512735cb4bdc02b",
+    "verified_input_paths": [
+      "tools/p0_qualification/common/evidence.py",
+      "tools/p0_qualification/common/launcher_loader.py",
+      "tools/p0_qualification/discrimination/__init__.py",
+      "tools/p0_qualification/discrimination/known_bad_replay.py",
+      "tests/test_astra_pre_t0.py"
+    ],
+    "verified_input_tree_digest": "sha256:73700daf6b1b81bd888670ebe365e1c0d36970551e170c24fb9cf7ad6a8bfe93"
+  },
+  "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+  "gate": "HISTORICAL_KNOWN_BAD_REPLAY",
+  "generated_at_utc": "2026-09-21T00:00:00+00:00",
+  "no_p14d_amendment_claimed": true,
+  "no_t0_declared": true,
+  "no_target_host_claimed": true,
+  "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "records": [
+    {
+      "classification": "FACT",
+      "defect_class": "REAL_DEFECT",
+      "detail": "Exact pre-fix launcher reproduced transient-observation digest movement.",
+      "domain": "REPOSITORY",
+      "exact_sha": "2da079d8ad75c69eb3fc2990c512735cb4bdc02b",
+      "property": "known_bad_replay:transient_execstart_digest_defect",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.discrimination.known_bad_replay",
+      "residual": "None; sensitivity evidence against a known historical defect."
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Frozen V4 stayed stable and detected semantic executable-path drift.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "known_bad_replay:frozen_v4_transient_digest_stability",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.discrimination.known_bad_replay",
+      "residual": "TARGET_HOST: repository replay does not replace physical host evidence."
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "KNOWN_BAD -> RED and FROZEN_V4 -> GREEN.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "known_bad_replay:discrimination_power",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.discrimination.known_bad_replay",
+      "residual": "None for this repository discriminant."
+    }
+  ],
+  "report_digest": "sha256:63577b3dbaa0bc86654573d8bed0513acad4d924b0279ca8fbef7f2baf36ece6"
+}

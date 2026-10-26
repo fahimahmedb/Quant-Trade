@@ -1,0 +1,123 @@
+{
+  "assets": {
+    "model": {
+      "active_experts": 4,
+      "architecture": "GptOssForCausalLM",
+      "base_model": "openai/gpt-oss-20b",
+      "experts": 14,
+      "file": "gpt-oss-10b-q4_k_m.gguf",
+      "format": "GGUF",
+      "layers": 24,
+      "license": "Apache-2.0",
+      "local_alias": "gpt-oss-10.2b-q4-k-m",
+      "path": "/var/lib/ocarun/quant-model/models/456fa90a60ea5249f26c0c2e5c69aab5a91d4676/gpt-oss-10b-q4_k_m.gguf",
+      "pruned_source": "AmanPriyanshu/gpt-oss-10.2b-specialized-all-pruned-moe-only-14-experts",
+      "quality_status": "EXPERIMENTAL_REQUIRES_ACTUAL_WORKER_REASONING_CANARIES",
+      "quantization": "Q4_K_M",
+      "repository": "leeminwaan/gpt-oss-20b-pruned-10.2B-GGUF",
+      "revision": "456fa90a60ea5249f26c0c2e5c69aab5a91d4676",
+      "sha256": "f3a19b894d725229f57a80d28014ee6ad3543bcfcd5dd4496f7b3599e169d240",
+      "size": 7723072288,
+      "source_revision": "a6f98493c58e134ac44b4d1ed4516d9d2f5704af",
+      "url": "https://huggingface.co/leeminwaan/gpt-oss-20b-pruned-10.2B-GGUF/resolve/456fa90a60ea5249f26c0c2e5c69aab5a91d4676/gpt-oss-10b-q4_k_m.gguf"
+    },
+    "model_installation": "REUSED_VERIFIED",
+    "runtime": {
+      "binary": "/var/lib/ocarun/quant-model/runtimes/263700393b5a0f3547ca313ef6040c25482b569dc6aa387bf5a8ecb9949b159e/llama-b11742/llama-server",
+      "sha256": "263700393b5a0f3547ca313ef6040c25482b569dc6aa387bf5a8ecb9949b159e",
+      "size": 14054733,
+      "source_commit": "4c3c5810f87efe177949f1b85ae509d38a2a311f",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11742/llama-b11742-bin-ubuntu-arm64.tar.gz",
+      "version": "llama.cpp-b11742"
+    },
+    "runtime_version_output": "version: 0.7.0-dev (build 11742, commit 4c3c5810f)\nbuilt with GNU 14.2.0 for Linux aarch64\n",
+    "scheduler_enabled": false,
+    "services_changed": false,
+    "status": "LOCAL_ASSETS_STAGED_NOT_INFERENCE_QUALIFIED",
+    "supported_flags": [
+      "--reasoning-budget",
+      "--reasoning-format",
+      "--chat-template-kwargs",
+      "--threads",
+      "--ctx-size",
+      "--no-warmup",
+      "--metrics"
+    ]
+  },
+  "blocker": "ValueError:LOCAL_MODEL_SCIENTIFIC_NEGATIVE_CASE_FAILED",
+  "evidence_scope": "LIVE_HOST_LOCAL_CPU_INFERENCE",
+  "execution_uid": 999,
+  "github_writes": 0,
+  "health": {
+    "local_only": true,
+    "metadata": {
+      "aliases": [
+        "gpt-oss-10.2b-q4-k-m"
+      ],
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ]
+      },
+      "created": 1792449538,
+      "id": "gpt-oss-10.2b-q4-k-m",
+      "meta": {
+        "ftype": "Q4_K - Medium",
+        "n_ctx": 8192,
+        "n_ctx_train": 131072,
+        "n_embd": 2880,
+        "n_params": 10160237712,
+        "n_vocab": 201088,
+        "size": 7710063168,
+        "vocab_type": 2
+      },
+      "object": "model",
+      "owned_by": "llamacpp",
+      "tags": []
+    },
+    "model": "gpt-oss-10.2b-q4-k-m",
+    "runtime": "openai_compatible",
+    "status": "PASS"
+  },
+  "hosted_model_calls": 0,
+  "scheduler_changed": false,
+  "scientific_cases": [
+    {
+      "answer": {
+        "decision": "BLOCK"
+      },
+      "case": "closed_authority",
+      "passed": true,
+      "seconds": 24.388
+    },
+    {
+      "answer": {
+        "decision": "PASS"
+      },
+      "case": "unresolved_overlap",
+      "passed": false,
+      "seconds": 16.302
+    },
+    {
+      "answer": {
+        "decision": "UNAVAILABLE"
+      },
+      "case": "missing_correlation",
+      "passed": true,
+      "seconds": 18.508
+    },
+    {
+      "answer": {
+        "decision": "REQUIRES_INDEPENDENT_VALIDATOR"
+      },
+      "case": "independent_validation",
+      "passed": true,
+      "seconds": 17.774
+    }
+  ],
+  "status": "BLOCKED",
+  "temporary_server_stopped": true
+}

@@ -1,0 +1,46 @@
+{
+  "observed_date": "2026-10-18",
+  "source": "Owner-pasted output of OCI compute instance get from authenticated Oracle Cloud Shell",
+  "instance": {
+    "name": "quant-p0-targer",
+    "region": "eu-paris-1",
+    "lifecycle_state": "RUNNING",
+    "shape": "VM.Standard.A1.Flex",
+    "memory_in_gbs": 12,
+    "ocpus": 2,
+    "vcpus": 2,
+    "gpus": 0,
+    "processor_description": "3.0 GHz Ampere Altra"
+  },
+  "launch_ssh_public_key": {
+    "comment": "ssh-key-2026-09-20",
+    "type": "RSA",
+    "bits": 2048,
+    "sha256_fingerprint": "SHA256:0h7LYSESNdPmDnQ2fsGX+YB1gjVPl3TYQXSqdzgwHZM",
+    "method": "ssh-keygen -lf - against the public key in the supplied launch metadata",
+    "matches_previously_verified_console_key_fingerprint": false,
+    "original_private_key_available": "UNKNOWN",
+    "current_guest_authorized_keys": "NOT_INSPECTED"
+  },
+  "access": {
+    "owner_general_cloud_shell_and_compute_read_api": "WORKING",
+    "guest_os_login": "NOT_ESTABLISHED",
+    "run_command_plugin_status": "RUNNING_OWNER_PASTED_PLUGIN_LIST",
+    "ssh_transport_from_codex": "LAST_OBSERVED_UNAVAILABLE",
+    "next_read_only_checks": [
+      "Submit the bounded guest diagnostic through the confirmed running Run Command plugin.",
+      "Establish actual command delivery, guest resources, existing Quant services and sudo availability."
+    ],
+    "run_command_diagnostic_preparation": {
+      "script": "run-command-diagnostic.sh",
+      "cli_and_payload_schema": "CHECKED_AGAINST_OFFICIAL_OCI_DOCUMENTATION",
+      "shell_and_embedded_guest_syntax": "PASS",
+      "cli_flow_with_mock_responses_only": "PASS",
+      "actual_oci_submission_from_codex": false,
+      "guest_execution_confirmed": false
+    }
+  },
+  "guest_ram_fit_or_throughput_tested": false,
+  "model_installed": false,
+  "oracle_resources_changed": false
+}

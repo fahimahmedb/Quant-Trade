@@ -1,0 +1,17 @@
+{
+  "action_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-012",
+  "emitted_at": "2026-10-20T20:00:18Z",
+  "event_id": "8b8d54219d7c3206214e6855f045da25a43629f1cc8dd8acf9ada054f40168ea",
+  "event_seq": 1,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 1,
+  "payload": {
+    "next_lane": "market_discovery",
+    "next_task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-012",
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "result": "DERIVED_ONE_READY_TASK"
+  },
+  "session_id": "8b8d54219d7c3206214e6855f045da25a43629f1cc8dd8acf9ada054f40168ea",
+  "worker_id": "oracle-research.integrator_portfolio"
+}

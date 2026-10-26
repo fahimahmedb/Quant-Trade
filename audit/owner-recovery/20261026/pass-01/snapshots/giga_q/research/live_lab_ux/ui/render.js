@@ -1,0 +1,14 @@
+import {formatProgress} from '../core/model.js';
+const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined&&text!==null)n.textContent=text;return n;};
+function history(state,id,windowMs){const now=state.clockAt?Date.parse(state.clockAt):0;return state.history.filter((e)=>e.workerId===id&&(!windowMs||now-Date.parse(e.at)<=windowMs));}
+export function renderDetailSheet(state,id,sheet){const a=state.agents[id];if(!a){sheet.hidden=true;return;}sheet.hidden=false;sheet.querySelector('[data-detail-role]').textContent=a.label;sheet.querySelector('[data-detail-state]').textContent=a.stale?'STALE / FROZEN':a.state;sheet.querySelector('[data-detail-task]').textContent=a.currentTask||'—';sheet.querySelector('[data-detail-step]').textContent=a.currentStep||'—';sheet.querySelector('[data-detail-progress]').textContent=formatProgress(a.progress);sheet.querySelector('[data-detail-next]').textContent=a.nextAction||'—';sheet.querySelector('[data-detail-last]').textContent=a.lastRealAction||'—';const hour=history(state,id,3600000),today=history(state,id,86400000);sheet.querySelector('[data-detail-hour]').textContent=`${hour.length} event${hour.length===1?'':'s'}`;sheet.querySelector('[data-detail-today]').textContent=`${today.length} event${today.length===1?'':'s'}`;const ev=sheet.querySelector('[data-detail-evidence]');ev.replaceChildren();if(!a.evidence.length)ev.append(el('span','empty-copy','No evidence reference'));for(const item of a.evidence){const n=item.href?document.createElement('a'):el('span');n.textContent=item.label||item.ref||item.href||'Evidence';if(item.href){n.href=item.href;n.target='_blank';n.rel='noreferrer';}ev.append(n);}}
+export function renderScene(state,refs){
+ const active=Boolean(state.economicLook.activeWorkerId);
+ refs.economicStatus.textContent=active?'ACTIVE':'FREE';refs.economicStatus.dataset.active=String(active);
+ refs.connectivity.textContent=state.transport.stale?'STALE':state.transport.connected?(state.mode==='LIVE'?'LIVE':'CONNECTED'):'OFFLINE';
+ refs.connectivity.dataset.state=state.transport.stale?'stale':state.transport.connected?'connected':'disconnected';
+ refs.warning.hidden=!state.transport.warning;refs.warning.textContent=state.transport.warning||'';
+ const last=state.history.findLast(e=>!['HEARTBEAT','CONNECTED','SNAPSHOT','DISCONNECTED','STALE'].includes(e.kind));
+ refs.clock.textContent=last?new Date(last.at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'UTC'}):'—';
+ refs.resumeGuard.hidden=!state.transport.resumeRequiresBusinessEvent||state.transport.stale||!state.transport.connected;
+}

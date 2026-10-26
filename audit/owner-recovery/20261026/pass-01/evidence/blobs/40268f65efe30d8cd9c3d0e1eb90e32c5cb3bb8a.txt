@@ -1,0 +1,31 @@
+{
+  "artifact_id": 11590897211,
+  "confirmatory_claim_authorized": false,
+  "execution_commit": "8d93861edc4e1ff07b6265d4e80e6a429cffd0b7",
+  "execution_run_id": "37915190172",
+  "exposure_record": {
+    "evidence": "Last canonical executor report 6068136072 (2026-10-08T20:09:14Z) explicitly states no decompression/statistic and an intact Stage A look. GitHub comments, F1 branches and Actions were checked again on 2026-10-09: no later economic outcome or look reservation is accessible. This does not prove the inaccessible private executor history.",
+    "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+    "last_documented_unexposed_report": "https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6068136072",
+    "prior_outcome_exposed": null,
+    "stage": "STAGE_A",
+    "takeover": {
+      "accessible_prior_outcomes": 0,
+      "confirmatory_claim_authorized": false,
+      "execution_scope": "FIRST_DOCUMENTED_DISCOVERY_RESULT",
+      "legacy_private_history": "UNKNOWN",
+      "owner_directive": "Owner chat 2026-10-09: Pourquoi tu ne poursuis pas; Claude on doit faire sans lui pour au moins trois jours. Continue autonomously using the available canonical state.",
+      "policy": "OWNER_DIRECTED_CANONICAL_STATE_RESUME",
+      "reconciliation_rule": "Preserve any earlier result if subsequently recovered; invalidate registered lineage if prior outcome exposure preceded a decision-changing harness repair. Never rerun a documented outcome or change cells/thresholds after observation."
+    }
+  },
+  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+  "license": "CC BY-NC-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "live_use_authorized": false,
+  "primary_terms_sha256": "dcf358e9d18f598a7a635fac80f6e643fa24a0e111a4d39bda47f1e246b31eb1",
+  "result_sha256": "554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03",
+  "role": "DISCOVERY_ONLY_THETA_SELECTION",
+  "source": "Binance Vision / Binance Public Data",
+  "stage": "STAGE_A"
+}

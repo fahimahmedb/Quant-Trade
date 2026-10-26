@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PARK_DATA_RECOVERY_CHECK",
+  "experiment": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+  "parent_result": "research/edge_lab/discovery/experiments/disc-market-sentiment-vix-fear-spike-reversal-l1-v1.result.json",
+  "decision": "PARK_DATA_CONFIRMED_NO_NEW_ECONOMIC_LOOK",
+  "economic_verdict": null,
+  "economic_look_opened_this_recovery": false,
+  "economic_payoffs_computed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "frozen_routes": {
+    "signal": "FRED VIXCLS",
+    "outcome": "FRED SP500"
+  },
+  "new_access_facts": {
+    "sp500": "The exact FRED SP500 text/table route renders enough later-history rows in the browser surface to cover substantial portions of the frozen 2018-2024 outcome period. This improves confidence that the outcome side can be recovered without changing provider.",
+    "vixcls": "The exact FRED VIXCLS text/table route rendered through the current browser surface is truncated in the accessible representation: the returned table ends around 2003/2004 rather than exposing the 2017 warm-up and 2018-2024 signal period required by the frozen rolling-252 protocol. Therefore the signal side remains unrecoverable as a reproducible bulk sample in the current runtime.",
+    "csv": "The FRED fredgraph.csv endpoints for VIXCLS/SP500 were not consumable through the current web surface because application/csv is rejected there; the container runtime did not have working DNS/network access to FRED. No mirror or alternate provider was attempted."
+  },
+  "protocol_effect": "The frozen test requires exact prior-252 VIX observations for every candidate day and cannot be reconstructed from sparse snippets. SP500 becoming more accessible does not cure the missing VIX signal population. Since the protocol forbids source substitution, the already-consumed economic execution remains PARK_DATA and is not replayed.",
+  "exposure_accounting": {
+    "new_trigger_thresholds_computed": false,
+    "new_trigger_dates_computed": false,
+    "new_sp500_trigger_joins_computed": false,
+    "new_returns_computed": false,
+    "economic_look_count_increment": 0
+  },
+  "reopen_only": "A runtime must become able to retrieve the exact frozen FRED VIXCLS series as a complete machine-readable sample covering the warm-up plus 2018-2024 period, while keeping FRED SP500 and every frozen rule unchanged. This would be recovery of the same consumed execution, never a new trial.",
+  "next_action": "Do not spend additional cycles probing FRED representations or approximate the q95 signal manually. Continue distinct documentary/prospective research until a genuinely new exact FRED machine-access primitive appears.",
+  "inference_ceiling": [
+    "No fear-spike economic verdict",
+    "No alpha/edge conclusion",
+    "No source substitution authorization",
+    "No live or real-capital authorization"
+  ]
+}

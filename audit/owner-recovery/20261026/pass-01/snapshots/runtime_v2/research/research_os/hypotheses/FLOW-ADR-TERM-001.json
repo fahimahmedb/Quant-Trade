@@ -1,0 +1,62 @@
+{
+  "hypothesis_id": "FLOW-ADR-TERM-001",
+  "family_id": "adr-program-termination-forced-sale",
+  "generation_id": "G1",
+  "parent_generation_ids": [],
+  "mechanism": "When an ADR/ADS deposit agreement is terminated, holders may have a bounded period to surrender ADSs for the underlying shares. After the termination date, the depositary may or must sell deposited securities still backing unsurrendered ADSs and later distribute net cash proceeds. That converts a residual holder cohort into a dated administrative seller of the underlying securities. The hypothesized rent, if any, would come from supplying liquidity around that forced inventory transfer, not from the termination itself creating value.",
+  "claim": "Public ADR termination terms can create a causally explicit, low-capacity forced-flow event: deposited shares attributable to non-surrendering ADS holders become eligible for depositary sale after a known termination date. A future economic test should ask whether this residual forced inventory produces a repeatable and capturable local-share/ADR dislocation after all conversion, FX, custody, tax, borrow and settlement frictions; no such economic effect is claimed here.",
+  "prediction": "Before any return data are inspected, the observable structural prediction is that qualifying termination notices will define (i) a public termination date, (ii) a surrender/withdrawal path for ADS holders, and (iii) a post-termination sale right or obligation over deposited securities remaining for unsurrendered ADSs. If those three elements cannot be established for actual events with a reliable ADS-to-underlying mapping, the mechanism is not test-ready.",
+  "falsification_scope": "This hypothesis is falsified as a usable institutional-flow candidate if qualified ADR termination events generally do not create a dated residual-sale obligation/right, if holders retain an indefinite frictionless conversion path that prevents a forced cohort from forming, or if exact ADS ratio/underlying/security/FX/settlement mapping cannot be established before outcome access. A later negative economic test would falsify only the frozen economic expression tested, not every form of ADR termination.",
+  "decision_map": {
+    "payer": "Liquidity-demanding residual ADS holders/depositary sale process; any counterparty rent would be paid through execution concession in the underlying/local market or ADR-underlying basis, not by the issuer mechanically.",
+    "trigger": "Primary-source termination notice plus deposit-agreement terms that establish termination date and post-termination treatment of unsurrendered ADSs.",
+    "capacity_intuition": "Likely low and event-specific because residual ADR balances shrink as holders surrender, underlying markets may be foreign, and operational/FX/custody frictions dominate. This is intentionally a small-actor candidate, not an institutional-scale alpha claim.",
+    "implementability_questions": [
+      "Can the exact depositary notice and termination date be captured point-in-time from SEC/issuer/depositary sources?",
+      "Can the ADS ratio, underlying local ticker/ISIN, depositary, fees, taxes, FX conversion and settlement route be frozen before any price observation?",
+      "Is the post-termination sale discretionary, mandatory, immediate, delayed by a fixed waiting period, or conditional on local-market practicability?",
+      "Can remaining ADS inventory or at least a defensible upper bound be observed without outcome leakage?",
+      "Can local-market and ADR prices be sourced with timestamp semantics sufficient to avoid stale-close and timezone leakage?",
+      "Does the broker/custodian permit ADS cancellation and local-share receipt for a small account, and at what fixed fees?"
+    ],
+    "primary_documentary_evidence": [
+      {
+        "source": "SEC-filed form deposit agreement",
+        "url": "https://www.sec.gov/Archives/edgar/data/1335730/000119312518211885/d524292dex22.htm",
+        "fact": "Termination notice is disseminated to ADS owners; after the termination date the depositary may sell deposited securities and hold net proceeds for remaining ADS owners."
+      },
+      {
+        "source": "SEC-filed ADR terms",
+        "url": "https://www.sec.gov/Archives/edgar/data/1691221/000164117225000289/ex2-2.htm",
+        "fact": "If the agreement terminates, holders are notified in advance; after termination the depositary may sell deposited securities, while holders may still surrender ADSs before sale subject to the stated constraints."
+      }
+    ],
+    "legacy_distinctness": {
+      "legacy_ledger_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "legacy_ledger_blob": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "screening_result": "NO_EXACT_OR_MECHANISTIC_DUPLICATE_FOUND_IN_33_RECONCILED_RECORDS_OR_BUNDLED_UNSCORED_PROTOCOL_NAMES",
+      "nearby_but_distinct": [
+        "exchange-traded debt full-call: contractual issuer redemption of debt, not depositary sale of residual foreign equity inventory",
+        "ETF liquidation NAV convergence: fund liquidation/cash conversion, not ADR cancellation and local-share sale mechanics",
+        "reverse-split/cash-in-lieu: issuer share-count corporate action, not depositary-program termination"
+      ]
+    },
+    "next_validator_decision": {
+      "PASS_TO_TEST_DESIGN": "At least one current or historical event can be identified from primary sources with frozen termination clock, ADS ratio, underlying mapping and operational route before any price/return access.",
+      "PARK_DATA": "Mechanism is legally real but event mapping, residual inventory, local price route or account implementability cannot be established without outcome leakage or paid/private access.",
+      "KILL_MECHANISM": "Primary terms do not create a genuine dated residual seller after reasonable surrender/conversion paths are accounted for."
+    }
+  },
+  "freeze_status": "FROZEN",
+  "frozen_at": "2026-10-15T12:34:51Z",
+  "amendments": [],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_data_accessed": false,
+    "price_or_return_data_accessed": false,
+    "scope": "DOCUMENTARY_MECHANISM_FREEZE_ONLY"
+  }
+}

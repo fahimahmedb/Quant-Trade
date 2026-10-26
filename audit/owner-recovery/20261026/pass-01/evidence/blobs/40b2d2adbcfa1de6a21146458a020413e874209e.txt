@@ -1,0 +1,80 @@
+name: Research OS wave4 acquisition firewall CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/**'
+      - '.github/workflows/research-os-wave4-acquisition-firewall-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  wave4-acquisition-firewall:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned legacy ledger
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+      - name: Run wave4 acquisition-firewall tests
+        run: |
+          python -m unittest research.research_os.tests.test_wave4_acquisition_firewall -v
+      - name: Exact-head wave4 assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.expansion.wave4_acquisition_firewall import build_wave4_acquisition_firewall
+
+          base = Path('research/research_os')
+          base_fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          wave2_fixture = json.loads((base / 'simulations' / 'wave2_hardening_fixture.json').read_text())
+          wave3_fixture = json.loads((base / 'simulations' / 'wave3_engine_depth_fixture.json').read_text())
+          wave4_fixture = json.loads((base / 'simulations' / 'wave4_acquisition_firewall_fixture.json').read_text())
+          result = build_wave4_acquisition_firewall(
+              base_fixture,
+              wave2_fixture,
+              wave3_fixture,
+              wave4_fixture,
+              legacy_ledger_path=base / 'legacy' / 'LEGACY_RESEARCH_LEDGER.imported.json',
+          )
+          assert result['wave4_status'] == 'PASS'
+          assert result['wave3_status'] == 'PASS'
+          assert result['unsafe_access_detected'] is False
+          assert len(result['acquisition_plans']) == 5
+          assert all(x['status'] == 'READY_AWAITING_SOURCE_ACTIVATION_AUTHORITY' for x in result['acquisition_plans'].values())
+          assert all(x['network_call_performed'] is False for x in result['acquisition_plans'].values())
+          assert all(x['outcome_accessed'] is False for x in result['acquisition_plans'].values())
+          assert result['firewall_summary']['record_count'] == 5
+          assert result['firewall_summary']['pass_count'] == 5
+          assert result['firewall_summary']['block_count'] == 0
+          assert result['firewall_summary']['network_records'] == 0
+          assert result['firewall_summary']['outcomes_accessed'] == 0
+          assert result['typed_pit_registry']['entry_count'] == 5
+          assert result['typed_pit_registry']['point_in_time_count'] == 5
+          assert result['typed_pit_registry']['network_origin_count'] == 0
+          assert result['typed_pit_registry']['outcome_accessed_count'] == 0
+          assert len(result['engine_input_bindings']) == 4
+          assert all(x['status'] == 'READY_PIT_TYPED_FIXTURE_ONLY' for x in result['engine_input_bindings'].values())
+          assert result['real_source_activation_authorized'] is False
+          assert result['network_access_authorized'] is False
+          assert result['economic_experiment_authorized'] is False
+          assert result['prospective_observation_authorized'] is False
+          assert result['real_capital_authorized'] is False
+          assert result['live_trading_authorized'] is False
+          print('RESEARCH_OS_WAVE4_ACQUISITION_FIREWALL=PASS')
+          PY

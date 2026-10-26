@@ -1,0 +1,354 @@
+FFFFFFFFFFFFFFFFFFFFFFFFF..                                              [100%]
+=================================== FAILURES ===================================
+_ test_scoped_negative_requires_identity_scope_and_reason[-negative_knowledge_id] _
+
+field = 'negative_knowledge_id', value = ''
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+___ test_scoped_negative_requires_identity_scope_and_reason[-failure_scope] ____
+
+field = 'failure_scope', value = ''
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+___ test_scoped_negative_requires_identity_scope_and_reason[-failure_reason] ___
+
+field = 'failure_reason', value = ''
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+___ test_scoped_negative_requires_identity_scope_and_reason[-revisit_policy] ___
+
+field = 'revisit_policy', value = ''
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[  -negative_knowledge_id] _
+
+field = 'negative_knowledge_id', value = '  '
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+__ test_scoped_negative_requires_identity_scope_and_reason[  -failure_scope] ___
+
+field = 'failure_scope', value = '  '
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+__ test_scoped_negative_requires_identity_scope_and_reason[  -failure_reason] __
+
+field = 'failure_reason', value = '  '
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+__ test_scoped_negative_requires_identity_scope_and_reason[  -revisit_policy] __
+
+field = 'revisit_policy', value = '  '
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-negative_knowledge_id] _
+
+field = 'negative_knowledge_id', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-failure_scope] _
+
+field = 'failure_scope', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-failure_reason] _
+
+field = 'failure_reason', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-revisit_policy] _
+
+field = 'revisit_policy', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[None-negative_knowledge_id] _
+
+field = 'negative_knowledge_id', value = None
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[None-failure_scope] __
+
+field = 'failure_scope', value = None
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[None-failure_reason] _
+
+field = 'failure_reason', value = None
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[None-revisit_policy] _
+
+field = 'revisit_policy', value = None
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[True-negative_knowledge_id] _
+
+field = 'negative_knowledge_id', value = True
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[True-failure_scope] __
+
+field = 'failure_scope', value = True
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[True-failure_reason] _
+
+field = 'failure_reason', value = True
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+_ test_scoped_negative_requires_identity_scope_and_reason[True-revisit_policy] _
+
+field = 'revisit_policy', value = True
+
+    @pytest.mark.parametrize('field',['negative_knowledge_id','failure_scope','failure_reason','revisit_policy'])
+    @pytest.mark.parametrize('value',['', '  ', 'UNKNOWN', None, True])
+    def test_scoped_negative_requires_identity_scope_and_reason(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:18: Failed
+____________ test_scope_context_shape_is_explicit[assumptions-None] ____________
+
+field = 'assumptions', value = None
+
+    @pytest.mark.parametrize('field,value',[('assumptions',None),('assumptions','implicit'),
+        ('regime_context',[]),('source_context','unbound'),('revisit_conditions','new evidence')])
+    def test_scope_context_shape_is_explicit(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:25: Failed
+__________ test_scope_context_shape_is_explicit[assumptions-implicit] __________
+
+field = 'assumptions', value = 'implicit'
+
+    @pytest.mark.parametrize('field,value',[('assumptions',None),('assumptions','implicit'),
+        ('regime_context',[]),('source_context','unbound'),('revisit_conditions','new evidence')])
+    def test_scope_context_shape_is_explicit(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:25: Failed
+_________ test_scope_context_shape_is_explicit[regime_context-value2] __________
+
+field = 'regime_context', value = []
+
+    @pytest.mark.parametrize('field,value',[('assumptions',None),('assumptions','implicit'),
+        ('regime_context',[]),('source_context','unbound'),('revisit_conditions','new evidence')])
+    def test_scope_context_shape_is_explicit(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:25: Failed
+_________ test_scope_context_shape_is_explicit[source_context-unbound] _________
+
+field = 'source_context', value = 'unbound'
+
+    @pytest.mark.parametrize('field,value',[('assumptions',None),('assumptions','implicit'),
+        ('regime_context',[]),('source_context','unbound'),('revisit_conditions','new evidence')])
+    def test_scope_context_shape_is_explicit(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:25: Failed
+____ test_scope_context_shape_is_explicit[revisit_conditions-new evidence] _____
+
+field = 'revisit_conditions', value = 'new evidence'
+
+    @pytest.mark.parametrize('field,value',[('assumptions',None),('assumptions','implicit'),
+        ('regime_context',[]),('source_context','unbound'),('revisit_conditions','new evidence')])
+    def test_scope_context_shape_is_explicit(field,value):
+        item=payload();item[field]=value
+>       with pytest.raises(ValueError):build_negative_memory(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_negative_memory_depth.py:25: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[-negative_knowledge_id]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[-failure_scope]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[-failure_reason]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[-revisit_policy]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[  -negative_knowledge_id]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[  -failure_scope]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[  -failure_reason]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[  -revisit_policy]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-negative_knowledge_id]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-failure_scope]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-failure_reason]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[UNKNOWN-revisit_policy]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[None-negative_knowledge_id]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[None-failure_scope]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[None-failure_reason]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[None-revisit_policy]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[True-negative_knowledge_id]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[True-failure_scope]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[True-failure_reason]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scoped_negative_requires_identity_scope_and_reason[True-revisit_policy]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scope_context_shape_is_explicit[assumptions-None]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scope_context_shape_is_explicit[assumptions-implicit]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scope_context_shape_is_explicit[regime_context-value2]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scope_context_shape_is_explicit[source_context-unbound]
+FAILED tests/test_vertical_negative_memory_depth.py::test_scope_context_shape_is_explicit[revisit_conditions-new evidence]
+25 failed, 2 passed in 0.16s

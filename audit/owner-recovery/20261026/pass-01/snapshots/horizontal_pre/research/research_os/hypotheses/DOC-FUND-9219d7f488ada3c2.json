@@ -1,0 +1,30 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "claim": "AAPL FY2025_TWELVE_MONTHS_ENDED_2025-09-27: operating margin=0.3197079976259188150739737746; free cash flow=98767 USD_millions.",
+  "decision_map": {
+    "premise_fails": "KILL_GENERATION",
+    "premise_survives": "EXPLORE"
+  },
+  "falsification_scope": "Withdraw the profitability premise if an admissible same-basis statement shows nonpositive margin or free cash flow.",
+  "family_id": "FUNDAMENTAL",
+  "freeze_status": "FROZEN",
+  "frozen_at": "2026-10-20T00:51:29Z",
+  "generation_id": "G1",
+  "hypothesis_id": "DOC-FUND-9219d7f488ada3c2",
+  "issuer": "AAPL",
+  "mechanism": "Cash generation and operating profitability may support a valuation thesis; market pricing remains untested.",
+  "parent_generation_ids": [],
+  "prediction": "Documentary premise only; economic payoff NOT_OBSERVED",
+  "worker_provenance": {
+    "candidate_hash": "7fffefe81dbb1514d71254510ff81408bc97a9d07ad2616bf99fd7dbc03f4da6",
+    "engine_output_ref": "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003/oracle-worker/document_or_fundamental_research.json",
+    "lane": "fundamental_events",
+    "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
+    "worker_id": "oracle-research-v1.fundamental_events"
+  }
+}

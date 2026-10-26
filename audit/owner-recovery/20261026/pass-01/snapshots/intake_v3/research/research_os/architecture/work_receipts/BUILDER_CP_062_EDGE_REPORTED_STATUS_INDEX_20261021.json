@@ -1,0 +1,479 @@
+{
+  "observed_at": "2026-10-21T08:44:46.640417+00:00",
+  "source_branch": "research/edge-lab-continuous",
+  "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+  "source_commit_predates_current_epoch": true,
+  "scope": "HISTORICAL_JSON_PROCESSED_BY_ALLOWLIST_FILTER_NOT_NUMERICAL_EVALUATION",
+  "historical_result_json_processed": true,
+  "numerical_economics_extracted": false,
+  "active_sealed_or_current_prospective_data_accessed": false,
+  "runtime_integration": "AUDIT_ONLY_NO_ACTIVE_EPOCH_OR_LEDGER_MUTATION",
+  "record_count": 16,
+  "records": [
+    {
+      "experiment_id_as_reported": "disc-binance-extreme-funding-reversal-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-binance-extreme-funding-reversal-l1-v1.result.json",
+      "blob_sha": "fe77e8bcd8bde4a682859468ca4484e0e05238e0",
+      "metadata": {
+        "decision": "PARK_DATA",
+        "typed_verdict": "PARK_DATA",
+        "economics_computed": false,
+        "edge_validated": false
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-binance-extreme-funding-reversal-l1-v1.md",
+          "blob_sha": "a95b30170b48cc6d94f73fd110ce6b1c91d26e94"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-cfe-vix-term-premium-l1-v0",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v0.result.json",
+      "blob_sha": "cb1d295f2bf6b1384c19c98320a38e8c52435cb6",
+      "metadata": {
+        "decision": "PARK",
+        "economics_computed": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "verdict",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v0.md",
+          "blob_sha": "cebfb715d00875fe777946fe3fb5b403830bed56"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-cfe-vix-term-premium-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v1.result.json",
+      "blob_sha": "de5812f29f6de130f796199f43c88e416d38f56f",
+      "metadata": {
+        "decision": "PARK_DATA",
+        "typed_verdict": "PARK_DATA",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": false,
+        "adequacy_passed": false
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v1.contract.json",
+          "blob_sha": "e1d6273d00bd4e5b7d3cf521dd5a1d0ce8e8857a"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-cfe-vix-term-premium-l1-v2-reader",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.result.json",
+      "blob_sha": "44a792e222f5cd763dcf1becdab9a6eb4d728286",
+      "metadata": {
+        "decision": "PROMOTE_EXPRESSION",
+        "typed_verdict": "PROMOTE_EXPRESSION",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": true,
+        "adequacy_passed": true
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.contract.json",
+          "blob_sha": "4784e9af2b22cac19d229fd6dc42bab567575358"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-crypto-book-pressure-prospective-l1-v0",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json",
+      "blob_sha": "6e56218941825491122d6ab6b860999da21b808d",
+      "metadata": {},
+      "unsupported_metadata_fields": [
+        {
+          "key": "disposition",
+          "type": "str"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.md",
+          "blob_sha": "c62b759ff7337a340282d04c9103fcd5b1cc89a8"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review.",
+      "reviewed_quality_disposition": {
+        "classification": "PROTOCOL_INVALIDATION_NOT_ECONOMIC_NEGATIVE",
+        "source_reported_statuses": [
+          "PARK_DATA",
+          "CAPTURE_INVALID"
+        ],
+        "limitation": "Original early-stop rule was violated by testing empty exception text for truthiness.",
+        "revisit_conditions": [
+          "Preserve original receipts and PARK; no replay of original capture.",
+          "Any separately declared successor must record exception type, test error-is-not-None and pass malformed synthetic payload checks before source access."
+        ],
+        "scope": "Historical recorder only; no current runtime defect inferred."
+      }
+    },
+    {
+      "experiment_id_as_reported": "disc-crypto-book-pressure-prospective-l1-v0",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.result.json",
+      "blob_sha": "a28ff8775ffb9233a788f79d7a487ba4631d3f92",
+      "metadata": {
+        "decision": "PARK",
+        "economic_test_completed": false,
+        "adequacy_passed": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "verdict",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.md",
+          "blob_sha": "c62b759ff7337a340282d04c9103fcd5b1cc89a8"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-france-oat-bund-l1-v0",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v0.result.json",
+      "blob_sha": "5eb8efe8452a7a4a47491f1948b4947c2d92ecac",
+      "metadata": {
+        "decision": "PARK",
+        "economic_test_completed": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "verdict",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v0.md",
+          "blob_sha": "9ec7110f6c53c321bc9fa2eaa71b948955af5a44"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-france-oat-bund-l1-v1-public-daily-route",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.result.json",
+      "blob_sha": "9f64f51a144087b2aeae2b56d9ac0ce176c8a57f",
+      "metadata": {
+        "typed_verdict": "PARK_DATA",
+        "first_broken_transition": "FROZEN_FRANCE_HISTORICAL_SOURCE_REQUIRES_ACCOUNT_API_KEY",
+        "economic_look_opened": false,
+        "decision_eligible": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "economic_verdict",
+          "type": "NoneType"
+        },
+        {
+          "key": "inference_ceiling",
+          "type": "list"
+        },
+        {
+          "key": "source_status",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.md",
+          "blob_sha": "ef4ef11f083d1b43dc8e1d3dcf2cbb50ec8ea4cb"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-market-sentiment-cftc-es-leveraged-extremes-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-market-sentiment-cftc-es-leveraged-extremes-l1-v1.result.json",
+      "blob_sha": "4008cd576a29da0d776522c0835d37ae55ed4644",
+      "metadata": {
+        "typed_verdict": "PARK_DATA",
+        "first_broken_transition": "BOUNDED_HISTORICAL_TFF_SAMPLE_NOT_RETRIEVABLE_FROM_FROZEN_CFTC_ROUTE",
+        "economic_look_opened": false,
+        "decision_eligible": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "economic_verdict",
+          "type": "NoneType"
+        },
+        {
+          "key": "inference_ceiling",
+          "type": "list"
+        },
+        {
+          "key": "source_status",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-market-sentiment-cftc-es-leveraged-extremes-l1-v1.md",
+          "blob_sha": "32bf98ed4274000388e86942540bf3b75809a3be"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-market-sentiment-vix-fear-spike-reversal-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-market-sentiment-vix-fear-spike-reversal-l1-v1.result.json",
+      "blob_sha": "06e9e5f6bdcaff00099f1c8f87884c8e0a592c31",
+      "metadata": {
+        "typed_verdict": "PARK_DATA",
+        "first_broken_transition": "FROZEN_FRED_SERIES_TO_REPRODUCIBLE_BULK_MACHINE_SAMPLE_IN_CURRENT_RUNTIME",
+        "economic_look_opened": true,
+        "decision_eligible": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "economic_verdict",
+          "type": "NoneType"
+        },
+        {
+          "key": "inference_ceiling",
+          "type": "list"
+        },
+        {
+          "key": "source_status",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-market-sentiment-vix-fear-spike-reversal-l1-v1.md",
+          "blob_sha": "743a983cfe93db5f359f4cba8b9e6647df067841"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-monthend-pension-rebalance-spytlt-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-monthend-pension-rebalance-spytlt-l1-v1.result.json",
+      "blob_sha": "cb7805a102bcfc35d32a60932e560b6298c767ef",
+      "metadata": {
+        "decision": "PARK_DATA",
+        "typed_verdict": "PARK_DATA",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": false,
+        "edge_validated": false
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-monthend-pension-rebalance-spytlt-l1-v1.md",
+          "blob_sha": "dfd4edcea8aa585f8b3b07355bb6961681976318"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-sec-form4-eod-l1-v0",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-sec-form4-eod-l1-v0.result.json",
+      "blob_sha": "33ca4a6b31352b9d94b84781b42166f9cd6b06ff",
+      "metadata": {
+        "decision": "PARK"
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "verdict",
+          "type": "dict"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-sec-form4-eod-l1-v0.md",
+          "blob_sha": "caae71d8d85a44bda4af4f5f297a02d5e5dbac6e"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-sector-relative-shock-reversal-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-sector-relative-shock-reversal-l1-v1.result.json",
+      "blob_sha": "03c0176a3363d1980050d43f44712dd42752b551",
+      "metadata": {
+        "decision": "KILL_EXPRESSION",
+        "typed_verdict": "KILL_EXPRESSION",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": true,
+        "edge_validated": false
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-sector-relative-shock-reversal-l1-v1.md",
+          "blob_sha": "aea994ef19eb564f46287009b0dec84e09a117ef"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-stockbond-joint-stress-rebound-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-stockbond-joint-stress-rebound-l1-v1.result.json",
+      "blob_sha": "b4b0460483e1c978d2cc3202df788c0f6a7e5368",
+      "metadata": {
+        "decision": "KILL_EXPRESSION",
+        "typed_verdict": "KILL_EXPRESSION",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": true,
+        "edge_validated": false
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-stockbond-joint-stress-rebound-l1-v1.md",
+          "blob_sha": "7c5eda13d5b6c079cdd7d454f2ff33333fff7174"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-treasury-5y-auction-concession-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.result.json",
+      "blob_sha": "1d5722b472261b0b828b4009a435d2ea3b291be3",
+      "metadata": {
+        "typed_verdict": "PARK_DATA",
+        "first_broken_transition": "FROZEN_POPULATION_SOURCE_ADEQUACY_NOT_PROVEN",
+        "decision_eligible": false
+      },
+      "unsupported_metadata_fields": [
+        {
+          "key": "economic_verdict",
+          "type": "NoneType"
+        },
+        {
+          "key": "inference_ceiling",
+          "type": "list"
+        }
+      ],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.md",
+          "blob_sha": "cb43c8cfb25feae97276093632789c7ee40e93c2"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    },
+    {
+      "experiment_id_as_reported": "disc-zf-auction-pressure-daily-l1-v1",
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.result.json",
+      "blob_sha": "91c4aa4c55828aaaa6ce7f68e4264c3453ed8917",
+      "metadata": {
+        "decision": "PARK_DATA",
+        "typed_verdict": "PARK_DATA",
+        "claim_ceiling": "PROMOTE_EXPRESSION",
+        "economics_computed": false,
+        "edge_validated": false
+      },
+      "unsupported_metadata_fields": [],
+      "protocol_file_candidates_not_semantically_verified": [
+        {
+          "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.md",
+          "blob_sha": "b21a860a6568935c98e8f93376e7c081ef3a2662"
+        }
+      ],
+      "classification": "HISTORICAL_REPORTED_STATUS_ONLY_NOT_V2_VALIDATED",
+      "numerical_economics_extracted": false,
+      "scientific_equivalence_to_legacy_ledger": "NOT_ESTABLISHED",
+      "failure_scope": "Original historical experiment and its protocol only; no permanent family veto.",
+      "revisit_policy": "Do not rerun spent windows or tune from these results; any successor requires explicit scope/authority review."
+    }
+  ],
+  "counts_are": "ARTIFACT_RECORDS_NOT_INDEPENDENT_TRIALS_OR_CANDIDATES",
+  "global_effective_trials": "UNKNOWN",
+  "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS"
+}

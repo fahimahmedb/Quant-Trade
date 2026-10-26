@@ -1,0 +1,27 @@
+{
+  "schema_version": "oracle-h24-first-durable-automatic-wake-v1",
+  "status": "DURABLE_AUTOMATIC_WAKE_PROVEN_VM_REBOOT_PENDING",
+  "operational_release_sha": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "automatic_commit": "ad8dd8d20e02259dd590c85aa5f27fb8269b5cfe",
+  "committed_at": "2026-10-20T00:10:17Z",
+  "fresh_input_head": "554f5646b83f5041154210c9c763c49b6dbef18f",
+  "historical_metadata_repair_commit": "b58f1d7637ea7c664d4446f8280e3de94ae66f58",
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
+  "task_status": "READY",
+  "lease_generation": 0,
+  "receipt": "research/research_os/receipts/queue-refill/e64dd18fd8ec1912eefd5d29137697b787f331bb7dd4c9b61f99214b4a7dbdb1.json",
+  "event": "research/research_os/events/queue-refill/e64dd18fd8ec1912eefd5d29137697b787f331bb7dd4c9b61f99214b4a7dbdb1.json",
+  "producer_executed_in_refill_wake": false,
+  "legacy_record_count": 20,
+  "current_frozen_corpus_count": 13,
+  "unresolved_asml_overlap_review_count": 1,
+  "hosted_model_calls": 0,
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "live_vs_ci": "Actual Oracle timer GitHub transaction, not CI. Exact deployment release CI remains 39338286363 and 39338286411, both success.",
+  "remaining": "Bind successful GitHub commit to native systemd journal invocation; actual VM reboot; automatic resume from this durable task and post-reboot local inference."
+}

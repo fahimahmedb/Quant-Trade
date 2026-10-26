@@ -1,0 +1,7 @@
+{
+  "source": "Federal Reserve Board, FOMC meeting calendars (https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm), transcribed",
+  "semantics": "decision day (last day) of each SCHEDULED meeting; unscheduled meetings and the cancelled 2020-03-18 meeting are excluded",
+  "point_in_time": "the schedule is published about a year ahead, so conditioning on it is not look-ahead",
+  "refresh": "scripts/fetch_feeds.py collect (fomc_calendar connector) writes data/feeds/fomc/scheduled.jsonl; reconcile before extending this file",
+  "caveat": "transcribed without network verification in this environment; the connector output is the check"
+}

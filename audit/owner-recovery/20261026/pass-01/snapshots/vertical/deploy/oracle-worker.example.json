@@ -1,0 +1,24 @@
+{
+  "repository": "fahimahmedb/Quant-Trade",
+  "branch": "builder/oracle-economic-loop-recovery-20261019",
+  "release_sha": "REPLACE_WITH_EXACT_40_HEX_QUALIFIED_RELEASE_SHA",
+  "qualification_ci_run_id": 0,
+  "cache": "/var/lib/quant-research/github.git",
+  "worker_id": "oracle-research",
+  "lane": "auto",
+  "vm_ocid": "REPLACE_WITH_EXPLICIT_INTENDED_VM_OCID",
+  "model_backend": {
+    "implementation": "gpt_oss",
+    "runtime": "ollama",
+    "endpoint": "http://127.0.0.1:11434",
+    "model": "REPLACE_WITH_EXISTING_HEALTHY_GPT_OSS_VARIANT_FROM_VM_INVENTORY",
+    "budget": {
+      "timeout_seconds": 120,
+      "retries": 1,
+      "context_tokens": 8192,
+      "output_tokens": 768,
+      "temperature": 0,
+      "seed": 19
+    }
+  }
+}

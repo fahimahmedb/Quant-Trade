@@ -1,0 +1,498 @@
+{
+  "recorded_at": "2026-10-15T06:21:18.076275+00:00",
+  "head_observed": "d0d76b24c29283dfde96d5ac479dcc435b1c0859",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "NON_OUTCOME_L1_PREPARATION_WITH_PROSPECTIVE_PRIORITY_CHECK",
+  "decision": "L1_PREPARATION_COMPLETE_EXECUTION_NOT_AUTHORIZED",
+  "economic_verdict": null,
+  "completed_question": {
+    "id": "us-savings-bond-accrual-calendar:linked-l1-preparation-v0",
+    "status": "COMPLETED",
+    "decision": "Fixed one historical accounting comparison plus a single posting-slip adversary; historical source/penalty/version gates remain unresolved."
+  },
+  "RESULT": "LINKED_L1_DESIGN_PERSISTED_WITHOUT_OUTCOMES; VALARIS_CLOCK_VERIFIED_AND_BODY_SCOPE_PARKED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "Selected historical redemption values, exact penalty definition/version applicability and benchmark route remain unqualified. No actual posting, Owner eligibility, execution or tax outcome established. Valaris body and earlier SEC chronology unresolved.",
+  "POWER_LIMITATION": "One planned historical cohort with dependent comparator/adversary cannot infer population profitability; no data test occurred. The indicative constant-yield benchmark is a screening proxy, not a realized liquid strategy.",
+  "ECONOMIC_SIGNIFICANCE": "Distinguishes a contractual calendar increment from net advantage after full capital lockup, penalty, operational friction and cash opportunity cost. A favorable same-month accrual identity alone cannot justify promotion.",
+  "FAILED_CRITERIA": [
+    "No selected historical value-route/penalty-definition manifest yet.",
+    "Current/2025 legal documentation does not by itself prove historical2024 applicability.",
+    "No CAS look reservation or executable declaration; execution remains unauthorized.",
+    "Valaris primary4807604bytes exceeds524288-byte scope; no complete admission or FIRST-event proof."
+  ],
+  "LESSON": "Same issue-month accrual does not remove liquidity/opportunity cost or posting risk. Compare identical capital/horizons and count the sole delay adversary before values, without treating metadata-size exclusion as an economic rejection.",
+  "FAMILY_STATUS": "Savings calendar preparation COMPLETED, economic magnitude untested and execution gated. A-E remain frozen; Valaris source dependency PARK, thirteen other saved records pending, no event selected. VX not mechanically due; all closed/exposed families and legacy UNKNOWN preserved.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
+      "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+      "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
+      "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "deferred_documentary": {
+      "kind": "L1_SOURCE_MANIFEST_QUALIFICATION_ONLY",
+      "family": "us-savings-bond-accrual-calendar",
+      "status": "OPEN",
+      "economic_access_authorized": false,
+      "completed_preparation": {
+        "status": "COMPLETED",
+        "reference": "v4_2_pilot/disc-us-savings-bond-calendar-l1-v0.md",
+        "sha256": "1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e",
+        "execution_status": "DESIGN_NOT_EXECUTABLE"
+      },
+      "question": "After higher-priority admissible prospective work, qualify exact free official historical redemption-value route, monthly/penalty definition, historical legal applicability and single dated1Y Treasury quote route using documentation only. One bounded step, then PARK_DATA if unresolved. Do not fetch selected rates/redemption values; do not rewrite cohort, formulas, benchmark or adversary.",
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "prior_exposure_reference": {
+        "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+        "must_not_be_treated_as_pristine": true,
+        "pre_reserved": false,
+        "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
+      },
+      "source_reuse": [
+        "qualifications/us-savings-bond-calendar-l0-2026-10-14.json",
+        "qualifications/us-savings-bond-calendar-legal-followup-2026-10-14.json"
+      ]
+    },
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "passive_VX_priority": {
+      "prospective_T0": "2026-10-15T00:00:00Z",
+      "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+      "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+      "status": "NOT_DUE_NO_ELIGIBLE_EXIT",
+      "earliest_possible_exit_lower_bound_utc": "2026-11-06T00:00:00+00:00",
+      "lower_bound_note": "Necessary lower bound only, not an identified contract/official settlement calendar. An eligible actual entry >=T0 and30-day target separation with±4-day endpoints imply an exit at least22days later. No calendar or price request; actual quarterly due date must still follow frozen official-calendar rules."
+    },
+    "pending_source_reference": {
+      "proof": "qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json",
+      "field": "candidate_form_records",
+      "count_pending": 13,
+      "count_parked_unqualified": 1,
+      "unqualified_total_in_saved_slice": 14
+    },
+    "primary_document_candidates": [
+      "https://www.sec.gov/Archives/edgar/data/937966/000162828026065813/0001628280-26-065813-index.htm"
+    ],
+    "prospective_A_E_priority": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "latest_metadata_snapshot": {
+        "candidate_form_records": 16,
+        "coverage_complete_since_T0": false,
+        "entries": 100,
+        "new_entries_vs_prior": 76,
+        "newest_updated": "2026-10-14T06:14:36-04:00",
+        "observed_at": "2026-10-14T10:16:37.932636+00:00",
+        "oldest_updated": "2026-10-13T21:25:11-04:00",
+        "sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157"
+      },
+      "pending": "Thirteen unreviewed saved records, beginning ASML by provisional feed ordering, plus Valaris index-verified/body-unread source park. Earlier chronology gaps remain. No FIRST qualifying event or universal absence established.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN"
+    },
+    "question": "Reuse the saved SEC list, next unreviewed record ASML6-K accession0001628280-26-065813. Verify its index/accepted clock first; only a bounded safe legal description may follow. Valaris remains a prior unresolved source, not excluded. No price/NAV/payoff access, first-event claim or later favorable substitution while earlier order/eligibility remains unresolved.",
+    "resume_rule": "Do not refetch Valaris index or download/truncate its4807604-byte proxy under the current524288-byte cap. A genuinely distinct bounded primary legal source would be needed to resolve this dependency. Earlier partial Fusion/AmpliTech and IX chronology remain. The savings-bond L1 preparation is complete; reuse the design instead of writing another version or revisiting legal pages. No new selected values or economic look before a separately published executable manifest and CAS claim.",
+    "reuse_reference": "qualifications/savings-calendar-l1-preparation-and-valaris-scope-2026-10-15.json",
+    "seed_history": [
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+        "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+        "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
+      },
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+        "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+        "same_candidate_id": "policy-announcement-repricing",
+        "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+        "seed_id": "trump_policy_event_transmission_l0"
+      }
+    ],
+    "spent_exposure_reference": {
+      "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+      "must_not_be_treated_as_pristine": true,
+      "pre_reserved": false,
+      "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json"
+    },
+    "status": "OPEN",
+    "unconsumed_seeds": []
+  },
+  "design": {
+    "path": "v4_2_pilot/disc-us-savings-bond-calendar-l1-v0.md",
+    "sha256": "1118b823587cf0f0322c936c6ab0294c108f80931d6ebaba5afb4b58ec7e120e",
+    "status": "DESIGN_NOT_EXECUTABLE",
+    "outcome_values_fetched": false,
+    "original_local_preparation_date": "2026-10-14",
+    "publication_not_claimed_before_remote_commit": true
+  },
+  "candidate_form_records": [
+    {
+      "issuer_and_form": "8-K - NEWS CORP (0001564708) (Filer)",
+      "cik": "0001564708",
+      "accession": "0001564708-26-000221",
+      "feed_updated": "2026-10-13T21:29:43-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1564708/000156470826000221/0001564708-26-000221-index.htm",
+      "accepted_at_verified": "2026-10-13T21:29:43-04:00",
+      "status": "REVIEWED_PRIMARY_COVER_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14"
+    },
+    {
+      "issuer_and_form": "8-K - Liquidia Corp (0001819576) (Filer)",
+      "cik": "0001819576",
+      "accession": "0001104659-26-115672",
+      "feed_updated": "2026-10-13T21:49:11-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1819576/000110465926115672/0001104659-26-115672-index.htm",
+      "accepted_at_verified": "2026-10-13T21:49:11-04:00",
+      "status": "REVIEWED_PRIMARY_DESCRIPTION_INELIGIBLE_A_E",
+      "filing_date": "2026-10-14",
+      "period_of_report": "2026-10-08"
+    },
+    {
+      "issuer_and_form": "DEFM14A - Valaris Ltd (0000314808) (Filer)",
+      "cik": "0000314808",
+      "accession": "0001140361-26-039488",
+      "feed_updated": "2026-10-14T06:01:02-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm",
+      "accepted_at_verified": "2026-10-14T06:01:02-04:00",
+      "status": "PARK_DOCUMENT_SCOPE_NOT_REVIEWED",
+      "filing_date": "2026-10-14",
+      "reason": "Advertised primary4807604bytes exceeds524288byte cap; body not fetched. Qualification unresolved, not ineligible."
+    },
+    {
+      "issuer_and_form": "6-K - ASML HOLDING NV (0000937966) (Filer)",
+      "cik": "0000937966",
+      "accession": "0001628280-26-065813",
+      "feed_updated": "2026-10-14T06:01:18-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026065813/0001628280-26-065813-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - NOMURA HOLDINGS INC (0001163653) (Filer)",
+      "cik": "0001163653",
+      "accession": "0001193125-26-420929",
+      "feed_updated": "2026-10-14T06:01:20-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/0001193125-26-420929-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - Artificial Intelligence Technology Solutions Inc. (0001498148) (Filer)",
+      "cik": "0001498148",
+      "accession": "0001062993-26-005318",
+      "feed_updated": "2026-10-14T06:01:26-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1498148/000106299326005318/0001062993-26-005318-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "497 - Calamos ETF Trust (0001579881) (Filer)",
+      "cik": "0001579881",
+      "accession": "0001104659-26-115676",
+      "feed_updated": "2026-10-14T06:01:39-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - SK TELECOM CO LTD (0001015650) (Filer)",
+      "cik": "0001015650",
+      "accession": "0001193125-26-420931",
+      "feed_updated": "2026-10-14T06:01:47-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1015650/000119312526420931/0001193125-26-420931-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - FortuneX Acquisition Corp (0002121703) (Filer)",
+      "cik": "0002121703",
+      "accession": "0001829126-26-011104",
+      "feed_updated": "2026-10-14T06:01:53-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/0001829126-26-011104-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - HDFC BANK LTD (0001144967) (Filer)",
+      "cik": "0001144967",
+      "accession": "0001193125-26-420933",
+      "feed_updated": "2026-10-14T06:02:14-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1144967/000119312526420933/0001193125-26-420933-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - SK hynix Inc. (0002120882) (Filer)",
+      "cik": "0002120882",
+      "accession": "0001193125-26-420934",
+      "feed_updated": "2026-10-14T06:02:20-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/2120882/000119312526420934/0001193125-26-420934-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Evotec SE (0001412558) (Filer)",
+      "cik": "0001412558",
+      "accession": "0001104659-26-115678",
+      "feed_updated": "2026-10-14T06:02:29-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1412558/000110465926115678/0001104659-26-115678-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Banco Santander, S.A. (0000891478) (Filer)",
+      "cik": "0000891478",
+      "accession": "0000950103-26-015545",
+      "feed_updated": "2026-10-14T06:02:36-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/891478/000095010326015545/0000950103-26-015545-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "6-K - Pharming Group N.V. (0001828316) (Filer)",
+      "cik": "0001828316",
+      "accession": "0001828316-26-000045",
+      "feed_updated": "2026-10-14T06:03:16-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1828316/000182831626000045/0001828316-26-000045-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "DEFM14A - Transocean Ltd. (0001451505) (Filer)",
+      "cik": "0001451505",
+      "accession": "0001104659-26-115680",
+      "feed_updated": "2026-10-14T06:03:31-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1451505/000110465926115680/0001104659-26-115680-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    },
+    {
+      "issuer_and_form": "8-K - Verastem, Inc. (0001526119) (Filer)",
+      "cik": "0001526119",
+      "accession": "0001104659-26-115687",
+      "feed_updated": "2026-10-14T06:08:11-04:00",
+      "index_url": "https://www.sec.gov/Archives/edgar/data/1526119/000110465926115687/0001104659-26-115687-index.htm",
+      "accepted_at_verified": null,
+      "status": "PENDING_DOCUMENTARY_QUALIFICATION"
+    }
+  ],
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm",
+      "observed_at": "2026-10-14T15:23:19.425821+00:00",
+      "scope": "SEC prospective admission metadata and primary legal description only; no selected market-price/NAV/payoff payload, claims or economic calculations",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.sec.gov/Archives/edgar/data/314808/000114036126039488/0001140361-26-039488-index.htm",
+      "body_bytes": 15059,
+      "sha256": "27bd491bb4d5c84564b70d68d0da49d068fadd3fdc5f7a9e2fd1a10f31f421b0",
+      "complete": true,
+      "content_type": "text/html; charset=UTF-8",
+      "wall_seconds": 0.20992651098640636,
+      "passages": [
+        "Form DEFM14A - Definitive proxy statement relating to merger or acquisition.",
+        "Filing Date 2026-10-14; Accepted 2026-10-14 06:01:02.",
+        "Primary ny20070137x2_defm14a.htm size4807604; complete submission size13169386.",
+        "Valaris Ltd, CIK0000314808, SIC1381 Drilling Oil & Gas Wells."
+      ],
+      "admission_conclusion": "Index clock verified only. Merger form/operating-company classification does not establish a frozen qualifying entitlement or fully exclude any embedded restructuring. Primary body exceeds the524288-byte bound and remains UNREAD, not truncated/retried. No event admitted and no economic family rejection."
+    }
+  ],
+  "reuse": {
+    "prior_proof": "qualifications/prospective-admission-liquidia-2026-10-14.json",
+    "prior_sha256": "03e992179ac97401c4d01e7db2b98a56edec5a9ea7db750ceda2c91b35bf6b49",
+    "parent_legal_source_hashes": {
+      "qualifications/us-savings-bond-calendar-l0-2026-10-14.json": "fc940d763b69ebe829231175ad8d483cade29954cf7fb1d3eab0c27d5035bf95",
+      "qualifications/us-savings-bond-calendar-legal-followup-2026-10-14.json": "0e4ff46fd18f931fa88c825f013b97cb7ba464ba74751a81423d6c587119a475"
+    },
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "VX_protocol_and_register_unchanged": {
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.md": "56fd0be311eb4672136008cdb2b6655afe5ac1d3b9db5bfdef9c7f23a7d72a15",
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.register.json": "316aa2bf3ed1fbe29e515d8888e2324ec9eeeed9113b646eda4e7db26018f768"
+    },
+    "saved_feed_sha256": "06f2d1a99cd3531610179be7d6909c1c05b2d20d0e0591b1cf1519068befe157",
+    "feed_refetched": false,
+    "all_three_seed_dispositions_preserved": [
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+        "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+        "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
+      },
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+        "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+        "same_candidate_id": "policy-announcement-repricing",
+        "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+        "seed_id": "trump_policy_event_transmission_l0"
+      }
+    ]
+  },
+  "priority_check": {
+    "no_admissible_fresh_event_established": true,
+    "universal_absence_claimed": false,
+    "active_discovery_running": [],
+    "legacy_UNKNOWN_remains_consumed": true,
+    "VX_necessary_exit_lower_bound_utc": "2026-11-06T00:00:00+00:00",
+    "VX_calendar_requests": 0,
+    "VX_price_requests": 0,
+    "one_other_useful_action": "Prepared existing savings candidate L1; no fresh seed/mechanism or economic look."
+  },
+  "exposure": {
+    "new_primary_scope": "One Valaris filing index, clock/type/size/SIC only. Primary merger proxy, exhibits and outcomes unread. Original receipt reused after interruption; no repeated request.",
+    "new_selected_market_or_redemption_payload_requests": 0,
+    "new_economic_calculations": 0,
+    "new_reserved_looks": 0,
+    "economic_tests_this_action": 0,
+    "newly_prepared_expression_variants": 3,
+    "planned_variants": [
+      "early-posting comparator E",
+      "late-posting primary L",
+      "conditional one-business-day posting-slip adversary"
+    ],
+    "planned_benchmarks": 1,
+    "not_independent_trials": true,
+    "prior_unplanned_rate_panel_and_Liquidia_disclosure_preserved": true,
+    "private_history": "UNKNOWN",
+    "effective_independent_M": "UNKNOWN",
+    "seed_consumptions": 0
+  },
+  "observable_cost": {
+    "primary_document_requests_total_for_action": 1,
+    "new_primary_requests_on_resume": 0,
+    "received_body_bytes": 15059,
+    "request_wall_seconds_sum": 0.20992651098640636,
+    "retries": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "agent_active_minutes": null,
+    "elapsed_interruption_not_agent_work": true
+  },
+  "interruption_reconciliation": "Valaris receipt acquired2026-10-14 and local L1 design retained. Fresh same HEAD/CONTROL checked on2026-10-15; original receipt/hash reused, no refetch, no original economic result exists or is recomputed. Pending work finished, not a second research loop.",
+  "bounds": {
+    "economic_payloads": 0,
+    "max_agent_minutes": 15,
+    "max_bytes_per_document": 524288,
+    "max_primary_document_requests": 3,
+    "max_total_document_bytes": 1572864,
+    "retries": 0
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "VX_register_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false,
+    "account_created": false,
+    "economic_claim_created": false
+  }
+}

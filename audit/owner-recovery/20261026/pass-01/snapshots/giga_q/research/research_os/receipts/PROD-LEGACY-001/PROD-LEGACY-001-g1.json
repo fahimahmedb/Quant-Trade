@@ -1,0 +1,13 @@
+{
+  "receipt_id":"PROD-LEGACY-001-g1",
+  "task_id":"PROD-LEGACY-001",
+  "worker_id":"evidence-data-workflow",
+  "lane":"evidence_data",
+  "lease_generation":1,
+  "started_at":"2026-10-15T13:21:26Z",
+  "completed_at":"2026-10-15T13:21:26Z",
+  "stages":["recover_or_qualify","provenance_check","gap_classification"],
+  "artifacts":["research/research_os/artifacts/PROD-LEGACY-001/recovery-result.json"],
+  "result":"COMPLETE_RECOVERY_EXHAUSTED_RESULT_UNKNOWN",
+  "authority_preserved":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}
+}

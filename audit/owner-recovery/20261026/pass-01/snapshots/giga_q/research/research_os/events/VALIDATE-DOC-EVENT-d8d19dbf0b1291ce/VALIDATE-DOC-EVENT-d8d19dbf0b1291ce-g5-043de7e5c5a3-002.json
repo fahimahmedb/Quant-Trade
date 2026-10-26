@@ -1,0 +1,20 @@
+{
+  "action_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
+  "emitted_at": "2026-10-20T04:40:29Z",
+  "event_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3-2",
+  "event_seq": 2,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 5,
+  "payload": {
+    "active_count": 0,
+    "claimed_count": 0,
+    "queue_state": "IDLE",
+    "ready_count": 0,
+    "result": "COMPLETE",
+    "stage": "integration_handoff",
+    "task_count": 36,
+    "terminal_count": 36
+  },
+  "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3",
+  "worker_id": "oracle-research-v1.independent_challenge"
+}

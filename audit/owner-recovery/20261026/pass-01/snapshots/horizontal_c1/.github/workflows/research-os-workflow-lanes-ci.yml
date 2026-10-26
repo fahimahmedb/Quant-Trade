@@ -1,0 +1,37 @@
+name: Research OS workflow lanes CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-autonomous-loop-20261015
+    paths:
+      - 'research/research_os/runtime/**'
+      - 'research/research_os/tests/test_workflow_lanes.py'
+      - '.github/workflows/research-os-workflow-lanes-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  workflow-lanes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Simulate three hourly cycles
+        run: python -m research.research_os.runtime.workflow_simulator
+      - name: Run workflow lane tests
+        run: python -m unittest research.research_os.tests.test_workflow_lanes -v
+      - name: Assert workflow safety
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('research/research_os/simulations/workflow_lane_simulation_result.json').read_text())
+          assert d['status']=='PASS'
+          assert d['one_lineage_per_wake'] is True
+          assert d['self_validation_detected'] is False
+          assert d['deadlock_detected'] is False
+          assert d['authority_safe'] is True
+          print('WORKFLOW_LANES=PASS')
+          PY

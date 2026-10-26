@@ -1,0 +1,23 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"quant-trade://research-os/HypothesisContract",
+  "title":"HypothesisContract",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["hypothesis_id","family_id","generation_id","parent_generation_ids","mechanism","claim","prediction","falsification_scope","decision_map","freeze_status","authority"],
+  "properties":{
+    "hypothesis_id":{"type":"string","minLength":1},
+    "family_id":{"type":"string","minLength":1},
+    "generation_id":{"type":"string","minLength":1},
+    "parent_generation_ids":{"type":"array","items":{"type":"string"}},
+    "mechanism":{"type":"string","minLength":1},
+    "claim":{"type":"string","minLength":1},
+    "prediction":{"type":"string","minLength":1},
+    "falsification_scope":{"type":"string","minLength":1},
+    "decision_map":{"type":"object"},
+    "freeze_status":{"enum":["DRAFT","FROZEN"]},
+    "frozen_at":{"type":["string","null"]},
+    "amendments":{"type":"array","items":{"type":"object"}},
+    "authority":{"type":"object"}
+  }
+}

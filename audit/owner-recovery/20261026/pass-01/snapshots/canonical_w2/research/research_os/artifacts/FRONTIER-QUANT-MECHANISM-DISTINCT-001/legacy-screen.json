@@ -1,0 +1,12 @@
+{
+  "task_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-001",
+  "stage":"legacy_duplicate_check",
+  "legacy_source_commit":"183ad65ff260b903a16548ce37948f54d47a9ec8",
+  "legacy_ledger_blob_sha":"ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+  "screened_at":"2026-10-16T06:58:00Z",
+  "candidate_mechanism_under_screen":"short-dated index-option dealer delta/gamma hedging pressure on the underlying",
+  "relevant_legacy_families":["multiasset-trend-carry","policy-calendar-pre-fomc","month-end-pension-rebalance","sector-cross-sectional-reversal","time-series-momentum-macro"],
+  "exact_duplicate_found":false,
+  "note":"No exact legacy family in the pinned ledger excerpt is the dealer option-hedging mechanism. Novelty alone is insufficient; mechanism-level disconfirmation remains mandatory before freeze.",
+  "economic_outcome_accessed":false
+}

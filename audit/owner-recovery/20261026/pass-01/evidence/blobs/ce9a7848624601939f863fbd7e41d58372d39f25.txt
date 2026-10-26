@@ -1,0 +1,114 @@
+name: Wave2 C2 Multi-Source Integrity Repair
+
+on:
+  push:
+    branches:
+      - builder/wave2-c2-final-qualification-repair-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  REPAIR_PARENT_SHA: d74d085903f409fdd224c3c894c6d6965e4a7d77
+  WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  exact-head-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Exact head and ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$WAVE2_IMMUTABLE_BASE_SHA" HEAD
+          git merge-base --is-ancestor "$REPAIR_PARENT_SHA" HEAD
+
+      - name: Compile repaired surfaces
+        run: |
+          python -m py_compile \
+            research/research_os/multi_source_ideation.py \
+            research/research_os/ideation_cycle.py \
+            research/research_os/multi_source_ideation_hardening.py \
+            research/research_os/multi_source_ideation_bindings.py \
+            research/research_os/policy_c_safe.py
+
+      - name: Canonical and adversarial Multi-Source suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v research.research_os.tests.test_multi_source_ideation_v2
+          python -m unittest discover -s tests -p 'test_multi_source_ideation_v2*.py' -v 2>&1 | tee /tmp/multisource.log
+          python -m unittest -v tests.test_wave2_c2_multi_source_integrity_repair 2>&1 | tee /tmp/integrity.log
+          grep -E '^Ran [0-9]+ tests' /tmp/multisource.log | tail -1
+          grep -E '^Ran [0-9]+ tests' /tmp/integrity.log | tail -1
+
+      - name: Direct passive-boundary proof
+        run: |
+          python - <<'PY'
+          from research.research_os.multi_source_ideation import raw_artifact, side_effect_zeroes
+          from research.research_os.multi_source_ideation_hardening import DurableProposalLedger
+
+          for payload in (
+              {'pnl': 1},
+              {'nested': {'return_series': [0.1]}},
+              {'nested': [{'price_series': [1, 2]}]},
+              {'nested': {'deeper': {'economic_result': 'positive'}}},
+          ):
+              try:
+                  raw_artifact(
+                      policy_kind='SYSTEMATIC_COVERAGE',
+                      status='PROPOSAL_EMITTED',
+                      context_snapshot_hash='ctx',
+                      artifact_kind='IDEA_PROPOSAL',
+                      payload=payload,
+                  )
+              except ValueError as exc:
+                  assert 'outcome-bearing ideation field forbidden' in str(exc)
+              else:
+                  raise AssertionError(payload)
+
+          ledger = DurableProposalLedger()
+          try:
+              ledger.persist({'proposal_id': 'P', 'nested': {'fills': [{'px': 1}]}})
+          except ValueError as exc:
+              assert 'outcome-bearing ideation field forbidden' in str(exc)
+          else:
+              raise AssertionError('ledger accepted outcome-bearing payload')
+
+          assert ledger.snapshot() == []
+          assert all(value == 0 for value in side_effect_zeroes().values())
+          PY
+
+      - name: Static mission-scope membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "$REPAIR_PARENT_SHA"...HEAD | sort | tee /tmp/repair.paths
+          unexpected="$(grep -Ev '^(research/research_os/(multi_source_ideation\.py|ideation_cycle\.py|multi_source_ideation_hardening\.py)|tests/test_wave2_c2_multi_source_integrity_repair\.py|\.github/workflows/(wave2-c2-multisource-qualification\.yml|wave2-c2-multisource-integrity-repair\.yml))$' /tmp/repair.paths || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected repair-scope files:" >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+
+      - name: Prove no operational authority opened
+        run: |
+          python - <<'PY'
+          from research.research_os.multi_source_ideation import side_effect_zeroes
+          assert all(value == 0 for value in side_effect_zeroes().values())
+          PY
+
+      - name: Clean tree
+        shell: bash
+        run: test -z "$(git status --porcelain)"

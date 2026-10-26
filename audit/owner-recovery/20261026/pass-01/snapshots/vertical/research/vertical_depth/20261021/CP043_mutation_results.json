@@ -1,0 +1,68 @@
+{
+  "fixed_source_sha256": {
+    "src/quant/dataplane/identity.py": "fffae01bbeacb2043b4cf355ebbee7cff79ad9186633585dfb0156d66440ae82",
+    "src/quant/dataplane/corporate_actions.py": "a5b80126fa6da63d07e2191811dfb37765d7fa416470a6fcea02e53ef9f8c9c4"
+  },
+  "mutants": [
+    {
+      "mutation": "IssuerIdentity",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.08s",
+      "log": "CP043_mutant_IssuerIdentity.txt"
+    },
+    {
+      "mutation": "IssuerNameInterval",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.07s",
+      "log": "CP043_mutant_IssuerNameInterval.txt"
+    },
+    {
+      "mutation": "SecurityIdentity",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.08s",
+      "log": "CP043_mutant_SecurityIdentity.txt"
+    },
+    {
+      "mutation": "TickerInterval",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.13s",
+      "log": "CP043_mutant_TickerInterval.txt"
+    },
+    {
+      "mutation": "ListingInterval",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.07s",
+      "log": "CP043_mutant_ListingInterval.txt"
+    },
+    {
+      "mutation": "action_lineage",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.09s",
+      "log": "CP043_mutant_action_lineage.txt"
+    },
+    {
+      "mutation": "action_legs",
+      "exit_code": 1,
+      "summary": "3 failed, 44 passed in 0.08s",
+      "log": "CP043_mutant_action_legs.txt"
+    },
+    {
+      "mutation": "identity_container",
+      "exit_code": 1,
+      "summary": "10 failed, 37 passed in 0.10s",
+      "log": "CP043_mutant_identity_container.txt"
+    },
+    {
+      "mutation": "action_evidence_container",
+      "exit_code": 1,
+      "summary": "2 failed, 45 passed in 0.08s",
+      "log": "CP043_mutant_action_evidence_container.txt"
+    },
+    {
+      "mutation": "action_legs_container",
+      "exit_code": 1,
+      "summary": "2 failed, 45 passed in 0.10s",
+      "log": "CP043_mutant_action_legs_container.txt"
+    }
+  ]
+}

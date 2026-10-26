@@ -1,0 +1,139 @@
+{
+  "adapters": [
+    {
+      "adapter_id": "ADAPTER-REG-FILINGS-V1",
+      "provider_family": "REGULATORY_DISCLOSURE",
+      "data_class": "REGULATORY_FILINGS",
+      "permission_model": "PUBLIC_OR_PERMITTED_ROUTE_REQUIRED",
+      "clock_semantics": "ACCEPTANCE_OR_PUBLICATION_TIME_MUST_BE_PRESERVED",
+      "revision_policy": "ORIGINAL_AND_AMENDMENTS_RETAINED_SEPARATELY",
+      "survivorship_policy": "INACTIVE_AND_DELISTED_ENTITIES_MUST_REMAIN_ADDRESSABLE",
+      "locator_template": "design://regulatory-filings/{entity}/{accession}",
+      "activation_state": "DESIGN_ONLY_NOT_CONNECTED",
+      "network_access": false,
+      "contains_market_outcome": false,
+      "allowed_content": ["filing_metadata", "document_text", "filing_clock", "entity_identity"],
+      "forbidden_content": ["returns", "payoffs", "future_outcomes", "post_event_price_response"]
+    },
+    {
+      "adapter_id": "ADAPTER-CORP-IR-V1",
+      "provider_family": "CORPORATE_DISCLOSURE",
+      "data_class": "CORPORATE_IR",
+      "permission_model": "PUBLIC_OR_PERMITTED_ROUTE_REQUIRED",
+      "clock_semantics": "FIRST_PUBLICATION_TIME_AND_REVISION_CHAIN_REQUIRED",
+      "revision_policy": "VERSIONS_AND_REPLACEMENTS_RETAINED",
+      "survivorship_policy": "HISTORICAL_ISSUER_DOCUMENTS_NOT_DROPPED_ON_STATUS_CHANGE",
+      "locator_template": "design://corporate-ir/{issuer}/{document_id}",
+      "activation_state": "DESIGN_ONLY_NOT_CONNECTED",
+      "network_access": false,
+      "contains_market_outcome": false,
+      "allowed_content": ["earnings_release", "guidance", "presentation", "publication_clock"],
+      "forbidden_content": ["returns", "payoffs", "future_outcomes", "post_release_price_response"]
+    },
+    {
+      "adapter_id": "ADAPTER-EXCHANGE-REF-V1",
+      "provider_family": "EXCHANGE_REFERENCE",
+      "data_class": "EXCHANGE_REFERENCE",
+      "permission_model": "PUBLIC_OR_PERMITTED_ROUTE_REQUIRED",
+      "clock_semantics": "REFERENCE_EFFECTIVE_TIME_AND_VERSION_MUST_BE_PRESERVED",
+      "revision_policy": "REFERENCE_VERSIONS_RETAINED",
+      "survivorship_policy": "DELISTED_AND_INACTIVE_INSTRUMENT_IDENTITIES_RETAINED",
+      "locator_template": "design://exchange-reference/{venue}/{instrument}",
+      "activation_state": "DESIGN_ONLY_NOT_CONNECTED",
+      "network_access": false,
+      "contains_market_outcome": false,
+      "allowed_content": ["instrument_identity", "venue", "calendar", "reference_terms"],
+      "forbidden_content": ["returns", "payoffs", "future_outcomes", "execution_prices"]
+    },
+    {
+      "adapter_id": "ADAPTER-INDEX-RULES-V1",
+      "provider_family": "INDEX_AND_REBALANCE_RULES",
+      "data_class": "PUBLIC_INDEX_RULES",
+      "permission_model": "PUBLIC_OR_PERMITTED_ROUTE_REQUIRED",
+      "clock_semantics": "ANNOUNCEMENT_AND_EFFECTIVE_CLOCKS_SEPARATED",
+      "revision_policy": "RULEBOOK_AND_NOTICE_VERSIONS_RETAINED",
+      "survivorship_policy": "HISTORICAL_CONSTITUENT_AND_RULE_STATES_RETAINED",
+      "locator_template": "design://index-rules/{family}/{notice_id}",
+      "activation_state": "DESIGN_ONLY_NOT_CONNECTED",
+      "network_access": false,
+      "contains_market_outcome": false,
+      "allowed_content": ["rulebook", "announcement_clock", "effective_clock", "eligibility_terms"],
+      "forbidden_content": ["returns", "payoffs", "future_outcomes", "implementation_price_response"]
+    },
+    {
+      "adapter_id": "ADAPTER-OFFICIAL-MACRO-V1",
+      "provider_family": "OFFICIAL_STATISTICS_AND_POLICY",
+      "data_class": "OFFICIAL_MACRO",
+      "permission_model": "PUBLIC_OR_PERMITTED_ROUTE_REQUIRED",
+      "clock_semantics": "RELEASE_TIME_AND_VINTAGE_REQUIRED",
+      "revision_policy": "VINTAGES_AND_REVISIONS_RETAINED",
+      "survivorship_policy": "HISTORICAL_SERIES_VINTAGES_RETAINED",
+      "locator_template": "design://official-macro/{publisher}/{series_or_release}",
+      "activation_state": "DESIGN_ONLY_NOT_CONNECTED",
+      "network_access": false,
+      "contains_market_outcome": false,
+      "allowed_content": ["release_metadata", "series_vintage", "policy_document", "release_clock"],
+      "forbidden_content": ["returns", "payoffs", "future_outcomes", "market_reaction"]
+    }
+  ],
+  "adapter_map": {
+    "SYN-QUANT-001": ["ADAPTER-EXCHANGE-REF-V1"],
+    "SYN-FUND-001": ["ADAPTER-REG-FILINGS-V1", "ADAPTER-CORP-IR-V1"],
+    "SYN-EVENT-001": ["ADAPTER-REG-FILINGS-V1", "ADAPTER-CORP-IR-V1"],
+    "SYN-FLOW-001": ["ADAPTER-INDEX-RULES-V1", "ADAPTER-OFFICIAL-MACRO-V1"]
+  },
+  "engine_details": {
+    "SYN-QUANT-001": {
+      "trigger": "Extreme temporary synthetic liquidity imbalance defined before any outcome inspection.",
+      "payer_or_forced_actor": "Temporary liquidity demander crossing a constrained synthetic book.",
+      "structural_reason": "Urgency and inventory pressure can create transient dislocation independent of long-run value.",
+      "expression": "Frozen cross-sectional ranking and short-horizon reversal expression; parameters remain preregistered.",
+      "universe_definition": "Synthetic equity universe with identity, venue and calendar eligibility frozen at decision time.",
+      "confounders": ["market-wide reversal", "stale reference state", "corporate event contamination", "cross-sectional beta shock"],
+      "disconfirmation_checks": ["pressure proxy lacks causal relation to urgency", "effect disappears under frozen neutralization", "signal is duplicate legacy exposure"],
+      "source_clock_frozen": true,
+      "active_disconfirmation": true,
+      "outcome_accessed": false
+    },
+    "SYN-FUND-001": {
+      "issuer_identity": "Synthetic issuer identity frozen with stable entity mapping and security lineage.",
+      "financial_statements": "Point-in-time synthetic income statement, balance sheet and cash-flow statement vintages.",
+      "earnings_and_guidance": "Earnings release and guidance versions separated by first-publication clock.",
+      "estimate_revisions": "Consensus-state design field only; no post-freeze realized revision outcome consumed.",
+      "valuation_frame": "Predeclared multiple and cash-flow valuation frame with scenario bounds, not target-price fitting.",
+      "balance_sheet_quality": "Debt, liquidity, maturity and working-capital diagnostics defined ex ante.",
+      "cash_flow_quality": "Cash conversion, capex intensity and working-capital bridge defined ex ante.",
+      "competitive_position": "Synthetic market position, pricing power and substitution risks encoded as falsifiable claims.",
+      "catalysts": ["margin normalization milestone", "cash conversion milestone", "guidance confirmation"],
+      "disconfirmation_checks": ["margin improvement is mix-only", "cash improvement is working-capital timing", "valuation gap is explained by balance-sheet risk"],
+      "source_clock_frozen": true,
+      "active_disconfirmation": true,
+      "outcome_accessed": false
+    },
+    "SYN-EVENT-001": {
+      "event_identity": "Synthetic guidance-document revision with immutable document pair identity.",
+      "document_clock": "First-publication clock frozen independently from later amendments.",
+      "eligibility_rule": "Only documents satisfying predeclared issuer, document-type and timing rules are admissible.",
+      "novel_information": "Structured change in guidance language classified before any market response is accessed.",
+      "diffusion_hypothesis": "Information may diffuse through analyst and investor processing with a bounded lag.",
+      "confounders": ["simultaneous earnings release", "macro announcement", "capital action", "document replacement"],
+      "disconfirmation_checks": ["language change is boilerplate", "information was already public", "revision classification depends on later knowledge"],
+      "source_clock_frozen": true,
+      "active_disconfirmation": true,
+      "outcome_accessed": false
+    },
+    "SYN-FLOW-001": {
+      "forced_actor": "Synthetic benchmark-constrained or mandate-constrained institutional holder.",
+      "constraint_rule": "Predeclared rebalance or eligibility rule that creates non-discretionary demand or supply.",
+      "implementation_clock": "Announcement and effective implementation clocks kept separate.",
+      "affected_universe": "Synthetic securities meeting frozen index or mandate eligibility rules.",
+      "expected_footprint": "Temporary pressure around the implementation window followed by potential normalization; no realized footprint inspected.",
+      "capacity_constraints": "Capacity depends on ADV, participation, crowding and implementation concentration and remains unqualified for the current Flow candidate.",
+      "confounders": ["fundamental news", "market-wide flow", "dealer inventory shock", "rule interpretation ambiguity"],
+      "disconfirmation_checks": ["actor is not actually forced", "announcement timing is endogenous", "capacity costs dominate theoretical pressure", "same exposure already exists in legacy knowledge"],
+      "source_clock_frozen": true,
+      "active_disconfirmation": true,
+      "outcome_accessed": false
+    }
+  }
+}

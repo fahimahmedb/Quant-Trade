@@ -1,0 +1,406 @@
+FFFFFFFFF.....FFFFFFFFFFFFFFF.F.                                         [100%]
+=================================== FAILURES ===================================
+___ test_adapter_required_text_cannot_qualify_from_ambiguity[   -adapter_id] ___
+
+field = 'adapter_id', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[   -provider_family] _
+
+field = 'provider_family', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[   -permission_model] _
+
+field = 'permission_model', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[   -clock_semantics] _
+
+field = 'clock_semantics', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[   -revision_policy] _
+
+field = 'revision_policy', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[   -survivorship_policy] _
+
+field = 'survivorship_policy', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[   -locator_template] _
+
+field = 'locator_template', value = '   '
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[UNKNOWN-adapter_id] _
+
+field = 'adapter_id', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[UNKNOWN-provider_family] _
+
+field = 'provider_family', value = 'UNKNOWN'
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+__ test_adapter_required_text_cannot_qualify_from_ambiguity[True-adapter_id] ___
+
+field = 'adapter_id', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[True-provider_family] _
+
+field = 'provider_family', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[True-permission_model] _
+
+field = 'permission_model', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[True-clock_semantics] _
+
+field = 'clock_semantics', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[True-revision_policy] _
+
+field = 'revision_policy', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[True-survivorship_policy] _
+
+field = 'survivorship_policy', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+_ test_adapter_required_text_cannot_qualify_from_ambiguity[True-locator_template] _
+
+field = 'locator_template', value = True
+
+    @pytest.mark.parametrize('field',['adapter_id','provider_family','permission_model','clock_semantics','revision_policy','survivorship_policy','locator_template'])
+    @pytest.mark.parametrize('value',['   ','UNKNOWN',True])
+    def test_adapter_required_text_cannot_qualify_from_ambiguity(field,value):
+        item=spec();item[field]=value
+>       assert adapters.validate_adapter_spec(item)['status']=='BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_adapter_registry_depth.py:20: AssertionError
+__ test_design_registry_reconstructs_the_supplied_qualification[status-BLOCK] __
+
+field = 'status', value = 'BLOCK'
+
+    @pytest.mark.parametrize('field,value',[('status','BLOCK'),('activated',True),('network_access',True),
+        ('outcome_access_authorized',True),('adapter_hash','a'*64),('adapter_id','foreign')])
+    def test_design_registry_reconstructs_the_supplied_qualification(field,value):
+        item=adapters.validate_adapter_spec(spec());item[field]=value
+        registry=adapters.DesignOnlyAdapterRegistry()
+>       with pytest.raises(ValueError):registry.register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:28: Failed
+_ test_design_registry_reconstructs_the_supplied_qualification[activated-True] _
+
+field = 'activated', value = True
+
+    @pytest.mark.parametrize('field,value',[('status','BLOCK'),('activated',True),('network_access',True),
+        ('outcome_access_authorized',True),('adapter_hash','a'*64),('adapter_id','foreign')])
+    def test_design_registry_reconstructs_the_supplied_qualification(field,value):
+        item=adapters.validate_adapter_spec(spec());item[field]=value
+        registry=adapters.DesignOnlyAdapterRegistry()
+>       with pytest.raises(ValueError):registry.register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:28: Failed
+_ test_design_registry_reconstructs_the_supplied_qualification[network_access-True] _
+
+field = 'network_access', value = True
+
+    @pytest.mark.parametrize('field,value',[('status','BLOCK'),('activated',True),('network_access',True),
+        ('outcome_access_authorized',True),('adapter_hash','a'*64),('adapter_id','foreign')])
+    def test_design_registry_reconstructs_the_supplied_qualification(field,value):
+        item=adapters.validate_adapter_spec(spec());item[field]=value
+        registry=adapters.DesignOnlyAdapterRegistry()
+>       with pytest.raises(ValueError):registry.register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:28: Failed
+_ test_design_registry_reconstructs_the_supplied_qualification[outcome_access_authorized-True] _
+
+field = 'outcome_access_authorized', value = True
+
+    @pytest.mark.parametrize('field,value',[('status','BLOCK'),('activated',True),('network_access',True),
+        ('outcome_access_authorized',True),('adapter_hash','a'*64),('adapter_id','foreign')])
+    def test_design_registry_reconstructs_the_supplied_qualification(field,value):
+        item=adapters.validate_adapter_spec(spec());item[field]=value
+        registry=adapters.DesignOnlyAdapterRegistry()
+>       with pytest.raises(ValueError):registry.register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:28: Failed
+_ test_design_registry_reconstructs_the_supplied_qualification[adapter_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa] _
+
+field = 'adapter_hash'
+value = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+
+    @pytest.mark.parametrize('field,value',[('status','BLOCK'),('activated',True),('network_access',True),
+        ('outcome_access_authorized',True),('adapter_hash','a'*64),('adapter_id','foreign')])
+    def test_design_registry_reconstructs_the_supplied_qualification(field,value):
+        item=adapters.validate_adapter_spec(spec());item[field]=value
+        registry=adapters.DesignOnlyAdapterRegistry()
+>       with pytest.raises(ValueError):registry.register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:28: Failed
+_ test_design_registry_reconstructs_the_supplied_qualification[adapter_id-foreign] _
+
+field = 'adapter_id', value = 'foreign'
+
+    @pytest.mark.parametrize('field,value',[('status','BLOCK'),('activated',True),('network_access',True),
+        ('outcome_access_authorized',True),('adapter_hash','a'*64),('adapter_id','foreign')])
+    def test_design_registry_reconstructs_the_supplied_qualification(field,value):
+        item=adapters.validate_adapter_spec(spec());item[field]=value
+        registry=adapters.DesignOnlyAdapterRegistry()
+>       with pytest.raises(ValueError):registry.register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:28: Failed
+__________ test_changed_canonical_body_cannot_reuse_a_validated_hash ___________
+
+    def test_changed_canonical_body_cannot_reuse_a_validated_hash():
+        item=adapters.validate_adapter_spec(spec());item['canonical_spec']['allowed_content'].append('returns')
+>       with pytest.raises(ValueError):adapters.DesignOnlyAdapterRegistry().register(item)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_adapter_registry_depth.py:34: Failed
+_______ test_competing_designs_cannot_both_publish_same_adapter_identity _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f929c22d760>
+
+    def test_competing_designs_cannot_both_publish_same_adapter_identity(monkeypatch):
+        one=adapters.validate_adapter_spec(spec());changed=spec();changed['locator_template']='fixture://different'
+        two=adapters.validate_adapter_spec(changed)
+        registry=adapters.DesignOnlyAdapterRegistry();entered,release,started=threading.Event(),threading.Event(),threading.Event()
+        original=adapters.deepcopy
+        def held(value):
+            if isinstance(value,dict) and value.get('adapter_hash')==one['adapter_hash']:
+                entered.set();assert release.wait(5)
+            return original(value)
+        monkeypatch.setattr(adapters,'deepcopy',held)
+        def second():started.set();return registry.register(two)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            first=pool.submit(registry.register,one)
+            try:
+                assert entered.wait(5);other=pool.submit(second);assert started.wait(5)
+>               assert not other.done()
+E               assert not True
+E                +  where True = done()
+E                +    where done = <Future at 0x7f929c22f350 state=finished returned dict>.done
+
+tests/test_vertical_adapter_registry_depth.py:52: AssertionError
+______ test_design_batch_retains_only_valid_prefix_and_can_resume[False] _______
+
+iterator_failure = False
+
+    @pytest.mark.parametrize('iterator_failure',[False,True])
+    def test_design_batch_retains_only_valid_prefix_and_can_resume(iterator_failure):
+        one=adapters.validate_adapter_spec(spec());changed=spec();changed['adapter_id']='SECOND'
+        two=adapters.validate_adapter_spec(changed);bad=deepcopy(two);bad['activated']=True
+        registry=adapters.DesignOnlyAdapterRegistry()
+        def inputs():
+            yield one
+            if iterator_failure:raise RuntimeError('injected iterator failure')
+            yield bad
+>       with pytest.raises((ValueError,RuntimeError)):registry.register_many(inputs())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, RuntimeError)
+
+tests/test_vertical_adapter_registry_depth.py:78: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -adapter_id]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -provider_family]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -permission_model]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -clock_semantics]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -revision_policy]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -survivorship_policy]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[   -locator_template]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[UNKNOWN-adapter_id]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[UNKNOWN-provider_family]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-adapter_id]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-provider_family]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-permission_model]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-clock_semantics]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-revision_policy]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-survivorship_policy]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_adapter_required_text_cannot_qualify_from_ambiguity[True-locator_template]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_registry_reconstructs_the_supplied_qualification[status-BLOCK]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_registry_reconstructs_the_supplied_qualification[activated-True]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_registry_reconstructs_the_supplied_qualification[network_access-True]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_registry_reconstructs_the_supplied_qualification[outcome_access_authorized-True]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_registry_reconstructs_the_supplied_qualification[adapter_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_registry_reconstructs_the_supplied_qualification[adapter_id-foreign]
+FAILED tests/test_vertical_adapter_registry_depth.py::test_changed_canonical_body_cannot_reuse_a_validated_hash
+FAILED tests/test_vertical_adapter_registry_depth.py::test_competing_designs_cannot_both_publish_same_adapter_identity
+FAILED tests/test_vertical_adapter_registry_depth.py::test_design_batch_retains_only_valid_prefix_and_can_resume[False]
+25 failed, 7 passed in 0.12s

@@ -1,0 +1,13 @@
+{
+  "after_source_sha": "4868b150c1020b54f1814c9173ed188d98da5b32",
+  "before_module_source_sha": "61e45e88a4812f489ee14c6c0df0cbe6ab25fd8b",
+  "fixture": "tests/test_vertical_watchdog_clock_depth.py",
+  "fixture_sha256": "85cc40fc69cba30eaad06b15369580184981b2fcd16c8ee61983387a6685af8b",
+  "module_fingerprints": {
+    "src/autonomous_research/watchdog.py": {
+      "after": "221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea",
+      "before": "337623fdb15cfe00793c1d67bfd1656297f774043de267325466cff053e691b4"
+    }
+  },
+  "new_final_fixture_retained_for_before": true
+}

@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-10-26T01:52:18.545339+00:00",
+  "required_deliverables": 25,
+  "consistency_checks": {
+    "branch_rows": true,
+    "cp_rows": true,
+    "frontier_rows": true,
+    "idea_rows": true,
+    "capability_rows": true,
+    "positive_rows": true,
+    "positive_termini": true,
+    "frozen_dispositions": true,
+    "gap_branches": true,
+    "gap_cps": true,
+    "gap_positive": true,
+    "contradictions_open": true,
+    "explicit_incomplete": true
+  },
+  "errors": [],
+  "product_tests_run": false,
+  "product_edits": false,
+  "completeness": "INCOMPLETE"
+}

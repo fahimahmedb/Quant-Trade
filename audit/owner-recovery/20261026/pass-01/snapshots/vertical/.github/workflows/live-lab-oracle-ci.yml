@@ -1,0 +1,54 @@
+name: Live Lab Oracle integration CI
+
+on:
+  push:
+    branches:
+      - builder/live-lab-oracle-canonical-20261020
+      - builder/v2-forward-20261020
+      - builder/oracle-v2-core-20261020
+    paths:
+      - 'research/live_lab_ux/**'
+      - 'research/research_os/live_lab_contract.py'
+      - 'research/research_os/oracle_live_worker.py'
+      - 'research/research_os/tests/test_live_lab_contract.py'
+      - '.github/workflows/live-lab-oracle-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  oracle-live-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Compile Oracle Live bridge
+        run: python -m py_compile research/research_os/live_lab_contract.py research/research_os/oracle_live_worker.py
+      - name: Verify truth-preserving Oracle metadata contract
+        run: |
+          python -m unittest research.research_os.tests.test_live_lab_contract
+          python -c "from research.research_os.live_lab_contract import assert_live_ui_contract; assert_live_ui_contract()"
+      - name: Run complete Live Lab unit suite
+        working-directory: research/live_lab_ux
+        run: node --test tests/*.test.js
+      - name: Syntax-check browser modules
+        working-directory: research/live_lab_ux
+        run: find . -path './node_modules' -prune -o -name '*.js' -type f -print0 | xargs -0 -n1 node --check
+      - name: Assert frozen authorities remain closed
+        run: |
+          python - <<'PY'
+          from research.research_os.oracle_worker import AUTHORITY
+          assert AUTHORITY == {
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+          }
+          PY

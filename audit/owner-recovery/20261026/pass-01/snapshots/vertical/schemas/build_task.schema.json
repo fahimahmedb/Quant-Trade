@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "A capability gap the system raised for the Build Plane.",
+  "properties": {
+    "acceptance": {
+      "type": "string"
+    },
+    "affected_subsystems": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "capability": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "evidence": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "priority": {
+      "type": "number"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "capability",
+    "reason",
+    "affected_subsystems",
+    "acceptance",
+    "priority"
+  ],
+  "title": "build_task",
+  "type": "object"
+}

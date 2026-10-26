@@ -1,0 +1,15 @@
+{
+  "event_id": "VALIDATE-FLOW-ADR-TERM-001-g1-e2",
+  "session_id": "VALIDATE-FLOW-ADR-TERM-001-g1",
+  "worker_id": "chatgpt-interactive-validator",
+  "action_id": "VALIDATE-FLOW-ADR-TERM-001",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 2,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:39:20Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "ADR termination validation complete",
+    "detail": "Documentary challenge supports EXPLORE/test-design readiness with explicit exclusion of mandatory-exchange terminations; no prices, returns, prospective observation, capital or live trading accessed."
+  }
+}

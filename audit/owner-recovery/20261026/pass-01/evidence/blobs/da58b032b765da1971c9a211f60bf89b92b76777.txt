@@ -1,0 +1,303 @@
+name: F1 Stage B single documented evaluation
+
+on:
+  push:
+    branches: ['builder/f1-sealed-stage-b-capture-2026-10-09']
+    paths:
+      - '.github/workflows/f1-stage-b-evaluate.yml'
+      - 'research/crypto_carry_f1/verification/stage_b_execution.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+  issues: write
+
+concurrency:
+  group: f1-stage-b-single-documented-evaluation
+  cancel-in-progress: false
+
+env:
+  A_SHA256: 554988d5c136caf43387d5338e0db226516e4a8b9e9a7ddf42c290aac6dbab03
+  HARNESS_SHA256: 5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c
+  CAPTURE_RUN_ID: '37901109334'
+  CAPTURE_RUN_ATTEMPT: '2'
+  CAPTURE_COMMIT: 0ba4c055dbf7a3c7301383e01aa71b680a4bbddd
+  CAPTURE_PLAN_SHA256: f7fbab497e616b28051536231c6fc593a02a87b048d3635ed6d4bc89cb461b85
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      VERIFICATION_PATH: research/crypto_carry_f1/verification/stage_b_capture-${{ github.run_id }}-${{ github.run_attempt }}.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Frozen synthetic research regressions
+        run: python3 -B -m unittest research.crypto_carry_f1.test_capture_stage_a research.crypto_carry_f1.test_run_f1 research.crypto_carry_f1.test_liquidity_ranking_f1 research.crypto_carry_f1.test_decision_integrity_f1
+      - name: Authenticate the published Stage A result and execution disposition
+        run: |
+          python3 -B - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('research/crypto_carry_f1')
+          result = root / 'results/stage_a_result_2026-10-09.json'
+          sha = hashlib.sha256(result.read_bytes()).hexdigest()
+          assert sha == os.environ['A_SHA256']
+          a = json.loads(result.read_bytes())
+          meta = json.loads(result.with_suffix('.meta.json').read_bytes())
+          decision = json.loads((root / 'verification/stage_b_execution.json').read_bytes())
+          exposure = json.loads((root / 'verification/stage_a_exposure.json').read_bytes())
+          assert exposure['prior_outcome_exposed'] is not True, 'known prior exposure requires reconciliation'
+          assert a['stage'] == 'STAGE_A' and a['harness_sha256'] == os.environ['HARNESS_SHA256']
+          assert hashlib.sha256((root / 'run_f1.py').read_bytes()).hexdigest() == os.environ['HARNESS_SHA256']
+          assert meta['result_sha256'] == sha and a['selected_theta'] == 0.2
+          assert decision['stage_a_result_sha256'] == sha and decision['selected_theta'] == 0.2
+          assert decision['capture_run_id'] == int(os.environ['CAPTURE_RUN_ID'])
+          assert decision['capture_run_attempt'] == int(os.environ['CAPTURE_RUN_ATTEMPT'])
+          assert decision['capture_commit'] == os.environ['CAPTURE_COMMIT']
+          assert decision['capture_plan_sha256'] == os.environ['CAPTURE_PLAN_SHA256']
+          assert decision['disposition'] == 'EXECUTE_SINGLE_DOCUMENTED_EVALUATION'
+          assert decision['confirmatory_claim_authorized'] is False
+          assert hashlib.sha256((root / 'results/STAGE_A_REPORT_2026-10-09.md').read_bytes()).hexdigest() == decision['stage_a_report_sha256']
+          print('Published A result, theta, harness and bounded result-review disposition authenticated.')
+          PY
+      - name: Wait for the existing sealed capture without acquiring another copy
+        timeout-minutes: 210
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PY'
+          import json, os, subprocess, time
+          endpoint = f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['CAPTURE_RUN_ID']}"
+          deadline = time.monotonic() + 205 * 60
+          while time.monotonic() < deadline:
+              run = json.loads(subprocess.check_output(['gh', 'api', endpoint]))
+              assert run['head_sha'] == os.environ['CAPTURE_COMMIT'] and run['run_attempt'] == int(os.environ['CAPTURE_RUN_ATTEMPT'])
+              print(f"Sealed capture {run['id']}: {run['status']} / {run['conclusion']}", flush=True)
+              if run['status'] == 'completed':
+                  assert run['conclusion'] == 'success', 'capture failed; no outcome read or look claimed'
+                  break
+              time.sleep(60)
+          else:
+              raise RuntimeError('capture not complete; no outcome read or look claimed')
+          PY
+      - name: Recover only the completed capture artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CAPTURE_RUN_ID/artifacts" > "$RUNNER_TEMP/b-artifacts.json"
+          python3 -B - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          rows = json.loads((root / 'b-artifacts.json').read_bytes())['artifacts']
+          name = f"f1-stage-b-sealed-capture-{os.environ['CAPTURE_RUN_ID']}-{os.environ['CAPTURE_RUN_ATTEMPT']}"
+          found = [a for a in rows if a['name'] == name and not a['expired']]
+          assert len(found) == 1, 'exact completed capture artifact missing or ambiguous'
+          a = found[0]
+          assert re.fullmatch(r'sha256:[0-9a-f]{64}', a['digest'])
+          (root / 'b-artifact.json').write_text(json.dumps(a, sort_keys=True))
+          (root / 'b-artifact-id.txt').write_text(str(a['id']))
+          PY
+          artifact_id=$(cat "$RUNNER_TEMP/b-artifact-id.txt")
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > "$RUNNER_TEMP/b-artifact.zip"
+      - name: Independently verify all compressed B archives before opening any row
+        run: |
+          python3 -B - <<'PY'
+          import json, os, sys, zipfile
+          from collections import Counter
+          from pathlib import Path
+          root = Path('research/crypto_carry_f1')
+          sys.path.insert(0, str(root.resolve()))
+          import capture_stage_a as capture
+          temp = Path(os.environ['RUNNER_TEMP'])
+          artifact = json.loads((temp / 'b-artifact.json').read_bytes())
+          archive = temp / 'b-artifact.zip'
+          assert capture.digest(archive) == artifact['digest'].split(':', 1)[1]
+          data = temp / 'f1-stage-b-sealed'
+          data.mkdir()
+          with zipfile.ZipFile(archive) as bundle:
+              for name in bundle.namelist():
+                  p = Path(name)
+                  assert not p.is_absolute() and '..' not in p.parts, 'unsafe artifact path'
+              bundle.extractall(data)  # Monthly ZIPs remain compressed here.
+          original = json.loads((data / 'capture_STAGE_B.json').read_bytes())
+          provenance = json.loads((data / 'provenance.json').read_bytes())
+          plan = json.loads((data / 'plan_STAGE_B.json').read_bytes())
+          candidates_sha = 'f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4'
+          producer = {'acquire_f1.py': 'e18be76c7f8f09ac2cb6456bfa6e3d7490e35685e4641fcc21bfdca386f699a5',
+                      'capture_stage_a.py': '5d594abe5107551a1f57b2f0e822c77a13f327e65c27360404170377de086687',
+                      'run_f1.py': os.environ['HARNESS_SHA256'], 'candidates_2026-10-08.txt': candidates_sha}
+          assert provenance['commit'] == os.environ['CAPTURE_COMMIT']
+          assert provenance['run_id'] == os.environ['CAPTURE_RUN_ID'] and provenance['run_attempt'] == os.environ['CAPTURE_RUN_ATTEMPT']
+          assert provenance['stage'] == 'STAGE_B' and provenance['source_sha256'] == producer and provenance['rows_parsed'] == 0
+          assert capture.digest(root / 'candidates_2026-10-08.txt') == candidates_sha
+          assert capture.digest(root / 'run_f1.py') == os.environ['HARNESS_SHA256']
+          assert original['stage'] == 'STAGE_B' and original['status'] == 'COMPLETE' and original['rows_parsed'] == 0
+          assert original['planned'] == original['verified'] == len(plan['jobs'])
+          assert capture.digest(data / 'plan_STAGE_B.json') == os.environ['CAPTURE_PLAN_SHA256'], 'resumed capture changed the original frozen plan'
+          assert plan['window'] == ['2023-11', '2026-09'] and plan['warmup_months'] == ['2023-11', '2023-12']
+          report = capture.capture(data, root / 'candidates_2026-10-08.txt', candidates_sha, verify_only=True, stage='STAGE_B')
+          assert report['plan_sha256'] == original['plan_sha256']
+          assert report['manifest_sha256'] == original['manifest_sha256'] and not report['missing_keys']
+          for rec in capture.read_manifest(data / 'manifest_STAGE_B.jsonl'):
+              assert rec['warmup_only'] == (capture.transport.month_of(rec['key']) in plan['warmup_months'])
+          report.update({'artifact_id': artifact['id'], 'artifact_sha256': capture.digest(archive),
+                         'capture_run_id': int(os.environ['CAPTURE_RUN_ID']), 'capture_run_attempt': int(os.environ['CAPTURE_RUN_ATTEMPT']), 'capture_commit': provenance['commit'],
+                         'capture_source_sha256': producer, 'verification_commit': os.environ['GITHUB_SHA'],
+                         'verification_run_id': os.environ['GITHUB_RUN_ID'], 'window': plan['window'],
+                         'warmup_months': plan['warmup_months'], 'archives_by_dataset': dict(Counter(ds for ds, _, _ in plan['jobs'])),
+                         'symbols_with_archives': len({sym for _, sym, _ in plan['jobs']}), 'economic_outcome_computed': False,
+                         'stage_a_result_sha256': os.environ['A_SHA256'], 'harness_sha256': os.environ['HARNESS_SHA256'],
+                         'source': 'Binance Vision / Binance Public Data', 'license': 'CC BY-NC-SA 4.0'})
+          with Path(os.environ['VERIFICATION_PATH']).open('x') as out:
+              json.dump(report, out, sort_keys=True, indent=2)
+              out.write('\n')
+          print(json.dumps(report, sort_keys=True))
+          PY
+      - name: Atomically claim the documented B look
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f ref='refs/heads/f1/crypto-carry-001-stage-b-look' -f sha="$GITHUB_SHA" > "$RUNNER_TEMP/stage-b-look-claim.json"
+      - name: Execute B once with the authenticated frozen A selection
+        id: execution
+        run: |
+          set -euo pipefail
+          python3 -u -I research/crypto_carry_f1/run_f1.py STAGE_B "$RUNNER_TEMP/f1-stage-b-sealed" research/crypto_carry_f1/results/stage_b_result_2026-10-09.json research/crypto_carry_f1/results/stage_a_result_2026-10-09.json "$A_SHA256"
+          python3 -B - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('research/crypto_carry_f1')
+          p = root / 'results/stage_b_result_2026-10-09.json'
+          r = json.loads(p.read_bytes())
+          assert r['stage'] == 'STAGE_B' and r['harness_sha256'] == os.environ['HARNESS_SHA256'] and r['selected_theta'] == 0.2
+          meta = {'stage': 'STAGE_B', 'result_sha256': hashlib.sha256(p.read_bytes()).hexdigest(),
+                  'harness_sha256': r['harness_sha256'], 'stage_a_result_sha256': os.environ['A_SHA256'],
+                  'selected_theta': r['selected_theta'], 'execution_commit': os.environ['GITHUB_SHA'],
+                  'execution_run_id': os.environ['GITHUB_RUN_ID'], 'capture_run_id': int(os.environ['CAPTURE_RUN_ID']),
+                  'capture_run_attempt': int(os.environ['CAPTURE_RUN_ATTEMPT']),
+                  'execution_run_attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'prior_legacy_stage_b_outcome': 'UNKNOWN',
+                  'capture_verification': json.loads(Path(os.environ['VERIFICATION_PATH']).read_bytes()),
+                  'exposure_record': json.loads((root / 'verification/stage_a_exposure.json').read_bytes()),
+                  'registered_lineage_status': 'UNVERIFIED_LEGACY_HISTORY', 'confirmatory_claim_authorized': False,
+                  'source': 'Binance Vision / Binance Public Data', 'license': 'CC BY-NC-SA 4.0',
+                  'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/', 'live_use_authorized': False}
+          with p.with_suffix('.meta.json').open('x') as out:
+              json.dump(meta, out, sort_keys=True, indent=2)
+              out.write('\n')
+          print(json.dumps({'stage': r['stage'], 'selected_theta': r['selected_theta'],
+                            'result_sha256': meta['result_sha256'], 'selected_cell': {k: v for k, v in r['cells']['0.2'].items() if not k.startswith('daily_returns')}}, sort_keys=True))
+          # This reporting policy is published before the B outcome. It does
+          # not alter the harness result, gates, selection or cost assumptions.
+          cell = r['cells']['0.2']
+          b, s = cell['base'], cell['stress']
+          if cell['status'] in ('NOT_CONFIRMED_EXCLUDES_SR_1.5', 'DEGENERATE_EXPOSURE') or (cell['status'] == 'CONFIRMED' and cell['excess_over_cash_annualised_base'] <= 0):
+              family = 'REJECT'
+              next_decision = 'Close this fixed expression; preserve the negative result and update research priority. No retest at a laxer threshold.'
+          elif cell['status'] == 'CONFIRMED':
+              family = 'INVALID_EXPERIMENT'
+              next_decision = 'Preserve the promising research screen; reconcile legacy lineage before any registered confirmation or promotion. Never rerun B.'
+          else:
+              family = 'INCONCLUSIVE_UNDERPOWERED'
+              next_decision = 'Close the single window as inconclusive; preserve its power limit and choose a separately registered next research action.'
+          failed = []
+          if b['t_one_sided'] < 2.539: failed.append('t < 2.539')
+          if s['mean_daily'] <= 0: failed.append('non-positive stress mean')
+          if b['quarters_positive'] < 6: failed.append('fewer than six positive quarters')
+          if b['exposure_days_share'] < 0.10: failed.append('exposure below 10%')
+          if cell['excess_over_cash_annualised_base'] <= 0: failed.append('non-positive excess over assumed 4% cash')
+          failed.append('legacy private exposure history unverified; no confirmatory claim authorized')
+          se_year = b['se_mean_max_nw'] * 365
+          mean_year = b['mean_daily'] * 365
+          lines = [
+              '# F1 Stage B — single documented research evaluation', '',
+              'Source: Binance Vision / Binance Public Data, CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/). Non-commercial research; no live use.', '',
+              f"RESULT = Selected theta 0.20; harness statistical screen {cell['status']}; {b['n_days']} calendar days / {r['n_symbols']} usable symbols. Other cells are reported but cannot replace the selected cell.",
+              f"EFFECT_SIZE = Mean/year {mean_year:.6%}; Sharpe {b['sharpe_annual']:.6f}; robust t {b['t_one_sided']:.6f}; doubled-cost mean/year {s['mean_daily'] * 365:.6%}; final NAV {cell['diag_base']['final_nav']:.6f}.",
+              f"UNCERTAINTY = Descriptive normal 95% mean/year interval {mean_year - 1.96 * se_year:.6%}..{mean_year + 1.96 * se_year:.6%}; one-sided upper Sharpe bound {b['sharpe_annual'] + 1.645 * b['se_sharpe']:.6f}; SE = max(Newey-West 7, 21). Legacy history is UNKNOWN; a positive screen is not a registered confirmation.",
+              'POWER_LIMITATION = Effective sample is days, not symbols. Registered 1,004-day window has assumed i.i.d. MDE Sharpe about 1.53; 80% power requires about 2.04.',
+              f"ECONOMIC_SIGNIFICANCE = Mean/year excess over assumed 4% cash {cell['excess_over_cash_annualised_base']:.6%}; {cell['diag_base']['liquidations']} liquidation-proxy events; positive quarters {b['quarters_positive']}/11. Cash is an assumption, not measured yield; daily liquidation and venue-risk limits remain.",
+              'FAILED_CRITERIA = ' + '; '.join(failed) + '.',
+              'LESSON = Evaluate net carry with fees, liquidation losses and idle capital; the three fixed cells and both cost schedules are retained without post-outcome tuning. Excluding Sharpe 1.5 does not prove that every smaller edge is absent.',
+              'FAMILY_STATUS = ' + family,
+              'NEXT_DECISION = ' + next_decision,
+              '', f"Result SHA256: `{meta['result_sha256']}`.",
+              f"Stage A SHA256: `{os.environ['A_SHA256']}`.",
+              f"Execution: {os.environ['GITHUB_RUN_ID']} at `{os.environ['GITHUB_SHA']}`.",
+          ]
+          with (root / 'results/STAGE_B_REPORT_2026-10-09.md').open('x') as out:
+              out.write('\n\n'.join(lines) + '\n')
+          import datetime
+          checkpoint = [
+              '# CHECKPOINT (overwritten at each significant batch)', '',
+              f"STATE ({datetime.datetime.now(datetime.timezone.utc).isoformat()}): Owner-directed continuation without Claude. PRIMARY = FIND_OR_FALSIFY_REAL_EDGE. F1 completed its single documented B evaluation. FAMILY_STATUS = {family}.",
+              'CANONICAL: PR #22 remains unmerged; original coordination source 1e88c6b. No live capital, paid-data purchase or account authorized. Economic harness unchanged at ' + os.environ['HARNESS_SHA256'] + '.',
+              'A: theta 0.20, result SHA256 ' + os.environ['A_SHA256'] + '; report and exact result preserved. Never rerun A.',
+              f"B: capture {os.environ['CAPTURE_RUN_ID']} independently verified, then one look claimed before analysis; result SHA256 {meta['result_sha256']}; source {os.environ['GITHUB_SHA']}, run {os.environ['GITHUB_RUN_ID']}. Exact result/meta/report in research/crypto_carry_f1/results/. Never rerun B or substitute another cell.",
+              'LINEAGE: private predecessor exposure UNKNOWN; no registered confirmatory or live claim authorized. Preserve/reconcile any recovered earlier outcome.',
+              'OTHER LANES: F2 BLOCKED_DATA_PERMISSION per primary-document decision PR #27, e7344cf; no Kalshi outcomes acquired. Existing Polymarket neg-risk scout 2b66b19 has a valid KILL verdict (1,260 executable routes, zero exceedances); do not restart it.',
+              'RESULT/LESSON: see results/STAGE_B_REPORT_2026-10-09.md for the nine required verdict fields and unchanged cost/threshold assumptions.',
+              'NEXT: ' + next_decision + ' Continue research within the available resources and preserve family/selection history; no reset of error budget.',
+          ]
+          Path('research/edge_search/CHECKPOINT.md').write_text('\n\n'.join(checkpoint) + '\n')
+          PY
+      - name: Persist verification and any outcome, including after interrupted publication
+        id: persist
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ ! -f "$VERIFICATION_PATH" ]; then exit 0; fi
+          evidence_branch="builder/f1-stage-b-evidence-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$evidence_branch"
+          git config user.name 'quant-f1-evidence'
+          git config user.email 'quant-f1-evidence@users.noreply.github.com'
+          git add "$VERIFICATION_PATH" research/crypto_carry_f1/results research/edge_search/CHECKPOINT.md
+          git commit -m 'F1: persist B verification and any single documented outcome'
+          git push origin "HEAD:refs/heads/$evidence_branch"
+      - name: Preserve verification and derived outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-stage-b-evaluation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ env.VERIFICATION_PATH }}
+            research/crypto_carry_f1/results/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Publish the result delta to the canonical coordination thread
+        if: steps.execution.outcome == 'success' && steps.persist.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          root = Path('research/crypto_carry_f1')
+          meta = json.loads((root / 'results/stage_b_result_2026-10-09.meta.json').read_bytes())
+          assert meta['execution_run_id'] == os.environ['GITHUB_RUN_ID']
+          assert meta['execution_run_attempt'] == os.environ['GITHUB_RUN_ATTEMPT']
+          report = (root / 'results/STAGE_B_REPORT_2026-10-09.md').read_text()
+          keys = ['RESULT', 'EFFECT_SIZE', 'UNCERTAINTY', 'POWER_LIMITATION', 'ECONOMIC_SIGNIFICANCE', 'FAILED_CRITERIA', 'LESSON', 'FAMILY_STATUS', 'NEXT_DECISION']
+          fields = [line for line in report.splitlines() if any(line.startswith(key + ' = ') for key in keys)]
+          assert len(fields) == len(keys) and {line.split(' = ', 1)[0] for line in fields} == set(keys)
+          marker = f"F1_B_RUN:{os.environ['GITHUB_RUN_ID']}:{os.environ['GITHUB_RUN_ATTEMPT']}"
+          branch = f"builder/f1-stage-b-evidence-{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}"
+          url = f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/blob/{branch}/research/crypto_carry_f1/results/STAGE_B_REPORT_2026-10-09.md"
+          comment = '[A2-TEAM] RESULT — F1 B, single documented evaluation\n\n' + '\n\n'.join(fields)
+          comment += f"\n\nREF = {url}\nResult SHA256 = {meta['result_sha256']}\n<!-- {marker} -->"
+          endpoint = f"repos/{os.environ['GITHUB_REPOSITORY']}/issues/22/comments"
+          pages = subprocess.check_output(['gh', 'api', endpoint, '--paginate', '--jq', '.[].body'], text=True)
+          if marker not in pages:
+              body = Path(os.environ['RUNNER_TEMP']) / 'b-result-comment.json'
+              body.write_text(json.dumps({'body': comment}))
+              subprocess.run(['gh', 'api', '--method', 'POST', endpoint, '--input', str(body)], check=True, stdout=subprocess.DEVNULL)
+          print('Result delta published or already present; raw data remains outside git.')
+          PY

@@ -1,0 +1,21 @@
+from catalog import *
+rails={
+ 'canonical_w2':'ebc72b9fd14f91420c37e0b7607f9bfb584a289a',
+ 'vertical':'5d628db2949144ca6abf94327de3146f3983ecea',
+ 'horizontal_pre':'7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f',
+ 'horizontal_c1':'6d9dc40b5833442c597f7e7ab8aa631b3d481e83',
+ 'runtime_v2':'16eafd0b3c8d9e0c633ef01dd191cbd32ae50b42',
+ 'runtime_v1':'0837f419c4e3a9e17a39269994f27d97fcf79757',
+ 'giga_f':'79329f15bbf02c25fa61e5d5ef6028e5abfb1493',
+ 'giga_q':'4efadddf694eff0c0df00925b5b4b89194f32f8e',
+ 'intake_v3':'0691a4c1c905c8cfa1e68d521b12d66655ec4dd3',
+ 'edge_lab':'68bbab8ec990c813310224bc8737c41480853108',
+ 'historical_audit':'67543ff286ff7a81a6705a197b7e557442d62ac2',
+ 'default':'9026e4d83d0b3d67637ca8e8437125a372109369'}
+dump('selected_rail_pins.json',rails)
+for name,sha in rails.items():
+    dest=ROOT/'snapshots'/name;dest.mkdir(parents=True,exist_ok=True)
+    p=subprocess.Popen(GIT+['archive',sha],stdout=subprocess.PIPE)
+    subprocess.run(['tar','-x','-C',str(dest)],stdin=p.stdout,check=True)
+    p.stdout.close();p.wait()
+    print(name,flush=True)

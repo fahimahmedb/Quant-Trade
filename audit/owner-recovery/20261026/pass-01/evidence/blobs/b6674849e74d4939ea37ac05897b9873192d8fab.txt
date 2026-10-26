@@ -1,0 +1,8 @@
+{
+  "uid": 999,
+  "general_sudo_exit": 1,
+  "v2_controls_present": false,
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaaezgbxhsjk6nrbhuw3k6msilbl4oojvnnq5ytonmlhv2a",
+  "oracle_request_id": "3B0F8D22D3DB4DCEB1D7881A60363342/81E5D0C3BBD20B98E3D7D66A43444764/93574B973F18A02653B27E297A727EE9",
+  "time_updated": "2026-10-20T02:54:26.651000+00:00"
+}

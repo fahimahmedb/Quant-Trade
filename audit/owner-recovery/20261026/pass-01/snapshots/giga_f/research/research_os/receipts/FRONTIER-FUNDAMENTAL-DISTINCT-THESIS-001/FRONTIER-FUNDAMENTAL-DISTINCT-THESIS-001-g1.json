@@ -1,0 +1,31 @@
+{
+  "receipt_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001-g1",
+  "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001",
+  "worker_id": "fundamental-events-workflow",
+  "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T19:09:30Z",
+  "completed_at": "2026-10-15T19:15:00Z",
+  "status": "COMPLETE",
+  "stages_executed": [
+    "legacy_duplicate_check",
+    "document_or_fundamental_research",
+    "disconfirmation",
+    "freeze_hypothesis",
+    "validation_handoff"
+  ],
+  "summary": "Legacy-screened one causally distinct ASML fundamental thesis, used public non-price documents only, actively documented disconfirmation/falsification, froze FUND-ASML-CAPACITY-PRICING-001, and created exactly one independent VALIDATION handoff. No independent validation, economic experiment, prospective observation, capital use or trading was performed.",
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001/legacy-screen.json",
+    "research/research_os/artifacts/FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001/research-and-disconfirmation.json",
+    "research/research_os/hypotheses/FUND-ASML-CAPACITY-PRICING-001.json",
+    "research/research_os/tasks/VALIDATE-FUND-ASML-CAPACITY-PRICING-001.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false,
+    "self_validation_performed": false
+  }
+}

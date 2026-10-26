@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T11:40:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before": "bed0a18c6092789a4c3ec04cc8e34ae98caa9ec1",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Nomura Holdings, Inc.",
+    "cik": "0001163653",
+    "form": "6-K",
+    "accession": "0001193125-26-420929",
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/1163653/000119312526420929/d384553d6k.htm",
+    "filing_date": "2026-10-14",
+    "accepted_timestamp_primary_verified_this_pass": false
+  },
+  "primary_observed_fact": "The primary 6-K states that its furnished exhibit is an English translation of Nomura's Share Buyback Report for the reporting month September 1 through September 30, 2026. The document reports status under an existing board-authorized repurchase program; it is not a commencement SC TO-I, reverse-split entitlement notice, SPAC redemption notice, ETF liquidation notice, or closed-end-fund rights-offering prospectus.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The document type and disclosed legal/economic mechanism fail the frozen prospective family gates before any market-price/NAV/payoff access. Exact EDGAR accepted time is unnecessary to admit or rank this candidate because the filing is substantively ineligible; no later-event substitution is implied by this single clearance.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I issuer tender commencement and no explicit odd-lot proration priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional cash-in-lieu mechanism.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up mechanism.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption mechanism.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: operating-company foreign issuer, not an ETF liquidation event.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE_AND_PRE_T0: Nomura is not a US-listed closed-end management investment company rights offering; this filing also predates the CEF protocol T0 of 2026-10-15T11:15:00Z."
+  },
+  "outcome_exposure": {
+    "selected_market_price": false,
+    "nav": false,
+    "liquidation_distribution": false,
+    "tender_spread": false,
+    "future_return_or_pnl": false,
+    "economic_look_opened": false
+  },
+  "next_action": "Continue the saved chronological documentary admission queue without reopening Nomura. Independently monitor the newly predeclared CEF-rights step-up protocol only for definitive SEC filings accepted strictly after 2026-10-15T11:15:00Z. Admit and persist event identity before any price/NAV/payoff read; otherwise continue one bounded documentary candidate at a time.",
+  "inference_ceiling": [
+    "No economic verdict",
+    "No market-direction inference from Nomura buybacks",
+    "No claim that the A-E/CEF search universe is exhaustively cleared",
+    "No live or real-capital authorization"
+  ]
+}

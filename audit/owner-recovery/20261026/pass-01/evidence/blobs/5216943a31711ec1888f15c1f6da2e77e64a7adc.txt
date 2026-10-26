@@ -1,0 +1,47 @@
+# Vertical CP007 — Local queue clocks, ambiguity and retry
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=ce63857
+
+Module: `src/autonomous_research/runtime.py`, the existing local Campaign/Queue
+used by Quant V1. This is separate from the native Git bounded writer, which is
+regressed independently; no orchestration backend is added or activated.
+North Star §§5, 7, 12. Starting depth: D2/basic restart tests.
+
+Defects/root causes/repairs:
+
+1. `next_due` compared timestamp strings: a due time at UTC+02 could run late,
+   while a future instant at UTC−02 could run early. Parse explicit timezone
+   instants for due checks and creation-time ordering; ambiguous/malformed clocks
+   raise instead of being lexically scheduled. Equality is due.
+2. Failed `add` left the task in memory and suppressed retry. Reload durable
+   queue state on save failure, including post-publication acknowledgement loss.
+3. The private JSON writer reused one `.tmp` pathname and omitted fsync. Reuse
+   the existing qualified durable JSON primitive, with unique staging and
+   file/directory fsync. No second persistence implementation was introduced.
+4. Reconstructing duplicate task IDs silently selected the last record; unknown
+   schema versions were silently accepted. Reject both before further use.
+
+Adversaries: equal/before/after UTC-offset boundaries; naive/UNKNOWN/empty/invalid
+clocks; same-object add retry; lost acknowledgement; simultaneous staging-file
+publication; old/new/boolean/string schema versions; conflicting task statuses
+under the same identity.
+
+Tests: **14 failed / 1 passed** before repair. Final focused fixtures plus local
+runtime, Quant, V1 red-team and SEC/control regression: **314 passed, 96 subtests
+passed**. Logs: `research/vertical_depth/20261021/CP007_{before,after}.txt`.
+Ruff F and whitespace checks pass. Attained depth: clock/reconstruction **D2**;
+local publication/retry **D3** for the tested failure boundaries.
+
+Remaining unproven depth: full competing local-queue writers/claims (atomic file
+replacement does not itself prevent stale overwrite), distributed persistence,
+all malformed priority values, physical power loss, campaign identity recovery
+after deletion. Native Git leases are not inferred from local-queue tests.
+
+Horizontal findings: none. Longitudinal findings: none.
+Authority bypass found here: FALSE.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

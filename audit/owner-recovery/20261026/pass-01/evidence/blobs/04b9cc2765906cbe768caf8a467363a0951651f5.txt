@@ -1,0 +1,148 @@
+# QUANT-TRADE — MEGA A CP004 — 2026-10-21
+
+## Durable checkpoint
+
+BASE_SHA: `4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090`
+PACKAGE_HEAD_SHA: `5e095dd91757c3814b6d25e124a6b946f3f1bba3`
+CHAIN_SCOPE: Research Intelligence Loop — qualified Scientific Memory feedback into actual pre-freeze candidate screening.
+
+## Package disposition
+
+- `ADAPT_EXISTING`: `legacy.py` remains the historical provenance/anti-restart gate but lexical overlap is review evidence only, not scientific equivalence.
+- `REUSE_CURRENT`: W1 Scientific Memory normalization/qualification semantics.
+- `REUSE_CURRENT`: Research Intelligence semantic family identity (`mechanism`, `payer`, `constrained_actor`, `timing_clock`, `universe`, `economic_exposure`) and separate evidence identity.
+- `BUILD_MISSING`: a read-only `scientific_memory_feedback.py` adapter from immutable legacy records to candidate-screen decisions.
+- `NO_BUILD_REQUIRED`: no new persistent memory store, scheduler, task queue, outcome store, Validator, acquisition runtime or Control Plane.
+
+## Capabilities qualified
+
+- Renamed labels do not evade a qualified NEGATIVE when semantic family identity matches.
+- BLOCKED remains PARK/reopenable and is not rewritten NEGATIVE.
+- UNEXECUTED remains unexecuted and is not rewritten failed.
+- INVALIDATED_PROTOCOL requires repair/change before unchanged rerun.
+- POSITIVE_BUT_INSUFFICIENT redirects to validation rather than automatic promotion.
+- Incomplete semantic identity redirects to `ARCHAEOLOGY_LOOKUP`; `UNKNOWN` is not novelty.
+- A memory record with a different semantic identity cannot suppress the candidate merely because words overlap.
+- Lexical/Jaccard overlap remains auditable review metadata but establishes neither scientific equivalence nor empirical correlation.
+- Model commentary is explicitly excluded from memory evidence.
+
+## Files changed
+
+- `research/research_os/scientific_memory_feedback.py`
+- `research/research_os/legacy.py`
+- `research/research_os/tests/test_scientific_memory_feedback.py`
+
+## Shared surfaces touched
+
+- Existing producer pre-freeze Legacy screen.
+- Existing imported legacy ledger, consumed read-only.
+- Existing W1 Scientific Memory normalization rules.
+
+## Public contracts changed
+
+`LegacyKnowledgeBase.screen_candidate()` now exposes additive fields including:
+
+- `lexical_review_required`
+- `lexical_review_status`
+- `scientific_memory.view_hash`
+- `scientific_memory.canonical_count`
+- `scientific_memory.review_count`
+- `scientific_memory.feedback`
+
+Scientific block statuses are now action-specific, including semantic-identity unresolved, known negative, invalid protocol repair, unresolved historical blocker and positive-insufficient validation requirements.
+
+Exact identifier reuse remains an operational collision requiring review; identifier equality alone is not labelled scientific equivalence.
+
+## Schemas changed
+
+No canonical persisted schema was replaced. The screen result was extended additively.
+
+## Tests added
+
+`test_scientific_memory_feedback.py` contains adversarial coverage for:
+
+1. negative family resurfacing under rename;
+2. BLOCKED not becoming NEGATIVE;
+3. UNEXECUTED not becoming failed;
+4. invalid protocol unchanged requiring repair;
+5. positive-but-insufficient not being promoted;
+6. unknown identity not being counted novel;
+7. wrong semantic identity not influencing Search;
+8. superficial lexical overlap not becoming a scientific duplicate;
+9. model commentary not becoming evidence.
+
+## Focused test result
+
+Behavioral test source is committed. No local behavioral execution result is claimed for this package because the GitHub connector path did not execute the suite locally.
+
+## Broader test result
+
+Hosted GitHub Actions `gate` for package HEAD `5e095dd91757c3814b6d25e124a6b946f3f1bba3` is **IN_PROGRESS** at checkpoint writing time; conclusion is unknown. No green CI claim is made.
+
+## Scientific claim limits
+
+- No economic outcome accessed.
+- No alpha, profitability, provider availability, return, covariance or empirical correlation inferred.
+- Semantic-family equality is a structured identity relation, not empirical correlation.
+- Lexical overlap is not scientific equivalence.
+- Documentary metadata is not economic evidence.
+- Review-only/noncanonical memory records cannot suppress a candidate.
+- UNKNOWN dimensions remain UNKNOWN.
+- Model commentary cannot rewrite scientific truth.
+
+## Dependencies
+
+- Immutable imported legacy ledger and source manifest.
+- W1 Scientific Memory normalization and canonical qualification.
+- Current Research Intelligence semantic identity rules.
+- Existing producer screen call site in `worker_stages.py`.
+
+## Expected integration conflicts
+
+High-conflict shared surface: `legacy.py`.
+
+Any parallel rail changing Legacy screening must preserve the distinction between provenance/lexical review and scientific semantic identity, plus W1 disposition semantics. Blind merge/cherry-pick is unsafe.
+
+## Whole-chain reassessment
+
+The fixed chain is **not exhausted**.
+
+Material remaining internal gap:
+
+The new screen can correctly return `ARCHAEOLOGY_LOOKUP`, `REPAIR_PROTOCOL`, `PARK`, `NO_BUILD`, or `ESCALATE_VALIDATION`, but the producer-stage result does not yet expose a complete structured research-action receipt describing:
+
+- what uncertainty should be resolved next;
+- why the action is cheapest/admissible;
+- which existing capability/lane is required;
+- what current handoff or authority blocks it;
+- why no scheduler mutation occurred.
+
+Current CP063 capability/route inspection proves:
+
+- `economic_identity` is production-enabled in `integrator_portfolio` and can produce payer/mechanism and overlap maps;
+- `legacy_recovery`/provenance capabilities exist in `evidence_data`;
+- current workflow handoffs do **not** authorize a free-form producer-to-`integrator_portfolio` or producer-to-`evidence_data` detour before freeze;
+- `control_integrator` explicitly forbids free-form task invention.
+
+Therefore the next package must emit a decision/handoff recommendation only, not create a second scheduler path.
+
+## Remaining gaps / classification
+
+1. Structured next-research-action receipt at candidate screen: `ACTIONABLE_INTERNAL`.
+2. Pre-freeze identity-resolution task routing: `REVIEW_STILL_REQUIRED` under current Control Plane because no canonical handoff authorizes free-form task creation.
+3. Durable Search-space/Archaeology completion facts: `REVIEW_STILL_REQUIRED`.
+4. Non-zero research budget contract: `DEPENDENT / NO_BUILD_REQUIRED` until canonical Control Plane budget semantics exist.
+5. Source acquisition runtime: `EXTERNAL_ACCESS_REQUIRED / OUT_OF_SCOPE`.
+6. Validator/economic/prospective/live outcomes: `SEALED_BY_AUTHORITY` or out of chain scope.
+
+## Authority status
+
+- `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`
+- `REAL_CAPITAL_AUTHORIZED=FALSE`
+- `LIVE_TRADING_AUTHORIZED=FALSE`
+- `OUTCOME_ACCESSED=FALSE`
+
+SAFE_TO_INTEGRATE: `CONDITIONAL` — semantics are fail-closed; hosted gate conclusion is still pending.
+
+SAFE_TO_CONTINUE_THIS_CHAIN: `TRUE`

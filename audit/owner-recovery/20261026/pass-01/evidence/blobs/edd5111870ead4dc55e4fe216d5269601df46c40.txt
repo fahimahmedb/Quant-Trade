@@ -1,0 +1,166 @@
+name: Wave2 C2 C0 Acceptance Pack Preflight
+
+on:
+  push:
+    branches:
+      - builder/wave2-convergence2-foreman-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  c0-acceptance-pack-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout foreman exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch pinned sibling evidence heads
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            7ef088bb30ece88cf96f4514e8c581a95ca4b091 \
+            84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0 \
+            2d5ff9d3d629affc720b706405fc093d0ae81548
+
+      - name: Verify acceptance pack against real sealed contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          BASE = "2b99d8aeb8a342f1ef32544247d366cb8a26037e"
+          B = "7ef088bb30ece88cf96f4514e8c581a95ca4b091"
+          D0 = "84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0"
+          E = "2d5ff9d3d629affc720b706405fc093d0ae81548"
+
+          def show(ref, path):
+              return subprocess.check_output(["git", "show", f"{ref}:{path}"], text=True)
+
+          matrix_path = Path("handoff/fixtures/WAVE2_C0_ACCEPTANCE_MATRIX.v1.json")
+          matrix = json.loads(matrix_path.read_text())
+          assert matrix["schema_version"] == "wave2-c0-acceptance-matrix.v1"
+          assert matrix["wave2_immutable_base_sha"] == BASE
+          assert matrix["qualified_b_source_sha"] == B
+          assert matrix["qualified_d0_code_sha"] == D0
+          assert matrix["qualified_e_source_sha"] == E
+          assert matrix["canonical_integration_status"] == {
+              "ready_for_canonical_convergence2": False,
+              "wave2_integrated_sha_emission_authorized": False,
+          }
+          assert all(value is False for value in matrix["authority"].values())
+          case_ids = [item["id"] for item in matrix["cases"]]
+          assert len(case_ids) >= 12 and len(case_ids) == len(set(case_ids))
+
+          # Factory law is reused, not redefined by the foreman/C0 seam.
+          infra = json.loads(show(BASE, "research/research_os/contracts/experiment-infrastructure.schema.json"))
+          props = infra["properties"]
+          assert props["outcome_accessed"]["const"] is False
+          assert props["economic_result"]["const"] == "NOT_OBSERVED"
+          for key in (
+              "economic_experiment_authorized",
+              "prospective_observation_authorized",
+              "real_capital_authorized",
+              "live_trading_authorized",
+          ):
+              assert props[key]["const"] is False
+          registry_required = set(infra["$defs"]["registry"]["required"])
+          for key in (
+              "experiment_id", "hypothesis_id", "generation_id", "candidate_hash",
+              "protocol_hash", "frozen_protocol_hash", "binding_hashes",
+              "trial_accounting_hash", "entry_hash",
+          ):
+              assert key in registry_required
+
+          # MEGA B ends before freeze / Validator / Red Team and stays authority-neutral.
+          b_src = show(B, "research/research_os/discovery_engine.py")
+          for needle in (
+              '"status": "READY_FOR_FACTORY" if ready else "BLOCKED_DISCOVERY"',
+              '"status": handoff_status',
+              '"validator_invoked": False',
+              '"red_team_invoked": False',
+              '"experiment_frozen": False',
+              '"scheduler_mutation": False',
+              '"control_plane_mutation": False',
+              '"outcome_accessed": False',
+          ):
+              assert needle in b_src, needle
+
+          # Existing W1 law already owns Validator + Red Team composition.
+          econ = show(BASE, "research/research_os/expansion/economic_test_readiness_v1.py")
+          assert "validator_economic_readiness_v3" in econ
+          assert "red_team_negative_rights_v2" in econ
+          assert "validator = validator_economic_readiness_v3(readiness_bundle=bundle)" in econ
+          assert "red = red_team_negative_rights_v2(validator, context=red_team_context)" in econ
+
+          validator = show(BASE, "research/research_os/expansion/validation_readiness.py")
+          for needle in (
+              "PRODUCER_VALIDATOR_NOT_INDEPENDENT",
+              "CANDIDATE_IMMUTABILITY_FAILED",
+              "PROTOCOL_NOT_FROZEN",
+              "FROZEN_INPUT_BINDING_FAILED",
+              "REPRODUCIBILITY_BINDING_FAILED",
+              "OUTCOME_FIREWALL_REJECTED",
+              '"economic_test_authorized": False',
+              '"economic_claim_authorized": False',
+              '"outcome_access_authorized": False',
+              '"candidate_mutated": mutated',
+          ):
+              assert needle in validator, needle
+
+          red = show(BASE, "research/research_os/expansion/red_team_v2.py")
+          for needle in (
+              '"repair_attempted": False',
+              '"signal_repair_attempted": False',
+              '"candidate_mutated": False',
+              '"parameters_optimized": False',
+              '"outcomes_opened": False',
+              '"retuned_until_profitable": False',
+              '"economic_test_authorized": False',
+              '"capital_authorized": False',
+          ):
+              assert needle in red, needle
+
+          # C0 is not allowed to bypass W1 ECON to D0.
+          d0 = show(D0, "research/research_os/expansion/economic_lifecycle.py")
+          assert "EconomicIdentityRef" in d0
+          assert "PortfolioReadinessRef" in d0
+
+          c0_ref = "refs/heads/builder/mega-c0-scientific-adjudication-20261021"
+          remote = subprocess.check_output(["git", "ls-remote", "origin", c0_ref], text=True).strip()
+          c0_head = remote.split()[0] if remote else "ABSENT"
+
+          receipt = {
+              "FOREMAN_HEAD": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+              "WAVE2_IMMUTABLE_BASE_SHA": BASE,
+              "B_SOURCE_HEAD": B,
+              "D0_SOURCE_CODE_HEAD": D0,
+              "E_SOURCE_HEAD": E,
+              "C0_SOURCE_HEAD": c0_head,
+              "C0_ACCEPTANCE_PACK_READY": True,
+              "C0_IMPLEMENTATION_QUALIFIED": False,
+              "FACTORY_REUSE_PROVEN": True,
+              "EXISTING_VALIDATOR_REUSE_REQUIRED": True,
+              "EXISTING_RED_TEAM_REUSE_REQUIRED": True,
+              "W1_ECON_VETO_PRESERVED": True,
+              "AUTHORITY_OPENED": False,
+              "OUTCOME_ACCESSED": False,
+              "READY_FOR_CANONICAL_CONVERGENCE2": False,
+              "WAVE2_INTEGRATED_SHA_EMITTED": False,
+          }
+          Path("wave2-c0-acceptance-pack-receipt.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+          print(json.dumps(receipt, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload preflight receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c0-acceptance-pack-${{ github.sha }}
+          path: wave2-c0-acceptance-pack-receipt.json

@@ -1,0 +1,27 @@
+name: Economic readiness experiment CI
+
+on:
+  push:
+    branches:
+      - builder/econ-readiness-experiment-20261016
+    paths:
+      - 'research/research_os/expansion/experiment_runner.py'
+      - 'research/research_os/tests/test_experiment_runner_frozen_protocol.py'
+      - '.github/workflows/econ-readiness-experiment-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-experiment-protocol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run frozen protocol tests
+        run: python -m unittest research.research_os.tests.test_experiment_runner_frozen_protocol -v
+      - name: Run bounded Research OS regression
+        run: python -m unittest research.research_os.tests.test_aggressive_architecture -v

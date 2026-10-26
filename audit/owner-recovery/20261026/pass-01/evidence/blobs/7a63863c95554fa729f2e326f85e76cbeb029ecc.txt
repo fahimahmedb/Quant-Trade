@@ -1,0 +1,49 @@
+# Horizontal Phase-A coverage matrix — 2026-10-21
+
+Base: `01c2e520fa4116645870f96acf6770ea83f1881c`. North Star blob: `a328b4e6d7d71dafd532938888ebf9818b1b610f`.
+
+Read alongside [the detailed matrix](HORIZONTAL_COVERAGE_MATRIX_20261021.json) and [findings](HORIZONTAL_FINDINGS_20261021.md). Each row has exact source hashes, behavioral test selectors, named contracts, producers, consumers and limits. This is a source-surface breadth review. No row establishes production or economic completeness.
+
+Q = QUALIFIED for the named narrow source surface; P = PARTIAL; F = FUTURE_WAVE2; D = INTENTIONALLY_DEFERRED. Current means CURRENT_REQUIRED_CAPABILITY. An authority guard can be Q while the denied active capability is D/F. Cells concern current scope only. Test execution evidence is in HORIZONTAL_VALIDATION_20261021.json.
+
+| Module | Capability families | Inputs | Outputs | UNKNOWN/BLOCKED | Provenance | Authority | Persistence | Tests | Producer | Consumer | Observability | Current/future ownership |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Owner / governance | Authority, epoch, model and blinding admission (Q); Grant higher outcome/capital authority (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | Q | Current, Deferred |
+| Scientific memory / core | Hypothesis generations, freeze, ancestry and counted trials (Q); Scoped negative knowledge (Q); Complete historical memory reconciliation (P) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Archaeology / historical recovery | Pinned historical inventory and duplicate/reopen screening (Q); Recover all missing historical primary provenance (P) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Research Intelligence / search priorities | Deterministic frontier, cheap screening, explainable priority and durable idle (Q); MEGA A broad intelligence, diversity and richer NO_ACTION receipt (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Multi-Source ideation intake | Single qualified packet intake and source selection (Q); Multi-Source ideation intake (F) | P | P | P | P | P | P | Q | P | P | P | Current, Future Wave-2 |
+| Discovery: Quant / mechanisms | Quant family candidate contract and synthetic mechanisms (Q); Source-qualified broad mechanism discovery (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Discovery: Events / documents | Captured distribution/guidance comparison and disconfirmation (Q); General event and economically novel thesis discovery (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Discovery: Fundamental | Primary accounting-cell thesis, cash-flow calculation, dossier and missing valuation requirements (Q); Broad valuation, expectations and mispricing discovery (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Discovery: Flows / regulation | Operative rule / nonbinding FAQ distinction and constraint disconfirmation (Q); Admissible forced-flow research beyond rule existence (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Candidate / freeze / trial identity | Canonical candidate, family extensions, freeze, scientific subject and ideation attempts (Q) | Q | Q | Q | Q | Q | Q | Q | Q | Q | Q | Current |
+| Early implementability | Instrument/data/clock/cost/capacity/reproducibility declaration checks (Q) | Q | Q | Q | Q | Q | Q | Q | Q | Q | Q | Current |
+| Experiment infrastructure / Factory | Frozen no-outcome protocol, code/environment/data/PIT/cost/capacity/multiplicity and reproducible dry run (Q); Factory cohort geometry, power/MDE and complete evidence firewall convergence (P) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Cross-examination | Structural shared-exposure questions and native disconfirmation/challenge (Q); Diverse semantic/cognitive scientific adjudication (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Independent validator | Independent process/source reconstruction, candidate/freeze/trial/readiness checks and PASS/BLOCK (Q); Scientific semantic adjudication breadth (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Red Team | Machine-readable negative rights across provenance, leakage, timing, multiplicity, cost, capacity and claim level (Q); Broader scientific falsification adjudication (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Economic identity | Payer/mechanism/exposure and frozen instrument/universe/clock/horizon declarations (Q); Full economic lifecycle/convergence (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Portfolio map / portfolio engine | Structural overlap, unknown dimensions and field-level provenance (Q); Empirical correlation, marginal value, allocation (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Shadow / prospective registration | Frozen registration and denied observation guard (Q); Authorized prospective observation and evaluation (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Sealed evaluation / feedback | Frozen export and technical reverse-message restriction (Q); Closed-epoch successor-only feedback gate (Q); Real economic outcome ingestion (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Decay / lifecycle / replacement | Authority-inactive decay guard and preserved strategy lifecycle (Q); Signal/cost/capacity/crowding/source-drift detection and replacement lineage (F) | Q | Q | Q | Q | Q | P | Q | P | P | P | Current, Future Wave-2 |
+| Capital Desk: SCAN / VET | Fixture-only opportunity scan, veto, accepted/rejected/blocked tickets (Q); V2 economic opportunity dispatch (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Capital Desk: SIZE / RISK | Fixture sizing, portfolio risk limits, concentration/drawdown and veto (Q); V2 authorized portfolio sizing (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Capital Desk: FILLS | Fixture execution cost, next-session fills, volume/capacity truncation and durable fill plan (Q); Real / broker execution (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Persistent Book | One bankroll, cash, sleeves, exposure/NAV/cost attribution and idempotent operations (Q); Live capital accounting (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | Q | Current, Deferred |
+| Learning / negative results to future search | Durable lessons, lane priorities, negative-memory scope and next actions (Q); Live economic/decay/false-reject learning (D) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+| Control plane / clock / routing | One Git-backed research task authority and bounded lane/steward selection (Q); Final composed runtime/lab operational qualification (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Oracle / runtime / release boundary | Exact-release entrypoint, safe install, bootstrap refusal and process timeout (Q); Integrated Wave-2 autonomous recovery runtime (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Task / lease / permission / budget | Task enum accounting, generation-fenced leases and permissions (Q); Unknown queue disposition and durable refill refusal (Q); Bounded model/resource budget (Q); Task cancellation producer/API (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Worker / task execution | Durable claim, source-bound stages, local model failures, atomic artifacts and completion (Q); Expanded autonomous task operations (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Events / receipts | Claim/stage/completion/block/retry/idle/refill factual artifacts (Q); Full future lifecycle event taxonomy (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Outbox / emitter / acknowledgments | Pending packet, bounded same-identity retry, explicit ACK/error receipt (Q); Complete restart-capable lifecycle outbox/reconciliation (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Live Research Lab / truthful projection | Native event mapping, reducer, unknown progress, blocker and evidence-maturity projection (Q); Final whole-lifecycle production projection (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Recovery / replay / resumption | Expired-lease requeue, CAS fencing, durable atomic replay and release rollback fixtures (Q); Final operational reconciliation and restart coverage (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Build plane / durable continuation | Build gaps, exact-source qualification, checkpoints and coherent resumable release (Q); Wave-2 final convergence/deployment (F) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Future Wave-2 |
+| Data / evidence / PIT / availability | Source identity, raw bytes, publication/availability/version clocks, provenance and fail-closed packet qualification (Q); Dataset availability and upstream blocker/recovery representation (Q); Complete data/evidence/PIT historical convergence (P) | Q | Q | Q | Q | Q | Q | Q | Q | Q | P | Current, Deferred |
+
+A producer/consumer cell records concrete presence and tested recognition, not semantic end-to-end correctness. Tests overlap. Future Multi-Source has only adjacent single-packet machinery; its cells remain P. Decay has a qualified inactive guard; active producer/consumer/persistence remain P. Historical files named wave2/wave3/wave4 belong to earlier campaigns and do not establish completion of the Owner’s upcoming Wave-2 packages.
+
+The only Phase-A runtime repairs are H001/H002 in the existing queue module. No new control plane, scheduler, memory, Book, source connector, inference service or economic capability was introduced.

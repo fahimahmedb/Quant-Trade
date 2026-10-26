@@ -1,0 +1,42 @@
+{
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaaep3vgqj6grpzhd3pduk6pkp3ouft2mhncscd2uc252ka",
+  "exit_code": 0,
+  "lifecycle_state": "SUCCEEDED",
+  "observed": {
+    "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+    "health": {
+      "status": "ok"
+    },
+    "model": {
+      "ActiveState": "active",
+      "MemoryCurrent": "10348634112",
+      "MemoryPeak": "10349117440",
+      "Result": "success",
+      "UnitFileState": "enabled"
+    },
+    "secret_file": {
+      "status": "PermissionError"
+    },
+    "uses_canonical_v2_entrypoint": false,
+    "uses_projection_entrypoint": true,
+    "v1": {
+      "ActiveState": "inactive",
+      "Result": "success",
+      "UnitFileState": "disabled"
+    },
+    "v2": {
+      "ActiveState": "active",
+      "Result": "success",
+      "UnitFileState": "enabled"
+    },
+    "worker": {
+      "ActiveState": "inactive",
+      "EnvironmentFiles": "/etc/quant-research/worker.env (ignore_errors=no)",
+      "MemoryCurrent": "[not set]",
+      "MemoryPeak": "[not set]",
+      "Result": "success",
+      "UnitFileState": "static"
+    }
+  },
+  "oracle_request_id": "09384308D7E8498E8450F735F0E5EDB3/EFCCB09EBAFF4CC18C92D76A434447AD/CCE592538683193089528C670999C78F"
+}

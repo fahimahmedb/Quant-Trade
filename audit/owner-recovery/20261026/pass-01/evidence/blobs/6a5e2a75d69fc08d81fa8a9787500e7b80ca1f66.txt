@@ -1,0 +1,15 @@
+{
+  "event_id": "PROD-EVENTDOC-001-g1-e1",
+  "session_id": "PROD-EVENTDOC-001-g1",
+  "worker_id": "chatgpt-interactive-event-document-worker",
+  "action_id": "PROD-EVENTDOC-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:42:16Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Event/document mechanism research",
+    "detail": "Screening due-bill entitlement mechanics for large distributions using primary regulatory and issuer/exchange documents; no post-event outcomes authorized."
+  }
+}

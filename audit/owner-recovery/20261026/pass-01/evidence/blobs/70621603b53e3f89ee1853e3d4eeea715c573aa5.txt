@@ -1,0 +1,57 @@
+# Vertical CP013 — A replay token identifies the exact durable economic fill
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=ba034dcaebfe0a662e008aa200b3e69520516857
+
+Module: existing Book idempotent fill capability, `src/quant/book/ledger.py`.
+Schema: `schemas/book_state.schema.json`. North Star §§5, 7, 10, 12.
+Starting depth: CP001 D3 mutation durability, with payload collision explicitly
+unproven. This checkpoint deepens that remaining internal identity case.
+
+Defect/root cause: a stored operation ID alone acknowledged any later fill with
+that token, even if symbol, quantity, price, cost, strategy, date or Book identity
+differed. A caller could receive `replayed=True` for an event never applied.
+The original idempotency set proved only that *some* event used that token.
+
+Narrow repair: persist an optional operation-to-SHA256 fingerprint mapping in
+the **same atomic Book document** as each fill and its applied ID. Bind all six
+fill fields plus stored ledger ID, authority, mode and currency, using a fixed
+fingerprint format. Equivalent int/float amounts and signed zero match without
+rounding distinct large integers through float conversion. Different payloads
+raise `LedgerConflict` before mutation. Malformed/orphan bindings fail closed at
+reconstruction. No second ledger or auxiliary write transaction is introduced.
+
+Compatibility is deliberately explicit: old Books without the optional mapping
+remain readable and can append new IDs without rewriting history. An old applied
+ID lacking a payload proof raises `LEGACY_OPERATION_PAYLOAD_UNVERIFIABLE` on
+replay; no historical fingerprint is invented. This can block old replay callers
+until they recover authoritative intent. This branch does not migrate or deploy
+to any active Book. Older consumers rejecting unknown fields need coordinated
+schema adoption, not blind porting.
+
+Adversaries: six changed fill fields after restart; four changed Book identity
+fields; equal numeric spellings; adjacent distinct integers above 2^53; legacy
+ID-only state; new fill on legacy state; failure before/after atomic publication;
+two workers competing under one token with different payloads and losing-worker
+retry; malformed/false/orphan fingerprint indexes.
+
+Tests: initial **16 failed / 1 passed**, including assertions observing the then
+absent durable payload proof. Final focused identity/Book/Desk-journal/Quant/V1
+red-team regressions **153 passed** (22 new cases). Logs:
+`research/vertical_depth/20261021/CP013_{before,after}.txt`.
+Ruff F, schema-generation consistency and whitespace checks pass. Attained depth:
+**D3** for exact-payload replay bound to the existing durable mutation boundary.
+
+Remaining unproven depth: cryptographic collision resistance is an assumption,
+not an experimental proof; malicious actors recomputing all stored fields are
+not authenticated by a self hash. Historical missing proofs remain unavailable.
+Global Desk/Book/event atomicity and every hostile Book schema remain unproven.
+
+Horizontal findings: none. Longitudinal findings: none.
+Authority bypass found here: FALSE for Owner authorities; authority metadata is
+bound as identity but no authority can be granted by this fingerprint.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

@@ -1,0 +1,19 @@
+{
+  "instance_agent_command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaamv5n2p3cxcanj74zq3bcpv7gkmnl3u2x7btsfz4576dq",
+  "instance_id": "ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa",
+  "delivery_state": "ACKED",
+  "lifecycle_state": "SUCCEEDED",
+  "time_created": "2026-10-20T10:49:51.682000+00:00",
+  "time_updated": "2026-10-20T10:51:33.081000+00:00",
+  "sequence_number": 4932987,
+  "display_name": "Quant-Trade recovery qualification",
+  "content": {
+    "output_type": "TEXT",
+    "exit_code": 0,
+    "message": "{\"execExitCode\":0,\"runtime\":\"57ms\"}",
+    "text": "{\"original_runuser\": null, \"repaired_runuser\": \"/usr/sbin/runuser\", \"v1_timer\": \"active\", \"v2_timer\": \"inactive\", \"wrappers\": {\"qualify\": \"a1204c0de4c6359d7cc4cbe47502644dfe92b9501a35a343643cfee0d959eeee\", \"activate\": \"063f056e56fb495bd5b96b10771b3c6ee83bc8d1669d6243424d19a7e159c54c\", \"status\": \"1de7102e0ae3aa221a123aad9edceb84a8957c3723d499f4c8850c33688a75f8\"}}\n",
+    "text_sha256": ""
+  },
+  "oracle_request_id": "B206F81FFE3A48A09F0A9ECD9ADBC0B2/5085020CABE7BB22B547D76A43444716/AD40BB9AD27CDCABFC274C5124127381",
+  "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaamv5n2p3cxcanj74zq3bcpv7gkmnl3u2x7btsfz4576dq"
+}

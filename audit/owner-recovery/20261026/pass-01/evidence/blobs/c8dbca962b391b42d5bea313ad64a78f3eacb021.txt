@@ -1,0 +1,102 @@
+{
+  "schema_version": "blue.repair.1",
+  "verification_date": "2026-10-04",
+  "verification_scope": "DOCUMENT_AND_REPOSITORY_INTEGRITY_ONLY_NOT_INDEPENDENT_SCIENTIFIC_AUDIT",
+  "mandatory_inputs_verified": true,
+  "dispatch_sha": "d8fada2dee81d36859330a55ec8bc11e4b81886b",
+  "base_tree_sha": "ae342451c7cebf9145859d01650cf2a7e65ece02",
+  "authority_chain": [
+    {
+      "sha": "d8fada2dee81d36859330a55ec8bc11e4b81886b",
+      "parents": [
+        "db7007af0b939e5beb41f59121d2557df391bc74"
+      ]
+    },
+    {
+      "sha": "db7007af0b939e5beb41f59121d2557df391bc74",
+      "parents": [
+        "042002f06dd1d146e7a0b9a3e433891bc7352f94"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "research/weather_forward/v4/audit/ASTRA_V4_EDGE_MAP_OVERFIT_AUDIT_2026-10-04.json",
+      "blob_sha": "03f8b13da79cd7e3dfba03af08f5b234cd5666ac",
+      "commit": "042002f06dd1d146e7a0b9a3e433891bc7352f94",
+      "fully_read": true
+    },
+    {
+      "path": "research/weather_forward/v4/audit/ASTRA_V4_EDGE_MAP_OVERFIT_AUDIT_2026-10-04.md",
+      "blob_sha": "ec356c7b5826012d1934ee2dde019c2d6ad91f8b",
+      "commit": "042002f06dd1d146e7a0b9a3e433891bc7352f94",
+      "fully_read": true
+    },
+    {
+      "path": "research/weather_forward/v4/audit/BLUE_RESEARCH_DESIGN_REPAIR_OWNER_ADDENDUM_2026-10-04.md",
+      "blob_sha": "6f2d11b7e0e53e7401e3357f2e3e1846893ccdf5",
+      "commit": "db7007af0b939e5beb41f59121d2557df391bc74",
+      "fully_read": true
+    }
+  ],
+  "v3_terminal": {
+    "sha": "fff9f5ed6604cf6cbf5bb3bf90141f033cd0c170",
+    "status": "CLAIMED_BUT_NOT_REPOSITORY_VERIFIED",
+    "git_object_http_status": 404,
+    "commit_http_status": 422,
+    "deliverables_verified": false
+  },
+  "checks": {
+    "canonical_edge_object_equality": "PASS_33_UNCHANGED",
+    "unique_seed_rows": 33,
+    "hypothesis_surface_pairs": 330,
+    "confirmatory_clean_certificates": 0,
+    "owner_decisions_unresolved": 12,
+    "economic_weights_zero": true,
+    "json_parse": "PASS",
+    "source_scope": "ONLY_REPAIR_DOCUMENTS_CREATED",
+    "outside_scope_modifications": [],
+    "research_tests_executed": [],
+    "backtests_executed": [],
+    "holdout_access": false,
+    "production_changed": false
+  },
+  "artifact_hashes": [
+    {
+      "path": "research/weather_forward/v4/blue/BLUE_V4_EXPOSURE_CUSTODY_LEDGER_2026-10-04.json",
+      "sha256": "152a750c768429928ed02a2ff387209472de7c051499a5993d7566df44828e2b",
+      "bytes": 468244
+    },
+    {
+      "path": "research/weather_forward/v4/blue/BLUE_V4_HYPOTHESIS_LEDGER_2026-10-04.json",
+      "sha256": "e7a745cfe1bc7085c0c8c6a934508e8f3d03efbd7c088ebca802e8640f232fac",
+      "bytes": 128789
+    },
+    {
+      "path": "research/weather_forward/v4/blue/BLUE_V4_REPAIR_CONTRACT_2026-10-04.json",
+      "sha256": "d06d3fdf54c59ff1e91549dffbd2a502d4c0f97e810a05fdb12544b76a10aaae",
+      "bytes": 11976
+    },
+    {
+      "path": "research/weather_forward/v4/blue/BLUE_V4_RESEARCH_DESIGN_REPAIR_PLAN_2026-10-04.md",
+      "sha256": "73f070b8a122201f031c741299e29b29da1f40c986e6bfd797bfa3e2bac5aabd",
+      "bytes": 27658
+    }
+  ],
+  "self_hash_policy": "This manifest excludes its own hash; Git blob/tree content binds the manifest.",
+  "terminal_status": "OWNER_DECISIONS_REQUIRED",
+  "authority": {
+    "REAL_CAPITAL_AUTHORIZED": false,
+    "LIVE_TRADING_AUTHORIZED": false,
+    "t0": "NOT_DECLARED",
+    "DATA_T0": "NOT_DECLARED",
+    "EXPERIMENT_T0": "NOT_DECLARED",
+    "BUILDER_AUTHORIZED": false,
+    "ECONOMIC_DECISION_WEIGHT": 0,
+    "COMPOSITE_ECONOMIC_AUTHORITY": 0,
+    "CAPTURE_AUTHORIZED": false,
+    "RESEARCH_FREEZE_AUTHORIZED": false,
+    "UNBLIND_AUTHORIZED": false,
+    "E1_E5_AUTHORIZED": false
+  }
+}

@@ -1,0 +1,32 @@
+from catalog import *
+def rd(n):return list(csv.DictReader((ROOT/'reports'/n).open()))
+refs=loadrefs();h=refs['builder/v2-forward-20261020'];can=refs['builder/convergence-wave2-canonical-20261021']
+br=rd('05_BRANCH_AND_RAIL_LEDGER.csv')
+for r in br:
+ if r['BRANCH']=='builder/v2-forward-20261020':
+  r.update(MISSION='Native/composed V2 controls; CP080-099 after CP079 base selection',CURRENT_STATUS='QUALIFIED_SOURCE_HEAD; LATE_CONTROLS_PARTLY_ABSENT_FROM_W2',QUALIFIED='EXACT_HEAD_ORACLE_V2_CORE_PASS_39660277404; SEC_PASS_39660277407',INTEGRATED='CP090 proposal binding / CP093 composed model admission / CP096 epoch-window checks absent in W2; CP099 tuple scan overlaps Q',SUPERSEDED='NOT_FULLY_SUPERSEDED; DIFFERENT_FIXES_OVERLAP_H_V_Q_W1',UNIQUE_UNINTEGRATED_WORK='YES_EXACT_CONTROL_GAPS; OTHER_PATCH_EQUIVALENCE_PENDING',RELEVANCE_TODAY='HIGH_SCIENTIFIC_INTEGRITY_INTEGRATION_DEBT',EVIDENCE_CLASS='FACT_PROVEN_GIT_FUNCTIONS_AND_EXACT_CI; NO_BULK_PORT_ASSERTION',AUDIT_REVIEW_STATUS='SCOPED_REVIEW_COMPLETE')
+csvout('05_BRANCH_AND_RAIL_LEDGER.csv',br)
+cp=rd('04_CP_MASTER_INDEX.csv');found=[]
+fixes={81,84,87,90,93,96,99};findings={80,83,86,89,92,95,98};quals={82,85,88,91,94,97}
+for r in cp:
+ m=re.search(r'BUILDER_CP_(\d{3})_',r['PATH'])
+ if not m or not r['PATH'].endswith('.md'):continue
+ n=int(m.group(1))
+ if not 80<=n<=99:continue
+ blob=git('rev-parse',h+':'+r['PATH'],check=False).decode().strip()
+ if blob!=r['BLOB_SHA']:continue
+ found.append(n);typ='REPAIR' if n in fixes else 'REAL_DEFECT_FOUND' if n in findings else 'QUALIFICATION'
+ text=git('show',h+':'+r['PATH']).decode()
+ r.update(CLASSIFICATION=typ,AUDIT_REVIEW_STATUS='CURRENT_LABEL_DISPOSITION_VERIFIED_IN_EXACT_HEAD_V2_FORWARD',EVIDENCE_CLASS='FACT_PROVEN_CP_ARTIFACT_SOURCE_DELTA_AND_SOURCE_HEAD_CI; NO_FRESH_PRODUCT_TEST',DEFECT_FOUND='YES_DOCUMENTED_REPRODUCTION' if n in findings or n in fixes else 'NO_NEW_DEFECT_CLAIM',DEFECT_REPAIRED='YES_SOURCE_CHANGE_AND_EXISTING_REGRESSION' if n in fixes else 'NO_NEW_REPAIR_IN_THIS_CP',WHAT_CHANGED_FUNCTIONALLY=next((l for l in text.splitlines() if l.startswith('# ')),r['MISSION']),EVIDENCE_REUSABLE='SOURCE_SCOPED; INTEGRATE_OR_REPLAY_RELEVANT_GUARDS_ON_FINAL_TARGET; NO_BULK_OLD_CODE_PORT',LATER_INVALIDATED='NO_RETRACTION_FOUND_IN_THIS_RAIL',SUPERSEDED='TARGET_CONTENT_EQUIVALENCE_REQUIRED; Q_OVERLAPS_TUPLE_FIREWALL',CODE_CHANGE_SCOPE_NOTE='CP080-099 are Builder V2 rail, not Vertical CP080-099. Exact source head ded4228 is CI-qualified; W2 source equivalence checked only for named controls.')
+csvout('04_CP_MASTER_INDEX.csv',cp)
+u=rd('07_QUALIFIED_UNINTEGRATED_REGISTER.csv');u.append(dict(CAPABILITY='Late V2 composed/native scientific controls CP080-099',BRANCH='builder/v2-forward-20261020',SHA=h,QUALIFICATION_EVIDENCE='39660277404 Oracle V2 Core exact-head PASS;39660277407 SEC PASS; seven repair groups and before/after qualification artifacts',CURRENT_CANONICAL_EQUIVALENT='W2 v2_core/v2_pipeline lack assert_trial_proposal_binding, assert_trial_epoch_window and composed assert_model_allowed calls. Q overlaps tuple membrane but not these checks.',STILL_NEEDED='YES_RECONCILE_NAMED_CONTROLS; DO_NOT_ASSUME_ALL_7_PATCHES_ABSENT',SUPERSEDED='PARTIAL_OVERLAP_WITH_W1_H_V_Q; NOT_WHOLE_RAIL_SUPERSESSION',INTEGRATION_DEBT='Base was selected at CP079; later field-provenance/data-memory/subject/model/time/container controls need semantic comparison and target replay. Preserve current W2 depth; no wholesale old file replacement.',EVIDENCE_CLASS='FACT_PROVEN_FOR_NAMED_ABSENT_CONTROLS_AND_EXACT_SOURCE_CI'))
+csvout('07_QUALIFIED_UNINTEGRATED_REGISTER.csv',u)
+v=rd('22_RECOVERABLE_VALUE_REGISTER.csv');v.append(dict(VALUE_ID='RV12',VALUE='Post-CP079 scientific controls on V2 forward rail',SOURCE_BRANCH='builder/v2-forward-20261020',SHA=h,WHY_NOT_CANONICAL='Source rail continued CP080-099 after immutable-base selection; three named composed controls absent in W2; tuple membrane overlaps Q.',SHOULD_RECOVER='YES_SCOPED_CONTROL_RECONCILIATION',HOW='Reuse existing repair/test contracts against current target; do not replace expanded W2 files with older V2 files.',EVIDENCE='Exact source CI39660277404 and CP090/093/096/099 source diffs',EVIDENCE_CLASS='FACT_PROVEN'))
+csvout('22_RECOVERABLE_VALUE_REGISTER.csv',v)
+c=rd('23_CONTRADICTION_REGISTER.csv');c.append(dict(CONTRADICTION_ID='CT15',SOURCE_A=h+':research/research_os/expansion/v2_pipeline.py',CLAIM_A='Exact-head-qualified late rail enforces proposal-subject binding, allowed models and generation epoch window',SOURCE_B=can+':research/research_os/expansion/v2_pipeline.py',CLAIM_B='W2 cumulative pass on earlier controls; named late composed checks absent',MOST_AUTHORITATIVE_EVIDENCE='Git content diff, helper/call absence, CP080-099 source/test changes and source exact-head39660277404',CURRENT_VERDICT='Late source qualification is not cumulative integration; named integrity work remains unintegrated',REMAINING_UNCERTAINTY='Which equivalent safeguards exist at other W2 boundaries and how Owner chooses final composed contract; no new exploit or product test performed',PRIORITY='HIGH',STATE='OPEN',EVIDENCE_CLASS='CONTRADICTORY_EVIDENCE'))
+csvout('23_CONTRADICTION_REGISTER.csv',c)
+s=json.load(open(ROOT/'evidence/review_coverage_stats.json'));s.update(branches_scoped_reviewed=38,cp_current_label_dispositions_verified=100+len(found),branches_pending=[r['BRANCH'] for r in br if r['AUDIT_REVIEW_STATUS']!='SCOPED_REVIEW_COMPLETE']);dump('review_coverage_stats.json',s)
+s=json.load(open(ROOT/'evidence/functional_register_stats.json'));s.update(qualified_unintegrated_scopes=len(u),recoverable_scopes=len(v));dump('functional_register_stats.json',s)
+dump('contradiction_stats.json',dict(total=len(c),open=sum(x['STATE']=='OPEN' for x in c),open_ids=[x['CONTRADICTION_ID'] for x in c if x['STATE']=='OPEN']))
+dump('late_v2_control_recovery.json',dict(head=h,cp_labels_reviewed=sorted(found),repairs=sorted(fixes),finding_cps=sorted(findings),qualification_cps=sorted(quals),exact_source_ci=39660277404,scope='Named composed control omissions verified statically; other patch equivalence remains unresolved.',source_diff=git('diff',can,h,'--','research/research_os/expansion/v2_core.py','research/research_os/expansion/v2_pipeline.py').decode()))
+print(json.dumps({'reviewed_cp_labels':sorted(found),'branch_reviewed':38,'cp_records_classified':100+len(found),'qualified_unintegrated_scopes':len(u),'open_contradictions':sum(x['STATE']=='OPEN' for x in c)}))

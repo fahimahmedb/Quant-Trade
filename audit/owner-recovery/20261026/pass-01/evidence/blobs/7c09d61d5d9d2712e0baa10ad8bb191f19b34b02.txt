@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Persistent SEC raw-capture cursor and liveness state.",
+  "properties": {
+    "blocked_until_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "collector_version": {
+      "type": "string"
+    },
+    "git_commit": {
+      "type": "string"
+    },
+    "known_source_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "last_attempt_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_byte_length": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "last_endpoint_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_error_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_http_status": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "last_poll_result": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_raw_object_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_receipt_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_successful_poll_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "next_poll_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pending": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "title": "sec_collector_state",
+  "type": "object"
+}

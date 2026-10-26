@@ -1,0 +1,277 @@
+
+==================== WEEKEND 2025-10-17 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-10-17 | FILM: Black Phone 2 | OPEN | key='Black Phone 2'
+  [lane A] Variety post 1236555520 pub 2025-10-17T14:59:00Z mod 2025-10-17T14:59:15Z STRICT :: Box Office: ‘The Black Phone 2’ Makes $2.6 Million in Previews
+     * With a $30 million budget, "The Black Phone 2" will hopefully turn Blumhouse's box office fortunes around after it suffered misfires earlier this year like "Wolf Man," "The Woman in the Yard," "Drop" and "M3GAN 2.0." The sequel brings back Mason Thames and Madeleine McGraw to face off against Hawke's The Grabber once again, this time from beyond th
+  [lane B] Deadline post 1236590286 section [FRIDAY MIDDAY UPDATE] available by 2025-10-18T00:00:00+00:00
+     * Blumhouse is looking at its biggest opening year-to-date after four movies with Black Phone 2 , which is shaping up for a $23 million start after a Friday and previews of $10.1M at 3,411 sites.
+     * PREVIOUSLY, Friday AM: Universal and Blumhouse's Black Phone 2 dialed up $2.6 million in previews Thursday at 2,900 theaters from showtimes that began at 2 p.m.
+     * Black Phone 2 previews are in line with that of Paramount's Smile 2, which opened in the same weekend a year ago with $2.5M in previews and a three-day total of $23M.
+     * Production cost for Black Phone 2 is net $30M.
+  [lane C] Variety post 1236555897 pub 2025-10-18T15:05:08Z mod 2025-10-18T19:39:23Z STRICT :: Box Office: ‘Black Phone 2’ Grabs $10.7 Million Opening Day, ‘Good Fortune’ Fizzling in Th
+     * Blumhouse's horror sequel "Black Phone 2" dialed into $10.7 million across Friday and preview screenings, heading for a No. 1 opening.
+     * Universal has "Black Phone 2" in 3,411 North American locations for its opening weekend, projecting a three-day total of $24.4 million.
+     * The R-rated "Black Phone 2" will easily notch Blumhouse's biggest opening of the calendar, but the Scott Derrickson-directed sequel is also one of its costlier productions at a $30 million production budget.
+  [lane D] Deadline post 1236590286 section [SUNDAY AM] available by 2025-10-19T19:00:00+00:00
+     * Blumhouse and Universal's Black Phone 2 was slightly bigger at $26.5M after a Saturday ease of -13% with $9.6M off Friday/previews $11M.
+     * Top ten markets were Los Angeles, NYC, Chicago, Dallas, Houston, San Francisco, Philadelphia, Phoenix, Atlanta and DC. iSpot shows a $7.2M linear spend by Uni for Black Phone 2 , which reached 422M impressions with spots during NFL games, College Football, MLB, Top Chef VIP and Chicago P.D.
+     * Black Phone 2 (Uni) 3,411 theaters, Fri $11M, Sat $9.6M $5.8M 3-day $26.5M /Wk 1 Tron: Ares (Dis) 4000 theaters, Fri $3M (-79%) Sat $4.8M Sun $3.3M, 3-day $11.1M (-67%), Total $61.9M /Wk 2 Good Fortune (LG) 2,990 theaters, Fri $2.4M, Sat $2.2M Sun $1.55M 3-day $6.2M /Wk 1 One Battle After Another (WB) 2,532 (-595) theaters, Fri $1.1M (-44%) Sat $1.
+     * Until now: the horror house of Purge & Five Nights at Freddy's finally makes a comeback this weekend with Black Phone 2 which in its opening is ahead of its predecessor with a 3-day of $24.4M.
+  [lane D] Variety post 1236556444 pub 2025-10-19T14:41:11Z mod 2025-10-20T15:07:14Z REVISABLE(modified after anchor) :: Box Office: ‘Black Phone 2’ Grabs $27 Million in Otherwise Muted October Weekend
+     * UPDATE: Universal and Blumhouse's horror sequel "Black Phone 2" kicked off spooky season with $27.3 million from 3,411 North American theaters.
+     * "Black Phone 2" opened slightly higher than Sunday's estimate of $26.5 million and roughly $4 million ahead of its predecessor.
+     * "Black Phone 2" also collected $15.5 million at the international box office for a global tally of $42.8 million.
+  [lane D] Variety post 1236556535 pub 2025-10-19T17:43:10Z mod 2025-10-20T15:07:37Z REVISABLE(modified after anchor) :: Box Office: ‘Black Phone 2’ Collects $42 Million Globally, ‘Tron: Ares’ Hits $100 Million 
+     * "Black Phone 2," a sequel to Universal and Blumhouse's 2022 hit slasher film, scared up $42.8 million at the global box office in its first weekend of release.
+
+######## 2025-10-17 | FILM: Good Fortune | OPEN | key='Good Fortune'
+  [lane A] Variety post 1236555520 pub 2025-10-17T14:59:00Z mod 2025-10-17T14:59:15Z STRICT :: Box Office: ‘The Black Phone 2’ Makes $2.6 Million in Previews
+     * "Good Fortune," a comedy starring Ansari, Keanu Reeves, Seth Rogen and Keke Palmer, made $725,000 and is expected to open with $6 million to $8 million.
+  [lane B] Deadline post 1236590286 section [FRIDAY MIDDAY UPDATE] available by 2025-10-18T00:00:00+00:00
+     * Third belongs to Lionsgate's Good Fortune at 2,990 theaters, with $2.5M today and bad fortune at $6M for the net $30M feature.
+  [lane C] Variety post 1236555897 pub 2025-10-18T15:05:08Z mod 2025-10-18T19:39:23Z STRICT :: Box Office: ‘Black Phone 2’ Grabs $10.7 Million Opening Day, ‘Good Fortune’ Fizzling in Th
+     * Meanwhile, Lionsgate's release of "Good Fortune" is headed for the lower side of projections, forecasting an opening of $5.9 million from 2,985 locations.
+  [lane D] Deadline post 1236590286 section [SUNDAY AM] available by 2025-10-19T19:00:00+00:00
+     * Eddy Chen/Lionsgate Lionsgate's Good Fortune with $6.25M is in the range we were seeing, but still low for the Aziz Ansari-directed and starring body swap/angels comedy. iSpot reports a $2.5M linear spend by Lionsgate for the Keanu Reeves-Seth Rogen movie that yielded 111M impressions with ads running across NFL, College Football, MLB and MLB Tonig
+     * Black Phone 2 (Uni) 3,411 theaters, Fri $11M, Sat $9.6M $5.8M 3-day $26.5M /Wk 1 Tron: Ares (Dis) 4000 theaters, Fri $3M (-79%) Sat $4.8M Sun $3.3M, 3-day $11.1M (-67%), Total $61.9M /Wk 2 Good Fortune (LG) 2,990 theaters, Fri $2.4M, Sat $2.2M Sun $1.55M 3-day $6.2M /Wk 1 One Battle After Another (WB) 2,532 (-595) theaters, Fri $1.1M (-44%) Sat $1.
+     * Photo Credit: Eddy Chen Eddy Chen The weekend's other starry wide entry, Lionsgate's Good Fortune , which at net $30M cost as much as Black Phone 2, ain't faring well with $5.7M-$6.1M .
+     * Good Fortune (LG) 2,990 theaters, Fri $2.4M, 3-day $5.7M-$6.1M/Wk 1 4.
+  [lane D] Variety post 1236556444 pub 2025-10-19T14:41:11Z mod 2025-10-20T15:07:14Z REVISABLE(modified after anchor) :: Box Office: ‘Black Phone 2’ Grabs $27 Million in Otherwise Muted October Weekend
+     * This weekend's other newcomer, Lionsgate's R-rated comedy "Good Fortune," opened at No. 3 with just $6.2 million from 2,990 venues.
+
+==================== WEEKEND 2025-10-24 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-10-24 | FILM: Chainsaw Man - The Movie: Reze Arc | OPEN | key='Chainsaw Man'
+  [lane A] Deadline post 1236596417 section [FRIDAY AM] available by 2025-10-24T19:00:00+00:00
+     * Sony/Crunchyroll's Chainsaw Man: Reze Arc revved up $3.4 million in previews Thursday in screenings that began at 4 p.m. at 2,500 locations.
+     * Related Stories Festivals 'Springsteen: Deliver Me From Nowhere' Review: Jeremy Allen White In Scott Cooper's Raw And Fearless Portrait Of An Artist Searching For Himself - Telluride Film Festival Reviews 'Regretting You' Review: True Love Inevitably Prevails In A Ridiculous Romantic Drama The Tatsuya Yoshihara-directed Chainsaw Man based on the po
+  [lane B] Deadline post 1236596417 section [FRIDAY PM] available by 2025-10-25T06:59:00+00:00
+     * Sony/Crunchyroll's Chainsaw Man: Reze Arc is slicing its way to the top of the box office with a good $8M today for what's shaping up to be a $14 million-plus weekend.
+  [lane C] Deadline post 1236596417 section [SATURDAY AM] available by 2025-10-25T19:00:00+00:00
+     * In an autumn where prestige awards potential isn't working, nor attempted tentpoles like Tron: Ares, Sony/Crunchyroll anime proves its merit again with its latest Chainsaw Man: Reze Arc which is now looking at a $15.5M-$17M opening after an $8.5M Friday, powered by an A CinemaScore from fans.
+     * Chainsaw Man (Sony) 3,003 theaters, Fri $8.5M, 3-day $15M-$17M/Wk 1 2 Regretting You (Par) 3,393 theaters, Fri $5.2M 3-day $13M/Wk 1 3.
+  [lane C] Variety post 1236560960 pub 2025-10-25T15:10:07Z mod 2025-10-25T16:42:32Z STRICT :: Box Office: ‘Chainsaw Man’ Revs $8.5 Million Opening Day on Top, ‘Regretting You’ Spars fo
+     * Anime rides again atop the domestic box office, as "Chainsaw Man - The Movie: Reze Arc" looks to open ahead of fellow new releases, the Bruce Springsteen biopic "Deliver Me From Nowhere" and the Colleen Hoover adaptation "Regretting You." The R-rated "Chainsaw Man" went brrr with $8.5 million across Friday and preview screenings from 3,003 location
+     * It's another win for Sony's anime label Crunchyroll, which delivered its parent studio's biggest opening of the year in September with a historic $70.6 million start for "Demon Slayer: Kimetsu no Yaiba - The Movie: Infinity Castle." "Chainsaw Man" will only hit a fraction of that blockbuster figure, but the fact that a new anime release is again le
+     * The bulk of the North American gross will likely come this weekend, but "Chainsaw Man" is already sitting pretty for producer Mappa with $61 million in overseas grosses.
+  [lane D] Deadline post 1236596417 section [SUNDAY AM] available by 2025-10-26T19:00:00+00:00
+     * Sony/Crunchyroll's Chainsaw Man: Reze Arc is landing at the high end of where we were seeing it yesterday with $17.2M after a $5.2M million Saturday in a weekend where the Toronto Blue Jays and LA Dodgers were a complete distraction in the World Series, now with 1-1 tied streak.
+     * Chainsaw Man (Sony) 3,003 theaters, Fri $8.5M, Sat $5.2M Sun $3.5M 3-day $17.2M /Wk 1 2.
+  [lane D] Variety post 1236561362 pub 2025-10-26T15:06:01Z mod 2025-10-27T18:29:57Z REVISABLE(modified after anchor) :: Box Office: ‘Chainsaw Man’ Is Latest Anime Win With $18 Million Debut, ‘Springsteen’ Under
+     * "Chainsaw Man - The Movie: Reze Arc," the latest offering from Sony's Crunchyroll, was No. 1 at the box office with $18 million from 3,003 North American theaters.
+     * Even if that happens, "Chainsaw Man" has already grossed $108 million worldwide, thanks to a robust international run.
+     * Gross, who runs the movie consulting firm Franchise Entertainment Research, says of "Chainsaw Man." "This is a worldwide phenomenon." "Springsteen" launched below projections at the international box office with $7 million, bringing its global tally to a soft $16.1 million.
+  [lane D] Variety post 1236561522 pub 2025-10-26T19:06:06Z mod 2025-10-26T19:16:01Z STRICT :: Box Office: ‘Springsteen’ Fizzles Overseas With $7 Million Start, ‘Black Phone 2’ Climbs t
+     * Meanwhile, "Chainsaw Man - The Movie: Reze Arc" continued to dominate at the international box office, adding $14.7 million while expanding to 46 total markets.
+     * "Chainsaw Man" topped the North American box office this weekend with $17.2 million and has so far earned $108 million worldwide.
+
+######## 2025-10-24 | FILM: Regretting You | OPEN | key='Regretting You'
+  [lane A] Deadline post 1236596417 section [FRIDAY AM] available by 2025-10-24T19:00:00+00:00
+     * Related Stories Festivals 'Springsteen: Deliver Me From Nowhere' Review: Jeremy Allen White In Scott Cooper's Raw And Fearless Portrait Of An Artist Searching For Himself - Telluride Film Festival Reviews 'Regretting You' Review: True Love Inevitably Prevails In A Ridiculous Romantic Drama The Tatsuya Yoshihara-directed Chainsaw Man based on the po
+     * Regretting You was forecasted at $9M-$11M this weekend in what is the second Colleen Hoover novel feature adaptation to hit the screen after the massive success of It Ends With Us.
+  [lane B] Deadline post 1236596417 section [FRIDAY PM] available by 2025-10-25T06:59:00+00:00
+     * Second is a three-way race between 20th Century Studios' Springsteen: Deliver Me From Nowhere (3,460 theaters) , Paramount's Colleen Hoover movie Regretting You (3,393 theaters) and the second weekend of Universal/Blumhouse's Black Phone 2 (3,460 theaters) each looking at $10.8M-$12M.
+  [lane C] Deadline post 1236596417 section [SATURDAY AM] available by 2025-10-25T19:00:00+00:00
+     * L-R: Mckenna Grace, Dave Franco and Allison Williams in 'Regretting You' Jessica Miglio / Paramount Pictures / Courtesy Everett Collection A title acquired during the Brian Robbins regime at Paramount, Regretting You , is doing its job in attracting 83% female moviegoers with a $13M 2nd place opening after a $5.2M Friday and B CinemaScore.
+     * Chainsaw Man (Sony) 3,003 theaters, Fri $8.5M, 3-day $15M-$17M/Wk 1 2 Regretting You (Par) 3,393 theaters, Fri $5.2M 3-day $13M/Wk 1 3.
+  [lane C] Variety post 1236560960 pub 2025-10-25T15:10:07Z mod 2025-10-25T16:42:32Z STRICT :: Box Office: ‘Chainsaw Man’ Revs $8.5 Million Opening Day on Top, ‘Regretting You’ Spars fo
+     * Anime rides again atop the domestic box office, as "Chainsaw Man - The Movie: Reze Arc" looks to open ahead of fellow new releases, the Bruce Springsteen biopic "Deliver Me From Nowhere" and the Colleen Hoover adaptation "Regretting You." The R-rated "Chainsaw Man" went brrr with $8.5 million across Friday and preview screenings from 3,003 location
+     * It's a tighter race for second place, with "Regretting You" narrowly leading ahead of the sophomore outing of "Black Phone 2." Paramount's "Regretting You" kicked off with $5.2 million across Friday and previews, including special fan event screenings that featured a live cast Q&A.
+     * "Regretting You" cost $30 million to produce.
+  [lane D] Deadline post 1236596417 section [SUNDAY AM] available by 2025-10-26T19:00:00+00:00
+     * Universal/Blumhouse's second weekend of Black Phone 2 is edging out the start of Paramount's Colleen Hoover movie, Regretting You , $13M to $12.8M .
+     * Regretting You (Par) 3,393 theaters, Fri $5.2M Sat $4.6M Sun $2.97M 3-day $12.85M /Wk 1 4.
+  [lane D] Variety post 1236561362 pub 2025-10-26T15:06:01Z mod 2025-10-27T18:29:57Z REVISABLE(modified after anchor) :: Box Office: ‘Chainsaw Man’ Is Latest Anime Win With $18 Million Debut, ‘Springsteen’ Under
+     * "Regretting You" opened in second place with a better-than-expected $13.68 million from 3,393 venues.
+     * However, he caveats that "Bruce Springsteen was not a controversial figure; his music was not part of a social movement; and he did not hurt himself with self-destructive behavior." Unlike commercial hits in the vein of Queen's "Bohemian Rhapsody" or Elton John's "Rocketman," this film is a "smaller story […] about the artist's struggle for his uni
+     * "Regretting You" cost a modest $30 million and marks Hoover's second novel to get the big screen treatment following "It Ends With Us," which became a breakout hit with $344 million worldwide.
+  [lane D] Variety post 1236561522 pub 2025-10-26T19:06:06Z mod 2025-10-26T19:16:01Z STRICT :: Box Office: ‘Springsteen’ Fizzles Overseas With $7 Million Start, ‘Black Phone 2’ Climbs t
+     * On international charts, "Springsteen" arrived behind Paramount's romantic drama "Regretting You." The PG-13 film, adapted from Colleen Hoover's best-selling novel, launched with $10 million from 43 markets.
+
+######## 2025-10-24 | FILM: Springsteen: Deliver Me from Nowhere | OPEN | key='Springsteen'
+  [lane A] Deadline post 1236596417 section [FRIDAY AM] available by 2025-10-24T19:00:00+00:00
+     * Related Stories Festivals 'Springsteen: Deliver Me From Nowhere' Review: Jeremy Allen White In Scott Cooper's Raw And Fearless Portrait Of An Artist Searching For Himself - Telluride Film Festival Reviews 'Regretting You' Review: True Love Inevitably Prevails In A Ridiculous Romantic Drama The Tatsuya Yoshihara-directed Chainsaw Man based on the po
+     * Jeremy Allen White in 'Springsteen: Deliver Me from Nowhere' 20th Century Studios Meanwhile, 20th Century Studios' $55M Scott Cooper-directed Springsteen: Deliver Me From Nowhere strummed $850,000 .
+  [lane B] Deadline post 1236596417 section [FRIDAY PM] available by 2025-10-25T06:59:00+00:00
+     * Second is a three-way race between 20th Century Studios' Springsteen: Deliver Me From Nowhere (3,460 theaters) , Paramount's Colleen Hoover movie Regretting You (3,393 theaters) and the second weekend of Universal/Blumhouse's Black Phone 2 (3,460 theaters) each looking at $10.8M-$12M.
+  [lane C] Deadline post 1236596417 section [SATURDAY AM] available by 2025-10-25T19:00:00+00:00
+     * Jeremy Allen White as Bruce Springsteen in SPRINGSTEEN: DELIVER ME FROM NOWHERE Macall Polay/20th Century Studios While we're on the subject of bad release dates for what should be older skewing male movies: 20th Century Studios' Springsteen: Deliver Me From Nowhere which has now shifted its range to $9M-$10M (many are seeing $9M) after a B+ Cinema
+     * If Springsteen hits the bottom of its tracking range at $9M, it won't be "Glory Days" for this net $55M Jeremy Allen White-Jeremy Strong starring production.
+     * Springsteen…(20th) 3,460 theaters, Fri $3.5M 3-day $9M-$10M/Wk 1 5.
+  [lane C] Variety post 1236560960 pub 2025-10-25T15:10:07Z mod 2025-10-25T16:42:32Z STRICT :: Box Office: ‘Chainsaw Man’ Revs $8.5 Million Opening Day on Top, ‘Regretting You’ Spars fo
+     * Anime rides again atop the domestic box office, as "Chainsaw Man - The Movie: Reze Arc" looks to open ahead of fellow new releases, the Bruce Springsteen biopic "Deliver Me From Nowhere" and the Colleen Hoover adaptation "Regretting You." The R-rated "Chainsaw Man" went brrr with $8.5 million across Friday and preview screenings from 3,003 location
+  [lane D] Deadline post 1236596417 section [SUNDAY AM] available by 2025-10-26T19:00:00+00:00
+     * Jeremy Allen White as Bruce Springsteen in 'Springsteen: Deliver Me from Nowhere' Macall Polay/20th Century Studios Springsteen: Deliver Me From Nowhere is arriving at the low end of its projections with $9.1M .
+     * Springsteen 's global take is $16.1M , under the $20M the studio was expecting.
+     * Springsteen… (20th) 3,460 theaters, Fri $3.6M, Sat $3.1M Sun  $2.4M 3-day $9.1M /Wk 1 5.
+  [lane D] Variety post 1236561362 pub 2025-10-26T15:06:01Z mod 2025-10-27T18:29:57Z REVISABLE(modified after anchor) :: Box Office: ‘Chainsaw Man’ Is Latest Anime Win With $18 Million Debut, ‘Springsteen’ Under
+     * Gross, who runs the movie consulting firm Franchise Entertainment Research, says of "Chainsaw Man." "This is a worldwide phenomenon." "Springsteen" launched below projections at the international box office with $7 million, bringing its global tally to a soft $16.1 million.
+     * However, he caveats that "Bruce Springsteen was not a controversial figure; his music was not part of a social movement; and he did not hurt himself with self-destructive behavior." Unlike commercial hits in the vein of Queen's "Bohemian Rhapsody" or Elton John's "Rocketman," this film is a "smaller story […] about the artist's struggle for his uni
+  [lane D] Variety post 1236561522 pub 2025-10-26T19:06:06Z mod 2025-10-26T19:16:01Z STRICT :: Box Office: ‘Springsteen’ Fizzles Overseas With $7 Million Start, ‘Black Phone 2’ Climbs t
+     * "Springsteen: Deliver Me From Nowhere," a musical biopic about the making of his beloved 1982 acoustic solo album "Nebraska," is falling flat with $7 million at the international box office and $16.1 million globally.
+     * On international charts, "Springsteen" arrived behind Paramount's romantic drama "Regretting You." The PG-13 film, adapted from Colleen Hoover's best-selling novel, launched with $10 million from 43 markets.
+
+==================== WEEKEND 2025-10-31 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-10-31 | FILM: Black to the Future | OPEN | key='Black to the Future'
+
+==================== WEEKEND 2025-11-07 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-11-07 | FILM: Predator: Badlands | OPEN | key='Predator'
+  [lane A] Deadline post 1236610703 section [FRIDAY AM] available by 2025-11-07T20:00:00+00:00
+     * The Dan Trachtenberg-directed Predator: Badlands speared $4.8 million in previews, which includes both Wednesday fan and Thursday night shows.
+     * Also, Predator: Badlands, with its female-action-hero sensibility, also is getting comped by Disney sources to Ballerina, which did $3.8M in previews before a $24.5M opening in June .
+     * Also good news for Badlands at this point in time: Total previews here are ahead of The Predator, which did $2.5M in Thursday previews back in September 2018.
+     * Predator owns the franchise-record opening at the domestic B.O. with $38.2M. 2010's Predators from director Nimród Antal and produced by Robert Rodriguez follows as the second-best U.S./Canada opening for the series at $24.7M.
+  [lane A] Variety post 1236572407 pub 2025-11-07T15:47:25Z mod 2025-11-07T15:47:38Z STRICT :: Box Office: ‘Predator: Badlands’ Makes $4.8 Million in Previews
+     * The Predator is on the hunt at the box office this weekend. 20th Century Studios' "Predator: Badlands," the ninth movie in the franchise and the first theatrically released "Predator" movie from Disney, has made $4.8 million in previews at the box office.
+     * Predator" which opened to $38 million.
+     * That would also put it above the 2010 and 2018 pair of reboots, creatively titled "Predators" and "The Predator," which both opened to around $24 million.
+     * With a $105 million budget plus marketing costs, Disney is hoping "Badlands" can use its broader PG-13 appeal to hunt down a profit after disappointing returns from last month's "Tron: Ares" and "Springsteen: Deliver Me From Nowhere." For the first time, a Predator protagonist takes center stage in "Badlands." Dimitrius Schuster-Koloamatangi plays 
+  [lane B] Deadline post 1236610703 section [FRIDAY AFTERNOON UPDATE] available by 2025-11-08T01:00:00+00:00
+     * 20th Century Studios' Predator: Badlands is creeping toward the second-best Friday start ever for the franchise at $14M , which would get the Dan Trachtenberg-directed movie to the second-best opening ever for a Predator movie at $33M.
+     * Predator with $16.4M and $38.2M, respectively.
+     * But Predator: Badlands has some of the best reviews and audience scores for its franchise, plus it cost 52% less than the $220M pricetag of the Jared Leto movie.
+  [lane C] Deadline post 1236610703 section [SATURDAY AM UPDATE] available by 2025-11-08T20:00:00+00:00
+     * 20th Century Studios' Predator: Badlands is looking good, knock on wood, coursing to a near-record opening for the franchise, around $37M , after a $15.6M Friday/previews.
+     * Related Stories Reviews 'Predator: Badlands' Review: The Extra-Terrestrial Killing Machine Loses Its Menacing Mojo In An FX-Heavy But Otherwise Lightweight Sc-fi Fantasy Culture Sydney Sweeney: Photos Of Her Work In Film And TV - And On The Red Carpet It's clear that audiences are enjoying this version of Predator from director-producer-writer Dan 
+     * The problem with the static opening between 2018's The Predator and 2010's Predators opening to around the same number of $25M stemmed from the campaigns being quite similar and not selling anything fresh.
+     * Predator: Badlands (Dis) 3,725 theaters, Fri $15.6M , 3-day $37M /Wk 1 2.
+  [lane C] Variety post 1236572897 pub 2025-11-08T16:06:32Z mod 2025-11-08T17:22:59Z STRICT :: Box Office: ‘Predator: Badlands’ Starts the Hunt With $15.6 Million Opening Day
+     * The "Predator" entry got to the chopper with $15.6 million across Friday and preview screenings in 3,725 locations.
+     * Predator" ($38 million).
+     * Disney spent $105 million on producing "Predator: Badlands," plus more on marketing expenses.
+  [lane D] Variety post 1236573309 pub 2025-11-09T15:48:20Z mod 2025-11-09T17:49:19Z STRICT :: ‘Predator: Badlands’ Sets Franchise Record With $40 Million Debut, Snapping Box Office Col
+     * "Predator: Badlands" is this weekend's apex predator at the box office, collecting a better-than-expected $40 million in its domestic debut.
+     * Predator" ($38 million, not adjusted for inflation) as the biggest opening weekend in the long-running property.
+     * "This is a great lead in for what promises to be one of the better months of November for the industry." Heading into the weekend, Disney and 20th Century's "Predator: Badlands" was aiming for $25 million to $30 million to start .
+     * "Predator: Badlands" earned another $40 million at the international box office, bringing its global total to $80 million.
+  [lane D] Variety post 1236573502 pub 2025-11-09T18:21:20Z mod 2025-11-09T19:28:03Z STRICT :: Box Office: ‘Predator: Badlands’ Ignites to Series-Best $80 Million Globally, ‘One Battle 
+     * "Predator: Badlands" clawed its way to $80 million at the global box office, ranking as the biggest debut in the nearly 40-year-old franchise.
+     * Director Shane Black's 2018 reboot "The Predator" previously held the record with $73.5 million, not adjusted for inflation.
+     * Predator" with $38 million, also not adjusted for inflation.
+     * Meanwhile, this marks the franchise's second-best international start after "The Predator" with $48.9 million.
+
+==================== WEEKEND 2025-11-14 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-11-14 | FILM: Keeper | OPEN | key='Keeper'
+  [lane C] Deadline post 1236617534 section [SATURDAY AM] available by 2025-11-15T20:00:00+00:00
+     * Tatiana Maslany in 'Keeper' Neon Fifth goes to Neon's third Oz Perkins genre movie, the $6M microbudget production The Keeper , with $1M today and $2M-$3M opening.
+  [lane C] Variety post 1236582590 pub 2025-11-15T16:05:53Z mod 2025-11-16T03:55:50Z REVISABLE(modified after anchor) :: Box Office: ‘Now You See Me 3’ Casts Spell on Top With $8.4 Million Opening Day, ‘The Runn
+     * The "Now You See Me" franchise's reappearing act is landing on the top of box office charts, debuting ahead of the weekend's other new releases "The Running Man" and "Keeper." Lionsgate's "Now You See Me: Now You Don't" heisted $8.4 million across Friday and preview screenings from 3,403 locations.
+     * Also opening this weekend, Neon's "Keeper," the latest indie horror effort from writer-director Osgood Perkins, earned about $1 million from 1,950 locations across Friday and previews.
+  [lane D] Deadline post 1236617534 section [SUNDAY AM] available by 2025-11-16T20:00:00+00:00
+     * Predator: Badlands (Dis) 3,725 theaters, Fri $3.5M, Sat $5.6M Sun $3.9M 3-day $13M (-68%), Total $66.3M/Wk 2 Regretting You (Par) 2,709 (-487) theaters, Fri $1.2M Sat $1.6M Sun $1.2M , 3-day $4M (-40%), Total $44.9M/Wk 4 Black Phone 2 (Uni) 2,419 (-524) theaters, Fri $750K (-50%) Sat $1.1M Sun $710K 3-day $2.65M (-49%), Total $74.6M/Wk 5 Nuremberg 
+
+######## 2025-11-14 | FILM: Now You See Me: Now You Don't | OPEN | key='Now You See Me'
+  [lane A] Variety post 1236581467 pub 2025-11-14T15:33:31Z mod 2025-11-14T15:33:51Z STRICT :: Box Office: ‘Now You See Me 3’ Makes $2.1 Million in Previews, Beating ‘Running Man’ With 
+     * "The Running Man" and "Now You See Me: Now You Don't" are heading toward a box office face-off as both movies are predicted to open with $20 million to $25 million this weekend.
+     * Paramount's dystopian thriller "The Running Man" has made $1.9 million in previews, while Lionsgate's magic heist movie "Now You See Me: Now You Don't" edged it out $2.1 million.
+  [lane C] Deadline post 1236617534 section [SATURDAY AM] available by 2025-11-15T20:00:00+00:00
+     * Two franchises, one that's 12 years old ( Now You See Me ) and another a reboot of a 38-year old Arnold Schwarzenegger, Stephen King sci-fi movie from hipster filmmaker Edgar Wright ( The Running Man ) are squaring off this weekend with the former the stronger with an estimated $21M-$24M opening.
+     * Friday for Now You See Me 3 is figured at $8.4M.
+     * So far, Now You See Me 3 in early China box office has grossed close to $16M.
+     * UPDATED, Friday midday: Lionsgate is looking at its third No. 1 opening of 2025 with the threequel Now You See Me: Now You Don't , which is pulling a rabbit out of its hat with a $20 million-$24 million start after an estimated $7.5M Friday that includes $2.1M in previews.
+  [lane C] Variety post 1236582590 pub 2025-11-15T16:05:53Z mod 2025-11-16T03:55:50Z REVISABLE(modified after anchor) :: Box Office: ‘Now You See Me 3’ Casts Spell on Top With $8.4 Million Opening Day, ‘The Runn
+     * The "Now You See Me" franchise's reappearing act is landing on the top of box office charts, debuting ahead of the weekend's other new releases "The Running Man" and "Keeper." Lionsgate's "Now You See Me: Now You Don't" heisted $8.4 million across Friday and preview screenings from 3,403 locations.
+  [lane D] Deadline post 1236617534 section [SUNDAY AM] available by 2025-11-16T20:00:00+00:00
+     * Sunday numbers: Now You See Me: Now You Don't (LG) 3,403 theaters, Fri $8.4M Sat $7.7M Sun $5.2M 3-day $21.3M/Wk 1 Running Man (Par) 3,534 theaters, Fri $6.5M Sat $6.1M Sun $4.4M 3-day $17M Wk 1 3.
+
+######## 2025-11-14 | FILM: The Running Man | OPEN | key='Running Man'
+  [lane A] Variety post 1236581467 pub 2025-11-14T15:33:31Z mod 2025-11-14T15:33:51Z STRICT :: Box Office: ‘Now You See Me 3’ Makes $2.1 Million in Previews, Beating ‘Running Man’ With 
+     * "The Running Man" and "Now You See Me: Now You Don't" are heading toward a box office face-off as both movies are predicted to open with $20 million to $25 million this weekend.
+     * Paramount's dystopian thriller "The Running Man" has made $1.9 million in previews, while Lionsgate's magic heist movie "Now You See Me: Now You Don't" edged it out $2.1 million.
+  [lane C] Deadline post 1236617534 section [SATURDAY AM] available by 2025-11-15T20:00:00+00:00
+     * Two franchises, one that's 12 years old ( Now You See Me ) and another a reboot of a 38-year old Arnold Schwarzenegger, Stephen King sci-fi movie from hipster filmmaker Edgar Wright ( The Running Man ) are squaring off this weekend with the former the stronger with an estimated $21M-$24M opening.
+     * Meanwhile, tracking pinned No. 1 with a north of $20M start for Running Man .
+     * If rain in LA drives folks to cinemas, the upside on Running Man is $18M start (though some believe it's around $16M) in 2nd place after a $6.5M Friday/preview.
+     * 'The Running Man' Paramount Second this weekend will be a fight between 20th Century Studios' second weekend of Predator: Badlands and Paramount's Edgar Wright reboot of The Running Man with Glen Powell, both hovering around $15M apiece.
+  [lane C] Variety post 1236582590 pub 2025-11-15T16:05:53Z mod 2025-11-16T03:55:50Z REVISABLE(modified after anchor) :: Box Office: ‘Now You See Me 3’ Casts Spell on Top With $8.4 Million Opening Day, ‘The Runn
+     * The "Now You See Me" franchise's reappearing act is landing on the top of box office charts, debuting ahead of the weekend's other new releases "The Running Man" and "Keeper." Lionsgate's "Now You See Me: Now You Don't" heisted $8.4 million across Friday and preview screenings from 3,403 locations.
+     * Meanwhile, Paramount's "The Running Man" starring Glen Powell will have to vie for second place against the sophomore weekend of "Predator: Badlands" (funnily, another stab at resurrecting a property that was first introduced to moviegoers via an Arnold Schwarzenegger vehicle in the '80s.) The R-rated "Running Man" racked up $6.4 million across Fri
+  [lane D] Deadline post 1236617534 section [SUNDAY AM] available by 2025-11-16T20:00:00+00:00
+     * Paramount Pictures / Courtesy Everett Collection There was clearly more goodwill out there for this IP than say for a revival of an Arnold Schwarzenegger 1980s sci-fi movie, that is clear as Paramount's Glen Powell starring, Edgar Wright directed Running Man falls behind on its $20M+ tracking to $17M , maybe even less by tomorrow morning with NFL t
+     * The unfortunate takeaways for Running Man : In the wake of Twisters ' great $81.2M opening, it was figured that Powell when paired with any IP post Top Gun: Maverick could bring 'em in.
+     * The $110M production of Running Man had some co-financing from Domain, which has a slate deal with Paramount.
+     * Sunday numbers: Now You See Me: Now You Don't (LG) 3,403 theaters, Fri $8.4M Sat $7.7M Sun $5.2M 3-day $21.3M/Wk 1 Running Man (Par) 3,534 theaters, Fri $6.5M Sat $6.1M Sun $4.4M 3-day $17M Wk 1 3.
+
+==================== WEEKEND 2025-11-21 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-11-21 | FILM: Wicked: For Good | OPEN | key='Wicked'
+  [lane A] Variety post 1236587612 pub 2025-11-21T15:34:11Z mod 2025-11-21T16:03:40Z STRICT :: Box Office: ‘Wicked: For Good’ Earns Huge $30.8 Million in Previews, Highest of the Year
+     * Universal's musical sequel "Wicked: For Good" has made $30.8 million in previews at the box office, marking the biggest pre-opening haul of the year.
+     * Thursday previews, including double screenings of "Wicked" and "For Good," made $18.2 million.
+     * "Wicked: For Good," the highly anticipated conclusion to last year's pink-and-green sensation, is on track to make between $150 million and $180 million this weekend.
+     * Chu's original "Wicked" hauled in $19.2 million in previews and grew to a $112.5 million opening weekend in the same pre-Thanksgiving weekend.
+  [lane B] Deadline post 1236625569 section [FRIDAY MIDDAY] available by 2025-11-22T01:00:00+00:00
+     * The first estimates for Friday are in for Universal's Wicked: For Good, which is eyeing $68.5M today and $150M for the weekend at 4,115 theaters.
+     * Chu's Part 2 Of Broadway Musical Screen Incarnation Flies Even Higher Than The First News 'Wicked: For Good' Casts $15M Spell Across First 2 Days Overseas - International Box Office If the figures hold at that 3-day level, here's some of the records that the Jon M.
+     * The biggest opening weekend for a Broadway adaptation, ahead of 2024's Wicked ($112.5M).
+     * Convo index for Wicked lands at a strong 8.7 out of 10 on the RelishMix scale, indicating highly activated fan engagement, major replay value, and cast performance buzz that primes Part Two for a fervent return." RELATED: 'Wicked: For Good' Screenwriter Explains "Emotional" New Scenes, Deleted "Romantic" Fiyero Moment & Chances Of 'Wicked 3' 'Now Y
+  [lane B] Deadline post 1236625726 section [PREVIOUS, FRIDAY] available by 2025-11-22T07:59:00+00:00
+     * Universal's Wicked: For Good is already casting a spell at the international box office with $14.9M across the first two days of play.
+     * On its first day out overseas, Wicked: For Good grossed $5.8M, driven by Australia, Korea and Germany.
+     * In Australia , Wicked: For Good grossed an estimated $1.2M on opening Thursday, taking the running total to $2.3M including Wednesday sneaks.
+     * Italy began rollout on Wednesday, grossing $400K at No.1 and outperforming Wicked 's opening day result by +40%.
+  [lane C] Variety post 1236588784 pub 2025-11-22T15:49:53Z mod 2025-11-22T17:57:36Z STRICT :: Box Office: ‘Wicked: For Good’ Takes Flight With Huge $68.6 Million Opening Day, Soaring t
+     * It'd be the biggest bow ever for a Broadway adaptation and the second-biggest ever for a Universal release, only behind "Jurassic World." It's also well ahead of the $112 million haul that the first "Wicked" debuted to in the same pre-Thanksgiving frame last year.
+     * With early screenings for Amazon Prime members and fan-focused double features, "Wicked: For Good" had already earned $12.6 million before Thursday.
+     * CJ4DPLex noted that the pink-and-green musical earned $922,000 in 4DX auditoriums and $1 million in ScreenX auditoriums across previews and Friday, marking a 70% uptick from the formats' collective opening day on the first "Wicked." The feature is expected to remain a high-demand release through the Thanksgiving holiday and into December.
+     * Universal spent $300 million between both "Wicked" features, not including massive marketing spends, but that investment has delivered not one but two event-status tentpoles.
+  [lane D] Deadline post 1236625569 section [SUNDAY AM UPDATE] available by 2025-11-23T20:00:00+00:00
+     * Universal's Wicked: For Good is sticking to a 3-day domestic opening of $150M and global debut of $226M .
+     * The first Wicked debuted to $112.5M stateside, $164M global.
+     * Hence in terms of promotional partners, Wicked: For Good had 400 of them, who delivered more than $330 million in media and promotional value across the Comcast empire, global partnerships, licensing and retail.
+     * That promo partner campaign is the second highest for any motion picture studio behind Wicked 's $350M a year ago.
+  [lane D] Variety post 1236590025 pub 2025-11-23T15:36:20Z mod 2025-11-24T18:46:48Z REVISABLE(modified after anchor) :: Box Office: ‘Wicked: For Good’ Dazzles With $147 Million, Biggest Debut for Broadway Adapt
+     * "Wicked: For Good," Universal's rendition of Act Two of the musical sensation, was No. 1 with $147 million from 4,115 North American theaters in its opening weekend.
+     * The film set a record for Broadway adaptations, shattering the debut of 2024's "Wicked," which previously held the benchmark with $112.5 million over the same pre-Thanksgiving frame.
+     * "Wicked: For Good" collected an additional $76 million at the international box office, bringing its global total to $223 million.
+     * It marks the biggest overseas and global opening for a stage musical adaptation, also overtaking its predecessor, "Wicked," which debuted to $50.2 million internationally and $164.2 million globally.
+  [lane D] Variety post 1236590079 pub 2025-11-23T16:47:32Z mod 2025-11-24T18:49:14Z REVISABLE(modified after anchor) :: ‘Wicked: For Good’ Flies to $223 Million Globally in Fourth-Biggest Box Office Debut of 20
+     * This weekend, the languishing box office has been changed for the better with "Wicked: For Good," which powered to $223 million globally.
+     * Universal's cinematic take on the second half of "Wicked," a revisionist look at "The Wizard of Oz," has earned $76 million overseas and $147 million domestically .
+     * The film set a worldwide, international and North American record for the biggest Broadway adaptation , smashing the benchmark held by 2024's "Wicked" with $164.2 million worldwide, $50.2 million internationally and $112.5 million domestically.
+     * "Wicked" became a global hit with $758 million, including $474 million domestically and $283 million overseas.
+  [lane D] Variety post 1236590107 pub 2025-11-23T18:30:00Z mod 2025-11-24T18:49:29Z REVISABLE(modified after anchor) :: ‘Wicked: For Good’ Box Office: All the Records Set in Opening Weekend
+     * "Wicked" became a four-quadrant hit with $758 million globally, setting the stage for the second film to achieve juggernaut status as well.
+     * Here are all the records from opening weekend: Global Biggest global opening for a Broadway musical adaptation of all-time ahead of "Wicked" ($164.2 million) Fourth-best Hollywood debut of 2025 behind Disney's "Lilo & Stitch" remake ($341 million), "Jurassic World Rebirth" ($322 million) and "A Minecraft Movie" ($313 million) and ahead of "Superman
+
+==================== WEEKEND 2025-12-05 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-12-05 | FILM: Five Nights at Freddy's 2 | OPEN | key='Five Nights at Freddy's 2'
+  [lane A] Deadline post 1236637393 section [FRIDAY AM] available by 2025-12-05T20:00:00+00:00
+     * Universal and Blumhouse's $36M net sequel Five Nights at Freddy's 2 is looking to bring some life to what is typically an off weekend at the post holiday Thanksgiving box office.
+     * Heading into today, the forecast for Five Nights at Freddy's 2 was $35M-$40M+ with Disney's second frame of Zootopia 2 set to win with $50M.
+  [lane B] Deadline post 1236637393 section [FRIDAY PM] available by 2025-12-06T07:59:00+00:00
+     * A historically dead post-Thanksgiving weekend is no longer as Universal/Blumhouse-Atomic Monster's Five Nights at Freddy's 2 is opening to a No. 1 take of $45M-$47M at 3,412 theaters.
+     * Five Nights at Freddy's 2 is prevailing over the second weekend of Disney's Zootopia 2 , which is eyeing $10M today, for around $45M for the weekend at 4,000 locations, -55%.
+  [lane C] Deadline post 1236637393 section [SATURDAY AM] available by 2025-12-06T20:00:00+00:00
+     * Blumhouse-Atomic Monster has their second No. 1 opening movie of the year with Five Nights at Freddy's 2 , which is now lighting up to a massive $56.5M opening after a $29.8M Friday/previews.
+     * Five Nights at Freddy's 2 (Uni) 3,412 theaters, Fri $29.8M, 3-day $56.5M /Wk 1 Zootopia 2 (Dis) 4,000 theaters, Fri $10.2M (-74%), 3-day $45M (-55%), Total $222.4M /Wk 2 Wicked: For Good (Uni) 3,985 (-130) theaters, Fri $4.5M (-83%), 3-day $15.6M (-75%), Total $295.8M /Wk 3 Jujutsu Kasen: Execution (Gkids) 1,833 theaters Fri $4.9M 3-day $9.7M /Wk 1
+  [lane D] Deadline post 1236637393 section [SUNDAY AM] available by 2025-12-07T20:00:00+00:00
+     * Five Nights at Freddy's 2 is now opening to $63M and $109M worldwide.
+     * Only once has this happened since 2020 and that was in 2023, the year of Barbenheimer so it will be a challenge to hit that mark this year." 'Zootopia 2' and 'Wicked: For Good' Walt Disney Animation Studios; Universal Pictures Five Nights at Freddy's 2 (Uni) 3,412 theaters, Fri $29.9M, Sat $20.7M Sun $12.3M 3-day $63M /Wk 1 Zootopia 2 (Dis) 4,000 t
+
+######## 2025-12-05 | FILM: Jujutsu Kaisen: Execution | OPEN | key='Jujutsu Kaisen'
+  [lane A] Deadline post 1236637393 section [FRIDAY AM] available by 2025-12-05T20:00:00+00:00
+     * Gkids has Jujutsu Kaisen : Execution which did $1.6M in combined Wednesday and Thursday previews juiced by Imax shows in select markets.
+  [lane B] Deadline post 1236637393 section [FRIDAY PM] available by 2025-12-06T07:59:00+00:00
+     * Gkids's Jujutsu Kaisen: Execution at 1,833 sites is seeing an estimated $4.5M today (that includes previews), for a 3-day of $8M-$10M .
+  [lane C] Deadline post 1236637393 section [SATURDAY AM] available by 2025-12-06T20:00:00+00:00
+     * Speaking of counter-programming, Gkids is bringing it this weekend with the opening of Jujutsu Kaisen: Execution with $4.9M yesterday and a near $10M take for the weekend.
+
+==================== WEEKEND 2025-12-12 | anchors ET: A=Fri 16:00, B=Sat 09:00, C=Sat 16:00, D=Sun 16:00
+
+######## 2025-12-12 | FILM: Ella McCay | OPEN | key='Ella McCay'
+  [lane B] Deadline post 1236647494 section [FRIDAY PM] available by 2025-12-13T07:59:00+00:00
+     * Brooks directed dramedy Ella McCay which is no good a t $800K today, $3M opening at 2,500 theaters.
+  [lane D] Variety post 1236608380 pub 2025-12-14T15:50:07Z mod 2025-12-16T14:24:52Z REVISABLE(modified after anchor) :: Box Office: ‘Zootopia 2’ Returns to No. 1 as ‘Ella McCay’ Suffers One of Worst Debuts Ever
+     * On the other, the political dramedy "Ella McCay" cratered with $2.1 million in its domestic debut, suffering one of the worst openings in modern times for Disney.
+     * To be fair, "Ella McCay" cost $35 million to produce, which is way less than Disney tends to spend on its theatrical releases.
+     * "Ella McCay" continues a miserable box office run for Brooks after 2004's "Spanglish" ($55 million against an $80 million budget) and 2010's "How Do You Know?" ($48 million against a $120 million budget).
+     * (That's roughly $500,000 less than "Ella McCay" despite playing in a fraction of the number of theaters.) So far, "Hamnet, a well-reviewed tragedy starring Jessie Buckley and Paul Mescal that follows the death of William Shakespeare's son, has amassed $7 million to date.
+  [lane D] Variety post 1236608395 pub 2025-12-14T17:02:09Z mod 2025-12-14T17:29:39Z STRICT :: ‘Zootopia 2’ Overtakes ‘Lilo & Stitch’ to Become 2025’s Highest Grossing Movie With $1.13 
+     * Brooks-directed "Ella McCay," cemented the wrong kind of records for the studio over the weekend as the political dramedy flopped with $300,000 from five territories.
+     * Globally, "Ella McCay" has grossed a paltry $2.4 million against a $35 million budget.

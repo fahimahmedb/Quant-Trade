@@ -1,0 +1,98 @@
+mutation=lease_expiry_equality
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+.F.......................F.FFFF.........................                 [100%]
+=================================== FAILURES ===================================
+____ test_lease_expiry_has_an_exact_boundary_and_no_future_start[600-True] _____
+
+age = 600, stale = True
+
+    @pytest.mark.parametrize('age,stale', [(599.999999, False), (600, True), (600.000001, True), (0, False), (-0.000001, True)])
+    def test_lease_expiry_has_an_exact_boundary_and_no_future_start(age, stale):
+>       assert is_lease_stale(running((NOW - timedelta(seconds=age)).isoformat()), NOW) is stale
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.912177+00:00', updated_at='2026-10-24T02:09:29.912179+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.912177+00:00', updated_at='2026-10-24T02:09:29.912179+00:00', last_error=None, metadata={}) = running('2026-10-24T11:50:00+00:00')
+E        +      where '2026-10-24T11:50:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fd75d21d890>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fd75d21d890> = (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) - datetime.timedelta(seconds=600)).isoformat
+E        +          where datetime.timedelta(seconds=600) = timedelta(seconds=600)
+
+tests/test_vertical_watchdog_clock_depth.py:24: AssertionError
+________ test_unqualified_lease_duration_cannot_prove_worker_health[0] _________
+
+lease = 0
+
+    @pytest.mark.parametrize('lease', [float('nan'), float('inf'), float('-inf'),
+                                      10**400, None, '600', {}, [], True, False, 0, -1])
+    def test_unqualified_lease_duration_cannot_prove_worker_health(lease):
+>       assert is_lease_stale(running(NOW.isoformat(), lease), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.936540+00:00', updated_at='2026-10-24T02:09:29.936543+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.936540+00:00', updated_at='2026-10-24T02:09:29.936543+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00+00:00', 0)
+E        +      where '2026-10-24T12:00:00+00:00' = <built-in method isoformat of datetime.datetime object at 0x7fd75d09e400>()
+E        +        where <built-in method isoformat of datetime.datetime object at 0x7fd75d09e400> = datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc).isoformat
+
+tests/test_vertical_watchdog_clock_depth.py:37: AssertionError
+____ test_valid_offset_spellings_are_the_same_instant[2026-10-24T12:00:00Z] ____
+
+start = '2026-10-24T12:00:00Z'
+
+    @pytest.mark.parametrize('start', ['2026-10-24T12:00:00Z', '2026-10-24T14:00:00+02:00',
+                                       '2026-10-24T05:00:00-07:00'])
+    def test_valid_offset_spellings_are_the_same_instant(start):
+        assert is_lease_stale(running(start, 0.25), NOW) is False
+>       assert is_lease_stale(running(start, 0.25), NOW + timedelta(seconds=0.25)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.941391+00:00', updated_at='2026-10-24T02:09:29.941393+00:00', last_error=None, metadata={}), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(microseconds=250000)))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.941391+00:00', updated_at='2026-10-24T02:09:29.941393+00:00', last_error=None, metadata={}) = running('2026-10-24T12:00:00Z', 0.25)
+E        +    and   datetime.timedelta(microseconds=250000) = timedelta(seconds=0.25)
+
+tests/test_vertical_watchdog_clock_depth.py:44: AssertionError
+_ test_valid_offset_spellings_are_the_same_instant[2026-10-24T14:00:00+02:00] __
+
+start = '2026-10-24T14:00:00+02:00'
+
+    @pytest.mark.parametrize('start', ['2026-10-24T12:00:00Z', '2026-10-24T14:00:00+02:00',
+                                       '2026-10-24T05:00:00-07:00'])
+    def test_valid_offset_spellings_are_the_same_instant(start):
+        assert is_lease_stale(running(start, 0.25), NOW) is False
+>       assert is_lease_stale(running(start, 0.25), NOW + timedelta(seconds=0.25)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.944617+00:00', updated_at='2026-10-24T02:09:29.944618+00:00', last_error=None, metadata={}), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(microseconds=250000)))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.944617+00:00', updated_at='2026-10-24T02:09:29.944618+00:00', last_error=None, metadata={}) = running('2026-10-24T14:00:00+02:00', 0.25)
+E        +    and   datetime.timedelta(microseconds=250000) = timedelta(seconds=0.25)
+
+tests/test_vertical_watchdog_clock_depth.py:44: AssertionError
+_ test_valid_offset_spellings_are_the_same_instant[2026-10-24T05:00:00-07:00] __
+
+start = '2026-10-24T05:00:00-07:00'
+
+    @pytest.mark.parametrize('start', ['2026-10-24T12:00:00Z', '2026-10-24T14:00:00+02:00',
+                                       '2026-10-24T05:00:00-07:00'])
+    def test_valid_offset_spellings_are_the_same_instant(start):
+        assert is_lease_stale(running(start, 0.25), NOW) is False
+>       assert is_lease_stale(running(start, 0.25), NOW + timedelta(seconds=0.25)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.948752+00:00', updated_at='2026-10-24T02:09:29.948753+00:00', last_error=None, metadata={}), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(microseconds=250000)))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:29.948752+00:00', updated_at='2026-10-24T02:09:29.948753+00:00', last_error=None, metadata={}) = running('2026-10-24T05:00:00-07:00', 0.25)
+E        +    and   datetime.timedelta(microseconds=250000) = timedelta(seconds=0.25)
+
+tests/test_vertical_watchdog_clock_depth.py:44: AssertionError
+________________ test_missing_duration_retains_existing_default ________________
+
+    def test_missing_duration_retains_existing_default():
+        task = SimpleNamespace(started_at=(NOW - timedelta(seconds=599)).isoformat())
+        assert is_lease_stale(task, NOW) is False
+>       assert is_lease_stale(task, NOW + timedelta(seconds=1)) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(namespace(started_at='2026-10-24T11:50:01+00:00'), (datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc) + datetime.timedelta(seconds=1)))
+E        +    where datetime.timedelta(seconds=1) = timedelta(seconds=1)
+
+tests/test_vertical_watchdog_clock_depth.py:50: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_lease_expiry_has_an_exact_boundary_and_no_future_start[600-True]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_unqualified_lease_duration_cannot_prove_worker_health[0]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_valid_offset_spellings_are_the_same_instant[2026-10-24T12:00:00Z]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_valid_offset_spellings_are_the_same_instant[2026-10-24T14:00:00+02:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_valid_offset_spellings_are_the_same_instant[2026-10-24T05:00:00-07:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_duration_retains_existing_default
+6 failed, 50 passed in 0.13s

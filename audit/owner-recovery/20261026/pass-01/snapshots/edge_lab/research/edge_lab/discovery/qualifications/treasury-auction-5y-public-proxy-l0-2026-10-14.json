@@ -1,0 +1,48 @@
+{
+  "recorded_date": "2026-10-14",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before_write": "b95246fed65bde304a1224bf44da1daf07bb9573",
+  "stage": "L0_SOURCE_FEASIBILITY",
+  "candidate_id": "treasury-auction-5y-concession-reversal",
+  "parent_family": "treasury-auction-zf",
+  "decision": "L1_NOW",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "MECHANISM": "Regular 5-year Treasury auctions may temporarily concentrate duration supply and dealer balance-sheet demand around the auction, producing a small yield concession that partially reverses on the next Treasury business-day observation.",
+  "WHO_PAYS": "Auction participants and intermediaries demanding balance-sheet/liquidity around a concentrated primary-market supply event; a reversal may also simply reflect ordinary rate risk rather than a structural rent.",
+  "WHY_PERSIST": "The auction calendar is mechanical and repeated, but any effect is likely small, crowded and exposed to macro-news confounding. A cheap public screen can determine whether expensive ZF futures/BBO reconstruction is justified.",
+  "CHEAP_DATA_NOW": "Official U.S. Treasury Fiscal Data exposes Treasury Securities Auctions Data including auction_date, security_type and security_term. Official Treasury Daily Rates exposes daily par yield curve observations including 5-year yields, with 2024 and 2025 tables publicly readable/downloadable.",
+  "CHEAP_EXPRESSION": "All regular nominal 5-year note auctions in a fixed calendar sample, measured using the official 5-year par yield on auction date versus the first subsequent Treasury daily observation. This is a yield-change proxy only, not executable futures PnL.",
+  "FATAL_PROBLEM": "Daily par yields are end-of-day/model curve observations, not auction-time executable prices; macro releases/Fed news can dominate one-day moves; reopenings and holiday calendars must be handled mechanically; a positive average can be ordinary term-premium/rate risk or chance.",
+  "WHY_NOT_ARBITRAGED": "Not established. The proposed L1 is only a cheap screen. If an effect exists, futures implementation, timing, DV01, carry, roll, bid/ask, announcement/auction timing and capacity still require strict reconstruction.",
+  "new_source_fact": {
+    "reactivates_parked_family": true,
+    "reason": "The parked treasury-auction-zf family explicitly allowed reactivation if a cheap public proxy was identified. Official Fiscal Data auction dates plus official Treasury daily 5-year par yields now provide that proxy without paid data or account creation."
+  },
+  "source_routes": [
+    {
+      "authority": "U.S. Treasury Fiscal Data",
+      "dataset": "Treasury Securities Auctions Data",
+      "page": "https://fiscaldata.treasury.gov/datasets/treasury-securities-auctions-data/",
+      "api": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query",
+      "required_fields": ["auction_date", "security_type", "security_term", "original_security_term", "reopening", "cusip"]
+    },
+    {
+      "authority": "U.S. Department of the Treasury",
+      "dataset": "Daily Treasury Par Yield Curve Rates",
+      "page_2024": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2024&type=daily_treasury_yield_curve",
+      "page_2025": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2025&type=daily_treasury_yield_curve",
+      "required_field": "5 Yr"
+    }
+  ],
+  "exposure_accounting": {
+    "signal_future_return_or_pnl_accessed": false,
+    "event_linked_2024_2025_yield_changes_accessed": false,
+    "incidental_generic_daily_yield_rows_seen_during_source_qualification": true,
+    "note": "Generic early-2025 daily-rate rows were visible while confirming source availability. No auction dates had been joined to those rows and no auction-window return/yield-change statistic was computed. No pristine-data claim is made."
+  },
+  "next_action": "Create one linked frozen L1 contract before querying the fixed auction population or joining auction dates to yield observations. Preserve one global economic look and use no substitute source if either official route fails."
+}

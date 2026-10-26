@@ -1,0 +1,14 @@
+{
+  "action_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
+  "emitted_at": "2026-10-20T04:00:24Z",
+  "event_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 1,
+  "payload": {
+    "lineage": "DOC-EVENT-d8d19dbf0b1291ce",
+    "queue_state": "WORKING"
+  },
+  "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g1-cecafe4e8360",
+  "worker_id": "oracle-research-v1.independent_challenge"
+}

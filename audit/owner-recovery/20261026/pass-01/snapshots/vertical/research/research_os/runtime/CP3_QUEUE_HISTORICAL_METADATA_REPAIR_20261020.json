@@ -1,0 +1,46 @@
+{
+  "schema_version": "oracle-h24-historical-queue-repair-v1",
+  "evidence_scope": "LIVE_ORACLE_DIAGNOSIS_AND_VERIFIED_GIT_STATE_MIGRATION",
+  "operational_release_unchanged": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "diagnosis": "Two automatic wakes safely refused a queue refill because existing historical frontier tasks used frontier/top-level metadata instead of canonical derivation metadata. The issue counter undercounted prior work and proposed an occupied task ID.",
+  "automatic_invocations_before_repair": [
+    "144092f7ed7a4cdb9820d7b150189bbd",
+    "d17781efb6d34b539ea770ef400af812"
+  ],
+  "observed_failure": "IMMUTABLE_ARTIFACT_ALREADY_EXISTS:research/research_os/tasks/FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-002.json",
+  "repair": "Add canonical derivation metadata from verified historical creation objects. Preserve every existing task field, status, lease, completion, result, hypothesis, event and receipt. No task reexecution or new authority.",
+  "tasks": [
+    {
+      "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-002",
+      "prior_git_blob": "59279a13d6a99fa6ed9539c562416c959c10936c",
+      "creation_commit": "8c3094eaa819889a0bf38011b1232566e51e1cd8",
+      "historical_schema": "frontier object",
+      "sequence": 2
+    },
+    {
+      "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-003",
+      "prior_git_blob": "a7807b8420cfdb901d6ed0dbf0a8edb674fcd6bd",
+      "creation_commit": "c3af205ebfaf4487ace6c285f6d945a6b7b1cd13",
+      "historical_schema": "top-level frontier_id, sequence and derivation_key",
+      "sequence": 3
+    }
+  ],
+  "verification": {
+    "all_preexisting_fields_equal": true,
+    "metadata_matches_original_creation_commits": true,
+    "deterministic_refill_replay_equal": true,
+    "next_task_id_is_unoccupied": true,
+    "next_task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-003",
+    "canonical_issue_counts": {"EVENT_DOCUMENT_DISTINCT_MECHANISM": 3, "FUNDAMENTAL_DISTINCT_THESIS": 2, "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM": 2, "QUANT_MECHANISM_DISTINCT": 2},
+    "test_suites": ["test_queue_replenisher", "test_oracle_worker", "test_worker_preflight", "test_economic_readiness_integration"],
+    "tests_passed": 52,
+    "scope": "Builder verification of the actual migrated state; subsequent automatic Oracle wakes still required"
+  },
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "remaining": "Two successful durable automatic wakes, actual VM reboot and post-reboot wake proof. Live Lab native ingress remains separate unfinished work."
+}

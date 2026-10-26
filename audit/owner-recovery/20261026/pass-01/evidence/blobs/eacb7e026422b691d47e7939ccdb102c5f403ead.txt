@@ -1,0 +1,45 @@
+{
+  "active_ticket_ids": [],
+  "blocked_tasks": [
+    {
+      "lane": "statistical_arbitrage",
+      "reason": "no synchronized multi-asset point-in-time panel",
+      "task_id": "SCAN-STATISTICAL-ARBITRAGE-001"
+    },
+    {
+      "lane": "factor_residual",
+      "reason": "no survivorship-controlled security and factor panel",
+      "task_id": "SCAN-FACTOR-RESIDUAL-001"
+    },
+    {
+      "lane": "insider_filings",
+      "reason": "point-in-time filing feed absent",
+      "task_id": "SCAN-INSIDER-FILINGS-001"
+    },
+    {
+      "lane": "volatility_surface",
+      "reason": "historical option chains, quotes, rates, dividends, and corporate actions absent",
+      "task_id": "SCAN-VOLATILITY-SURFACE-001"
+    }
+  ],
+  "budget_consumed": {
+    "cycles": 0
+  },
+  "campaign_id": "quant-research-v1",
+  "cycles_completed": 0,
+  "last_completed_ticket_id": "TSR-NDX-001",
+  "last_heartbeat": "2026-09-13T03:14:03.864337+00:00",
+  "latest_lesson": "Fixed short-horizon reversal failed: profitable_at_10_bps, profitable_in_both_halves, top_5_share_below_0_5.",
+  "next_action": "waiting for resource: no synchronized multi-asset point-in-time panel",
+  "pause_reason": null,
+  "processed_data_fingerprints": [
+    "TSR-NDX-001@sha256:a594f2da8590676126537f5c1dc59fe9c3e0b2b3b1e8a315c5612afa3621ff26"
+  ],
+  "queued_ticket_ids": [],
+  "research_budget": {
+    "max_cycles": null
+  },
+  "started_at": "2026-09-13T03:13:41.559491+00:00",
+  "status": "IDLE",
+  "stop_reason": null
+}

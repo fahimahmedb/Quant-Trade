@@ -1,0 +1,487 @@
+{
+  "observed_at": "2026-10-21T08:42:27.807049+00:00",
+  "method": "LOCAL_GIT_OBJECT_METADATA_ONLY_NO_RESULT_PAYLOADS",
+  "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+  "source_branch_pins": {
+    "research/edge-lab-continuous": "68bbab8ec990c813310224bc8737c41480853108",
+    "claude/deep-research-project-6vr22g": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+    "research/f2-primary-terms-decision-2026-10-09": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e",
+    "astra/weather-forward-v2-independent-reaudit-2026-09-29": "f7a0d7e29f852a9f9c11c2ab2b66973d48629597",
+    "blue/weather-v4-phase-gate-decision-support-2026-10-04": "d669e603b87ac95c85c80861646de859df1b8819",
+    "builder/sec-form4-census-v2a": "08dcfc39b4b22e0b25e54edde7b6accbb2bc4502"
+  },
+  "loaded_ledger_record_count": 20,
+  "status_counts": {
+    "SOURCE_METADATA_LOCATED": 16,
+    "UNRESOLVED_DECLARED_SOURCE": 4
+  },
+  "rows": [
+    {
+      "hypothesis_id": "TSR-NDX-001",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+          "path": "research/memory.jsonl",
+          "blob_sha": "79ab74c28c05c7cfd688ecdfe1c41dcc4c773717",
+          "binding_kind": "DECLARED_PATH_IN_LEGACY_SNAPSHOT_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "LAB24-FUTURES-TREND-CARRY",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "claude/deep-research-project-6vr22g",
+          "source_commit": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+          "path": "research/deep_research_2026-09-24/REPORT.md",
+          "blob_sha": "b2b37dbf0f8e12ae62eab8efe41ea84a4cff0df2",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "LAB24-PM-FLB",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "claude/deep-research-project-6vr22g",
+          "source_commit": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+          "path": "research/deep_research_2026-09-24/REPORT.md",
+          "blob_sha": "b2b37dbf0f8e12ae62eab8efe41ea84a4cff0df2",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "LAB25-HL-CEX-FUNDING",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "claude/deep-research-project-6vr22g",
+          "source_commit": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+          "path": "research/structural_edges_2026-09-25/scripts/lab2_crypto/xvenue.out",
+          "blob_sha": "877e2af4128f767aaf9711bd43563357a2a0d62f",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "LAB25-FOMC-EVE",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "claude/deep-research-project-6vr22g",
+          "source_commit": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+          "path": "research/structural_edges_2026-09-25/scripts/lab2_eq/results.txt",
+          "blob_sha": "c41a49fe568b30a060b6538c6891aca1c178f91b",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "LAB25-PENSION-REBAL",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "claude/deep-research-project-6vr22g",
+          "source_commit": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+          "path": "research/structural_edges_2026-09-25/scripts/lab2_eq/results.txt",
+          "blob_sha": "c41a49fe568b30a060b6538c6891aca1c178f91b",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "B2-SECTOR-XREV",
+      "ledger_result_commit_verbatim": "70aabd66f5c6b62dfedf3e80856021453f1cfa7a",
+      "source_bindings": [
+        {
+          "source_branch": "research/f2-primary-terms-decision-2026-10-09",
+          "source_commit": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e",
+          "path": "research/sector_xrev_b2/results/b2_result_2026-10-08.json",
+          "blob_sha": "25f472d4c6c75268a58026072b3a8508fd5d5dd6",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "B4-MACRO-TSMOM",
+      "ledger_result_commit_verbatim": "20d7568ef4ee9935922b89d9055d9ac3677e981c",
+      "source_bindings": [
+        {
+          "source_branch": "research/f2-primary-terms-decision-2026-10-09",
+          "source_commit": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e",
+          "path": "research/time_series_macro_b4/results/b4_result_2026-10-08.json",
+          "blob_sha": "31642be53db9baf4754461ec7fa79ad602060e4f",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "WEATHER-V2",
+      "ledger_result_commit_verbatim": "29a87ea7febeb86f1b4291aac4fc06b9e06e4fd1 branch head observed",
+      "source_bindings": [
+        {
+          "source_branch": "astra/weather-forward-v2-independent-reaudit-2026-09-29",
+          "source_commit": "f7a0d7e29f852a9f9c11c2ab2b66973d48629597",
+          "path": "research/weather_forward/ASTRA_WEATHER_V2_INDEPENDENT_REAUDIT_2026-09-29.md",
+          "blob_sha": "957d28e7e923c210729a934d61174430f78b0a58",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "WEATHER-V3",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "blue/weather-v4-phase-gate-decision-support-2026-10-04",
+          "source_commit": "d669e603b87ac95c85c80861646de859df1b8819",
+          "path": "research/weather_forward/v4/WEATHER_V4_EDGE_ARCHAEOLOGY_GOLD_MAP_2026-10-04.md",
+          "blob_sha": "c10b3f85c919a8f35bc119dbd4c4d6accba7ca87",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "WEATHER-V4",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "blue/weather-v4-phase-gate-decision-support-2026-10-04",
+          "source_commit": "d669e603b87ac95c85c80861646de859df1b8819",
+          "path": "research/weather_forward/v4/blue/BLUE_V4_PHASE_GATE_DECISION_SUPPORT_2026-10-04.md",
+          "blob_sha": "db0ae4ba933041f0c1d89cb3a9f8fdbacb913aeb",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "disc-cfe-vix-term-premium-l1-v0",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "research/edge-lab-continuous",
+          "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+          "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v0.result.json",
+          "blob_sha": "cb1d295f2bf6b1384c19c98320a38e8c52435cb6",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "research/edge-lab-continuous",
+          "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+          "path": "research/edge_lab/discovery/STATE.json",
+          "blob_sha": "a1db8fcce69afa19cec27f08a2c27076ebfe55ea",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "TREASURY-ZF-FAMILY",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [],
+      "unresolved_references": [
+        "research/edge-lab-continuous:treasury/zf result artifacts",
+        "owner mission input"
+      ],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "UNRESOLVED_DECLARED_SOURCE"
+    },
+    {
+      "hypothesis_id": "FR-OAT-BUND-FAMILY",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [],
+      "unresolved_references": [
+        "research/edge-lab-continuous:France result artifacts",
+        "owner mission input"
+      ],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "UNRESOLVED_DECLARED_SOURCE"
+    },
+    {
+      "hypothesis_id": "SEC-FORM4-RECOVERY",
+      "ledger_result_commit_verbatim": "legacy head cited 08dcfc39b4b22e0b25e54edde7b6accbb2bc4502",
+      "source_bindings": [
+        {
+          "source_branch": "builder/sec-form4-census-v2a",
+          "source_commit": "08dcfc39b4b22e0b25e54edde7b6accbb2bc4502",
+          "path": ".github/workflows/sec-form4-census-proof.yml",
+          "blob_sha": "494b1f743ae2923901dc67d84330312244cd1021",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        },
+        {
+          "source_branch": "research/edge-lab-continuous",
+          "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+          "path": "research/edge_lab/discovery/experiments/disc-sec-form4-eod-l1-v0.result.json",
+          "blob_sha": "33ca4a6b31352b9d94b84781b42166f9cd6b06ff",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [
+        "owner mission facts"
+      ],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "F2-KALSHI-FLB-OOS",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "research/f2-primary-terms-decision-2026-10-09",
+          "source_commit": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e",
+          "path": "research/kalshi_flb_f2/TERMS_DECISION_2026-10-09.md",
+          "blob_sha": "d382c2264d5cffd61f87776f422b51648fa853a2",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "disc-crypto-book-pressure-prospective-l1-v0",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [
+        {
+          "source_branch": "research/edge-lab-continuous",
+          "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+          "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json",
+          "blob_sha": "6e56218941825491122d6ab6b860999da21b808d",
+          "binding_kind": "DECLARED_SOURCE_SNAPSHOT_LOCATED_NOT_ORIGINAL_EXECUTION_PROOF"
+        }
+      ],
+      "unresolved_references": [],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "SOURCE_METADATA_LOCATED"
+    },
+    {
+      "hypothesis_id": "MLB-SOCCER-WEATHER-REPLICATION",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [],
+      "unresolved_references": [
+        "owner mission input"
+      ],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "UNRESOLVED_DECLARED_SOURCE"
+    },
+    {
+      "hypothesis_id": "BOX-OFFICE-REPLAY",
+      "ledger_result_commit_verbatim": "UNKNOWN",
+      "source_bindings": [],
+      "unresolved_references": [
+        "owner mission input"
+      ],
+      "scientific_verdict_revalidated": false,
+      "result_payload_read": false,
+      "status": "UNRESOLVED_DECLARED_SOURCE"
+    }
+  ],
+  "edge_artifact_discovery_index": [
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-binance-extreme-funding-reversal-l1-v1.result.json",
+      "blob_sha": "fe77e8bcd8bde4a682859468ca4484e0e05238e0",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v0.result.json",
+      "blob_sha": "cb1d295f2bf6b1384c19c98320a38e8c52435cb6",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v1.contract.json",
+      "blob_sha": "e1d6273d00bd4e5b7d3cf521dd5a1d0ce8e8857a",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v1.result.json",
+      "blob_sha": "de5812f29f6de130f796199f43c88e416d38f56f",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.contract.json",
+      "blob_sha": "4784e9af2b22cac19d229fd6dc42bab567575358",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.result.json",
+      "blob_sha": "44a792e222f5cd763dcf1becdab9a6eb4d728286",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.register.json",
+      "blob_sha": "aee888228843bee6281b5cd7fde42d1047de248c",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json",
+      "blob_sha": "6e56218941825491122d6ab6b860999da21b808d",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.result.json",
+      "blob_sha": "a28ff8775ffb9233a788f79d7a487ba4631d3f92",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v0.result.json",
+      "blob_sha": "5eb8efe8452a7a4a47491f1948b4947c2d92ecac",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.result.json",
+      "blob_sha": "9f64f51a144087b2aeae2b56d9ac0ce176c8a57f",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-market-sentiment-cftc-es-leveraged-extremes-l1-v1.result.json",
+      "blob_sha": "4008cd576a29da0d776522c0835d37ae55ed4644",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-market-sentiment-vix-fear-spike-reversal-l1-v1.result.json",
+      "blob_sha": "06e9e5f6bdcaff00099f1c8f87884c8e0a592c31",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-monthend-pension-rebalance-spytlt-l1-v1.result.json",
+      "blob_sha": "cb7805a102bcfc35d32a60932e560b6298c767ef",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-sec-form4-eod-l1-v0.result.json",
+      "blob_sha": "33ca4a6b31352b9d94b84781b42166f9cd6b06ff",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-sector-relative-shock-reversal-l1-v1.result.json",
+      "blob_sha": "03c0176a3363d1980050d43f44712dd42752b551",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-stockbond-joint-stress-rebound-l1-v1.result.json",
+      "blob_sha": "b4b0460483e1c978d2cc3202df788c0f6a7e5368",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-treasury-5y-auction-concession-l1-v1.result.json",
+      "blob_sha": "1d5722b472261b0b828b4009a435d2ea3b291be3",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    },
+    {
+      "source_commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-zf-auction-pressure-daily-l1-v1.result.json",
+      "blob_sha": "91c4aa4c55828aaaa6ce7f68e4264c3453ed8917",
+      "scientific_status": "NOT_CLASSIFIED_FROM_FILENAME",
+      "result_payload_read": false
+    }
+  ],
+  "edge_index_count": 19,
+  "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+  "global_effective_trials": "UNKNOWN",
+  "authority_changed": false,
+  "imported_ledger_modified": false,
+  "runtime_consumes_this_audit": false
+}

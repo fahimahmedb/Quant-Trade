@@ -1,0 +1,236 @@
+{
+  "schema": "v2-reconciliation-queue-v1",
+  "recorded_date": "2026-10-20",
+  "authority": "CHECKPOINT_012",
+  "destructive_git_operations_authorized": false,
+  "hard_authorities": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "live_targets": {
+    "v1_runtime_branch": "builder/oracle-economic-loop-recovery-20261019",
+    "v2_build_branch": "builder/oracle-v2-core-20261020",
+    "live_lab_branches": [
+      "builder/live-lab-oracle-canonical-20261020",
+      "builder/live-lab-oracle-integration-20261020"
+    ]
+  },
+  "items": [
+    {
+      "id": "V2R-001",
+      "source": "builder/research-factory-core-v2",
+      "observed_unique_commits": 15,
+      "class": "SOURCE_IMPORT_REQUIRED",
+      "capabilities": [
+        "experiment_registry",
+        "outcome_firewall",
+        "power_geometry"
+      ],
+      "proof_gap": "current V2 Core does not contain src/quant/factory/outcome_firewall.py",
+      "required_disposition": [
+        "CAPABILITY_IMPORTED",
+        "SUPERSEDED_WITH_PROOF",
+        "EXPLICITLY_REJECTED_WITH_REASON"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "V2R-002",
+      "source": "builder/evidence-store-identity-v2",
+      "observed_unique_commits": 22,
+      "class": "SOURCE_IMPORT_REQUIRED",
+      "capabilities": [
+        "evidence_identity",
+        "pit_identity",
+        "source_identity",
+        "corporate_action_identity",
+        "adversarial_evidence_tests"
+      ],
+      "required_disposition": [
+        "CAPABILITY_IMPORTED",
+        "SUPERSEDED_WITH_PROOF",
+        "EXPLICITLY_REJECTED_WITH_REASON"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "V2R-003",
+      "source": "builder/sec-form4-census-v2a",
+      "observed_unique_commits": 67,
+      "class": "SOURCE_IMPORT_REQUIRED",
+      "capabilities": [
+        "sec_form4_census",
+        "calendar_and_schema",
+        "census_tests"
+      ],
+      "required_disposition": [
+        "CAPABILITY_IMPORTED",
+        "SUPERSEDED_WITH_PROOF",
+        "EXPLICITLY_REJECTED_WITH_REASON"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "V2R-004",
+      "source": "builder/research-os-aggressive-architecture-20261015",
+      "observed_unique_commits": 84,
+      "class": "SOURCE_IMPORT_REQUIRED",
+      "capabilities": [
+        "research_os_architecture_depth"
+      ],
+      "required_disposition": [
+        "CAPABILITY_IMPORTED",
+        "SUPERSEDED_WITH_PROOF",
+        "EXPLICITLY_REJECTED_WITH_REASON"
+      ],
+      "status": "PENDING_SEMANTIC_REVIEW"
+    },
+    {
+      "id": "V2R-005",
+      "source": "research/edge-lab-continuous",
+      "observed_unique_commits": 170,
+      "class": "SOURCE_IMPORT_REQUIRED_AND_SCIENTIFIC_MEMORY_REQUIRED",
+      "capabilities": [
+        "discovery_protocols",
+        "source_qualification",
+        "experiment_contracts",
+        "scientific_results",
+        "prospective_designs",
+        "platform_probes"
+      ],
+      "required_disposition": [
+        "SCIENTIFIC_MEMORY_INDEXED",
+        "CAPABILITY_IMPORTED_OR_REJECTED"
+      ],
+      "status": "PENDING_BULK_MIGRATION"
+    },
+    {
+      "id": "V2R-006",
+      "source": "research/legacy-economic-reconciliation-20261015",
+      "observed_unique_commits": 102,
+      "class": "SOURCE_IMPORT_REQUIRED_AND_SCIENTIFIC_MEMORY_REQUIRED",
+      "capabilities": [
+        "legacy_reconciliation",
+        "historical_result_identity",
+        "explicit_gap_tracking"
+      ],
+      "scientific_constraint": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "required_disposition": [
+        "SCIENTIFIC_MEMORY_INDEXED",
+        "EXPLICIT_GAPS_PRESERVED"
+      ],
+      "status": "PENDING_BULK_MIGRATION"
+    },
+    {
+      "id": "V2R-007",
+      "source": "research/design-v1",
+      "observed_unique_commits": 20,
+      "class": "ARCHITECTURE_SOURCE_REVIEW_REQUIRED",
+      "capabilities": [
+        "alpha_factory_design",
+        "market_selection",
+        "abstention",
+        "launch_doctrine"
+      ],
+      "required_disposition": [
+        "CAPABILITY_IMPORTED",
+        "SUPERSEDED_WITH_PROOF",
+        "EXPLICITLY_REJECTED_WITH_REASON"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "V2R-008",
+      "source": "codex/test",
+      "observed_unique_commits": 1,
+      "class": "SCIENTIFIC_MEMORY_REQUIRED",
+      "capabilities": [
+        "historical_negative_experiment_memory"
+      ],
+      "required_disposition": [
+        "SCIENTIFIC_MEMORY_INDEXED"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "id": "V2R-009",
+      "source": "weather-v4-family",
+      "class": "OWNER_GOVERNANCE_REQUIRED_AND_SCIENTIFIC_MEMORY_REQUIRED",
+      "anchor": "builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08",
+      "capabilities": [
+        "owner_decisions_od01_od12",
+        "weather_archaeology",
+        "a2_harness",
+        "builder_outputs",
+        "blue_decision_support",
+        "astra_independent_audits"
+      ],
+      "required_disposition": [
+        "OWNER_DECISION_INDEXED",
+        "SCIENTIFIC_MEMORY_INDEXED",
+        "DRAFTS_AND_CONDITIONAL_AUTHORITIES_NOT_UPGRADED"
+      ],
+      "status": "PENDING_FAMILY_CONSOLIDATION"
+    },
+    {
+      "id": "V2R-010",
+      "source": "live-lab-family",
+      "class": "LIVE_PARALLEL_PRODUCT_RECONCILIATION_REQUIRED",
+      "branches": [
+        "builder/live-lab-oracle-canonical-20261020",
+        "builder/live-lab-oracle-integration-20261020",
+        "builder/live-lab-3d-full-build-20261015"
+      ],
+      "capabilities": [
+        "oracle_native_bridge",
+        "canonical_ux",
+        "webgl_3d_renderer",
+        "production_product_evidence"
+      ],
+      "required_disposition": [
+        "ONE_CANONICAL_PRODUCT_RAIL",
+        "UNIQUE_PRODUCT_CAPABILITIES_PRESERVED"
+      ],
+      "status": "ACTIVE_RECONCILIATION"
+    },
+    {
+      "id": "V2R-011",
+      "source": "edge-f1-f2-eurusd-pr-chain",
+      "class": "SCIENTIFIC_MEMORY_REQUIRED",
+      "prs": [24, 25, 26, 27, 28],
+      "required_memory": [
+        "F1_STAGE_A_DISCOVERY",
+        "F1_STAGE_B_REJECT",
+        "F2_BLOCKED_DATA_PERMISSION",
+        "EURUSD_FROZEN_UNEXECUTED"
+      ],
+      "required_disposition": [
+        "SCIENTIFIC_MEMORY_INDEXED",
+        "PRS_NO_LONGER_USED_AS_CURRENT_ROUTING"
+      ],
+      "status": "PENDING_INDEX_IMPORT"
+    },
+    {
+      "id": "V2R-012",
+      "source": ".github/workflows",
+      "class": "WORKFLOW_GOVERNANCE_DEBT",
+      "capabilities": [
+        "v1_runtime_guards",
+        "v2_build_guards",
+        "research_os_historical_gates",
+        "edge_lab_execution",
+        "sec_data_guards",
+        "live_lab_guards"
+      ],
+      "required_disposition": [
+        "WORKFLOW_DISPOSITION_REVIEW",
+        "UNIQUE_TESTS_MAPPED_TO_RETAINED_GATES",
+        "HISTORICAL_EXECUTION_SURFACES_RETIRED_WHEN_SAFE"
+      ],
+      "status": "PENDING_CONSOLIDATION"
+    }
+  ],
+  "completion_condition": "all PENDING items have a durable import/supersession/rejection/memory disposition before generating the Owner branch-deletion manifest"
+}

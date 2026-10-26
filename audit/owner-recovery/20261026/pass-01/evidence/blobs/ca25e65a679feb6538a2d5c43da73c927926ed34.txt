@@ -1,0 +1,61 @@
+{
+  "fixed_source_sha256": "03cc51f0ec5d566d36ba28cf6e7df4f67ca032553013cfea47581f03d885c5e8",
+  "mutants": [
+    {
+      "mutation": "stale_fence",
+      "exit_code": 1,
+      "summary": "9 failed, 25 passed in 1.55s",
+      "log": "CP042_mutant_stale_fence.txt",
+      "replace": "if (current_wire != encode(self._persisted_by_path.get(key))\n                    and current_wire != document_wire):",
+      "with": "if False:"
+    },
+    {
+      "mutation": "recovery",
+      "exit_code": 1,
+      "summary": "21 failed, 13 passed in 1.65s",
+      "log": "CP042_mutant_recovery.txt",
+      "replace": "if durable is not None:\n                self._adopt(key, durable)",
+      "with": "if durable is not None:\n                pass"
+    },
+    {
+      "mutation": "file_lock",
+      "exit_code": 1,
+      "summary": "4 failed, 30 passed in 1.52s",
+      "log": "CP042_mutant_file_lock.txt",
+      "replace": "fcntl.flock(fd, fcntl.LOCK_EX)",
+      "with": "pass  # deliberate missing cross-process lock"
+    },
+    {
+      "mutation": "heartbeat_serialization",
+      "exit_code": 1,
+      "summary": "4 failed, 30 passed in 1.70s",
+      "log": "CP042_mutant_heartbeat_serialization.txt",
+      "replace": "    @_serialized_mutation\n    def heartbeat",
+      "with": "    def heartbeat"
+    },
+    {
+      "mutation": "save_serialization",
+      "exit_code": 1,
+      "summary": "2 failed, 32 passed in 1.75s",
+      "log": "CP042_mutant_save_serialization.txt",
+      "replace": "    @_serialized_mutation\n    def save",
+      "with": "    def save"
+    },
+    {
+      "mutation": "duplicate_key_admission",
+      "exit_code": 1,
+      "summary": "3 failed, 31 passed in 1.51s",
+      "log": "CP042_mutant_duplicate_key_admission.txt",
+      "replace": "object_pairs_hook=cls._unique_fields",
+      "with": "object_pairs_hook=dict"
+    },
+    {
+      "mutation": "finite_read_admission",
+      "exit_code": 1,
+      "summary": "3 failed, 31 passed in 1.49s",
+      "log": "CP042_mutant_finite_read_admission.txt",
+      "replace": "json.dumps(document, allow_nan=False)  # Match the existing writer's finite JSON contract.",
+      "with": "pass  # deliberate read/write admission asymmetry"
+    }
+  ]
+}

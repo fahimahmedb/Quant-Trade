@@ -1,0 +1,191 @@
+{
+  "actual_github_readonly_smoke": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "current_corpus": {
+      "count": 13,
+      "overlap_map_hash": "d7cdf881da5807aaec74287f3ea5fe407a0a717700bf1fd3db0714c8ab1c63ff",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "8dc9f4b770152c60887540b0f8d8047202657fd38e607c8520153dd45fc2e544"
+    },
+    "dry_run_status": "DRY_RUN",
+    "exact_code_sha": "5e6c740329939b24ac2b20cfc830bcde5dcc5719",
+    "execution_host": "BUILD_ENVIRONMENT_NOT_ORACLE_VM",
+    "fresh_github_head": "5e6c740329939b24ac2b20cfc830bcde5dcc5719",
+    "hosted_model_calls": 0,
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "noop_status": "READ_ONLY_CANARY",
+    "writes": 0
+  },
+  "authority": {
+    "capital_allocation_authorized": false,
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "orders_authorized": false,
+    "position_sizing_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "branch": "builder/oracle-economic-loop-recovery-20261019",
+  "checkpoint_commits": {
+    "CP2b.0": "8ce219fa5415fd3cc53ab7ba89cf46bd4f3094c4",
+    "CP2b.1": "c23531e838a0a9e974de0d304c0becc5bd4fe692",
+    "CP2b.2-4": "3171c729b0bf1bdc0c8996272799b1bd1b76e1a2",
+    "CP2b.5b": "5e6c740329939b24ac2b20cfc830bcde5dcc5719",
+    "CP3.0": "04a14e47dbdcb74fd7e24bbb82c210da3a12b6b1",
+    "CP3.0b": "a63d7320b4b95424084b93f463d4674b7a818aae"
+  },
+  "ci": {
+    "additional_local_checks": {
+      "node_contract_smokes": 3,
+      "status_artifacts_regenerated": "PASS; only test inventory changed from 539 to 555",
+      "systemd_analyze_verify": "PASS",
+      "workflow_lanes_and_preflight": 21
+    },
+    "oracle_recovery": {
+      "commit_sha": "5e6c740329939b24ac2b20cfc830bcde5dcc5719",
+      "conclusion": "success",
+      "run_id": 39272109295,
+      "tests": {
+        "oracle": 16,
+        "scientific_pre_outcome": 91,
+        "worker_backend_scheduler": 28
+      },
+      "total_passed": 135,
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39272109295"
+    },
+    "scope": "CI and disposable local Git/HTTP test doubles; not live Oracle or actual GPT-OSS inference",
+    "sec_p0_verified_predecessor": {
+      "commit_sha": "04a14e47dbdcb74fd7e24bbb82c210da3a12b6b1",
+      "conclusion": "success",
+      "end_to_end_checks_passed": 35,
+      "run_id": 39270935429,
+      "sec_p0_lane_tests_passed": 267,
+      "unit_tests_passed": 555,
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39270935429"
+    }
+  },
+  "external_dependency": {
+    "browser_control_tools": "NOT_EXPOSED",
+    "code": "NO_AUTHENTICATED_ORACLE_VM_TRANSPORT_IN_EXECUTION_ENVIRONMENT",
+    "configured_outbound_identities": [],
+    "configured_secret_bindings": [],
+    "evidence_file": "research/research_os/runtime/CP2B_0_LOCAL_MODEL_INVENTORY_20261019.json",
+    "github_actions_secret_metadata": "HTTP 403; no assertion about unobservable secret contents",
+    "needed": "Authenticated OCI CLI/Run Command or SSH transport to the explicit intended VM, and durable noninteractive GitHub credentials for its service user. No renewed Owner approval is needed.",
+    "oci_cli_available": false,
+    "oci_config_exists": false,
+    "oci_oracle_ssh_identity_variable_names": [],
+    "rechecked_environment_observations_current": true,
+    "ssh_client_available": true,
+    "ssh_directory_exists": false,
+    "tcp_access_domains_and_ranges": []
+  },
+  "final_exact_head_ci_artifact": "oracle-h24-ci-receipt-<containing Git commit SHA>",
+  "implementation_status": "CANONICAL_WORKER_AND_GATED_SCHEDULER_IMPLEMENTED_AND_CI_QUALIFIED",
+  "live_oracle_status": {
+    "automatic_wakes": "NOT_OBSERVED",
+    "gpt_oss_variant_quantization_size_format_path_version": "NOT_OBSERVED",
+    "inventory": "NOT_OBSERVED",
+    "local_model_health": "NOT_EXECUTED",
+    "model_installations_or_replacements": 0,
+    "preexisting_service_timer_state": "NOT_OBSERVED",
+    "ram_cpu_swap_disk_latency": "NOT_OBSERVED",
+    "release_install_by_this_mission": false,
+    "runtime": "NOT_OBSERVED",
+    "service_timer_install_by_this_mission": false,
+    "timer_activation_by_this_mission": false
+  },
+  "oracle_h24_research_lab": "NOT_PROVEN",
+  "preserved_scientific_limits": {
+    "asml_overlap": "DETECTED_AND_UNRESOLVED; candidate screening/readiness must block it",
+    "documentary_adapters_reused": [
+      "Fundamental",
+      "Event/Document",
+      "Institutional Flow"
+    ],
+    "economic_results_fabricated": false,
+    "empirical_correlation": "UNAVAILABLE",
+    "legacy_reconciliation": "PARTIAL_WITH_EXPLICIT_GAPS",
+    "marginal_portfolio_contribution": "NOT_ESTIMATED",
+    "outcome_access_opened": false,
+    "quant_documentary_source_adapter": "No qualified real adapter yet; affected task blocks explicitly, never uses synthetic data as real evidence"
+  },
+  "receipt_commit_identity": "The containing Git commit; final exact-head CI artifact contains its full SHA.",
+  "recorded_at": "2026-10-19T14:50:54.485092+00:00",
+  "recovered_from_exact_sha": "fb831cf26060cbe6487dd953b8683dcbe82a07db",
+  "remaining_live_checkpoints": [
+    "CP2b.0 live: run read-only inventory on the actual VM before runtime/model changes; reuse healthy existing installation",
+    "CP3.1: install exact CI-qualified release and prepare service-user credentials outside Git",
+    "CP3.2-4: actual GPT-OSS health and representative reasoning, dry-run/no-op, real process-death canary, two stages and durable GitHub receipts",
+    "CP3.5: activate timer only with matching fresh live qualification; verify enabled and active",
+    "CP4: observe two automatic wakes, prove process/VM restart scope actually tested and persist final live RUNNING receipt"
+  ],
+  "repository": "fahimahmedb/Quant-Trade",
+  "restart_evidence": {
+    "ci_fault_method": "Injected process interruption and fresh worker/cache objects against a real disposable Git remote",
+    "ci_proven": [
+      "crash before claim",
+      "crash after claim",
+      "crash after output before atomic publication",
+      "crash after event staging before receipt",
+      "crash after receipt staging before task transition",
+      "lost acknowledgement after publication",
+      "fresh-cache restart simulation",
+      "timer double-trigger simulation",
+      "expired and stale lease fencing",
+      "actual two-worker race against local bare remote",
+      "completed task restart",
+      "restart after persisted candidate freeze",
+      "owner ref rewind conflict",
+      "frozen generation mismatch rejection"
+    ],
+    "live_process_crash_canary": "IMPLEMENTED_NOT_EXECUTED_ON_ORACLE",
+    "live_vm_reboot": "NOT_EXECUTED"
+  },
+  "runbook": "deploy/ORACLE_H24_RUNBOOK.md",
+  "runtime_contract": {
+    "code_identity": "EXACT_CONTENT_ADDRESSED_RELEASE_SHA",
+    "concurrency": "Task current blob SHA plus exact Git HEAD ref lease; stale and rewound refs rejected",
+    "hosted_model_fallback": false,
+    "local_memory_authority": "NONE",
+    "model_backend": "PLUGGABLE_LOCAL_ONLY; GPTOSSBackend is one implementation",
+    "model_failure": "Explicit retry receipt, minimum five-minute delay, max three attempts then BLOCKED",
+    "normal_wake_codex_chatgpt_work_calls": 0,
+    "one_lineage_per_wake": true,
+    "persistence": "Claim/start event transaction, then atomic stage artifact/event/receipt/task-progress transaction",
+    "producer_validator_independence": "SEPARATE_LANES_AND_FRESH_WAKES; frozen content and generation bound",
+    "runtime_data_commit_ci": "[skip ci]; executable Builder commits still require CI",
+    "stages_per_wake": 1,
+    "state_authority": "FRESH_GITHUB_DURABLE_STATE_EVERY_WAKE_AND_CRITICAL_TRANSITION",
+    "systemd": "Non-root bounded oneshot, stable directory lock, journald, resource limits, ten-minute timer"
+  },
+  "schema_version": "oracle-h24-recovery-final-v1",
+  "verdict": "BLOCKED_BY_SPECIFIC_EXTERNAL_DEPENDENCY",
+  "verified_implementation_sha": "5e6c740329939b24ac2b20cfc830bcde5dcc5719"
+}

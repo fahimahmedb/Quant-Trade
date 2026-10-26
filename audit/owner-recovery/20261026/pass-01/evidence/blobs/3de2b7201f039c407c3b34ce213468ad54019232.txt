@@ -1,0 +1,261 @@
+name: Wave2 C2 Sealed-Base Port Simulation
+
+on:
+  push:
+    branches:
+      - builder/wave2-convergence2-foreman-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SEALED_BASE: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  HISTORICAL_START: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+  B_SOURCE_HEAD: ba80b8cd717a3239d92a005248a326462d6a5744
+  D0_SOURCE_CODE_HEAD: 84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0
+  OLD_D0_BASE: 97165db2faa3300cef1f23de0045ed93d25eb9cb
+
+jobs:
+  simulate:
+    name: Simulate B and D0 ports without integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install simulation test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Reacquire exact source commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "+refs/heads/builder/convergence-cp079-wave2-base-20261021:refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021"
+          git fetch origin "+refs/heads/builder/mega-b-discovery-engine-20261021:refs/remotes/origin/builder/mega-b-discovery-engine-20261021"
+          git fetch origin "+refs/heads/builder/mega-d0-economic-lifecycle-20261021:refs/remotes/origin/builder/mega-d0-economic-lifecycle-20261021"
+          test "$(git rev-parse refs/remotes/origin/builder/convergence-cp079-wave2-base-20261021)" = "$SEALED_BASE"
+          git cat-file -e "${B_SOURCE_HEAD}^{commit}"
+          git cat-file -e "${D0_SOURCE_CODE_HEAD}^{commit}"
+          test "$(git merge-base "$SEALED_BASE" "$B_SOURCE_HEAD")" = "$HISTORICAL_START"
+          test "$(git merge-base "$SEALED_BASE" "$D0_SOURCE_CODE_HEAD")" = "$HISTORICAL_START"
+
+      - name: Build ephemeral sealed-base worktrees
+        shell: bash
+        run: |
+          set -euo pipefail
+          git worktree add --detach /tmp/port-b "$SEALED_BASE"
+          git worktree add --detach /tmp/port-d0 "$SEALED_BASE"
+          git worktree add --detach /tmp/port-bd0 "$SEALED_BASE"
+          git worktree add --detach /tmp/port-base "$SEALED_BASE"
+
+      - name: Materialize current B delta on sealed base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --binary "$HISTORICAL_START" "$B_SOURCE_HEAD" > /tmp/mega-b-source.patch
+          test -s /tmp/mega-b-source.patch
+          git -C /tmp/port-b apply --index /tmp/mega-b-source.patch
+          git -C /tmp/port-bd0 apply --index /tmp/mega-b-source.patch
+          echo 'B_EPHEMERAL_PORT_APPLIED=TRUE' | tee /tmp/port-simulation.env
+
+      - name: Materialize D0 qualified code delta and rebind sealed base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --binary "$HISTORICAL_START" "$D0_SOURCE_CODE_HEAD" -- \
+            research/research_os/expansion/economic_lifecycle.py \
+            tests/test_mega_d0_economic_lifecycle.py \
+            > /tmp/mega-d0-code-source.patch
+          test -s /tmp/mega-d0-code-source.patch
+          git -C /tmp/port-d0 apply --index /tmp/mega-d0-code-source.patch
+          git -C /tmp/port-bd0 apply --index /tmp/mega-d0-code-source.patch
+          python - <<'PY'
+          from pathlib import Path
+          old = '97165db2faa3300cef1f23de0045ed93d25eb9cb'
+          new = '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          for root in ('/tmp/port-d0', '/tmp/port-bd0'):
+              path = Path(root) / 'research/research_os/expansion/economic_lifecycle.py'
+              text = path.read_text()
+              needle = f'WAVE2_IMMUTABLE_BASE_SHA = "{old}"'
+              replacement = f'WAVE2_IMMUTABLE_BASE_SHA = "{new}"'
+              assert text.count(needle) == 1, (root, text.count(needle))
+              path.write_text(text.replace(needle, replacement))
+          PY
+          git -C /tmp/port-d0 add research/research_os/expansion/economic_lifecycle.py
+          git -C /tmp/port-bd0 add research/research_os/expansion/economic_lifecycle.py
+          echo 'D0_EPHEMERAL_PORT_APPLIED=TRUE' | tee -a /tmp/port-simulation.env
+          echo 'D0_BASE_REBOUND_TO_SEALED_BASE=TRUE' | tee -a /tmp/port-simulation.env
+
+      - name: Prove sealed-base repair remains byte-identical
+        shell: bash
+        run: |
+          set -euo pipefail
+          for root in /tmp/port-b /tmp/port-d0 /tmp/port-bd0; do
+            test "$(git -C "$root" hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = ba9b165aaf96956776672df51233bb9bf1e6cbc9
+            test "$(git -C "$root" hash-object research/research_os/tests/test_economic_identity_portfolio_readiness.py)" = 4c163e5c1276e4909b4be3e97990e899c9079234
+            test "$(git -C "$root" hash-object research/research_os/tests/test_economic_readiness_integration.py)" = 8b64c95695abfc661e636b20deb20713d391d5e5
+          done
+          echo 'SEALED_BASE_REPAIR_PRESERVED=TRUE' | tee -a /tmp/port-simulation.env
+
+      - name: Qualify B-only sealed-base port
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/port-b
+          PYTHONPATH="$PWD:$PWD/src" python -m pytest -q \
+            research/research_os/tests/test_mega_b_all_producer_routes.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py \
+            research/research_os/tests/test_mega_b_discovery_chain.py \
+            research/research_os/tests/test_mega_b_discovery_engine.py \
+            research/research_os/tests/test_mega_b_outcome_firewall.py \
+            2>&1 | tee /tmp/port-b-tests.log
+
+      - name: Qualify D0-only rebound sealed-base port
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/port-d0
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v 2>&1 | tee /tmp/port-d0-tests.log
+          PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
+          from research.research_os.expansion.economic_lifecycle import WAVE2_IMMUTABLE_BASE_SHA, AUTHORITY_STATE
+          assert WAVE2_IMMUTABLE_BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          PY
+
+      - name: Qualify combined B plus rebound D0 sealed-base port
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/port-bd0
+          PYTHONPATH="$PWD:$PWD/src" python -m pytest -q \
+            research/research_os/tests/test_mega_b_all_producer_routes.py \
+            research/research_os/tests/test_mega_b_canonical_gate.py \
+            research/research_os/tests/test_mega_b_discovery_chain.py \
+            research/research_os/tests/test_mega_b_discovery_engine.py \
+            research/research_os/tests/test_mega_b_outcome_firewall.py \
+            2>&1 | tee /tmp/port-bd0-b-tests.log
+          PYTHONPATH="$PWD:$PWD/src" python -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v 2>&1 | tee /tmp/port-bd0-d0-tests.log
+          PYTHONPATH="$PWD:$PWD/src" python - <<'PY'
+          from research.research_os.discovery_engine import AUTHORITY as B_AUTHORITY
+          from research.research_os.expansion.economic_lifecycle import AUTHORITY_STATE, WAVE2_IMMUTABLE_BASE_SHA
+          assert all(value is False for value in B_AUTHORITY.values()), B_AUTHORITY
+          assert all(value is False for value in AUTHORITY_STATE.values()), AUTHORITY_STATE
+          assert WAVE2_IMMUTABLE_BASE_SHA == '2b99d8aeb8a342f1ef32544247d366cb8a26037e'
+          PY
+
+      - name: W1 ECON differential on sealed base and D0 ports
+        shell: bash
+        run: |
+          set -euo pipefail
+          modules=(
+            research.research_os.tests.test_economic_identity_memory_context_w1
+            research.research_os.tests.test_economic_identity_portfolio_depth_w1
+            research.research_os.tests.test_economic_identity_portfolio_frontier_w1
+            research.research_os.tests.test_economic_identity_portfolio_readiness
+            research.research_os.tests.test_economic_readiness_validation
+            research.research_os.tests.test_producer_economic_readiness
+            research.research_os.tests.test_economic_readiness_integration
+            research.research_os.tests.test_w1_factory_economic_integration
+          )
+          run_suite() {
+            local root="$1" label="$2"
+            set +e
+            (cd "$root" && PYTHONPATH="$root:$root/src" python -m unittest -v "${modules[@]}") > "/tmp/${label}.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\n' "$code" > "/tmp/${label}.exit"
+            grep -E '^(FAIL|ERROR): ' "/tmp/${label}.log" | sort > "/tmp/${label}.failures" || true
+            grep -E '^Ran [0-9]+ tests' "/tmp/${label}.log" | tail -1 | sed -E 's/^Ran ([0-9]+) tests.*/\1/' > "/tmp/${label}.count" || true
+          }
+          run_suite /tmp/port-base port-base-econ
+          run_suite /tmp/port-d0 port-d0-econ
+          run_suite /tmp/port-bd0 port-bd0-econ
+          diff -u /tmp/port-base-econ.failures /tmp/port-d0-econ.failures
+          diff -u /tmp/port-base-econ.failures /tmp/port-bd0-econ.failures
+          diff -u /tmp/port-base-econ.count /tmp/port-d0-econ.count
+          diff -u /tmp/port-base-econ.count /tmp/port-bd0-econ.count
+          test "$(cat /tmp/port-base-econ.exit)" = "$(cat /tmp/port-d0-econ.exit)"
+          test "$(cat /tmp/port-base-econ.exit)" = "$(cat /tmp/port-bd0-econ.exit)"
+          test "$(cat /tmp/port-base-econ.exit)" = 0
+
+      - name: Prove port scope and no canonical integration mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C /tmp/port-b diff --cached --name-only | sort > /tmp/port-b-paths.txt
+          git -C /tmp/port-d0 diff --cached --name-only | sort > /tmp/port-d0-paths.txt
+          git -C /tmp/port-bd0 diff --cached --name-only | sort > /tmp/port-bd0-paths.txt
+          test -z "$(git status --porcelain)"
+          echo 'CANONICAL_BRANCH_MUTATED=FALSE' | tee -a /tmp/port-simulation.env
+          echo 'WAVE2_INTEGRATED_SHA_EMITTED=FALSE' | tee -a /tmp/port-simulation.env
+
+      - name: Emit port simulation receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          def pytest_count(path):
+              text = Path(path).read_text()
+              m = re.findall(r'(\d+) passed(?:,| in|$)', text)
+              return int(m[-1]) if m else None
+
+          def unittest_count(path):
+              text = Path(path).read_text()
+              m = re.findall(r'^Ran ([0-9]+) tests.*$', text, flags=re.MULTILINE)
+              return int(m[-1]) if m else None
+
+          def scalar(path):
+              return int(Path(path).read_text().strip())
+
+          receipt = {
+              'role': 'FOREMAN_EPHEMERAL_PORT_SIMULATION_ONLY',
+              'sealed_base': '2b99d8aeb8a342f1ef32544247d366cb8a26037e',
+              'b_source_head': 'ba80b8cd717a3239d92a005248a326462d6a5744',
+              'd0_source_code_head': '84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0',
+              'b_only_tests': pytest_count('/tmp/port-b-tests.log'),
+              'd0_only_tests': unittest_count('/tmp/port-d0-tests.log'),
+              'combined_b_tests': pytest_count('/tmp/port-bd0-b-tests.log'),
+              'combined_d0_tests': unittest_count('/tmp/port-bd0-d0-tests.log'),
+              'w1_econ_base_tests': scalar('/tmp/port-base-econ.count'),
+              'w1_econ_d0_port_tests': scalar('/tmp/port-d0-econ.count'),
+              'w1_econ_combined_port_tests': scalar('/tmp/port-bd0-econ.count'),
+              'sealed_base_repair_preserved': True,
+              'd0_rebound_to_sealed_base': True,
+              'authority_opened': False,
+              'outcome_access_opened': False,
+              'canonical_branch_mutated': False,
+              'wave2_integrated_sha_emitted': False,
+              'canonical_convergence2_complete': False,
+          }
+          for key in ('b_only_tests','d0_only_tests','combined_b_tests','combined_d0_tests'):
+              assert receipt[key] is not None, (key, receipt[key])
+          Path('/tmp/wave2-c2-port-simulation-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c2-port-simulation-${{ github.sha }}
+          path: |
+            /tmp/wave2-c2-port-simulation-receipt.json
+            /tmp/port-simulation.env
+            /tmp/port-b-paths.txt
+            /tmp/port-d0-paths.txt
+            /tmp/port-bd0-paths.txt
+            /tmp/port-b-tests.log
+            /tmp/port-d0-tests.log
+            /tmp/port-bd0-b-tests.log
+            /tmp/port-bd0-d0-tests.log
+            /tmp/port-base-econ.log
+            /tmp/port-d0-econ.log
+            /tmp/port-bd0-econ.log
+          if-no-files-found: error

@@ -1,0 +1,144 @@
+...................................FF                                    [100%]
+=================================== FAILURES ===================================
+_ test_pause_publication_and_worker_settlement_do_not_erase_each_other[before_write] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-1/test_pause_publication_and_wor1')
+publication_outcome = 'before_write'
+
+    @pytest.mark.parametrize('publication_outcome', ['success', 'before_write', 'after_write'])
+    def test_pause_publication_and_worker_settlement_do_not_erase_each_other(tmp_path, publication_outcome):
+        entered, release_worker = threading.Event(), threading.Event()
+        worker_returned, settlement_write = threading.Event(), threading.Event()
+        pause_publishing, release_pause = threading.Event(), threading.Event()
+
+        def worker(t):
+            entered.set()
+            assert release_worker.wait(5)
+            worker_returned.set()
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one'))
+        original_queue_save = campaign.queue.save
+
+        def save_queue():
+            if campaign.queue.tasks['one'].status == 'COMPLETED':
+                settlement_write.set()
+            return original_queue_save()
+
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected:
+                injected.append(True)
+                pause_publishing.set()
+                assert release_pause.wait(5)
+                if publication_outcome != 'before_write':
+                    write_json(path, document)
+                if publication_outcome != 'success':
+                    raise OSError('pause publication fault')
+            else:
+                write_json(path, document)
+
+        with patch.object(campaign.queue, 'save', side_effect=save_queue):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                attempt = pool.submit(campaign.run_once)
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    pause = pool.submit(campaign.pause, 'maintenance')
+                    try:
+                        assert pause_publishing.wait(5)
+                        release_worker.set()
+                        assert worker_returned.wait(5)
+                        # Give the returning worker a turn while pause publication is
+                        # held. This probes overlapping settlement, not a timed expiry.
+                        settlement_write.wait(0.2)
+                    finally:
+                        release_pause.set()
+                    if publication_outcome == 'success':
+                        pause.result(timeout=5)
+                    else:
+                        with pytest.raises(OSError):
+                            pause.result(timeout=5)
+                    assert attempt.result(timeout=5) == 'COMPLETED'
+        persisted = json.loads(campaign.state_path.read_text())
+        assert campaign.queue.tasks['one'].status == 'COMPLETED'
+>       assert persisted['cycles_completed'] == campaign.state.cycles_completed == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = CampaignState(campaign_id='quant-research-v1', status='RUNNING', started_at='2026-10-24T02:03:14.800628+00:00', last_h...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None).cycles_completed
+E        +    where CampaignState(campaign_id='quant-research-v1', status='RUNNING', started_at='2026-10-24T02:03:14.800628+00:00', last_h...gerprints=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason=None, stop_reason=None) = <autonomous_research.orchestrator.ResearchCampaign object at 0x7f725f4f41d0>.state
+
+tests/test_vertical_campaign_pause_depth.py:239: AssertionError
+_ test_pause_publication_and_worker_settlement_do_not_erase_each_other[after_write] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-1/test_pause_publication_and_wor2')
+publication_outcome = 'after_write'
+
+    @pytest.mark.parametrize('publication_outcome', ['success', 'before_write', 'after_write'])
+    def test_pause_publication_and_worker_settlement_do_not_erase_each_other(tmp_path, publication_outcome):
+        entered, release_worker = threading.Event(), threading.Event()
+        worker_returned, settlement_write = threading.Event(), threading.Event()
+        pause_publishing, release_pause = threading.Event(), threading.Event()
+
+        def worker(t):
+            entered.set()
+            assert release_worker.wait(5)
+            worker_returned.set()
+            return result(t)
+
+        campaign = ResearchCampaign(tmp_path, workers={'fake': worker})
+        campaign.enqueue(task('one'))
+        original_queue_save = campaign.queue.save
+
+        def save_queue():
+            if campaign.queue.tasks['one'].status == 'COMPLETED':
+                settlement_write.set()
+            return original_queue_save()
+
+        injected = []
+
+        def publication(path, document):
+            if document.get('status') == 'PAUSED' and not injected:
+                injected.append(True)
+                pause_publishing.set()
+                assert release_pause.wait(5)
+                if publication_outcome != 'before_write':
+                    write_json(path, document)
+                if publication_outcome != 'success':
+                    raise OSError('pause publication fault')
+            else:
+                write_json(path, document)
+
+        with patch.object(campaign.queue, 'save', side_effect=save_queue):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                attempt = pool.submit(campaign.run_once)
+                assert entered.wait(5)
+                with patch.object(runtime, '_write_json', side_effect=publication):
+                    pause = pool.submit(campaign.pause, 'maintenance')
+                    try:
+                        assert pause_publishing.wait(5)
+                        release_worker.set()
+                        assert worker_returned.wait(5)
+                        # Give the returning worker a turn while pause publication is
+                        # held. This probes overlapping settlement, not a timed expiry.
+                        settlement_write.wait(0.2)
+                    finally:
+                        release_pause.set()
+                    if publication_outcome == 'success':
+                        pause.result(timeout=5)
+                    else:
+                        with pytest.raises(OSError):
+                            pause.result(timeout=5)
+                    assert attempt.result(timeout=5) == 'COMPLETED'
+        persisted = json.loads(campaign.state_path.read_text())
+        assert campaign.queue.tasks['one'].status == 'COMPLETED'
+>       assert persisted['cycles_completed'] == campaign.state.cycles_completed == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = CampaignState(campaign_id='quant-research-v1', status='PAUSED', started_at='2026-10-24T02:03:14.819698+00:00', last_he...=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason='maintenance', stop_reason=None).cycles_completed
+E        +    where CampaignState(campaign_id='quant-research-v1', status='PAUSED', started_at='2026-10-24T02:03:14.819698+00:00', last_he...=[], research_budget={'max_cycles': None}, budget_consumed={'cycles': 0}, pause_reason='maintenance', stop_reason=None) = <autonomous_research.orchestrator.ResearchCampaign object at 0x7f725f95f1d0>.state
+
+tests/test_vertical_campaign_pause_depth.py:239: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_campaign_pause_depth.py::test_pause_publication_and_worker_settlement_do_not_erase_each_other[before_write]
+FAILED tests/test_vertical_campaign_pause_depth.py::test_pause_publication_and_worker_settlement_do_not_erase_each_other[after_write]
+2 failed, 35 passed in 0.32s

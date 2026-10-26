@@ -1,0 +1,23 @@
+{
+  "after_source_sha": "e98a1b22f98935302c26a749fdb84638ffbeac41",
+  "before_module_source_sha": "b4eeceb1f9637a0ed153da25be1e83d269d945c2",
+  "exact_before_final_fixture_failed": 45,
+  "exact_before_final_fixture_passed": 4,
+  "first_repair_deeper_falsification_failed": 6,
+  "first_repair_deeper_falsification_passed": 43,
+  "first_repair_fixture_sha256": "493f5e5227d35b327909d1e8a676ed0c396f1d14513b26683f1102f2b0e16ed9",
+  "first_repair_focused_passed": 153,
+  "first_repair_initial_cases": 43,
+  "first_repair_source_sha": "2b02e5245f9e4be8c272affe257a4cabe9571f6b",
+  "fixture": "tests/test_vertical_queue_document_depth.py",
+  "fixture_sha256": "4ca8c76c269ae071a4badc4b79cbff98b4c8e43030f0029c1e4759c2e5bfd26d",
+  "module_fingerprints": {
+    "src/autonomous_research/runtime.py": {
+      "after": "276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6",
+      "before": "03cc51f0ec5d566d36ba28cf6e7df4f67ca032553013cfea47581f03d885c5e8"
+    }
+  },
+  "new_final_fixture_retained_for_before": true,
+  "new_scoped_unit_count": 0,
+  "same_module_only": true
+}

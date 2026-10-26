@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "mission": "LIVE_LAB_PUBLICATION_CANARY",
+  "repository": "fahimahmedb/Quant-Trade",
+  "branch": "builder/live-lab-native-integration-20261015",
+  "platform_probe_base": "809ec7e3d088a4ba4c5857771e6422ab91a139f4",
+  "integration_checkpoint_before_publication_work": "03ec93857f9418e69134112846bcdd4b343ead4a",
+  "identity_gate": {
+    "status": "WAIVED_FOR_THIS_CANARY_BY_OWNER",
+    "codex_authenticated_runtime": "BLOCKED_UNCHANGED",
+    "owner_auth_mutation": "BLOCKED_UNCHANGED",
+    "worker_ingress_authentication": "REQUIRED_UNCHANGED",
+    "canary_executor": "WRAPPED_BENIGN_WORKER_ONLY"
+  },
+  "live_surface": {
+    "entry_point": "research/live_lab_ux/live.html",
+    "transport": "/api/work/events",
+    "path": "native Site SSE -> LiveEventAdapter -> native mapper -> factual state -> deterministic DOM render",
+    "github_polling_in_live_path": false
+  },
+  "repair": {
+    "defect": "live-app invoked LiveEventAdapter.start/stop although adapter did not implement injected transport lifecycle",
+    "repair_commit": "e1fde39074414b9ca675717117f2fdfb451cfc7f",
+    "test_commit": "6c244917cc145d2d3c5d9400990a236d07760bc5"
+  },
+  "ci": {
+    "workflow_commit": "1082051f0bf2a622bd918e97bc5083e8130a32e1",
+    "run_id": 38664566010,
+    "job_id": 116193393335,
+    "status": "PASS",
+    "tests": 29,
+    "passed": 29,
+    "failed": 0
+  },
+  "publication": {
+    "target_project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
+    "target_slug": "quant-trade-lab",
+    "target_url": "https://quant-trade-lab.sassylime.chatgpt.site",
+    "status": "BLOCKED_BY_CURRENT_RUNTIME_SITE_CONTROL",
+    "observed_fact": "This chat runtime exposes GitHub and OpenAI Platform API-key tooling but no native Sites project source/deploy control. Local runtime DNS also cannot resolve the public Site domain. The previous Work session had native Sites controls; this runtime does not.",
+    "minimum_missing_capability": "Native Sites project source/deploy/cloud-browser control for the exact existing project. No new host or replacement deployment is authorized."
+  },
+  "public_e2e_live_canary": {
+    "status": "NOT_RUN_PUBLICATION_NOT_APPLIED",
+    "required_after_publish": "WRAPPED benign authenticated worker -> native ingress/store -> public SSE -> live.html state/render -> verified ACK",
+    "codex_identity_required_for_this_canary": false,
+    "owner_identity_required_for_this_canary": false
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0,
+    "economic_actions": "UNSUPPORTED"
+  },
+  "do_not_repeat": [
+    "platform capability probes already proved",
+    "UX subtree graft",
+    "native mapper/replay guard",
+    "LiveEventAdapter lifecycle repair",
+    "isolated 29/29 CI"
+  ]
+}

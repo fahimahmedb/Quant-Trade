@@ -1,0 +1,169 @@
+{
+  "acquisition_critical_fingerprint": "sha256:b84925b8474702fe86e60110f941b7096e991ebb880d6a3cfc0001d35741e976",
+  "all_committing_transitions_carry_obligation_identity": true,
+  "artifact": "sec_form4_p0_pre_t0_rodage_final",
+  "audit_note": "accountable is false here and that is correct: the MANUAL_START in this journal is the falsification attempt above, which the audit reports as an invalidating intervention. A rodage that deliberately intervenes is not a candidate window.",
+  "blue_followup_findings": {
+    "MATERIALIZED_FINGERPRINT_NOT_VERIFIED_AGAINST_ACTIVE": {
+      "finding": "t0_readiness() checked only that the fingerprint file existed, never that it described the running build.",
+      "live_result": "The check caught a real case: a manifest materialized outside the service environment can never match, because effective service configuration is part of the manifest. The supervisor now materializes it itself, in the child environment, and only when none exists, so an existing manifest is never silently re-frozen and a mid-window change still surfaces as a mismatch.",
+      "observed_live": true,
+      "resolution": "Readiness and telemetry compare materialized against active and block on FINGERPRINT_MATERIALIZED_MISMATCH.",
+      "state": "CLOSED"
+    },
+    "SYSTEMD_RESTART_CAUSE_AMBIGUOUS": {
+      "finding": "INVOCATION_ID proves systemd launched the service but not why, so systemctl restart typed by a human classified as SCHEDULED_START and hid an operator intervention behind a non-invalidating cause.",
+      "live_result": "A clean stop, same host boot id, new invocation identity - exactly systemctl restart - was classified MANUAL_START and recorded as invalidating.",
+      "observed_live": true,
+      "resolution": "An automatic action must be positively demonstrated. The only positive reasons a cleanly stopped service can start are a host boot, visible because the kernel boot id changed, and the first start of a deployment. A restart after a failure is automatic only inside the window the unit RestartSec implies; past that systemd has given up, so a start is an operator acting on a stopped service. Everything else is MANUAL_START.",
+      "state": "CLOSED"
+    }
+  },
+  "builder_found_during_this_pass": {
+    "SERVICE_ENTRY_POINT_OUTSIDE_FINGERPRINT": {
+      "classification": "BLOCKS_CAPTURE_INTEGRITY",
+      "resolution": "added to the frozen membership; the verification tree digest now covers deploy/ too. Membership may only be narrowed before the first qualifying t0, so it is widened while that is still permitted.",
+      "scenario": "scripts/quant.py was not in ACQUISITION_CRITICAL_MODULES, yet its sec-serve command binds the clock wake cadence into system.serve() and therefore decides how often a due poll is noticed. A change to the service entry point could alter acquisition timing without moving the fingerprint.",
+      "state": "CLOSED",
+      "violates": "the fingerprint covering all code that can change acquisition timing"
+    }
+  },
+  "coverage_state": "COMPLETE",
+  "falsification_attempts": {
+    "automatic_restart_outside_the_window": {
+      "covered_by": "OperatorRestartTests",
+      "method": "failed exit revisited past RestartSec",
+      "result": "MANUAL_START"
+    },
+    "changed_acquisition_module": {
+      "covered_by": "MaterializedFingerprintTests",
+      "method": "visibility.py edited in a mirror, manifest left",
+      "result": "READINESS_BLOCKED"
+    },
+    "host_reboot": {
+      "classified_as": "SCHEDULED_START",
+      "covered_by": "OperatorRestartTests",
+      "method": "kernel boot id differs from the recorded one",
+      "result": "CORRECTLY_AUTOMATIC"
+    },
+    "invalid_discovery": {
+      "covered_by": "AntiFalseSuccessTests",
+      "method": "HTML error page under HTTP 200",
+      "result": "DISCOVERY_INVALID, never NO_NEW_DATA"
+    },
+    "malformed_supervisor_state": {
+      "covered_by": "OperatorRestartTests",
+      "method": "non-zero exit with no exit timestamp",
+      "result": "MANUAL_START (safe direction)"
+    },
+    "missed_obligation": {
+      "covered_by": "RodageFalsificationTests",
+      "method": "silence against an open obligation",
+      "result": "DETECTED"
+    },
+    "operator_systemctl_restart_on_a_healthy_service": {
+      "classified_as": "MANUAL_START",
+      "method": "clean prior stop, same host boot id, new invocation identity",
+      "previously_would_have_been": "SCHEDULED_START",
+      "recorded_invalidating": true,
+      "result": "DETECTED"
+    },
+    "stale_materialized_fingerprint": {
+      "covered_by": "MaterializedFingerprintTests",
+      "method": "manifest mutated on disk",
+      "result": "READINESS_BLOCKED (FINGERPRINT_MATERIALIZED_MISMATCH)"
+    }
+  },
+  "fingerprint_matches_materialized": true,
+  "fingerprint_publication_rule": "The generator aborts if active and materialized differ, so a stale value cannot be published again. The previous artifact carried sha256:6f516b66..., computed before the final commit changed visibility.py; nothing checked it.",
+  "git_commit": "1450af4a7352ccbe938030a49f774c33b7d61a80",
+  "lifecycle_provenance_observed": [
+    {
+      "invalidates_observation_window": false,
+      "lifecycle_cause": "SCHEDULED_START",
+      "qualifying_service_mode": true,
+      "service_managed": true
+    },
+    {
+      "invalidates_observation_window": true,
+      "lifecycle_cause": "MANUAL_START",
+      "qualifying_service_mode": true,
+      "service_managed": true
+    }
+  ],
+  "materialized_fingerprint": "sha256:b84925b8474702fe86e60110f941b7096e991ebb880d6a3cfc0001d35741e976",
+  "not_yet_established": [
+    "Multi-day unattended operation. This rodage is minutes, not days.",
+    "The required complete weekend and predeclared source-normal silence interval.",
+    "Live 429/403 behaviour, deliberately not provoked against SEC; offline only.",
+    "Multi-host budget coordination: the limiter is a file lock bounding one machine.",
+    "A real systemd deployment. Qualifying mode was exercised with the provenance systemd supplies and the host boot id read from the real kernel, but not under systemd itself."
+  ],
+  "note": "Opaque acquisition evidence only. No filing identity, locator, body, parsed field, filing count or per-filing request count.",
+  "open_gap_kinds": [],
+  "p0_continuous_service_state": "OPEN / NOT_YET_PROVEN_CONTINUOUS",
+  "produced_at_utc": "2026-09-19T00:57:24.934901+00:00",
+  "purpose": "Final pre-t0 rodage on the exact frozen state, after closing the two follow-up points Blue left on PR #17. It does not count toward the fourteen days and does not authorize t0.",
+  "raw_object_integrity": {
+    "address_mismatches": [],
+    "all_rehashed_objects_match": true
+  },
+  "readiness": {
+    "blockers": [],
+    "fingerprint_matches_materialized": true,
+    "instrumentation_ready": true,
+    "lifecycle_cause": "SCHEDULED_START",
+    "qualifying_service_mode": true,
+    "service_managed": true
+  },
+  "request_accounting": {
+    "DUPLICATED_ATTEMPT_AUTHORITY": false,
+    "REQUEST_ACCOUNTING_INVARIANT": "PASS",
+    "UNACCOUNTED_NETWORK_REQUESTS": false
+  },
+  "retrospective_audit": {
+    "accountable": false,
+    "attempt_matching": "forward_only_within_tolerance_consumed",
+    "findings": [
+      "INVALIDATING_INTERVENTION"
+    ],
+    "fingerprint_stable": true,
+    "lifecycle_causes": [
+      "MANUAL_START",
+      "SCHEDULED_START"
+    ],
+    "obligations": 22,
+    "obligations_pending": 2,
+    "obligations_resolved_by_attempt": 19,
+    "obligations_resolved_by_supersession": 1,
+    "obligations_unexplained": 0,
+    "obligations_without_identity": [],
+    "reconciliation": "one_obligation_to_one_resolution",
+    "supersession_rule": "explicit_named_before_due_with_authorized_cause",
+    "window_duration_seconds": 164.6
+  },
+  "states": {
+    "admissibility_state": "NOT_ADMISSIBLE_FOR_CONFIRMATION",
+    "capture_state": "CAPTURED",
+    "visibility_state": "NOT_VISIBLE_FOR_SCIENTIFIC_PROTOCOL"
+  },
+  "supersedes": [
+    "handoff/SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18.json",
+    "handoff/SEC_FORM4_P0_PRE_T0_RODAGE_2_2026-09-18.json"
+  ],
+  "t0_authority": "BLUE_TEAM",
+  "t0_declared_by_this_artifact": false,
+  "transition_causes_observed": [
+    "DRAIN_COMPLETED",
+    "LANE_ENABLED",
+    "POLL_COMPLETED",
+    "SERVICE_START",
+    "WORK_ENQUEUED"
+  ],
+  "transition_states_observed": [
+    "AWAITING_POLL",
+    "DISABLED",
+    "DRAINING",
+    "POLL_DUE"
+  ]
+}

@@ -1,0 +1,39 @@
+name: Research OS final-shape simulation
+
+on:
+  push:
+    branches:
+      - builder/research-os-autonomous-loop-20261015
+    paths:
+      - 'research/research_os/**'
+      - '.github/workflows/research-os-final-shape-sim.yml'
+  workflow_dispatch:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic full-pipeline simulation
+        run: python research/research_os/simulations/full_pipeline_sim.py
+      - name: Assert result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('research/research_os/simulations/full_pipeline_result.json')
+          d=json.loads(p.read_text())
+          assert d['status']=='PASS'
+          assert d['synthetic_only'] is True
+          assert d['authorities']=={
+            'real_capital': False,
+            'live_trading': False,
+            'prospective_observation': False,
+            'economic_experiment': False,
+          }
+          assert d['next_build_boundary']=='ENGINE_ADAPTERS'
+          print('FINAL_SHAPE_SIM=PASS')
+          PY

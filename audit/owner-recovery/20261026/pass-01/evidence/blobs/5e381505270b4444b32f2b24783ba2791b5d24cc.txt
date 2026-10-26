@@ -1,0 +1,52 @@
+{
+  "autonomy_platform_diagnosis": "BLOCKED",
+  "first_broken_internal_step": "SCHEDULED_RUN_TO_GITHUB_TOOL_INVOCATION_UNOBSERVABLE",
+  "first_canary": {
+    "canary": "AUTONOMY_CANARY_20261012_1300_375C8340",
+    "scheduler_last_run_time": "2026-10-12T10:59:49.197944Z",
+    "source_head_before_after": "b93ff746d6b4522a0e3de3e4c9dd847acf5a2a53",
+    "expected_receipt": "research/edge_lab/e2e/autonomy/AUTONOMY_CANARY_20261012_1300_375C8340.json",
+    "receipt_status": "404_NOT_FOUND",
+    "write_attempt_observed": "UNKNOWN",
+    "write_error": "UNAVAILABLE_NO_SCHEDULED_TOOL_TRACE"
+  },
+  "github_control": {
+    "interactive_connection_available": true,
+    "interactive_repo_permissions": {
+      "pull": true,
+      "push": true,
+      "admin": true,
+      "maintain": true,
+      "triage": true
+    },
+    "scheduled_runtime_github_tool_available": "UNKNOWN",
+    "scheduled_runtime_github_auth_available": "UNKNOWN",
+    "scheduled_runtime_github_write_allowed": "UNKNOWN"
+  },
+  "fresh_write_probe": {
+    "canary": "AUTONOMY_PLATFORM_WRITE_20261012_1312_A6F3C9D1",
+    "scheduled_for_utc": "2026-10-12T11:12:06Z",
+    "branch": "builder/autonomy-e2e-20261012",
+    "target": "research/edge_lab/e2e/autonomy/platform/AUTONOMY_PLATFORM_WRITE_20261012_1312_A6F3C9D1.json",
+    "observed_after_utc": "2026-10-12T11:13:49Z",
+    "scheduler_last_run_time": null,
+    "target_status": "404_NOT_FOUND",
+    "classification_at_observation": "SCHEDULER_TRIGGER_NOT_OBSERVED"
+  },
+  "automation_update_error": {
+    "previous_error": "Unable to complete task request. Try again.",
+    "previous_error_evidence_commit": "1090242b64e95bbcf82816ebdd66870edd400168",
+    "later_main_update_succeeded_at": "2026-10-12T11:02:30.899131Z",
+    "current_main_canary": "AUTONOMY_CANARY_20261012_1400_7B91D2E4",
+    "classification": "TRANSIENT_PLATFORM_TASK_UPDATE_FAILURE_NOT_PERSISTENT_PERMISSION_DENIAL"
+  },
+  "control": {
+    "blob_sha": "c913ffed759707972d605f9dfb5567a87cf09261",
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "root_cause": "The completed 13:00 canary proves a scheduled run was recorded but no durable GitHub receipt appeared. Available scheduler metadata does not expose the scheduled run's tool inventory, GitHub authentication context, tool-call attempt, or connector error, so connector absence/auth/write-denial versus model/prompt non-invocation cannot be distinguished. A minimal scheduled write probe was then armed successfully, but by the observation point it had not started, so it cannot yet resolve the GitHub boundary.",
+  "smallest_fix": "Expose scheduled-run tool-call diagnostics or guarantee propagation of the user's connected GitHub connector into scheduled task runtimes; then rerun one nonce-only write-and-reread canary. Do not change research architecture.",
+  "autonomy_e2e": "BLOCKED"
+}

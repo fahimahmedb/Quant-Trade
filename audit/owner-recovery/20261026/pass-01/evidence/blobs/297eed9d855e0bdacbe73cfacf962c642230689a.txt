@@ -1,0 +1,54 @@
+# Vertical CP001 — Book mutation recovery and fencing
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=c309fec
+
+Module: `src/quant/book/ledger.py`. Existing capabilities: restart-safe,
+idempotent fills, monotonic marks, detached decision views. North Star §§7,
+11–12 requires persistent bankroll, coherent restart, and factual state.
+Starting depth: D1/D2 plus existing end-to-end restart tests; same-process
+failed persistence and competing Book instances were unproven.
+
+Defects and localized roots:
+
+1. A failed persistence left `_applied` and accounting ahead of disk; a retry
+   silently became a no-op. Save now restores the actual durable document on
+   error, handling failure before replacement and acknowledgement loss after it.
+2. Atomic replacement admitted stale overwrite of acknowledged fills/marks.
+   Save now compares the observed document under a shared file lock and raises
+   `LedgerConflict`; the instance refreshes for caller reconsideration/retry.
+3. Malformed/nonfinite fills could mutate memory before serialization failed;
+   negative prices/costs and empty operation identities were accepted. Validate
+   inputs before mutation; restore on arithmetic overflow at serialization.
+4. `from_document` advertised a read-only view but could create a persistent
+   file; save/fill/mark now reject detached views, and the document is copied.
+
+Adversarial cases: two stale writers released by a barrier; stale mark after
+fill; failure before replace; actual subprocess death immediately before/after
+replace; post-replace acknowledgement failure; same-object retry; reopened
+replay; nonfinite/boolean/zero/negative/empty/malformed inputs; finite-input
+overflow; detached alternate mutation paths. No market data or production state.
+
+Repair scope: same JSON schema, optimistic conflict rather than automatic
+redecision, existing operation-id replay semantics retained.
+
+Tests: original new fixture set reproduced **15 failed / 1 passed** on base.
+Final focused set plus Quant System and V1 red-team regressions: **109 passed**
+(23 new cases). See `research/vertical_depth/20261021/CP001_{before,after}.txt`.
+Ruff F and `git diff --check` pass. Attained depth: **D3**, scoped to the above
+mutation/retry/recovery invariants, not whole-Book qualification.
+
+Remaining unproven depth: hardware power loss/filesystem guarantees, distributed
+filesystems or writers ignoring the lock, tampered on-disk schema, collision of
+an operation id with a different fill, complete Desk session concurrency. Reads
+are instance snapshots. Missing/deleted Book state recovery is not proved.
+
+Horizontal findings: none. Longitudinal findings: none.
+Authority bypass found: FALSE. The detached-write defect concerns snapshot
+immutability, not real-capital/trading authorization. Existing synthetic Book
+behavior does not authorize an economic experiment.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

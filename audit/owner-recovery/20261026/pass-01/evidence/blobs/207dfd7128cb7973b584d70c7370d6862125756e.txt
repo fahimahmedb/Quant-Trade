@@ -1,0 +1,108 @@
+# Vertical CP044 — Pause survives dispatch, settlement and lost acknowledgement
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=696e330000eeae1f4fa17efbb63706db83f9a259
+MISSION_CHECKPOINT_ACCEPTED=TRUE_SCOPED_EVIDENCE
+REPLACES_INSUFFICIENT_RUNTIME_REPLAY_LABEL=TRUE
+
+Module: existing autonomous_research.ResearchCampaign.
+Capability: persistent operator pause/resume around existing local work dispatch,
+worker completion/failure and configured completed-cycle budget.
+North Star basis: Research Control Plane leases/permissions/budgets and Control /
+Clock state must describe acknowledged control truth. OPERATING_MODEL defines
+PAUSED as intentional suspension. This is synthetic engineering work only.
+
+Starting depth: basic named-pause/restart, successful worker, budget exhaustion
+and interrupted worker tests; no proof for an unexplained pause or concurrent
+pause publication and settlement. CP042 qualified the lower state writer, not
+this scheduler's unsynchronized field updates. Old CP044 replay is rejected.
+
+## Actual defects and descent
+
+Three grouped repair items:
+
+1. The entry guard required both PAUSED and a truthy explanation. pause("") and
+   a durable optional null explanation could therefore execute queued work.
+   Control state was incorrectly inferred from explanatory text.
+2. Dispatch/idle and worker success/failure assigned RUNNING or IDLE without
+   preserving an intervening acknowledged pause. A failing worker could recurse
+   into a second task, crossing a control boundary after pause returned.
+3. The first phase-preservation repair passed 34 new cases. Further falsification
+   overlapped pause publication with worker settlement and found two failures:
+   publication failure / lost ACK made CampaignState adopt the durable snapshot,
+   erasing concurrently updated cycles, budget and processed fingerprint while
+   the queue already recorded COMPLETED. Keeping PAUSED alone was insufficient.
+
+These are internal ResearchCampaign interleavings. No future runtime ownership,
+cross-module transaction or capability family is implemented.
+
+## Narrow repair
+
+PAUSED is authoritative independently of pause_reason. Activity transitions
+preserve PAUSED/STOPPED and recheck before reserving dispatch. A reentrant local
+control lock serializes operator pause/resume with durable dispatch and attempt
+settlement, including failure rollback from the existing state writer. Failed
+worker recursion occurs outside this section. Workers execute outside the lock:
+pause remains available while a dispatched worker is running. Completion can
+return COMPLETED while the campaign remains PAUSED; that reports the completed
+in-flight attempt, not permission to dispatch another one.
+
+The established wire fields, worker interface and explicit resume behavior stay
+compatible. A worker already reserved before pause may finish; pause is not a
+cancellation API. Explicit resume does not increase the configured cycle budget.
+
+## Executed proof
+
+tests/test_vertical_campaign_pause_depth.py adds **37 cases**:
+
+- Empty, null persisted and ordinary explanations, before/after restart, repeated
+  blocked invocations, unchanged attempts/queue/budget, then explicit resume.
+- Worker success/failure, another task present/absent, two pause reasons and
+  publication success / failure before write / failure after durable write.
+  Before-write failure requires a successful retry before claiming a pause;
+  lost acknowledgement is proved by reading the durable PAUSED document.
+- Pause between the initial gate and due-task selection, with and without work;
+  self-pausing worker; explicit resume against an exhausted cycle budget.
+- Pause publication overlaps successful settlement. Readback proves the completed
+  task retains exactly one consumed cycle and fingerprint under success,
+  before-write error and after-write acknowledgement loss.
+
+Final before proof restores the exact previous orchestrator from 92c4ee0 with the
+final fixture retained: **31 failed / 6 passed**. The first repair's deeper
+settlement falsification is retained separately: **2 failed / 35 passed**.
+Focused after: **85 passed**, including CP042 and the original campaign/runtime
+tests. Optimized interpreter / alternate hash seed: **85 passed**, with pytest's
+known optimization warning. Seven deliberate guard removals are detected:
+reason-dependent pause 18 failures, activity reopening 23, successful settlement
+reopening 15, failed settlement reopening 6, idle reopening 1, missing settlement
+serialization 2 and missing pause serialization 2. Counts overlap; these are
+sensitivity controls, not 67 independently discovered defects.
+
+The overlap fixture uses real worker/pause threads and events. It allows up to
+200 ms for the returning worker to reach queue publication while pause is held;
+it does not assert wall-clock expiry or exhaustive scheduler interleavings.
+All workers return local SYNTHETIC_ONLY results. No discovery/data worker runs.
+
+Transcripts/provenance/mutation runner are in research/vertical_depth/20261021:
+CP044_before.txt, CP044_after.txt, CP044_intermediate_settlement_falsification.txt,
+CP044_optimized.txt, CP044_mutation_results.json and CP044_PROVENANCE.json.
+Full regression and exact-source Core receipt are separately bound to HEAD_SHA.
+
+Attained depth: **D3**, scoped to local same-instance pause, dispatch reservation,
+settlement, publication failure/retry and fresh-instance paused restart. No
+whole-module D4 or cross-process campaign lease ownership claim.
+
+Remaining unproven: simultaneous run_once dispatchers, cross-process controller
+ownership, cancellation of reserved work, queue/state/memory multi-file atomicity,
+external worker effects, all direct public state mutations, seed/enqueue races,
+physical power loss, stop/resume policy, stale-context ABA and schema migration.
+Control lock is in-process; CP042's state fencing is separate bounded evidence.
+No result is simulated where durable readback is required.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains owned separately.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

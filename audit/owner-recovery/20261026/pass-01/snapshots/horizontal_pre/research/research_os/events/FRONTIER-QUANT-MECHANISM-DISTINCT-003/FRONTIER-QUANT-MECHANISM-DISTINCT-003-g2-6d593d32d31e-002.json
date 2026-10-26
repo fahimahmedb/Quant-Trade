@@ -1,0 +1,20 @@
+{
+  "action_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-003",
+  "emitted_at": "2026-10-20T02:50:24Z",
+  "event_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-003-g2-6d593d32d31e-2",
+  "event_seq": 2,
+  "event_type": "SESSION_ENDED",
+  "generation": 2,
+  "payload": {
+    "active_count": 0,
+    "claimed_count": 0,
+    "queue_state": "IDLE",
+    "ready_count": 0,
+    "result": "BLOCKED",
+    "stage": "mechanism_research",
+    "task_count": 34,
+    "terminal_count": 34
+  },
+  "session_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-003-g2-6d593d32d31e",
+  "worker_id": "oracle-research-v1.market_discovery"
+}

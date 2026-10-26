@@ -1,0 +1,84 @@
+mutation=existing_null_document_admission
+fixed_source_sha256=276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6
+...............................F..........F....F.                        [100%]
+=================================== FAILURES ===================================
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-null_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_invalid_durable_recovery_9')
+kind = 'null_root', operation = 'save'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert set() == {'original'}
+E
+E         Extra items in the right set:
+E         'original'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-null_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_invalid_durable_recovery_20')
+kind = 'null_root', operation = 'add'
+
+    @pytest.mark.parametrize('kind', ['duplicate_root', 'duplicate_task', 'duplicate_nested', 'nonfinite',
+                                      'bool_version', 'unknown_version', 'duplicate_identity',
+                                      'invalid_tasks_shape', 'truncated', 'null_root', 'unknown_root_field'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk(tmp_path, kind, operation):
+        queue = setup_queue(tmp_path)
+        original_wire = queue.path.read_bytes()
+        trusted = asdict(queue.tasks['original'])
+        queue.path.write_text(corrupt_document(json.loads(original_wire), kind))
+        invalid_wire = queue.path.read_bytes()
+        with pytest.raises((ValueError, TypeError, QueueConflict, KeyError)):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'uncommitted edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == invalid_wire
+>       assert set(queue.tasks) == {'original'}
+E       AssertionError: assert set() == {'original'}
+E
+E         Extra items in the right set:
+E         'original'
+E         Use -v to get more diff
+
+tests/test_vertical_queue_document_depth.py:139: AssertionError
+_ test_existing_null_or_unknown_root_is_not_a_missing_or_rewritable_queue[null_root] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-32/test_existing_null_or_unknown_0')
+kind = 'null_root'
+
+    @pytest.mark.parametrize('kind', ['null_root', 'unknown_root_field'])
+    def test_existing_null_or_unknown_root_is_not_a_missing_or_rewritable_queue(tmp_path, kind):
+        queue = setup_queue(tmp_path)
+        queue.path.write_text(corrupt_document(json.loads(queue.path.read_text()), kind))
+        before = queue.path.read_bytes()
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_queue_document_depth.py:188: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[save-null_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_invalid_durable_recovery_restores_last_trusted_snapshot_without_repairing_disk[add-null_root]
+FAILED tests/test_vertical_queue_document_depth.py::test_existing_null_or_unknown_root_is_not_a_missing_or_rewritable_queue[null_root]
+3 failed, 46 passed in 0.15s

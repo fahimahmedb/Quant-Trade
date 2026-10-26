@@ -1,0 +1,91 @@
+removed_capture=build_validator_result
+fixed_source_sha256=c5b537105728f8ff7def3ff1e82da58c765149866874a73eba339aa3626903c1
+..F....F........                                                         [100%]
+=================================== FAILURES ===================================
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-candidate] _
+
+key = 'candidate', builder = <function build_candidate at 0x7efd377fbce0>
+identity = 'hypothesis_id', required = 'claim'
+mutation = 'null_checked_identity'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'hypothesis_...OCH-001', ...} == {'hypothesis_...OCH-001', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'hypothesis_id': None} != {'hypothesis_id': 'V2-FIXTURE-HYPOTHESIS-001'}
+E         {'candidate_hash': '541c295533c3dacf57b5ebd43a0f60c78b886e829a3ab619bbe74ab2f99a9fe1'} != {'candidate_hash': '32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+_ test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-candidate] _
+
+key = 'candidate', builder = <function build_candidate at 0x7efd377fbce0>
+identity = 'hypothesis_id', required = 'claim'
+mutation = 'delete_required_field'
+
+    @pytest.mark.parametrize('key,builder,identity,required', CASES, ids=[c[0] for c in CASES])
+    @pytest.mark.parametrize('mutation', ['null_checked_identity', 'delete_required_field'])
+    def test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact(key,builder,identity,required,mutation):
+        supplied = bundle()[key]
+        expected = builder(deepcopy(supplied))
+        checked, release = threading.Event(), threading.Event()
+        check = core._require_identifiers
+
+        def pause_after_identifier_check(body, fields, label):
+            check(body, fields, label)
+            checked.set()
+            assert release.wait(5)
+
+        with patch.object(core, '_require_identifiers', side_effect=pause_after_identifier_check):
+            with ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(builder, supplied)
+                try:
+                    assert checked.wait(5)
+                    if mutation == 'null_checked_identity':
+                        supplied[identity] = None
+                    else:
+                        del supplied[required]
+                finally:
+                    release.set()
+                actual = future.result(timeout=5)
+>       assert actual == expected
+E       AssertionError: assert {'hypothesis_...OCH-001', ...} == {'hypothesis_...OCH-001', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'candidate_hash': 'afecd213b3319005b6003e90f9f1d39b3c30923f3d4e6f592cc5fab291db3456'} != {'candidate_hash': '32585771326176e4ebfc1fb627c9ac20f2aa4c9b755fda897ab8c913c5351f2a'}
+E         Right contains 1 more item:
+E         {'claim': 'Fixture documentary premise only; no economic payoff is observed.'}
+E         Use -v to get more diff
+
+tests/test_vertical_core_admission_snapshot.py:52: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[null_checked_identity-candidate]
+FAILED tests/test_vertical_core_admission_snapshot.py::test_concurrent_mutation_after_checks_cannot_enter_hashed_core_artifact[delete_required_field-candidate]
+2 failed, 14 passed in 0.08s

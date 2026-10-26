@@ -1,0 +1,226 @@
+{
+  "qualified_commit": "fecd09e0839f1208d9f876c311331221bde3ab7d",
+  "scope": "HOSTED_CI_AND_LOCAL_EXECUTION_NOT_DEPLOYMENT",
+  "hosted": {
+    "target_commit": "fecd09e0839f1208d9f876c311331221bde3ab7d",
+    "source_url": "https://github.com/fahimahmedb/Quant-Trade/actions?query=branch%3Abuilder%2Fv2-forward-20261020",
+    "observed_at": "2026-10-20T23:55:20.411827+00:00",
+    "runs": [
+      {
+        "id": "39517451814",
+        "name": "Oracle V2 Core",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39517451814",
+        "state": {
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED",
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS"
+        }
+      },
+      {
+        "id": "39517451804",
+        "name": "SEC P0 pre-t0 gate",
+        "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39517451804",
+        "state": {
+          "status": "WORKFLOW_RUN_STATUS_COMPLETED",
+          "conclusion": "WORKFLOW_RUN_CONCLUSION_SUCCESS"
+        }
+      }
+    ],
+    "page_sha256": "ef4d20a6b9495648dcc077b7b5476548e3ea58712ee57c6e98cd435d3637180b"
+  },
+  "jobs": [
+    {
+      "run_id": "39517451814",
+      "job_id": "118952925608",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39517451814/job/118952925608",
+      "observed_at": "2026-10-21T07:29:50.471904+00:00",
+      "page_sha256": "4508cf2357c2b643a55280f12b2d02a585a63d5066caddb788ca98c474902fbf",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compile V2 Core",
+          "conclusion": "success"
+        },
+        {
+          "name": "V2 Core contract, bridge, worker and whole-loop tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Qualify composed native Live Lab contracts",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify V2 policy remains fail-closed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify V2 claim ceiling",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate exact-head V2 qualification receipt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload exact-head V2 qualification receipt",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": "39517451804",
+      "job_id": "118952925523",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/39517451804/job/118952925523",
+      "observed_at": "2026-10-21T07:29:51.778080+00:00",
+      "page_sha256": "e118f8b52c7ea13eb78f026034c1c2e6266f5d665204baa4d914034e4a52f1cb",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Record environment",
+          "conclusion": "success"
+        },
+        {
+          "name": "Fail-closed check (no SEC identity configured)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generated schema drift",
+          "conclusion": "success"
+        },
+        {
+          "name": "Status artifact freshness",
+          "conclusion": "success"
+        },
+        {
+          "name": "Full unit suite",
+          "conclusion": "success"
+        },
+        {
+          "name": "SEC P0 lane suite",
+          "conclusion": "success"
+        },
+        {
+          "name": "V1 end-to-end regression",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate exact-head verification artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload exact-head verification artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Restore committed verification placeholder",
+          "conclusion": "success"
+        },
+        {
+          "name": "Clean working tree",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "local_steps": {
+    "sha": "fecd09e0839f1208d9f876c311331221bde3ab7d",
+    "scope": "LOCAL_EXECUTION_NOT_HOSTED_CI",
+    "adaptations": [
+      "github.sha",
+      "scope LOCAL",
+      "output paths"
+    ],
+    "steps": [
+      {
+        "name": "Compile V2 Core",
+        "exit_code": 0
+      },
+      {
+        "name": "V2 Core contract, bridge, worker and whole-loop tests",
+        "exit_code": 0
+      },
+      {
+        "name": "Qualify composed native Live Lab contracts",
+        "exit_code": 0
+      },
+      {
+        "name": "Verify V2 policy remains fail-closed",
+        "exit_code": 0
+      },
+      {
+        "name": "Verify V2 claim ceiling",
+        "exit_code": 0
+      },
+      {
+        "name": "Generate exact-head V2 qualification receipt",
+        "exit_code": 0
+      },
+      {
+        "name": "Real V2 entrypoint against fresh GitHub state with remote writes disabled",
+        "exit_code": 0
+      }
+    ]
+  },
+  "root_tests": 759,
+  "core_v2_tests": 268,
+  "broader_research_os_tests": 268,
+  "counts_overlap": true,
+  "artifact_contents_downloaded": false
+}

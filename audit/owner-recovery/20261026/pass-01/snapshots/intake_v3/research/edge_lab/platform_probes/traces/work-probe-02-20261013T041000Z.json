@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "probe_id": "PROBE_2_SCHEDULED_WORKER",
+  "trace_id": "P2-WORK-PLATFORM-20261013T041000Z",
+  "recorded_at_utc": "2026-10-13T04:12:01.747Z",
+  "executor_environment": "ChatGPT Work; native GitHub/Sites/Automations tools; Cloud Browser; managed Linux container",
+  "evidence_provenance": "Direct inspection receipts and bounded source/DOM observations. Platform logs are retrospective request evidence; none is relabeled as live worker emission.",
+  "verdict": "BLOCKED_BY_CURRENT_ENVIRONMENT",
+  "verdict_scope": "CURRENT_WORK_EXECUTION_ENVIRONMENT",
+  "first_broken_transition": "SCHEDULED_EXECUTION_TO_AUTHENTICATED_LIVE_SESSION_LEASE_NOT_EXPOSED",
+  "observed_fact": "Existing scheduler-to-bounded-GitHub-effect proof is preserved. Work peek confirms the exact canary automation is disabled and last_run_time is 2026-10-12T22:12:43.047567+00:00. The exposed automation controls carry configuration/task/conversation metadata, not a launch-bound live execution session, generation, lease or action-event interface. The published Site exposes only read-only MCP tools. No second run was armed because there is no authenticated event-ingress target to test the missing live protocol.",
+  "evidence_reference": [
+    "traces/work-probe-02-20261013T041000Z.json"
+  ],
+  "minimum_platform_requirement": "An authorized platform launcher or scheduled-runtime emitter tying a real unattended run to its exact worker/session/generation/lease and real action boundaries, plus an authenticated non-GitHub ingress. Task or conversation id alone is insufficient.",
+  "worker_id": null,
+  "session_id": null,
+  "session_generation": null,
+  "lease_id": null,
+  "sequence": null,
+  "live_event_effect_proof": null,
+  "confidentiality": "No secret, token, cookie, identity email or research outcome payload retained.",
+  "scientific_state_modified": false,
+  "preserved_scheduler_proof": {
+    "automation_id": "6acd5b34dec8819187d5fa4bc79e6133",
+    "canary": "PLATFORM_SCHED_CANARY_20261013_15CFF3C5",
+    "canary_path": "research/edge_lab/platform_probes/scheduled_canaries/PLATFORM_SCHED_CANARY_20261013_15CFF3C5.json",
+    "head_before": "8e990173276065ec41b0d2355571f4b7fc3d3787",
+    "effect_commit": "80e156edcab8c86b70d05ece837049d5389b13f9",
+    "effect_commit_parent": "8e990173276065ec41b0d2355571f4b7fc3d3787",
+    "provenance_scope": "Scheduler-to-bounded-GitHub-effect only; live session emitter UNVERIFIED.",
+    "short_run_proven": true,
+    "long_session_lease_proof": false,
+    "economic_guard_scope": "POLICY_ONLY",
+    "economic_actions": "UNSUPPORTED",
+    "provenance_level": "WRAPPED_PLATFORM"
+  },
+  "work_peek": [
+    {
+      "id": "6acd5b34dec8819187d5fa4bc79e6133",
+      "is_enabled": false,
+      "last_run_time": "2026-10-12T22:12:43.047567+00:00",
+      "conversation_id": "6acd5a3a-13a0-83eb-bc9f-0847ee1a204c"
+    }
+  ],
+  "exposed_interfaces_checked": [
+    "mcp__codex_apps__automations_create",
+    "mcp__codex_apps__automations_discover_webhook_schema",
+    "mcp__codex_apps__automations_list",
+    "mcp__codex_apps__automations_list_event_sources",
+    "mcp__codex_apps__automations_peek",
+    "mcp__codex_apps__automations_run_now",
+    "mcp__codex_apps__automations_update"
+  ],
+  "new_run_armed": false
+}

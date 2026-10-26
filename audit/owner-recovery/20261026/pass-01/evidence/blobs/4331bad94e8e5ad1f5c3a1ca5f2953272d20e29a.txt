@@ -1,0 +1,74 @@
+name: Research OS wave2 hardening CI
+
+on:
+  push:
+    branches:
+      - builder/research-os-aggressive-architecture-20261015
+    paths:
+      - 'research/research_os/**'
+      - '.github/workflows/research-os-wave2-hardening-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  wave2-hardening:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned legacy ledger
+        run: |
+          set -euo pipefail
+          LEGACY_COMMIT=183ad65ff260b903a16548ce37948f54d47a9ec8
+          git fetch --depth=1 origin "$LEGACY_COMMIT"
+          mkdir -p research/research_os/legacy
+          git show FETCH_HEAD:LEGACY_RESEARCH_LEDGER.json > research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json
+          test "$(git hash-object research/research_os/legacy/LEGACY_RESEARCH_LEDGER.imported.json)" = "ba9b165aaf96956776672df51233bb9bf1e6cbc9"
+      - name: Run wave2 hardening tests
+        run: |
+          python -m unittest research.research_os.tests.test_wave2_hardening -v
+      - name: Exact-head wave2 assertions
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.expansion.wave2_hardening import build_wave2_hardening
+
+          base = Path('research/research_os')
+          base_fixture = json.loads((base / 'simulations' / 'aggressive_architecture_fixture.json').read_text())
+          wave2_fixture = json.loads((base / 'simulations' / 'wave2_hardening_fixture.json').read_text())
+          result = build_wave2_hardening(
+              base_fixture,
+              wave2_fixture,
+              legacy_ledger_path=base / 'legacy' / 'LEGACY_RESEARCH_LEDGER.imported.json',
+          )
+          assert result['hardening_status'] == 'PASS'
+          assert result['persistent_base_status'] == 'PASS'
+          assert result['unsafe_access_detected'] is False
+          assert result['source_registry']['entry_count'] == 5
+          assert result['source_registry']['outcome_routes_authorized'] is False
+          assert result['reproducibility']['ready_count'] == 4
+          assert result['reproducibility']['blocked_count'] == 1
+          assert result['validator_summary']['pass_count'] == 4
+          assert result['validator_summary']['block_count'] == 1
+          assert result['candidate_states']['SYN-FLOW-001']['dry_run'] == 'BLOCK'
+          assert result['candidate_states']['SYN-FLOW-001']['validator_v2'] == 'BLOCK'
+          assert result['portfolio_v2']['return_series_consumed'] is False
+          assert result['portfolio_v2']['statistical_correlation_matrix'] == 'UNAVAILABLE_BY_DESIGN'
+          assert result['portfolio_v2']['capital_allocation_authorized'] is False
+          assert result['portfolio_v2']['orders_authorized'] is False
+          assert result['forward_registry_v2']['authorized_count'] == 0
+          assert result['forward_registry_v2']['observation_count'] == 0
+          assert result['forward_registry_v2']['future_outcomes_consumed'] == 0
+          assert result['economic_experiment_authorized'] is False
+          assert result['prospective_observation_authorized'] is False
+          assert result['real_capital_authorized'] is False
+          assert result['live_trading_authorized'] is False
+          print('RESEARCH_OS_WAVE2_HARDENING=PASS')
+          PY

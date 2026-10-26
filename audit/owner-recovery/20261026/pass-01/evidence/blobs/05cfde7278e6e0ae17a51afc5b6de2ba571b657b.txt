@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:25:00Z",
+  "branch": "research/edge-lab-continuous",
+  "family": "us-fda-recall-disclosure-diffusion",
+  "parent": "qualifications/us-fda-recall-disclosure-diffusion-l0-2026-10-12.json",
+  "stage": "L0_SOURCE_CLOCK_FOLLOWUP",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "economic_look_opened": false,
+  "economic_payloads_accessed": 0,
+  "decision": "PARK_DATA",
+  "classification": "PARK_DATA_AUTHENTICATED_IRES_CLOCK_ROUTE",
+  "RESULT": "PRIMARY_FIRST_POSTED_FIELD_EXISTS_BUT_AUTONOMOUS_ZERO_CREDENTIAL_ROUTE_NOT_QUALIFIED",
+  "MECHANISM": "Potential delayed incorporation of newly public severe FDA recall information into a listed parent's price after a precisely timestamped/datable public posting.",
+  "WHO_PAYS": "Investors providing liquidity before fully processing newly public recall information; issuer cash flows ultimately bear recall/liability effects. No transfer or return is observed here.",
+  "WHY_PERSIST": "Recall data are fragmented across firms, products, subsidiaries and regulator updates; mapping and low salience can slow processing, but prior firm warnings can precede FDA posting and destroy novelty.",
+  "CHEAP_DATA_NOW": "FDA's current iRES definitions explicitly include `postedinternetdt`, defined as the date a recall was first posted to the Enforcement Report, plus `eventlmd`/history fields. This resolves the conceptual clock ambiguity identified in the prior L0. However, FDA's iRES API documentation requires Authorization-User and Authorization-Key headers obtained through OII Unified Logon; a typical unauthenticated web request is not an admitted autonomous route. openFDA remains public but does not expose the qualified first-posted/history semantics required by the frozen idea.",
+  "FATAL_PROBLEM": "The exact PIT/public-post clock exists in FDA iRES but the machine-readable route requires credentials. Without a pre-existing authorized zero-cost credential or a distinct public bulk export carrying `postedinternetdt` and history, the candidate cannot assemble a bounded reproducible historical/prospective signal population under current constraints. Firm press releases may also predate FDA posting, so even iRES date alone would need a novelty rule before economics.",
+  "source_receipts": [
+    {
+      "source": "FDA Enforcement Report API Definitions",
+      "url": "https://www.fda.gov/safety/enforcement-reports/enforcement-report-api-definitions",
+      "facts": [
+        "`postedinternetdt` is the Posted to Internet Date and is defined as the date the recall was first posted to the Enforcement Report.",
+        "`eventlmd` is the Event Last Modified Date; for history endpoints it displays the date a new value was posted.",
+        "Press release issue date/URL are separate fields, reinforcing that firm/FDA communications can precede or differ from Enforcement Report posting."
+      ]
+    },
+    {
+      "source": "FDA iRES API Usage Documentation",
+      "url": "https://www.accessdata.fda.gov/scripts/ires/apidocs/",
+      "facts": [
+        "REST endpoints expose `postedinternetdt`, `eventlmd`, event/product history and filtering by posted-internet date.",
+        "Use requires Authorization-User and Authorization-Key headers; authorization-key requests use OII Unified Logon.",
+        "FDA explicitly states the API cannot be used by simply pasting the request URL into a typical browser because the authorization headers are required."
+      ]
+    },
+    {
+      "source": "openFDA enforcement documentation",
+      "url": "https://open.fda.gov/apis/device/enforcement/understanding-the-api-results/",
+      "fact": "openFDA remains a public current enforcement-report route but is not treated as equivalent to the authenticated iRES PIT/history fields."
+    }
+  ],
+  "disconfirmation": [
+    "First FDA posting is not necessarily first market-relevant public disclosure; firm/customer warnings or press releases may come earlier.",
+    "Subsidiary/product-to-listed-parent mapping remains a separate point-in-time problem even if the iRES clock is available.",
+    "Credential-gated access prevents a zero-interaction autonomous historical collector under current constraints; do not interpret public documentation as public unauthenticated data access."
+  ],
+  "reopen_only_if": "A genuinely new fact establishes either (a) an already-authorized zero-cost iRES credential usable by the research runtime, or (b) an official public bulk/API route exposing first-posted/history fields without account interaction, together with a bounded parent-mapping/novelty design. Do not repeat the openFDA schema probe or request credentials on the Owner's behalf.",
+  "next_action": "Close this source cycle and spend search capacity on a causally distinct mechanism with immediately retrievable primary data or on already-frozen prospectives. No FDA outcome or issuer-price join is authorized.",
+  "inference_ceiling": [
+    "No recall alpha conclusion",
+    "No issuer-return conclusion",
+    "No proof that first FDA posting is first public news",
+    "No live or real-capital authorization"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "event_id":"VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001-g1-002",
+  "session_id":"VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001-g1",
+  "worker_id":"independent_challenge",
+  "action_id":"VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001",
+  "event_type":"ACTION_COMPLETED",
+  "event_seq":2,
+  "generation":1,
+  "emitted_at":"2026-10-18T11:39:30Z",
+  "payload":{"result":"PARK_DATA_BLOCK_DATA_AND_BLOCK_CLAIM_LEVEL","queue_state":"UNKNOWN","next_task_id":null,"next_lane":null}
+}

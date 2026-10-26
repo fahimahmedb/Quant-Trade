@@ -1,0 +1,150 @@
+{
+  "accepted_detail_codes": [
+    "INPUT_READ_ELIGIBLE_LOGGED_AND_COMPLETED"
+  ],
+  "approver": {
+    "actor_id": "astra.weather-v4.a2.doc-integration.v1",
+    "role": "RELEASE_APPROVER"
+  },
+  "authority_binding": {
+    "harness_identity": "research/weather_forward/v4/a2_harness",
+    "harness_version_or_commit_identity": "weather-v4-a2-doc-integration-v1",
+    "manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+    "owner_authority_sha": "37e3b25f17a7c5d3b3bc8d37df730aa988585b6c"
+  },
+  "branch": "D2",
+  "execution_authority_sha": "6e0320f15d48a924cef9507af5641e47de9fe938",
+  "executor": {
+    "actor_id": "blue.weather-v4.a2.doc-integration.v1",
+    "role": "EXECUTOR"
+  },
+  "harness_source_blobs": {
+    "__init__.py": "bf9a2bdba7658454ea10009a28c975024365cfe1",
+    "contract.py": "f6f94a4a472e3f6652a1502f6afb5825721364d0",
+    "harness.py": "00ae81d2823b7d30d72aabe8d82ac051dbfcf5c4",
+    "trusted_root.py": "9704a844bae0ef54637c76dded5bb82d9f4c334f"
+  },
+  "input_manifest": {
+    "fields": {
+      "access_logging_requirement": "REQUIRED",
+      "aggregation_allowed": "DENIED",
+      "cross_source_comparison_allowed": "DENIED",
+      "efficacy_leakage_assessment": "CLEAR",
+      "exact_permitted_fields": [
+        "document_commit_sha",
+        "document_path",
+        "document_blob_sha",
+        "authorized_documentary_scope_reference"
+      ],
+      "exact_prohibited_fields": [
+        "document_body",
+        "fixture_payload",
+        "real_observation",
+        "real_technical_metadata",
+        "operational_endpoint",
+        "operational_credential",
+        "actual_timestamp",
+        "cadence",
+        "latency",
+        "availability",
+        "delivery_pattern",
+        "efficacy",
+        "economic_outcome",
+        "performance_distribution",
+        "pnl",
+        "ranking",
+        "source_preference",
+        "station_preference",
+        "city_preference",
+        "model_preference"
+      ],
+      "frequency_or_count_information_visible": "HIDDEN",
+      "input_classification": "DOCUMENTATION_ONLY",
+      "input_id": "A2-DOC-IN-OWNER-A1-V1",
+      "longitudinal_observation_allowed": "DENIED",
+      "manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+      "owner_approval_required": "REQUIRED",
+      "permitted_reader_roles": [
+        "EXECUTOR"
+      ],
+      "quarantine_on_ambiguity": "REQUIRED",
+      "raw_values_visible": "VISIBLE",
+      "source_provenance_class": "OWNER_GOVERNANCE_DECISION; commit=728cf23e7d69a373306f3c1a3fb5d11240210cda; path=research/weather_forward/v4/owner/OWNER_V4_PHASE_GATE_A1_DECISION_2026-10-04.md; blob=483907e4f719ec8bcb3851af0f184690cea96279",
+      "timestamps_visible": "HIDDEN"
+    },
+    "kind": "InputManifest",
+    "schema": "A2_FROZEN_CONTENT_V1"
+  },
+  "log": {
+    "incident_identifier": null,
+    "input_record_id": "a2-doc-v1-d2-log-input-read-001",
+    "output_record_id": null
+  },
+  "output_directory": "/srv/a2out",
+  "output_manifest": {
+    "fields": {
+      "cumulative_disclosure_risk": "UNRESOLVED",
+      "efficacy_leakage_assessment": "UNRESOLVED",
+      "exact_metric_or_artifact": "STRUCTURAL_REPORT_ONLY: validation_state; permit_or_deny_state; quarantine_state; release_state; completion_state; stop_reason; detail_code; input_manifest_reference; output_manifest_reference; policy_reference; construction_authority_reference; execution_authority_reference; actor_role_bindings; acknowledged_log_record_references; structural_linkage_status",
+      "exportability": "ALLOWED",
+      "granularity": "ONE_DOCUMENTARY_OPERATION; exact structural identifiers, enum states and fixed reason codes only; no observations, measurements, payload text, operational timing or event counts",
+      "incident_if_unexpected_information_revealed": "STOP; DENY and BLOCKED release; withhold affected content through an already-authorized mechanism; record safe incident class/reference only; escalate to PROJECT_OWNER; no payload investigation, retry or automatic resume; separate exact Owner direction required before recovery",
+      "manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+      "output_id": "A2-DOC-OUT-STRUCTURAL-REPORT-V1",
+      "output_type": "DOCUMENTATION_ONLY_STRUCTURAL_REPORT",
+      "permitted_recipients": [
+        "RESEARCH_VIEWER"
+      ],
+      "quarantine_status": "BLOCKED_PENDING_OWNER_REVIEW",
+      "release_approval_requirement": "REQUIRED",
+      "retention_rule": "STRUCTURAL_EVIDENCE_ONLY; 30 calendar days from authorized operation closure; custodian PROJECT_OWNER; evidence destination existing Owner document libfile_4f09286d65ac8191a6e343b85aff696e / EVIDENCE_A2_DOC_INTEGRATION_V1; no public release; retention and deletion capabilities verified before custody; no automatic extension; governance decisions retained separately"
+    },
+    "kind": "OutputManifest",
+    "schema": "A2_FROZEN_CONTENT_V1"
+  },
+  "policy": {
+    "fields": {
+      "allowed_input_classifications": [
+        "DOCUMENTATION_ONLY"
+      ],
+      "expected_harness_identity": "research/weather_forward/v4/a2_harness",
+      "expected_harness_version_or_commit_identity": "weather-v4-a2-doc-integration-v1",
+      "expected_input_manifest_id": "A2-DOC-IN-OWNER-A1-V1",
+      "expected_input_manifest_identity": "sha256:5c55b855b91a5c2b0bde86f3c0888905b500c086309a761ff454644d0cfbbd00",
+      "expected_manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+      "expected_output_manifest_id": "A2-DOC-OUT-STRUCTURAL-REPORT-V1",
+      "expected_output_manifest_identity": "sha256:b8157e4e15b4e03813b0ff43d52a2319ea589fc9aab9429f1c2894bcce990976",
+      "expected_owner_authority_sha": "37e3b25f17a7c5d3b3bc8d37df730aa988585b6c",
+      "fixture_provenance_contract": null,
+      "permitted_recipient_actor_roles": [
+        [
+          "project-owner.weather-v4.a2.doc-integration.v1",
+          "RESEARCH_VIEWER"
+        ]
+      ],
+      "prohibited_input_classifications": [
+        "NON_ECONOMIC_SYNTHETIC",
+        "REAL_TECHNICAL_METADATA",
+        "PROHIBITED",
+        "UNKNOWN"
+      ]
+    },
+    "kind": "HarnessPolicy",
+    "schema": "A2_FROZEN_CONTENT_V1"
+  },
+  "read_authorization": {
+    "action": "READ_INPUT",
+    "actor_id": "blue.weather-v4.a2.doc-integration.v1",
+    "authority_sha": "6e0320f15d48a924cef9507af5641e47de9fe938",
+    "authorization_id": "a2-doc-v1-read-input-blue",
+    "declared_role": "EXECUTOR",
+    "state": "UNRESOLVED"
+  },
+  "recipient": {
+    "actor_id": "project-owner.weather-v4.a2.doc-integration.v1",
+    "role": "RESEARCH_VIEWER"
+  },
+  "release": null,
+  "result_file_name": "a2-doc-v1-d2-input-result-001.json",
+  "schema": "A2_DOC_INTEGRATION_OPERATION_CONTEXT_V1"
+}

@@ -1,0 +1,706 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quant://governance/target-host-gate-b-evidence-2026-09-21-v2",
+  "title": "Quant Target-Host Gate B Evidence Artifact v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "created_at_utc",
+    "gate_b_run_id",
+    "gate_b_attempt_number",
+    "candidate_sha",
+    "git_tree",
+    "verified_input_tree_digest",
+    "activation_reference",
+    "activation_digest",
+    "contract_reference",
+    "contract_digest",
+    "runbook_reference",
+    "runbook_digest",
+    "target_host_opaque_id",
+    "repository_ci_runs",
+    "independent_review",
+    "time_authority",
+    "runtime_identity",
+    "mount_identity",
+    "systemd_identity",
+    "state_authority",
+    "single_writer_budget",
+    "fingerprint_materialization",
+    "filesystem_semantics",
+    "lifecycle_campaign",
+    "resource_baseline",
+    "evidence_retention",
+    "network_runtime_binding",
+    "sanitization",
+    "synthetic_campaign_network_activity",
+    "sub_artifacts",
+    "artifact_manifest_digest",
+    "overall_verdict",
+    "t0_declared"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "gate-b-evidence-v2"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gate_b_run_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "gate_b_attempt_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "candidate_sha": {
+      "const": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072"
+    },
+    "git_tree": {
+      "const": "4d15ef6f471213ee6ab56337b555d2906ef9bf16"
+    },
+    "verified_input_tree_digest": {
+      "const": "sha256:ceaa2a1801e96a51dc8c86ea087a3a113d15aa757fbed0b7415129c157c231f2"
+    },
+    "activation_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "activation_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "contract_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contract_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runbook_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runbook_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "target_host_opaque_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository_ci_runs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "independent_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_head",
+        "verdict"
+      ],
+      "properties": {
+        "review_head": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "verdict": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ci_runs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "time_authority": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "runtime_identity": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "mount_identity": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "systemd_identity": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "state_authority": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "single_writer_budget": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "fingerprint_materialization": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "filesystem_semantics": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "lifecycle_campaign": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "resource_baseline": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "evidence_retention": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "network_runtime_binding": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "sanitization": {
+      "$ref": "#/$defs/verdict_object"
+    },
+    "synthetic_campaign_network_activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "real_sec_requests_made",
+        "verdict",
+        "evidence_digest"
+      ],
+      "properties": {
+        "real_sec_requests_made": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "evidence_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    },
+    "sub_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "digest",
+          "classification",
+          "defect_classification"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "digest": {
+            "$ref": "#/$defs/sha256"
+          },
+          "classification": {
+            "enum": [
+              "FACT",
+              "CLAIM",
+              "INFERENCE",
+              "RECOMMENDATION",
+              "UNKNOWN"
+            ]
+          },
+          "defect_classification": {
+            "enum": [
+              "REAL_DEFECT",
+              "TEST_DEFECT",
+              "MISSING_PROOF",
+              "TARGET_HOST_ONLY",
+              "NON_ISSUE",
+              "NONE"
+            ]
+          },
+          "restricted_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "artifact_manifest_digest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "overall_verdict": {
+      "enum": [
+        "PASS",
+        "BLOCKED",
+        "FAILED_TERMINAL"
+      ]
+    },
+    "t0_declared": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "verdict_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict",
+        "evidence_digest",
+        "classification",
+        "defect_classification"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "evidence_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "classification": {
+          "enum": [
+            "FACT",
+            "CLAIM",
+            "INFERENCE",
+            "RECOMMENDATION",
+            "UNKNOWN"
+          ]
+        },
+        "defect_classification": {
+          "enum": [
+            "REAL_DEFECT",
+            "TEST_DEFECT",
+            "MISSING_PROOF",
+            "TARGET_HOST_ONLY",
+            "NON_ISSUE",
+            "NONE"
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "overall_verdict": {
+            "const": "PASS"
+          }
+        },
+        "required": [
+          "overall_verdict"
+        ]
+      },
+      "then": {
+        "properties": {
+          "time_authority": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "runtime_identity": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "mount_identity": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "systemd_identity": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "state_authority": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "single_writer_budget": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "fingerprint_materialization": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "filesystem_semantics": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "lifecycle_campaign": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "resource_baseline": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "evidence_retention": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "network_runtime_binding": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "sanitization": {
+            "allOf": [
+              {
+                "properties": {
+                  "verdict": {
+                    "const": "PASS"
+                  }
+                },
+                "required": [
+                  "verdict"
+                ]
+              },
+              {
+                "properties": {
+                  "defect_classification": {
+                    "enum": [
+                      "NON_ISSUE",
+                      "TARGET_HOST_ONLY",
+                      "NONE"
+                    ]
+                  }
+                },
+                "required": [
+                  "defect_classification"
+                ]
+              }
+            ]
+          },
+          "synthetic_campaign_network_activity": {
+            "properties": {
+              "verdict": {
+                "const": "PASS"
+              },
+              "real_sec_requests_made": {
+                "const": 0
+              }
+            },
+            "required": [
+              "verdict",
+              "real_sec_requests_made"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

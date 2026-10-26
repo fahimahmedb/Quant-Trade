@@ -1,0 +1,100 @@
+name: Oracle V2 Live Lab Bridge
+
+on:
+  push:
+    branches:
+      - builder/oracle-v2-live-lab-bridge-20261020
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile bridge and V2 entrypoints
+        run: |
+          python -m py_compile \
+            research/research_os/live_lab_contract.py \
+            research/research_os/live_lab_bridge.py \
+            research/research_os/live_lab_emitter.py \
+            research/research_os/oracle_worker_v2_live.py \
+            research/research_os/oracle_worker_v2.py \
+            deploy/oracle_live_lab_bridge_install.py
+
+      - name: Bridge invariants and V2 regression tests
+        run: |
+          python -m unittest -v \
+            tests.test_oracle_v2_live_lab_bridge \
+            tests.test_research_os_v2_worker_integration \
+            tests.test_oracle_v2_deploy
+
+      - name: Verify secret isolation and Site pinning
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          worker = Path('deploy/systemd/quant-research-worker-v2.service').read_text()
+          emitter = Path('deploy/systemd/quant-live-lab-emitter-v2.service').read_text()
+          source = Path('research/research_os/live_lab_emitter.py').read_text()
+          policy = json.loads(Path('research/research_os/runtime/V2_CORE_POLICY.json').read_text())
+
+          assert 'oracle_worker_v2_live' in worker
+          assert 'EnvironmentFile=' not in worker
+          assert 'QT_ORACLE_INGRESS_KEY' not in worker
+          assert 'EnvironmentFile=/etc/quant-research/worker.env' in emitter
+          assert 'research.research_os.live_lab_emitter' in emitter
+          assert 'quant-trade-lab.sassylime.chatgpt.site' in source
+          assert '/api/oracle/session' in source
+          assert '/api/oracle/event' in source
+          assert 'oracle-research-live' in source
+
+          required = (
+              'economic_experiment_authorized',
+              'prospective_observation_authorized',
+              'real_capital_authorized',
+              'live_trading_authorized',
+          )
+          assert all(policy['authority'][key] is False for key in required)
+          assert policy['evaluation_membrane']['status'] == 'SEALED'
+          print('LIVE_LAB_SECRET_ISOLATION=PASS')
+          print('V2_AUTHORITY_CLOSED=PASS')
+          PY
+
+      - name: Verify no literal ingress secret is committed
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          allowed_names = {
+              'QT_ORACLE_INGRESS_KEY',
+              'QT_ORACLE_PRINCIPAL',
+              'QT_ORACLE_SITE_BASE_URL',
+              'QT_ORACLE_SITE_WORKER_PREFIX',
+          }
+          for path in [
+              Path('research/research_os/live_lab_emitter.py'),
+              Path('deploy/oracle_live_lab_bridge_install.py'),
+              Path('deploy/systemd/quant-live-lab-emitter-v2.service'),
+          ]:
+              text = path.read_text()
+              for line in text.splitlines():
+                  if 'INGRESS_KEY=' in line and not any(name in line for name in allowed_names):
+                      raise AssertionError(f'possible literal secret in {path}: {line[:80]}')
+          print('NO_LITERAL_INGRESS_SECRET=PASS')
+          PY
+
+      - name: Verify systemd units
+        run: |
+          sudo systemd-analyze verify \
+            deploy/systemd/quant-research-worker-v2.service \
+            deploy/systemd/quant-live-lab-emitter-v2.service

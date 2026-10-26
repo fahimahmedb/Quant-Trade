@@ -1,0 +1,34 @@
+{
+  "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol4/xml/CFR-2025-title17-vol4-sec240-15c6-1.xml",
+  "freeze_time": "2026-10-15T20:43:05.673234+00:00",
+  "documentary_packet": {
+    "evidence_class": "DOCUMENTARY",
+    "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol4/xml/CFR-2025-title17-vol4-sec240-15c6-1.xml",
+    "issuer_id": "SEC_RULE_15c6_1",
+    "published_at": "2026-10-15T20:43:05.673234+00:00",
+    "available_at": "2026-10-15T20:43:05.673234+00:00",
+    "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+    "period": "CFR_EDITION_2025-04-01",
+    "unit": "business_days_after_trade",
+    "rule_kind": "STANDARD_SETTLEMENT_OPERATIVE_RULE",
+    "facts": {
+      "standard_settlement_business_days": "1"
+    },
+    "actor": "A broker or dealer entering a covered securities purchase or sale contract",
+    "constraint": "17 CFR 240.15c6-1(a): first business day settlement unless expressly agreed otherwise at transaction time; paragraphs (b)-(d) qualify scope",
+    "instrument": "Bounded class: ordinary common-equity secondary-market contracts outside all exclusions and alternate-date agreements; individual applicability UNKNOWN",
+    "horizon": "First business day settlement obligation only; tradable horizon UNKNOWN",
+    "capture": {
+      "source_url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol4/xml/CFR-2025-title17-vol4-sec240-15c6-1.xml",
+      "raw_sha256": "65c9d9ce2c73d45811c7f0c97b02349f8184546d42050d12f9c3ea1f2864fd36",
+      "retrieved_at": "2026-10-15T20:43:05.673234+00:00",
+      "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+      "document_kind": "OFFICIAL_CFR_OPERATIVE_RULE_EDITION",
+      "edition_date": "2025-04-01",
+      "section": "17 CFR 240.15c6-1",
+      "section_text": "(a) Except as provided in paragraphs (b), (c), and (d) of this section, a broker or dealer shall not effect or enter into a contract for the purchase or sale of a security (other than an exempted security, a government security, a municipal security, commercial paper, bankers' acceptances, or commercial bills) that provides for payment of funds and delivery of securities later than the first business day after the date of the contract unless otherwise expressly agreed to by the parties at the time of the transaction.\n(b) Paragraph (a) of this section shall not apply to:\n(1) Contracts for the purchase or sale of limited partnership interests that are not listed on an exchange or for which quotations are not disseminated through an automated quotation system of a registered securities association;\n(2) Security-based swaps; or\n(3) Contracts for the purchase or sale of securities that the Commission may from time to time, taking into account then existing market practices, exempt by order from the requirements of paragraph (a) of this section, either unconditionally or on specified terms and conditions, if the Commission determines that such exemption is consistent with the public interest and the protection of investors.\n(c) Paragraph (a) of this section shall not apply to contracts for the sale for cash of securities that are priced after 4:30 p.m. Eastern Time (ET) on the date such securities are priced and that are sold by an issuer to an underwriter pursuant to a firm commitment underwritten offering registered under the Securities Act of 1933 or sold to an initial purchaser by a broker-dealer participating in such offering provided that a broker or dealer shall not effect or enter into a contract for the purchase or sale of such securities that provides for payment of funds and delivery of securities later than the second business day after the date of the contract unless otherwise expressly agreed to by the parties at the time of the transaction.\n(d) For purposes of paragraphs (a) and (c) of this section, the parties to a contract shall be deemed to have expressly agreed to an alternate date for payment of funds and delivery of securities at the time of the transaction for a contract for the sale for cash of securities pursuant to a firm commitment offering if the managing underwriter and the issuer have agreed to such date for all securities sold pursuant to such offering and the parties to the contract have not expressly agreed to another date for payment of funds and delivery of securities at the time of the transaction.",
+      "extractor": "govinfo-cfr-15c6-1.v1"
+    },
+    "content_hash": "802a6bcbcdba8ae1c5fad48048a308821b655478549fe97f14cc7f054bf9d3d0"
+  }
+}

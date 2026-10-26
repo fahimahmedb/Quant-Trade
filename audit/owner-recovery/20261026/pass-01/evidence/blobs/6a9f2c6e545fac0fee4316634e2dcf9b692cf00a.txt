@@ -1,0 +1,48 @@
+# QUANT-TRADE — MEGA D0 — CP004 — FINAL ALIAS-HARDENING QUALIFICATION — 2026-10-21
+
+MISSION_BRANCH: `builder/mega-d0-economic-lifecycle-20261021`
+WAVE2_IMMUTABLE_BASE_SHA: `97165db2faa3300cef1f23de0045ed93d25eb9cb`
+FINAL_CODE_AND_TEST_QUALIFIED_HEAD_SHA: `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0`
+AUTHORITATIVE_NORTH_STAR_BLOB: `a328b4e6d7d71dafd532938888ebf9818b1b610f`
+
+## Why CP004 exists
+
+CP003 correctly recorded the late code hardening at `ece62c2041bba7c7b9e6e58628f028ba02e0e1ef`, but the immediately following canonical test commit `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0` added the recursive adversarial proof for the newly sealed raw-outcome aliases. This checkpoint records the later exact head so the closure evidence is not stale by one test commit.
+
+No production semantics changed after `ece62c2041bba7c7b9e6e58628f028ba02e0e1ef`; `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0` changes only the canonical D0 adversarial test surface and is therefore the final code+test qualified head.
+
+## Hardened pre-outcome membrane
+
+The canonical D0 kernel rejects outcome-bearing metadata keys including direct and series aliases for PnL, returns, realized returns, prices, fills, equity curves, unrealized PnL, win rate and hit rate. The added adversarial test injects these aliases recursively through nested list/mapping metadata and requires fail-closed rejection.
+
+## Exact-head qualification
+
+Workflow: `MEGA D0 Exact Head Qualification`
+Run: `39623589944`
+Exact head: `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0`
+Conclusion: `SUCCESS`
+
+Qualification evidence:
+
+- immutable Wave2-base ancestry: PASS;
+- canonical D0 focused suite: `33/33 PASS`;
+- D0 static scope membrane: PASS;
+- authority/outcome membrane: PASS;
+- clean working tree: PASS;
+- W1 ECON differential non-regression: `86` tests on sealed base vs `86` tests on D0 head, identical failure signatures and identical exit status: PASS;
+- W1 ECON owned implementation/test surfaces modified by D0: `FALSE`.
+
+The W1 differential intentionally preserves inherited sealed-base behavior instead of reopening W1 ECON inside D0.
+
+## Authority and ownership state
+
+- `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`
+- `REAL_CAPITAL_AUTHORIZED=FALSE`
+- `LIVE_TRADING_AUTHORIZED=FALSE`
+- `OUTCOME_ACCESSED=FALSE`
+- scheduler owned by D0: `FALSE`
+- runtime owned by D0: `FALSE`
+
+SAFE_TO_CONTINUE: `TRUE` only for documentary FINAL reseal.
+SAFE_TO_INTEGRATE: `TRUE` for qualified head `84aa0f5ff74a701130c3a8a1cc5ef7c52e197db0`.

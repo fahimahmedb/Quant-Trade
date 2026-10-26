@@ -1,0 +1,13 @@
+{
+  "probe_id": "PROBE_6_PUBLIC_RENDER_CANARY",
+  "trace_id": "P6-NOT-RUN-20261012T221500Z",
+  "started_at_utc": "2026-10-12T22:15:00Z",
+  "finished_at_utc": "2026-10-12T22:15:00Z",
+  "executor_environment": "Builder Chat",
+  "provenance": "UNVERIFIED",
+  "observed_fact": "The public render canary was intentionally not run because the required prerequisites are not proven in this environment: no genuine Codex live emitter, no exposed scheduled-worker live session/lease protocol, no verified public non-GitHub event stream, and no accessible Site render lifecycle capable of a post-frame VISIBLE_ACK.",
+  "evidence_reference": "P1-BUILDER-CODEX-20261012T221118Z; P2-SCHEDULED-CANARY-20261012T221243Z; P3-BUILDER-NETWORK-20261012T221118Z; P5-BUILDER-OWNER-AUTH-20261012T221500Z",
+  "verdict": "NOT_RUN",
+  "first_broken_transition": "PREREQUISITE_LIVE_PRIMITIVES_NOT_PROVEN",
+  "notes": "No external hosting workaround, fake timer, GitHub event bus, DISPLAY_ONLY event, or simulated worker was substituted."
+}

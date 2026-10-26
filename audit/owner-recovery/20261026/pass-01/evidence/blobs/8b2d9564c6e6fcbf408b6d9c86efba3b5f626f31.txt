@@ -1,0 +1,71 @@
+# W1 FACTORY CP003 — 2026-10-21
+
+STATUS: QUALIFIED_CURRENT — adversarial firewall depth + public infrastructure contract + CI exposure
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF (commit containing this checkpoint)
+PARENT: 4a9c4cc0c6eaa6b732e3ba6346a56e606ae50310
+
+## WHAT_GAP_WAS_PROVEN
+
+Reassessment after CP002 found two remaining actionable integrity gaps. First, the historical firewall test rail proved valuable alias/derived-lineage bypass classes that CP001's generic payload membrane did not yet encode. Second, repository CI discovers `tests/` only; W1 tests under `research/research_os/tests/` were not in the broad full-unit step. The integrated Experiment Infrastructure also lacked a durable public JSON contract.
+
+## WHAT_CHANGED
+
+- Hardened the pre-outcome firewall against `contains_outcome`/outcome-derived markers, dataset/field/column outcome roles, aliases and derivation lineage referencing future/outcome/realized fields, and opaque DERIVED fields with no declared lineage.
+- Preserved legal preregistration semantics such as `outcome_definition`; this is still a data firewall, not a ban on defining a future outcome.
+- Added `experiment-infrastructure.schema.json` defining the W1 registry, exact six-domain binding hashes, lifecycle, geometry/power UNKNOWN/DECLARED semantics, authority-false constants and infrastructure hash.
+- Added adversarial firewall tests covering historical-style alias/lineage attacks while retaining safe formation-only derivation.
+- Added a top-level CI discovery bridge so CP001, CP002 and CP003 W1 tests participate in the repository's existing `Full unit suite` workflow rather than living only in the research subdirectory.
+
+## WHAT_WAS_REUSED / IMPORTED
+
+- ADAPT_EXISTING: historical Factory adversarial ideas for lying roles, alias/derived lineage, unknown derivation and outcome-bearing source markers.
+- SEALED_BY_AUTHORITY: historical exact-gate outcome opening remains deliberately absent; `read_outcomes` cannot be opened.
+- REUSE_CURRENT: repository top-level unittest workflow; no new CI/orchestration system.
+- BUILD_MISSING: public experiment-infrastructure schema, because no current contract represented this recovered connected capability.
+
+## TESTS / FALSIFICATION
+
+New firewall hardening slice: 6/6 PASS locally.
+CP002 bridge slice: 6/6 PASS locally.
+CP001 slice: 15/15 PASS at CP001.
+Python compile checks for W1 modules/integration tests: PASS.
+
+The top-level CI bridge now exposes all W1 regression classes to the existing broad workflow. Post-push exact-head CI is required before final stop.
+
+## SCIENTIFIC CLAIM LIMIT
+
+Firewall hardening classifies provenance/lineage metadata only; it does not infer any economic outcome. Schema status `PASS` means integrity binding, not profitability, statistical significance or experiment authorization. UNKNOWN geometry/power values remain explicit UNKNOWN.
+
+## SHARED_SURFACES_TOUCHED
+
+SHARED_SURFACES_TOUCHED:
+- `src/quant/factory/outcome_firewall.py`
+- `research/research_os/contracts/experiment-infrastructure.schema.json` (new)
+- `research/research_os/tests/test_w1_factory_firewall_hardening.py` (new)
+- `tests/test_w1_factory_depth.py` (new CI discovery bridge)
+
+WHY_REQUIRED: close plausible historical bypass classes, make the connected infrastructure contract durable, and ensure repository-level regressions actually execute W1 tests.
+
+CONTRACT_CHANGE: additive research contract schema; firewall becomes stricter for outcome-labelled/derived lineage. No outcome access API is added and no existing authority flag changes.
+
+EXPECTED_CROSS_LANE_IMPACT: low-to-moderate. Pre-outcome payloads that truthfully declare outcome-bearing or outcome-derived lineage will now fail closed, as intended. Opaque DERIVED metadata now requires explicit lineage.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+Outcome-firewall depth now covers direct values plus dataset/column role and lineage bypasses recovered from history. The public connected infrastructure shape is explicit, and W1 tests are attached to the repository's broad CI rail.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Consume exact-head CI results, repair any real regression, then reassess lifecycle/registry/schema/readiness for remaining actionable gaps. If green, classify remaining outcome execution/prospective observation as authority-sealed and historical realized-outcome geometry/power as superseded.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

@@ -1,0 +1,937 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF..........F........F.    [100%]
+=================================== FAILURES ===================================
+_ test_contradictory_validator_summary_cannot_pass[status-BLOCK-BLOCK_CLAIM_LEVEL] _
+
+field = 'status', value = 'BLOCK', blocker = 'BLOCK_CLAIM_LEVEL'
+
+    @pytest.mark.parametrize('field,value,blocker', [
+        ('status','BLOCK','BLOCK_CLAIM_LEVEL'),
+        ('block_reasons',['frozen input conflict'],'BLOCK_CLAIM_LEVEL'),
+        ('ready_for_authorized_economic_test',False,'BLOCK_CLAIM_LEVEL'),
+        ('economic_test_authorized',True,'BLOCK_CLAIM_LEVEL'),
+        ('outcome_access_authorized',True,'BLOCK_LEAKAGE'),
+    ])
+    def test_contradictory_validator_summary_cannot_pass(field,value,blocker):
+        record = receipt()
+        record[field] = value
+        before = deepcopy(record)
+        result = red_team_negative_rights_v2(record)
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:28: AssertionError
+_ test_contradictory_validator_summary_cannot_pass[block_reasons-value1-BLOCK_CLAIM_LEVEL] _
+
+field = 'block_reasons', value = ['frozen input conflict']
+blocker = 'BLOCK_CLAIM_LEVEL'
+
+    @pytest.mark.parametrize('field,value,blocker', [
+        ('status','BLOCK','BLOCK_CLAIM_LEVEL'),
+        ('block_reasons',['frozen input conflict'],'BLOCK_CLAIM_LEVEL'),
+        ('ready_for_authorized_economic_test',False,'BLOCK_CLAIM_LEVEL'),
+        ('economic_test_authorized',True,'BLOCK_CLAIM_LEVEL'),
+        ('outcome_access_authorized',True,'BLOCK_LEAKAGE'),
+    ])
+    def test_contradictory_validator_summary_cannot_pass(field,value,blocker):
+        record = receipt()
+        record[field] = value
+        before = deepcopy(record)
+        result = red_team_negative_rights_v2(record)
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:28: AssertionError
+_ test_contradictory_validator_summary_cannot_pass[ready_for_authorized_economic_test-False-BLOCK_CLAIM_LEVEL] _
+
+field = 'ready_for_authorized_economic_test', value = False
+blocker = 'BLOCK_CLAIM_LEVEL'
+
+    @pytest.mark.parametrize('field,value,blocker', [
+        ('status','BLOCK','BLOCK_CLAIM_LEVEL'),
+        ('block_reasons',['frozen input conflict'],'BLOCK_CLAIM_LEVEL'),
+        ('ready_for_authorized_economic_test',False,'BLOCK_CLAIM_LEVEL'),
+        ('economic_test_authorized',True,'BLOCK_CLAIM_LEVEL'),
+        ('outcome_access_authorized',True,'BLOCK_LEAKAGE'),
+    ])
+    def test_contradictory_validator_summary_cannot_pass(field,value,blocker):
+        record = receipt()
+        record[field] = value
+        before = deepcopy(record)
+        result = red_team_negative_rights_v2(record)
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:28: AssertionError
+_ test_contradictory_validator_summary_cannot_pass[economic_test_authorized-True-BLOCK_CLAIM_LEVEL] _
+
+field = 'economic_test_authorized', value = True, blocker = 'BLOCK_CLAIM_LEVEL'
+
+    @pytest.mark.parametrize('field,value,blocker', [
+        ('status','BLOCK','BLOCK_CLAIM_LEVEL'),
+        ('block_reasons',['frozen input conflict'],'BLOCK_CLAIM_LEVEL'),
+        ('ready_for_authorized_economic_test',False,'BLOCK_CLAIM_LEVEL'),
+        ('economic_test_authorized',True,'BLOCK_CLAIM_LEVEL'),
+        ('outcome_access_authorized',True,'BLOCK_LEAKAGE'),
+    ])
+    def test_contradictory_validator_summary_cannot_pass(field,value,blocker):
+        record = receipt()
+        record[field] = value
+        before = deepcopy(record)
+        result = red_team_negative_rights_v2(record)
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:28: AssertionError
+_ test_contradictory_validator_summary_cannot_pass[outcome_access_authorized-True-BLOCK_LEAKAGE] _
+
+field = 'outcome_access_authorized', value = True, blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('field,value,blocker', [
+        ('status','BLOCK','BLOCK_CLAIM_LEVEL'),
+        ('block_reasons',['frozen input conflict'],'BLOCK_CLAIM_LEVEL'),
+        ('ready_for_authorized_economic_test',False,'BLOCK_CLAIM_LEVEL'),
+        ('economic_test_authorized',True,'BLOCK_CLAIM_LEVEL'),
+        ('outcome_access_authorized',True,'BLOCK_LEAKAGE'),
+    ])
+    def test_contradictory_validator_summary_cannot_pass(field,value,blocker):
+        record = receipt()
+        record[field] = value
+        before = deepcopy(record)
+        result = red_team_negative_rights_v2(record)
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:28: AssertionError
+____________________ test_frozen_input_check_is_not_omitted ____________________
+
+    def test_frozen_input_check_is_not_omitted():
+        record = receipt()
+        record['checks']['frozen_input_binding']['status'] = 'FAIL'
+>       assert 'BLOCK_REPRODUCIBILITY' in red_team_negative_rights_v2(record)['negative_rights']
+E       AssertionError: assert 'BLOCK_REPRODUCIBILITY' in []
+
+tests/test_vertical_red_team_depth.py:38: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-UNKNOWN] _
+
+state = 'UNKNOWN', field = 'data_integrity_status', blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-CONFLICTED] _
+
+state = 'CONFLICTED', field = 'data_integrity_status', blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-BLOCKED] _
+
+state = 'BLOCKED', field = 'data_integrity_status', blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-UNEXECUTED] _
+
+state = 'UNEXECUTED', field = 'data_integrity_status', blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-INVALIDATED_PROTOCOL] _
+
+state = 'INVALIDATED_PROTOCOL', field = 'data_integrity_status'
+blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-None] _
+
+state = None, field = 'data_integrity_status', blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-True] _
+
+state = True, field = 'data_integrity_status', blocker = 'BLOCK_DATA'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-UNKNOWN] _
+
+state = 'UNKNOWN', field = 'leakage_status', blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-CONFLICTED] _
+
+state = 'CONFLICTED', field = 'leakage_status', blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-BLOCKED] _
+
+state = 'BLOCKED', field = 'leakage_status', blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-UNEXECUTED] _
+
+state = 'UNEXECUTED', field = 'leakage_status', blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-INVALIDATED_PROTOCOL] _
+
+state = 'INVALIDATED_PROTOCOL', field = 'leakage_status'
+blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-None] _
+
+state = None, field = 'leakage_status', blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-True] _
+
+state = True, field = 'leakage_status', blocker = 'BLOCK_LEAKAGE'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-UNKNOWN] _
+
+state = 'UNKNOWN', field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-CONFLICTED] _
+
+state = 'CONFLICTED', field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-BLOCKED] _
+
+state = 'BLOCKED', field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-UNEXECUTED] _
+
+state = 'UNEXECUTED', field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-INVALIDATED_PROTOCOL] _
+
+state = 'INVALIDATED_PROTOCOL', field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-None] _
+
+state = None, field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-True] _
+
+state = True, field = 'clock_status', blocker = 'BLOCK_CLOCK'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-UNKNOWN] _
+
+state = 'UNKNOWN', field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-CONFLICTED] _
+
+state = 'CONFLICTED', field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-BLOCKED] _
+
+state = 'BLOCKED', field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-UNEXECUTED] _
+
+state = 'UNEXECUTED', field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-INVALIDATED_PROTOCOL] _
+
+state = 'INVALIDATED_PROTOCOL', field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-None] __
+
+state = None, field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-True] __
+
+state = True, field = 'pit_status', blocker = 'BLOCK_PIT'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-UNKNOWN] _
+
+state = 'UNKNOWN', field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-CONFLICTED] _
+
+state = 'CONFLICTED', field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-BLOCKED] _
+
+state = 'BLOCKED', field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-UNEXECUTED] _
+
+state = 'UNEXECUTED', field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-INVALIDATED_PROTOCOL] _
+
+state = 'INVALIDATED_PROTOCOL', field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-None] _
+
+state = None, field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-True] _
+
+state = True, field = 'economic_identity_status'
+blocker = 'BLOCK_ECONOMIC_IDENTITY'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-UNKNOWN] _
+
+state = 'UNKNOWN', field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-CONFLICTED] _
+
+state = 'CONFLICTED', field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-BLOCKED] _
+
+state = 'BLOCKED', field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-UNEXECUTED] _
+
+state = 'UNEXECUTED', field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-INVALIDATED_PROTOCOL] _
+
+state = 'INVALIDATED_PROTOCOL', field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-None] _
+
+state = None, field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+_ test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-True] _
+
+state = True, field = 'portfolio_duplication_status'
+blocker = 'BLOCK_PORTFOLIO_DUPLICATION'
+
+    @pytest.mark.parametrize('state', ['UNKNOWN','CONFLICTED','BLOCKED','UNEXECUTED','INVALIDATED_PROTOCOL',None,True])
+    @pytest.mark.parametrize('field,blocker', [('data_integrity_status','BLOCK_DATA'), ('leakage_status','BLOCK_LEAKAGE'),
+        ('clock_status','BLOCK_CLOCK'), ('pit_status','BLOCK_PIT'), ('economic_identity_status','BLOCK_ECONOMIC_IDENTITY'),
+        ('portfolio_duplication_status','BLOCK_PORTFOLIO_DUPLICATION')])
+    def test_explicit_unqualified_context_is_not_ignored(state, field, blocker):
+        result = red_team_negative_rights_v2(receipt(), context={field:state})
+>       assert result['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:47: AssertionError
+__________ test_each_known_check_missing_blocks[frozen_input_binding] __________
+
+field = 'frozen_input_binding'
+
+    @pytest.mark.parametrize('field', list(CHECK_ORDER))
+    def test_each_known_check_missing_blocks(field):
+        record = receipt()
+        del record['checks'][field]
+>       assert red_team_negative_rights_v2(record)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:55: AssertionError
+_____________ test_unknown_failed_validator_check_preserves_denial _____________
+
+    def test_unknown_failed_validator_check_preserves_denial():
+        record = receipt()
+        record['checks']['future_additional_invariant'] = {'status': 'FAIL'}
+>       assert red_team_negative_rights_v2(record)['status'] == 'BLOCK'
+E       AssertionError: assert 'PASS' == 'BLOCK'
+E         
+E         - BLOCK
+E         + PASS
+
+tests/test_vertical_red_team_depth.py:61: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_red_team_depth.py::test_contradictory_validator_summary_cannot_pass[status-BLOCK-BLOCK_CLAIM_LEVEL]
+FAILED tests/test_vertical_red_team_depth.py::test_contradictory_validator_summary_cannot_pass[block_reasons-value1-BLOCK_CLAIM_LEVEL]
+FAILED tests/test_vertical_red_team_depth.py::test_contradictory_validator_summary_cannot_pass[ready_for_authorized_economic_test-False-BLOCK_CLAIM_LEVEL]
+FAILED tests/test_vertical_red_team_depth.py::test_contradictory_validator_summary_cannot_pass[economic_test_authorized-True-BLOCK_CLAIM_LEVEL]
+FAILED tests/test_vertical_red_team_depth.py::test_contradictory_validator_summary_cannot_pass[outcome_access_authorized-True-BLOCK_LEAKAGE]
+FAILED tests/test_vertical_red_team_depth.py::test_frozen_input_check_is_not_omitted
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-UNKNOWN]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-CONFLICTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-BLOCKED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-UNEXECUTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-INVALIDATED_PROTOCOL]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-None]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[data_integrity_status-BLOCK_DATA-True]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-UNKNOWN]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-CONFLICTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-BLOCKED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-UNEXECUTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-INVALIDATED_PROTOCOL]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-None]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[leakage_status-BLOCK_LEAKAGE-True]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-UNKNOWN]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-CONFLICTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-BLOCKED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-UNEXECUTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-INVALIDATED_PROTOCOL]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-None]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[clock_status-BLOCK_CLOCK-True]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-UNKNOWN]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-CONFLICTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-BLOCKED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-UNEXECUTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-INVALIDATED_PROTOCOL]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-None]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[pit_status-BLOCK_PIT-True]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-UNKNOWN]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-CONFLICTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-BLOCKED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-UNEXECUTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-INVALIDATED_PROTOCOL]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-None]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[economic_identity_status-BLOCK_ECONOMIC_IDENTITY-True]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-UNKNOWN]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-CONFLICTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-BLOCKED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-UNEXECUTED]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-INVALIDATED_PROTOCOL]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-None]
+FAILED tests/test_vertical_red_team_depth.py::test_explicit_unqualified_context_is_not_ignored[portfolio_duplication_status-BLOCK_PORTFOLIO_DUPLICATION-True]
+FAILED tests/test_vertical_red_team_depth.py::test_each_known_check_missing_blocks[frozen_input_binding]
+FAILED tests/test_vertical_red_team_depth.py::test_unknown_failed_validator_check_preserves_denial
+50 failed, 19 passed in 0.19s

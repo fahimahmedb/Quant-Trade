@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Observed version of one SEC source identity.",
+  "properties": {
+    "admissibility_state": {
+      "type": "string"
+    },
+    "capture_state": {
+      "type": "string"
+    },
+    "conflict": {
+      "type": "boolean"
+    },
+    "observed_at_utc": {
+      "type": "string"
+    },
+    "package_state": {
+      "type": "string"
+    },
+    "prior_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "raw_object_sha256": {
+      "type": "string"
+    },
+    "source_identity": {
+      "type": "string"
+    },
+    "source_locator": {
+      "type": "string"
+    },
+    "visibility_state": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_identity",
+    "source_locator",
+    "raw_object_sha256",
+    "observed_at_utc",
+    "conflict",
+    "prior_sha256"
+  ],
+  "title": "sec_source_version_record",
+  "type": "object"
+}

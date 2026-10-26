@@ -1,0 +1,82 @@
+# W1 FACTORY CP002 — 2026-10-21
+
+STATUS: QUALIFIED_CURRENT — Factory binding connected to current economic-readiness membrane
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF (commit containing this checkpoint)
+PARENT: 520f01b17fe93b18a0dc72b80a6a8260071aa938
+
+## WHAT_GAP_WAS_PROVEN
+
+CP001 qualified the recovered pre-outcome contracts, but they were still standalone. Repository reassessment identified `research/research_os/expansion/economic_test_readiness_v1.py` as the current high-value integration rail: it already composes the exact frozen protocol, source/PIT qualification, `DryRunExperimentRunner`, pre-outcome receipt/replay and Validator v3. The older canonical-depth synthetic path intentionally remains legacy dry-run-only and must not be upgraded by fabricating missing economic protocol fields.
+
+## WHAT_CHANGED
+
+- Added `experiment_infrastructure.py`, a pure bridge from the current canonical envelope + runner plan/receipt/replay + current trial accounting into the CP001 immutable Factory registry.
+- The bridge performs the exact registry lifecycle `FROZEN -> PREPARED -> RECEIPT_BOUND -> REPLAY_VERIFIED` using existing runner artifacts; it owns no persistence.
+- Integrated this binding into `economic_test_readiness_v1.py` before the Validator/red-team handoff.
+- The reproducibility binding now includes the immutable experiment registry id/hash and W1 infrastructure hash.
+- Previous frozen readiness packages must carry the same infrastructure hash; geometry/power mutation after a prior freeze cannot silently rebind.
+- Missing geometry/power inputs become explicit `UNKNOWN` declarations with `declaration_gaps`; no effect/MDE/variance/sample-size evidence is fabricated. Unknown declarations do not by themselves convert a structurally valid pre-outcome binding into an empirical failure.
+- The Validator receipt is augmented with an explicit `experiment_infrastructure` membrane check. Missing/broken registry/receipt/replay binding forces Validator BLOCK.
+- The documentary dry-run-only path is deliberately unchanged because it does not possess a complete economic frozen protocol.
+
+## WHAT_WAS_REUSED / IMPORTED
+
+- REUSE_CURRENT: `DryRunExperimentRunner` exact candidate/protocol/source/PIT/code-environment bindings.
+- REUSE_CURRENT: runner `pre_outcome_receipt` and deterministic replay; no second receipt authority.
+- REUSE_CURRENT: current trial accounting semantics; the bridge binds the current record rather than creating a ledger.
+- REUSE_CURRENT: `economic_test_readiness_v1` and Validator v3 as the canonical pre-outcome readiness membrane.
+- ADAPT_EXISTING: CP001 registry/geometry/power/firewall contracts are now an attestation over current canonical artifacts.
+- NO_BUILD_REQUIRED: no new scheduler, task queue, Research Core, evidence store or scientific ledger.
+
+## TESTS / FALSIFICATION
+
+Focused bridge tests: 6/6 PASS locally.
+Python compile checks for the bridge, modified readiness module and new integration tests: PASS.
+CP001 focused tests remain 15/15 PASS from the prior checkpoint.
+
+Added repository tests for:
+- current economic-readiness path reaching a replay-verified registry;
+- explicit UNKNOWN geometry/power without fabricated claims;
+- declared geometry/power bound to the exact protocol;
+- post-freeze geometry mutation failing rebind;
+- malformed power declaration failing closed;
+- missing replay, foreign replay, declaration mutation and outcome injection at the bridge.
+
+Broad repository regression: pending post-push Actions / broader practical test run.
+
+## SCIENTIFIC CLAIM LIMIT
+
+This package attests pre-outcome identity and reproducibility only. Geometry/power UNKNOWN remains UNKNOWN; declared values are planning assumptions, not empirical estimates. No outcomes, return series, profitability, edge, prospective observation, capital or live trading are authorized or consumed.
+
+## SHARED_SURFACES_TOUCHED
+
+SHARED_SURFACES_TOUCHED:
+- `research/research_os/expansion/economic_test_readiness_v1.py`
+- `research/research_os/expansion/experiment_infrastructure.py` (new)
+- `research/research_os/tests/` (new W1 integration tests)
+
+WHY_REQUIRED: the recovered Factory capabilities were not architecturally complete until they were connected to the existing canonical frozen-protocol/runner/Validator membrane.
+
+CONTRACT_CHANGE: additive readiness output `experiment_infrastructure`; reproducibility payload gains registry/infrastructure identities; Validator output gains an `experiment_infrastructure` check. Existing runner hashes and legacy dry-run behavior are not changed.
+
+EXPECTED_CROSS_LANE_IMPACT: moderate. Any consumer asserting an exact readiness-result shape may need to accept the additive infrastructure fields. No authority or orchestration contract changes.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+The Factory registry is no longer a sidecar utility for the current economic-readiness path. Exact candidate/protocol/reproducibility/trial/declaration identity now advances through the existing execution plan, existing pre-outcome receipt, replay and Validator membrane. The synthetic/documentary legacy path remains intentionally outside this economic binding unless a complete frozen protocol exists.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Run broader repository regressions/Actions, then harden the remaining membrane edges: verify no permissive historical API can bypass the new bridge, inspect public schema/readiness consumers for shape drift, and reconcile outcome-firewall false-positive/false-negative boundaries against legitimate preregistration fields.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

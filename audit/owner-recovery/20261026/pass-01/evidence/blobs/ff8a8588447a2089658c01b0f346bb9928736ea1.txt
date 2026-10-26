@@ -1,0 +1,35 @@
+mutation=action_evidence_container
+......................................F.....F..                          [100%]
+=================================== FAILURES ===================================
+_ test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-action] _
+
+kind = 'action', container = 'mapping'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+__ test_lineage_container_cannot_silently_drop_metadata_or_order[set-action] ___
+
+kind = 'action', container = 'set'
+
+    @pytest.mark.parametrize('kind', KINDS)
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_lineage_container_cannot_silently_drop_metadata_or_order(kind, container):
+        digest = 'sha256:' + 'a'*64
+        malformed = {digest: {'unvalidated': 'silently ignored metadata'}} if container == 'mapping' else {digest}
+>       with pytest.raises(ValueError, match='lineage.*sequence|evidence.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:111: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[mapping-action]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_lineage_container_cannot_silently_drop_metadata_or_order[set-action]
+2 failed, 45 passed in 0.08s

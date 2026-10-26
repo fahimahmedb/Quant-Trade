@@ -1,0 +1,19 @@
+{
+  "schema_version": "research-os-queue-refill-receipt-v1",
+  "receipt_type": "EMPTY_QUEUE_FRONTIER_REFILL",
+  "recorded_at": "2026-10-18T08:44:59Z",
+  "steward_lane": "integrator_portfolio",
+  "source_head": "0e58014421b6795b12908015ad57dc2798afb5f9",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-DISTINCT-MECHANISM-002",
+  "frontier_id": "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM",
+  "sequence": 2,
+  "derivation_key": "19cc3e61106d085aebc115c11d33a14c96aeb5dff30725433084c47a8a48883e",
+  "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+  "global_queue_precondition": {"ready_count": 0, "claimed_count": 0},
+  "legacy_screen_required_before_freeze": true,
+  "lease_generation": 0,
+  "lease_owner": null,
+  "authority": {"economic_experiment_authorized": false, "prospective_observation_authorized": false, "real_capital_authorized": false, "live_trading_authorized": false},
+  "producer_executed_same_wake": false,
+  "recursive_refill_same_wake": false
+}

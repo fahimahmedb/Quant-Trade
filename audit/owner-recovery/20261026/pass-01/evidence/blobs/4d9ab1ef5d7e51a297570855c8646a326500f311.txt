@@ -1,0 +1,39 @@
+{
+  "run_id": "AGGRESSIVE-ARCH-SIM-001",
+  "sources": {
+    "quant": {"source_ref": "synthetic://quant/liquidity-reversal-v1"},
+    "fundamental": {"source_ref": "synthetic://fundamental/margin-normalization-v1"},
+    "event_document": {"source_ref": "synthetic://event/guidance-revision-v1"},
+    "institutional_flow": {"source_ref": "synthetic://flows/rebalance-pressure-v1"},
+    "archaeology": {
+      "source_ref": "synthetic://legacy/negative-knowledge-map-v1",
+      "hypothesis_id": "SYN-ARCH-001",
+      "mechanism": "Broad historical decay may leave a small operational niche identifiable from negative knowledge without replaying spent windows.",
+      "claim": "The synthetic negative-knowledge map identifies one distinct unspent niche worth freezing for later test design.",
+      "falsification_scope": "Only the synthetic legacy map and explicitly unspent niche label.",
+      "economic_tags": ["archaeology", "negative_knowledge", "low_capacity", "operational_friction"],
+      "horizon": "mechanism-dependent"
+    }
+  },
+  "implementability": {
+    "SYN-QUANT-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "MEDIUM"},
+    "SYN-FUND-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "LOW"},
+    "SYN-EVENT-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "MEDIUM"},
+    "SYN-FLOW-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": false, "capacity_observable": false, "operational_complexity": "HIGH"},
+    "SYN-ARCH-001": {"source_available": true, "pit_feasible": true, "expression_feasible": true, "cost_model_feasible": true, "capacity_observable": true, "operational_complexity": "HIGH"}
+  },
+  "experiments": {
+    "SYN-QUANT-001": {"dataset_provenance": {"dataset": "SYN-Q", "pit": true}, "cost_model_version": "cost-sim-v1", "code_version": "quant-v1", "declared_metrics": ["effect", "stability"], "pit_controls_declared": true, "leakage_controls_declared": true, "multiplicity_accounting_declared": true},
+    "SYN-FUND-001": {"dataset_provenance": {"dataset": "SYN-F", "pit": true}, "cost_model_version": "cost-sim-v1", "code_version": "fund-v1", "declared_metrics": ["milestone_state"], "pit_controls_declared": true, "leakage_controls_declared": true, "multiplicity_accounting_declared": true},
+    "SYN-EVENT-001": {"dataset_provenance": {"dataset": "SYN-E", "pit": true}, "cost_model_version": "cost-sim-v1", "code_version": "event-v1", "declared_metrics": ["revision_state"], "pit_controls_declared": true, "leakage_controls_declared": true, "multiplicity_accounting_declared": true},
+    "SYN-FLOW-001": {"dataset_provenance": {"dataset": "SYN-FLOW", "pit": true}, "cost_model_version": "UNQUALIFIED", "code_version": "flow-v1", "declared_metrics": ["pressure", "reversal"], "pit_controls_declared": true, "leakage_controls_declared": true, "multiplicity_accounting_declared": true},
+    "SYN-ARCH-001": {"dataset_provenance": {"dataset": "SYN-LEGACY-MAP", "pit": true}, "cost_model_version": "cost-sim-v1", "code_version": "arch-v1", "declared_metrics": ["distinctness", "niche_status"], "pit_controls_declared": true, "leakage_controls_declared": true, "multiplicity_accounting_declared": true}
+  },
+  "economic_identity": {
+    "SYN-QUANT-001": {"payer": "TEMPORARY_LIQUIDITY_DEMAND", "asset": "SYNTHETIC_EQUITY", "beta": "LOW", "momentum": "LOW", "vol": "MEDIUM", "liquidity": "MEDIUM", "capacity": "LOW", "tail_exposure": "MEDIUM"},
+    "SYN-FUND-001": {"payer": "CONSENSUS_MISPRICING", "asset": "SYNTHETIC_EQUITY", "beta": "HIGH", "momentum": "UNKNOWN", "vol": "MEDIUM", "liquidity": "HIGH", "capacity": "MEDIUM", "tail_exposure": "EQUITY_DOWNSIDE"},
+    "SYN-EVENT-001": {"payer": "SLOW_INFORMATION_PROCESSOR", "asset": "SYNTHETIC_EQUITY", "beta": "HIGH", "momentum": "MEDIUM", "vol": "HIGH", "liquidity": "HIGH", "capacity": "MEDIUM", "tail_exposure": "EVENT_GAP"},
+    "SYN-FLOW-001": {"payer": "FORCED_REBALANCER", "asset": "SYNTHETIC_EQUITY", "beta": "MEDIUM", "momentum": "LOW", "vol": "HIGH", "liquidity": "LOW", "capacity": "LOW", "tail_exposure": "LIQUIDITY_GAP"},
+    "SYN-ARCH-001": {"payer": "UNKNOWN", "asset": "SYNTHETIC_MULTI_ASSET", "beta": "UNKNOWN", "momentum": "UNKNOWN", "vol": "UNKNOWN", "liquidity": "LOW", "capacity": "LOW", "tail_exposure": "UNKNOWN"}
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "oracle-lab-v1-progress-v1",
+  "status": "TIMER_ENABLED_HISTORICAL_QUEUE_METADATA_REPAIR_VERIFIED",
+  "oracle_h24_research_lab": "AUTOMATIC_WAKES_PROVEN_DURABLE_RESEARCH_PROGRESS_NOT_YET_PROVEN",
+  "operational_release_proposed": "f138c980c94eea313fd77532c20857da5c02d3fe",
+  "local_backend_qualification_code_sha": "e20e8530a177ae9e197cf9578fae0a503f3b3d09",
+  "ci": {
+    "oracle_run_id": 39338286363,
+    "oracle_conclusion": "success",
+    "oracle_tests": 145,
+    "general_run_id": 39338286411,
+    "general_conclusion": "success",
+    "general_demo_checks": "35/35",
+    "scope": "CI evidence; not live scheduler proof"
+  },
+  "actual_local_model": {
+    "status": "PASS_LOCAL_COMMENTARY_BACKEND_ONLY",
+    "scored_cases_passed": 5,
+    "production_critique_seconds": 49.641,
+    "peak_rss_kib": 9883908,
+    "swap_free_kib": 0,
+    "temporary_server_stopped": true,
+    "report": "CP3_LOCAL_MODEL_POLICY_QUALIFIED_20261020.json",
+    "report_sha256": "6535991128be78afc59d0dcceffe88ade06677a23b2709b76454daf2ef9a0631",
+    "prior_failed_attempt_preserved": true
+  },
+  "github_identity": {
+    "repository_scoped_native_ssh_authenticated": true,
+    "private_key_exported": false,
+    "live_write_and_claim_canary": "PASS_13_OF_13_GATES",
+    "live_canary_report": "research/research_os/artifacts/AAA-ORACLE-H24-CANARY-f138c980c94eea31/qualification-fa6ecb5ec2109f56.json",
+    "live_canary_report_sha256": "721f82cad9804fc0b2bbfb5d0b25d93d621b87b3d35423f2dfd6d2474361fd0b"
+  },
+  "last_live_host_probe": {
+    "command_id": "ocid1.instanceagentcommand.oc1.eu-paris-1.amaaaaaatoradqaa5hgfsqanqc6zuzkwzc7vjebnmv2alqs3njnsz7dehyda",
+    "observed_at": "2026-10-20T00:02:47.864056+00:00",
+    "model_service_load_state": "loaded",
+    "model_service_state": "enabled/running",
+    "model_health": "ok",
+    "worker_service_load_state": "loaded",
+    "worker_timer_load_state": "loaded/enabled/active",
+    "bounded_recovery_wrappers_present": true
+  },
+  "external_execution_dependency": {
+    "new_owner_authorization_required": false,
+    "required": "NONE; Owner completed pinned host preparation",
+    "reason": "Two fixed root-owned no-argument wrappers now permit canonical qualification and gated activation without general sudo",
+    "source": "deploy/oracle_v1_host_prepare.py",
+    "source_commit": "f138c980c94eea313fd77532c20857da5c02d3fe",
+    "source_sha256": "4f16891393a7adaea4b9c55ff29c479860ffc08d770b82e48ec24a0211a1e44f",
+    "qualification_ci_run_id": 39338286363,
+    "root_preparation_enables_research_timer": false
+  },
+  "remaining_live_gates": [
+    "Historical queue metadata migration must be observed by automatic fresh-state wakes",
+    "Two successful durable automatic wakes and no duplicated work",
+    "Actual VM reboot recovery and final H24 receipt"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "live_lab_ui": "Existing Site inspected read-only; native Oracle event-ingress connection remains separate unfinished observability work"
+}

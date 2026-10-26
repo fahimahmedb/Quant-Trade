@@ -1,0 +1,52 @@
+# Vertical CP003 — Evidence publication, replay index and exact references
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=832dd19
+
+Module: `src/quant/dataplane/evidence.py`. Existing capabilities: immutable
+content-addressed objects, provenance/validation/derivation records, reconstructible
+manifest, semantic replay. North Star §§5, 7, 10, 12. Starting depth: D2 and
+single-writer D3 process-kill recovery; concurrent publication unproven.
+
+Defects/root causes/repairs:
+
+1. `_atomic_write` used a PID-only staging filename; threads publishing one
+   object shared/truncated/renamed the same staging inode. Use unique `mkstemp`.
+2. Manifest deduplication read and append were separate unprotected operations;
+   competing callers could publish duplicate identities. A stable file lock now
+   encloses check + append, recovery, reads and rebuild publication. Immutable
+   record bytes remain authoritative; the manifest remains reconstructible.
+3. Validation lookup embedded unvalidated input in a glob, so `validation:*`
+   could resolve an unrelated valid record. Foreign prefixes and partial IDs
+   were also accepted for validation/derived references; path traversal could
+   alias the same valid derived record. Require exact type + 64 lowercase hex
+   digits before path/glob construction.
+4. Nonfinite assertions became nonstandard JSON identity records. Canonical
+   evidence serialization now rejects NaN/Infinity before record publication.
+
+Adversaries: simultaneous replacements in one process; eight identical ingest
+workers; first append paused while a second writer attempts deduplication;
+rebuild while a receipt is durable but not acknowledged/indexed; wildcard,
+partial, foreign-prefix and traversal references; nonfinite validation data.
+
+Tests: first **13 new cases failed** before repair. Final **39 passed, 29
+subtests passed**, including existing evidence/identity/admission/raw-capture
+regressions and actual subprocess death after object commit. Logs:
+`research/vertical_depth/20261021/CP003_{before,after}.txt`. Ruff F and whitespace
+checks pass. Attained depth: **D3** for concurrent publication/index replay;
+**D2** for exact-reference and serialization admission.
+
+Remaining unproven depth: noncooperating writers, distributed filesystems and
+physical power failure; full root-wide atomic inventory during ongoing writes
+(audit is conclusive when writers quiesce); arbitrary malicious filesystem
+mutation; semantic correctness of external parsers/transforms. This does not
+create new source acquisition or future Multi-Source capability.
+
+Horizontal findings: none. Longitudinal findings: none.
+Authority bypass found here: FALSE. Record selection defects affect attribution;
+replayed assertions still require the existing independent semantic check.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

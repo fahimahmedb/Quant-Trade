@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "revision": 2,
+  "scope": "Small reusable primary-source passages and limits; no API records, news corpus or market-price histories. Curated version replaces bulky rendered-page returns; immutable evidence passages and original cached-return digests preserved.",
+  "private_rendered_cache_sha256": "1f4d8adccf7eb3d39b7badb322f5c89c3fb379f5ed2b939e52e59b602990de6b",
+  "returned_payload_receipts": [
+    {
+      "scope": "ECB TPI/AFT TEC10 methodology/Eurostat API introduction",
+      "sha256": "16796d1f6b1aaaa4cdd9a87871f2dab04bb72e58fdbd9ca68cb1cda526b75145",
+      "version": "Observed2026-10-11; rendered browser result, not source-byte hash"
+    },
+    {
+      "scope": "Federal Register API/GDELT DOC2.0/government document help; failed govinfo/about URL recorded",
+      "sha256": "fe411cd4b08d8e0ec243a1e33a3d97a2828ed115250c6e3eaeaa8ba02cd68a8e",
+      "version": "Observed2026-10-11; rendered browser result, not source-byte hash"
+    },
+    {
+      "scope": "GDELT specification excerpts/government document help",
+      "sha256": "ad0297038b556fb52aa3fac6174d624657a229f94cee0adadb771f63285ffe67",
+      "version": "Observed2026-10-11; rendered browser result, not source-byte hash"
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "The public official site does not establish open economic-reuse/redistribution rights. TEC10 is a yield index, not executable bid/ask or tradable P&L. Approximate daily publication is not an authenticated first-availability timestamp.",
+      "id": "france-sovereign-source-rights-clock-20261011",
+      "kind": "ACCESS",
+      "limit": "No index history/CSV/API/price page opened. One unplanned search snippet for the TEC10 daily page exposed its reported25Sep2026 quote4.63percent; no strategy/return calculated. Retain this public exposure in scope; it is not a pristine observation or an economic test. Do not use the quote to choose a direction, date, threshold or window.",
+      "passage": "Méthode : interpolation quotidienne vers une obligation fictive10ans, publication aux environs de15h. Les valeurs sont informatives ; redistribution, sous-licence et usage commercial nécessitent autorisation écrite préalable Euronext.",
+      "public_exposure": {
+        "dataset": "france-oat-bund-relative-sovereign-risk",
+        "displayed_tec10_percent": 4.63,
+        "independent_test_count": 0,
+        "kind": "INCIDENTAL_SEARCH_SNIPPET",
+        "pre_reserved": false,
+        "remediation": "record unplanned exposure, never assert virgin period or fake an earlier reservation; future validation must exclude/acknowledge this exposure and unknown private history",
+        "reported_quote_date": "2026-09-25",
+        "scope": "single publicly shown quote, no history/returns/BBO accessed",
+        "source_url": "https://www.aft.gouv.fr/fr/tec-10-du-jour",
+        "used_for_parameter_selection": false
+      },
+      "url": "https://www.aft.gouv.fr/fr/oat-tec-10",
+      "version": {
+        "observed_at": "2026-10-11",
+        "page": "OAT TEC10 methodology and index-use notice",
+        "source": "AFT primary official HTML"
+      }
+    },
+    {
+      "fact": "Neither guaranteed French default nor unconditional ECB rescue follows from fiscal stress. Relative spread repricing is a plausible risk channel; backstop/discretion/reversal confound one-way bearish rules.",
+      "id": "france-sovereign-ecb-contradiction-20261011",
+      "kind": "CONTRADICTION",
+      "limit": "No eligibility, activation, funding, rating, forecast or tradable probability asserted for11Oct2026. Bad public debt figures may already be priced. This source is a mechanism challenge, not evidence of an edge.",
+      "passage": "ECB TPI targets unwarranted disorderly transmission dynamics under cumulative fiscal and sustainability criteria; activation requires Governing Council judgement; tensions caused by fundamentals can terminate purchases.",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.pr220721~973e6e7273.en.html",
+      "version": {
+        "issued": "2022-07-21",
+        "observed_at": "2026-10-11",
+        "scope": "foundational TPI design, not current activation/France eligibility"
+      }
+    },
+    {
+      "fact": "Accessible current debt/deficit indicators are not a point-in-time surprise series. Use contemporaneous releases/preserved vintages and actual observation times, not final revised levels as past predictors.",
+      "id": "macro-eurostat-vintage-gate-20261011",
+      "kind": "ACCESS",
+      "limit": "No numeric dataset queried, market price read or announcement return computed. CET labels do not resolve summer/time-specific clocks; release time versus dataset refresh versus reception must remain distinct.",
+      "passage": "API provides free programmatic metadata/data. Datasets update11:00 and23:00 CET when newdata exist; database retains latest version without historical-version documentation.",
+      "url": "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access/api-introduction",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "official API introduction, general introduction"
+      }
+    },
+    {
+      "fact": "No Owner API account is needed to qualify this metadata source. Document date, public-inspection filing, signature, publication, amendment and our first reception are different clocks; none automatically gives the earliest public Trump statement.",
+      "id": "policy-federal-register-free-api-20261011",
+      "kind": "ACCESS",
+      "limit": "Documentation only; no live API records, documents, prices, return, sentiment score or economic outcome read. Govinfo authentication/rights and actual API schema/clock need separate qualification.",
+      "passage": "Public API endpoints require an HTTP client and no API key. The website XML is informational; official legal editions are linked govinfo PDFs.",
+      "url": "https://www.federalregister.gov/developers/documentation/api/v1",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "Federal Register API primary documentation"
+      }
+    },
+    {
+      "fact": "News tone is editorial coverage, not investors’ expected-return positioning. A capped query-dependent corpus, multilingual repeats, retrospective timestamps, refresh lag and smoothing can create false predictive timing. Historical2017description cannot authenticate today’s coverage or first publication.",
+      "id": "policy-gdelt-sentiment-clock-limits-20261011",
+      "kind": "CONTRADICTION",
+      "limit": "No API/tonechart/articles/underlying publishers extracted. GDELT does not confer underlying publishers’ extraction rights. Recheck only a distinct current-source question, not replay this old documentation. No market reaction or positive performance paper consulted.",
+      "passage": "Document API combines machine-translated news, mean tone/coverage and query-dependent article lists. ArticleList defaults to75/max250; modes differ, and smoothing shifts peaks. Rolling3month wording also coexists with back-to-Jan2017 wording.",
+      "url": "https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/",
+      "version": {
+        "issued": "2017-06-20",
+        "observed_at": "2026-10-11",
+        "scope": "published DOC2.0 specification, not verified2026production retention"
+      }
+    },
+    {
+      "fact": "A current LLM may remember historical event outcomes; retrospectively choosing phrases, Trump episodes or best asset/horizon is data leakage/selection. Begin only with official-source metadata availability, no automatic bullish/bearish mapping and no blanket sentiment index.",
+      "id": "policy-sentiment-model-causality-challenge-20261011",
+      "kind": "METHOD",
+      "limit": "No event/asset/horizon/threshold/grid selected using returns. Future test requires public-information exposure accounting, matched executable prices, latency/clock, costs/borrow/funding/margin, clustered events/days and a fixed decision contract. Prospective observations and exploratory backtest are distinct.",
+      "passage": "Separate economic policy content, surprise versus past expectations and investor positioning. Freeze taxonomy and causal classifier before market outcomes; archive exact event bytes, corrections, first-receipt UTC and corpus coverage.",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "own preregistration design challenge; no external claim of predictability"
+      }
+    }
+  ],
+  "limits": "Full server HTTP/network traffic and initial search payload not measured; curated passages are paraphrases, not a full-copy archive. Incidental public quote is separately preserved in the exact evidence scope. No repeated closed-source probes or empirical sentiment query."
+}

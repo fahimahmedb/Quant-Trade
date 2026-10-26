@@ -1,0 +1,3 @@
+"""Historical entry point; numeric CP100 is not mission completion."""
+from pathlib import Path
+exec(compile(Path('research/vertical_depth/20261021/VERIFY_CURRENT_DEPTH.txt').read_text(), 'VERIFY_CURRENT_DEPTH.txt', 'exec'))

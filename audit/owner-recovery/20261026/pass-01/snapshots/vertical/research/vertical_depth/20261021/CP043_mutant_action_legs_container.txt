@@ -1,0 +1,33 @@
+mutation=action_legs_container
+.............................................FF                          [100%]
+=================================== FAILURES ===================================
+_ test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[mapping] _
+
+container = 'mapping'
+
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence(container):
+        leg = CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')
+        malformed = {leg: 'ignored quantity'} if container == 'mapping' else {leg}
+>       with pytest.raises(ValueError, match='legs.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:119: Failed
+_ test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[set] _
+
+container = 'set'
+
+    @pytest.mark.parametrize('container', ['mapping', 'set'])
+    def test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence(container):
+        leg = CorporateActionLeg('CASH', cash_per_source_share=1, currency='USD')
+        malformed = {leg: 'ignored quantity'} if container == 'mapping' else {leg}
+>       with pytest.raises(ValueError, match='legs.*sequence'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_pit_contract_immutability.py:119: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_pit_contract_immutability.py::test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[mapping]
+FAILED tests/test_vertical_pit_contract_immutability.py::test_consideration_container_cannot_be_silently_reinterpreted_as_leg_sequence[set]
+2 failed, 45 passed in 0.10s

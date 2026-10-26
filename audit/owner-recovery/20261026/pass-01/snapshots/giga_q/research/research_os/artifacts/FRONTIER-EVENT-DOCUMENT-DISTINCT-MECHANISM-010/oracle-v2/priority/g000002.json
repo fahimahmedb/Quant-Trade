@@ -1,0 +1,21 @@
+{
+  "criteria": [
+    "priority_desc",
+    "starvation_desc",
+    "resource_cost_asc",
+    "task_id_asc"
+  ],
+  "decision_hash": "00e2db8752158f59ef936d8d2c15a226e9b4c72aec04791af8ca91ab077d3ef4",
+  "eligible_set": [
+    "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010"
+  ],
+  "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+  "policy_version": "oracle-v2-core-policy-v1",
+  "resource_cost_semantics": "UNIFORM_DECLARED_UNIT_NOT_MEASURED",
+  "selected_reason_codes": [
+    "CANONICAL_PRIORITY_DESC_TASK_ID_ASC"
+  ],
+  "selected_task": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-010",
+  "snapshot_head": "32b75fad1e4afafcdb04dd5aec52a9030d5f4f76",
+  "starvation_policy": "DISABLED"
+}

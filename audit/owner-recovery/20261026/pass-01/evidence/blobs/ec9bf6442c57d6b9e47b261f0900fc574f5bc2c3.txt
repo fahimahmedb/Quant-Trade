@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Pinned official SEC quarterly source provenance.",
+  "properties": {
+    "bytes": {
+      "type": "integer"
+    },
+    "local_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parser_version": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string"
+    },
+    "retrieved_at": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "period",
+    "source_url",
+    "sha256",
+    "bytes",
+    "retrieved_at"
+  ],
+  "title": "sec_form4_source_record",
+  "type": "object"
+}

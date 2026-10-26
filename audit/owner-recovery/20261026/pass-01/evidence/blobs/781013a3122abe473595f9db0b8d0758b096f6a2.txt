@@ -1,0 +1,304 @@
+mutation=malformed_clock_recovery
+fixed_source_sha256=221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea
+......FF......F....................FFFFFFFFF..........F.                 [100%]
+=================================== FAILURES ===================================
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[] _
+
+start = ''
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:31.061024+00:00', updated_at='2026-10-24T02:09:31.061027+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:31.061024+00:00', updated_at='2026-10-24T02:09:31.061027+00:00', last_error=None, metadata={}) = running('')
+
+tests/test_vertical_watchdog_clock_depth.py:31: AssertionError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[not-a-clock] _
+
+start = 'not-a-clock'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:31.091530+00:00', updated_at='2026-10-24T02:09:31.091537+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:31.091530+00:00', updated_at='2026-10-24T02:09:31.091537+00:00', last_error=None, metadata={}) = running('not-a-clock')
+
+tests/test_vertical_watchdog_clock_depth.py:31: AssertionError
+_ test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:60+00:00] _
+
+start = '2026-10-24T11:59:60+00:00'
+
+    @pytest.mark.parametrize('start', [None, '', 'not-a-clock', '2026-10-24',
+                                       '2026-10-24T11:59:59', 123, {}, [], True,
+                                       '2026-10-24T11:59:60+00:00'])
+    def test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale(start):
+>       assert is_lease_stale(running(start), NOW) is True
+E       AssertionError: assert False is True
+E        +  where False = is_lease_stale(ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:31.105691+00:00', updated_at='2026-10-24T02:09:31.105697+00:00', last_error=None, metadata={}), datetime.datetime(2026, 10, 24, 12, 0, tzinfo=datetime.timezone.utc))
+E        +    where ResearchTask(task_id='running', lane='synthetic', priority=1, reason='clock proof only', worker='fake', parent=None, r...ted_at='2026-10-24T02:09:31.105691+00:00', updated_at='2026-10-24T02:09:31.105697+00:00', last_error=None, metadata={}) = running('2026-10-24T11:59:60+00:00')
+
+tests/test_vertical_watchdog_clock_depth.py:31: AssertionError
+___ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[None] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe0')
+heartbeat = None
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+_____ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe1')
+heartbeat = ''
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'QUEUE_STARV...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'HEARTBEAT_MISSING'
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+__ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[broken] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe2')
+heartbeat = 'broken'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'QUEUE_STARV...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'HEARTBEAT_MISSING'
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe3')
+heartbeat = '2026-10-24T12:00:00'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe4')
+heartbeat = '2026-10-24'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat5] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe5')
+heartbeat = {}
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat6] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe6')
+heartbeat = []
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+____ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[42] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe7')
+heartbeat = 42
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+_ test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00.000001+00:00] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_invalid_or_future_heartbe8')
+heartbeat = '2026-10-24T12:00:00.000001+00:00'
+
+    @pytest.mark.parametrize('heartbeat', [None, '', 'broken', '2026-10-24T12:00:00',
+                                           '2026-10-24', {}, [], 42,
+                                           '2026-10-24T12:00:00.000001+00:00'])
+    def test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults(tmp_path, heartbeat):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        queue.add(running('broken'))
+        queue.add(ResearchTask('failed', 'synthetic', 1, 'repeat', 'fake', status='FAILED', attempts=3))
+        queue.add(ResearchTask('ready', 'synthetic', 1, 'due', 'fake'))
+        state = CampaignState('local', last_heartbeat=heartbeat)
+        state_before, queue_before = asdict(state), queue.path.read_bytes()
+        alerts = health(state, queue)
+        codes = {a['code'] for a in alerts}
+>       assert {'HEARTBEAT_MISSING', 'WORKER_STUCK', 'REPEATED_CRASH', 'QUEUE_STARVATION'} <= codes
+E       AssertionError: assert {'HEARTBEAT_M...WORKER_STUCK'} <= {'HEARTBEAT_M...PEATED_CRASH'}
+E
+E         Extra items in the left set:
+E         'WORKER_STUCK'
+
+tests/test_vertical_watchdog_clock_depth.py:90: AssertionError
+____ test_one_malformed_running_task_does_not_suppress_other_worker_alerts _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-21/test_one_malformed_running_tas0')
+
+    def test_one_malformed_running_task_does_not_suppress_other_worker_alerts(tmp_path):
+        queue = PersistentQueue(tmp_path / 'queue.json')
+        malformed = running('broken')
+        valid = running((NOW - timedelta(seconds=601)).isoformat())
+        valid.task_id = 'expired'
+        healthy = running(NOW.isoformat())
+        healthy.task_id = 'healthy'
+        for t in [malformed, valid, healthy]:
+            queue.add(t)
+        state = CampaignState('local', status='RUNNING', last_heartbeat=NOW.isoformat())
+        before = queue.path.read_bytes()
+        for _ in range(2):
+            alerts = health(state, queue)
+>           assert {a['detail'] for a in alerts if a['code'] == 'WORKER_STUCK'} == {'running', 'expired'}
+E           AssertionError: assert {'expired'} == {'expired', 'running'}
+E
+E             Extra items in the right set:
+E             'running'
+E             Use -v to get more diff
+
+tests/test_vertical_watchdog_clock_depth.py:125: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[not-a-clock]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_missing_malformed_or_timezone_ambiguous_start_is_conservatively_stale[2026-10-24T11:59:60+00:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[None]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[broken]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat5]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[heartbeat6]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[42]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_invalid_or_future_heartbeat_alert_does_not_hide_other_faults[2026-10-24T12:00:00.000001+00:00]
+FAILED tests/test_vertical_watchdog_clock_depth.py::test_one_malformed_running_task_does_not_suppress_other_worker_alerts
+13 failed, 43 passed in 0.31s

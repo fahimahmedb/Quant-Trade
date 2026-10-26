@@ -1,0 +1,342 @@
+F.FFFFFFFFFFFFFF                                                         [100%]
+=================================== FAILURES ===================================
+__________ test_failed_persist_does_not_turn_retry_into_false_success __________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_failed_persist_does_not_t0')
+
+    def test_failed_persist_does_not_turn_retry_into_false_success(tmp_path):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        with patch("quant.book.ledger.write_json", side_effect=OSError("disk full")):
+            with pytest.raises(OSError):
+                fill(book)
+>       assert not book.has_applied("one")
+E       AssertionError: assert not True
+E        +  where True = has_applied('one')
+E        +    where has_applied = <quant.book.ledger.Ledger object at 0x7f1dc5759790>.has_applied
+
+tests/test_vertical_book_depth.py:27: AssertionError
+__________ test_competing_stale_writers_cannot_silently_erase_a_fill ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_competing_stale_writers_c0')
+
+    def test_competing_stale_writers_cannot_silently_erase_a_fill(tmp_path):
+        path = tmp_path / "book.json"
+        books = [Ledger(path, authority="EVALUATION", initial_capital=100), Ledger(path)]
+        gate = threading.Barrier(2)
+    
+        def compete(index):
+            gate.wait(timeout=5)
+            try:
+                fill(books[index], str(index))
+                return "written"
+            except RuntimeError:
+                return "conflict"
+    
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(compete, range(2)))
+>       assert sorted(results) == ["conflict", "written"]
+E       AssertionError: assert ['written', 'written'] == ['conflict', 'written']
+E         
+E         At index 0 diff: 'written' != 'conflict'
+E         Use -v to get more diff
+
+tests/test_vertical_book_depth.py:65: AssertionError
+____________________ test_stale_mark_cannot_erase_new_fill _____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_stale_mark_cannot_erase_n0')
+
+    def test_stale_mark_cannot_erase_new_fill(tmp_path):
+        path = tmp_path / "book.json"
+        first = Ledger(path, authority="EVALUATION", initial_capital=100)
+        stale = Ledger(path)
+        fill(first)
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_vertical_book_depth.py:80: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes0] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor0')
+changes = {'quantity': nan}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+        with pytest.raises(ValueError):
+            fill(book, **changes)
+>       assert book.state.to_dict() == before
+E       AssertionError: assert {'ledger_id':...': 'USD', ...} == {'ledger_id':...': 'USD', ...}
+E         
+E         Omitting 14 identical items, use -vv to show
+E         Differing items:
+E         {'fees_paid': 1.0} != {'fees_paid': 0.0}
+E         {'fills': 1} != {'fills': 0}
+E         {'applied_operations': ['one']} != {'applied_operations': []}
+E         {'cash': nan} != {'cash': 100}
+E         {'attribution': {'fixture': {'realized_pnl': 0.0, 'costs': 1.0, 'fills': 1.0, 'notional': nan}}} != {'attribution': {}}
+E         Use -v to get more diff
+
+tests/test_vertical_book_depth.py:98: AssertionError
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes1] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor1')
+changes = {'price': inf}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+        with pytest.raises(ValueError):
+            fill(book, **changes)
+>       assert book.state.to_dict() == before
+E       AssertionError: assert {'ledger_id':...': 'USD', ...} == {'ledger_id':...': 'USD', ...}
+E         
+E         Omitting 13 identical items, use -vv to show
+E         Differing items:
+E         {'fees_paid': 1.0} != {'fees_paid': 0.0}
+E         {'fills': 1} != {'fills': 0}
+E         {'sleeves': {'fixture': {'SYNTH': {'symbol': 'SYNTH', 'strategy_id': 'fixture', 'quantity': 2.0, 'average_price': inf, ...}}}} != {'sleeves': {}}
+E         {'applied_operations': ['one']} != {'applied_operations': []}...
+E         
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_book_depth.py:98: AssertionError
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes2] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor2')
+changes = {'cost': nan}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+        with pytest.raises(ValueError):
+            fill(book, **changes)
+>       assert book.state.to_dict() == before
+E       AssertionError: assert {'ledger_id':...': 'USD', ...} == {'ledger_id':...': 'USD', ...}
+E         
+E         Omitting 13 identical items, use -vv to show
+E         Differing items:
+E         {'fees_paid': nan} != {'fees_paid': 0.0}
+E         {'fills': 1} != {'fills': 0}
+E         {'sleeves': {'fixture': {'SYNTH': {'symbol': 'SYNTH', 'strategy_id': 'fixture', 'quantity': 2.0, 'average_price': 10.0, ...}}}} != {'sleeves': {}}
+E         {'applied_operations': ['one']} != {'applied_operations': []}...
+E         
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests/test_vertical_book_depth.py:98: AssertionError
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes3] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor3')
+changes = {'price': 0}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes4] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor4')
+changes = {'cost': -1}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes5] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor5')
+changes = {'quantity': 0}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes6] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor6')
+changes = {'quantity': True}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes7] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor7')
+changes = {'operation_id': ' '}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes8] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor8')
+changes = {'strategy_id': ''}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+_________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes9] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor9')
+changes = {'symbol': ''}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+________ test_invalid_fill_leaves_memory_and_disk_unchanged[changes10] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_invalid_fill_leaves_memor10')
+changes = {'date': '2026-99-99'}
+
+    @pytest.mark.parametrize("changes", [
+        {"quantity": float("nan")}, {"price": float("inf")}, {"cost": float("nan")},
+        {"price": 0}, {"cost": -1}, {"quantity": 0}, {"quantity": True},
+        {"operation_id": " "}, {"strategy_id": ""}, {"symbol": ""},
+        {"date": "2026-99-99"},
+    ])
+    def test_invalid_fill_leaves_memory_and_disk_unchanged(tmp_path, changes):
+        path = tmp_path / "book.json"
+        book = Ledger(path, authority="EVALUATION", initial_capital=100)
+        before = deepcopy(book.state.to_dict())
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_book_depth.py:96: Failed
+______________ test_detached_decision_view_cannot_write_or_mutate ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_detached_decision_view_ca0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f1dc58bec00>
+
+    def test_detached_decision_view_cannot_write_or_mutate(tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        detached = Ledger.from_document(book.state.to_dict())
+        before = deepcopy(detached.state.to_dict())
+        for action in (lambda: fill(detached),
+                       lambda: detached.mark_to_market("2026-10-20", {}), detached.save):
+>           with pytest.raises(RuntimeError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE RuntimeError
+
+/workspace/Quant-Trade/tests/test_vertical_book_depth.py:110: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_book_depth.py::test_failed_persist_does_not_turn_retry_into_false_success
+FAILED tests/test_vertical_book_depth.py::test_competing_stale_writers_cannot_silently_erase_a_fill
+FAILED tests/test_vertical_book_depth.py::test_stale_mark_cannot_erase_new_fill
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes0]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes1]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes2]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes3]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes4]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes5]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes6]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes7]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes8]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes9]
+FAILED tests/test_vertical_book_depth.py::test_invalid_fill_leaves_memory_and_disk_unchanged[changes10]
+FAILED tests/test_vertical_book_depth.py::test_detached_decision_view_cannot_write_or_mutate
+15 failed, 1 passed in 0.11s

@@ -1,0 +1,15 @@
+{
+  "event_id": "PROD-FLOWS-001-g1-e1",
+  "session_id": "PROD-FLOWS-001-g1",
+  "worker_id": "chatgpt-interactive-institutional-flows-worker",
+  "action_id": "PROD-FLOWS-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:33:20Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Institutional flow mechanism research",
+    "detail": "Screening one causally explicit public forced-flow mechanism against pinned Legacy memory; no return or payoff data authorized."
+  }
+}

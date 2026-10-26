@@ -1,0 +1,87 @@
+{
+  "runtime_head": "16eafd0b3c8d9e0c633ef01dd191cbd32ae50b42",
+  "tasks": 72,
+  "statuses": {
+    "COMPLETE": 34,
+    "BLOCKED": 38
+  },
+  "task_types": {
+    "LEGACY_RECOVERY": 3,
+    "FUNDAMENTAL_RESEARCH": 14,
+    "SYSTEM_CANARY": 1,
+    "EVENT_DOCUMENT": 13,
+    "INSTITUTIONAL_FLOW": 13,
+    "QUANT_MECHANISM": 13,
+    "QUANT_DISTINCT_MECHANISM": 1,
+    "VALIDATION": 14
+  },
+  "frontier_tasks": 49,
+  "frontier_families": {
+    "EVENT_DOCUMENT_DISTINCT_MECHANISM": 12,
+    "FUNDAMENTAL_DISTINCT_THESIS": 12,
+    "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM": 12,
+    "QUANT_MECHANISM_DISTINCT": 12,
+    "QUANT_MECHANISM_DISTINCT_SIGNAL": 1
+  },
+  "frontier_states": {
+    "COMPLETE": 12,
+    "BLOCKED": 37
+  },
+  "frozen_hypotheses": 15,
+  "validation_tasks": 14,
+  "assessment_files": 14,
+  "hypothesis_births": {
+    "DOC-EVENT-d8d19dbf0b1291ce": "2026-10-20T03:40:27Z",
+    "DOC-FUND-9219d7f488ada3c2": "2026-10-20T00:51:29Z",
+    "EVENT-DUEBILL-LARGE-DIST-001": "2026-10-15T12:43:35Z",
+    "EVENT-FDA-ADCOM-BRIEFING-CLOCK-001": "2026-10-18T11:18:00Z",
+    "EVENT-SCHEDULE13D-DISCLOSURE-CLOCK-001": "2026-10-16T08:20:00Z",
+    "EVENT-STAPLED-CVR-PRV-001": "2026-10-15T18:16:25Z",
+    "FLOW-ADR-TERM-001": "2026-10-15T12:34:51Z",
+    "FLOW-RUSSELL-RECON-CLOSE-001": "2026-10-15T21:04:00Z",
+    "FLOW-UST-PRIMARY-DEALER-AUCTION-001": "2026-10-18T09:10:00Z",
+    "FUND-ASML-CAPACITY-PRICING-001": "2026-10-15T19:14:00Z",
+    "FUND-ASML-CAPACITY-SERVICE-001": "2026-10-15T13:14:30Z",
+    "FUND-TSMC-N2-MARGIN-LEARNING-001": "2026-10-18T08:16:00Z",
+    "QUANT-CLOSE-AUCTION-IMBALANCE-001": "2026-10-16T06:58:00Z",
+    "QUANT-FORM144-SUPPLY-001": "2026-10-15T12:51:10Z",
+    "QUANT-LETF-DAILY-RESET-001": "2026-10-18T10:04:00Z"
+  },
+  "last_task_update": "2026-10-20T20:50:25Z",
+  "idea_ledger_rows": 146,
+  "row_kinds": {
+    "FROZEN_HYPOTHESIS": 15,
+    "PROGRAM_FAMILY": 14,
+    "EXPRESSION_OR_SOFTWARE_GENERATION": 11,
+    "LEGACY_RECONCILIATION_RECORD": 20,
+    "DESIGN_SEED_NOT_TRIAL": 33,
+    "EXPRESSION_RESULT_NOT_IN_CURRENT_QUEUE": 9,
+    "FAST_RAIL_VERSIONED_RECORD": 44
+  },
+  "positive_items_indexed": 15,
+  "positive_items_scoped_terminal": 10,
+  "positive_items_untraced": [
+    "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+    "LAB25-HL-CEX-FUNDING",
+    "LAB25-FOMC-EVE",
+    "LAB25-PENSION-REBAL",
+    "LAB24-FUTURES-TREND-CARRY"
+  ],
+  "missing_complete_receipts": [
+    "VALIDATE-FLOW-UST-PRIMARY-DEALER-AUCTION-001"
+  ],
+  "global_unique_ideas": "UNKNOWN",
+  "complete": false,
+  "experiment_result_paths_indexed": 15,
+  "fast_registry_versions": 6,
+  "blocker_rows": 52,
+  "blocked_task_reason_partition": {
+    "CURRENT_CORPUS_DUPLICATE": 18,
+    "MISSING_QUALIFIED_QUANT_SOURCE": 10,
+    "TASK_STAGE_AUTHORIZATION_MISMATCH": 9,
+    "LEGACY_REQUIRES_NEW_V2_TRIAL": 1
+  },
+  "native_v2_trial_files": 11,
+  "native_v2_generated_proposals": 11,
+  "native_v2_discarded_proposals": 11
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "experiment_preregistration.json",
+  "title": "Quant Experiment Preregistration Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["signal_definition", "entry_rule", "entry_timing", "horizon_sessions", "benchmark", "exclusions", "inference_plan", "immutable_fields"],
+  "properties": {
+    "signal_definition": {"type": "string", "minLength": 1},
+    "entry_rule": {"type": "string", "minLength": 1},
+    "entry_timing": {"const": "NEXT_SESSION_OPEN"},
+    "horizon_sessions": {"type": "integer", "minimum": 1},
+    "benchmark": {"type": "string", "minLength": 1},
+    "exclusions": {"type": "array", "items": {"type": "string"}},
+    "inference_plan": {"type": "string", "minLength": 1},
+    "immutable_fields": {
+      "const": ["signal_definition", "entry_rule", "entry_timing", "horizon_sessions", "benchmark", "exclusions", "inference_plan"]
+    }
+  }
+}

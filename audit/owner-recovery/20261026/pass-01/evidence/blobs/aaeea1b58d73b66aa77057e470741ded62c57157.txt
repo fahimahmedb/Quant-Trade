@@ -1,0 +1,27 @@
+{
+  "calibration_vector": {
+    "description": "TEST_ONLY OutputManifest of TestContext in a2_harness/test_bounded_runtime.py at H (lines 49-63); synthetic structural values, not a fixture",
+    "expected_identity": "sha256:54bfcafcca4d87b9771b905efe9fb12023fdce061fbccda155bcecb3a62253bf",
+    "published_in": "research/weather_forward/v4/a2_harness/D5_TYPE_REPAIR_CONFIRMED_INITIAL_TEST_OUTPUT_2026-10-05.txt line 295, blob c334e2e7aa2a8385b426ba5292ece6a3e57a0b63",
+    "reference_commit_H": "78d537de681363ed83a6c7787aba4319f3c73c4d"
+  },
+  "document": {
+    "schema": "A2_FROZEN_CONTENT_V1",
+    "kind": "OutputManifest",
+    "fields": {
+      "output_id": "TEST_ONLY_OUTPUT",
+      "manifest_version_identity": "TEST_ONLY_MANIFEST_V1",
+      "output_type": "TEST_ONLY_DOCUMENTARY_STATUS",
+      "exact_metric_or_artifact": "TEST_ONLY_STRUCTURAL_STATUS",
+      "granularity": "TEST_ONLY_SINGLE_STATUS",
+      "permitted_recipients": ["RESEARCH_VIEWER", "EXECUTOR"],
+      "exportability": "ALLOWED",
+      "quarantine_status": "CLEAR",
+      "cumulative_disclosure_risk": "CLEAR",
+      "efficacy_leakage_assessment": "CLEAR",
+      "release_approval_requirement": "REQUIRED",
+      "retention_rule": "TEST_ONLY_NO_OPERATIONAL_RETENTION",
+      "incident_if_unexpected_information_revealed": "TEST_ONLY_STOP"
+    }
+  }
+}

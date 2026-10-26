@@ -1,0 +1,52 @@
+{
+  "trace_id": "WORK-NATIVE-FIRST-EVENT-20261014",
+  "recorded_at_utc": "2026-10-14T10:24:24.363Z",
+  "site_version": 15,
+  "site_source_head": "83d9126c69ebd44cf74605df4ff69b274732527d",
+  "deployment_id": "appgdep_6acedce03efc8191b547a105b80d4369",
+  "native_store": "Sites D1 DB",
+  "observed_fact": "Authorized native driver heartbeat reached authenticated non-GitHub ingress, D1 cursor 9, public anonymous probe SSE client and post-render ACK. Following ACTION_STARTED was rejected 409 after the six-second lease expired during successive HTTP round trips. No benign subprocess action was launched; this is not a successful action or Codex E2E canary.",
+  "event": [
+    {
+      "cursor": 9,
+      "event_id": "WORK-NATIVE-45a4621e5cad-1",
+      "trace_id": "WORK-NATIVE-45a4621e5cad",
+      "worker_id": "work-benign-process-20261014",
+      "session_id": "1372dee1-ba11-4508-a1b3-d8833542ef9d",
+      "generation": 1,
+      "lease_id": "ffce6338-f37b-44f3-aa28-386af41849a1",
+      "sequence": 1,
+      "type": "HEARTBEAT",
+      "received_at": 1791941996480
+    }
+  ],
+  "ack_receipts": [
+    {
+      "event_id": "WORK-NATIVE-45a4621e5cad-1",
+      "trace_id": "WORK-NATIVE-45a4621e5cad",
+      "render_state_hash": "40f20fb269fee288655c67a5ea3cc0fbbb9151a57916154f1ba6e5ac7e3dc64f",
+      "frame_cycles": 2,
+      "render_after_receive_ms": 1003.2999999998137,
+      "received_at": 1791941998099,
+      "server_latency_ms": 1619
+    }
+  ],
+  "emitter_type": "authenticated_native_driver_before_action",
+  "codex_supported": false,
+  "first_broken_transition": "LEASE_EXPIRED_BEFORE_ACTION_START_DUE_TO_SEQUENTIAL_HTTP_OBSERVATIONS",
+  "failure_receipt": {
+    "http_status": 409,
+    "error": "stale_lease_generation_or_sequence"
+  },
+  "frontend_preserved_sha256": "784b11fabd68f8e9cb40e4a80860a1af5ed54124636dfdb4d0db77717eecdba9",
+  "source_changes_scope": [
+    "worker/platform-probe.mjs",
+    "worker/index.js",
+    "drizzle/0001_probe_epoch_and_owner_nonce.sql",
+    "drizzle/meta/_journal.json",
+    "scripts/build-probe-only.mjs",
+    "test/platform-probe.test.mjs"
+  ],
+  "scientific_state_modified": false,
+  "paid_usd_total": 0
+}

@@ -1,0 +1,13 @@
+{
+  "probe_id": "PROBE_4_TRANSIENT_STATE_LEASES",
+  "trace_id": "P4-LOCAL-HARNESS-20261012T221132Z",
+  "started_at_utc": "2026-10-12T22:11:32.686599Z",
+  "finished_at_utc": "2026-10-12T22:11:33.314048Z",
+  "executor_environment": "Builder Chat deterministic local Python harness",
+  "provenance": "DIRECT",
+  "observed_fact": "11/11 deterministic canary tests passed for fresh lease, expiry to stale, previous generation rejection, duplicate idempotence, old sequence non-regression, restart invalidation, snapshot-without-stream animation suppression, worker/engine/lease spoof rejection, and unknown event rejection.",
+  "evidence_reference": "harness/protocol_model.py + harness/test_protocol_model.py; unittest output sha256=5564537cb91ff7cd9bd8df9c4ebec2119f83010b6f9bf70b1929161088ccac36",
+  "verdict": "PROVEN",
+  "first_broken_transition": null,
+  "notes": "This proves only deterministic contract behavior of the probe harness. It is not proof that the actual Site platform exposes a transient store, persistent process, stream, restart hooks, or live lease mechanism."
+}

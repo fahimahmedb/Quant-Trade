@@ -1,0 +1,22 @@
+{
+  "task_id":"VALIDATE-FUND-ASML-CAPACITY-PRICING-001",
+  "hypothesis_id":"FUND-ASML-CAPACITY-PRICING-001",
+  "generation":1,
+  "lane":"independent_challenge",
+  "assessment_type":"INDEPENDENT_DOCUMENTARY_CHALLENGE",
+  "performed_at":"2026-10-15T19:38:00Z",
+  "outcome_access":{"prices_or_returns":false,"backtest":false,"prospective_observation":false},
+  "stages":["independent_validation","cross_examination","red_team","claim_restriction"],
+  "primary_evidence":[
+    {"source":"ASML Q3 2026 results, 2026-10-14","finding":"Management states currently planned 2027 and 2028 supply will not fully meet customer demand, is investigating 2028 capacity beyond the previously communicated 30% increase, and reports strong productivity-upgrade demand in Installed Base Management."},
+    {"source":"ASML Q2 2026 investor call, 2026-07-15","finding":"2027 Low-NA EUV was described as close to fully covered with orders; ASML planned roughly 30% Low-NA EUV and immersion capacity increases for 2027 and was investigating a further roughly 30% expansion for 2028."},
+    {"source":"ASML Q1 2026 results / forward-looking risk disclosure, 2026-04-15","finding":"ASML explicitly identifies order conversion, cancellations/delays/push-outs, export restrictions, supply-chain capacity and ability to adjust production capacity as material uncertainties."}
+  ],
+  "cross_examination":{"survives":["The supply-demand imbalance premise is directly stated by ASML and is not merely inferred.","Installed-base productivity upgrades are a separately identified revenue channel and Q3 2026 management attributed above-guidance IBM sales to continued strong productivity-upgrade demand.","Q2 order coverage gives stronger support than customer-interest language alone for the 2027 Low-NA EUV portion."],"fails_or_unproved":["Scarcity does not by itself prove incremental pricing power or normalized margin durability.","The frozen claim does not establish how much of 2028 indicated demand is firm/non-cancellable versus forecast or interest.","Capacity expansion can increase output while adding supplier/ramp costs, so the margin transmission remains conditional.","The causal driver is materially exposed to AI-related customer capex expectations and therefore is not independent of generic AI-demand continuation.","Export controls and order push-outs can break backlog-to-revenue conversion even when headline demand exceeds planned supply."]},
+  "red_team":{"blocks":["BLOCK_CLAIM_LEVEL"],"non_blocks":["No documentary contradiction to the existence of a 2027-2028 planned-supply shortfall was found.","No price/outcome evidence was used, so no leakage or outcome-tuning finding is introduced by this validation."],"reason":"Primary evidence supports capacity scarcity and installed-base upgrade demand, but not the stronger causal step that scarcity itself supports durable pricing/mix and normalized earnings. Commitment quality beyond 2027 Low-NA EUV remains insufficiently decomposed, while ramp cost, export-control and AI-capex confounders are material."},
+  "verdict":"PASS_BOUNDED_CAPACITY_SCARCITY_MECHANISM_WITH_BLOCK_CLAIM_LEVEL",
+  "allowed_claim":"ASML reports planned 2027-2028 leading-edge supply below indicated customer demand and strong installed-base productivity-upgrade demand; this supports a bounded capacity-scarcity and installed-base monetization mechanism for further test design.",
+  "forbidden_claim":"Current documentary evidence does not establish durable pricing power, normalized margin expansion, backlog conversion certainty, or earnings outperformance from the scarcity mechanism.",
+  "integration_handoff":{"authorized":false,"created":false,"reason":"A BLOCK_CLAIM_LEVEL remains and the task does not separately authorize an integration handoff despite that blocker."},
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false}
+}

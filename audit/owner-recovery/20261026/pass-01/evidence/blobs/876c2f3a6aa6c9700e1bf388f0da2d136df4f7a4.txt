@@ -1,0 +1,161 @@
+# QUANT-TRADE — MEGA A CP003 — 2026-10-21
+
+## Durable checkpoint
+
+BASE_SHA: `4a5e2fe47ff142c3f1dc9ed2e221386aa42e4090`
+PACKAGE_HEAD_SHA: `ed093fa704cfca84b7b7ed8b7eea4a0d7c54cf06`
+CHAIN_SCOPE: Research Intelligence Loop — native preflight integration into the existing empty-queue frontier refill path.
+
+## Package disposition
+
+- `HARDEN_EXISTING`: `queue_replenisher.py` remains the sole deterministic frontier-to-task adapter.
+- `HARDEN_EXISTING`: `oracle_worker_v2.py` reacquires the same capability, route, source and policy inputs before publishing a refill.
+- `REUSE_CURRENT`: `research_intelligence.py` frontier classification and capability/route semantics.
+- `REUSE_CURRENT`: `frontier_source_planner_v2.py` documentary-source admissibility and content-identity deduplication.
+- `REUSE_CURRENT`: `runtime/CAPABILITY_REGISTRY.json` and `runtime/WORKFLOW_LANES.json` as capability/route contracts.
+- `BUILD_MISSING`: pure `research_refill_policy.py` translation from Owner-governed generation mandates to explainable Research Intelligence decisions.
+- `NO_BUILD_REQUIRED`: no second scheduler, task queue, source-acquisition runtime, scientific truth store, capability registry or Control Plane.
+- `NO_BUILD_REQUIRED`: no budget manager was invented because CP063 exposes no canonical budget object; generation preflight is explicitly zero-cost and any future non-zero action must consume a canonical supplied budget context.
+
+## Semantics qualified in this package
+
+1. A CP063 frontier entry is a **generation mandate**, not a fully identified economic candidate.
+2. Missing mechanism/payer/actor/timing/universe/economic-exposure dimensions remain `UNKNOWN`; they are not counted as novelty.
+3. Scientific Memory family/evidence matching is deferred until a candidate semantic identity exists; this prevents a mandate label from becoming a false family identity.
+4. A generation mandate is executable only when its declared capability is production-enabled **and** its target lane actively routes that capability.
+5. When source planning is active, a qualified unused documentary source must be bound before generation may be scheduled.
+6. The only admitted refill action is bounded `GENERATE_MECHANISM`, `depth=WIDE`, `cost_units=0`, with no economic/prospective/capital/live authority.
+7. The Research Intelligence layer emits `scheduler_mutation=false`; task creation remains exclusively inside the pre-existing queue replenisher.
+8. Queue emptiness or exhaustion of `max_issued_per_frontier` is not scientific exhaustion. With no qualified completion facts, the state is `SEARCH_SPACE_INCOMPLETE`.
+9. `SCIENTIFICALLY_EXHAUSTED` requires both explicit `search_space_complete=true` and `archaeology_complete=true`. Production CP063 deliberately supplies neither claim.
+10. Research-policy state/hash are bound into the derivation key and task contract so a later capability/route/source/policy change cannot silently masquerade as the same derivation.
+
+## Files changed
+
+- `research/research_os/research_refill_policy.py` — new pure preflight policy.
+- `research/research_os/queue_replenisher.py` — policy handoff and fail-closed exhaustion semantics.
+- `research/research_os/oracle_worker_v2.py` — fresh-snapshot policy reacquisition and durable receipt/event binding.
+- `research/research_os/tests/test_research_refill_policy.py` — adversarial contract tests.
+
+## Shared surfaces touched
+
+- Existing queue refill path.
+- V2 Oracle empty-queue refill wake.
+- Existing capability and lane registries (read-only consumption).
+- Existing source planner (read-only decision input).
+
+No producer-family implementation, Validator, economic evaluator, live-trading path, acquisition runtime or second orchestration authority was added.
+
+## Public contracts changed
+
+Derived frontier tasks may now contain:
+
+- `inputs.research_intelligence_contract`
+- `derivation.research_intelligence`
+- `derivation_payload.research_policy_hash`
+
+V2 refill events may expose whether the Research Intelligence preflight was present, its frontier-state classification and the explicit `novelty_claimed=false` fact.
+
+New NOOP distinctions available under the hardened path include:
+
+- `NOOP_SOURCE_MISSING`
+- `NOOP_CAPABILITY_MISSING`
+- `NOOP_BUDGET_BLOCKED`
+- `NOOP_EXTERNAL_ACCESS_BLOCKED`
+- `NOOP_AUTHORITY_SEALED`
+- `NOOP_TEMPORARILY_PARKED`
+- `NOOP_SEARCH_SPACE_INCOMPLETE`
+- `NOOP_FRONTIER_SCIENTIFICALLY_EXHAUSTED`
+
+The legacy direct-call behavior remains available when no Research Intelligence context is supplied; production repo/V2 paths supply the context.
+
+## Schemas changed
+
+No canonical persisted schema file was replaced. The derived task/receipt shape was extended additively with an explainable Research Intelligence contract and policy hash.
+
+## Tests added
+
+`test_research_refill_policy.py` covers:
+
+- unknown identity is not novelty;
+- declared capability with inactive route is unavailable;
+- source-missing is not scientific exhaustion;
+- queue/search empty is not scientific exhaustion;
+- true exhaustion requires explicit Search + Archaeology completion;
+- preflight cannot become a scheduler;
+- frontier issue-limit exhaustion is not scientific exhaustion;
+- explicit completion facts can qualify true scientific exhaustion.
+
+## Focused test result
+
+Local syntax/import compilation performed before commit for the four package files: **PASS** (`python -m py_compile`).
+
+This checkpoint does **not** relabel that syntax check as a behavioral-suite pass.
+
+## Broader test result
+
+Hosted GitHub Actions check for package HEAD `ed093fa704cfca84b7b7ed8b7eea4a0d7c54cf06`: `gate` is **IN_PROGRESS**, conclusion unknown at checkpoint-writing time. No green CI claim is made.
+
+Earlier isolated Research Intelligence adversarial harness result remains 24/24 for the prior package only; it is not evidence that this integration package or the whole repository passes.
+
+## Scientific claim limits
+
+- No outcome was accessed.
+- No alpha, return, profitability, provider availability, empirical correlation or historical raw evidence was inferred.
+- `UNKNOWN` remains unknown.
+- A generation mandate is not evidence of novelty.
+- Capability declaration is not route availability.
+- Source metadata/admissibility is not source activation or empirical evidence.
+- Queue emptiness and emission limits are operational facts, not scientific exhaustion.
+- No model commentary may become scientific evidence through this package.
+
+## Dependencies
+
+- Existing `research_intelligence.py` decision/classification semantics.
+- Existing source planner and source qualification contracts.
+- Existing CP063 capability registry and workflow lanes.
+- Existing queue replenisher/Oracle writer authority.
+
+## Expected integration conflicts
+
+High-conflict shared files:
+
+- `queue_replenisher.py`
+- `oracle_worker_v2.py`
+
+Any parallel rail touching empty-queue refill or Oracle wake semantics should be integrated semantically, not by blind cherry-pick. The new package intentionally does not own source acquisition, producer execution or Control Plane scheduling authority.
+
+## Whole-chain reassessment
+
+The fixed chain is **not exhausted**.
+
+Material next gap proven after this package:
+
+- The actual producer screening path still relies on the historical `LegacyKnowledgeBase.screen_candidate` overlap screen before research/freeze.
+- Qualified Scientific Memory semantics are available, but are not yet proven to feed candidate Search/screening at the point where a generated semantic identity exists.
+- The legacy lexical/token-overlap surface must not be allowed to equate two causally distinct mechanisms merely because labels overlap.
+- Conversely, renamed negative families must not escape qualified memory once semantic identity is available.
+
+Next disposition target: `ADAPT_EXISTING` / `HARDEN_EXISTING` candidate screening by consuming the canonical/qualified Scientific Memory view without creating a second memory truth or weakening the existing Legacy provenance gate.
+
+## Remaining gaps / classification
+
+1. Scientific Memory → actual candidate Search/screen feedback: **ACTIONABLE_INTERNAL**.
+2. Semantic duplicate relation versus legacy lexical overlap: **ACTIONABLE_INTERNAL**.
+3. Invalid-protocol repair routing at producer-screen boundary: **ACTIONABLE_INTERNAL** if the candidate/protocol contracts expose sufficient identity; otherwise preserve `REVIEW_STILL_REQUIRED`.
+4. Durable Search/Archaeology-complete facts: **REVIEW_STILL_REQUIRED**; no completion claim is currently qualified, therefore production remains fail-closed as `SEARCH_SPACE_INCOMPLETE`.
+5. Non-zero research-budget admission: **NO_BUILD_REQUIRED / DEPENDENT** until a canonical Control Plane budget contract exists.
+6. Source acquisition itself: **OUT_OF_SCOPE / EXTERNAL_DEPENDENCY**.
+7. Economic/prospective/live evaluation: **SEALED_BY_AUTHORITY**.
+
+## Authority status
+
+- `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
+- `PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`
+- `REAL_CAPITAL_AUTHORIZED=FALSE`
+- `LIVE_TRADING_AUTHORIZED=FALSE`
+- `OUTCOME_ACCESSED=FALSE`
+
+SAFE_TO_INTEGRATE: `CONDITIONAL` — architecture is fail-closed and package is pushed; hosted gate conclusion is still pending at this checkpoint.
+
+SAFE_TO_CONTINUE_THIS_CHAIN: `TRUE`

@@ -1,0 +1,30 @@
+{
+  "receipt_id": "PROD-QUANT-001-g1",
+  "task_id": "PROD-QUANT-001",
+  "worker_id": "chatgpt-interactive-quant-mechanisms-worker",
+  "session_id": "PROD-QUANT-001-g1",
+  "lease_generation": 1,
+  "started_at": "2026-10-15T12:49:00Z",
+  "completed_at": "2026-10-15T12:51:48Z",
+  "input_head": "b1ae37b0f3af9a148dc6fe56bbc57ccd5f2a381f",
+  "output_commit": "cb176e21ab77cafc064ad9574ce89101da5a6805",
+  "status": "COMPLETE",
+  "summary": "Pinned Legacy memory was screened before ideation. A distinct SEC Form 144 proposed-sale supply-overhang mechanism was frozen with a public EDGAR acceptance clock, PIT normalization requirements, repeat-filing dependence controls and exactly one downstream validation handoff. No signal-to-return or future-outcome data were accessed.",
+  "artifacts": [
+    "research/research_os/hypotheses/QUANT-FORM144-SUPPLY-001.json",
+    "research/research_os/tasks/VALIDATE-QUANT-FORM144-SUPPLY-001.json",
+    "research/research_os/events/PROD-QUANT-001/001-action-started.json"
+  ],
+  "evidence_refs": [
+    "LEGACY_RESEARCH_LEDGER.json@183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "https://www.sec.gov/files/form144.pdf",
+    "https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/file-form-144-electronically",
+    "https://www.sec.gov/Archives/edgar/data/19617/000119534526000004/xsl144X01/primary_doc.xml"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false,
+    "live_trading_performed": false
+  }
+}

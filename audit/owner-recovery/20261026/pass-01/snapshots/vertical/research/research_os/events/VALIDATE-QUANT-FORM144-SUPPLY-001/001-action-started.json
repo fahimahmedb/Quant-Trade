@@ -1,0 +1,15 @@
+{
+  "event_id": "VALIDATE-QUANT-FORM144-SUPPLY-001-g1-e1",
+  "session_id": "VALIDATE-QUANT-FORM144-SUPPLY-001-g1",
+  "worker_id": "chatgpt-interactive-validator",
+  "action_id": "VALIDATE-QUANT-FORM144-SUPPLY-001",
+  "event_type": "ACTION_STARTED",
+  "event_seq": 1,
+  "generation": 1,
+  "emitted_at": "2026-10-15T12:53:15Z",
+  "accepted_at": null,
+  "payload": {
+    "label": "Form 144 documentary validation",
+    "detail": "Checking electronic filing clock, structured field sufficiency, overlap controls and PIT normalization feasibility without reading post-filing market outcomes."
+  }
+}

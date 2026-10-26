@@ -1,0 +1,142 @@
+{
+  "boot_id": "79a29c0f-c7cd-4cd2-885c-9e4c18e123b6",
+  "model": {
+    "ActiveState": "active",
+    "InvocationID": "64df7b2db2b14843ba30d253d4ef6c63",
+    "MemoryMax": "10737418240",
+    "MemoryPeak": "10554503168",
+    "Result": "success",
+    "UnitFileState": "enabled"
+  },
+  "model_health": {
+    "local_only": true,
+    "metadata": {
+      "aliases": [
+        "gpt-oss-10.2b-q4-k-m"
+      ],
+      "architecture": {
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ]
+      },
+      "created": 1792494400,
+      "id": "gpt-oss-10.2b-q4-k-m",
+      "meta": {
+        "ftype": "Q4_K - Medium",
+        "n_ctx": 8192,
+        "n_ctx_train": 131072,
+        "n_embd": 2880,
+        "n_params": 10160237712,
+        "n_vocab": 201088,
+        "size": 7710063168,
+        "vocab_type": 2
+      },
+      "object": "model",
+      "owned_by": "llamacpp",
+      "tags": []
+    },
+    "model": "gpt-oss-10.2b-q4-k-m",
+    "runtime": "openai_compatible",
+    "status": "PASS"
+  },
+  "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+  "v1_timer": {
+    "ActiveState": "inactive",
+    "InvocationID": "",
+    "LastTriggerUSec": "",
+    "Result": "success",
+    "UnitFileState": "disabled"
+  },
+  "v2_service": {
+    "ActiveState": "inactive",
+    "InvocationID": "42bae378bebf4580a13f3ee0fe6df65d",
+    "MemoryMax": "805306368",
+    "MemoryPeak": "[not set]",
+    "Result": "success",
+    "UnitFileState": "static"
+  },
+  "v2_timer": {
+    "ActiveState": "active",
+    "InvocationID": "b9b43842cb414bb18d7e26b49f9d1867",
+    "LastTriggerUSec": "Tue 2026-10-20 11:03:50 UTC",
+    "Result": "success",
+    "UnitFileState": "enabled"
+  },
+  "wake_results": [
+    {
+      "invocation": "42bae378bebf4580a13f3ee0fe6df65d",
+      "result": {
+        "authority": {
+          "economic_experiment_authorized": false,
+          "live_trading_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false
+        },
+        "hosted_model_calls": 0,
+        "input_head": "be33ca60ee731dd3db2b851960892fae63056b2c",
+        "one_lineage_per_wake": true,
+        "output_commit": "1147c244643bac7a6ce2d3b1d581a6b824f6a7c5",
+        "preflight": {
+          "control_plane": {
+            "authority": {
+              "economic_experiment_authorized": false,
+              "live_trading_authorized": false,
+              "prospective_observation_authorized": false,
+              "real_capital_authorized": false
+            },
+            "mode": "PRODUCTION_RESEARCH_WORKERS",
+            "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+          },
+          "current_corpus": {
+            "count": 15,
+            "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+            "review_count": 1,
+            "review_pairs": [
+              {
+                "basis": [
+                  "entity",
+                  "mechanism_tokens"
+                ],
+                "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+                "left": "FUND-ASML-CAPACITY-PRICING-001",
+                "mechanism_overlap": 0.2529,
+                "review_required": true,
+                "right": "FUND-ASML-CAPACITY-SERVICE-001"
+              }
+            ],
+            "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+          },
+          "legacy": {
+            "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+            "loaded_record_count": 20,
+            "manifest_historical_research_items_found": 33,
+            "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+            "schema_version": "legacy-research-ledger-v1",
+            "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+            "status": "PASS"
+          },
+          "preflight_hash": "af586f7116b275fd1ae69d9e1061d232d50ba628102f6be87bd0aee71d544b83",
+          "status": "PASS",
+          "task_authority": null
+        },
+        "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+        "research_contract_version": "v2-core",
+        "state_branch": "builder/oracle-v2-core-20261020",
+        "state_repository": "fahimahmedb/Quant-Trade",
+        "status": "DERIVED_ONE_READY_TASK",
+        "task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-007",
+        "v2_preflight": {
+          "epoch_manifest_hash": "1afd9465259d607f7917b7c627ad8b80fd9c385a3435028df7df96b1cd23babb",
+          "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
+          "research_epoch_id": "ORACLE-V2-EPOCH-20261020-001",
+          "snapshot_head": "be33ca60ee731dd3db2b851960892fae63056b2c",
+          "status": "PASS"
+        }
+      },
+      "timestamp": "1792494236678964"
+    }
+  ]
+}

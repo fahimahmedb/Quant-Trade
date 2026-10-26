@@ -1,0 +1,77 @@
+{
+  "observed_at": "2026-10-18T00:48:57Z",
+  "status": "NOT_CONNECTED_TRANSPORT_UNAVAILABLE",
+  "owner_authorized_connection_attempt": true,
+  "owner_screenshots": {
+    "instance_running": true,
+    "public_ip_and_ubuntu_username_supplied": true,
+    "os": "Canonical Ubuntu 24.04 Minimal aarch64",
+    "region": "eu-paris-1",
+    "console_connection": "ACTIVE",
+    "ram_and_ocpu": "NOT_SHOWN",
+    "boot_volume_gb": 50,
+    "data_volume_attached": true,
+    "guest_mount_status": "UNKNOWN"
+  },
+  "credential_observation": {
+    "owner_supplied_public_key_fingerprint": true,
+    "private_key_received": false,
+    "runtime_secret_bindings": 0,
+    "runtime_outbound_identities": 0,
+    "ssh_agent_configured": false,
+    "workspace_key_file_found": false
+  },
+  "network_observation": {
+    "runtime_observations_current": true,
+    "runtime_spec_revision": "41",
+    "http_policy": "UNRESTRICTED_ENFORCED",
+    "configured_tcp_domain_grants": 0,
+    "configured_tcp_ip_range_grants": 0,
+    "test": "Attempt HTTP CONNECT through the configured TCP proxy to the owner-provided SSH endpoint, port 22",
+    "tcp_proxy": "http://proxy:8088",
+    "curl_exit_code": 7,
+    "error": "Failed to connect to proxy port 8088 after 1 ms: Could not connect to server",
+    "oracle_endpoint_reachability": "NOT_ESTABLISHED",
+    "ssh_authentication_attempted": false,
+    "ssh_host_key_verified": false
+  },
+  "distinctions": [
+    "The active instance console connection is not evidence of a working SSH login to the Ubuntu OS.",
+    "An SHA256 public-key fingerprint is public identification metadata, not a public key blob or a private signing credential.",
+    "A key created for a console connection need not be authorized for direct Ubuntu SSH.",
+    "A failed connection to the local TCP relay does not diagnose the Oracle firewall or SSH service."
+  ],
+  "console_endpoint_probe": {
+    "source": "Owner supplied Windows Plink console and VNC connection commands",
+    "hostname": "instance-console.eu-paris-1.oci.oraclecloud.com",
+    "port": 443,
+    "protocol": "SSH, not HTTPS",
+    "configured_tcp_proxy_attempt": "FAILED_TO_CONNECT_TO_PROXY",
+    "curl_exit_code": 7,
+    "oracle_console_reachability": "NOT_ESTABLISHED",
+    "private_console_key_available_here": false,
+    "runtime_revision_rechecked": "41"
+  },
+  "credential_followup_20261018": {
+    "owner_attached_private_key": true,
+    "file_permissions": "0600",
+    "key_type": "RSA",
+    "key_bits": 2048,
+    "fingerprint_matches_owner_public_fingerprint": true,
+    "private_key_locally_readable": true,
+    "private_key_content_printed_or_committed": false,
+    "runtime_revision_rechecked": "45",
+    "console_port_443_tcp_proxy_retest": "FAILED_TO_CONNECT_TO_PROXY",
+    "curl_exit_code": 7,
+    "ssh_authentication_attempted": false,
+    "remaining_blocker": "The configured TCP relay is unavailable; no conclusion about Oracle-side SSH reachability.",
+    "remote_commands_executed": false
+  },
+  "next_access_options": [
+    "Configure a supported SSH transport and a scoped private credential in the execution environment; no plaintext private key in public chat or Git.",
+    "Use Oracle browser Cloud Shell with the matching key to administer the instance; serial console may require OS login/recovery."
+  ],
+  "remote_commands_executed": false,
+  "remote_mutations": false,
+  "model_installed": false
+}

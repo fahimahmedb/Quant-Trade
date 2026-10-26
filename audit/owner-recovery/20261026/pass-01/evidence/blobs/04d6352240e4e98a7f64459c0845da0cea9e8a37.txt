@@ -1,0 +1,85 @@
+# W1 FACTORY CP007 — 2026-10-21
+
+STATUS: HARDEN_EXISTING — native Validator membrane owns Factory qualification
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF (commit containing this checkpoint)
+PARENT: 10d6851a27647136294db7cb701b40bc1b7d33d2
+
+## WHAT_GAP_WAS_PROVEN
+
+At CP006, the current economic-readiness composer built a W1 Experiment Infrastructure attestation but the canonical Validator did not decide that law itself. The producer called `validator_economic_readiness_v3()` and then post-mutated the returned Validator receipt by inserting an `experiment_infrastructure` check and potentially rewriting status/readiness/claim ceiling. That left the Candidate -> frozen experiment -> Validator membrane split across two authorities.
+
+A second provenance gap was exposed while moving the law: geometry and power declaration hashes were present in the immutable registry identity but were not explicitly carried on the geometry/power objects exposed by the combined infrastructure attestation.
+
+## WHAT_CHANGED
+
+- `validation_readiness.py` now makes `experiment_infrastructure` a mandatory native Validator check with reason code `EXPERIMENT_INFRASTRUCTURE_NOT_QUALIFIED`.
+- The Validator recomputes the infrastructure hash and the frozen/final registry entry hashes; requires `FROZEN -> ... -> REPLAY_VERIFIED`; recrosses candidate and protocol identity; verifies geometry/power protocol and declaration-hash references against the registry; requires all outcome/authority fields closed; and requires the reproducibility binding to name the same registry id/hash and infrastructure hash.
+- Missing Experiment Infrastructure fails closed. A self-consistent foreign registry attached to another candidate also fails closed even if its registry and infrastructure hashes are recomputed.
+- Removed the 17-line producer-side post-mutation of Validator output from `economic_test_readiness_v1.py`. The producer now consumes the Validator decision as returned.
+- `experiment_infrastructure.py` now exposes each geometry/power `declaration_hash` directly in the attestation rather than leaving it only inside registry identity.
+- Migrated the standalone Validator-v3 fixture to the new mandatory Factory contract and added missing/foreign-infrastructure adversarial cases.
+- Extended the dedicated W1 exact-head CI step to execute `test_economic_readiness_validation` as part of the lane suite.
+
+## WHAT_WAS_REUSED / IMPORTED
+
+HARDEN_EXISTING: current `validation_readiness.py` / `validator_economic_readiness_v3` remains the single Validator authority.
+REUSE_CURRENT: current W1 Experiment Infrastructure, registry lifecycle, geometry/power declarations, runner receipt and replay bindings.
+NO_BUILD_REQUIRED: no new Validator, no new registry store, no new evidence store, no new orchestration path.
+
+## TESTS / FALSIFICATION
+
+Observed exact-head evidence before CP007:
+- CP005 (`465adbbee46b4fd0289dbced4d818336aad843d4`) completed the repository gate successfully end-to-end.
+- CP006 (`10d6851a27647136294db7cb701b40bc1b7d33d2`) had already passed generated schema drift, status freshness, full unit suite, dedicated W1 Factory suite, and SEC P0 suite while V1 end-to-end was still executing when this checkpoint package was assembled.
+
+Pre-push structural falsification:
+- native Validator-only diff against CP006: +76 / -0;
+- removal of producer post-mutation: +0 / -17;
+- declaration-hash exposure diff: +4 / -2;
+- no unrelated file drift in those inspected packages.
+
+Adversarial coverage added/migrated:
+- missing Experiment Infrastructure -> native Validator FAIL;
+- self-consistent foreign candidate registry with recomputed registry/infrastructure/reproducibility hashes -> native Validator FAIL;
+- ordinary current readiness path must receive native `checks.experiment_infrastructure=PASS` without producer mutation.
+
+Exact-head CP007 CI after push remains the authoritative execution result; no future result is claimed in this checkpoint.
+
+## SCIENTIFIC CLAIM LIMIT
+
+This package validates identity, provenance, lifecycle and pre-outcome closure only. It does not access economic outcomes, start observation, infer edge, turn geometry/power into a profitability claim, or grant any execution/capital authority.
+
+## SHARED_SURFACES_TOUCHED
+
+SHARED_SURFACES_TOUCHED:
+- `research/research_os/expansion/validation_readiness.py`
+- `research/research_os/expansion/economic_test_readiness_v1.py`
+- `research/research_os/expansion/experiment_infrastructure.py`
+- `research/research_os/tests/test_economic_readiness_validation.py`
+- `.github/workflows/sec-p0-pre-t0-gate.yml`
+
+WHY_REQUIRED: the Validator, not its caller, must own the final pre-outcome qualification law for the exact Factory attestation.
+
+CONTRACT_CHANGE: Validator v3 now requires an exact hash-valid Experiment Infrastructure attestation. Geometry/power objects in that attestation now explicitly carry their declaration hashes.
+
+EXPECTED_CROSS_LANE_IMPACT: callers constructing Validator-v3 bundles directly must provide the current Experiment Infrastructure contract; normal `economic_test_readiness` composition already does so. Producer-side Validator result mutation is removed.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+The current chain is now one connected authority path: candidate/envelope -> runner frozen identity -> registry/trial/geometry/power -> receipt/replay -> native Validator law. Factory qualification is no longer a post-hoc caller amendment to Validator output.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Run exact-head CP007 CI and repair any regression. Then adversarially reassess the Validator's declaration-hash verification and frozen-protocol/reproducibility cross-binding for a self-consistent forged or stale declaration package before deciding whether the scoped frontier is exhausted.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

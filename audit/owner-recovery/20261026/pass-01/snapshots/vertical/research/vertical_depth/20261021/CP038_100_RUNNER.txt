@@ -1,0 +1,27 @@
+from pathlib import Path
+import ast, subprocess, json, os, time, hashlib
+repo=Path('/workspace/Quant-Trade'); out=Path('/workspace/vertical_depth_cp100')
+names=json.loads(Path('/workspace/vertical_depth_logs_20261023/CP038_100_files.json').read_text())
+sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()
+results=[]
+for cp,name in enumerate(names,38):
+    p=repo/'tests'/name
+    node=ast.parse(p.read_text())
+    tests=[x.name for x in ast.walk(node) if isinstance(x,(ast.FunctionDef,ast.AsyncFunctionDef)) and x.name.startswith('test')]
+    modules=[x.module for x in ast.walk(node) if isinstance(x,ast.ImportFrom) and x.module and not x.module.startswith(('test','unittest','pathlib','typing','datetime','copy','__future__','tempfile','types'))]
+    entry={'checkpoint':cp,'test_file':'tests/'+name,'test_functions':tests,'imported_modules':modules,'source_sha':sha,'test_file_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'runs':[]}
+    for mode,options,seed in [('standard',[],'0'),('optimized',['-OO'],'1729')]:
+        cmd=['python',*options,'-m','pytest','-q','tests/'+name]
+        env=dict(os.environ,PYTHONPATH='src:tests:.',PYTHONHASHSEED=seed)
+        path=out/f'CP{cp:03}_{mode}.txt'; start=time.monotonic()
+        with path.open('w') as f:
+            f.write('source_sha='+sha+'\nPYTHONHASHSEED='+seed+'\nPYTHONPATH=src:tests:.\ncommand='+' '.join(cmd)+'\n'); f.flush()
+            proc=subprocess.run(cmd,cwd=repo,env=env,stdout=f,stderr=subprocess.STDOUT)
+        text=path.read_text(); summary=next((s for s in reversed(text.splitlines()) if 'passed' in s or 'failed' in s),'NO_RESULT')
+        entry['runs'].append({'mode':mode,'command':cmd,'PYTHONHASHSEED':seed,'exit_code':proc.returncode,'duration_seconds':round(time.monotonic()-start,3),'summary':summary,'log':path.name})
+        print(f'CP{cp:03} {mode}: exit={proc.returncode} {summary}',flush=True)
+    results.append(entry)
+    (out/'INDEX.json').write_text(json.dumps(results,indent=2)+'\n')
+    if any(r['exit_code'] for r in entry['runs']):
+        print('STOP: concrete failure requires investigation',flush=True)
+        raise SystemExit(1)

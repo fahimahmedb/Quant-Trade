@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "pattern": "^artifact:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "input_sha256s": {
+      "items": {
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "output_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "transform_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "transform_version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "input_sha256s",
+    "transform_name",
+    "transform_version",
+    "output_sha256",
+    "parameters",
+    "created_at"
+  ],
+  "title": "DerivedArtifact",
+  "type": "object"
+}

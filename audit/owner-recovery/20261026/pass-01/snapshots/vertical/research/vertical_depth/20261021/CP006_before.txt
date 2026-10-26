@@ -1,0 +1,396 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFF                                               [100%]
+=================================== FAILURES ===================================
+_____ test_invalid_target_cannot_disappear_during_projection[evaluate-nan] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis0')
+value = nan, entrypoint = <function evaluate at 0x7fb7d4cc8e00>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+_____ test_invalid_target_cannot_disappear_during_projection[evaluate-inf] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis1')
+value = inf, entrypoint = <function evaluate at 0x7fb7d4cc8e00>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+____ test_invalid_target_cannot_disappear_during_projection[evaluate--inf] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis2')
+value = -inf, entrypoint = <function evaluate at 0x7fb7d4cc8e00>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+____ test_invalid_target_cannot_disappear_during_projection[evaluate-True] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis3')
+value = True, entrypoint = <function evaluate at 0x7fb7d4cc8e00>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+___ test_invalid_target_cannot_disappear_during_projection[verify_final-nan] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis4')
+value = nan, entrypoint = <function verify_final at 0x7fb7d4cc8ea0>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+___ test_invalid_target_cannot_disappear_during_projection[verify_final-inf] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis5')
+value = inf, entrypoint = <function verify_final at 0x7fb7d4cc8ea0>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+__ test_invalid_target_cannot_disappear_during_projection[verify_final--inf] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis6')
+value = -inf, entrypoint = <function verify_final at 0x7fb7d4cc8ea0>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+__ test_invalid_target_cannot_disappear_during_projection[verify_final-True] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis7')
+value = True, entrypoint = <function verify_final at 0x7fb7d4cc8ea0>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+_____ test_invalid_target_cannot_disappear_during_projection[project-nan] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis8')
+value = nan, entrypoint = <function project at 0x7fb7d4cc8720>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+_____ test_invalid_target_cannot_disappear_during_projection[project-inf] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis9')
+value = inf, entrypoint = <function project at 0x7fb7d4cc8720>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+_____ test_invalid_target_cannot_disappear_during_projection[project--inf] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis10')
+value = -inf, entrypoint = <function project at 0x7fb7d4cc8720>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+_____ test_invalid_target_cannot_disappear_during_projection[project-True] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_target_cannot_dis11')
+value = True, entrypoint = <function project at 0x7fb7d4cc8720>
+
+    @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf"), True])
+    @pytest.mark.parametrize("entrypoint", [evaluate, verify_final, project])
+    def test_invalid_target_cannot_disappear_during_projection(tmp_path, value, entrypoint):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        args = (book, "fixture", {"SYNTH": value})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:17: Failed
+______ test_nonfinite_limit_cannot_disable_a_comparison[max_gross_ratio] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di0')
+field = 'max_gross_ratio'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+_______ test_nonfinite_limit_cannot_disable_a_comparison[max_net_ratio] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di1')
+field = 'max_net_ratio'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+______ test_nonfinite_limit_cannot_disable_a_comparison[max_symbol_ratio] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di2')
+field = 'max_symbol_ratio'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+_____ test_nonfinite_limit_cannot_disable_a_comparison[drawdown_throttle] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di3')
+field = 'drawdown_throttle'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+_______ test_nonfinite_limit_cannot_disable_a_comparison[drawdown_halt] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di4')
+field = 'drawdown_halt'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+_______ test_nonfinite_limit_cannot_disable_a_comparison[throttle_scale] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di5')
+field = 'throttle_scale'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+_______ test_nonfinite_limit_cannot_disable_a_comparison[min_nav_ratio] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_nonfinite_limit_cannot_di6')
+field = 'min_nav_ratio'
+
+    @pytest.mark.parametrize("field", [item.name for item in fields(RiskLimits)])
+    def test_nonfinite_limit_cannot_disable_a_comparison(tmp_path, field):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        limits = replace(RiskLimits(), **{field: float("nan")})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:25: Failed
+__________ test_direct_assess_does_not_pass_nonfinite_accounting[nav] __________
+
+field = 'nav'
+
+    @pytest.mark.parametrize("field", ["nav", "drawdown", "initial_capital", "portfolio"])
+    def test_direct_assess_does_not_pass_nonfinite_accounting(field):
+        args = dict(portfolio={}, nav=100, drawdown=0, limits=RiskLimits(), initial_capital=100)
+        args[field] = {"SYNTH": float("nan")} if field == "portfolio" else float("nan")
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:33: Failed
+_______ test_direct_assess_does_not_pass_nonfinite_accounting[drawdown] ________
+
+field = 'drawdown'
+
+    @pytest.mark.parametrize("field", ["nav", "drawdown", "initial_capital", "portfolio"])
+    def test_direct_assess_does_not_pass_nonfinite_accounting(field):
+        args = dict(portfolio={}, nav=100, drawdown=0, limits=RiskLimits(), initial_capital=100)
+        args[field] = {"SYNTH": float("nan")} if field == "portfolio" else float("nan")
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:33: Failed
+____ test_direct_assess_does_not_pass_nonfinite_accounting[initial_capital] ____
+
+field = 'initial_capital'
+
+    @pytest.mark.parametrize("field", ["nav", "drawdown", "initial_capital", "portfolio"])
+    def test_direct_assess_does_not_pass_nonfinite_accounting(field):
+        args = dict(portfolio={}, nav=100, drawdown=0, limits=RiskLimits(), initial_capital=100)
+        args[field] = {"SYNTH": float("nan")} if field == "portfolio" else float("nan")
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:33: Failed
+_______ test_direct_assess_does_not_pass_nonfinite_accounting[portfolio] _______
+
+field = 'portfolio'
+
+    @pytest.mark.parametrize("field", ["nav", "drawdown", "initial_capital", "portfolio"])
+    def test_direct_assess_does_not_pass_nonfinite_accounting(field):
+        args = dict(portfolio={}, nav=100, drawdown=0, limits=RiskLimits(), initial_capital=100)
+        args[field] = {"SYNTH": float("nan")} if field == "portfolio" else float("nan")
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:33: Failed
+_______ test_corrupt_sleeve_cannot_be_filtered_out_by_symbol_projection ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_corrupt_sleeve_cannot_be_0')
+
+    def test_corrupt_sleeve_cannot_be_filtered_out_by_symbol_projection(tmp_path):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        book.apply_fill("SYNTH", 1, 10, 0, "2026-10-20", "fixture", "one")
+        book.sleeves["fixture"]["SYNTH"].quantity = float("nan")
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:41: Failed
+________ test_invalid_valuation_vector_and_final_cash_adjustment_block _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_invalid_valuation_vector_0')
+
+    def test_invalid_valuation_vector_and_final_cash_adjustment_block(tmp_path):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:47: Failed
+________________ test_no_nan_verdict_can_reach_a_book_mutation _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_no_nan_verdict_can_reach_0')
+
+    def test_no_nan_verdict_can_reach_a_book_mutation(tmp_path):
+        book = Ledger(tmp_path / "book.json", authority="EVALUATION", initial_capital=100)
+        with patch.object(book, "apply_fill", side_effect=AssertionError("must not book")):
+>           with pytest.raises(ValueError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_risk_depth.py:56: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[evaluate-nan]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[evaluate-inf]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[evaluate--inf]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[evaluate-True]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[verify_final-nan]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[verify_final-inf]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[verify_final--inf]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[verify_final-True]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[project-nan]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[project-inf]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[project--inf]
+FAILED tests/test_vertical_risk_depth.py::test_invalid_target_cannot_disappear_during_projection[project-True]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[max_gross_ratio]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[max_net_ratio]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[max_symbol_ratio]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[drawdown_throttle]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[drawdown_halt]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[throttle_scale]
+FAILED tests/test_vertical_risk_depth.py::test_nonfinite_limit_cannot_disable_a_comparison[min_nav_ratio]
+FAILED tests/test_vertical_risk_depth.py::test_direct_assess_does_not_pass_nonfinite_accounting[nav]
+FAILED tests/test_vertical_risk_depth.py::test_direct_assess_does_not_pass_nonfinite_accounting[drawdown]
+FAILED tests/test_vertical_risk_depth.py::test_direct_assess_does_not_pass_nonfinite_accounting[initial_capital]
+FAILED tests/test_vertical_risk_depth.py::test_direct_assess_does_not_pass_nonfinite_accounting[portfolio]
+FAILED tests/test_vertical_risk_depth.py::test_corrupt_sleeve_cannot_be_filtered_out_by_symbol_projection
+FAILED tests/test_vertical_risk_depth.py::test_invalid_valuation_vector_and_final_cash_adjustment_block
+FAILED tests/test_vertical_risk_depth.py::test_no_nan_verdict_can_reach_a_book_mutation
+26 failed in 0.17s

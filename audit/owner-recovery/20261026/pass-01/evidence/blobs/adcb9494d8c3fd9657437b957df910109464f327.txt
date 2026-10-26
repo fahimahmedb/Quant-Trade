@@ -1,0 +1,69 @@
+name: Live Lab 3D CI
+
+on:
+  push:
+    branches:
+      - builder/live-lab-3d-full-build-20261015
+      - builder/live-lab-owner-ux-rebuild-20261015
+      - builder/live-lab-oracle-integration-20261020
+    paths:
+      - 'research/live_lab_ux/**'
+      - '.github/workflows/live-lab-3d-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-lab-3d-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: research/live_lab_ux
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install pinned Live Lab dependencies
+        run: npm ci
+      - name: Run isolated Live Lab suite
+        run: node --test tests/*.test.js
+      - name: Syntax-check browser modules
+        run: find . -path './node_modules' -prune -o -name '*.js' -type f -print0 | xargs -0 -n1 node --check
+      - name: Assert 3D integration boundaries
+        run: |
+          grep -q 'createResearchLab3D' app.js
+          grep -q 'createResearchLab3D' live-app.js
+          grep -q 'scene3d.css' index.html
+          grep -q 'scene3d.css' live.html
+          grep -q "WebGLRenderer" ui/scene3d.js
+          grep -q 'state.animationRunning' ui/scene3d.js
+          grep -q 'escapeSceneText' ui/scene3d-policy.js
+          grep -q "mobileSafari:'UNVERIFIED_REAL_DEVICE'" ui/scene3d.js
+      - name: Assert Oracle-native truth contract
+        run: |
+          grep -q "HYPOTHESIS_GENERATION:'hypothesis-generation'" core/model.js
+          grep -q "ui_role" adapters/platform-native.js
+          grep -q "ui_label" adapters/platform-native.js
+          grep -q "role-from-worker-id" adapters/platform-native.js
+          grep -q "hypothesis-generation" tests/oracle-native.test.js
+          grep -q "UNBOUND_UNTIL_SITE_PRINCIPAL_IS_DEPLOYED" adapters/oracle-native-contract.js
+      - name: Browser QA on real live page and no-WebGL fallback
+        run: |
+          python3 -m http.server 4173 >/tmp/live-lab-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          npm run qa:browser || { cat /tmp/live-lab-http.log; exit 1; }
+      - name: Upload browser QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-lab-browser-qa-${{ github.sha }}
+          path: |
+            research/live_lab_ux/artifacts/browser-qa.json
+            research/live_lab_ux/artifacts/G_ORACLE_WORLD.png
+            research/live_lab_ux/artifacts/H_ORACLE_SELECTED.png
+            research/live_lab_ux/artifacts/F_FALLBACK.png
+          if-no-files-found: error
+          retention-days: 90

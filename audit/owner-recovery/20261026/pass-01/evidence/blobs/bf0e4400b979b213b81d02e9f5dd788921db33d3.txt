@@ -1,0 +1,73 @@
+# Diagnostic label CP041 — frozen trial accounting: existing-test runtime replay
+
+MISSION_CHECKPOINT_ACCEPTED=FALSE
+EVIDENCE_CLASS=EXISTING_TEST_RUNTIME_REPLAY
+NEW_ADVERSARIAL_CASES=0
+PRODUCT_REPAIR=NONE
+NEW_DEPTH_QUALIFICATION=NONE
+
+Correction following Owner review: this numbered entry is insufficient for the
+requested vertical-depth checkpoint standard. It reuses existing tests with
+changed runtime flags/hash seed. It does not demonstrate a new implementation
+descent, a localized failure search, or a new deep invariant qualification.
+Keep the logs as supplemental regression evidence; do not count this label as
+completed substantive vertical work. No defect is required to earn a checkpoint,
+but a meaningful new falsification investigation is required and absent here.
+
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+TESTED_STANDARD_AND_OPTIMIZED_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+CONTINUATION_DATE=2026-10-23
+
+Module/capability: the existing `tests/test_research_os_frozen_trial_accounting.py` contract and its explicit cases below.
+Modules imported by reused tests (not proof of new implementation descent): `research.research_os.expansion.experiment_runner`.
+These interfaces and this test surface exist on the immutable Phase-A base.
+North Star basis: preserve scientific identity/provenance, causal clocks,
+reproducible durable truth, and fail-closed authority through alternate execution
+conditions; do not infer any economic permission from technical readiness.
+
+Starting depth: existing structured adversarial regression; invariance under
+optimized Python and a different process hash seed was not recorded here.
+This diagnostic adds a runtime replay only. Its checkpoint-depth claim is withdrawn.
+
+Existing cases replayed (no newly constructed adversarial fixtures in this entry):
+
+- `test_legacy_hash_valid_nonfinite_plan_cannot_replay_or_rebind`
+- `test_nonfinite_or_invalid_estimates_cannot_freeze`
+- `test_unknown_and_finite_estimates_preserve_freeze_and_rebinding`
+
+Runtime composition: execute these existing denial/identity/recovery fixtures
+with ordinary Python/PYTHONHASHSEED=0, then Python -OO/PYTHONHASHSEED=1729.
+Assertions in application modules may disappear in the latter; pytest-rewritten
+test assertions and unittest checks remain the oracle. The optimized run warns
+about disabled assertions in non-test modules, as expected. Explicit child
+commands in fixtures keep their own interpreter flags; this does not prove every
+child was optimized. All effects use local fixtures/mocks/disposable stores.
+No deployment, production Site operation or live source call is performed.
+
+- standard: `3 passed, 15 subtests passed in 0.05s`; exit 0; `research/vertical_depth/20261021/CP041_standard.txt`.
+- optimized: `3 passed, 1 warning, 15 subtests passed in 0.05s`; exit 0; `research/vertical_depth/20261021/CP041_optimized.txt`.
+
+Defect found: none reproduced by this bounded runtime composition.
+Root cause/repair: not applicable; no speculative product change.
+Attained new depth: NONE. The prior D2 requalification wording is withdrawn.
+Existing fixture coverage retains its earlier limits and is not new depth work.
+
+Remaining unproven depth: arbitrary object graphs and schema migrations,
+noncooperating concurrent writers, physical power loss, real external authority
+and source truth, and failures outside the named fixtures. Different interpreter
+versions, all hash seeds and semantic equivalence of source facts are unproved.
+An unchanged green suite is not exhaustive falsification. Final regression and
+receipt evidence are shared in FINAL_qualification.json and the final manifest;
+714 per-mode existing tests across CP038–CP100 overlap other suites and are not
+new tests, independent observations, or 63 new capabilities.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains separately owned and unrepaired.
+Authority state: local diagnostic fixtures only; no Owner authority granted.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

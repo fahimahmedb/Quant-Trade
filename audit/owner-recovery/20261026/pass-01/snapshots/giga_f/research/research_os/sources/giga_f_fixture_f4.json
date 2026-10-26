@@ -1,0 +1,26 @@
+{
+  "source_id": "fixture-F4",
+  "source_version": "v1",
+  "origin_family": "FUNDAMENTAL_DOCUMENT",
+  "origin": "FILING_CHANGE",
+  "discovery_method": "DOCUMENT_EXTRACTION",
+  "published_at": "2026-10-01T00:00:00Z",
+  "available_at": "2026-10-01T00:00:00Z",
+  "evidence_mode": "DETERMINISTIC_FIXTURE",
+  "observation_ref": "fixture://giga-f/F4/v1",
+  "seed_fields": {
+    "actor": "hypothesized-actor-F4",
+    "mechanism_family": "UNVERIFIED_MECHANISM_F4",
+    "mechanism_state": "HYPOTHESIS",
+    "universe": "FIXTURE_UNIVERSE",
+    "instruments": [
+      "FIXTURE_INSTRUMENT"
+    ],
+    "information_source": "fixture-F4",
+    "clock": "after source availability",
+    "horizon": "one declared session",
+    "constraint": "UNVERIFIED_CONSTRAINT_F4",
+    "possible_transfer": "UNKNOWN",
+    "rule_structure": "UNKNOWN"
+  }
+}

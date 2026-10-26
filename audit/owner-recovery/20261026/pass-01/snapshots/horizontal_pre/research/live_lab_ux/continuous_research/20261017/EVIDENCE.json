@@ -1,0 +1,51 @@
+{
+  "observed_at": "2026-10-17T00:41:45.748230+00:00",
+  "investigation_base_sha": "861e62df0a9a9747d0bdb6fef8fca55cf9a58d0a",
+  "research_branch_observed_sha": "68bbab8ec990c813310224bc8737c41480853108",
+  "site_source_sha": "517f510c096e752643c64097b475048cfc0385c1",
+  "site_version": 22,
+  "site_linked_automations": [],
+  "current_codex_cli_version": "0.159.2",
+  "current_codex_login_status": "Logged in using ChatGPT",
+  "actual_new_codex_headless_turn_tested": false,
+  "host_uptime_and_persistence_24h_proven": false,
+  "source_findings": [
+    {
+      "file": "src/quant/edge_lab/worker.py",
+      "fact": "Explicitly never calls a model or backtest; cloud task supplies reasoning."
+    },
+    {
+      "file": "scripts/research_runtime.py",
+      "fact": "start loops only while run_once returns COMPLETED; exits on IDLE/PAUSED/FAILED."
+    },
+    {
+      "file": "src/autonomous_research/orchestrator.py",
+      "fact": "Historical bounded vertical slice; interrupted RUNNING work is automatically put back to PENDING. Must not be reused as an economic exactly-once guarantee."
+    },
+    {
+      "file": ".github/workflows/edge-lab.yml",
+      "fact": "Push/dispatch metadata workflow, no cron scheduler or autonomous reasoning engine."
+    },
+    {
+      "file": "research/edge_lab/CONTROL.json",
+      "fact": "Fresh remote control unpaused; paid_usd_total=0, capital and live trading false."
+    },
+    {
+      "file": "/workspace/quant-site/.openai/hosting.json",
+      "fact": "Only existing D1 DB and MCP configured; no observed Queue/Workflow/DO/Container binding."
+    }
+  ],
+  "interpretation": "Five scheduled workflows exist; zero READY and one expired CLAIMED task currently prevent refill. Persistent event-driven continuation, recovery and live delivery remain to be qualified.",
+  "mutations": {
+    "production": false,
+    "automation_schedules": false,
+    "scientific_state": false,
+    "new_paid_service": false
+  },
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_authorized": 0,
+  "scope_note": "The first checkpoint audits historical Edge Lab code. CURRENT_OS_PROOF.json and ACTIVE_WORKFLOWS.json supersede any inference that the current Research OS has no scheduled workers.",
+  "current_research_os_branch": "builder/research-os-autonomous-loop-20261015",
+  "current_research_os_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121"
+}

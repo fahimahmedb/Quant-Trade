@@ -1,0 +1,381 @@
+FFFFFFFFFF.F.FFFFFFFF....                                                [100%]
+=================================== FAILURES ===================================
+__________ test_checkpoint_replay_uses_hash_identity[first0-second0] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_replay_uses_ha0')
+first = {'x': True}, second = {'x': 1}
+
+    @pytest.mark.parametrize('first,second', [({'x': True}, {'x': 1}), ({'x': 1}, {'x': 1.0}), ({'x': 0.0}, {'x': -0.0})])
+    def test_checkpoint_replay_uses_hash_identity(tmp_path, first, second):
+        path = tmp_path / 'checkpoint.json'
+        state.write_immutable_json(path, first)
+        original = path.read_bytes()
+>       with pytest.raises(ValueError, match='mutation'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:16: Failed
+__________ test_checkpoint_replay_uses_hash_identity[first1-second1] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_replay_uses_ha1')
+first = {'x': 1}, second = {'x': 1.0}
+
+    @pytest.mark.parametrize('first,second', [({'x': True}, {'x': 1}), ({'x': 1}, {'x': 1.0}), ({'x': 0.0}, {'x': -0.0})])
+    def test_checkpoint_replay_uses_hash_identity(tmp_path, first, second):
+        path = tmp_path / 'checkpoint.json'
+        state.write_immutable_json(path, first)
+        original = path.read_bytes()
+>       with pytest.raises(ValueError, match='mutation'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:16: Failed
+__________ test_checkpoint_replay_uses_hash_identity[first2-second2] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_replay_uses_ha2')
+first = {'x': 0.0}, second = {'x': -0.0}
+
+    @pytest.mark.parametrize('first,second', [({'x': True}, {'x': 1}), ({'x': 1}, {'x': 1.0}), ({'x': 0.0}, {'x': -0.0})])
+    def test_checkpoint_replay_uses_hash_identity(tmp_path, first, second):
+        path = tmp_path / 'checkpoint.json'
+        state.write_immutable_json(path, first)
+        original = path.read_bytes()
+>       with pytest.raises(ValueError, match='mutation'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:16: Failed
+_______________ test_checkpoint_tuple_replay_uses_wire_identity ________________
+
+path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_tuple_replay_u0/checkpoint.json')
+payload = {'x': (1, 2)}
+
+    def write_immutable_json(path: Path, payload: Dict[str, Any]) -> None:
+        """Publish complete content once. Concurrent identical writers are idempotent.
+    
+        A hard link exposes only a fully fsynced file and refuses replacement. The
+        caller must use a filesystem supporting atomic hard links within a directory.
+        """
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        record = {"payload_hash": sha256_json(payload), "payload": deepcopy(payload)}
+        fd, temporary = tempfile.mkstemp(prefix=".immutable-", dir=path.parent)
+        try:
+            with os.fdopen(fd, "w") as stream:
+                json.dump(record, stream, sort_keys=True, allow_nan=False)
+                stream.flush()
+                os.fsync(stream.fileno())
+            try:
+>               os.link(temporary, path)
+E               FileExistsError: [Errno 17] File exists: '/tmp/pytest-of-agent/pytest-0/test_checkpoint_tuple_replay_u0/.immutable-t6ss8bk7' -> '/tmp/pytest-of-agent/pytest-0/test_checkpoint_tuple_replay_u0/checkpoint.json'
+
+research/research_os/expansion/persistent_state.py:31: FileExistsError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_tuple_replay_u0')
+
+    def test_checkpoint_tuple_replay_uses_wire_identity(tmp_path):
+        path = tmp_path / 'checkpoint.json'
+        state.write_immutable_json(path, {'x': (1, 2)})
+>       state.write_immutable_json(path, {'x': (1, 2)})
+
+tests/test_vertical_immutable_depth.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_tuple_replay_u0/checkpoint.json')
+payload = {'x': (1, 2)}
+
+    def write_immutable_json(path: Path, payload: Dict[str, Any]) -> None:
+        """Publish complete content once. Concurrent identical writers are idempotent.
+    
+        A hard link exposes only a fully fsynced file and refuses replacement. The
+        caller must use a filesystem supporting atomic hard links within a directory.
+        """
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        record = {"payload_hash": sha256_json(payload), "payload": deepcopy(payload)}
+        fd, temporary = tempfile.mkstemp(prefix=".immutable-", dir=path.parent)
+        try:
+            with os.fdopen(fd, "w") as stream:
+                json.dump(record, stream, sort_keys=True, allow_nan=False)
+                stream.flush()
+                os.fsync(stream.fileno())
+            try:
+                os.link(temporary, path)
+            except FileExistsError:
+                if read_immutable_json(path) != payload:
+>                   raise ValueError("immutable checkpoint mutation rejected")
+E                   ValueError: immutable checkpoint mutation rejected
+
+research/research_os/expansion/persistent_state.py:34: ValueError
+______ test_checkpoint_and_registry_reject_noncanonical_objects[payload0] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_and_registry_r0')
+payload = []
+
+    @pytest.mark.parametrize('payload', [[], None, {'x': float('nan')}, {'x': float('inf')}, {'nested': {1: 'bad'}}])
+    def test_checkpoint_and_registry_reject_noncanonical_objects(tmp_path, payload):
+        path = tmp_path / 'checkpoint.json'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_immutable_depth.py:31: Failed
+________ test_checkpoint_and_registry_reject_noncanonical_objects[None] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_and_registry_r1')
+payload = None
+
+    @pytest.mark.parametrize('payload', [[], None, {'x': float('nan')}, {'x': float('inf')}, {'nested': {1: 'bad'}}])
+    def test_checkpoint_and_registry_reject_noncanonical_objects(tmp_path, payload):
+        path = tmp_path / 'checkpoint.json'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_immutable_depth.py:31: Failed
+______ test_checkpoint_and_registry_reject_noncanonical_objects[payload2] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_and_registry_r2')
+payload = {'x': nan}
+
+    @pytest.mark.parametrize('payload', [[], None, {'x': float('nan')}, {'x': float('inf')}, {'nested': {1: 'bad'}}])
+    def test_checkpoint_and_registry_reject_noncanonical_objects(tmp_path, payload):
+        path = tmp_path / 'checkpoint.json'
+        with pytest.raises((ValueError, TypeError)):
+            state.write_immutable_json(path, payload)
+        assert not path.exists()
+        registry = state.ImmutableArtifactRegistry('r')
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_immutable_depth.py:35: Failed
+______ test_checkpoint_and_registry_reject_noncanonical_objects[payload3] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_and_registry_r3')
+payload = {'x': inf}
+
+    @pytest.mark.parametrize('payload', [[], None, {'x': float('nan')}, {'x': float('inf')}, {'nested': {1: 'bad'}}])
+    def test_checkpoint_and_registry_reject_noncanonical_objects(tmp_path, payload):
+        path = tmp_path / 'checkpoint.json'
+        with pytest.raises((ValueError, TypeError)):
+            state.write_immutable_json(path, payload)
+        assert not path.exists()
+        registry = state.ImmutableArtifactRegistry('r')
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_immutable_depth.py:35: Failed
+______ test_checkpoint_and_registry_reject_noncanonical_objects[payload4] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_and_registry_r4')
+payload = {'nested': {1: 'bad'}}
+
+    @pytest.mark.parametrize('payload', [[], None, {'x': float('nan')}, {'x': float('inf')}, {'nested': {1: 'bad'}}])
+    def test_checkpoint_and_registry_reject_noncanonical_objects(tmp_path, payload):
+        path = tmp_path / 'checkpoint.json'
+>       with pytest.raises((ValueError, TypeError)):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, TypeError)
+
+tests/test_vertical_immutable_depth.py:31: Failed
+______________ test_checkpoint_malformed_read_fails_closed[null] _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_malformed_read0')
+raw = 'null'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '1', '{"payload_hash":"x","payload":{}}',
+        '{"payload_hash":"' + sha256_json({'x': 1}) + '","payload":{"x":0,"x":1}}',
+        json.dumps({'payload_hash':sha256_json({'x': float('nan')}), 'payload':{'x': float('nan')}})])
+    def test_checkpoint_malformed_read_fails_closed(tmp_path, raw):
+        path = tmp_path / 'checkpoint.json'
+        path.write_text(raw)
+        with pytest.raises(ValueError):
+>           state.read_immutable_json(path)
+
+tests/test_vertical_immutable_depth.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_malformed_read0/checkpoint.json')
+
+    def read_immutable_json(path: Path) -> Dict[str, Any]:
+        record = json.loads(Path(path).read_text())
+>       if set(record) != {"payload_hash", "payload"} or record["payload_hash"] != sha256_json(record["payload"]):
+           ^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not iterable
+
+research/research_os/expansion/persistent_state.py:46: TypeError
+________________ test_checkpoint_malformed_read_fails_closed[1] ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_malformed_read2')
+raw = '1'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '1', '{"payload_hash":"x","payload":{}}',
+        '{"payload_hash":"' + sha256_json({'x': 1}) + '","payload":{"x":0,"x":1}}',
+        json.dumps({'payload_hash':sha256_json({'x': float('nan')}), 'payload':{'x': float('nan')}})])
+    def test_checkpoint_malformed_read_fails_closed(tmp_path, raw):
+        path = tmp_path / 'checkpoint.json'
+        path.write_text(raw)
+        with pytest.raises(ValueError):
+>           state.read_immutable_json(path)
+
+tests/test_vertical_immutable_depth.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_malformed_read2/checkpoint.json')
+
+    def read_immutable_json(path: Path) -> Dict[str, Any]:
+        record = json.loads(Path(path).read_text())
+>       if set(record) != {"payload_hash", "payload"} or record["payload_hash"] != sha256_json(record["payload"]):
+           ^^^^^^^^^^^
+E       TypeError: 'int' object is not iterable
+
+research/research_os/expansion/persistent_state.py:46: TypeError
+_ test_checkpoint_malformed_read_fails_closed[{"payload_hash":"5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22","payload":{"x":0,"x":1}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_malformed_read4')
+raw = '{"payload_hash":"5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22","payload":{"x":0,"x":1}}'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '1', '{"payload_hash":"x","payload":{}}',
+        '{"payload_hash":"' + sha256_json({'x': 1}) + '","payload":{"x":0,"x":1}}',
+        json.dumps({'payload_hash':sha256_json({'x': float('nan')}), 'payload':{'x': float('nan')}})])
+    def test_checkpoint_malformed_read_fails_closed(tmp_path, raw):
+        path = tmp_path / 'checkpoint.json'
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:46: Failed
+_ test_checkpoint_malformed_read_fails_closed[{"payload_hash": "c238cb6e9ac5407491b0988102620ab9445290d2ed7713c516a2b28bd2388968", "payload": {"x": NaN}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_checkpoint_malformed_read5')
+raw = '{"payload_hash": "c238cb6e9ac5407491b0988102620ab9445290d2ed7713c516a2b28bd2388968", "payload": {"x": NaN}}'
+
+    @pytest.mark.parametrize('raw', ['null', '[]', '1', '{"payload_hash":"x","payload":{}}',
+        '{"payload_hash":"' + sha256_json({'x': 1}) + '","payload":{"x":0,"x":1}}',
+        json.dumps({'payload_hash':sha256_json({'x': float('nan')}), 'payload':{'x': float('nan')}})])
+    def test_checkpoint_malformed_read_fails_closed(tmp_path, raw):
+        path = tmp_path / 'checkpoint.json'
+        path.write_text(raw)
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:46: Failed
+_______________ test_registry_requires_exact_nonempty_identity[] _______________
+
+artifact_id = ''
+
+    @pytest.mark.parametrize('artifact_id', ['', None, 1, True])
+    def test_registry_requires_exact_nonempty_identity(artifact_id):
+        registry = state.ImmutableArtifactRegistry('r')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:53: Failed
+_____________ test_registry_requires_exact_nonempty_identity[None] _____________
+
+artifact_id = None
+
+    @pytest.mark.parametrize('artifact_id', ['', None, 1, True])
+    def test_registry_requires_exact_nonempty_identity(artifact_id):
+        registry = state.ImmutableArtifactRegistry('r')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:53: Failed
+______________ test_registry_requires_exact_nonempty_identity[1] _______________
+
+artifact_id = 1
+
+    @pytest.mark.parametrize('artifact_id', ['', None, 1, True])
+    def test_registry_requires_exact_nonempty_identity(artifact_id):
+        registry = state.ImmutableArtifactRegistry('r')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:53: Failed
+_____________ test_registry_requires_exact_nonempty_identity[True] _____________
+
+artifact_id = True
+
+    @pytest.mark.parametrize('artifact_id', ['', None, 1, True])
+    def test_registry_requires_exact_nonempty_identity(artifact_id):
+        registry = state.ImmutableArtifactRegistry('r')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_vertical_immutable_depth.py:53: Failed
+________________ test_registry_deterministic_competing_payloads ________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fbf5ca491f0>
+
+    def test_registry_deterministic_competing_payloads(monkeypatch):
+        registry = state.ImmutableArtifactRegistry('r')
+        entered, release, second_started = threading.Event(), threading.Event(), threading.Event()
+        original = state.sha256_json
+        def held(payload):
+            if payload == {'x': 1}:
+                entered.set()
+                assert release.wait(5)
+            return original(payload)
+        monkeypatch.setattr(state, 'sha256_json', held)
+        def second():
+            second_started.set()
+            return registry.register('same', {'x': 2})
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            one = pool.submit(registry.register, 'same', {'x': 1})
+            try:
+                assert entered.wait(5)
+                two = pool.submit(second)
+                assert second_started.wait(5)
+>               assert not two.done()
+E               assert not True
+E                +  where True = done()
+E                +    where done = <Future at 0x7fbf5ca4b770 state=finished returned dict>.done
+
+tests/test_vertical_immutable_depth.py:77: AssertionError
+______________ test_registry_normalizes_and_detaches_wire_payload ______________
+
+    def test_registry_normalizes_and_detaches_wire_payload():
+        registry = state.ImmutableArtifactRegistry('r')
+        payload = {'nested': ([1],)}
+        result = registry.register('id', payload)
+        payload['nested'][0].append(2)
+>       assert result['payload'] == {'nested': [[1]]}
+E       AssertionError: assert {'nested': ([1],)} == {'nested': [[1]]}
+E         
+E         Differing items:
+E         {'nested': ([1],)} != {'nested': [[1]]}
+E         Use -v to get more diff
+
+tests/test_vertical_immutable_depth.py:91: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_replay_uses_hash_identity[first0-second0]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_replay_uses_hash_identity[first1-second1]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_replay_uses_hash_identity[first2-second2]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_tuple_replay_uses_wire_identity
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_and_registry_reject_noncanonical_objects[payload0]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_and_registry_reject_noncanonical_objects[None]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_and_registry_reject_noncanonical_objects[payload2]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_and_registry_reject_noncanonical_objects[payload3]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_and_registry_reject_noncanonical_objects[payload4]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_malformed_read_fails_closed[null]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_malformed_read_fails_closed[1]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_malformed_read_fails_closed[{"payload_hash":"5041bf1f713df204784353e82f6a4a535931cb64f1f4b4a5aeaffcb720918b22","payload":{"x":0,"x":1}}]
+FAILED tests/test_vertical_immutable_depth.py::test_checkpoint_malformed_read_fails_closed[{"payload_hash": "c238cb6e9ac5407491b0988102620ab9445290d2ed7713c516a2b28bd2388968", "payload": {"x": NaN}}]
+FAILED tests/test_vertical_immutable_depth.py::test_registry_requires_exact_nonempty_identity[]
+FAILED tests/test_vertical_immutable_depth.py::test_registry_requires_exact_nonempty_identity[None]
+FAILED tests/test_vertical_immutable_depth.py::test_registry_requires_exact_nonempty_identity[1]
+FAILED tests/test_vertical_immutable_depth.py::test_registry_requires_exact_nonempty_identity[True]
+FAILED tests/test_vertical_immutable_depth.py::test_registry_deterministic_competing_payloads
+FAILED tests/test_vertical_immutable_depth.py::test_registry_normalizes_and_detaches_wire_payload
+19 failed, 6 passed in 0.13s

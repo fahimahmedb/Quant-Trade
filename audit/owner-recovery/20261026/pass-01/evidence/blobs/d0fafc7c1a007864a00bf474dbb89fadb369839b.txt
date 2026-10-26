@@ -1,0 +1,307 @@
+mutation=durable_readback
+fixed_source_sha256=276e9fedafdb733704e44fc8c9b5206ae6de73d78458ed444c8a81be361152c6
+FFFFFFFF......................................F..                        [100%]
+=================================== FAILURES ===================================
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-priority] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang0')
+field = 'priority', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         Skipping 256 identical leading characters in diff, use -v to show
+E         - riority": true, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.182485+00:00", "worker": "fake"}
+E         ?           ^^^^^^^^^^^^^^^
+E         + riority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.182485+00:00", "worker": "fake"}
+E         ?           ^^^^^^^^^^^^
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-attempts] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang1')
+field = 'attempts', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         - {"attempts": false, "blocked_reason": null, "created_at": "2026-10-24T02:16:15.196633+00:00", "data_fingerprint": "v1", "due_at": null, "lane": "synthetic", "last_error": null, "lease_seconds": 600, "metadata": {"identity": {"sequence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.196639+00:00", "worker": "fake"}
+E         ?              ^^^^^^
+E         + {"attempts": 0, "blocked_reason": null, "created_at": "2026-10-24T02:16:15.196633+00:00",...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-lease] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang2')
+field = 'lease', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         Skipping 183 identical leading characters in diff, use -v to show
+E         - onds": 600.0, "metadata": {"identity": {"sequence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.202106+00:00", "worker": "fake"}
+E         ?           ^^^
+E         + onds": 600, "metadata": {"identity": {"sequence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "update...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-metadata] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang3')
+field = 'metadata', operation = 'save'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         Skipping 223 identical leading characters in diff, use -v to show
+E         - equence": false}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.207244+00:00", "worker": "fake"}
+E         ?           ^^^^^
+E         + equence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.207244+00:00", "worker": "fake"}
+E         ?           ^
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-priority] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang4')
+field = 'priority', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         Skipping 256 identical leading characters in diff, use -v to show
+E         - riority": true, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.213450+00:00", "worker": "fake"}
+E         ?           ^^^^^^^^^^^^^^^
+E         + riority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.213450+00:00", "worker": "fake"}
+E         ?           ^^^^^^^^^^^^
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-attempts] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang5')
+field = 'attempts', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         - {"attempts": false, "blocked_reason": null, "created_at": "2026-10-24T02:16:15.219437+00:00", "data_fingerprint": "v1", "due_at": null, "lane": "synthetic", "last_error": null, "lease_seconds": 600, "metadata": {"identity": {"sequence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.219444+00:00", "worker": "fake"}
+E         ?              ^^^^^^
+E         + {"attempts": 0, "blocked_reason": null, "created_at": "2026-10-24T02:16:15.219437+00:00",...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-lease] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang6')
+field = 'lease', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         Skipping 183 identical leading characters in diff, use -v to show
+E         - onds": 600.0, "metadata": {"identity": {"sequence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.230026+00:00", "worker": "fake"}
+E         ?           ^^^
+E         + onds": 600, "metadata": {"identity": {"sequence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "update...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-metadata] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_typed_only_external_chang7')
+field = 'metadata', operation = 'add'
+
+    @pytest.mark.parametrize('field', ['priority', 'attempts', 'lease', 'metadata'])
+    @pytest.mark.parametrize('operation', ['save', 'add'])
+    def test_typed_only_external_change_fences_stale_writer_and_retries_from_readback(tmp_path, field, operation):
+        queue = setup_queue(tmp_path)
+        observed = json.loads(queue.path.read_text())
+        external = deepcopy(observed)
+        typed_change(external, field)
+        assert external == observed  # Python equality is precisely the unsafe comparison.
+        assert json.dumps(external, sort_keys=True) != json.dumps(observed, sort_keys=True)
+        write_json(queue.path, external)
+        durable = queue.path.read_bytes()
+        with pytest.raises(QueueConflict):
+            if operation == 'save':
+                queue.tasks['original'].reason = 'stale edit'
+                queue.save()
+            else:
+                queue.add(task('next'))
+        assert queue.path.read_bytes() == durable
+>       assert json.dumps(asdict(queue.tasks['original']), sort_keys=True) == json.dumps(external['tasks'][0], sort_keys=True)
+E       assert '{"attempts":...ker": "fake"}' == '{"attempts":...ker": "fake"}'
+E
+E         Skipping 223 identical leading characters in diff, use -v to show
+E         - equence": false}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.240549+00:00", "worker": "fake"}
+E         ?           ^^^^^
+E         + equence": 0}}, "parent": null, "priority": 1, "reason": "durable proof only", "required_resources": [], "started_at": null, "status": "PENDING", "task_id": "original", "updated_at": "2026-10-24T02:16:15.240549+00:00", "worker": "fake"}
+E         ?           ^
+
+tests/test_vertical_queue_document_depth.py:54: AssertionError
+_ test_strict_readback_preserves_exact_typed_new_task_after_publication_error[True] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-35/test_strict_readback_preserves1')
+ack_lost = True
+
+    @pytest.mark.parametrize('ack_lost', [False, True])
+    def test_strict_readback_preserves_exact_typed_new_task_after_publication_error(tmp_path, ack_lost):
+        queue = setup_queue(tmp_path)
+        proposal = task('next')
+        proposal.metadata['identity']['sequence'] = False
+        before = queue.path.read_bytes()
+
+        def publication(path, document):
+            if ack_lost:
+                write_json(path, document)
+            raise OSError('publication/ACK error')
+
+        with patch.object(runtime, '_write_json', side_effect=publication):
+            with pytest.raises(OSError):
+                queue.add(proposal)
+        if ack_lost:
+>           assert queue.tasks['next'].metadata['identity']['sequence'] is False
+                   ^^^^^^^^^^^^^^^^^^^
+E           KeyError: 'next'
+
+tests/test_vertical_queue_document_depth.py:172: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-priority]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-attempts]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-lease]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[save-metadata]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-priority]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-attempts]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-lease]
+FAILED tests/test_vertical_queue_document_depth.py::test_typed_only_external_change_fences_stale_writer_and_retries_from_readback[add-metadata]
+FAILED tests/test_vertical_queue_document_depth.py::test_strict_readback_preserves_exact_typed_new_task_after_publication_error[True]
+9 failed, 40 passed in 0.21s

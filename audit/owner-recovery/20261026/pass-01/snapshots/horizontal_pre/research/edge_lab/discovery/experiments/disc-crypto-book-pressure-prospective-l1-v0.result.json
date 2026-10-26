@@ -1,0 +1,708 @@
+{
+  "experiment_id": "disc-crypto-book-pressure-prospective-l1-v0",
+  "label": "EXPLORATORY",
+  "decision": "PARK",
+  "completed_at": "2026-10-11T22:28:54.485080+00:00",
+  "predeclaration_commit": "6b9daadaf6a5bf10b3b7356c2740080961add095",
+  "receipts": [
+    {
+      "slot": 0,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:21.460260+00:00",
+      "send_monotonic": 39380.351761222,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:22 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:22.374798+00:00",
+      "receive_monotonic": 39381.26630637,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 1,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:26.460304+00:00",
+      "send_monotonic": 39385.351825608,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:27 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:27.146076+00:00",
+      "receive_monotonic": 39386.037592128,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 2,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:31.460303+00:00",
+      "send_monotonic": 39390.351823023,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:31 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:31.953331+00:00",
+      "receive_monotonic": 39390.844834834,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 3,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:36.460307+00:00",
+      "send_monotonic": 39395.351827935,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:36 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:37.082816+00:00",
+      "receive_monotonic": 39395.974343816,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 4,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:41.460378+00:00",
+      "send_monotonic": 39400.35196099,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:42 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:42.377814+00:00",
+      "receive_monotonic": 39401.269323229,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 5,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:46.460293+00:00",
+      "send_monotonic": 39405.351814588,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:47 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:47.225174+00:00",
+      "receive_monotonic": 39406.116684126,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 6,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:51.460304+00:00",
+      "send_monotonic": 39410.351824797,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:51 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:51.899333+00:00",
+      "receive_monotonic": 39410.790843384,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 7,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:26:56.460303+00:00",
+      "send_monotonic": 39415.351823753,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:26:57 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:26:57.356324+00:00",
+      "receive_monotonic": 39416.247832318,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 8,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:01.460294+00:00",
+      "send_monotonic": 39420.351817147,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:01 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:02.071188+00:00",
+      "receive_monotonic": 39420.962696549,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 9,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:06.460396+00:00",
+      "send_monotonic": 39425.351918244,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:06 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:06.973535+00:00",
+      "receive_monotonic": 39425.865042599,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 10,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:11.460283+00:00",
+      "send_monotonic": 39430.351805468,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:12 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:12.253421+00:00",
+      "receive_monotonic": 39431.144929726,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 11,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:16.460304+00:00",
+      "send_monotonic": 39435.351825115,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:17 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:17.258787+00:00",
+      "receive_monotonic": 39436.150375176,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 12,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:21.461310+00:00",
+      "send_monotonic": 39440.353089393,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:21 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:21.946824+00:00",
+      "receive_monotonic": 39440.838479625,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 13,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:26.460295+00:00",
+      "send_monotonic": 39445.35181601,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:27 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:27.286258+00:00",
+      "receive_monotonic": 39446.17776568,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 14,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:31.460973+00:00",
+      "send_monotonic": 39450.352674391,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:32 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:32.240169+00:00",
+      "receive_monotonic": 39451.131681391,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 15,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:36.461188+00:00",
+      "send_monotonic": 39455.352991529,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:36 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:36.875922+00:00",
+      "receive_monotonic": 39455.767429799,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 16,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:41.460324+00:00",
+      "send_monotonic": 39460.351844772,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:42 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:42.293532+00:00",
+      "receive_monotonic": 39461.18504059,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 17,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:46.460310+00:00",
+      "send_monotonic": 39465.351831351,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:47 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:47.225994+00:00",
+      "receive_monotonic": 39466.118694629,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 18,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:51.460355+00:00",
+      "send_monotonic": 39470.351875636,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:51 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:52.047721+00:00",
+      "receive_monotonic": 39470.939229052,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 19,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:27:56.461540+00:00",
+      "send_monotonic": 39475.354373176,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:27:56 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:27:56.891427+00:00",
+      "receive_monotonic": 39475.782934882,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    },
+    {
+      "slot": 20,
+      "url": "https://www.bitmex.com/api/v1/quote?symbol=XBTUSD&count=1&reverse=true",
+      "send_utc": "2026-10-11T22:28:01.460297+00:00",
+      "send_monotonic": 39480.35182082,
+      "status": 200,
+      "error": "",
+      "headers": {
+        "content-type": "application/json;charset=utf-8",
+        "content-length": "77",
+        "date": "Sun, 11 Oct 2026 22:28:01 GMT",
+        "x-ratelimit-remaining": "179"
+      },
+      "receive_utc": "2026-10-11T22:28:01.891924+00:00",
+      "receive_monotonic": 39480.783446751,
+      "payload_bytes": 77,
+      "sha256": "fa9364cb9386ea861b8ca732674d3547dda41dffc1e2ef61d083158f85f2a39a"
+    }
+  ],
+  "quote_count": 21,
+  "valid_trades": 0,
+  "planned_trades": 19,
+  "quote_span_seconds": null,
+  "quote_quality": [
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "slot": null,
+      "source_timestamp": null,
+      "age_seconds": null,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    }
+  ],
+  "intervals": [
+    {
+      "entry_slot": 1,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 2,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 3,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 4,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 5,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 6,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 7,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 8,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 9,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 10,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 11,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 12,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 13,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 14,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 15,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 16,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 17,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 18,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    },
+    {
+      "entry_slot": 19,
+      "invalid": [
+        "schema/integrity:'bidPrice'"
+      ]
+    }
+  ],
+  "adequacy_passed": false,
+  "economic_test_completed": false,
+  "statistics": null,
+  "reason": "predeclared quote/sample adequacy failed",
+  "raw_cache_private": "/workspace/scratch/discovery-v4-20261011/book",
+  "capture_cost": {
+    "completed_at": "2026-10-11T22:28:01.892467+00:00",
+    "wall_seconds": 100.4323048849983,
+    "cpu_seconds": 0.159906046,
+    "paid_usd": 0,
+    "tokens": null,
+    "global_bill": null
+  },
+  "compute_cost": {
+    "wall_seconds": 0.0015486179981962778,
+    "cpu_seconds": 0.0015472440000000032,
+    "paid_usd": 0,
+    "tokens": null,
+    "global_bill": null
+  },
+  "verdict": {
+    "RESULT": "PARK: predeclared quote/sample adequacy failed",
+    "EFFECT_SIZE": "NOT_ESTIMABLE under declared data gate",
+    "UNCERTAINTY": "19 overlapping lagged intervals in one short Sunday regime; highly dependent, no confidence/significance or long-run expectancy inference.",
+    "POWER_LIMITATION": "A coarse cost falsifier, not a broad microstructure or profitability study. REST reception cannot authenticate execution.",
+    "ECONOMIC_SIGNIFICANCE": "Only the fixed fast taker expression under assumed11/21bp fee+slippage and observed crossing; no capital return/alpha.",
+    "FAILED_CRITERIA": "predeclared quote/sample adequacy failed",
+    "LESSON": "Use favorable cost bounds to assess whether short-horizon information can plausibly pay; stale/cached quotes cannot demonstrate price response.",
+    "FAMILY_STATUS": "PARK exact sampled expression only; parent book-pressure mechanism not generally closed.",
+    "NEXT_DECISION": "Stop this pass after3 data-test attempts. Preserve original results and private raws. No replay/retune; policy remains deferred until2026-10-13T12:45Z; seek a distinct cheap verified data route next."
+  }
+}

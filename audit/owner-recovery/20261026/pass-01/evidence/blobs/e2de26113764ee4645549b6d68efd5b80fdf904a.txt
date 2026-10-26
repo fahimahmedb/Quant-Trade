@@ -1,0 +1,56 @@
+# W1 FACTORY CP012 — 2026-10-21
+
+STATUS: HARDEN_EXISTING — direct Validator now applies canonical recursive outcome firewall
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF
+PARENT: 10aaa3586a86ef47fc7bcff0bd95b0a9cd9eb867
+
+## WHAT_GAP_WAS_PROVEN
+The direct Validator checked explicit outcome-state sentinels but did not recursively inspect ignored extension fields. A caller could attach prohibited outcome-bearing metadata outside the fields consumed by readiness calculations while preserving otherwise valid identities and authority flags.
+
+## WHAT_CHANGED
+- Reused canonical `assert_pre_outcome_payload()` directly in Validator v3 readiness.
+- Added `outcome_firewall` check and fail-closed reason `OUTCOME_FIREWALL_REJECTED`.
+- Preserved the separate explicit `no_outcome_access` state check.
+- Preserved CP011 canonical trial-accounting adapter unchanged.
+- Added adversarial tests for top-level and nested prohibited extensions plus a safe-extension control.
+
+## WHAT_WAS_REUSED / IMPORTED
+REUSE_CURRENT: canonical W1 outcome firewall.
+HARDEN_EXISTING: Validator membrane.
+NO_BUILD_REQUIRED: no second firewall, gate, store, outcome reader or validation authority.
+
+## TESTS / FALSIFICATION
+Focused cases added to the existing W1 firewall suite:
+- ignored top-level outcome payload -> Validator BLOCK;
+- nested prohibited value under an ignored source extension -> Validator BLOCK;
+- safe pre-outcome extension -> firewall PASS.
+
+Observed CP010 evidence before this package: schema drift PASS, status freshness PASS, full unit PASS, W1 Factory PASS, SEC P0 PASS, V1 end-to-end PASS. CP011 exact-head CI remains independently authoritative for the parent. CP012 exact-head CI after push is authoritative for this package.
+
+## SCIENTIFIC CLAIM LIMIT
+Structural pre-outcome leakage hardening only. No empirical result, experiment authorization, prospective observation, real capital or live trading authority is created.
+
+## SHARED_SURFACES_TOUCHED
+- `research/research_os/expansion/validation_readiness.py`
+- `research/research_os/tests/test_w1_factory_firewall_hardening.py`
+
+WHY_REQUIRED: ignored fields at the Evaluation membrane must not bypass the canonical outcome firewall.
+CONTRACT_CHANGE: READY now requires the explicit recursive `outcome_firewall` check to pass.
+EXPECTED_CROSS_LANE_IMPACT: prohibited outcome-bearing extensions now block; safe pre-outcome extensions remain admissible.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+The same canonical firewall protects Factory artifact construction and the direct Validator boundary.
+
+## NEXT_HIGHEST_VALUE_GAP
+Run exact-head CP012 CI and repair any regression. Then perform final historical/current disposition and lifecycle/frontier reassessment. If no material implementation gap remains, produce `W1_FACTORY_FINAL_20261021.md` with Integration Manifest on a clean verified head.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

@@ -1,0 +1,65 @@
+{
+  "protocol_id":"FLOW-UST-PRIMARY-DEALER-AUCTION-001-G1-ECON-SCREEN-V1",
+  "hypothesis_id":"FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "generation_id":"G1",
+  "hypothesis_blob_sha":"ba92efb4475db4883dc3dfb9f0cd979ba7a6de03",
+  "freeze_status":"FROZEN_BEFORE_OUTCOME_ACCESS",
+  "freeze_marker":"THIS_FILE_COMMIT_SHA_IS_THE_PROTOCOL_FREEZE_AUTHORITY",
+  "objective":"Test one narrow consequence of the documented primary-dealer Treasury-auction constraint: whether nominal 10-year Treasury auctions are associated with a repeatable local 10-year curve cheapening by the auction-day close. This is a mechanism/economic screen, not yet a profitability claim.",
+  "sample":{
+    "start_date":"2010-01-01",
+    "end_date":"2025-12-31",
+    "event_rule":"All nominal U.S. Treasury Note auctions whose original security term is 10-Year, including reopenings; exclude TIPS and any event lacking prior-business-day, auction-day, or next-business-day official 5Y/10Y/30Y CMT observations.",
+    "no_posthoc_subgroup_selection":true
+  },
+  "predeclared_sources":{
+    "auction_events":{
+      "source_class":"OFFICIAL_API",
+      "locator":"https://www.treasurydirect.gov/TA_WS/securities/search?startdate=2010-01-01&enddate=2025-12-31&format=json",
+      "fields_needed":["auctionDate","securityType","originalSecurityTerm","securityTerm","tips","reopening","offeringAmount"],
+      "outcome_fields_not_used_for_event_selection":["highYield","pricePer100","bidToCoverRatio","primaryDealerAccepted","indirectBidderAccepted","directBidderAccepted"]
+    },
+    "market_proxy":{
+      "source_class":"PRIMARY_PUBLIC",
+      "locator_template":"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/{YEAR}?_format=csv&field_tdr_date_value={YEAR}&type=daily_treasury_yield_curve",
+      "fields_needed":["Date","5 Yr","10 Yr","30 Yr"],
+      "note":"Official CMTs are based on indicative bid-side market quotations at or near 3:30 PM ET; this screen therefore measures end-of-day curve movement, not the exact 1 PM when-issued auction tail."
+    }
+  },
+  "transform":{
+    "curve_10_bfly_pct_points":"y10 - 0.5*y5 - 0.5*y30",
+    "primary_event_metric_bps":"100 * (curve_10_bfly_auction_day - curve_10_bfly_previous_business_day)",
+    "secondary_reversal_metric_bps":"100 * (curve_10_bfly_auction_day - curve_10_bfly_next_business_day)",
+    "positive_primary_interpretation":"10-year sector cheapened relative to 5Y/30Y wings into the auction-day close",
+    "positive_secondary_interpretation":"auction-day cheapening reversed by the next business-day close"
+  },
+  "primary_endpoint":{
+    "statistic":"sample mean of primary_event_metric_bps",
+    "test":"one-sample one-sided t-test H0 mean<=0 versus H1 mean>0",
+    "alpha":0.05,
+    "economic_materiality_floor_bps":0.25,
+    "pass_rule":"PASS_SCREEN only if one-sided p<0.05 AND sample mean>=0.25 bps",
+    "fail_rule":"Otherwise FAIL_SCREEN for this frozen expression; do not retune this expression."
+  },
+  "secondary_endpoints":{
+    "reversal":"Report mean secondary_reversal_metric_bps and one-sided p-value, descriptive only and not permitted to rescue a failed primary endpoint.",
+    "sign_robustness":"Report fraction of events with primary_event_metric_bps>0 and exact/binomial sign-test p-value, descriptive only.",
+    "methodology_split":"Report primary mean separately for 2010-2021-12-05 and 2021-12-06 through 2025 because Treasury changed yield-curve methodology; this is robustness only and cannot redefine the primary decision."
+  },
+  "multiplicity":{
+    "family":"US_TREASURY_PRIMARY_DEALER_AUCTION_CONSTRAINT",
+    "observed_attempt_count_before_this_test":0,
+    "this_test_attempt_number":1,
+    "decision_endpoint_count":1,
+    "method":"Only the primary endpoint controls PASS/FAIL; all other endpoints are descriptive and cannot rescue failure."
+  },
+  "claim_boundary":{
+    "pass_means":"Evidence of a repeatable daily local-curve cheapening associated with pre-announced 10-year auctions, warranting a separately frozen tradable P&L test.",
+    "pass_does_not_mean":"Dealer inventory causality proven, auction-tail alpha proven, or net profitability proven.",
+    "fail_means":"This daily frozen expression is falsified and will not be retuned; move to the next admissible candidate or a materially new generation with explicit new rationale."
+  },
+  "cost_capacity":"NOT_APPLIED_TO_MECHANISM_SCREEN. Any subsequent tradable P&L test must freeze executable instrument, fees, spread, slippage, financing, capacity and sizing before viewing its returns.",
+  "owner_authorization":"Economic outcome access is authorized only after this protocol file is committed. Real capital and live trading are not required for this screen.",
+  "outcome_accessed":false,
+  "economic_result":"NOT_OBSERVED"
+}

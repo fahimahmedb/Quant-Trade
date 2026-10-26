@@ -1,0 +1,110 @@
+{
+  "tasks": [
+    {
+      "attempts": 0,
+      "blocked_reason": "no synchronized multi-asset point-in-time panel",
+      "created_at": "2026-09-13T03:13:41.561588+00:00",
+      "data_fingerprint": null,
+      "due_at": null,
+      "lane": "statistical_arbitrage",
+      "last_error": null,
+      "metadata": {},
+      "parent": "opportunity_map",
+      "priority": 29,
+      "reason": "ranked research lane: next after data expansion",
+      "required_resources": [
+        "no synchronized multi-asset point-in-time panel"
+      ],
+      "status": "BLOCKED",
+      "task_id": "SCAN-STATISTICAL-ARBITRAGE-001",
+      "updated_at": "2026-09-13T03:13:41.561598+00:00",
+      "worker": "unavailable_data"
+    },
+    {
+      "attempts": 0,
+      "blocked_reason": "no survivorship-controlled security and factor panel",
+      "created_at": "2026-09-13T03:13:41.562082+00:00",
+      "data_fingerprint": null,
+      "due_at": null,
+      "lane": "factor_residual",
+      "last_error": null,
+      "metadata": {},
+      "parent": "opportunity_map",
+      "priority": 28,
+      "reason": "ranked research lane: queued",
+      "required_resources": [
+        "no survivorship-controlled security and factor panel"
+      ],
+      "status": "BLOCKED",
+      "task_id": "SCAN-FACTOR-RESIDUAL-001",
+      "updated_at": "2026-09-13T03:13:41.562128+00:00",
+      "worker": "unavailable_data"
+    },
+    {
+      "attempts": 0,
+      "blocked_reason": "point-in-time filing feed absent",
+      "created_at": "2026-09-13T03:13:41.562677+00:00",
+      "data_fingerprint": null,
+      "due_at": null,
+      "lane": "insider_filings",
+      "last_error": null,
+      "metadata": {},
+      "parent": "opportunity_map",
+      "priority": 27,
+      "reason": "ranked research lane: queued",
+      "required_resources": [
+        "point-in-time filing feed absent"
+      ],
+      "status": "BLOCKED",
+      "task_id": "SCAN-INSIDER-FILINGS-001",
+      "updated_at": "2026-09-13T03:13:41.562685+00:00",
+      "worker": "unavailable_data"
+    },
+    {
+      "attempts": 0,
+      "blocked_reason": "historical option chains, quotes, rates, dividends, and corporate actions absent",
+      "created_at": "2026-09-13T03:13:41.563236+00:00",
+      "data_fingerprint": null,
+      "due_at": null,
+      "lane": "volatility_surface",
+      "last_error": null,
+      "metadata": {},
+      "parent": "opportunity_map",
+      "priority": 27,
+      "reason": "ranked research lane: deferred",
+      "required_resources": [
+        "historical option chains, quotes, rates, dividends, and corporate actions absent"
+      ],
+      "status": "BLOCKED",
+      "task_id": "SCAN-VOLATILITY-SURFACE-001",
+      "updated_at": "2026-09-13T03:13:41.563244+00:00",
+      "worker": "unavailable_data"
+    },
+    {
+      "attempts": 1,
+      "blocked_reason": null,
+      "created_at": "2026-09-13T03:14:03.862250+00:00",
+      "data_fingerprint": "sha256:a594f2da8590676126537f5c1dc59fe9c3e0b2b3b1e8a315c5612afa3621ff26",
+      "due_at": null,
+      "lane": "time_series_relative_value",
+      "last_error": null,
+      "metadata": {
+        "result": {
+          "lesson": "Fixed short-horizon reversal failed: profitable_at_10_bps, profitable_in_both_halves, top_5_share_below_0_5.",
+          "next_action_hint": "Acquire or construct a compact cross-sectional ETF universe for beta-neutral relative-value scanning.",
+          "outcome": "REJECT_RESEARCH",
+          "ticket_id": "TSR-NDX-001"
+        }
+      },
+      "parent": null,
+      "priority": 30,
+      "reason": "historical PR #7 vertical slice",
+      "required_resources": [],
+      "status": "COMPLETED",
+      "task_id": "TSR-NDX-001",
+      "updated_at": "2026-09-13T03:14:03.862260+00:00",
+      "worker": "vertical_slice"
+    }
+  ],
+  "version": 1
+}

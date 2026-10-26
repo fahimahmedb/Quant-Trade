@@ -1,0 +1,20 @@
+{
+  "artifact": "SEC_FORM4_P0_PRE_T0_RODAGE_2026-09-18",
+  "status": "SUPERSEDED_HISTORICAL_EVIDENCE_REDACTED_FROM_PROTOCOL_SURFACE",
+  "original_artifact_commit": "c156bc490419a507c534c46482ab4dab58c8d3c0",
+  "original_git_blob_sha": "9540eb60415d84b15a414c4b992cdd0d0ed5fc77",
+  "visibility_firewall_provenance": {
+    "observed_by_blue": true,
+    "exposure_is_irreversible": true,
+    "blindness_restored": false,
+    "what_was_exposed": [
+      "attempts_by_endpoint_kind",
+      "scheduler_or_obligation_counts",
+      "acquisition_activity_timestamps_or_object_bindings"
+    ],
+    "authority": "Historical exposure has no authority to tune or change any scientific rule."
+  },
+  "note": "The exact prior artifact remains in Git history at original_artifact_commit/original_git_blob_sha. This projection preserves the fact of exposure without republishing values or timing/count proxies.",
+  "t0": "NOT DECLARED",
+  "P0_CONTINUOUS_SERVICE_STATE": "OPEN / NOT_YET_PROVEN_CONTINUOUS"
+}

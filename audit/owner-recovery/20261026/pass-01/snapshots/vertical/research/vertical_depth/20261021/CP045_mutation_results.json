@@ -1,0 +1,54 @@
+{
+  "fixed_source_sha256": "221c5214c0658b740d154a1f9daa56b3e33092b07514a5805c0c6bd5683895ea",
+  "mutants": [
+    {
+      "mutation": "duration_admission",
+      "exit_code": 1,
+      "summary": "8 failed, 48 passed in 0.16s",
+      "log": "CP045_mutant_duration_admission.txt",
+      "mutant_sha256": "4ed8845090726828dcd57aac7ca777b078f95427e4cc390a6d5f6ee92eba48bc"
+    },
+    {
+      "mutation": "future_clock_admission",
+      "exit_code": 1,
+      "summary": "2 failed, 54 passed in 0.16s",
+      "log": "CP045_mutant_future_clock_admission.txt",
+      "mutant_sha256": "e92ca35da8de68df46c8b9b98a5b57717f75c9c037af95cfe1ce2c1ce0df46af"
+    },
+    {
+      "mutation": "timezone_admission",
+      "exit_code": 1,
+      "summary": "3 failed, 53 passed in 0.24s",
+      "log": "CP045_mutant_timezone_admission.txt",
+      "mutant_sha256": "a5ba3b7a534a97be479711593f5cf79befebc4a17a66c25178810cc3430affe7"
+    },
+    {
+      "mutation": "lease_expiry_equality",
+      "exit_code": 1,
+      "summary": "6 failed, 50 passed in 0.13s",
+      "log": "CP045_mutant_lease_expiry_equality.txt",
+      "mutant_sha256": "eddeee4d7311dd74a1eaa8a3dbfb9f2da6195a8d9d6375eeef4135187467eaa0"
+    },
+    {
+      "mutation": "heartbeat_expiry_equality",
+      "exit_code": 1,
+      "summary": "2 failed, 54 passed in 0.14s",
+      "log": "CP045_mutant_heartbeat_expiry_equality.txt",
+      "mutant_sha256": "f3857fa5b490dae22c27b4b695f1ef5c41da37a9136ef9ac442b0c13da2dd72c"
+    },
+    {
+      "mutation": "malformed_clock_recovery",
+      "exit_code": 1,
+      "summary": "13 failed, 43 passed in 0.31s",
+      "log": "CP045_mutant_malformed_clock_recovery.txt",
+      "mutant_sha256": "fc01e38a433f8ebeb6b65e7fc5ec5edda0a1d7cb5447cfbd0b8f6bcf4432ce8a"
+    },
+    {
+      "mutation": "timeout_configuration_admission",
+      "exit_code": 1,
+      "summary": "6 failed, 50 passed in 0.20s",
+      "log": "CP045_mutant_timeout_configuration_admission.txt",
+      "mutant_sha256": "cc9924a8c683068d605620a36201f8d90714d39ea1427f1770bd136085924cb5"
+    }
+  ]
+}

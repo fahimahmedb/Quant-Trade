@@ -1,0 +1,55 @@
+{
+  "CHEAP_DATA_NOW": "SEC TYG/MPTI offering documents explicitly list exchange-traded transferable rights and expiry/last-trading dates. General Yahoo stock OHLC schema exists, but this expired temporary instrument alias is unverified and returned 404. No free right bid/ask or exercise-fill route qualified.",
+  "CHEAP_EXPRESSION": "Buy a fixed basic entitlement, pay exercise cash, exit common shares at a frozen session after issuance; account for all right costs, exercise deadline and dilution. Do not claim oversubscription eligibility for a new buyer.",
+  "ECONOMIC_SIGNIFICANCE": "Post-record-date basic exercise is documented, but no measurable forced-selling rent.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "Correct free temporary-symbol price/exercise-delivery chain."
+  ],
+  "FAMILY_STATUS": "PARK_DATA_LINKED_RIGHTS_FAMILY",
+  "FATAL_PROBLEM": "Complete temporary-symbol price mapping, spreads and delivery clock missing. Subscription discount alone ignores rights cost. This is related rights-funding exposure, not an independent family reset or reopening the parked record-holder oversubscription expression.",
+  "LESSON": "Do not confuse transferable basic rights with record-holder-only residual privileges; last trading day is not the broker exercise cutoff.",
+  "MECHANISM": "Record holders unable or unwilling to exercise transferable subscription rights may sell a short-lived entitlement under deadline pressure; a new small buyer can potentially exercise basic rights without record-date ownership.",
+  "NEXT_DECISION": "Only reopen with a concrete temporary-symbol mapping and free quote/delivery facts. Next L0 FDA recall disclosure diffusion; check public-time semantics.",
+  "POWER_LIMITATION": "No matched right/common price or payoff.",
+  "RESULT": "PARK_DATA",
+  "UNCERTAINTY": "A 404 on an unverified expired alias is not proof no free rights history exists.",
+  "WHO_PAYS": "Nonparticipating right holders demanding liquidity and existing holders diluted by issuance; any rent must survive both right purchase cost and common-share/dilution risk.",
+  "WHY_PERSIST": "Temporary symbols, broker exercise cutoffs, tiny lots, capital calls and irreversible expiry create operational nuisance; institutions can still price the rights and are not categorically excluded.",
+  "classification": "PARK_DATA",
+  "exposure": {
+    "economic_look": false,
+    "excluded_calibration_ciks": [
+      "1268533",
+      "1902314"
+    ],
+    "numeric_right_or_common_prices_read": false,
+    "private_history": "UNKNOWN",
+    "type": "IDEA_GENERATED + DATA_FEASIBILITY"
+  },
+  "linked_parked_l0": "qualifications/us-rights-offering-oversubscription-l0-2026-10-12.md",
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "e6666eb43cfcdb592c3e4e488ab915421501dd5f",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:26:59.792408+00:00",
+  "route_receipt": {
+    "at": "2026-10-12T21:25:39.899877+00:00",
+    "error": "HTTP Error 404: Not Found",
+    "exchange_symbol": "TYG RT",
+    "method": "HEAD",
+    "payload_read": false,
+    "provider_alias_status": "UNVERIFIED",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/TYG-RT?interval=1d&range=5d"
+  },
+  "sources": [
+    {
+      "fact": "TYG RT exchange symbol; traded through June 16, 2026, before June 17 expiration; ordinary brokerage sale/transfer and subscription-agent sale available; costs charged to right holder.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1268533/000121390026059544/ea0291466-01_424b2.htm"
+    },
+    {
+      "fact": "MPTI RT transferable listing, April 15 expiration and no fractional rights/shares.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1902314/000143774926010183/mpti20260329c_424b2.htm"
+    }
+  ]
+}

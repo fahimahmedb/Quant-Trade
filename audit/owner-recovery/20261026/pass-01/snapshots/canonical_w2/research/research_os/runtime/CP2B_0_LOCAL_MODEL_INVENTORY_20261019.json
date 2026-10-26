@@ -1,0 +1,48 @@
+{
+  "checkpoint": "CP2b.0",
+  "source_head": "fb831cf26060cbe6487dd953b8683dcbe82a07db",
+  "repository": "fahimahmedb/Quant-Trade",
+  "branch": "builder/oracle-economic-loop-recovery-20261019",
+  "baseline_ci": {
+    "oracle_recovery_run": 39263907092,
+    "oracle_recovery_conclusion": "success",
+    "sec_p0_run": 39263906814,
+    "sec_p0_conclusion": "failure",
+    "sec_p0_observed_failure": "STATE.md generated test count stale: 539 vs 555"
+  },
+  "live_oracle_inventory": "BLOCKED_NO_AUTHENTICATED_HOST_TRANSPORT",
+  "model_runtime": "NOT_OBSERVED",
+  "gpt_oss_variant": "NOT_OBSERVED",
+  "quantization_size_path_version_service_api_ram_cpu": "NOT_OBSERVED",
+  "free_tier_compatibility": "NOT_ESTABLISHED_WITHOUT_LIVE_INVENTORY",
+  "access_evidence": {
+    "managed_environment_observations_current": true,
+    "configured_secret_bindings": 0,
+    "configured_outbound_identities": 0,
+    "configured_runtime_variables": 0,
+    "oci_cli_available": false,
+    "oci_config_exists": false,
+    "ssh_client_available": true,
+    "ssh_directory_exists": false,
+    "oci_oracle_ssh_identity_variable_names": [],
+    "tcp_access_domains_and_ranges": [],
+    "github_actions_secret_metadata": "HTTP_403_RESOURCE_NOT_ACCESSIBLE_BY_INTEGRATION; contents unknown",
+    "browser_control_tools": "NOT_EXPOSED_IN_SESSION"
+  },
+  "non_destructive_vm_probe": "deploy/oracle_model_inventory.py",
+  "tests": ["python -m py_compile deploy/oracle_model_inventory.py"],
+  "test_scope": "BUILD_ENVIRONMENT_ONLY; not an Oracle inventory",
+  "models_installed_or_replaced": 0,
+  "scheduler_enabled": false,
+  "remaining": [
+    "Authenticated OCI CLI/Run Command or SSH access to the explicit intended VM",
+    "Run the read-only inventory on that VM and persist sanitized evidence",
+    "Select/reuse existing healthy GPT-OSS variant from measured resource and inference evidence"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  }
+}

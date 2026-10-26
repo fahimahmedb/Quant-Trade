@@ -1,0 +1,40 @@
+{
+  "assessment_id":"VALIDATE-FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "hypothesis_id":"FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+  "generation_id":"G1",
+  "lane":"independent_challenge",
+  "capability":"validator",
+  "assessed_at":"2026-10-19T12:56:00+02:00",
+  "recommendation":"PASS_TO_TEST_DESIGN_BOUNDED",
+  "verdict":"DOCUMENTED_PRIMARY_DEALER_PARTICIPATION_CONSTRAINT_WITH_RECONSTRUCTABLE_PIT_AUCTION_CLOCK",
+  "evidence":{
+    "forced_actor_and_constraint":"PASS. New York Fed operating policy states that primary dealers are expected to bid in every Treasury auction for at least their pro-rata share of the offered amount at reasonably competitive prices, with continued dealer status subject to ongoing business standards.",
+    "dealer_population_pit":"PASS. The New York Fed publishes the current primary-dealer list together with dated additions, removals and name changes, allowing historical dealer-count reconstruction at an auction date.",
+    "auction_clock_and_offered_amount":"PASS. Treasury auction announcements publish the security, offered amount, auction date, issue date, maturity and closing times; TreasuryDirect's Auction Search exposes historical announcement/results data and downloadable CSV/JSON/TSV/XML.",
+    "pre_outcome_expression_feasibility":"PASS_BOUNDED. A protocol can be frozen before outcome access using only the auction schedule, security/tenor, offered amount and dealer count. The first test must use a separately frozen executable duration proxy and cannot condition entry on auction results, high yield, bid-to-cover, dealer take-down or post-auction prices.",
+    "economic_claim_level":"RESTRICTED. The documents establish a participation constraint and predictable supply event, not a guaranteed dealer inventory shock or profitable concession. Direct/indirect demand, when-issued risk transfer, hedging and competition may absorb the effect.",
+    "data_leakage":"CONTROLLED_IF_PROTOCOL_FREEZES. Auction results and any post-close/post-auction observations are outcome data and must remain unopened until the exact protocol, sample, costs, capacity, multiplicity and decision rule are frozen."
+  },
+  "red_team_blocks":[],
+  "claim_restriction":"Validated only: U.S. Treasury auctions impose a dated participation expectation on primary dealers and create a pre-announced supply/distribution event. Not validated: dealer net inventory magnitude, auction concession, reversal, alpha, profitability, or capacity.",
+  "required_test_design":[
+    "freeze exactly one tenor family before outcomes (initial candidate: 10-year nominal note auctions)",
+    "freeze an executable duration proxy and exact entry/exit clocks using only information available before each event",
+    "exclude any rule that uses auction-result fields to decide whether to trade",
+    "declare matched benchmark/control, sample window, missing-data policy and macro-event confounder policy",
+    "declare cost and capacity assumptions before outcome access",
+    "count this as one observed trial in the Treasury-auction mechanism family and declare multiplicity handling"
+  ],
+  "sources":[
+    "https://www.newyorkfed.org/markets/counterparties",
+    "https://www.newyorkfed.org/markets/pridealers_policies.html",
+    "https://www.newyorkfed.org/markets/primarydealers.html",
+    "https://www.newyorkfed.org/markets/pridealers_listing.html",
+    "https://treasurydirect.gov/auctions/auction-query/",
+    "https://treasurydirect.gov/auctions/how-auctions-work/",
+    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates"
+  ],
+  "authority":{"economic_experiment_authorized":false,"prospective_observation_authorized":false,"real_capital_authorized":false,"live_trading_authorized":false,"outcome_data_accessed":false,"price_or_return_data_accessed":false},
+  "integration_handoff_created":true,
+  "next_stage":"FREEZE_BOUNDED_ECONOMIC_TEST_PROTOCOL"
+}

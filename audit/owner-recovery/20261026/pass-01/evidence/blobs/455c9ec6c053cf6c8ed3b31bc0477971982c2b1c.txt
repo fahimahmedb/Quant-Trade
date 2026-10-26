@@ -1,0 +1,248 @@
+{
+ "L_seconds": 60.0,
+ "coverage": {},
+ "primary_all_ge_0998": {
+  "n_fills": 84313,
+  "n_markets": 12927,
+  "notional": 32337728.348083362,
+  "gross_win": 32668.41105503887,
+  "loss": 1.9999979999999997,
+  "fees": 237.0992838699775,
+  "net": 32429.31177290833,
+  "net_per_notional": 0.0010028320920950032,
+  "ci95_net_per_notional": [
+   0.0009946960010716562,
+   0.001009068381700531
+  ],
+  "losing_fills": 1,
+  "losing_markets": 1,
+  "median_lock_h": 0.7363888888888889,
+  "p90_lock_h": 2.7533333333333334,
+  "distinct_buyers": 3549,
+  "maker_share_notional": 0.8620573882758377,
+  "disputed_markets": 3,
+  "reversal_fills": 559
+ },
+ "at_0998": {
+  "n_fills": 266,
+  "n_markets": 164,
+  "notional": 42819.04536384865,
+  "gross_win": 85.80410001600404,
+  "loss": 0,
+  "fees": 2.799956850000003,
+  "net": 83.00414315130564,
+  "net_per_notional": 0.0019384865413506988,
+  "ci95_net_per_notional": [
+   0.001911632958157206,
+   0.001961827107757138
+  ],
+  "losing_fills": 0,
+  "losing_markets": 0,
+  "median_lock_h": 0.7366666666666667,
+  "p90_lock_h": 5.318333333333333,
+  "distinct_buyers": 117,
+  "maker_share_notional": 0.34588369951153,
+  "disputed_markets": 1,
+  "reversal_fills": 1
+ },
+ "at_0999": {
+  "n_fills": 83455,
+  "n_markets": 12881,
+  "notional": 31519149.36698056,
+  "gross_win": 31550.51511880968,
+  "loss": 1.9999979999999997,
+  "fees": 182.76826354997732,
+  "net": 31365.746858200484,
+  "net_per_notional": 0.0009951330377925497,
+  "ci95_net_per_notional": [
+   0.0009884815157102183,
+   0.000999313424837242
+  ],
+  "losing_fills": 1,
+  "losing_markets": 1,
+  "median_lock_h": 0.7363888888888889,
+  "p90_lock_h": 2.7555555555555555,
+  "distinct_buyers": 3516,
+  "maker_share_notional": 0.883975862048189,
+  "disputed_markets": 3,
+  "reversal_fills": 554
+ },
+ "maker_only": {
+  "n_fills": 75584,
+  "n_markets": 10891,
+  "notional": 27876977.64252226,
+  "gross_win": 27919.7374699929,
+  "loss": 0,
+  "fees": 0.0,
+  "net": 27919.7374699929,
+  "net_per_notional": 0.001001533876018375,
+  "ci95_net_per_notional": [
+   0.0010010851793129068,
+   0.0010023253553292407
+  ],
+  "losing_fills": 0,
+  "losing_markets": 0,
+  "median_lock_h": 0.7644444444444445,
+  "p90_lock_h": 2.745,
+  "distinct_buyers": 3307,
+  "maker_share_notional": 1.0,
+  "disputed_markets": 3,
+  "reversal_fills": 414
+ },
+ "taker_only": {
+  "n_fills": 8729,
+  "n_markets": 4419,
+  "notional": 4460750.705564499,
+  "gross_win": 4748.673585045487,
+  "loss": 1.9999979999999997,
+  "fees": 237.0992838699775,
+  "net": 4509.574302918498,
+  "net_per_notional": 0.0010109451526383428,
+  "ci95_net_per_notional": [
+   0.0009764855427588446,
+   0.0011104118394231516
+  ],
+  "losing_fills": 1,
+  "losing_markets": 1,
+  "median_lock_h": 0.7347222222222223,
+  "p90_lock_h": 2.8316666666666666,
+  "distinct_buyers": 1982,
+  "maker_share_notional": 0.0,
+  "disputed_markets": 2,
+  "reversal_fills": 145
+ },
+ "by_family": {
+  "espn": {
+   "n_fills": 34933,
+   "n_markets": 5375,
+   "notional": 12617518.555581534,
+   "gross_win": 12656.736309184957,
+   "loss": 1.9999979999999997,
+   "fees": 15.375598550000127,
+   "net": 12639.360712595186,
+   "net_per_notional": 0.0010017310976732417,
+   "ci95_net_per_notional": [
+    0.001000243305568001,
+    0.001003574003558823
+   ],
+   "losing_fills": 1,
+   "losing_markets": 1,
+   "median_lock_h": 0.6719444444444445,
+   "p90_lock_h": 2.4058333333333333,
+   "distinct_buyers": 3280,
+   "maker_share_notional": 0.976777524586175,
+   "disputed_markets": 0,
+   "reversal_fills": 58
+  },
+  "mlb": {
+   "n_fills": 13978,
+   "n_markets": 2631,
+   "notional": 13732379.712148683,
+   "gross_win": 13987.61562808147,
+   "loss": 0,
+   "fees": 197.5411566799996,
+   "net": 13790.074471420632,
+   "net_per_notional": 0.0010042013664405818,
+   "ci95_net_per_notional": [
+    0.000988997552825305,
+    0.0010207651413330025
+   ],
+   "losing_fills": 0,
+   "losing_markets": 0,
+   "median_lock_h": 0.2375,
+   "p90_lock_h": 0.7880555555555555,
+   "distinct_buyers": 513,
+   "maker_share_notional": 0.729688405708391,
+   "disputed_markets": 3,
+   "reversal_fills": 0
+  },
+  "sports_other": {
+   "n_fills": 20285,
+   "n_markets": 3481,
+   "notional": 5525208.834690709,
+   "gross_win": 5534.859010192823,
+   "loss": 0,
+   "fees": 17.368641099999905,
+   "net": 5517.4903688474515,
+   "net_per_notional": 0.0009986030454098322,
+   "ci95_net_per_notional": [
+    0.0009974293553211245,
+    0.0009996036696093577
+   ],
+   "losing_fills": 0,
+   "losing_markets": 0,
+   "median_lock_h": 1.905,
+   "p90_lock_h": 2.6166666666666667,
+   "distinct_buyers": 2622,
+   "maker_share_notional": 0.9378034006909017,
+   "disputed_markets": 0,
+   "reversal_fills": 114
+  },
+  "wx": {
+   "n_fills": 15117,
+   "n_markets": 1440,
+   "notional": 462621.2456749034,
+   "gross_win": 489.2001075871626,
+   "loss": 0,
+   "fees": 6.813887540000066,
+   "net": 482.3862200565546,
+   "net_per_notional": 0.0010427238795590044,
+   "ci95_net_per_notional": [
+    0.0010231593404658463,
+    0.0010710439370072771
+   ],
+   "losing_fills": 0,
+   "losing_markets": 0,
+   "median_lock_h": 0.38305555555555554,
+   "p90_lock_h": 6.806666666666667,
+   "distinct_buyers": 3012,
+   "maker_share_notional": 0.7577499114606392,
+   "disputed_markets": 0,
+   "reversal_fills": 387
+  }
+ },
+ "contrast_pre_det_2h": {
+  "n_fills": 34313,
+  "n_markets": 9856,
+  "notional": 17891929.695907246,
+  "gross_win": 19254.331087589464,
+  "loss": 6996.748372983082,
+  "fees": 314.79658456999385,
+  "net": 11942.786130394232,
+  "net_per_notional": 0.0006674956996464236,
+  "ci95_net_per_notional": [
+   0.00011508233542434251,
+   0.0010518429556111866
+  ],
+  "losing_fills": 28,
+  "losing_markets": 11,
+  "median_lock_h": 2.042222222222222,
+  "p90_lock_h": 3.227777777777778,
+  "distinct_buyers": 1796,
+  "maker_share_notional": 0.6853392322067342,
+  "disputed_markets": 1,
+  "reversal_fills": 74
+ },
+ "losing_fill_list": [
+  {
+   "cid": "0xdeb963202c4106b37ae984d9ea21e480f32e7fa70a932aeb2d4569e7e3fade15",
+   "family": "espn",
+   "smt": "soccer_team_total_corners",
+   "ts": 1785769218,
+   "outcome": 1,
+   "price": 0.999,
+   "size": 2.002,
+   "taker": 1,
+   "wallet": "0x97ab9cbef3a427c24145d358f524d3dff8622e6a",
+   "payout": 0.0,
+   "fee": 0.0001,
+   "net": -2.0000979999,
+   "notional": 2.0000979999,
+   "lock_s": 23756.0,
+   "disputes": 0,
+   "reversal": "",
+   "win": 0,
+   "ts_iso": "2026-08-03T15:00:18Z"
+  }
+ ]
+}

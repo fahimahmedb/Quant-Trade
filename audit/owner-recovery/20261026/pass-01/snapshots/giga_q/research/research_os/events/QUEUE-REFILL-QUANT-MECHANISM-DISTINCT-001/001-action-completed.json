@@ -1,0 +1,26 @@
+{
+  "event_id": "QUEUE-REFILL-QUANT-MECHANISM-DISTINCT-001-g0-e001",
+  "session_id": "QUEUE-REFILL-QUANT-MECHANISM-DISTINCT-001",
+  "worker_id": "integrator-portfolio-queue-steward",
+  "action_id": "QUEUE-REFILL-CONTROL-MAINTENANCE",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 1,
+  "generation": 0,
+  "emitted_at": "2026-10-16T06:51:12Z",
+  "payload": {
+    "result": "DETERMINISTIC_FRONTIER_REFILL",
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "claimed_count": 0,
+    "next_task_id": "FRONTIER-QUANT-MECHANISM-DISTINCT-001",
+    "next_lane": "market_discovery",
+    "frontier_id": "QUANT_MECHANISM_DISTINCT",
+    "derivation_key": "68578081bc3a414ec1351e9796607fcf817efaab09f5a6fc2a592b9f9056540f",
+    "authority": {
+      "economic_experiment_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false,
+      "live_trading_authorized": false
+    }
+  }
+}

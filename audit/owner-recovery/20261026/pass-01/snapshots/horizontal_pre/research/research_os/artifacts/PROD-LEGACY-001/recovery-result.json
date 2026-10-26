@@ -1,0 +1,41 @@
+{
+  "artifact_type":"LEGACY_RECOVERY_RESULT",
+  "task_id":"PROD-LEGACY-001",
+  "lineage_id":"legacy-recovery-boxoffice-mlb-soccer-weather",
+  "recovered_at":"2026-10-15T13:21:26Z",
+  "authority":"LEGACY_RECOVERY_ONLY",
+  "legacy_source_commit":"183ad65ff260b903a16548ce37948f54d47a9ec8",
+  "targets":[
+    {
+      "target":"BOX-OFFICE-REPLAY",
+      "primary_result_recovered":false,
+      "canonical_result":"UNKNOWN",
+      "canonical_result_artifact":"UNKNOWN",
+      "evidence":[
+        "LEGACY_EVIDENCE_GAPS.md at legacy source commit explicitly records no primary durable result artifact recovered",
+        "repository default-branch commit history for candidate path research/box_office returned no commits"
+      ],
+      "classification":"UNRECOVERED_PRIMARY_RESULT",
+      "reopen_condition":"A pre-existing primary result artifact, branch or commit tying the replay verdict to its frozen protocol is located. Do not rerun or recreate the experiment."
+    },
+    {
+      "target":"MLB-SOCCER-WEATHER-REPLICATION",
+      "primary_result_recovered":false,
+      "canonical_result":"UNKNOWN",
+      "canonical_result_artifact":"UNKNOWN",
+      "effective_trials":"UNKNOWN",
+      "evidence":[
+        "LEGACY_EVIDENCE_GAPS.md at legacy source commit explicitly records no primary result artifact, branch, commit or durable report tying the remembered claim to its protocol",
+        "repository default-branch commit history for candidate path research/replication returned no commits"
+      ],
+      "classification":"UNRECOVERED_PRIMARY_RESULT",
+      "reopen_condition":"A pre-existing primary artifact with exact protocol provenance is located. Do not rerun, recreate or extend the experiment."
+    }
+  ],
+  "historical_result_immutability":true,
+  "economic_experiment_run":false,
+  "prospective_observation_run":false,
+  "real_capital_action":false,
+  "live_trading_action":false,
+  "decision":"RECOVERY_EXHAUSTED_WITHIN_AUTHORIZED_REPOSITORY_SURFACES_RESULT_REMAINS_UNKNOWN"
+}

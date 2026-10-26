@@ -1,0 +1,166 @@
+FFFFFFFFF...F.                                                           [100%]
+=================================== FAILURES ===================================
+________ test_overflow_json_cannot_disable_control_budget[tokens_total] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_overflow_json_cannot_disa0')
+budget = 'tokens_total'
+
+    @pytest.mark.parametrize('budget',['tokens_total','cpu_seconds_total','metadata_bytes_per_tick'])
+    def test_overflow_json_cannot_disable_control_budget(tmp_path,budget):
+        initialize(tmp_path);store=Store(tmp_path)
+        control=store.control();control['limits'][budget]='OVERFLOW_TOKEN'
+        store.control_path.write_text(json.dumps(control).replace('"OVERFLOW_TOKEN"','1e999'))
+>       with pytest.raises(Refused):store.control()
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:14: Failed
+_____ test_overflow_json_cannot_disable_control_budget[cpu_seconds_total] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_overflow_json_cannot_disa1')
+budget = 'cpu_seconds_total'
+
+    @pytest.mark.parametrize('budget',['tokens_total','cpu_seconds_total','metadata_bytes_per_tick'])
+    def test_overflow_json_cannot_disable_control_budget(tmp_path,budget):
+        initialize(tmp_path);store=Store(tmp_path)
+        control=store.control();control['limits'][budget]='OVERFLOW_TOKEN'
+        store.control_path.write_text(json.dumps(control).replace('"OVERFLOW_TOKEN"','1e999'))
+>       with pytest.raises(Refused):store.control()
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:14: Failed
+__ test_overflow_json_cannot_disable_control_budget[metadata_bytes_per_tick] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_overflow_json_cannot_disa2')
+budget = 'metadata_bytes_per_tick'
+
+    @pytest.mark.parametrize('budget',['tokens_total','cpu_seconds_total','metadata_bytes_per_tick'])
+    def test_overflow_json_cannot_disable_control_budget(tmp_path,budget):
+        initialize(tmp_path);store=Store(tmp_path)
+        control=store.control();control['limits'][budget]='OVERFLOW_TOKEN'
+        store.control_path.write_text(json.dumps(control).replace('"OVERFLOW_TOKEN"','1e999'))
+>       with pytest.raises(Refused):store.control()
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:14: Failed
+___________ test_control_schema_requires_exact_integer_version[True] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_control_schema_requires_e0')
+schema = True
+
+    @pytest.mark.parametrize('schema',[True,1.0])
+    def test_control_schema_requires_exact_integer_version(tmp_path,schema):
+        initialize(tmp_path);store=Store(tmp_path)
+        control=store.control();control['schema']=schema
+        store.control_path.write_text(json.dumps(control))
+>       with pytest.raises(Refused):store.control()
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:22: Failed
+___________ test_control_schema_requires_exact_integer_version[1.0] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_control_schema_requires_e1')
+schema = 1.0
+
+    @pytest.mark.parametrize('schema',[True,1.0])
+    def test_control_schema_requires_exact_integer_version(tmp_path,schema):
+        initialize(tmp_path);store=Store(tmp_path)
+        control=store.control();control['schema']=schema
+        store.control_path.write_text(json.dumps(control))
+>       with pytest.raises(Refused):store.control()
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:22: Failed
+________ test_state_schema_cannot_be_rehashed_as_boolean_or_float[True] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_state_schema_cannot_be_re0')
+schema = True
+
+    @pytest.mark.parametrize('schema',[True,1.0])
+    def test_state_schema_cannot_be_rehashed_as_boolean_or_float(tmp_path,schema):
+        initialize(tmp_path);store=Store(tmp_path);state=store.read();state['schema']=schema
+        state['integrity']=digest({k:v for k,v in state.items() if k!='integrity'})
+>       with pytest.raises(Refused):verify(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:29: Failed
+________ test_state_schema_cannot_be_rehashed_as_boolean_or_float[1.0] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_state_schema_cannot_be_re1')
+schema = 1.0
+
+    @pytest.mark.parametrize('schema',[True,1.0])
+    def test_state_schema_cannot_be_rehashed_as_boolean_or_float(tmp_path,schema):
+        initialize(tmp_path);store=Store(tmp_path);state=store.read();state['schema']=schema
+        state['integrity']=digest({k:v for k,v in state.items() if k!='integrity'})
+>       with pytest.raises(Refused):verify(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:29: Failed
+___ test_event_sequence_requires_exact_integer_even_with_matching_hash[True] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_event_sequence_requires_e0')
+sequence = True
+
+    @pytest.mark.parametrize('sequence',[True,1.0])
+    def test_event_sequence_requires_exact_integer_even_with_matching_hash(tmp_path,sequence):
+        initialize(tmp_path);state=Store(tmp_path).read()
+        state['events']=[]
+        event(state,'SYNTHETIC',{'source':'software-only'})
+        state['events'][0]['sequence']=sequence
+        state['events'][0]['hash']=digest({k:v for k,v in state['events'][0].items() if k!='hash'})
+        state['integrity']=digest({k:v for k,v in state.items() if k!='integrity'})
+>       with pytest.raises(Refused):verify(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:40: Failed
+___ test_event_sequence_requires_exact_integer_even_with_matching_hash[1.0] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_event_sequence_requires_e1')
+sequence = 1.0
+
+    @pytest.mark.parametrize('sequence',[True,1.0])
+    def test_event_sequence_requires_exact_integer_even_with_matching_hash(tmp_path,sequence):
+        initialize(tmp_path);state=Store(tmp_path).read()
+        state['events']=[]
+        event(state,'SYNTHETIC',{'source':'software-only'})
+        state['events'][0]['sequence']=sequence
+        state['events'][0]['hash']=digest({k:v for k,v in state['events'][0].items() if k!='hash'})
+        state['integrity']=digest({k:v for k,v in state.items() if k!='integrity'})
+>       with pytest.raises(Refused):verify(state)
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:40: Failed
+____ test_strict_json_rejects_ambiguous_and_nonfinite_numbers[{"x":1e999}] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_strict_json_rejects_ambig3')
+raw = '{"x":1e999}'
+
+    @pytest.mark.parametrize('raw',['{"x":NaN}','{"x":Infinity}','{"x":1,"x":2}','{"x":1e999}'])
+    def test_strict_json_rejects_ambiguous_and_nonfinite_numbers(tmp_path,raw):
+        path=tmp_path/'input.json';path.write_text(raw)
+>       with pytest.raises(Refused):strict_json(path)
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE Refused
+
+tests/test_vertical_edge_store_depth.py:46: Failed
+=========================== short test summary info ============================
+FAILED tests/test_vertical_edge_store_depth.py::test_overflow_json_cannot_disable_control_budget[tokens_total]
+FAILED tests/test_vertical_edge_store_depth.py::test_overflow_json_cannot_disable_control_budget[cpu_seconds_total]
+FAILED tests/test_vertical_edge_store_depth.py::test_overflow_json_cannot_disable_control_budget[metadata_bytes_per_tick]
+FAILED tests/test_vertical_edge_store_depth.py::test_control_schema_requires_exact_integer_version[True]
+FAILED tests/test_vertical_edge_store_depth.py::test_control_schema_requires_exact_integer_version[1.0]
+FAILED tests/test_vertical_edge_store_depth.py::test_state_schema_cannot_be_rehashed_as_boolean_or_float[True]
+FAILED tests/test_vertical_edge_store_depth.py::test_state_schema_cannot_be_rehashed_as_boolean_or_float[1.0]
+FAILED tests/test_vertical_edge_store_depth.py::test_event_sequence_requires_exact_integer_even_with_matching_hash[True]
+FAILED tests/test_vertical_edge_store_depth.py::test_event_sequence_requires_exact_integer_even_with_matching_hash[1.0]
+FAILED tests/test_vertical_edge_store_depth.py::test_strict_json_rejects_ambiguous_and_nonfinite_numbers[{"x":1e999}]
+10 failed, 4 passed in 0.08s

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchCampaignState",
+  "type": "object",
+  "required": [
+    "campaign_id",
+    "status",
+    "started_at",
+    "last_heartbeat",
+    "cycles_completed",
+    "active_ticket_ids",
+    "queued_ticket_ids"
+  ],
+  "properties": {
+    "campaign_id": {"type": "string"},
+    "status": {
+      "type": "string",
+      "enum": ["RUNNING", "IDLE", "PAUSED", "BLOCKED", "STOPPED"]
+    },
+    "started_at": {"type": "string"},
+    "last_heartbeat": {"type": "string"},
+    "cycles_completed": {"type": "integer", "minimum": 0},
+    "active_ticket_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "queued_ticket_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "blocked_tasks": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": true}
+    },
+    "last_completed_ticket_id": {"type": ["string", "null"]},
+    "latest_lesson": {"type": ["string", "null"]},
+    "next_action": {"type": ["string", "null"]},
+    "processed_data_fingerprints": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "research_budget": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "budget_consumed": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "pause_reason": {"type": ["string", "null"]},
+    "stop_reason": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

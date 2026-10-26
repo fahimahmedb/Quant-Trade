@@ -1,0 +1,27 @@
+{
+  "run_id": "SITE_CANARY_20261012_1246_6DCE23A9",
+  "classification": "DISPLAY_ONLY",
+  "canary_kind": "SOURCE_HEAD_BEACON",
+  "canary_value_rule": "The exact 40-character SHA of the commit adding this record is the canary.",
+  "public_field": "Preuves > LA SOURCE COURANTE > snapshot.head",
+  "created_at": "2026-10-12T12:46:00Z",
+  "project_id": "appgprj_6aca43cb86bc81918e067097356a37de",
+  "public_url": "https://quant-trade-lab.sassylime.chatgpt.site/",
+  "source_branch": "research/edge-lab-continuous",
+  "previous_observed_head": "b93ff746d6b4522a0e3de3e4c9dd847acf5a2a53",
+  "normal_path": "GitHub branch commit -> deployed Worker git-ls-refs -> immutable metadata read -> /api/live snapshot -> existing Preuves source HEAD",
+  "authority": "NONE",
+  "execution_effect": "NONE",
+  "status": "E2E_TEST_ARTIFACT",
+  "constraints": [
+    "No research state, Discovery, V4.2, V3, outcomes, claims, controls, LIVE generation, economic results or scheduler change.",
+    "Verify exact canary SHA visibly, not merely in API JSON."
+  ],
+  "platform_repair": {
+    "access_revision": 2,
+    "access_mode": "public",
+    "site_version": 12,
+    "site_source": "e3076b9e711ac32c1298ce372dac959939cdc23e",
+    "deployment_id": "appgdep_6accd5dc916881918ccf995b153e52d4"
+  }
+}

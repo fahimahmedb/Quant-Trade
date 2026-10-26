@@ -1,0 +1,14 @@
+{
+  "action_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
+  "emitted_at": "2026-10-19T23:48:18Z",
+  "event_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g1-9fcc4b3293ed-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 1,
+  "payload": {
+    "lineage": "AAA-ORACLE-H24-CANARY-f138c980c94eea31",
+    "queue_state": "WORKING"
+  },
+  "session_id": "AAA-ORACLE-H24-CANARY-f138c980c94eea31-g1-9fcc4b3293ed",
+  "worker_id": "oracle-research-v1.evidence_data"
+}

@@ -1,0 +1,28 @@
+name: Live Lab native integration CI
+
+on:
+  push:
+    branches:
+      - builder/live-lab-native-integration-20261015
+    paths:
+      - 'research/live_lab_ux/**'
+      - '.github/workflows/live-lab-native-integration-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-lab-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: research/live_lab_ux
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run isolated Live Lab tests
+        run: node --test tests/*.test.js

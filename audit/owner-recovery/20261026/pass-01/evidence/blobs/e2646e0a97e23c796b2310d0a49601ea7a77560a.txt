@@ -1,0 +1,135 @@
+{
+  "schema_version": "wave2-multi-source-acceptance-matrix.v1",
+  "wave2_immutable_base_sha": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+  "observed_multi_source_branch": "builder/multi-source-ideation-intake-20261021",
+  "observed_multi_source_head_at_pack_creation": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+  "qualified_b_source_sha": "7ef088bb30ece88cf96f4514e8c581a95ca4b091",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed": false
+  },
+  "existing_primitives_to_reuse": [
+    "research/research_os/frontier_source_planner_v2.py",
+    "research/research_os/research_refill_policy.py",
+    "research/research_os/queue_replenisher.py",
+    "research/research_os/research_intelligence.py",
+    "research/research_os/scientific_memory.py"
+  ],
+  "forbidden_duplicate_ownership": [
+    "scientific_memory_store",
+    "frontier_source_qualifier",
+    "queue_replenisher",
+    "control_plane_task_admission",
+    "lease_state_machine",
+    "producer_execution_authority",
+    "outcome_access"
+  ],
+  "required_source_bindings": [
+    "source_ref",
+    "evidence_class",
+    "content_or_packet_hash",
+    "record_or_snapshot_identity",
+    "published_available_effective_clocks_as_applicable",
+    "retrieval_or_freeze_time",
+    "revision_or_version_metadata_as_applicable",
+    "qualification_status_and_blockers"
+  ],
+  "cases": [
+    {
+      "id": "MS-A01",
+      "name": "qualified_documentary_snapshot_retains_provenance_and_clocks",
+      "mutation": "NONE",
+      "expected_intake": "ADMISSIBLE_FOR_IDEATION",
+      "expected_run_producer": "NOT_IMPLIED",
+      "expected_operational_ready": false
+    },
+    {
+      "id": "MS-A02",
+      "name": "source_ref_binding_mismatch_rejects",
+      "mutation": "wrapper_source_ref_differs_from_packet_source_ref",
+      "expected_intake": "BLOCK",
+      "expected_reason_family": "SOURCE_REF_BINDING"
+    },
+    {
+      "id": "MS-A03",
+      "name": "missing_content_identity_rejects",
+      "mutation": "content_hash_missing",
+      "expected_intake": "BLOCK",
+      "expected_reason_family": "PACKET_OR_CONTENT_IDENTITY"
+    },
+    {
+      "id": "MS-A04",
+      "name": "path_rename_or_copy_is_not_source_novelty",
+      "mutation": "same_content_identity_different_path",
+      "expected_source_novelty": false,
+      "expected_provenance_preserved": true
+    },
+    {
+      "id": "MS-A05",
+      "name": "consumed_source_identity_is_not_reissued_within_frontier",
+      "mutation": "same_packet_blob_or_record_identity_already_bound",
+      "expected_intake": "NO_UNUSED_SOURCE_OR_EQUIVALENT_BLOCK",
+      "expected_duplicate_reissue": false
+    },
+    {
+      "id": "MS-A06",
+      "name": "material_source_revision_requires_requalification",
+      "mutation": "source_snapshot_or_revision_or_clock_changes",
+      "expected_old_qualification_reused": false,
+      "expected_new_binding_or_block": true
+    },
+    {
+      "id": "MS-A07",
+      "name": "multi_url_duplicate_content_is_one_scientific_identity",
+      "mutation": "same_content_exposed_at_multiple_refs",
+      "expected_scientific_support_count": 1,
+      "expected_all_provenance_refs_retained": true
+    },
+    {
+      "id": "MS-A08",
+      "name": "conflicting_sources_do_not_majority_vote_truth",
+      "mutation": "qualified_sources_materially_conflict",
+      "expected_intake": "BLOCK_OR_EXPLICIT_UNKNOWN",
+      "expected_synthetic_fact": false
+    },
+    {
+      "id": "MS-A09",
+      "name": "unresolved_semantic_identity_is_not_novelty",
+      "mutation": "core_candidate_identity_unknown",
+      "expected_novelty_claimed": false,
+      "expected_memory_screen_bypass": false
+    },
+    {
+      "id": "MS-A10",
+      "name": "memory_dispositions_remain_distinct",
+      "mutation": "negative_blocked_invalidated_protocol_unexecuted_history",
+      "expected_state_collapse": false,
+      "expected_unknown_preserved_where_applicable": true
+    },
+    {
+      "id": "MS-A11",
+      "name": "b_requires_canonical_run_producer_qualification",
+      "mutation": "proposal_or_generate_mechanism_sent_directly_to_b",
+      "expected_b_admission": "BLOCK",
+      "expected_reason_family": "RESEARCH_INTELLIGENCE_NOT_QUALIFIED_FOR_PRODUCER"
+    },
+    {
+      "id": "MS-A12",
+      "name": "scientific_intake_never_mints_operational_ready_or_authority",
+      "mutation": "NONE",
+      "expected_operational_ready": false,
+      "expected_scheduler_mutation": false,
+      "expected_control_plane_mutation": false,
+      "expected_authority_opened": false,
+      "expected_outcome_accessed": false
+    }
+  ],
+  "canonical_integration_status": {
+    "multi_source_implementation_qualified": false,
+    "ready_for_canonical_convergence2": false,
+    "wave2_integrated_sha_emission_authorized": false
+  }
+}

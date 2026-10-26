@@ -1,0 +1,179 @@
+name: Wave2 C2 Canonical Mega E Qualification
+
+on:
+  push:
+    branches:
+      - builder/convergence-wave2-canonical-20261021
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  WAVE2_IMMUTABLE_BASE_SHA: 2b99d8aeb8a342f1ef32544247d366cb8a26037e
+  NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
+  HISTORICAL_MEGA_E_CODE_SHA: 2d5ff9d3d629affc720b706405fc093d0ae81548
+  HISTORICAL_MEGA_E_PROJECTION_BLOB: b130ae27f1a8b036e23b4f0c6c131dd2a611e703
+  HISTORICAL_MEGA_E_TEST_BLOB: c39d10789502b70db20ab4df005307a23b5b5d86
+  MEGA_E_PORT_COMMIT: 8d7383be274797d3114c37f92cd11c6f90de1af0
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+
+jobs:
+  qualify-mega-e:
+    name: Cumulative runtime/recovery/Live Lab qualification
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Prove exact head, canonical ancestry and North Star
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
+          git merge-base --is-ancestor "${MEGA_E_PORT_COMMIT}" HEAD
+          test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
+
+      - name: Prove exact qualified Mega E production/test blobs were reused
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:deploy/oracle_live_projection.py)" = "${HISTORICAL_MEGA_E_PROJECTION_BLOB}"
+          test "$(git rev-parse HEAD:research/research_os/tests/test_mega_e_live_receipt_reconciliation.py)" = "${HISTORICAL_MEGA_E_TEST_BLOB}"
+
+      - name: Generated schema and status freshness
+        run: |
+          python3 scripts/generate_schemas.py --check
+          python3 scripts/status_artifacts.py --check
+
+      - name: MEGA E focused recovery and projection suite
+        run: |
+          python3 -m unittest -v \
+            research.research_os.tests.test_mega_e_live_receipt_reconciliation \
+            tests.test_oracle_live_projection \
+            tests.test_oracle_live_composition \
+            tests.test_research_os_v2_core \
+            tests.test_research_os_v2_worker_integration \
+            tests.test_oracle_v2_bootstrap_admission \
+            tests.test_oracle_v2_release_provenance \
+            research.research_os.tests.test_queue_replenisher \
+            research.research_os.tests.test_oracle_worker
+
+      - name: C0 scientific adjudication non-regression
+        run: python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_adjudication.py' -v
+
+      - name: Scientific to Economic to D0 seam non-regression
+        run: python3 -m unittest discover -s tests -p 'test_wave2_c2_scientific_economic_d0_seam.py' -v
+
+      - name: D0 lifecycle non-regression
+        run: python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
+
+      - name: Control Plane and authority membrane proof
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from research.research_os.control_plane import load_control_plane
+          from research.research_os.queue_replenisher import derive_refill_task
+          from research.research_os.expansion.economic_lifecycle import authority_state
+
+          base = Path('research/research_os')
+          control = load_control_plane(base)
+          assert control['status'] == 'PASS', control['errors']
+          refill = control['queue_replenishment']
+          assert refill['authorized'] is True
+          assert refill['max_new_tasks_per_wake'] == 1
+          assert refill['producer_execution_same_refill_wake'] is False
+          assert refill['recursive_refill_same_wake'] is False
+          assert refill['free_form_task_invention_forbidden'] is True
+          authority_keys = ('economic_experiment_authorized', 'prospective_observation_authorized',
+                            'real_capital_authorized', 'live_trading_authorized')
+          assert all(refill[key] is False for key in authority_keys), refill
+          frontier = json.loads((base / 'runtime' / 'RESEARCH_FRONTIER.json').read_text())
+          assert frontier['require_global_queue_empty'] is True
+          assert frontier['max_new_tasks_per_refill'] == 1
+          assert frontier['producer_execution_same_refill_wake'] is False
+          assert frontier['recursive_refill_same_wake'] is False
+          assert all(value is False for value in frontier['authority'].values())
+          no_refill = derive_refill_task(frontier=frontier,
+                                         tasks=[{'task_id': 'ACTIVE', 'status': 'READY'}],
+                                         created_at='2026-10-21T16:00:00Z')
+          assert no_refill['status'] == 'NOOP_QUEUE_NOT_EMPTY'
+          assert no_refill['task'] is None
+          policy = json.loads((base / 'runtime' / 'V2_CORE_POLICY.json').read_text())
+          assert all(policy['authority'][key] is False for key in authority_keys), policy['authority']
+          membrane = policy['evaluation_membrane']
+          assert membrane['status'] == 'SEALED'
+          assert membrane['research_outcome_read_capability'] is False
+          assert membrane['research_supervisor_outcome_read_capability'] is False
+          assert membrane['evaluation_research_write_capability'] is False
+          assert all(value is False for value in authority_state().values())
+          print('WAVE2_C2_MEGA_E_CONTROL_AUTHORITY=PASS')
+          print('OUTCOME_ACCESSED=FALSE')
+          PY
+
+      - name: Live Lab factual projection contracts
+        run: |
+          python3 -m unittest research.research_os.tests.test_live_lab_contract -v
+          node --test research/live_lab_ux/tests/*.test.js
+
+      - name: Full root unit suite
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Full Research OS unit suite
+        run: python3 -m unittest discover -s research/research_os/tests -v
+
+      - name: V1 end-to-end non-regression
+        run: python3 scripts/demo_quant_system.py
+
+      - name: Exact-head clean tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test -z "$(git status --porcelain)"
+
+      - name: Emit Mega E cumulative receipt
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {
+              'mission': 'WAVE2_C2_CANONICAL_INTEGRATION',
+              'stage': 'MEGA_E_PORT',
+              'qualified_head': os.environ['GITHUB_SHA'],
+              'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
+              'historical_mega_e_code_sha': os.environ['HISTORICAL_MEGA_E_CODE_SHA'],
+              'projection_blob_reused_exactly': os.environ['HISTORICAL_MEGA_E_PROJECTION_BLOB'],
+              'receipt_test_blob_reused_exactly': os.environ['HISTORICAL_MEGA_E_TEST_BLOB'],
+              'live_lab_projection': 'OBSERVATIONAL_ONLY',
+              'stale_event_replay_authorized': False,
+              'pending_promoted_to_ack': False,
+              'runtime_success_is_scientific_success': False,
+              'runtime_success_is_economic_success': False,
+              'runtime_success_is_profitability': False,
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+              'outcome_accessed': False,
+              'clean_working_tree': True,
+          }
+          Path('/tmp/wave2-c2-mega-e-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave2-c2-mega-e-${{ github.sha }}
+          path: /tmp/wave2-c2-mega-e-receipt.json
+          if-no-files-found: error

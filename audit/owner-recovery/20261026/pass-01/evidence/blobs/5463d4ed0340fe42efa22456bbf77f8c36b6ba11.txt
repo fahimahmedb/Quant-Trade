@@ -1,0 +1,172 @@
+DATA COVERAGE
+  FF monthly   1926-07-31 -> 2021-11-30  cols=['Mkt-RF', 'SMB', 'HML', 'MOM', 'RMW', 'CMA', 'RF']
+  FF daily     1926-07-01 -> 2021-11-30  cols=['Mkt-RF', 'SMB', 'HML', 'MOM', 'RMW', 'CMA']
+  49 ind       1926-07-31 -> 2021-11-30  cols=['Agric', 'Food', 'Soda', 'Beer', 'Smoke', 'Toys', 'Fun', 'Books']
+  AQR monthly  1926-07-31 -> 2025-09-30  cols=['MKT', 'SMB', 'HML_FF', 'HML_DEVIL', 'UMD', 'BAB', 'QMJ']
+  corr AQR MKT vs FF Mkt-RF 0.9993; AQR UMD vs FF MOM 0.9866
+
+(A) FACTOR PREMIA  n ann vol SR t(NW6)
+Mkt-RF         full 1145    8.29%  18.49% SR  0.45 t  4.21
+               <2000    882    8.63%  19.26% SR  0.45 t  3.72
+               2000+    263    7.16%  15.65% SR  0.46 t  1.98
+               2010+    143   14.65%  14.47% SR  1.01 t  4.64
+               2020+     23     nan%    nan% SR   nan t   nan
+SMB            full 1145    2.39%  11.00% SR  0.22 t  2.03
+               <2000    882    2.27%  10.94% SR  0.21 t  1.62
+               2000+    263    2.80%  11.22% SR  0.25 t  1.43
+               2010+    143    0.79%   8.40% SR  0.09 t  0.32
+               2020+     23     nan%    nan% SR   nan t   nan
+               postpub  479    0.89%  10.41% SR  0.09 t  0.57
+HML            full 1145    4.01%  12.24% SR  0.33 t  2.87
+               <2000    882    4.70%  12.43% SR  0.38 t  3.00
+               2000+    263    1.68%  11.57% SR  0.14 t  0.56
+               2010+    143   -3.34%  10.05% SR -0.33 t -0.94
+               2020+     23     nan%    nan% SR   nan t   nan
+               postpub  347    1.32%  11.10% SR  0.12 t  0.51
+MOM            full 1139    7.70%  16.32% SR  0.47 t  4.69
+               <2000    876    9.39%  15.67% SR  0.60 t  5.36
+               2000+    263    2.08%  18.25% SR  0.11 t  0.54
+               2010+    143    2.93%  12.02% SR  0.24 t  0.96
+               2020+     23     nan%    nan% SR   nan t   nan
+               postpub  335    4.55%  17.04% SR  0.27 t  1.36
+RMW            full  701    3.23%   7.66% SR  0.42 t  2.90
+               <2000    438    2.06%   5.50% SR  0.37 t  1.91
+               2000+    263    5.20%  10.28% SR  0.51 t  2.35
+               2010+    143    2.52%   6.26% SR  0.40 t  1.46
+               2020+     23     nan%    nan% SR   nan t   nan
+               postpub   71    4.18%   7.06% SR  0.59 t  1.65
+CMA            full  701    3.15%   6.85% SR  0.46 t  3.07
+               <2000    438    3.22%   6.79% SR  0.47 t  2.57
+               2000+    263    3.02%   6.96% SR  0.43 t  1.68
+               2010+    143   -0.19%   5.47% SR -0.04 t -0.12
+               2020+     23     nan%    nan% SR   nan t   nan
+               postpub   71   -1.31%   6.39% SR -0.20 t -0.59
+AQR_MKT        full 1191    8.10%  18.21% SR  0.44 t  4.29
+               <2000    882    8.47%  18.92% SR  0.45 t  3.72
+               2000+    309    7.05%  16.03% SR  0.44 t  2.14
+               2010+    189   12.17%  15.10% SR  0.81 t  4.06
+               2020+     69   12.17%  18.31% SR  0.66 t  1.90
+AQR_SMB        full 1191    2.23%  10.37% SR  0.22 t  1.97
+               <2000    882    2.68%  10.67% SR  0.25 t  1.93
+               2000+    309    0.96%   9.46% SR  0.10 t  0.54
+               2010+    189   -1.73%   8.19% SR -0.21 t -0.86
+               2020+     69   -3.30%  10.30% SR -0.32 t -0.76
+               postpub  525   -0.31%   9.20% SR -0.03 t -0.22
+AQR_HML_FF     full 1191    3.36%  11.87% SR  0.28 t  2.50
+               <2000    882    4.04%  12.20% SR  0.33 t  2.60
+               2000+    309    1.41%  10.89% SR  0.13 t  0.54
+               2010+    189   -2.11%  10.38% SR -0.20 t -0.66
+               2020+     69    1.11%  14.62% SR  0.08 t  0.15
+               postpub  393    0.97%  10.52% SR  0.09 t  0.43
+AQR_HML_DEVIL  full 1191    4.04%  14.80% SR  0.27 t  2.52
+               <2000    882    4.33%  14.95% SR  0.29 t  2.32
+               2000+    309    3.21%  14.39% SR  0.22 t  1.06
+               2010+    189   -0.44%  12.05% SR -0.04 t -0.14
+               2020+     69    4.03%  16.41% SR  0.25 t  0.56
+               postpub  141   -0.82%  13.58% SR -0.06 t -0.20
+AQR_UMD        full 1185    7.93%  15.61% SR  0.51 t  5.11
+               <2000    876    9.63%  14.87% SR  0.65 t  5.74
+               2000+    309    3.10%  17.50% SR  0.18 t  0.91
+               2010+    189    4.36%  12.52% SR  0.35 t  1.58
+               2020+     69    1.81%  14.92% SR  0.12 t  0.32
+               postpub  381    5.05%  16.43% SR  0.31 t  1.68
+AQR_BAB        full 1138    7.85%  11.14% SR  0.71 t  5.64
+               <2000    829    7.61%  10.28% SR  0.74 t  4.83
+               2000+    309    8.50%  13.18% SR  0.64 t  3.07
+               2010+    189    6.51%   8.07% SR  0.81 t  3.63
+               2020+     69    1.31%  10.53% SR  0.12 t  0.41
+               postpub  129    4.20%   8.93% SR  0.47 t  1.88
+AQR_QMJ        full  819    3.98%   7.84% SR  0.51 t  3.70
+               <2000    510    3.81%   5.89% SR  0.65 t  3.80
+               2000+    309    4.27%  10.30% SR  0.41 t  1.84
+               2010+    189    2.84%   9.29% SR  0.31 t  1.14
+               2020+     69    0.33%  11.85% SR  0.03 t  0.07
+               postpub   69    0.33%  11.85% SR  0.03 t  0.07
+
+DECADE SHARPE (annualised)
+               1920  1930  1940  1950  1960  1970  1980  1990  2000  2010  2020
+Mkt-RF         0.70  0.15  0.64  1.40  0.39  0.07  0.50  0.92 -0.11  1.01   NaN
+SMB           -1.31  0.53  0.57 -0.12  0.54  0.30  0.01 -0.13  0.37 -0.02   NaN
+HML            0.27  0.14  1.05  0.46  0.51  0.83  0.61 -0.01  0.59 -0.30   NaN
+MOM            2.62  0.01  0.70  1.37  1.19  0.76  0.74  1.22  0.05  0.30   NaN
+RMW             NaN   NaN   NaN   NaN  0.23 -0.11  0.96  0.41  0.62  0.27   NaN
+CMA             NaN   NaN   NaN   NaN -0.08  0.96  0.89  0.02  0.83  0.02   NaN
+AQR_MKT        0.71  0.15  0.64  1.40  0.39  0.08  0.46  0.90 -0.06  0.94  0.66
+AQR_SMB       -1.05  0.69  0.70 -0.06  0.57  0.22 -0.11 -0.17  0.47 -0.12 -0.32
+AQR_HML_FF     0.46  0.06  0.86  0.35  0.35  0.86  0.65 -0.14  0.60 -0.58  0.08
+AQR_HML_DEVIL -0.16  0.31  0.82  0.13  0.05  0.90  0.52 -0.34  0.52 -0.35  0.25
+AQR_UMD        2.37  0.08  0.69  1.39  1.14  0.73  0.81  1.36  0.05  0.53  0.12
+AQR_BAB         NaN  0.29  0.52  0.81  1.08  0.98  1.61  0.63  0.63  1.55  0.12
+AQR_QMJ         NaN   NaN   NaN  0.76  0.42  0.19  1.31  0.82  0.56  0.58  0.03
+
+(B) VOL-MANAGED f*c/RV_{t-1}; alpha vs unmanaged, SR diff; expanding c (causal)
+  FF_Mkt-RF  full  capNone c 0 SR unm  0.41 -> vm  0.45  alpha   4.87%/yr t  2.04  max lev  17.4x
+  FF_Mkt-RF  2000  capNone c 0 SR unm  0.46 -> vm  0.47  alpha   2.53%/yr t  0.98  max lev   5.9x
+  FF_SMB     full  capNone c 0 SR unm  0.26 -> vm  0.14  alpha  -0.19%/yr t -0.15  max lev  11.5x
+  FF_SMB     2000  capNone c 0 SR unm  0.25 -> vm  0.10  alpha  -0.44%/yr t -0.59  max lev   2.7x
+  FF_HML     full  capNone c 0 SR unm  0.34 -> vm  0.35  alpha   2.88%/yr t  1.80  max lev  16.0x
+  FF_HML     2000  capNone c 0 SR unm  0.14 -> vm  0.11  alpha   0.39%/yr t  0.15  max lev   7.3x
+  FF_MOM     full  capNone c 0 SR unm  0.44 -> vm  0.75  alpha  13.44%/yr t  4.89  max lev  24.8x
+  FF_MOM     2000  capNone c 0 SR unm  0.11 -> vm  0.51  alpha   3.41%/yr t  2.78  max lev   6.9x
+  FF_RMW     full  capNone c 0 SR unm  0.44 -> vm  0.57  alpha   1.43%/yr t  2.57  max lev   5.4x
+  FF_RMW     2000  capNone c 0 SR unm  0.51 -> vm  0.37  alpha   0.35%/yr t  0.44  max lev   5.1x
+  FF_CMA     full  capNone c 0 SR unm  0.47 -> vm  0.36  alpha   0.22%/yr t  0.37  max lev   8.7x
+  FF_CMA     2000  capNone c 0 SR unm  0.43 -> vm  0.08  alpha  -1.13%/yr t -1.24  max lev   4.9x
+  AQR_BAB    full  capNone c 0 SR unm  0.79 -> vm  0.84  alpha   5.24%/yr t  3.36  max lev  15.8x
+  AQR_BAB    2000  capNone c 0 SR unm  0.64 -> vm  1.18  alpha   8.28%/yr t  4.62  max lev   6.3x
+  AQR_BAB    2010  capNone c 0 SR unm  0.81 -> vm  1.19  alpha   7.49%/yr t  3.70  max lev   6.3x
+  AQR_QMJ    full  capNone c 0 SR unm  0.50 -> vm  0.50  alpha   1.08%/yr t  1.86  max lev   7.0x
+  AQR_QMJ    2000  capNone c 0 SR unm  0.41 -> vm  0.38  alpha   0.44%/yr t  0.70  max lev   2.9x
+  AQR_QMJ    2010  capNone c 0 SR unm  0.31 -> vm  0.40  alpha   0.59%/yr t  1.04  max lev   1.6x
+  AQR_MKT    full  capNone c 0 SR unm  0.41 -> vm  0.44  alpha   4.52%/yr t  2.02  max lev  15.9x
+  AQR_MKT    2000  capNone c 0 SR unm  0.44 -> vm  0.46  alpha   2.53%/yr t  1.13  max lev   4.6x
+  AQR_MKT    2010  capNone c 0 SR unm  0.81 -> vm  0.57  alpha   1.14%/yr t  0.32  max lev   4.6x
+  AQR_UMD    full  capNone c 0 SR unm  0.48 -> vm  0.85  alpha  13.58%/yr t  5.40  max lev  22.0x
+  AQR_UMD    2000  capNone c 0 SR unm  0.18 -> vm  0.64  alpha   3.91%/yr t  3.49  max lev   6.8x
+  AQR_UMD    2010  capNone c 0 SR unm  0.35 -> vm  0.59  alpha   2.20%/yr t  1.99  max lev   3.9x
+  -- implementable variant: leverage cap 2x, 20bp per unit notional change
+  FF_MOM     full  cap2 c20 SR unm  0.44 -> vm  0.80  alpha   6.55%/yr t  4.71  max lev   2.0x
+  FF_MOM     2000  cap2 c20 SR unm  0.11 -> vm  0.39  alpha   2.32%/yr t  2.01  max lev   2.0x
+  AQR_BAB    full  cap2 c20 SR unm  0.79 -> vm  0.85  alpha   2.92%/yr t  2.89  max lev   2.0x
+  AQR_BAB    2000  cap2 c20 SR unm  0.64 -> vm  1.17  alpha   5.52%/yr t  4.80  max lev   2.0x
+  AQR_BAB    2010  cap2 c20 SR unm  0.81 -> vm  1.22  alpha   4.43%/yr t  4.00  max lev   2.0x
+  AQR_QMJ    full  cap2 c20 SR unm  0.50 -> vm  0.38  alpha   0.23%/yr t  0.45  max lev   2.0x
+  AQR_QMJ    2000  cap2 c20 SR unm  0.41 -> vm  0.26  alpha  -0.02%/yr t -0.03  max lev   2.0x
+  AQR_QMJ    2010  cap2 c20 SR unm  0.31 -> vm  0.27  alpha   0.15%/yr t  0.26  max lev   1.6x
+  AQR_MKT    full  cap2 c20 SR unm  0.41 -> vm  0.43  alpha   2.19%/yr t  1.58  max lev   2.0x
+  AQR_MKT    2000  cap2 c20 SR unm  0.44 -> vm  0.45  alpha   1.53%/yr t  1.02  max lev   2.0x
+  AQR_MKT    2010  cap2 c20 SR unm  0.81 -> vm  0.61  alpha   0.36%/yr t  0.17  max lev   2.0x
+  AQR_UMD    full  cap2 c20 SR unm  0.48 -> vm  0.81  alpha   6.55%/yr t  4.32  max lev   2.0x
+  AQR_UMD    2000  cap2 c20 SR unm  0.18 -> vm  0.50  alpha   2.61%/yr t  2.70  max lev   2.0x
+  AQR_UMD    2010  cap2 c20 SR unm  0.35 -> vm  0.45  alpha   1.16%/yr t  1.15  max lev   2.0x
+
+(C) TIME-SERIES FACTOR MOMENTUM: long f if trailing 12m sum>0 else short (causal)
+  FF5+MOM ex-mkt         L 1 LS full  TSFM SR  0.63 | EW SR  0.92 | alpha vs EW  3.06% t  3.70
+  FF5+MOM ex-mkt         L 1 LS 2000  TSFM SR  0.19 | EW SR  0.54 | alpha vs EW  0.92% t  0.73
+  FF5+MOM ex-mkt         L 1 LS 2010  TSFM SR  0.01 | EW SR  0.16 | alpha vs EW -0.00% t -0.00
+  AQR SMB,HML,UMD,BAB,QMJ L 1 LS full  TSFM SR  0.80 | EW SR  1.01 | alpha vs EW  4.13% t  4.02
+  AQR SMB,HML,UMD,BAB,QMJ L 1 LS 2000  TSFM SR  0.50 | EW SR  0.57 | alpha vs EW  3.59% t  2.23
+  AQR SMB,HML,UMD,BAB,QMJ L 1 LS 2010  TSFM SR  0.39 | EW SR  0.47 | alpha vs EW  1.59% t  1.13
+  FF5+MOM ex-mkt         L12 LS full  TSFM SR  0.52 | EW SR  0.92 | alpha vs EW  0.37% t  0.50
+  FF5+MOM ex-mkt         L12 LS 2000  TSFM SR  0.13 | EW SR  0.54 | alpha vs EW -1.08% t -0.85
+  FF5+MOM ex-mkt         L12 LS 2010  TSFM SR  0.04 | EW SR  0.16 | alpha vs EW  0.02% t  0.02
+  AQR SMB,HML,UMD,BAB,QMJ L12 LS full  TSFM SR  0.85 | EW SR  1.01 | alpha vs EW  1.41% t  1.97
+  AQR SMB,HML,UMD,BAB,QMJ L12 LS 2000  TSFM SR  0.51 | EW SR  0.57 | alpha vs EW  1.19% t  1.04
+  AQR SMB,HML,UMD,BAB,QMJ L12 LS 2010  TSFM SR  0.64 | EW SR  0.47 | alpha vs EW  1.95% t  1.83
+  AQR ... long-or-flat   L12 LO full  TSFM SR  1.03 | EW SR  1.01 | alpha vs EW  0.71% t  1.97
+  AQR ... long-or-flat   L12 LO 2000  TSFM SR  0.59 | EW SR  0.57 | alpha vs EW  0.59% t  1.04
+  AQR ... long-or-flat   L12 LO 2010  TSFM SR  0.64 | EW SR  0.47 | alpha vs EW  0.97% t  1.83
+
+(D) 49-INDUSTRY MOMENTUM, VW, long top-N short bottom-N, monthly rebalance; cost per unit one-way turnover
+  L12/skip1 N7 cost  0bp  turnover/mo 0.91 | 1930+ SR  0.46 t  4.63 ann   8.9% | 2000+ SR  0.25 t  1.20 ann   5.3% | 2010+ SR  0.57 t  1.82 ann   8.7%
+  L12/skip1 N7 cost 10bp  turnover/mo 0.91 | 1930+ SR  0.40 t  4.05 ann   7.8% | 2000+ SR  0.20 t  0.94 ann   4.2% | 2010+ SR  0.49 t  1.58 ann   7.6%
+  L12/skip1 N7 cost 25bp  turnover/mo 0.91 | 1930+ SR  0.32 t  3.20 ann   6.2% | 2000+ SR  0.11 t  0.55 ann   2.4% | 2010+ SR  0.38 t  1.22 ann   5.9%
+  L 6/skip0 N7 cost  0bp  turnover/mo 1.34 | 1930+ SR  0.30 t  2.73 ann   5.5% | 2000+ SR  0.37 t  1.88 ann   7.8% | 2010+ SR  0.59 t  2.07 ann   9.3%
+  L 6/skip0 N7 cost 10bp  turnover/mo 1.34 | 1930+ SR  0.21 t  1.92 ann   3.9% | 2000+ SR  0.29 t  1.47 ann   6.2% | 2010+ SR  0.48 t  1.69 ann   7.6%
+  L 6/skip0 N7 cost 25bp  turnover/mo 1.34 | 1930+ SR  0.08 t  0.72 ann   1.5% | 2000+ SR  0.18 t  0.88 ann   3.7% | 2010+ SR  0.32 t  1.12 ann   5.1%
+  L 1/skip0 N7 cost  0bp  turnover/mo 3.21 | 1930+ SR  0.26 t  2.38 ann   4.2% | 2000+ SR  0.19 t  1.05 ann   3.3% | 2010+ SR  0.15 t  0.71 ann   2.2%
+  L 1/skip0 N7 cost 10bp  turnover/mo 3.21 | 1930+ SR  0.02 t  0.22 ann   0.4% | 2000+ SR -0.04 t -0.20 ann  -0.6% | 2010+ SR -0.12 t -0.56 ann  -1.7%
+  L 1/skip0 N7 cost 25bp  turnover/mo 3.21 | 1930+ SR -0.33 t -2.97 ann  -5.4% | 2000+ SR -0.38 t -2.05 ann  -6.4% | 2010+ SR -0.53 t -2.43 ann  -7.6%
+
+TOTAL TRIALS (configurations evaluated): 65
+Bonferroni-ish 5% two-sided hurdle for 65 trials: |t| > 3.36

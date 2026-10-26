@@ -1,0 +1,11 @@
+{
+  "experiment_id": "disc-crypto-book-pressure-prospective-l1-v0",
+  "at": "2026-10-11T22:31:57.747388+00:00",
+  "original_result_sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+  "source_semantics": "All21 response bodies are identical77bytes containing timestamp,symbol,pool only; no bidPrice/askPrice/bidSize/askSize. quote_count21 means21 HTTP response records, not21 executable quote observations.",
+  "protocol_deviation": "Empty-message AssertionError stored error=\"\"; capture used truthiness rather than error-is-not-None, so stop-on-first-malformed did not fire.21slots remained within21request/120s budget, but violated early-stop rule. Original bytes/receipts/error strings and original PARK result preserved unchanged.",
+  "disposition": "PARK_DATA / CAPTURE_INVALID; zero valid trades; no financial output or valid discriminatory economic test. No replay.",
+  "repair_for_any_future_separately_declared_capture": "Store exception type with message, and branch on error is not None. Check required fields explicitly; validate this on malformed synthetic payload before any new source access. Original recorder is retired, not a production runner.",
+  "paid_usd": 0,
+  "tokens": null
+}

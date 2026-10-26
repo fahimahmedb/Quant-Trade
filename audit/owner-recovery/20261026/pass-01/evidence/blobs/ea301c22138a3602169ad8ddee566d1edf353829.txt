@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:46:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_MECHANISM_AND_ROUTE_QUALIFICATION",
+  "family": "us-cef-optional-cash-discounted-issuance",
+  "candidate": "Tortoise Energy Infrastructure Corp. (TYG)",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "economic_look_opened": false,
+  "selected_future_price_nav_payload_accessed": false,
+  "decision": "L1_NOW_PROSPECTIVE_OOS_ONLY",
+  "classification": "DISTINCT_EXPRESSION_WITHIN_DISCOUNTED_ISSUANCE_CLUSTER",
+  "MECHANISM": "TYG's plan permits a participating common stockholder to submit optional cash, currently $100-$5,000 per month. When the fund is at a market premium to NAV at the relevant fixing, the fund issues new common shares directly at the greater of NAV or 95% of market price; when at a discount, the Plan Agent instead buys in the open market. A small participant can therefore receive a bounded direct-issuance discount only in the premium branch.",
+  "WHO_PAYS": "In the direct-issuance branch, the fund/nonparticipating shareholders bear dilution from issuance below contemporaneous market price but not below the plan formula. In the discount branch there is no issuer concession; the participant bears market purchase price and commissions through the Plan Agent.",
+  "WHY_PERSIST": "The maximum ordinary optional-cash size is only $5,000 per month, the participant must use the plan and meet operational cutoffs, the branch depends on premium/NAV state, purchase timing is fixed rather than selectable, the issuer may amend/terminate the plan, and exit through the agent carries a fixed transaction fee plus per-share charge. These features make the opportunity operationally annoying and capacity-limited.",
+  "CHEAP_DATA_NOW": "Primary TYG prospectus text publicly specifies the cash-purchase range, cutoff, premium/discount branch, pricing formula, direct-issuance/open-market distinction and agent-sale charges. Tortoise's public fund page publishes declared distribution/payment dates and later reports NAV/market/DRIP values. A future case can therefore be frozen before its fixing values become public. The current page showed historical 2026 plan outcomes during qualification; those are contamination/calibration only and cannot count as fresh evidence.",
+  "CHEAP_EXPRESSION": "Prospective upper-bound case using one fixed $5,000 optional cash investment at one predeclared future monthly purchase date. If the direct-issuance premium branch occurs, compare shares received under the frozen max(NAV, 95% market) formula with same-date market value, then apply fixed sale/market frictions. If the open-market branch occurs, the case should not be re-selected or retimed.",
+  "FATAL_PROBLEM": "This is not a guaranteed 5% arbitrage. If NAV exceeds 95% of market, the discount is smaller than 5%; if the fund is at a discount, the plan uses open-market purchases and the issuer concession disappears. The participant cannot choose the fixing time, must already be a plan participant/stockholder, can face delay and market risk before shares are saleable, and the plan reserves amendment/termination rights. Historical same-issuer plan values are already exposed, so only future OOS events can add evidence.",
+  "causal_distinction": "This is not the existing CEF dividend-reinvestment expression. The cash source is a participant's optional external cash contribution rather than a declared distribution. It remains in the same broad discounted-issuance cluster, so no multiplicity reset or independence claim is allowed.",
+  "primary_sources": [
+    {
+      "source": "TYG prospectus / Automatic Dividend Reinvestment and Cash Purchase Plan",
+      "url": "https://cef.tortoisecapital.com/media/2337/tyg-tyg-prospectus-mandatory-redeemable-preferred-series-b-tyg-preferred.pdf",
+      "facts": [
+        "Optional cash investments range from $100 to $5,000 per month absent waiver.",
+        "Plan Agent must receive cash no later than two business days before the monthly investment date for purchase on the next succeeding purchase date.",
+        "Direct issuance occurs when shares trade at a premium to NAV; discount branch uses open-market purchases.",
+        "Direct-issue price is the greater of NAV or 95% of market price at the stated fixing.",
+        "Agent sale can deduct a $15 transaction fee plus $0.05 per share."
+      ]
+    },
+    {
+      "source": "Tortoise Capital TYG public fund page",
+      "url": "https://tortoisecapital.com/cef/tortoise-energy-infrastructure-corp/",
+      "facts": [
+        "Public page lists distribution record/payment dates and later NAV/market/DRIP values.",
+        "As of qualification, October 30 and November 30, 2026 payment dates were listed with future market/NAV/DRIP entries still TBD."
+      ]
+    }
+  ],
+  "exposure_accounting": {
+    "historical_same_issuer_market_nav_values_seen": true,
+    "future_2026_10_30_market_nav_seen": false,
+    "future_2026_11_30_market_nav_seen": false,
+    "economic_look_count_increment": 0,
+    "note": "Historical TYG plan rows are contamination only; they must not be used to choose thresholds, branch rules, cash size or fixing dates."
+  },
+  "next_action": "Predeclare one future OOS case before reading its fixing NAV/market values. Freeze the exact monthly event, cash amount, pricing/fixing convention, market-value route, costs and case verdict. No historical reconstruction or parameter search.",
+  "inference_ceiling": [
+    "No alpha/edge claim",
+    "No claim of a guaranteed 5% discount",
+    "No broker/account eligibility claim",
+    "No live or real-capital authorization"
+  ]
+}

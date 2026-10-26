@@ -1,0 +1,34 @@
+# Vertical CP024 — Source route qualification and freeze-context identity
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=f298e0654a23d6b6f9e4148bfd94207e908f7889
+
+Existing module/capability: Source route qualification and freeze-context identity. Starting depth: D1.
+North Star basis: preserve scientific identity, scoped evidence, blocking states,
+persistent truth and explicit authority. No future Wave-2 family is built.
+
+Enumerated repair items:
+
+1. Blank/sentinel identity, transport and policy values could qualify as valid routes.
+2. Registry admission trusted caller-supplied qualification fields and compared only route_hash, replaying a different freeze context as if identical.
+3. Concurrent context registrations could both report success under one route identity.
+
+Narrow repair: Qualify required route text; re-run the module's own route qualification at registry admission and compare the full proof. Preserve blocked qualifications as blocked records. An instance RLock serializes registration/replay/snapshots; exact context changes conflict even when route content hash is unchanged.
+
+Adversaries: **35 new cases** in the corresponding vertical pytest module;
+pre-repair **23 failed / 12 passed**, focused requalification **61 passed; 67 subtests**. Durable transcripts:
+`research/vertical_depth/20261021/CP024_{before,after}.txt`.
+Concrete malformed identities, status ambiguity, nested/serialized input, replay,
+mutation and deterministic competing publication are tested where applicable.
+
+Attained depth: **D3**, scoped as follows. D2 for route identity/policy admission and D3 for same-instance immutable qualification-context registration. Existing source content hashes remain unchanged for valid routes. Requalification under a new freeze requires a distinct registry/context; old records are not silently promoted. No vendor truth, source authentication, IANA timezone-name validation, all malformed objects, distributed registry or real capture proof.
+
+Horizontal findings: none. Longitudinal findings: no new finding in this module;
+LONGITUDINAL_001 is separately retained without a handoff repair.
+Authority state: no economic experiment, prospective observation, real capital or
+live trading enabled. Tests use synthetic/local disposable state only.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

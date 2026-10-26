@@ -1,0 +1,39 @@
+{
+  "audit_id": "QT-AUDIT-20261018T2352Z",
+  "checkpoint": "001",
+  "status": "PARTIAL_IN_PROGRESS",
+  "publication_authority": "Owner: Pousse ton premier checkpoint ensuite et reprends",
+  "remote_scope": "new isolated audit branch only; no operational code or workflows",
+  "initial_counts": {
+    "utc": "2026-10-18T23:55:46.934083+00:00",
+    "refs": 259,
+    "branches": 221,
+    "distinct_branch_tips": 212,
+    "commits_reachable": 3494,
+    "unique_tip_trees": 228,
+    "tip_path_occurrences": 96288,
+    "unique_tip_blobs": 7974,
+    "reference_kinds": {
+      "heads": 221,
+      "notes": 1,
+      "pull": 37
+    },
+    "rest_branches": 221,
+    "rest_tags": 0,
+    "rest_refs": 259
+  },
+  "initial_bundle_sha256": "1a844022a76d871092405e9eb488af80c610a7de884273f24b8d91929694a923",
+  "backup_location": "local /workspace/quant-trade-audit/2026-10-18T2352Z; not in remote checkpoint",
+  "initial_ref_inventory_immutable": true,
+  "semantic_audit_complete": false,
+  "remote_consolidation_authorized": false,
+  "new_experiment_authorized_by_audit": false,
+  "resume_priority": [
+    "PR1 scientific lineage and PEAD/SPA validation integrity",
+    "new ops branch and datafeed delta",
+    "per-branch historical roles and dependency consumers",
+    "scientific aliases/exposures and preserved UNKNOWN",
+    "consolidation proposals review",
+    "final remote delta"
+  ]
+}

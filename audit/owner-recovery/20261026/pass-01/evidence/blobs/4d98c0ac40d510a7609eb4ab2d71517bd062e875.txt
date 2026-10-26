@@ -1,0 +1,223 @@
+FFFFFFFFF.....................                                           [100%]
+=================================== FAILURES ===================================
+__ test_decay_guard_rejects_inconsistent_authority_and_consumption[changes0] ___
+
+changes = {'observation_authorization': 'AUTHORIZED_FOR_EXACT_SCOPE'}
+
+    @pytest.mark.parametrize("changes", [
+        {"observation_authorization": "AUTHORIZED_FOR_EXACT_SCOPE"},
+        {"observation_authorization": "UNKNOWN"}, {"future_outcomes_consumed": 1},
+        {"future_outcomes_consumed": False}, {"observation_started": True},
+        {"observation_started": "false"},
+    ])
+    def test_decay_guard_rejects_inconsistent_authority_and_consumption(changes):
+        record = dict(registration(), **changes)
+        with pytest.raises(PermissionError):
+>           decay_guard([record])
+
+tests/test_vertical_authority_depth.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+registrations = [{'observation_authorization': 'AUTHORIZED_FOR_EXACT_SCOPE', 'observation_started': False, 'future_outcomes_consumed': 0}]
+
+    def decay_guard(registrations: List[Dict[str, Any]]) -> Dict[str, Any]:
+>       assert all(r["observation_authorization"] == "NOT_AUTHORIZED" for r in registrations)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+research/research_os/expansion/final_shape.py:271: AssertionError
+__ test_decay_guard_rejects_inconsistent_authority_and_consumption[changes1] ___
+
+changes = {'observation_authorization': 'UNKNOWN'}
+
+    @pytest.mark.parametrize("changes", [
+        {"observation_authorization": "AUTHORIZED_FOR_EXACT_SCOPE"},
+        {"observation_authorization": "UNKNOWN"}, {"future_outcomes_consumed": 1},
+        {"future_outcomes_consumed": False}, {"observation_started": True},
+        {"observation_started": "false"},
+    ])
+    def test_decay_guard_rejects_inconsistent_authority_and_consumption(changes):
+        record = dict(registration(), **changes)
+        with pytest.raises(PermissionError):
+>           decay_guard([record])
+
+tests/test_vertical_authority_depth.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+registrations = [{'observation_authorization': 'UNKNOWN', 'observation_started': False, 'future_outcomes_consumed': 0}]
+
+    def decay_guard(registrations: List[Dict[str, Any]]) -> Dict[str, Any]:
+>       assert all(r["observation_authorization"] == "NOT_AUTHORIZED" for r in registrations)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+research/research_os/expansion/final_shape.py:271: AssertionError
+__ test_decay_guard_rejects_inconsistent_authority_and_consumption[changes2] ___
+
+changes = {'future_outcomes_consumed': 1}
+
+    @pytest.mark.parametrize("changes", [
+        {"observation_authorization": "AUTHORIZED_FOR_EXACT_SCOPE"},
+        {"observation_authorization": "UNKNOWN"}, {"future_outcomes_consumed": 1},
+        {"future_outcomes_consumed": False}, {"observation_started": True},
+        {"observation_started": "false"},
+    ])
+    def test_decay_guard_rejects_inconsistent_authority_and_consumption(changes):
+        record = dict(registration(), **changes)
+        with pytest.raises(PermissionError):
+>           decay_guard([record])
+
+tests/test_vertical_authority_depth.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+registrations = [{'observation_authorization': 'NOT_AUTHORIZED', 'observation_started': False, 'future_outcomes_consumed': 1}]
+
+    def decay_guard(registrations: List[Dict[str, Any]]) -> Dict[str, Any]:
+        assert all(r["observation_authorization"] == "NOT_AUTHORIZED" for r in registrations)
+>       assert all(r["future_outcomes_consumed"] == 0 for r in registrations)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+research/research_os/expansion/final_shape.py:272: AssertionError
+__ test_decay_guard_rejects_inconsistent_authority_and_consumption[changes3] ___
+
+changes = {'future_outcomes_consumed': False}
+
+    @pytest.mark.parametrize("changes", [
+        {"observation_authorization": "AUTHORIZED_FOR_EXACT_SCOPE"},
+        {"observation_authorization": "UNKNOWN"}, {"future_outcomes_consumed": 1},
+        {"future_outcomes_consumed": False}, {"observation_started": True},
+        {"observation_started": "false"},
+    ])
+    def test_decay_guard_rejects_inconsistent_authority_and_consumption(changes):
+        record = dict(registration(), **changes)
+>       with pytest.raises(PermissionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE PermissionError
+
+tests/test_vertical_authority_depth.py:31: Failed
+__ test_decay_guard_rejects_inconsistent_authority_and_consumption[changes4] ___
+
+changes = {'observation_started': True}
+
+    @pytest.mark.parametrize("changes", [
+        {"observation_authorization": "AUTHORIZED_FOR_EXACT_SCOPE"},
+        {"observation_authorization": "UNKNOWN"}, {"future_outcomes_consumed": 1},
+        {"future_outcomes_consumed": False}, {"observation_started": True},
+        {"observation_started": "false"},
+    ])
+    def test_decay_guard_rejects_inconsistent_authority_and_consumption(changes):
+        record = dict(registration(), **changes)
+>       with pytest.raises(PermissionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE PermissionError
+
+tests/test_vertical_authority_depth.py:31: Failed
+__ test_decay_guard_rejects_inconsistent_authority_and_consumption[changes5] ___
+
+changes = {'observation_started': 'false'}
+
+    @pytest.mark.parametrize("changes", [
+        {"observation_authorization": "AUTHORIZED_FOR_EXACT_SCOPE"},
+        {"observation_authorization": "UNKNOWN"}, {"future_outcomes_consumed": 1},
+        {"future_outcomes_consumed": False}, {"observation_started": True},
+        {"observation_started": "false"},
+    ])
+    def test_decay_guard_rejects_inconsistent_authority_and_consumption(changes):
+        record = dict(registration(), **changes)
+>       with pytest.raises(PermissionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE PermissionError
+
+tests/test_vertical_authority_depth.py:31: Failed
+_ test_guard_still_executes_when_python_assertions_are_removed[optimization0] __
+
+optimization = []
+
+    @pytest.mark.parametrize("optimization", [[], ["-O"], ["-OO"]])
+    def test_guard_still_executes_when_python_assertions_are_removed(optimization):
+        code = """
+    from research.research_os.expansion.final_shape import decay_guard
+    try:
+        decay_guard([{'observation_authorization': 'AUTHORIZED_FOR_EXACT_SCOPE',
+                      'observation_started': True, 'future_outcomes_consumed': 1}])
+    except PermissionError:
+        print('BLOCKED')
+    else:
+        raise SystemExit('FAIL_OPEN')
+    """
+        result = subprocess.run([sys.executable, *optimization, "-c", code],
+                                env=os.environ.copy(), capture_output=True, text=True, timeout=10)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<string>", line 4, in <module>
+E           File "/workspace/Quant-Trade/research/research_os/expansion/final_shape.py", line 271, in decay_guard
+E             assert all(r["observation_authorization"] == "NOT_AUTHORIZED" for r in registrations)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         AssertionError
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '-c', "\nfrom resea...rations)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n').returncode
+
+tests/test_vertical_authority_depth.py:49: AssertionError
+_ test_guard_still_executes_when_python_assertions_are_removed[optimization1] __
+
+optimization = ['-O']
+
+    @pytest.mark.parametrize("optimization", [[], ["-O"], ["-OO"]])
+    def test_guard_still_executes_when_python_assertions_are_removed(optimization):
+        code = """
+    from research.research_os.expansion.final_shape import decay_guard
+    try:
+        decay_guard([{'observation_authorization': 'AUTHORIZED_FOR_EXACT_SCOPE',
+                      'observation_started': True, 'future_outcomes_consumed': 1}])
+    except PermissionError:
+        print('BLOCKED')
+    else:
+        raise SystemExit('FAIL_OPEN')
+    """
+        result = subprocess.run([sys.executable, *optimization, "-c", code],
+                                env=os.environ.copy(), capture_output=True, text=True, timeout=10)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: FAIL_OPEN
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '-O', '-c', "\nfrom...or:\n    print('BLOCKED')\nelse:\n    raise SystemExit('FAIL_OPEN')\n"], returncode=1, stdout='', stderr='FAIL_OPEN\n').returncode
+
+tests/test_vertical_authority_depth.py:49: AssertionError
+_ test_guard_still_executes_when_python_assertions_are_removed[optimization2] __
+
+optimization = ['-OO']
+
+    @pytest.mark.parametrize("optimization", [[], ["-O"], ["-OO"]])
+    def test_guard_still_executes_when_python_assertions_are_removed(optimization):
+        code = """
+    from research.research_os.expansion.final_shape import decay_guard
+    try:
+        decay_guard([{'observation_authorization': 'AUTHORIZED_FOR_EXACT_SCOPE',
+                      'observation_started': True, 'future_outcomes_consumed': 1}])
+    except PermissionError:
+        print('BLOCKED')
+    else:
+        raise SystemExit('FAIL_OPEN')
+    """
+        result = subprocess.run([sys.executable, *optimization, "-c", code],
+                                env=os.environ.copy(), capture_output=True, text=True, timeout=10)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: FAIL_OPEN
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python', '-OO', '-c', "\nfro...or:\n    print('BLOCKED')\nelse:\n    raise SystemExit('FAIL_OPEN')\n"], returncode=1, stdout='', stderr='FAIL_OPEN\n').returncode
+
+tests/test_vertical_authority_depth.py:49: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_authority_depth.py::test_decay_guard_rejects_inconsistent_authority_and_consumption[changes0]
+FAILED tests/test_vertical_authority_depth.py::test_decay_guard_rejects_inconsistent_authority_and_consumption[changes1]
+FAILED tests/test_vertical_authority_depth.py::test_decay_guard_rejects_inconsistent_authority_and_consumption[changes2]
+FAILED tests/test_vertical_authority_depth.py::test_decay_guard_rejects_inconsistent_authority_and_consumption[changes3]
+FAILED tests/test_vertical_authority_depth.py::test_decay_guard_rejects_inconsistent_authority_and_consumption[changes4]
+FAILED tests/test_vertical_authority_depth.py::test_decay_guard_rejects_inconsistent_authority_and_consumption[changes5]
+FAILED tests/test_vertical_authority_depth.py::test_guard_still_executes_when_python_assertions_are_removed[optimization0]
+FAILED tests/test_vertical_authority_depth.py::test_guard_still_executes_when_python_assertions_are_removed[optimization1]
+FAILED tests/test_vertical_authority_depth.py::test_guard_still_executes_when_python_assertions_are_removed[optimization2]
+9 failed, 21 passed in 0.48s

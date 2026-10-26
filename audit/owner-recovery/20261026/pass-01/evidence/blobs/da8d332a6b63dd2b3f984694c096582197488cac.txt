@@ -1,0 +1,70 @@
+# Vertical CP079 — smard: optimized-runtime falsification
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+TESTED_STANDARD_AND_OPTIMIZED_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+CONTINUATION_DATE=2026-10-23
+
+Module/capability: the existing `tests/test_edge_lab_smard.py` contract and its explicit cases below.
+Implementation descent: `quant.edge_lab.public_inputs`, `quant.edge_lab.smard`, `quant.edge_lab.smard_solar`, `quant.edge_lab.store`.
+These interfaces and this test surface exist on the immutable Phase-A base.
+North Star basis: preserve scientific identity/provenance, causal clocks,
+reproducible durable truth, and fail-closed authority through alternate execution
+conditions; do not infer any economic permission from technical readiness.
+
+Starting depth: existing structured adversarial regression; invariance under
+optimized Python and a different process hash seed was not recorded here.
+This checkpoint adds environmental falsification evidence, not a new capability
+family, a new repair, or whole-module qualification.
+
+Adversaries executed (the full file is run, including parametrizations/subtests):
+
+- `test_full_calendar_dst_no_missing_or_double_selected_hour`
+- `test_price_change_cannot_select_new_hours_or_omit_negative_day`
+- `test_loss_efficiency_asset_cost_and_benchmark_are_not_hidden`
+- `test_fixed_stress_is_required_for_positive_not_best_cost`
+- `test_complete_input_source_qa_and_identical_duplicates`
+- `test_null_gap_nonfinite_conflicting_revision_and_subhour_fail`
+- `test_weak_version_foreign_url_and_short_calendar_cannot_capture`
+- `test_capture_retains_raw_once_and_rejects_new_version_before_body`
+- `test_only_nonsecret_proxy_ca_enter_explicit_public_runner`
+- `test_real_entrypoint_never_imports_adjacent_historic_quant_script`
+- `test_generic_isolation_ignores_poisoned_neighbor_before_package_import`
+- `test_solar_uses_only_fixed_noon_and_evening_with_complete_losses`
+- `test_solar_entrypoint_actual_process_isolated`
+
+Runtime composition: execute these existing denial/identity/recovery fixtures
+with ordinary Python/PYTHONHASHSEED=0, then Python -OO/PYTHONHASHSEED=1729.
+Assertions in application modules may disappear in the latter; pytest-rewritten
+test assertions and unittest checks remain the oracle. The optimized run warns
+about disabled assertions in non-test modules, as expected. Explicit child
+commands in fixtures keep their own interpreter flags; this does not prove every
+child was optimized. All effects use local fixtures/mocks/disposable stores.
+No deployment, production Site operation or live source call is performed.
+
+- standard: `13 passed in 0.30s`; exit 0; `research/vertical_depth/20261021/CP079_standard.txt`.
+- optimized: `13 passed, 1 warning in 0.31s`; exit 0; `research/vertical_depth/20261021/CP079_optimized.txt`.
+
+Defect found: none reproduced by this bounded runtime composition.
+Root cause/repair: not applicable; no speculative product change.
+Attained evidence: D2 runtime/structured-edge requalification only. Where fixtures
+exercise durable retry/concurrency, their named scoped checks retain their prior
+limits; no new D3/D4 label or additional capability count follows from this run.
+
+Remaining unproven depth: arbitrary object graphs and schema migrations,
+noncooperating concurrent writers, physical power loss, real external authority
+and source truth, and failures outside the named fixtures. Different interpreter
+versions, all hash seeds and semantic equivalence of source facts are unproved.
+An unchanged green suite is not exhaustive falsification. Final regression and
+receipt evidence are shared in FINAL_qualification.json and the final manifest;
+714 per-mode existing tests across CP038–CP100 overlap other suites and are not
+new tests, independent observations, or 63 new capabilities.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains separately owned and unrepaired.
+Authority state: local diagnostic fixtures only; no Owner authority granted.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

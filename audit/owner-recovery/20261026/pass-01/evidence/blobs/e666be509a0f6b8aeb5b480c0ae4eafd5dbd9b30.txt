@@ -1,0 +1,24 @@
+{
+  "event_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001-g1-e002",
+  "session_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001-g1",
+  "worker_id": "fundamental-events-workflow",
+  "action_id": "fundamental-discovery",
+  "event_type": "ACTION_COMPLETED",
+  "event_seq": 2,
+  "generation": 1,
+  "emitted_at": "2026-10-15T19:15:10Z",
+  "payload": {
+    "task_id": "FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-001",
+    "result": "FROZEN_HYPOTHESIS_QUEUED_FOR_VALIDATION",
+    "hypothesis_id": "FUND-ASML-CAPACITY-PRICING-001",
+    "queue_state": "QUEUED",
+    "next_task_id": "VALIDATE-FUND-ASML-CAPACITY-PRICING-001",
+    "next_lane": "independent_challenge",
+    "authority": {
+      "economic_experiment_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false,
+      "live_trading_authorized": false
+    }
+  }
+}

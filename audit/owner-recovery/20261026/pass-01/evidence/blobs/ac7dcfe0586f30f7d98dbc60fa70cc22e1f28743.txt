@@ -1,0 +1,88 @@
+{
+ "dataset_sha256": "2dc35b3020980949e9dc3c2f95bf26c9b158dc45eae3d3b04c0aff4c0bb19c03",
+ "discovery": {
+  "bet_matches": 29,
+  "bets": 32,
+  "clv_halves": [
+   0.06965326501380062,
+   0.09691514861622279
+  ],
+  "clv_mean_bet": 0.08615772305091884,
+  "clv_mean_match": 0.08375423929091554,
+  "clv_t_clustered": 3.5169047233904096,
+  "league_clv_share": {
+   "D1": 0.07544632719018796,
+   "E0": 0.2684025575886919,
+   "F1": 0.08545053054844991,
+   "I1": 0.4059100350128665,
+   "SP1": 0.1647905496598036
+  },
+  "losing_bets": 17,
+  "matches": 694,
+  "median_bet_volume": 25401.727549,
+  "pnl_mean_match": 0.02429409469995214,
+  "pnl_t": 0.12245212307275949
+ },
+ "expression": {
+  "devig": "power",
+  "edge_threshold": 0.02,
+  "half_spread": 0.01
+ },
+ "matches_with_prices": 1261,
+ "split": {
+  "discovery": {
+   "from": "epl-manchester-united-vs-fulham",
+   "n": 694,
+   "to": "sea-int-cre-2025-10-04"
+  },
+  "untouched": {
+   "from": "sea-lec-pis-2025-12-12",
+   "n": 189,
+   "to": "sea-int-lec-2026-01-14"
+  },
+  "validation": {
+   "from": "bun-ein-bay-2025-10-04",
+   "n": 378,
+   "to": "fl1-ang-nan-2025-12-12"
+  }
+ },
+ "validation": {
+  "bet_matches": 3,
+  "bets": 3,
+  "clv_halves": [
+   0.03609174929836079,
+   0.014235577525658849
+  ],
+  "clv_mean_bet": 0.021520968116559496,
+  "clv_mean_match": 0.021520968116559496,
+  "clv_t_clustered": 2.5051340824607884,
+  "league_clv_share": {
+   "I1": 0.34261929475118547,
+   "SP1": 0.6573807052488145
+  },
+  "losing_bets": 1,
+  "matches": 378,
+  "median_bet_volume": 435980.987851,
+  "pnl_mean_match": -0.05514403292181069,
+  "pnl_t": -0.113919222072859
+ },
+ "validation_2x_costs": {
+  "bet_matches": 2,
+  "bets": 2,
+  "clv_halves": [
+   0.026091749298360778,
+   -0.003649341704057396
+  ],
+  "clv_mean_bet": 0.011221203797151691,
+  "clv_mean_match": 0.011221203797151691,
+  "clv_t_clustered": 0.7545926137167814,
+  "league_clv_share": {
+   "SP1": 1.0
+  },
+  "losing_bets": 1,
+  "matches": 378,
+  "median_bet_volume": 596088.811863,
+  "pnl_mean_match": -0.3902439024390244,
+  "pnl_t": -0.64
+ }
+}

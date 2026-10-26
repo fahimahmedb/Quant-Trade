@@ -1,0 +1,21 @@
+{
+  "schema": "A2_FROZEN_CONTENT_V1",
+  "kind": "OutputManifest",
+  "fields": {
+    "output_id": "A2-DOC-OUT-STRUCTURAL-REPORT-V1",
+    "manifest_version_identity": "A2-DOC-INTEGRATION-MANIFEST-V1",
+    "output_type": "DOCUMENTATION_ONLY_STRUCTURAL_REPORT",
+    "exact_metric_or_artifact": "STRUCTURAL_REPORT_ONLY: validation_state; permit_or_deny_state; quarantine_state; release_state; completion_state; stop_reason; detail_code; input_manifest_reference; output_manifest_reference; policy_reference; construction_authority_reference; execution_authority_reference; actor_role_bindings; acknowledged_log_record_references; structural_linkage_status",
+    "granularity": "ONE_DOCUMENTARY_OPERATION; exact structural identifiers, enum states and fixed reason codes only; no observations, measurements, payload text, operational timing or event counts",
+    "permitted_recipients": [
+      "RESEARCH_VIEWER"
+    ],
+    "exportability": "ALLOWED",
+    "quarantine_status": "BLOCKED_PENDING_OWNER_REVIEW",
+    "cumulative_disclosure_risk": "UNRESOLVED",
+    "efficacy_leakage_assessment": "UNRESOLVED",
+    "release_approval_requirement": "REQUIRED",
+    "retention_rule": "STRUCTURAL_EVIDENCE_ONLY; 30 calendar days from authorized operation closure; custodian PROJECT_OWNER; evidence destination existing Owner document libfile_4f09286d65ac8191a6e343b85aff696e / EVIDENCE_A2_DOC_INTEGRATION_V1; no public release; retention and deletion capabilities verified before custody; no automatic extension; governance decisions retained separately",
+    "incident_if_unexpected_information_revealed": "STOP; DENY and BLOCKED release; withhold affected content through an already-authorized mechanism; record safe incident class/reference only; escalate to PROJECT_OWNER; no payload investigation, retry or automatic resume; separate exact Owner direction required before recovery"
+  }
+}

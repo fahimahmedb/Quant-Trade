@@ -1,0 +1,8 @@
+rows 1212 in-class reached cells 1183
+lambda_theta = 1.7  lambda_kappa = 1.6
+lam 1.00 {'miss': (0.1176, 'class_', 887), 'fpos': (0.1035, 'class_', 886), 'uw_miss': (0.0355, 'class_', 681)} {'T1a_null': (0.0659, 'class_', 886), 'NEG_null': (0.0324, 'class_', 680)}
+lam 1.60 {'miss': (0.0457, 'class_', 887), 'fpos': (0.0408, 'class_', 886), 'uw_miss': (0.0109, 'class_', 656)} {'T1a_null': (0.0198, 'class_', 886), 'NEG_null': (0.0106, 'class_', 656)}
+lam 1.65 {'miss': (0.0423, 'class_', 887), 'fpos': (0.0377, 'class_', 886), 'uw_miss': (0.0095, 'class_', 658)} {'T1a_null': (0.0181, 'class_', 886), 'NEG_null': (0.0097, 'class_', 656)}
+lam 1.70 {'miss': (0.0395, 'class_', 887), 'fpos': (0.0353, 'class_', 886), 'uw_miss': (0.0089, 'class_', 658)} {'T1a_null': (0.0165, 'class_', 886), 'NEG_null': (0.0086, 'class_', 658)}
+lam 1.75 {'miss': (0.0369, 'class_', 887), 'fpos': (0.0322, 'class_', 886), 'uw_miss': (0.008, 'class_', 658)} {'T1a_null': (0.0152, 'class_', 886), 'NEG_null': (0.0079, 'class_', 658)}
+max L_W miss given reach (reach>=0.10): (0.18226600985221675, 0.11165, 'fav35', 113)

@@ -1,0 +1,1874 @@
+{
+ "0G": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-22",
+  "min_close": 0.13863,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "2Z": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-10-02",
+  "min_close": 0.04565,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AAVE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-07-17",
+  "min_close": 52.103,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ACE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-18",
+  "min_close": 0.0631,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ADA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-22",
+  "min_close": 0.14361,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AERO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-11-11",
+  "min_close": 0.27918,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AI": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-02-19",
+  "min_close": 0.111,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AI16Z": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-01-01",
+  "min_close": 0.04756,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AIXBT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-01",
+  "min_close": 0.016597,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ALGO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-04",
+  "min_close": 0.077346,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ALT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-25",
+  "min_close": 0.00563,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ANIME": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-21",
+  "min_close": 0.002362,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "APE": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-05",
+  "min_close": 0.08262,
+  "price_scale": 1000.0,
+  "rows": 0
+ },
+ "APEX": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-27",
+  "min_close": 0.17947,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "APT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-06-30",
+  "min_close": 0.5176,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-02-28",
+  "min_close": 1.5311,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ARB": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-23",
+  "min_close": 0.07273,
+  "price_scale": 1000.0,
+  "rows": 0
+ },
+ "ARK": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-06",
+  "min_close": 0.10646,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ASTER": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-19",
+  "min_close": 0.4672,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ATOM": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-02-26",
+  "min_close": 1.2224,
+  "price_scale": 1.0,
+  "rows": 0
+ },
+ "AVAX": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-05",
+  "min_close": 5.8923,
+  "price_scale": 1.0,
+  "rows": 0
+ },
+ "AVNT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-21",
+  "min_close": 0.079308,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AXS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-01-18",
+  "min_close": 0.81904,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "AZTEC": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-02-12",
+  "min_close": 0.011518,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BABY": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-04-12",
+  "min_close": 0.009627,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BADGER": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-11-09",
+  "min_close": 0.81541,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BANANA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-09-15",
+  "min_close": 2.5773,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "BCH": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-06-30",
+  "min_close": 183.75,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "BERA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-02-06",
+  "min_close": 0.14154,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BIGTIME": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-11",
+  "min_close": 0.004786,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BIO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-03",
+  "min_close": 0.016073,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BLAST": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-06-26",
+  "min_close": 0.00043,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BLUR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-18",
+  "min_close": 0.012949,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BLZ": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-09-12",
+  "min_close": 0.067654,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BNB": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-05",
+  "min_close": 205.26,
+  "price_scale": 1.0,
+  "rows": 0
+ },
+ "BNT": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-08",
+  "min_close": 0.37811,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BOME": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-03-15",
+  "min_close": 0.000365,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BRETT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-06-11",
+  "min_close": 0.003655,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "BSV": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-20",
+  "min_close": 10.818,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "BTC": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-02-26",
+  "min_close": 20141.0,
+  "price_scale": 1.0,
+  "rows": 1207
+ },
+ "CAKE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-30",
+  "min_close": 1.1612,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "CANTO": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-09",
+  "min_close": 0.035907,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "CASHCAT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-07-11",
+  "min_close": 0.035744,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "CATI": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-09-25",
+  "min_close": 0.082821,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "CC": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-10-31",
+  "min_close": 0.062044,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "CELO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-09-25",
+  "min_close": 0.058195,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "CFX": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-24",
+  "min_close": 0.038009,
+  "price_scale": 1000.0,
+  "rows": 31
+ },
+ "CHILLGUY": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-11-25",
+  "min_close": 0.006971,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "CHIP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-04-22",
+  "min_close": 0.021699,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "COMP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-07-17",
+  "min_close": 15.195,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "CRV": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-15",
+  "min_close": 0.182,
+  "price_scale": 1000.0,
+  "rows": 22
+ },
+ "CYBER": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-08-31",
+  "min_close": 0.93522,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "DASH": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-01-18",
+  "min_close": 29.636,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "DOGE": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-04-03",
+  "min_close": 0.057862,
+  "price_scale": 1000.0,
+  "rows": 0
+ },
+ "DOOD": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-05-09",
+  "min_close": 0.001408,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "DOT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-09-12",
+  "min_close": 0.75087,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "DYDX": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-04",
+  "min_close": 0.07984,
+  "price_scale": 1000.0,
+  "rows": 0
+ },
+ "DYM": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-02-06",
+  "min_close": 0.01288,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "EIGEN": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-30",
+  "min_close": 0.1513,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ENA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-02",
+  "min_close": 0.071304,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ENS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-05",
+  "min_close": 3.8457,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ETC": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-12",
+  "min_close": 6.0722,
+  "price_scale": 1.0,
+  "rows": 46
+ },
+ "ETH": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-02-26",
+  "min_close": 1426.0,
+  "price_scale": 1.0,
+  "rows": 0
+ },
+ "ETHFI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-03-21",
+  "min_close": 0.28711,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "FARTCOIN": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-20",
+  "min_close": 0.10589,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "FET": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-26",
+  "min_close": 0.12152,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "FIL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-14",
+  "min_close": 0.6314,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "FOGO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-12-11",
+  "min_close": 0.005954,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "FRIEND": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-08-21",
+  "min_close": 2.5769,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "FTM": {
+  "delisted": true,
+  "eligible": false,
+  "listing_date": "2023-05-24",
+  "min_close": 0.17555,
+  "price_scale": 1000.0,
+  "rows": 31
+ },
+ "FTT": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-09-25",
+  "min_close": 0.27013,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "FXS": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-07-30",
+  "min_close": 0.62114,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "GALA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-05",
+  "min_close": 0.00139,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "GAS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-24",
+  "min_close": 0.91177,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "GMT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-26",
+  "min_close": 0.005925,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "GMX": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-24",
+  "min_close": 5.2709,
+  "price_scale": 1.0,
+  "rows": 31
+ },
+ "GOAT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-10-23",
+  "min_close": 0.012201,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "GRAM": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-07-02",
+  "min_close": 1.3167,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "GRASS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-10-28",
+  "min_close": 0.1714,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "GRIFFAIN": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-07",
+  "min_close": 0.007608,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "HBAR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-24",
+  "min_close": 0.042506,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "HEMI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-24",
+  "min_close": 0.004246,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "HMSTR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-09-27",
+  "min_close": 0.000131,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "HPOS": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-07-31",
+  "min_close": 0.033898,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "HYPE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-05",
+  "min_close": 10.261,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "HYPER": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-04-22",
+  "min_close": 0.056087,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ICP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-11-08",
+  "min_close": 2.0197,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ILV": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-11-17",
+  "min_close": 12.118,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "IMX": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-17",
+  "min_close": 0.09994,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "INIT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-04-24",
+  "min_close": 0.047972,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "INJ": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-04-27",
+  "min_close": 2.7411,
+  "price_scale": 1.0,
+  "rows": 4
+ },
+ "IO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-06-12",
+  "min_close": 0.09619,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "IOTA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-04",
+  "min_close": 0.031726,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "IP": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-02-13",
+  "min_close": 0.28635,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "JELLY": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-01-30",
+  "min_close": 0.00384,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "JTO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-07",
+  "min_close": 0.23659,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "JUP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-03",
+  "min_close": 0.13714,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "KAITO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-02-20",
+  "min_close": 0.28643,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "KAS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-12",
+  "min_close": 0.025239,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LAUNCHCOIN": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-05-14",
+  "min_close": 0.041783,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LAYER": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-02-11",
+  "min_close": 0.058013,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LDO": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-15",
+  "min_close": 0.23983,
+  "price_scale": 1000.0,
+  "rows": 22
+ },
+ "LINEA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-01",
+  "min_close": 0.002086,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LINK": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-18",
+  "min_close": 5.1277,
+  "price_scale": 1.0,
+  "rows": 25
+ },
+ "LISTA": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-06-28",
+  "min_close": 0.11965,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LIT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-12-22",
+  "min_close": 0.80768,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LOOM": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-09-28",
+  "min_close": 0.040885,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "LTC": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-18",
+  "min_close": 40.896,
+  "price_scale": 1.0,
+  "rows": 0
+ },
+ "MANTA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-18",
+  "min_close": 0.05554,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MATIC": {
+  "delisted": true,
+  "eligible": false,
+  "listing_date": "2023-02-26",
+  "min_close": 0.36666,
+  "price_scale": 1000.0,
+  "rows": 0
+ },
+ "MAV": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-12-20",
+  "min_close": 0.012296,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MAVIA": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-02-06",
+  "min_close": 0.02744,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ME": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-10",
+  "min_close": 0.05637,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MEGA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-10-22",
+  "min_close": 0.031136,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MELANIA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-20",
+  "min_close": 0.06995,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "MEME": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-03",
+  "min_close": 0.000457,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MERL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-23",
+  "min_close": 0.016737,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MET": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-10-10",
+  "min_close": 0.097191,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MEW": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-07-23",
+  "min_close": 0.00054,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MINA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-24",
+  "min_close": 0.037695,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MKR": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-07-21",
+  "min_close": 902.11,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "MNT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-05",
+  "min_close": 0.39242,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "MON": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-10-08",
+  "min_close": 0.016899,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MOODENG": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-10-25",
+  "min_close": 0.022409,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MORPHO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-17",
+  "min_close": 0.85374,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MOVE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-11",
+  "min_close": 0.00586,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "MYRO": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-03-05",
+  "min_close": 0.01553,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "NEAR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-01",
+  "min_close": 0.96057,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "NEIROETH": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-10-23",
+  "min_close": 0.016354,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "NEO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-09",
+  "min_close": 1.6552,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "NFTI": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-11-30",
+  "min_close": 5.761,
+  "price_scale": 1.0,
+  "rows": 46
+ },
+ "NIL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-03-24",
+  "min_close": 0.027861,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "NOT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-05-17",
+  "min_close": 0.000326,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "NTRN": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-12-12",
+  "min_close": 0.12084,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "NXPC": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-05-15",
+  "min_close": 0.17898,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "OGN": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-01",
+  "min_close": 0.044251,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "OM": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-02-16",
+  "min_close": 0.0419,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "OMNI": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-04-29",
+  "min_close": 1.4222,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ONDO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-20",
+  "min_close": 0.20687,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "OP": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-05",
+  "min_close": 0.08196,
+  "price_scale": 1000.0,
+  "rows": 0
+ },
+ "ORBS": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-13",
+  "min_close": 0.018456,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ORDI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-07",
+  "min_close": 2.152,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "OX": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-08-17",
+  "min_close": 0.005307,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PANDORA": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-02-09",
+  "min_close": 2955.0,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "PAXG": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-04-06",
+  "min_close": 3000.8,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "PENDLE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-26",
+  "min_close": 0.8104,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PENGU": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-17",
+  "min_close": 0.003868,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PEOPLE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-03",
+  "min_close": 0.004971,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PIXEL": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-02-19",
+  "min_close": 0.02036,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PNUT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-11-14",
+  "min_close": 0.03777,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "POL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-09-17",
+  "min_close": 0.06851,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "POLYX": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-24",
+  "min_close": 0.027963,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PONS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-08-31",
+  "min_close": 0.40053,
+  "price_scale": 1000.0,
+  "rows": 26
+ },
+ "POPCAT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-28",
+  "min_close": 0.03904,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PROMPT": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-04-12",
+  "min_close": 0.028593,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PROVE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-08-06",
+  "min_close": 0.14537,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PUMP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-07-10",
+  "min_close": 0.001199,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PURR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-11-04",
+  "min_close": 0.046995,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "PYTH": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-14",
+  "min_close": 0.031033,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "RDNT": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-03",
+  "min_close": 0.016858,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "RENDER": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-07-31",
+  "min_close": 1.2091,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "REQ": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-11",
+  "min_close": 0.066649,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "RESOLV": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-06-10",
+  "min_close": 0.014615,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "REZ": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-30",
+  "min_close": 0.002331,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "RLB": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-08-02",
+  "min_close": 0.053483,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "RNDR": {
+  "delisted": true,
+  "eligible": false,
+  "listing_date": "2023-05-18",
+  "min_close": 1.3392,
+  "price_scale": 1.0,
+  "rows": 25
+ },
+ "RSR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-05",
+  "min_close": 0.001068,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "RUNE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-08-15",
+  "min_close": 0.32141,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "S": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-17",
+  "min_close": 0.020001,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SAGA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-21",
+  "min_close": 0.012,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SAND": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-04",
+  "min_close": 0.033399,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SCR": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-10-09",
+  "min_close": 0.03899,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SEI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-08-15",
+  "min_close": 0.038558,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SHIA": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-08-26",
+  "min_close": 0.000565,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SKR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-01-22",
+  "min_close": 0.00646,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SKY": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-17",
+  "min_close": 0.04172,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SNX": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-24",
+  "min_close": 0.19129,
+  "price_scale": 1000.0,
+  "rows": 31
+ },
+ "SOL": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-03-04",
+  "min_close": 14.477,
+  "price_scale": 1.0,
+  "rows": 0
+ },
+ "SOPH": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-05-28",
+  "min_close": 0.003349,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SPX": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-07",
+  "min_close": 0.2484,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "STABLE": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-12-08",
+  "min_close": 0.009509,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "STBL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-09-22",
+  "min_close": 0.020378,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "STG": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-26",
+  "min_close": 0.14605,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "STRAX": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-26",
+  "min_close": 0.80993,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "STRK": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-02-14",
+  "min_close": 0.02245,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "STX": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-18",
+  "min_close": 0.11999,
+  "price_scale": 1000.0,
+  "rows": 25
+ },
+ "SUI": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-03",
+  "min_close": 0.37005,
+  "price_scale": 1000.0,
+  "rows": 10
+ },
+ "SUPER": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-26",
+  "min_close": 0.081205,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SUSHI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-17",
+  "min_close": 0.1467,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "SYRUP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-06-26",
+  "min_close": 0.12146,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "TAO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-02-19",
+  "min_close": 145.76,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "TIA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-10-19",
+  "min_close": 0.28475,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "TNSR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-04-08",
+  "min_close": 0.02764,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "TON": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-10-22",
+  "min_close": 1.2005,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "TRB": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-09-17",
+  "min_close": 12.804,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "TRUMP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-18",
+  "min_close": 1.3951,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "TRX": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-08-06",
+  "min_close": 0.072627,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "TST": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-02-09",
+  "min_close": 0.007856,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "TURBO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-05-31",
+  "min_close": 0.000754,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "UMA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-19",
+  "min_close": 0.31837,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "UNI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-08-11",
+  "min_close": 2.3953,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "UNIBOT": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-08-02",
+  "min_close": 7.628,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "USELESS": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-09-08",
+  "min_close": 0.1965,
+  "price_scale": 1000.0,
+  "rows": 18
+ },
+ "USTC": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2023-11-27",
+  "min_close": 0.004324,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "USUAL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-18",
+  "min_close": 0.00758,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "VINE": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-01-23",
+  "min_close": 0.006521,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "VIRTUAL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-12-16",
+  "min_close": 0.43842,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "VVV": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-01-28",
+  "min_close": 0.9461,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "W": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-02-07",
+  "min_close": 0.00794,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "WCT": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-04-15",
+  "min_close": 0.033222,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "WIF": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-22",
+  "min_close": 0.087386,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "WLD": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-07-24",
+  "min_close": 0.23393,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "WLFI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-08-23",
+  "min_close": 0.051253,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "XAI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-01-15",
+  "min_close": 0.00593,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "XLM": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-11-23",
+  "min_close": 0.14338,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "XMR": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2026-01-15",
+  "min_close": 293.31,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "XPL": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-08-22",
+  "min_close": 0.061206,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "XRP": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-06-17",
+  "min_close": 0.41903,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "YGG": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-08-06",
+  "min_close": 0.017194,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "YZY": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-08-21",
+  "min_close": 0.29626,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ZEC": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-10-02",
+  "min_close": 127.5,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ZEN": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-09",
+  "min_close": 3.8128,
+  "price_scale": 1.0,
+  "rows": 45
+ },
+ "ZEREBRO": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2025-01-02",
+  "min_close": 0.005986,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ZETA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-02-02",
+  "min_close": 0.02685,
+  "price_scale": 1000.0,
+  "rows": 46
+ },
+ "ZK": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-06-12",
+  "min_close": 0.007212,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ZORA": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2025-04-23",
+  "min_close": 0.004765,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "ZRO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-09-07",
+  "min_close": 0.71574,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "kBONK": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-11-19",
+  "min_close": 0.002235,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "kDOGS": {
+  "delisted": true,
+  "eligible": true,
+  "listing_date": "2024-09-03",
+  "min_close": 0.10252,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "kFLOKI": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-03-11",
+  "min_close": 0.02001,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "kLUNC": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-12-05",
+  "min_close": 0.026698,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "kNEIRO": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2024-10-23",
+  "min_close": 0.05384,
+  "price_scale": 1000.0,
+  "rows": 45
+ },
+ "kPEPE": {
+  "delisted": false,
+  "eligible": false,
+  "listing_date": "2023-05-05",
+  "min_close": 0.000608,
+  "price_scale": 1000.0,
+  "rows": 12
+ },
+ "kSHIB": {
+  "delisted": false,
+  "eligible": true,
+  "listing_date": "2023-08-11",
+  "min_close": 0.004112,
+  "price_scale": 1000.0,
+  "rows": 45
+ }
+}

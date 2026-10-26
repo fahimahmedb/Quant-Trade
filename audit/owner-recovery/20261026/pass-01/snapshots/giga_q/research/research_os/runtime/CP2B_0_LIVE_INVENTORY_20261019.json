@@ -1,0 +1,101 @@
+{
+  "compatibility_verdict": "REQUIRES_REVIEW_AND_BOUNDED_INFERENCE_CANARY",
+  "cpu": {
+    "returncode": 0,
+    "stdout": "Architecture:                            aarch64\nCPU op-mode(s):                          32-bit, 64-bit\nByte Order:                              Little Endian\nCPU(s):                                  2\nOn-line CPU(s) list:                     0,1\nVendor ID:                               ARM\nModel name:                              Neoverse-N1\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                r3p1\nBogoMIPS:                                50.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0,1\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; CSV2, BHB\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n"
+  },
+  "cpu_count": 2,
+  "disk": {
+    "free": 43893039104,
+    "total": 47321268224
+  },
+  "evidence_scope": "LIVE_HOST_WHERE_EXECUTED",
+  "execution_user": "ocarun",
+  "file_inventory_complete_for_requested_roots": false,
+  "file_scan_truncated": false,
+  "host_architecture": "aarch64",
+  "inspection_gaps": [
+    {
+      "error": "PermissionError",
+      "operation": "MODEL_ROOT_STAT",
+      "path": "/home/ubuntu/.ollama/models"
+    }
+  ],
+  "kernel": "6.17.0-1020-oracle",
+  "llama_properties": {
+    "unavailable": "URLError"
+  },
+  "loaded_models": {
+    "unavailable": "URLError"
+  },
+  "memory": {
+    "returncode": 0,
+    "stdout": "               total        used        free      shared  buff/cache   available\nMem:     12506759168   661209088  9098059776     5550080  2985439232 11845550080\nSwap:              0           0           0\n"
+  },
+  "model_files": [],
+  "models_downloaded": 0,
+  "mutations_performed": false,
+  "observed_at": "2026-10-19T21:54:20.361935+00:00",
+  "ollama_models": [],
+  "ollama_status": "URLError",
+  "openai_compatible_models": {
+    "unavailable": "URLError"
+  },
+  "os": {
+    "returncode": 0,
+    "stdout": "Ubuntu 24.04.5 LTS\n"
+  },
+  "path_visibility": {
+    "/home/ubuntu": {
+      "exists": true,
+      "searchable": false
+    },
+    "/opt/models": {
+      "exists": false,
+      "searchable": false
+    },
+    "/usr/share/ollama/.ollama/models": {
+      "exists": false,
+      "searchable": false
+    },
+    "/var/lib/ocarun": {
+      "exists": true,
+      "searchable": true
+    },
+    "/var/lib/ollama": {
+      "exists": false,
+      "searchable": false
+    }
+  },
+  "ports": {
+    "returncode": 0,
+    "stdout": "State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess\nLISTEN 0      4096         0.0.0.0:111       0.0.0.0:*          \nLISTEN 0      4096         0.0.0.0:22        0.0.0.0:*          \nLISTEN 0      4096      127.0.0.54:53        0.0.0.0:*          \nLISTEN 0      4096   127.0.0.53%lo:53        0.0.0.0:*          \nLISTEN 0      4096            [::]:111          [::]:*          \nLISTEN 0      4096            [::]:22           [::]:*          \n"
+  },
+  "probe_release_sha": "b54dc2fa4c9ae294927c63f9056a5c4dc7746973",
+  "processes": [],
+  "runtime_listeners": [],
+  "runtimes": {},
+  "schema_version": "oracle-local-model-inventory-v1",
+  "services": {
+    "gpt-oss.service": {
+      "returncode": 0,
+      "stdout": "MainPID=0\nMemoryCurrent=[not set]\nCPUUsageNSec=[not set]\nActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+    },
+    "llama-server.service": {
+      "returncode": 0,
+      "stdout": "MainPID=0\nMemoryCurrent=[not set]\nCPUUsageNSec=[not set]\nActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+    },
+    "ollama.service": {
+      "returncode": 0,
+      "stdout": "MainPID=0\nMemoryCurrent=[not set]\nCPUUsageNSec=[not set]\nActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+    },
+    "quant-research-worker.timer": {
+      "returncode": 0,
+      "stdout": "ActiveState=inactive\nSubState=dead\nFragmentPath=\nUnitFileState=\n"
+    }
+  },
+  "sudo_noninteractive": {
+    "returncode": 1,
+    "stdout": ""
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "CHEAP_DATA_NOW": "SEC commencement offer, accepted clock, offer fraction, NAV fixing and result amendment are public. Need documentary qualification of daily issuer NAV and exchange OHLC routes; do not read prices yet.",
+  "CHEAP_EXPRESSION": "One fixed-position prospective case, tender all, honor actual pro-rata acceptance and value the unaccepted residual at a predeclared exit; cannot count every share as redeemed.",
+  "ECONOMIC_SIGNIFICANCE": "Only contractual conversion availability established.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [],
+  "FAMILY_STATUS": "OPEN_DATA_QUALIFICATION",
+  "FATAL_PROBLEM": "Free same-date NAV/result acceptance and residual exit prices may be missing. A price discount alone is not payoff; ignoring proration or residual loss creates a false upper bound.",
+  "LESSON": "NAV tender is not whole-position redemption; explicit allocation accounting is necessary.",
+  "MECHANISM": "An exchange-listed CEF periodically converts a bounded quantity of common shares into cash at a specified NAV fraction, supplying a contractual conversion route unavailable during ordinary secondary-market trading.",
+  "NEXT_DECISION": "Qualify one issuer NAV/history route and existing public OHLC route without values; PARK_DATA if missing within two requests.",
+  "POWER_LIMITATION": "No event or economic test.",
+  "RESULT": "L1_NOW_PENDING_MINIMUM_DATA_QUALIFICATION",
+  "UNCERTAINTY": "Allocation, NAV drift and residual discount risk unresolved.",
+  "WHO_PAYS": "The fund repurchase budget; impatient secondary-market sellers may sell below the eventual conversion value. Remaining shareholders bear tender expenses and portfolio liquidation costs.",
+  "WHY_PERSIST": "Limited offer size, proration, uncertain valuation-date NAV, residual discount exposure and tender operations prevent a riskless scalable conversion. Small positions reduce market impact but receive no automatic allocation advantage.",
+  "breadth": "Distinct NAV-conversion/limited-liquidity mechanism; related corporate-action allocation cluster, no independent-statistical-trial claim. Existing operating-company fixed-cash oddlot protocol explicitly excludes CEFs.",
+  "classification": "L1_NOW",
+  "exposure": {
+    "calibration_excluded_ciks": [
+      "1176984",
+      "836412",
+      "1620515",
+      "1090116",
+      "1306550",
+      "2041398",
+      "1858660",
+      "1616203",
+      "1232860",
+      "2026675",
+      "1901164",
+      "2037804",
+      "2031750"
+    ],
+    "economic_look": false,
+    "incidental_exposure": "Search returned historical Nuveen final-tender/proration language; no market-entry/exit return or numerical profit inspected. All search-exposed registrants excluded from fresh confirmation. The SEC document was parsed only for terms, not its historical price-range section.",
+    "private_history": "UNKNOWN",
+    "type": "IDEA_GENERATED + DATA_FEASIBILITY"
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "e83c5ee0b889a38b410a2a9ca949c6e9d692e3c6",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:10:04.353868+00:00",
+  "sources": [
+    {
+      "accession": "0001076598-25-000291",
+      "bytes": 157330,
+      "documentary_facts": "Exchange-listed CEF; offer up to 5% at 98% expiration-date NAV; pro rata disregarding fractions if oversubscribed; no odd-lot preference found.",
+      "sha256": "1313a4cfe91ee65754f05c1ac22d5b4d980769d45f651cb2beabc76a4e015c5c",
+      "status": 200,
+      "url": "https://www.sec.gov/Archives/edgar/data/1176984/000107659825000291/exhibita1i_ex99za1i.htm"
+    },
+    {
+      "documentary_facts": "Announces a series of limited periodic NAV tenders; search metadata only.",
+      "url": "https://www.sec.gov/Archives/edgar/data/836412/000119312524064620/d802663dsctoc.htm"
+    }
+  ]
+}

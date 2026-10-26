@@ -1,0 +1,42 @@
+{
+  "recorded_date": "2026-10-14",
+  "stage": "L0_SOURCE_FEASIBILITY",
+  "candidate_id": "market-sentiment-vix-fear-spike-reversal",
+  "seed_family": "market_sentiment_dislocation",
+  "decision": "L1_NOW",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "MECHANISM": "A sharp transition into unusually high option-implied fear can coincide with forced de-risking, convexity hedging and liquidity demand. If part of that demand is temporary, the broad equity index can rebound over the next several sessions. If fear is correctly pricing a persistent deterioration, the contrarian expression should fail and may carry crash risk.",
+  "WHO_PAYS": "Potentially investors forced to sell/de-risk or buy protection during acute fear episodes; positive subsequent equity returns may also simply compensate crash/liquidity risk rather than reveal mispricing.",
+  "WHY_PERSIST": "Risk limits, margin/liquidity constraints and convexity demand recur, while the exact timing of reversals is difficult and dangerous to warehouse. Publication/crowding makes a large simple effect unlikely.",
+  "OBSERVABLE_TRIGGER": "CBOE VIX daily close entering an extreme tail relative only to its own trailing history, with equity entry strictly after the signal close.",
+  "CHEAP_DATA_NOW": "FRED exposes VIXCLS (daily VIX close, source CBOE) and SP500 (daily S&P 500 close). Both routes are public, no account and no paid service required for this bounded research screen.",
+  "CHEAP_EXPRESSION": "When VIX first crosses into the top 5% of its trailing 252 valid closes, take one non-overlapping paper LONG S&P 500 proxy from the next available close for five subsequent closes. Threshold, horizon and costs must be frozen before joined historical outcomes are read.",
+  "WHY_NOT_ARBITRAGED": "Not established. VIX spikes and equity rebounds are widely studied; any apparent return may be compensation for crash risk, a sample dominated by crisis episodes, or a non-executable close-to-close artifact.",
+  "FATAL_PROBLEM": "Signals cluster in crises, observations are dependent, and extreme-VIX episodes can precede much deeper equity losses. Using same-day SP500 close would create timing ambiguity, so entry must be strictly after the VIX signal close. Cash-index closes are not executable futures fills.",
+  "source_routes": [
+    {
+      "authority": "Federal Reserve Bank of St. Louis / Cboe",
+      "series_id": "VIXCLS",
+      "frequency": "Daily, Close",
+      "role": "signal"
+    },
+    {
+      "authority": "Federal Reserve Bank of St. Louis / S&P Dow Jones Indices LLC",
+      "series_id": "SP500",
+      "frequency": "Daily, Close",
+      "role": "outcome proxy"
+    }
+  ],
+  "exposure_accounting": {
+    "generic_current_2026_vix_values_seen_during_source_qualification": true,
+    "one_old_2014_vix_snippet_seen": true,
+    "joined_historical_vix_sp500_sample_seen": false,
+    "future_returns_or_pnl_computed": false,
+    "note": "The incidental VIX values are outside the planned 2018-2024 economic sample except for generic source semantics; no joined signal-return pair was inspected before L1 predeclaration."
+  },
+  "next_action": "Create exactly one frozen L1 contract before downloading/joining the 2017 warm-up and 2018-2024 economic sample. No nearby percentile, hold, trend or macro filter may be tried after outcome access."
+}

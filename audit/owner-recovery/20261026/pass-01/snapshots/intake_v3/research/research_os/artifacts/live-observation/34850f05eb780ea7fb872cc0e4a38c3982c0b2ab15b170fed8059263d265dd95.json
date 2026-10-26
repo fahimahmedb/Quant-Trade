@@ -1,0 +1,89 @@
+{
+  "authority": "OBSERVATIONAL_ONLY",
+  "canonical_terminal": {
+    "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e-2",
+    "event_seq": 2,
+    "generation": 2,
+    "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e",
+    "source_commit": "679271dd47ac55755728ef7a58839cb55df78084"
+  },
+  "credentials_included": false,
+  "records": [
+    {
+      "packet": {
+        "action_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011",
+        "emitted_at": "2026-10-20T17:20:08Z",
+        "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e-1",
+        "event_seq": 1,
+        "event_type": "ACTION_STARTED",
+        "generation": 3,
+        "lease_id": "a0b48c7b-5ec0-4fd3-b271-c7771b9ed25a",
+        "payload": {
+          "label": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011",
+          "stage": "document_or_fundamental_research",
+          "ui_activity": "document-reading",
+          "ui_label": "Oracle \u00b7 Documents",
+          "ui_role": "researcher"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "ff3edce0-fdca-4b5f-b938-93a61962b06a",
+        "trace_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T17:20:12.303Z",
+      "cursor": 97,
+      "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e-1",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    },
+    {
+      "packet": {
+        "action_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011",
+        "emitted_at": "2026-10-20T17:20:15Z",
+        "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e-2",
+        "event_seq": 2,
+        "event_type": "SESSION_ENDED",
+        "generation": 3,
+        "lease_id": "a0b48c7b-5ec0-4fd3-b271-c7771b9ed25a",
+        "payload": {
+          "ui_activity": "none"
+        },
+        "principal": "oracle-research-live",
+        "session_id": "ff3edce0-fdca-4b5f-b938-93a61962b06a",
+        "trace_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e",
+        "worker_id": "oracle-research.fundamental_events"
+      },
+      "state": "PENDING"
+    },
+    {
+      "accepted_at": "2026-10-20T17:20:18.054Z",
+      "cursor": 98,
+      "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e-2",
+      "state": "ACKNOWLEDGED",
+      "status": "APPLIED"
+    }
+  ],
+  "schema_version": "oracle-live-projection-v1",
+  "site_session": {
+    "generation": 3,
+    "heartbeat_interval_ms": 10000,
+    "lease_id": "a0b48c7b-5ec0-4fd3-b271-c7771b9ed25a",
+    "session_id": "ff3edce0-fdca-4b5f-b938-93a61962b06a"
+  },
+  "source": {
+    "action_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011",
+    "event_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e-1",
+    "event_seq": 1,
+    "generation": 2,
+    "input_commit": "02c4efa8025d2273d519fad97cac8ea6c34ea64f",
+    "lane": "fundamental_events",
+    "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-011-g2-fc1d36308f7e",
+    "stage": "document_or_fundamental_research",
+    "worker_id": "oracle-research.fundamental_events"
+  },
+  "source_events_mutated": false,
+  "stale_starts_replayed": false
+}

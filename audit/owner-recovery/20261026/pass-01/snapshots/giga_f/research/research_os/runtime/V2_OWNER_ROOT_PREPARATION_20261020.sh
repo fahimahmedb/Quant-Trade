@@ -1,0 +1,1 @@
+sudo /usr/bin/python3.12 -I -B -c 'import json,os,sys; from pathlib import Path; p=Path("/opt/quant-research/releases/a67ffec48fff895d5edc42171855e2213e49cf0d"); os.chdir(p); sys.path.insert(0,str(p)); from deploy.oracle_v2_deploy import prepare; print(json.dumps(prepare(p,39360664488,39360664487),sort_keys=True))'

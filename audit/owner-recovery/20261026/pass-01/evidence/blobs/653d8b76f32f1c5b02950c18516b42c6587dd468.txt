@@ -1,0 +1,19 @@
+from pathlib import Path
+import subprocess,os,json,hashlib
+p=Path('/workspace/Quant-Trade/research/research_os/expansion/v2_core.py'); fixed=p.read_text();out=Path('/workspace/vertical_depth_cp041_rebuild');results=[]
+try:
+ for name in ['build_epoch_manifest','build_research_trial','build_candidate','build_validator_result','build_negative_memory','build_frozen_export_intent']:
+  old=f'def {name}(payload: Mapping[str, Any]) -> Dict[str, Any]:\n    payload = deepcopy(dict(payload))\n'
+  assert fixed.count(old)==1,name
+  p.write_text(fixed.replace(old,old.replace('    payload = deepcopy(dict(payload))\n','')))
+  f=out/('CP041_mutant_'+name+'.txt')
+  test='tests/test_vertical_export_input_isolation.py' if name=='build_frozen_export_intent' else 'tests/test_vertical_core_admission_snapshot.py'
+  with f.open('w') as log:
+   log.write('removed_capture='+name+'\nfixed_source_sha256='+hashlib.sha256(fixed.encode()).hexdigest()+'\n');log.flush()
+   r=subprocess.run(['python','-m','pytest','-q',test],cwd='/workspace/Quant-Trade',env=dict(os.environ,PYTHONPATH='src:tests:.'),stdout=log,stderr=subprocess.STDOUT)
+  summary=next(s for s in reversed(f.read_text().splitlines()) if 'failed' in s)
+  assert r.returncode==1,(name,r.returncode)
+  results.append({'removed_capture':name,'exit_code':r.returncode,'summary':summary,'log':f.name})
+  print(name,summary,flush=True)
+finally:p.write_text(fixed)
+(out/'CP041_mutation_results.json').write_text(json.dumps({'fixed_source_sha256':hashlib.sha256(fixed.encode()).hexdigest(),'mutants':results},indent=2)+'\n')

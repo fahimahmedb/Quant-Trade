@@ -1,0 +1,11 @@
+{
+  "event_id":"VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001-g1-001",
+  "session_id":"VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001-g1",
+  "worker_id":"independent_challenge",
+  "action_id":"VALIDATE-EVENT-FDA-ADCOM-BRIEFING-CLOCK-001",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-18T11:34:00Z",
+  "payload":{"queue_state":"WORKING","candidate_id":"EVENT-FDA-ADCOM-BRIEFING-CLOCK-001","stage":"independent_validation"}
+}

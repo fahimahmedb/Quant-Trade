@@ -1,0 +1,11 @@
+{
+  "event_id":"fundamental-events-frontier-fundamental-distinct-thesis-002-g1-001",
+  "session_id":"fundamental-events-frontier-fundamental-distinct-thesis-002-g1",
+  "worker_id":"fundamental_events_workflow",
+  "action_id":"FRONTIER-FUNDAMENTAL-DISTINCT-THESIS-002",
+  "event_type":"ACTION_STARTED",
+  "event_seq":1,
+  "generation":1,
+  "emitted_at":"2026-10-16T09:15:24Z",
+  "payload":{"queue_state":"WORKING","task_type":"FUNDAMENTAL_RESEARCH","lane":"fundamental_events"}
+}

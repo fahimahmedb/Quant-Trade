@@ -1,0 +1,93 @@
+name: F1 Stage A compressed capture
+
+# A branch push starts a durable capture without merging coordination PR #22.
+# No analysis command appears here. No Stage B archive is selected or opened.
+on:
+  push:
+    branches: ['builder/f1-persistent-stage-a-2026-10-08']
+    paths:
+      - '.github/workflows/f1-stage-a-capture.yml'
+      - 'research/crypto_carry_f1/capture_stage_a.py'
+      - 'research/crypto_carry_f1/acquire_f1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f1-stage-a-compressed-capture
+  cancel-in-progress: false
+
+env:
+  CANDIDATES_SHA256: f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic capture and harness regressions
+        run: python3 -B -m unittest research.crypto_carry_f1.test_capture_stage_a research.crypto_carry_f1.test_run_f1 research.crypto_carry_f1.test_liquidity_ranking_f1 research.crypto_carry_f1.test_decision_integrity_f1
+      - name: Recover the most recent persisted Stage A capture
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/f1-stage-a"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" --paginate --jq '.artifacts[] | select(.expired == false and (.name | startswith("f1-stage-a-capture-"))) | [.workflow_run.id, .name] | @tsv' > "$RUNNER_TEMP/f1-artifacts.tsv"
+          if read -r source_run source_artifact < "$RUNNER_TEMP/f1-artifacts.tsv"; then
+            gh run download "$source_run" --repo "$GITHUB_REPOSITORY" --name "$source_artifact" --dir "$RUNNER_TEMP/f1-stage-a"
+            echo "Recovered $source_artifact from run $source_run"
+          else
+            echo 'No persisted Stage A capture exists; create names-only plan.'
+          fi
+      - name: Record capture provenance
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          paths = ["acquire_f1.py", "capture_stage_a.py", "run_f1.py", "candidates_2026-10-08.txt"]
+          root = Path("research/crypto_carry_f1")
+          (Path(os.environ["RUNNER_TEMP"]) / "f1-stage-a" / "capture_STAGE_A.json").unlink(missing_ok=True)
+          record = {"commit": os.environ["GITHUB_SHA"], "run_id": os.environ["GITHUB_RUN_ID"],
+                    "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"], "stage": "STAGE_A",
+                    "operation": "compressed acquisition only", "rows_parsed": 0,
+                    "source_sha256": {p: hashlib.sha256((root / p).read_bytes()).hexdigest() for p in paths}}
+          (Path(os.environ["RUNNER_TEMP"]) / "f1-stage-a" / "provenance.json").write_text(json.dumps(record, sort_keys=True, indent=1))
+          PY
+      - name: Capture and certify Stage A archives
+        timeout-minutes: 300
+        run: |
+          set -euo pipefail
+          python3 -u -I research/crypto_carry_f1/capture_stage_a.py "$RUNNER_TEMP/f1-stage-a" research/crypto_carry_f1/candidates_2026-10-08.txt "$CANDIDATES_SHA256" | tee "$RUNNER_TEMP/f1-stage-a/acquisition.log"
+      - name: Persist complete or interrupted capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-stage-a-capture-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/f1-stage-a/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 30
+      - name: Publish capture counts (no economic outcome)
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = Path(os.environ["RUNNER_TEMP"]) / "f1-stage-a" / "capture_STAGE_A.json"
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as out:
+              if report.exists():
+                  r = json.loads(report.read_bytes())
+                  out.write(f"Stage A capture: **{r['status']}**; {r['verified']}/{r['planned']} compressed archives checksum-verified. Rows parsed: {r['rows_parsed']}.\n")
+                  out.write(f"Plan SHA256: `{r['plan_sha256']}`\n\nManifest SHA256: `{r['manifest_sha256']}`\n")
+              else:
+                  out.write("Capture did not reach certification. Analysis remains blocked.\n")
+          PY

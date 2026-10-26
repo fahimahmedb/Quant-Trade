@@ -1,0 +1,21 @@
+{
+  "RELEVANT_BRANCHES_DISCOVERED": 261,
+  "RELEVANT_BRANCHES_CLASSIFIED": 38,
+  "BRANCHES_PARTIALLY_CLASSIFIED": 1,
+  "CP_RECORDS_DISCOVERED": 704,
+  "CP_RECORDS_CLASSIFIED": 120,
+  "CP_RECORD_COUNT_SCOPE": "517 artifact versions +187 unbound subject-label records, not704 completed CPs; classified120=100 current V label dispositions +20 current Builder V2-forward label dispositions",
+  "POSITIVE_RESEARCH_ITEMS_DISCOVERED": 15,
+  "POSITIVE_RESEARCH_ITEMS_TRACED_TO_TERMINUS": 10,
+  "POSITIVE_RESEARCH_SCOPE": "Recovered unique positive leads; global completeness unknown",
+  "QUALIFIED_HEADS_DISCOVERED": "UNKNOWN_GLOBAL;8 exact-head component/cumulative CI qualification scopes plus3 locally bound H/V source scopes documented",
+  "QUALIFIED_HEADS_ACCOUNTED_FOR": "11_SCOPED; other historical qualification claims pending",
+  "ARCHITECTURE_CAPABILITIES_DISCOVERED": 63,
+  "ARCHITECTURE_CAPABILITIES_CLASSIFIED": 63,
+  "ARCHITECTURE_SCOPE": "Requested/recovered functional surfaces, not every historical module semantically closed",
+  "UNRESOLVED_CONTRADICTIONS": 8,
+  "UNTRACED_POSITIVE_HANDOFFS": 5,
+  "UNTRACED_POSITIVE_HANDOFFS_SCOPE": "1 suspected UST missing execution +4 historical positives with unknown descendant; not5 proven orphans",
+  "UNKNOWN_CRITICAL_ITEMS": 12,
+  "AUDIT_COMPLETENESS": "INCOMPLETE"
+}

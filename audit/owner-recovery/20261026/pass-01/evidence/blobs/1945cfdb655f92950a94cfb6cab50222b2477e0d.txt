@@ -1,0 +1,118 @@
+# Vertical CP046 — Typed queue fencing and trustworthy recovery from invalid documents
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=e98a1b22f98935302c26a749fdb84638ffbeac41
+MISSION_CHECKPOINT_ACCEPTED=TRUE_SCOPED_EVIDENCE
+REPLACES_INSUFFICIENT_RUNTIME_REPLAY_LABEL=TRUE
+OWNER_REQUESTED_STOP_AFTER_THIS_CHECKPOINT=TRUE
+
+Module: existing autonomous_research.runtime.PersistentQueue.
+Capabilities: observed-document conflict fencing, v1 JSON admission, rollback,
+publication readback and idempotent add/retry. North Star Research Control Plane
+queue/priorities/leases and persistent Clock/recovery truth. No future E Runtime,
+distributed ownership or cross-module queue/state transaction is implemented.
+
+Starting depth: CP007 D2 admission and CP015 D3 cooperative writer/recovery tests.
+Those proofs did not distinguish typed-equal JSON changes, reject duplicate or
+nonfinite JSON at initial load, or preserve a trusted snapshot after corrupt
+external state. This checkpoint extends those same two units; it adds no unit
+merely because a new checkpoint number exists. The old CP046 replay is rejected.
+
+## Concrete descent
+
+Three grouped repair items, with an additional counterexample to the first repair:
+
+1. The optimistic fence compared Python values. An external 0 -> false or
+   600 -> 600.0 change compared equal, so a stale save/add overwrote it. Nested
+   metadata is affected too: this is loss of exact serialized identity, not just
+   a top-level scheduling field. Canonical key order/whitespace must remain benign.
+2. Initial reads admitted duplicate object fields and nonfinite numbers, including
+   overflow 1e309. Last-key-wins silently discarded conflicting metadata. The first
+   repair rejected those, but deeper tests found JSON null confused with a missing
+   queue and unknown v1 root fields accepted then discarded at write. These are
+   all grouped as strict durable document admission, not independent root counts.
+3. Error recovery called __init__ on the live object. A corrupt read could clear
+   tasks or leave the uncommitted attempted mutation installed. Retrying then lost
+   the previously trusted queue, even though the failed operation never persisted.
+
+Initial 43-case fixture: **40 failed / 3 passed**. The first repair passed those
+cases plus existing queue/campaign tests. It is recorded at source 2b02e52.
+Six deeper null/unknown-root cases then failed that repair: **6 failed / 43 passed**.
+The checkpoint was kept open and refined before full qualification.
+
+Final before proof restores the exact previous runtime from b4eeceb with the
+final 49-case fixture retained: **45 failed / 4 passed**. This restores the module,
+not a fabricated whole historical checkout; fixture/module hashes are recorded.
+
+## Minimal repair and compatibility
+
+The queue compares canonical finite JSON bodies under its existing file lock,
+distinguishing bool/int/float values while ignoring key order and whitespace.
+A queue-local parser rejects repeated keys at every nesting level, nonfinite
+values and existing non-object documents. A missing path remains a legitimate
+new queue. V1 root shape is explicitly version/tasks; unknown or missing root
+fields are refused rather than silently thrown away. The explicit metadata
+object inside each task remains extensible. Existing version/duplicate-task-ID
+admission stays in place; this is not an entire new task schema.
+
+Recovery prepares a complete replacement before installing it. It adopts valid
+durable readback after conflict or lost ACK. If readback is malformed/unreadable,
+it reinstalls the previously observed snapshot and raises; it never rewrites or
+"repairs" the invalid file. A real external repair is required before a successful
+retry. Valid files retain their wire version, field representation and ordering.
+Previously ignored v1 root extensions now require explicit compatible migration.
+
+## Final adversarial proof
+
+tests/test_vertical_queue_document_depth.py adds **49 cases**:
+
+- Four typed-equal external changes through save and add; stale mutation refused,
+  exact durable bytes retained, external typed truth adopted, retry succeeds once.
+- Duplicate root/task/nested metadata fields with same or conflicting values.
+- NaN, positive/negative infinity and overflowing finite spelling in priority or
+  nested metadata, denied at load without a disk effect.
+- Eleven invalid durable forms through save/add: repeated fields, nonfinite JSON,
+  bool/unknown version, duplicate task identity, bad tasks shape, truncation,
+  root null and unrecognized root extension. Trusted object restored; disk bytes
+  preserved; externally repaired file permits one add and denies its replay.
+- Actual missing/new queues and harmless canonical key/format differences remain
+  valid. Null is explicitly distinguished from absence.
+- Publication failure before write versus durable success with lost ACK. Exact
+  bool-valued proposed metadata survives readback and replay without duplicate task.
+
+Focused after: **159 passed**, combining this fixture with CP007/CP015/CP042/
+CP044 and original runtime tests. Optimized interpreter / alternate hash seed:
+**159 passed**, with pytest's optimization warning. Seven deliberate removals are
+caught: Python-equality stale fence 10 failures; duplicate-key admission 12;
+finite read admission 10; null-shape admission 3; root-field admission 3; trusted
+fallback 22; durable readback 9. Overlapping mutant failures are sensitivity
+controls, not additional defects, economic experiments or observations.
+
+Proof: CP046_before.txt, CP046_after.txt,
+CP046_intermediate_deeper_falsification.txt, CP046_optimized.txt,
+CP046_MUTATION_RUNNER.txt, CP046_mutation_results.json and CP046_PROVENANCE.json
+under research/vertical_depth/20261021. Full regression and an exact-source Core
+receipt are separately bound to HEAD_SHA. Only disposable synthetic queues run.
+
+Attained depth: D2 strict-document admission and D3 observed-body fencing,
+publication failure/lost-ACK readback and retry. These extend the existing scoped
+queue units. No new process-death boundary or whole-module D4 claim is made.
+
+Remaining unproven: adversarial noncooperating writes between check and publish,
+all scalar/task status/identity schema constraints, path alias/symlink attacks,
+unknown nested metadata semantics, live reader atomic snapshots, simultaneous
+schedulers/controllers, physical power failure, external worker effects and
+multi-file campaign/queue/memory atomicity. The old last-observed object is not
+new durable proof; writes remain denied until durable input is qualified again.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains separately owned. No production, live or market action.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+
+STOP_AFTER_CP046=TRUE
+PHASE_A_COMPLETE=FALSE
+CP047_SUBSTANTIVE_WORK_OPENED=FALSE

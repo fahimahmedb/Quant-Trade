@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="cfr.xsl"?>
+<CFRGRANULE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="CFRMergedXML.xsd">
+    <FDSYS>
+        <CFRTITLE>17</CFRTITLE>
+        <CFRTITLETEXT>Commodity and Securities Exchanges</CFRTITLETEXT>
+        <VOL>4</VOL>
+        <DATE>2025-04-01</DATE>
+        <COVERONLY>false</COVERONLY>
+        <ORIGINALDATE>2025-04-01</ORIGINALDATE>
+        <ANCESTORS>
+            <PARENT HEADING="Title 17" SEQ="4">Commodity and Securities Exchanges</PARENT>
+            <PARENT HEADING="CHAPTER II" SEQ="3">SECURITIES AND EXCHANGE COMMISSION (CONTINUED)</PARENT>
+            <PARENT HEADING="PART 240" SEQ="2">GENERAL RULES AND REGULATIONS, SECURITIES EXCHANGE ACT OF 1934</PARENT>
+            <PARENT HEADING="Subpart A" SEQ="1">Rules and Regulations Under the Securities Exchange Act of 1934</PARENT>
+            <PARENT HEADING="" SEQ="0">Rules Relating to Over-The-Counter Markets</PARENT>
+        </ANCESTORS>
+    </FDSYS>
+    <SECTION>
+        <SECTNO>§ 240.15c6-1</SECTNO>
+        <SUBJECT>Settlement cycle.</SUBJECT>
+        <P>(a) Except as provided in paragraphs (b), (c), and (d) of this section, a broker or dealer shall not effect or enter into a contract for the purchase or sale of a security (other than an exempted security, a government security, a municipal security, commercial paper, bankers' acceptances, or commercial bills) that provides for payment of funds and delivery of securities later than the first business day after the date of the contract unless otherwise expressly agreed to by the parties at the time of the transaction.</P>
+        <P>(b) Paragraph (a) of this section shall not apply to:</P>
+        <P>(1) Contracts for the purchase or sale of limited partnership interests that are not listed on an exchange or for which quotations are not disseminated through an automated quotation system of a registered securities association;</P>
+        <P>(2) Security-based swaps; or</P>
+        <P>(3) Contracts for the purchase or sale of securities that the Commission may from time to time, taking into account then existing market practices, exempt by order from the requirements of paragraph (a) of this section, either unconditionally or on specified terms and conditions, if the Commission determines that such exemption is consistent with the public interest and the protection of investors.</P>
+        <P>(c) Paragraph (a) of this section shall not apply to contracts for the sale for cash of securities that are priced after 4:30 p.m. Eastern Time (ET) on the date such securities are priced and that are sold by an issuer to an underwriter pursuant to a firm commitment underwritten offering registered under the Securities Act of 1933 or sold to an initial purchaser by a broker-dealer participating in such offering provided that a broker or dealer shall not effect or enter into a contract for the purchase or sale of such securities that provides for payment of funds and delivery of securities later than the second business day after the date of the contract unless otherwise expressly agreed to by the parties at the time of the transaction.</P>
+        <P>(d) For purposes of paragraphs (a) and (c) of this section, the parties to a contract shall be deemed to have expressly agreed to an alternate date for payment of funds and delivery of securities at the time of the transaction for a contract for the sale for cash of securities pursuant to a firm commitment offering if the managing underwriter and the issuer have agreed to such date for all securities sold pursuant to such offering and the parties to the contract have not expressly agreed to another date for payment of funds and delivery of securities at the time of the transaction.</P>
+        <CITA>[88 FR 13952, Mar. 6, 2023]</CITA>
+    </SECTION>
+</CFRGRANULE>

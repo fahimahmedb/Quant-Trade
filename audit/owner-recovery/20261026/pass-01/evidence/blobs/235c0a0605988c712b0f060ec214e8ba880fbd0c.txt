@@ -1,0 +1,72 @@
+# Vertical CP092 — p0 adversarial: optimized-runtime falsification
+
+BASE_SHA=01c2e520fa4116645870f96acf6770ea83f1881c
+HEAD_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+TESTED_STANDARD_AND_OPTIMIZED_SHA=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+CONTINUATION_DATE=2026-10-23
+
+Module/capability: the existing `tests/test_p0_adversarial.py` contract and its explicit cases below.
+Implementation descent: `quant.clock`, `quant.dataplane.sec.audit`, `quant.dataplane.sec.budget`, `quant.dataplane.sec.collector`, `quant.dataplane.sec.fingerprint`, `quant.dataplane.sec.policy`, `quant.dataplane.sec.store`, `quant.dataplane.sec.supervisor`, `quant.dataplane.sec.transport`, `quant.dataplane.sec.visibility`, `quant.paths`, `quant.state`.
+These interfaces and this test surface exist on the immutable Phase-A base.
+North Star basis: preserve scientific identity/provenance, causal clocks,
+reproducible durable truth, and fail-closed authority through alternate execution
+conditions; do not infer any economic permission from technical readiness.
+
+Starting depth: existing structured adversarial regression; invariance under
+optimized Python and a different process hash seed was not recorded here.
+This checkpoint adds environmental falsification evidence, not a new capability
+family, a new repair, or whole-module qualification.
+
+Adversaries executed (the full file is run, including parametrizations/subtests):
+
+- `test_main_state_roundtrip_keeps_kernel_boot_distinct_from_child`
+- `test_same_living_supervisor_can_attest_child_failure_restart`
+- `test_corrupt_prior_supervisor_state_never_buys_clean_cause`
+- `test_double_supervisor_is_rejected_by_real_lock`
+- `test_runtime_import_closure_is_in_manifest`
+- `test_manifest_body_tamper_is_detected_even_if_string_fingerprint_is_unchanged`
+- `test_other_host_materialization_is_not_accepted`
+- `test_qualifying_request_refuses_stale_materialization_before_network`
+- `test_torn_sec_journal_is_never_silently_discarded`
+- `test_future_attempt_timestamp_is_not_live`
+- `test_http_200_non_form4_body_does_not_acknowledge_filing`
+- `test_public_telemetry_has_no_activity_volume_or_timing_proxy`
+- `test_real_transport_path_emits_exactly_one_request_per_permit`
+- `test_connection_failure_is_not_hiddenly_resent`
+- `test_network_intent_without_finished_attempt_invalidates_audit`
+
+Runtime composition: execute these existing denial/identity/recovery fixtures
+with ordinary Python/PYTHONHASHSEED=0, then Python -OO/PYTHONHASHSEED=1729.
+Assertions in application modules may disappear in the latter; pytest-rewritten
+test assertions and unittest checks remain the oracle. The optimized run warns
+about disabled assertions in non-test modules, as expected. Explicit child
+commands in fixtures keep their own interpreter flags; this does not prove every
+child was optimized. All effects use local fixtures/mocks/disposable stores.
+No deployment, production Site operation or live source call is performed.
+
+- standard: `15 passed in 0.23s`; exit 0; `research/vertical_depth/20261021/CP092_standard.txt`.
+- optimized: `15 passed, 1 warning in 0.23s`; exit 0; `research/vertical_depth/20261021/CP092_optimized.txt`.
+
+Defect found: none reproduced by this bounded runtime composition.
+Root cause/repair: not applicable; no speculative product change.
+Attained evidence: D2 runtime/structured-edge requalification only. Where fixtures
+exercise durable retry/concurrency, their named scoped checks retain their prior
+limits; no new D3/D4 label or additional capability count follows from this run.
+
+Remaining unproven depth: arbitrary object graphs and schema migrations,
+noncooperating concurrent writers, physical power loss, real external authority
+and source truth, and failures outside the named fixtures. Different interpreter
+versions, all hash seeds and semantic equivalence of source facts are unproved.
+An unchanged green suite is not exhaustive falsification. Final regression and
+receipt evidence are shared in FINAL_qualification.json and the final manifest;
+714 per-mode existing tests across CP038–CP100 overlap other suites and are not
+new tests, independent observations, or 63 new capabilities.
+
+Horizontal findings: none new. Longitudinal findings: none new;
+LONGITUDINAL_001 remains separately owned and unrepaired.
+Authority state: local diagnostic fixtures only; no Owner authority granted.
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE

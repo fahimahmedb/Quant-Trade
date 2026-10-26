@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TrialLedgerRecord",
+  "type": "object",
+  "required": ["trial_record_id","hypothesis_id","generation_id","observed_attempt_count","effective_trials_status","attempt_refs","updated_at"],
+  "properties": {
+    "trial_record_id": {"type":"string","minLength":1},
+    "hypothesis_id": {"type":"string","minLength":1},
+    "generation_id": {"type":"string","minLength":1},
+    "observed_attempt_count": {"type":"integer","minimum":0},
+    "estimated_effective_trials": {"type":["number","null"],"minimum":0},
+    "effective_trials_status": {"enum":["KNOWN","ESTIMATED","PARTIALLY_BOUNDED","UNKNOWN"]},
+    "method": {"type":["string","null"]},
+    "assumptions": {"type":"array","items":{"type":"string"}},
+    "covered_scope": {"type":["string","null"]},
+    "limitations": {"type":"array","items":{"type":"string"}},
+    "attempt_refs": {"type":"array","items":{"type":"string"}},
+    "failed_run_refs": {"type":"array","items":{"type":"string"}},
+    "abandoned_attempt_refs": {"type":"array","items":{"type":"string"}},
+    "manual_exploratory_refs": {"type":"array","items":{"type":"string"}},
+    "updated_at": {"type":"string","minLength":1}
+  },
+  "additionalProperties": false
+}

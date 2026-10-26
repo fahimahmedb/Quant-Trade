@@ -1,0 +1,22 @@
+{
+  "task_id":"FRONTIER-QUANT-MECHANISM-DISTINCT-001",
+  "generation":1,
+  "worker_id":"market-discovery-workflow",
+  "lane":"market_discovery",
+  "started_at":"2026-10-16T06:57:05Z",
+  "completed_at":"2026-10-16T07:00:00Z",
+  "stages_executed":["legacy_duplicate_check","mechanism_research","disconfirmation"],
+  "result":"NO_CANDIDATE",
+  "artifacts":[
+    "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-001/legacy-screen.json",
+    "research/research_os/artifacts/FRONTIER-QUANT-MECHANISM-DISTINCT-001/research-and-disconfirmation.json"
+  ],
+  "candidate_frozen":false,
+  "validation_handoff_created":false,
+  "validation_handoff_reason":"No hypothesis was frozen after active disconfirmation, so no validation handoff is applicable.",
+  "economic_experiment_authorized":false,
+  "prospective_observation_authorized":false,
+  "real_capital_authorized":false,
+  "live_trading_authorized":false,
+  "economic_outcome_accessed":false
+}

@@ -1,0 +1,87 @@
+{
+  "allowed_actions": [
+    "independently validate frozen documentary evidence",
+    "cross-examine falsification and disconfirmation",
+    "red-team and restrict claims; no integration handoff is authorized"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "scope": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
+  },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/integration_handoff.json"
+    ],
+    "completed_at": "2026-10-20T04:40:29Z",
+    "receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3.json",
+    "result": "COMPLETE"
+  },
+  "created_at": "2026-10-20T03:50:27Z",
+  "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "claim_restriction": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/claim_restriction.json",
+        "artifact_hash": "bec1cf2bbc286a86389070af03b43d6d41dbe666199c9edd99497942e6121eb9"
+      },
+      "cross_examination": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/cross_examination.json",
+        "artifact_hash": "76982e6f15ae24d304cfa86c761fe5b923a006080becb04a16b58d159a32c41e"
+      },
+      "independent_validation": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/independent_validation.json",
+        "artifact_hash": "530e1c3c704274387f77f0e929712b513ecef75b332f6269eb8a5e46018a0536"
+      },
+      "integration_handoff": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/integration_handoff.json",
+        "artifact_hash": "ea87a00c3c9389db81ab50399d3fdcddb838e065b3ba78913b68342be2456229"
+      },
+      "red_team": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/oracle-worker/red_team.json",
+        "artifact_hash": "941f1eb923838dca5e7a1f1012bc752b66154a2c19818f28e04e205acfcdbee9"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce/VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3.json",
+    "lineage": "DOC-EVENT-d8d19dbf0b1291ce",
+    "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+    "session_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce-g5-043de7e5c5a3"
+  },
+  "forbidden_actions": [
+    "hypothesis_generation",
+    "signal_repair",
+    "mutate frozen hypothesis",
+    "backtest",
+    "future outcomes",
+    "prospective observation",
+    "capital allocation",
+    "orders",
+    "live trading"
+  ],
+  "inputs": {
+    "frozen_hypothesis": "research/research_os/hypotheses/DOC-EVENT-d8d19dbf0b1291ce.json",
+    "validation_mode": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
+  },
+  "lease": {
+    "claimed_at": "2026-10-20T04:40:24Z",
+    "expires_at": "2026-10-20T04:40:29Z",
+    "generation": 5,
+    "owner": "oracle-research-v1.independent_challenge"
+  },
+  "lineage": {
+    "destination_lane": "independent_challenge",
+    "generation": 1,
+    "hypothesis_id": "DOC-EVENT-d8d19dbf0b1291ce",
+    "parent_task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-004",
+    "source_lane": "fundamental_events"
+  },
+  "priority": 70,
+  "required_capability": "validator",
+  "status": "COMPLETE",
+  "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
+  "task_id": "VALIDATE-DOC-EVENT-d8d19dbf0b1291ce",
+  "task_type": "VALIDATION",
+  "updated_at": "2026-10-20T04:40:29Z"
+}

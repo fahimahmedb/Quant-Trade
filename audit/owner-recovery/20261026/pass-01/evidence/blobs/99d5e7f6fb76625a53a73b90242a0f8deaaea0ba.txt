@@ -1,0 +1,13 @@
+source_sha=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+PYTHONHASHSEED=1729
+PYTHONPATH=src:tests:.
+command=python -OO -m pytest -q tests/test_edge_lab_legacy_adapter.py
+......                                                                   [100%]
+=============================== warnings summary ===============================
+../../home/agent/.local/lib/python3.12/site-packages/_pytest/config/__init__.py:1346
+  /home/agent/.local/lib/python3.12/site-packages/_pytest/config/__init__.py:1346: PytestConfigWarning: assertions not in test modules or plugins will be ignored because assert statements are not executed by the underlying Python interpreter (are you using python -O?)
+
+    self._warn_about_missing_assertion(mode)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+6 passed, 1 warning in 0.09s

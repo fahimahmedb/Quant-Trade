@@ -1,0 +1,77 @@
+{
+  "allowed_actions": [
+    "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+    "inspect admissible public primary documents and event rules",
+    "map event clock, causal mechanism, eligibility, confounders and falsification scope",
+    "actively seek documentary disconfirmation",
+    "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
+  },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005/oracle-worker/document_or_fundamental_research.json"
+    ],
+    "completed_at": "2026-10-20T06:40:12Z",
+    "receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005-g2-087b5f08b4f1.json",
+    "result": "BLOCKED"
+  },
+  "created_at": "2026-10-20T06:20:18Z",
+  "derivation": {
+    "derivation_key": "8a312337e7abbec72cc4d6279c28934dee205dfea3834192cbc911aae1b98342",
+    "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+    "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+    "sequence": 5,
+    "steward_lane": "integrator_portfolio",
+    "target_lane": "fundamental_events",
+    "type": "EMPTY_QUEUE_FRONTIER_REFILL"
+  },
+  "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "legacy_duplicate_check": {
+        "artifact": "research/research_os/artifacts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005/oracle-worker/legacy_duplicate_check.json",
+        "artifact_hash": "12506d7f0c4544d7d6aded1316027a01db868e7111a21faa1347d2d5127da34f"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005/FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005-g2-087b5f08b4f1.json",
+    "lineage": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005",
+    "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+    "session_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005-g2-087b5f08b4f1"
+  },
+  "forbidden_actions": [
+    "candidate price or return inspection",
+    "backtest",
+    "post-outcome tuning",
+    "prospective observation",
+    "capital allocation",
+    "order generation",
+    "live trading"
+  ],
+  "inputs": {
+    "causal_distinctness_required": true,
+    "derivation_key": "8a312337e7abbec72cc4d6279c28934dee205dfea3834192cbc911aae1b98342",
+    "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+    "legacy_gate_required": true,
+    "objective": "Find exactly one causally distinct event/document mechanism using admissible public primary or documentary evidence, screen Legacy before freeze, actively seek disconfirmation, and freeze at most one CandidateHypothesis without reading candidate returns or future outcomes.",
+    "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
+  },
+  "lease": {
+    "claimed_at": "2026-10-20T06:40:07Z",
+    "expires_at": "2026-10-20T06:40:12Z",
+    "generation": 2,
+    "owner": "oracle-research-v1.fundamental_events"
+  },
+  "priority": 70,
+  "required_capability": "event_document",
+  "status": "BLOCKED",
+  "success_condition": "One Legacy-screened, causally distinct event/document CandidateHypothesis is frozen and handed to independent validation, or a durable NO_CANDIDATE result is persisted.",
+  "task_id": "FRONTIER-EVENT-DOCUMENT-DISTINCT-MECHANISM-005",
+  "task_type": "EVENT_DOCUMENT",
+  "updated_at": "2026-10-20T06:40:12Z"
+}

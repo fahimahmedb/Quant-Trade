@@ -1,0 +1,39 @@
+{
+  "archive_bytes": 31631748,
+  "archives_by_dataset": {
+    "funding": 5825,
+    "perp1d": 5870,
+    "spot1d": 9393
+  },
+  "artifact_id": 11590897211,
+  "artifact_sha256": "9ec40fe2f1aaa57c63c00e1c1830f4fa28c3c98c5ca9ed90934305094b0550d0",
+  "candidates_sha256": "f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4",
+  "capture_run_id": 37856637365,
+  "capture_source_commit": "7b9054fc7bc3857b509ba1d6ad3112a0e8b83f96",
+  "capture_source_sha256": {
+    "acquire_f1.py": "012c09ff7ad0ce651bb211317965fc482b91bca048b2b5d5658d9a17c93c72d0",
+    "candidates_2026-10-08.txt": "f586b666d8950f9f98983a869eea012ef5e3ac7ac0c96f5d39a4dbbf0b65c9e4",
+    "capture_stage_a.py": "9692fd2e45899a93cf56a5961cf2281c0262941ce77abf55cfd606dda5c4bc4f",
+    "run_f1.py": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c"
+  },
+  "checked_utc": "2026-10-09T08:09:41Z",
+  "economic_outcome_computed": false,
+  "harness_sha256": "5a773f45c630c559532ccfbf6888bf506adf6e8a3c31b9fbe09f65ef33ec239c",
+  "license": "CC BY-NC-SA 4.0",
+  "manifest_sha256": "00069b4942f250324f6114c449a3a1d374e5755dd9e274c74ab1144cb93edb15",
+  "missing_keys": [],
+  "plan_sha256": "bd3d6603f371eaaf8c9a1c8dc38f843cee7c7eadee0853c8a5ef5722e177afc0",
+  "planned": 21088,
+  "rows_parsed": 0,
+  "source": "Binance Vision / Binance Public Data",
+  "stage": "STAGE_A",
+  "status": "COMPLETE",
+  "symbols_with_archives": 293,
+  "verification_commit": "680e555c4fd59caa57ee16a6214430c970210e4f",
+  "verification_run_id": "37903239892",
+  "verified": 21088,
+  "window": [
+    "2020-01",
+    "2023-12"
+  ]
+}

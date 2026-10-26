@@ -1,0 +1,205 @@
+module_source_sha=97d2da61e93ac22b47a6d68be99d72efc574ba4a
+New adversarial test retained; module restored exactly, then repaired bytes restored.
+FFFFF.                                                                   [100%]
+=================================== FAILURES ===================================
+__ test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[ready] __
+
+mutation = 'ready'
+
+    @pytest.mark.parametrize('mutation', ['ready', 'ceiling_outcome', 'remove_blocker', 'support', 'validator'])
+    def test_cp061_caller_mutation_after_scan_cannot_change_projected_truth(mutation):
+        supplied = inputs()
+        expected = projection.build_edge_observability_projection(**deepcopy(supplied))
+        original = projection._collect_blockers
+        calls = []
+
+        def mutate_then_collect(*args, **kwargs):
+            calls.append(True)
+            if mutation == 'ready':
+                supplied['readiness']['status'] = 'READY'
+            elif mutation == 'ceiling_outcome':
+                supplied['readiness']['claim_ceiling'] = {'returns': [1]}
+            elif mutation == 'remove_blocker':
+                supplied['research']['dossier']['blockers'].clear()
+            elif mutation == 'support':
+                supplied['research']['dossier']['dossier']['rule'].update(status='SUPPORTED', support={'ref': 'injected'})
+            else:
+                supplied['validator']['scientific_decision'] = 'PASS'
+            return original(*args, **kwargs)
+
+        with patch.object(projection, '_collect_blockers', side_effect=mutate_then_collect):
+            result = projection.build_edge_observability_projection(**supplied)
+        assert calls == [True]
+>       assert result == expected
+E       AssertionError: assert {'schema_vers...OCUMENT', ...} == {'schema_vers...OCUMENT', ...}
+E
+E         Omitting 17 identical items, use -vv to show
+E         Differing items:
+E         {'projection_hash': '2d8a140550486d16580061e166c4eaaff6063144fed583468019c3685f95cdfe'} != {'projection_hash': '7c1c8b3a44d79f058003943845dc0cf7b06cdd3cef52d0c4c76cbf3960caad50'}
+E         {'scientific_maturity': 'VALIDATED'} != {'scientific_maturity': 'EVIDENCE_BOUND'}
+E         {'experiment_readiness': 'READY'} != {'experiment_readiness': 'INCOMPLETE'}
+E         Use -v to get more diff
+
+tests/test_vertical_observability_input_snapshot.py:45: AssertionError
+_ test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[ceiling_outcome] _
+
+mutation = 'ceiling_outcome'
+
+    @pytest.mark.parametrize('mutation', ['ready', 'ceiling_outcome', 'remove_blocker', 'support', 'validator'])
+    def test_cp061_caller_mutation_after_scan_cannot_change_projected_truth(mutation):
+        supplied = inputs()
+        expected = projection.build_edge_observability_projection(**deepcopy(supplied))
+        original = projection._collect_blockers
+        calls = []
+
+        def mutate_then_collect(*args, **kwargs):
+            calls.append(True)
+            if mutation == 'ready':
+                supplied['readiness']['status'] = 'READY'
+            elif mutation == 'ceiling_outcome':
+                supplied['readiness']['claim_ceiling'] = {'returns': [1]}
+            elif mutation == 'remove_blocker':
+                supplied['research']['dossier']['blockers'].clear()
+            elif mutation == 'support':
+                supplied['research']['dossier']['dossier']['rule'].update(status='SUPPORTED', support={'ref': 'injected'})
+            else:
+                supplied['validator']['scientific_decision'] = 'PASS'
+            return original(*args, **kwargs)
+
+        with patch.object(projection, '_collect_blockers', side_effect=mutate_then_collect):
+            result = projection.build_edge_observability_projection(**supplied)
+        assert calls == [True]
+>       assert result == expected
+E       AssertionError: assert {'schema_vers...OCUMENT', ...} == {'schema_vers...OCUMENT', ...}
+E
+E         Omitting 18 identical items, use -vv to show
+E         Differing items:
+E         {'claim_ceiling': {'returns': [1]}} != {'claim_ceiling': 'DOCUMENTED_FACTS_ONLY'}
+E         {'projection_hash': 'eadea7bf50750fc56807e75f936d91110a6b60d4edbd65dce62c7e1df15204c7'} != {'projection_hash': '7c1c8b3a44d79f058003943845dc0cf7b06cdd3cef52d0c4c76cbf3960caad50'}
+E         Use -v to get more diff
+
+tests/test_vertical_observability_input_snapshot.py:45: AssertionError
+_ test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[remove_blocker] _
+
+mutation = 'remove_blocker'
+
+    @pytest.mark.parametrize('mutation', ['ready', 'ceiling_outcome', 'remove_blocker', 'support', 'validator'])
+    def test_cp061_caller_mutation_after_scan_cannot_change_projected_truth(mutation):
+        supplied = inputs()
+        expected = projection.build_edge_observability_projection(**deepcopy(supplied))
+        original = projection._collect_blockers
+        calls = []
+
+        def mutate_then_collect(*args, **kwargs):
+            calls.append(True)
+            if mutation == 'ready':
+                supplied['readiness']['status'] = 'READY'
+            elif mutation == 'ceiling_outcome':
+                supplied['readiness']['claim_ceiling'] = {'returns': [1]}
+            elif mutation == 'remove_blocker':
+                supplied['research']['dossier']['blockers'].clear()
+            elif mutation == 'support':
+                supplied['research']['dossier']['dossier']['rule'].update(status='SUPPORTED', support={'ref': 'injected'})
+            else:
+                supplied['validator']['scientific_decision'] = 'PASS'
+            return original(*args, **kwargs)
+
+        with patch.object(projection, '_collect_blockers', side_effect=mutate_then_collect):
+            result = projection.build_edge_observability_projection(**supplied)
+        assert calls == [True]
+>       assert result == expected
+E       AssertionError: assert {'schema_vers...OCUMENT', ...} == {'schema_vers...OCUMENT', ...}
+E
+E         Omitting 16 identical items, use -vv to show
+E         Differing items:
+E         {'interpretation': 'PRE_OUTCOME_RESEARCH_ONLY'} != {'interpretation': 'BLOCKED_NOT_FAILED'}
+E         {'blockers': []} != {'blockers': ['MISSING_DOCUMENT']}
+E         {'operational_state': 'ADVANCING'} != {'operational_state': 'BLOCKED'}
+E         {'projection_hash': '53018d56ba6615f3b85897eba9f138562a537b1286f5eb42ff5ac119bd319b39'} != {'projection_hash': '7c1c8b3a44d79f058003943845dc0cf7b06cdd3cef52d0c4c76cbf3960caad50'}
+E         Use -v to get more diff
+
+tests/test_vertical_observability_input_snapshot.py:45: AssertionError
+_ test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[support] _
+
+mutation = 'support'
+
+    @pytest.mark.parametrize('mutation', ['ready', 'ceiling_outcome', 'remove_blocker', 'support', 'validator'])
+    def test_cp061_caller_mutation_after_scan_cannot_change_projected_truth(mutation):
+        supplied = inputs()
+        expected = projection.build_edge_observability_projection(**deepcopy(supplied))
+        original = projection._collect_blockers
+        calls = []
+
+        def mutate_then_collect(*args, **kwargs):
+            calls.append(True)
+            if mutation == 'ready':
+                supplied['readiness']['status'] = 'READY'
+            elif mutation == 'ceiling_outcome':
+                supplied['readiness']['claim_ceiling'] = {'returns': [1]}
+            elif mutation == 'remove_blocker':
+                supplied['research']['dossier']['blockers'].clear()
+            elif mutation == 'support':
+                supplied['research']['dossier']['dossier']['rule'].update(status='SUPPORTED', support={'ref': 'injected'})
+            else:
+                supplied['validator']['scientific_decision'] = 'PASS'
+            return original(*args, **kwargs)
+
+        with patch.object(projection, '_collect_blockers', side_effect=mutate_then_collect):
+            result = projection.build_edge_observability_projection(**supplied)
+        assert calls == [True]
+>       assert result == expected
+E       AssertionError: assert {'schema_vers...OCUMENT', ...} == {'schema_vers...OCUMENT', ...}
+E
+E         Omitting 18 identical items, use -vv to show
+E         Differing items:
+E         {'projection_hash': '50fd235031e4c63d2b2bf0974bec8350cca24e2604f135d80e3c1ee07358234c'} != {'projection_hash': '7c1c8b3a44d79f058003943845dc0cf7b06cdd3cef52d0c4c76cbf3960caad50'}
+E         {'evidence_maturity': {'fields': {'rule': {'status': 'SUPPORTED', 'limitations': ['not recovered'], 'has_support': True}}, 'counts': {'SUPPORTED': 1, 'PARTIAL': 0, 'UNKNOWN': 0, 'OTHER': 0}, 'missing_evidence': [], 'fully_supported': True}} != {'evidence_maturity': {'fields': {'rule': {'status': 'UNKNOWN', 'limitations': ['not recovered...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests/test_vertical_observability_input_snapshot.py:45: AssertionError
+_ test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[validator] _
+
+mutation = 'validator'
+
+    @pytest.mark.parametrize('mutation', ['ready', 'ceiling_outcome', 'remove_blocker', 'support', 'validator'])
+    def test_cp061_caller_mutation_after_scan_cannot_change_projected_truth(mutation):
+        supplied = inputs()
+        expected = projection.build_edge_observability_projection(**deepcopy(supplied))
+        original = projection._collect_blockers
+        calls = []
+
+        def mutate_then_collect(*args, **kwargs):
+            calls.append(True)
+            if mutation == 'ready':
+                supplied['readiness']['status'] = 'READY'
+            elif mutation == 'ceiling_outcome':
+                supplied['readiness']['claim_ceiling'] = {'returns': [1]}
+            elif mutation == 'remove_blocker':
+                supplied['research']['dossier']['blockers'].clear()
+            elif mutation == 'support':
+                supplied['research']['dossier']['dossier']['rule'].update(status='SUPPORTED', support={'ref': 'injected'})
+            else:
+                supplied['validator']['scientific_decision'] = 'PASS'
+            return original(*args, **kwargs)
+
+        with patch.object(projection, '_collect_blockers', side_effect=mutate_then_collect):
+            result = projection.build_edge_observability_projection(**supplied)
+        assert calls == [True]
+>       assert result == expected
+E       AssertionError: assert {'schema_vers...OCUMENT', ...} == {'schema_vers...OCUMENT', ...}
+E
+E         Omitting 18 identical items, use -vv to show
+E         Differing items:
+E         {'scientific_maturity': 'VALIDATED'} != {'scientific_maturity': 'EVIDENCE_BOUND'}
+E         {'projection_hash': 'f72a22f9c5acfa76d71d77cb111aa437199b333ea051db43e0d57fbb90969d50'} != {'projection_hash': '7c1c8b3a44d79f058003943845dc0cf7b06cdd3cef52d0c4c76cbf3960caad50'}
+E         Use -v to get more diff
+
+tests/test_vertical_observability_input_snapshot.py:45: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_vertical_observability_input_snapshot.py::test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[ready]
+FAILED tests/test_vertical_observability_input_snapshot.py::test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[ceiling_outcome]
+FAILED tests/test_vertical_observability_input_snapshot.py::test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[remove_blocker]
+FAILED tests/test_vertical_observability_input_snapshot.py::test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[support]
+FAILED tests/test_vertical_observability_input_snapshot.py::test_cp061_caller_mutation_after_scan_cannot_change_projected_truth[validator]
+5 failed, 1 passed in 0.08s

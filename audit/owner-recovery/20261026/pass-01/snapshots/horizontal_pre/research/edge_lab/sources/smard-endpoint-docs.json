@@ -1,0 +1,77 @@
+[
+  {
+    "name": "smard-series-head",
+    "url": "https://www.smard.de/app/chart_data/4169/DE/4169_DE_hour_1736118000000.json",
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "access-control-allow-origin": "*",
+      "cache-status": "miss",
+      "content-length": "3809",
+      "content-security-policy": "frame-ancestors 'self' *.smard.de; default-src *.gstatic.com *.googleapis.com 'unsafe-inline' 'self' *.smard.de *.smard.de; img-src data: *.googleapis.com *.gstatic.com 'self' *.smard.de 'unsafe-inline'; script-src 'unsafe-eval' 'unsafe-inline' 'self' *.smard.de *.googleapis.com",
+      "content-type": "application/json",
+      "date": "Sun, 11 Oct 2026 12:49:24 GMT",
+      "etag": "\"09e83c69637dc1:0\"",
+      "last-modified": "Tue, 07 Oct 2025 14:29:22 GMT",
+      "x-content-type-options": "nosniff",
+      "x-ua-compatible": "IE=edge",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "set-cookie": "TS01418b58=01e68c70d563c89ffbf0869bac7e9f3c47c497104a06f288633e7c0c630b51f307d59bfb0138b145af0d1ef2396ea4cbc46304da7f; Path=/; Domain=.www.smard.de; Secure; HttpOnly",
+      "x-envoy-upstream-service-time": "169",
+      "server": "envoy",
+      "connection": "close"
+    },
+    "bytes": 0,
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "smard-urls-js",
+    "url": "https://www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/intern/mod_urls-220146-5.js",
+    "status": 200,
+    "headers": {
+      "cache-control": "max-age=31536000",
+      "content-language": "en",
+      "content-length": "347",
+      "content-security-policy-report-only": "default-src 'self'; connect-src 'self' *.engagement.coremedia.cloud *.byside.com wss://*.engagement.coremedia.cloud wss://*.byside.com; script-src 'self' *.engagement.coremedia.cloud 'unsafe-inline'; style-src 'self' *.engagement.coremedia.cloud 'unsafe-inline'; img-src 'self' *.engagement.coremedia.cloud data:;",
+      "content-type": "text/javascript;charset=UTF-8",
+      "date": "Sun, 11 Oct 2026 12:49:15 GMT",
+      "last-modified": "Tue, 15 Sep 2026 09:34:40 GMT",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-xss-protection": "0",
+      "set-cookie": "TS01418b58=01e68c70d5f24a2b6911b83a85b1d3da2bf43dadd7c3d5295326cce779c1fddd5c6f2ce8b761b55bf73d4d597610221568ea4157a4; Path=/; Domain=.www.smard.de; Secure; HttpOnly",
+      "x-envoy-upstream-service-time": "174",
+      "server": "envoy",
+      "connection": "close"
+    },
+    "bytes": 347,
+    "hash": "42feba54f133bdc179ebaeedada9bdd00fac33b49562010cbdfd20432ce5442d"
+  },
+  {
+    "name": "smard-import-js",
+    "url": "https://www.smard.de/resource/sites/bnetza/editorial/content/0__js_charts__0/lib/mod_import-217290-4.js",
+    "status": 200,
+    "headers": {
+      "cache-control": "max-age=31536000",
+      "content-language": "en",
+      "content-length": "147",
+      "content-security-policy-report-only": "default-src 'self'; connect-src 'self' *.engagement.coremedia.cloud *.byside.com wss://*.engagement.coremedia.cloud wss://*.byside.com; script-src 'self' *.engagement.coremedia.cloud 'unsafe-inline'; style-src 'self' *.engagement.coremedia.cloud 'unsafe-inline'; img-src 'self' *.engagement.coremedia.cloud data:;",
+      "content-type": "text/javascript;charset=UTF-8",
+      "date": "Sun, 11 Oct 2026 12:49:16 GMT",
+      "last-modified": "Mon, 04 May 2026 06:24:16 GMT",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "vary": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-xss-protection": "0",
+      "set-cookie": "TS01418b58=01e68c70d513c64f54ce92fd1aca1017899a169f0f8cb74d8a04be8704eb37acb59f44dc8ea8ceb4fb192a7de6e4bcc2d6097fb611; Path=/; Domain=.www.smard.de; Secure; HttpOnly",
+      "x-envoy-upstream-service-time": "171",
+      "server": "envoy",
+      "connection": "close"
+    },
+    "bytes": 147,
+    "hash": "6113c7e39415dcf2334e43c50f7aaeded17ddd496a9b5b3115d01525c72918c3"
+  }
+]

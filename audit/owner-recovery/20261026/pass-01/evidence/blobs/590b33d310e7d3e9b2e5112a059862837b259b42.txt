@@ -1,0 +1,560 @@
+{
+  "body": {
+    "fault_matrix_rows": 19,
+    "frozen_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+    "gate_a_v4_pass": "NOT_CLAIMED_BY_BUILDER",
+    "harness_input_tree_digest": "sha256:34d14e8b8bfec6088a66099a8f51b87ba52333f7027ecc1b9cbfcc2404de9de0",
+    "non_issues": 19,
+    "p14d_amendment": "NOT_CLAIMED_BY_BUILDER",
+    "production_code_changed": false,
+    "proof_class_counts": {
+      "EXISTING_DISCRIMINATING_PROOF": 15,
+      "MISSING_PROOF": 0,
+      "NEW_DISCRIMINATING_PROOF": 4,
+      "TARGET_HOST_ONLY": 0
+    },
+    "real_capital_authorized": false,
+    "real_defects": 0,
+    "restart_burst_limit_disposition": {
+      "defect_classification": "NON_ISSUE",
+      "detail": "constant=5 exact_loaded_value_accepted=True one_below_rejected=True; paired runtime guard citation resolves",
+      "epistemic_classification": "FACT",
+      "evidence_source": [
+        "tools/p0_qualification/gate_a/fault_matrix.py",
+        "deploy/quant_sec_supervisor.py:_effective_systemd_definition",
+        "tests/test_astra_pre_t0.py"
+      ],
+      "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "proof_class": "NEW_DISCRIMINATING_PROOF",
+      "property": "restart_burst_limit",
+      "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+      "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+      "test_or_harness_function": [
+        "tools.p0_qualification.gate_a.fault_matrix._restart_burst_limit_discriminant",
+        "tests.test_astra_pre_t0.Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service"
+      ]
+    },
+    "rows": [
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "ENOSPC during raw write leaves no object, staging file, or envelope.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_sec_form4_capture.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_raw_write",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.RawStoreTests.test_disk_full_during_raw_write_raises_instead_of_acknowledging -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_sec_form4_capture.RawStoreTests.test_disk_full_during_raw_write_raises_instead_of_acknowledging"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "regular_fsync_seen=True storage_failure=True target_exists=False staging_entries=0",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tools/p0_qualification/gate_a/fault_matrix.py",
+          "src/quant/dataplane/sec/store.py:SecCaptureStore._link_into_place"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "NEW_DISCRIMINATING_PROOF",
+        "property": "before_after_file_fsync",
+        "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tools.p0_qualification.gate_a.fault_matrix._file_fsync_discriminant"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "A visible post-link object is not acknowledged until directory durability is revalidated.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_p0_deployment_boundaries.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_hardlink_publication",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_retry_after_directory_fsync_failure_revalidates_durability -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_retry_after_directory_fsync_failure_revalidates_durability"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "The object directory and the newly-created hash-prefix parent are both covered by discriminating fsync assertions.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_p0_deployment_boundaries.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_directory_fsync",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_retry_after_directory_fsync_failure_revalidates_durability tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_new_hash_prefix_is_fsynced_in_its_parent -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_retry_after_directory_fsync_failure_revalidates_durability",
+          "tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_new_hash_prefix_is_fsynced_in_its_parent"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "No envelope means replay; a durable envelope suppresses refetch and a duplicate append.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_sec_form4_capture.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_envelope_append",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_raw_write_and_envelope_replays_safely tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_envelope_and_acknowledgement_costs_no_refetch -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_raw_write_and_envelope_replays_safely",
+          "tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_envelope_and_acknowledgement_costs_no_refetch"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "An INTENT without a FINISHED attempt produces REQUEST_ACCOUNTING_INCOMPLETE.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_p0_adversarial.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_attempt_completion",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_adversarial.AuditFailClosedTests.test_network_intent_without_finished_attempt_invalidates_audit -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_p0_adversarial.AuditFailClosedTests.test_network_intent_without_finished_attempt_invalidates_audit"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "A crash before cursor movement skips nothing; replay advances only after all acknowledgements.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_sec_form4_capture.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_cursor_advancement",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_acknowledgement_and_cursor_advance_is_recoverable -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_acknowledgement_and_cursor_advance_is_recoverable"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "An answered request without a successor obligation cannot yield an accountable window.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_astra_pre_t0.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_successor_scheduler_obligation",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.MoreCollectorCampaign.test_qualifying_stop_after_answer_before_next_obligation_is_not_accountable -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_astra_pre_t0.MoreCollectorCampaign.test_qualifying_stop_after_answer_before_next_obligation_is_not_accountable"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "Cooldown survives a new budget instance and cannot be shortened.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_sec_form4_capture.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "before_after_cooldown_persistence",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.TrafficBudgetTests.test_cooldown_is_durable_across_restart_and_never_shortened -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_sec_form4_capture.TrafficBudgetTests.test_cooldown_is_durable_across_restart_and_never_shortened"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "Real SIGKILL kills the child; replacement is manual and pending work stays non-accountable.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_p0_deployment_boundaries.py",
+          "tests/test_gate_a_v3_red.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "supervisor_death",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.SupervisorRealProcessBoundaryTests.test_sigkill_supervisor_kills_child_and_replacement_is_manual tests.test_gate_a_v3_red.GateAV3PrimitiveRedTests.test_stopped_supervisor_with_pending_obligation_is_not_accountable -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_p0_deployment_boundaries.SupervisorRealProcessBoundaryTests.test_sigkill_supervisor_kills_child_and_replacement_is_manual",
+          "tests.test_gate_a_v3_red.GateAV3PrimitiveRedTests.test_stopped_supervisor_with_pending_obligation_is_not_accountable"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "Only the same live supervisor's durable child-exit witness authorizes an automatic restart.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_p0_adversarial.py",
+          "tests/test_astra_pre_t0.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "child_death",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_adversarial.SupervisorProductionPathTests.test_same_living_supervisor_can_attest_child_failure_restart tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_automatic_restart_requires_external_exit_witness -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_p0_adversarial.SupervisorProductionPathTests.test_same_living_supervisor_can_attest_child_failure_restart",
+          "tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_automatic_restart_requires_external_exit_witness"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "An acquisition-critical torn SEC journal tail fails loudly instead of self-repairing.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_p0_adversarial.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "corrupt_torn_journal_tail",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_adversarial.DurabilityAndSemanticTests.test_torn_sec_journal_is_never_silently_discarded -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_p0_adversarial.DurabilityAndSemanticTests.test_torn_sec_journal_is_never_silently_discarded"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "Replay deduplicates raw bytes; a durable envelope costs no second fetch or append.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_sec_form4_capture.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "duplicate_replay",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_raw_write_and_envelope_replays_safely tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_envelope_and_acknowledgement_costs_no_refetch -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_raw_write_and_envelope_replays_safely",
+          "tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_envelope_and_acknowledgement_costs_no_refetch"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "state_newer_than_journal: failed_closed=True error=COLLECTOR_STATE_UNCOMMITTED_OR_ROLLED_BACK",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tools/p0_qualification/gate_a/fault_matrix.py",
+          "src/quant/dataplane/sec/collector.py:SecForm4Collector._load_state"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "NEW_DISCRIMINATING_PROOF",
+        "property": "state_newer_than_journal",
+        "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tools.p0_qualification.gate_a.fault_matrix._state_journal_divergence_discriminant"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "journal_newer_than_state: failed_closed=True error=COLLECTOR_STATE_UNCOMMITTED_OR_ROLLED_BACK",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tools/p0_qualification/gate_a/fault_matrix.py",
+          "src/quant/dataplane/sec/collector.py:SecForm4Collector._load_state"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "NEW_DISCRIMINATING_PROOF",
+        "property": "journal_newer_than_state",
+        "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tools.p0_qualification.gate_a.fault_matrix._state_journal_divergence_discriminant"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "Qualifying readiness blocks when no fingerprint is materialized.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_sec_form4_capture.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "missing_fingerprint",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.MaterializedFingerprintTests.test_readiness_blocks_when_nothing_is_materialized -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_sec_form4_capture.MaterializedFingerprintTests.test_readiness_blocks_when_nothing_is_materialized"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "A single foreign fingerprint makes retrospective audit non-accountable.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_astra_pre_t0.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "foreign_fingerprint",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.AuditCampaign.test_single_foreign_fingerprint_cannot_pass -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_astra_pre_t0.AuditCampaign.test_single_foreign_fingerprint_cannot_pass"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "Removing the consumed deployment-authority ledger fails audit explicitly.",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tests/test_astra_pre_t0.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "EXISTING_DISCRIMINATING_PROOF",
+        "property": "missing_deployment_authority",
+        "reproduction_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_deployment_restart_requires_consumed_external_authority -v",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_deployment_restart_requires_consumed_external_authority"
+        ]
+      },
+      {
+        "defect_classification": "NON_ISSUE",
+        "detail": "constant=5 exact_loaded_value_accepted=True one_below_rejected=True; paired runtime guard citation resolves",
+        "epistemic_classification": "FACT",
+        "evidence_source": [
+          "tools/p0_qualification/gate_a/fault_matrix.py",
+          "deploy/quant_sec_supervisor.py:_effective_systemd_definition",
+          "tests/test_astra_pre_t0.py"
+        ],
+        "frozen_production_candidate_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+        "proof_class": "NEW_DISCRIMINATING_PROOF",
+        "property": "restart_burst_limit",
+        "reproduction_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+        "residual_proof_domain": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof",
+        "test_or_harness_function": [
+          "tools.p0_qualification.gate_a.fault_matrix._restart_burst_limit_discriminant",
+          "tests.test_astra_pre_t0.Phase4LifecycleAndWindowCampaign.test_unsolicited_zero_child_exit_cannot_cleanly_stop_qualifying_service"
+        ]
+      }
+    ],
+    "t0": "NOT_DECLARED",
+    "target_host_ready": "NOT_CLAIMED_BY_BUILDER",
+    "test_defects": 0
+  },
+  "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+  "gate": "GATE_A_FAULT_MATRIX",
+  "generated_at_utc": "2026-09-21T00:00:00+00:00",
+  "no_p14d_amendment_claimed": true,
+  "no_t0_declared": true,
+  "no_target_host_claimed": true,
+  "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "records": [
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "ENOSPC during raw write leaves no object, staging file, or envelope.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_raw_write",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.RawStoreTests.test_disk_full_during_raw_write_raises_instead_of_acknowledging -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "regular_fsync_seen=True storage_failure=True target_exists=False staging_entries=0",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_file_fsync",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+      "residual": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "A visible post-link object is not acknowledged until directory durability is revalidated.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_hardlink_publication",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_retry_after_directory_fsync_failure_revalidates_durability -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "The object directory and the newly-created hash-prefix parent are both covered by discriminating fsync assertions.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_directory_fsync",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_retry_after_directory_fsync_failure_revalidates_durability tests.test_p0_deployment_boundaries.RawPublicationDurabilityTests.test_new_hash_prefix_is_fsynced_in_its_parent -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "No envelope means replay; a durable envelope suppresses refetch and a duplicate append.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_envelope_append",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_raw_write_and_envelope_replays_safely tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_envelope_and_acknowledgement_costs_no_refetch -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "An INTENT without a FINISHED attempt produces REQUEST_ACCOUNTING_INCOMPLETE.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_attempt_completion",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_adversarial.AuditFailClosedTests.test_network_intent_without_finished_attempt_invalidates_audit -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "A crash before cursor movement skips nothing; replay advances only after all acknowledgements.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_cursor_advancement",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_acknowledgement_and_cursor_advance_is_recoverable -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "An answered request without a successor obligation cannot yield an accountable window.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_successor_scheduler_obligation",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.MoreCollectorCampaign.test_qualifying_stop_after_answer_before_next_obligation_is_not_accountable -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Cooldown survives a new budget instance and cannot be shortened.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:before_after_cooldown_persistence",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.TrafficBudgetTests.test_cooldown_is_durable_across_restart_and_never_shortened -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Real SIGKILL kills the child; replacement is manual and pending work stays non-accountable.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:supervisor_death",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_deployment_boundaries.SupervisorRealProcessBoundaryTests.test_sigkill_supervisor_kills_child_and_replacement_is_manual tests.test_gate_a_v3_red.GateAV3PrimitiveRedTests.test_stopped_supervisor_with_pending_obligation_is_not_accountable -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Only the same live supervisor's durable child-exit witness authorizes an automatic restart.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:child_death",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_adversarial.SupervisorProductionPathTests.test_same_living_supervisor_can_attest_child_failure_restart tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_automatic_restart_requires_external_exit_witness -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "An acquisition-critical torn SEC journal tail fails loudly instead of self-repairing.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:corrupt_torn_journal_tail",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_p0_adversarial.DurabilityAndSemanticTests.test_torn_sec_journal_is_never_silently_discarded -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Replay deduplicates raw bytes; a durable envelope costs no second fetch or append.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:duplicate_replay",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_raw_write_and_envelope_replays_safely tests.test_sec_form4_capture.CrashBoundaryTests.test_crash_between_envelope_and_acknowledgement_costs_no_refetch -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "state_newer_than_journal: failed_closed=True error=COLLECTOR_STATE_UNCOMMITTED_OR_ROLLED_BACK",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:state_newer_than_journal",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+      "residual": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "journal_newer_than_state: failed_closed=True error=COLLECTOR_STATE_UNCOMMITTED_OR_ROLLED_BACK",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:journal_newer_than_state",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+      "residual": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Qualifying readiness blocks when no fingerprint is materialized.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:missing_fingerprint",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_sec_form4_capture.MaterializedFingerprintTests.test_readiness_blocks_when_nothing_is_materialized -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "A single foreign fingerprint makes retrospective audit non-accountable.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:foreign_fingerprint",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.AuditCampaign.test_single_foreign_fingerprint_cannot_pass -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "Removing the consumed deployment-authority ledger fails audit explicitly.",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:missing_deployment_authority",
+      "reproduce_command": "PYTHONPATH=src python3 -m unittest tests.test_astra_pre_t0.Phase5AuthorityBindingCampaign.test_deployment_restart_requires_consumed_external_authority -v",
+      "residual": "TARGET_HOST: physical crash/power-loss and deployed filesystem/service-manager behaviour remain outside repository proof"
+    },
+    {
+      "classification": "FACT",
+      "defect_class": "NON_ISSUE",
+      "detail": "constant=5 exact_loaded_value_accepted=True one_below_rejected=True; paired runtime guard citation resolves",
+      "domain": "REPOSITORY",
+      "exact_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "property": "fault_matrix:restart_burst_limit",
+      "reproduce_command": "PYTHONPATH=. python3 -m tools.p0_qualification.gate_a.fault_matrix",
+      "residual": "TARGET_HOST: physical crash/power-loss and effective service-manager behaviour remain outside repository proof"
+    }
+  ],
+  "report_digest": "sha256:bc7682fe22450ad63a84df1ac8443107056c4949dc07e58ff5335e260e832d73"
+}

@@ -1,0 +1,133 @@
+name: Producer Readiness bounded qualification
+
+on:
+  push:
+    branches:
+      - builder/econ-readiness-producer-evidence-20261016
+    paths:
+      - 'research/research_os/expansion/source_qualification.py'
+      - 'research/research_os/tests/test_producer_economic_readiness.py'
+      - '.github/workflows/producer-readiness-ci.yml'
+      - 'tests/test_producer_economic_readiness.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  producer-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Canonical V1 status freshness unchanged
+        run: python3 scripts/status_artifacts.py --check
+
+      - name: Producer-owned readiness tests
+        run: >-
+          python3 -m unittest
+          research.research_os.tests.test_producer_economic_readiness.ProducerEconomicReadinessTests
+          -v
+
+      - name: Producer source qualification tests
+        run: >-
+          python3 -m unittest
+          research.research_os.tests.test_producer_economic_readiness.ProducerSourceQualificationTests
+          -v
+
+      - name: Documentary dossier contract tests
+        run: python3 -m unittest research.research_os.tests.test_documentary_dossier_depth -v
+
+      - name: Institutional flow rule dossier contract
+        run: >-
+          python3 -m unittest
+          research.research_os.tests.test_operative_rule_depth.OperativeRuleDepthTests.test_official_bytes_reproduce_rule_and_dossier_without_forced_flow
+          research.research_os.tests.test_operative_rule_depth.OperativeRuleDepthTests.test_faq_remains_nonbinding_and_cannot_be_promoted_to_rule_text
+          research.research_os.tests.test_operative_rule_depth.OperativeRuleDepthTests.test_rule_tampering_missing_exceptions_and_bad_capture_clocks_are_rejected
+          research.research_os.tests.test_operative_rule_depth.OperativeRuleDepthTests.test_conditional_scope_rejects_exceptions_and_unknown_assumptions
+          -v
+
+      - name: Forbidden surface and closed-family diff guard
+        env:
+          PRODUCER_BASE_SHA: b570973836e0e7daf50ca095a7559d63328f0a57
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          base = os.environ['PRODUCER_BASE_SHA']
+          changed = set(subprocess.check_output(
+              ['git', 'diff', '--name-only', f'{base}...HEAD'], text=True
+          ).splitlines())
+          allowed = {
+              'research/research_os/expansion/source_qualification.py',
+              'research/research_os/tests/test_producer_economic_readiness.py',
+              '.github/workflows/producer-readiness-ci.yml',
+          }
+          unexpected = sorted(changed - allowed)
+          assert not unexpected, f'forbidden/unowned changed surfaces: {unexpected}'
+          required = {
+              'research/research_os/expansion/source_qualification.py',
+              'research/research_os/tests/test_producer_economic_readiness.py',
+          }
+          assert required <= changed, f'missing expected producer changes: {sorted(required - changed)}'
+
+          patch = subprocess.check_output(
+              ['git', 'diff', '-U0', f'{base}...HEAD', '--',
+               'research/research_os/expansion/source_qualification.py',
+               'research/research_os/tests/test_producer_economic_readiness.py'],
+              text=True,
+          ).lower()
+          closed = ('box office', 'box_office', 'mlb', 'soccer', 'weather')
+          reopened = [token for token in closed if token in patch]
+          assert not reopened, f'closed historical family referenced by producer delta: {reopened}'
+          print('PRODUCER_DIFF_GUARD=PASS')
+          print('CHANGED_FILES=' + ','.join(sorted(changed)))
+          PY
+
+      - name: Authority and no-outcome barriers
+        run: |
+          python3 - <<'PY'
+          import ast
+          from pathlib import Path
+
+          source = Path('research/research_os/expansion/final_shape.py').read_text()
+          tree = ast.parse(source)
+          authority = None
+          for node in ast.walk(tree):
+              if isinstance(node, ast.Assign) and any(
+                  isinstance(target, ast.Name) and target.id == 'authority'
+                  for target in node.targets
+              ):
+                  candidate = ast.literal_eval(node.value)
+                  if isinstance(candidate, dict) and 'economic_experiment_authorized' in candidate:
+                      authority = candidate
+                      break
+          expected = {
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+          }
+          assert authority == expected, f'authority barrier drift: {authority}'
+
+          producer_source = Path('research/research_os/expansion/source_qualification.py').read_text()
+          producer_test = Path('research/research_os/tests/test_producer_economic_readiness.py').read_text()
+          forbidden_imports = (
+              'experiment_runner', 'validation_v2', 'portfolio_v2',
+              'canonical_spine', 'final_shape',
+          )
+          for token in forbidden_imports:
+              assert token not in producer_source, f'producer source touches forbidden surface: {token}'
+              assert token not in producer_test, f'producer tests touch forbidden surface: {token}'
+          assert '"outcome_accessed": False' in producer_source
+          assert '"economic_result": "NOT_OBSERVED"' in producer_source
+          print('AUTHORITY_BARRIERS=PASS')
+          print('OUTCOME_ACCESS=FALSE')
+          PY

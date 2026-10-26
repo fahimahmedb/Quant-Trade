@@ -1,0 +1,89 @@
+# W1 FACTORY CP009 — 2026-10-21
+
+STATUS: HARDEN_EXISTING — native Validator replays the canonical runner artifact
+
+BASE: fecd09e0839f1208d9f876c311331221bde3ab7d
+HEAD: SELF (commit containing this checkpoint)
+PARENT: 9cc387fb5eec32520e13e266388472d28a77583e
+
+## WHAT_GAP_WAS_PROVEN
+
+CP008 proved that geometry/power/multiplicity must derive from the exact runner freeze, but the native Validator still consumed registry lifecycle/hash assertions without independently replaying the canonical runner artifact. A direct caller could therefore attempt to fabricate a mutually self-consistent registry/receipt/replay surface rather than supplying the exact runner plan that produced those hashes.
+
+The same boundary had not yet directly recrossed the registry trial-accounting hash and the runner's source/PIT binding domains against the current Validator bundle.
+
+## WHAT_CHANGED
+
+- Experiment Infrastructure now embeds immutable copies of the canonical `execution_plan` and exact deterministic `replay` alongside the already embedded `frozen_protocol`.
+- Native Validator invokes the existing `DryRunExperimentRunner().replay()` on the embedded plan. The supplied replay must equal the runner-produced replay exactly.
+- Validator requires plan frozen protocol == attested frozen protocol and plan binding hashes == both frozen and replay-verified registry binding hashes.
+- Validator recomputes the registry `reproducibility_hash` from the runner's `source`, `pit`, and `code_environment` binding domains.
+- Validator recrosses runner-frozen source snapshot hashes and source PIT metadata against the current source/PIT bundle.
+- Validator recrosses `trial_accounting_hash` against the current trial-accounting record.
+- Validator binds registry `execution_plan_hash`, `receipt_hash`, and `replay_hash` to the actual embedded runner plan, receipt and replay.
+- Rebuilt the standalone Validator fixture using the real `DryRunExperimentRunner` and `bind_pre_outcome_infrastructure` rather than a hand-drawn fake registry.
+- Added an adversarial test that mutates the embedded runner plan while rebuilding the outer infrastructure/reproducibility hashes; the native Validator must still reject it because canonical runner replay fails.
+
+## WHAT_WAS_REUSED / IMPORTED
+
+REUSE_CURRENT: `DryRunExperimentRunner.replay()` remains the single law for deterministic plan/receipt/frozen-binding verification.
+REUSE_CURRENT: existing registry identity and replay lifecycle; Validator cross-checks them rather than reimplementing their construction.
+HARDEN_EXISTING: native Validator now independently exercises runner semantics on the attested artifacts.
+NO_BUILD_REQUIRED: no second replay engine, receipt implementation, registry store or provenance system.
+
+## TESTS / FALSIFICATION
+
+Observed CP008 exact-head evidence while CP009 was assembled:
+- generated schema drift: PASS
+- status artifact freshness: PASS
+- canonical full unit suite was executing; no unobserved completion result is claimed here.
+
+Pre-push diff inspection against CP008:
+- `experiment_infrastructure.py`: +2 / -0
+- `validation_readiness.py`: +51 / -3
+- `test_economic_readiness_validation.py`: +94 / -99, explained by replacing the hand-built Validator fixture with production runner/infrastructure construction.
+- no unrelated production files in the inspected diff.
+
+Adversarial falsification now includes:
+- self-consistent foreign candidate registry;
+- self-consistent geometry forged after runner freeze;
+- multiplicity-method drift after freeze;
+- embedded runner plan mutation with outer infrastructure and reproducibility hashes rebuilt;
+- exact current source/PIT/trial binding cross-checks.
+
+Exact-head CP009 CI after push remains authoritative.
+
+## SCIENTIFIC CLAIM LIMIT
+
+Replay here validates deterministic identity and pre-outcome closure only. It does not run an economic experiment, inspect future outcomes, estimate performance or authorize observation/capital/trading.
+
+## SHARED_SURFACES_TOUCHED
+
+SHARED_SURFACES_TOUCHED:
+- `research/research_os/expansion/experiment_infrastructure.py`
+- `research/research_os/expansion/validation_readiness.py`
+- `research/research_os/tests/test_economic_readiness_validation.py`
+
+WHY_REQUIRED: registry hashes must be demonstrably backed by the exact canonical runner plan/receipt/replay, not only by caller-supplied mutually consistent metadata.
+
+CONTRACT_CHANGE: a qualified Experiment Infrastructure attestation now carries the canonical runner execution plan and deterministic replay; Validator v3 independently replays and cross-checks them.
+
+EXPECTED_CROSS_LANE_IMPACT: ordinary readiness composition receives these fields automatically. Manually assembled Validator bundles must supply canonical runner artifacts rather than synthetic registry claims.
+
+## WHAT_THIS_CHANGES_IN_MODULE_TRUTH
+
+The full pre-outcome chain is now executable as a verification chain inside the Validator: exact candidate/protocol/source/PIT/code-environment freeze -> plan -> receipt -> replay -> registry lifecycle -> Validator. The Validator no longer trusts the registry's replay assertion without exercising the canonical replay law.
+
+## NEXT_HIGHEST_VALUE_GAP
+
+Run exact-head CP009 CI and repair any regression. Then reassess public schema/contract coverage and remaining historical Factory dispositions. If no material implementation gap remains, classify residual work and prepare the FINAL lane checkpoint + Integration Manifest only after a clean exact-head broad regression.
+
+SAFE_TO_CONTINUE: TRUE
+
+## AUTHORITY FLAGS
+
+ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE
+PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE
+REAL_CAPITAL_AUTHORIZED=FALSE
+LIVE_TRADING_AUTHORIZED=FALSE
+OUTCOME_ACCESSED=FALSE

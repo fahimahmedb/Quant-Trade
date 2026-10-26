@@ -1,0 +1,86 @@
+{
+  "hypothesis_id": "QUANT-FORM144-SUPPLY-001",
+  "family_id": "affiliate-proposed-sale-supply",
+  "generation_id": "G1",
+  "parent_generation_ids": [],
+  "mechanism": "SEC Form 144 is a public notice of a proposed sale of restricted or control securities. For reporting issuers, electronic Form 144 filings have been required on EDGAR since April 2023, and the form records the issuer, selling person, relationship, amount proposed for sale and approximate sale date. When a proposed sale is large relative to pre-filing liquidity/float, the notice can represent a near-term supply-overhang channel: an affiliate or control holder has taken a concrete procedural step toward selling and the market maker/broker may need to intermediate inventory. This is distinct from a Form 4 purchase-information signal and from a lockup expiry, which merely permits selling without evidencing a specific proposed sale.",
+  "claim": "A mechanically defined subset of electronically filed Form 144 notices with unusually large proposed-sale size relative to pre-filing liquidity may create short-horizon downward price pressure or elevated supply concession after the public filing clock, before or around the approximate sale date. The hypothesis is causal supply pressure, not generic insider pessimism, and no return evidence has been inspected.",
+  "prediction": "For a frozen universe of listed U.S. reporting issuers, events with larger proposed-sale size normalized only by information available before or at filing should exhibit a more negative short-horizon post-filing price response than small/no-sale controls, if the supply mechanism is economically relevant. The primary test must use EDGAR acceptance time as public-time T0, must not use later Form 4 completion data to define the signal, and must treat repeat/amended/overlapping Form 144 filings from the same seller/issuer as one lineage rather than independent trials.",
+  "falsification_scope": "The mechanism is falsified for the frozen expression if properly timestamped large Form 144 proposed sales do not show a directionally worse post-filing response than the predeclared control after fixed costs and overlap handling, or if documentary validation shows Form 144 is too weak a proxy for near-term actual supply because proposed sales are routinely non-executed/indefinitely delayed. A null result does not falsify all insider-sale information effects.",
+  "decision_map": {
+    "who_pays": "Buyers/liquidity providers absorbing affiliate/control-holder supply would require a temporary price concession if sale urgency exceeds immediate demand. Any rent is compensation for inventory/adverse-selection risk, not value created by the filing itself.",
+    "why_persist": "Form 144 is operational/legal plumbing with high filing volume and heterogeneous relevance. Large-cap routine 10b5-1 sales are likely efficiently absorbed; the plausible small-actor niche is less-followed issuers where proposed size is material to local liquidity and capacity is too small for large funds.",
+    "required_data": [
+      "EDGAR Form 144 filings with acceptance timestamps from the electronic-filing era only",
+      "Issuer CIK, security title, shares/units proposed, aggregate market value if populated, approximate sale date, seller identity/relationship and broker/market-maker fields",
+      "Point-in-time listed common-equity identifier mapping at T0",
+      "Pre-filing shares outstanding or public float from a source available at/before T0",
+      "Pre-filing daily dollar volume/ADV using only dates strictly before T0",
+      "Post-filing prices only after the economic-look contract is separately authorized and frozen"
+    ],
+    "frozen_signal_design": {
+      "event_clock": "EDGAR accepted timestamp, not filing date alone and not approximate sale date",
+      "eligible_security": "U.S.-listed common equity of a reporting issuer; exclude debt, options-only sales, private/non-listed securities and trusts unless separately specified",
+      "seller_lineage": "Deduplicate same seller+issuer overlapping notices until the prior notice's stated sale window ends; amendments/re-filings are linked variants, not new independent events",
+      "size_metric_candidates": [
+        "proposed shares / pre-T0 shares outstanding",
+        "proposed market value / pre-T0 average daily dollar volume"
+      ],
+      "parameter_rule": "Validator must select one normalization route and one threshold rule from documentary/data feasibility before outcome access; no threshold sweep is authorized here",
+      "horizon_rule": "One short horizon must be frozen by validator/test designer before any signal-to-return join; no multi-horizon search",
+      "controls": "Predeclared same-universe matched controls or within-event benchmark using only pre-T0 characteristics; no ex-post sector/date matching for significance"
+    },
+    "fatal_risks": [
+      "Proposed sale may never execute, so Form 144 could be a weak treatment proxy",
+      "Routine 10b5-1 plans may be fully anticipated and mechanically diversified over time",
+      "Sale notice may coincide with earnings, vesting, tax or other corporate information that drives price independently",
+      "Approximate sale date and actual execution can differ materially",
+      "Large filings are concentrated in mega-cap issuers where capacity is high but impact is negligible",
+      "Repeat filings from the same insider create severe dependence/multiplicity if not lineage-deduplicated"
+    ],
+    "primary_documentary_evidence": [
+      {
+        "source": "SEC current Form 144",
+        "url": "https://www.sec.gov/files/form144.pdf",
+        "fact": "Form is explicitly a NOTICE OF PROPOSED SALE OF SECURITIES and contains fields for amount to be sold and approximate date of sale."
+      },
+      {
+        "source": "SEC electronic Form 144 guidance",
+        "url": "https://www.sec.gov/submit-filings/filer-support-resources/how-do-i-guides/file-form-144-electronically",
+        "fact": "For reporting issuers, required electronic EDGAR filing became effective April 13, 2023, creating a public machine-readable clock for the modern sample."
+      },
+      {
+        "source": "Example current EDGAR Form 144 XML",
+        "url": "https://www.sec.gov/Archives/edgar/data/19617/000119534526000004/xsl144X01/primary_doc.xml",
+        "fact": "A live filing shows issuer and seller identity in structured Form 144 format; example is documentary/schema evidence only and is excluded from any future fresh economic confirmation sample."
+      }
+    ],
+    "legacy_distinctness": {
+      "legacy_ledger_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "legacy_ledger_blob": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "screening_result": "NO_FORM144_PROPOSED_SALE_SUPPLY_FAMILY_FOUND_IN_PINNED_33-ITEM_LEDGER_OR_BUNDLED_UNSCORED_PROTOCOL_NAMES",
+      "nearby_but_distinct": [
+        "SEC Form 4 insider clusters: observed insider transactions/information asymmetry; this candidate is pre-sale proposed supply",
+        "IPO lockup expiry: permission to sell after restriction expiry; this candidate requires a specific seller notice and proposed amount/date",
+        "Russell deletion or month-end pension flows: institution/index-driven forced flow rather than affiliate/control-holder proposed sale"
+      ]
+    },
+    "next_validator_decision": {
+      "PASS_TO_TEST_DESIGN": "Electronic Form 144 fields, point-in-time issuer mapping and one pre-T0 size-normalization route can be established mechanically; repeat/10b5-1 confounds can be frozen before outcomes.",
+      "PARK_DATA": "Modern filing clock exists but PIT float/liquidity/security mapping or overlap controls cannot be qualified without leakage/private data.",
+      "KILL_MECHANISM": "Documentary/legal review shows Form 144 does not meaningfully constrain or precede sale behavior enough to define a near-term supply treatment."
+    }
+  },
+  "freeze_status": "FROZEN",
+  "frozen_at": "2026-10-15T12:51:10Z",
+  "amendments": [],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_data_accessed": false,
+    "price_or_return_data_accessed": false,
+    "scope": "QUANT_MECHANISM_FREEZE_ONLY"
+  }
+}

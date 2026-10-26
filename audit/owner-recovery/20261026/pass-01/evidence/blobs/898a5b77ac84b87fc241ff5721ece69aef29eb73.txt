@@ -1,0 +1,25 @@
+from pathlib import Path
+import subprocess,os,json,hashlib
+R=Path('/workspace/Quant-Trade');P=R/'src/autonomous_research/runtime.py';L=Path('/workspace/vertical_depth_cp046_rebuild');fixed=P.read_text();a=fixed.index('class PersistentQueue:');part=fixed[a:]
+def repl(old,new):
+ assert part.count(old)==1,(old,part.count(old))
+ return fixed[:a]+part.replace(old,new)
+mutants={
+ 'typed_stale_fence':repl('if encode(current) != encode(self._persisted):','if current != self._persisted:'),
+ 'duplicate_field_admission':repl('object_pairs_hook=self._unique_fields','object_pairs_hook=dict'),
+ 'finite_document_admission':repl('        json.dumps(document, allow_nan=False)\n',''),
+ 'existing_null_document_admission':repl('        if not isinstance(document, dict):\n            raise ValueError("queue state must be an object")\n',''),
+ 'unknown_root_admission':repl('            if set(observed) != {"version", "tasks"}:\n                raise ValueError("unknown or missing queue state fields")\n',''),
+ 'trusted_recovery':repl('                self._install_document(self._persisted)','                pass'),
+ 'durable_readback':repl('                self._install_document(self._read_document())','                self._install_document(self._persisted)'),
+}
+results=[]
+try:
+ for name,mutated in mutants.items():
+  P.write_text(mutated);log=L/f'CP046_mutant_{name}.txt'
+  with log.open('w') as f:
+   f.write('mutation='+name+'\nfixed_source_sha256='+hashlib.sha256(fixed.encode()).hexdigest()+'\n');f.flush()
+   r=subprocess.run(['python','-m','pytest','-q','tests/test_vertical_queue_document_depth.py'],cwd=R,env=dict(os.environ,PYTHONPATH='src:tests:.'),stdout=f,stderr=subprocess.STDOUT)
+  summary=next((s for s in reversed(log.read_text().splitlines()) if 'failed' in s),'NO_FAILURE');print(name,r.returncode,summary,flush=True);results.append({'mutation':name,'exit_code':r.returncode,'summary':summary,'log':log.name,'mutant_sha256':hashlib.sha256(mutated.encode()).hexdigest()});assert r.returncode==1,(name,r.returncode)
+finally:P.write_text(fixed)
+(L/'CP046_mutation_results.json').write_text(json.dumps({'fixed_source_sha256':hashlib.sha256(fixed.encode()).hexdigest(),'mutants':results},indent=2)+'\n')
