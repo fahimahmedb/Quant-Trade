@@ -40,3 +40,6 @@ TERMINAL_REASON=STOPPED_ON_CURRENT_INVARIANT_FAILURE
 
 
 FACT: Candidate exact HEAD 0b6cc21a8aead178549966789b1e063dcfab8245 was pushed, fetched and locally qualified: FAIL. Same known C0 current invariant and ordinary stale fixtures persist; all seven suite outcomes archived in one_shot/evidence/candidate_exact_runs/QUALIFICATION.json. Final attestation contains evidence/metadata only; no product or test logic changes. Final SHA, local run results, remote equality and clean status must be read from the external final receipt returned with mission closure; no post-final-run commit is allowed. Reproduce on the final containing commit with `python3 continuity/one_shot/qualify_local.py /tmp/quant-trade-final-recheck`. Never treat a successful Git push or a metadata attestation as test qualification.
+
+
+FACT: User subsequently authorized a separate bounded continuation mission on codex/c0-confirmation-repair-20261027 from this frozen d19b1237 attestation. Current successor handoff: continuity/c0_repair/FINAL_HANDOFF.md. Original one-shot evidence, branch and NOT_QUALIFIED verdict remain frozen; read successor results without retroactively promoting this historical mission.

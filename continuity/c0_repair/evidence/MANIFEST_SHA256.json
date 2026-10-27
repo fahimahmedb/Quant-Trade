@@ -1,0 +1,217 @@
+{
+  "SELF_HASHED": false,
+  "HASH_ALGORITHM": "SHA256",
+  "HASH_DOMAIN": "Explicit enumeration: all durable continuity/c0_repair files plus existing files changed from d19b1237, including shared tracking; excluding manifest itself and Python/pytest caches. Prior one_shot frozen subtree is checked unchanged by Git.",
+  "FILES": [
+    {
+      "PATH": ".github/workflows/c0-repair-qualification.yml",
+      "SHA256": "9e5507915d30fdf93c4405a9562202aa6db406876c66fb9cee2f123d422d8329",
+      "SIZE": 1195
+    },
+    {
+      "PATH": "STATE.md",
+      "SHA256": "d70c178249523e3fbfc455fe637159d0e532a41f6152129fb3853e94e5e2718a",
+      "SIZE": 28915
+    },
+    {
+      "PATH": "continuity/CURRENT_STATE.md",
+      "SHA256": "3ab45620c76784b8b08211131e4f5408b0924b58af78750b9f41fee8732ef403",
+      "SIZE": 657
+    },
+    {
+      "PATH": "continuity/DECISION_REGISTER.csv",
+      "SHA256": "f632227f9e90c4eeb28340930a2c8c820b78de48c1ae63fbd21fb2d0288290a2",
+      "SIZE": 3154
+    },
+    {
+      "PATH": "continuity/EXECUTION_LEDGER.md",
+      "SHA256": "915e33e516a8e0bb8cc0a553c5833b5879b2ed97cbf08d8a1287d77dd20269e3",
+      "SIZE": 19092
+    },
+    {
+      "PATH": "continuity/FINAL_HANDOFF.md",
+      "SHA256": "620a89fe430a72a31965058106f4d838cf36ea7b87576d7b7ba303359abf2a61",
+      "SIZE": 8919
+    },
+    {
+      "PATH": "continuity/FOLLOWUP_MISSION_REGISTER.csv",
+      "SHA256": "3994e2e34356494afd32a9d19792a6b4cc96668f8c57b33d853cc901e4b78d90",
+      "SIZE": 5268
+    },
+    {
+      "PATH": "continuity/PARALLEL_WORK_REGISTER.csv",
+      "SHA256": "77c6b5d8af444148a06991e9a076c485173465310b17d83fbd6d1826b4bd5444",
+      "SIZE": 3620
+    },
+    {
+      "PATH": "continuity/c0_repair/FINAL_HANDOFF.md",
+      "SHA256": "49aedb55958b3a9b85207487076879195fd91c02a66d02887a193b2e68c0bfff",
+      "SIZE": 4226
+    },
+    {
+      "PATH": "continuity/c0_repair/MISSION.md",
+      "SHA256": "d48dc4f6369cf62c0a90c92c51e60f192cfc0c7d889a54b19222cecd4bf198c4",
+      "SIZE": 2229
+    },
+    {
+      "PATH": "continuity/c0_repair/PRODUCT_FREEZE.md",
+      "SHA256": "a01469fb33bce1030e70fc51b61490a1c5f68c4305ac1aa103aa5f194d563340",
+      "SIZE": 381
+    },
+    {
+      "PATH": "continuity/c0_repair/REPAIR_DECISION.md",
+      "SHA256": "b6eb80cfaa1815cc75033977b63f7304a195bc642b93ddd65f1c6b6e593af703",
+      "SIZE": 2010
+    },
+    {
+      "PATH": "continuity/c0_repair/SELF_CHALLENGE.md",
+      "SHA256": "13014ee17001b33159c75cd173d7acdfa709058611177aba6244e38c118ec393",
+      "SIZE": 2140
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/AUTHORITY_DECISION_MATRIX.csv",
+      "SHA256": "4514ea2ad11cc783fc8a5f908e4224435140116271153c5d8c46828c1217e63c",
+      "SIZE": 4683
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/PREFLIGHT.json",
+      "SHA256": "f5a85b33d5ce6d7d26971482c4611c3e41ee6bf947d03c3872e2a75677469376",
+      "SIZE": 1039
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/PRODUCT_FREEZE.json",
+      "SHA256": "9858b7b23b5a029eba0a4fa955d92aaca5a40fdd2b8f561cddce7b46aad5376a",
+      "SIZE": 787
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/QUALIFICATION_SUMMARY.json",
+      "SHA256": "5a45e73e0621c3d386bfefc207088c43066b8aeda6e605ff02277f890cfcc01b",
+      "SIZE": 1270
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_fixture_baseline.log",
+      "SHA256": "411b884aa10fbd4b0d6b83c62cc55d198febf3c8469f3e87dc083aa518e87c01",
+      "SIZE": 5069
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_fixture_golden_evidence.json",
+      "SHA256": "c8c3bb9ecf647d3ff9644b9db1f84eea227ab4b976aee494e7cad9f934c9c609",
+      "SIZE": 456
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_fixture_repair.md",
+      "SHA256": "d1d3d8d2d6ef35cfc65a7f38dc262e9a176cf0922fb5219d569ee506159eeaf6",
+      "SIZE": 2892
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_fixture_repaired.log",
+      "SHA256": "8bbf65b6814059fac10cab0bf0a6230e80fea9cc61f9490d6c320972b1e81d2a",
+      "SIZE": 5439
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_fixture_runs.json",
+      "SHA256": "d45c43d535e61f137afd546720ec0331bca2aa3d08baf2a6b40f9cd6ea506bb0",
+      "SIZE": 1677
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_hosted_capability_evidence.json",
+      "SHA256": "4ac633ae5ab3aff6660aaa9a333749e1f4697f61c6aca967fbfaef87fa2aab45",
+      "SIZE": 3541
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_hosted_plan.md",
+      "SHA256": "c42b5a727e39b00ad26f91c843ff02581a9d042561c7d323971f2a4330b536ee",
+      "SIZE": 6912
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_independent_challenge.json",
+      "SHA256": "313516a3536626db5bd78ed8dfe7cb1ae0693a94c1c241aab8c30bbb9fc4f03f",
+      "SIZE": 14900
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_independent_challenge.md",
+      "SHA256": "2812fc6b18b112a30f26e9c997f419187106ab6bf68ad6abce8862908e09c66a",
+      "SIZE": 6196
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_independent_final_working_probe.json",
+      "SHA256": "268f403fe207b0800b9e2ddec43456d02d9a5bab0f4fedd1e52753b98fab08bd",
+      "SIZE": 7251
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_outcome_ref_current_probe.log",
+      "SHA256": "24ab6875b850387d5dfc305ed8d993fdfd1b082bc11bbf5bcd030b8352c876e3",
+      "SIZE": 1368
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_outcome_ref_current_probe_run.json",
+      "SHA256": "cf05d4e147632b22cc586ee504e5dbb1303f382be953ed7e7d4c313dc507de47",
+      "SIZE": 914
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/c0_repair_review.md",
+      "SHA256": "792ebe46d1fa03ab900ce4aa90103000550cb915a168a13443f874baec917a72",
+      "SIZE": 8791
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/repair_working_runs/TEST_RUNS.json",
+      "SHA256": "6ed24bd71c56456d41a74f8f4f6874ac849d32928be50857a399bfcd3780dcce",
+      "SIZE": 2448
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/repair_working_runs/diff_check.log",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "SIZE": 0
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/repair_working_runs/focused.log",
+      "SHA256": "9eccbfb97e3b88f6a0d71dabd8884f4f8a9bfc9fc3a7b0a511da968ec1cbbb5d",
+      "SIZE": 141
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/repair_working_runs/historical_failing_witness.log",
+      "SHA256": "230ebf7af224e9178d6065f447832871928c76126928867bab2940fcbe69ab56",
+      "SIZE": 6085
+    },
+    {
+      "PATH": "continuity/c0_repair/evidence/status_refresh.log",
+      "SHA256": "103de78892fbf13e8b15817083db7d3b03fe3868495733c6fde26ce13a996e2a",
+      "SIZE": 36
+    },
+    {
+      "PATH": "continuity/c0_repair/probes/outcome_ref_current_probe.py",
+      "SHA256": "8cc9bf90eadd211f1eb8be4807392c40c400f491935955f8391a7f541616d5d0",
+      "SIZE": 2495
+    },
+    {
+      "PATH": "continuity/c0_repair/qualify.py",
+      "SHA256": "91ba260deca9866667f88e1b1d8f4117215609f3b7209912a2e0f91ec34922e9",
+      "SIZE": 12848
+    },
+    {
+      "PATH": "continuity/evidence/EXECUTION_EVENTS.jsonl",
+      "SHA256": "d36dc37679fdcc8620df4ba8afbebcab2ae3141aa3593ac49fe0070cf0c01282",
+      "SIZE": 15123
+    },
+    {
+      "PATH": "research/research_os/expansion/scientific_adjudication.py",
+      "SHA256": "f185f4d60e3e5d09ee6403f0e658d5c23593c83006dae24365741fb0be9b1cf6",
+      "SIZE": 22827
+    },
+    {
+      "PATH": "tests/test_c0_confirmation_count_repair.py",
+      "SHA256": "c9b0da0ecd697c6b68bb30f17e8b7ad8ad92dd3e921197dbf89d12e4abf5d852",
+      "SIZE": 9517
+    },
+    {
+      "PATH": "tests/test_research_os_canonical_identity.py",
+      "SHA256": "fd44c55fa8f4b61368cfadcb7109e80958b657124fb23d91a24ada6671a72848",
+      "SIZE": 4483
+    },
+    {
+      "PATH": "tests/test_research_os_v2_pipeline.py",
+      "SHA256": "9c683a618d85760ed194f73297197d7e68cc96315861afeb6eeb198a34c9b020",
+      "SIZE": 7359
+    }
+  ]
+}

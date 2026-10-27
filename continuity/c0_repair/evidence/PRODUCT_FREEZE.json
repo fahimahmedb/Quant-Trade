@@ -1,0 +1,17 @@
+{
+  "PRODUCT_FREEZE_SHA": "a8339a02f070a9697172dfa3cbe1d4d9bacf96ba",
+  "BASE_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+  "PRODUCT_CODE_CHANGE_AFTER_FREEZE_AUTHORIZED": false,
+  "TEST_LOGIC_CHANGE_AFTER_FREEZE_AUTHORIZED": false,
+  "NEW_PRODUCT_DOMAINS": [
+    "SCIENTIFIC_INDEPENDENCE_COUNTING"
+  ],
+  "INHERITED_DOMAIN_COUNT": 3,
+  "CUMULATIVE_CONSERVATIVE_DOMAIN_COUNT": 4,
+  "PRODUCT_FILE": "research/research_os/expansion/scientific_adjudication.py",
+  "HISTORICAL_KERNEL_UNCHANGED": true,
+  "OLD_ONE_SHOT_IMMUTABLE": true,
+  "REQUIRED_RESIDUAL_PROBE": "probes/outcome_ref_current_probe.py",
+  "EXPECTED_CURRENT_FAILURE": "DIRECT_REF_OUTCOME_MEMBRANE",
+  "NOTE": "Known invariant failure is not an expected PASS or waiver. It must remain FAIL in aggregate qualification."
+}
