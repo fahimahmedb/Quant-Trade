@@ -1,0 +1,47 @@
+[
+  {
+    "CP": "CP03",
+    "PATH": "research/research_os/ideation_intake.py",
+    "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+    "WHY": "No primary-witness dependency or small safety-only W2 gap proved; W2 retains proposal admission ownership; new CP03 write path is not semantically equivalent to source V3 and its derived root/exposure scheme is not an authorized canonical owner.",
+    "DOMAIN": "CP03_ADMISSION_PROPOSAL",
+    "SOURCE_REF": "acec18f007b079701ee55a620cf913ac960bdcfa",
+    "W2_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "TEST_DISPOSITION": "REPLAY_TEST_ONLY; archive exact historical test and execute only against exact historical code in isolated temp worktree",
+    "CONFIDENCE": "HIGH"
+  },
+  {
+    "CP": "CP03",
+    "PATH": "research/research_os/idea_feed/__init__.py",
+    "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+    "WHY": "No primary-witness dependency or small safety-only W2 gap proved; W2 retains proposal admission ownership; new CP03 write path is not semantically equivalent to source V3 and its derived root/exposure scheme is not an authorized canonical owner.",
+    "DOMAIN": "CP03_IDENTITY_EXPOSURE",
+    "SOURCE_REF": "acec18f007b079701ee55a620cf913ac960bdcfa",
+    "W2_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "TEST_DISPOSITION": "REPLAY_TEST_ONLY; archive exact historical test and execute only against exact historical code in isolated temp worktree",
+    "CONFIDENCE": "HIGH"
+  },
+  {
+    "CP": "CP03",
+    "PATH": "research/research_os/idea_feed/primitives.py",
+    "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+    "WHY": "No primary-witness dependency or small safety-only W2 gap proved; W2 retains proposal admission ownership; new CP03 write path is not semantically equivalent to source V3 and its derived root/exposure scheme is not an authorized canonical owner.",
+    "DOMAIN": "CP03_IDENTITY_EXPOSURE",
+    "SOURCE_REF": "acec18f007b079701ee55a620cf913ac960bdcfa",
+    "W2_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "TEST_DISPOSITION": "REPLAY_TEST_ONLY; archive exact historical test and execute only against exact historical code in isolated temp worktree",
+    "CONFIDENCE": "HIGH"
+  },
+  {
+    "CP": "CP03",
+    "PATH": "tests/test_verified_continuity_admission_identity.py",
+    "DISPOSITION": "REPLAY_TEST_ONLY",
+    "WHY": "Archive original bytes outside ordinary tests discovery; exact CP03 replay only; no target PASS claim"
+  },
+  {
+    "CP": "CP03",
+    "PATH": "continuity/03_IDENTITY_OWNERSHIP.md",
+    "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+    "WHY": "Preserve historical prose unchanged; append CORRECTION invalidating mission-selected V3/F ownership in current ledger"
+  }
+]

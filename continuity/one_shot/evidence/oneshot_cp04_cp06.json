@@ -1,0 +1,48 @@
+[
+  {
+    "checkpoint": "CP04",
+    "product_paths": [
+      "research/research_os/continuation.py"
+    ],
+    "disposition": "SEPARATE_MISSION_REQUIRED",
+    "product_action": "REVERT_BY_NEW_COMMIT",
+    "w2_equivalent": "Native task/lease/event/receipt/handoff ownership exists; generic declared-obligation revision accounting is not proven and unnecessary for read-only UST forensic classification.",
+    "reason": "Contradictory lifetime-single-closure module is unused by product. A forensic report can classify lawful next-state truth without introducing or mutating a production obligation.",
+    "evidence": [
+      "d35629b56362cd4704032925e4d6415102c6d28a:research/research_os/continuation.py:70-105",
+      "d35629b56362cd4704032925e4d6415102c6d28a:research/research_os/continuation.py:110-128",
+      "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/oracle_worker.py:210-252",
+      "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/worker_stages.py:269-292",
+      "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/worker_stages.py:338-369"
+    ],
+    "current_failure": "BLOCK -> REOPENED -> CHILD_TASK preserving both closures yields MULTIPLE_DURABLE_CLOSURES:O-1; reopen event has no obligation revision/current-resolution binding.",
+    "required_future_test": "Append-only PARK/BLOCK revision 1 -> REOPEN revision 2 -> CHILD_TASK revision 2 -> TERMINAL revision 3, each revision exactly one authoritative current resolution; duplicate resolution same revision rejected; historical hashes immutable.",
+    "preserve_tests": "tests/test_verified_continuation_contract.py as immutable historical replay-only input; do not silently skip or delete.",
+    "primary_witness_needed": false,
+    "new_owner": false
+  },
+  {
+    "checkpoint": "CP06",
+    "product_paths": [
+      "research/research_os/renewal_policy.py"
+    ],
+    "disposition": "KEEP_EVIDENCE_ONLY",
+    "product_action": "REVERT_BY_NEW_COMMIT",
+    "additional_dispositions": [
+      "REPLAY_TEST_ONLY",
+      "SEPARATE_MISSION_REQUIRED"
+    ],
+    "w2_equivalent": "Native queue replenish bounded issuance, idempotent derivation and source-aware preflight already exist; successor-cohort policy is separate missing policy seam.",
+    "reason": "Primary witness is UST forensic disposition, not successor cohort activation. Module only imported by own test, so safety quality does not establish current mission necessity.",
+    "evidence": [
+      "3be85e3314aa70d2fecfd1b145c3aaa9ab5df199:research/research_os/renewal_policy.py",
+      "3be85e3314aa70d2fecfd1b145c3aaa9ab5df199:continuity/06_RENEWAL_PROOF.md",
+      "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/oracle_worker.py:266-296",
+      "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/control_plane.py:84-103",
+      "642b551985f499b37286c3bc21b89c57294f63ca:architecture-review/04_FRONTIER_RENEWAL_ANALYSIS.md"
+    ],
+    "preserve_tests": "tests/test_verified_continuity_renewal.py plus continuity/evidence/RENEWAL_WITNESS.json; original renewal test imports CP03 idea_feed.primitives so replay at immutable CP06 tree rather than current product if CP03 reverted.",
+    "primary_witness_needed": false,
+    "new_owner": false
+  }
+]

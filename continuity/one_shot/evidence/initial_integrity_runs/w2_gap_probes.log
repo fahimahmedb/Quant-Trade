@@ -1,0 +1,25 @@
+{
+  "valid_baseline": {
+    "result": "ACCEPTED",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY"
+  },
+  "unattributed_proposal": {
+    "result": "ACCEPTED",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY"
+  },
+  "outside_model_policy": {
+    "result": "ACCEPTED",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY"
+  },
+  "outside_generation_window": {
+    "result": "ACCEPTED",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY"
+  },
+  "tuple_hidden_outcome": {
+    "result": "ACCEPTED",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY"
+  },
+  "null_model_equality": {
+    "result": "ACCEPTED"
+  }
+}

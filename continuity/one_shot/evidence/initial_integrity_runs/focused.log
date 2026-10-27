@@ -1,0 +1,16 @@
+.......................F.....................................
+======================================================================
+FAIL: test_explicit_clean_blinded_fixture_keeps_exact_qualified_receipt (tests.test_research_os_epoch_blinding_admission.EpochBlindingAdmissionTests.test_explicit_clean_blinded_fixture_keeps_exact_qualified_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Quant-Trade/tests/test_research_os_epoch_blinding_admission.py", line 75, in test_explicit_clean_blinded_fixture_keeps_exact_qualified_receipt
+    self.assertEqual(result["receipt_hash"], "01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec")
+AssertionError: '48ec56afa0be00bcd198c38a37b49c89f2b0d00d05b7f055346e887f7b2480e8' != '01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec'
+- 48ec56afa0be00bcd198c38a37b49c89f2b0d00d05b7f055346e887f7b2480e8
++ 01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec
+
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.350s
+
+FAILED (failures=1)

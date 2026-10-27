@@ -1,0 +1,19 @@
+{
+  "head": "40c590189e1389502d179e63f6e0925df8513d2c",
+  "time": "2026-10-27T01:46:08.158091+00:00",
+  "synthetic": true,
+  "production_mutation": false,
+  "history_preserved_block_reopen_then_child_result": "MULTIPLE_DURABLE_CLOSURES:O-1",
+  "reopen_keys": [
+    "EVENT_TYPE",
+    "EVENT_ID",
+    "OBLIGATION_ID",
+    "ORIGINAL_CLOSURE_HASH",
+    "ORIGINAL_CLOSURE_TYPE",
+    "REOPENED_AT",
+    "PREDICATE_EVIDENCE_REF",
+    "HISTORICAL_DISPOSITION_MUTATED",
+    "EVENT_HASH"
+  ],
+  "finding": "No revision-aware current-resolution representation; lifetime closure cardinality contradicts mission law."
+}

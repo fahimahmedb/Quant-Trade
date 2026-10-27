@@ -1,0 +1,89 @@
+[
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_cp02_probe.py",
+      "/tmp/oneshot-w2-cp02-7l_i8uwm"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/tmp/oneshot-w2-cp02-7l_i8uwm"
+    },
+    "HEAD_SHA": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "START_TIME": "2026-10-27T01:45:56.825452+00:00",
+    "END_TIME": "2026-10-27T01:45:56.884726+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "/tmp/oneshot_cp02_runs/w2_gap_probes.log"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_cp02_probe.py",
+      "/workspace/Quant-Trade"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade"
+    },
+    "HEAD_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+    "START_TIME": "2026-10-27T01:45:56.887728+00:00",
+    "END_TIME": "2026-10-27T01:45:56.924825+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "/tmp/oneshot_cp02_runs/target_gap_probes.log"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_research_os_trial_proposal_export_binding",
+      "tests.test_research_os_epoch_model_admission",
+      "tests.test_research_os_trial_epoch_window",
+      "tests.test_research_os_serializable_outcome_membrane",
+      "tests.test_research_os_native_trial_lineage",
+      "tests.test_research_os_epoch_blinding_admission",
+      "tests.test_research_os_evaluation_membrane_admission",
+      "tests.test_research_os_source_pit_clocks",
+      "tests.test_wave2_c2_scientific_adjudication"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade"
+    },
+    "HEAD_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+    "START_TIME": "2026-10-27T01:45:56.924945+00:00",
+    "END_TIME": "2026-10-27T01:45:58.465637+00:00",
+    "RESULT": "FAIL",
+    "FAILURES": 1,
+    "LOG_REF": "/tmp/oneshot_cp02_runs/focused.log"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_c0_current_attack.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+    "START_TIME": "2026-10-27T01:47:01.225729+00:00",
+    "END_TIME": "2026-10-27T01:47:01.319799+00:00",
+    "RESULT": "FAIL",
+    "FAILURES": [
+      "CURRENT_INVARIANT:UNPROVEN_SEMANTIC_CONFIRMATION_COUNT"
+    ],
+    "LOG_REF": "/tmp/oneshot_cp02_runs/c0_current_attack.log",
+    "PRODUCT_BLOBS": {
+      "research/research_os/expansion/scientific_adjudication.py": "7ca2c4ae464421196844a4c43a78cb38f725deb0",
+      "research/research_os/expansion/_scientific_adjudication_c0.py": "3f0e1b7bae53e9513f0061cabcfae2505a6795f3"
+    }
+  }
+]

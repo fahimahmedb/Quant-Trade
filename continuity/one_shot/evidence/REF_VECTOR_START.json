@@ -1,0 +1,19 @@
+{
+  "W2_ENGINEERING_BASE_SHA": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+  "SOURCE_RESUME_BRANCH": "codex/verified-autonomous-continuity-20261026",
+  "REMOTE_RESUME_HEAD": "40c590189e1389502d179e63f6e0925df8513d2c",
+  "ONE_SHOT_BRANCH": "codex/verified-autonomous-continuity-oneshot-20261027",
+  "ONE_SHOT_BASE_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+  "W2_ANCESTRY": true,
+  "CP_COMMITS": [
+    "da549fd8d905915a550d3107634a3eb5a5ff635b",
+    "a06fa2d7c79f6b562101e15f555cb56bb1d025fe",
+    "acec18f007b079701ee55a620cf913ac960bdcfa",
+    "d35629b56362cd4704032925e4d6415102c6d28a",
+    "eae8eaef0cdf56ba195d1afa94431e113bdaea3a",
+    "3be85e3314aa70d2fecfd1b145c3aaa9ab5df199",
+    "40c590189e1389502d179e63f6e0925df8513d2c"
+  ],
+  "FETCH_COMMAND": "git fetch origin refs/heads/codex/verified-autonomous-continuity-20261026",
+  "FETCH_RESULT": "exit 0; FETCH_HEAD=40c590189e1389502d179e63f6e0925df8513d2c"
+}

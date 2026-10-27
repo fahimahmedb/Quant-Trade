@@ -1,0 +1,136 @@
+F.......................
+======================================================================
+FAIL: test_unproven_semantic_review_cannot_count_as_independent_confirmation (__main__.CurrentSemanticConfirmationAttack.test_unproven_semantic_review_cannot_count_as_independent_confirmation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/oneshot_c0_current_attack.py", line 17, in test_unproven_semantic_review_cannot_count_as_independent_confirmation
+    self.assertEqual(ref['independent_confirmation_count'],0,
+AssertionError: 1 != 0 : CURRENT_INVARIANT: structural reconstruction with explicitly unproven semantic review inflated independent confirmation count
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.030s
+
+FAILED (failures=1)
+{
+  "record": {
+    "information_isolation": true,
+    "retrieval_independence": true,
+    "cognitive_independence": true,
+    "state_isolation": true,
+    "retrieval": {
+      "reconstructed_v2_candidate_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "information_scope": "PRIMARY_SOURCE_AND_FROZEN_CANDIDATE_NO_PRODUCER_COMMENTARY",
+    "cognitive_scope": "DETERMINISTIC_STRUCTURAL_CHECKS_ONLY",
+    "semantic_diverse_review": "NOT_PROVEN_NO_SEMANTIC_PASS_GRANTED",
+    "support_relation": "PRIMARY_SOURCE_RECONSTRUCTION",
+    "outcome_accessed": false
+  },
+  "ref": {
+    "schema_version": "scientific-independence-ref-v1",
+    "factory_ref_hash": "96a48a9757afe32e77a5b22ac0c44e71ccd1a4087877c136493ea64564521960",
+    "hypothesis_id": "H-C2-C0-001",
+    "generation_id": "G1",
+    "candidate_hash": "5d0e0a1f316b259b39157302bfb59b11f15a1733d3ea39e8489ee485c06a8bf7",
+    "protocol_hash": "24d211cc64891389aca394575925a3ee2455e77f39eca6ff43205f15de7fa52d",
+    "frozen_protocol_hash": "45536311e820f938f159128ca7c7f915a9651fb3651d6b938c6ca7b3bce15f88",
+    "axes": {
+      "information_isolation": true,
+      "retrieval_independence": true,
+      "cognitive_independence": true,
+      "state_isolation": true
+    },
+    "structural_independence_proven": true,
+    "support_relation": "PRIMARY_SOURCE_RECONSTRUCTION",
+    "independent_confirmation_count": 1,
+    "semantic_diverse_review": "NOT_PROVEN_NO_SEMANTIC_PASS_GRANTED",
+    "information_scope": "PRIMARY_SOURCE_AND_FROZEN_CANDIDATE_NO_PRODUCER_COMMENTARY",
+    "cognitive_scope": "DETERMINISTIC_STRUCTURAL_CHECKS_ONLY",
+    "record_hash": "255cf2aa940ad280afc6e9c0da8c57280f7c7ea2120a73d09c85f58da4771ffc",
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed": false,
+    "status": "PASS",
+    "ref_hash": "3ef7a6d5adfc8cb8e52fd0dacd80d6b517dd52f01fc9ee84d8b54ac63a9e8fa0"
+  },
+  "adjudication": {
+    "schema_version": "scientific-adjudication-v1",
+    "adjudication_identity": "c5dfa6c14567a69afe3554a9adac949551c2082d6d26d9cb2f123f36236c524e",
+    "identity": {
+      "schema_version": "scientific-adjudication-identity-v1",
+      "wave2_base_sha": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+      "hypothesis_id": "H-C2-C0-001",
+      "generation_id": "G1",
+      "candidate_hash": "5d0e0a1f316b259b39157302bfb59b11f15a1733d3ea39e8489ee485c06a8bf7",
+      "protocol_hash": "24d211cc64891389aca394575925a3ee2455e77f39eca6ff43205f15de7fa52d",
+      "frozen_protocol_hash": "45536311e820f938f159128ca7c7f915a9651fb3651d6b938c6ca7b3bce15f88",
+      "components": {
+        "factory_ref_hash": "96a48a9757afe32e77a5b22ac0c44e71ccd1a4087877c136493ea64564521960",
+        "cross_examination_ref_hash": "7cab93356d13e48454614caa9efa0ef6e569b581f5e3c9420cac703a7d16e760",
+        "validator_ref_hash": "1bad920fc15aa6cf4382900d8451144256e992b1f089e49a6f0f41fdcf5a12ee",
+        "red_team_ref_hash": "7046e556dce060b69ae12b182e998b201875a05cb2722ff3142d1a82f0ade6c1",
+        "independence_ref_hash": "3ef7a6d5adfc8cb8e52fd0dacd80d6b517dd52f01fc9ee84d8b54ac63a9e8fa0",
+        "qualified_negative_ref_hash": null
+      },
+      "scientific_context": {
+        "trial_id": "TRIAL-001",
+        "experiment_epoch": "EPOCH-001",
+        "frozen_expression_hash": "2f582238f72e31d1c6c21ccb2382a06343f752fd0b2cdbdd33f47b5181a88756",
+        "provenance_hash": "41350638cce8ba4453934d58ee9686a8517124670d9598a111297a28fd310fd7",
+        "ancestry_hash": "dba22d7667feea9cbc6d2dfd529c2717f7a44d0f2eadc794a620f7d0dc1d3a34",
+        "claim_ceiling": "MECHANISM_AND_PRE_ECONOMIC_READINESS_ONLY",
+        "falsifiers_hash": "83f11475da9b6fc4ab38626e50da7678e1ebbc5f48b04da7627c4b5fd5dc265e",
+        "evidence_gaps_hash": "ca72d07e58b7dbadd4526a401b77bbd551b8942eda0ec2ae75819b185d241ddb"
+      }
+    },
+    "verdict": "PROMOTE",
+    "reason_codes": [
+      "SCIENTIFIC_ADJUDICATION_COMPLETE"
+    ],
+    "promotion_target": "ECONOMIC_IDENTITY",
+    "economic_identity_created": false,
+    "economic_result": "NOT_OBSERVED",
+    "profitability_status": "UNKNOWN",
+    "ready_is_profitable": false,
+    "unexecuted_is_negative": false,
+    "blocked_is_failed": false,
+    "negative_knowledge_global": false,
+    "independent_confirmation_count": 1,
+    "scientific_negative_claim": false,
+    "raw_outcomes_consumed": 0,
+    "candidate_mutated": false,
+    "protocol_mutated": false,
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "outcome_accessed": false,
+    "adjudication_hash": "a01abbd57893b3b71c36cda76a1178e7f167f0ec07e9ffb216ebf1354e3f7e61",
+    "scientific_posture": "QUALIFIED_WITH_CLAIM_CEILING",
+    "claim_ceiling": "MECHANISM_AND_PRE_ECONOMIC_READINESS_ONLY",
+    "uncertainty_state": {
+      "cross_examination_uncertainties": [],
+      "unknown_preserved": true,
+      "blocked_is_failed": false,
+      "unexecuted_is_negative": false
+    },
+    "evaluation_binding": {
+      "candidate_hash": "5d0e0a1f316b259b39157302bfb59b11f15a1733d3ea39e8489ee485c06a8bf7",
+      "protocol_hash": "24d211cc64891389aca394575925a3ee2455e77f39eca6ff43205f15de7fa52d",
+      "frozen_protocol_hash": "45536311e820f938f159128ca7c7f915a9651fb3651d6b938c6ca7b3bce15f88",
+      "factory_ref_hash": "96a48a9757afe32e77a5b22ac0c44e71ccd1a4087877c136493ea64564521960",
+      "trial_id": "TRIAL-001",
+      "experiment_epoch": "EPOCH-001",
+      "frozen_expression_hash": "2f582238f72e31d1c6c21ccb2382a06343f752fd0b2cdbdd33f47b5181a88756",
+      "provenance_hash": "41350638cce8ba4453934d58ee9686a8517124670d9598a111297a28fd310fd7"
+    },
+    "downstream_binding_required": [
+      "ECONOMIC_IDENTITY_REF",
+      "PORTFOLIO_READINESS_REF",
+      "ECONOMIC_LIFECYCLE_D0"
+    ],
+    "negative_knowledge_scope": null
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "valid_baseline": {
+    "result": "ACCEPTED",
+    "status": "READY_FOR_AUTHORIZED_ECONOMIC_TEST_ONLY"
+  },
+  "unattributed_proposal": {
+    "result": "REJECTED",
+    "error": "TRIAL_PROPOSAL_BINDING_MISMATCH",
+    "type": "V2ContractError"
+  },
+  "outside_model_policy": {
+    "result": "REJECTED",
+    "error": "MODEL_OUTSIDE_EPOCH_POLICY",
+    "type": "V2ContractError"
+  },
+  "outside_generation_window": {
+    "result": "REJECTED",
+    "error": "TRIAL_OUTSIDE_EPOCH_RESEARCH_WINDOW",
+    "type": "V2ContractError"
+  },
+  "tuple_hidden_outcome": {
+    "result": "REJECTED",
+    "error": "OUTCOME_DATA_VISIBLE_TO_RESEARCH:$.export.review_context[0].outcome",
+    "type": "V2ContractError"
+  },
+  "null_model_equality": {
+    "result": "REJECTED",
+    "error": "MODEL_INVALID_IDENTIFIER:model_identity"
+  }
+}

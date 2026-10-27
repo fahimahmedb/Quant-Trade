@@ -1,0 +1,10 @@
+{
+  "CWD": "/workspace/Quant-Trade",
+  "STATUS": "?? continuity/one_shot/",
+  "STATUS_NOTE": "preflight evidence directory created immediately before snapshot; no pre-existing worktree edits",
+  "INITIAL_STATUS_BEFORE_FILES": "",
+  "EXECUTION_ENVIRONMENT_STATUS": "LOCAL_WORKTREE_AVAILABLE",
+  "PYTHON": "3.12.14",
+  "PYTEST": "NOT_INSTALLED_AT_START",
+  "WORKTREES": "/workspace/Quant-Trade  40c59018 [codex/verified-autonomous-continuity-oneshot-20261027]"
+}
