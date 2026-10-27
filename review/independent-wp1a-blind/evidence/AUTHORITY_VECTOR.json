@@ -1,0 +1,91 @@
+{
+  "schema": "independent-wp1a-blind-authority-v1",
+  "audit_only": true,
+  "observed_at": "2026-10-27T10:23:21.812329+00:00",
+  "real_experiment_admissible_now": false,
+  "successor_declared": false,
+  "trial_id": null,
+  "historical_trial_id": "disc-crypto-book-pressure-prospective-l1-v0",
+  "audit_artifact_write_and_commit_authorized": true,
+  "actions": {
+    "DECLARE_TRIAL": {
+      "granted_for_real_successor": false,
+      "status": "NOT_GRANTED",
+      "implies": []
+    },
+    "READ_LIVE_SOURCE": {
+      "granted_for_real_successor": false,
+      "status": "PROHIBITED",
+      "implies": []
+    },
+    "EXECUTE_EXPERIMENT": {
+      "granted_for_real_successor": false,
+      "status": "PROHIBITED",
+      "implies": []
+    },
+    "ACCESS_RESULT": {
+      "granted_for_real_successor": false,
+      "status": "LIMITED_HISTORICAL_PUBLIC",
+      "implies": []
+    },
+    "WRITE_RESULT_RECEIPT": {
+      "granted_for_real_successor": false,
+      "status": "NOT_GRANTED",
+      "implies": []
+    },
+    "APPEND_TRIAL_EXPOSURE": {
+      "granted_for_real_successor": false,
+      "status": "NOT_GRANTED",
+      "implies": []
+    },
+    "WRITE_SCIENTIFIC_MEMORY": {
+      "granted_for_real_successor": false,
+      "status": "PROHIBITED",
+      "implies": []
+    },
+    "RUN_AUTONOMY_REPLAY": {
+      "granted_for_real_successor": false,
+      "status": "AUDIT_SYNTHETIC_TESTS_ONLY",
+      "implies": []
+    },
+    "OWNER_PROMOTE_CODE": {
+      "granted_for_real_successor": false,
+      "status": "NOT_GRANTED",
+      "implies": []
+    },
+    "DEPLOY": {
+      "granted_for_real_successor": false,
+      "status": "PROHIBITED",
+      "implies": []
+    },
+    "REAL_CAPITAL": {
+      "granted_for_real_successor": false,
+      "status": "PROHIBITED",
+      "implies": []
+    },
+    "LIVE_TRADING": {
+      "granted_for_real_successor": false,
+      "status": "PROHIBITED",
+      "implies": []
+    }
+  },
+  "required_for_one_future_trial": [
+    "DECLARE_TRIAL",
+    "READ_LIVE_SOURCE",
+    "EXECUTE_EXPERIMENT",
+    "ACCESS_RESULT",
+    "WRITE_RESULT_RECEIPT",
+    "APPEND_TRIAL_EXPOSURE"
+  ],
+  "separately_optional": [
+    "WRITE_SCIENTIFIC_MEMORY",
+    "RUN_AUTONOMY_REPLAY"
+  ],
+  "not_required_for_bounded_science": [
+    "OWNER_PROMOTE_CODE",
+    "DEPLOY",
+    "REAL_CAPITAL",
+    "LIVE_TRADING"
+  ],
+  "authority_rule": "No grant implies another; this vector reports scope and issues no grants."
+}

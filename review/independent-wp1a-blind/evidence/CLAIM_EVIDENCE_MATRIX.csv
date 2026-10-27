@@ -1,0 +1,21 @@
+claim_id,claim_type,claim,evidence_ids,confidence,limitation
+C01,OBSERVED,"Historical capture has 21 responses, zero valid trades, null statistics",E01,HIGH,Private raw bytes not reauthenticated
+C02,OBSERVED_CODE,Empty error string bypasses stop condition,E03;E02,HIGH,Recorder not executed
+C03,INFERENCE,Historical trial cannot rerun under same identity,E05;E01;E03,HIGH,Successor requires independent freeze
+C04,INFERENCE,Book-pressure successor is provisional best preparation target,E01;E05;E06;E12;E13;E14;E15;E17,MODERATE,No presently admissible witness; ranking contingent on source qualification
+C05,OBSERVED,"VIX reader has 36 trades, nine clusters, exploratory expression ceiling",E06,HIGH,Published output not independently recomputed
+C06,HISTORICAL_ASSERTION,Form144 source failure precedes event/market access,E13,MODERATE,Workflow payload not independently downloaded
+C07,HISTORICAL_ASSERTION,France route requires account/API key under frozen source,E08,MODERATE,No current source request
+C08,OBSERVED,Treasury protocol has frozen daily-curve screen and no profit claim,E12,HIGH,Prior Treasury/ZF exposure reconciliation incomplete
+C09,HISTORICAL_ASSERTION,"F1 prior private history unknown, A/B identities recorded",E09;E10;E11,MODERATE,Public outputs are not clean first confirmation
+C10,HISTORICAL_ASSERTION,Due-bill paired historical data unavailable in assessment,E14,MODERATE,No current probe
+C11,OBSERVED_CODE,Close source probe is not a bounded frozen economic runner,E15,HIGH,Probe not executed
+C12,OBSERVED_CODE,DryRunExperimentRunner does not open outcomes,E18,HIGH,Does not qualify real recorder
+C13,OBSERVED_CODE,PIT qualification needs explicit aware availability clock,E19;E24,HIGH,Synthetic pass does not authenticate source time
+C14,OBSERVED_CODE,Confirmation code binds semantic assertion; does not authenticate reviewer,E20;E21;E22,HIGH,Not an empirical replication
+C15,OBSERVED,Engineering qualification reports other HEAD/product identities,E26;E27,HIGH,No automatic exact-tip equivalence
+C16,INFERENCE,No real scientific experiment admitted now,E01;E03;E18;E28,HIGH,"Absence of a bound admissible package, not proof no possible experiment exists"
+C17,REVIEW_REQUIREMENT,All G01-G12 must close for specific successor,E01;E03;E05;E18;E19;E21;E28,HIGH,"Independent reviewer requirements, not existing passed gates"
+C18,LIMITATION,"Legacy ledger useful search index, not primary economic proof",E16,HIGH,Primary recovery incomplete
+C19,OBSERVED,21 synthetic checks pass; initial integration run has missing-fixture error,LOCAL_VERIFICATION,HIGH,"Code-only isolated export, no full baseline PASS"
+C20,SCOPE,Blind package exclusions respected with incidental NEXT text qualification,AUDIT_ACCESS_RECORD,HIGH,Not a zero-incidental-text-exposure certification

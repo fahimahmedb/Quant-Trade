@@ -1,0 +1,275 @@
+{
+  "observed_at": "2026-10-27T10:23:21.812329+00:00",
+  "anchor": "9026e4d83d0b3d67637ca8e8437125a372109369",
+  "refs": {
+    "engineering": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "c0": "df443d12bb4d7a1d908862ad993c855a11a71852",
+    "edge": "68bbab8ec990c813310224bc8737c41480853108",
+    "f1": "2620ba065e790b1c255f43bcd941fc336ad5ef4d",
+    "f1result": "d4332b8748968832b3fed08a0bb8ebef939d42ec",
+    "legacy": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+    "ust": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+    "form144": "9faba4fe0639e6835ae2b9d43f81f37252f86e3d",
+    "close": "a2ef88b07823e963e779196cf808b01339624115",
+    "duebill": "b9f6ee8a6775ddd61c4f562da50cfc7e279e1f2a",
+    "weather": "649be59e69d8e0724d61352cc76abcac7f3f588e"
+  },
+  "evidence": [
+    {
+      "evidence_id": "E01",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.result.json",
+      "blob": "a28ff8775ffb9233a788f79d7a487ba4631d3f92",
+      "sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.result.json"
+    },
+    {
+      "evidence_id": "E02",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json",
+      "blob": "6e56218941825491122d6ab6b860999da21b808d",
+      "sha256": "8873e1126b27289353e535dd8ef806cc2472e53a4ac7eb872de9101e3148aa48",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json"
+    },
+    {
+      "evidence_id": "E03",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.original_capture.py",
+      "blob": "19abb16d8980003f808132d10c2e8fe570ac0e7a",
+      "sha256": "3ca4ac69a5fa29aaf5bbb618627e98b5f2e839e2766e7c6fe7a73765f09d78bb",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.original_capture.py"
+    },
+    {
+      "evidence_id": "E04",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.original_calculation.py",
+      "blob": "a24fb2296061f1044d1c6ea007402c65639b631c",
+      "sha256": "e7501f958585b67d91b2be9abc3001e99eab4a9e7204aa749f2b470629c5689c",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.original_calculation.py"
+    },
+    {
+      "evidence_id": "E05",
+      "commit": "6b9daadaf6a5bf10b3b7356c2740080961add095",
+      "path": "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.md",
+      "blob": "af5d2e2c99e53781e0fc71e222268f215b2149aa",
+      "sha256": "8604476351bf006dccf9dc30de511804ded9bce949a02152bcace096c6efd206",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/6b9daadaf6a5bf10b3b7356c2740080961add095/research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.md"
+    },
+    {
+      "evidence_id": "E06",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.result.json",
+      "blob": "44a792e222f5cd763dcf1becdab9a6eb4d728286",
+      "sha256": "1c6abdf76a5b3901b2819b5e4bafaa355851c4dad14de464cc0b6a0437537fff",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.result.json"
+    },
+    {
+      "evidence_id": "E07",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-sec-form4-eod-l1-v0.result.json",
+      "blob": "33ca4a6b31352b9d94b84781b42166f9cd6b06ff",
+      "sha256": "86a3dbedd336e0f4e0f0dcafb8ed64a9a9290cee0a0a404a2e3c8708b4591456",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-sec-form4-eod-l1-v0.result.json"
+    },
+    {
+      "evidence_id": "E08",
+      "commit": "68bbab8ec990c813310224bc8737c41480853108",
+      "path": "research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.result.json",
+      "blob": "9f64f51a144087b2aeae2b56d9ac0ce176c8a57f",
+      "sha256": "5621877ea80238ac6ed985f90f1d33f8937f1375139c1268abc84b29fa8bf7a0",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/68bbab8ec990c813310224bc8737c41480853108/research/edge_lab/discovery/experiments/disc-france-oat-bund-l1-v1-public-daily-route.result.json"
+    },
+    {
+      "evidence_id": "E09",
+      "commit": "d4332b8748968832b3fed08a0bb8ebef939d42ec",
+      "path": "research/crypto_carry_f1/results/stage_b_result_2026-10-09.json",
+      "blob": "623cfc0fa1db330a8f587fd5401639ee2956dc85",
+      "sha256": "bcf2d7e8c75c42c9ea870eb30e553a39a2726471b588c4b54071bb2e621e16d3",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/d4332b8748968832b3fed08a0bb8ebef939d42ec/research/crypto_carry_f1/results/stage_b_result_2026-10-09.json"
+    },
+    {
+      "evidence_id": "E10",
+      "commit": "2620ba065e790b1c255f43bcd941fc336ad5ef4d",
+      "path": "research/crypto_carry_f1/verification/stage_a_exposure.json",
+      "blob": "92fbf5ea60c871a0800f59e30a50ccd90f694f62",
+      "sha256": "ce393674657484e7591cd064fb7c07997eb194feea7e2914ccb70fe1b8701d14",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/2620ba065e790b1c255f43bcd941fc336ad5ef4d/research/crypto_carry_f1/verification/stage_a_exposure.json"
+    },
+    {
+      "evidence_id": "E11",
+      "commit": "2620ba065e790b1c255f43bcd941fc336ad5ef4d",
+      "path": "research/crypto_carry_f1/verification/stage_b_execution.json",
+      "blob": "5231cd531ea5c81085ecec93db71ecfeabf720bc",
+      "sha256": "fa341ab87cebac6605d65501df4d3dc4d322a3ddce6f98f8e5d62af16229e93b",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/2620ba065e790b1c255f43bcd941fc336ad5ef4d/research/crypto_carry_f1/verification/stage_b_execution.json"
+    },
+    {
+      "evidence_id": "E12",
+      "commit": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+      "path": "research/research_os/artifacts/FLOW-UST-PRIMARY-DEALER-AUCTION-001/frozen-economic-screen-v1.json",
+      "blob": "86069a57da75b6cf34fada9373b92704b9d0fff2",
+      "sha256": "8f11a6a8b4041889a8e0098f7a17c1ad2a9237bb94bc9d7325bc1dbe3f4af234",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7/research/research_os/artifacts/FLOW-UST-PRIMARY-DEALER-AUCTION-001/frozen-economic-screen-v1.json"
+    },
+    {
+      "evidence_id": "E13",
+      "commit": "9faba4fe0639e6835ae2b9d43f81f37252f86e3d",
+      "path": "research/research_os/experiments/results/FORM144_SUPPLY_001_RESULT.json",
+      "blob": "2a7aac0c11135ed6794725ae95e0b48c6034edd4",
+      "sha256": "994632afbe1441e0f30b7a59761ed23d8633ca19891f763cdc8bbdcddecb78ee",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/9faba4fe0639e6835ae2b9d43f81f37252f86e3d/research/research_os/experiments/results/FORM144_SUPPLY_001_RESULT.json"
+    },
+    {
+      "evidence_id": "E14",
+      "commit": "b9f6ee8a6775ddd61c4f562da50cfc7e279e1f2a",
+      "path": "research/research_os/assessments/DUEBILL_SOURCE_READINESS_20261017.json",
+      "blob": "e4eba345d92b1d864c7d3f4794b055f06efe3721",
+      "sha256": "42d419de1b43d1afef84ccbba0a2daa030ef84b571848e65926519eef1ac670e",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/b9f6ee8a6775ddd61c4f562da50cfc7e279e1f2a/research/research_os/assessments/DUEBILL_SOURCE_READINESS_20261017.json"
+    },
+    {
+      "evidence_id": "E15",
+      "commit": "a2ef88b07823e963e779196cf808b01339624115",
+      "path": "research/research_os/experiments/probe_close_auction_source.py",
+      "blob": "1260e2aa446f04d578db6a77f01b7f420f3a637d",
+      "sha256": "bf56a226dc6bf056abd49b868bc473a93d71e4711282a52745cc3eae3975742a",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/a2ef88b07823e963e779196cf808b01339624115/research/research_os/experiments/probe_close_auction_source.py"
+    },
+    {
+      "evidence_id": "E16",
+      "commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "path": "LEGACY_RESEARCH_LEDGER.json",
+      "blob": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "sha256": "08494ff1d7be15ee1aefad813b5f65ad03b7ed7474159ea10180fb4fcf697432",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/183ad65ff260b903a16548ce37948f54d47a9ec8/LEGACY_RESEARCH_LEDGER.json"
+    },
+    {
+      "evidence_id": "E17",
+      "commit": "649be59e69d8e0724d61352cc76abcac7f3f588e",
+      "path": "research/weather_forward/v4/a2_harness/contract.py",
+      "blob": "f453b8ac7d540a5cdc3b27abebaa7d21cbeba21c",
+      "sha256": "417d521c92aea8a2ba6d9c9ac1660bb2ceb0c16083d71c28246af57d8326d771",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/649be59e69d8e0724d61352cc76abcac7f3f588e/research/weather_forward/v4/a2_harness/contract.py"
+    },
+    {
+      "evidence_id": "E18",
+      "commit": "d19b1237636d2311cd42f97f0b02feb55168347b",
+      "path": "research/research_os/expansion/experiment_runner.py",
+      "blob": "04688b39b5aed52b88748160854b203c1e8428ac",
+      "sha256": "eeb37cbc3ad11e7fcca6a5d7898aaafde1f9477b78ccb1dfc9531b89df548deb",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/d19b1237636d2311cd42f97f0b02feb55168347b/research/research_os/expansion/experiment_runner.py"
+    },
+    {
+      "evidence_id": "E19",
+      "commit": "d19b1237636d2311cd42f97f0b02feb55168347b",
+      "path": "research/research_os/expansion/source_qualification.py",
+      "blob": "2664c197e71af40477260161f8404d04a0a1cbb6",
+      "sha256": "f6d235cfb6fc72404a19fb9583cb78c43a6d1114f7c302c966986728fe4d6e77",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/d19b1237636d2311cd42f97f0b02feb55168347b/research/research_os/expansion/source_qualification.py"
+    },
+    {
+      "evidence_id": "E20",
+      "commit": "d19b1237636d2311cd42f97f0b02feb55168347b",
+      "path": "research/research_os/expansion/_scientific_adjudication_c0.py",
+      "blob": "3f0e1b7bae53e9513f0061cabcfae2505a6795f3",
+      "sha256": "fd5ee7854a8fbed75ce52550435b928bc0498662b25b8485ee96b83b1c82343c",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/d19b1237636d2311cd42f97f0b02feb55168347b/research/research_os/expansion/_scientific_adjudication_c0.py"
+    },
+    {
+      "evidence_id": "E21",
+      "commit": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "path": "research/research_os/expansion/scientific_adjudication.py",
+      "blob": "58c720185b89e83eedbc41bac80bb4b82404fa4a",
+      "sha256": "f185f4d60e3e5d09ee6403f0e658d5c23593c83006dae24365741fb0be9b1cf6",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/df443d12bb4d7a1d908862ad993c855a11a71852/research/research_os/expansion/scientific_adjudication.py"
+    },
+    {
+      "evidence_id": "E22",
+      "commit": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "path": "tests/test_c0_confirmation_count_repair.py",
+      "blob": "1fc593214ad3d5ae7578fd3b66937fcfb08d0417",
+      "sha256": "c9b0da0ecd697c6b68bb30f17e8b7ad8ad92dd3e921197dbf89d12e4abf5d852",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/df443d12bb4d7a1d908862ad993c855a11a71852/tests/test_c0_confirmation_count_repair.py"
+    },
+    {
+      "evidence_id": "E23",
+      "commit": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "path": "tests/test_research_os_native_trial_lineage.py",
+      "blob": "c2eebeec533fa194a494a660c5496ed7e613420b",
+      "sha256": "9bbdbb471d02b6feb2437cc648d7c29c348e0273fac63d53b7faede521d85366",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/df443d12bb4d7a1d908862ad993c855a11a71852/tests/test_research_os_native_trial_lineage.py"
+    },
+    {
+      "evidence_id": "E24",
+      "commit": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "path": "tests/test_research_os_source_pit_clocks.py",
+      "blob": "845c433e200cf08b73669ab7db6eb1700bf57930",
+      "sha256": "e1ee1381aa157f2a3c38071969ff315dc078f68c233df7fc956ea31897b0677a",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/df443d12bb4d7a1d908862ad993c855a11a71852/tests/test_research_os_source_pit_clocks.py"
+    },
+    {
+      "evidence_id": "E25",
+      "commit": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "path": "tests/test_research_os_frozen_trial_accounting.py",
+      "blob": "4efe6480498ac5447ae3dc8364fe99691f674305",
+      "sha256": "cbaec2b4d947b83ebfb816bb6bde563efd4b5205e97b619318ae49874ccdee93",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/df443d12bb4d7a1d908862ad993c855a11a71852/tests/test_research_os_frozen_trial_accounting.py"
+    },
+    {
+      "evidence_id": "E26",
+      "commit": "d19b1237636d2311cd42f97f0b02feb55168347b",
+      "path": "continuity/one_shot/evidence/freeze_runs/retained_integrity.json",
+      "blob": "919b4f20db05e236b94bd020d26d9850dd0835d1",
+      "sha256": "5583e970e16433c1abb2935f6be42931026404415193e9898771628e729bd6b5",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/d19b1237636d2311cd42f97f0b02feb55168347b/continuity/one_shot/evidence/freeze_runs/retained_integrity.json"
+    },
+    {
+      "evidence_id": "E27",
+      "commit": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "path": "continuity/c0_repair/evidence/candidate_exact_runs/QUALIFICATION.json",
+      "blob": "c11f62684584e0d80ea79108c45d51ecb213d0a3",
+      "sha256": "c7ed42cc68c3f3988b8b352e80d4258b393b1986009e70b58cb0f843e03c6436",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/df443d12bb4d7a1d908862ad993c855a11a71852/continuity/c0_repair/evidence/candidate_exact_runs/QUALIFICATION.json"
+    },
+    {
+      "evidence_id": "E28",
+      "commit": "9026e4d83d0b3d67637ca8e8437125a372109369",
+      "path": "AGENTS.md",
+      "blob": "650c09aed2e165c420f25ea33bf82e72c416df03",
+      "sha256": "7c6916162fd74741ac564241e5661fcddd58237b0c0ba5befada64574ea9648b",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/9026e4d83d0b3d67637ca8e8437125a372109369/AGENTS.md"
+    },
+    {
+      "evidence_id": "E29",
+      "commit": "9026e4d83d0b3d67637ca8e8437125a372109369",
+      "path": "governance/CURRENT_PROJECT_STATE_2026-10-20.md",
+      "blob": "c66652d116ee3e88aa6207c8daeb013711c84436",
+      "sha256": "811c8b175d5a672fac8ad5ae45e0c813f28a04ad054012120f27ad7827a18c40",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/9026e4d83d0b3d67637ca8e8437125a372109369/governance/CURRENT_PROJECT_STATE_2026-10-20.md"
+    },
+    {
+      "evidence_id": "E30",
+      "commit": "d4332b8748968832b3fed08a0bb8ebef939d42ec",
+      "path": "research/crypto_carry_f1/results/STAGE_B_REPORT_2026-10-09.md",
+      "blob": "cceb75f9623a14e094fd6eaab19a587b480135c3",
+      "sha256": "9fdd6c612f1a0b795c09a8627d61ab136c9ebc995cb02fe18c3a49b7fd1968c7",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/d4332b8748968832b3fed08a0bb8ebef939d42ec/research/crypto_carry_f1/results/STAGE_B_REPORT_2026-10-09.md"
+    },
+    {
+      "evidence_id": "E31",
+      "commit": "9026e4d83d0b3d67637ca8e8437125a372109369",
+      "path": "research/memory.jsonl",
+      "blob": "79ab74c28c05c7cfd688ecdfe1c41dcc4c773717",
+      "sha256": "dec9e93db8e437c447e81cf17bcfd6930e09e3363ae53842d4fdacf118492eab",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/9026e4d83d0b3d67637ca8e8437125a372109369/research/memory.jsonl"
+    },
+    {
+      "evidence_id": "E32",
+      "commit": "9026e4d83d0b3d67637ca8e8437125a372109369",
+      "path": "QUANT_NORTH_STAR.md",
+      "blob": "8295041a8d253636d8f8aab941b811dce64939d9",
+      "sha256": "d3fcbf96186dde2f0e946391d1bc40b5845c4398da5ce674f078f77c53ab113b",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/blob/9026e4d83d0b3d67637ca8e8437125a372109369/QUANT_NORTH_STAR.md"
+    }
+  ]
+}

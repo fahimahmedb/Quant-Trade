@@ -1,0 +1,28 @@
+{
+  "source_sha": "df443d12bb4d7a1d908862ad993c855a11a71852",
+  "source_tree": "a5c4914e245d03a856c59751a181711b24f9e1e5",
+  "scope": "Python-only isolated export at /tmp/wp1a-blind-code; no live source, no production scientific state",
+  "initial_run": {
+    "command": "PYTHONPATH=src:. python -m unittest tests.test_research_os_frozen_trial_accounting tests.test_research_os_source_pit_clocks tests.test_research_os_native_trial_lineage tests.test_c0_confirmation_count_repair",
+    "tests": 22,
+    "errors": 1,
+    "passed": 21,
+    "error": "FileNotFoundError: /tmp/wp1a-blind-code/research/research_os/sources; integration fixture directory intentionally not exported",
+    "result": "NOT_FULL_PASS"
+  },
+  "focused_run": {
+    "tests": 21,
+    "errors": 0,
+    "result": "PASS",
+    "excluded_test": "test_actual_git_generated_trial_replays_and_foreign_reference_stops_before_model",
+    "log": "SYNTHETIC_TESTS.log"
+  },
+  "workflow_observations": {
+    "engineering_pr_triggered_first_page": [],
+    "c0_combined_status_contexts": [],
+    "interpretation": "Bounded API queries only; not evidence of no workflows or failed CI. No exact-head hosted PASS established by these responses."
+  },
+  "ancestry": {
+    "engineering_is_ancestor_of_c0": true
+  }
+}
