@@ -1,0 +1,26 @@
+{
+  "NAME": "targeted_c0",
+  "COMMAND": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_wave2_c2_scientific_adjudication",
+    "tests.test_c0_confirmation_count_repair",
+    "tests.test_c0_ref_outcome_membrane"
+  ],
+  "ENVIRONMENT": {
+    "cwd": "/workspace/Quant-Trade",
+    "python": "3.12.14",
+    "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "state": "isolated fixtures and read-only registered source"
+  },
+  "HEAD_SHA": "c028bc866d8dbca56028b4b859b00d34bfb7dbe1",
+  "START_TIME": "2026-10-27T02:17:30.930907+00:00",
+  "END_TIME": "2026-10-27T02:17:31.196927+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": [],
+  "LOG_REF": "targeted_c0.log"
+}

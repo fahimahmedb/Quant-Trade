@@ -14,8 +14,8 @@
     },
     {
       "PATH": "continuity/CURRENT_STATE.md",
-      "SIZE": 311,
-      "SHA256": "a3aeae412f414c9045bc4b72e43aa6b96c95ccc73eada7bb74d42c4cfef81516"
+      "SIZE": 384,
+      "SHA256": "661bd32c78e6047c45c2db52cf8286b3362523a810d94db3a940b307bfb88e1c"
     },
     {
       "PATH": "continuity/DECISION_REGISTER.csv",
@@ -24,13 +24,13 @@
     },
     {
       "PATH": "continuity/EXECUTION_LEDGER.md",
-      "SIZE": 21306,
-      "SHA256": "f07ef3b5ab95a0f59c0cb5904722a01efedeb146091ceb8af6d3411daa342947"
+      "SIZE": 22056,
+      "SHA256": "032836f994791bf88b99f4677ef4fb98eeb4a0a2b43152af5fd3e9db12fdfda3"
     },
     {
       "PATH": "continuity/c0_membrane/FINAL_HANDOFF.md",
-      "SIZE": 1666,
-      "SHA256": "826ab65c5827e6995f681b925ca9ad81582d9a33852fd5f41ff6e0e4ffd70e4e"
+      "SIZE": 2443,
+      "SHA256": "50ba5b648eb651b0a96adc297f682b17879e193b52eabe8da5f408db0a79dc30"
     },
     {
       "PATH": "continuity/c0_membrane/MISSION.md",
@@ -43,14 +43,134 @@
       "SHA256": "295428ab171903673f4b601f966669d8fa5ea4b6a0e720f5e89805e7e9de903d"
     },
     {
+      "PATH": "continuity/c0_membrane/evidence/CANDIDATE_HOSTED.json",
+      "SIZE": 1957,
+      "SHA256": "2fe9c9ffa161c737f0c8fa935402aa5dcb15cde64ed10cbda53d737e0b8d14d8"
+    },
+    {
       "PATH": "continuity/c0_membrane/evidence/PRODUCT_FREEZE.json",
       "SIZE": 170,
       "SHA256": "47d2623aa1e14b86701a6d0b877448e0abea62d87165f661d24022a215fce51b"
     },
     {
       "PATH": "continuity/c0_membrane/evidence/QUALIFICATION_SUMMARY.json",
-      "SIZE": 268,
-      "SHA256": "b49ffb720bbcc169aa04877da395baaca1216624252ec44893b3846d4b5f6d4e"
+      "SIZE": 2680,
+      "SHA256": "888ef8408facd0f8b520eb91fda8ad72ccc06096b4563ceb6ecdb62826d328b8"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/QUALIFICATION.json",
+      "SIZE": 18142,
+      "SHA256": "f02ce350a68cb3e6ac60fb3eb6a69b79a148785fd71881c6543467f59979b9bd"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/historical_replay.json",
+      "SIZE": 700,
+      "SHA256": "3e6440dd993a02dbeea76c1ea7ac676755d6e3622a82effe259d70a0e461c80b"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/historical_replay.log",
+      "SIZE": 3597,
+      "SHA256": "f75738918e276fd385c02492a6d95f73bba1d3c584ebd7eb808761f4151b6d63"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/ordinary_regression.json",
+      "SIZE": 742,
+      "SHA256": "029b23662e6323624f644c36e32064a76313f96e5a8c57e4b8ebd7c29dc70995"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/ordinary_regression.log",
+      "SIZE": 1725,
+      "SHA256": "777ce0ebf9d84b0e77ab4243ad5d1da8879cd27c18863d1b48f38d447739f7f6"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/preserved_current_c0_attack.json",
+      "SIZE": 722,
+      "SHA256": "fd1d36e84c90678da7d5dce7f0ac4d5bdc563e73b9da2987f6a4b8b23f77e626"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/preserved_current_c0_attack.log",
+      "SIZE": 6085,
+      "SHA256": "9de357802284659efc58ffb388fb7da92ca4a37e88d0fedbd4506289fc75a8f6"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/research_os_regression.json",
+      "SIZE": 769,
+      "SHA256": "25c53c3ec902e31f35e506d9feee88773f428a3355897204f363fd4aa8937f26"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/research_os_regression.log",
+      "SIZE": 556,
+      "SHA256": "083e5a69ab4828280212ae3dc9147c890c602893e14a8603211c88491cf9262f"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/residual_outcome_ref_invariant.json",
+      "SIZE": 736,
+      "SHA256": "3e272563379407940417050e12f206590ef7ec91600dc087d96a7aaf019861f7"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/residual_outcome_ref_invariant.log",
+      "SIZE": 1518,
+      "SHA256": "090062b96360b4783912dd75367f722fa1b90c9293feb16dfbf32f8882812547"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/retained_integrity.json",
+      "SIZE": 1119,
+      "SHA256": "21d61953f44d5548deea3a092bed51f47931cceadb41852332b1f08a045aacb4"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/retained_integrity.log",
+      "SIZE": 8614,
+      "SHA256": "0aedae74812feecbceb258a1a4cf6fe2ef31804162db1d88d5ba15ed053fa6ae"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/schema_check.json",
+      "SIZE": 686,
+      "SHA256": "dedc07c73477c6ebe9674f314bd01c51cb9afe9f6a08bc0b3d6c2a4be1a4459e"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/schema_check.log",
+      "SIZE": 16,
+      "SHA256": "cce602d9699c53436cfa1f8cbf9c0257a20c55bb77c126087946b0ecc325d06e"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/selected_q_attacks.json",
+      "SIZE": 946,
+      "SHA256": "d34fd4c85fdab8165ceaa6261d57f17164a9607f6f7824ad43cf38f4f9219225"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/selected_q_attacks.log",
+      "SIZE": 113,
+      "SHA256": "55ac601ad4dc48c376ec25568060cd8363d14851fe78de23e54c85b250cae6e5"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/source_shadow.json",
+      "SIZE": 685,
+      "SHA256": "8d81ca55ae6489be5f518b983a66a86fecd8abea2fab1088810e4852df2e293b"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/source_shadow.log",
+      "SIZE": 7618,
+      "SHA256": "a32676d68beb3a85dbc0559b4186c02536a212bd538e5562cdc9e9d31ca48518"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/status_check.json",
+      "SIZE": 686,
+      "SHA256": "6f0cae78c4a00aad9a2b860d8e71b6019a71f8280fa2e6efbf6acb89bb8f3918"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/status_check.log",
+      "SIZE": 38,
+      "SHA256": "324e804e424ba71e9b110b0cc707571d0dd456f7c0cc41d36bc7a2d8a9b46365"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/targeted_c0.json",
+      "SIZE": 810,
+      "SHA256": "f7881eefc7323c0484045118dd363cf33a56fd4a794af4394670d30c54273f0e"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/candidate_runs/targeted_c0.log",
+      "SIZE": 7761,
+      "SHA256": "e917dfb14e3106df4ce7d67c02719deecb3c4841cc03f65039d8d8c0b8442073"
     },
     {
       "PATH": "continuity/c0_membrane/evidence/focused-seam.log",
@@ -74,8 +194,8 @@
     },
     {
       "PATH": "continuity/evidence/EXECUTION_EVENTS.jsonl",
-      "SIZE": 17415,
-      "SHA256": "8f7c47a71c915545d4405c5478e98cbb0420170d77ccce1372fb7d8cb290d427"
+      "SIZE": 18191,
+      "SHA256": "e0a8cfa9374adcb0593dd33e31efd0f5db63aeeff19fc1e9dea5275c0bd7cd59"
     },
     {
       "PATH": "research/research_os/expansion/scientific_adjudication.py",

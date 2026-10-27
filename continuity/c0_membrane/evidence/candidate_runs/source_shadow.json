@@ -1,0 +1,21 @@
+{
+  "NAME": "source_shadow",
+  "COMMAND": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "continuity/one_shot/oneshot_e1_probe.py"
+  ],
+  "ENVIRONMENT": {
+    "cwd": "/workspace/Quant-Trade",
+    "python": "3.12.14",
+    "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "state": "isolated fixtures and read-only registered source"
+  },
+  "HEAD_SHA": "c028bc866d8dbca56028b4b859b00d34bfb7dbe1",
+  "START_TIME": "2026-10-27T02:17:34.300828+00:00",
+  "END_TIME": "2026-10-27T02:17:34.415329+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": [],
+  "LOG_REF": "source_shadow.log"
+}

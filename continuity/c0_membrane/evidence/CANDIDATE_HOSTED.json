@@ -1,0 +1,74 @@
+{
+  "id": 40437576402,
+  "head_sha": "c028bc866d8dbca56028b4b859b00d34bfb7dbe1",
+  "status": "completed",
+  "conclusion": "success",
+  "html_url": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/40437576402",
+  "qualification_result": "PASS",
+  "guards_pass": true,
+  "runs": [
+    {
+      "name": "targeted_c0",
+      "result": "PASS"
+    },
+    {
+      "name": "preserved_current_c0_attack",
+      "result": "PASS"
+    },
+    {
+      "name": "residual_outcome_ref_invariant",
+      "result": "PASS"
+    },
+    {
+      "name": "retained_integrity",
+      "result": "PASS"
+    },
+    {
+      "name": "ordinary_regression",
+      "result": "PASS"
+    },
+    {
+      "name": "research_os_regression",
+      "result": "PASS"
+    },
+    {
+      "name": "historical_replay",
+      "result": "PASS"
+    },
+    {
+      "name": "source_shadow",
+      "result": "PASS"
+    },
+    {
+      "name": "schema_check",
+      "result": "PASS"
+    },
+    {
+      "name": "status_check",
+      "result": "PASS"
+    },
+    {
+      "name": "selected_q_attacks",
+      "result": "PASS"
+    }
+  ],
+  "artifact": {
+    "id": 12705205070,
+    "name": "c0-membrane-qualification-c028bc866d8dbca56028b4b859b00d34bfb7dbe1-40437576402",
+    "size_in_bytes": 18940,
+    "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/artifacts/12705205070",
+    "archive_download_url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/artifacts/12705205070/zip",
+    "expired": false,
+    "created_at": "2026-10-27T02:20:16Z",
+    "expires_at": "2027-01-25T02:17:31Z",
+    "updated_at": "2026-10-27T02:20:16Z",
+    "digest": "sha256:6ebeb67527157fc882fa9ac08825a1c5ec811108bfcfe964b00a16d58c359aef",
+    "workflow_run": {
+      "id": 40437576402,
+      "repository_id": 1298751593,
+      "head_repository_id": 1298751593,
+      "head_branch": "codex/c0-membrane-qualification-20261027",
+      "head_sha": "c028bc866d8dbca56028b4b859b00d34bfb7dbe1"
+    }
+  }
+}

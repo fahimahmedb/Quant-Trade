@@ -1,0 +1,27 @@
+{
+  "NAME": "ordinary_regression",
+  "COMMAND": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_*.py"
+  ],
+  "ENVIRONMENT": {
+    "cwd": "/workspace/Quant-Trade",
+    "python": "3.12.14",
+    "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "state": "isolated fixtures and read-only registered source"
+  },
+  "HEAD_SHA": "c028bc866d8dbca56028b4b859b00d34bfb7dbe1",
+  "START_TIME": "2026-10-27T02:17:31.123383+00:00",
+  "END_TIME": "2026-10-27T02:18:21.055920+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": [],
+  "LOG_REF": "ordinary_regression.log"
+}
