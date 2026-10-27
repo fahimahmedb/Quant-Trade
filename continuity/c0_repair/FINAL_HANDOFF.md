@@ -23,3 +23,6 @@ RECOMMENDATION: Next bounded product mission is the smallest direct-reference ou
 CURRENT_COUNT_REPAIR_STATUS=SUPPORTED_PENDING_EXACT_HEAD
 OVERALL_QUALIFICATION=NOT_QUALIFIED_CURRENT_RESIDUAL_INVARIANT
 ECONOMIC_READINESS=NOT_EVALUATED_IN_THIS_MISSION
+
+
+FACT: Exact candidate df513ec327b09277c83d6a153181a8fb989d79c6 pushed and fetched equal, local result FAIL; hosted run 40436205163 on exact same SHA concluded failure. All suites/guards preserved in evidence/PREQUALIFICATION.json and candidate_exact_runs. Count correction tests and original failing count witness results are explicit, not a global PASS. Overall remains NOT_QUALIFIED_CURRENT_OUTCOME_REF_MEMBRANE_FAILURE. Final evidence-only attestation changes no product/test/CI/helper logic. Final exact run/ref receipt is external because no post-final-run commit is allowed. Reproduce via `python3 continuity/c0_repair/qualify.py --output-dir /tmp/c0-final-recheck --check-source-remote`.

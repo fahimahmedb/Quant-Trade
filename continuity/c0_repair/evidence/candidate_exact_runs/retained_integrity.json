@@ -1,0 +1,31 @@
+{
+  "NAME": "retained_integrity",
+  "COMMAND": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_research_os_trial_proposal_export_binding",
+    "tests.test_research_os_epoch_model_admission",
+    "tests.test_research_os_trial_epoch_window",
+    "tests.test_research_os_serializable_outcome_membrane",
+    "tests.test_research_os_native_trial_lineage",
+    "tests.test_research_os_epoch_blinding_admission",
+    "tests.test_research_os_evaluation_membrane_admission",
+    "tests.test_research_os_source_pit_clocks"
+  ],
+  "ENVIRONMENT": {
+    "cwd": "/workspace/Quant-Trade",
+    "python": "3.12.14",
+    "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "state": "isolated fixtures and read-only registered source"
+  },
+  "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+  "START_TIME": "2026-10-27T02:03:39.525243+00:00",
+  "END_TIME": "2026-10-27T02:03:41.531327+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": [],
+  "LOG_REF": "retained_integrity.log"
+}

@@ -1,0 +1,43 @@
+{
+  "SYNTHETIC": true,
+  "PRODUCTION_SCIENCE": false,
+  "REAL_PROTECTED_OUTCOMES_ACCESSED": false,
+  "PRODUCTION_STATE_MUTATED": false,
+  "ALIAS_PATH": "$.audit.nested[0].return_series",
+  "ALIAS_CLASS": "Existing C0 _FORBIDDEN_OUTCOME_KEYS includes return_series",
+  "ORIGINAL_REF_COUNT": 0,
+  "REF_UNCHANGED_BY_VALIDATION_COMPOSITION": true,
+  "FACTORY_HASH_BOUND": true,
+  "CHECKS": [
+    {
+      "ENTRYPOINT": "PUBLIC_VALIDATE",
+      "RESULT": "ACCEPTED",
+      "VERDICT": null,
+      "INDEPENDENT_CONFIRMATION_COUNT": null,
+      "RAW_OUTCOMES_CONSUMED_CLAIM": null
+    },
+    {
+      "ENTRYPOINT": "PRESERVED_INNER_VALIDATE",
+      "RESULT": "ACCEPTED",
+      "VERDICT": null,
+      "INDEPENDENT_CONFIRMATION_COUNT": null,
+      "RAW_OUTCOMES_CONSUMED_CLAIM": null
+    },
+    {
+      "ENTRYPOINT": "PUBLIC_COMPOSITION",
+      "RESULT": "ACCEPTED",
+      "VERDICT": "PROMOTE",
+      "INDEPENDENT_CONFIRMATION_COUNT": 0,
+      "RAW_OUTCOMES_CONSUMED_CLAIM": 0
+    },
+    {
+      "ENTRYPOINT": "PRESERVED_INNER_COMPOSITION",
+      "RESULT": "ACCEPTED",
+      "VERDICT": "PROMOTE",
+      "INDEPENDENT_CONFIRMATION_COUNT": 0,
+      "RAW_OUTCOMES_CONSUMED_CLAIM": 0
+    }
+  ],
+  "CLASSIFICATION": "CURRENT_INVARIANT_RESIDUAL_OUTCOME_REF_MEMBRANE",
+  "SCOPE": "Inherited preexisting direct-ref validation path; separate followup, no product repair in count mission"
+}

@@ -1,0 +1,536 @@
+{
+  "MISSION": "C0_CONFIRMATION_REPAIR",
+  "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+  "SOURCE_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+  "PRODUCT_FREEZE_SHA": "a8339a02f070a9697172dfa3cbe1d4d9bacf96ba",
+  "START_TIME": "2026-10-27T02:03:49.952071+00:00",
+  "END_TIME": "2026-10-27T02:05:44.394090+00:00",
+  "ENVIRONMENT": {
+    "python": "3.12.15",
+    "cwd": "/home/runner/work/Quant-Trade/Quant-Trade"
+  },
+  "HOSTED_RUN_ID": "40436205163",
+  "HOSTED_RUN_ATTEMPT": "1",
+  "HOSTED_EVENT": "push",
+  "GUARDS": [
+    {
+      "NAME": "initial_exact_head_clean",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:49.953427+00:00",
+      "END_TIME": "2026-10-27T02:03:50.028953+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+        "WORKTREE_CLEAN": true
+      }
+    },
+    {
+      "NAME": "source_ancestry",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.028967+00:00",
+      "END_TIME": "2026-10-27T02:03:50.030396+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": 0
+    },
+    {
+      "NAME": "w2_ancestry",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.030404+00:00",
+      "END_TIME": "2026-10-27T02:03:50.031716+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": 0
+    },
+    {
+      "NAME": "permitted_source_delta",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.031720+00:00",
+      "END_TIME": "2026-10-27T02:03:50.033356+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": [
+        ".github/workflows/c0-repair-qualification.yml",
+        "STATE.md",
+        "continuity/CURRENT_STATE.md",
+        "continuity/DECISION_REGISTER.csv",
+        "continuity/EXECUTION_LEDGER.md",
+        "continuity/FINAL_HANDOFF.md",
+        "continuity/FOLLOWUP_MISSION_REGISTER.csv",
+        "continuity/PARALLEL_WORK_REGISTER.csv",
+        "continuity/c0_repair/FINAL_HANDOFF.md",
+        "continuity/c0_repair/MISSION.md",
+        "continuity/c0_repair/PRODUCT_FREEZE.md",
+        "continuity/c0_repair/REPAIR_DECISION.md",
+        "continuity/c0_repair/SELF_CHALLENGE.md",
+        "continuity/c0_repair/evidence/AUTHORITY_DECISION_MATRIX.csv",
+        "continuity/c0_repair/evidence/MANIFEST_SHA256.json",
+        "continuity/c0_repair/evidence/PREFLIGHT.json",
+        "continuity/c0_repair/evidence/PRODUCT_FREEZE.json",
+        "continuity/c0_repair/evidence/QUALIFICATION_SUMMARY.json",
+        "continuity/c0_repair/evidence/c0_fixture_baseline.log",
+        "continuity/c0_repair/evidence/c0_fixture_golden_evidence.json",
+        "continuity/c0_repair/evidence/c0_fixture_repair.md",
+        "continuity/c0_repair/evidence/c0_fixture_repaired.log",
+        "continuity/c0_repair/evidence/c0_fixture_runs.json",
+        "continuity/c0_repair/evidence/c0_hosted_capability_evidence.json",
+        "continuity/c0_repair/evidence/c0_hosted_plan.md",
+        "continuity/c0_repair/evidence/c0_independent_challenge.json",
+        "continuity/c0_repair/evidence/c0_independent_challenge.md",
+        "continuity/c0_repair/evidence/c0_independent_final_working_probe.json",
+        "continuity/c0_repair/evidence/c0_outcome_ref_current_probe.log",
+        "continuity/c0_repair/evidence/c0_outcome_ref_current_probe_run.json",
+        "continuity/c0_repair/evidence/c0_repair_review.md",
+        "continuity/c0_repair/evidence/repair_working_runs/TEST_RUNS.json",
+        "continuity/c0_repair/evidence/repair_working_runs/diff_check.log",
+        "continuity/c0_repair/evidence/repair_working_runs/focused.log",
+        "continuity/c0_repair/evidence/repair_working_runs/historical_failing_witness.log",
+        "continuity/c0_repair/evidence/status_refresh.log",
+        "continuity/c0_repair/probes/outcome_ref_current_probe.py",
+        "continuity/c0_repair/qualify.py",
+        "continuity/evidence/EXECUTION_EVENTS.jsonl",
+        "research/research_os/expansion/scientific_adjudication.py",
+        "tests/test_c0_confirmation_count_repair.py",
+        "tests/test_research_os_canonical_identity.py",
+        "tests/test_research_os_v2_pipeline.py"
+      ]
+    },
+    {
+      "NAME": "immutable_source_state",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.033360+00:00",
+      "END_TIME": "2026-10-27T02:03:50.034738+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "SOURCE_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+        "PATHS": [
+          "research/research_os/runtime",
+          "research/research_os/tasks",
+          "research/research_os/hypotheses",
+          "research/research_os/assessments",
+          "research/research_os/sources",
+          "research/research_os/artifacts",
+          "research/research_os/events",
+          "research/research_os/receipts",
+          "research/research_os/legacy",
+          "research/edge_lab",
+          "continuity/one_shot",
+          "QUANT_NORTH_STAR.md",
+          "research/research_os/expansion/_scientific_adjudication_c0.py"
+        ]
+      }
+    },
+    {
+      "NAME": "product_freeze",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.034741+00:00",
+      "END_TIME": "2026-10-27T02:03:50.037288+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "PRODUCT_FREEZE_SHA": "a8339a02f070a9697172dfa3cbe1d4d9bacf96ba",
+        "PATHS": [
+          "src",
+          "research",
+          "deploy",
+          "scripts",
+          "tests",
+          ".github/workflows",
+          "STATE.md",
+          "CHIEF_BRIEF.md",
+          "continuity/c0_repair/qualify.py",
+          "continuity/c0_repair/probes"
+        ]
+      }
+    },
+    {
+      "NAME": "evidence_manifest",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.037292+00:00",
+      "END_TIME": "2026-10-27T02:03:50.041596+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "MANIFEST": "continuity/c0_repair/evidence/MANIFEST_SHA256.json",
+        "VERIFIED_FILES": 42,
+        "SELF_HASHED": false
+      }
+    },
+    {
+      "NAME": "initial_source_remote",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.041601+00:00",
+      "END_TIME": "2026-10-27T02:03:50.331446+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "SOURCE_BRANCH": "codex/verified-autonomous-continuity-oneshot-20261027",
+        "REMOTE_SOURCE_HEAD": "d19b1237636d2311cd42f97f0b02feb55168347b"
+      }
+    },
+    {
+      "NAME": "final_exact_head_clean",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:05:44.083100+00:00",
+      "END_TIME": "2026-10-27T02:05:44.093957+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+        "WORKTREE_CLEAN": true
+      }
+    },
+    {
+      "NAME": "final_immutable_source_state",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:05:44.093964+00:00",
+      "END_TIME": "2026-10-27T02:05:44.095365+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "SOURCE_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+        "PATHS": [
+          "research/research_os/runtime",
+          "research/research_os/tasks",
+          "research/research_os/hypotheses",
+          "research/research_os/assessments",
+          "research/research_os/sources",
+          "research/research_os/artifacts",
+          "research/research_os/events",
+          "research/research_os/receipts",
+          "research/research_os/legacy",
+          "research/edge_lab",
+          "continuity/one_shot",
+          "QUANT_NORTH_STAR.md",
+          "research/research_os/expansion/_scientific_adjudication_c0.py"
+        ]
+      }
+    },
+    {
+      "NAME": "final_product_freeze",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:05:44.095368+00:00",
+      "END_TIME": "2026-10-27T02:05:44.097877+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "PRODUCT_FREEZE_SHA": "a8339a02f070a9697172dfa3cbe1d4d9bacf96ba",
+        "PATHS": [
+          "src",
+          "research",
+          "deploy",
+          "scripts",
+          "tests",
+          ".github/workflows",
+          "STATE.md",
+          "CHIEF_BRIEF.md",
+          "continuity/c0_repair/qualify.py",
+          "continuity/c0_repair/probes"
+        ]
+      }
+    },
+    {
+      "NAME": "final_evidence_manifest",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:05:44.097881+00:00",
+      "END_TIME": "2026-10-27T02:05:44.102056+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "MANIFEST": "continuity/c0_repair/evidence/MANIFEST_SHA256.json",
+        "VERIFIED_FILES": 42,
+        "SELF_HASHED": false
+      }
+    },
+    {
+      "NAME": "final_source_remote",
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:05:44.102061+00:00",
+      "END_TIME": "2026-10-27T02:05:44.394053+00:00",
+      "RESULT": "PASS",
+      "FAILURES": [],
+      "DETAIL": {
+        "SOURCE_BRANCH": "codex/verified-autonomous-continuity-oneshot-20261027",
+        "REMOTE_SOURCE_HEAD": "d19b1237636d2311cd42f97f0b02feb55168347b"
+      }
+    }
+  ],
+  "RUNS": [
+    {
+      "NAME": "targeted_c0",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_wave2_c2_scientific_adjudication",
+        "tests.test_c0_confirmation_count_repair"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.334602+00:00",
+      "END_TIME": "2026-10-27T02:03:50.549303+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "targeted_c0.log"
+    },
+    {
+      "NAME": "preserved_current_c0_attack",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "continuity/one_shot/oneshot_c0_current_attack.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.334844+00:00",
+      "END_TIME": "2026-10-27T02:03:50.449422+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "preserved_current_c0_attack.log"
+    },
+    {
+      "NAME": "residual_outcome_ref_invariant",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "continuity/c0_repair/probes/outcome_ref_current_probe.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.335209+00:00",
+      "END_TIME": "2026-10-27T02:03:50.449688+00:00",
+      "RESULT": "FAIL",
+      "EXIT_CODE": 1,
+      "FAILURES": [
+        "nonzero exit; see complete preserved log"
+      ],
+      "LOG_REF": "residual_outcome_ref_invariant.log"
+    },
+    {
+      "NAME": "retained_integrity",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_research_os_trial_proposal_export_binding",
+        "tests.test_research_os_epoch_model_admission",
+        "tests.test_research_os_trial_epoch_window",
+        "tests.test_research_os_serializable_outcome_membrane",
+        "tests.test_research_os_native_trial_lineage",
+        "tests.test_research_os_epoch_blinding_admission",
+        "tests.test_research_os_evaluation_membrane_admission",
+        "tests.test_research_os_source_pit_clocks"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.449775+00:00",
+      "END_TIME": "2026-10-27T02:03:52.474994+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "retained_integrity.log"
+    },
+    {
+      "NAME": "ordinary_regression",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.449855+00:00",
+      "END_TIME": "2026-10-27T02:04:43.546640+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "ordinary_regression.log"
+    },
+    {
+      "NAME": "research_os_regression",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "research/research_os/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:50.549591+00:00",
+      "END_TIME": "2026-10-27T02:04:12.533575+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "research_os_regression.log"
+    },
+    {
+      "NAME": "historical_replay",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "continuity/one_shot/replay_historical_tests.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:52.475271+00:00",
+      "END_TIME": "2026-10-27T02:03:53.040374+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "historical_replay.log"
+    },
+    {
+      "NAME": "source_shadow",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "continuity/one_shot/oneshot_e1_probe.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:53.040648+00:00",
+      "END_TIME": "2026-10-27T02:03:53.154863+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "source_shadow.log"
+    },
+    {
+      "NAME": "schema_check",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "scripts/generate_schemas.py",
+        "--check"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:53.155156+00:00",
+      "END_TIME": "2026-10-27T02:03:53.319327+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "schema_check.log"
+    },
+    {
+      "NAME": "status_check",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "scripts/status_artifacts.py",
+        "--check"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:03:53.319561+00:00",
+      "END_TIME": "2026-10-27T02:05:44.082609+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "status_check.log"
+    },
+    {
+      "NAME": "selected_q_attacks",
+      "COMMAND": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "continuity/one_shot/evidence/regression_classification/q-source/test_giga_q_core_identity.py",
+        "-k",
+        "export_guard_covers_nested_json_serializable_sequences or pipeline_cannot_accept_tuple_hidden_outcome or authority_never_coerces_false_like_values"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+        "python": "3.12.15",
+        "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "state": "isolated fixtures and read-only registered source"
+      },
+      "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+      "START_TIME": "2026-10-27T02:04:12.533845+00:00",
+      "END_TIME": "2026-10-27T02:04:12.848438+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "selected_q_attacks.log"
+    }
+  ],
+  "REQUIRED_RUN_COUNT": 11,
+  "RESULT": "FAIL",
+  "QUALIFICATION_SCOPE": "C0_REPAIR_ENGINEERING_ONLY",
+  "PRODUCTION_INPUTS_EQUAL_SOURCE": true,
+  "PRODUCTION_RESEARCH_STATE_MUTATED": false,
+  "AUTHORITY_CHANGED": false,
+  "OUTCOME_ACCESSED": false,
+  "ECONOMIC_READINESS": "NOT_EVALUATED_IN_THIS_MISSION"
+}

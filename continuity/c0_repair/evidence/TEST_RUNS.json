@@ -1,0 +1,611 @@
+[
+  {
+    "NAME": "targeted_c0",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_wave2_c2_scientific_adjudication",
+      "tests.test_c0_confirmation_count_repair"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:39.359282+00:00",
+    "END_TIME": "2026-10-27T02:03:39.575371+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/targeted_c0.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "preserved_current_c0_attack",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "continuity/one_shot/oneshot_c0_current_attack.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:39.359688+00:00",
+    "END_TIME": "2026-10-27T02:03:39.524983+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/preserved_current_c0_attack.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "residual_outcome_ref_invariant",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "continuity/c0_repair/probes/outcome_ref_current_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:39.360284+00:00",
+    "END_TIME": "2026-10-27T02:03:39.526424+00:00",
+    "RESULT": "FAIL",
+    "EXIT_CODE": 1,
+    "FAILURES": [
+      "nonzero exit; see complete preserved log"
+    ],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/residual_outcome_ref_invariant.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "retained_integrity",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_research_os_trial_proposal_export_binding",
+      "tests.test_research_os_epoch_model_admission",
+      "tests.test_research_os_trial_epoch_window",
+      "tests.test_research_os_serializable_outcome_membrane",
+      "tests.test_research_os_native_trial_lineage",
+      "tests.test_research_os_epoch_blinding_admission",
+      "tests.test_research_os_evaluation_membrane_admission",
+      "tests.test_research_os_source_pit_clocks"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:39.525243+00:00",
+    "END_TIME": "2026-10-27T02:03:41.531327+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/retained_integrity.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "ordinary_regression",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:39.526580+00:00",
+    "END_TIME": "2026-10-27T02:04:26.742821+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/ordinary_regression.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "research_os_regression",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "research/research_os/tests",
+      "-p",
+      "test_*.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:39.575583+00:00",
+    "END_TIME": "2026-10-27T02:04:06.987977+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/research_os_regression.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "historical_replay",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "continuity/one_shot/replay_historical_tests.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:41.531560+00:00",
+    "END_TIME": "2026-10-27T02:03:41.952694+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/historical_replay.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "source_shadow",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "continuity/one_shot/oneshot_e1_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:41.952973+00:00",
+    "END_TIME": "2026-10-27T02:03:42.016919+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/source_shadow.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "schema_check",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "scripts/generate_schemas.py",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:42.017084+00:00",
+    "END_TIME": "2026-10-27T02:03:42.131081+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/schema_check.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "status_check",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "scripts/status_artifacts.py",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:42.131262+00:00",
+    "END_TIME": "2026-10-27T02:05:59.589518+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/status_check.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "selected_q_attacks",
+    "COMMAND": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pytest",
+      "-q",
+      "continuity/one_shot/evidence/regression_classification/q-source/test_giga_q_core_identity.py",
+      "-k",
+      "export_guard_covers_nested_json_serializable_sequences or pipeline_cannot_accept_tuple_hidden_outcome or authority_never_coerces_false_like_values"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "/workspace/Quant-Trade/src:/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:04:06.988169+00:00",
+    "END_TIME": "2026-10-27T02:04:07.627517+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "continuity/c0_repair/evidence/candidate_exact_runs/selected_q_attacks.log",
+    "RUN_SCOPE": "LOCAL_CANDIDATE"
+  },
+  {
+    "NAME": "targeted_c0",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_wave2_c2_scientific_adjudication",
+      "tests.test_c0_confirmation_count_repair"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:50.334602+00:00",
+    "END_TIME": "2026-10-27T02:03:50.549303+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "targeted_c0.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "preserved_current_c0_attack",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "continuity/one_shot/oneshot_c0_current_attack.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:50.334844+00:00",
+    "END_TIME": "2026-10-27T02:03:50.449422+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "preserved_current_c0_attack.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "residual_outcome_ref_invariant",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "continuity/c0_repair/probes/outcome_ref_current_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:50.335209+00:00",
+    "END_TIME": "2026-10-27T02:03:50.449688+00:00",
+    "RESULT": "FAIL",
+    "EXIT_CODE": 1,
+    "FAILURES": [
+      "nonzero exit; see complete preserved log"
+    ],
+    "LOG_REF": "residual_outcome_ref_invariant.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "retained_integrity",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "-m",
+      "unittest",
+      "-v",
+      "tests.test_research_os_trial_proposal_export_binding",
+      "tests.test_research_os_epoch_model_admission",
+      "tests.test_research_os_trial_epoch_window",
+      "tests.test_research_os_serializable_outcome_membrane",
+      "tests.test_research_os_native_trial_lineage",
+      "tests.test_research_os_epoch_blinding_admission",
+      "tests.test_research_os_evaluation_membrane_admission",
+      "tests.test_research_os_source_pit_clocks"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:50.449775+00:00",
+    "END_TIME": "2026-10-27T02:03:52.474994+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "retained_integrity.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "ordinary_regression",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:50.449855+00:00",
+    "END_TIME": "2026-10-27T02:04:43.546640+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "ordinary_regression.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "research_os_regression",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "research/research_os/tests",
+      "-p",
+      "test_*.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:50.549591+00:00",
+    "END_TIME": "2026-10-27T02:04:12.533575+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "research_os_regression.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "historical_replay",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "continuity/one_shot/replay_historical_tests.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:52.475271+00:00",
+    "END_TIME": "2026-10-27T02:03:53.040374+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "historical_replay.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "source_shadow",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "continuity/one_shot/oneshot_e1_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:53.040648+00:00",
+    "END_TIME": "2026-10-27T02:03:53.154863+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "source_shadow.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "schema_check",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "scripts/generate_schemas.py",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:53.155156+00:00",
+    "END_TIME": "2026-10-27T02:03:53.319327+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "schema_check.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "status_check",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "scripts/status_artifacts.py",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:03:53.319561+00:00",
+    "END_TIME": "2026-10-27T02:05:44.082609+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "status_check.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  },
+  {
+    "NAME": "selected_q_attacks",
+    "COMMAND": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "continuity/one_shot/evidence/regression_classification/q-source/test_giga_q_core_identity.py",
+      "-k",
+      "export_guard_covers_nested_json_serializable_sequences or pipeline_cannot_accept_tuple_hidden_outcome or authority_never_coerces_false_like_values"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/home/runner/work/Quant-Trade/Quant-Trade",
+      "python": "3.12.15",
+      "PYTHONPATH": "/home/runner/work/Quant-Trade/Quant-Trade/src:/home/runner/work/Quant-Trade/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "state": "isolated fixtures and read-only registered source"
+    },
+    "HEAD_SHA": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "START_TIME": "2026-10-27T02:04:12.533845+00:00",
+    "END_TIME": "2026-10-27T02:04:12.848438+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "selected_q_attacks.log",
+    "RUN_SCOPE": "HOSTED_CANDIDATE",
+    "LOG_ANCHOR": {
+      "GITHUB_RUN_ID": 40436205163,
+      "ARTIFACT_ID": 12704432030,
+      "ARTIFACT_DIGEST": "sha256:823ad79d77d5d8af793e1e60593534d71de8ae86028b8d4c971b7a34a137f167"
+    }
+  }
+]
