@@ -1,0 +1,80 @@
+{
+  "schema": "quant-trade.pass-b.dependency-graph-final.v1",
+  "blind_reconstruction_sha": "b9b0f351de8cb9838e83222fea87c81a68074934",
+  "common_prefix": [
+    "EXACT_IMMUTABLE_IDENTITY",
+    "EXPLICIT_AUTHORITY_OR_CONTRACT",
+    "PROVENANCE_BINDING"
+  ],
+  "scientific_path": [
+    "EXACT_FROZEN_WITNESS_IDENTITY",
+    "EXPLICIT_BOUNDED_RESEARCH_AUTHORITY",
+    "VALID_PIT_SOURCE_CAPTURE",
+    "DETERMINISTIC_ISOLATED_EXECUTION",
+    "OUTCOME_ISOLATED_EVALUATION_ADJUDICATION",
+    "DENOMINATOR_MULTIPLICITY_APPEND",
+    "IMMUTABLE_SCIENTIFIC_MEMORY"
+  ],
+  "scientific_first_blocker": "AUTHORIZED_VALID_PROSPECTIVE_BBO_CAPTURE",
+  "autonomy_path": [
+    "EXACT_AUTHORITY_AND_RESEARCH_OBJECT",
+    "TASK_MATERIALIZATION",
+    "LEASE_RETRY_RECOVERY",
+    "RUNNER_EXECUTOR",
+    "EVALUATOR",
+    "SCIENTIFIC_SINKS_MEMORY",
+    "REPLAY_CONTINUATION"
+  ],
+  "autonomy_first_blocker": "UNPROVEN_SINGLE_CANONICAL_IDENTITY_CONSERVING_TASK_TO_SINK_LINEAGE",
+  "promotion_path": [
+    "OWNER_SELECTED_CANDIDATE_SHA_AND_GATE_POLICY",
+    "EXACT_LOCAL_QUALIFICATION",
+    "EXACT_HOSTED_QUALIFICATION",
+    "REMOTE_HEAD_EQUALITY",
+    "FORMAL_OWNER_PROMOTION",
+    "INSTALLED_RELEASE_RECEIPT",
+    "DEPLOYED_RUNTIME_IDENTITY"
+  ],
+  "promotion_first_blocker": "NO_FORMAL_OWNER_SELECTION_OR_PROMOTION_OF_AN_EXACT_TECHNICAL_CANDIDATE",
+  "work_packages": {
+    "WP1_REAL_SCIENCE_BBO": {
+      "path": "SCIENTIFIC",
+      "depends_on": ["bounded_authority", "frozen_protocol_identity"],
+      "blocks_on": ["valid_BBO_capture"],
+      "parallel_with": ["WP2_AUTONOMY_LINEAGE_PROOF", "WP3_EXACT_PROMOTION_IDENTITY"]
+    },
+    "WP2_AUTONOMY_LINEAGE_PROOF": {
+      "path": "AUTONOMY",
+      "depends_on": ["exact_technical_base", "existing_task_lease_runner_evaluator_sink_components"],
+      "blocks_on": ["single_lineage_evidence"],
+      "parallel_with": ["WP1_REAL_SCIENCE_BBO", "WP3_EXACT_PROMOTION_IDENTITY"]
+    },
+    "WP3_EXACT_PROMOTION_IDENTITY": {
+      "path": "PROMOTION",
+      "depends_on": ["owner_gate_policy", "exact_candidate_identity"],
+      "blocks_on": ["formal_owner_selection_promotion"],
+      "parallel_with": ["WP1_REAL_SCIENCE_BBO", "WP2_AUTONOMY_LINEAGE_PROOF"]
+    }
+  },
+  "join_gate": {
+    "name": "GATE_AUTONOMOUS_PROMOTED_EQUIVALENCE",
+    "requires": [
+      "WP1 immutable frozen dataset and scientific result",
+      "WP2 proven canonical task-to-sink route",
+      "WP3 exact qualified/promoted release if Owner elects promotion"
+    ],
+    "action": "replay exact WP1 protocol and exact WP1 dataset through canonical promoted route",
+    "claim_ceiling": "ENGINEERING_INTEGRATION_EQUIVALENCE_ONLY",
+    "not_an_independent_scientific_trial": true
+  },
+  "later_economic_path": [
+    "SCIENTIFICALLY_ELIGIBLE_RESULT",
+    "ECONOMIC_TRANSPORT",
+    "FROZEN_OOS_ECONOMIC_VALIDATION",
+    "REALISTIC_COST_CAPACITY_DATA",
+    "PORTFOLIO_INCREMENTAL_VALUE",
+    "PROSPECTIVE_OPERATIONAL_OBSERVATION",
+    "RUNTIME_GATE",
+    "CAPITAL_GATE"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "quant-trade.pass-b.qualification-identity-vector.v1",
+  "blind_reconstruction_sha": "b9b0f351de8cb9838e83222fea87c81a68074934",
+  "one_shot": {
+    "branch": "codex/verified-autonomous-continuity-oneshot-20261027",
+    "source_sha": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "candidate_sha": "0b6cc21a8aead178549966789b1e063dcfab8245",
+    "tested_sha": "0b6cc21a8aead178549966789b1e063dcfab8245",
+    "current_branch_head": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "local_tested_sha": "0b6cc21a8aead178549966789b1e063dcfab8245",
+    "local_result": "FAIL",
+    "locally_qualified_sha": null,
+    "hosted_tested_sha": null,
+    "hosted_result": "NOT_RECOVERED_AS_PASS",
+    "hosted_qualified_sha": null,
+    "promoted_sha": null,
+    "promotion_status": "UNKNOWN_NOT_PROVEN",
+    "direct_parent_of_current_head": "0b6cc21a8aead178549966789b1e063dcfab8245",
+    "identity_law": "0b6cc21 is not d19b123; parent test evidence cannot qualify the evidence-only child"
+  },
+  "post_disclosure_c0_confirmation_repair": {
+    "branch": "codex/c0-confirmation-repair-20261027",
+    "observed_candidate_sha": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "final_attestation_head": "df443d12bb4d7a1d908862ad993c855a11a71852",
+    "count_repair_targeted_result": "PASS",
+    "candidate_global_result": "FAIL_ON_DISTINCT_OUTCOME_REF_MEMBRANE",
+    "hosted_run_id": 40436205163
+  },
+  "post_disclosure_c0_membrane_successor": {
+    "branch": "codex/c0-membrane-qualification-20261027",
+    "prequalification_candidate_sha": "c028bc866d8dbca56028b4b859b00d34bfb7dbe1",
+    "prequalification_local_result": "PASS",
+    "prequalification_hosted_result": "PASS",
+    "prequalification_hosted_run_id": 40437576402,
+    "current_branch_head": "13721384fe5b94b0136fb4548192e05d5e34e605",
+    "current_head_hosted_result": "PASS",
+    "current_head_hosted_run_id": 40437918834,
+    "current_head_local_result": "NOT_INDEPENDENTLY_RECOVERED_IN_PASS_B",
+    "scope": "C0 reference membrane engineering qualification only",
+    "promoted_sha": null,
+    "installed_runtime_sha": null
+  },
+  "historical_w2_candidate": {
+    "sha": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "status": "ENGINEERING_CANDIDATE_WITH_CUMULATIVE_QUALIFICATION_EVIDENCE",
+    "formal_owner_promotion": "NOT_PROVEN"
+  },
+  "global": {
+    "default_branch": "blue/master-v2-2026-09-20",
+    "default_branch_is_current_truth": false,
+    "promoted_sha": null,
+    "deployed_runtime_identity": null
+  }
+}
