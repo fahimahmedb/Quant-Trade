@@ -1,0 +1,19 @@
+CLAIM_ID,CLAIM,EVIDENCE,STATUS,CONFIDENCE
+C001,"Default branch cannot be assumed current truth","default ref blue/master-v2-2026-09-20@9026e4d; newer divergent rails observed","SUPPORTED",HIGH
+C002,"Current head/canonical candidate is ambiguous","df513ec vs 0691 compare diverged at merge base 2b99d8a; no formal promotion recovered","SUPPORTED",HIGH
+C003,"df513ec exact hosted qualification failed","GitHub Actions run 40436205163 head_sha=df513ec conclusion=failure","SUPPORTED",HIGH
+C004,"0691 exact hosted gate+qualify checks passed for their scopes","check runs 121337450683 and 121337450195","SUPPORTED_SCOPE_LIMITED",HIGH
+C005,"Research Intelligence chain is pure with no scheduler mutation/outcome access/persistent-memory write","research/research_os/research_chain.py docstring and returns","SUPPORTED",HIGH
+C006,"Oracle V2 has explicit task refill, source binding verification, inherited lease/recovery, V2 executor","research/research_os/oracle_worker_v2.py","SUPPORTED",HIGH
+C007,"Control Plane contract separates worker launch authority from economic/prospective/capital/live authority","research/research_os/control_plane.py","SUPPORTED",HIGH
+C008,"Proposal/source qualification repairs on 0691 are not proven integrated into df","0691...df divergence; ideation_intake.py diff on 0691","SUPPORTED",HIGH
+C009,"Best prospective witness is predeclared but current capture invalid","disc-crypto-book-pressure-prospective-l1-v0.md: 21 HTTP200, BBO missing, zero valid trades, PARK_DATA/CAPTURE_INVALID","SUPPORTED",HIGH
+C010,"Binance funding witness source failed HTTP451 and computed no economics","disc-binance-extreme-funding-reversal-l1-v1.result.json","SUPPORTED",HIGH
+C011,"CFE historical reader has official CBOE acquisitions with hashes/QA","disc-cfe-vix-term-premium-l1-v2-reader.result.json","SUPPORTED",HIGH
+C012,"One canonical proposal->task->lease->runner->evaluator->sink real lineage is proven","no such immutable real witness recovered","NOT_PROVEN",MEDIUM_HIGH
+C013,"Scientific denominator/memory conservation is proven end-to-end on first real witness","components exist but no real lineage binding recovered","NOT_PROVEN",MEDIUM_HIGH
+C014,"Scientific result -> Economic Identity -> Portfolio Readiness is proven on a real witness","capabilities/workflows exist; no linked real witness recovered","NOT_PROVEN",MEDIUM
+C015,"Promoted SHA is known","no explicit formal promotion binding recovered","UNKNOWN",HIGH
+C016,"Installed/active runtime SHA is known","deploy machinery exists; no independent host/service observation recovered","UNKNOWN",HIGH
+C017,"First real science can precede full autonomy","scientific invariants are protocol/data/provenance/adjudication/denominator properties; repository separates pure RI from scheduler runtime","SUPPORTED_CONDITIONALLY",HIGH
+C018,"BitMEX prospective microstructure lineage is blind-best witness","low contamination, explicit prospective timing/costs/denominator/criteria; current result transparently PARK_DATA","REVIEW_JUDGMENT",MEDIUM_HIGH

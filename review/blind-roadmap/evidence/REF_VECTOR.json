@@ -1,0 +1,58 @@
+{
+  "audit_start_time": "2026-10-27T02:04:00Z",
+  "repository": "fahimahmedb/Quant-Trade",
+  "default_branch": "blue/master-v2-2026-09-20",
+  "default_branch_head": "9026e4d02675a17d4767813a1da6648006603fb2",
+  "current_head_ambiguous": true,
+  "refs": {
+    "codex/verified-autonomous-continuity-oneshot-20261027": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "codex/c0-confirmation-repair-20261027": "df513ec327b09277c83d6a153181a8fb989d79c6",
+    "builder/multi-source-ideation-intake-v3-20261026": "0691a4c1c905c8cfa1e68d521b12d66655ec4dd3",
+    "builder/giga-q-final-whole-system-hardening-20261023": "4ef250ebef54ae2061155e5c68cae7550172f8b3",
+    "review/independent-architecture-challenger-20261026": "716b92417eaeaeea0143360beaeef6f429592770"
+  },
+  "ancestry": {
+    "d19_to_df": [
+      "d19b1237636d2311cd42f97f0b02feb55168347b",
+      "a8339a02f070a9697172dfa3cbe1d4d9bacf96ba",
+      "df513ec327b09277c83d6a153181a8fb989d79c6"
+    ],
+    "0691_vs_df_merge_base": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+    "0691_vs_df_status": "diverged"
+  },
+  "hosted_checks": {
+    "df513ec327b09277c83d6a153181a8fb989d79c6": {
+      "workflow": "C0 Confirmation Repair Exact-Head Qualification",
+      "run_id": 40436205163,
+      "check_run_id": 121965347426,
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_at": "2026-10-27T02:05:47Z"
+    },
+    "0691a4c1c905c8cfa1e68d521b12d66655ec4dd3": {
+      "checks": [
+        {"name": "gate", "id": 121337450683, "conclusion": "success"},
+        {"name": "qualify", "id": 121337450195, "conclusion": "success"}
+      ],
+      "scope_warning": "success applies only to these recovered check scopes"
+    },
+    "d19b1237636d2311cd42f97f0b02feb55168347b": {
+      "check_run_count": 0
+    }
+  },
+  "primary_code_evidence": [
+    "research/research_os/research_chain.py@df513ec327b09277c83d6a153181a8fb989d79c6",
+    "research/research_os/control_plane.py@df513ec327b09277c83d6a153181a8fb989d79c6",
+    "research/research_os/oracle_worker_v2.py@df513ec327b09277c83d6a153181a8fb989d79c6",
+    "research/research_os/ideation_intake.py@0691a4c1c905c8cfa1e68d521b12d66655ec4dd3",
+    "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.md@df513ec327b09277c83d6a153181a8fb989d79c6",
+    "research/edge_lab/discovery/experiments/disc-binance-extreme-funding-reversal-l1-v1.result.json@df513ec327b09277c83d6a153181a8fb989d79c6",
+    "research/edge_lab/discovery/experiments/disc-cfe-vix-term-premium-l1-v2-reader.result.json@df513ec327b09277c83d6a153181a8fb989d79c6"
+  ],
+  "deployed_runtime_identity": "UNKNOWN",
+  "promoted_sha": "UNKNOWN",
+  "blind_best_witness": "disc-crypto-book-pressure-prospective-l1-v0",
+  "carrier_branch": "review/blind-roadmap-pass-a-20261027",
+  "carrier_parent": "df513ec327b09277c83d6a153181a8fb989d79c6",
+  "carrier_has_no_promotion_authority": true
+}
