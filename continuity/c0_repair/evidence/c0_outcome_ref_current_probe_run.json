@@ -1,0 +1,26 @@
+{
+  "COMMAND": [
+    "python3",
+    "/tmp/c0_outcome_ref_current_probe.py"
+  ],
+  "ENVIRONMENT": {
+    "cwd": "/workspace/Quant-Trade",
+    "python": "3.12.14",
+    "PYTHONPATH": "src:.",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+  "WORKTREE_STATUS": "UNCOMMITTED_PROPOSED_REPAIR; product SHA256 separately anchored",
+  "ADAPTER_WORKTREE_SHA256": "f185f4d60e3e5d09ee6403f0e658d5c23593c83006dae24365741fb0be9b1cf6",
+  "SCRIPT_SHA256": "311a7ca7213db924b37cd8d12263d376f00fc52fb43cebe1d4c0304f5e1195a0",
+  "START_TIME": "2026-10-27T01:59:55.838933+00:00",
+  "END_TIME": "2026-10-27T01:59:55.918357+00:00",
+  "RESULT": "FAIL_CURRENT_INVARIANT",
+  "EXIT_CODE": 1,
+  "FAILURES": [
+    "DIRECT_REF_OUTCOME_ALIAS_ACCEPTED"
+  ],
+  "LOG_REF": "/tmp/c0_outcome_ref_current_probe.log",
+  "REAL_PROTECTED_OUTCOMES_ACCESSED": false,
+  "PRODUCTION_STATE_MUTATED": false
+}

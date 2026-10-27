@@ -1,0 +1,46 @@
+{
+  "schema": {
+    "name": "mcp__codex_apps__github_fetch",
+    "description": "Access repositories, issues, and pull requests. Required for some features such as Codex\n\nFetch approved public GitHub repository resources and repository files. Supports repositories, directories, code and issue search, and blob or raw file URLs. Pull requests, issues, commits, branches, workflow runs, releases, Git data, commit statuses, and rulesets include their collections and subresources via GET only, including branch-protection and ruleset reads. The active connection's repository permissions still apply. Managed GitHub App installation connections exclude administration access, so they cannot read branch-protection endpoints that require that permission. Unlisted API endpoints and non-public-GitHub hosts are rejected. Sensitive endpoint families, such as user, organization, and secrets APIs, are not supported. Contents URLs without a ref use the repository's default branch. JSON responses are returned unchanged; oversized or non-UTF-8 responses are rejected, so binary downloads are not supported. This tool is part of plugin `GitHub`.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__codex_apps__github_fetch(args: {\n  // Approved public GitHub repository, file, directory, issue, pull request, commit, branch, blob, README, workflow run, release, Git data, commit status, ruleset, code-search, or issue-search URL. Includes collections and subresources of pull requests, issues, commits, branches, workflow runs, releases, Git data, statuses, and rulesets. Responses must contain UTF-8 text. Supports github.com, GitHub REST API (api.github.com), and raw.githubusercontent.com URLs. Examples: https://github.com/owner/repo/blob/main/README.md, https://api.github.com/repos/owner/repo/contents/README.md, and https://raw.githubusercontent.com/owner/repo/main/README.md. Contents URLs without a ref use the repository's default branch.\n  url: string;\n}): Promise<CallToolResult>; };\n```"
+  },
+  "observedQuery": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs?head_sha=d19b1237636d2311cd42f97f0b02feb55168347b&per_page=100",
+  "observedResponse": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "content": "{\"total_count\":0,\"workflow_runs\":[]}",
+      "title": "runs",
+      "modified_date": null,
+      "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs?head_sha=d19b1237636d2311cd42f97f0b02feb55168347b&per_page=100",
+      "display_url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs?head_sha=d19b1237636d2311cd42f97f0b02feb55168347b&per_page=100",
+      "display_title": "runs",
+      "structuredContent": {
+        "title": "runs",
+        "content": "{\"total_count\":0,\"workflow_runs\":[]}",
+        "display_url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs?head_sha=d19b1237636d2311cd42f97f0b02feb55168347b&per_page=100"
+      }
+    },
+    "isError": false
+  },
+  "commitStatusesResponse": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "statuses": []
+    },
+    "isError": false
+  },
+  "limitations": [
+    "point-in-time empty exact-SHA run list does not predict subsequent pushes",
+    "get_commit_combined_status does not enumerate all GitHub Actions check runs",
+    "PR-only workflow wrapper cannot establish absence of push runs"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "NEW_MISSION": "MINIMAL_C0_CONFIRMATION_COUNT_REPAIR_AND_QUALIFICATION",
+  "BASE_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+  "REMOTE_FROZEN_BRANCH_HEAD": "d19b1237636d2311cd42f97f0b02feb55168347b",
+  "FETCH_VERIFIED": true,
+  "BRANCH": "codex/c0-confirmation-repair-20261027",
+  "INITIAL_WORKTREE_CLEAN": true,
+  "AUTHORIZATION": "User continuation: As tu la possibilit\u00e9 de poursuivre / Si oui poursuit",
+  "PREVIOUS_MISSION_IMMUTABLE": true,
+  "OLD_ONE_SHOT_VERDICT": "NOT_QUALIFIED; not retroactively changed",
+  "PRODUCTION_RESEARCH_STATE_MUTATION_AUTHORIZED": false,
+  "PROTECTED_OUTCOME_ACCESS_AUTHORIZED": false,
+  "DEPLOYMENT_AUTHORIZED": false,
+  "OWNER_PROMOTION_AUTHORIZED": false,
+  "REAL_CAPITAL_AUTHORIZED": false,
+  "LIVE_TRADING_AUTHORIZED": false,
+  "NEW_PRODUCT_DOMAIN": "SCIENTIFIC_INDEPENDENCE_COUNTING",
+  "INHERITED_PRODUCT_DOMAINS": 3,
+  "CUMULATIVE_CONSERVATIVE_DOMAINS": 4,
+  "NOTE": "Separate one-domain followup; cannot claim old one-shot three-domain qualification with this additional code."
+}

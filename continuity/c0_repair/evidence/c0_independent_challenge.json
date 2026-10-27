@@ -1,0 +1,301 @@
+{
+  "OBSERVED_HEAD": "d19b1237636d2311cd42f97f0b02feb55168347b",
+  "OBSERVED_WORKTREE_STATUS": "UNCOMMITTED_PROPOSED_REPAIR; HEAD alone does not identify tested product bytes",
+  "ADAPTER_WORKTREE_SHA256": "f185f4d60e3e5d09ee6403f0e658d5c23593c83006dae24365741fb0be9b1cf6",
+  "HISTORICAL_KERNEL_GIT_BLOB": "3f0e1b7bae53e9513f0061cabcfae2505a6795f3",
+  "TIMESTAMP": "2026-10-27T02:01:01.325932+00:00",
+  "INDEPENDENT_READ_ONLY_REVIEW": true,
+  "TRACKED_FILES_CHANGED_BY_REVIEWER": false,
+  "PRODUCTION_RESEARCH_STATE_MUTATED": false,
+  "REAL_PROTECTED_OUTCOMES_ACCESSED": false,
+  "NARROW_REPAIR_CONCLUSION": "COUNT_CORRECTION_SUPPORTED_PENDING_EXACT_HEAD_QUALIFICATION",
+  "GLOBAL_C0_SAFETY_CONCLUSION": "NOT_QUALIFIED_CURRENT_OUTCOME_REF_MEMBRANE_FAILURE",
+  "FINDINGS": [
+    {
+      "ID": "C0_COUNT_CORRECTION",
+      "CLASSIFICATION": "SCOPED_CORRECTION_SUPPORTED",
+      "STATUS": "SUPPORTED_PENDING_EXACT_HEAD_QUALIFICATION",
+      "FACT": "Structural reconstruction with semantic NOT_PROVEN now yields count0 while structural PASS and claim ceiling remain. Exact existing semantic token plus strict structural flags, axes, outcome isolation, primary relation and PASS yields at most count1.",
+      "REFS": [
+        "research/research_os/expansion/scientific_adjudication.py:_confirmation_count",
+        "tests/test_c0_confirmation_count_repair.py",
+        "/tmp/c0_independent_final_working_probe.json"
+      ]
+    },
+    {
+      "ID": "C0_INTERNAL_BYPASS",
+      "CLASSIFICATION": "SAME_SCOPE_HARDENING",
+      "STATUS": "RESOLVED_IN_WORKING_PATCH",
+      "FACT": "Original bind/validate captured before installation; _impl.bind_independence_ref and _impl.validate_independence_ref rebound, so preserved adjudicator module-global lookups use current validator. Direct inner composition rejects legacy NOT_PROVEN count1 refs rather than bypassing adapter.",
+      "REFS": [
+        "research/research_os/expansion/scientific_adjudication.py:71",
+        "research/research_os/expansion/scientific_adjudication.py:304",
+        "tests/test_c0_confirmation_count_repair.py:test_historical_overcount_ref_is_immutable_but_not_admissible_to_current_composition"
+      ]
+    },
+    {
+      "ID": "C0_COUNT_LAUNDERING",
+      "CLASSIFICATION": "SAME_SCOPE_HARDENING",
+      "STATUS": "RESOLVED_FOR_BOUND_REF_COHERENCE",
+      "FACT": "Rehashed direct refs with bool/noninteger/out-of-range/wrong basis counts, NOT_PROVEN plus redundant semantic boolean, false structural axis, or changed Factory/Candidate identity reject. Standalone adjudication rejects noninteger or out-of-range counts.",
+      "REFS": [
+        "/tmp/c0_independent_final_working_probe.json",
+        "research/research_os/expansion/scientific_adjudication.py:validate_independence_ref",
+        "research/research_os/expansion/scientific_adjudication.py:validate_adjudication"
+      ]
+    },
+    {
+      "ID": "C0_SEMANTIC_ASSERTION_TRUST",
+      "CLASSIFICATION": "EXISTING_TRUST_BOUNDARY_LIMIT",
+      "STATUS": "NOT_ACTUAL_REVIEWER_PROOF",
+      "FACT": "Caller can assert exact PROVEN_INDEPENDENT_SEMANTIC_REVIEW token without supplying authenticated reviewer evidence. Existing source6dc84f semantics likewise depend on this assertion. record_hash/ref_hash bind bytes, not authorship or scientific independence. No new verifier/schema/authority should be invented in this bounded repair.",
+      "REFS": [
+        "6dc84f35e80aec709e67e3d5d3ce0cdcfaee3bcf:research/research_os/expansion/scientific_adjudication.py:418",
+        "/tmp/c0_independent_final_working_probe.json:caller_asserts_proven_token_no_reviewer_proof"
+      ]
+    },
+    {
+      "ID": "C0_STANDALONE_RESULT_PROVENANCE",
+      "CLASSIFICATION": "EXISTING_TRUST_BOUNDARY_LIMIT",
+      "STATUS": "NOT_SOURCE_PROVENANCE_VERIFICATION",
+      "FACT": "Standalone validate_adjudication receives only result with opaque independence_ref_hash. An untrusted caller may change count0 to in-range1 and recompute outer hash; shape validation accepts. It cannot authenticate a source ref it was not given. Current composition validates actual refs and preserves their hashes; clients must use verified composition rather than treat arbitrary selfhashed JSON as provenance proof.",
+      "REFS": [
+        "/tmp/c0_independent_final_working_probe.json:standalone_adjudication_rehashed_count_1",
+        "research/research_os/expansion/scientific_adjudication.py:adjudicate_scientific_candidate",
+        "research/research_os/expansion/scientific_adjudication.py:validate_adjudication"
+      ]
+    },
+    {
+      "ID": "C0_DIRECT_REF_OUTCOME_MEMBRANE",
+      "CLASSIFICATION": "CURRENT_INVARIANT",
+      "STATUS": "UNRESOLVED_SEPARATE_FOLLOWUP_NO_EXPANSION",
+      "FACT": "A canonically Factory-bound IndependenceRef with nested forbidden return_series alias and valid recomputed hash passes public/inner validators and public/inner composition. Composition remains PROMOTE,count0,raw_outcomes_consumed0. This demonstrates acceptance of forbidden alias, not actual protected-data access, outcome interpretation, production promotion, or economic harm.",
+      "BLOCKS_GLOBAL_C0_SAFETY_QUALIFICATION": true,
+      "INVALIDATES_NARROW_COUNT_CORRECTION": false,
+      "REFS": [
+        "/tmp/c0_outcome_ref_current_probe.py",
+        "/tmp/c0_outcome_ref_current_probe.log",
+        "/tmp/c0_outcome_ref_current_probe_run.json",
+        "research/research_os/expansion/_scientific_adjudication_c0.py:_reject_outcomes",
+        "research/research_os/expansion/_scientific_adjudication_c0.py:validate_independence_ref"
+      ]
+    },
+    {
+      "ID": "C0_HISTORY_AND_OWNERSHIP",
+      "CLASSIFICATION": "FACT",
+      "STATUS": "PRESERVED",
+      "FACT": "Historical kernel working blob remains3f0e1b7bae53e9513f0061cabcfae2505a6795f3. Product repair changes existing C2 adapter only, adds no state owner or production mutation API. Invalid historical count1 refs are rejected for current composition without rewriting their bytes. Existing valid duplicate/wrapper zero-count refs retain their original shape/hash.",
+      "REFS": [
+        "research/research_os/expansion/_scientific_adjudication_c0.py",
+        "research/research_os/expansion/scientific_adjudication.py",
+        "tests/test_c0_confirmation_count_repair.py"
+      ]
+    }
+  ],
+  "EXPLORATORY_PROBE": {
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "OBSERVED_TIME": "2026-10-27T01:59:55.992691+00:00",
+    "PRODUCT_ADAPTER_WORKTREE_SHA256": "f185f4d60e3e5d09ee6403f0e658d5c23593c83006dae24365741fb0be9b1cf6",
+    "SYNTHETIC": true,
+    "PRODUCTION_SCIENCE": false,
+    "PRODUCTION_MUTATION": false,
+    "CASES": [
+      {
+        "NAME": "bind_unproven",
+        "RESULT": "ACCEPTED",
+        "OUTPUT": {
+          "schema_version": "scientific-independence-ref-v1",
+          "factory_ref_hash": "96a48a9757afe32e77a5b22ac0c44e71ccd1a4087877c136493ea64564521960",
+          "hypothesis_id": "H-C2-C0-001",
+          "generation_id": "G1",
+          "candidate_hash": "5d0e0a1f316b259b39157302bfb59b11f15a1733d3ea39e8489ee485c06a8bf7",
+          "protocol_hash": "24d211cc64891389aca394575925a3ee2455e77f39eca6ff43205f15de7fa52d",
+          "frozen_protocol_hash": "45536311e820f938f159128ca7c7f915a9651fb3651d6b938c6ca7b3bce15f88",
+          "axes": {
+            "information_isolation": true,
+            "retrieval_independence": true,
+            "cognitive_independence": true,
+            "state_isolation": true
+          },
+          "structural_independence_proven": true,
+          "support_relation": "PRIMARY_SOURCE_RECONSTRUCTION",
+          "independent_confirmation_count": 0,
+          "semantic_diverse_review": "NOT_PROVEN_NO_SEMANTIC_PASS_GRANTED",
+          "information_scope": "PRIMARY_SOURCE_AND_FROZEN_CANDIDATE_NO_PRODUCER_COMMENTARY",
+          "cognitive_scope": "DETERMINISTIC_STRUCTURAL_CHECKS_ONLY",
+          "record_hash": "255cf2aa940ad280afc6e9c0da8c57280f7c7ea2120a73d09c85f58da4771ffc",
+          "economic_experiment_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false,
+          "live_trading_authorized": false,
+          "outcome_accessed": false,
+          "status": "PASS",
+          "ref_hash": "24c152bb0967c425d0604cd42da04a057d5398d6a778eba11876daad8a06c117"
+        }
+      },
+      {
+        "NAME": "rehash_count_True",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "rehash_count_2",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "rehash_count_-1",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "rehash_count_'1'",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "rehash_count_None",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "forged_semantic_flag_with_NOT_PROVEN",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "composed_forged_semantic_flag_with_NOT_PROVEN",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "outcome_access_true",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef.outcome_accessed must remain False",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "direct_ref_contains_forbidden_outcome_payload",
+        "RESULT": "ACCEPTED",
+        "OUTPUT": {
+          "count": 0
+        }
+      },
+      {
+        "NAME": "cross_candidate_rebind",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef candidate_hash mismatch",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "structural_false_axis_count_one",
+        "RESULT": "REJECTED",
+        "ERROR": "IndependenceRef confirmation count requires explicit semantic review and structural proof",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "standalone_adjudication_rehashed_count_37",
+        "RESULT": "REJECTED",
+        "ERROR": "adjudication confirmation count must be an integer zero or one",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "standalone_adjudication_rehashed_count_True",
+        "RESULT": "REJECTED",
+        "ERROR": "adjudication confirmation count must be an integer zero or one",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "standalone_adjudication_rehashed_count_-1",
+        "RESULT": "REJECTED",
+        "ERROR": "adjudication confirmation count must be an integer zero or one",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "standalone_adjudication_rehashed_count_'1'",
+        "RESULT": "REJECTED",
+        "ERROR": "adjudication confirmation count must be an integer zero or one",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "standalone_adjudication_rehashed_count_None",
+        "RESULT": "REJECTED",
+        "ERROR": "adjudication confirmation count must be an integer zero or one",
+        "TYPE": "ScientificAdjudicationError"
+      },
+      {
+        "NAME": "standalone_adjudication_rehashed_count_1",
+        "RESULT": "ACCEPTED",
+        "OUTPUT": {
+          "count": 1
+        }
+      },
+      {
+        "NAME": "caller_asserts_proven_token_no_reviewer_proof",
+        "RESULT": "ACCEPTED",
+        "OUTPUT": {
+          "schema_version": "scientific-independence-ref-v1",
+          "factory_ref_hash": "96a48a9757afe32e77a5b22ac0c44e71ccd1a4087877c136493ea64564521960",
+          "hypothesis_id": "H-C2-C0-001",
+          "generation_id": "G1",
+          "candidate_hash": "5d0e0a1f316b259b39157302bfb59b11f15a1733d3ea39e8489ee485c06a8bf7",
+          "protocol_hash": "24d211cc64891389aca394575925a3ee2455e77f39eca6ff43205f15de7fa52d",
+          "frozen_protocol_hash": "45536311e820f938f159128ca7c7f915a9651fb3651d6b938c6ca7b3bce15f88",
+          "axes": {
+            "information_isolation": true,
+            "retrieval_independence": true,
+            "cognitive_independence": true,
+            "state_isolation": true
+          },
+          "structural_independence_proven": true,
+          "support_relation": "PRIMARY_SOURCE_RECONSTRUCTION",
+          "independent_confirmation_count": 1,
+          "semantic_diverse_review": "PROVEN_INDEPENDENT_SEMANTIC_REVIEW",
+          "information_scope": "PRIMARY_SOURCE_AND_FROZEN_CANDIDATE_NO_PRODUCER_COMMENTARY",
+          "cognitive_scope": "DETERMINISTIC_STRUCTURAL_CHECKS_ONLY",
+          "record_hash": "73e11fefa7751d3818e8f1b3303d239088395440a2b6927936708dad53f2e5c1",
+          "economic_experiment_authorized": false,
+          "prospective_observation_authorized": false,
+          "real_capital_authorized": false,
+          "live_trading_authorized": false,
+          "outcome_accessed": false,
+          "status": "PASS",
+          "ref_hash": "80b606d6f3ce452e5c8a457497a733931fd0966cd048266c9eed0bda44a3eeb0"
+        }
+      }
+    ]
+  },
+  "RESIDUAL_TEST_RUN": {
+    "COMMAND": [
+      "python3",
+      "/tmp/c0_outcome_ref_current_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "src:.",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "WORKTREE_STATUS": "UNCOMMITTED_PROPOSED_REPAIR; product SHA256 separately anchored",
+    "ADAPTER_WORKTREE_SHA256": "f185f4d60e3e5d09ee6403f0e658d5c23593c83006dae24365741fb0be9b1cf6",
+    "SCRIPT_SHA256": "311a7ca7213db924b37cd8d12263d376f00fc52fb43cebe1d4c0304f5e1195a0",
+    "START_TIME": "2026-10-27T01:59:55.838933+00:00",
+    "END_TIME": "2026-10-27T01:59:55.918357+00:00",
+    "RESULT": "FAIL_CURRENT_INVARIANT",
+    "EXIT_CODE": 1,
+    "FAILURES": [
+      "DIRECT_REF_OUTCOME_ALIAS_ACCEPTED"
+    ],
+    "LOG_REF": "/tmp/c0_outcome_ref_current_probe.log",
+    "REAL_PROTECTED_OUTCOMES_ACCESSED": false,
+    "PRODUCTION_STATE_MUTATED": false
+  }
+}

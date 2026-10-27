@@ -103,7 +103,12 @@ class V2PipelineTests(unittest.TestCase):
             "feedback_lineage_qualified": True,
             "bounded_orchestration_qualified": True,
         }
-        bundle["validator"]["candidate_hash"] = build_candidate(bundle["candidate"])["candidate_hash"]
+        candidate = build_candidate(bundle["candidate"])
+        bundle["trial"]["generated_proposals"][0].update({
+            field: candidate[field]
+            for field in ("hypothesis_id", "generation_id", "candidate_hash")
+        })
+        bundle["validator"]["candidate_hash"] = candidate["candidate_hash"]
         return bundle
 
     def test_end_to_end_pre_outcome_receipt(self):

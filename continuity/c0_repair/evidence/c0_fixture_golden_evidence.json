@@ -1,0 +1,7 @@
+{
+  "W2_TRIAL_GOLDEN": "dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b",
+  "CP02_ATTRIBUTED_TRIAL_GOLDEN": "a02058400aec467b836985f030f2a1694f5a0c78eedefa7c270b21c24b92ae47",
+  "ONLY_FIXTURE_CHANGE": "P1 adds hypothesis_id, generation_id, candidate_hash",
+  "METHOD": "independent standard-library canonical JSON SHA256; does not call product hash/build functions",
+  "FIXTURE_SOURCE_COMMIT": "a06fa2d7c79f6b562101e15f555cb56bb1d025fe"
+}

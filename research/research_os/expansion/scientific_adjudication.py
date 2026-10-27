@@ -69,6 +69,8 @@ _original_bind_validator_ref = _impl.bind_validator_ref
 _original_validate_validator_ref = _impl.validate_validator_ref
 _original_bind_red_team_ref = _impl.bind_red_team_ref
 _original_validate_red_team_ref = _impl.validate_red_team_ref
+_original_bind_independence_ref = _impl.bind_independence_ref
+_original_validate_independence_ref = _impl.validate_independence_ref
 _original_bind_qualified_negative_ref = _impl.bind_qualified_negative_ref
 _original_validate_qualified_negative_ref = _impl.validate_qualified_negative_ref
 _original_adjudicate = _impl.adjudicate_scientific_candidate
@@ -266,12 +268,41 @@ def validate_red_team_ref(
 _impl.validate_red_team_ref = validate_red_team_ref
 
 
+def _confirmation_count(ref: Mapping[str, Any]) -> int:
+    # This binds an existing review assertion; a token/hash does not authenticate
+    # its author or independently establish cognitive/semantic independence.
+    axes = ref.get("axes")
+    return int(
+        ref.get("semantic_diverse_review") == "PROVEN_INDEPENDENT_SEMANTIC_REVIEW"
+        and ref.get("structural_independence_proven") is True
+        and ref.get("outcome_accessed") is False
+        and ref.get("status") == "PASS"
+        and ref.get("support_relation") == "PRIMARY_SOURCE_RECONSTRUCTION"
+        and isinstance(axes, Mapping)
+        and all(axes.get(axis) is True for axis in INDEPENDENCE_AXES)
+    )
+
+
 def bind_independence_ref(factory_ref: Mapping[str, Any], record: Mapping[str, Any]) -> Dict[str, Any]:
-    return _impl.bind_independence_ref(factory_ref, record)
+    """Keep structural PASS separate from explicitly asserted semantic review."""
+    ref = _original_bind_independence_ref(factory_ref, record)
+    ref["independent_confirmation_count"] = _confirmation_count(ref)
+    ref["ref_hash"] = _rehash(ref, "ref_hash")
+    validate_independence_ref(ref, factory_ref)
+    return ref
 
 
 def validate_independence_ref(ref: Mapping[str, Any], factory_ref: Mapping[str, Any]) -> None:
-    _impl.validate_independence_ref(ref, factory_ref)
+    _original_validate_independence_ref(ref, factory_ref)
+    count = ref.get("independent_confirmation_count")
+    _require(type(count) is int and count == _confirmation_count(ref),
+             "IndependenceRef confirmation count requires explicit semantic review and structural proof")
+
+
+# The preserved adjudicator resolves its validators through this module object.
+# Rebind both entrypoints so direct inner composition observes the same law.
+_impl.bind_independence_ref = bind_independence_ref
+_impl.validate_independence_ref = validate_independence_ref
 
 
 def bind_qualified_negative_ref(factory_ref: Mapping[str, Any], record: Mapping[str, Any]) -> Dict[str, Any]:
@@ -417,6 +448,9 @@ def adjudicate_scientific_candidate(
 
 def validate_adjudication(result: Mapping[str, Any]) -> None:
     _original_validate_adjudication(result)
+    count = result.get("independent_confirmation_count")
+    _require(type(count) is int and count in (0, 1),
+             "adjudication confirmation count must be an integer zero or one")
     posture = result.get("scientific_posture")
     _require(posture in SCIENTIFIC_POSTURES, "invalid canonical scientific posture")
     _require(posture == _posture_for(result["verdict"]), "scientific posture/verdict mismatch")

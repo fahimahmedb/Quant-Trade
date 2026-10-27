@@ -1,0 +1,39 @@
+[
+  {
+    "COMMAND": "python -m unittest tests.test_research_os_canonical_identity tests.test_research_os_v2_pipeline -v",
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade"
+    },
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "START_TIME": "2026-10-27T01:57:14.013020+00:00",
+    "END_TIME": "2026-10-27T01:57:14.094220+00:00",
+    "RESULT": "FAIL",
+    "EXIT_CODE": 1,
+    "FAILURES": "3 failures, 1 error: stale attributed-trial golden and three inline-trial proposal binding prerequisites",
+    "LOG_REF": "/tmp/c0_fixture_baseline.log",
+    "WORKTREE_TEST_EDITS": false
+  },
+  {
+    "COMMAND": "python -m unittest tests.test_research_os_canonical_identity tests.test_research_os_v2_pipeline tests.test_research_os_trial_proposal_export_binding tests.test_research_os_v2_core -v",
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade"
+    },
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "START_TIME": "2026-10-27T01:57:28.685213+00:00",
+    "END_TIME": "2026-10-27T01:57:28.841240+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "/tmp/c0_fixture_repaired.log",
+    "WORKTREE_TEST_EDITS": true,
+    "EXACT_COMMITTED_HEAD_QUALIFICATION": false,
+    "TEST_FILES_SHA256": {
+      "tests/test_research_os_canonical_identity.py": "fd44c55fa8f4b61368cfadcb7109e80958b657124fb23d91a24ada6671a72848",
+      "tests/test_research_os_v2_pipeline.py": "9c683a618d85760ed194f73297197d7e68cc96315861afeb6eeb198a34c9b020"
+    }
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "COMMAND": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_c0_confirmation_count_repair",
+      "tests.test_wave2_c2_scientific_adjudication",
+      "tests.test_wave2_c2_scientific_economic_d0_seam"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "src:.",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "SYNTHETIC": true,
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "WORKTREE_DIRTY": true,
+    "PRODUCT_WORKTREE_BLOB": "58c720185b89e83eedbc41bac80bb4b82404fa4a",
+    "TEST_WORKTREE_BLOB": "1fc593214ad3d5ae7578fd3b66937fcfb08d0417",
+    "START_TIME": "2026-10-27T01:59:45.047807+00:00",
+    "END_TIME": "2026-10-27T01:59:45.208245+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "/tmp/c0_repair_runs/focused.log"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "continuity/one_shot/oneshot_c0_current_attack.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "src:.",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "SYNTHETIC": true,
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "WORKTREE_DIRTY": true,
+    "PRODUCT_WORKTREE_BLOB": "58c720185b89e83eedbc41bac80bb4b82404fa4a",
+    "TEST_WORKTREE_BLOB": "1fc593214ad3d5ae7578fd3b66937fcfb08d0417",
+    "START_TIME": "2026-10-27T01:59:45.212889+00:00",
+    "END_TIME": "2026-10-27T01:59:45.316423+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "/tmp/c0_repair_runs/historical_failing_witness.log"
+  },
+  {
+    "COMMAND": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "3.12.14",
+      "PYTHONPATH": "src:.",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "SYNTHETIC": true,
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "d19b1237636d2311cd42f97f0b02feb55168347b",
+    "WORKTREE_DIRTY": true,
+    "PRODUCT_WORKTREE_BLOB": "58c720185b89e83eedbc41bac80bb4b82404fa4a",
+    "TEST_WORKTREE_BLOB": "1fc593214ad3d5ae7578fd3b66937fcfb08d0417",
+    "START_TIME": "2026-10-27T01:59:45.320659+00:00",
+    "END_TIME": "2026-10-27T01:59:45.325653+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": [],
+    "LOG_REF": "/tmp/c0_repair_runs/diff_check.log"
+  }
+]
