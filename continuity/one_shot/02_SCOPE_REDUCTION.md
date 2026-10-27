@@ -11,3 +11,5 @@ FACT: CP02 four small boundary guards remain under individual safety-critical re
 FACT: a current C0 scientific-independence counting attack fails. No C0 repair is attempted in this mission. Product expansion stops and qualification is NOT_QUALIFIED.
 
 CORRECTION: original CP03 ownership claims, CP04 lifetime closure claims and CP05 inferred declared obligation are historical assertions, not current accepted architecture or historical production truth. Original evidence is preserved unchanged; see appended ledger corrections and primary forensic result.
+
+CORRECTION / conservative scope accounting: one existing component boundary contains three independent mutation domains: TRIAL_IDENTITY_AND_PROPOSAL_BINDING, PIT_EPOCH_MEMBERSHIP, OUTCOME_FIREWALL. FINAL_ACCEPTED_PRODUCT_MUTATION_DOMAINS=3, not a claim that a broad scientific-integrity label erases independent domains. Four guards, three existing product files, no extra code.

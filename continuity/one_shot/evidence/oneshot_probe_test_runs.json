@@ -1,0 +1,53 @@
+[
+  {
+    "ID": "E2_RUNNER",
+    "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_work_build_depth.ExecutedDryRunTests research.research_os.tests.test_work_build_depth.CanonicalExecutedDepthTests",
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "Python 3.12.14",
+      "PYTHONPATH": "src:.",
+      "state": "TemporaryDirectory and disposable local Git fixture only"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:18.684237+00:00",
+    "END_TIME": "2026-10-27T01:48:19.425353+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "LOG_REF": "/tmp/oneshot_e2_runner.log",
+    "FAILURES": []
+  },
+  {
+    "ID": "E2_WORKER",
+    "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_oracle_worker.WorkerTests",
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "Python 3.12.14",
+      "PYTHONPATH": "src:.",
+      "state": "TemporaryDirectory and disposable local Git fixture only"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:19.425738+00:00",
+    "END_TIME": "2026-10-27T01:48:38.706473+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "LOG_REF": "/tmp/oneshot_e2_worker.log",
+    "FAILURES": []
+  },
+  {
+    "ID": "E3_TRANSPORT",
+    "COMMAND": "PYTHONPATH=src:. python -m unittest tests.test_wave2_c2_scientific_economic_d0_seam",
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "Python 3.12.14",
+      "PYTHONPATH": "src:.",
+      "state": "TemporaryDirectory and disposable local Git fixture only"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:38.710557+00:00",
+    "END_TIME": "2026-10-27T01:48:38.877286+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "LOG_REF": "/tmp/oneshot_e3_transport.log",
+    "FAILURES": []
+  }
+]

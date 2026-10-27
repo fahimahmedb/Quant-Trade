@@ -1,0 +1,538 @@
+{
+  "OBSERVED_HEAD": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "SELF_CHALLENGE_STATUS": "RETENTION_RATIONALE_SUPPORTED; GLOBAL_CURRENT_INVARIANT_FAILURE_UNRESOLVED",
+  "BOUNDED_CONTINUITY_RECOMMENDATION": "NOT_QUALIFIED",
+  "PRODUCT_SCOPE": "One existing V2 scientific-integrity validation boundary; four individually justified invariants. Even conservatively separating attribution/model, temporal membership, and outcome membrane gives at most three domains, without new mutation owners.",
+  "PRODUCTION_MUTATION_OBSERVED": false,
+  "RETAINED_DELTAS": [
+    {
+      "DELTA_ID": "CP02-TRIAL-PROPOSAL",
+      "RETENTION": "RETAIN_SAFETY_CRITICAL",
+      "QUESTIONS": [
+        {
+          "NUMBER": 1,
+          "QUESTION": "What exact W2 gap justified keeping it?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 generic pipeline admits a Candidate whose subject/hash is absent from generated_proposals; native source-proposal validation exists but is not called on this generic route.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 2,
+          "QUESTION": "Could W2 already do this under a different path?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 v2_stage_executor.py:138\u2013147 already performs native source binding. Retention expands coverage at the generic pure export route and reuses the equivalent native check; it does not replace native ownership.",
+          "EVIDENCE_REFS": [
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_pipeline.py",
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_stage_executor.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 3,
+          "QUESTION": "Is this needed by the primary witness or a universal safety invariant?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Universal PROPOSAL/TRIAL BINDING safety invariant; not needed by read-only UST witness.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 4,
+          "QUESTION": "Did sunk cost influence retention?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "No sunk-cost justification is needed: controlled differential inputs demonstrate proposal subject/hash attribution. Intent cannot be empirically proven, but the retention rationale survives independently of implementation history.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 5,
+          "QUESTION": "Did branch recency influence retention?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Retention uses fixed W2 and exact-target differential behavior; no conclusion depends on source-rail date, branch qualification, or newer ownership. W2 remains the surviving owner.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 6,
+          "QUESTION": "Did any new mutation owner appear?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No. The entire final product diff from W2 touches only existing v2_core.py, v2_pipeline.py and v2_stage_executor.py; additions validate existing inputs. No task, proposal, root, exposure, renewal, memory store or scheduler mutation API is created.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_pipeline.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_stage_executor.py"
+          ]
+        },
+        {
+          "NUMBER": 7,
+          "QUESTION": "Could the same result be achieved with evidence/test only?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Evidence/tests alone can expose the defect but cannot make the existing callable boundary reject the admitted invalid input. If retaining this universal invariant in product, this small validation guard is necessary.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 8,
+          "QUESTION": "Does any fixture contaminate production truth?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No production-state path is changed by this guard. Differential tests use the same synthetic fixture for W2 and target; fixtures remain tests. The fixture carries declared actor/proposal attribution, not production evidence or source qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/fixtures/oracle_v2_core_fixture.json",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/oneshot_cp02_probe.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        },
+        {
+          "NUMBER": 9,
+          "QUESTION": "Did any UNKNOWN get silently converted into FALSE or TRUE?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "This guard rejects missing/malformed prerequisites without asserting scientific truth. Source/model-PIT uncertainty remains represented; economic and authority flags remain closed. A separate inherited C0 defect DOES turn explicitly unproven semantic review into count=1, remains unresolved, and blocks qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/c0_current_attack.log"
+          ]
+        },
+        {
+          "NUMBER": 10,
+          "QUESTION": "Would reverting this delta break the proven witness?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Reverting would not break read-only UST forensic classification. It would reopen the demonstrated proposal subject/hash attribution safety gap. The safety-critical retention exception, not primary-witness necessity, justifies keeping it.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:282",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_proposal_export_binding.py"
+          ]
+        }
+      ]
+    },
+    {
+      "DELTA_ID": "CP02-MODEL-ADMISSION",
+      "RETENTION": "RETAIN_SAFETY_CRITICAL",
+      "QUESTIONS": [
+        {
+          "NUMBER": 1,
+          "QUESTION": "What exact W2 gap justified keeping it?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 pure pipeline admits recorded generator/validator identities outside epoch policy; direct assert_model_allowed admits None by equality when allowed_model_set=[None].",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 2,
+          "QUESTION": "Could W2 already do this under a different path?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 v2_state.py:81 admits the executing worker model only. That path does not prove attribution or epoch admission of both recorded pipeline actors. Existing allowed-model list and epoch remain canonical.",
+          "EVIDENCE_REFS": [
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_pipeline.py",
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_stage_executor.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 3,
+          "QUESTION": "Is this needed by the primary witness or a universal safety invariant?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Universal TRIAL IDENTITY invariant; not needed by read-only UST witness.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 4,
+          "QUESTION": "Did sunk cost influence retention?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "No sunk-cost justification is needed: controlled differential inputs demonstrate literal attributable model identity and frozen-policy admission. Intent cannot be empirically proven, but the retention rationale survives independently of implementation history.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 5,
+          "QUESTION": "Did branch recency influence retention?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Retention uses fixed W2 and exact-target differential behavior; no conclusion depends on source-rail date, branch qualification, or newer ownership. W2 remains the surviving owner.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 6,
+          "QUESTION": "Did any new mutation owner appear?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No. The entire final product diff from W2 touches only existing v2_core.py, v2_pipeline.py and v2_stage_executor.py; additions validate existing inputs. No task, proposal, root, exposure, renewal, memory store or scheduler mutation API is created.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_pipeline.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_stage_executor.py"
+          ]
+        },
+        {
+          "NUMBER": 7,
+          "QUESTION": "Could the same result be achieved with evidence/test only?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Evidence/tests alone can expose the defect but cannot make the existing callable boundary reject the admitted invalid input. If retaining this universal invariant in product, this small validation guard is necessary.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 8,
+          "QUESTION": "Does any fixture contaminate production truth?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No production-state path is changed by this guard. Differential tests use the same synthetic fixture for W2 and target; fixtures remain tests. The fixture carries declared actor/proposal attribution, not production evidence or source qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/fixtures/oracle_v2_core_fixture.json",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/oneshot_cp02_probe.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        },
+        {
+          "NUMBER": 9,
+          "QUESTION": "Did any UNKNOWN get silently converted into FALSE or TRUE?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "This guard rejects missing/malformed prerequisites without asserting scientific truth. Source/model-PIT uncertainty remains represented; economic and authority flags remain closed. A separate inherited C0 defect DOES turn explicitly unproven semantic review into count=1, remains unresolved, and blocks qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/c0_current_attack.log"
+          ]
+        },
+        {
+          "NUMBER": 10,
+          "QUESTION": "Would reverting this delta break the proven witness?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Reverting would not break read-only UST forensic classification. It would reopen the demonstrated literal attributable model identity and frozen-policy admission safety gap. The safety-critical retention exception, not primary-witness necessity, justifies keeping it.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:126",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_epoch_model_admission.py"
+          ]
+        }
+      ]
+    },
+    {
+      "DELTA_ID": "CP02-TRIAL-EPOCH-WINDOW",
+      "RETENTION": "RETAIN_SAFETY_CRITICAL",
+      "QUESTIONS": [
+        {
+          "NUMBER": 1,
+          "QUESTION": "What exact W2 gap justified keeping it?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 checks epoch/trial labels but accepts persisted generated_at before epoch start in the generic path; native current-time admission does not establish persisted generation-time membership.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 2,
+          "QUESTION": "Could W2 already do this under a different path?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 _active_epoch enforces current execution time and research_epoch_id checks preserve label binding. Neither proves persisted generated_at belongs to the half-open frozen research window; native and pure routes need the existing-field check.",
+          "EVIDENCE_REFS": [
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_pipeline.py",
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_stage_executor.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 3,
+          "QUESTION": "Is this needed by the primary witness or a universal safety invariant?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Universal PIT/TRIAL IDENTITY invariant; not needed by read-only UST witness.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 4,
+          "QUESTION": "Did sunk cost influence retention?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "No sunk-cost justification is needed: controlled differential inputs demonstrate declared generation instant within existing epoch window. Intent cannot be empirically proven, but the retention rationale survives independently of implementation history.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 5,
+          "QUESTION": "Did branch recency influence retention?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Retention uses fixed W2 and exact-target differential behavior; no conclusion depends on source-rail date, branch qualification, or newer ownership. W2 remains the surviving owner.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 6,
+          "QUESTION": "Did any new mutation owner appear?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No. The entire final product diff from W2 touches only existing v2_core.py, v2_pipeline.py and v2_stage_executor.py; additions validate existing inputs. No task, proposal, root, exposure, renewal, memory store or scheduler mutation API is created.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_pipeline.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_stage_executor.py"
+          ]
+        },
+        {
+          "NUMBER": 7,
+          "QUESTION": "Could the same result be achieved with evidence/test only?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Evidence/tests alone can expose the defect but cannot make the existing callable boundary reject the admitted invalid input. If retaining this universal invariant in product, this small validation guard is necessary.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 8,
+          "QUESTION": "Does any fixture contaminate production truth?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No production-state path is changed by this guard. Differential tests use the same synthetic fixture for W2 and target; fixtures remain tests. The fixture carries declared actor/proposal attribution, not production evidence or source qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/fixtures/oracle_v2_core_fixture.json",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/oneshot_cp02_probe.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        },
+        {
+          "NUMBER": 9,
+          "QUESTION": "Did any UNKNOWN get silently converted into FALSE or TRUE?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "This guard rejects missing/malformed prerequisites without asserting scientific truth. Source/model-PIT uncertainty remains represented; economic and authority flags remain closed. A separate inherited C0 defect DOES turn explicitly unproven semantic review into count=1, remains unresolved, and blocks qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/c0_current_attack.log"
+          ]
+        },
+        {
+          "NUMBER": 10,
+          "QUESTION": "Would reverting this delta break the proven witness?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Reverting would not break read-only UST forensic classification. It would reopen the demonstrated declared generation instant within existing epoch window safety gap. The safety-critical retention exception, not primary-witness necessity, justifies keeping it.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:165",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_trial_epoch_window.py"
+          ]
+        }
+      ]
+    },
+    {
+      "DELTA_ID": "CP02-SERIALIZABLE-OUTCOME",
+      "RETENTION": "RETAIN_SAFETY_CRITICAL",
+      "QUESTIONS": [
+        {
+          "NUMBER": 1,
+          "QUESTION": "What exact W2 gap justified keeping it?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 list-only recursive membranes accept forbidden outcome fields nested in tuple although canonical JSON serializes tuples and lists identically.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 2,
+          "QUESTION": "Could W2 already do this under a different path?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "W2 already scans Mapping/list at pure pipeline and direct export boundaries. Those equivalent protections omit tuple in both locations, so no alternate called W2 path closes this serializable-container bypass.",
+          "EVIDENCE_REFS": [
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_pipeline.py",
+            "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/expansion/v2_stage_executor.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 3,
+          "QUESTION": "Is this needed by the primary witness or a universal safety invariant?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Universal OUTCOME FIREWALL invariant; not needed by read-only UST witness.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 4,
+          "QUESTION": "Did sunk cost influence retention?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "No sunk-cost justification is needed: controlled differential inputs demonstrate equal firewall disposition for JSON-equivalent containers. Intent cannot be empirically proven, but the retention rationale survives independently of implementation history.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 5,
+          "QUESTION": "Did branch recency influence retention?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Retention uses fixed W2 and exact-target differential behavior; no conclusion depends on source-rail date, branch qualification, or newer ownership. W2 remains the surviving owner.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 6,
+          "QUESTION": "Did any new mutation owner appear?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No. The entire final product diff from W2 touches only existing v2_core.py, v2_pipeline.py and v2_stage_executor.py; additions validate existing inputs. No task, proposal, root, exposure, renewal, memory store or scheduler mutation API is created.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_pipeline.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_stage_executor.py"
+          ]
+        },
+        {
+          "NUMBER": 7,
+          "QUESTION": "Could the same result be achieved with evidence/test only?",
+          "CLASSIFICATION": "INFERENCE",
+          "ANSWER": "Evidence/tests alone can expose the defect but cannot make the existing callable boundary reject the admitted invalid input. If retaining this universal invariant in product, this small validation guard is necessary.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 8,
+          "QUESTION": "Does any fixture contaminate production truth?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "No production-state path is changed by this guard. Differential tests use the same synthetic fixture for W2 and target; fixtures remain tests. The fixture carries declared actor/proposal attribution, not production evidence or source qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/fixtures/oracle_v2_core_fixture.json",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/oneshot_cp02_probe.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        },
+        {
+          "NUMBER": 9,
+          "QUESTION": "Did any UNKNOWN get silently converted into FALSE or TRUE?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "This guard rejects missing/malformed prerequisites without asserting scientific truth. Source/model-PIT uncertainty remains represented; economic and authority flags remain closed. A separate inherited C0 defect DOES turn explicitly unproven semantic review into count=1, remains unresolved, and blocks qualification.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/c0_current_attack.log"
+          ]
+        },
+        {
+          "NUMBER": 10,
+          "QUESTION": "Would reverting this delta break the proven witness?",
+          "CLASSIFICATION": "FACT",
+          "ANSWER": "Reverting would not break read-only UST forensic classification. It would reopen the demonstrated equal firewall disposition for JSON-equivalent containers safety gap. The safety-critical retention exception, not primary-witness necessity, justifies keeping it.",
+          "EVIDENCE_REFS": [
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:research/research_os/expansion/v2_core.py:351",
+            "68f16c0f697f275f536e9c58afdc00b341ebee0a:tests/test_research_os_serializable_outcome_membrane.py"
+          ]
+        }
+      ]
+    }
+  ],
+  "ADDITIONAL_FINDINGS": [
+    {
+      "CLASSIFICATION": "FACT",
+      "FINDING": "CP03, CP04 and CP06 product files absent from frozen target tree; original tests preserved byte-exact under .replay and replay runner pins immutable CP06 tree.",
+      "REFS": [
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/replay_historical_tests.py",
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/replay_tests/"
+      ]
+    },
+    {
+      "CLASSIFICATION": "FACT",
+      "FINDING": "Historical CP05 declared obligation assertion has been corrected in appended tracking rather than accepted as production truth. Primary forensic result must independently prove any obligation, which is not established by CP05 reconstruction.",
+      "REFS": [
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/EXECUTION_LEDGER.md",
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/02_SCOPE_REDUCTION.md"
+      ]
+    },
+    {
+      "CLASSIFICATION": "FACT",
+      "FINDING": "C0 structural independence counting remains a current scientific-independence defect: explicit semantic NOT_PROVEN yields independent_confirmation_count=1, propagated into adjudication. No production impact is proven and no repair is authorized after freeze.",
+      "REFS": [
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/evidence/initial_integrity_runs/c0_current_attack.log",
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/oneshot_c0_current_attack.py"
+      ]
+    },
+    {
+      "CLASSIFICATION": "UNKNOWN",
+      "FINDING": "Global complete scientific denominator, resolved UST historical authorization and generalized revision-aware obligation equivalence remain unproved. None is converted to true by retained guards.",
+      "REFS": [
+        "68f16c0f697f275f536e9c58afdc00b341ebee0a:continuity/one_shot/02_SCOPE_REDUCTION.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_fixture_classification_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "/workspace/Quant-Trade:/workspace/Quant-Trade/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:49:37.510159+00:00",
+    "END_TIME": "2026-10-27T01:49:37.597798+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "/tmp/oneshot_regression_classification/fixture_only_demonstration.log"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "/tmp/oneshot_regression_classification/q-source/test_giga_q_core_identity.py",
+      "-k",
+      "export_guard_covers_nested_json_serializable_sequences or pipeline_cannot_accept_tuple_hidden_outcome or authority_never_coerces_false_like_values"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "/workspace/Quant-Trade:/workspace/Quant-Trade/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:49:37.601264+00:00",
+    "END_TIME": "2026-10-27T01:49:38.045016+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "/tmp/oneshot_regression_classification/selected_q_outcome_authority.log"
+  }
+]

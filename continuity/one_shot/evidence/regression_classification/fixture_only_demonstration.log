@@ -1,0 +1,16 @@
+test_broken_blinding_cannot_export (tests.test_research_os_v2_pipeline.V2PipelineTests.test_broken_blinding_cannot_export) ... ok
+test_end_to_end_pre_outcome_receipt (tests.test_research_os_v2_pipeline.V2PipelineTests.test_end_to_end_pre_outcome_receipt) ... ok
+test_outcome_key_anywhere_in_research_bundle_fails_closed (tests.test_research_os_v2_pipeline.V2PipelineTests.test_outcome_key_anywhere_in_research_bundle_fails_closed) ... ok
+test_validator_block_cannot_export (tests.test_research_os_v2_pipeline.V2PipelineTests.test_validator_block_cannot_export) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+{
+  "old_trial_hash": "dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b",
+  "attributed_trial_hash": "a02058400aec467b836985f030f2a1694f5a0c78eedefa7c270b21c24b92ae47",
+  "product_changes": false,
+  "state_inventory": "1107",
+  "observed_suite": "1125"
+}

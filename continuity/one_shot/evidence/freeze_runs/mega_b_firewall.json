@@ -1,0 +1,28 @@
+{
+  "NAME": "mega_b_firewall",
+  "COMMAND": [
+    "python3",
+    "-m",
+    "pytest",
+    "-q",
+    "research/research_os/tests/test_mega_b_all_producer_routes.py",
+    "research/research_os/tests/test_mega_b_canonical_gate.py",
+    "research/research_os/tests/test_mega_b_discovery_chain.py",
+    "research/research_os/tests/test_mega_b_discovery_engine.py",
+    "research/research_os/tests/test_mega_b_outcome_firewall.py"
+  ],
+  "ENVIRONMENT": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "cwd": "/workspace/Quant-Trade",
+    "PYTHONPATH": "src:.",
+    "PRODUCTION_SCIENCE": false
+  },
+  "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "START_TIME": "2026-10-27T01:48:57.761650+00:00",
+  "END_TIME": "2026-10-27T01:48:58.365726+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": "See full log; no suppression",
+  "LOG_REF": "/tmp/oneshot_runs/mega_b_firewall.log"
+}

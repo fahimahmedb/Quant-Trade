@@ -1,0 +1,407 @@
+[
+  {
+    "NAME": "current_c0_attack",
+    "COMMAND": [
+      "python3",
+      "continuity/one_shot/oneshot_c0_current_attack.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:18.982302+00:00",
+    "END_TIME": "2026-10-27T01:48:19.210225+00:00",
+    "RESULT": "FAIL",
+    "EXIT_CODE": 1,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/current_c0_attack.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/current_c0_attack.log"
+  },
+  {
+    "NAME": "generated_status_check",
+    "COMMAND": [
+      "python3",
+      "scripts/status_artifacts.py",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:58.609146+00:00",
+    "END_TIME": "2026-10-27T01:51:02.559583+00:00",
+    "RESULT": "FAIL",
+    "EXIT_CODE": 1,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/generated_status_check.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/generated_status_check.log"
+  },
+  {
+    "NAME": "historical_replay",
+    "COMMAND": [
+      "python3",
+      "continuity/one_shot/replay_historical_tests.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:18.040784+00:00",
+    "END_TIME": "2026-10-27T01:48:18.834643+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/historical_replay.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/historical_replay.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "NAME": "mega_b_firewall",
+    "COMMAND": [
+      "python3",
+      "-m",
+      "pytest",
+      "-q",
+      "research/research_os/tests/test_mega_b_all_producer_routes.py",
+      "research/research_os/tests/test_mega_b_canonical_gate.py",
+      "research/research_os/tests/test_mega_b_discovery_chain.py",
+      "research/research_os/tests/test_mega_b_discovery_engine.py",
+      "research/research_os/tests/test_mega_b_outcome_firewall.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:57.761650+00:00",
+    "END_TIME": "2026-10-27T01:48:58.365726+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/mega_b_firewall.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/mega_b_firewall.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "NAME": "ordinary_regression",
+    "COMMAND": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_*.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:02.282275+00:00",
+    "END_TIME": "2026-10-27T01:48:49.336718+00:00",
+    "RESULT": "FAIL",
+    "EXIT_CODE": 1,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/ordinary_regression.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/ordinary_regression.log"
+  },
+  {
+    "NAME": "research_os_regression",
+    "COMMAND": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "research/research_os/tests",
+      "-p",
+      "test_*.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:11.956006+00:00",
+    "END_TIME": "2026-10-27T01:48:39.648808+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/research_os_regression.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/research_os_regression.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "NAME": "retained_integrity",
+    "COMMAND": [
+      "python3",
+      "-m",
+      "unittest",
+      "tests.test_research_os_trial_proposal_export_binding",
+      "tests.test_research_os_epoch_model_admission",
+      "tests.test_research_os_trial_epoch_window",
+      "tests.test_research_os_serializable_outcome_membrane",
+      "tests.test_research_os_native_trial_lineage",
+      "tests.test_research_os_epoch_blinding_admission",
+      "tests.test_research_os_evaluation_membrane_admission",
+      "tests.test_research_os_source_pit_clocks",
+      "tests.test_wave2_c2_scientific_adjudication"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:33.593568+00:00",
+    "END_TIME": "2026-10-27T01:48:36.293710+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/retained_integrity.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/retained_integrity.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "NAME": "schema_check",
+    "COMMAND": [
+      "python3",
+      "scripts/generate_schemas.py",
+      "--check"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "src:.",
+      "PRODUCTION_SCIENCE": false
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:58.392067+00:00",
+    "END_TIME": "2026-10-27T01:48:58.582867+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "FAILURES": "See full log; no suppression",
+    "LOG_REF": "continuity/one_shot/evidence/freeze_runs/schema_check.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_runs/schema_check.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_cp02_probe.py",
+      "/tmp/oneshot-w2-cp02-7l_i8uwm"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/tmp/oneshot-w2-cp02-7l_i8uwm"
+    },
+    "HEAD_SHA": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "START_TIME": "2026-10-27T01:45:56.825452+00:00",
+    "END_TIME": "2026-10-27T01:45:56.884726+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "continuity/one_shot/evidence/initial_integrity_runs/w2_gap_probes.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_cp02_runs/w2_gap_probes.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_cp02_probe.py",
+      "/workspace/Quant-Trade"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade"
+    },
+    "HEAD_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+    "START_TIME": "2026-10-27T01:45:56.887728+00:00",
+    "END_TIME": "2026-10-27T01:45:56.924825+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "continuity/one_shot/evidence/initial_integrity_runs/target_gap_probes.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_cp02_runs/target_gap_probes.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "-m",
+      "unittest",
+      "tests.test_research_os_trial_proposal_export_binding",
+      "tests.test_research_os_epoch_model_admission",
+      "tests.test_research_os_trial_epoch_window",
+      "tests.test_research_os_serializable_outcome_membrane",
+      "tests.test_research_os_native_trial_lineage",
+      "tests.test_research_os_epoch_blinding_admission",
+      "tests.test_research_os_evaluation_membrane_admission",
+      "tests.test_research_os_source_pit_clocks",
+      "tests.test_wave2_c2_scientific_adjudication"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+      "cwd": "/workspace/Quant-Trade"
+    },
+    "HEAD_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+    "START_TIME": "2026-10-27T01:45:56.924945+00:00",
+    "END_TIME": "2026-10-27T01:45:58.465637+00:00",
+    "RESULT": "FAIL",
+    "FAILURES": 1,
+    "LOG_REF": "continuity/one_shot/evidence/initial_integrity_runs/focused.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_cp02_runs/focused.log"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_c0_current_attack.py"
+    ],
+    "ENVIRONMENT": {
+      "python": "3.12.14",
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "/workspace/Quant-Trade",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+    "START_TIME": "2026-10-27T01:47:01.225729+00:00",
+    "END_TIME": "2026-10-27T01:47:01.319799+00:00",
+    "RESULT": "FAIL",
+    "FAILURES": [
+      "CURRENT_INVARIANT:UNPROVEN_SEMANTIC_CONFIRMATION_COUNT"
+    ],
+    "LOG_REF": "continuity/one_shot/evidence/initial_integrity_runs/c0_current_attack.log",
+    "PRODUCT_BLOBS": {
+      "research/research_os/expansion/scientific_adjudication.py": "7ca2c4ae464421196844a4c43a78cb38f725deb0",
+      "research/research_os/expansion/_scientific_adjudication_c0.py": "3f0e1b7bae53e9513f0061cabcfae2505a6795f3"
+    },
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_cp02_runs/c0_current_attack.log"
+  },
+  {
+    "ID": "E2_RUNNER",
+    "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_work_build_depth.ExecutedDryRunTests research.research_os.tests.test_work_build_depth.CanonicalExecutedDepthTests",
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "Python 3.12.14",
+      "PYTHONPATH": "src:.",
+      "state": "TemporaryDirectory and disposable local Git fixture only"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:18.684237+00:00",
+    "END_TIME": "2026-10-27T01:48:19.425353+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "LOG_REF": "continuity/one_shot/evidence/oneshot_e2_runner.log",
+    "FAILURES": [],
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_e2_runner.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "ID": "E2_WORKER",
+    "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_oracle_worker.WorkerTests",
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "Python 3.12.14",
+      "PYTHONPATH": "src:.",
+      "state": "TemporaryDirectory and disposable local Git fixture only"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:19.425738+00:00",
+    "END_TIME": "2026-10-27T01:48:38.706473+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "LOG_REF": "continuity/one_shot/evidence/oneshot_e2_worker.log",
+    "FAILURES": [],
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_e2_worker.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "ID": "E3_TRANSPORT",
+    "COMMAND": "PYTHONPATH=src:. python -m unittest tests.test_wave2_c2_scientific_economic_d0_seam",
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "python": "Python 3.12.14",
+      "PYTHONPATH": "src:.",
+      "state": "TemporaryDirectory and disposable local Git fixture only"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:48:38.710557+00:00",
+    "END_TIME": "2026-10-27T01:48:38.877286+00:00",
+    "RESULT": "PASS",
+    "EXIT_CODE": 0,
+    "LOG_REF": "continuity/one_shot/evidence/oneshot_e3_transport.log",
+    "FAILURES": [],
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_e3_transport.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "/tmp/oneshot_fixture_classification_probe.py"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "/workspace/Quant-Trade:/workspace/Quant-Trade/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:49:37.510159+00:00",
+    "END_TIME": "2026-10-27T01:49:37.597798+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "continuity/one_shot/evidence/regression_classification/fixture_only_demonstration.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_regression_classification/fixture_only_demonstration.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  },
+  {
+    "COMMAND": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "/tmp/oneshot_regression_classification/q-source/test_giga_q_core_identity.py",
+      "-k",
+      "export_guard_covers_nested_json_serializable_sequences or pipeline_cannot_accept_tuple_hidden_outcome or authority_never_coerces_false_like_values"
+    ],
+    "ENVIRONMENT": {
+      "cwd": "/workspace/Quant-Trade",
+      "PYTHONPATH": "/workspace/Quant-Trade:/workspace/Quant-Trade/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "START_TIME": "2026-10-27T01:49:37.601264+00:00",
+    "END_TIME": "2026-10-27T01:49:38.045016+00:00",
+    "RESULT": "PASS",
+    "FAILURES": 0,
+    "LOG_REF": "continuity/one_shot/evidence/regression_classification/selected_q_outcome_authority.log",
+    "ORIGINAL_LOG_REF": "/tmp/oneshot_regression_classification/selected_q_outcome_authority.log",
+    "RESULT_SCOPE": "COMMAND_COMPLETION; baseline differential acceptance is not an invariant PASS for W2"
+  }
+]

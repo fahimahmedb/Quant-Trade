@@ -1,0 +1,31 @@
+{
+  "NAME": "retained_integrity",
+  "COMMAND": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.test_research_os_trial_proposal_export_binding",
+    "tests.test_research_os_epoch_model_admission",
+    "tests.test_research_os_trial_epoch_window",
+    "tests.test_research_os_serializable_outcome_membrane",
+    "tests.test_research_os_native_trial_lineage",
+    "tests.test_research_os_epoch_blinding_admission",
+    "tests.test_research_os_evaluation_membrane_admission",
+    "tests.test_research_os_source_pit_clocks",
+    "tests.test_wave2_c2_scientific_adjudication"
+  ],
+  "ENVIRONMENT": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "cwd": "/workspace/Quant-Trade",
+    "PYTHONPATH": "src:.",
+    "PRODUCTION_SCIENCE": false
+  },
+  "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "START_TIME": "2026-10-27T01:48:33.593568+00:00",
+  "END_TIME": "2026-10-27T01:48:36.293710+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": "See full log; no suppression",
+  "LOG_REF": "/tmp/oneshot_runs/retained_integrity.log"
+}

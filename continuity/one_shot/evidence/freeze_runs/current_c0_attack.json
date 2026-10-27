@@ -1,0 +1,21 @@
+{
+  "NAME": "current_c0_attack",
+  "COMMAND": [
+    "python3",
+    "continuity/one_shot/oneshot_c0_current_attack.py"
+  ],
+  "ENVIRONMENT": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "cwd": "/workspace/Quant-Trade",
+    "PYTHONPATH": "src:.",
+    "PRODUCTION_SCIENCE": false
+  },
+  "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "START_TIME": "2026-10-27T01:48:18.982302+00:00",
+  "END_TIME": "2026-10-27T01:48:19.210225+00:00",
+  "RESULT": "FAIL",
+  "EXIT_CODE": 1,
+  "FAILURES": "See full log; no suppression",
+  "LOG_REF": "/tmp/oneshot_runs/current_c0_attack.log"
+}

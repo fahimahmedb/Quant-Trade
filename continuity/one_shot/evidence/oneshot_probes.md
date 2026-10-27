@@ -1,0 +1,36 @@
+# Secondary probe plan (read-only inspection; probes pending freeze)
+
+## E1
+FACT: real registered documentary packets are present; do not conclude NO_SOURCE from absent market data. Existing native `queue_replenisher.load_source_catalog` registers root source JSON. `frontier_source_planner_v2.plan_frontier_source` qualifies exact wrapper and family, binds content hash, and accounts for prior task consumption. `sec_t1_operative_rule.json` has official CFR provenance, bundled capture XML, raw_sha256, retrieval clock, conservative available/public clock, content hash, freeze cutoff. Existing primary-source imports and CP004/CP005/CP006 receipts identify it as real documentary source, not fixture. Access scope may be explicitly UNKNOWN in shadow metadata without modifying source. Qualification status can be obtained by pure existing qualifier; it is not production source admission.
+
+Post-freeze command should read registered catalog/frontier/tasks, call planner for each frontier, and retain qualification/addressability decisions only. If no unused source selected, return NO_ADMISSIBLE_ADDRESSABLE_REAL_SOURCE even when admissible consumed packets exist. Never replace real tasks with empty fixture list to manufacture SOURCE_SELECTED. Optional read-only projection of one real packet to qualifier uses `qualify_document_packet` only; do not call documentary_case (creates candidate) or canonical spine for E1.
+
+## E2
+Existing test coverage components:
+- `research.research_os.tests.test_work_build_depth.ExecutedDryRunTests`: synthetic structured packets; actual runner executes fact transformations; PREPARED interruption/replay; immutable completed output; input/code/environment binding.
+- `research.research_os.tests.test_work_build_depth.CanonicalExecutedDepthTests`: candidate -> envelope -> execution -> deterministic validator -> isolated scientific/control outputs, but task claim is supplied fixture, not native leased worker.
+- `research.research_os.tests.test_oracle_worker.WorkerTests`: disposable local Git remote; native leases, fault injection/replay, receipts, independent challenge stages. Worker production task loop stops before actual economic execution by authority; this is proper behavior.
+- `tests.test_research_os_v2_worker_integration.V2WorkerIntegrationTests`: native V2 trial claim before crash/replay, epoch and model limits, isolated worker fixtures. Some paths project real documentary source captures into disposable fixtures, so cannot count wholesale as E2 isolated synthetic-only closed loop.
+
+The requested singular fixture lineage through native lease/crash -> execution -> result -> evaluator -> isolated scientific/control sinks is not yet demonstrated by these separate tests. Do not call their union ENGINEERING_LOOP_PASS. If no existing exact integration route is found after execution, report ENGINEERING_LOOP_BLOCKED / NO_EXISTING_SINGLE_LINEAGE_LEASE_EXECUTION_EVALUATOR_SINK_ROUTE, with passing component checks separately. No adapter/product repair authorized postfreeze.
+
+Suggested command: `PYTHONPATH=src:. python -m unittest research.research_os.tests.test_work_build_depth.ExecutedDryRunTests research.research_os.tests.test_work_build_depth.CanonicalExecutedDepthTests research.research_os.tests.test_oracle_worker.WorkerTests`.
+
+All sinks remain temporary directories/disposable Git remotes. Report SYNTHETIC=TRUE, PRODUCTION_SCIENCE=FALSE, COUNTS_TOWARD_TRIAL_DENOMINATOR=FALSE, COUNTS_TOWARD_EXPOSURE=FALSE, COUNTS_TOWARD_PRODUCTION_MEMORY=FALSE for synthetic component evidence only. Do not relabel read-only actual metadata as synthetic.
+
+## E3
+OPTIONAL_TRANSPORT_STATUS=NOT_EVALUATED_IN_THIS_MISSION is defensible and requires no lifecycle state. Existing `tests.test_wave2_c2_scientific_economic_d0_seam` exercises fixture transport identity bindings; it creates in-memory shadow lifecycle objects, not production state. Optional executing this test is qualification evidence only; no adapter code.
+
+Further exact E2 seam evidence: `worker_stages.py:59` `stage_plan` offers producer freeze/handoff, independent pre-outcome validation/challenge, evidence-data provenance and portfolio/readiness stages, with no native experiment-execution/result/evaluator stage. `oracle_worker.py:194` dispatches only those stage contracts. `expansion/experiment_runner.py:446` supports independently called `execute(plan, inputs, checkpoint_dir)`, whose signature has no canonical task/lease lineage. `expansion/v2_pipeline.py:48` expressly runs pre-outcome and never accesses an Evaluation-side outcome store. `tests/test_research_os_evaluation_membrane_admission.py:1` tests technical membrane admission without an Evaluation store/transport. Existing `src/quant/factory/evaluate.py` economic evaluator consumes PricePanel/StrategySpec independently and has no Research OS task/lease/receipt sink binding. Calling it on arbitrary fixtures would invent a join and is not evidence of the required native loop.
+
+# Executed post-freeze results
+
+FACT: full product freeze/observed execution HEAD = `68f16c0f697f275f536e9c58afdc00b341ebee0a`.
+
+E1 `REAL_SOURCE_SHADOW_PASS`: read-only native catalog/qualifier/planner with 72 actual durable tasks selected `research/research_os/sources/sec_t1_operative_rule.json` for INSTITUTIONAL_FLOW. Qualification PASS; raw bundled CFR XML digest equals declared `65c9d9ce2c73d45811c7f0c97b02349f8184546d42050d12f9c3ea1f2864fd36`. Git blob `4f4c98030520e5a0aaa7cf0320ade5ae377a78e7`; packet hash `802a6bcbcdba8ae1c5fad48048a308821b655478549fe97f14cc7f054bf9d3d0`. Access scope explicitly UNKNOWN except mission READ_ONLY; capture/freeze cutoff 2026-10-15T20:43:05.673234+00:00; current captured edition does not prove historical PIT or current legal applicability. No engine Candidate generation was called. All detailed metadata in `/tmp/oneshot_real_source.json`; reproducible `/tmp/oneshot_e1_probe.py`.
+
+E2 `ENGINEERING_LOOP_BLOCKED`: 9 synthetic runner/canonical component tests PASS; 16 disposable local-Git worker regression tests PASS. These are separate components and do not establish singular end-to-end task/lease/execution/evaluator/sink lineage. Existing full native route absence remains the exact blocker. `SYNTHETIC=TRUE` labels the isolated harness engineering evidence; real documentary source copies used by some worker regression tests retain their source provenance and are not relabeled synthetic scientific knowledge. All fixture results excluded from production scientific memory/trial denominator/exposure. Follow-up required, no adapter added.
+
+E3 `TRANSPORT_SHADOW_FIXTURE_PASS`: all 8 existing scientific-economic D0 seam tests PASS. In-memory faithful fixtures preserve canonical hashes and detect wrong identity, changed adjudication/handoff metadata and outcome injection. No production EconomicIdentity or lifecycle state created. This proves fixture structural transport only, not real economic readiness.
+
+All runs contain COMMAND, ENVIRONMENT, HEAD_SHA, START_TIME, END_TIME, RESULT, FAILURES and LOG_REF in `/tmp/oneshot_probe_test_runs.json`. Logs `/tmp/oneshot_e2_runner.log`, `/tmp/oneshot_e2_worker.log`, `/tmp/oneshot_e3_transport.log`. Reproducible runner `/tmp/oneshot_probe_tests.py`. No product edits, no production state writes, no uncontrolled source acquisition, no protected outcomes accessed.

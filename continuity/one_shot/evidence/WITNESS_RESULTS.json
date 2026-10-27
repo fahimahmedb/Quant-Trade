@@ -1,0 +1,518 @@
+{
+  "PRIMARY": {
+    "PRIMARY_WITNESS": "UST FORENSIC LINEAGE DISPOSITION",
+    "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+    "UST_FORENSIC_STATUS": "AUTHORITY_UNRESOLVED",
+    "CURRENT_PROTECTED_ACTION_STATUS": "DENIED",
+    "CURRENT_LAWFUL_NEXT_STATE": "READ_ONLY_FORENSIC_AUTHORITY_BLOCK",
+    "CONTINUATION_OBLIGATION_STATUS": "UNKNOWN_NOT_PROVEN_AS_DURABLE_OPERATIONAL_OBLIGATION",
+    "HISTORICAL_EXECUTION_STATUS": "NOT_RECOVERED_IN_INSPECTED_TREES",
+    "SCHEDULER_FAILURE": "NOT_PROVEN",
+    "TASK_MATERIALIZATION_FAILURE": "NOT_PROVEN",
+    "RECOVERY_ARTIFACT": true,
+    "AUTHORITATIVE_HISTORICAL_STATE": false,
+    "RECOVERY_ARTIFACT_CORRECTION_REQUIRED": true,
+    "PRIMARY_REQUIRES_PRODUCT_CHANGE": false,
+    "PRODUCTION_RESEARCH_STATE_MUTATED": false,
+    "PROTECTED_OUTCOME_ACCESSED": false,
+    "AUTHORITY_CHANGED": false,
+    "FROZEN_PROTOCOL_UNCHANGED_ACROSS_FREEZE_POSTFREEZE_W2": true,
+    "HYPOTHESIS_BLOB_BINDING_VERIFIED": true,
+    "SOURCE_REFS": [
+      {
+        "SHA": "7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+        "PATH": "research/research_os/artifacts/FLOW-UST-PRIMARY-DEALER-AUCTION-001/frozen-economic-screen-v1.json",
+        "GIT_BLOB": "86069a57da75b6cf34fada9373b92704b9d0fff2",
+        "SHA256": "8f11a6a8b4041889a8e0098f7a17c1ad2a9237bb94bc9d7325bc1dbe3f4af234",
+        "SIZE": 4810
+      },
+      {
+        "SHA": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+        "PATH": "research/research_os/architecture/work_receipts/ECON_TEST_FLOW_UST_AUCTION_CP2_POST_FREEZE.json",
+        "GIT_BLOB": "6e60ed77ea3d28c3c5519403db6f032590cd2e1d",
+        "SHA256": "f4bfd1f9e49b3ff30259af184807544ba979478d7e360d2f7d91fe37c1d8c99b",
+        "SIZE": 1310
+      },
+      {
+        "SHA": "7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+        "PATH": "research/research_os/architecture/work_receipts/ECON_TEST_FLOW_UST_AUCTION_CP1_20261019.json",
+        "GIT_BLOB": "7cae2b34f5957a4018f12e3ab9c4d9b74b62997d",
+        "SHA256": "f0d2f4211441b3eeb2a5fe531aeb0d79512ec8872423554648a7d71ccc28a114",
+        "SIZE": 1753
+      },
+      {
+        "SHA": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+        "PATH": "research/research_os/assessments/VALIDATE-FLOW-UST-PRIMARY-DEALER-AUCTION-001.json",
+        "GIT_BLOB": "4959346e69060e2c1255b5c23521c8af62e09343",
+        "SHA256": "d257ec159983ab051ee77872649b380be15ee7dcf460bdf9dc8ced2f396028bc",
+        "SIZE": 3896
+      },
+      {
+        "SHA": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+        "PATH": "research/research_os/tasks/VALIDATE-FLOW-UST-PRIMARY-DEALER-AUCTION-001.json",
+        "GIT_BLOB": "dec9b06bc09619c0d766a8687584edad67fedd18",
+        "SHA256": "bd2dc1dc8fdbf4947d7c0998c6b15c7a4e81696aa251cbb1cce4b62f5d12425c",
+        "SIZE": 1759
+      },
+      {
+        "SHA": "7b843ddd551c6770c0ff5941cf5cb1ffb74b8452",
+        "PATH": "research/research_os/hypotheses/FLOW-UST-PRIMARY-DEALER-AUCTION-001.json",
+        "GIT_BLOB": "ba92efb4475db4883dc3dfb9f0cd979ba7a6de03",
+        "SHA256": "34579723ede848ae9b119e56859334477df1a3d01389c5da6b7e0b5493c70c7f",
+        "SIZE": 7087
+      },
+      {
+        "SHA": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+        "PATH": "research/research_os/runtime/CONTROL_PLANE.json",
+        "GIT_BLOB": "fff7df98508800c228dbcf89c36c4acc11507ab9",
+        "SHA256": "7b955532d57895b4106576727857db179d851378d1206777fdb1fc70d874b0b7",
+        "SIZE": 3893
+      },
+      {
+        "SHA": "40c590189e1389502d179e63f6e0925df8513d2c",
+        "PATH": "continuity/evidence/UST_RECOVERY_ARTIFACT.json",
+        "GIT_BLOB": "f140f5552f115c6f6e28e1d38531785555806605",
+        "SHA256": "12a850a6520146a3b9d2051361df3eb758cdeb93630ee49065b2629054cd2367",
+        "SIZE": 3798
+      }
+    ],
+    "AUTHORITY_MATRIX_ROWS": [
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED",
+        "ACTION": "READ_SOURCE_METADATA"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED",
+        "ACTION": "INSPECT_FROZEN_PROTOCOL"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED",
+        "ACTION": "TRACE_HISTORICAL_LINEAGE"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED",
+        "ACTION": "ISOLATED_METADATA_REPLAY"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "CREATE_PRODUCTION_RESEARCH_TASK"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "CREATE_PRODUCTION_PROPOSAL"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "CREATE_PRODUCTION_ROOT"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "MUTATE_PRODUCTION_EXPOSURE"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "EXECUTE_ECONOMIC_EXPERIMENT"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "ACCESS_PROTECTED_OUTCOME"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "PROSPECTIVE_OBSERVATION"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "LIVE_TRADING"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "MISSION_EXPLICIT",
+        "SCOPE": "CURRENT_ONE_SHOT_20261027",
+        "EFFECTIVE_FROM": "CURRENT_USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "NONE_PROVEN_APPLICABLE",
+        "DENIAL_REF": "USER_MISSION_PRODUCTION_RESEARCH_STATE_AND_DEPLOYMENT_CAPITAL_FIREWALLS",
+        "PRECEDENCE_RULE_REF": "CURRENT_ACTION_SPECIFIC_MISSION_FIREWALL",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED",
+        "ACTION": "USE_REAL_CAPITAL"
+      },
+      {
+        "OBJECT_ID": "FLOW-UST-PRIMARY-DEALER-AUCTION-001",
+        "AUTHORITY_KIND": "HISTORICAL_REPRESENTATIONS",
+        "SCOPE": "UST_G1_FROZEN_MECHANISM_SCREEN_HISTORICAL",
+        "EFFECTIVE_FROM": "HISTORICAL_POST_FREEZE_REPORTED",
+        "EFFECTIVE_TO": "UNKNOWN",
+        "GRANT_REF": "7b843ddd551c6770c0ff5941cf5cb1ffb74b8452:research/research_os/architecture/work_receipts/ECON_TEST_FLOW_UST_AUCTION_CP1_20261019.json;7b843ddd551c6770c0ff5941cf5cb1ffb74b8452:research/research_os/artifacts/FLOW-UST-PRIMARY-DEALER-AUCTION-001/frozen-economic-screen-v1.json;ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7:research/research_os/architecture/work_receipts/ECON_TEST_FLOW_UST_AUCTION_CP2_POST_FREEZE.json",
+        "DENIAL_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/runtime/CONTROL_PLANE.json",
+        "PRECEDENCE_RULE_REF": "UNKNOWN_NOT_RECOVERED",
+        "REVOCATION_REF": "UNKNOWN_NOT_RECOVERED",
+        "STATUS": "UNRESOLVED",
+        "ACTION": "INTERPRET_HISTORICAL_SCOPED_EXECUTION_AUTHORITY"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "PUSH_CHILD_BRANCH",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CHILD_BRANCH_ONLY",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "EDIT_BOUNDED_PRODUCT_BEFORE_FREEZE",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CHILD_BRANCH_ONLY",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "EDIT_PRODUCT_AFTER_FREEZE",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CURRENT_MISSION",
+        "EFFECTIVE_FROM": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "",
+        "DENIAL_REF": "USER_MISSION_FIREWALL_OR_PRODUCT_FREEZE",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "LOCAL_ISOLATED_TEST",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CHILD_BRANCH_ONLY",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "READ_REGISTERED_CFR_PACKET",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CHILD_BRANCH_ONLY",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "ISOLATED_TRANSPORT_FIXTURE",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CHILD_BRANCH_ONLY",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "USER_MISSION_POST_AUDIT_FINAL_V3",
+        "DENIAL_REF": "",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "AUTHORIZED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "DEPLOYMENT",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CURRENT_MISSION",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "",
+        "DENIAL_REF": "USER_MISSION_FIREWALL_OR_PRODUCT_FREEZE",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "DEFAULT_BRANCH_CHANGE",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CURRENT_MISSION",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "",
+        "DENIAL_REF": "USER_MISSION_FIREWALL_OR_PRODUCT_FREEZE",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "OWNER_CANONICAL_PROMOTION",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CURRENT_MISSION",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "",
+        "DENIAL_REF": "USER_MISSION_FIREWALL_OR_PRODUCT_FREEZE",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "MERGE_TO_OWNER_CANONICAL_RAIL",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CURRENT_MISSION",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "",
+        "DENIAL_REF": "USER_MISSION_FIREWALL_OR_PRODUCT_FREEZE",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED"
+      },
+      {
+        "OBJECT_ID": "ONE_SHOT_20261027",
+        "ACTION": "RUNTIME_RELEASE_PROMOTION",
+        "AUTHORITY_KIND": "CURRENT_MISSION",
+        "SCOPE": "CURRENT_MISSION",
+        "EFFECTIVE_FROM": "USER_MISSION",
+        "EFFECTIVE_TO": "MISSION_END",
+        "GRANT_REF": "",
+        "DENIAL_REF": "USER_MISSION_FIREWALL_OR_PRODUCT_FREEZE",
+        "PRECEDENCE_RULE_REF": "ACTION_SPECIFIC_CURRENT_INSTRUCTION",
+        "REVOCATION_REF": "NOT_APPLICABLE",
+        "STATUS": "DENIED"
+      }
+    ],
+    "CP05_DISPOSITION": "KEEP_EVIDENCE_ONLY",
+    "FOLLOWUPS": [
+      "Resolve historical UST authority precedence/scope/effective-time/revocation before any protected execution.",
+      "Separately reconcile screen claim/readiness and compatible executor only under explicit future scope.",
+      "Recover durable historical continuation obligation/receipt if needed; do not manufacture old tasks."
+    ],
+    "UNKNOWNS": [
+      "Unrecorded/private historical execution or authorization.",
+      "Complete historical trial/exposure denominator.",
+      "Whether an operational task obligation ever existed for this protocol.",
+      "Current compatible qualified executor/source capability; not exercised here."
+    ]
+  },
+  "SECONDARY": {
+    "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+    "E1": {
+      "status": "REAL_SOURCE_SHADOW_PASS",
+      "source": "research/research_os/sources/sec_t1_operative_rule.json",
+      "native_planner": "SOURCE_SELECTED",
+      "qualification": "PASS",
+      "raw_capture_hash_matches": true,
+      "scope": "READ_ONLY_NATIVE_QUALIFICATION_AND_SOURCE_PLANNING",
+      "production_mutated": false,
+      "outcome_accessed": false,
+      "evidence": "/tmp/oneshot_real_source.json"
+    },
+    "E2": {
+      "status": "ENGINEERING_LOOP_BLOCKED",
+      "exact_blocker": "NO_EXISTING_SINGLE_LINEAGE_LEASE_EXECUTION_EVALUATOR_SINK_ROUTE",
+      "synthetic_runner_component_tests": 9,
+      "worker_component_tests": 16,
+      "component_result": "PASS",
+      "whole_loop_executed": false,
+      "SYNTHETIC": true,
+      "PRODUCTION_SCIENCE": false,
+      "COUNTS_TOWARD_TRIAL_DENOMINATOR": false,
+      "COUNTS_TOWARD_EXPOSURE": false,
+      "COUNTS_TOWARD_PRODUCTION_MEMORY": false,
+      "limits": [
+        "Synthetic flag labels disposable harness evidence; worker regression uses copied documentary fixtures and cannot be relabeled as new synthetic scientific evidence.",
+        "Separate component tests do not demonstrate one end-to-end native lineage."
+      ],
+      "followup": "Bound a single synthetic fixture through native scheduler/lease, runner, evaluator and isolated sink receipt; no production objects."
+    },
+    "E3": {
+      "status": "TRANSPORT_SHADOW_FIXTURE_PASS",
+      "tests": 8,
+      "scope": "existing scientific-economic D0 seam tests; in-memory fixtures only",
+      "production_economic_identity_or_lifecycle_mutated": false,
+      "economic_readiness": "NOT_EVALUATED_IN_THIS_MISSION",
+      "limits": [
+        "Fixture structural transport only; no empirical returns, real transport, deployment or capital authority."
+      ]
+    },
+    "test_runs": [
+      {
+        "ID": "E2_RUNNER",
+        "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_work_build_depth.ExecutedDryRunTests research.research_os.tests.test_work_build_depth.CanonicalExecutedDepthTests",
+        "ENVIRONMENT": {
+          "cwd": "/workspace/Quant-Trade",
+          "python": "Python 3.12.14",
+          "PYTHONPATH": "src:.",
+          "state": "TemporaryDirectory and disposable local Git fixture only"
+        },
+        "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+        "START_TIME": "2026-10-27T01:48:18.684237+00:00",
+        "END_TIME": "2026-10-27T01:48:19.425353+00:00",
+        "RESULT": "PASS",
+        "EXIT_CODE": 0,
+        "LOG_REF": "/tmp/oneshot_e2_runner.log",
+        "FAILURES": []
+      },
+      {
+        "ID": "E2_WORKER",
+        "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_oracle_worker.WorkerTests",
+        "ENVIRONMENT": {
+          "cwd": "/workspace/Quant-Trade",
+          "python": "Python 3.12.14",
+          "PYTHONPATH": "src:.",
+          "state": "TemporaryDirectory and disposable local Git fixture only"
+        },
+        "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+        "START_TIME": "2026-10-27T01:48:19.425738+00:00",
+        "END_TIME": "2026-10-27T01:48:38.706473+00:00",
+        "RESULT": "PASS",
+        "EXIT_CODE": 0,
+        "LOG_REF": "/tmp/oneshot_e2_worker.log",
+        "FAILURES": []
+      },
+      {
+        "ID": "E3_TRANSPORT",
+        "COMMAND": "PYTHONPATH=src:. python -m unittest tests.test_wave2_c2_scientific_economic_d0_seam",
+        "ENVIRONMENT": {
+          "cwd": "/workspace/Quant-Trade",
+          "python": "Python 3.12.14",
+          "PYTHONPATH": "src:.",
+          "state": "TemporaryDirectory and disposable local Git fixture only"
+        },
+        "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+        "START_TIME": "2026-10-27T01:48:38.710557+00:00",
+        "END_TIME": "2026-10-27T01:48:38.877286+00:00",
+        "RESULT": "PASS",
+        "EXIT_CODE": 0,
+        "LOG_REF": "/tmp/oneshot_e3_transport.log",
+        "FAILURES": []
+      }
+    ],
+    "production_research_state_mutated": false,
+    "product_code_changed_by_probe": false
+  },
+  "PRODUCTION_RESEARCH_STATE_MUTATED": false,
+  "OUTCOME_ACCESSED": false
+}

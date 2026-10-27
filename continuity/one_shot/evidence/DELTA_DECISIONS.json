@@ -1,0 +1,489 @@
+{
+  "PRECHALLENGE_FILES_AUDITED": 41,
+  "RECORDS": [
+    {
+      "DELTA_ID": "continuity/00_ANCHOR.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/01_CAPABILITY_EQUIVALENCE_MATRIX.csv",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/02_INTEGRITY_DELTA.csv",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/03_IDENTITY_OWNERSHIP.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/04_CONTINUATION_PROOF.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/05_UST_DISPOSITION.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/06_RENEWAL_PROOF.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/CURRENT_STATE.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/DECISION_REGISTER.csv",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/EXECUTION_LEDGER.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/FOLLOWUP_MISSION_REGISTER.csv",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/PARALLEL_WORK_REGISTER.csv",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/evidence/AUTHORITY_SNAPSHOT.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/evidence/EXECUTION_EVENTS.jsonl",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/evidence/REF_VECTOR_START.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/evidence/RENEWAL_WITNESS.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/evidence/SOURCE_BINDINGS.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/evidence/UST_RECOVERY_ARTIFACT.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/00_RESUME_ANCHOR.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/01_PRECHALLENGE_DIFF_REGISTER.csv",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/evidence/AUTHORITY_SNAPSHOT_RESUME.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/evidence/BRANCH_DIFF_RESUME.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/evidence/REF_VECTOR_RESUME.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/evidence/SOURCE_BINDINGS_RESUME.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "continuity/post_challenge/evidence/WORKTREE_RESUME.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Historical evidence retained unchanged; new forensic corrections govern interpretation",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/continuation.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness necessity; see individual checkpoint audit",
+      "MUTATION_DOMAIN": "NONE_FINAL",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/expansion/v2_core.py",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "Four separately proven existing V2 boundary gaps; see CP02 records",
+      "MUTATION_DOMAIN": "CP02_EXISTING_BOUNDARY",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/expansion/v2_pipeline.py",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "Four separately proven existing V2 boundary gaps; see CP02 records",
+      "MUTATION_DOMAIN": "CP02_EXISTING_BOUNDARY",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/expansion/v2_stage_executor.py",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "Four separately proven existing V2 boundary gaps; see CP02 records",
+      "MUTATION_DOMAIN": "CP02_EXISTING_BOUNDARY",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/idea_feed/__init__.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness necessity; see individual checkpoint audit",
+      "MUTATION_DOMAIN": "NONE_FINAL",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/idea_feed/primitives.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness necessity; see individual checkpoint audit",
+      "MUTATION_DOMAIN": "NONE_FINAL",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/ideation_intake.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness necessity; see individual checkpoint audit",
+      "MUTATION_DOMAIN": "NONE_FINAL",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "research/research_os/renewal_policy.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness necessity; see individual checkpoint audit",
+      "MUTATION_DOMAIN": "NONE_FINAL",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/fixtures/oracle_v2_core_fixture.json",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Retained current regression test/fixture; no product mutation ownership",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_research_os_epoch_model_admission.py",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Retained current regression test/fixture; no product mutation ownership",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_research_os_serializable_outcome_membrane.py",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Retained current regression test/fixture; no product mutation ownership",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_research_os_trial_epoch_window.py",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Retained current regression test/fixture; no product mutation ownership",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_research_os_trial_proposal_export_binding.py",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Retained current regression test/fixture; no product mutation ownership",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_verified_continuation_contract.py",
+      "DISPOSITION": "REPLAY_TEST_ONLY",
+      "WHY": "Byte-exact relocated .replay; executes immutable CP06 code only",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_verified_continuity_admission_identity.py",
+      "DISPOSITION": "REPLAY_TEST_ONLY",
+      "WHY": "Byte-exact relocated .replay; executes immutable CP06 code only",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "tests/test_verified_continuity_renewal.py",
+      "DISPOSITION": "REPLAY_TEST_ONLY",
+      "WHY": "Byte-exact relocated .replay; executes immutable CP06 code only",
+      "MUTATION_DOMAIN": "NONE",
+      "EVIDENCE": "evidence/oneshot_cp02.md; oneshot_cp03.md; oneshot_cp04_cp06.md; oneshot_ust.md"
+    },
+    {
+      "DELTA_ID": "CP02-TRIAL-PROPOSAL",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "Generic run_pre_outcome_pipeline checks labels and validator candidate hash, but never joins candidate subject/hash to generated_proposals. Native manual source binding exists at W2 v2_stage_executor.py:138-147 and is narrower coverage.",
+      "MUTATION_DOMAIN": "PROPOSAL/TRIAL BINDING",
+      "EVIDENCE": "evidence/oneshot_cp02.json"
+    },
+    {
+      "DELTA_ID": "CP02-MODEL-ADMISSION",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "W2 assert_model_allowed checks only Python membership; None in [None] admits unattributable identity. W2 pure pipeline does not call model policy admission for recorded generator or validator. v2_state store model admission covers its own actor only.",
+      "MUTATION_DOMAIN": "TRIAL IDENTITY",
+      "EVIDENCE": "evidence/oneshot_cp02.json"
+    },
+    {
+      "DELTA_ID": "CP02-TRIAL-EPOCH-WINDOW",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "W2 native executor checks current now against window, but generic and native lineages do not verify persisted trial.generated_at membership. Valid hash permits a trial from before epoch.",
+      "MUTATION_DOMAIN": "PIT / TRIAL IDENTITY",
+      "EVIDENCE": "evidence/oneshot_cp02.json"
+    },
+    {
+      "DELTA_ID": "CP02-SERIALIZABLE-OUTCOME",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "WHY": "Both W2 recursive membranes traverse list but not tuple although canonical JSON treats both as arrays. Tuple can hide forbidden synthetic outcome field while JSON roundtrip exposes same content.",
+      "MUTATION_DOMAIN": "OUTCOME FIREWALL",
+      "EVIDENCE": "evidence/oneshot_cp02.json"
+    },
+    {
+      "DELTA_ID": "CP02-C0-REUSE-ASSESSMENT",
+      "DISPOSITION": "SEPARATE_MISSION_REQUIRED",
+      "WHY": "Preserved C0 kernel counts structural primary-source reconstruction as independent confirmation despite explicit semantic review NOT_PROVEN. Public C2 adapter delegates unchanged, then propagates count into adjudication.",
+      "MUTATION_DOMAIN": "SCIENTIFIC INDEPENDENCE",
+      "EVIDENCE": "evidence/oneshot_cp02.json"
+    }
+  ],
+  "CP03": [
+    {
+      "CP": "CP03",
+      "PATH": "research/research_os/ideation_intake.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness dependency or small safety-only W2 gap proved; W2 retains proposal admission ownership; new CP03 write path is not semantically equivalent to source V3 and its derived root/exposure scheme is not an authorized canonical owner.",
+      "DOMAIN": "CP03_ADMISSION_PROPOSAL",
+      "SOURCE_REF": "acec18f007b079701ee55a620cf913ac960bdcfa",
+      "W2_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "TEST_DISPOSITION": "REPLAY_TEST_ONLY; archive exact historical test and execute only against exact historical code in isolated temp worktree",
+      "CONFIDENCE": "HIGH"
+    },
+    {
+      "CP": "CP03",
+      "PATH": "research/research_os/idea_feed/__init__.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness dependency or small safety-only W2 gap proved; W2 retains proposal admission ownership; new CP03 write path is not semantically equivalent to source V3 and its derived root/exposure scheme is not an authorized canonical owner.",
+      "DOMAIN": "CP03_IDENTITY_EXPOSURE",
+      "SOURCE_REF": "acec18f007b079701ee55a620cf913ac960bdcfa",
+      "W2_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "TEST_DISPOSITION": "REPLAY_TEST_ONLY; archive exact historical test and execute only against exact historical code in isolated temp worktree",
+      "CONFIDENCE": "HIGH"
+    },
+    {
+      "CP": "CP03",
+      "PATH": "research/research_os/idea_feed/primitives.py",
+      "DISPOSITION": "REVERT_BY_NEW_COMMIT",
+      "WHY": "No primary-witness dependency or small safety-only W2 gap proved; W2 retains proposal admission ownership; new CP03 write path is not semantically equivalent to source V3 and its derived root/exposure scheme is not an authorized canonical owner.",
+      "DOMAIN": "CP03_IDENTITY_EXPOSURE",
+      "SOURCE_REF": "acec18f007b079701ee55a620cf913ac960bdcfa",
+      "W2_REF": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "TEST_DISPOSITION": "REPLAY_TEST_ONLY; archive exact historical test and execute only against exact historical code in isolated temp worktree",
+      "CONFIDENCE": "HIGH"
+    },
+    {
+      "CP": "CP03",
+      "PATH": "tests/test_verified_continuity_admission_identity.py",
+      "DISPOSITION": "REPLAY_TEST_ONLY",
+      "WHY": "Archive original bytes outside ordinary tests discovery; exact CP03 replay only; no target PASS claim"
+    },
+    {
+      "CP": "CP03",
+      "PATH": "continuity/03_IDENTITY_OWNERSHIP.md",
+      "DISPOSITION": "KEEP_EVIDENCE_ONLY",
+      "WHY": "Preserve historical prose unchanged; append CORRECTION invalidating mission-selected V3/F ownership in current ledger"
+    }
+  ],
+  "CP04_CP06": [
+    {
+      "checkpoint": "CP04",
+      "product_paths": [
+        "research/research_os/continuation.py"
+      ],
+      "disposition": "SEPARATE_MISSION_REQUIRED",
+      "product_action": "REVERT_BY_NEW_COMMIT",
+      "w2_equivalent": "Native task/lease/event/receipt/handoff ownership exists; generic declared-obligation revision accounting is not proven and unnecessary for read-only UST forensic classification.",
+      "reason": "Contradictory lifetime-single-closure module is unused by product. A forensic report can classify lawful next-state truth without introducing or mutating a production obligation.",
+      "evidence": [
+        "d35629b56362cd4704032925e4d6415102c6d28a:research/research_os/continuation.py:70-105",
+        "d35629b56362cd4704032925e4d6415102c6d28a:research/research_os/continuation.py:110-128",
+        "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/oracle_worker.py:210-252",
+        "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/worker_stages.py:269-292",
+        "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/worker_stages.py:338-369"
+      ],
+      "current_failure": "BLOCK -> REOPENED -> CHILD_TASK preserving both closures yields MULTIPLE_DURABLE_CLOSURES:O-1; reopen event has no obligation revision/current-resolution binding.",
+      "required_future_test": "Append-only PARK/BLOCK revision 1 -> REOPEN revision 2 -> CHILD_TASK revision 2 -> TERMINAL revision 3, each revision exactly one authoritative current resolution; duplicate resolution same revision rejected; historical hashes immutable.",
+      "preserve_tests": "tests/test_verified_continuation_contract.py as immutable historical replay-only input; do not silently skip or delete.",
+      "primary_witness_needed": false,
+      "new_owner": false
+    },
+    {
+      "checkpoint": "CP06",
+      "product_paths": [
+        "research/research_os/renewal_policy.py"
+      ],
+      "disposition": "KEEP_EVIDENCE_ONLY",
+      "product_action": "REVERT_BY_NEW_COMMIT",
+      "additional_dispositions": [
+        "REPLAY_TEST_ONLY",
+        "SEPARATE_MISSION_REQUIRED"
+      ],
+      "w2_equivalent": "Native queue replenish bounded issuance, idempotent derivation and source-aware preflight already exist; successor-cohort policy is separate missing policy seam.",
+      "reason": "Primary witness is UST forensic disposition, not successor cohort activation. Module only imported by own test, so safety quality does not establish current mission necessity.",
+      "evidence": [
+        "3be85e3314aa70d2fecfd1b145c3aaa9ab5df199:research/research_os/renewal_policy.py",
+        "3be85e3314aa70d2fecfd1b145c3aaa9ab5df199:continuity/06_RENEWAL_PROOF.md",
+        "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/oracle_worker.py:266-296",
+        "ebc72b9fd14f91420c37e0b7607f9bfb584a289a:research/research_os/control_plane.py:84-103",
+        "642b551985f499b37286c3bc21b89c57294f63ca:architecture-review/04_FRONTIER_RENEWAL_ANALYSIS.md"
+      ],
+      "preserve_tests": "tests/test_verified_continuity_renewal.py plus continuity/evidence/RENEWAL_WITNESS.json; original renewal test imports CP03 idea_feed.primitives so replay at immutable CP06 tree rather than current product if CP03 reverted.",
+      "primary_witness_needed": false,
+      "new_owner": false
+    }
+  ],
+  "CP02": [
+    {
+      "DELTA_ID": "CP02-TRIAL-PROPOSAL",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "PROPOSAL/TRIAL BINDING",
+      "W2_GAP": "Generic run_pre_outcome_pipeline checks labels and validator candidate hash, but never joins candidate subject/hash to generated_proposals. Native manual source binding exists at W2 v2_stage_executor.py:138-147 and is narrower coverage.",
+      "TARGET_SEAM": "v2_core.py:282-307 + v2_pipeline.py:73 + native helper reuse",
+      "REPRODUCTION": "W2 accepts generated_proposals=[{id:UNATTRIBUTED_SYNTHETIC}], target rejects TRIAL_PROPOSAL_BINDING_MISMATCH",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_trial_proposal_export_binding",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Attribution cannot be manufactured by copying trial IDs; generic export path must preserve subject/proposal relation. Native refactor is equivalent reuse, not new protection."
+    },
+    {
+      "DELTA_ID": "CP02-MODEL-ADMISSION",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "TRIAL IDENTITY",
+      "W2_GAP": "W2 assert_model_allowed checks only Python membership; None in [None] admits unattributable identity. W2 pure pipeline does not call model policy admission for recorded generator or validator. v2_state store model admission covers its own actor only.",
+      "TARGET_SEAM": "v2_core.py:126-127,180-183 + v2_pipeline.py:77-78",
+      "REPRODUCTION": "W2 accepts out-of-policy recorded trial model and direct null membership; target rejects MODEL_OUTSIDE_EPOCH_POLICY / MODEL_INVALID_IDENTIFIER:model_identity",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_epoch_model_admission",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Recorded actor identities must remain attributable and policy bound. Frozen allowed model list and existing epoch remain owners."
+    },
+    {
+      "DELTA_ID": "CP02-TRIAL-EPOCH-WINDOW",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "PIT / TRIAL IDENTITY",
+      "W2_GAP": "W2 native executor checks current now against window, but generic and native lineages do not verify persisted trial.generated_at membership. Valid hash permits a trial from before epoch.",
+      "TARGET_SEAM": "v2_core.py:165-177 + v2_pipeline.py:74 + v2_stage_executor.py:140-143",
+      "REPRODUCTION": "W2 accepts generated_at=2026-10-19T00:00:00Z before research_window start; target rejects TRIAL_OUTSIDE_EPOCH_RESEARCH_WINDOW",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_trial_epoch_window",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Preserve half-open epoch membership without changing existing epoch or trial identity owners; independent native rehashed-trial attacks executed."
+    },
+    {
+      "DELTA_ID": "CP02-SERIALIZABLE-OUTCOME",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "OUTCOME FIREWALL",
+      "W2_GAP": "Both W2 recursive membranes traverse list but not tuple although canonical JSON treats both as arrays. Tuple can hide forbidden synthetic outcome field while JSON roundtrip exposes same content.",
+      "TARGET_SEAM": "v2_core.py:351 and v2_pipeline.py:42 list/tuple traversal",
+      "REPRODUCTION": "W2 accepts export.review_context=({outcome:SYNTHETIC_MARKER},); target rejects OUTCOME_DATA_VISIBLE_TO_RESEARCH before export",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_serializable_outcome_membrane",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Equivalent serializable inputs require equal fail-closed disposition; same pre-outcome owner, two tiny recursive-branch edits."
+    },
+    {
+      "DELTA_ID": "CP02-C0-REUSE-ASSESSMENT",
+      "DISPOSITION": "SEPARATE_MISSION_REQUIRED",
+      "INVARIANT": "SCIENTIFIC INDEPENDENCE",
+      "W2_GAP": "Preserved C0 kernel counts structural primary-source reconstruction as independent confirmation despite explicit semantic review NOT_PROVEN. Public C2 adapter delegates unchanged, then propagates count into adjudication.",
+      "TARGET_SEAM": "scientific_adjudication.py:269-274 delegates _scientific_adjudication_c0.py:419-431, final count propagation:612-614",
+      "REPRODUCTION": "/tmp/oneshot_c0_current_attack.py test fails 1 != 0 on exact target; validates structural PASS and explicit NOT_PROVEN before count assertion.",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": "No repair made in this audit",
+      "TEST": "/tmp/oneshot_c0_current_attack.py",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Current applicable failure blocks qualification; prior blanket C0 KEEP equivalence conclusion requires correction. Latest C0 selected semantic counting repair is evidence, not ownership authority."
+    }
+  ]
+}

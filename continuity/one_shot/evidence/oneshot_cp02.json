@@ -1,0 +1,85 @@
+{
+  "audit_target": "40c590189e1389502d179e63f6e0925df8513d2c",
+  "w2_base": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+  "records": [
+    {
+      "DELTA_ID": "CP02-TRIAL-PROPOSAL",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "PROPOSAL/TRIAL BINDING",
+      "W2_GAP": "Generic run_pre_outcome_pipeline checks labels and validator candidate hash, but never joins candidate subject/hash to generated_proposals. Native manual source binding exists at W2 v2_stage_executor.py:138-147 and is narrower coverage.",
+      "TARGET_SEAM": "v2_core.py:282-307 + v2_pipeline.py:73 + native helper reuse",
+      "REPRODUCTION": "W2 accepts generated_proposals=[{id:UNATTRIBUTED_SYNTHETIC}], target rejects TRIAL_PROPOSAL_BINDING_MISMATCH",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_trial_proposal_export_binding",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Attribution cannot be manufactured by copying trial IDs; generic export path must preserve subject/proposal relation. Native refactor is equivalent reuse, not new protection."
+    },
+    {
+      "DELTA_ID": "CP02-MODEL-ADMISSION",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "TRIAL IDENTITY",
+      "W2_GAP": "W2 assert_model_allowed checks only Python membership; None in [None] admits unattributable identity. W2 pure pipeline does not call model policy admission for recorded generator or validator. v2_state store model admission covers its own actor only.",
+      "TARGET_SEAM": "v2_core.py:126-127,180-183 + v2_pipeline.py:77-78",
+      "REPRODUCTION": "W2 accepts out-of-policy recorded trial model and direct null membership; target rejects MODEL_OUTSIDE_EPOCH_POLICY / MODEL_INVALID_IDENTIFIER:model_identity",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_epoch_model_admission",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Recorded actor identities must remain attributable and policy bound. Frozen allowed model list and existing epoch remain owners."
+    },
+    {
+      "DELTA_ID": "CP02-TRIAL-EPOCH-WINDOW",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "PIT / TRIAL IDENTITY",
+      "W2_GAP": "W2 native executor checks current now against window, but generic and native lineages do not verify persisted trial.generated_at membership. Valid hash permits a trial from before epoch.",
+      "TARGET_SEAM": "v2_core.py:165-177 + v2_pipeline.py:74 + v2_stage_executor.py:140-143",
+      "REPRODUCTION": "W2 accepts generated_at=2026-10-19T00:00:00Z before research_window start; target rejects TRIAL_OUTSIDE_EPOCH_RESEARCH_WINDOW",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_trial_epoch_window",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Preserve half-open epoch membership without changing existing epoch or trial identity owners; independent native rehashed-trial attacks executed."
+    },
+    {
+      "DELTA_ID": "CP02-SERIALIZABLE-OUTCOME",
+      "DISPOSITION": "RETAIN_SAFETY_CRITICAL",
+      "INVARIANT": "OUTCOME FIREWALL",
+      "W2_GAP": "Both W2 recursive membranes traverse list but not tuple although canonical JSON treats both as arrays. Tuple can hide forbidden synthetic outcome field while JSON roundtrip exposes same content.",
+      "TARGET_SEAM": "v2_core.py:351 and v2_pipeline.py:42 list/tuple traversal",
+      "REPRODUCTION": "W2 accepts export.review_context=({outcome:SYNTHETIC_MARKER},); target rejects OUTCOME_DATA_VISIBLE_TO_RESEARCH before export",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": true,
+      "TEST": "tests.test_research_os_serializable_outcome_membrane",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Equivalent serializable inputs require equal fail-closed disposition; same pre-outcome owner, two tiny recursive-branch edits."
+    },
+    {
+      "DELTA_ID": "CP02-C0-REUSE-ASSESSMENT",
+      "DISPOSITION": "SEPARATE_MISSION_REQUIRED",
+      "INVARIANT": "SCIENTIFIC INDEPENDENCE",
+      "W2_GAP": "Preserved C0 kernel counts structural primary-source reconstruction as independent confirmation despite explicit semantic review NOT_PROVEN. Public C2 adapter delegates unchanged, then propagates count into adjudication.",
+      "TARGET_SEAM": "scientific_adjudication.py:269-274 delegates _scientific_adjudication_c0.py:419-431, final count propagation:612-614",
+      "REPRODUCTION": "/tmp/oneshot_c0_current_attack.py test fails 1 != 0 on exact target; validates structural PASS and explicit NOT_PROVEN before count assertion.",
+      "NO_NEW_OWNER": true,
+      "SMALL_LOCAL": "No repair made in this audit",
+      "TEST": "/tmp/oneshot_c0_current_attack.py",
+      "PRIMARY_WITNESS_REQUIRED": false,
+      "SAFETY_RETENTION_REASON": "Current applicable failure blocks qualification; prior blanket C0 KEEP equivalence conclusion requires correction. Latest C0 selected semantic counting repair is evidence, not ownership authority."
+    }
+  ],
+  "failures": [
+    {
+      "id": "C0_UNPROVEN_SEMANTIC_CONFIRMATION",
+      "classification": "CURRENT_INVARIANT",
+      "blocks_qualification": true
+    },
+    {
+      "id": "EPOCH_BLINDING_RECEIPT_GOLDEN",
+      "classification": "STALE_FIXTURE",
+      "blocks_qualification": "until test evidence repaired or recorded as failing; not product defect",
+      "old_hash": "01fa1c77d95dbe81b9366264629a9e0bdcf24eefc03835a04796cbfc509c30ec",
+      "correct_hash": "48ec56afa0be00bcd198c38a37b49c89f2b0d00d05b7f055346e887f7b2480e8"
+    }
+  ]
+}

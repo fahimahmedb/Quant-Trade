@@ -1,0 +1,97 @@
+{
+  "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "E1": {
+    "status": "REAL_SOURCE_SHADOW_PASS",
+    "source": "research/research_os/sources/sec_t1_operative_rule.json",
+    "native_planner": "SOURCE_SELECTED",
+    "qualification": "PASS",
+    "raw_capture_hash_matches": true,
+    "scope": "READ_ONLY_NATIVE_QUALIFICATION_AND_SOURCE_PLANNING",
+    "production_mutated": false,
+    "outcome_accessed": false,
+    "evidence": "/tmp/oneshot_real_source.json"
+  },
+  "E2": {
+    "status": "ENGINEERING_LOOP_BLOCKED",
+    "exact_blocker": "NO_EXISTING_SINGLE_LINEAGE_LEASE_EXECUTION_EVALUATOR_SINK_ROUTE",
+    "synthetic_runner_component_tests": 9,
+    "worker_component_tests": 16,
+    "component_result": "PASS",
+    "whole_loop_executed": false,
+    "SYNTHETIC": true,
+    "PRODUCTION_SCIENCE": false,
+    "COUNTS_TOWARD_TRIAL_DENOMINATOR": false,
+    "COUNTS_TOWARD_EXPOSURE": false,
+    "COUNTS_TOWARD_PRODUCTION_MEMORY": false,
+    "limits": [
+      "Synthetic flag labels disposable harness evidence; worker regression uses copied documentary fixtures and cannot be relabeled as new synthetic scientific evidence.",
+      "Separate component tests do not demonstrate one end-to-end native lineage."
+    ],
+    "followup": "Bound a single synthetic fixture through native scheduler/lease, runner, evaluator and isolated sink receipt; no production objects."
+  },
+  "E3": {
+    "status": "TRANSPORT_SHADOW_FIXTURE_PASS",
+    "tests": 8,
+    "scope": "existing scientific-economic D0 seam tests; in-memory fixtures only",
+    "production_economic_identity_or_lifecycle_mutated": false,
+    "economic_readiness": "NOT_EVALUATED_IN_THIS_MISSION",
+    "limits": [
+      "Fixture structural transport only; no empirical returns, real transport, deployment or capital authority."
+    ]
+  },
+  "test_runs": [
+    {
+      "ID": "E2_RUNNER",
+      "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_work_build_depth.ExecutedDryRunTests research.research_os.tests.test_work_build_depth.CanonicalExecutedDepthTests",
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "Python 3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "TemporaryDirectory and disposable local Git fixture only"
+      },
+      "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+      "START_TIME": "2026-10-27T01:48:18.684237+00:00",
+      "END_TIME": "2026-10-27T01:48:19.425353+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "LOG_REF": "/tmp/oneshot_e2_runner.log",
+      "FAILURES": []
+    },
+    {
+      "ID": "E2_WORKER",
+      "COMMAND": "PYTHONPATH=src:. python -m unittest research.research_os.tests.test_oracle_worker.WorkerTests",
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "Python 3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "TemporaryDirectory and disposable local Git fixture only"
+      },
+      "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+      "START_TIME": "2026-10-27T01:48:19.425738+00:00",
+      "END_TIME": "2026-10-27T01:48:38.706473+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "LOG_REF": "/tmp/oneshot_e2_worker.log",
+      "FAILURES": []
+    },
+    {
+      "ID": "E3_TRANSPORT",
+      "COMMAND": "PYTHONPATH=src:. python -m unittest tests.test_wave2_c2_scientific_economic_d0_seam",
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "Python 3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "TemporaryDirectory and disposable local Git fixture only"
+      },
+      "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+      "START_TIME": "2026-10-27T01:48:38.710557+00:00",
+      "END_TIME": "2026-10-27T01:48:38.877286+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "LOG_REF": "/tmp/oneshot_e3_transport.log",
+      "FAILURES": []
+    }
+  ],
+  "production_research_state_mutated": false,
+  "product_code_changed_by_probe": false
+}

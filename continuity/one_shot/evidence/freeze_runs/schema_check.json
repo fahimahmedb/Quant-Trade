@@ -1,0 +1,22 @@
+{
+  "NAME": "schema_check",
+  "COMMAND": [
+    "python3",
+    "scripts/generate_schemas.py",
+    "--check"
+  ],
+  "ENVIRONMENT": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "cwd": "/workspace/Quant-Trade",
+    "PYTHONPATH": "src:.",
+    "PRODUCTION_SCIENCE": false
+  },
+  "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "START_TIME": "2026-10-27T01:48:58.392067+00:00",
+  "END_TIME": "2026-10-27T01:48:58.582867+00:00",
+  "RESULT": "PASS",
+  "EXIT_CODE": 0,
+  "FAILURES": "See full log; no suppression",
+  "LOG_REF": "/tmp/oneshot_runs/schema_check.log"
+}

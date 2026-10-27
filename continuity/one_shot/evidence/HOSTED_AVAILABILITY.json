@@ -1,0 +1,8 @@
+{
+  "STATUS": "NOT_AVAILABLE",
+  "CLI_COMMAND": "gh run list --repo fahimahmedb/Quant-Trade --branch codex/verified-autonomous-continuity-20261026 --limit 3 --json databaseId,headSha,conclusion,status",
+  "CLI_ERROR": "GET https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs: Forbidden",
+  "CONNECTOR_LIMIT": "run lookup filters pull-request-triggered runs only; no workflow dispatch tool available",
+  "EXISTING_WORKFLOW_LIMIT": "push branch filters exclude codex child; no PR created merely to trigger merge-SHA CI",
+  "PASS_CLAIM": false
+}

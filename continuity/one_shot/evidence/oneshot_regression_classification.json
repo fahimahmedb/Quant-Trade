@@ -1,0 +1,110 @@
+{
+  "HEAD_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "ordinary_result": "FAIL",
+  "ordinary_tests": 1125,
+  "failure_count": 4,
+  "error_count": 1,
+  "rows": [
+    {
+      "TEST": "test_astra_pre_t0.Phase6ProofAndConcurrencyCampaign.test_published_test_inventory_matches_authoritative_package_discovery",
+      "CLASSIFICATION": "STALE_FIXTURE",
+      "EVIDENCE": "STATE.md:16 publishes 1107; authoritative package discovery actually ran1125. Test itself enforces freshness and is correct.",
+      "PRODUCT_DEFECT": false,
+      "STATUS": "UNRESOLVED_STALE_QUALIFICATION_METADATA",
+      "ACTION": "Evidence/documentation-only inventory correction may be lawful; preserve failed run. It does not alter product.",
+      "PROOF": "/tmp/oneshot_runs/ordinary_regression.log:22-27"
+    },
+    {
+      "TEST": "test_research_os_canonical_identity.CanonicalIdentityTests.test_valid_epoch_trial_and_four_family_hashes_are_unchanged",
+      "CLASSIFICATION": "STALE_FIXTURE",
+      "EVIDENCE": "tests/test_research_os_canonical_identity.py:40-41 expects old shared trial fixture hash dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b. CP02 attributed first proposal, so same builder on actual changed fixture emits a02058400aec467b836985f030f2a1694f5a0c78eedefa7c270b21c24b92ae47. Epoch/family hashes are independent.",
+      "PRODUCT_DEFECT": false,
+      "STATUS": "UNRESOLVED_STALE_GOLDEN",
+      "ACTION": "A test-only golden correction is lawful before candidate if desired; no product mutation.",
+      "PROOF": "/tmp/oneshot_regression_classification/fixture_only_demonstration.log"
+    },
+    {
+      "TEST": "test_research_os_v2_pipeline.V2PipelineTests.test_end_to_end_pre_outcome_receipt",
+      "CLASSIFICATION": "STALE_FIXTURE",
+      "EVIDENCE": "Independent inline V2PipelineTests.bundle() generated_proposals at tests/test_research_os_v2_pipeline.py:39 are id-only P1/P2; lack required hypothesis/generation/hash attribution. Product correctly blocks TRIAL_PROPOSAL_BINDING_MISMATCH before later gates.",
+      "PRODUCT_DEFECT": false,
+      "STATUS": "UNRESOLVED_STALE_INLINE_FIXTURE",
+      "ACTION": "Evidence-only demonstration adding attribution to in-memory fixture makes all four tests pass, including validator BLOCK and broken-blinding expected gates. No tracked tests or product changed.",
+      "PROOF": "/tmp/oneshot_regression_classification/fixture_only_demonstration.log"
+    },
+    {
+      "TEST": "test_research_os_v2_pipeline.V2PipelineTests.test_broken_blinding_cannot_export",
+      "CLASSIFICATION": "STALE_FIXTURE",
+      "EVIDENCE": "Independent inline V2PipelineTests.bundle() generated_proposals at tests/test_research_os_v2_pipeline.py:39 are id-only P1/P2; lack required hypothesis/generation/hash attribution. Product correctly blocks TRIAL_PROPOSAL_BINDING_MISMATCH before later gates.",
+      "PRODUCT_DEFECT": false,
+      "STATUS": "UNRESOLVED_STALE_INLINE_FIXTURE",
+      "ACTION": "Evidence-only demonstration adding attribution to in-memory fixture makes all four tests pass, including validator BLOCK and broken-blinding expected gates. No tracked tests or product changed.",
+      "PROOF": "/tmp/oneshot_regression_classification/fixture_only_demonstration.log"
+    },
+    {
+      "TEST": "test_research_os_v2_pipeline.V2PipelineTests.test_validator_block_cannot_export",
+      "CLASSIFICATION": "STALE_FIXTURE",
+      "EVIDENCE": "Independent inline V2PipelineTests.bundle() generated_proposals at tests/test_research_os_v2_pipeline.py:39 are id-only P1/P2; lack required hypothesis/generation/hash attribution. Product correctly blocks TRIAL_PROPOSAL_BINDING_MISMATCH before later gates.",
+      "PRODUCT_DEFECT": false,
+      "STATUS": "UNRESOLVED_STALE_INLINE_FIXTURE",
+      "ACTION": "Evidence-only demonstration adding attribution to in-memory fixture makes all four tests pass, including validator BLOCK and broken-blinding expected gates. No tracked tests or product changed.",
+      "PROOF": "/tmp/oneshot_regression_classification/fixture_only_demonstration.log"
+    }
+  ],
+  "selected_h_v_q_attacks": [
+    {
+      "SOURCE_SHA": "6d9dc40b5833442c597f7e7ab8aa631b3d481e83",
+      "SOURCE_PATH": "tests/test_research_os_evaluation_membrane_admission.py",
+      "CLASSIFICATION": "DUPLICATE_TEST",
+      "BLOB": "4ff36244ff796ecb43adc653078c6ddda102e765",
+      "TARGET_PATH": "tests/test_research_os_evaluation_membrane_admission.py",
+      "RESULT": "PASS in exact freeze retained_integrity run; source/target test bytes identical",
+      "INVARIANT": "outcome firewall"
+    },
+    {
+      "SOURCE_SHA": "6d9dc40b5833442c597f7e7ab8aa631b3d481e83",
+      "SOURCE_PATH": "tests/test_research_os_source_pit_clocks.py",
+      "CLASSIFICATION": "DUPLICATE_TEST",
+      "BLOB": "845c433e200cf08b73669ab7db6eb1700bf57930",
+      "TARGET_PATH": "tests/test_research_os_source_pit_clocks.py",
+      "RESULT": "PASS in exact freeze retained_integrity run; source/target test bytes identical",
+      "INVARIANT": "PIT"
+    },
+    {
+      "SOURCE_SHA": "5d628db2949144ca6abf94327de3146f3983ecea",
+      "SOURCE_PATH": "tests/test_research_os_native_trial_lineage.py",
+      "CLASSIFICATION": "DUPLICATE_TEST",
+      "BLOB": "c2eebeec533fa194a494a660c5496ed7e613420b",
+      "TARGET_PATH": "tests/test_research_os_native_trial_lineage.py",
+      "RESULT": "PASS in exact freeze retained_integrity run; source/target test bytes identical",
+      "INVARIANT": "trial/proposal identity"
+    },
+    {
+      "SOURCE_SHA": "5d628db2949144ca6abf94327de3146f3983ecea",
+      "SOURCE_PATH": "tests/test_research_os_frozen_envelope_binding.py",
+      "CLASSIFICATION": "DUPLICATE_TEST",
+      "BLOB": "5798a0be7542cd42684d3ecb8e6cc341493ec33a",
+      "TARGET_PATH": "tests/test_research_os_frozen_envelope_binding.py",
+      "RESULT": "PASS within ordinary suite (not among five failures); source/target bytes identical",
+      "INVARIANT": "frozen identity"
+    },
+    {
+      "SOURCE_SHA": "4efadddf694eff0c0df00925b5b4b89194f32f8e",
+      "SOURCE_PATH": "tests/test_giga_q_core_identity.py",
+      "SELECTED_TESTS": [
+        "test_export_guard_covers_nested_json_serializable_sequences",
+        "test_pipeline_cannot_accept_tuple_hidden_outcome_then_claim_no_outcome_access",
+        "test_authority_never_coerces_false_like_values"
+      ],
+      "CLASSIFICATION": "CURRENT_INVARIANT",
+      "RESULT": "18 PASS, 7 unselected, exact source test bytes extracted to tmp; target synthetic fixture used; no product integration",
+      "INVARIANT": "serializable outcome firewall and strict authority false",
+      "LOG": "/tmp/oneshot_regression_classification/selected_q_outcome_authority.log"
+    }
+  ],
+  "L_ATTACK_SCOPE": "NOT_USED",
+  "L_REASON": "No exact immutable L source recovered; moving branch not followed",
+  "current_applicable_failure": "C0_UNPROVEN_SEMANTIC_CONFIRMATION_COUNT remains unresolved; separate from all five ordinary failures",
+  "tracked_edits": false,
+  "product_edits": false
+}

@@ -1,0 +1,13 @@
+{
+  "PRODUCT_FREEZE_SHA": "68f16c0f697f275f536e9c58afdc00b341ebee0a",
+  "PRODUCT_CHANGES_AFTER_FREEZE_AUTHORIZED": false,
+  "FINAL_ACCEPTED_PRODUCT_MUTATION_DOMAINS": [
+    "TRIAL_IDENTITY_AND_PROPOSAL_BINDING",
+    "PIT_EPOCH_MEMBERSHIP",
+    "OUTCOME_FIREWALL"
+  ],
+  "DOMAIN_COUNT": 3,
+  "UNRESOLVED_CURRENT_INVARIANT": "C0_UNPROVEN_SEMANTIC_CONFIRMATION_COUNT",
+  "PRODUCT_DIFF_FROM_W2": "research/research_os/expansion/v2_core.py          | 45 +++++++++++++++++++++-\n research/research_os/expansion/v2_pipeline.py      |  9 ++++-\n .../research_os/expansion/v2_stage_executor.py     | 16 +++++---\n 3 files changed, 62 insertions(+), 8 deletions(-)",
+  "DOMAIN_COUNT_NOTE": "Conservative three independent invariant domains inside one existing V2 validation boundary; four individual guards. No product expansion from this accounting clarification."
+}
