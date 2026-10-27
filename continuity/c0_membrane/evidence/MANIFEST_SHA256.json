@@ -1,0 +1,91 @@
+{
+  "SELF_HASHED": false,
+  "HASH_DOMAIN": "New mission durable files plus changed files relative to df443d12; excludes self and caches; historical subtrees checked unchanged by Git.",
+  "FILES": [
+    {
+      "PATH": ".github/workflows/c0-membrane-qualification.yml",
+      "SIZE": 1226,
+      "SHA256": "e1f45dadf5c773faabe265348ccd4316a4ead61322921bf013be9a273bcae332"
+    },
+    {
+      "PATH": "STATE.md",
+      "SIZE": 28915,
+      "SHA256": "647bc972d1f6c879264cc2d21ec06bb1ae678724caa9a49b2d5503ff1c61f702"
+    },
+    {
+      "PATH": "continuity/CURRENT_STATE.md",
+      "SIZE": 311,
+      "SHA256": "a3aeae412f414c9045bc4b72e43aa6b96c95ccc73eada7bb74d42c4cfef81516"
+    },
+    {
+      "PATH": "continuity/DECISION_REGISTER.csv",
+      "SIZE": 3458,
+      "SHA256": "749402c75b55cfdd2a01d0e96c7a96545b7c664d7e9b0cd6c177e6d88e923f92"
+    },
+    {
+      "PATH": "continuity/EXECUTION_LEDGER.md",
+      "SIZE": 21306,
+      "SHA256": "f07ef3b5ab95a0f59c0cb5904722a01efedeb146091ceb8af6d3411daa342947"
+    },
+    {
+      "PATH": "continuity/c0_membrane/FINAL_HANDOFF.md",
+      "SIZE": 1666,
+      "SHA256": "826ab65c5827e6995f681b925ca9ad81582d9a33852fd5f41ff6e0e4ffd70e4e"
+    },
+    {
+      "PATH": "continuity/c0_membrane/MISSION.md",
+      "SIZE": 1379,
+      "SHA256": "60225ef1f5f022e22d8845fb95fd60d78263962a42d14371cc05c998832b903a"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/BUILD_EVIDENCE.json",
+      "SIZE": 664,
+      "SHA256": "295428ab171903673f4b601f966669d8fa5ea4b6a0e720f5e89805e7e9de903d"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/PRODUCT_FREEZE.json",
+      "SIZE": 170,
+      "SHA256": "47d2623aa1e14b86701a6d0b877448e0abea62d87165f661d24022a215fce51b"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/QUALIFICATION_SUMMARY.json",
+      "SIZE": 268,
+      "SHA256": "b49ffb720bbcc169aa04877da395baaca1216624252ec44893b3846d4b5f6d4e"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/focused-seam.log",
+      "SIZE": 145,
+      "SHA256": "4540f73a8588986f91a5e6d37435c98f1a5487c1350779bc0e7f534aa29e7d54"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/membrane-focused.log",
+      "SIZE": 137,
+      "SHA256": "676e600fd85076c0c72b23d90fae2f5a7abadc70ebb190db43faaa87c8106ac9"
+    },
+    {
+      "PATH": "continuity/c0_membrane/evidence/membrane-old-attack.log",
+      "SIZE": 1518,
+      "SHA256": "090062b96360b4783912dd75367f722fa1b90c9293feb16dfbf32f8882812547"
+    },
+    {
+      "PATH": "continuity/c0_membrane/qualify.py",
+      "SIZE": 12905,
+      "SHA256": "219fbad367592c23840d42ab0581938ffa641a0b14dd93522193df22f810ef1f"
+    },
+    {
+      "PATH": "continuity/evidence/EXECUTION_EVENTS.jsonl",
+      "SIZE": 17415,
+      "SHA256": "8f7c47a71c915545d4405c5478e98cbb0420170d77ccce1372fb7d8cb290d427"
+    },
+    {
+      "PATH": "research/research_os/expansion/scientific_adjudication.py",
+      "SIZE": 23345,
+      "SHA256": "49f1475a295425782a5e510a677e6ddf45dd2146f61321094c06e995f6653217"
+    },
+    {
+      "PATH": "tests/test_c0_ref_outcome_membrane.py",
+      "SIZE": 3496,
+      "SHA256": "161c4cbdaab05b7740ecc6762dd2a8445af7edc1cea0621647b5b58de993cec6"
+    }
+  ]
+}
