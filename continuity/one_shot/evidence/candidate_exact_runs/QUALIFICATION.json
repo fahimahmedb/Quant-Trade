@@ -1,0 +1,179 @@
+{
+  "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+  "START_TIME": "2026-10-27T01:53:10.115694+00:00",
+  "END_TIME": "2026-10-27T01:53:49.387777+00:00",
+  "WORKTREE_CLEAN": true,
+  "PRODUCT_FREEZE_UNCHANGED": true,
+  "PRODUCTION_INPUTS_UNCHANGED": true,
+  "RUNS": [
+    {
+      "NAME": "retained_integrity",
+      "COMMAND": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.test_research_os_trial_proposal_export_binding",
+        "tests.test_research_os_epoch_model_admission",
+        "tests.test_research_os_trial_epoch_window",
+        "tests.test_research_os_serializable_outcome_membrane",
+        "tests.test_research_os_native_trial_lineage",
+        "tests.test_research_os_epoch_blinding_admission",
+        "tests.test_research_os_evaluation_membrane_admission",
+        "tests.test_research_os_source_pit_clocks",
+        "tests.test_wave2_c2_scientific_adjudication"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:10.141157+00:00",
+      "END_TIME": "2026-10-27T01:53:12.458458+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/retained_integrity.log"
+    },
+    {
+      "NAME": "ordinary_regression",
+      "COMMAND": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:10.141503+00:00",
+      "END_TIME": "2026-10-27T01:53:49.376916+00:00",
+      "RESULT": "FAIL",
+      "EXIT_CODE": 1,
+      "FAILURES": [
+        "see log; preserved without waiver"
+      ],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/ordinary_regression.log"
+    },
+    {
+      "NAME": "research_os_regression",
+      "COMMAND": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "research/research_os/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:10.141778+00:00",
+      "END_TIME": "2026-10-27T01:53:29.397924+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/research_os_regression.log"
+    },
+    {
+      "NAME": "current_c0_attack",
+      "COMMAND": [
+        "python3",
+        "continuity/one_shot/oneshot_c0_current_attack.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:12.458537+00:00",
+      "END_TIME": "2026-10-27T01:53:12.552275+00:00",
+      "RESULT": "FAIL",
+      "EXIT_CODE": 1,
+      "FAILURES": [
+        "see log; preserved without waiver"
+      ],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/current_c0_attack.log"
+    },
+    {
+      "NAME": "source_shadow",
+      "COMMAND": [
+        "python3",
+        "continuity/one_shot/oneshot_e1_probe.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:12.552319+00:00",
+      "END_TIME": "2026-10-27T01:53:12.605289+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/source_shadow.log"
+    },
+    {
+      "NAME": "historical_replay",
+      "COMMAND": [
+        "python3",
+        "continuity/one_shot/replay_historical_tests.py"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:12.605324+00:00",
+      "END_TIME": "2026-10-27T01:53:12.987217+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/historical_replay.log"
+    },
+    {
+      "NAME": "schema_check",
+      "COMMAND": [
+        "python3",
+        "scripts/generate_schemas.py",
+        "--check"
+      ],
+      "ENVIRONMENT": {
+        "cwd": "/workspace/Quant-Trade",
+        "python": "3.12.14",
+        "PYTHONPATH": "src:.",
+        "state": "isolated fixtures/read-only source"
+      },
+      "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+      "START_TIME": "2026-10-27T01:53:12.987262+00:00",
+      "END_TIME": "2026-10-27T01:53:13.148153+00:00",
+      "RESULT": "PASS",
+      "EXIT_CODE": 0,
+      "FAILURES": [],
+      "LOG_REF": "/tmp/oneshot_candidate_exact/schema_check.log"
+    }
+  ],
+  "RESULT": "FAIL",
+  "BOUNDED_CONTINUITY_VERDICT": "NOT_QUALIFIED"
+}

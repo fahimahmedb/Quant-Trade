@@ -1,0 +1,169 @@
+{
+  "HEAD_SHA": "0b6cc21a8aead178549966789b1e063dcfab8245",
+  "START_TIME": "2026-10-27T01:53:12.585832+00:00",
+  "END_TIME": "2026-10-27T01:53:12.597681+00:00",
+  "STATUS": "REAL_SOURCE_SHADOW_PASS",
+  "COMMAND": "PYTHONPATH=src:. python3 /workspace/Quant-Trade/continuity/one_shot/oneshot_e1_probe.py",
+  "PRODUCTION_RESEARCH_STATE_MUTATED": false,
+  "OUTCOME_ACCESSED": false,
+  "OPERATION": "read-only registered source qualification and planner projection; no Candidate/root/trial/task creation",
+  "catalog_size": 5,
+  "durable_task_count": 72,
+  "planner_results": [
+    {
+      "status": "NO_UNUSED_ADMISSIBLE_SOURCE",
+      "frontier_id": "EVENT_DOCUMENT_DISTINCT_MECHANISM",
+      "task_type": "EVENT_DOCUMENT",
+      "family": "EVENT_DOCUMENT",
+      "qualified_count": 1,
+      "unused_count": 0,
+      "source": null,
+      "rejections": [
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements_capture.json",
+          "reason": "SOURCE_WRAPPER_FIELDS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/apple_fy2025_statement_cells.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/sec_t1_operative_rule.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID,DOCUMENT_RULE_KIND_NOT_QUALIFIED"
+        },
+        {
+          "path": "research/research_os/sources/sec_t1_staff_faq.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID,DOCUMENT_RULE_KIND_NOT_QUALIFIED"
+        }
+      ]
+    },
+    {
+      "status": "NO_UNUSED_ADMISSIBLE_SOURCE",
+      "frontier_id": "FUNDAMENTAL_DISTINCT_THESIS",
+      "task_type": "FUNDAMENTAL_RESEARCH",
+      "family": "FUNDAMENTAL",
+      "qualified_count": 1,
+      "unused_count": 0,
+      "source": null,
+      "rejections": [
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_EVENT_KIND_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements_capture.json",
+          "reason": "SOURCE_WRAPPER_FIELDS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/sec_t1_operative_rule.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID,DOCUMENT_RULE_KIND_NOT_QUALIFIED"
+        },
+        {
+          "path": "research/research_os/sources/sec_t1_staff_faq.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID,DOCUMENT_RULE_KIND_NOT_QUALIFIED"
+        }
+      ]
+    },
+    {
+      "status": "SOURCE_SELECTED",
+      "frontier_id": "INSTITUTIONAL_FLOW_DISTINCT_MECHANISM",
+      "task_type": "INSTITUTIONAL_FLOW",
+      "family": "INSTITUTIONAL_FLOW",
+      "qualified_count": 2,
+      "unused_count": 2,
+      "source": {
+        "status": "PASS",
+        "path": "research/research_os/sources/sec_t1_operative_rule.json",
+        "blob_sha": "4f4c98030520e5a0aaa7cf0320ade5ae377a78e7",
+        "packet_hash": "802a6bcbcdba8ae1c5fad48048a308821b655478549fe97f14cc7f054bf9d3d0",
+        "record_hash": "f67e707ade0dd60aa2a291505f730f88e9d7f5235ab82dd3b940b06dc4e8c959",
+        "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol4/xml/CFR-2025-title17-vol4-sec240-15c6-1.xml",
+        "available_at": "2026-10-15T20:43:05.673234+00:00",
+        "family": "INSTITUTIONAL_FLOW",
+        "evidence_authority_rank": 0,
+        "evidence_kind": "STANDARD_SETTLEMENT_OPERATIVE_RULE"
+      },
+      "rejections": [
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_EVENT_KIND_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements_capture.json",
+          "reason": "SOURCE_WRAPPER_FIELDS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/apple_fy2025_statement_cells.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID"
+        }
+      ]
+    },
+    {
+      "status": "NO_ADMISSIBLE_DOCUMENTARY_SOURCE",
+      "frontier_id": "QUANT_MECHANISM_DISTINCT",
+      "task_type": "QUANT_MECHANISM",
+      "family": "QUANT_MECHANISM",
+      "qualified_count": 0,
+      "unused_count": 0,
+      "source": null,
+      "rejections": [
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_EVENT_KIND_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/apple_dividend_announcements_capture.json",
+          "reason": "SOURCE_WRAPPER_FIELDS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/apple_fy2025_statement_cells.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID"
+        },
+        {
+          "path": "research/research_os/sources/sec_t1_operative_rule.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID,DOCUMENT_RULE_KIND_NOT_QUALIFIED"
+        },
+        {
+          "path": "research/research_os/sources/sec_t1_staff_faq.json",
+          "reason": "QUALIFICATION_BLOCK:DOCUMENT_CAPTURE_NOT_QUALIFIED,DOCUMENT_FACTS_INVALID,DOCUMENT_RULE_KIND_NOT_QUALIFIED"
+        }
+      ]
+    }
+  ],
+  "source_witness": {
+    "path": "research/research_os/sources/sec_t1_operative_rule.json",
+    "NON_FIXTURE": true,
+    "NON_DEMO": true,
+    "NON_SYNTHETIC": true,
+    "DURABLE_PROVENANCE": {
+      "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol4/xml/CFR-2025-title17-vol4-sec240-15c6-1.xml",
+      "raw_capture_path": "research/research_os/sources/captures/sec_15c6_1_2025.xml",
+      "raw_sha256_declared": "65c9d9ce2c73d45811c7f0c97b02349f8184546d42050d12f9c3ea1f2864fd36",
+      "raw_sha256_observed": "65c9d9ce2c73d45811c7f0c97b02349f8184546d42050d12f9c3ea1f2864fd36",
+      "raw_sha256_matches": true,
+      "git_blob_sha": "4f4c98030520e5a0aaa7cf0320ade5ae377a78e7"
+    },
+    "HASH_OR_VERSION_PRESENT": {
+      "content_hash": "802a6bcbcdba8ae1c5fad48048a308821b655478549fe97f14cc7f054bf9d3d0",
+      "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL"
+    },
+    "CAPTURE_CLOCK_PRESENT": "2026-10-15T20:43:05.673234+00:00",
+    "QUALIFICATION_STATUS_PRESENT": {
+      "status": "PASS",
+      "blockers": [],
+      "source_hash": "802a6bcbcdba8ae1c5fad48048a308821b655478549fe97f14cc7f054bf9d3d0",
+      "evidence_class": "DOCUMENTARY",
+      "outcome_accessed": false
+    },
+    "ACCESS_SCOPE": "UNKNOWN_EXPLICIT_MISSION_READ_ONLY_ONLY",
+    "INFORMATION_CUTOFF": "2026-10-15T20:43:05.673234+00:00",
+    "SOURCE_FAMILY": "INSTITUTIONAL_FLOW",
+    "ADDRESSABLE_BY_EXISTING_PLANNER": true,
+    "planner_status": "SOURCE_SELECTED",
+    "NON_SYNTHETIC_EVIDENCE_REF": "research/research_os/architecture/work_receipts/BUILDER_CP_004_FRONTIER_SOURCE_ADMISSIBILITY_20261020.md#Source-admissibility-proof",
+    "limits": [
+      "current captured CFR edition does not prove historical PIT availability or current legal applicability",
+      "consumed source is still admissible documentary evidence but cannot be issued as unused source"
+    ]
+  }
+}

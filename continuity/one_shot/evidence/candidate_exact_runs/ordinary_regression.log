@@ -1,0 +1,69 @@
+.........................................verification record is stale or inconsistent:
+  - verified_sha aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa != exact requested bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+run: python3 scripts/verify_p0.py --write
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/multiprocessing/popen_fork.py:66: DeprecationWarning: This process (pid=15923) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  self.pid = os.fork()
+.F........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................[supervisor] ALREADY_RUNNING
+...................................................................................F............................................................................................................................................................................................FE.F..............................................................................................................................................................................................................................................................................
+======================================================================
+ERROR: test_end_to_end_pre_outcome_receipt (test_research_os_v2_pipeline.V2PipelineTests.test_end_to_end_pre_outcome_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Quant-Trade/tests/test_research_os_v2_pipeline.py", line 110, in test_end_to_end_pre_outcome_receipt
+    receipt = run_pre_outcome_pipeline(self.bundle())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/Quant-Trade/research/research_os/expansion/v2_pipeline.py", line 73, in run_pre_outcome_pipeline
+    assert_trial_proposal_binding(candidate, trial)
+  File "/workspace/Quant-Trade/research/research_os/expansion/v2_core.py", line 304, in assert_trial_proposal_binding
+    raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+research.research_os.expansion.v2_core.V2ContractError: TRIAL_PROPOSAL_BINDING_MISMATCH
+
+======================================================================
+FAIL: test_published_test_inventory_matches_authoritative_package_discovery (test_astra_pre_t0.Phase6ProofAndConcurrencyCampaign.test_published_test_inventory_matches_authoritative_package_discovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Quant-Trade/tests/test_astra_pre_t0.py", line 558, in test_published_test_inventory_matches_authoritative_package_discovery
+    self.assertEqual(
+AssertionError: 1107 != 1125 : a freshness gate must not publish a smaller suite than package-aware discovery
+
+======================================================================
+FAIL: test_valid_epoch_trial_and_four_family_hashes_are_unchanged (test_research_os_canonical_identity.CanonicalIdentityTests.test_valid_epoch_trial_and_four_family_hashes_are_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/Quant-Trade/tests/test_research_os_canonical_identity.py", line 40, in test_valid_epoch_trial_and_four_family_hashes_are_unchanged
+    self.assertEqual(build_research_trial(bundle["trial"])["trial_hash"],
+AssertionError: 'a02058400aec467b836985f030f2a1694f5a0c78eedefa7c270b21c24b92ae47' != 'dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b'
+- a02058400aec467b836985f030f2a1694f5a0c78eedefa7c270b21c24b92ae47
++ dbb5e858d6e03796b26282cdbc4d442f7ec77798cd9dc9e81e43d35c9beae91b
+
+
+======================================================================
+FAIL: test_broken_blinding_cannot_export (test_research_os_v2_pipeline.V2PipelineTests.test_broken_blinding_cannot_export)
+----------------------------------------------------------------------
+research.research_os.expansion.v2_core.V2ContractError: TRIAL_PROPOSAL_BINDING_MISMATCH
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/Quant-Trade/tests/test_research_os_v2_pipeline.py", line 131, in test_broken_blinding_cannot_export
+    with self.assertRaisesRegex(V2ContractError, "BLINDING_INTEGRITY_BROKEN"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "BLINDING_INTEGRITY_BROKEN" does not match "TRIAL_PROPOSAL_BINDING_MISMATCH"
+
+======================================================================
+FAIL: test_validator_block_cannot_export (test_research_os_v2_pipeline.V2PipelineTests.test_validator_block_cannot_export)
+----------------------------------------------------------------------
+research.research_os.expansion.v2_core.V2ContractError: TRIAL_PROPOSAL_BINDING_MISMATCH
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/Quant-Trade/tests/test_research_os_v2_pipeline.py", line 125, in test_validator_block_cannot_export
+    with self.assertRaisesRegex(V2ContractError, "EXPORT_REQUIRES_COMPLETED_VALIDATOR_PASS"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "EXPORT_REQUIRES_COMPLETED_VALIDATOR_PASS" does not match "TRIAL_PROPOSAL_BINDING_MISMATCH"
+
+----------------------------------------------------------------------
+Ran 1125 tests in 38.400s
+
+FAILED (failures=4, errors=1)

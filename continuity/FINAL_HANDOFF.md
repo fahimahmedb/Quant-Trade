@@ -37,3 +37,6 @@ BOUNDED_CONTINUITY_VERDICT=NOT_QUALIFIED
 RESEARCH_READINESS_VERDICT=BLOCKED_ON_ENGINEERING_LOOP
 ECONOMIC_READINESS_VERDICT=NOT_EVALUATED_IN_THIS_MISSION
 TERMINAL_REASON=STOPPED_ON_CURRENT_INVARIANT_FAILURE
+
+
+FACT: Candidate exact HEAD 0b6cc21a8aead178549966789b1e063dcfab8245 was pushed, fetched and locally qualified: FAIL. Same known C0 current invariant and ordinary stale fixtures persist; all seven suite outcomes archived in one_shot/evidence/candidate_exact_runs/QUALIFICATION.json. Final attestation contains evidence/metadata only; no product or test logic changes. Final SHA, local run results, remote equality and clean status must be read from the external final receipt returned with mission closure; no post-final-run commit is allowed. Reproduce on the final containing commit with `python3 continuity/one_shot/qualify_local.py /tmp/quant-trade-final-recheck`. Never treat a successful Git push or a metadata attestation as test qualification.
