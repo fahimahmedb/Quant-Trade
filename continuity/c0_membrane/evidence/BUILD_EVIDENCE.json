@@ -1,0 +1,11 @@
+{
+  "BASE_SHA": "df443d12bb4d7a1d908862ad993c855a11a71852",
+  "WORKTREE_ADAPTER_SHA256": "49f1475a295425782a5e510a677e6ddf45dd2146f61321094c06e995f6653217",
+  "COMMAND": "PYTHONPATH=src:. python3 -m unittest tests.test_c0_ref_outcome_membrane tests.test_c0_confirmation_count_repair tests.test_wave2_c2_scientific_adjudication tests.test_wave2_c2_scientific_economic_d0_seam",
+  "RESULT": "46 PASS",
+  "EXACT_HEAD_QUALIFICATION": false,
+  "LOG_REF": "focused-seam.log",
+  "AUTHORIZATION": "User: Continue tes it\u00e9rations cette fois ci en autonomie jusqu\u2019\u00e0 qualification",
+  "AUTHORITY_EXPANSION": false,
+  "REAL_PROTECTED_OUTCOMES_ACCESSED": false
+}

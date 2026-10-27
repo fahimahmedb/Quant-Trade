@@ -1,0 +1,41 @@
+name: C0 Reference Membrane Exact-Head Qualification
+
+on:
+  push:
+    branches:
+      - codex/c0-membrane-qualification-20261027
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  qualify:
+    name: C0 repair engineering qualification
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install hostile-test runner
+        run: python -m pip install --disable-pip-version-check pytest==8.4.2
+      - name: Qualify the exact pushed commit
+        run: |
+          python continuity/c0_membrane/qualify.py \
+            --output-dir "$RUNNER_TEMP/c0-membrane-qualification" \
+            --check-source-remote
+      - name: Preserve exact-head qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c0-membrane-qualification-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/c0-membrane-qualification/
+          if-no-files-found: error

@@ -65,6 +65,7 @@ _impl.CROSS_EXAMINATION_AXES = CROSS_EXAMINATION_AXES
 
 _original_bind_factory_ref = _impl.bind_factory_ref
 _original_validate_factory_ref = _impl.validate_factory_ref
+_original_validate_cross_examination_ref = _impl.validate_cross_examination_ref
 _original_bind_validator_ref = _impl.bind_validator_ref
 _original_validate_validator_ref = _impl.validate_validator_ref
 _original_bind_red_team_ref = _impl.bind_red_team_ref
@@ -151,6 +152,7 @@ def bind_factory_ref(candidate: Mapping[str, Any], infrastructure: Mapping[str, 
 
 
 def validate_factory_ref(ref: Mapping[str, Any]) -> None:
+    _impl._reject_outcomes(ref, "factory_ref")
     _original_validate_factory_ref(ref)
     _require(ref.get("wave2_base_sha") == WAVE2_IMMUTABLE_BASE_SHA, "FactoryRef canonical Wave2 base mismatch")
     context = ref.get("scientific_context")
@@ -181,9 +183,13 @@ def build_cross_examination_ref(
 
 
 def validate_cross_examination_ref(ref: Mapping[str, Any], factory_ref: Mapping[str, Any]) -> None:
-    _impl.validate_cross_examination_ref(ref, factory_ref)
+    _impl._reject_outcomes(ref, "cross_examination_ref")
+    _original_validate_cross_examination_ref(ref, factory_ref)
     _require(set(ref.get("axes", {})) == set(CROSS_EXAMINATION_AXES),
              "CrossExaminationRef does not cover the canonical C2 axes")
+
+
+_impl.validate_cross_examination_ref = validate_cross_examination_ref
 
 
 def bind_validator_ref(factory_ref: Mapping[str, Any], receipt: Mapping[str, Any]) -> Dict[str, Any]:
@@ -213,6 +219,7 @@ def bind_validator_ref(factory_ref: Mapping[str, Any], receipt: Mapping[str, Any
 
 
 def validate_validator_ref(ref: Mapping[str, Any], factory_ref: Mapping[str, Any]) -> None:
+    _impl._reject_outcomes(ref, "validator_ref")
     _original_validate_validator_ref(ref, factory_ref)
     _require(ref.get("validator_independent") is True, "ValidatorRef independence not proven")
     _require(ref.get("self_validation") is False, "ValidatorRef self-validation is forbidden")
@@ -256,6 +263,7 @@ def bind_red_team_ref(
 def validate_red_team_ref(
     ref: Mapping[str, Any], factory_ref: Mapping[str, Any], validator_ref: Mapping[str, Any]
 ) -> None:
+    _impl._reject_outcomes(ref, "red_team_ref")
     _original_validate_red_team_ref(ref, factory_ref, validator_ref)
     _require(ref.get("red_team_independent") is True, "RedTeamRef independence not proven")
     _require(ref.get("self_red_team") is False, "RedTeamRef self-review is forbidden")
@@ -293,6 +301,7 @@ def bind_independence_ref(factory_ref: Mapping[str, Any], record: Mapping[str, A
 
 
 def validate_independence_ref(ref: Mapping[str, Any], factory_ref: Mapping[str, Any]) -> None:
+    _impl._reject_outcomes(ref, "independence_ref")
     _original_validate_independence_ref(ref, factory_ref)
     count = ref.get("independent_confirmation_count")
     _require(type(count) is int and count == _confirmation_count(ref),
@@ -339,6 +348,7 @@ def bind_qualified_negative_ref(factory_ref: Mapping[str, Any], record: Mapping[
 
 
 def validate_qualified_negative_ref(ref: Mapping[str, Any], factory_ref: Mapping[str, Any]) -> None:
+    _impl._reject_outcomes(ref, "qualified_negative_ref")
     _original_validate_qualified_negative_ref(ref, factory_ref)
     _require(ref.get("evaluator_authority_kind") == "GIT_COMMIT_PATH",
              "QualifiedNegativeRef lacks immutable evaluator authority")
@@ -447,6 +457,7 @@ def adjudicate_scientific_candidate(
 
 
 def validate_adjudication(result: Mapping[str, Any]) -> None:
+    _impl._reject_outcomes(result, "adjudication")
     _original_validate_adjudication(result)
     count = result.get("independent_confirmation_count")
     _require(type(count) is int and count in (0, 1),

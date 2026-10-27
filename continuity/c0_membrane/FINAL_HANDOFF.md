@@ -1,0 +1,8 @@
+# C0 reference membrane qualification
+User authorizes autonomous iterations until technical qualification. Base df443d12bb4d7a1d908862ad993c855a11a71852, remote fetched exact. Frozen predecessors stay unchanged. Scope: canonical C0 reference outcome firewall using existing recursive key scanner; tests and exact-head CI. All actual protected outcomes, production mutations, deployment, owner promotion, capital and trading remain denied.
+
+One existing adapter changes: scan every public reference validator and final result; wire cross-examination validation into inner composition. No new owner/schema or historical kernel edits. Structural independence and UNKNOWN semantics remain unchanged. Positive review tokens/selfhashes do not authenticate scientific reviewers. Global research/economic readiness and historical UST authority are not granted by technical qualification.
+
+38 focused tests pass, including all existing forbidden keys, casing/whitespace, list/tuple nesting, all seven reference/result boundaries, public/inner composition and unchanged input checks. Former residual probe rejects all four entrypoints. Required full local/hosted candidate and final qualification still pending. Product/test/CI logic freezes before candidate; failures after freeze require new bounded iteration, never suppression. Prior one-shot verdict remains historical NOT_QUALIFIED.
+
+Technical scope only. Full isolated E2 loop remains blocked, UST historical authority unresolved, economics not evaluated. Read evidence/QUALIFICATION_SUMMARY.json and final external run receipt for exact results. Never infer original one-shot global qualification from this successor.

@@ -1,0 +1,39 @@
+{
+  "SYNTHETIC": true,
+  "PRODUCTION_SCIENCE": false,
+  "REAL_PROTECTED_OUTCOMES_ACCESSED": false,
+  "PRODUCTION_STATE_MUTATED": false,
+  "ALIAS_PATH": "$.audit.nested[0].return_series",
+  "ALIAS_CLASS": "Existing C0 _FORBIDDEN_OUTCOME_KEYS includes return_series",
+  "ORIGINAL_REF_COUNT": 0,
+  "REF_UNCHANGED_BY_VALIDATION_COMPOSITION": true,
+  "FACTORY_HASH_BOUND": true,
+  "CHECKS": [
+    {
+      "ENTRYPOINT": "PUBLIC_VALIDATE",
+      "RESULT": "REJECTED",
+      "ERROR": "independence_ref.audit.nested[0].return_series is outcome-bearing and forbidden in C0",
+      "TYPE": "ScientificAdjudicationError"
+    },
+    {
+      "ENTRYPOINT": "PRESERVED_INNER_VALIDATE",
+      "RESULT": "REJECTED",
+      "ERROR": "independence_ref.audit.nested[0].return_series is outcome-bearing and forbidden in C0",
+      "TYPE": "ScientificAdjudicationError"
+    },
+    {
+      "ENTRYPOINT": "PUBLIC_COMPOSITION",
+      "RESULT": "REJECTED",
+      "ERROR": "independence_ref.audit.nested[0].return_series is outcome-bearing and forbidden in C0",
+      "TYPE": "ScientificAdjudicationError"
+    },
+    {
+      "ENTRYPOINT": "PRESERVED_INNER_COMPOSITION",
+      "RESULT": "REJECTED",
+      "ERROR": "independence_ref.audit.nested[0].return_series is outcome-bearing and forbidden in C0",
+      "TYPE": "ScientificAdjudicationError"
+    }
+  ],
+  "CLASSIFICATION": "CURRENT_INVARIANT_RESIDUAL_OUTCOME_REF_MEMBRANE",
+  "SCOPE": "Inherited preexisting direct-ref validation path; separate followup, no product repair in count mission"
+}
