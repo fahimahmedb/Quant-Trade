@@ -1,20 +1,19 @@
 # AGENTS.md — Quant-Trade agent contract
 
-## Read before acting
+## Minimal recovery and durable work
 
-1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
-3. resolve the exact branch and live HEAD
-4. read the exact branch-specific evidence / mission required for your work
+This is the single recovery procedure; README routes here. It applies without chat history, custom instructions or a previous agent.
 
-Do not infer the current mission from old September Blue handoffs, `STATE.md`, `CHIEF_BRIEF.md`, historical PR/issue text or the GitHub default branch alone.
+1. Read QUANT_NORTH_STAR.md, then governance/CURRENT_PROJECT_STATE_2026-10-20.md on the repository default ref. Resolve that ref remotely; do not assume an old checkout contains the latest router.
+2. Treat summaries as navigation claims. Check LAST_VERIFIED_AT, LAST_VERIFIED_REF and OBSERVATION_METHOD. Reconcile relevant current refs, newer work and exact evidence before choosing an action. Unindexed or conflicting activity stays UNKNOWN/UNRECONCILED. Absence of a handoff is not a reason to restart completed work.
+3. Distinguish VERIFIED (specific assertion actually checked), REPORTED (document claim), STALE and UNKNOWN. Work may be ACTIVE, PARKED or BLOCKED. Built, qualified, integrated, promoted, active and used are different dimensions. CI on another SHA does not qualify this subject; Git does not prove current runtime health.
+4. Inspect existing evidence before proposing work. Reuse, connect or repair before building. NO_CHANGE_REQUIRED, BLOCK, PARK and UNKNOWN are valid deliverables; a patch is not mandatory.
+5. High-value work (including autonomous prompts, architecture, scientific protocols and persistent working rules) self-triggers: OBJECTIVE → INSPECT EXISTING EVIDENCE → PROPOSE → COUNTEREXAMPLE / BYPASS / BLIND SPOT → REVISE IF NEEDED → VERIFY → RECORD RESULT. Record the concrete objection, its disposition, revisions or why none were needed, exact checks and limits. Ordinary small tasks need only proportionate verification.
+6. Before pursuing a side finding ask: DOES THIS CHANGE THE DECISION OR UNBLOCK THE USER OBJECTIVE? If no, PARK it with a reopening condition. UNKNOWN can BLOCK the affected action; it does not authorize unlimited auditing. Request independent review only when consequences/risk warrant it. Owner permission and technical/scientific verification are separate; self-review is not independent review.
+7. Update only the necessary existing state/index: what was actually done, subject/base identity, evidence versus reports, checks performed, remaining unknowns, parked issues and the next bounded action with revalidation conditions. Use native Git history for changes, not duplicate logs. Verify the remote update before claiming durable completion. An unpushed local SHA remains provisional.
+8. After interruption repeat reconciliation, not the completed task. If a decisive premise cannot be established, record BLOCK/UNKNOWN and stop that action.
 
-## Current topology
-
-- Oracle V1 live runtime: `builder/oracle-economic-loop-recovery-20261019`
-- forensic / V2 baseline: `audit/forensic-checkpoint-20261019` -> `CHECKPOINT_010.md`
-- V2 canonical trunk: `NOT_YET_DECLARED`
-- default branch: temporary routing/historical portal during repository cleanup
+Historical routing and cleanup documents may conflict. CP11 destructive commands are superseded; no branch deletion, runtime activation, promotion or economic authority follows from this documentary repair. Follow the current state rather than old September handoffs or an old NEXT_BUILD_MISSION.
 
 ## Prime rule
 
@@ -80,9 +79,9 @@ Use broad inexpensive/deterministic monitoring before expensive reasoning. Reser
 
 ## Repository hygiene
 
-Current procedure:
+Historical procedure (not execution authority):
 
-`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`
+`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`. Reconcile the current project state and later audit decisions before using it.
 
 Branch sprawl is now considered a project defect.
 

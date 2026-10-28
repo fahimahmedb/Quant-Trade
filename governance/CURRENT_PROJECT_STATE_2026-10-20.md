@@ -1,17 +1,42 @@
 # CURRENT PROJECT STATE — 2026-10-20
 
-Status: **CURRENT ROUTING AUTHORITY** for repository orientation.
+Status: **RECOVERY INDEX — not autonomous authority or proof of current runtime**.
 
 `QUANT_NORTH_STAR.md` remains the highest-level product specification.
 
-## Current lines
+
+## Current continuity mission — 2026-10-28
+
+Owner mandate (REPORTED here by implementing agent from the current request): MINIMAL DURABLE CONTINUITY REPAIR + SUCCESSION TEST; documentation and bounded succession tasks only. No new security program or production implementation is authorized by this record.
+
+| Work | Status | Evidence / limits | Next action |
+|---|---|---|---|
+| Minimal continuity repair | ACTIVE; document changes implemented in containing Git commit | README + AGENTS + this existing router; inspect native commit diff. Succession not yet proven. | Fresh AI-A recovers from repository only, selects and performs a bounded documentary verification task, records its evidence/result here; then fresh AI-B succeeds it without a handoff. |
+| C0 membrane | REPORTED engineering candidate PASS; final checks UNKNOWN | [Exact summary](https://github.com/fahimahmedb/Quant-Trade/blob/13721384fe5b94b0136fb4548192e05d5e34e605/continuity/c0_membrane/evidence/QUALIFICATION_SUMMARY.json): candidate c028bc866d8dbca56028b4b859b00d34bfb7dbe1 differs from attestation SHA; FINAL_RESULT=PENDING_EXTERNAL_FINAL_CHECKS. Run claims not reverified by this documentary repair. | Do not repeat C0 repair or claim global qualification; inspect later receipts only if the selected task requires it. |
+| E2 / UST | REPORTED BLOCKED / unresolved | Same C0 summary; not a fresh global audit. | Preserve UNKNOWN; no economic execution or authority inference. |
+| C1–C4 security/enforcement | PARKED | Prior mapping retained externally; findings not erased. Current Owner mandate prioritizes continuity. | Reopen only if a concrete failed recovery/continuation step depends on a specific defect. |
+| Whole-project work/roadmap | PARTIAL / UNKNOWN outside inspected scope | Existing historical index below; not every later workstream has been reconciled. | Reconcile only relevant newer refs/evidence, never present this limited index as exhaustive. |
+
+Observed discovery anchors (VERIFIED ref existence/HEAD only, not qualification/integration):
+- refs/heads/builder/convergence-wave2-canonical-20261021: ebc72b9fd14f91420c37e0b7607f9bfb584a289a
+- refs/heads/builder/v2-forward-20261020: ded4228de74ce3b6926d9ea3e3c2114ff1be8208
+- refs/heads/codex/c0-membrane-qualification-20261027: 13721384fe5b94b0136fb4548192e05d5e34e605
+- refs/heads/review/post-disclosure-pass-b-20261027: c081a05692e81ad0b999bf46d5f8988649aa7d24
+
+DO_NOT_REPEAT: CP11 cleanup/deletion; frozen historical experiments; completed C0 work based solely on stale routing; the continuity bootstrap repair once its diff is present. Reassess precise scope before any repeat.
+
+Freshness rule: date/ref/method bind each observation. A changed head or unavailable decisive evidence invalidates the corresponding claim, not every unrelated row. A summary or an agent assertion remains REPORTED until its underlying evidence is checked. Local-only work unavailable remotely cannot be recovered from this index.
+
+Historical sections below are retained as REPORTED/ST​ALE navigation (the date in this file name is not its freshness). Use the recovery procedure in AGENTS; no conflicting historical cleanup instructions override it.
+
+## Historical lines — revalidate before use
 
 ### Oracle H24 V1
 
 - branch: `builder/oracle-economic-loop-recovery-20261019`
 - class: `LIVE_RUNTIME_V1`
 - qualified release: `f3943830e20b05d926d3013501573b8b21fdace7`
-- V1 is operationally qualified and continues autonomously.
+- REPORTED historical operational qualification; current running release/health UNKNOWN until independently observed.
 - V1 proves runtime/scheduling/recovery, not economic edge.
 
 Always resolve its fresh HEAD before making implementation claims.
@@ -56,7 +81,14 @@ Current CP12 registries:
 
 ## Repository hygiene status
 
-Current observed branch count: **229**.
+Historical CP12 count: **229 — STALE**.
+
+LAST_VERIFIED_AT: 2026-10-28T12:44:46.148Z
+LAST_VERIFIED_REF: GitHub heads collection; portal base 9026e4d83d0b3d67637ca8e8437125a372109369
+OBSERVATION_METHOD: GET /repos/fahimahmedb/Quant-Trade/git/matching-refs/heads/; count complete returned array.
+REMOTE_OBSERVED_BRANCH_COUNT: 270 (VERIFIED only for this observation, before this repair branch; not a live counter).
+
+Refresh the complete refs inventory before using the count. Branch creation/deletion after the observation makes it STALE; never infer mission completion from a branch count.
 
 The previous one-shot CP11 cleanup is disabled and MUST NOT be run.
 

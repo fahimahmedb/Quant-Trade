@@ -8,12 +8,9 @@ Quant-Trade is a persistent quantitative system whose long-term objective is gen
 
 Do **not** infer current authority from branch names, old PRs, September Blue handoffs, CP11, or the default branch's code snapshot.
 
-Read first:
+Recovery procedure: read [AGENTS.md](AGENTS.md), section “Minimal recovery and durable work”. It routes to the existing [project state](governance/CURRENT_PROJECT_STATE_2026-10-20.md). Summaries below are historical reports, not current runtime observations; reconcile recent refs and evidence before acting.
 
-1. `QUANT_NORTH_STAR.md`
-2. `governance/CURRENT_PROJECT_STATE_2026-10-20.md`
-3. current CP12 audit on `audit/forensic-checkpoint-20261019`
-4. resolve the exact live branch + HEAD for the workstream you are changing
+## Historical routing — reconcile before use
 
 ## Current live lines
 
@@ -21,7 +18,7 @@ Read first:
 
 `builder/oracle-economic-loop-recovery-20261019`
 
-Operationally qualified autonomous pre-outcome Research OS runtime. It continues to advance. V1 proves scheduling/persistence/recovery—not economic edge.
+Historically reported operationally qualified pre-outcome runtime; current running identity and health require fresh observation. V1 proves scheduling/persistence/recovery—not economic edge.
 
 ### Oracle V2 Core
 
@@ -43,7 +40,7 @@ Current cleanup authority is **CP12**, not CP11.
 
 CP12 established:
 
-- current branch count = **229**;
+- branch count at the CP12 observation = **229**, now STALE; see the project state for dated observations and refresh method;
 - V1 remains live;
 - V2 Core is active but incomplete as a historical-capability absorption target;
 - Research Factory Core, Evidence/Identity, SEC Census, aggressive Research OS, Edge Lab, Legacy reconciliation and Design V1 still carry material unique content;
