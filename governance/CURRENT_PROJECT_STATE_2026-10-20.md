@@ -11,7 +11,7 @@ Owner mandate (REPORTED here by implementing agent from the current request): MI
 
 | Work | Status | Evidence / limits | Next action |
 |---|---|---|---|
-| Minimal continuity repair | ACTIVE; document changes implemented in containing Git commit | README + AGENTS + this existing router; inspect native commit diff. Succession not yet proven. | Fresh AI-A recovers from repository only, selects and performs a bounded documentary verification task, records its evidence/result here; then fresh AI-B succeeds it without a handoff. |
+| Minimal continuity repair | AI-A repository-only recovery and documentary verification COMPLETE; second succession PENDING | README → AGENTS → this router recovered successfully; bounded check below. This is not proof of whole-project or runtime continuity. | Fresh AI-B recovers from repository only, independently checks this result, then verifies the pinned C0 summary's candidate/attestation/final-result fields and records only the supported documentary conclusion. Resolve the current C0 ref first; do not rerun qualification or infer economic authority. |
 | C0 membrane | REPORTED engineering candidate PASS; final checks UNKNOWN | [Exact summary](https://github.com/fahimahmedb/Quant-Trade/blob/13721384fe5b94b0136fb4548192e05d5e34e605/continuity/c0_membrane/evidence/QUALIFICATION_SUMMARY.json): candidate c028bc866d8dbca56028b4b859b00d34bfb7dbe1 differs from attestation SHA; FINAL_RESULT=PENDING_EXTERNAL_FINAL_CHECKS. Run claims not reverified by this documentary repair. | Do not repeat C0 repair or claim global qualification; inspect later receipts only if the selected task requires it. |
 | E2 / UST | REPORTED BLOCKED / unresolved | Same C0 summary; not a fresh global audit. | Preserve UNKNOWN; no economic execution or authority inference. |
 | C1–C4 security/enforcement | PARKED | Prior mapping retained externally; findings not erased. Current Owner mandate prioritizes continuity. | Reopen only if a concrete failed recovery/continuation step depends on a specific defect. |
@@ -28,6 +28,18 @@ DO_NOT_REPEAT: CP11 cleanup/deletion; frozen historical experiments; completed C
 Freshness rule: date/ref/method bind each observation. A changed head or unavailable decisive evidence invalidates the corresponding claim, not every unrelated row. A summary or an agent assertion remains REPORTED until its underlying evidence is checked. Local-only work unavailable remotely cannot be recovered from this index.
 
 Historical sections below are retained as REPORTED/ST​ALE navigation (the date in this file name is not its freshness). Use the recovery procedure in AGENTS; no conflicting historical cleanup instructions override it.
+
+## Bounded recovery verification — 2026-10-28
+
+LAST_VERIFIED_AT: 2026-10-28 (GitHub reads during this documentary task).
+LAST_VERIFIED_REF: default branch `blue/master-v2-2026-09-20` at `d7b296e055203148bdac6770cb14668f05ad479a`; router blob `f55c2cf4ed39f92e69fcc9f67d0d3bde621d05ba`.
+OBSERVATION_METHOD: GitHub repository metadata, remote default-head lookup, direct file reads and a router read pinned to that exact HEAD.
+
+Objective/result: **VERIFIED bounded documentary recovery**. README routes to AGENTS; AGENTS names the North Star and this existing router. Those sources identify the current continuity mission and distinguish it from historical CP12 work. CP12 and its workstream index were read on `audit/forensic-checkpoint-20261019` as historical navigation; their file blobs were `24369ef726f05bf5baa94785cc14c44f9de43881` and `252174d0f65faee27ede7d7f551a582f49e78e25`. No fresh global audit or runtime observation follows from these reads.
+
+Counterexample checked: `STATE.md` still calls itself compact current state and offers September research/data-acquisition next actions. Following it directly could restart historical work or cross the closed authority boundary. Disposition: **STALE for current mission selection**; retain its historical/generated content, and recover through README → AGENTS → this router. No regeneration or scientific rerun was performed.
+
+Limits: this verifies one recovery and selection step only. C0 qualification, E2/UST, later workstream integration and current runtime health remain REPORTED/UNKNOWN as stated above; their evidence was not requalified. The four discovery anchors above were not refreshed by this task. A second fresh succession is still required. Reopen this result if the routing files or selected subject change; compare the exact remote head/blob before the next documentary update.
 
 ## Historical lines — revalidate before use
 
