@@ -1,0 +1,121 @@
+{
+  "result": "BLOCK",
+  "test_executed": "offline extracted historical checks",
+  "test_passed": "blocker witnesses reproduced; no successor PASS implied",
+  "source_sha": "68bbab8ec990c813310224bc8737c41480853108",
+  "cases": {
+    "valid_bbo": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": false
+    },
+    "missing_bid": {
+      "capture_error": "",
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "missing_ask": {
+      "capture_error": "",
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "missing_timestamp": {
+      "capture_error": "",
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "malformed_numeric": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "zero_price": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "negative_price": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "stale": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "future": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "wrong_instrument": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": false
+    },
+    "wrong_venue": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": false
+    },
+    "unexpected_units": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": false
+    },
+    "unexpected_precision": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": false
+    },
+    "wrong_schema": {
+      "capture_error": "",
+      "historical_stop": false,
+      "evaluator_rejected": true
+    },
+    "empty_body": {
+      "capture_error": "Expecting value: line 1 column 1 (char 0)",
+      "historical_stop": true,
+      "evaluator_rejected": true
+    },
+    "partial_body": {
+      "capture_error": "Expecting property name enclosed in double quotes: line 1 column 3 (char 2)",
+      "historical_stop": true,
+      "evaluator_rejected": true
+    },
+    "oversized": {
+      "capture_error": "body limit",
+      "historical_stop": true,
+      "evaluator_rejected": true
+    },
+    "duplicate_observation": {
+      "interval_rejected": true
+    },
+    "out_of_order": {
+      "interval_rejected": true
+    },
+    "missing_source_provenance": {
+      "capture_error": null,
+      "historical_stop": false,
+      "evaluator_rejected": false
+    },
+    "timeout": {
+      "status": "NOT_EXECUTED_TRANSPORT_BASELINE_UNQUALIFIED"
+    },
+    "http_error": {
+      "status": "NOT_EXECUTED_TRANSPORT_BASELINE_UNQUALIFIED"
+    }
+  },
+  "real_outcome_access": false,
+  "historical_runner_executed": false,
+  "successor_runner_qualified": false,
+  "successor_evaluator_qualified": false,
+  "challenge_script_sha256": "371ad1e0fbc5cac90413b5d442aeefe9d7a29a5aa652c03df3a852bca8129f3f",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "repository_base": "42affc56635b9dc7de411b544f657f98967f2371",
+    "network_required": false
+  }
+}

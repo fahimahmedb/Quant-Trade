@@ -4,6 +4,21 @@ Status: **RECOVERY INDEX — not autonomous authority or proof of current runtim
 
 `QUANT_NORTH_STAR.md` remains the highest-level product specification.
 
+## WP1 book-pressure pre-exposure — 2026-10-28
+
+Builder result: **BLOCK**, bounded to the historical book-pressure successor.
+Evidence/reconstruction and blocked join identities:
+[`qualification/wp1_book_pressure/RESULT.md`](../qualification/wp1_book_pressure/RESULT.md).
+Offline synthetic challenge reproduced historical empty-error continuation and
+wrong-symbol/declared-wrong-unit admission. Source schema bytes/semantics are not
+established by the inspected preserved download receipt; no live probe occurred.
+Historical trial remains PARK_DATA / CAPTURE_INVALID and non-rerunnable; one
+attempt, zero valid trades, private exposure and effective multiplicity UNKNOWN.
+No successor declared, product repair, experiment, authority opening or independent
+validation. Next bounded action: recover authoritative preserved source evidence;
+then resolve semantic discrepancies and qualify affected dependencies offline.
+Reopen on that evidence, not by rerunning capture or broadening governance work.
+
 
 ## Current continuity mission — 2026-10-28
 

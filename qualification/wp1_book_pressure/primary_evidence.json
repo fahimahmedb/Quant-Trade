@@ -1,0 +1,35 @@
+{
+  "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.md": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "git_blob": "c62b759ff7337a340282d04c9103fcd5b1cc89a8",
+    "sha256": "08badfd3d51d6ba5bbabdcfa9eef054c269ae849d3971fad479a80ae6aedc6df"
+  },
+  "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.original_capture.py": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "git_blob": "19abb16d8980003f808132d10c2e8fe570ac0e7a",
+    "sha256": "3ca4ac69a5fa29aaf5bbb618627e98b5f2e839e2766e7c6fe7a73765f09d78bb"
+  },
+  "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.original_calculation.py": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "git_blob": "a24fb2296061f1044d1c6ea007402c65639b631c",
+    "sha256": "e7501f958585b67d91b2be9abc3001e99eab4a9e7204aa749f2b470629c5689c"
+  },
+  "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.quality.json": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "git_blob": "6e56218941825491122d6ab6b860999da21b808d",
+    "sha256": "8873e1126b27289353e535dd8ef806cc2472e53a4ac7eb872de9101e3148aa48"
+  },
+  "research/edge_lab/discovery/experiments/disc-crypto-book-pressure-prospective-l1-v0.result.json": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "git_blob": "a28ff8775ffb9233a788f79d7a487ba4631d3f92",
+    "sha256": "8845cf3ab3ce20efd3d20acb87b9176b1411fc56ee5552d4bdbd0de5f879ab65"
+  },
+  "research/edge_lab/discovery/STATE.json": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "sha256": "fd0584cad97e86bbc1db3bc26737f5c7f3c2f6120b47f01b9559ddaf51acb67f"
+  },
+  "research/edge_lab/sources/bitmex_api_metadata_20261011.json": {
+    "commit": "68bbab8ec990c813310224bc8737c41480853108",
+    "sha256": "c0243ddea011d1983e141c377c645336139ba05024a044cf2ac41326549eb560"
+  }
+}
