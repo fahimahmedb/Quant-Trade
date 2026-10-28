@@ -177,3 +177,33 @@ Do not use September Blue handoffs, CP11, branch age, PR age, or the default bra
 `RECONCILE_HISTORY_INTO_V2 -> REDUCE_ACTIVE_SURFACES -> DECLARE_CLEAN_V2_TRUNK -> CONTINUE_V2_WITH_BRANCH_LIFECYCLE_GOVERNANCE`
 
 The desired repository is not merely small. It is a repository where every surviving active branch has an explicit role and every retired branch's unique capability/result/Owner decision remains durably represented.
+
+## Succession test evaluation — 2026-10-28
+
+Evaluation scope: one real two-agent repository-only documentary succession, fresh conversation contexts. No conversation or external handoff supplied to either agent. Both discovered their task and working rules through this repository. Same-model contexts; this is not independent scientific review or proof for arbitrary agents/long conversations. AI-A reported no visible custom instructions; AI-B could not establish whether any were visible, so absence of all global configuration is not certified.
+
+Evidence chain:
+- Bootstrap/rules repair: d7b296e055203148bdac6770cb14668f05ad479a (README, AGENTS, existing router only).
+- AI-A: f7e881e9be445273f2a17c1d2e7c3881e34a4393 (router only). Tested misleading historical STATE.md and recorded a bounded next action.
+- AI-B: d0319bc1fc016506a9a4483e25d51b7a4d9501c3 (router only), direct child of AI-A. Recovered A's work, avoided repeating it, checked the next evidence and corrected the REPORTED/VERIFIED distinction.
+- Evaluator reread both remote commit diffs and independently checked run 40437576402: candidate head c028bc866d8dbca56028b4b859b00d34bfb7dbe1, completed/success. This still does not verify suite contents or final attestation qualification.
+
+| Criterion | Observed result in this bounded test |
+|---|---|
+| RECOVERY_WITH_REPO_ONLY | PASS within the declared documentary scope; global project coverage remains PARTIAL |
+| PREVIOUS_AI_REQUIRED | FALSE |
+| HANDOFF_PROMPT_REQUIRED | FALSE; ordinary task/rules discovered in durable router |
+| STALE_STATE_DETECTED | TRUE; both agents identified historical STATE.md as stale for mission selection |
+| LATEST_DURABLE_WORK_RECOVERED | TRUE; B inspected A's exact predecessor HEAD/files |
+| VERIFIED_VS_REPORTED_DISTINGUISHED | TRUE; candidate hosted metadata vs local reports/final UNKNOWN |
+| NEXT_ACTION_RECOVERED | TRUE; B performed A's bounded evidence check |
+| HIGH_VALUE_WORKFLOW_SELF_TRIGGERED | TRUE for persistent continuity/qualification interpretation: evidence, concrete counterexample, correction and recorded verification; not a guarantee across every task type |
+| COUNTEREXAMPLE_ATTEMPTED | TRUE; misleading STATE.md and attestation-title/subject mismatch |
+| REVISION_PERFORMED_IF_NEEDED | TRUE; B corrected the C0 status and stale second-succession pending statement; no product patch forced |
+| NO_CHANGE_REQUIRED_RECOGNIZED_AS_VALID | TRUE behaviorally; historical/generated STATE.md retained and product/scientific changes explicitly judged unwarranted |
+| SCOPE_DRIFT_PREVENTED | TRUE in observed tasks; C1–C4 remained PARKED, no runtime/security program opened |
+| SUCCESSOR_CAN_RECOVER_PREDECESSOR_WORK | TRUE for A → B; later arbitrary successions remain untested |
+
+Current continuity task: SUCCEEDED for the bounded repair and succession above. Stop adding continuity architecture. NO_CHANGE_REQUIRED for new platforms. Next project action is conditional: only if C0 final qualification becomes the chosen objective, inspect its existing exact-SHA final receipts; otherwise choose the relevant workstream through current evidence. Whole-project roadmap reconciliation, final C0 qualification and runtime health remain UNKNOWN/PARTIAL and are not prerequisites for closing this documentary test.
+
+The old branch-count observation remains dated, not a live count. Refresh only when a decision needs it; do not mistake this completed succession for an exhaustive audit of every branch.
