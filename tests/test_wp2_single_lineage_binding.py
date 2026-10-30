@@ -7,6 +7,7 @@ import unittest
 from continuity.wp2_binding.synthetic_binding import SINK, TASK_ID, SyntheticWP2Binding
 from research.research_os.github_state import PREFIX, StateConflict
 from research.research_os.oracle_worker import ResearchOSWorker
+from research.research_os.scientific_store import sha256_json
 from research.research_os.tests.test_experiment_runner_frozen_protocol import fixture
 from research.research_os.tests import test_oracle_worker as worker_fixture
 from research.research_os.worker_stages import StageBlocked
@@ -58,7 +59,17 @@ class WP2SingleLineageTests(unittest.TestCase):
         self.assertEqual(receipt["runner_subject"], receipt["evaluator_subject"])
         self.assertEqual(receipt["task_id"], TASK_ID)
         self.assertEqual(receipt["lease_generation"], 1)
-        self.assertTrue(receipt["receipt_hash"])
+        receipt_fields = {key: value for key, value in receipt.items() if key != "receipt_hash"}
+        self.assertEqual(receipt["receipt_hash"], sha256_json(receipt_fields))
+        worker_metadata = {
+            "input_head", "preflight", "state_repository", "state_branch", "authority",
+            "outcome_accessed",
+        }
+        worker_output = self.read(
+            f"artifacts/{TASK_ID}/oracle-worker/recover_or_qualify.json"
+        )
+        self.assertTrue(worker_metadata <= worker_output.keys())
+        self.assertTrue(worker_metadata.isdisjoint(receipt))
         self.worker().wake()
         self.assertEqual(self.harness.count_paths(f"artifacts/{TASK_ID}/wp2/"), 1)
 

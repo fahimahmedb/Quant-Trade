@@ -86,4 +86,4 @@ class SyntheticWP2Binding:
             "owner_promotion": False,
         }
         receipt["receipt_hash"] = sha256_json(receipt)
-        return receipt, {SINK: receipt}, "COMPLETE"
+        return deepcopy(receipt), {SINK: receipt}, "COMPLETE"
