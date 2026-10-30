@@ -21,9 +21,42 @@ _ALLOWED_ACTIONS_BY_EVENT: dict[str, set[str]] = {
     "REVIEW_UNKNOWN_EXHAUSTED": {"CONTINUE", "PARK"},
 }
 
+_IMMUTABLE_DELEGATION_ENVELOPE = (
+    "ENGINEERING-ONLY AUTHORITY ENVELOPE (IMMUTABLE):",
+    "- Do not select, execute, inspect outcomes for, or modify economic hypotheses.",
+    "- Do not perform scientific unblinding or prospective exposure.",
+    "- Do not authorize or perform real-capital or live-trading activity.",
+    "- Do not redefine frozen scientific protocol, denominator, endpoint, or lineage.",
+    "- Do not perform irreversible external mutation or production deployment.",
+    "- Work only on bounded, reversible engineering/review/qualification tasks.",
+)
+
+_FORBIDDEN_PROMPT_FRAGMENTS = (
+    "live trading",
+    "real capital",
+    "scientific unblind",
+    "unblinding",
+    "economic hypothesis",
+    "economic hypotheses",
+    "market outcome",
+    "outcome access",
+    "prospective exposure",
+    "production trading",
+    "deploy to production",
+    "frozen protocol redefinition",
+    "denominator redefinition",
+    "endpoint redefinition",
+    "lineage redefinition",
+)
+
+
+def _scope_violations(prompt: str) -> list[str]:
+    text = prompt.casefold()
+    return [fragment for fragment in _FORBIDDEN_PROMPT_FRAGMENTS if fragment in text]
+
 
 class FencedGitHubIssueClient(GitHubIssueClient):
-    """GitHub client that proves the posting principal matches the configured actor."""
+    """GitHub client that proves the posting principal before any mutation."""
 
     def __init__(self, repository: str, issue_number: int, token: str,
                  expected_actor: str, api_url: str = "https://api.github.com"):
@@ -32,13 +65,29 @@ class FencedGitHubIssueClient(GitHubIssueClient):
         if not actor:
             raise ValueError("expected_actor is required")
         self.expected_actor = actor
+        self._identity_verified = False
+
+    def _verify_identity(self) -> None:
+        if self._identity_verified:
+            return
+        # This is deliberately a read-only request. Tokens that cannot prove a
+        # principal through /user fail closed before any actionable comment is sent.
+        profile = self._request("GET", "/user")
+        actual = str((profile or {}).get("login") or "")
+        if actual != self.expected_actor:
+            raise RuntimeError(
+                "GitHub posting identity mismatch before mutation: "
+                f"configured={self.expected_actor!r} observed={actual!r}"
+            )
+        self._identity_verified = True
 
     def post_comment(self, body: str) -> dict[str, Any]:
+        self._verify_identity()
         item = super().post_comment(body)
         actual = str(item.get("author") or "")
         if actual != self.expected_actor:
             raise RuntimeError(
-                "GitHub posting identity mismatch: "
+                "GitHub posting identity changed after verification: "
                 f"configured={self.expected_actor!r} observed={actual!r}"
             )
         return item
@@ -64,6 +113,16 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
                 if str(comment.get("author") or "") == self.trusted_orchestrator_actor
             ]
         return super()._has_marker(kind, comments, expected)
+
+    def _dispatch_body(self, task, state: OrchestrationState) -> str:
+        violations = _scope_violations(state.current_prompt)
+        if violations:
+            raise ValueError(
+                "delegation prompt violates immutable engineering envelope: "
+                + ", ".join(violations)
+            )
+        envelope = "\n".join(_IMMUTABLE_DELEGATION_ENVELOPE)
+        return envelope + "\n\n" + super()._dispatch_body(task, state)
 
     def _valid_review(self, comments: list[dict[str, Any]],
                       state: OrchestrationState) -> str | None:
@@ -116,6 +175,7 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
             "state": asdict(state),
             "evidence": evidence,
             "allowed_actions": sorted(allowed),
+            "immutable_delegation_envelope": list(_IMMUTABLE_DELEGATION_ENVELOPE),
             "hard_boundaries": [
                 "real capital/live trading",
                 "irreversible scientific unblinding",
@@ -139,4 +199,16 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
                 ),
                 "rejected_action": action,
             }
+        if action == "CONTINUE":
+            prompt = str(decision.get("prompt") or "")
+            violations = _scope_violations(prompt)
+            if violations:
+                return {
+                    "action": "PARK",
+                    "reason": (
+                        "machine policy rejected continuation outside engineering envelope: "
+                        + ", ".join(violations)
+                    ),
+                    "rejected_action": "CONTINUE",
+                }
         return decision
