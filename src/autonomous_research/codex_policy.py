@@ -9,6 +9,7 @@ from .codex_adapter import (
     CodexOrchestrationWorker,
     GitHubIssueClient,
     OrchestrationState,
+    _parse_markers,
 )
 
 
@@ -55,7 +56,7 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
 
     def _has_marker(self, kind: str, comments: list[dict[str, Any]],
                     expected: dict[str, Any]) -> bool:
-        # Dispatch/review-request markers are control-plane messages.  A third
+        # Dispatch/review-request markers are control-plane messages. A third
         # party must not be able to pre-seed one and suppress the real wake.
         if kind in {"dispatch", "review_request"}:
             comments = [
@@ -63,6 +64,49 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
                 if str(comment.get("author") or "") == self.trusted_orchestrator_actor
             ]
         return super()._has_marker(kind, comments, expected)
+
+    def _valid_review(self, comments: list[dict[str, Any]],
+                      state: OrchestrationState) -> str | None:
+        # Builder and reviewer tasks may be represented by the same connector bot
+        # identity. Prevent pre-seeded/self-approval by requiring the review marker
+        # to be posted strictly AFTER a trusted review-request control comment.
+        request = {
+            "task_id": state.task_id,
+            "dispatch_id": state.dispatch_id,
+            "review_attempt": state.review_attempt,
+            "result_sha": state.result_sha,
+        }
+        request_ids: list[int] = []
+        for comment, payload in _parse_markers("review_request", comments):
+            if str(comment.get("author") or "") != self.trusted_orchestrator_actor:
+                continue
+            if not all(payload.get(key) == value for key, value in request.items()):
+                continue
+            try:
+                request_ids.append(int(comment.get("id")))
+            except (TypeError, ValueError):
+                continue
+        if not request_ids:
+            return None
+        request_id = max(request_ids)
+
+        for comment, payload in reversed(_parse_markers("review", comments)):
+            try:
+                review_comment_id = int(comment.get("id"))
+            except (TypeError, ValueError):
+                continue
+            if review_comment_id <= request_id:
+                continue
+            author = str(comment.get("author") or "")
+            if self.config.allowed_review_authors and author not in self.config.allowed_review_authors:
+                continue
+            if (payload.get("task_id") == state.task_id
+                    and payload.get("dispatch_id") == state.dispatch_id
+                    and payload.get("review_attempt") == state.review_attempt
+                    and payload.get("result_sha") == state.result_sha
+                    and payload.get("verdict") in {"PASS", "REQUEST_CHANGES", "UNKNOWN"}):
+                return str(payload["verdict"])
+        return None
 
     def _decision(self, event: str, state: OrchestrationState,
                   evidence: dict[str, Any]) -> dict[str, Any]:
@@ -85,7 +129,7 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
         state.last_decision = decision
         action = str(decision.get("action") or "").upper()
         if action not in allowed:
-            # Do not let model output widen the machine policy.  Parking is a
+            # Do not let model output widen the machine policy. Parking is a
             # bounded, reversible fail-closed terminal for Phase 1.
             return {
                 "action": "PARK",
