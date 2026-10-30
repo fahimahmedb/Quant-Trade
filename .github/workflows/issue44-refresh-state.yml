@@ -1,0 +1,43 @@
+name: Issue44 refresh generated STATE projection
+
+on:
+  push:
+    branches:
+      - builder/issue44-gpt-oss-codex-phase1-remote-20261030
+    paths:
+      - .github/workflows/issue44-refresh-state.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-state:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate canonical status projection
+        run: python3 scripts/status_artifacts.py --write
+      - name: Prove bounded projection-only delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only)
+          printf 'changed=%s\n' "${changed[*]-}"
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = "STATE.md"
+          grep -F '**378 unit tests discovered**' STATE.md
+      - name: Commit canonical STATE projection only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'issue44-projection-bot'
+          git config user.email 'issue44-projection-bot@users.noreply.github.com'
+          git add -- STATE.md
+          test "$(git diff --cached --name-only)" = "STATE.md"
+          git commit -m 'chore: refresh canonical test inventory projection'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
