@@ -40,6 +40,7 @@ def worker(tmp_path, decision):
         target_branch="builder/test",
         poll_seconds=0,
         max_poll_seconds=0,
+        allowed_review_authors=("reviewer",),
     )
     return PolicyFencedCodexOrchestrationWorker(
         config,
@@ -91,3 +92,40 @@ def test_untrusted_dispatch_marker_cannot_suppress_real_dispatch():
         trusted = {"author": "orchestrator", "body": _marker("dispatch", expected)}
         assert not fenced._has_marker("dispatch", [attacker], expected)
         assert fenced._has_marker("dispatch", [attacker, trusted], expected)
+
+
+def test_review_pass_must_be_after_trusted_review_request():
+    with tempfile.TemporaryDirectory() as directory:
+        fenced = worker(directory, Decision({"action": "PARK"}))
+        review_state = state()
+        review_state.result_sha = SHA_A
+        review_state.review_attempt = 1
+        request_payload = {
+            "task_id": "task",
+            "dispatch_id": "dispatch",
+            "review_attempt": 1,
+            "result_sha": SHA_A,
+        }
+        review_payload = dict(request_payload)
+        review_payload["verdict"] = "PASS"
+
+        preseeded_pass = {
+            "id": 10,
+            "author": "reviewer",
+            "body": _marker("review", review_payload),
+        }
+        trusted_request = {
+            "id": 20,
+            "author": "orchestrator",
+            "body": _marker("review_request", request_payload),
+        }
+        assert fenced._valid_review([preseeded_pass, trusted_request], review_state) is None
+
+        later_pass = {
+            "id": 30,
+            "author": "reviewer",
+            "body": _marker("review", review_payload),
+        }
+        assert fenced._valid_review(
+            [preseeded_pass, trusted_request, later_pass], review_state
+        ) == "PASS"
