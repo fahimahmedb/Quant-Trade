@@ -2,7 +2,7 @@
 """Feature-flagged one-step hook for the existing VM scheduler/GPT-OSS runtime.
 
 This executable deliberately does not open or execute the scientific ResearchCampaign
-queue.  The existing VM scheduler is the wake source; this script advances exactly
+queue. The existing VM scheduler is the wake source; this script advances exactly
 one synthetic engineering-orchestration state-machine step per invocation.
 """
 
@@ -15,10 +15,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from autonomous_research.codex_adapter import (
-    CodexOrchestrationWorker,
-    GitHubIssueClient,
-    OrchestrationConfig,
+from autonomous_research.codex_adapter import OrchestrationConfig
+from autonomous_research.codex_policy import (
+    FencedGitHubIssueClient,
+    PolicyFencedCodexOrchestrationWorker,
 )
 from autonomous_research.runtime import ResearchTask
 
@@ -66,7 +66,7 @@ def main() -> int:
 
     project_root = Path(os.environ.get("QUANT_RESEARCH_ROOT", ".")).resolve()
     # Keep orchestration state physically separate from the validated scientific
-    # ResearchCampaign queue/state.  The default lives under runtime but never
+    # ResearchCampaign queue/state. The default lives under runtime but never
     # opens project_root/runtime/research_queue.json or campaign_state.json.
     orchestration_root = Path(
         os.environ.get(
@@ -82,6 +82,7 @@ def main() -> int:
     task_id = _required("QUANT_CODEX_TASK_ID")
     initial_prompt = _required("QUANT_CODEX_PROMPT")
     token = _required("QUANT_GITHUB_TOKEN")
+    github_actor = _required("QUANT_GITHUB_ACTOR")
     gpt_oss_command = _required("QUANT_GPT_OSS_COMMAND")
 
     config = OrchestrationConfig(
@@ -95,10 +96,20 @@ def main() -> int:
         max_dispatch_attempts=int(os.environ.get("QUANT_CODEX_MAX_DISPATCH_ATTEMPTS", "12")),
         max_review_attempts=int(os.environ.get("QUANT_CODEX_MAX_REVIEW_ATTEMPTS", "3")),
     )
-    client = GitHubIssueClient(repository, issue_number, token)
-    worker = CodexOrchestrationWorker(config, client, subprocess_json_decider(gpt_oss_command))
+    client = FencedGitHubIssueClient(
+        repository,
+        issue_number,
+        token,
+        expected_actor=github_actor,
+    )
+    worker = PolicyFencedCodexOrchestrationWorker(
+        config,
+        client,
+        subprocess_json_decider(gpt_oss_command),
+        trusted_orchestrator_actor=github_actor,
+    )
 
-    # Synthetic engineering/control task only.  No economic/scientific authority is
+    # Synthetic engineering/control task only. No economic/scientific authority is
     # carried into Phase 1 and no scientific queue is opened by this executable.
     task = ResearchTask(
         task_id=task_id,
@@ -119,7 +130,7 @@ def main() -> int:
         },
     )
 
-    # Advance one state-machine step.  The existing VM scheduler supplies future
+    # Advance one state-machine step. The existing VM scheduler supplies future
     # wakes, which makes this restart-safe and prevents a second daemon/timer.
     outcome = worker.step(task)
     print(json.dumps({
