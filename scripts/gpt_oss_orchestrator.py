@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Feature-flagged one-shot entry point for the existing ResearchCampaign scheduler."""
+"""Feature-flagged one-step hook for the existing VM scheduler/GPT-OSS runtime.
+
+This executable deliberately does not open or execute the scientific ResearchCampaign
+queue.  The existing VM scheduler is the wake source; this script advances exactly
+one synthetic engineering-orchestration state-machine step per invocation.
+"""
 
 from __future__ import annotations
 
@@ -15,7 +20,7 @@ from autonomous_research.codex_adapter import (
     GitHubIssueClient,
     OrchestrationConfig,
 )
-from autonomous_research.orchestrator import ResearchCampaign
+from autonomous_research.runtime import ResearchTask
 
 
 def _required(name: str) -> str:
@@ -59,28 +64,71 @@ def main() -> int:
         print("codex orchestration feature flag disabled")
         return 0
 
-    root = Path(os.environ.get("QUANT_RESEARCH_ROOT", ".")).resolve()
+    project_root = Path(os.environ.get("QUANT_RESEARCH_ROOT", ".")).resolve()
+    # Keep orchestration state physically separate from the validated scientific
+    # ResearchCampaign queue/state.  The default lives under runtime but never
+    # opens project_root/runtime/research_queue.json or campaign_state.json.
+    orchestration_root = Path(
+        os.environ.get(
+            "QUANT_CODEX_ORCHESTRATION_ROOT",
+            str(project_root / "runtime" / "codex_control_plane"),
+        )
+    ).resolve()
+
     repository = _required("QUANT_REPOSITORY")
     issue_number = int(_required("QUANT_CODEX_ISSUE_NUMBER"))
     target_branch = _required("QUANT_CODEX_TARGET_BRANCH")
+    expected_head_sha = _required("QUANT_CODEX_EXPECTED_HEAD_SHA")
+    task_id = _required("QUANT_CODEX_TASK_ID")
+    initial_prompt = _required("QUANT_CODEX_PROMPT")
     token = _required("QUANT_GITHUB_TOKEN")
     gpt_oss_command = _required("QUANT_GPT_OSS_COMMAND")
 
     config = OrchestrationConfig(
-        root=root,
+        root=orchestration_root,
         repository=repository,
         issue_number=issue_number,
         target_branch=target_branch,
         poll_seconds=float(os.environ.get("QUANT_CODEX_POLL_SECONDS", "15")),
         max_poll_seconds=float(os.environ.get("QUANT_CODEX_MAX_POLL_SECONDS", "120")),
         max_no_delta_cycles=int(os.environ.get("QUANT_CODEX_MAX_NO_DELTA_CYCLES", "240")),
+        max_dispatch_attempts=int(os.environ.get("QUANT_CODEX_MAX_DISPATCH_ATTEMPTS", "12")),
+        max_review_attempts=int(os.environ.get("QUANT_CODEX_MAX_REVIEW_ATTEMPTS", "3")),
     )
     client = GitHubIssueClient(repository, issue_number, token)
     worker = CodexOrchestrationWorker(config, client, subprocess_json_decider(gpt_oss_command))
-    campaign = ResearchCampaign(root, workers={"codex_orchestrator": worker})
-    status = campaign.run_once()
-    print(json.dumps({"campaign_status": status, "inspection": campaign.inspect()},
-                     sort_keys=True))
+
+    # Synthetic engineering/control task only.  No economic/scientific authority is
+    # carried into Phase 1 and no scientific queue is opened by this executable.
+    task = ResearchTask(
+        task_id=task_id,
+        lane="engineering_orchestration",
+        priority=100.0,
+        reason="advance the bounded GPT-OSS/Codex control loop",
+        worker="codex_orchestrator",
+        metadata={
+            "expected_head_sha": expected_head_sha,
+            "codex_prompt": initial_prompt,
+            "authority": {
+                "real_capital_authorized": False,
+                "live_trading_authorized": False,
+                "scientific_unblinding_authorized": False,
+                "frozen_protocol_redefinition_authorized": False,
+                "irreversible_external_mutation_authorized": False,
+            },
+        },
+    )
+
+    # Advance one state-machine step.  The existing VM scheduler supplies future
+    # wakes, which makes this restart-safe and prevents a second daemon/timer.
+    outcome = worker.step(task)
+    print(json.dumps({
+        "task_id": task_id,
+        "terminal": outcome["terminal"],
+        "result": outcome["result"],
+        "orchestration_root": str(orchestration_root),
+        "scientific_queue_opened": False,
+    }, sort_keys=True))
     return 0
 
 
