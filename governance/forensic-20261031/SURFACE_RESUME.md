@@ -1,32 +1,68 @@
-# Reprise active — historique de surface
+# Historique de surface terminé — reprise vers la carte de capacités
 
-STATUT : IN_PROGRESS. L’Owner a autorisé explicitement la reprise. L’audit global et la simplification ne sont pas terminés. Ne pas interrompre la chronologie après un checkpoint intermédiaire.
+STATUT : `SURFACE_CHRONOLOGY_COMPLETE_NEXT_CAPABILITY_MAP`.
 
-## Curseur durable
+La chronologie quotidienne de surface de la photographie initiale est terminée. **Ne pas recommencer la revue jour-par-jour.** Revenir à une journée uniquement pour résoudre une contradiction précise qui change une décision de capacité, d'autorité ou de réutilisation.
 
-Les **60 premières journées actives** sont traitées jusqu’au **20 octobre inclus** : **4 068 commits** plus les traces GitHub datées associées. Prochaine journée active : **21 octobre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-10-17_2026-10-20.md`.
+## Couverture durable
 
-Méthode : `CHRONOLOGICAL_SURFACE`. Toutes les quatre journées actives, publier un checkpoint puis continuer. Les 6 393 commits / 111 journées / 13 471 occurrences restent l’inventaire initial ; indexé n’est pas relu intégralement.
+- 6 393 / 6 393 commits de la photographie initiale rattachés et parcourus selon la méthode de surface ;
+- 71 journées actives revues jusqu'au 31 octobre 2026 inclus ;
+- 111 journées calendaires indexées ;
+- 13 471 occurrences de sources ;
+- 969 occurrences sans date exploitable conservées `UNKNOWN` ou à associer par SHA sans inventer d'heure ;
+- dernier checkpoint : `surface/CHECKPOINT_2026-10-29_2026-10-31.md`.
 
-## État réutilisable
+`SURFACE_COMPLETE` ne signifie pas lecture profonde des 6 393 diffs ou des 6 465 versions documentaires. Cela signifie que la chronologie active, les principales constructions, corrections, ports, échecs, qualifications et changements d'autorité ont été reconstruits suffisamment pour passer à la réconciliation des capacités.
+
+## Ce que la chronologie change
+
+Le dépôt ne contient pas 275 architectures indépendantes. La dispersion vient surtout de :
+
+1. lignées successives de recherche et résultats négatifs/blocked ;
+2. branches de rôle Builder/Astra/Owner/reviewer autour d'une même capacité ;
+3. campagnes W1/Mega/Wave2/GIGA avec ports sélectifs, adaptations et re-exports ;
+4. snapshots data, CI, wakes et receipts automatiques qui gonflent les compteurs sans créer de nouveaux modules ;
+5. branches longues dont le head actuel a bougé après l'événement historique ;
+6. couches récentes d'autonomie/orchestration encore séparées de l'autorité scientifique et du runtime réellement unattended.
+
+## Invariants réutilisables
 
 - `restaurant-stock/` est hors périmètre Quant.
-- `SCHEDULED_DATA_COLLECTION` représente la collecte planifiée ; snapshots automatiques et heartbeats ne sont pas des modules.
-- Rails : `SAFE_RAIL_PROSPECTIVE`, `FAST_RAIL_C_PAPER_SHADOW`, `HISTORICAL_PIT_VALIDATION`, `CI_ONLY_AUDIT_SURFACES`, `EDGE_LAB_SINGLE_USE_RESEARCH_LOOP`.
-- `REAL_CAPITAL_AUTHORIZED = FALSE`; `REAL_CAPITAL` et `FIXED_COST_BASE` restent inconnus décisifs.
-- Live Lab = `OBSERVABILITY_UX_PROJECTION`, pas vérité scientifique ; PR #29 open/unmerged au dernier état inspecté.
-- Research OS persistent final shape est qualifié dans son domaine, avec autorités à false ; succès domaine != repo-wide green.
-- F1 sealed B = REJECT, F2 permission blocked, EURUSD proxy gelé pre-price, 0DTE mechanism = NO_CANDIDATE après disconfirmation.
+- `SCHEDULED_DATA_COLLECTION` est une seule capacité ; les snapshots de feed ne sont pas des architectures.
+- W1/Mega A/B/D0/C0/E et Multi-Source ont des ports/adaptations vérifiés vers Wave2 ; l'absence d'un ancien chemin ne prouve pas une perte.
+- Wave2 C2 est scellé à `ebc72b9fd14f91420c37e0b7607f9bfb584a289a`, sans implication de production/capital.
+- Le one-shot historique reste `NOT_QUALIFIED` ; les réparations C0/membrane ultérieures ne réécrivent pas son verdict.
+- C0 final : `13721384fe5b94b0136fb4548192e05d5e34e605`, run `40437918834` success.
+- WP2 exact head : `8f8df47d184f0f1594280bec7e9e7941962cf1c5`, run `41069767444` success, claim ceiling = autonomie engineering synthétique.
+- Issue #44 / PR #46 : candidat `afedfd57986aa042e9e97aa53b9db53b4619764f`, run `41203216122` success ; vraie boucle VM unattended non prouvée.
+- `REAL_CAPITAL_AUTHORIZED = FALSE`; `LIVE_TRADING_AUTHORIZED = FALSE`.
 
-Nouveaux invariants 17→20 octobre :
-- single-look économique pinné ;
-- mécanisme gelé avant validation ;
-- chaque hypothèse doit se normaliser vers un **stable id** ;
-- `FRONTIER_EXHAUSTED -> NOOP`, ne pas inventer une hypothèse pour rester actif ;
-- `ORACLE_V2` émerge comme candidat d'ingénierie qualifié, CP057 lie la source exacte de CI sans rediriger l'état scientifique.
+## Lois à ne plus redécouvrir
 
-Preuve Oracle V2 : run `39517451814` `Oracle V2 Core` success sur `fecd09e0839f1208d9f876c311331221bde3ab7d`. Receipt CP057 : qualification complète encore pending ; probe Site 403 ; aucun deployment ; toutes les autorités économique/prospective/capital/live false ; outcome non accédé.
+`REUSE > CONNECT > REPAIR > BUILD`.
 
-Règles : `HYPOTHESIS_PATH != HYPOTHESIS_ID`, `FRONTIER_EXHAUSTED -> NOOP`, `QUALIFICATION_SOURCE_PROVENANCE != SCIENTIFIC_STATE_REDIRECTION`, `CI_GREEN != DEPLOYMENT`.
+`BRANCH_NAME/DATE != AUTHORITY/TIME`.
 
-Poursuivre depuis le **21 octobre**, puis 22, 23 et 24. Publier le prochain checkpoint et continuer immédiatement. Aucun nettoyage destructif, runtime produit ou essai scientifique rejoué pendant cette reconstruction.
+`PATH_ABSENCE != CAPABILITY_LOSS`.
+
+`CI_GREEN != DEPLOYMENT_OR_SCIENTIFIC_AUTHORITY`.
+
+`HISTORICAL_NOT_QUALIFIED` n'est pas réécrit par une réparation ultérieure.
+
+`BLOCK`, `UNKNOWN`, `PARK`, `NO_CHANGE_REQUIRED` sont valides.
+
+`FRONTIER_EXHAUSTED -> NOOP`.
+
+`SELF_PASS != INDEPENDENT_PASS`.
+
+## Prochaine action exacte
+
+**Ne plus poursuivre la chronologie.** Construire maintenant la carte de capacités/lignées depuis les checkpoints existants, `capability-lineages.csv`, `w1-mega-a-lineages.csv`, les receipts CP et les preuves exact-head. Pour chaque famille : `REUSE / CONNECT / REPAIR / PARK / RETIRE`.
+
+Puis proposer deux destinations seulement :
+
+- une branche **code** pour l'implémentation intégrée ;
+- une branche **projet/gouvernance** pour mémoire, preuves, décisions, inconnus et prochaines actions.
+
+Aucune suppression/fusion destructive avant validation de cette carte.
