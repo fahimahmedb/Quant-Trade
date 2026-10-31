@@ -7,10 +7,10 @@
     "commit_traces": 6393,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 44,
-    "commit_traces_surface_reviewed": 2232,
-    "last_checkpoint": "surface/CHECKPOINT_2026-10-01_2026-10-04.md",
-    "next_active_day": "2026-10-05",
+    "surface_reviewed_days": 48,
+    "commit_traces_surface_reviewed": 2449,
+    "last_checkpoint": "surface/CHECKPOINT_2026-10-05_2026-10-08.md",
+    "next_active_day": "2026-10-09",
     "checkpoint_every_active_days": 4,
     "continue_after_checkpoint": true,
     "out_of_scope_side_projects": ["restaurant-stock/"],
@@ -23,10 +23,11 @@
     "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"],
     "real_capital_authorized": false,
     "science_supersessions": ["Weather unconditional prospective label superseded 2026-09-30 by cost-mass transport repair R3"],
-    "weather_authority_rule": "PRE_OP_PASS != EXECUTION_AUTHORITY; audit, Owner decision, and authorized phase remain distinct",
-    "unknowns_not_blocking": ["2026-10-01 non-feed commit detail not fully resolved at surface level"]
+    "weather_authority_rule": "PRE_OP_PASS != EXECUTION_AUTHORITY; RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY; root candidate and reproduced tests do not imply activation",
+    "weather_a2_state_at_2026_10_08": "trusted root candidate exists; Astra lot3 BLOCKED_INCOMPLETE_EVIDENCE; E_EFFECTIVE=FALSE; no activation/release/quarantine lift demonstrated",
+    "unknowns_not_blocking": ["2026-10-01 non-feed commit detail not fully resolved at surface level", "2026-10-06 four non-feed commits not fully resolved at surface level"]
   },
-  "next_action": "Continue with 2026-10-05; process 2026-10-05 through 2026-10-08, publish checkpoint, continue",
+  "next_action": "Continue with 2026-10-09; process 2026-10-09 through 2026-10-12, publish checkpoint, continue",
   "limits": "Metrics/labels remain historical claims unless independently demonstrated; local tests and remote CI are distinct; automated feed commits are data observations, not modules; scientific corrections that remove prior positives supersede earlier labels; branch names/dates do not establish event time or authority",
   "next_action_now": "CONTINUE"
 }
