@@ -7,10 +7,10 @@
     "commit_traces": 6393,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 52,
-    "commit_traces_surface_reviewed": 2762,
-    "last_checkpoint": "surface/CHECKPOINT_2026-10-09_2026-10-12.md",
-    "next_active_day": "2026-10-13",
+    "surface_reviewed_days": 56,
+    "commit_traces_surface_reviewed": 3401,
+    "last_checkpoint": "surface/CHECKPOINT_2026-10-13_2026-10-16.md",
+    "next_active_day": "2026-10-17",
     "checkpoint_every_active_days": 4,
     "continue_after_checkpoint": true,
     "out_of_scope_side_projects": ["restaurant-stock/"],
@@ -18,22 +18,26 @@
     "current_quant_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA"],
     "research_rails": ["SAFE_RAIL_PROSPECTIVE", "FAST_RAIL_C_PAPER_SHADOW", "HISTORICAL_PIT_VALIDATION", "CI_ONLY_AUDIT_SURFACES", "EDGE_LAB_SINGLE_USE_RESEARCH_LOOP"],
     "data_capabilities": ["SCHEDULED_DATA_COLLECTION"],
+    "observability_capabilities": ["OBSERVABILITY_UX_PROJECTION"],
+    "research_os_capabilities": ["RESEARCH_OS_PERSISTENT_STATE"],
     "p0_status": "raw capture integrated in Blue; phase-6 corrective merge in Astra; Gate A exact-head qualified; Gate B/t0 not inferred",
     "known_irreversible_contamination": ["SEC visibility count-proxy exposure observed 2026-09-18"],
     "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"],
     "real_capital_authorized": false,
     "science_supersessions": ["Weather unconditional prospective label superseded 2026-09-30 by cost-mass transport repair R3"],
-    "weather_authority_rule": "PRE_OP_PASS != EXECUTION_AUTHORITY; RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY; root candidate and reproduced tests do not imply activation",
-    "weather_a2_state_at_2026_10_08": "trusted root candidate exists; Astra lot3 BLOCKED_INCOMPLETE_EVIDENCE; E_EFFECTIVE=FALSE; no activation/release/quarantine lift demonstrated",
     "sealed_research_state": {
       "F1_STAGE_A": "DISCOVERY_PERSISTED_NOT_CONFIRMATION; private prior exposure UNKNOWN unless recovered",
       "F1_STAGE_B": "FAMILY_STATUS_REJECT; preserve single evaluation; no retune/rerun",
       "F2": "BLOCKED_DATA_PERMISSION",
-      "EURUSD_RANGE_GRID_001": "FROZEN_PRE_PRICE_PROXY_HARNESS; positive proxy cannot imply live authority"
+      "EURUSD_RANGE_GRID_001": "FROZEN_PRE_PRICE_PROXY_HARNESS; positive proxy cannot imply live authority",
+      "FRONTIER_QUANT_MECHANISM_DISTINCT_001": "NO_CANDIDATE after public-evidence mechanism disconfirmation; no economic outcome access; no prospective observation"
     },
-    "unknowns_not_blocking": ["2026-10-01 non-feed commit detail not fully resolved at surface level", "2026-10-06 four non-feed commits not fully resolved at surface level"]
+    "exact_head_proofs": {
+      "RESEARCH_OS_PERSISTENT_FINAL_SHAPE": "run 38740440664 success @ 083f7bc7b2d6a0de4ddc4804d6c55f40d3ca9504; SEC P0 gate on same SHA failure",
+      "LIVE_LAB_3D": "run 38744604683 success @ 6076774f52ca2e619caaab57fb6a278f47608349; PR29 open/unmerged; no production deployment"
+    }
   },
-  "next_action": "Continue with 2026-10-13; process 2026-10-13 through 2026-10-16, publish checkpoint, continue",
-  "limits": "Metrics/labels remain historical claims unless independently demonstrated; local tests and remote CI are distinct; automated feed/telemetry commits are observations, not modules; discovery is not confirmation; sealed negative results must not be retuned; branch names/dates do not establish event time or authority",
+  "next_action": "Continue with 2026-10-17; process 2026-10-17 through 2026-10-20, publish checkpoint, continue",
+  "limits": "Metrics/labels remain historical claims unless independently demonstrated; automated feed/telemetry/CI commits are activity evidence not modules; domain CI success does not imply repository-wide green; observability UI does not establish research truth; mechanism disconfirmation can close an idea before candidate freeze",
   "next_action_now": "CONTINUE"
 }
