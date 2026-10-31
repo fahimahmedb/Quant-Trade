@@ -123,6 +123,8 @@ def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:
         raise V2ContractError("INVALID_CLOSE_POLICY")
     if not isinstance(payload["allowed_model_set"], list) or not payload["allowed_model_set"]:
         raise V2ContractError("EMPTY_ALLOWED_MODEL_SET")
+    for model in payload["allowed_model_set"]:
+        _require_identifiers({"allowed_model": model}, ("allowed_model",), "EPOCH")
     if not isinstance(payload["epoch_feedback_dependencies"], list):
         raise V2ContractError("INVALID_FEEDBACK_DEPENDENCIES")
     if type(payload["max_candidate_exports"]) is not int or payload["max_candidate_exports"] < 1:
@@ -160,7 +162,23 @@ def assert_epoch_update(previous: Mapping[str, Any], current: Mapping[str, Any],
             raise V2ContractError("POST_EXPORT_EPOCH_MUTATION:" + ",".join(changed))
 
 
+def assert_trial_epoch_window(epoch: Mapping[str, Any], trial: Mapping[str, Any]) -> None:
+    """Bind declared generation time to the existing half-open research window."""
+    try:
+        window = epoch["research_window"]
+        if not isinstance(window, Mapping):
+            raise V2ContractError("INVALID_RESEARCH_WINDOW")
+        start = _parse_time(window["start"])
+        end = _parse_time(window["end"])
+        generated = _parse_time(trial["generated_at"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise V2ContractError("INVALID_TRIAL_EPOCH_TIME") from error
+    if not start <= generated < end:
+        raise V2ContractError("TRIAL_OUTSIDE_EPOCH_RESEARCH_WINDOW")
+
+
 def assert_model_allowed(epoch: Mapping[str, Any], model_identity: str) -> None:
+    _require_identifiers({"model_identity": model_identity}, ("model_identity",), "MODEL")
     if model_identity not in epoch.get("allowed_model_set", []):
         raise V2ContractError("MODEL_OUTSIDE_EPOCH_POLICY")
 
@@ -261,6 +279,31 @@ def assert_validator_candidate_binding(candidate: Mapping[str, Any], validator: 
         raise V2ContractError("VALIDATOR_HASH_MISMATCH")
 
 
+def assert_trial_proposal_binding(candidate: Mapping[str, Any], trial: Mapping[str, Any]) -> None:
+    """Join a generated proposal to its exact subject, not merely its trial ID.
+
+    Native producer trials reference the original source Candidate; generic V2
+    trials reference the V2 Candidate itself. These hashes are not interchangeable.
+    """
+    _require_identifiers(candidate, ("hypothesis_id", "generation_id"), "TRIAL_CANDIDATE")
+    manifest = candidate.get("evidence_manifest")
+    if not isinstance(manifest, Mapping):
+        raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+    reference = candidate.get("candidate_hash")
+    if "source_candidate_hash" in manifest or "documentary_packet_hash" in manifest:
+        reference = manifest.get("source_candidate_hash")
+        packet_hash = manifest.get("documentary_packet_hash")
+        if not _is_sha256(packet_hash) or trial.get("source_packet_hash") != packet_hash:
+            raise V2ContractError("TRIAL_SOURCE_PACKET_BINDING_MISMATCH")
+    if not _is_sha256(reference):
+        raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+    expected = {"hypothesis_id": candidate.get("hypothesis_id"),
+                "generation_id": candidate.get("generation_id"), "candidate_hash": reference}
+    if not any(isinstance(proposal, Mapping) and all(proposal.get(k) == v for k, v in expected.items())
+               for proposal in trial["generated_proposals"]):
+        raise V2ContractError("TRIAL_PROPOSAL_BINDING_MISMATCH")
+
+
 def build_priority_decision(*, policy_version: str, eligible: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     if not policy_version or not eligible:
         raise V2ContractError("PRIORITY_REQUIRES_POLICY_AND_ELIGIBLE_SET")
@@ -305,7 +348,7 @@ def _scan_forbidden_outcome_keys(value: Any, path: str = "$") -> List[str]:
             if key_norm in FORBIDDEN_OUTCOME_KEYS:
                 hits.append(f"{path}.{key}")
             hits.extend(_scan_forbidden_outcome_keys(child, f"{path}.{key}"))
-    elif isinstance(value, list):
+    elif isinstance(value, (list, tuple)):
         for idx, child in enumerate(value):
             hits.extend(_scan_forbidden_outcome_keys(child, f"{path}[{idx}]"))
     return hits
