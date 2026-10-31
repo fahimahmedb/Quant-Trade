@@ -1,0 +1,2288 @@
+{
+  "schema_version": 1,
+  "repository": "fahimahmedb/Quant-Trade",
+  "assembled_at": "2026-10-31T13:28:11.299Z",
+  "stage": "PREFLIGHT_INVENTORY_ONLY",
+  "repository_created_at": "2026-07-13T01:29:49Z",
+  "snapshot_limit": "Paginated reads rechecked with identical branch name/SHA pairs; no server-side atomic lock. This records live refs, not all historical refs, and is not a full Git mirror.",
+  "evidence_sources": {
+    "branch_pages": [
+      "https://api.github.com/repos/fahimahmedb/Quant-Trade/branches?per_page=100&page=1",
+      "https://api.github.com/repos/fahimahmedb/Quant-Trade/branches?per_page=100&page=2",
+      "https://api.github.com/repos/fahimahmedb/Quant-Trade/branches?per_page=100&page=3",
+      "https://api.github.com/repos/fahimahmedb/Quant-Trade/branches?per_page=100&page=4"
+    ],
+    "issues": "https://api.github.com/repos/fahimahmedb/Quant-Trade/issues?state=all&per_page=100&sort=created&direction=asc",
+    "pulls": "https://api.github.com/repos/fahimahmedb/Quant-Trade/pulls?state=all&per_page=100&page=1",
+    "workflow_count": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs?per_page=1"
+  },
+  "counts": {
+    "live_branches": 275,
+    "unique_live_tip_shas": 266,
+    "pull_requests": 35,
+    "issues_excluding_pull_requests": 11,
+    "reported_top_level_comments": 325,
+    "workflow_runs_reported": 4804
+  },
+  "coverage": {
+    "branch_name_tip_inventory": "COLLECTED_AND_RECHECKED",
+    "issue_pr_inventory": "COLLECTED",
+    "all_reachable_commits": "NOT_COLLECTED",
+    "file_history_all_branches": "NOT_COLLECTED",
+    "document_revisions_read": "NOT_STARTED",
+    "conversation_comments_bodies": "NOT_COLLECTED_BY_THIS_PREFLIGHT",
+    "inline_reviews_and_threads": "NOT_COLLECTED",
+    "timelines": "ONE_SAMPLE_ENDPOINT_VERIFIED_ONLY",
+    "workflow_metadata_all_runs": "COUNT_ONLY",
+    "workflow_logs_and_artifacts": "NOT_COLLECTED",
+    "lfs_submodules_wiki_releases_deployments": "NOT_COLLECTED"
+  },
+  "access_limitations": [
+    "GitHub fetch wrapper rejected /tags collection as INVALID_ARGUMENT; use supported Git refs access or git transport, do not classify as no tags.",
+    "No full mirror clone / durable collector execution has been verified by this preflight.",
+    "Expired/deleted artifacts, deleted or rewritten comments, unreachable commits and work never pushed may not be recoverable; list them explicitly."
+  ],
+  "branches": [
+    {
+      "name": "astra/checkpoint-gate-a-v2-independent-audit-2026-09-20",
+      "tip_sha": "357b0e58bcf29832ee72976f757bc12d481c5d45",
+      "protected": false
+    },
+    {
+      "name": "astra/first-vertical-independent-review-2026-09-21",
+      "tip_sha": "264f31aebf93d03e5418cfa46cc9af4004aa28ab",
+      "protected": false
+    },
+    {
+      "name": "astra/gate-b-evidence-schema-false-pass-recheck-2026-09-21",
+      "tip_sha": "65e05aa86d54aa354a7e2a911ab3366ea96f01a0",
+      "protected": false
+    },
+    {
+      "name": "astra/gate-b-f11-lock-identity-recheck-2026-09-21",
+      "tip_sha": "31acd7590dd1e5f505da0df3332fd12f838b6615",
+      "protected": false
+    },
+    {
+      "name": "astra/gate-b-run-authority-mechanisms-independent-review-2026-09-21",
+      "tip_sha": "02432fae0ceb6440d2aec2182d06756f7151c648",
+      "protected": false
+    },
+    {
+      "name": "astra/gate-b-run-authority-mechanisms-recheck-2026-09-21",
+      "tip_sha": "41c3f291f46b7b5849bdb702c09ccefbeecde691",
+      "protected": false
+    },
+    {
+      "name": "astra/gate-b-v4-transition-independent-preactivation-review-2026-09-21",
+      "tip_sha": "aff6b7a2ca6355f518578c0ddbcac72fb49a356c",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-deep-adversarial-2026-09-19",
+      "tip_sha": "816b999832d3ebf8d5d535981f232147a2a257f9",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-deep-adversarial-pre-t0",
+      "tip_sha": "643deacdf5bbbdb1d2410c762eb20f72aff16bbf",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-gate-a-v2-independent-audit-2026-09-20",
+      "tip_sha": "64b105f5a2cc1d798d1cf1e41e715b967c845a85",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-gate-a-v3-independent-audit-2026-09-20",
+      "tip_sha": "33995d03c8632e5c3a7b77a12b87366fb06b4d30",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-gate-a-v4-independent-audit-2026-09-20",
+      "tip_sha": "afe25984b0ddd261fda143d858106c3c71e45149",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-hybrid-fault-matrix-independent-review-2026-09-21",
+      "tip_sha": "c6be804e99e409ab36a455f09ea2fccbe3d88252",
+      "protected": false
+    },
+    {
+      "name": "astra/p0-restart-burst-proof-recheck-2026-09-21",
+      "tip_sha": "61facacdcdc499bd3e6680644c75c97fcff22656",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-forward-v2-independent-reaudit-2026-09-29",
+      "tip_sha": "f7a0d7e29f852a9f9c11c2ab2b66973d48629597",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-bounded-runtime-test-evidence-audit-2026-10-05",
+      "tip_sha": "2776fed7fcfb8a10e0be6ad924c7f2fc8f6c9a26",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-d1-d5-static-recheck-2026-10-05",
+      "tip_sha": "2602b993a98ef565a164e48bf4c801b0b86a8994",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-d5-type-repair-runtime-evidence-audit-2026-10-05",
+      "tip_sha": "31215914a7e11daa20ca0189d859bb69827a055c",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-dedicated-harness-static-audit-2026-10-04",
+      "tip_sha": "07405b3c20168014993f1616c19e7d47f5e2a41f",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-doc-integration-lot1-review-2026-10-07",
+      "tip_sha": "52e5ff27583f3480ea443acdf6b358d3a44242f5",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-lot3-independent-review-2026-10-08",
+      "tip_sha": "f236ab2b9840471bc790a631c6267010ed5ebf64",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-a2-residual-d5-final-static-recheck-2026-10-05",
+      "tip_sha": "976da7e0190b899bd9982e9e0565d68fecdddb6d",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-edge-map-overfit-audit-2026-10-04",
+      "tip_sha": "db7007af0b939e5beb41f59121d2557df391bc74",
+      "protected": false
+    },
+    {
+      "name": "astra/weather-v4-pre-op-contract-audit-2026-10-04",
+      "tip_sha": "926741e7a67cb80bccde0ff428f2837bb200cf19",
+      "protected": false
+    },
+    {
+      "name": "audit/forensic-checkpoint-20261019",
+      "tip_sha": "67543ff286ff7a81a6705a197b7e557442d62ac2",
+      "protected": false
+    },
+    {
+      "name": "audit/owner-recovery-preserved-20261026",
+      "tip_sha": "e97bb3834f2c1a1b3de3a5719c1e94b416c52d2e",
+      "protected": false
+    },
+    {
+      "name": "blue/checkpoint-gate-a-v2-audit-2026-09-20",
+      "tip_sha": "4678c29eb8cd22aa7ef143075c6d4b68739026a3",
+      "protected": false
+    },
+    {
+      "name": "blue/forward-finalization-2026-09-20",
+      "tip_sha": "d209348159c44ba4eac9c0a1999e04f0e96e7108",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-activation-seal-host-relay-2026-09-21",
+      "tip_sha": "ad1b4d318c9e3657326e81b94cb9710b3953ffcd",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-f11-final-integration-2026-09-21",
+      "tip_sha": "4f26c1f015efb8c3530aeba8b3f87a81b0361a3f",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-post-astra-convergence-2026-09-21",
+      "tip_sha": "c14f28466cf7aeaddfe265a8b8aaf77fd301d4d3",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-route1-seal-integration-2026-09-21",
+      "tip_sha": "738c4a5425e19a353302edd3e7059d0c96c27e9c",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-run-authority-repair-dispatch-2026-09-21",
+      "tip_sha": "58b559767ddbb965c1ab6448dd7ec89dc46ec821",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-run-authority-repair-integration-2026-09-21",
+      "tip_sha": "644da76eb0227be275b8e3448118dac0cc7096ca",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-run-reservation-activation-preseal-2026-09-21",
+      "tip_sha": "5041df45da2d586c22deef4d8e5fab2487509ac9",
+      "protected": false
+    },
+    {
+      "name": "blue/gate-b-run-reservation-host-relay-preseal-2026-09-21",
+      "tip_sha": "5ea73f3ff3b29242c56073ca2cf4e7bde645c143",
+      "protected": false
+    },
+    {
+      "name": "blue/integration-readiness-2026-09-20",
+      "tip_sha": "37e9f95f3e24be78b1cb61ab35244b2880988b12",
+      "protected": false
+    },
+    {
+      "name": "blue/long-horizon-research-2026-09-20",
+      "tip_sha": "7e0fae86834db7f46ecea5755faf0ac544245399",
+      "protected": false
+    },
+    {
+      "name": "blue/master-v2-2026-09-20",
+      "tip_sha": "e9f1cc178ae7fa9f48a90340b2b076287803c3d8",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-audit-authority-fix-2026-09-20",
+      "tip_sha": "a98bc8aef3a397c054a3df495f14a781b1b939de",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-audit-authority-red-2026-09-20",
+      "tip_sha": "ca0f6b00c3e88e2a6e6d541ad538a529bfb57aee",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-calendar-direct-reconcile-red-2026-09-20",
+      "tip_sha": "c81fa1cdf93d5b08265c5f06ed0f4424bdda917f",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-calendar-dst-proof-2026-09-20",
+      "tip_sha": "99a64981b7f3c5e8755782d68d52cb7c7408e764",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-continuity-qualification-2026-09-20",
+      "tip_sha": "3dfc54a4219f1b31374ff4a007f1d9a2dfc0ec4c",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-gate-a-long-history-2026-09-20",
+      "tip_sha": "d79387f06821e2c0c4d345d7d42d05200ac384d3",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-gate-a-v2-final-2026-09-20",
+      "tip_sha": "db166fd04c681e67a2c6d4440828af14ef58c48c",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-gate-a-v2-staging-2026-09-20",
+      "tip_sha": "fd2e0f3b546fa8ad8e67a8368eb6a9a2543c81dc",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-gate-a-v3-frozen-2026-09-20",
+      "tip_sha": "2da079d8ad75c69eb3fc2990c512735cb4bdc02b",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-gate-a-v4-frozen-2026-09-20",
+      "tip_sha": "4d06bdbf8ed008af5c9d4ab9469e61f34c3ba072",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-manual-operator-provenance-fix-2026-09-20",
+      "tip_sha": "927f496a58fe71ffbaa6cce4df5297fe9638d0bb",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-manual-probe-fix-2026-09-20",
+      "tip_sha": "a6924958e88c8f3f4ad38caa2c45bf8db9309116",
+      "protected": false
+    },
+    {
+      "name": "blue/p0-manual-probe-red-2026-09-20",
+      "tip_sha": "efbf72484e5e6873aba2446d53a728798b3f453f",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v3-orchestration-2026-10-02",
+      "tip_sha": "5747f11cb87c59bea32d2cb38c9e2c4c06db08ea",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-a1-documentation-2026-10-04",
+      "tip_sha": "98b261a4c5221f1cd3bfab5f57019cc16adc4678",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-a2-consolidated-preparation-2026-10-06",
+      "tip_sha": "49d3d0033dd5088ebe6ed93937d283b0a5b83a63",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-a2-governance-configuration-draft-2026-10-05",
+      "tip_sha": "92088b83dd47799c6d413bb747138c05fdb0e420",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-a2-harness-attestation-2026-10-04",
+      "tip_sha": "f074f04167a872f2865cc654c17c1d3dda45e4e8",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-a2-harness-suitability-assessment-2026-10-04",
+      "tip_sha": "9b65151c6840cff9d6cad4b6ba897e329862d292",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-od04-od12-decision-support-2026-10-04",
+      "tip_sha": "ce9ee937d25eac0d44cfa345924c7630726f995f",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-phase-gate-decision-support-2026-10-04",
+      "tip_sha": "d669e603b87ac95c85c80861646de859df1b8819",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-research-design-repair-2026-10-04",
+      "tip_sha": "af77165c26308bc085fabf44282e2bacd09bdbb4",
+      "protected": false
+    },
+    {
+      "name": "blue/weather-v4-structural-pre-op-contract-2026-10-04",
+      "tip_sha": "de74c887b5dec9e4bd6f851c3571e69191015f43",
+      "protected": false
+    },
+    {
+      "name": "build-review/research-os-depth-64a6c455-20261015",
+      "tip_sha": "64a6c4556abaa4ed1e2c2cf0ee7037f623fb2491",
+      "protected": false
+    },
+    {
+      "name": "builder/autonomy-e2e-20261012",
+      "tip_sha": "fed1acd62d95bb30dfa285cc1ab01305d1f42937",
+      "protected": false
+    },
+    {
+      "name": "builder/codex-p0-hybrid-fault-matrix-2026-09-21",
+      "tip_sha": "e5c4c720e758cd8ab3f0e04faf541b26e204be16",
+      "protected": false
+    },
+    {
+      "name": "builder/codex-p0-hybrid-known-bad-replay-2026-09-21",
+      "tip_sha": "565e4eb4c1240bbd23c00f2dc2c4e1d7aca7840b",
+      "protected": false
+    },
+    {
+      "name": "builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21",
+      "tip_sha": "1fa82a75485661bf9bbb3de10b925126397dfec5",
+      "protected": false
+    },
+    {
+      "name": "builder/convergence2-multisource-pinned-b5ba7541",
+      "tip_sha": "b5ba754188b9029f8a80ebfeea37c98b6f636869",
+      "protected": false
+    },
+    {
+      "name": "builder/convergence-cp069-wave2-base-20261021",
+      "tip_sha": "ac50b0c357113c63c3aab375f9016d9bcc732bcc",
+      "protected": false
+    },
+    {
+      "name": "builder/convergence-cp079-wave2-base-20261021",
+      "tip_sha": "2b99d8aeb8a342f1ef32544247d366cb8a26037e",
+      "protected": false
+    },
+    {
+      "name": "builder/convergence-wave2-canonical-20261021",
+      "tip_sha": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-readiness-experiment-20261016",
+      "tip_sha": "8eb01c5163e43b8d23ee977d68c71770b6b25c26",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-readiness-identity-portfolio-20261016",
+      "tip_sha": "71267d09b6fc0ea0d822bd35268c151f740a943d",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-readiness-implementability-20261016",
+      "tip_sha": "972a94eb763fa40498139c76c339f04a7467910f",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-readiness-integration-20261016",
+      "tip_sha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-readiness-producer-evidence-20261016",
+      "tip_sha": "d48eaf78487d1d617cf9feddbdd16c199925684d",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-readiness-validation-20261016",
+      "tip_sha": "6d3a9ddba44e993b4bab133feb9a784045d94cec",
+      "protected": false
+    },
+    {
+      "name": "builder/econ-test-flow-ust-auction-20261019",
+      "tip_sha": "ac3b32ffa8ff4d768525c6da2a7ae3f9e2cdddc7",
+      "protected": false
+    },
+    {
+      "name": "builder/evidence-store-identity-v2",
+      "tip_sha": "b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-decision-integrity-repair-2026-10-08",
+      "tip_sha": "9f1d5ba92cf808dd2d6020d2918116947d8ed1d9",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-persistent-stage-a-2026-10-08",
+      "tip_sha": "a0a07c12a8fbb6e9bff59fd19bbed0da06c15040",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-sealed-stage-b-capture-2026-10-09",
+      "tip_sha": "ea9d2d0e0e057199bb168249c963acbc88e89de5",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-stage-a-evidence-37900200192-1",
+      "tip_sha": "58c708c271885a213f50a421191ebc3f7556b198",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-stage-a-evidence-37903239892-1",
+      "tip_sha": "354ea1aba5987caa282bb93449da2db5d026dd7c",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-stage-a-evidence-37915190172-1",
+      "tip_sha": "5cfdddbd49fda9f0083b3cff2d2dfa558af38700",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-stage-a-execution-2026-10-09",
+      "tip_sha": "0b0f5b416f7c958b763216450d5889feea692cc3",
+      "protected": false
+    },
+    {
+      "name": "builder/f1-stage-b-evidence-38006324356-1",
+      "tip_sha": "d4332b8748968832b3fed08a0bb8ebef939d42ec",
+      "protected": false
+    },
+    {
+      "name": "builder/forward-market-recorder-v2",
+      "tip_sha": "87bd049574ec41fe9d22b2ffcfdfc06ec7b7166a",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21",
+      "tip_sha": "e19f45709b9e0c2a6d6d22c4d666b701a5bced86",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-evidence-reception-prestage-2026-09-21",
+      "tip_sha": "f5721d62bd025b70f141cee8cf0b4dd8ba8e35a1",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-evidence-schema-false-pass-fix-2026-09-21",
+      "tip_sha": "12a666fde821d80f7323f527c64c96ff1c290058",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-f11-lock-identity-repair-2026-09-21",
+      "tip_sha": "8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-lock-path-identity-repair-2026-09-21",
+      "tip_sha": "e600295b2aa7056e8176e0286f9d67f5c65b1c11",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-offline-lifecycle-sanitization-prestage-2026-09-21",
+      "tip_sha": "6693b1e91febe907151e69f27807373c10eb40da",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-route1-concrete-mutation-pack-2026-09-21",
+      "tip_sha": "929cba23282007b39520b2c3d33ff0a5281a0b5b",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-run-authority-m1-m3-repair-2026-09-21",
+      "tip_sha": "2d2ff4e32f239fb7ef41d9e44745005f5f5fb44a",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-run-authority-mechanisms-2026-09-21",
+      "tip_sha": "845dfa3609a9bbb2f81b76cd4375189a30ec2232",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-run-authority-retention-prestage-2026-09-21",
+      "tip_sha": "51a2b9074340bacfc2c337e57cb68a7d344b4b04",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-b-v4-materialization-activation-prestage-2026-09-21",
+      "tip_sha": "478735d5924df8bc79777b837e710c9083817512",
+      "protected": false
+    },
+    {
+      "name": "builder/gate-c-prospective-event-plan-prestage-2026-09-21",
+      "tip_sha": "4c8312582e28ce16a3f12ed5bace78c39a151230",
+      "protected": false
+    },
+    {
+      "name": "builder/giga-f-idea-federation-autonomous-feed-20261023",
+      "tip_sha": "79329f15bbf02c25fa61e5d5ef6028e5abfb1493",
+      "protected": false
+    },
+    {
+      "name": "builder/giga-q-final-whole-system-hardening-20261023",
+      "tip_sha": "4efadddf694eff0c0df00925b5b4b89194f32f8e",
+      "protected": false
+    },
+    {
+      "name": "builder/issue44-gpt-oss-codex-phase1-remote-20261030",
+      "tip_sha": "afedfd57986aa042e9e97aa53b9db53b4619764f",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-3d-full-build-20261015",
+      "tip_sha": "6076774f52ca2e619caaab57fb6a278f47608349",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-full-autonomy-20261015",
+      "tip_sha": "fdfee2006869ff3770f752f32fb672da0b0fc4ac",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-native-integration-20261015",
+      "tip_sha": "fdfee2006869ff3770f752f32fb672da0b0fc4ac",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-oracle-canonical-20261020",
+      "tip_sha": "d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-oracle-integration-20261020",
+      "tip_sha": "a48bbb3594036b1a5c323af42a2723c8defcf555",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-owner-ux-rebuild-20261015-checkpoint",
+      "tip_sha": "6076774f52ca2e619caaab57fb6a278f47608349",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-owner-ux-rebuild-20261015-checkpoint-2",
+      "tip_sha": "6076774f52ca2e619caaab57fb6a278f47608349",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-owner-ux-rebuild-20261015",
+      "tip_sha": "8583ea6e46b123e831e8af489ad1043b810a0cf4",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-platform-probes-20261013",
+      "tip_sha": "809ec7e3d088a4ba4c5857771e6422ab91a139f4",
+      "protected": false
+    },
+    {
+      "name": "builder/live-lab-ux-vision-20261014",
+      "tip_sha": "13d2e7c435b465a58af740ce2f2e6674cbab6639",
+      "protected": false
+    },
+    {
+      "name": "builder/mega-a-research-intelligence-20261021",
+      "tip_sha": "29c6faa4ac334d74f2c90d49897346047beaa5d0",
+      "protected": false
+    },
+    {
+      "name": "builder/mega-b-discovery-engine-20261021",
+      "tip_sha": "bfc9fad9c36790abce71f80aead2485d6e022cdb",
+      "protected": false
+    },
+    {
+      "name": "builder/mega-c0-scientific-adjudication-20261021",
+      "tip_sha": "6dc84f35e80aec709e67e3d5d3ce0cdcfaee3bcf",
+      "protected": false
+    },
+    {
+      "name": "builder/mega-d0-economic-lifecycle-20261021",
+      "tip_sha": "4262462e0c853d917f32e8f87c2423f93a313167",
+      "protected": false
+    },
+    {
+      "name": "builder/mega-e-autonomous-runtime-20261021",
+      "tip_sha": "82da975878eb9b525e1845103fe7b35e7aeca404",
+      "protected": false
+    },
+    {
+      "name": "builder/minimal-durable-continuity-20261028",
+      "tip_sha": "42affc56635b9dc7de411b544f657f98967f2371",
+      "protected": false
+    },
+    {
+      "name": "builder/multi-source-ideation-intake-20261021",
+      "tip_sha": "bbdea6a794377f8cab54fa8bcb6ad2242616e426",
+      "protected": false
+    },
+    {
+      "name": "builder/multi-source-ideation-intake-v3-20261026",
+      "tip_sha": "0691a4c1c905c8cfa1e68d521b12d66655ec4dd3",
+      "protected": false
+    },
+    {
+      "name": "builder/multi-source-outcome-firewall-repair-20261021",
+      "tip_sha": "884632a1fc332df8155eaa5e0557521497dc6d4b",
+      "protected": false
+    },
+    {
+      "name": "builder/oracle-economic-loop-recovery-20261019",
+      "tip_sha": "0837f419c4e3a9e17a39269994f27d97fcf79757",
+      "protected": false
+    },
+    {
+      "name": "builder/oracle-v2-core-20261020",
+      "tip_sha": "08c6160aea642efd99b606adbfd49d47226772bb",
+      "protected": false
+    },
+    {
+      "name": "builder/oracle-v2-live-lab-bridge-20261020",
+      "tip_sha": "4dd1400452f624ad27bddd96b07a3d6d9abef1da",
+      "protected": false
+    },
+    {
+      "name": "builder/p0-effective-unit-digest-stability-v4-2026-09-20",
+      "tip_sha": "b10cde0dd193714346abdfe87afb841482e9b7c8",
+      "protected": false
+    },
+    {
+      "name": "builder/p0-gate-a-v3-2026-09-20",
+      "tip_sha": "2da079d8ad75c69eb3fc2990c512735cb4bdc02b",
+      "protected": false
+    },
+    {
+      "name": "builder/p0-hybrid-qualification-harness-2026-09-20",
+      "tip_sha": "d4d446c412258b2a9e4792cdcd9e2442ef24b615",
+      "protected": false
+    },
+    {
+      "name": "builder/post-p0-first-vertical-shadow-loop-2026-09-21",
+      "tip_sha": "5c8b5b71ef627ac0ec0faa509edc40b7d9d0c4df",
+      "protected": false
+    },
+    {
+      "name": "builder/post-p0-vertical-interface-map-2026-09-21",
+      "tip_sha": "8d40af1f2333474d8f26509b61cb257d96f8772d",
+      "protected": false
+    },
+    {
+      "name": "builder/research-factory-core-v2",
+      "tip_sha": "ca8ffe439953b063fb9d049773ce0b6245958c7d",
+      "protected": false
+    },
+    {
+      "name": "builder/research-os-aggressive-architecture-20261015",
+      "tip_sha": "43ed98dcab5e8108ee5190a4a53fc7f511fe41e0",
+      "protected": false
+    },
+    {
+      "name": "builder/research-os-autonomous-econ-readiness-port-20261016",
+      "tip_sha": "d5e6d55ba6084729b585a7bb41cede62d8d0f01b",
+      "protected": false
+    },
+    {
+      "name": "builder/research-os-autonomous-loop-20261015",
+      "tip_sha": "d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec",
+      "protected": false
+    },
+    {
+      "name": "builder/research-os-econ-readiness-activation-20261017",
+      "tip_sha": "e980d201d3c84d16d7d91fde0d27a06c9a2c3121",
+      "protected": false
+    },
+    {
+      "name": "builder/research-os-vm-autonomy-20261019",
+      "tip_sha": "8a1bdadc9bc52c4889ee19d0472bcee61fe24318",
+      "protected": false
+    },
+    {
+      "name": "builder/__scratch-never-push",
+      "tip_sha": "e102e4702d25e9765316009fab6c8555349d905c",
+      "protected": false
+    },
+    {
+      "name": "builder/__scratch-never-push-2",
+      "tip_sha": "d3fbf86d49af0afe98ec03efe9f9e088fcb03a34",
+      "protected": false
+    },
+    {
+      "name": "builder/__scratch-never-push-3",
+      "tip_sha": "f4be6953e3ec71eae38bd99903b3787a542c615c",
+      "protected": false
+    },
+    {
+      "name": "builder/sec-form4-census-v2a",
+      "tip_sha": "08dcfc39b4b22e0b25e54edde7b6accbb2bc4502",
+      "protected": false
+    },
+    {
+      "name": "builder/sec-form4-p0-raw-capture",
+      "tip_sha": "348c4e42bf4efb29d6e4135cc39b2e5ae31bf5ef",
+      "protected": false
+    },
+    {
+      "name": "builder/site-e2e-20261012",
+      "tip_sha": "e06fa1b5a20e1d05aed857cbe6158d09a5697bfa",
+      "protected": false
+    },
+    {
+      "name": "builder/v2-forward-20261020",
+      "tip_sha": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
+      "protected": false
+    },
+    {
+      "name": "builder/w1-data-evidence-sec-depth-20261021",
+      "tip_sha": "c0fda9bd809594711ebaf2fa2422a0410812e1df",
+      "protected": false
+    },
+    {
+      "name": "builder/w1-economic-portfolio-depth-20261021",
+      "tip_sha": "83bb495104acf7de8617593bc737a8a204c99b32",
+      "protected": false
+    },
+    {
+      "name": "builder/w1-factory-experiment-depth-20261021",
+      "tip_sha": "dfaf0bd7be04926a2b16dc585ccb82699c6dd0e4",
+      "protected": false
+    },
+    {
+      "name": "builder/w1-scientific-memory-depth-20261021",
+      "tip_sha": "9d92c9f859efd39fdfd94372b10ba91ad73c31b4",
+      "protected": false
+    },
+    {
+      "name": "builder/wave2-base-repair-20261021",
+      "tip_sha": "a19ee49a6e87b3d95fa95b4c9f0e7b334a47d193",
+      "protected": false
+    },
+    {
+      "name": "builder/wave2-c2-final-qualification-repair-20261021",
+      "tip_sha": "699256f7de051c3f7271bd64713f2739c47ac889",
+      "protected": false
+    },
+    {
+      "name": "builder/wave2-c2-multisource-grep-repair-20261021",
+      "tip_sha": "bab911f45e6fe8a889c5acb8da24bc48790c1f50",
+      "protected": false
+    },
+    {
+      "name": "builder/wave2-convergence2-foreman-20261021",
+      "tip_sha": "2dedbe0bf7994b15567bad1562338ef9faf4a392",
+      "protected": false
+    },
+    {
+      "name": "builder/wave2-seal-preflight-20261021",
+      "tip_sha": "4651105825eda35b703e567e9daeee50850bd5af",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-astra-d1-d5-static-repair-2026-10-05",
+      "tip_sha": "fa81d3fbddca2802e43ea0b05fe85e608b98a61d",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-bounded-offline-harness-tests-2026-10-05",
+      "tip_sha": "a13a15ff41b231628bb55613edc2fef060e35e48",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-d5-public-state-type-repair-tests-2026-10-05",
+      "tip_sha": "78d537de681363ed83a6c7787aba4319f3c73c4d",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-dedicated-harness-construction-2026-10-04",
+      "tip_sha": "649be59e69d8e0724d61352cc76abcac7f3f588e",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08",
+      "tip_sha": "73280c3e9d8604b2f2d8e6d2d174aa940389a760",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08",
+      "tip_sha": "44bee3b053401111f5e35a06a8bee9df92019188",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-l2i-verification-2026-10-08",
+      "tip_sha": "5b381d34ccdfc938727ccecaf1d09447dcd29ab5",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08",
+      "tip_sha": "5358c7ac582b46804be0008cffc78a043751d910",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-owner-package-2026-10-08",
+      "tip_sha": "103799938755605aef55e07b3f31e2fe69ad8890",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-q22-host-attestation-2026-10-08",
+      "tip_sha": "b8725677da7b8cfef3ceea54675b35a10fd6e124",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-q27-retention-2026-10-08",
+      "tip_sha": "7ba9879512f6df2561efe8135702c21cfec12174",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-tooling-2026-10-07",
+      "tip_sha": "51f49c81d843e57111135df283b06368cc1546bf",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-lot2-vm-kit-2026-10-08",
+      "tip_sha": "2b3c42fc4d0e6ea9a7bc6554b4a52dd56a68d3f6",
+      "protected": false
+    },
+    {
+      "name": "builder/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05",
+      "tip_sha": "2bc718711d507b38176981c2b3e55dd607c9547b",
+      "protected": false
+    },
+    {
+      "name": "builder/wp1-book-pressure-preexposure-20261028",
+      "tip_sha": "1c9e9f6a1a35faf4a3ef75dddf03961c57ab265f",
+      "protected": false
+    },
+    {
+      "name": "builder/wp2-single-lineage-binding-20261030",
+      "tip_sha": "8f8df47d184f0f1594280bec7e9e7941962cf1c5",
+      "protected": false
+    },
+    {
+      "name": "claude/charming-allen-948kd8",
+      "tip_sha": "0cfdd4d25ef74e8158403ed6037fccc341fb7639",
+      "protected": false
+    },
+    {
+      "name": "claude/confident-allen-xw7eb6",
+      "tip_sha": "edd13079050681fea82e5e812794dc9d43647e63",
+      "protected": false
+    },
+    {
+      "name": "claude/confident-mendel-h4qqo4",
+      "tip_sha": "9e6431dedaa621d58218f6ffb09ed1300de1bd1b",
+      "protected": false
+    },
+    {
+      "name": "claude/data-feeds-6vr22g",
+      "tip_sha": "96b6f73e760fb9abb79e93184fe1afd70b4920a8",
+      "protected": false
+    },
+    {
+      "name": "claude/dazzling-dirac-foklrv",
+      "tip_sha": "4682fbbf335257f931209b433e0f10ea7b4f3b14",
+      "protected": false
+    },
+    {
+      "name": "claude/deep-research-project-6vr22g",
+      "tip_sha": "337c4b7c78cb769550e165be00e0b12da4c9d65d",
+      "protected": false
+    },
+    {
+      "name": "claude/dreamy-franklin-1vki4t",
+      "tip_sha": "e1cf4ca0851eace2912ce8a9bcd4a8400ebf4250",
+      "protected": false
+    },
+    {
+      "name": "claude/epic-cannon-1sy39m",
+      "tip_sha": "fff0cca0773f542e9039be726d9b49519fe2b56e",
+      "protected": false
+    },
+    {
+      "name": "claude/exciting-edison-w68tos",
+      "tip_sha": "454d8522061c441659570dff4b3ec6b59cb526b5",
+      "protected": false
+    },
+    {
+      "name": "claude/exciting-planck-uq6rir",
+      "tip_sha": "10c025dca8bb082c5c9c8e012a427a90189bc5fd",
+      "protected": false
+    },
+    {
+      "name": "claude/gallant-cerf-e0rpao",
+      "tip_sha": "94381734a22df464331c7654d70371faa48748c3",
+      "protected": false
+    },
+    {
+      "name": "claude/hopeful-dirac-4ahy2z",
+      "tip_sha": "7cdfe2ff8899a4a7788f4997db2bc2100a7d39bf",
+      "protected": false
+    },
+    {
+      "name": "claude/hopeful-hamilton-81rab1",
+      "tip_sha": "85483fb9f85c6beea36e0af969e3f0a3e939e07f",
+      "protected": false
+    },
+    {
+      "name": "claude/intelligent-gates-msidml",
+      "tip_sha": "726070a199957a6fc05515ebb3027e945028fddc",
+      "protected": false
+    },
+    {
+      "name": "claude/magical-ramanujan-wsktyr",
+      "tip_sha": "501093d1f6760201a5d81e638e74aa16ff75c3a8",
+      "protected": false
+    },
+    {
+      "name": "claude/nasdaq-trading-model-design-h3mp4n",
+      "tip_sha": "8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-0ydmkg",
+      "tip_sha": "fa2aaef93243a0553c6428223d7a7aec72663ac6",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-3ujgeu",
+      "tip_sha": "5255ba2a1c3f8983ac145ce107289db7685bdfe2",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-3ujgeu-wip-h002",
+      "tip_sha": "1903aed7212cda271948b42f5b446a1b1bb11ac8",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-3ujgeu-wip-h004",
+      "tip_sha": "fd1d2e1e09d6acc82667ac2bb163d3ccd089dc89",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-3ujgeu-wip-h006",
+      "tip_sha": "bc9974d36eb1d90c11ca632cba0646114ec3c9b3",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-8msq33",
+      "tip_sha": "57b0c68a691f172db68318f7dacd76adbab40c01",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-kfwf1b",
+      "tip_sha": "d33c1da4d846e9192d9ce7d7d406ac9785466eaf",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-qr4nsz",
+      "tip_sha": "52e5ff27583f3480ea443acdf6b358d3a44242f5",
+      "protected": false
+    },
+    {
+      "name": "claude/new-session-z4pdlx",
+      "tip_sha": "0f9cb618997173155860afe6941e02cf20833481",
+      "protected": false
+    },
+    {
+      "name": "claude/order-12b-anytime-valid",
+      "tip_sha": "e43f74efdc07044504d4d1d6ca3ef70ad5331be1",
+      "protected": false
+    },
+    {
+      "name": "claude/project-review-audit-q5kfb9",
+      "tip_sha": "ef0f66ecdc806867783e35d8a960c29f433714a8",
+      "protected": false
+    },
+    {
+      "name": "claude/prompt-recherche-praticiens-dfy1l0",
+      "tip_sha": "09b0974a38d705182e97f46ed4f5db17833f9266",
+      "protected": false
+    },
+    {
+      "name": "claude/prototype-futures-trend-carry-6vr22g",
+      "tip_sha": "afd8fe5455518000bfbf28d1939c041ad5ae5f3a",
+      "protected": false
+    },
+    {
+      "name": "claude/relaxed-johnson-mqca45",
+      "tip_sha": "af5dcff5aade75d4cc4a3056b3f6217983f2a8cf",
+      "protected": false
+    },
+    {
+      "name": "claude/restaurant-stock-management-mvp-6oq43e",
+      "tip_sha": "e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0",
+      "protected": false
+    },
+    {
+      "name": "claude/two-speed-cleanup-6vr22g",
+      "tip_sha": "d6cc72454f7598bbc9ff798ee9f7dfc8aeeb5b24",
+      "protected": false
+    },
+    {
+      "name": "claude/weather-v3-s0-compute-2026-10-02",
+      "tip_sha": "1fa81100d3d4f32cd8f8842356c043c3d502910d",
+      "protected": false
+    },
+    {
+      "name": "claude/weather-v3-s1-data-archaeology-2026-10-02",
+      "tip_sha": "697865d4f8ba5ecfcb23025272b50b5eee2b2f30",
+      "protected": false
+    },
+    {
+      "name": "claude/weather-v3-s2-capture-architecture-2026-10-02",
+      "tip_sha": "9751368c90150a71eb88147ff69446f0711c81f2",
+      "protected": false
+    },
+    {
+      "name": "claude/zen-einstein-9moyry",
+      "tip_sha": "5760ffa5b5da2a988cfe6d1503c86c561acf9b1f",
+      "protected": false
+    },
+    {
+      "name": "codex/c0-confirmation-repair-20261027",
+      "tip_sha": "df443d12bb4d7a1d908862ad993c855a11a71852",
+      "protected": false
+    },
+    {
+      "name": "codex/c0-membrane-qualification-20261027",
+      "tip_sha": "13721384fe5b94b0136fb4548192e05d5e34e605",
+      "protected": false
+    },
+    {
+      "name": "codex/horizontal-completeness-convergence1-20261021",
+      "tip_sha": "6d9dc40b5833442c597f7e7ab8aa631b3d481e83",
+      "protected": false
+    },
+    {
+      "name": "codex/horizontal-completeness-prewave2-20261021",
+      "tip_sha": "7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f",
+      "protected": false
+    },
+    {
+      "name": "codex/test",
+      "tip_sha": "723a778e302b6bc96e72030ded91440f75769aba",
+      "protected": false
+    },
+    {
+      "name": "codex/verified-autonomous-continuity-20261026",
+      "tip_sha": "40c590189e1389502d179e63f6e0925df8513d2c",
+      "protected": false
+    },
+    {
+      "name": "codex/verified-autonomous-continuity-oneshot-20261027",
+      "tip_sha": "d19b1237636d2311cd42f97f0b02feb55168347b",
+      "protected": false
+    },
+    {
+      "name": "codex/vertical-depth-prewave2-20261021",
+      "tip_sha": "5d628db2949144ca6abf94327de3146f3983ecea",
+      "protected": false
+    },
+    {
+      "name": "codex/weather-v3-s0-finish-2026-10-03",
+      "tip_sha": "1fa81100d3d4f32cd8f8842356c043c3d502910d",
+      "protected": false
+    },
+    {
+      "name": "codex/weather-v3-s4-forecast-hindcast-2026-10-03",
+      "tip_sha": "697865d4f8ba5ecfcb23025272b50b5eee2b2f30",
+      "protected": false
+    },
+    {
+      "name": "codex/weather-v3-s6-cohort-expansion-2026-10-03",
+      "tip_sha": "697865d4f8ba5ecfcb23025272b50b5eee2b2f30",
+      "protected": false
+    },
+    {
+      "name": "docs/owner-edge-audit-2026-10-10",
+      "tip_sha": "fae3be50549d8b023c3e9a42eb14a51613bcb8c4",
+      "protected": false
+    },
+    {
+      "name": "executor/f1-trailing-volume-ranking-fix-2026-10-08",
+      "tip_sha": "25b95cdad27e4f1dfb00fdc4cfb670d6a25bd46b",
+      "protected": false
+    },
+    {
+      "name": "f1/crypto-carry-001-stage-a-look",
+      "tip_sha": "8d93861edc4e1ff07b6265d4e80e6a429cffd0b7",
+      "protected": false
+    },
+    {
+      "name": "f1/crypto-carry-001-stage-b-look",
+      "tip_sha": "2620ba065e790b1c255f43bcd941fc336ad5ef4d",
+      "protected": false
+    },
+    {
+      "name": "operator/gate-b-f5-route1-host-evidence-closure-2026-09-21",
+      "tip_sha": "17d692beaa8013101670c0c0164c9bb204f471d9",
+      "protected": false
+    },
+    {
+      "name": "operator/gate-b-f5-route1-host-feasibility-2026-09-21",
+      "tip_sha": "a5493f052c458e1bbf76e00cbc4943dca8632e71",
+      "protected": false
+    },
+    {
+      "name": "operator/gate-b-read-only-preflight-2026-09-21",
+      "tip_sha": "44285788fce3d5d048b037dd8d1089e1f08f43e9",
+      "protected": false
+    },
+    {
+      "name": "operator/gate-b-target-host-read-only-rebind-2026-09-21",
+      "tip_sha": "4a503eed81df6656d6aec856f8440b66c5c39943",
+      "protected": false
+    },
+    {
+      "name": "ops/oci-one-shot-install-20261019",
+      "tip_sha": "6e8ea155b05086f8e5eabcf830a5f835d3e3d09c",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-bounded-offline-harness-test-authority-2026-10-05",
+      "tip_sha": "45f5c940140788bb96c7b6da8581d9aa7c627dfa",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-dedicated-harness-builder-decision-2026-10-04",
+      "tip_sha": "37e3b25f17a7c5d3b3bc8d37df730aa988585b6c",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-execution-authority-draft-2026-10-08",
+      "tip_sha": "a56467a63805365deae2e64e8c35fccb0a2cf63b",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-execution-authority-e-d2-2026-10-08",
+      "tip_sha": "6e0320f15d48a924cef9507af5641e47de9fe938",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-harness-attestation-decision-2026-10-04",
+      "tip_sha": "0f50e10c68ba6ab6f4f3152f6e06335906d818f0",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-harness-suitability-decision-2026-10-04",
+      "tip_sha": "1684cd6b41992a73547b0665400d32d0c124f256",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-lot2-freezes-2026-10-08",
+      "tip_sha": "79f6e9290121869cece6d23a259249883b32941a",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-lot2-technical-authorization-2026-10-07",
+      "tip_sha": "9d0698b5ae73bed8f670a94d0ffd62016b1dc8a2",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-partial-configuration-decision-2026-10-06",
+      "tip_sha": "3ed9607add11618862043e707c687053d208dff6",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05",
+      "tip_sha": "d1447fd515e814a21e34118d0a0b063a44220bbd",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-static-audit-repair-decision-2026-10-05",
+      "tip_sha": "08b40c41bdadb05b572a88fc1279310c436d32f7",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-a2-team-charter-ratification-2026-10-08",
+      "tip_sha": "3425be1f7436ae4dfca06f4919d0de149c3442a2",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-od01-od03-decision-2026-10-04",
+      "tip_sha": "377af70116f24f486feac7b4da5d2873107822a2",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-od04-od12-structural-decision-2026-10-04",
+      "tip_sha": "9391ce7a3f66cfc5bff2c745ca2dbb1072bba954",
+      "protected": false
+    },
+    {
+      "name": "owner/weather-v4-phase-gate-a1-decision-2026-10-04",
+      "tip_sha": "728cf23e7d69a373306f3c1a3fb5d11240210cda",
+      "protected": false
+    },
+    {
+      "name": "parallel/antigravity-gate-b-run-authority-adversarial-precheck-2026-09-21",
+      "tip_sha": "644da76eb0227be275b8e3448118dac0cc7096ca",
+      "protected": false
+    },
+    {
+      "name": "parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21",
+      "tip_sha": "568eea1e028302e14f96a06eb2515bb89aa73ad4",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-economic-question-falsification-map-2026-09-21",
+      "tip_sha": "7a411524d6238ee7544d48c82637db2dc5f74ec0",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-economic-v2-2026-09-20",
+      "tip_sha": "35dff27b8fac53618da434ee6d31febbddcc0e69",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-first-slice-cohort-geometry-2026-09-21",
+      "tip_sha": "6eb0c23da0c8f16a2dcc0c50bd1898baaa9b21d0",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-forward-data-2026-09-20",
+      "tip_sha": "83521dbfdd90027c90d04adfb7d814593c2355c5",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-post-p0-vertical-build-prep-2026-09-21",
+      "tip_sha": "ce8b1ffe1e09d58162d96f52bea3b10aac1fb6ec",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21",
+      "tip_sha": "1226427082e55e7b3c51f96c5f091b90a6278447",
+      "protected": false
+    },
+    {
+      "name": "parallel/claude-s11-dependence-interval-challenge-2026-09-21",
+      "tip_sha": "7080288b5c88cf70b9b908837f5fc859255d571a",
+      "protected": false
+    },
+    {
+      "name": "parallel/codex-wave1-economic-system-2026-09-19",
+      "tip_sha": "738a5879ef8634d3e08c717a2d439632fe64e1ff",
+      "protected": false
+    },
+    {
+      "name": "parallel/economic-acceleration-2026-09-21",
+      "tip_sha": "8af21cf2df140361f4fc2dfdf1bd2d1a1aa9a31c",
+      "protected": false
+    },
+    {
+      "name": "recovery/claude-sec-local-20260914",
+      "tip_sha": "ac37339ed31b59f2c16caed6a5e914e647006671",
+      "protected": false
+    },
+    {
+      "name": "research/close-auction-source-readiness-20261017",
+      "tip_sha": "a2ef88b07823e963e779196cf808b01339624115",
+      "protected": false
+    },
+    {
+      "name": "research/delta-research-pack-v1-20261015",
+      "tip_sha": "07a75ee44138bef4fc64613c9cf53ac740823323",
+      "protected": false
+    },
+    {
+      "name": "research/design-v1",
+      "tip_sha": "2da2d1b6786e9a7b1d34f94f5066dca79abf8e07",
+      "protected": false
+    },
+    {
+      "name": "research/duebill-source-readiness-20261017",
+      "tip_sha": "b9f6ee8a6775ddd61c4f562da50cfc7e279e1f2a",
+      "protected": false
+    },
+    {
+      "name": "research/economic-reorientation-checkpoint-2026-09-29",
+      "tip_sha": "0f8f2d1a99aa25a871a524c616b8e6beb06eaafd",
+      "protected": false
+    },
+    {
+      "name": "research/economic-test-form144-supply-20261017",
+      "tip_sha": "9faba4fe0639e6835ae2b9d43f81f37252f86e3d",
+      "protected": false
+    },
+    {
+      "name": "research/edge-lab-continuous",
+      "tip_sha": "68bbab8ec990c813310224bc8737c41480853108",
+      "protected": false
+    },
+    {
+      "name": "research/f2-primary-terms-decision-2026-10-09",
+      "tip_sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e",
+      "protected": false
+    },
+    {
+      "name": "research/legacy-economic-reconciliation-20261015",
+      "tip_sha": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "protected": false
+    },
+    {
+      "name": "research/paused-lanes-qualification-20261015",
+      "tip_sha": "8d89ca7a6071e85bea5a74cb1e51e30ee5ae00ab",
+      "protected": false
+    },
+    {
+      "name": "research/technical-signals-literature-2026-10-10",
+      "tip_sha": "e42d4924a33efa78bab97939d654424cc1501fb8",
+      "protected": false
+    },
+    {
+      "name": "review/blind-roadmap-pass-a-20261027",
+      "tip_sha": "b9b0f351de8cb9838e83222fea87c81a68074934",
+      "protected": false
+    },
+    {
+      "name": "review/independent-architecture-challenger-20261026",
+      "tip_sha": "642b551985f499b37286c3bc21b89c57294f63ca",
+      "protected": false
+    },
+    {
+      "name": "review/independent-wp1a-blind-pass-a-20261027",
+      "tip_sha": "e830bd78444350c2c6512a6bdc34fb17aee1106c",
+      "protected": false
+    },
+    {
+      "name": "review/post-disclosure-pass-b-20261027",
+      "tip_sha": "c081a05692e81ad0b999bf46d5f8988649aa7d24",
+      "protected": false
+    },
+    {
+      "name": "review/wp2-independent-d40053-20261030",
+      "tip_sha": "47e944fbcc5acb450b3cd63ab5920aa548c01309",
+      "protected": false
+    },
+    {
+      "name": "reviewer/v1-final-red-team",
+      "tip_sha": "37f298423ca4a100c1c633da2c3c6c2641d8dd8e",
+      "protected": false
+    },
+    {
+      "name": "sol/scout-crypto-20261008-1847",
+      "tip_sha": "a6961e5fc02785c7c2d797f0e1fca94425150705",
+      "protected": false
+    },
+    {
+      "name": "sol/scout-events-f413d",
+      "tip_sha": "afd69b74c12d02cb9b8f731137ba5c357819ab24",
+      "protected": false
+    },
+    {
+      "name": "sol/scout-macro-tauc-gfs",
+      "tip_sha": "5bb78345e0cc9d02ac38c13d2c0981cb380021be",
+      "protected": false
+    },
+    {
+      "name": "sol/scout-prediction-flb-nr",
+      "tip_sha": "2b66b1937257651b3a941bba6d7a1e5e45c01137",
+      "protected": false
+    },
+    {
+      "name": "team/weather-v4-a2-coordination-2026-10-08",
+      "tip_sha": "5a992b031ee2ecf996fc9c258f02907ee807a5af",
+      "protected": false
+    },
+    {
+      "name": "__temp_should_not_create__",
+      "tip_sha": "e15740a0a933a3f15c8e4d6b2825bb35203788bf",
+      "protected": false
+    },
+    {
+      "name": "ux/intake-20261015",
+      "tip_sha": "6102583019c1d638518dad11726996e73310462c",
+      "protected": false
+    }
+  ],
+  "issues_and_prs": [
+    {
+      "number": 1,
+      "kind": "pull_request",
+      "title": "Étape B : modèle de prédiction directionnelle (triple-barrier + walk-forward + DSR)",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/1",
+      "created_at": "2026-07-13T14:44:36Z",
+      "updated_at": "2026-07-29T17:50:00Z",
+      "closed_at": "2026-07-29T17:50:00Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 2,
+      "kind": "issue",
+      "title": "Phase 0 — Forensic audit and first value-of-information experiment",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/2",
+      "created_at": "2026-09-12T16:55:22Z",
+      "updated_at": "2026-09-20T20:54:33Z",
+      "closed_at": "2026-09-20T20:54:33Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 3,
+      "kind": "pull_request",
+      "title": "Bootstrap autonomous quant alignment and research governance",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/3",
+      "created_at": "2026-09-12T16:55:34Z",
+      "updated_at": "2026-09-20T21:22:38Z",
+      "closed_at": "2026-09-13T02:27:27Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 4,
+      "kind": "pull_request",
+      "title": "Add causal economic evaluation utilities, preregistered P0‑E1 experiment, results and forensic audit",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/4",
+      "created_at": "2026-09-12T20:39:52Z",
+      "updated_at": "2026-09-13T02:27:23Z",
+      "closed_at": "2026-09-13T02:27:23Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 5,
+      "kind": "pull_request",
+      "title": "Design Quant Alpha Factory v1 with anti-beta market doctrine",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/5",
+      "created_at": "2026-09-13T02:03:41Z",
+      "updated_at": "2026-09-13T02:27:20Z",
+      "closed_at": "2026-09-13T02:27:20Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 6,
+      "kind": "pull_request",
+      "title": "Rebuild Quant-Trade around autonomous alpha discovery",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/6",
+      "created_at": "2026-09-13T02:31:33Z",
+      "updated_at": "2026-09-20T21:22:11Z",
+      "closed_at": "2026-09-13T19:05:17Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 7,
+      "kind": "pull_request",
+      "title": "Build the first autonomous research vertical slice",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/7",
+      "created_at": "2026-09-13T02:39:06Z",
+      "updated_at": "2026-09-20T21:22:20Z",
+      "closed_at": "2026-09-20T12:13:16Z",
+      "reported_top_level_comments": 2
+    },
+    {
+      "number": 8,
+      "kind": "pull_request",
+      "title": "Define persistent research runtime above the first vertical slice",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/8",
+      "created_at": "2026-09-13T03:04:31Z",
+      "updated_at": "2026-09-20T21:22:32Z",
+      "closed_at": "2026-09-20T14:10:59Z",
+      "reported_top_level_comments": 2
+    },
+    {
+      "number": 9,
+      "kind": "pull_request",
+      "title": "Add persistent research campaign orchestrator",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/9",
+      "created_at": "2026-09-13T14:57:55Z",
+      "updated_at": "2026-09-20T21:22:23Z",
+      "closed_at": "2026-09-20T14:11:14Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 10,
+      "kind": "pull_request",
+      "title": "Re-center Quant on the full persistent system architecture",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/10",
+      "created_at": "2026-09-13T15:41:07Z",
+      "updated_at": "2026-09-20T21:22:29Z",
+      "closed_at": "2026-09-20T14:11:17Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 11,
+      "kind": "pull_request",
+      "title": "Build a restart-safe persistent research runtime",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/11",
+      "created_at": "2026-09-13T18:42:44Z",
+      "updated_at": "2026-09-20T21:22:41Z",
+      "closed_at": "2026-09-20T14:11:21Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 12,
+      "kind": "pull_request",
+      "title": "Quant System V1 + corrective integrity pass",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/12",
+      "created_at": "2026-09-13T20:19:55Z",
+      "updated_at": "2026-09-20T21:22:14Z",
+      "closed_at": "2026-09-20T14:11:26Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 13,
+      "kind": "pull_request",
+      "title": "Complete Quant System V1 integrity repair",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/13",
+      "created_at": "2026-09-13T21:49:26Z",
+      "updated_at": "2026-09-20T21:22:26Z",
+      "closed_at": "2026-09-20T14:11:30Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 14,
+      "kind": "pull_request",
+      "title": "Quant System V1: connect all North-Star planes in persistent paper/shadow mode",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/14",
+      "created_at": "2026-09-14T17:10:13Z",
+      "updated_at": "2026-09-20T14:11:35Z",
+      "closed_at": "2026-09-20T14:11:35Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 15,
+      "kind": "pull_request",
+      "title": "Builder C: Evidence Store + PIT Security Identity",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/15",
+      "created_at": "2026-09-14T18:09:02Z",
+      "updated_at": "2026-09-20T14:11:39Z",
+      "closed_at": "2026-09-20T14:11:39Z",
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 16,
+      "kind": "pull_request",
+      "title": "P0: durable SEC/Form-4 raw capture, running and probed live",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/16",
+      "created_at": "2026-09-18T10:14:46Z",
+      "updated_at": "2026-09-20T21:23:45Z",
+      "closed_at": "2026-09-18T10:47:19Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 17,
+      "kind": "pull_request",
+      "title": "P0 pre-t0: close both capture-integrity blockers, materialize fingerprint V1",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/17",
+      "created_at": "2026-09-18T11:52:42Z",
+      "updated_at": "2026-09-20T21:23:42Z",
+      "closed_at": "2026-09-20T14:11:44Z",
+      "reported_top_level_comments": 6
+    },
+    {
+      "number": 18,
+      "kind": "pull_request",
+      "title": "Close phase-6 concurrency & readiness faults; repair inventory test and status artifacts",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/18",
+      "created_at": "2026-09-19T22:16:22Z",
+      "updated_at": "2026-09-20T21:23:48Z",
+      "closed_at": "2026-09-19T23:05:23Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 19,
+      "kind": "pull_request",
+      "title": "Astra P0 hybrid fault-matrix independent review — CI observation only",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/19",
+      "created_at": "2026-09-21T00:26:50Z",
+      "updated_at": "2026-09-21T00:37:51Z",
+      "closed_at": "2026-09-21T00:37:51Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 20,
+      "kind": "pull_request",
+      "title": "CI-only: Gate-B run-authority repair integration audit candidate",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/20",
+      "created_at": "2026-09-21T12:18:45Z",
+      "updated_at": "2026-09-21T12:27:10Z",
+      "closed_at": "2026-09-21T12:27:10Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 21,
+      "kind": "pull_request",
+      "title": "governance: propose two-speed research rails, fast-rail builder prompt, cleanup manifest",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/21",
+      "created_at": "2026-09-25T14:21:02Z",
+      "updated_at": "2026-10-20T02:02:41Z",
+      "closed_at": "2026-10-20T02:02:41Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 22,
+      "kind": "pull_request",
+      "title": "[A2-TEAM] Coordination Claude ↔ Codex — NE PAS FUSIONNER",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/22",
+      "created_at": "2026-10-07T23:24:11Z",
+      "updated_at": "2026-10-20T02:02:48Z",
+      "closed_at": "2026-10-20T02:02:48Z",
+      "reported_top_level_comments": 162
+    },
+    {
+      "number": 23,
+      "kind": "pull_request",
+      "title": "[EDGE-FLOW] F1: preserve captures, exit costs and authenticated selection",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/23",
+      "created_at": "2026-10-08T21:58:56Z",
+      "updated_at": "2026-10-20T02:02:54Z",
+      "closed_at": "2026-10-20T02:02:54Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 24,
+      "kind": "pull_request",
+      "title": "[EDGE-FLOW] F1: durable Stage A capture with completion proof",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/24",
+      "created_at": "2026-10-08T22:55:52Z",
+      "updated_at": "2026-10-09T08:14:47Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 25,
+      "kind": "pull_request",
+      "title": "[EDGE-FLOW] F1: persist discovery result and freeze its selection",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/25",
+      "created_at": "2026-10-09T07:38:40Z",
+      "updated_at": "2026-10-09T10:23:07Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 26,
+      "kind": "pull_request",
+      "title": "[EDGE-FLOW] F1: reject carry on B and preserve the single evaluation",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/26",
+      "created_at": "2026-10-09T07:51:07Z",
+      "updated_at": "2026-10-10T00:07:12Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 27,
+      "kind": "pull_request",
+      "title": "[EDGE-FLOW] F2: resolve primary terms and keep acquisition blocked",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/27",
+      "created_at": "2026-10-09T10:23:06Z",
+      "updated_at": "2026-10-09T10:45:29Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 28,
+      "kind": "pull_request",
+      "title": "[EDGE-RESEARCH] Freeze bounded intraday EURUSD proxy test",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/28",
+      "created_at": "2026-10-10T00:32:31Z",
+      "updated_at": "2026-10-10T14:30:17Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 29,
+      "kind": "pull_request",
+      "title": "Live Lab native WebGL 3D renderer",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/29",
+      "created_at": "2026-10-15T13:40:24Z",
+      "updated_at": "2026-10-15T13:44:11Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 30,
+      "kind": "pull_request",
+      "title": "Wave 2 convergence: import pinned Multi-Source Ideation Intake V2",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/30",
+      "created_at": "2026-10-21T19:57:39Z",
+      "updated_at": "2026-10-21T19:58:06Z",
+      "closed_at": "2026-10-21T19:58:06Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 31,
+      "kind": "pull_request",
+      "title": "Wave 2 C2: close Multi-Source nested outcome firewall",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/31",
+      "created_at": "2026-10-21T20:01:13Z",
+      "updated_at": "2026-10-21T20:02:24Z",
+      "closed_at": "2026-10-21T20:02:24Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 32,
+      "kind": "pull_request",
+      "title": "Apply nested outcome firewall repair to Multi-Source Ideation V2",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/32",
+      "created_at": "2026-10-21T20:06:10Z",
+      "updated_at": "2026-10-21T20:06:22Z",
+      "closed_at": "2026-10-21T20:06:22Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 33,
+      "kind": "pull_request",
+      "title": "Wave 2 C2: repair Multi-Source qualification source-law assertions",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/33",
+      "created_at": "2026-10-21T20:06:32Z",
+      "updated_at": "2026-10-21T20:06:52Z",
+      "closed_at": "2026-10-21T20:06:52Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 34,
+      "kind": "issue",
+      "title": "Wave2 C2: reacquire Multi-Source lane after receipt-binding hardening",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/34",
+      "created_at": "2026-10-21T20:12:49Z",
+      "updated_at": "2026-10-21T20:54:42Z",
+      "closed_at": null,
+      "reported_top_level_comments": 1
+    },
+    {
+      "number": 35,
+      "kind": "issue",
+      "title": "Wave2 C2 BLOCKER: canonical head still carries stale Multi-Source receipt boundary",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/35",
+      "created_at": "2026-10-21T20:16:49Z",
+      "updated_at": "2026-10-21T20:16:49Z",
+      "closed_at": null,
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 36,
+      "kind": "issue",
+      "title": "WP1 — Recover authoritative source evidence before any book-pressure successor",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/36",
+      "created_at": "2026-10-28T22:33:22Z",
+      "updated_at": "2026-10-30T01:07:06Z",
+      "closed_at": null,
+      "reported_top_level_comments": 6
+    },
+    {
+      "number": 37,
+      "kind": "issue",
+      "title": "Independent challenge — should Quant-Trade move to one bounded autonomous workflow lane?",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/37",
+      "created_at": "2026-10-30T01:42:43Z",
+      "updated_at": "2026-10-30T02:05:35Z",
+      "closed_at": null,
+      "reported_top_level_comments": 5
+    },
+    {
+      "number": 38,
+      "kind": "issue",
+      "title": "Bounded autonomous orchestrator — first continuity mission across WP1/WP2/WP3",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/38",
+      "created_at": "2026-10-30T02:20:21Z",
+      "updated_at": "2026-10-30T08:04:25Z",
+      "closed_at": null,
+      "reported_top_level_comments": 14
+    },
+    {
+      "number": 39,
+      "kind": "pull_request",
+      "title": "WP2 — exact-base single-lineage binding proof",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/39",
+      "created_at": "2026-10-30T04:37:42Z",
+      "updated_at": "2026-10-30T14:12:06Z",
+      "closed_at": null,
+      "reported_top_level_comments": 20
+    },
+    {
+      "number": 40,
+      "kind": "issue",
+      "title": "Independent review — WP2 single-lineage binding on PR #39",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/40",
+      "created_at": "2026-10-30T12:02:40Z",
+      "updated_at": "2026-10-30T12:04:38Z",
+      "closed_at": null,
+      "reported_top_level_comments": 2
+    },
+    {
+      "number": 41,
+      "kind": "pull_request",
+      "title": "Independent WP2 review — exact implementation checkout",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/41",
+      "created_at": "2026-10-30T12:07:02Z",
+      "updated_at": "2026-10-30T12:11:16Z",
+      "closed_at": null,
+      "reported_top_level_comments": 2
+    },
+    {
+      "number": 42,
+      "kind": "issue",
+      "title": "WP2 — fresh-context adversarial review of exact hosted-green head",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/42",
+      "created_at": "2026-10-30T14:22:00Z",
+      "updated_at": "2026-10-30T14:42:28Z",
+      "closed_at": null,
+      "reported_top_level_comments": 4
+    },
+    {
+      "number": 43,
+      "kind": "issue",
+      "title": "Autonomy continuity challenge — eliminate manual relaunch dependence",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/43",
+      "created_at": "2026-10-30T19:06:19Z",
+      "updated_at": "2026-10-30T19:10:04Z",
+      "closed_at": null,
+      "reported_top_level_comments": 5
+    },
+    {
+      "number": 44,
+      "kind": "issue",
+      "title": "GPT-OSS VM → Codex autonomous orchestration: reuse existing validated worker without regression",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/44",
+      "created_at": "2026-10-30T19:23:56Z",
+      "updated_at": "2026-10-31T13:19:55Z",
+      "closed_at": null,
+      "reported_top_level_comments": 76
+    },
+    {
+      "number": 45,
+      "kind": "issue",
+      "title": "ASTRA SECURITY + OPERABILITY GATE — GPT-OSS↔Codex autonomous loop and economic vertical slice",
+      "state": "closed",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/issues/45",
+      "created_at": "2026-10-30T20:05:16Z",
+      "updated_at": "2026-10-30T20:05:42Z",
+      "closed_at": "2026-10-30T20:05:42Z",
+      "reported_top_level_comments": 0
+    },
+    {
+      "number": 46,
+      "kind": "pull_request",
+      "title": "Issue 44 Phase 1 — remote GPT-OSS ↔ Codex orchestration candidate",
+      "state": "open",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/pull/46",
+      "created_at": "2026-10-30T21:05:46Z",
+      "updated_at": "2026-10-31T13:05:40Z",
+      "closed_at": null,
+      "reported_top_level_comments": 10
+    }
+  ],
+  "pull_request_identities": [
+    {
+      "number": 46,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "ded11224df03e1a8ea332a7da4078f691062c7ab",
+      "base_ref": "blue/master-v2-2026-09-20",
+      "base_sha": "42affc56635b9dc7de411b544f657f98967f2371",
+      "head_ref": "builder/issue44-gpt-oss-codex-phase1-remote-20261030",
+      "head_sha": "afedfd57986aa042e9e97aa53b9db53b4619764f"
+    },
+    {
+      "number": 41,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "32d9a07cca8eb0f2190bfed77c9768f2190000a0",
+      "base_ref": "builder/wp2-single-lineage-binding-20261030",
+      "base_sha": "d40053bd112164826273a866199e2941259919b0",
+      "head_ref": "review/wp2-independent-d40053-20261030",
+      "head_sha": "47e944fbcc5acb450b3cd63ab5920aa548c01309"
+    },
+    {
+      "number": 39,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "390b3a5e3e5320bd2a48ab6a4549fae1661e68b2",
+      "base_ref": "codex/c0-membrane-qualification-20261027",
+      "base_sha": "13721384fe5b94b0136fb4548192e05d5e34e605",
+      "head_ref": "builder/wp2-single-lineage-binding-20261030",
+      "head_sha": "8f8df47d184f0f1594280bec7e9e7941962cf1c5"
+    },
+    {
+      "number": 33,
+      "state": "closed",
+      "merged_at": "2026-10-21T20:06:52Z",
+      "merge_commit_sha": "b8110b39d611c7813b937cacb5727247149a516e",
+      "base_ref": "builder/convergence-wave2-canonical-20261021",
+      "base_sha": "82244483f5dfcb581b3dfbf23fb636c65d868f7d",
+      "head_ref": "builder/wave2-c2-multisource-grep-repair-20261021",
+      "head_sha": "bab911f45e6fe8a889c5acb8da24bc48790c1f50"
+    },
+    {
+      "number": 32,
+      "state": "closed",
+      "merged_at": "2026-10-21T20:06:22Z",
+      "merge_commit_sha": "c1f0ae08a0b148b89c6f328e5064f2fd002a0525",
+      "base_ref": "builder/multi-source-ideation-intake-20261021",
+      "base_sha": "9ddc7a01e300372a15b06727a0e4e70386973d48",
+      "head_ref": "builder/multi-source-outcome-firewall-repair-20261021",
+      "head_sha": "884632a1fc332df8155eaa5e0557521497dc6d4b"
+    },
+    {
+      "number": 31,
+      "state": "closed",
+      "merged_at": "2026-10-21T20:02:24Z",
+      "merge_commit_sha": "7f043122fa18437f6e7ffbed6e199099cea2811d",
+      "base_ref": "builder/convergence-wave2-canonical-20261021",
+      "base_sha": "d74d085903f409fdd224c3c894c6d6965e4a7d77",
+      "head_ref": "builder/multi-source-outcome-firewall-repair-20261021",
+      "head_sha": "884632a1fc332df8155eaa5e0557521497dc6d4b"
+    },
+    {
+      "number": 30,
+      "state": "closed",
+      "merged_at": "2026-10-21T19:58:06Z",
+      "merge_commit_sha": "0722dc4d3a69e70b67b15962b9bfe1858f963408",
+      "base_ref": "builder/convergence-wave2-canonical-20261021",
+      "base_sha": "ef01d456e1300395c225ad63defce17a1afc21c6",
+      "head_ref": "builder/convergence2-multisource-pinned-b5ba7541",
+      "head_sha": "b5ba754188b9029f8a80ebfeea37c98b6f636869"
+    },
+    {
+      "number": 29,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "6622099f4bd5b632678ad50dccb68ef56fd770a4",
+      "base_ref": "builder/live-lab-full-autonomy-20261015",
+      "base_sha": "fdfee2006869ff3770f752f32fb672da0b0fc4ac",
+      "head_ref": "builder/live-lab-3d-full-build-20261015",
+      "head_sha": "6076774f52ca2e619caaab57fb6a278f47608349"
+    },
+    {
+      "number": 28,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "d4fa5afa493c878b84471e44705fbd4af3790e11",
+      "base_ref": "builder/f1-sealed-stage-b-capture-2026-10-09",
+      "base_sha": "ea9d2d0e0e057199bb168249c963acbc88e89de5",
+      "head_ref": "research/technical-signals-literature-2026-10-10",
+      "head_sha": "e42d4924a33efa78bab97939d654424cc1501fb8"
+    },
+    {
+      "number": 27,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "2e063c7eb972c4410af9cd5eab2cd7530be01c5e",
+      "base_ref": "team/weather-v4-a2-coordination-2026-10-08",
+      "base_sha": "1e88c6b82d682ae6d6d71b0732cb1bdb232cea3a",
+      "head_ref": "research/f2-primary-terms-decision-2026-10-09",
+      "head_sha": "e7344cfda865b987e57c0d0ad8eb37f4f164cf9e"
+    },
+    {
+      "number": 26,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "9b9c4bdfdd3187e457cdbfcf0287a68d5b1a658a",
+      "base_ref": "builder/f1-stage-a-execution-2026-10-09",
+      "base_sha": "0b0f5b416f7c958b763216450d5889feea692cc3",
+      "head_ref": "builder/f1-sealed-stage-b-capture-2026-10-09",
+      "head_sha": "ea9d2d0e0e057199bb168249c963acbc88e89de5"
+    },
+    {
+      "number": 25,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "55c7ce3010626097871e4ef1cce0dac1efee5ac5",
+      "base_ref": "builder/f1-persistent-stage-a-2026-10-08",
+      "base_sha": "a0a07c12a8fbb6e9bff59fd19bbed0da06c15040",
+      "head_ref": "builder/f1-stage-a-execution-2026-10-09",
+      "head_sha": "0b0f5b416f7c958b763216450d5889feea692cc3"
+    },
+    {
+      "number": 24,
+      "state": "open",
+      "merged_at": null,
+      "merge_commit_sha": "4c870d5af9b6dc633267f85e56d4b948024e17c7",
+      "base_ref": "builder/f1-decision-integrity-repair-2026-10-08",
+      "base_sha": "9f1d5ba92cf808dd2d6020d2918116947d8ed1d9",
+      "head_ref": "builder/f1-persistent-stage-a-2026-10-08",
+      "head_sha": "a0a07c12a8fbb6e9bff59fd19bbed0da06c15040"
+    },
+    {
+      "number": 23,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "b444c05e00538c8482f4a982d77a268639c039c2",
+      "base_ref": "team/weather-v4-a2-coordination-2026-10-08",
+      "base_sha": "1e88c6b82d682ae6d6d71b0732cb1bdb232cea3a",
+      "head_ref": "builder/f1-decision-integrity-repair-2026-10-08",
+      "head_sha": "9f1d5ba92cf808dd2d6020d2918116947d8ed1d9"
+    },
+    {
+      "number": 22,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "732756122c1c6b172328df6710d1495db30c73da",
+      "base_ref": "blue/master-v2-2026-09-20",
+      "base_sha": "09ba64b8bee1419076ec8a30f8d75a916932c2ba",
+      "head_ref": "team/weather-v4-a2-coordination-2026-10-08",
+      "head_sha": "5a992b031ee2ecf996fc9c258f02907ee807a5af"
+    },
+    {
+      "number": 21,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": null,
+      "base_ref": "blue/master-v2-2026-09-20",
+      "base_sha": "bd061dcd5a2a75b37119ee3eb65edafd16a58544",
+      "head_ref": "claude/new-session-z4pdlx",
+      "head_sha": "0f9cb618997173155860afe6941e02cf20833481"
+    },
+    {
+      "number": 20,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "31acc95b7a4f970fafddeb3f5a31b0a5c7ef2f31",
+      "base_ref": "blue/master-v2-2026-09-20",
+      "base_sha": "ff327a7cf30d91b9eabff973b6ad2d05de1b969d",
+      "head_ref": "blue/gate-b-run-authority-repair-integration-2026-09-21",
+      "head_sha": "644da76eb0227be275b8e3448118dac0cc7096ca"
+    },
+    {
+      "number": 19,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "ebbed473df8de8f9a3756f573c449a140e30653d",
+      "base_ref": "blue/master-v2-2026-09-20",
+      "base_sha": "442d7b59151ee0815bafe603e058f34e9a318e71",
+      "head_ref": "astra/p0-hybrid-fault-matrix-independent-review-2026-09-21",
+      "head_sha": "c6be804e99e409ab36a455f09ea2fccbe3d88252"
+    },
+    {
+      "number": 18,
+      "state": "closed",
+      "merged_at": "2026-09-19T23:05:22Z",
+      "merge_commit_sha": "288d224fc3f2830add4338c9875d9fd50ab174e2",
+      "base_ref": "astra/p0-deep-adversarial-pre-t0",
+      "base_sha": "f823a6d133dd8da8d7ed2dc4b6a9b227f37743c5",
+      "head_ref": "codex/reprendre-mission-astra-p0-pre-t0",
+      "head_sha": "a321bfd9d77d42bb43a4fcd8b774a6eb38789179"
+    },
+    {
+      "number": 17,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "7c61195f448b85f8ab7ece2cc7f43d7812fd24d3",
+      "base_ref": "blue/frontier-p0-integrity-blockers-2026-09-18",
+      "base_sha": "c1a955316055aaf6c1b28853e21ed07e36e55f6a",
+      "head_ref": "builder/p0-integrity-blockers-fingerprint-v1",
+      "head_sha": "8d5dbb41559c4716e94d5290b6ae979a8b96143c"
+    },
+    {
+      "number": 16,
+      "state": "closed",
+      "merged_at": "2026-09-18T10:47:19Z",
+      "merge_commit_sha": "52dfe380c753cad44f2876fd5a04d68c46ead8db",
+      "base_ref": "blue/handoff-memory-2026-09-15",
+      "base_sha": "d203c92a658bd18bc821e0a25bb68f57cf100a5c",
+      "head_ref": "builder/sec-form4-p0-raw-capture-v2",
+      "head_sha": "859ffafd2f31aa16e26c120def79aa8726517ed0"
+    },
+    {
+      "number": 15,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "770c6b582acecfb1248b56cbca5710414dfd8e78",
+      "base_ref": "reviewer/v1-final-red-team",
+      "base_sha": "37f298423ca4a100c1c633da2c3c6c2641d8dd8e",
+      "head_ref": "builder/evidence-store-identity-v2",
+      "head_sha": "b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba"
+    },
+    {
+      "number": 14,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "9e2cc7bd3913e3a8b2ecf065b54f144a7f300d36",
+      "base_ref": "claude/nasdaq-trading-model-design-h3mp4n",
+      "base_sha": "8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce",
+      "head_ref": "builder/sec-form4-census-v2a",
+      "head_sha": "08dcfc39b4b22e0b25e54edde7b6accbb2bc4502"
+    },
+    {
+      "number": 13,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "e358777cac6198b5be712bcb5aff33a912de38ed",
+      "base_ref": "claude/quant-code-mandate-q0l644",
+      "base_sha": "dba6a95153006a395ea7bc739f552a9c21b9ca35",
+      "head_ref": "codex/complete-v1-integrity-pass-for-codex",
+      "head_sha": "a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0"
+    },
+    {
+      "number": 12,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "4f5e3b57f29b9adc346477f333e5f0906936db3a",
+      "base_ref": "quant-system-v1",
+      "base_sha": "8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce",
+      "head_ref": "claude/quant-code-mandate-q0l644",
+      "head_sha": "dba6a95153006a395ea7bc739f552a9c21b9ca35"
+    },
+    {
+      "number": 11,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "3485e060a42e68eaacf1d85d572eaa8a9ca3bc28",
+      "base_ref": "runtime/persistent-research-v1",
+      "base_sha": "8bc25a9ce576617a68ccd1131ed914461acccb61",
+      "head_ref": "codex/optimiser-recherche-persistente-avec-intelligence++",
+      "head_sha": "eb69d66f93081a8252bfcbfd0bc779923e9d6467"
+    },
+    {
+      "number": 10,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "5b4381c7157a22e3ddeeaec4995776cd070c05fa",
+      "base_ref": "runtime/persistent-research-v1",
+      "base_sha": "8bc25a9ce576617a68ccd1131ed914461acccb61",
+      "head_ref": "quant-system-v1",
+      "head_sha": "8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce"
+    },
+    {
+      "number": 9,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "063574151bced3ccb550f3a5ec50e449efb53de2",
+      "base_ref": "runtime/persistent-research-v1",
+      "base_sha": "8bc25a9ce576617a68ccd1131ed914461acccb61",
+      "head_ref": "codex/build-persistent-research-campaign-orchestrator",
+      "head_sha": "dc65d4918b5253949122dead09e02a4c4f60833d"
+    },
+    {
+      "number": 8,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "5269e9bcdcec84ffe634d8574c54b5ae5714107a",
+      "base_ref": "codex/add-task-acknowledgment-and-tracking",
+      "base_sha": "5d80132da2de3d3a3525c49d09234700017dc994",
+      "head_ref": "runtime/persistent-research-v1",
+      "head_sha": "8bc25a9ce576617a68ccd1131ed914461acccb61"
+    },
+    {
+      "number": 7,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "fc2d03a986ac77cb2498546c399ac4617e8932c0",
+      "base_ref": "autonomous-quant-rebuild",
+      "base_sha": "4af5b1dea0e1785acdf697d411153bfbf3113ad6",
+      "head_ref": "codex/add-task-acknowledgment-and-tracking",
+      "head_sha": "5d80132da2de3d3a3525c49d09234700017dc994"
+    },
+    {
+      "number": 6,
+      "state": "closed",
+      "merged_at": "2026-09-13T19:05:17Z",
+      "merge_commit_sha": "4af5b1dea0e1785acdf697d411153bfbf3113ad6",
+      "base_ref": "claude/nasdaq-trading-model-design-h3mp4n",
+      "base_sha": "35cf6d626e979e24b2784d9e2e8cc5ba94bb7f4e",
+      "head_ref": "autonomous-quant-rebuild",
+      "head_sha": "4af5b1dea0e1785acdf697d411153bfbf3113ad6"
+    },
+    {
+      "number": 5,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "55ff27daf14f74edddee423d5c3cca6bfbf61cbf",
+      "base_ref": "codex/alignment-bootstrap",
+      "base_sha": "73e30782aab39fe19261c1edead9c86ea916e69c",
+      "head_ref": "research/design-v1",
+      "head_sha": "2da2d1b6786e9a7b1d34f94f5066dca79abf8e07"
+    },
+    {
+      "number": 4,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "943eba18836093ff4e8d41e50b778a9f579ef64a",
+      "base_ref": "claude/nasdaq-trading-model-design-h3mp4n",
+      "base_sha": "35cf6d626e979e24b2784d9e2e8cc5ba94bb7f4e",
+      "head_ref": "codex/test",
+      "head_sha": "723a778e302b6bc96e72030ded91440f75769aba"
+    },
+    {
+      "number": 3,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "5af244910f3454091b71469736fd495021fd2279",
+      "base_ref": "claude/nasdaq-trading-model-design-h3mp4n",
+      "base_sha": "35cf6d626e979e24b2784d9e2e8cc5ba94bb7f4e",
+      "head_ref": "codex/alignment-bootstrap",
+      "head_sha": "73e30782aab39fe19261c1edead9c86ea916e69c"
+    },
+    {
+      "number": 1,
+      "state": "closed",
+      "merged_at": null,
+      "merge_commit_sha": "c41dbb03742cf0b35145562014012bd3edcd67d2",
+      "base_ref": "claude/nasdaq-trading-model-design-h3mp4n",
+      "base_sha": "35cf6d626e979e24b2784d9e2e8cc5ba94bb7f4e",
+      "head_ref": "claude/price-prediction-model-ykhog1",
+      "head_sha": "c60c8ab20b3f08add097e25e7295ba1196b0e4a6"
+    }
+  ],
+  "interpretation_corrections": [
+    "A diverged Git graph does not establish that equivalent content or semantic ports are absent.",
+    "Wave2 is a candidate with later descendants and audits to examine, not an already selected final product trunk.",
+    "PRs 30, 31 and 33 have merged_at evidence of integration into the Wave2 branch.",
+    "Do not infer whole-product readiness or absence from PR46 bridge tests or the current default branch alone."
+  ]
+}
