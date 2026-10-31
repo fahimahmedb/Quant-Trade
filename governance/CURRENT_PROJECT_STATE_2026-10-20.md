@@ -5,6 +5,16 @@ Status: **RECOVERY INDEX — not autonomous authority or proof of current runtim
 `QUANT_NORTH_STAR.md` remains the highest-level product specification.
 
 
+## Current mission — forensic reconstruction PAUSED by Owner, 2026-10-31
+
+STATUS: PAUSED_BY_OWNER. The Owner requested a stop after a durable checkpoint so another AI can evaluate the work before continuation. This supersedes older mission-selection prompts below for this reconstruction; it does not change runtime or economic authority.
+
+Resume/evaluation checkpoint: [repository-only memory](https://github.com/fahimahmedb/Quant-Trade/blob/e6f5fa74a69f20263353c908483db61e8fe2e051/governance/forensic-20261031/RESUME.md), [machine cursor](https://github.com/fahimahmedb/Quant-Trade/blob/e6f5fa74a69f20263353c908483db61e8fe2e051/governance/forensic-20261031/resume.json), [evaluation guide](https://github.com/fahimahmedb/Quant-Trade/blob/e6f5fa74a69f20263353c908483db61e8fe2e051/governance/forensic-20261031/REVIEW_THIS_WORK.md). Branch: audit/forensic-checkpoint-20261019.
+
+Initial snapshot: 275 branches / 266 distinct tips / 6,393 reachable commits; 6,465 unique documentary blobs; 423 discussion objects; 4,806 Actions run metadata records. Full reads recorded: 52 documentary blobs and 7 discussion objects. Whole-branch semantic reconciliation: 0/275 completed. The exhaustive reconstruction, final product lineage, branch dispositions and integration patch are NOT COMPLETE.
+
+Raw exports, indices, read overlays and partial factual timelines are published. Archive restoration and 289 preserved tips were checked. Additional archive parents retain Git history only; they do not merge capabilities into a product. Resume from unread objects and current overlays, not a new initial inventory or old CP001 workspace. Use the frozen refs for baseline counts. No automatic continuation after this pause; wait for an Owner instruction. No branch deletion, PR merge, product/runtime mutation, deployment or economic authority is granted.
+
 ## Current continuity mission — 2026-10-28
 
 Owner mandate (REPORTED here by implementing agent from the current request): MINIMAL DURABLE CONTINUITY REPAIR + SUCCESSION TEST; documentation and bounded succession tasks only. No new security program or production implementation is authorized by this record.
