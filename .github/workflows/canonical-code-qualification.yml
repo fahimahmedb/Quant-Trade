@@ -1,0 +1,88 @@
+name: Canonical Code Qualification
+
+on:
+  push:
+    branches:
+      - code/canonical
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-code:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact head identity
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "CANONICAL_CODE_HEAD=$GITHUB_SHA"
+      - name: Compile integrated deltas
+        run: |
+          python -m py_compile \
+            research/research_os/expansion/v2_core.py \
+            research/research_os/expansion/v2_pipeline.py \
+            research/research_os/expansion/v2_stage_executor.py \
+            src/autonomous_research/codex_adapter.py \
+            src/autonomous_research/codex_policy.py \
+            scripts/gpt_oss_orchestrator.py
+      - name: CP099 carried-hardening regressions
+        env:
+          PYTHONPATH: .:src
+        run: |
+          python -m unittest -v \
+            tests.test_research_os_serializable_outcome_membrane \
+            tests.test_research_os_epoch_model_admission \
+            tests.test_research_os_trial_epoch_window \
+            tests.test_research_os_trial_proposal_export_binding \
+            tests.test_research_os_native_trial_lineage
+      - name: PR46 autonomy regressions
+        env:
+          PYTHONPATH: .:src
+        run: |
+          python -m unittest -v tests.test_codex_adapter tests.test_codex_policy
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('scripts/gpt_oss_orchestrator.py').read_text(encoding='utf-8')
+          assert 'ResearchCampaign' not in source
+          assert 'worker.step(task)' in source
+          assert '"scientific_queue_opened": False' in source
+          assert 'lane="engineering_orchestration"' in source
+          for key in (
+              'real_capital_authorized', 'live_trading_authorized',
+              'scientific_unblinding_authorized',
+              'frozen_protocol_redefinition_authorized',
+              'irreversible_external_mutation_authorized'):
+              assert f'"{key}": False' in source
+          print('GPT_OSS_LAUNCHER_ISOLATION=PASS')
+          PY
+      - name: Wave2 non-regression sample
+        env:
+          PYTHONPATH: .:src
+        run: |
+          python -m unittest -v \
+            tests.test_wave2_c2_scientific_adjudication \
+            tests.test_wave2_c2_scientific_economic_d0_seam \
+            research.research_os.tests.test_mega_b_canonical_gate \
+            research.research_os.tests.test_economic_identity_portfolio_readiness
+      - name: Authority remains closed
+        env:
+          PYTHONPATH: .:src
+        run: |
+          python - <<'PY'
+          from research.research_os.expansion.v2_core import CLOSED_AUTHORITY
+          assert CLOSED_AUTHORITY == {
+              'economic_experiment_authorized': False,
+              'prospective_observation_authorized': False,
+              'real_capital_authorized': False,
+              'live_trading_authorized': False,
+          }
+          print('CANONICAL_AUTHORITY_CLOSED=PASS')
+          PY
+      - name: Clean checkout
+        run: git diff --exit-code
