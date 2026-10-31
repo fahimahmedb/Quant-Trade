@@ -7,19 +7,21 @@
     "commit_traces": 6393,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 56,
-    "commit_traces_surface_reviewed": 3401,
-    "last_checkpoint": "surface/CHECKPOINT_2026-10-13_2026-10-16.md",
-    "next_active_day": "2026-10-17",
+    "surface_reviewed_days": 60,
+    "commit_traces_surface_reviewed": 4068,
+    "last_checkpoint": "surface/CHECKPOINT_2026-10-17_2026-10-20.md",
+    "next_active_day": "2026-10-21",
     "checkpoint_every_active_days": 4,
     "continue_after_checkpoint": true,
     "out_of_scope_side_projects": ["restaurant-stock/"],
-    "reusable_continuity_pattern": "compact live restart routers + durable feature plans/handoffs + canonical checkpoints/rules + exact-head proofs + explicit authority states",
+    "reusable_continuity_pattern": "compact live restart routers + durable feature plans/handoffs + canonical checkpoints/rules + stable hypothesis ids + exact-head proofs + explicit authority states",
     "current_quant_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA"],
     "research_rails": ["SAFE_RAIL_PROSPECTIVE", "FAST_RAIL_C_PAPER_SHADOW", "HISTORICAL_PIT_VALIDATION", "CI_ONLY_AUDIT_SURFACES", "EDGE_LAB_SINGLE_USE_RESEARCH_LOOP"],
     "data_capabilities": ["SCHEDULED_DATA_COLLECTION"],
     "observability_capabilities": ["OBSERVABILITY_UX_PROJECTION"],
-    "research_os_capabilities": ["RESEARCH_OS_PERSISTENT_STATE"],
+    "research_os_capabilities": ["RESEARCH_OS_PERSISTENT_STATE", "SEALED_SINGLE_LOOK_ECONOMIC_TESTING", "STABLE_HYPOTHESIS_IDENTITY", "BOUNDED_FRONTIER_NOOP"],
+    "oracle_v2_status": "QUALIFIED_ENGINEERING_CANDIDATE; CP057 exact source provenance; full qualification pending; deployment not performed; authorities false",
+    "oracle_v2_exact_head_proof": "Oracle V2 Core run 39517451814 success @ fecd09e0839f1208d9f876c311331221bde3ab7d",
     "p0_status": "raw capture integrated in Blue; phase-6 corrective merge in Astra; Gate A exact-head qualified; Gate B/t0 not inferred",
     "known_irreversible_contamination": ["SEC visibility count-proxy exposure observed 2026-09-18"],
     "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"],
@@ -31,13 +33,9 @@
       "F2": "BLOCKED_DATA_PERMISSION",
       "EURUSD_RANGE_GRID_001": "FROZEN_PRE_PRICE_PROXY_HARNESS; positive proxy cannot imply live authority",
       "FRONTIER_QUANT_MECHANISM_DISTINCT_001": "NO_CANDIDATE after public-evidence mechanism disconfirmation; no economic outcome access; no prospective observation"
-    },
-    "exact_head_proofs": {
-      "RESEARCH_OS_PERSISTENT_FINAL_SHAPE": "run 38740440664 success @ 083f7bc7b2d6a0de4ddc4804d6c55f40d3ca9504; SEC P0 gate on same SHA failure",
-      "LIVE_LAB_3D": "run 38744604683 success @ 6076774f52ca2e619caaab57fb6a278f47608349; PR29 open/unmerged; no production deployment"
     }
   },
-  "next_action": "Continue with 2026-10-17; process 2026-10-17 through 2026-10-20, publish checkpoint, continue",
-  "limits": "Metrics/labels remain historical claims unless independently demonstrated; automated feed/telemetry/CI commits are activity evidence not modules; domain CI success does not imply repository-wide green; observability UI does not establish research truth; mechanism disconfirmation can close an idea before candidate freeze",
+  "next_action": "Continue with 2026-10-21; process 2026-10-21 through 2026-10-24, publish checkpoint, continue",
+  "limits": "Metrics/labels remain historical claims unless independently demonstrated; autonomous wakes are executions not modules; stable ids are authoritative identity candidates, paths/branch names are not; source CI provenance does not redirect scientific state; CI green does not prove deployment or authority",
   "next_action_now": "CONTINUE"
 }
