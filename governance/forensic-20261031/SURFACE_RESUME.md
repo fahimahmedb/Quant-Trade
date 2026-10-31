@@ -6,16 +6,16 @@ Méthode retenue : historique de surface systématique, chronologique, journée 
 
 ## Reprendre sans recommencer
 
-Les **36 premières journées actives** sont traitées à la surface jusqu’au **25 septembre inclus** : **1 905 commits** plus les traces GitHub datées associées. Prochaine journée active : **27 septembre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-09-21_2026-09-25.md`.
+Les **40 premières journées actives** sont traitées à la surface jusqu’au **30 septembre inclus** : **2 123 commits** plus les traces GitHub datées associées. Prochaine journée active : **1 octobre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-09-27_2026-09-30.md`.
 
 Les 6 393 commits et 111 journées calendaires sont indexés, pas tous revus. 13 471 occurrences de sources au total, dont 969 sans date exploitable. Ne pas compter plusieurs représentations comme événements indépendants.
 
-Conclusions durables : `restaurant-stock/` reste hors périmètre ; les labels et métriques ne valent pas autorité seuls ; les FAIL, contaminations et conclusions supersédées restent mémorisés. PR #16 et PR #18 sont intégrées dans leurs lignées respectives ; PR #17, #19 et #20 sont fermées sans merge / CI-only selon leur rôle ; Gate B et t0 ne sont pas inférés d’un CI vert.
+État durable : `restaurant-stock/` hors périmètre ; Rail C paper/shadow adopté sans autorité capital ; SAFE_RAIL/HISTORICAL_PIT/CI_ONLY restent distincts ; `REAL_CAPITAL` et `FIXED_COST_BASE` sont des inconnus économiques décisifs ; `REAL_CAPITAL_AUTHORIZED = FALSE`.
 
-Économie : la fermeture R3 fondée sur une illustration 10k est `SUPERSEDED`. Le dépôt suppose 1M de capital de simulation mais ne prouve aucun capital réel. `REAL_CAPITAL` et `FIXED_COST_BASE` restent `UNKNOWN_DECISIVE`; `REAL_CAPITAL_AUTHORIZED = FALSE`.
+Data : le workflow `data feeds` est owner-approved et planifié depuis la branche par défaut, mais checkout/exécute la branche data dédiée. Il collecte des données publiques append-only et n’envoie aucun ordre. Les commits automatiques `quant-data-feeds` doivent être compressés en une seule capacité `SCHEDULED_DATA_COLLECTION`.
 
-Recherche : Rail C fast research est adopté par Blue le 25 septembre sur `bd197126...`, en paper/shadow, budget 10 itérations / 200 trials / 5 agents, sans toucher le rail sûr ; transfert au rail sûr à `FORWARD_PASS` avec décision Owner. La PR #21 reste une proposition non mergée et le cleanup n’est pas validé par l’adoption. Une voie `HISTORICAL_PIT_VALIDATION` existe séparément et doit rester firewalled de la prospective lineage.
+Science : les résultats négatifs sont des sorties à conserver. La correction Weather R3 du 30 septembre supersède les labels prospectifs antérieurs : sans bridge gelé `theta_W -> theta_P`, aucune étiquette prospective inconditionnelle ; utiliser une frontière de transport et un `SHADOW_CONTINUATION_SIGNAL`.
 
-Pattern de continuité à préserver : une petite surface de reprise vivante (mission, état, réacquisition) + handoffs/checkpoints/règles canoniques + preuves exact-head + statuts d’autorité explicites. Réutiliser les archives existantes ; ne pas recommencer la collecte.
+Pattern de continuité : petite surface de reprise vivante + handoffs/checkpoints/règles canoniques + preuves exact-head + statuts d’autorité explicites. Réutiliser les archives existantes ; ne pas recommencer la collecte.
 
-Poursuivre depuis le **27 septembre**, puis dans l’ordre. Toutes les **4 journées actives**, publier un checkpoint durable et continuer immédiatement. Terminer ensuite la carte des capacités et le plan des deux branches. Aucun essai rejoué, aucun runtime modifié, aucun nettoyage destructif pendant cette phase.
+Poursuivre depuis le **1 octobre**, puis dans l’ordre. Toutes les **4 journées actives**, publier un checkpoint durable et continuer immédiatement. Terminer ensuite la carte des capacités et le plan des deux branches. Aucun essai rejoué, aucun runtime modifié, aucun nettoyage destructif pendant cette phase.
