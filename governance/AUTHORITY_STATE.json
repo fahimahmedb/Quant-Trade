@@ -1,0 +1,13 @@
+{
+  "schema": "quant-trade-canonical-authority-v1",
+  "as_of": "2026-10-31",
+  "economic_experiment_authorized": false,
+  "prospective_observation_authorized": false,
+  "scientific_unblinding_authorized": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "production_deployment_authorized": false,
+  "destructive_repository_cleanup_authorized": true,
+  "destructive_repository_cleanup_scope": "retire legacy branches after two canonical branches and preservation checks",
+  "authority_note": "Repository cleanup authority does not grant scientific, economic, deployment, capital or trading authority."
+}
