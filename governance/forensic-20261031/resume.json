@@ -1,8 +1,8 @@
 {
   "mission": "QUANT_FORENSIC_20261031",
-  "status": "FORENSIC_DEEPENING_IN_PROGRESS",
-  "phase": "POST_SURFACE_DEEP_LINEAGE_RECONSTRUCTION",
-  "method": "DAY_TO_CP_TO_COMMITS_TO_DOCS_TO_DISCUSSIONS_TO_RUNS_TO_BRANCH_DESCENDANTS",
+  "status": "FORENSIC_RECONSTRUCTION_COMPLETE_FOR_CONVERGENCE",
+  "phase": "TWO_BRANCH_CONVERGENCE_READY",
+  "method": "CHRONOLOGICAL_SURFACE_PLUS_CAPABILITY_RECONCILIATION_WITH_POST_CLOSE_DEEP_SUPPLEMENT",
   "surface_cursor": {
     "commit_traces": 6393,
     "commit_traces_surface_reviewed": 6393,
@@ -12,42 +12,47 @@
     "surface_complete": true,
     "anti_restart": true
   },
-  "deep_cursor": {
-    "latest_checkpoint": "deep/CHECKPOINT_CP055_CP099_20261031.md",
+  "capability_reconciliation": {
+    "complete_for_convergence_planning": true,
+    "capability_map": "CAPABILITY_MAP.md",
+    "convergence_plan": "TWO_BRANCH_CONVERGENCE_PLAN.md",
+    "code_base_provisional": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "strategy": "WAVE2_DERIVED_BASE_PLUS_SELECTIVE_QUALIFIED_PORTS",
+    "autonomy_delta_source": "afedfd57986aa042e9e97aa53b9db53b4619764f",
+    "common_merge_base_wave2_blue_pr46": "09ba64b8bee1419076ec8a30f8d75a916932c2ba",
+    "wave2_commits_not_carried_by_recent_blue_or_pr46_by_ancestry": 1221,
+    "governance_target": "CONDENSE_CURRENT_BLUE_CONTROL_TOWER_TO_SINGLE_NON_EXECUTABLE_PROJECT_GOVERNANCE_BRANCH",
+    "generated_data_branch_status": "PARK_UNTIL_STORAGE_REPLACEMENT_PROVEN",
+    "destructive_cleanup_authorized": false
+  },
+  "post_close_deep_supplement": {
+    "checkpoint": "deep/CHECKPOINT_CP055_CP099_20261031.md",
+    "classification": "SUPPLEMENTAL_EVIDENCE_DOES_NOT_REOPEN_FORENSIC_MISSION",
     "cp055_cp099_deep_read": true,
     "cp099_exact_head": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
     "cp099_oracle_v2_run": 39660277404,
     "cp099_sec_run": 39660277407,
     "cp099_exact_head_qualified": true,
     "cp100_documentary_receipt": "ABSENT",
-    "next_cursor": "DISCUSSIONS_ISSUES_PRS_THEN_POST_WAVE2_DESCENDANT_RECONCILIATION"
+    "changes_main_convergence_decision": false,
+    "lineage_summary": [
+      "EVIDENCE_HISTORY_REUSE_CONNECT",
+      "DATA_SOURCE_ADMISSION_REPAIR",
+      "READINESS_PROVENANCE_FROZEN_INPUT_CAUSAL_CLOCK_REPAIR",
+      "SOURCE_CANDIDATE_TRIAL_EPOCH_FREEZE_PROPOSAL_ATTRIBUTION_REPAIR",
+      "DOCUMENTARY_ECONOMIC_IDENTITY_PORTFOLIO_REPAIR_CONNECT",
+      "HISTORICAL_BLOCK_MEMORY_REUSE_CONNECT",
+      "MODEL_AND_TEMPORAL_POLICY_REPAIR",
+      "OUTCOME_MEMBRANE_REPAIR"
+    ]
   },
-  "provisional_convergence": {
-    "code_base": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
-    "strategy": "WAVE2_DERIVED_BASE_PLUS_SELECTIVE_QUALIFIED_PORTS",
-    "autonomy_delta_source": "afedfd57986aa042e9e97aa53b9db53b4619764f",
-    "destructive_cleanup_authorized": false,
-    "final_promotion_decided": false
-  },
-  "cp055_cp099_lineage": [
-    "EVIDENCE_HISTORY_REUSE_CONNECT",
-    "DATA_SOURCE_ADMISSION_REPAIR",
-    "READINESS_PROVENANCE_FROZEN_INPUT_CAUSAL_CLOCK_REPAIR",
-    "SOURCE_CANDIDATE_TRIAL_EPOCH_FREEZE_PROPOSAL_ATTRIBUTION_REPAIR",
-    "DOCUMENTARY_ECONOMIC_IDENTITY_PORTFOLIO_REPAIR_CONNECT",
-    "HISTORICAL_BLOCK_MEMORY_REUSE_CONNECT",
-    "MODEL_AND_TEMPORAL_POLICY_REPAIR",
-    "OUTCOME_MEMBRANE_REPAIR"
-  ],
-  "decision_relevant_unknowns": [
+  "bounded_unknowns_and_blocks": [
     "PRODUCTION_VM_INSTALLATION_AND_LIVENESS",
     "ACTUAL_MULTI_WAKE_AUTONOMY",
     "SEMANTIC_COGNITIVE_INDEPENDENCE_BEYOND_R0",
     "REAL_PRIMARY_READY_AND_ECONOMIC_EDGE_PREMISES",
-    "PARTIAL_HISTORICAL_PRIMARY_PROVENANCE",
-    "FACTORY_GEOMETRY_POWER_AND_SEC_CENSUS_LINEAGE",
-    "POST_WAVE2_GIGA_HORIZONTAL_VERTICAL_TRANSVERSAL_COLLISIONS",
-    "PR46_SELECTIVE_PORT_COMPATIBILITY",
+    "HISTORICAL_PRIMARY_PROVENANCE_WHEN_DECISION_RELEVANT",
+    "POST_WAVE2_AND_PR46_PORT_COMPATIBILITY_DURING_CODE_CANDIDATE_BUILD",
     "GENERATED_DATA_STORAGE_FOR_TWO_BRANCH_TARGET"
   ],
   "authority": {
@@ -65,8 +70,10 @@
     "PARK_DATA != KILL",
     "DECLARED_ONLY != SOURCE_FACT",
     "DO_NOT_INVENT_MISSING_CP_OR_RECEIPT",
-    "ANTI_RESTART_RULE"
+    "NO_GLOBAL_FORENSIC_RESTART_WITHOUT_CONCRETE_DECISION_CHANGING_CONTRADICTION"
   ],
-  "next_action": "READ_DECISION_RELEVANT_DISCUSSIONS_PRS_AND_RECONCILE_POST_WAVE2_DESCENDANTS",
-  "forensic_reconstruction_complete": false
+  "next_action": "CODE_CANDIDATE_BUILD",
+  "next_action_detail": "Create a non-destructive candidate from exact Wave2 C2; compare post-Wave2 hardenings and selectively import only necessary semantics; selectively port PR46 autonomy delta; qualify exact head plus Wave2 regressions and semantic review; then prove the real non-economic VM multi-wake loop and build the condensed governance branch.",
+  "forensic_reconstruction_complete_for_convergence": true,
+  "global_forensic_continuation_authorized": false
 }
