@@ -7,10 +7,10 @@
     "commit_traces": 6393,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 40,
-    "commit_traces_surface_reviewed": 2123,
-    "last_checkpoint": "surface/CHECKPOINT_2026-09-27_2026-09-30.md",
-    "next_active_day": "2026-10-01",
+    "surface_reviewed_days": 44,
+    "commit_traces_surface_reviewed": 2232,
+    "last_checkpoint": "surface/CHECKPOINT_2026-10-01_2026-10-04.md",
+    "next_active_day": "2026-10-05",
     "checkpoint_every_active_days": 4,
     "continue_after_checkpoint": true,
     "out_of_scope_side_projects": ["restaurant-stock/"],
@@ -22,9 +22,11 @@
     "known_irreversible_contamination": ["SEC visibility count-proxy exposure observed 2026-09-18"],
     "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"],
     "real_capital_authorized": false,
-    "science_supersessions": ["Weather unconditional prospective label superseded 2026-09-30 by cost-mass transport repair R3"]
+    "science_supersessions": ["Weather unconditional prospective label superseded 2026-09-30 by cost-mass transport repair R3"],
+    "weather_authority_rule": "PRE_OP_PASS != EXECUTION_AUTHORITY; audit, Owner decision, and authorized phase remain distinct",
+    "unknowns_not_blocking": ["2026-10-01 non-feed commit detail not fully resolved at surface level"]
   },
-  "next_action": "Continue with 2026-10-01; publish a checkpoint after four active days and continue",
-  "limits": "Metrics/labels remain historical claims unless independently demonstrated; local tests and remote CI are distinct; automated feed commits are data observations, not modules; scientific corrections that remove prior positives supersede earlier labels",
+  "next_action": "Continue with 2026-10-05; process 2026-10-05 through 2026-10-08, publish checkpoint, continue",
+  "limits": "Metrics/labels remain historical claims unless independently demonstrated; local tests and remote CI are distinct; automated feed commits are data observations, not modules; scientific corrections that remove prior positives supersede earlier labels; branch names/dates do not establish event time or authority",
   "next_action_now": "CONTINUE"
 }
