@@ -1,14 +1,20 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`TWO_BRANCH_CONVERGENCE_QUALIFIED_CLEANUP_PENDING`
+STATUS=`CANONICAL_PAIR_ACTIVE_BRANCH_RETIREMENT_PARKED`
 DATE=`2026-10-31`
 
-## Canonical destinations
+## Canonical authority
 
-- CODE: `code/canonical`
-- PROJECT/GOVERNANCE: `project/canonical`
+- CODE AUTHORITY: `code/canonical`
+- PROJECT / GOVERNANCE AUTHORITY: `project/canonical`
 
-No other branch is authoritative for new work once cleanup completes.
+These are the only branches authorized for new canonical work.
+Legacy branches remain preserved as historical evidence until a later explicit Owner decision retires them.
+
+`BRANCH_DELETION_AUTHORIZED=FALSE`
+`BRANCH_RETIREMENT=PARK`
+
+The repository default branch is still `blue/master-v2-2026-09-20` because the GitHub integration could not rename the default branch (`403 Resource not accessible by integration`). This does NOT restore engineering authority to that branch.
 
 ## Code state
 
@@ -21,9 +27,22 @@ Exact-head canonical qualification:
 - workflow: `Canonical Code Qualification`
 - run: `41216401503`
 - conclusion: `SUCCESS`
-- all observed steps PASS: exact-head identity, compile, CP099 carried-hardening regressions, PR46 autonomy regressions, Wave2 non-regression sample, closed authority, clean checkout.
+- exact-head identity: PASS
+- compile integrated deltas: PASS
+- CP099 carried-hardening regressions: PASS
+- PR46 autonomy regressions: PASS
+- Wave2 non-regression sample: PASS
+- closed authority: PASS
+- clean checkout: PASS
 
-The preceding combined head `2b7e3d77b4fe36e1720fe0a8b4620f91eee32132` failed run `41216294343` because the CP099 source manifest taxonomies were incompatible with Wave2 `legacy.py`. Repair restored exact Wave2 manifest blob `50e4e9088b9ce68336cf2ca34fd02882af44ea5e` rather than importing the conflicting validator.
+Challenge evidence retained:
+- preceding head `2b7e3d77b4fe36e1720fe0a8b4620f91eee32132`
+- run `41216294343`
+- result: FAILURE
+- cause: CP099 `legacy/source_manifest.json` taxonomy incompatible with Wave2 `legacy.py`
+- correction: restore exact Wave2-compatible manifest blob `50e4e9088b9ce68336cf2ca34fd02882af44ea5e`
+- corrected head: `fd3f8ce77d3a2f20cc5954c184c4487b44dac1d3`
+- corrected run: `41216401503` SUCCESS
 
 Included selectively:
 - CP099 non-conflicting V2 hardening spine: `v2_core`, `v2_pipeline`, `v2_stage_executor`;
@@ -35,8 +54,14 @@ Direct CP099 wholesale merge was rejected: PR #47 conflicted and was closed with
 ## Project memory
 
 Forensic reconstruction is complete for convergence. Do not restart global archaeology.
-Historical evidence remains under `governance/forensic-20261031/` and Git history.
-Legacy open PRs have been closed; their commits remain evidence, not active integration lanes.
+Historical evidence remains under `governance/forensic-20261031/`, closed PRs, and Git history.
+Legacy open PRs were closed; their commits remain evidence, not active integration lanes.
+
+The attempted final cleanup workflow run `41216737420` failed before branch deletion. It preserved branch-tip evidence, then hit a GitHub permission failure while trying to rename the default branch. No mass branch deletion occurred.
+
+A failed rollback left the qualified code ref temporarily named `code/canonical-qualified-tmp`; `code/canonical` was then recreated directly at the already-qualified SHA `fd3f8ce77d3a2f20cc5954c184c4487b44dac1d3`. The temporary branch is deliberately NOT deleted under the Owner PARK decision.
+
+The destructive cleanup workflow is now parked and read-only. It cannot delete or rename branches unless explicitly rewritten in a future Owner-authorized mission.
 
 ## Authority
 
@@ -45,13 +70,16 @@ Legacy open PRs have been closed; their commits remain evidence, not active inte
 `REAL_CAPITAL_AUTHORIZED=FALSE`
 `LIVE_TRADING_AUTHORIZED=FALSE`
 
-Repository cleanup to the two canonical branches is Owner-authorized and does not widen those scientific/economic authorities.
-
 ## Current claim ceiling
 
 `ENGINEERING_CODE_CANDIDATE_QUALIFIED=TRUE`.
+`CANONICAL_PROJECT_AUTHORITY_ESTABLISHED=TRUE`.
+`LEGACY_BRANCHES_RETIRED=FALSE`.
+`DEFAULT_BRANCH_SWITCHED=FALSE`.
+
 Actual VM `GPT-OSS -> Codex -> GPT-OSS` multi-wake autonomy remains `NOT_PROVEN`; CI does not establish deployment or runtime use.
 
 ## Next action
 
-Preserve all legacy branch tips in the project history anchor, switch the repository default to `code/canonical`, retire all non-canonical branch refs, verify exactly two branches remain, then publish the final handoff.
+Continue project work only through `code/canonical` and `project/canonical`.
+Do not delete, rename, or retire legacy branches until a new explicit Owner instruction authorizes that cleanup.
