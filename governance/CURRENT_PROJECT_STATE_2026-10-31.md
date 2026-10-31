@@ -10,6 +10,18 @@ LAST_VERIFIED_AT: 2026-10-31.
 LAST_VERIFIED_REF: default branch `blue/master-v2-2026-09-20` at `42affc56635b9dc7de411b544f657f98967f2371` before this Control Tower reconciliation sequence; each active subject below is separately bound to its exact ref/SHA/run where known.
 OBSERVATION_METHOD: GitHub issue/PR comment histories and remote metadata for #36, #38, PR #39, #42, #43, #44 and PR #46; exact commit comparison; PR diffs/file lists; GitHub Actions run metadata/logs; read-only Quant-Trade Lab status. Chat/conversation summaries were treated only as navigation hints, never as primary proof.
 
+## Repository reconstruction requested — preparation status
+
+Latest Owner request: reconstruct all Quant-Trade branches, document histories and GitHub discussions from the beginning, then propose a simpler canonical product/memory layout. Scope and execution method are prepared; the exhaustive content audit has NOT been performed or launched by this preparation.
+
+Verified inventory: 275 live branches / 266 distinct tips; 35 PRs, 11 other issues; 325 reported conversation comments before the audit receipt; 4,804 reported Actions runs. Repository creation: 2026-07-13T01:29:49Z. Exact branch/SHA and issue/PR inventory: `governance/FORENSIC_INVENTORY_2026-10-31.json`, commit `c40b738bfd48a83a0249f12e4b9bbc1a745f91af`, blob `34e1b94d9f7a3c334190f88b5ed1b97ab683de25`.
+
+Execution contract and resume requirements: https://github.com/fahimahmedb/Quant-Trade/issues/44#issuecomment-6543997679 .
+
+Correction: Git divergence does not prove absence of equivalent/ported capabilities. PRs #30/#31/#33 were merged into the Wave2 branch. Wave2 and later descendants/audit repairs must be compared before choosing a product base. No final trunk selection, whole-product completion claim or wholesale reintegration follows from the earlier branch counters.
+
+Next audit preparation unit: verify complete Git mirror plus persistent export/checkpoint transport, then enumerate all unique Git/API objects and reading coverage. Reuse previous audit objects and preserve historical/scientific evidence. The autonomy candidate and runtime limits below remain separately scoped evidence.
+
 ## Current mission
 
 **Finish and qualify the system-level autonomous continuity path before opening any new economic hypothesis, economic outcome, prospective scientific exposure or capital/trading authority.**
