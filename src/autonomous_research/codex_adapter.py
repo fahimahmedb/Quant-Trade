@@ -332,18 +332,19 @@ class CodexOrchestrationWorker:
 
     def _dispatch_body(self, task: ResearchTask, state: OrchestrationState) -> str:
         payload = self._dispatch_payload(task, state)
-        prompt = state.current_prompt
         contract = dict(payload)
         contract["result_sha"] = "<40-lowercase-hex-sha>"
         contract["result_branch"] = self.config.target_branch
         return (
             f"{_marker('dispatch', payload)}\n"
-            f"{self.config.builder_mention}\\n\\n"
-            "BOUNDED CODEX DISPATCH — work only inside the supplied task and expected-head fence.\\n\\n"
-            f"{prompt}\\n\\n"
-            "When, and only when, the bounded result is remotely durable, append this exact machine-readable "
-            "marker with result_sha replaced by the exact remote candidate SHA:\\n"
-            f"`{_marker('result', contract)}`\\n"
+            f"{self.config.builder_mention}\n\n"
+            "BOUNDED CODEX DISPATCH — work only inside the supplied task and expected-head fence.\n\n"
+            f"{state.current_prompt}\n\n"
+            "When, and only when, the bounded result is remotely durable, start your response "
+            "with the following raw marker as its very first line. Replace result_sha with the "
+            "exact remote candidate SHA. No backticks, code fence, heading or text before it; "
+            "put any explanation on subsequent lines.\n"
+            f"{_marker('result', contract)}\n"
             "Do not claim CI or independent review in that marker; the orchestrator verifies those separately."
         )
 
@@ -358,10 +359,13 @@ class CodexOrchestrationWorker:
         contract["verdict"] = "<PASS|REQUEST_CHANGES|UNKNOWN>"
         return (
             f"{_marker('review_request', payload)}\n"
-            f"{self.config.reviewer_mention}\\n\\n"
+            f"{self.config.reviewer_mention}\n\n"
             "FRESH-CONTEXT INDEPENDENT REVIEW. Inspect the exact candidate SHA and primary evidence; "
-            "do not modify implementation. Return PASS only if the bounded claim is independently supported.\\n"
-            f"Return exactly one marker: `{_marker('review', contract)}`"
+            "do not modify implementation. Return PASS only if the bounded claim is independently supported.\n"
+            "Start your response with the following raw marker as its very first line, replacing "
+            "verdict with PASS, REQUEST_CHANGES or UNKNOWN. No backticks, code fence, heading or "
+            "text before it; put any explanation on subsequent lines.\n"
+            f"{_marker('review', contract)}"
         )
 
     def _valid_result(self, comments: list[dict[str, Any]], state: OrchestrationState) -> str | None:
@@ -655,3 +659,4 @@ class CodexOrchestrationWorker:
                 self.config.max_poll_seconds,
             )
             self.sleeper(delay)
+

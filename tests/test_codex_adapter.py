@@ -65,6 +65,40 @@ def task(expected=SHA_A, authority=None, prompt="Make one bounded reversible cha
 
 
 class AdapterTests(unittest.TestCase):
+    def test_emitted_response_contract_completes_nominal_loop(self):
+        from autonomous_research.codex_policy import PolicyFencedCodexOrchestrationWorker
+
+        with tempfile.TemporaryDirectory() as directory:
+            client = FakeClient()
+            worker = PolicyFencedCodexOrchestrationWorker(
+                self.config(directory), client,
+                DecisionQueue({"action": "DONE", "reason": "bounded result qualified"}),
+                trusted_orchestrator_actor="orchestrator", sleeper=lambda _: None)
+            worker.step(task())
+            dispatch = client.posts[-1]
+            self.assertIn("\n@codex\n\n", dispatch)
+            self.assertIn("very first line", dispatch)
+            result_line = next(line for line in dispatch.splitlines()
+                               if line.startswith("<!-- QUANT_CODEX_RESULT "))
+            result_line = result_line.replace("<40-lowercase-hex-sha>", SHA_B)
+            client.head = SHA_B
+            client.items.append({"id": 2, "author": "builder",
+                                 "body": result_line + "\nBounded result details."})
+            self.assertFalse(worker.step(task())["terminal"])
+            client.ci[SHA_B] = "PASS"
+            self.assertFalse(worker.step(task())["terminal"])
+            review_request = client.posts[-1]
+            self.assertIn("\n@codex\n\n", review_request)
+            self.assertIn("very first line", review_request)
+            review_line = next(line for line in review_request.splitlines()
+                               if line.startswith("<!-- QUANT_CODEX_REVIEW "))
+            review_line = review_line.replace("<PASS|REQUEST_CHANGES|UNKNOWN>", "PASS")
+            client.items.append({"id": 4, "author": "reviewer",
+                                 "body": review_line + "\nIndependent review details."})
+            result = worker.step(task())
+            self.assertTrue(result["terminal"])
+            self.assertEqual(result["result"]["outcome"], "DONE")
+
     def config(self, root, **overrides):
         values = dict(
             root=Path(root), repository="owner/repo", issue_number=44,
@@ -254,3 +288,4 @@ class AdapterTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
