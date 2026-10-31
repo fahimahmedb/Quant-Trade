@@ -2,24 +2,24 @@
 
 STATUT : IN_PROGRESS. L’Owner a autorisé explicitement la reprise. L’audit global et la simplification ne sont pas terminés. Ne pas interrompre la chronologie après un checkpoint intermédiaire.
 
-Méthode retenue : historique de surface systématique, chronologique, journée active par journée active. La lecture profonde de toutes les versions documentaires n’est pas le critère de fin. Cible finale : une branche code et une branche projet/gouvernance ; aucune branche supprimée ou migrée pendant cette phase forensic.
+## Curseur durable
 
-## Reprendre sans recommencer
+Les **48 premières journées actives** sont traitées jusqu’au **8 octobre inclus** : **2 449 commits** plus les traces GitHub datées associées. Prochaine journée active : **9 octobre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-10-05_2026-10-08.md`.
 
-Les **44 premières journées actives** sont traitées à la surface jusqu’au **4 octobre inclus** : **2 232 commits** plus les traces GitHub datées associées. Prochaine journée active : **5 octobre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-10-01_2026-10-04.md`.
+Méthode : `CHRONOLOGICAL_SURFACE`. Toutes les quatre journées actives, publier un checkpoint puis continuer. Les 6 393 commits / 111 journées / 13 471 occurrences restent l’inventaire initial ; indexé n’est pas relu intégralement.
 
-Les 6 393 commits et 111 journées calendaires sont indexés, pas tous revus. 13 471 occurrences de sources au total, dont 969 sans date exploitable. Ne pas compter plusieurs représentations comme événements indépendants.
+## État réutilisable
 
-État durable : `restaurant-stock/` hors périmètre ; Rail C paper/shadow adopté sans autorité capital ; SAFE_RAIL/HISTORICAL_PIT/CI_ONLY restent distincts ; `REAL_CAPITAL` et `FIXED_COST_BASE` sont des inconnus économiques décisifs ; `REAL_CAPITAL_AUTHORIZED = FALSE`.
+- `restaurant-stock/` est hors périmètre Quant.
+- `SCHEDULED_DATA_COLLECTION` représente la collecte planifiée ; les snapshots automatiques ne sont pas des modules.
+- Rails : `SAFE_RAIL_PROSPECTIVE`, `FAST_RAIL_C_PAPER_SHADOW`, `HISTORICAL_PIT_VALIDATION`, `CI_ONLY_AUDIT_SURFACES`.
+- `REAL_CAPITAL_AUTHORIZED = FALSE`; `REAL_CAPITAL` et `FIXED_COST_BASE` restent inconnus décisifs.
+- Weather R3 du 30 septembre supersède l’ancien label prospectif inconditionnel.
 
-Data : le workflow `data feeds` est owner-approved et planifié depuis la branche par défaut, mais checkout/exécute la branche data dédiée. Les commits automatiques `quant-data-feeds` sont des observations append-only à compresser en une seule capacité `SCHEDULED_DATA_COLLECTION`, pas de nouveaux modules.
+Weather V4 A2 doit être reconstruit comme **une lignée d’états**, pas comme une architecture par branche : design/contract → scope Owner → harness Builder → audit Astra → repair → ratification Owner → trusted-root candidate → independent review → éventuelle autorité effective/activation.
 
-Science : la correction Weather R3 du 30 septembre supersède les labels prospectifs antérieurs. Weather V3 devient une campagne orchestrée le 2 octobre. Le 4 octobre, Astra persiste un pré-op audit PASS avec qualifications puis l’Owner n’autorise qu’une phase A1 documentation bornée : `PRE_OP_PASS != EXECUTION_AUTHORITY`.
+Au 8 octobre : root candidate présent ; Astra lot3 = `BLOCKED_INCOMPLETE_EVIDENCE`; `E_EFFECTIVE = FALSE`; aucune activation, release, levée de quarantaine ou merge n’est démontrée. Règles : `PRE_OP_PASS != EXECUTION_AUTHORITY`, `RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY`, tests reproduits + root candidat != activation.
 
-Temporalité : les dates contenues dans les noms de branches ne font pas foi. Exemple vérifié : `codex/weather-v3-s0-finish-2026-10-03` a un head committé le 2 octobre. Utiliser les dates Git/événements primaires.
+Les détails non résolus du 1 octobre et de quatre commits non-feed du 6 octobre restent `UNKNOWN_DETAIL_NOT_BLOCKING` ; ne pas recommencer l’audit pour les combler sauf si cela change une décision de réutilisation.
 
-Inconnu conservé : le détail des 21 commits non-feed du 1 octobre reste `UNKNOWN_DETAIL_NOT_BLOCKING`; ne pas inventer de capacité ou d’autorité pour combler cette lacune.
-
-Pattern de continuité : petite surface de reprise vivante + handoffs/checkpoints/règles canoniques + preuves exact-head + statuts d’autorité explicites. Réutiliser les archives existantes ; ne pas recommencer la collecte.
-
-Poursuivre depuis le **5 octobre**, puis 6, 7 et 8 octobre. Toutes les **4 journées actives**, publier un checkpoint durable et continuer immédiatement. Aucun essai rejoué, aucun runtime modifié, aucun nettoyage destructif pendant cette phase.
+Poursuivre depuis le **9 octobre**, puis 10, 11 et 12 octobre. Publier le prochain checkpoint et continuer immédiatement. Aucun nettoyage destructif, runtime produit ou essai scientifique rejoué pendant cette reconstruction.
