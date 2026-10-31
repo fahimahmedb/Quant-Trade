@@ -1,10 +1,25 @@
 {
-  "sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
-  "archive_hashes": {
-    "raw-export.tar.gz": "a676c40debe397999d40f5f19a32088258e48d3375b3e4b1cffed7133816c38e",
-    "analysis-export.tar.gz": "5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe"
+  "archive_checkpoint": {
+    "sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
+    "archive_hashes": {
+      "raw-export.tar.gz": "a676c40debe397999d40f5f19a32088258e48d3375b3e4b1cffed7133816c38e",
+      "analysis-export.tar.gz": "5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe"
+    },
+    "tips_verified_reachable": 289,
+    "status": "VERIFIED_ARCHIVAL_CHECKPOINT_NOT_AUDIT_COMPLETION"
   },
-  "tips_verified_reachable": 289,
-  "restoration_directory": "/workspace/quant-audit-restore-check",
-  "status": "VERIFIED_ARCHIVAL_CHECKPOINT_NOT_AUDIT_COMPLETION"
+  "surface_completion": {
+    "status": "VERIFIED_REMOTE_SURFACE_CHRONOLOGY_COMPLETE",
+    "final_checkpoint_path": "governance/forensic-20261031/surface/CHECKPOINT_2026-10-29_2026-10-31.md",
+    "final_checkpoint_blob_sha": "20f0053c9742fffb5c8691e88ba93773f25982ea",
+    "final_checkpoint_creation_commit": "6f0e4b980a4cb81ba462d565ac9d6b64706b60c7",
+    "router_head_verified_before_this_receipt": "7a0cb17aaddd0d0e9d4a0ba57972340960d087ff",
+    "router_tree_verified_before_this_receipt": "67354ed86db78e8a7b569bf7ed1c79a3bd62276b",
+    "commit_traces_surface_reviewed": 6393,
+    "active_days_surface_reviewed": 71,
+    "calendar_days_indexed": 111,
+    "undated_occurrences_preserved_unknown": 969,
+    "next_phase": "CAPABILITY_RECONCILIATION",
+    "verification_note": "Final checkpoint was re-fetched from the verified remote router head; root RESUME, SURFACE_RESUME, resume.json and coverage.json were updated before this receipt. This receipt does not claim deep semantic reading of every diff or completion of capability reconciliation."
+  }
 }
