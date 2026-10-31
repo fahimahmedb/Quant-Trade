@@ -1,17 +1,17 @@
-# Historique quotidien — index de couverture UTC
+# Index quotidien — UTC
 
-Inventaire automatique, pas un récit relu. Les occurrences de timeline peuvent répéter des commits/commentaires. UNKNOWN conserve les dates absentes. Aucune activité n’est inventée pour les journées sans trace.
+Indexation distincte de la revue de surface. Dates absentes : UNKNOWN. Références répétées dans les timelines distinctes des événements indépendants.
 
-| Jour | Commits | Occurrences GitHub | État |
+| Jour | Commits | Occurrences GitHub datées | État |
 |---|---:|---:|---|
-| 2026-07-13 | 9 | 1 | PENDING_SURFACE_REVIEW |
-| 2026-07-14 | 11 | 3 | PENDING_SURFACE_REVIEW |
-| 2026-07-15 | 4 | 1 | PENDING_SURFACE_REVIEW |
+| 2026-07-13 | 9 | 1 | SURFACE_REVIEWED_METADATA_NOT_DEEP |
+| 2026-07-14 | 11 | 3 | SURFACE_REVIEWED_METADATA_NOT_DEEP |
+| 2026-07-15 | 4 | 1 | SURFACE_REVIEWED_METADATA_NOT_DEEP |
 | 2026-07-16 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |
 | 2026-07-17 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |
 | 2026-07-18 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |
 | 2026-07-19 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |
-| 2026-07-20 | 1 | 0 | PENDING_SURFACE_REVIEW |
+| 2026-07-20 | 1 | 0 | SURFACE_REVIEWED_METADATA_NOT_DEEP |
 | 2026-07-21 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |
 | 2026-07-22 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |
 | 2026-07-23 | 0 | 0 | NO_DATED_TRACE_IN_SNAPSHOT |

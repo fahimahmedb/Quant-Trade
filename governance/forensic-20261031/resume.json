@@ -1,6 +1,6 @@
 {
   "mission": "QUANT_FORENSIC_20261031",
-  "status": "ACTIVE_OWNER_RESUMED",
+  "status": "PAUSED_BY_OWNER",
   "method": "CHRONOLOGICAL_SURFACE",
   "previous_deep_reading_method": "SUPERSEDED_AS_COMPLETION_CRITERION",
   "target": "Two active branches: code for implementation, projet for governance; exact names/trees pending chronological reconstruction",
@@ -22,7 +22,8 @@
     "next_active_day": "2026-07-24",
     "undated_occurrences_status": "PENDING_ASSOCIATION_WITHOUT_INVENTING_EVENT_TIME"
   },
-  "next_action": "Read all dated traces of 2026-07-24 then following days; connect requests, changes, reported tests and integrations; do not restart inventory",
+  "next_action": "On resumption: 2026-07-24, chronological surface method",
   "on_owner_stop": "Finish bounded unit; publish days.json, coverage, narrative, pending IDs and this cursor on existing audit branch; verify remote; stop",
-  "limits": "All-day indexing is not all-day surface review; undated traces remain pending; legacy deep-read statuses remain separate"
+  "limits": "All-day indexing is not all-day surface review; undated traces remain pending; legacy deep-read statuses remain separate",
+  "next_action_now": "STOP; resume only on further Owner instruction"
 }
