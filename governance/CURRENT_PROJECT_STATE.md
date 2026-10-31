@@ -1,6 +1,6 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`CANONICAL_PAIR_ACTIVE_BRANCH_RETIREMENT_PARKED`
+STATUS=`CANONICAL_PAIR_ACTIVE_VALUE_RECOVERY_IN_PROGRESS_BRANCH_RETIREMENT_PARKED`
 DATE=`2026-10-31`
 
 ## Canonical authority
@@ -63,6 +63,26 @@ A failed rollback left the qualified code ref temporarily named `code/canonical-
 
 The destructive cleanup workflow is now parked and read-only. It cannot delete or rename branches unless explicitly rewritten in a future Owner-authorized mission.
 
+## Current phase — value recovery before economic focus
+
+The completed 71-day forensic reconstruction is now used as an indexed source for a reuse-first recovery pass, not as a reason to reopen global archaeology.
+
+Canonical method:
+`REUSE > CONNECT > REPAIR > BUILD`.
+
+For each historically valuable capability/invariant/correction/negative result, compare it directly to the current canonical pair and classify it as one of:
+`NO_CHANGE_REQUIRED`, `REUSE_AS_IS`, `CONNECT`, `PORT_SELECTIVELY`, `REPAIR`, `GOVERNANCE_ONLY`, `PARK`, `RETIRE_FROM_ACTIVE_SCOPE`, `UNKNOWN_DECISION_RELEVANT`.
+
+Durable method file:
+`governance/VALUE_RECOVERY_AND_ECONOMIC_FOCUS_PLAN.md`.
+
+Purpose:
+- recover only value still missing from the canonical pair;
+- avoid duplicating capabilities already equivalent or stronger;
+- close remaining engineering/project gaps;
+- produce a short final closure gate;
+- then shift default effort to economic/scientific evidence rather than architecture/governance expansion.
+
 ## Authority
 
 `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
@@ -81,5 +101,10 @@ Actual VM `GPT-OSS -> Codex -> GPT-OSS` multi-wake autonomy remains `NOT_PROVEN`
 
 ## Next action
 
-Continue project work only through `code/canonical` and `project/canonical`.
+Execute the reuse-first value recovery classification against the current canonical pair, port only decision-relevant missing value, and produce:
+1. `VALUE_RECOVERY_LEDGER`;
+2. `CANONICAL_GAP_LIST`;
+3. `PROJECT_CLOSURE_GATE`;
+4. `ECONOMIC_FOCUS_BACKLOG`.
+
 Do not delete, rename, or retire legacy branches until a new explicit Owner instruction authorizes that cleanup.
