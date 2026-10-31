@@ -1,24 +1,33 @@
-# Point de reprise courant — forensic deepening en cours
+# Point de reprise canonique — forensic/reconstruction terminée pour convergence
 
-Lire dans cet ordre :
+STATUT : `FORENSIC_RECONSTRUCTION_COMPLETE_FOR_CONVERGENCE`.
 
-1. `governance/forensic-20261031/RESUME.md` ;
-2. `governance/forensic-20261031/resume.json` ;
-3. `governance/forensic-20261031/deep/CHECKPOINT_CP055_CP099_20261031.md` ;
-4. `governance/forensic-20261031/CAPABILITY_MAP.md` et `TWO_BRANCH_CONVERGENCE_PLAN.md` comme hypothèses de planification à challenger par la reconstruction profonde.
+Lire d’abord `governance/forensic-20261031/SURFACE_RESUME.md`, puis `governance/forensic-20261031/resume.json`, `CAPABILITY_MAP.md` et `TWO_BRANCH_CONVERGENCE_PLAN.md`.
 
 ## Ne pas recommencer
 
-La chronologie de surface est complète : **6 393 / 6 393 commits**, **71 journées actives**, du 13 juillet au 31 octobre 2026. Ne pas refaire la revue jour-par-jour. Les 969 occurrences sans date restent `UNKNOWN` ou doivent être rattachées par SHA sans inventer d’heure.
+La chronologie de surface est complète : **6 393 / 6 393 commits**, **71 journées actives**, jusqu’au 31 octobre 2026. Les 969 occurrences non datables restent `UNKNOWN` ou sont rattachées seulement par SHA sans inventer d’heure.
 
-Le deep checkpoint CP055→CP099 est maintenant publié. Il confirme que la majeure partie de cette séquence est une lignée de **hardenings de propriétaires existants** (`REUSE / CONNECT / REPAIR`), pas une collection de nouvelles architectures.
+La réconciliation de capacités est suffisante pour décider la convergence. **Ne pas relancer un audit global, CP par CP, branche par branche ou discussion par discussion** sauf contradiction primaire précise susceptible de changer une décision `REUSE / CONNECT / REPAIR / PARK / RETIRE`.
 
-Point exact important : `builder/v2-forward-20261020` s’arrête à CP099 `ded4228de74ce3b6926d9ea3e3c2114ff1be8208`. Le CP100 annoncé dans CP099 n’a pas été commité, mais l’exact head CP099 est qualifié directement par Actions : Oracle V2 Core `39660277404` SUCCESS et SEC P0 pre-t0 `39660277407` SUCCESS. Ne jamais inventer un reçu CP100.
+## Preuve supplémentaire post-clôture
 
-## Curseur exact suivant
+Le checkpoint `governance/forensic-20261031/deep/CHECKPOINT_CP055_CP099_20261031.md` a été produit après la première clôture. Il est conservé comme **supplément de preuve**, pas comme réouverture de la mission. Il confirme principalement des hardenings d’owners existants. CP099 exact head `ded4228de74ce3b6926d9ea3e3c2114ff1be8208` est qualifié par Oracle V2 Core `39660277404` SUCCESS et SEC P0 pre-t0 `39660277407` SUCCESS ; aucun CP100 documentaire n’existe et ne doit être inventé.
 
-Continuer sur les discussions/issues/PR non profondément lus, en priorité PR #1, Edge, Legacy, Weather et décisions Owner/Builder/Astra/challenger qui peuvent changer une lignée, une autorité ou un statut. Ensuite réconcilier les descendants post-Wave2 (GIGA / horizontal / vertical / transversal) avec les hardenings CP055→CP099 afin de décider pour chaque capacité : `REUSE / CONNECT / REPAIR / PARK / RETIRE`.
+Ce supplément ne renverse pas la décision de convergence :
 
-La base code reste **provisoirement** Wave2 C2 `ebc72b9fd14f91420c37e0b7607f9bfb584a289a` + ports sélectifs qualifiés. Ce n’est pas encore une promotion finale. Aucun nettoyage destructif n’est autorisé.
+- code provisoire : Wave2 C2 `ebc72b9fd14f91420c37e0b7607f9bfb584a289a` ;
+- stratégie : `WAVE2_DERIVED_BASE_PLUS_SELECTIVE_QUALIFIED_PORTS` ;
+- delta autonomie : PR #46 / `afedfd57986aa042e9e97aa53b9db53b4619764f`, port sélectif seulement ;
+- gouvernance : condenser le Control Tower Blue en une branche projet/gouvernance non exécutable ;
+- `data-feeds` : `PARK_UNTIL_STORAGE_REPLACEMENT_PROVEN` ;
+- aucun cleanup destructif avant preuve de propriété canonique/PARK/RETIRE.
 
-`FORENSIC_RECONSTRUCTION_COMPLETE=FALSE`
+## Prochaine action
+
+`CODE_CANDIDATE_BUILD` : créer non destructivement une candidate depuis l’exact Wave2 C2, comparer et porter uniquement les hardenings nécessaires, qualifier exact-head + régressions Wave2 + revue sémantique, puis traiter séparément la preuve VM multi-wake non économique.
+
+Les UNKNOWN/BLOCK restants sont des limites de convergence/qualification, pas une permission de recommencer l’archéologie globale.
+
+`REAL_CAPITAL_AUTHORIZED=FALSE`
+`LIVE_TRADING_AUTHORIZED=FALSE`
