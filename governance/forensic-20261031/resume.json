@@ -1,8 +1,8 @@
 {
   "mission": "QUANT_FORENSIC_20261031",
-  "status": "SURFACE_CHRONOLOGY_COMPLETE_NEXT_CAPABILITY_MAP",
-  "method": "CHRONOLOGICAL_SURFACE",
-  "target": "Two active branches: code for implementation, projet for governance; exact names/trees pending capability reconciliation",
+  "status": "FORENSIC_SURFACE_AND_CAPABILITY_RECONCILIATION_COMPLETE_PLAN_READY",
+  "phase": "TWO_BRANCH_CONVERGENCE_PLANNING_COMPLETE",
+  "method": "CHRONOLOGICAL_SURFACE_THEN_CAPABILITY_RECONCILIATION",
   "surface_cursor": {
     "commit_traces": 6393,
     "commit_traces_surface_reviewed": 6393,
@@ -12,23 +12,35 @@
     "undated_occurrences": 969,
     "dated_surface_complete_through": "2026-10-31",
     "last_checkpoint": "surface/CHECKPOINT_2026-10-29_2026-10-31.md",
-    "next_active_day": null,
     "surface_complete": true,
     "undated_occurrences_status": "PRESERVE_UNKNOWN_OR_ASSOCIATE_BY_SHA_WITHOUT_INVENTING_TIME"
+  },
+  "capability_reconciliation": {
+    "complete_for_planning": true,
+    "capability_map": "CAPABILITY_MAP.md",
+    "convergence_plan": "TWO_BRANCH_CONVERGENCE_PLAN.md",
+    "provisional_code_base": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "provisional_governance_base": "current Blue Control Tower state, to be condensed into a non-executable project/governance branch",
+    "autonomy_delta_source": "afedfd57986aa042e9e97aa53b9db53b4619764f",
+    "git_topology": {
+      "wave2_vs_current_blue": "DIVERGED",
+      "wave2_vs_pr46": "DIVERGED",
+      "common_merge_base": "09ba64b8bee1419076ec8a30f8d75a916932c2ba",
+      "wave2_commits_not_carried_by_recent_blue_or_pr46_by_ancestry": 1221,
+      "decision": "WAVE2_DERIVED_BASE_PLUS_SELECTIVE_QUALIFIED_PORTS"
+    },
+    "destructive_cleanup_authorized": false,
+    "generated_data_branch_status": "PARK_UNTIL_STORAGE_REPLACEMENT_PROVEN"
   },
   "durable_findings": {
     "out_of_scope_side_projects": ["restaurant-stock/"],
     "core_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA", "AUTONOMY_ORCHESTRATION"],
-    "research_rails": ["SAFE_RAIL_PROSPECTIVE", "FAST_RAIL_C_PAPER_SHADOW", "HISTORICAL_PIT_VALIDATION", "CI_ONLY_AUDIT_SURFACES", "EDGE_LAB_SINGLE_USE_RESEARCH_LOOP"],
-    "data_capabilities": ["SCHEDULED_DATA_COLLECTION"],
     "integration_finding": "Substantial W1/Mega/Multi-Source capabilities were selectively ported/adapted/re-exported into Wave2 descendants; missing old paths do not prove capability loss",
     "wave2_anchor": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a = canonical Wave2 C2 closure manifest; engineering anchor, not economic/production activation",
     "one_shot_history": "Historical one-shot remains NOT_QUALIFIED; later C0/membrane repairs qualify later SHA/scope only",
     "c0_final_exact_head": "13721384fe5b94b0136fb4548192e05d5e34e605; run 40437918834 success",
     "wp2_exact_head": "8f8df47d184f0f1594280bec7e9e7941962cf1c5; hosted run 41069767444 success; synthetic engineering-autonomy claim ceiling only",
     "issue44_exact_candidate": "afedfd57986aa042e9e97aa53b9db53b4619764f; hosted run 41203216122 success; real VM unattended E2E not proven",
-    "oracle_v2": "qualified engineering candidate with exact-source provenance; CI green does not imply deployment/authority",
-    "weather": "Weather R3 supersedes prior unconditional positive; V4 A2 is one governed state lineage, not one architecture per branch",
     "real_capital_authorized": false,
     "live_trading_authorized": false,
     "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"]
@@ -46,10 +58,11 @@
     "RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY",
     "SELF_PASS != INDEPENDENT_PASS"
   ],
-  "next_action": "Do not restart chronology. Build capability/lineage map from existing checkpoints and lineages; classify each family REUSE/CONNECT/REPAIR/PARK/RETIRE; then propose exact code and project/governance destination branches with no destructive cleanup until validated.",
+  "next_action": "NONDESTRUCTIVE_BUILD_CODE_CANDIDATE_FROM_WAVE2_C2_THEN_SELECTIVE_PORT_AND_QUALIFY",
+  "next_action_detail": "Create a candidate from exact Wave2 C2, compare and selectively port only necessary post-Wave2 hardenings and PR46 autonomy deltas, qualify exact-head plus Wave2 regressions and semantic review, then prove the real non-economic VM multi-wake loop. Build the condensed project/governance candidate separately. Do not restart chronology or perform destructive branch cleanup.",
   "unknowns_not_blocking": [
     "Some high-activity days retain unresolved per-commit detail where no capability/authority decision depends on it",
     "969 undated source occurrences remain without invented event time"
   ],
-  "next_action_now": "CAPABILITY_RECONCILIATION"
+  "next_action_now": "CODE_CANDIDATE_BUILD"
 }
