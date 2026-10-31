@@ -30,7 +30,7 @@ jobs:
           printf 'changed=%s\n' "${changed[*]-}"
           test "${#changed[@]}" -eq 1
           test "${changed[0]}" = "STATE.md"
-          grep -F '**378 unit tests discovered**' STATE.md
+          grep -F '**381 unit tests discovered**' STATE.md
       - name: Commit canonical STATE projection only
         shell: bash
         run: |
