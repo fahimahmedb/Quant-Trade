@@ -1,8 +1,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
-
 from autonomous_research.codex_adapter import OrchestrationConfig, OrchestrationState, _marker
 from autonomous_research.codex_policy import (
     FencedGitHubIssueClient,
@@ -174,6 +172,10 @@ def test_review_pass_must_be_after_trusted_review_request():
 
 def test_identity_mismatch_fails_before_any_control_post():
     client = IdentityProbeClient("wrong-actor")
-    with pytest.raises(RuntimeError):
+    try:
         client.post_comment("actionable control message")
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("identity mismatch must raise RuntimeError")
     assert client.calls == [("GET", "/user")]
