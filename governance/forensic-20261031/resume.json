@@ -7,17 +7,19 @@
     "commit_traces": 6393,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 28,
-    "commit_traces_surface_reviewed": 1030,
-    "last_checkpoint": "surface/CHECKPOINT_2026-09-12_2026-09-15.md",
-    "next_active_day": "2026-09-17",
+    "surface_reviewed_days": 32,
+    "commit_traces_surface_reviewed": 1484,
+    "last_checkpoint": "surface/CHECKPOINT_2026-09-17_2026-09-20.md",
+    "next_active_day": "2026-09-21",
     "checkpoint_every_active_days": 4,
     "continue_after_checkpoint": true,
     "out_of_scope_side_projects": ["restaurant-stock/"],
-    "reusable_continuity_pattern": "durable feature plans + handoffs + canonical checkpoints/rules + context routing",
-    "current_quant_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA"]
+    "reusable_continuity_pattern": "durable feature plans + handoffs + canonical checkpoints/rules + exact-head proofs + explicit authority states",
+    "current_quant_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA"],
+    "p0_status": "raw capture integrated in Blue; phase-6 corrective merge in Astra; Gate A exact-head qualified; t0 not inferred",
+    "known_irreversible_contamination": ["SEC visibility count-proxy exposure observed 2026-09-18"]
   },
-  "next_action": "Continue with 2026-09-17; publish a checkpoint after four active days and continue",
-  "limits": "Metrics/labels remain historical claims unless independently demonstrated; local tests and remote CI are distinct; closed/unmerged PRs are candidates not promotion; exact-head workflow success qualifies only the tested SHA/scope",
+  "next_action": "Continue with 2026-09-21; publish a checkpoint after four active days and continue",
+  "limits": "Metrics/labels remain historical claims unless independently demonstrated; local tests and remote CI are distinct; merge proves integration only into its base lineage; exact-head workflow success qualifies only the tested SHA/scope; t0/continuity are distinct gates",
   "next_action_now": "CONTINUE"
 }
