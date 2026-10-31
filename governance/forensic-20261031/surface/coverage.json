@@ -9,9 +9,14 @@
   "commit_traces": 6393,
   "total_source_occurrences": 13471,
   "undated_occurrences": 969,
-  "surface_reviewed_days": 4,
+  "surface_reviewed_active_days": 71,
+  "surface_complete_for_initial_dated_snapshot": true,
   "deep_document_reads_not_completion_criterion": true,
-  "commit_traces_surface_reviewed": 25,
-  "next_active_day": "2026-07-24",
-  "undated_occurrences_status": "PENDING_ASSOCIATION_WITHOUT_INVENTING_EVENT_TIME"
+  "commit_traces_surface_reviewed": 6393,
+  "first_active_day": "2026-07-13",
+  "last_active_day": "2026-10-31",
+  "next_active_day": null,
+  "last_checkpoint": "CHECKPOINT_2026-10-29_2026-10-31.md",
+  "undated_occurrences_status": "PRESERVE_UNKNOWN_OR_ASSOCIATE_BY_SHA_WITHOUT_INVENTING_EVENT_TIME",
+  "next_phase": "CAPABILITY_RECONCILIATION"
 }
