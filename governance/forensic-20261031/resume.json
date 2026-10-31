@@ -1,59 +1,28 @@
 {
-  "mission_id": "QUANT_FORENSIC_20261031",
-  "status": "PAUSED_BY_OWNER",
-  "audit_complete": false,
-  "restart_from_scratch": false,
-  "owner_stop_reason": "Owner requests external AI evaluation before resumption; save exact recoverable progress then stop",
-  "initial_default_sha": "b76bb13f4200784185bc2034e3763df78a72f9ab",
-  "initial_audit_sha": "67543ff286ff7a81a6705a197b7e557442d62ac2",
-  "archive_sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
-  "previous_published_batch_sha": "6ca29624a8b8903026152a30b97b0afc8c93aaba",
-  "current_checkpoint_sha": "CONTAINING_COMMIT_RESOLVE_FROM_GIT_OR_DEFAULT_ROUTER",
-  "coverage": {
-    "branches_indexed": 275,
-    "branches_semantically_reconciled": 0,
-    "reachable_commits": 6393,
-    "unique_document_blobs": 6465,
-    "document_blobs_read": 52,
-    "discussion_objects": 423,
-    "discussion_objects_read": 7,
-    "workflow_run_metadata": 4806
+  "mission": "QUANT_FORENSIC_20261031",
+  "status": "ACTIVE_OWNER_RESUMED",
+  "method": "CHRONOLOGICAL_SURFACE",
+  "previous_deep_reading_method": "SUPERSEDED_AS_COMPLETION_CRITERION",
+  "target": "Two active branches: code for implementation, projet for governance; exact names/trees pending chronological reconstruction",
+  "initial_snapshot_unchanged": true,
+  "surface_cursor": {
+    "method": "CHRONOLOGICAL_SURFACE",
+    "target_active_branches": [
+      "code",
+      "projet"
+    ],
+    "target_names_provisional": true,
+    "calendar_days": 111,
+    "commit_traces": 6393,
+    "total_source_occurrences": 13471,
+    "undated_occurrences": 969,
+    "surface_reviewed_days": 4,
+    "deep_document_reads_not_completion_criterion": true,
+    "commit_traces_surface_reviewed": 25,
+    "next_active_day": "2026-07-24",
+    "undated_occurrences_status": "PENDING_ASSOCIATION_WITHOUT_INVENTING_EVENT_TIME"
   },
-  "last_completed_unit": "W1/Mega A reuse and relocation proofs; builder checkpoint catalogue; prior audit correction chronology; exact archive restoration and fresh-index restart tests",
-  "pending_catalogues": [
-    "builder-checkpoints.csv",
-    "reads-overlay.json",
-    "discussion-coverage.csv",
-    "capability-lineages.csv",
-    "w1-mega-a-lineages.csv",
-    "index/document-versions.csv",
-    "index/branches.csv"
-  ],
-  "next_bounded_unit_after_owner_resumption": [
-    "Read CP055_HISTORICAL_EVIDENCE_STORE_CONNECTED and CP062 archaeology receipts at pinned v2-forward SHA",
-    "Process unread CP001-CP099; trace code/tests/integration including CP080-CP099 and horizontal/vertical fixes",
-    "Continue unread conversations and PR1/Edge/Legacy/Weather/Owner historical evidence",
-    "Complete semantic destinations and branch disposition before proposing product trunk/consolidation patch"
-  ],
-  "next_action_now": "STOP; evaluation only until Owner resumes",
-  "do_not_repeat": [
-    "initial mirror/API inventory",
-    "verified archive restoration",
-    "W1 Data test relocation proof",
-    "D0 kernel identity proof",
-    "already-read blobs in overlay",
-    "historical scientific experiments"
-  ],
-  "limits": [
-    "Exhaustive semantic reading incomplete",
-    "No final trunk selection or consolidation patch",
-    "CI jobs/logs/artifact payload coverage incomplete",
-    "Runtime health/deployment not observed",
-    "Some connector endpoints unavailable"
-  ],
-  "counterexamples_and_revisions": [
-    "Git archive parents retain history without product integration; indexer uses frozen refs instead of --all",
-    "Read states survive restart; fresh SQLite verified with 45 document and 7 discussion reads before seven additional documented reads",
-    "Graph difference and relocated files are not treated as missing capabilities"
-  ]
+  "next_action": "Read all dated traces of 2026-07-24 then following days; connect requests, changes, reported tests and integrations; do not restart inventory",
+  "on_owner_stop": "Finish bounded unit; publish days.json, coverage, narrative, pending IDs and this cursor on existing audit branch; verify remote; stop",
+  "limits": "All-day indexing is not all-day surface review; undated traces remain pending; legacy deep-read statuses remain separate"
 }

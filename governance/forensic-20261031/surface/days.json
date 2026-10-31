@@ -1,0 +1,924 @@
+[
+  {
+    "day": "2026-07-13",
+    "source_occurrences": 10,
+    "commits": 9,
+    "github_occurrences": 1,
+    "status": "SURFACE_REVIEWED_METADATA_NOT_DEEP",
+    "reviewed_trace_ids": [
+      "commit:d49290b2a335ba47d83c8ae056f1c66ae253ff9c",
+      "commit:35cf6d626e979e24b2784d9e2e8cc5ba94bb7f4e",
+      "commit:eb588f571127f50976c6c41e9a0e0a1c5922f857",
+      "issue_created:4874743572",
+      "commit:777c7960c57f8f6fcbd9a8efe8148283b9101823",
+      "commit:b2dcd5720c7c583611661fea1c87bd57d29eb3d3",
+      "commit:6fff20de5ddfd96aff3c15c7cc1f78bcb9aa9d30",
+      "commit:69007c88d54c089edbbd1fef24c06bcc7f153a13",
+      "commit:1e04a9dcde14de259e4cfd62bc2aea962afe6eab",
+      "commit:841b713bfaebe82c14f40a223d7e84519560e0a1"
+    ]
+  },
+  {
+    "day": "2026-07-14",
+    "source_occurrences": 14,
+    "commits": 11,
+    "github_occurrences": 3,
+    "status": "SURFACE_REVIEWED_METADATA_NOT_DEEP",
+    "reviewed_trace_ids": [
+      "commit:a40cc098b6cbb07688069d9c8114d414086b99d3",
+      "commit:ffbf4880d1cccc7a41b86806e320c999476ecfea",
+      "commit:5b91c0f51ff70a779e4808a5e81ae77b830d41df",
+      "commit:af0e709f6b46cb41d7c6a3be615dc07189a3efbc",
+      "commit:a8543f23e58b4a1f0bcad9b1a0445aecfc62a42d",
+      "commit:912f6f11d9a5776be7823425aedac3937b4109ce",
+      "commit:be13c3e72a55f74fa3ce240871b81305b502355f",
+      "commit:9683dca5ed434261bbd4a79d3944dc770eee8b5d",
+      "commit:58e5c21b2182243dc07d0cde1dbf6b56a356eb81",
+      "timeline:27938898524",
+      "commit:4816b2dbbd845762005fb364f62e67e153fcca5c",
+      "timeline:27939446994",
+      "commit:27d41c07fe324016f08f3f432439031ee4f2910a",
+      "timeline:27939973399"
+    ]
+  },
+  {
+    "day": "2026-07-15",
+    "source_occurrences": 5,
+    "commits": 4,
+    "github_occurrences": 1,
+    "status": "SURFACE_REVIEWED_METADATA_NOT_DEEP",
+    "reviewed_trace_ids": [
+      "commit:ee8a2fd136216cd60a657f172743a6ede9d02ec1",
+      "commit:c709982f4c7cce431b39946d67e67ff9ebb00e02",
+      "commit:06915ec36521ef7811e11b0596361f03e66f025c",
+      "commit:5932795643f1edf7a44a93fa7aa02fb7ff1e9c34",
+      "timeline:28003100648"
+    ]
+  },
+  {
+    "day": "2026-07-16",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-17",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-18",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-19",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-20",
+    "source_occurrences": 1,
+    "commits": 1,
+    "github_occurrences": 0,
+    "status": "SURFACE_REVIEWED_METADATA_NOT_DEEP",
+    "reviewed_trace_ids": [
+      "commit:97b961cece263a9fb586ba68b19d9ebe927db8a6"
+    ]
+  },
+  {
+    "day": "2026-07-21",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-22",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-23",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-24",
+    "source_occurrences": 10,
+    "commits": 10,
+    "github_occurrences": 0,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-25",
+    "source_occurrences": 14,
+    "commits": 14,
+    "github_occurrences": 0,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-26",
+    "source_occurrences": 28,
+    "commits": 27,
+    "github_occurrences": 1,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-27",
+    "source_occurrences": 69,
+    "commits": 67,
+    "github_occurrences": 2,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-28",
+    "source_occurrences": 192,
+    "commits": 188,
+    "github_occurrences": 4,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-29",
+    "source_occurrences": 373,
+    "commits": 371,
+    "github_occurrences": 2,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-30",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-07-31",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-01",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-02",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-03",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-04",
+    "source_occurrences": 1,
+    "commits": 0,
+    "github_occurrences": 1,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-05",
+    "source_occurrences": 3,
+    "commits": 0,
+    "github_occurrences": 3,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-06",
+    "source_occurrences": 1,
+    "commits": 0,
+    "github_occurrences": 1,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-07",
+    "source_occurrences": 2,
+    "commits": 0,
+    "github_occurrences": 2,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-08",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-09",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-10",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-11",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-12",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-13",
+    "source_occurrences": 1,
+    "commits": 0,
+    "github_occurrences": 1,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-14",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-15",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-16",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-17",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-18",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-19",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-20",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-21",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-22",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-23",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-24",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-25",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-26",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-27",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-28",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-29",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-30",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-08-31",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-01",
+    "source_occurrences": 6,
+    "commits": 4,
+    "github_occurrences": 2,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-02",
+    "source_occurrences": 14,
+    "commits": 10,
+    "github_occurrences": 4,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-03",
+    "source_occurrences": 10,
+    "commits": 5,
+    "github_occurrences": 5,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-04",
+    "source_occurrences": 2,
+    "commits": 1,
+    "github_occurrences": 1,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-05",
+    "source_occurrences": 39,
+    "commits": 22,
+    "github_occurrences": 17,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-06",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-07",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-08",
+    "source_occurrences": 11,
+    "commits": 6,
+    "github_occurrences": 5,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-09",
+    "source_occurrences": 31,
+    "commits": 16,
+    "github_occurrences": 15,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-10",
+    "source_occurrences": 6,
+    "commits": 3,
+    "github_occurrences": 3,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-11",
+    "source_occurrences": 2,
+    "commits": 1,
+    "github_occurrences": 1,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-12",
+    "source_occurrences": 13,
+    "commits": 8,
+    "github_occurrences": 5,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-13",
+    "source_occurrences": 281,
+    "commits": 109,
+    "github_occurrences": 172,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-14",
+    "source_occurrences": 177,
+    "commits": 100,
+    "github_occurrences": 77,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-15",
+    "source_occurrences": 47,
+    "commits": 43,
+    "github_occurrences": 4,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-16",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-17",
+    "source_occurrences": 45,
+    "commits": 45,
+    "github_occurrences": 0,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-18",
+    "source_occurrences": 79,
+    "commits": 61,
+    "github_occurrences": 18,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-19",
+    "source_occurrences": 248,
+    "commits": 137,
+    "github_occurrences": 111,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-20",
+    "source_occurrences": 503,
+    "commits": 211,
+    "github_occurrences": 292,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-21",
+    "source_occurrences": 739,
+    "commits": 357,
+    "github_occurrences": 382,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-22",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-23",
+    "source_occurrences": 2,
+    "commits": 2,
+    "github_occurrences": 0,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-24",
+    "source_occurrences": 20,
+    "commits": 20,
+    "github_occurrences": 0,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-25",
+    "source_occurrences": 48,
+    "commits": 42,
+    "github_occurrences": 6,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-26",
+    "source_occurrences": 0,
+    "commits": 0,
+    "github_occurrences": 0,
+    "status": "NO_DATED_TRACE_IN_SNAPSHOT",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-27",
+    "source_occurrences": 88,
+    "commits": 80,
+    "github_occurrences": 8,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-28",
+    "source_occurrences": 13,
+    "commits": 6,
+    "github_occurrences": 7,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-29",
+    "source_occurrences": 139,
+    "commits": 115,
+    "github_occurrences": 24,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-09-30",
+    "source_occurrences": 27,
+    "commits": 17,
+    "github_occurrences": 10,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-01",
+    "source_occurrences": 47,
+    "commits": 26,
+    "github_occurrences": 21,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-02",
+    "source_occurrences": 69,
+    "commits": 43,
+    "github_occurrences": 26,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-03",
+    "source_occurrences": 17,
+    "commits": 7,
+    "github_occurrences": 10,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-04",
+    "source_occurrences": 70,
+    "commits": 33,
+    "github_occurrences": 37,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-05",
+    "source_occurrences": 44,
+    "commits": 22,
+    "github_occurrences": 22,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-06",
+    "source_occurrences": 17,
+    "commits": 8,
+    "github_occurrences": 9,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-07",
+    "source_occurrences": 100,
+    "commits": 37,
+    "github_occurrences": 63,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-08",
+    "source_occurrences": 807,
+    "commits": 150,
+    "github_occurrences": 657,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-09",
+    "source_occurrences": 95,
+    "commits": 23,
+    "github_occurrences": 72,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-10",
+    "source_occurrences": 113,
+    "commits": 51,
+    "github_occurrences": 62,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-11",
+    "source_occurrences": 116,
+    "commits": 89,
+    "github_occurrences": 27,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-12",
+    "source_occurrences": 227,
+    "commits": 150,
+    "github_occurrences": 77,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-13",
+    "source_occurrences": 48,
+    "commits": 30,
+    "github_occurrences": 18,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-14",
+    "source_occurrences": 102,
+    "commits": 62,
+    "github_occurrences": 40,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-15",
+    "source_occurrences": 1766,
+    "commits": 483,
+    "github_occurrences": 1283,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-16",
+    "source_occurrences": 280,
+    "commits": 64,
+    "github_occurrences": 216,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-17",
+    "source_occurrences": 61,
+    "commits": 23,
+    "github_occurrences": 38,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-18",
+    "source_occurrences": 306,
+    "commits": 67,
+    "github_occurrences": 239,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-19",
+    "source_occurrences": 164,
+    "commits": 76,
+    "github_occurrences": 88,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-20",
+    "source_occurrences": 738,
+    "commits": 501,
+    "github_occurrences": 237,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-21",
+    "source_occurrences": 1772,
+    "commits": 779,
+    "github_occurrences": 993,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-22",
+    "source_occurrences": 176,
+    "commits": 166,
+    "github_occurrences": 10,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-23",
+    "source_occurrences": 192,
+    "commits": 173,
+    "github_occurrences": 19,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-24",
+    "source_occurrences": 186,
+    "commits": 164,
+    "github_occurrences": 22,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-25",
+    "source_occurrences": 162,
+    "commits": 151,
+    "github_occurrences": 11,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-26",
+    "source_occurrences": 172,
+    "commits": 160,
+    "github_occurrences": 12,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-27",
+    "source_occurrences": 173,
+    "commits": 161,
+    "github_occurrences": 12,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-28",
+    "source_occurrences": 182,
+    "commits": 154,
+    "github_occurrences": 28,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-29",
+    "source_occurrences": 155,
+    "commits": 148,
+    "github_occurrences": 7,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-30",
+    "source_occurrences": 600,
+    "commits": 167,
+    "github_occurrences": 433,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  },
+  {
+    "day": "2026-10-31",
+    "source_occurrences": 231,
+    "commits": 102,
+    "github_occurrences": 129,
+    "status": "PENDING_SURFACE_REVIEW",
+    "reviewed_trace_ids": []
+  }
+]
