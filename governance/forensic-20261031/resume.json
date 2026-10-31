@@ -13,16 +13,17 @@
     "commit_traces": 6393,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 12,
+    "surface_reviewed_days": 16,
     "deep_document_reads_not_completion_criterion": true,
-    "commit_traces_surface_reviewed": 702,
-    "last_checkpoint": "surface/CHECKPOINT_2026-07-28_2026-08-05.md",
-    "next_active_day": "2026-08-06",
+    "commit_traces_surface_reviewed": 706,
+    "last_checkpoint": "surface/CHECKPOINT_2026-08-06_2026-09-01.md",
+    "next_active_day": "2026-09-02",
     "checkpoint_every_active_days": 4,
     "continue_after_checkpoint": true,
-    "undated_occurrences_status": "PENDING_ASSOCIATION_WITHOUT_INVENTING_EVENT_TIME"
+    "undated_occurrences_status": "PENDING_ASSOCIATION_WITHOUT_INVENTING_EVENT_TIME",
+    "out_of_scope_side_projects": ["restaurant-stock/"]
   },
-  "next_action": "Continue with 2026-08-06 using chronological surface method; publish another durable checkpoint after four additional active days and continue",
+  "next_action": "Continue with 2026-09-02 using chronological surface method; publish another durable checkpoint after four additional active days and continue",
   "on_owner_stop": "Finish bounded unit; publish narrative, checkpoint, pending IDs and this cursor on existing audit branch; verify remote; stop",
   "limits": "All-day indexing is not all-day surface review; metrics and validation labels are historical claims unless independently demonstrated; undated traces remain pending; legacy deep-read statuses remain separate",
   "next_action_now": "CONTINUE"
