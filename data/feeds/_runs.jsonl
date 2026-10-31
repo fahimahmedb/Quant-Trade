@@ -181,3 +181,4 @@
 {"report": {"odds_api": {"duplicate": 168, "observation": 138, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-30T21:06:32+00:00"}
 {"report": {"odds_api": {"duplicate": 146, "observation": 89, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-31T01:05:01+00:00"}
 {"report": {"odds_api": {"duplicate": 134, "observation": 111, "restatement": 0, "status": "OK"}}, "run_at": "2026-10-31T07:31:45+00:00"}
+{"report": {"odds_api": {"duplicate": 131, "observation": 137, "restatement": 1, "status": "OK"}}, "run_at": "2026-10-31T13:54:38+00:00"}
