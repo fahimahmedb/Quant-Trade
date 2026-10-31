@@ -5,15 +5,17 @@ Status: **RECOVERY INDEX — not autonomous authority or proof of current runtim
 `QUANT_NORTH_STAR.md` remains the highest-level product specification.
 
 
-## Current mission — forensic reconstruction PAUSED by Owner, 2026-10-31
+## Current mission — chronological SURFACE history PAUSED by Owner, 2026-10-31
 
-STATUS: PAUSED_BY_OWNER. The Owner requested a stop after a durable checkpoint so another AI can evaluate the work before continuation. This supersedes older mission-selection prompts below for this reconstruction; it does not change runtime or economic authority.
+The Owner resumed the audit with a changed method, then requested another stop. Status: PAUSED_BY_OWNER. No autonomous continuation.
 
-Resume/evaluation checkpoint: [repository-only memory](https://github.com/fahimahmedb/Quant-Trade/blob/e6f5fa74a69f20263353c908483db61e8fe2e051/governance/forensic-20261031/RESUME.md), [machine cursor](https://github.com/fahimahmedb/Quant-Trade/blob/e6f5fa74a69f20263353c908483db61e8fe2e051/governance/forensic-20261031/resume.json), [evaluation guide](https://github.com/fahimahmedb/Quant-Trade/blob/e6f5fa74a69f20263353c908483db61e8fe2e051/governance/forensic-20261031/REVIEW_THIS_WORK.md). Branch: audit/forensic-checkpoint-20261019.
+Current checkpoint: [surface handoff](https://github.com/fahimahmedb/Quant-Trade/blob/1fc3c1196d8aba886a7287769882da78c9f38af8/governance/forensic-20261031/SURFACE_RESUME.md), [machine cursor](https://github.com/fahimahmedb/Quant-Trade/blob/1fc3c1196d8aba886a7287769882da78c9f38af8/governance/forensic-20261031/resume.json), [daily narrative](https://github.com/fahimahmedb/Quant-Trade/blob/1fc3c1196d8aba886a7287769882da78c9f38af8/governance/forensic-20261031/surface/JULY_SURFACE.md).
 
-Initial snapshot: 275 branches / 266 distinct tips / 6,393 reachable commits; 6,465 unique documentary blobs; 423 discussion objects; 4,806 Actions run metadata records. Full reads recorded: 52 documentary blobs and 7 discussion objects. Whole-branch semantic reconciliation: 0/275 completed. The exhaustive reconstruction, final product lineage, branch dispositions and integration patch are NOT COMPLETE.
+Method: systematically follow all accessible commits and GitHub traces chronologically, day by day, at surface depth. Full reading of 6,465 documentary versions is no longer the completion criterion. Preserve previous archives, indices and scoped checks; do not restart collection.
 
-Raw exports, indices, read overlays and partial factual timelines are published. Archive restoration and 289 preserved tips were checked. Additional archive parents retain Git history only; they do not merge capabilities into a product. Resume from unread objects and current overlays, not a new initial inventory or old CP001 workspace. Use the frozen refs for baseline counts. No automatic continuation after this pause; wait for an Owner instruction. No branch deletion, PR merge, product/runtime mutation, deployment or economic authority is granted.
+Initial snapshot: 6,393 commits, 275 branches, 266 tips. Calendar index: 111 days. Surface-reviewed: July 13, 14, 15 and 20 (25 commits plus associated dated GitHub traces). Next active day: July 24. Indexing is not surface review; 969 undated source occurrences still need association or UNKNOWN classification. The earlier 52 document reads / 7 discussion reads remain separate from the new surface-coverage count.
+
+Owner's eventual target: two active branches, one for code and one for project/governance. Exact consolidation remains to derive from the chronology. No branch deletion, PR merge, runtime modification or deployment occurred. Archive parents preserve history, not product integration. Exhaustive history and final simplification remain incomplete. Resume only after further Owner instruction.
 
 ## Current continuity mission — 2026-10-28
 
