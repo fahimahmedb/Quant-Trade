@@ -1,41 +1,55 @@
 {
   "mission": "QUANT_FORENSIC_20261031",
-  "status": "IN_PROGRESS",
+  "status": "SURFACE_CHRONOLOGY_COMPLETE_NEXT_CAPABILITY_MAP",
   "method": "CHRONOLOGICAL_SURFACE",
-  "target": "Two active branches: code for implementation, projet for governance; exact names/trees pending chronological reconstruction",
+  "target": "Two active branches: code for implementation, projet for governance; exact names/trees pending capability reconciliation",
   "surface_cursor": {
     "commit_traces": 6393,
+    "commit_traces_surface_reviewed": 6393,
+    "calendar_days": 111,
+    "surface_reviewed_active_days": 71,
     "total_source_occurrences": 13471,
     "undated_occurrences": 969,
-    "surface_reviewed_days": 60,
-    "commit_traces_surface_reviewed": 4068,
-    "last_checkpoint": "surface/CHECKPOINT_2026-10-17_2026-10-20.md",
-    "next_active_day": "2026-10-21",
-    "checkpoint_every_active_days": 4,
-    "continue_after_checkpoint": true,
+    "dated_surface_complete_through": "2026-10-31",
+    "last_checkpoint": "surface/CHECKPOINT_2026-10-29_2026-10-31.md",
+    "next_active_day": null,
+    "surface_complete": true,
+    "undated_occurrences_status": "PRESERVE_UNKNOWN_OR_ASSOCIATE_BY_SHA_WITHOUT_INVENTING_TIME"
+  },
+  "durable_findings": {
     "out_of_scope_side_projects": ["restaurant-stock/"],
-    "reusable_continuity_pattern": "compact live restart routers + durable feature plans/handoffs + canonical checkpoints/rules + stable hypothesis ids + exact-head proofs + explicit authority states",
-    "current_quant_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA"],
+    "core_families": ["GOVERNANCE_SCIENCE", "WHOLE_SYSTEM_CODE", "EVIDENCE_DATA", "AUTONOMY_ORCHESTRATION"],
     "research_rails": ["SAFE_RAIL_PROSPECTIVE", "FAST_RAIL_C_PAPER_SHADOW", "HISTORICAL_PIT_VALIDATION", "CI_ONLY_AUDIT_SURFACES", "EDGE_LAB_SINGLE_USE_RESEARCH_LOOP"],
     "data_capabilities": ["SCHEDULED_DATA_COLLECTION"],
-    "observability_capabilities": ["OBSERVABILITY_UX_PROJECTION"],
-    "research_os_capabilities": ["RESEARCH_OS_PERSISTENT_STATE", "SEALED_SINGLE_LOOK_ECONOMIC_TESTING", "STABLE_HYPOTHESIS_IDENTITY", "BOUNDED_FRONTIER_NOOP"],
-    "oracle_v2_status": "QUALIFIED_ENGINEERING_CANDIDATE; CP057 exact source provenance; full qualification pending; deployment not performed; authorities false",
-    "oracle_v2_exact_head_proof": "Oracle V2 Core run 39517451814 success @ fecd09e0839f1208d9f876c311331221bde3ab7d",
-    "p0_status": "raw capture integrated in Blue; phase-6 corrective merge in Astra; Gate A exact-head qualified; Gate B/t0 not inferred",
-    "known_irreversible_contamination": ["SEC visibility count-proxy exposure observed 2026-09-18"],
-    "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"],
+    "integration_finding": "Substantial W1/Mega/Multi-Source capabilities were selectively ported/adapted/re-exported into Wave2 descendants; missing old paths do not prove capability loss",
+    "wave2_anchor": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a = canonical Wave2 C2 closure manifest; engineering anchor, not economic/production activation",
+    "one_shot_history": "Historical one-shot remains NOT_QUALIFIED; later C0/membrane repairs qualify later SHA/scope only",
+    "c0_final_exact_head": "13721384fe5b94b0136fb4548192e05d5e34e605; run 40437918834 success",
+    "wp2_exact_head": "8f8df47d184f0f1594280bec7e9e7941962cf1c5; hosted run 41069767444 success; synthetic engineering-autonomy claim ceiling only",
+    "issue44_exact_candidate": "afedfd57986aa042e9e97aa53b9db53b4619764f; hosted run 41203216122 success; real VM unattended E2E not proven",
+    "oracle_v2": "qualified engineering candidate with exact-source provenance; CI green does not imply deployment/authority",
+    "weather": "Weather R3 supersedes prior unconditional positive; V4 A2 is one governed state lineage, not one architecture per branch",
     "real_capital_authorized": false,
-    "science_supersessions": ["Weather unconditional prospective label superseded 2026-09-30 by cost-mass transport repair R3"],
-    "sealed_research_state": {
-      "F1_STAGE_A": "DISCOVERY_PERSISTED_NOT_CONFIRMATION; private prior exposure UNKNOWN unless recovered",
-      "F1_STAGE_B": "FAMILY_STATUS_REJECT; preserve single evaluation; no retune/rerun",
-      "F2": "BLOCKED_DATA_PERMISSION",
-      "EURUSD_RANGE_GRID_001": "FROZEN_PRE_PRICE_PROXY_HARNESS; positive proxy cannot imply live authority",
-      "FRONTIER_QUANT_MECHANISM_DISTINCT_001": "NO_CANDIDATE after public-evidence mechanism disconfirmation; no economic outcome access; no prospective observation"
-    }
+    "live_trading_authorized": false,
+    "decisive_economic_unknowns": ["REAL_CAPITAL", "FIXED_COST_BASE"]
   },
-  "next_action": "Continue with 2026-10-21; process 2026-10-21 through 2026-10-24, publish checkpoint, continue",
-  "limits": "Metrics/labels remain historical claims unless independently demonstrated; autonomous wakes are executions not modules; stable ids are authoritative identity candidates, paths/branch names are not; source CI provenance does not redirect scientific state; CI green does not prove deployment or authority",
-  "next_action_now": "CONTINUE"
+  "laws": [
+    "REUSE > CONNECT > REPAIR > BUILD",
+    "BRANCH_NAME_OR_DATE != AUTHORITY_OR_EVENT_TIME",
+    "PATH_ABSENCE != CAPABILITY_LOSS",
+    "PORT_ADAPT_REEXPORT != NEW_ARCHITECTURE",
+    "CI_GREEN != DEPLOYMENT_OR_SCIENTIFIC_AUTHORITY",
+    "HISTORICAL_NOT_QUALIFIED_IS_NOT_REWRITTEN_BY_LATER_REPAIR",
+    "BLOCK_UNKNOWN_PARK_NO_CHANGE_REQUIRED_ARE_VALID_TERMINAL_OR_INTERMEDIATE_RESULTS",
+    "FRONTIER_EXHAUSTED -> NOOP",
+    "HYPOTHESIS_PATH != HYPOTHESIS_ID",
+    "RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY",
+    "SELF_PASS != INDEPENDENT_PASS"
+  ],
+  "next_action": "Do not restart chronology. Build capability/lineage map from existing checkpoints and lineages; classify each family REUSE/CONNECT/REPAIR/PARK/RETIRE; then propose exact code and project/governance destination branches with no destructive cleanup until validated.",
+  "unknowns_not_blocking": [
+    "Some high-activity days retain unresolved per-commit detail where no capability/authority decision depends on it",
+    "969 undated source occurrences remain without invented event time"
+  ],
+  "next_action_now": "CAPABILITY_RECONCILIATION"
 }
