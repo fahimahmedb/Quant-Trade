@@ -4,7 +4,7 @@ STATUT : IN_PROGRESS. L’Owner a autorisé explicitement la reprise. L’audit 
 
 ## Curseur durable
 
-Les **48 premières journées actives** sont traitées jusqu’au **8 octobre inclus** : **2 449 commits** plus les traces GitHub datées associées. Prochaine journée active : **9 octobre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-10-05_2026-10-08.md`.
+Les **52 premières journées actives** sont traitées jusqu’au **12 octobre inclus** : **2 762 commits** plus les traces GitHub datées associées. Prochaine journée active : **13 octobre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-10-09_2026-10-12.md`.
 
 Méthode : `CHRONOLOGICAL_SURFACE`. Toutes les quatre journées actives, publier un checkpoint puis continuer. Les 6 393 commits / 111 journées / 13 471 occurrences restent l’inventaire initial ; indexé n’est pas relu intégralement.
 
@@ -15,11 +15,16 @@ Méthode : `CHRONOLOGICAL_SURFACE`. Toutes les quatre journées actives, publier
 - Rails : `SAFE_RAIL_PROSPECTIVE`, `FAST_RAIL_C_PAPER_SHADOW`, `HISTORICAL_PIT_VALIDATION`, `CI_ONLY_AUDIT_SURFACES`.
 - `REAL_CAPITAL_AUTHORIZED = FALSE`; `REAL_CAPITAL` et `FIXED_COST_BASE` restent inconnus décisifs.
 - Weather R3 du 30 septembre supersède l’ancien label prospectif inconditionnel.
+- Weather V4 A2 reste une lignée d’états : root candidate présent au 8 octobre mais `E_EFFECTIVE = FALSE`; aucune activation démontrée.
 
-Weather V4 A2 doit être reconstruit comme **une lignée d’états**, pas comme une architecture par branche : design/contract → scope Owner → harness Builder → audit Astra → repair → ratification Owner → trusted-root candidate → independent review → éventuelle autorité effective/activation.
+Nouveau rail à compresser : `EDGE_LAB_SINGLE_USE_RESEARCH_LOOP`. Préserver réservations atomiques, receipt single-use, outcome provenance et non-rerun ; ne pas conserver chaque heartbeat comme architecture.
 
-Au 8 octobre : root candidate présent ; Astra lot3 = `BLOCKED_INCOMPLETE_EVIDENCE`; `E_EFFECTIVE = FALSE`; aucune activation, release, levée de quarantaine ou merge n’est démontrée. Règles : `PRE_OP_PASS != EXECUTION_AUTHORITY`, `RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY`, tests reproduits + root candidat != activation.
+État scientifique durable :
+- F1 Stage A = discovery persistée, pas confirmation ; historique privé antérieur reste `UNKNOWN` si non récupéré.
+- F1 Stage B scellé = `FAMILY_STATUS_REJECT`; aucune cellule alternative ni seuil relâché, pas de rerun/retune post-outcome.
+- F2 = `BLOCKED_DATA_PERMISSION`, malgré exact-head CI vert sur la décision documentaire.
+- EURUSD-RANGE-GRID-001 = harness/proxy gelé avant accès aux prix ; un éventuel positif ne vaut pas autorité live.
 
-Les détails non résolus du 1 octobre et de quatre commits non-feed du 6 octobre restent `UNKNOWN_DETAIL_NOT_BLOCKING` ; ne pas recommencer l’audit pour les combler sauf si cela change une décision de réutilisation.
+Règles : `PRE_OP_PASS != EXECUTION_AUTHORITY`, `RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY`, `DISCOVERY != CONFIRMATION`, `CI_SUCCESS != PERMISSION`, `PROXY_POSITIVE != LIVE_AUTHORITY`, `SEALED_REJECT -> PRESERVE, DO_NOT_RETUNE`.
 
-Poursuivre depuis le **9 octobre**, puis 10, 11 et 12 octobre. Publier le prochain checkpoint et continuer immédiatement. Aucun nettoyage destructif, runtime produit ou essai scientifique rejoué pendant cette reconstruction.
+Poursuivre depuis le **13 octobre**, puis 14, 15 et 16. Publier le prochain checkpoint et continuer immédiatement. Aucun nettoyage destructif, runtime produit ou essai scientifique rejoué pendant cette reconstruction.
