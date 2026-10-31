@@ -1,58 +1,13 @@
 [
   {
-    "blob": "336e3ce3b7d8ed2b3bf2a78f94d752c50af518f1",
+    "blob": "014eca06058ad696a78fcf14ecc4ffadd72c1326",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source blue/master-v2-2026-09-20:AGENTS.md ; claims not all independently verified"
-  },
-  {
-    "blob": "8295041a8d253636d8f8aab941b811dce64939d9",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source blue/master-v2-2026-09-20:QUANT_NORTH_STAR.md ; claims not all independently verified"
+    "note": "builder/convergence-wave2-canonical-20261021:WAVE2_C2_CP002_D0_20261021.md ; historical claims not all independently verified"
   },
   {
     "blob": "017a9e2f844c3cbb7980ab64eef707feff2ae154",
     "method": "CONTENT_DISPLAYED_AND_READ",
     "note": "Source blue/master-v2-2026-09-20:governance/CURRENT_PROJECT_STATE_2026-10-20.md ; claims not all independently verified"
-  },
-  {
-    "blob": "24369ef726f05bf5baa94785cc14c44f9de43881",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source audit/forensic-checkpoint-20261019:CHECKPOINT_012.md ; claims not all independently verified"
-  },
-  {
-    "blob": "252174d0f65faee27ede7d7f551a582f49e78e25",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source audit/forensic-checkpoint-20261019:governance/WORKSTREAM_INDEX_2026-10-20.md ; claims not all independently verified"
-  },
-  {
-    "blob": "340be3f3102c5c7dd6281956c0dede2b934b4ace",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source builder/convergence-wave2-canonical-20261021:WAVE2_CONVERGENCE2_FINAL_20261021.md ; claims not all independently verified"
-  },
-  {
-    "blob": "42b8aa7a6d4f70c662afd350d9c870f8244d7af8",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source codex/horizontal-completeness-convergence1-20261021:HORIZONTAL_CONVERGENCE1_FINAL_20261021.md ; claims not all independently verified"
-  },
-  {
-    "blob": "a921640ff013d8f3dba0a721eabdf75c6be28f7b",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source review/post-disclosure-pass-b-20261027:review/post-disclosure/02_ONE_SHOT_REASSESSMENT.md ; claims not all independently verified"
-  },
-  {
-    "blob": "493248259cef9b896897c7366de3e2479846dd60",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Source review/post-disclosure-pass-b-20261027:review/post-disclosure/03_C0_CLASSIFICATION.md ; claims not all independently verified"
-  },
-  {
-    "blob": "b52317876eeb89e6ae715e3569b34873b66eb11d",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Port declaration read; verification linked separately"
-  },
-  {
-    "blob": "1e216a421f3cf72d63421e6544b5a063f583c625",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Port declaration read; verification linked separately"
   },
   {
     "blob": "0556b45f9455a1e1586f36ee60b7d46ff426f5c9",
@@ -65,24 +20,24 @@
     "note": "Port declaration read; verification linked separately"
   },
   {
-    "blob": "9cb68cde6e86759a69587fd9ed9a2f893b60736e",
+    "blob": "0ed34c165cb8b839a1e2a9bad891a9859f476360",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Port declaration read; verification linked separately"
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_010.md ; REPORTED claims distinguished from current verification"
   },
   {
-    "blob": "efdbd00e9399186777d5175e14c2c11df99fc27d",
+    "blob": "11d059e9b679002a6928eae8e2cf11961483a47a",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "Port declaration read; verification linked separately"
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_016.md ; REPORTED claims distinguished from current verification"
   },
   {
-    "blob": "014eca06058ad696a78fcf14ecc4ffadd72c1326",
+    "blob": "13647e70f3e49c4aa34e78266381d124c3ffbf2d",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/convergence-wave2-canonical-20261021:WAVE2_C2_CP002_D0_20261021.md ; historical claims not all independently verified"
+    "note": "builder/convergence-wave2-canonical-20261021:handoff/CONVERGENCE_CP079_W2_CP_003_DATA_20261021.md ; source reports remain scoped"
   },
   {
-    "blob": "30fcf959848b43c914391ce4a99ffa6c6e6210c4",
+    "blob": "159289f041ea8a8a14f44a25a1fa06b81cbbd0a5",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/02_SCOPE_REDUCTION.md ; historical claims not all independently verified"
+    "note": "builder/w1-scientific-memory-depth-20261021:W1_MEMORY_FINAL_20261021.md ; claims scoped to declared subject"
   },
   {
     "blob": "18b5e544b57d08ffcb5105014d53a4a99c11e8ee",
@@ -90,9 +45,54 @@
     "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/11_FINAL_DECISION.md ; historical claims not all independently verified"
   },
   {
-    "blob": "d9708aa499ce2fb9f0284df5ef69eb26d9c18dab",
+    "blob": "1e216a421f3cf72d63421e6544b5a063f583c625",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/FINAL_ATTESTATION.md ; historical claims not all independently verified"
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "1e21f99bdb228b77249787c897843954ccf9c730",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489:README.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "24369ef726f05bf5baa94785cc14c44f9de43881",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source audit/forensic-checkpoint-20261019:CHECKPOINT_012.md ; claims not all independently verified"
+  },
+  {
+    "blob": "252174d0f65faee27ede7d7f551a582f49e78e25",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source audit/forensic-checkpoint-20261019:governance/WORKSTREAM_INDEX_2026-10-20.md ; claims not all independently verified"
+  },
+  {
+    "blob": "28693b5d8484508dd8bae6dcfd2a1a570f4f2a3e",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_011.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "2f40074ed040a57f5dc545e8b5d95c17c623f875",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_015.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "30fcf959848b43c914391ce4a99ffa6c6e6210c4",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/02_SCOPE_REDUCTION.md ; historical claims not all independently verified"
+  },
+  {
+    "blob": "336e3ce3b7d8ed2b3bf2a78f94d752c50af518f1",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source blue/master-v2-2026-09-20:AGENTS.md ; claims not all independently verified"
+  },
+  {
+    "blob": "340be3f3102c5c7dd6281956c0dede2b934b4ace",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source builder/convergence-wave2-canonical-20261021:WAVE2_CONVERGENCE2_FINAL_20261021.md ; claims not all independently verified"
+  },
+  {
+    "blob": "367f2cdc9dcb6ea1cc9a6bf14793f7d6e32ed0bc",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_006.md ; REPORTED claims distinguished from current verification"
   },
   {
     "blob": "408b83ac77d61199e652c5343dbf9573c42cba2f",
@@ -105,109 +105,9 @@
     "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_003.md ; REPORTED claims distinguished from current verification"
   },
   {
-    "blob": "86ac5341325df920552083a0965cbfd1c82b7d70",
+    "blob": "42b8aa7a6d4f70c662afd350d9c870f8244d7af8",
     "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_004.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "7533b157f2f0ff7986a978f84f00d3a10e53edfb",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_005.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "367f2cdc9dcb6ea1cc9a6bf14793f7d6e32ed0bc",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_006.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "5e76bff53d6dc885e223f9117abae0cf23524f32",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_007.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "99db48a6db4148a1bdc0fa4417e48c8c524ba318",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_008.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "74857603310ba43e81f13e99e215422fa4b2cd4c",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_009.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "0ed34c165cb8b839a1e2a9bad891a9859f476360",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_010.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "28693b5d8484508dd8bae6dcfd2a1a570f4f2a3e",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_011.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "a57474b7b1d50e76877a48113de720b9bb4f2ad8",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_013.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "7532af3a0bf64d1a9aeae04863884afc047f8bc2",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_014.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "2f40074ed040a57f5dc545e8b5d95c17c623f875",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_015.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "11d059e9b679002a6928eae8e2cf11961483a47a",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_016.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "1e21f99bdb228b77249787c897843954ccf9c730",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489:README.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "8f14b5b8e657c96f4d97d3bdb520b918f658cbce",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489:RESUME.md ; REPORTED claims distinguished from current verification"
-  },
-  {
-    "blob": "a7b694489845401362747c5e36bc8bff97a513c8",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/v2-forward-20261020:research/research_os/architecture/work_receipts/BUILDER_CP_049_WHOLE_QUANT_CONVERGENCE_AUTHORIZATION_20261020.md ; claims scoped to declared subject"
-  },
-  {
-    "blob": "f2d315b9240aa74cd0e0015e27ad8c577e9f54bc",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/v2-forward-20261020:research/research_os/architecture/work_receipts/BUILDER_CP_079_CANONICAL_SUBJECT_REASSESSMENT_20261021.md ; claims scoped to declared subject"
-  },
-  {
-    "blob": "159289f041ea8a8a14f44a25a1fa06b81cbbd0a5",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/w1-scientific-memory-depth-20261021:W1_MEMORY_FINAL_20261021.md ; claims scoped to declared subject"
-  },
-  {
-    "blob": "9c38caa021de5654275f701c47e24ebe77fc78aa",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/w1-factory-experiment-depth-20261021:handoff/W1_FACTORY_FINAL_20261021.md ; claims scoped to declared subject"
-  },
-  {
-    "blob": "d2e6fec4b32b7105df5b897b2d870cd6e51d4d6c",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/w1-economic-portfolio-depth-20261021:W1_ECON_FINAL_20261021.md ; claims scoped to declared subject"
-  },
-  {
-    "blob": "6c32c5831bbe2e667ebe94335d3248da3a1644e7",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/mega-a-research-intelligence-20261021:research/research_os/MEGA_A_FINAL_20261021.md ; claims scoped to declared subject"
-  },
-  {
-    "blob": "f3f30f9a8c4b77f0f0a9e9daec95bd27d38a070c",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/w1-data-evidence-sec-depth-20261021:W1_DATA_CP_001_20261021.md ; claims scoped to declared subject"
+    "note": "Source codex/horizontal-completeness-convergence1-20261021:HORIZONTAL_CONVERGENCE1_FINAL_20261021.md ; claims not all independently verified"
   },
   {
     "blob": "431b8174d0e3d26f0a88e223040cb2275325c484",
@@ -215,13 +115,148 @@
     "note": "builder/convergence-wave2-canonical-20261021:handoff/CONVERGENCE_CP079_W2_CP_001_20261021.md ; source reports remain scoped"
   },
   {
+    "blob": "493248259cef9b896897c7366de3e2479846dd60",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source review/post-disclosure-pass-b-20261027:review/post-disclosure/03_C0_CLASSIFICATION.md ; claims not all independently verified"
+  },
+  {
+    "blob": "5e76bff53d6dc885e223f9117abae0cf23524f32",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_007.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "6c32c5831bbe2e667ebe94335d3248da3a1644e7",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/mega-a-research-intelligence-20261021:research/research_os/MEGA_A_FINAL_20261021.md ; claims scoped to declared subject"
+  },
+  {
+    "blob": "74857603310ba43e81f13e99e215422fa4b2cd4c",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_009.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "7532af3a0bf64d1a9aeae04863884afc047f8bc2",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_014.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "7533b157f2f0ff7986a978f84f00d3a10e53edfb",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_005.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "77207feacdf3fbda64ccc2bb5772dfd01ef33ef7",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_099_SERIALIZABLE_OUTCOME_MEMBRANE_20261021.md ; source reports not global current qualification"
+  },
+  {
+    "blob": "8295041a8d253636d8f8aab941b811dce64939d9",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source blue/master-v2-2026-09-20:QUANT_NORTH_STAR.md ; claims not all independently verified"
+  },
+  {
+    "blob": "86ac5341325df920552083a0965cbfd1c82b7d70",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_004.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "8f14b5b8e657c96f4d97d3bdb520b918f658cbce",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489:RESUME.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "99db48a6db4148a1bdc0fa4417e48c8c524ba318",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_008.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "9c38caa021de5654275f701c47e24ebe77fc78aa",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/w1-factory-experiment-depth-20261021:handoff/W1_FACTORY_FINAL_20261021.md ; claims scoped to declared subject"
+  },
+  {
+    "blob": "9cb68cde6e86759a69587fd9ed9a2f893b60736e",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "a57474b7b1d50e76877a48113de720b9bb4f2ad8",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_013.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "a58194e3076317dc6d5e66a73a32a8552b214254",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_064_WHOLE_QUANT_REASSESSMENT_20261021.md ; source reports not global current qualification"
+  },
+  {
+    "blob": "a70edbbd8860a92c45902d328e5d91bff1539bd5",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_030_SESSION_HANDOFF_20261020.md ; source reports not global current qualification"
+  },
+  {
+    "blob": "a7b694489845401362747c5e36bc8bff97a513c8",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/v2-forward-20261020:research/research_os/architecture/work_receipts/BUILDER_CP_049_WHOLE_QUANT_CONVERGENCE_AUTHORIZATION_20261020.md ; claims scoped to declared subject"
+  },
+  {
+    "blob": "a921640ff013d8f3dba0a721eabdf75c6be28f7b",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source review/post-disclosure-pass-b-20261027:review/post-disclosure/02_ONE_SHOT_REASSESSMENT.md ; claims not all independently verified"
+  },
+  {
+    "blob": "b1c7f19b774658a670fbd137449fadcb9d850d6e",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_060_BOOTSTRAP_EDGE_AND_CAPABILITY_DISPOSITION_20261021.md ; source reports not global current qualification"
+  },
+  {
+    "blob": "b52317876eeb89e6ae715e3569b34873b66eb11d",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "d2e6fec4b32b7105df5b897b2d870cd6e51d4d6c",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/w1-economic-portfolio-depth-20261021:W1_ECON_FINAL_20261021.md ; claims scoped to declared subject"
+  },
+  {
+    "blob": "d9708aa499ce2fb9f0284df5ef69eb26d9c18dab",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/FINAL_ATTESTATION.md ; historical claims not all independently verified"
+  },
+  {
+    "blob": "efdbd00e9399186777d5175e14c2c11df99fc27d",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "f1c3b93e6cae34fb7cf2d5ee3a7a2a9c51943102",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_048_QUALIFIED_OPERATIONAL_HANDOFF_20261020.md ; source reports not global current qualification"
+  },
+  {
+    "blob": "f2d315b9240aa74cd0e0015e27ad8c577e9f54bc",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/v2-forward-20261020:research/research_os/architecture/work_receipts/BUILDER_CP_079_CANONICAL_SUBJECT_REASSESSMENT_20261021.md ; claims scoped to declared subject"
+  },
+  {
+    "blob": "f3f30f9a8c4b77f0f0a9e9daec95bd27d38a070c",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/w1-data-evidence-sec-depth-20261021:W1_DATA_CP_001_20261021.md ; claims scoped to declared subject"
+  },
+  {
+    "blob": "f41c1ab74bc5c09d7c8337a8f8a8b8a6b500a869",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_052_DEPTH_AND_HISTORY_REASSESSMENT_20261020.md ; source reports not global current qualification"
+  },
+  {
+    "blob": "f5284b6cf416fedc1094feb69a8827a2a978fa3d",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208:research/research_os/architecture/work_receipts/BUILDER_CP_069_INDEPENDENT_DEPTH_REASSESSMENT_20261021.md ; source reports not global current qualification"
+  },
+  {
     "blob": "f8ed9c2af54b3ca007f7151de6042e72e6f37ced",
     "method": "CONTENT_DISPLAYED_AND_READ",
     "note": "builder/convergence-wave2-canonical-20261021:handoff/CONVERGENCE_CP079_W2_CP_002_MEMORY_20261021.md ; source reports remain scoped"
-  },
-  {
-    "blob": "13647e70f3e49c4aa34e78266381d124c3ffbf2d",
-    "method": "CONTENT_DISPLAYED_AND_READ",
-    "note": "builder/convergence-wave2-canonical-20261021:handoff/CONVERGENCE_CP079_W2_CP_003_DATA_20261021.md ; source reports remain scoped"
   }
 ]

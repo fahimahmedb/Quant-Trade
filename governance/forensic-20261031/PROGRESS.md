@@ -1,10 +1,18 @@
+# ÉTAT COURANT : PAUSE OWNER — 31 octobre 2026
+
+L'Owner a demandé l'arrêt après sauvegarde et une évaluation externe. Lire RESUME.md, resume.json et REVIEW_THIS_WORK.md. Audit exhaustif NON TERMINÉ. Couverture courante : 52 blobs documentaires lus / 6 465 ; 7 discussions lues / 423 ; 0 réconciliation sémantique complète de branche / 275. Les rapports ci-dessous sont des lots datés, pas une clôture globale. Aucune reprise automatique ni activité en arrière-plan après l'arrêt.
+
+Dernier lot achevé : sources W1/Mega A suivies, corpus Builder indexé ; CP050 retrouvé comme merge, pas document Markdown disparu. Lectures supplémentaires CP030/048/052/060/064/069/099 enregistrées. La prochaine action n'est pas une nouvelle collecte : utiliser les objets encore non lus du point de reprise, après instruction Owner.
+
+## Historique des lots précédents
+
 # Avancement durable — reconstruction Quant-Trade
 
 STATUT : NON TERMINÉ. Collecte et indexation initiales réalisées ; lecture exhaustive et simplification produit restantes.
 
 Photographie : 275 branches / 266 têtes, 320 références Git, 6 393 commits accessibles. Catalogue : 17 221 blobs de fichiers dont 6 465 blobs documentaires selon les extensions déclarées. Ne pas assimiler COLLECTÉ ou INDEXÉ à LU.
 
-Lecture complète consignée : 45 blobs documentaires / 6 465. Objets de discussion : 423 collectés/indexés ; 7 lectures complètes consignées. Réconciliation sémantique complète des branches : 0 / 275. Métadonnées CI : 4 806 / 4 806 ; listes de jobs : 14 runs ; logs : 3 collectés, extraits examinés, aucune lecture complète revendiquée. Les archives ZIP des artifacts ne sont pas analysées.
+Lecture complète consignée : 52 blobs documentaires / 6 465. Objets de discussion : 423 collectés/indexés ; 7 lectures complètes consignées. Réconciliation sémantique complète des branches : 0 / 275. Métadonnées CI : 4 806 / 4 806 ; listes de jobs : 14 runs ; logs : 3 collectés, extraits examinés, aucune lecture complète revendiquée. Les archives ZIP des artifacts ne sont pas analysées.
 
 Travail accompli : miroir complet, fsck et bundle verify ; collecte issues/PR/commentaires/revues/timelines ; pagination ; compteurs exacts ; catalogue SQLite et CSV ; registre événementiel UTC/Paris ; comparaison d'ascendance et de présence exacte des octets ; 3 vérifications CI ciblées ; rapport RECONSTRUCTION.md.
 

@@ -1,3 +1,9 @@
+# Point de reprise courant — 31 octobre 2026
+
+PAUSE DEMANDÉE PAR L'OWNER. Audit exhaustif non terminé. Lire [la mémoire de reprise](governance/forensic-20261031/RESUME.md), puis [le guide de revue](governance/forensic-20261031/REVIEW_THIS_WORK.md). Les compteurs et lectures courants sont dans le même dossier. Les archives distantes ont été restaurées et vérifiées. Ne pas repartir du checkpoint 001 ni des chemins de son ancien workspace.
+
+## Ancien point de reprise — historique CP001
+
 # Reprise de l’audit
 
 Lire README.md et checkpoint.json. Ne pas fusionner cette branche d’audit. Aucun fichier opérant du projet n’y est installé. Les noms, SHA et niveaux de revue initiaux sont dans refs-initial.json/csv.

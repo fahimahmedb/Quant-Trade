@@ -16,7 +16,7 @@
   "raw_files": 252,
   "raw_bytes": 82236724,
   "semantic_review_complete": false,
-  "document_blobs_read": 45,
+  "document_blobs_read": 52,
   "discussion_objects_read": 7,
   "discussion_objects_partially_examined": "not globally enumerated; excerpts are not counted as full reads",
   "branches_semantically_reconciled": 0,
@@ -24,7 +24,8 @@
   "job_logs_collected": 3,
   "job_logs_fully_read": 0,
   "job_logs_excerpts_examined": 3,
-  "closure": "NOT_COMPLETE",
+  "closure": "NOT_COMPLETE_PAUSED_BY_OWNER",
   "artifact_exports_downloaded_by_connector": 1,
-  "artifact_archives_examined": 0
+  "artifact_archives_examined": 0,
+  "audit_paused_by_owner": true
 }
