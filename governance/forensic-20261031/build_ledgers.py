@@ -21,6 +21,10 @@ for x in issues:
  ev('issue_or_pr_created',x['id'],x['created_at'],x['title'],x['html_url'],number=x['number'])
  if x['closed_at']:ev('issue_or_pr_closed',x['id'],x['closed_at'],x['title'],x['html_url'],number=x['number'])
 objects=[];runs=[];reviews=[];threads=[];timelines=[]
+prior_discussion={}
+if (P/'index/discussion-coverage.csv').exists():
+ for x in csv.DictReader((P/'index/discussion-coverage.csv').open()):
+  prior_discussion[(x['kind'],str(x['id']))]=x['read'].lower()=='true'
 for f in sorted((P/'raw').glob('*.json')):
  d=json.loads(f.read_text());name=f.stem
  if name.startswith('runs-'):runs+=d.get('workflow_runs',[])
@@ -29,7 +33,7 @@ for f in sorted((P/'raw').glob('*.json')):
  if name.startswith('threads-'):threads+=d.get('structuredContent',{}).get('review_threads',[])
  if name.startswith(('issue-comments-','review-comments-','reviews-')) and isinstance(d,list):
   for x in d:
-   body=x.get('body') or '';objects.append({'kind':name.rsplit('-',1)[0],'id':x['id'],'sha256':hashlib.sha256(body.encode()).hexdigest(),'bytes':len(body.encode()),'collected':True,'indexed':True,'read':False,'verified':False,'source':str(f.relative_to(P))})
+   body=x.get('body') or '';objects.append({'kind':name.rsplit('-',1)[0],'id':x['id'],'sha256':hashlib.sha256(body.encode()).hexdigest(),'bytes':len(body.encode()),'collected':True,'indexed':True,'read':prior_discussion.get((name.rsplit('-',1)[0],str(x['id'])),False),'verified':False,'source':str(f.relative_to(P))})
    ev(name.rsplit('-',1)[0],x['id'],x.get('created_at') or x.get('submitted_at'),body.split('\n')[0][:200],str(f.relative_to(P)))
 for name,x in timelines:
  ev('timeline',x.get('id') or x.get('sha') or name,x.get('created_at') or x.get('submitted_at'),x.get('event',''),str(P/'raw'/(name+'.json')))
@@ -64,5 +68,5 @@ for f in sorted((P/'raw').iterdir()):
  if f.is_file():
   b=f.read_bytes();manifest.append(dict(path=str(f.relative_to(P)),bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),status='COLLECTED',read=False))
 (P/'index/raw-manifest.json').write_text(json.dumps(manifest,indent=2))
-summary=dict(branches=len(branch),commits=D.execute('select count(*) from commits').fetchone()[0],file_blob_versions=D.execute('select count(distinct blob) from versions').fetchone()[0],document_blobs=D.execute('select count(distinct blob) from versions where document=1').fetchone()[0],issues=len(issues),prs=sum('pull_request' in x for x in issues),discussion_objects=len(objects),conversation_comments=sum(x['kind']=='issue-comments' for x in objects),inline_comments=sum(x['kind']=='review-comments' for x in objects),review_submissions=len(reviews),review_threads=len(threads),timeline_events=len(timelines),runs=len(runs),unique_runs=len({x['id'] for x in runs}),raw_files=len(manifest),raw_bytes=sum(x['bytes'] for x in manifest),semantic_review_complete=False)
+summary=dict(branches=len(branch),commits=D.execute('select count(*) from commits').fetchone()[0],file_blob_versions=D.execute('select count(distinct blob) from versions').fetchone()[0],document_blobs=D.execute('select count(distinct blob) from versions where document=1').fetchone()[0],issues=len(issues),prs=sum('pull_request' in x for x in issues),discussion_objects=len(objects),conversation_comments=sum(x['kind']=='issue-comments' for x in objects),inline_comments=sum(x['kind']=='review-comments' for x in objects),review_submissions=len(reviews),review_threads=len(threads),timeline_events=len(timelines),runs=len(runs),unique_runs=len({x['id'] for x in runs}),raw_files=len(manifest),raw_bytes=sum(x['bytes'] for x in manifest),semantic_review_complete=False,document_blobs_read=D.execute('select count(*) from reads').fetchone()[0],discussion_objects_read=sum(x['read'] for x in objects))
 (P/'index/coverage-summary.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary))

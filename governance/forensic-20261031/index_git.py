@@ -12,16 +12,20 @@ create table if not exists head_files(ref text,path text,blob text,primary key(r
 create table if not exists reads(blob text primary key,method text,note text);
 ''')
 refs=[]
-for l in git('for-each-ref','--format=%(refname)\t%(objectname)').decode().splitlines():
- r,s=l.split('\t');refs.append((r,s,r.split('/')[1],'INDEXED'))
+for l in (P/'raw'/'remote-refs-initial.tsv').read_text().splitlines():
+ s,r=l.split('\t')
+ if r.startswith('refs/') and not r.endswith('^{}'): refs.append((r,s,r.split('/')[1],'INDEXED'))
+snapshot_tips=sorted({s for r,s,k,st in refs})
+for s in snapshot_tips: git('cat-file','-e',s)
+db.execute('delete from refs')
 db.executemany('insert or replace into refs values(?,?,?,?)',refs)
-log=git('log','--all','--format=%H%x00%P%x00%aI%x00%cI%x00%s').decode(errors='replace')
+log=git('log',*snapshot_tips,'--format=%H%x00%P%x00%aI%x00%cI%x00%s').decode(errors='replace')
 for l in log.splitlines():
  parts=l.split('\0')
  if len(parts)==5: db.execute('insert or replace into commits values(?,?,?,?,?,?)',(*parts,'INDEXED'))
 db.commit()
 doc=lambda p: int(bool(re.search(r'\.(md|mdx|rst|txt|adoc|pdf|org|html?)$',p,re.I)))
-raw=git('log','--all','--root','-m','--no-renames','--raw','--no-abbrev','--format=COMMIT %H').decode(errors='replace')
+raw=git('log',*snapshot_tips,'--root','-m','--no-renames','--raw','--no-abbrev','--format=COMMIT %H').decode(errors='replace')
 (P/'raw'/'git-changes.txt').write_text(raw)
 db.execute('delete from changes')
 sha=None
@@ -41,6 +45,12 @@ for r,s,k,st in refs:
   db.execute('insert or replace into head_files values(?,?,?)',(r,path,b))
   db.execute('insert or ignore into versions(blob,path,document,collected,indexed) values(?,?,?,?,?)',(b,path,doc(path),1,1))
  db.commit()
+overlay=P/'index'/'reads-overlay.json'
+if overlay.exists():
+ for x in json.loads(overlay.read_text()):
+  db.execute('insert or replace into reads values(?,?,?)',(x['blob'],x['method'],x['note']))
+db.execute('update versions set read=1 where blob in (select blob from reads)')
+db.commit()
 heads=[(r,s) for r,s,k,st in refs if k=='heads']
 targets=['refs/heads/blue/master-v2-2026-09-20','refs/heads/builder/convergence-wave2-canonical-20261021','refs/heads/builder/v2-forward-20261020']
 rows=[]

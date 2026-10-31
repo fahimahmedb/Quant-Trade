@@ -4,7 +4,7 @@ STATUT : NON TERMINÉ. Collecte et indexation initiales réalisées ; lecture ex
 
 Photographie : 275 branches / 266 têtes, 320 références Git, 6 393 commits accessibles. Catalogue : 17 221 blobs de fichiers dont 6 465 blobs documentaires selon les extensions déclarées. Ne pas assimiler COLLECTÉ ou INDEXÉ à LU.
 
-Lecture complète consignée : 35 blobs documentaires / 6 465. Objets de discussion : 423 collectés/indexés ; 1 lecture complète consignée (contrat de reconstruction). Réconciliation sémantique complète des branches : 0 / 275. Métadonnées CI : 4 806 / 4 806 ; listes de jobs : 14 runs ; logs : 3 collectés, extraits examinés, aucune lecture complète revendiquée. Les archives ZIP des artifacts ne sont pas analysées.
+Lecture complète consignée : 45 blobs documentaires / 6 465. Objets de discussion : 423 collectés/indexés ; 7 lectures complètes consignées. Réconciliation sémantique complète des branches : 0 / 275. Métadonnées CI : 4 806 / 4 806 ; listes de jobs : 14 runs ; logs : 3 collectés, extraits examinés, aucune lecture complète revendiquée. Les archives ZIP des artifacts ne sont pas analysées.
 
 Travail accompli : miroir complet, fsck et bundle verify ; collecte issues/PR/commentaires/revues/timelines ; pagination ; compteurs exacts ; catalogue SQLite et CSV ; registre événementiel UTC/Paris ; comparaison d'ascendance et de présence exacte des octets ; 3 vérifications CI ciblées ; rapport RECONSTRUCTION.md.
 
@@ -18,3 +18,6 @@ Le rapport ne satisfait pas encore les critères de clôture. Les archives et sc
 
 
 Lot 2 : lire CHRONOLOGIE_REUTILISATION.md, audit-decision-chronology.csv, capability-lineages.csv et reads-overlay.json. La restauration des deux archives publiées a réussi avec empreintes identiques et 289 têtes récupérables. Les anciens audits CP2–CP16 et leurs corrections sont datés ; les ports B/D0/E/C0 sont suivis dans les descendants. La mission exhaustive reste NON TERMINÉE. Ne pas régénérer les compteurs sur le graphe après archivage sans fixer les références initiales : les parents d'archive ne sont pas des intégrations produit.
+
+
+Lot 3 : W1_MEGA_A_REUTILISATION.md et w1-mega-a-lineages.csv suivent les cinq ports W1/Mega A et leurs descendants. Factory historique : façades vers les propriétaires canoniques vérifiées ; tests W1 Data retrouvés déplacés octet pour octet. Le pipeline repris avec une SQLite neuve retrouve exactement 6 393 commits, 45 lectures documentaires et 7 lectures de discussion. Employer les scripts courants avec les overlays, pas les versions initiales contenues dans l'archive figée. Prochaine action : poursuivre CP001–CP099, mémoire historique et discussions sans répéter les ports déjà suivis. Audit exhaustif NON TERMINÉ.
