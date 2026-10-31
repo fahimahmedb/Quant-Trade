@@ -6,14 +6,12 @@ Méthode retenue : historique de surface systématique, chronologique, journée 
 
 ## Reprendre sans recommencer
 
-Lire `resume.json`, `surface/coverage.json`, `surface/days.json`, les récits de surface et le dernier checkpoint durable. Les **28 premières journées actives** sont désormais traitées à la surface, jusqu’au **15 septembre inclus** : **1 030 commits** du corpus principal plus les traces GitHub datées associées. Prochaine journée active : **17 septembre 2026**.
-
-Dernier checkpoint durable : `surface/CHECKPOINT_2026-09-12_2026-09-15.md`.
+Les **32 premières journées actives** sont traitées à la surface jusqu’au **20 septembre inclus** : **1 484 commits** plus les traces GitHub datées associées. Prochaine journée active : **21 septembre 2026**. Dernier checkpoint : `surface/CHECKPOINT_2026-09-17_2026-09-20.md`.
 
 Les 6 393 commits et 111 journées calendaires sont indexés, pas tous revus. 13 471 occurrences de sources au total, dont 969 sans date exploitable. Ne pas compter plusieurs représentations comme événements indépendants.
 
-Conclusions déjà durables : les labels `PASS`/`FINAL`/`DEPLOYMENT READY` ne valent pas autorité seuls ; les FAIL et fermetures de familles doivent être conservés ; une idée doit être prouvée nouvelle avant admission ; `restaurant-stock/` est hors périmètre. Depuis le 12 septembre, le noyau Quant se recompose en trois familles : gouvernance/science, whole-system runtime/code et Evidence/Data. Les PR #12/#13 sont fermées sans merge mais portent des invariants V1 à préserver ; Builder C Evidence/PIT a un exact-head green sur `b8f7dff...` ; le census SEC reste rouge à cette date. Le pattern durable `feature-plans` + `handoffs` + checkpoints/règles canoniques doit être réutilisé pour empêcher les pertes de mémoire.
+Conclusions durables : `restaurant-stock/` reste hors périmètre ; les métriques/labels ne valent pas autorité seuls ; les FAIL et contaminations restent mémorisés. Le noyau Quant se structure en gouvernance/science, whole-system code et Evidence/Data. PR #16 est mergée dans la lignée Blue ; PR #17 est fermée sans merge ; PR #18 est mergée dans une lignée Astra ; Gate A est exact-head green sur `e5c4c720...`. La fuite de visibilité du 18 septembre est irréversible pour la fenêtre touchée. `t0` reste distinct d'un CI vert et n'est pas déduit automatiquement.
 
-Utiliser les archives et scripts antérieurs ; ne pas recommencer le miroir ou la collecte initiale. Les anciens rapports d’octobre restent des preuves à réutiliser quand la chronologie y arrivera.
+Pattern de continuité à préserver : feature-plans + handoffs + checkpoints/règles canoniques + preuves exact-head + statuts d'autorité explicites. Réutiliser les archives existantes ; ne pas recommencer la collecte.
 
-Poursuivre depuis le **17 septembre**, puis chaque journée dans l’ordre. Toutes les **4 journées actives**, publier un checkpoint durable et continuer immédiatement. Terminer ensuite la carte des capacités et le plan des deux branches. Ne pas sélectionner le tronc par nom/date/ascendance seule. Aucun essai rejoué, aucun runtime modifié, aucun nettoyage destructif.
+Poursuivre depuis le **21 septembre**, puis dans l’ordre. Toutes les **4 journées actives**, publier un checkpoint durable et continuer immédiatement. Terminer ensuite la carte des capacités et le plan des deux branches. Aucun essai rejoué, aucun runtime modifié, aucun nettoyage destructif pendant cette phase.
