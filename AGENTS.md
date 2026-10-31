@@ -4,7 +4,7 @@
 
 This is the single recovery procedure; README routes here. It applies without chat history, custom instructions or a previous agent.
 
-1. Read QUANT_NORTH_STAR.md, then governance/CURRENT_PROJECT_STATE_2026-10-20.md on the repository default ref. Resolve that ref remotely; do not assume an old checkout contains the latest router.
+1. Read QUANT_NORTH_STAR.md, then governance/CURRENT_PROJECT_STATE_2026-10-31.md on the repository default ref. The 2026-10-20 router is retained as historical baseline only; follow it when the current router explicitly sends you there. Resolve the default ref remotely; do not assume an old checkout contains the latest router.
 2. Treat summaries as navigation claims. Check LAST_VERIFIED_AT, LAST_VERIFIED_REF and OBSERVATION_METHOD. Reconcile relevant current refs, newer work and exact evidence before choosing an action. Unindexed or conflicting activity stays UNKNOWN/UNRECONCILED. Absence of a handoff is not a reason to restart completed work.
 3. Distinguish VERIFIED (specific assertion actually checked), REPORTED (document claim), STALE and UNKNOWN. Work may be ACTIVE, PARKED or BLOCKED. Built, qualified, integrated, promoted, active and used are different dimensions. CI on another SHA does not qualify this subject; Git does not prove current runtime health.
 4. Inspect existing evidence before proposing work. Reuse, connect or repair before building. NO_CHANGE_REQUIRED, BLOCK, PARK and UNKNOWN are valid deliverables; a patch is not mandatory.
