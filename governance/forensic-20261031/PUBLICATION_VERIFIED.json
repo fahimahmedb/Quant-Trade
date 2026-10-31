@@ -1,0 +1,10 @@
+{
+  "sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
+  "archive_hashes": {
+    "raw-export.tar.gz": "a676c40debe397999d40f5f19a32088258e48d3375b3e4b1cffed7133816c38e",
+    "analysis-export.tar.gz": "5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe"
+  },
+  "tips_verified_reachable": 289,
+  "restoration_directory": "/workspace/quant-audit-restore-check",
+  "status": "VERIFIED_ARCHIVAL_CHECKPOINT_NOT_AUDIT_COMPLETION"
+}

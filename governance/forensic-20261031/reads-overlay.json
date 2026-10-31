@@ -1,0 +1,177 @@
+[
+  {
+    "blob": "014eca06058ad696a78fcf14ecc4ffadd72c1326",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "builder/convergence-wave2-canonical-20261021:WAVE2_C2_CP002_D0_20261021.md ; historical claims not all independently verified"
+  },
+  {
+    "blob": "017a9e2f844c3cbb7980ab64eef707feff2ae154",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source blue/master-v2-2026-09-20:governance/CURRENT_PROJECT_STATE_2026-10-20.md ; claims not all independently verified"
+  },
+  {
+    "blob": "0556b45f9455a1e1586f36ee60b7d46ff426f5c9",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "0dbb28ce3211235c83299e7954dfeae7d26f7b6f",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "0ed34c165cb8b839a1e2a9bad891a9859f476360",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_010.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "11d059e9b679002a6928eae8e2cf11961483a47a",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_016.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "18b5e544b57d08ffcb5105014d53a4a99c11e8ee",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/11_FINAL_DECISION.md ; historical claims not all independently verified"
+  },
+  {
+    "blob": "1e216a421f3cf72d63421e6544b5a063f583c625",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "1e21f99bdb228b77249787c897843954ccf9c730",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489:README.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "24369ef726f05bf5baa94785cc14c44f9de43881",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source audit/forensic-checkpoint-20261019:CHECKPOINT_012.md ; claims not all independently verified"
+  },
+  {
+    "blob": "252174d0f65faee27ede7d7f551a582f49e78e25",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source audit/forensic-checkpoint-20261019:governance/WORKSTREAM_INDEX_2026-10-20.md ; claims not all independently verified"
+  },
+  {
+    "blob": "28693b5d8484508dd8bae6dcfd2a1a570f4f2a3e",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_011.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "2f40074ed040a57f5dc545e8b5d95c17c623f875",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_015.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "30fcf959848b43c914391ce4a99ffa6c6e6210c4",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/02_SCOPE_REDUCTION.md ; historical claims not all independently verified"
+  },
+  {
+    "blob": "336e3ce3b7d8ed2b3bf2a78f94d752c50af518f1",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source blue/master-v2-2026-09-20:AGENTS.md ; claims not all independently verified"
+  },
+  {
+    "blob": "340be3f3102c5c7dd6281956c0dede2b934b4ace",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source builder/convergence-wave2-canonical-20261021:WAVE2_CONVERGENCE2_FINAL_20261021.md ; claims not all independently verified"
+  },
+  {
+    "blob": "367f2cdc9dcb6ea1cc9a6bf14793f7d6e32ed0bc",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_006.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "408b83ac77d61199e652c5343dbf9573c42cba2f",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_002.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "41aac9f9c0441d7686fb1426f3a64433c291bc4b",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_003.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "42b8aa7a6d4f70c662afd350d9c870f8244d7af8",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source codex/horizontal-completeness-convergence1-20261021:HORIZONTAL_CONVERGENCE1_FINAL_20261021.md ; claims not all independently verified"
+  },
+  {
+    "blob": "493248259cef9b896897c7366de3e2479846dd60",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source review/post-disclosure-pass-b-20261027:review/post-disclosure/03_C0_CLASSIFICATION.md ; claims not all independently verified"
+  },
+  {
+    "blob": "5e76bff53d6dc885e223f9117abae0cf23524f32",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_007.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "74857603310ba43e81f13e99e215422fa4b2cd4c",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_009.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "7532af3a0bf64d1a9aeae04863884afc047f8bc2",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_014.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "7533b157f2f0ff7986a978f84f00d3a10e53edfb",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_005.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "8295041a8d253636d8f8aab941b811dce64939d9",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source blue/master-v2-2026-09-20:QUANT_NORTH_STAR.md ; claims not all independently verified"
+  },
+  {
+    "blob": "86ac5341325df920552083a0965cbfd1c82b7d70",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_004.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "8f14b5b8e657c96f4d97d3bdb520b918f658cbce",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "d95b52feb0c0fd75b33d1140c89ed4fc9c355489:RESUME.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "99db48a6db4148a1bdc0fa4417e48c8c524ba318",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_008.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "9cb68cde6e86759a69587fd9ed9a2f893b60736e",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "a57474b7b1d50e76877a48113de720b9bb4f2ad8",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "67543ff286ff7a81a6705a197b7e557442d62ac2:CHECKPOINT_013.md ; REPORTED claims distinguished from current verification"
+  },
+  {
+    "blob": "a921640ff013d8f3dba0a721eabdf75c6be28f7b",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Source review/post-disclosure-pass-b-20261027:review/post-disclosure/02_ONE_SHOT_REASSESSMENT.md ; claims not all independently verified"
+  },
+  {
+    "blob": "b52317876eeb89e6ae715e3569b34873b66eb11d",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  },
+  {
+    "blob": "d9708aa499ce2fb9f0284df5ef69eb26d9c18dab",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "codex/verified-autonomous-continuity-oneshot-20261027:continuity/one_shot/FINAL_ATTESTATION.md ; historical claims not all independently verified"
+  },
+  {
+    "blob": "efdbd00e9399186777d5175e14c2c11df99fc27d",
+    "method": "CONTENT_DISPLAYED_AND_READ",
+    "note": "Port declaration read; verification linked separately"
+  }
+]
