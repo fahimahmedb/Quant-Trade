@@ -67,16 +67,24 @@ def _marker(kind: str, payload: dict[str, Any]) -> str:
 
 
 def _parse_markers(kind: str, comments: list[dict[str, Any]]) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    """Parse only the canonical, first-line control envelope.
+
+    Human-facing text below that envelope is untrusted data.  In particular, it
+    may contain prompts or examples which look exactly like control markers.
+    """
     parsed: list[tuple[dict[str, Any], dict[str, Any]]] = []
     for comment in comments:
         body = str(comment.get("body") or "")
-        for match in _MARKER_RE[kind].finditer(body):
-            try:
-                payload = json.loads(match.group(1))
-            except json.JSONDecodeError:
-                continue
-            if isinstance(payload, dict):
-                parsed.append((comment, payload))
+        first_line = body.splitlines()[0].strip() if body.splitlines() else ""
+        match = _MARKER_RE[kind].fullmatch(first_line)
+        if match is None:
+            continue
+        try:
+            payload = json.loads(match.group(1))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(payload, dict):
+            parsed.append((comment, payload))
     return parsed
 
 
@@ -110,6 +118,9 @@ class OrchestrationConfig:
 class OrchestrationState:
     task_id: str
     expected_head_sha: str
+    repository: str = ""
+    issue_number: int = 0
+    target_branch: str = ""
     current_prompt: str = ""
     attempt: int = 1
     dispatch_id: str = ""
@@ -123,14 +134,25 @@ class OrchestrationState:
     updated_at: str = field(default_factory=_utc_now)
 
     @classmethod
-    def load_or_create(cls, path: Path, task_id: str, expected_head_sha: str, current_prompt: str) -> "OrchestrationState":
+    def load_or_create(cls, path: Path, task_id: str, expected_head_sha: str,
+                       current_prompt: str, repository: str, issue_number: int,
+                       target_branch: str) -> "OrchestrationState":
         if path.exists():
             payload = json.loads(path.read_text(encoding="utf-8"))
+            subject = (repository, int(issue_number), target_branch)
+            persisted_subject = (
+                payload.get("repository"), payload.get("issue_number"), payload.get("target_branch"))
+            if persisted_subject != subject:
+                raise ValueError(
+                    "durable orchestration state GitHub subject mismatch; "
+                    "explicit reconciliation or a new task/state namespace is required")
             state = cls(**payload)
             if state.task_id != task_id:
                 raise ValueError("durable orchestration state belongs to another task")
             return state
-        state = cls(task_id=task_id, expected_head_sha=expected_head_sha, current_prompt=current_prompt)
+        state = cls(
+            task_id=task_id, expected_head_sha=expected_head_sha, current_prompt=current_prompt,
+            repository=repository, issue_number=int(issue_number), target_branch=target_branch)
         state.dispatch_id = _dispatch_id(task_id, expected_head_sha, 1)
         return state
 
@@ -267,7 +289,8 @@ class CodexOrchestrationWorker:
             raise ValueError("task.metadata.codex_prompt is required")
         state_path, receipt_path, _ = self._paths(task.task_id)
         state = OrchestrationState.load_or_create(
-            state_path, task.task_id, expected, current_prompt)
+            state_path, task.task_id, expected, current_prompt, self.config.repository,
+            self.config.issue_number, self.config.target_branch)
         return state, state_path, receipt_path
 
     def _persist(self, state: OrchestrationState, state_path: Path, receipt_path: Path,
@@ -314,8 +337,8 @@ class CodexOrchestrationWorker:
         contract["result_sha"] = "<40-lowercase-hex-sha>"
         contract["result_branch"] = self.config.target_branch
         return (
+            f"{_marker('dispatch', payload)}\n"
             f"{self.config.builder_mention}\\n\\n"
-            f"{_marker('dispatch', payload)}\\n"
             "BOUNDED CODEX DISPATCH — work only inside the supplied task and expected-head fence.\\n\\n"
             f"{prompt}\\n\\n"
             "When, and only when, the bounded result is remotely durable, append this exact machine-readable "
@@ -334,8 +357,8 @@ class CodexOrchestrationWorker:
         contract = dict(payload)
         contract["verdict"] = "<PASS|REQUEST_CHANGES|UNKNOWN>"
         return (
+            f"{_marker('review_request', payload)}\n"
             f"{self.config.reviewer_mention}\\n\\n"
-            f"{_marker('review_request', payload)}\\n"
             "FRESH-CONTEXT INDEPENDENT REVIEW. Inspect the exact candidate SHA and primary evidence; "
             "do not modify implementation. Return PASS only if the bounded claim is independently supported.\\n"
             f"Return exactly one marker: `{_marker('review', contract)}`"
@@ -543,6 +566,14 @@ class CodexOrchestrationWorker:
 
             if state.status == "WAITING_CI":
                 assert state.result_sha is not None
+                current_head = self.client.branch_head(self.config.target_branch)
+                if current_head != state.result_sha:
+                    decision = self._decision(
+                        "STALE_HEAD", state,
+                        {"expected_head_sha": state.result_sha, "current_head_sha": current_head})
+                    result = self._apply_decision(
+                        task, state, state_path, receipt_path, decision, fallback_head=current_head)
+                    return {"terminal": result is not None, "result": result}
                 ci = self.client.ci_state(state.result_sha)
                 if ci == "PASS":
                     state.status = "WAITING_REVIEW"
@@ -562,6 +593,15 @@ class CodexOrchestrationWorker:
                 return {"terminal": result is not None, "result": result}
 
             if state.status == "WAITING_REVIEW":
+                assert state.result_sha is not None
+                current_head = self.client.branch_head(self.config.target_branch)
+                if current_head != state.result_sha:
+                    decision = self._decision(
+                        "STALE_HEAD", state,
+                        {"expected_head_sha": state.result_sha, "current_head_sha": current_head})
+                    result = self._apply_decision(
+                        task, state, state_path, receipt_path, decision, fallback_head=current_head)
+                    return {"terminal": result is not None, "result": result}
                 self._ensure_review_request(state, state_path, receipt_path, comments)
                 comments = self.client.comments()
                 verdict = self._valid_review(comments, state)
@@ -574,6 +614,18 @@ class CodexOrchestrationWorker:
                     self._ensure_review_request(state, state_path, receipt_path, comments)
                     return {"terminal": False, "result": None}
                 if verdict in {"PASS", "REQUEST_CHANGES", "UNKNOWN"}:
+                    # Re-read immediately before qualification/decision: the branch
+                    # may have advanced while the review comments were fetched.
+                    current_head = self.client.branch_head(self.config.target_branch)
+                    if current_head != state.result_sha:
+                        decision = self._decision(
+                            "STALE_HEAD", state,
+                            {"expected_head_sha": state.result_sha,
+                             "current_head_sha": current_head})
+                        result = self._apply_decision(
+                            task, state, state_path, receipt_path, decision,
+                            fallback_head=current_head)
+                        return {"terminal": result is not None, "result": result}
                     event = {
                         "PASS": "QUALIFIED_RESULT",
                         "REQUEST_CHANGES": "REVIEW_REQUEST_CHANGES",

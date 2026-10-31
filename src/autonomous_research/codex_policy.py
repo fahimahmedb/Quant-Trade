@@ -122,7 +122,8 @@ class PolicyFencedCodexOrchestrationWorker(CodexOrchestrationWorker):
                 + ", ".join(violations)
             )
         envelope = "\n".join(_IMMUTABLE_DELEGATION_ENVELOPE)
-        return envelope + "\n\n" + super()._dispatch_body(task, state)
+        control_envelope, human_body = super()._dispatch_body(task, state).split("\n", 1)
+        return control_envelope + "\n" + envelope + "\n\n" + human_body
 
     def _valid_review(self, comments: list[dict[str, Any]],
                       state: OrchestrationState) -> str | None:

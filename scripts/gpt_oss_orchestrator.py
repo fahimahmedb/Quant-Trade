@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Feature-flagged one-step hook for the existing VM scheduler/GPT-OSS runtime.
 
-This executable deliberately does not open or execute the scientific ResearchCampaign
+This executable deliberately does not open or execute the scientific campaign
 queue. The existing VM scheduler is the wake source; this script advances exactly
 one synthetic engineering-orchestration state-machine step per invocation.
 """
@@ -66,7 +66,7 @@ def main() -> int:
 
     project_root = Path(os.environ.get("QUANT_RESEARCH_ROOT", ".")).resolve()
     # Keep orchestration state physically separate from the validated scientific
-    # ResearchCampaign queue/state. The default lives under runtime but never
+    # scientific campaign queue/state. The default lives under runtime but never
     # opens project_root/runtime/research_queue.json or campaign_state.json.
     orchestration_root = Path(
         os.environ.get(
