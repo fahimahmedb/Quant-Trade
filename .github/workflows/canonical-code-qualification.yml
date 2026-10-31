@@ -12,12 +12,16 @@ permissions:
 jobs:
   canonical-code:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install focused recovery qualification dependencies
+        run: python -m pip install --disable-pip-version-check pytest==9.1.1 jsonschema==4.26.0
       - name: Exact head identity
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -70,6 +74,28 @@ jobs:
             tests.test_wave2_c2_scientific_economic_d0_seam \
             research.research_os.tests.test_mega_b_canonical_gate \
             research.research_os.tests.test_economic_identity_portfolio_readiness
+      - name: Post-Wave2 GIGA-Q focused recovery challenge
+        env:
+          PYTHONPATH: .:src
+          GIGA_Q_SHA: 4efadddf694eff0c0df00925b5b4b89194f32f8e
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$GIGA_Q_SHA"
+          files=(
+            tests/test_giga_q_auxiliary_contracts.py
+            tests/test_giga_q_core_identity.py
+            tests/test_giga_q_git_publication.py
+            tests/test_giga_q_negative_memory.py
+            tests/test_giga_q_qualification_runtime.py
+            tests/test_giga_q_scientific_ledger.py
+            tests/test_giga_q_truth_continuity.py
+          )
+          cleanup() { rm -f "${files[@]}"; }
+          trap cleanup EXIT
+          for f in "${files[@]}"; do
+            git show "$GIGA_Q_SHA:$f" > "$f"
+          done
+          python -m pytest -q "${files[@]}"
       - name: Authority remains closed
         env:
           PYTHONPATH: .:src
