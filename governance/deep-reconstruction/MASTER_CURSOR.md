@@ -3,19 +3,18 @@
 STATUS=DEEP_RECONSTRUCTION_ACTIVE
 GLOBAL_FORENSIC_RESTART=FALSE
 
-## Canonical anchors observed before this pass
+## Canonical anchors
 
-- `code/canonical` observed head: `13c9ff03f0898e9af28abaa3dab78a520c70c887`
-- `project/canonical` observed head before this cursor: `a7a2de4bb4dcc5b2fcf99155896d4d2a21efb44f`
+- `code/canonical` observed head for completed week 2026-07-13 -> 2026-07-19: `13c9ff03f0898e9af28abaa3dab78a520c70c887`
+- `project/canonical` parent before weekly checkpoint publication: `0447b74d0939b00720e2c8a210ea4c7dc719a0f4`
 
-These are anchors for comparison, not proof that every historical invariant is already covered.
+These are comparison anchors, not proof that every historical invariant is covered.
 
 ## Mission
 
-Reconstruct the remaining project history in depth, week by week, to recover decision-relevant value that the surface audit could have missed.
+Reconstruct remaining project history in depth, week by week, to recover decision-relevant value that the surface audit could have missed.
 
-For each historical week, link where material:
-
+For each material object link where useful:
 `intent -> commits -> files/blobs -> tests/runs -> PR/issues/reviews -> integration/ancestry -> later supersession -> current canonical state -> gap/disposition`.
 
 Primary evidence outranks branch names, summaries, prompts and prose claims.
@@ -28,51 +27,54 @@ Construction, qualification, integration, promotion, activation, use and end-to-
 
 ## Efficiency law
 
-Reuse existing forensic indexes, crosswalks, capability maps and prior checkpoints as navigation aids.
-
-Descend to commits/files/runs when doing so can change a canonical decision, recover value, expose a contradiction, or close a material unknown.
-
-Do not reread thousands of commits merely to reproduce already-proven chronology.
-
+Reuse forensic indexes, crosswalks, capability maps, value-recovery checkpoints and prior weekly checkpoints as navigation aids.
+Descend to commits/files/runs only when doing so can change a canonical decision, recover value, expose a contradiction, or close a material unknown.
+Do not reread thousands of commits merely to reproduce proven chronology.
 Aggregation is allowed for repetitive automation/no-op activity only when no distinct semantic change is hidden inside the aggregate.
 
 ## Weekly checkpoint law
 
 Every completed historical calendar week MUST publish:
-
 1. `DEEP_WEEK_YYYY-MM-DD_YYYY-MM-DD.md` — evidence, analysis, canonical comparison and decisions.
 2. `HANDOFF_WEEK_YYYY-MM-DD_YYYY-MM-DD.md` — concise autonomous resume for another AI.
 
 Do not advance the cursor beyond a week until both artifacts exist.
 
-## Quality gate for a completed week
+## Completed weeks
 
-A week is complete only when every object capable of changing the current project has one of:
+### 2026-07-13 -> 2026-07-19
 
-- a proved canonical owner/equivalent;
-- a bounded recovery/repair action;
-- a governance-only disposition;
-- PARK/RETIRE with reason;
-- BLOCK/UNKNOWN with the missing proof named exactly.
+Status: `COMPLETE_WITH_ONE_BOUNDED_UNKNOWN`.
 
-Historical positive results are not promoted to current economic truth without fresh prospective evidence.
+Durable decisions:
+- preregistration / embargo -> `NO_CHANGE_REQUIRED`;
+- source PIT identity -> `NO_CHANGE_REQUIRED`;
+- historical Buy & Hold verdict -> `GOVERNANCE_ONLY`;
+- early prediction/overlay/meta-labeling implementations -> `RETIRE_FROM_ACTIVE_SCOPE`;
+- transformation-level causal invariance in current modern experiment path -> `UNKNOWN/PARK` pending a bounded adversarial future-data mutation test when economically relevant;
+- no historical code port required from this week.
 
-Historical negative or invalidated results must remain discoverable so they are not rediscovered as new work.
+Read first if challenged:
+- `governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md`
+- `governance/deep-reconstruction/HANDOFF_WEEK_2026-07-13_2026-07-19.md`
 
 ## Current cursor
 
-`CURRENT_WEEK_START=2026-07-13`
-`CURRENT_WEEK_END=2026-07-19`
+`CURRENT_WEEK_START=2026-07-20`
+`CURRENT_WEEK_END=2026-07-26`
 `CURRENT_WEEK_STATUS=IN_PROGRESS`
 
-Known active historical days in this first week: 13, 14, 15 July 2026.
+Known material starting objects:
+1. 20 July paper robot (`97b961cece`) — distinguish construction/deployment claim from activation/use proof.
+2. 24 July robustness/reproducibility chain (`517ba73473`, `2334c675b8`, final `0894777f8b`).
+3. 25 July critical corrections/invalidation (`f70ae6713d`) and defensive overlay reclassification (`5dcf49c7cd`).
+4. 26 July S5 candidate / paper package / anti-data-snooping / ML retry chain through `2b1f03b13f`.
 
-Initial material objects to close:
+## Open cross-week gap carried forward
 
-1. anti-lookahead/leakage tests and their corrective commits;
-2. embargo/preregistration discipline;
-3. causal sigma/triple-barrier correction;
-4. historical Buy & Hold verdict and its proper present-day disposition.
+`TRANSFORMATION_CAUSALITY_PROOF=UNKNOWN_PARK`
+
+Do not build merely to close it. Reopen only when the exact modern transformation path is decision-relevant to a prospective economic test, then prove pre-t output invariance to post-t data mutation.
 
 ## Resume law
 
@@ -80,5 +82,5 @@ Do NOT restart the global forensic audit.
 Do NOT assume absence from filename/search-term absence.
 Do NOT promote historical experiment verdicts into current economic truth.
 Do NOT merge or delete branches as part of this reconstruction.
-
+Do NOT reread completed weeks unless contradictory primary evidence can change a canonical decision.
 Resume from `CURRENT_WEEK_*`, publish the weekly evidence document and handoff, then advance to the next calendar week.
