@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_022_20261101",
+  "status": "COMPLETE",
+  "scope": "WP2_REMOTE_EVIDENCE_TO_LOST_SELF_PASS_AND_BYTE_FREEZE_REBUILD_ORDER_6513711836_THROUGH_6515283827",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6513711836,"sha256":"4beffa13b9cc2f4123dedf9876e63e44a99e95d55657dd9bcadb364762b76a14","status":"READ","summary":"Owner supplies the four requested WP2 historical objects. October-12 evidence proves a scheduled run with a missing durable receipt and later GitHub write invocation, but not lease recovery/evaluator/sink continuity; historical FAIL and later SUCCESS_NO_SHA are both explicitly bounded."},
+    {"kind":"issue-comment","id":6513745444,"sha256":"23131e848dce928f98680273578553973a11a49914bdbab73589f4e4036fef53","status":"READ","summary":"Codex anchors to Pass-B base, keeps WP2 UNKNOWN_INSUFFICIENT_RUNTIME_EVIDENCE and WP3 promotion/runtime UNKNOWN, then requests later VM/runtime lineage and exact-head qualification evidence rather than inferring from branch names or component passes."},
+    {"kind":"issue-comment","id":6514618196,"sha256":"cd4b09e8f2106a9fe400c04e947aa4d41aecc49b69dfa4383e872db122d6d495","status":"READ","summary":"Remote bridge 03 provides canonical MEGA-E lineage, cumulative Wave2 qualification, exact-head C0 qualification and impact delta from f453 to 13721384. It requires arrow-by-arrow falsification of Pass-B Phase A and affected-link-only requalification."},
+    {"kind":"issue-comment","id":6514642248,"sha256":"705f8177b03eff8c5988aeee13113b16c0d29fdd2ba796ddad06c8ec8a8be4ec","status":"READ","summary":"Codex reconstructs WP2 through task/materialization/recovery/runner/evaluator but withholds PASS because semantic identity of Live Lab to the pre-frozen isolated scientific sink is unproven. WP3 technical candidate is PASS while promotion/install/deploy/runtime remain Owner-gated/not proven."},
+    {"kind":"issue-comment","id":6514664195,"sha256":"7464b3ab22d5133fde34c3ce12b9955bf57ba2d62714283610d860c83063ff38","status":"READ","summary":"Owner supplies decisive exact-base counterevidence: continuity/one_shot/07_ENGINEERING_LOOP.md explicitly records ENGINEERING_LOOP_BLOCKED and NO_EXISTING_SINGLE_LINEAGE_LEASE_EXECUTION_EVALUATOR_SINK_ROUTE. Separate component passes are not full-loop proof."},
+    {"kind":"issue-comment","id":6514682355,"sha256":"68dde0c3291c061db232f3dad931b9b1dafddcaf151822ffba674d86cddbd824","status":"READ","summary":"Codex classifies WP2_RESULT=NARROW_JOIN_GAP_PROVEN, freezes the synthetic-only proof path and adversarial invariants, withholds the causality receipt and requests exact-base component objects for reuse-first closure."},
+    {"kind":"issue-comment","id":6515039683,"sha256":"1e8b7827d96c0fbc09c8278bce5de801bc0a563ab2348dcebefab81c30ae9b70","status":"READ","summary":"Owner verifies the seam on the exact base and exact hosted WP3 head, authorizing only the smallest synthetic deterministic binding using existing components. WP1 stays parked and WP3 promotion/deploy remain outside authority."},
+    {"kind":"issue-comment","id":6515054336,"sha256":"438a56cde5aec0621933b2e0f4d857d6f8c3e9d0971891075585f91668998167","status":"READ","summary":"Codex refuses to implement against a non-authoritative shallow checkout, keeping WP2 as NARROW_JOIN_GAP_PROVEN_PENDING_EXACT_BASE_BINDING and requesting a portable exact-base tree/component bundle instead of inventing interfaces."},
+    {"kind":"issue-comment","id":6515102338,"sha256":"b963197baf9cc2f3c8d3eef88b910ba2d6ea68cd6622a926696491f601fee41f","status":"READ","summary":"Owner starts the frozen WP2 mission on PR #39 created from exact Pass-B base, explicitly instructing no archaeology restart and no product-code change unless the proven seam requires the smallest lawful synthetic binding."},
+    {"kind":"issue-comment","id":6515214753,"sha256":"64b3705d06d05bf2a492dfa23794be724f7ec54a924d88d4982296fe5b751d4d","status":"READ","summary":"Codex reports a minimal WP2-only synthetic binding using native worker/fenced lease, existing DryRunExperimentRunner, existing verify_bindings evaluator and isolated sink; two qualification files only, 7 new tests plus 29 affected tests pass, and a self-qualified causality receipt is claimed pending independent review."},
+    {"kind":"issue-comment","id":6515240367,"sha256":"e08503c7f466e4413d0b7beecbdd4ad686c5c3f9074e1891c3c0bc2134ab75e2","status":"READ","summary":"Owner/connector rejects the self-PASS because remote PR head remains documentation-only and commit 51b746... does not exist remotely. SELF_PASS != DURABLE_PASS; the implementation is not independently auditable. Required correction is transport-only, not reasoning restart."},
+    {"kind":"issue-comment","id":6515256247,"sha256":"a607fedb3c6c9c65190734d39269f03da57ce69a1c6c4ca98230e7b139680f30","status":"READ","summary":"Codex cannot recover the reported self-qualified bytes or commit from workspace/object DB and refuses to fabricate a patch bundle or approximate implementation. Working tree remains clean; durable causality claim is withdrawn."},
+    {"kind":"issue-comment","id":6515283827,"sha256":"6a293468965e27001d78b64a5fc24bbd4870d820f1c0f2edd08c3f19005907a0","status":"READ","summary":"Owner voids the lost implementation and orders WP2 rebuild V2 as a new candidate. Crucial evidence-procedure change: exact tested bytes must be emitted in a complete hash-addressed portable PATCH_BUNDLE before any PASS claim; explicit ceiling becomes SELF_PASS != DURABLE_PASS != INDEPENDENT_PASS."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 13,
+    "objects_directly_read": 13,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 13,
+    "cumulative_new_discussion_objects_directly_read": 198,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 208,
+    "estimated_total_discussion_objects_directly_read": 205,
+    "estimated_total_discussion_objects_semantically_disposed": 215,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"COMPONENT_QUALIFICATION_NOT_CAUSAL_LINEAGE","finding":"Historical MEGA-E, runtime/recovery and Live-Lab passes do not establish the Pass-B single-lineage task-to-lease-to-runner-to-evaluator-to-isolated-sink contract. Exact-base posterior evidence explicitly proves the narrow join gap.","current_product_decision_change":false},
+    {"classification":"NARROW_JOIN_REPAIR_REUSE_FIRST","finding":"The authorized closure path is intentionally tiny and synthetic-only: reuse existing worker, fencing/recovery, runner, evaluator and sink contracts; do not build another scheduler/control plane/Research OS.","current_product_decision_change":false},
+    {"classification":"SELF_PASS_NOT_DURABLE_PASS","finding":"A technically successful local repair became unusable when its commit/files were not remotely persisted. Independent review correctly rejected the claim despite passing tests, because workspace-only bytes are not durable evidence.","current_product_decision_change":false},
+    {"classification":"LOST_BYTES_CAUSE_DIRECT_REWORK","finding":"The qualified candidate had to be voided because its exact bytes disappeared. This is a concrete historical mechanism of lost person-days: ephemeral worker state caused a complete implementation rebuild even though the reasoning had already been done.","current_product_decision_change":false},
+    {"classification":"FREEZE_BYTES_BEFORE_PASS","finding":"WP2 V2 changes evidence procedure so exact tested bytes/hash/bundle are durable before any PASS label. This directly addresses the project memory/restart failure without adding broad governance.","current_product_decision_change":false}
+  ],
+  "current_action": "WP2_REBUILD_V2_BYTE_FREEZE_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6515364918,"sha256":"f0cc67588a9477182d83f442aef85d5e994adc7d5c48599195601ab8bf6b02b1"}
+}
