@@ -157,6 +157,17 @@
       "backup_or_rollback": "capture worker.json, unit/timer, deployed release and SHA before changing",
       "migration_executed": false,
       "post_migration_test": "NOT_EXECUTED; host access unavailable"
+    },
+    {
+      "system": "Quant-Trade Laboratoire",
+      "location": "worker/server.mjs BRANCH, strict git-ref parser and UI controls/links",
+      "old_branch": "research/edge-lab-continuous",
+      "why_used": "read-only scientific metadata projection",
+      "target": "project/canonical",
+      "safe_to_rebind": true,
+      "backup_or_rollback": "Site v26 / source 6e64515 retained; current source 78a45bf8aa2f039612bbea644878929ede90712a, v27",
+      "migration_executed": true,
+      "post_migration_test": "Site deployment appgdep_6ae75a73c7a4819197c2c2229ebaefdd succeeded; lab_status MCP returned fresh project head bd67b2127ba483189c9c760ba0c6fba29a5f6c95 and unchanged ledger b4023c64c237fa7b375c1c98ee27198ad16559adf7bfd221e588dda34e207229"
     }
   ],
   "deleted": [],
@@ -184,10 +195,12 @@
     "wave2_nonregression_local": "48/48 PASS",
     "live_lab_js_local": "57/57 PASS",
     "yaml_shell_syntax": "all retained executable workflows parse; bash -n PASS",
-    "hosted_exact_head": "Canonical Code Qualification run 41321169062 SUCCESS on f3a29907c4bb664a5a7b5daf671fb03935c3cef0; supersedes first migrated-head PASS",
+    "hosted_exact_head": "Canonical Code Qualification 41321331348 SUCCESS on exact final code/canonical d500d96a8ab5024557319add41e8030ebf392883",
     "scientific_state_port": "207 original Edge Lab files byte-identical; four live Lab source blobs explicitly compared at project/canonical; no experiment run",
     "meta_audit_port": "6 original artifacts byte-identical, original commit retained as project parent",
-    "paused_forensic_port": "73 added/updated evidence files byte-identical, 128 unique commits retained as project parent; PAUSED_BY_OWNER preserved"
+    "paused_forensic_port": "73 added/updated evidence files byte-identical, 128 unique commits retained as project parent; PAUSED_BY_OWNER preserved",
+    "edge_lab_metadata_links": "168/168 synthetic Edge Lab tests PASS after canonical metadata-link rebind",
+    "lab_site": "50/50 server tests and 49/49 embedded Live Lab JS tests PASS; artifact/source hashes validated; deployed existing Site v27; fresh MCP read resolves project/canonical@bd67b2127ba483189c9c760ba0c6fba29a5f6c95; stale=false and ledger unchanged"
   },
   "workflow_runs": [
     {
@@ -199,6 +212,12 @@
     {
       "id": 41320797151,
       "sha": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
+      "workflow": "Canonical Code Qualification",
+      "result": "success"
+    },
+    {
+      "id": 41321331348,
+      "sha": "d500d96a8ab5024557319add41e8030ebf392883",
       "workflow": "Canonical Code Qualification",
       "result": "success"
     }
@@ -264,8 +283,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:27:50.856243+00:00",
-  "project_subject_before_receipt": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
+  "updated_utc": "2026-11-01T15:29:57.671596+00:00",
+  "project_subject_before_receipt": "bd67b2127ba483189c9c760ba0c6fba29a5f6c95",
   "code_canonical_sha": "d500d96a8ab5024557319add41e8030ebf392883",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -453,5 +472,6 @@
     "host_checkout": "UNKNOWN; independently PARK Oracle refs",
     "decision": "BLOCK_DEFAULT_MUTATION_ONLY"
   },
-  "pre_deletion_status": "READY_FOR_INDEPENDENT_DOCUMENTARY_FAMILY_ONLY"
+  "pre_deletion_status": "READY_FOR_INDEPENDENT_DOCUMENTARY_FAMILY_ONLY",
+  "all_independent_migrations_qualified": true
 }
