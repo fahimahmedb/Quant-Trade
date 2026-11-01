@@ -1,0 +1,55 @@
+name: Quant operational maintenance
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Operation explicite; inventaire du host en lecture seule
+        type: choice
+        options: [check-access, host-inventory, switch-default, protect-canonicals]
+        default: check-access
+        required: true
+  push:
+    branches: [project/canonical]
+    paths: [.github/workflows/quant-operational-maintenance.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quant-operational-maintenance
+  cancel-in-progress: false
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: code/canonical
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify operational gates on exact code subject
+        run: |
+          echo "QUANT_CODE_SUBJECT_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          python -m unittest -v tests.test_quant_operational_job
+      - name: Execute selected bounded operation
+        env:
+          OPERATION: ${{ inputs.operation || 'check-access' }}
+          QUANT_GH_ADMIN_TOKEN: ${{ secrets.QUANT_GH_ADMIN_TOKEN }}
+          QUANT_ORACLE_SSH_KEY: ${{ secrets.QUANT_ORACLE_SSH_KEY }}
+          QUANT_ORACLE_KNOWN_HOSTS: ${{ secrets.QUANT_ORACLE_KNOWN_HOSTS }}
+          QUANT_ORACLE_HOST: ${{ vars.QUANT_ORACLE_HOST }}
+          QUANT_ORACLE_USER: ${{ vars.QUANT_ORACLE_USER }}
+        run: python scripts/quant_operational_job.py "$OPERATION"
+      - name: Keep sanitized operation result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quant-operation-${{ github.run_id }}
+          path: quant-operations-result.json
+          if-no-files-found: warn
+          retention-days: 7
