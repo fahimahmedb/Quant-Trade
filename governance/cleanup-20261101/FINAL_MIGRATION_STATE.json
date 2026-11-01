@@ -395,11 +395,11 @@
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Owner-executed Run Command reports existing V2 timer active/enabled, service_result success and local model PASS on release a67ffec48fff895d5edc42171855e2213e49cf0d. Owner now reports successful SSH using the matching historical September key. Direct agent SSH remains unavailable under current TCP policy. Exact V2 worker.json/unit/release inventory and private rollback backup are pending; then qualify the ref-only canonical binding and require two additional automatic wakes. No rebind or retirement is yet proven."
+      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes."
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Current Owner-executed V2 status reports v1_timer inactive. This proves current timer inactivity only; installed fallback configuration/ref remains uninspected. Read /etc/quant-research/worker.json, V1 unit/timer and /opt/quant-research/current in the same privileged inventory, then prove no future consumer or rebind only the fallback branch to code/canonical with backup. Keep existing release/scientific semantics."
+      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release."
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
@@ -510,9 +510,9 @@
     "live_trading_authorized": false
   },
   "known_external_unverified": [
-    "Existing Oracle host: Owner reports working SSH and executed fixed V2 status; full privileged V1/V2 configuration/unit/release inventory and backup are still pending. Agent has no direct SSH TCP grant.",
-    "Two automatic Oracle wakes after canonical rebinding are unverified; current healthy pre-migration status is not that proof.",
-    "GitHub administrative mutation/environment/deployment settings remain unavailable through the agent connector. Default and protections need an authenticated owner/admin execution surface."
+    "Root host inventory received and durable. Private backup, canonical compatibility, fixed status-control adaptation and ref-only migration are pending; agent still has no direct SSH TCP grant.",
+    "Two additional automatic post-rebind V2 wakes remain unproven. V1 inactivity is not absence of the installed fallback binding.",
+    "GitHub default/protection/environment/deployment settings still need an available owner/admin execution surface; repository connector has no administrative mutation capability."
   ],
   "adversarial_review": [
     "Counterexample found: Oracle V2 tip advanced during fetch with a current NOOP wake. Preserve that branch and record final exact delta; do not infer host absence from missing credentials.",
@@ -522,9 +522,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T19:02:58.290011+00:00",
-  "project_subject_before_receipt": "de18412279c33165f6fb1f0e0a14669e96ff0b2f",
-  "code_canonical_sha": "8d9a33053a834f7a4612da2b0f665bade57bc3e5",
+  "updated_utc": "2026-11-01T19:16:14.778448+00:00",
+  "project_subject_before_receipt": "748d23409d939e48aef8d2c71c6015630e932972",
+  "code_canonical_sha": "806faa691f49ffd7bed3d1fa660054ac97cfdd47",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -603,12 +603,12 @@
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Current Owner-executed V2 status reports v1_timer inactive. This proves current timer inactivity only; installed fallback configuration/ref remains uninspected. Read /etc/quant-research/worker.json, V1 unit/timer and /opt/quant-research/current in the same privileged inventory, then prove no future consumer or rebind only the fallback branch to code/canonical with backup. Keep existing release/scientific semantics.",
+      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release.",
       "sha_at_snapshot": "99f0496296a34a767dfd95a092523b10ad5fbf49"
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Owner-executed Run Command reports existing V2 timer active/enabled, service_result success and local model PASS on release a67ffec48fff895d5edc42171855e2213e49cf0d. Owner now reports successful SSH using the matching historical September key. Direct agent SSH remains unavailable under current TCP policy. Exact V2 worker.json/unit/release inventory and private rollback backup are pending; then qualify the ref-only canonical binding and require two additional automatic wakes. No rebind or retirement is yet proven.",
+      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes.",
       "sha_at_snapshot": "1800723221809180afa58f64db43a28bf4a75829"
     },
     "builder/research-os-aggressive-architecture-20261015": {
@@ -696,7 +696,7 @@
   "evidence_archive_commit": "fac556b52ff048255d987bed6a6755eab4766fd5",
   "evidence_archive_integration_commit": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
   "migration_commit": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-  "status": "IN_PROGRESS_OPERATIONAL_RESUME_HOST_INVENTORY_PENDING",
+  "status": "IN_PROGRESS_BACKUP_AND_CANONICAL_COMPATIBILITY_PENDING",
   "default_binding_commit": "fe310c0a",
   "default_preflight": {
     "scheduled_workflows": [
@@ -817,8 +817,8 @@
     "builder/oracle-economic-loop-recovery-20261019": "99f0496296a34a767dfd95a092523b10ad5fbf49",
     "builder/oracle-v2-core-20261020": "0426e1b9e735ecff442dff19ea753f905d6b0790",
     "builder/research-os-autonomous-loop-20261015": "47cb12bead9910d6fce7f30cf6408c752a713ded",
-    "code/canonical": "8d9a33053a834f7a4612da2b0f665bade57bc3e5",
-    "project/canonical": "de18412279c33165f6fb1f0e0a14669e96ff0b2f"
+    "code/canonical": "806faa691f49ffd7bed3d1fa660054ac97cfdd47",
+    "project/canonical": "748d23409d939e48aef8d2c71c6015630e932972"
   },
   "branch_count_end": 6,
   "branches_deleted_this_mission": 27,
@@ -902,7 +902,7 @@
     "independent_review_claimed": false,
     "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
   },
-  "next_action": "Owner executes the hash-verified, exact-qualified read-only host inventory in the existing SSH terminal and returns only its allowlisted JSON; prepare minimal private-backup/ref-only migration from that actual evidence.",
+  "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed.",
   "final_heads_observation_method": "Authoritative GitHub REST branches collection immediately before this operational receipt; project entry is the pre-receipt subject, not a self-referential receipt SHA. Live V2 head can advance and requires a fresh read before any deletion.",
   "final_counters": {
     "start": 33,
@@ -1041,8 +1041,8 @@
     "scheduled_operation": false,
     "new_scheduler": false,
     "new_oracle": false,
-    "next_action": "Owner executes the hash-verified, exact-qualified read-only host inventory in the existing SSH terminal and returns only its allowlisted JSON; prepare minimal private-backup/ref-only migration from that actual evidence.",
-    "host_inventory_execution_route": "Owner existing authenticated SSH terminal; reuse exact qualified helper with source SHA256 verification. GitHub job secret configuration is not a prerequisite for this route."
+    "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed.",
+    "host_inventory_execution_route": "Owner SSH route succeeded: root-only helper returned V1/V2 config identities, active releases, units/timers and the V2 live-observer drop-in."
   },
   "operational_resume": {
     "snapshot_utc": "2026-11-01T19:02:58.290011+00:00",
@@ -1069,7 +1069,7 @@
       "matches_historical_launch_public_key": true,
       "live_authentication_agent_tested": false,
       "owner_reports_ssh_working": true,
-      "root_inventory_received": false
+      "root_inventory_received": true
     },
     "run_command_access": {
       "evidence_source": "Owner-provided executed command output",
@@ -1114,6 +1114,154 @@
     "branch_retirements_this_resume": 0,
     "branch_retirement_gate": "Inventory/back up; preserve release and behavior; minimally migrate V2 and V1 fallback binding; verify two automatic post-rebind wakes; final consumer/SHA/lease checks; default role separately migrated before its retirement.",
     "counterexample": "A timer can be active and the model healthy while the config still points at an old state branch or V1 fallback can later reintroduce it.",
-    "next_action": "Owner executes the hash-verified, exact-qualified read-only host inventory in the existing SSH terminal and returns only its allowlisted JSON; prepare minimal private-backup/ref-only migration from that actual evidence."
+    "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed.",
+    "phase": "ROOT_BASELINE_RECEIVED_BACKUP_AND_COMPATIBILITY_PENDING",
+    "root_inventory": {
+      "source": "Owner-executed hash-verified 8d9a33053a834f7a4612da2b0f665bade57bc3e5 inventory helper via existing SSH; allowlisted JSON only",
+      "received_utc": "2026-11-01T19:16:14.778448+00:00",
+      "source_line_sha256": "f98a82d4c0a13c061893e8763521777e949573dac72a707492eb7acb6f9d99b2",
+      "inventory": {
+        "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+        "configs": {
+          "/etc/quant-research-v2/worker.json": {
+            "exists": true,
+            "gid": 989,
+            "mode": "0o640",
+            "settings": {
+              "branch": "builder/oracle-v2-core-20261020",
+              "cache": "/var/lib/quant-research-v2/github.git",
+              "economic_experiment_authorized": false,
+              "live_trading_authorized": false,
+              "prospective_observation_authorized": false,
+              "real_capital_authorized": false,
+              "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+              "repository": "fahimahmedb/Quant-Trade",
+              "research_contract_version": "v2-core"
+            },
+            "sha256": "5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f",
+            "uid": 0
+          },
+          "/etc/quant-research/worker.json": {
+            "exists": true,
+            "gid": 989,
+            "mode": "0o640",
+            "settings": {
+              "branch": "builder/oracle-economic-loop-recovery-20261019",
+              "cache": "/var/lib/quant-research/github.git",
+              "release_sha": "f3943830e20b05d926d3013501573b8b21fdace7",
+              "repository": "fahimahmedb/Quant-Trade"
+            },
+            "sha256": "766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea",
+            "uid": 0
+          }
+        },
+        "fallback_absence_proven": false,
+        "host_mutations": 0,
+        "next_action": "Review exact inventory, save private rollback copies, qualify ref-only change, then observe two automatic post-rebind wakes. No host mutation is implemented by this inventory job.",
+        "operation": "READ_ONLY_HOST_INVENTORY",
+        "releases": {
+          "/opt/quant-research-v2/current": {
+            "exists": true,
+            "identity": {
+              "path": "/opt/quant-research/releases/a67ffec48fff895d5edc42171855e2213e49cf0d",
+              "sha": "a67ffec48fff895d5edc42171855e2213e49cf0d"
+            },
+            "receipt_sha256": "7122c75ab97aec0a5967886ddc7018e81faab0cad51ca67e19a4693dbf987a6f",
+            "resolved_path": "/opt/quant-research/releases/a67ffec48fff895d5edc42171855e2213e49cf0d"
+          },
+          "/opt/quant-research/current": {
+            "exists": true,
+            "identity": {
+              "path": "/opt/quant-research/releases/f3943830e20b05d926d3013501573b8b21fdace7",
+              "sha": "f3943830e20b05d926d3013501573b8b21fdace7"
+            },
+            "receipt_sha256": "9a13f8bbdbcd00add62b1e576023005350e46fd72c48d4bde217067b47844f69",
+            "resolved_path": "/opt/quant-research/releases/f3943830e20b05d926d3013501573b8b21fdace7"
+          }
+        },
+        "units": {
+          "quant-research-worker-v2.service": {
+            "ActiveState": "inactive",
+            "DropInPaths": "/etc/systemd/system/quant-research-worker-v2.service.d/50-native-live.conf",
+            "ExecMainStatus": "0",
+            "FragmentPath": "/etc/systemd/system/quant-research-worker-v2.service",
+            "InvocationID": "d403beff35fb4f458ec782be964ea2ce",
+            "Result": "success",
+            "SubState": "dead",
+            "UnitFileState": "static",
+            "WorkingDirectory": "/opt/quant-research-v2/current",
+            "configured_worker_paths": [
+              "/etc/quant-research-v2/worker.json"
+            ],
+            "entrypoint_markers": [],
+            "query_exit": 0
+          },
+          "quant-research-worker-v2.timer": {
+            "ActiveState": "active",
+            "DropInPaths": "",
+            "FragmentPath": "/etc/systemd/system/quant-research-worker-v2.timer",
+            "InvocationID": "195420e3009e4cd6acb1ed7a97bd95a8",
+            "LastTriggerUSec": "Sun 2026-11-01 19:00:11 UTC",
+            "NextElapseUSecRealtime": "Sun 2026-11-01 19:10:05 UTC",
+            "Result": "success",
+            "SubState": "waiting",
+            "UnitFileState": "enabled",
+            "configured_worker_paths": [],
+            "entrypoint_markers": [],
+            "query_exit": 0
+          },
+          "quant-research-worker.service": {
+            "ActiveState": "inactive",
+            "DropInPaths": "",
+            "ExecMainStatus": "0",
+            "FragmentPath": "/etc/systemd/system/quant-research-worker.service",
+            "InvocationID": "",
+            "Result": "success",
+            "SubState": "dead",
+            "UnitFileState": "static",
+            "WorkingDirectory": "/opt/quant-research/current",
+            "configured_worker_paths": [
+              "/etc/quant-research/worker.json"
+            ],
+            "entrypoint_markers": [
+              "research.research_os.oracle_worker"
+            ],
+            "query_exit": 0
+          },
+          "quant-research-worker.timer": {
+            "ActiveState": "inactive",
+            "DropInPaths": "",
+            "FragmentPath": "/etc/systemd/system/quant-research-worker.timer",
+            "InvocationID": "",
+            "LastTriggerUSec": "",
+            "NextElapseUSecRealtime": "",
+            "Result": "success",
+            "SubState": "dead",
+            "UnitFileState": "disabled",
+            "configured_worker_paths": [],
+            "entrypoint_markers": [],
+            "query_exit": 0
+          }
+        }
+      }
+    },
+    "minimal_control_counterexample": {
+      "source": "a67 exact historical source deploy/oracle_v2_deploy.py validate_config; deployed module SHA256 will be checked by preflight",
+      "old_branch_literal_check": true,
+      "effect": "Simply changing V2 worker.json branch would make the existing fixed quant-v2-status fail its old branch validation. Normal worker/observer read config.branch. Preserve immutable release; migrate only fixed status-control validation plumbing before final ref rebinding. Do not execute qualify/activate or restart model/timer as a workaround.",
+      "investigation_scope": "Exact active A67 worker/store/control and C564 observer entrypoint only; no global archaeology."
+    },
+    "backup_and_compatibility_helper": {
+      "path": "scripts/quant_host_rebind_preflight.py",
+      "code_sha": "806faa691f49ffd7bed3d1fa660054ac97cfdd47",
+      "sha256": "046b4c2d663868923d676e71418bcdfc2498a604bd5a94a571fd5280ff288331",
+      "local_tests": "18/18 operational guards PASS, including 7 new preflight checks",
+      "canonical_ci_run": 41340693995,
+      "canonical_ci_status": "completed",
+      "canonical_ci_conclusion": "success",
+      "host_executed": false,
+      "effect": "Checks inventoried config/release/source identity, makes private root-only rollback copies with original ownership/mode metadata, probes V1/V2 canonical snapshots with no remote writes/inference; binding/unit/release/timer/model unchanged. Active V2 tasks must be identical and canonical queue unclaimed/idle.",
+      "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed."
+    }
   }
 }
