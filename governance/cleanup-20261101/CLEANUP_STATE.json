@@ -1,4 +1,25 @@
 {
+  "schema_version": 1,
+  "mission": "DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP",
+  "status": "COMPLETE_WITH_POST_SNAPSHOT_DELTA_RECONCILED",
+  "snapshot_timestamp": "2026-11-01T13:39:34.460914+00:00",
+  "project_canonical_sha_at_classification": "966ba64775520fb37c28f9f06eb6366b5e835e26",
+  "project_canonical_sha_before_delta_receipt_commit": "ae9f2ed8d81b158adb9405a7c3366d55054d8684",
+  "code_canonical_sha_at_classification": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+  "code_canonical_sha_at_delta_reconciliation": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+  "auditor_sha_at_last_reconcile": "f9f5bcfc7bef96e42196693a62ef159a592e427b",
+  "default_branch": "blue/master-v2-2026-09-20",
+  "total_remote_branches_at_start": 279,
+  "total_remote_branches_after_cleanup_run": 32,
+  "total_remote_branches_after_post_snapshot_delta": 33,
+  "total_distinct_branch_refs_seen_during_mission": 280,
+  "exact_tip_groups_at_snapshot": 7,
+  "deleted_count": 247,
+  "current_batch": 7,
+  "batch_total": 7,
+  "last_deleted_ref": "ux/intake-20261015",
+  "next_batch": null,
+  "owner_authorized_delete_proven_safe": true,
   "active_protected_refs": [
     "project/canonical",
     "code/canonical",
@@ -6,28 +27,31 @@
     "builder/research-os-autonomous-loop-20261015",
     "blue/master-v2-2026-09-20"
   ],
-  "auditor_sha_at_last_reconcile": "f9f5bcfc7bef96e42196693a62ef159a592e427b",
-  "batch_total": 7,
-  "code_canonical_sha_at_classification": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
-  "counts_by_final_disposition": {
-    "DELETED": 247,
+  "counts_by_current_final_disposition": {
+    "DELETED_DURING_MISSION": 247,
     "KEEP_ACTIVE": 19,
+    "KEEP_EVIDENCE": 1,
     "PARK": 13
   },
-  "current_batch": 7,
+  "post_snapshot_delta_refs": [
+    {
+      "branch": "audit/independent-meta-audit-20261101",
+      "tip_sha": "0881c2b765837d8f833fb7b2567dab7ac3cca081",
+      "observed_after_cleanup_snapshot": true,
+      "unique_commits_vs_project_canonical": 1,
+      "reachable_from_project_canonical": false,
+      "mission_status": "COMPLETE_BOUNDED_EVIDENCE_SCOPE",
+      "classification": "KEEP_EVIDENCE",
+      "reason": "Completed independent meta-audit contains six unique durable audit artifacts and is not reachable from project/canonical. Do not delete until those exact evidence bytes/provenance are durably represented by retained authority or an equivalent archive."
+    }
+  ],
   "current_true_blockers": [],
-  "default_branch": "blue/master-v2-2026-09-20",
-  "deleted_count": 247,
-  "exact_tip_groups": 7,
-  "final": true,
-  "last_deleted_ref": "ux/intake-20261015",
-  "mission": "DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP",
-  "next_batch": null,
-  "owner_authorized_delete_proven_safe": true,
-  "project_canonical_sha_at_classification": "966ba64775520fb37c28f9f06eb6366b5e835e26",
-  "recovery_basis": "Exact pre-cleanup tips recorded in governance/BRANCH_RETIREMENT_RECEIPT.json and old snapshot tips already attached as reachable parents of project/canonical. New or changed unreachable tips are not deleted.",
-  "schema_version": 1,
-  "snapshot_timestamp": "2026-11-01T13:39:34.460914+00:00",
-  "status": "COMPLETE",
-  "total_remote_branches_at_start": 279
+  "recovery_basis": "All 247 deleted refs had exact current tips re-read immediately before deletion and were reachable from retained authority history. Deletion used server-side force-with-lease. Pre-cleanup identities remain recorded in governance/BRANCH_RETIREMENT_RECEIPT.json. Post-snapshot unique evidence is retained rather than deleted.",
+  "delta_reconciliation": {
+    "performed": true,
+    "full_cleanup_rerun": false,
+    "new_ref_count": 1,
+    "result": "NO_CHANGE_TO_247_DELETIONS; NEW_META_AUDIT_REF_CLASSIFIED_KEEP_EVIDENCE"
+  },
+  "final": true
 }
