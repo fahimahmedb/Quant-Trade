@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "status": "SEMANTIC_READING_ACTIVE",
+  "decision_relevant_forensic_status": "CLOSED_DO_NOT_REOPEN_WITHOUT_CONTRADICTION",
+  "collection_status": {
+    "raw_inventory": "COLLECTED",
+    "durable_archives": "VERIFIED",
+    "archive_checkpoint_sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
+    "full_git_mirror_equivalence": "NOT_PROVEN",
+    "local_git_mirror_this_session": "BLOCK_ENVIRONMENT_DNS_RESOLUTION"
+  },
+  "denominators": {
+    "branches": 275,
+    "commits": 6393,
+    "file_blob_versions": 17221,
+    "document_blobs": 6465,
+    "discussion_objects": 423,
+    "timeline_events": 1775,
+    "unique_runs": 4806
+  },
+  "baseline_semantic_coverage": {
+    "document_blobs_read": 52,
+    "discussion_objects_read": 7,
+    "semantic_review_complete": false
+  },
+  "incremental_semantic_coverage": {
+    "batches_complete": 1,
+    "new_discussion_objects_directly_read": 6,
+    "new_discussion_objects_byte_identical_to_read": 2,
+    "new_discussion_objects_semantically_disposed": 8,
+    "estimated_discussion_objects_directly_read_total": 13,
+    "estimated_discussion_objects_semantically_disposed_total": 15,
+    "document_blobs_directly_read_delta": 0
+  },
+  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_001_20261101.json",
+  "next_cursor": {
+    "source": "governance/forensic-20261031/discussion-coverage.csv",
+    "kind": "issue-comments",
+    "id": 5750320891,
+    "sha256": "443514bcab53d213417dd5c8432cdbff5ede695ea789a54817c63c3c9d0865e9"
+  },
+  "resume_law": [
+    "Do not restart raw inventory or decision-relevant chronology.",
+    "Continue from next_cursor in discussion-coverage.csv.",
+    "A semantic object is complete only as READ, BYTE_IDENTICAL_TO_READ_OBJECT, or explicitly UNAVAILABLE with proof.",
+    "Deduplicate only by exact collected sha256.",
+    "Keep historical review findings separate from current project authority.",
+    "Do not mutate product/runtime during exhaustive reading."
+  ]
+}
