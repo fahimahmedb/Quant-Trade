@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Executable guardrails for the Quant-Trade two-branch AI working method.
+"""Executable guardrails for the Quant-Trade canonical AI working method.
 
-This validator is deliberately small. It does not decide scientific truth or runtime truth.
-It catches the recurring process failures already observed in the project: stale authority,
-local-only PASS, wrong-SHA qualification, unnecessary rebuild/review, WIP expansion,
-missing continuation, and post-migration branch sprawl.
+The validator covers both the declarative method contract and the real mission
+admission/completion interface. It deliberately does not decide scientific or
+runtime truth; it verifies identity, freshness, bounded authority and durable
+handoff invariants that can be checked mechanically.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping
+from typing import Any, Dict, Iterable, List, Mapping, Sequence
 
 
 class ContractError(ValueError):
@@ -26,6 +27,11 @@ def load_json(path: str | Path) -> Dict[str, Any]:
     if not isinstance(data, dict):
         raise ContractError(f"{path}: expected JSON object")
     return data
+
+
+def canonical_json_identity(value: Mapping[str, Any]) -> str:
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return "sha256:" + hashlib.sha256(payload).hexdigest()
 
 
 def validate_contract(contract: Mapping[str, Any]) -> List[str]:
@@ -95,6 +101,37 @@ def validate_contract(contract: Mapping[str, Any]) -> List[str]:
     if set(contract.get("post_migration_remote_branches", [])) != expected_branches:
         errors.append("post-migration branches must be exactly project/canonical and code/canonical")
 
+    admission = contract.get("mission_admission", {})
+    if admission:
+        if admission.get("receipt_path") != ".quant/MISSION_ADMISSION.json":
+            errors.append("mission_admission.receipt_path must be .quant/MISSION_ADMISSION.json")
+        if admission.get("material_change_exempt_prefixes") != ["data/feeds/"]:
+            errors.append("mission_admission.material_change_exempt_prefixes must be exactly ['data/feeds/']")
+        required = admission.get("required_fields", [])
+        for field in (
+            "mission_id",
+            "mission_kind",
+            "receipt_timestamp",
+            "project_canonical_sha",
+            "code_canonical_sha",
+            "current_router_identity",
+            "current_subject",
+            "current_blocker_or_decision",
+            "target_gate_or_blocker",
+            "existing_capability",
+            "why_this_work_can_change_the_decision",
+            "minimal_decisive_test",
+            "counterexample",
+            "durable_output_required",
+            "next_action_after_pass_fail_block",
+            "owner_authorization_required",
+            "active_seam",
+            "active_decision_lanes",
+            "mutating_builders_on_seam",
+            "requested_action",
+        ):
+            if field not in required:
+                errors.append(f"mission_admission.required_fields missing {field}")
     return errors
 
 
@@ -170,6 +207,150 @@ def evaluate_mission(contract: Mapping[str, Any], mission: Mapping[str, Any]) ->
     return "ADMIT"
 
 
+def _missing(value: Any) -> bool:
+    return value is None or value == "" or value == [] or value == {}
+
+
+def admission_required_fields(contract: Mapping[str, Any]) -> Sequence[str]:
+    configured = contract.get("mission_admission", {}).get("required_fields")
+    if configured:
+        return configured
+    return (
+        "mission_id",
+        "mission_kind",
+        "receipt_timestamp",
+        "project_canonical_sha",
+        "code_canonical_sha",
+        "current_router_identity",
+        "current_subject",
+        "current_blocker_or_decision",
+        "target_gate_or_blocker",
+        "existing_capability",
+        "why_this_work_can_change_the_decision",
+        "minimal_decisive_test",
+        "counterexample",
+        "durable_output_required",
+        "next_action_after_pass_fail_block",
+        "owner_authorization_required",
+        "active_seam",
+        "active_decision_lanes",
+        "mutating_builders_on_seam",
+        "requested_action",
+    )
+
+
+def validate_real_mission_admission(
+    contract: Mapping[str, Any],
+    admission: Mapping[str, Any],
+    *,
+    current_project_sha: str,
+    current_code_sha: str,
+    current_router_identity: str,
+    expected_mission_id: str | None = None,
+) -> List[str]:
+    errors: List[str] = []
+    for field in admission_required_fields(contract):
+        if field not in admission or _missing(admission[field]):
+            errors.append(f"MISSING_{field.upper()}")
+
+    if errors:
+        return errors
+
+    if admission.get("project_canonical_sha") != current_project_sha:
+        errors.append("STALE_PROJECT_SHA")
+    if admission.get("code_canonical_sha") != current_code_sha:
+        errors.append("STALE_CODE_SHA")
+    if admission.get("current_router_identity") != current_router_identity:
+        errors.append("STALE_ROUTER_IDENTITY")
+    if expected_mission_id is not None and admission.get("mission_id") != expected_mission_id:
+        errors.append("COPIED_RECEIPT_MISSION_MISMATCH")
+
+    subject = admission.get("current_subject")
+    if not isinstance(subject, Mapping):
+        errors.append("MISSING_EXACT_SUBJECT")
+    else:
+        if subject.get("project_sha") != current_project_sha or subject.get("code_sha") != current_code_sha:
+            errors.append("MISSING_EXACT_SUBJECT")
+
+    if not admission.get("current_blocker_or_decision"):
+        errors.append("MISSING_BLOCKER_OR_DECISION")
+    if not admission.get("next_action_after_pass_fail_block"):
+        errors.append("MISSING_NEXT_ACTION")
+
+    existing = admission.get("existing_capability")
+    if existing not in {"REUSE", "CONNECT", "REPAIR", "BUILD_REQUIRED", "UNKNOWN"}:
+        errors.append("INVALID_EXISTING_CAPABILITY")
+    if admission.get("requested_action") in {"BUILD", "BUILD_REQUIRED"} and existing in {"REUSE", "CONNECT", "REPAIR"}:
+        errors.append("BUILD_WHEN_REUSE_CONNECT_REPAIR_EXISTS")
+
+    max_lanes = int(contract.get("concurrency", {}).get("max_active_decision_lanes", 2))
+    if int(admission.get("active_decision_lanes", 0)) > max_lanes:
+        errors.append("WIP_LIMIT_VIOLATION")
+    max_builders = int(contract.get("concurrency", {}).get("max_mutating_builders_per_capability", 1))
+    if int(admission.get("mutating_builders_on_seam", 0)) > max_builders:
+        errors.append("CONCURRENT_SAME_SEAM_BUILDERS")
+
+    if admission.get("mission_kind") == "REVIEW":
+        decision_changing_inputs = (
+            admission.get("new_exact_subject", False),
+            admission.get("new_evidence", False),
+            admission.get("new_counterexample_class", False),
+            admission.get("new_primary_object", False),
+            admission.get("irreversible_boundary", False),
+        )
+        if not any(decision_changing_inputs):
+            errors.append("REVIEW_WITHOUT_NEW_SUBJECT_EVIDENCE_COUNTEREXAMPLE_OR_IRREVERSIBLE_BOUNDARY")
+
+    if admission.get("local_blocker", False) and admission.get("global_stop_requested", False):
+        if admission.get("independent_lane_available", False):
+            errors.append("LOCAL_BLOCKER_CAUSING_UNJUSTIFIED_GLOBAL_STOP")
+
+    if admission.get("owner_authorization_required", False) and not admission.get("owner_authorized", False):
+        errors.append("OWNER_AUTHORITY_REQUIRED_BUT_MISSING")
+
+    return errors
+
+
+def validate_completion_binding(
+    contract: Mapping[str, Any],
+    admission: Mapping[str, Any],
+    completion: Mapping[str, Any],
+    *,
+    current_project_sha: str,
+    current_code_sha: str,
+) -> List[str]:
+    errors: List[str] = []
+    identity = canonical_json_identity(admission)
+    if completion.get("admission_identity") != identity:
+        errors.append("ADMISSION_IDENTITY_MISMATCH")
+    if completion.get("mission_id") != admission.get("mission_id"):
+        errors.append("COPIED_RECEIPT_MISSION_MISMATCH")
+    if completion.get("subject_sha") != current_code_sha:
+        errors.append("WRONG_SHA_SUBJECT")
+    if completion.get("tested_sha") != current_code_sha:
+        errors.append("WRONG_SHA_QUALIFICATION")
+    if completion.get("project_sha") != current_project_sha:
+        errors.append("STALE_PROJECT_SHA")
+    if completion.get("claim") == "PASS" and not completion.get("durable_remote_output", False):
+        errors.append("LOCAL_ONLY_PASS")
+    if not completion.get("next_action"):
+        errors.append("MISSING_NEXT_ACTION")
+
+    if completion.get("claim") == contract.get("finish_claim", "QUANT_SYSTEM_V1_FINISHED"):
+        gates = completion.get("finish_gate_statuses", {})
+        if project_finish_status(contract, gates) != contract.get("finish_claim"):
+            errors.append("FALSE_FINISH_WITH_OPEN_BLOCK_UNKNOWN_GATE")
+    return errors
+
+
+def material_change_requires_admission(paths: Iterable[str], contract: Mapping[str, Any]) -> bool:
+    normalized = [path.strip() for path in paths if path and path.strip()]
+    if not normalized:
+        return False
+    exempt = tuple(contract.get("mission_admission", {}).get("material_change_exempt_prefixes", ["data/feeds/"]))
+    return any(not any(path.startswith(prefix) for prefix in exempt) for path in normalized)
+
+
 def validate_checkpoint(contract: Mapping[str, Any], checkpoint: Mapping[str, Any]) -> List[str]:
     errors: List[str] = []
     for field in contract.get("checkpoint_required_fields", []):
@@ -206,6 +387,13 @@ def _main(argv: List[str]) -> int:
     parser.add_argument("contract")
     parser.add_argument("agents")
     parser.add_argument("--branches-file")
+    parser.add_argument("--admission")
+    parser.add_argument("--completion")
+    parser.add_argument("--current-project-sha")
+    parser.add_argument("--current-code-sha")
+    parser.add_argument("--current-router-identity")
+    parser.add_argument("--completion-code-sha")
+    parser.add_argument("--expected-mission-id")
     args = parser.parse_args(argv)
 
     contract = load_json(args.contract)
@@ -217,10 +405,54 @@ def _main(argv: List[str]) -> int:
         branches = Path(args.branches_file).read_text(encoding="utf-8").splitlines()
         errors.extend(validate_remote_branches(contract, branches))
 
+    admission: Dict[str, Any] | None = None
+    if args.admission:
+        required_cli = {
+            "--current-project-sha": args.current_project_sha,
+            "--current-code-sha": args.current_code_sha,
+            "--current-router-identity": args.current_router_identity,
+        }
+        for flag, value in required_cli.items():
+            if not value:
+                errors.append(f"{flag} required with --admission")
+        if not errors:
+            admission = load_json(args.admission)
+            errors.extend(
+                validate_real_mission_admission(
+                    contract,
+                    admission,
+                    current_project_sha=args.current_project_sha,
+                    current_code_sha=args.current_code_sha,
+                    current_router_identity=args.current_router_identity,
+                    expected_mission_id=args.expected_mission_id,
+                )
+            )
+
+    if args.completion:
+        if admission is None:
+            errors.append("--completion requires --admission")
+        elif not args.current_project_sha or not args.current_code_sha:
+            errors.append("--completion requires current project/code SHAs")
+        else:
+            completion = load_json(args.completion)
+            errors.extend(
+                validate_completion_binding(
+                    contract,
+                    admission,
+                    completion,
+                    current_project_sha=args.current_project_sha,
+                    current_code_sha=args.completion_code_sha or args.current_code_sha,
+                )
+            )
+
     if errors:
         for error in errors:
             print(f"FAIL: {error}")
         return 1
+
+    if admission is not None:
+        print(f"MISSION_ADMISSION_IDENTITY={canonical_json_identity(admission)}")
+        print("REAL_MISSION_ADMISSION=PASS")
     print("AI_WORKING_METHOD_GATE=PASS")
     return 0
 

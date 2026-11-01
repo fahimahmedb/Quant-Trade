@@ -19,21 +19,35 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Verify exact code subject
+      - name: Verify exact code subject and resolve admitted base
+        shell: bash
         run: |
+          set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          BEFORE_SHA="${{ github.event.before }}"
+          if [ -z "$BEFORE_SHA" ] || printf '%s' "$BEFORE_SHA" | grep -Eq '^0+$'; then
+            BEFORE_SHA="$(git rev-parse "$GITHUB_SHA^" 2>/dev/null || true)"
+          fi
+          test -n "$BEFORE_SHA"
           echo "CODE_SUBJECT_SHA=$GITHUB_SHA"
+          echo "ADMITTED_CODE_BASE_SHA=$BEFORE_SHA" >> "$GITHUB_ENV"
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Fetch canonical project contract and record identity
+      - name: Fetch canonical project contract and router identity
+        shell: bash
         run: |
+          set -euo pipefail
           git fetch --no-tags origin project/canonical
           PROJECT_CONTRACT_SHA="$(git rev-parse FETCH_HEAD)"
+          ROUTER_BLOB_SHA="$(git rev-parse "$PROJECT_CONTRACT_SHA:governance/CURRENT_PROJECT_STATE.md")"
+          ROUTER_IDENTITY="governance/CURRENT_PROJECT_STATE.md@$ROUTER_BLOB_SHA"
           echo "PROJECT_CONTRACT_SHA=$PROJECT_CONTRACT_SHA"
+          echo "PROJECT_CONTRACT_SHA=$PROJECT_CONTRACT_SHA" >> "$GITHUB_ENV"
+          echo "ROUTER_IDENTITY=$ROUTER_IDENTITY" >> "$GITHUB_ENV"
           git show "$PROJECT_CONTRACT_SHA":governance/AI_WORKING_METHOD_V1.json > /tmp/AI_WORKING_METHOD_V1.json
 
       - name: Snapshot remote branch names
@@ -41,6 +55,42 @@ jobs:
           git ls-remote --heads origin \
             | awk '{sub("refs/heads/", "", $2); print $2}' \
             | sort > /tmp/remote-branches.txt
+
+      - name: Classify material AI change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "$ADMITTED_CODE_BASE_SHA" "$GITHUB_SHA" > /tmp/changed-files.txt
+          python - <<'PY' >> "$GITHUB_ENV"
+          import json
+          from pathlib import Path
+          from scripts.validate_ai_working_method import material_change_requires_admission
+          contract = json.loads(Path('/tmp/AI_WORKING_METHOD_V1.json').read_text())
+          paths = Path('/tmp/changed-files.txt').read_text().splitlines()
+          print('MATERIAL_AI_CHANGE=' + ('true' if material_change_requires_admission(paths, contract) else 'false'))
+          PY
+          cat /tmp/changed-files.txt
+
+      - name: Require fresh real mission admission for material AI change
+        if: env.MATERIAL_AI_CHANGE == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fx '.quant/MISSION_ADMISSION.json' /tmp/changed-files.txt >/dev/null || {
+            echo 'FAIL: material AI change did not update .quant/MISSION_ADMISSION.json'; exit 1;
+          }
+          MISSION_ID="$(git show -s --format=%B "$GITHUB_SHA" | sed -n 's/^Mission-ID:[[:space:]]*//p' | tail -1)"
+          test -n "$MISSION_ID" || { echo 'FAIL: missing Mission-ID commit trailer'; exit 1; }
+          echo "EXPECTED_MISSION_ID=$MISSION_ID" >> "$GITHUB_ENV"
+          python scripts/validate_ai_working_method.py \
+            /tmp/AI_WORKING_METHOD_V1.json \
+            AGENTS.md \
+            --branches-file /tmp/remote-branches.txt \
+            --admission .quant/MISSION_ADMISSION.json \
+            --current-project-sha "$PROJECT_CONTRACT_SHA" \
+            --current-code-sha "$ADMITTED_CODE_BASE_SHA" \
+            --current-router-identity "$ROUTER_IDENTITY" \
+            --expected-mission-id "$MISSION_ID"
 
       - name: Validate machine contract and all active code AI entrypoints
         run: |
@@ -56,3 +106,38 @@ jobs:
 
       - name: Run anti-regression tests
         run: python -m pytest -q tests/test_ai_working_method.py
+
+      - name: Bind exact-SHA completion to admission
+        if: env.MATERIAL_AI_CHANGE == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from scripts.validate_ai_working_method import canonical_json_identity
+          admission = json.loads(Path('.quant/MISSION_ADMISSION.json').read_text())
+          completion = {
+              'mission_id': admission['mission_id'],
+              'admission_identity': canonical_json_identity(admission),
+              'project_sha': os.environ['PROJECT_CONTRACT_SHA'],
+              'subject_sha': os.environ['GITHUB_SHA'],
+              'tested_sha': os.environ['GITHUB_SHA'],
+              'claim': 'PASS',
+              'durable_remote_output': True,
+              'next_action': admission['next_action_after_pass_fail_block'],
+          }
+          Path('/tmp/mission-completion.json').write_text(json.dumps(completion, indent=2) + '\n')
+          PY
+          python scripts/validate_ai_working_method.py \
+            /tmp/AI_WORKING_METHOD_V1.json \
+            AGENTS.md \
+            --branches-file /tmp/remote-branches.txt \
+            --admission .quant/MISSION_ADMISSION.json \
+            --completion /tmp/mission-completion.json \
+            --current-project-sha "$PROJECT_CONTRACT_SHA" \
+            --current-code-sha "$ADMITTED_CODE_BASE_SHA" \
+            --completion-code-sha "$GITHUB_SHA" \
+            --current-router-identity "$ROUTER_IDENTITY" \
+            --expected-mission-id "$EXPECTED_MISSION_ID"

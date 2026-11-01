@@ -1,0 +1,27 @@
+{
+  "mission_id": "METHOD_ENFORCEMENT_SEAM_2026-11-02_0044_CET",
+  "mission_kind": "BUILDER",
+  "receipt_timestamp": "2026-11-02T00:44:00+01:00",
+  "project_canonical_sha": "4e3eb58c939d1c738b74794ab1e86500a04268e1",
+  "code_canonical_sha": "a9876c732cb88bd4383aacc433d0d2cba2feaeb5",
+  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@7f703c1b5e956fe0a4879faa8e8751460f55f94b",
+  "current_subject": {
+    "project_sha": "4e3eb58c939d1c738b74794ab1e86500a04268e1",
+    "code_sha": "a9876c732cb88bd4383aacc433d0d2cba2feaeb5",
+    "object": "AI_WORKING_METHOD_V1 real mission enforcement seam"
+  },
+  "current_blocker_or_decision": "METHOD_REAL_AGENT_ENFORCEMENT=NOT_PROVEN; F1_RECOVERABLE_CANONICAL_STATE=NOT_PROVEN_BEHAVIORALLY",
+  "target_gate_or_blocker": "F1_RECOVERABLE_CANONICAL_STATE / METHOD_REAL_AGENT_ENFORCEMENT",
+  "existing_capability": "REPAIR",
+  "why_this_work_can_change_the_decision": "Connect the existing method contract and validator to a fresh real-mission receipt and exact-SHA completion binding instead of synthetic fixtures only.",
+  "minimal_decisive_test": "A material code mission requires a changed real receipt bound to fresh project/code/router identity; stale, copied, wrong-SHA, unnecessary-build, duplicate-review, local-only, missing-next-action, false-finish and concurrent-seam cases are rejected.",
+  "counterexample": "A material AI can still push and obtain authoritative PASS without a fresh receipt or can reuse a stale/copied receipt after either canonical head moves.",
+  "durable_output_required": "Published validator/tests/workflow plus exact remote code SHA, exact-SHA CI, and canonical project status/claim ceiling.",
+  "next_action_after_pass_fail_block": "Run a genuinely fresh-agent repository-only recovery test; if unavailable, record F1_BEHAVIORAL_RECOVERY=BLOCK_ENVIRONMENT_FRESH_AGENT_UNAVAILABLE and stop this seam.",
+  "owner_authorization_required": false,
+  "owner_authorized": true,
+  "active_seam": "AI_WORKING_METHOD_ENFORCEMENT",
+  "active_decision_lanes": 1,
+  "mutating_builders_on_seam": 1,
+  "requested_action": "REPAIR"
+}
