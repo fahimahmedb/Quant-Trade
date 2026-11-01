@@ -25,24 +25,20 @@
   "discussion_phase": {
     "status": "COMPLETE_423_OF_423",
     "closure_receipt": "governance/forensic-20261031/exhaustive/DISCUSSION_SEMANTIC_CLOSURE_20261101.json",
-    "last_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json",
-    "last_ledger_object": {"kind":"reviews","id":5718871390,"sha256":"9cfb6329142e00d483f894a3258cd45a816ee30f768af504b752cd375f8bd6c6"}
+    "last_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json"
   },
   "document_phase": {
     "status": "ACTIVE",
     "index_path": "governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv",
     "index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
-    "index_extraction_receipt": "governance/forensic-20261031/exhaustive/DOCUMENT_INDEX_EXTRACTION_RECEIPT.json",
-    "bundle_generation_run_0001": 41317167703,
-    "bundle_generation_run_0001_result": "SUCCESS",
     "baseline_read_blobs": 52,
-    "new_document_blobs_read": 20,
-    "document_blobs_disposed": 72,
+    "new_document_blobs_read": 40,
+    "document_blobs_disposed": 92,
     "document_blob_denominator": 6465,
-    "latest_bundle": "governance/forensic-20261031/exhaustive/documents/DOC_BUNDLE_0001.md",
-    "latest_read_batch": "governance/forensic-20261031/exhaustive/documents/DOC_READ_BATCH_0001_20261101.json",
+    "latest_bundle": "governance/forensic-20261031/exhaustive/documents/DOC_BUNDLE_0002.md",
+    "latest_read_batch": "governance/forensic-20261031/exhaustive/documents/DOC_READ_BATCH_0002_20261101.json",
     "reading_method": "HASH_FIRST_VERSION_FAMILY_FIRST_BUNDLED_FULL_CONTENT_OR_EXPLICIT_BINARY_UNAVAILABLE",
-    "next_cursor": "GENERATE_DOC_BUNDLE_0002"
+    "next_cursor": "GENERATE_DOC_BUNDLE_0003"
   },
   "resume_law": [
     "Do not restart raw inventory, discussion reading, or decision-relevant chronology.",
