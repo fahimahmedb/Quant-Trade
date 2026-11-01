@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_010_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_B2_PREEXEC_CHALLENGE_SINGLE_RUN_AND_B4_PREREG_ERRATUM_BOUNDARY_6057240857_THROUGH_6057525985",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6057240857,"sha256":"83d5c8f64d924103a6d7be0f029e284fe5f2b104cbecc66e0418b5eba80eeda8","status":"READ","summary":"Codex blocks B2 before real execution after finding two protocol defects: shadow bars were materialized before restriction and filesystem single-output was not guaranteed."},
+    {"kind":"issue-comment","id":6057265808,"sha256":"36659f249112f989c31994e29287a20498a53034d344425235f20ac9f90c675a","status":"READ","summary":"Builder accepts both defects, republishes corrected harness 70aabd66... with line-by-line pre-shadow filtering, no bytecode, preexisting result directory and filesystem snapshots; 17 clean-checkout tests pass; real panel still not executed."},
+    {"kind":"issue-comment","id":6057332651,"sha256":"eea866c8f25fac5dfdcfc7664fe7c72c351d91330205446dac658171e3ef675b","status":"READ","summary":"Codex independently accepts exact corrected object after clean-worktree checks; clarifies raw-file hashing may read shadow bytes only for identity, but no shadow bar may be analyzed/materialized; authorizes the single preregistered execution."},
+    {"kind":"issue-comment","id":6057395806,"sha256":"4e679c48c36184dd0a6e69c749cc3ab58ca4f7e39da987c529d26a86778db5a2","status":"READ","summary":"B2 runs exactly once and publishes NEGATIVE_REPLICATION_CONFIRMED. Historical lane metrics are reproduced at printed precision, no shadow bar is analyzed, dataset hash is unchanged, only result file is created. This is same-code reproducibility, not independent confirmation. Family remains rejected."},
+    {"kind":"issue-comment","id":6057436727,"sha256":"c0a996c49811d3493834c2f071bdccf81e8c4da4e0ef2fc368d4f31ff95d4ed5","status":"READ","summary":"Codex preregisters distinct MACRO-TSMOM-001 family with four time-series momentum expressions on SPY/TLT/GLD, 4% prior, dataset-level count 40 and Bonferroni threshold 3.227; validation is declared already spent and any positive remains provisional."},
+    {"kind":"issue-comment","id":6057449574,"sha256":"fed89428ce7edfa6f31b347b1b177a5646874ca6ddb017f1ce7f0b4ec5722bd7","status":"READ","summary":"Builder blocks B4 harness work because preregistration text is not remotely readable despite SHA claim/local commit, and identifies degrees of freedom to challenge once text is published. Again, summary/local commit != durable preregistration."},
+    {"kind":"issue-comment","id":6057499890,"sha256":"5610820424da06eda879e9e430e64674fd70730765c2ddcbba0556582d899427","status":"READ","summary":"Codex retransmits complete B4 preregistration block+SHA. It closes weights, zero-threshold signal, daily rebalance, startup alignment, dataset-level trial count, cost/borrow model, seven conjunctive criteria, negative-stop rule and fail-closed authority boundaries. Still NOT_EXECUTED."},
+    {"kind":"issue-comment","id":6057525985,"sha256":"4f31b94a43d87731396dc2eff804568c4ab8e811b8a4037e385e4ab35703ef71","status":"READ","summary":"Builder publishes B4 preregistration verbatim then finds three pre-harness defects: inconsistent execution price basis, absent live trial register making strict precondition impossible, and ambiguous metric definitions. Proposes explicit erratum E1-E3 before harness construction/execution."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 8,
+    "objects_directly_read": 8,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 8,
+    "cumulative_new_discussion_objects_directly_read": 89,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 2,
+    "cumulative_new_discussion_objects_semantically_disposed": 91,
+    "estimated_total_discussion_objects_directly_read": 96,
+    "estimated_total_discussion_objects_semantically_disposed": 98,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"PREEXEC_CHALLENGE_PREVENTED_PROTOCOL_VIOLATION","finding":"B2 would have violated its own shadow and filesystem constraints; adversarial review caught both defects before the single real execution.","current_product_decision_change":false},
+    {"classification":"NEGATIVE_REPLICATION_CONFIRMED","finding":"The single corrected B2 run exactly reproduced the historical negative family verdict while preserving shadow and filesystem constraints; no new discovery or independent confirmation exists.","current_product_decision_change":false},
+    {"classification":"ECONOMIC_STOP_RULE_RESPECTED","finding":"The rejected sector family was abandoned rather than retuned, and the next family was required to be causally distinct with explicit prior and negative-result action written before observation.","current_product_decision_change":false},
+    {"classification":"REMOTE_PREREGISTRATION_REQUIRED","finding":"B4 could not proceed from a summary/SHA/local commit; full bytes had to be published and timestamped before harness construction, repeating the remote-proof lesson.","current_product_decision_change":false},
+    {"classification":"CHALLENGE_CONTINUES_TO_REMOVE_DEGREES_OF_FREEDOM","finding":"Even after full B4 preregistration publication, adversarial review found price-basis inconsistency, impossible trial-count source assumption and underdefined metrics before execution. Erratum remains pending at batch boundary.","current_product_decision_change":false}
+  ],
+  "current_action": "ECONOMIC_RESEARCH_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6057563728,"sha256":"19fd207406823356e91de53833a82f82b9df76c74f3e8efc4971c89442339370"}
+}
