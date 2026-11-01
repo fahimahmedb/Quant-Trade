@@ -1,0 +1,71 @@
+name: AI Working Method Project Gate
+
+on:
+  push:
+    branches:
+      - project/canonical
+    paths:
+      - AGENTS.md
+      - README.md
+      - governance/AI_WORKING_METHOD_V1.md
+      - governance/AI_WORKING_METHOD_V1.json
+      - governance/CURRENT_PROJECT_STATE.md
+      - .github/workflows/ai-working-method-project-gate.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  project-method-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact triggering project subject
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify exact project subject
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "PROJECT_SUBJECT_SHA=$GITHUB_SHA"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch exact current code method implementation
+        run: |
+          git fetch --no-tags origin code/canonical
+          CODE_METHOD_SHA="$(git rev-parse FETCH_HEAD)"
+          echo "CODE_METHOD_SHA=$CODE_METHOD_SHA"
+          mkdir -p /tmp/quant-method/scripts /tmp/quant-method/tests
+          git show "$CODE_METHOD_SHA":scripts/validate_ai_working_method.py > /tmp/quant-method/scripts/validate_ai_working_method.py
+          git show "$CODE_METHOD_SHA":tests/test_ai_working_method.py > /tmp/quant-method/tests/test_ai_working_method.py
+
+      - name: Snapshot remote branch names
+        run: |
+          git ls-remote --heads origin \
+            | awk '{sub("refs/heads/", "", $2); print $2}' \
+            | sort > /tmp/remote-branches.txt
+
+      - name: Validate project entrypoints and machine contract
+        run: |
+          python /tmp/quant-method/scripts/validate_ai_working_method.py \
+            governance/AI_WORKING_METHOD_V1.json \
+            AGENTS.md \
+            --branches-file /tmp/remote-branches.txt
+          python /tmp/quant-method/scripts/validate_ai_working_method.py \
+            governance/AI_WORKING_METHOD_V1.json \
+            README.md \
+            --branches-file /tmp/remote-branches.txt
+
+      - name: Install test runner
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run anti-regression tests against exact project contract
+        env:
+          PYTHONPATH: /tmp/quant-method
+        run: python -m pytest -q /tmp/quant-method/tests/test_ai_working_method.py

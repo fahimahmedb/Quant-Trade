@@ -1,113 +1,99 @@
-# AGENTS.md — Quant-Trade agent contract
+# AGENTS.md — Quant-Trade canonical project contract
 
-## Minimal recovery and durable work
+This is the single bootstrap for every AI working on Quant-Trade. It applies to Builders, Reviewers, Research agents, Operators and coordinators without relying on chat history.
 
-This is the single recovery procedure; README routes here. It applies without chat history, custom instructions or a previous agent.
+## Mandatory bootstrap
 
-1. Read QUANT_NORTH_STAR.md, then governance/CURRENT_PROJECT_STATE_2026-10-31.md on the repository default ref. The 2026-10-20 router is retained as historical baseline only; follow it when the current router explicitly sends you there. Resolve the default ref remotely; do not assume an old checkout contains the latest router.
-2. Treat summaries as navigation claims. Check LAST_VERIFIED_AT, LAST_VERIFIED_REF and OBSERVATION_METHOD. Reconcile relevant current refs, newer work and exact evidence before choosing an action. Unindexed or conflicting activity stays UNKNOWN/UNRECONCILED. Absence of a handoff is not a reason to restart completed work.
-3. Distinguish VERIFIED (specific assertion actually checked), REPORTED (document claim), STALE and UNKNOWN. Work may be ACTIVE, PARKED or BLOCKED. Built, qualified, integrated, promoted, active and used are different dimensions. CI on another SHA does not qualify this subject; Git does not prove current runtime health.
-4. Inspect existing evidence before proposing work. Reuse, connect or repair before building. NO_CHANGE_REQUIRED, BLOCK, PARK and UNKNOWN are valid deliverables; a patch is not mandatory.
-5. High-value work (including autonomous prompts, architecture, scientific protocols and persistent working rules) self-triggers: OBJECTIVE → INSPECT EXISTING EVIDENCE → PROPOSE → COUNTEREXAMPLE / BYPASS / BLIND SPOT → REVISE IF NEEDED → VERIFY → RECORD RESULT. Record the concrete objection, its disposition, revisions or why none were needed, exact checks and limits. Ordinary small tasks need only proportionate verification.
-6. Before pursuing a side finding ask: DOES THIS CHANGE THE DECISION OR UNBLOCK THE USER OBJECTIVE? If no, PARK it with a reopening condition. UNKNOWN can BLOCK the affected action; it does not authorize unlimited auditing. Request independent review only when consequences/risk warrant it. Owner permission and technical/scientific verification are separate; self-review is not independent review.
-7. Update only the necessary existing state/index: what was actually done, subject/base identity, evidence versus reports, checks performed, remaining unknowns, parked issues and the next bounded action with revalidation conditions. Use native Git history for changes, not duplicate logs. Verify the remote update before claiming durable completion. An unpushed local SHA remains provisional.
-8. After interruption repeat reconciliation, not the completed task. If a decisive premise cannot be established, record BLOCK/UNKNOWN and stop that action.
+Before substantive work:
 
-Historical routing and cleanup documents may conflict. CP11 destructive commands are superseded; no branch deletion, runtime activation, promotion or economic authority follows from this documentary repair. Follow the current state rather than old September handoffs or an old NEXT_BUILD_MISSION.
+1. fetch/reconcile fresh `project/canonical` and `code/canonical`;
+2. read `QUANT_NORTH_STAR.md` on `project/canonical`;
+3. read `governance/AI_WORKING_METHOD_V1.md` on `project/canonical`;
+4. read `governance/CURRENT_PROJECT_STATE.md` on `project/canonical`;
+5. resolve the exact current `code/canonical` SHA;
+6. inspect only evidence needed for the current blocker/decision or F0–F6 finish gate.
 
-## Prime rule
+Machine-readable method: `governance/AI_WORKING_METHOD_V1.json`.
 
-Do not reduce Quant to the subsystem currently being worked on.
+Do not use the repository default branch, old Blue/V1/V2 handoffs, `NEXT_BUILD_MISSION.md`, historical branch names, stale prompts, local checkout state or chat memory as current authority.
 
-A worker, runtime, data adapter, research engine, validator, Book, UI, Oracle host or agent is a component of Quant, not the whole project.
+## Authority split
 
-When lower-level implementation choices conflict with `QUANT_NORTH_STAR.md`, preserve the North Star and surface the conflict.
+- `project/canonical` owns objective, current project router, decisions, scientific memory, evidence/receipts, blockers and next action.
+- `code/canonical` owns executable product, tests, workflows and deployment/runtime helpers.
 
-## Permanent authority boundary
+No third branch is current authority. Historical objects are evidence only unless the current router explicitly reopens them.
 
-Unless changed by a later explicit Owner decision:
+## Work law
 
-- `ECONOMIC_EXPERIMENT_AUTHORIZED = FALSE`
-- `PROSPECTIVE_OBSERVATION_AUTHORIZED = FALSE`
-- `REAL_CAPITAL_AUTHORIZED = FALSE`
-- `LIVE_TRADING_AUTHORIZED = FALSE`
+Follow:
 
-Tests, audits, validator PASS, local-model output, operational qualification and branch cleanup grant none of these authorities.
+`REUSE > CONNECT > REPAIR > BUILD`
 
-## Functional roles
+A material mission is admitted only when it can change a current decision, close/protect an F0–F6 finish gate, prevent a demonstrated regression, or collect evidence required for one of those. Otherwise return `PARK` or `NO_CHANGE_REQUIRED`.
 
-### Builder / engineering
+Use the exact mission admission fields and stop laws in `governance/AI_WORKING_METHOD_V1.md`; do not create a competing methodology.
 
-Build, repair and integrate persistent capabilities. Leave tests, observability, restart safety and durable evidence. Do not create architectural novelty without a demonstrated need.
+`UNKNOWN` blocks only the affected action. It does not authorize global archaeology.
 
-### Research / producer
+## Concurrency and continuation
 
-Generate falsifiable economically meaningful hypotheses, screen against Legacy/current knowledge, preserve negative results and produce explicit evidence.
+- one mutating Builder per capability/seam;
+- at most two active decision-changing lanes;
+- independent Reviewer is read-only on the exact published subject;
+- reconcile if either canonical head moves before publishing;
+- local/private work is never shared authority or PASS;
+- after every material interruption persist exact subject, completed work, tests actually executed, changed decision, blockers/unknowns and one bounded next action.
 
-### Independent validation / red team
+A fresh AI must resume from GitHub durable state without reconstructing a conversation.
 
-Attempt to falsify promising work. Check timing, provenance, leakage, multiplicity, implementability, costs, sensitivity, structural duplication and decision-map integrity as relevant.
+## Evidence law
 
-### Portfolio / integration
+Built, tested, qualified, integrated, promoted, active, used and end-to-end proven are separate states.
 
-Reason about economic identity and structural overlap without inventing empirical correlation. Without admissible returns, empirical correlation is UNKNOWN/UNAVAILABLE and marginal contribution is NOT_ESTIMATED.
+- a test/review/CI run for SHA A does not qualify SHA B;
+- remotely recoverable bytes/state are required before durable PASS/handoff;
+- reviewer without the exact candidate/evidence returns `BLOCK_EVIDENCE` or `UNKNOWN`;
+- hosted CI does not prove deployment, runtime use or E2E operation.
 
-### Control / clock
+## Scientific and authority invariants
 
-Maintain lifetime, due work, claim/lease fencing, recovery, liveness, bounded work selection and durable state.
+Never fabricate evidence or data. Preserve exact identity, PIT/causal timing, provenance, frozen scientific protocol/exposure accounting, negative scientific memory, restart/idempotency semantics and fail-closed authority.
 
-## Scientific invariants
+Unless a later explicit Owner decision changes them, code/tests/governance do not grant economic experiment, prospective observation, production deployment, real-capital or live-trading authority.
 
-- never fabricate data or evidence;
-- preserve point-in-time timing and provenance;
-- UNKNOWN is not evidence of independence or PASS;
-- negative results remain scientific memory;
-- a local PASS is not automatically a family-level or economic-edge claim;
-- producer and independent challenge functions remain separated;
-- historical result immutability survives branch cleanup;
-- persistent state mutation must be restart-safe and idempotent.
+Scientific failure, engineering failure, environment/access BLOCK and insufficient evidence are different outcomes.
 
-## Research autonomy
+## Roles
 
-Ordinary negative experiments should normally produce:
+Builder: reuse/connect/repair/build executable capability and exact tests.
 
-`RESULT -> LESSON -> PRIORITY UPDATE -> NEXT LEGITIMATE ACTION`
+Reviewer: try to falsify the exact published subject; do not mutate it.
 
-not a request for the human to invent another strategy.
+Research: produce falsifiable hypotheses and preserve full selection/exposure/negative memory under current authority.
 
-Use broad inexpensive/deterministic monitoring before expensive reasoning. Reserve deeper analysis and engineering for candidates with sufficient information value.
+Operator: prove deployment/runtime state from the actual authorized environment; do not extend repository claims into host claims.
 
-## Repository hygiene
+Coordinator: preserve one current router, bounded WIP and durable continuation; do not create extra process layers.
 
-Historical procedure (not execution authority):
+## Finish line
 
-`governance/REPOSITORY_HYGIENE_V2_2026-10-20.md`. Reconcile the current project state and later audit decisions before using it.
+The finite engineering/autonomy finish definition is F0–F6 in `governance/AI_WORKING_METHOD_V1.md`.
 
-Branch sprawl is now considered a project defect.
+Every material task must identify which current finish gate or recorded blocker it changes. Do not keep engineering open because profitable alpha is unknown: economic value, real capital and live trading are separate later authorities.
 
-- reuse an existing authorized branch when appropriate;
-- absorbed ancestors do not need permanent branch refs;
-- unique historical tips can be archived before deleting their working refs;
-- do not delete scientific meaning merely because a branch is old;
-- do not mutate Oracle V1 as incidental cleanup;
-- do not create another top-level V2 architecture before the canonical trunk is declared.
+## Reporting
 
-## Human escalation
+Every material completion states:
 
-Do not escalate routine coding choices, ordinary research negatives or expected test failures.
+- exact subject/branch/SHA;
+- evidence changed;
+- tests actually executed and results;
+- claim ceiling;
+- durable project-state update when decision-changing;
+- blockers/unknowns;
+- one next bounded action.
 
-Escalate genuine boundaries such as unavailable external resources, paid/permissioned access, credentials, irreversible authority/integration decisions or strategic ambiguity that current project evidence cannot resolve.
+Final rule:
 
-## Reporting standard
-
-Report milestones with:
-
-- exact branch and HEAD;
-- capability/evidence added or invalidated;
-- scientific limits;
-- tests / adversarial checks;
-- durable state changes;
-- genuine blockers;
-- next legitimate action.
-
-Durable truth belongs in GitHub, code, tests and evidence artifacts rather than in chat-only summaries.
+`CLOSE THE NEXT REAL GATE. REUSE BEFORE BUILD. PUBLISH BEFORE HANDOFF. TEST THE EXACT SUBJECT. PRESERVE THE NEXT ACTION.`
