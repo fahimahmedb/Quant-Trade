@@ -6,6 +6,8 @@ on:
       - code/canonical
     paths:
       - AGENTS.md
+      - CLAUDE.md
+      - CODEX.md
       - scripts/validate_ai_working_method.py
       - tests/test_ai_working_method.py
       - .github/workflows/ai-working-method-gate.yml
@@ -47,12 +49,14 @@ jobs:
             | awk '{sub("refs/heads/", "", $2); print $2}' \
             | sort > /tmp/remote-branches.txt
 
-      - name: Validate canonical entrypoint and method contract
+      - name: Validate machine contract and all active code AI entrypoints
         run: |
-          python scripts/validate_ai_working_method.py \
-            /tmp/AI_WORKING_METHOD_V1.json \
-            AGENTS.md \
-            --branches-file /tmp/remote-branches.txt
+          for entrypoint in AGENTS.md CLAUDE.md CODEX.md; do
+            python scripts/validate_ai_working_method.py \
+              /tmp/AI_WORKING_METHOD_V1.json \
+              "$entrypoint" \
+              --branches-file /tmp/remote-branches.txt
+          done
 
       - name: Install test runner
         run: python -m pip install --disable-pip-version-check pytest
