@@ -1,1055 +1,1175 @@
-# Quant-Trade — Appréciation cumulative et méthode de simplification
-## Analyse du parcours du 13 juillet au 1er novembre 2026
+# Quant-Trade — Rapport d’appréciation cumulative, réécrit depuis le début
+## Comprendre les avancées, les pertes de continuité et la simplification vers deux branches
 
-**Date de vérification : 1er novembre 2026, Europe/Paris.**  
-**Objet :** interpréter la reconstruction existante au regard du système Quant autonome visé, reconnaître les avancées efficaces et préparer une exploitation à deux branches. Le rapport factuel antérieur reste intact ; cette appréciation s’y ajoute.
+**Édition réécrite le 1er novembre 2026 — Europe/Paris.**  
+**Mission :** apprécier le parcours vers un système Quant autonome en exploitant la nouvelle lecture détaillée ; identifier les pratiques à conserver ; préparer une simplification du travail et du dépôt.
 
-**Photographie :** projet `e862ee10b4a2d3eee319004614b75677412973ff` ; code `13c9ff03f0898e9af28abaa3dab78a520c70c887`. Aucun changement de code, suppression de branche, activation de VM, expérience économique ou octroi d’autorité n’est exécuté par ce rapport.
+**Bornes vérifiées :**
+- nouvelle passe d’audit : `audit/forensic-checkpoint-20261019@1b537233652b8c9a719855269b4907b14ad5a100` ;
+- état projet avant cette réécriture : `project/canonical@822a370d4626a2c15eb21115501ae53a26ff127a` ;
+- code : `code/canonical@13c9ff03f0898e9af28abaa3dab78a520c70c887`.
 
-## 1. Verdict principal et limites de la lecture
+Le présent texte remplace l’édition précédente du **rapport d’appréciation**, conservée par l’historique de versions. Il ne remplace ni la chronologie factuelle ni les états historiques du projet. L’évolution des conclusions est explicitée.
 
-Le projet a accumulé une infrastructure Quant substantielle et plusieurs corrections importantes. Une part significative du travail historique est conservée dans la lignée actuelle. Le problème dominant observable est la difficulté à convertir des constructions et qualifications locales en un produit courant, facilement identifiable et utilisé de bout en bout.
+## 1. Mon appréciation générale
 
-Cette conclusion n’équivaut ni à « tout est à refaire », ni à « tout est terminé sauf l’alpha ». La première formulation ignorerait les propriétaires de capacités retrouvés ; la seconde confondrait présence du code, qualification ciblée, fonctionnement sur hôte, sélection de missions et preuve économique.
+Quant-Trade a réellement progressé dans trois domaines : la rigueur de la recherche, les primitives d’un système persistant et l’intégration d’une partie importante des capacités. Il a aussi accumulé une dette de conduite du projet : savoir quel état fait autorité, transmettre le travail exact, fournir les bons accès et déclencher l’action suivante.
 
-**L’actif à conserver est le système intégré et sa mémoire scientifique ; la surface de travail à réduire est celle des autorités, routes de reprise et lignées concurrentes.**
+La nouvelle passe permet d’aller au-delà du constat « trop de branches et trop de gouvernance ». Les pertes de continuité sont observables :
 
-### Couverture effectivement utilisée
+1. des fichiers annoncés comme construits et testés n’ont pas été publiés et sont ensuite devenus irrécupérables ;
+2. une acquisition de plusieurs heures dépendait d’un espace privé de session inaccessible au successeur ;
+3. des réviseurs étaient lancés sans accès aux objets exacts qu’ils devaient examiner ;
+4. les règles de continuation existaient, mais le prochain réveil nécessitait encore une intervention ;
+5. plusieurs chemins qualifiés séparément ne formaient pas encore la chaîne causale annoncée.
 
-- Lecture intégrale des **16 DEEP_WEEK** et des **16 HANDOFF_WEEK**, du 13 juillet au 1er novembre, au SHA projet fixé.
-- Lecture du master cursor, de l’état courant, de la clôture historique et du checkpoint final des décisions.
-- Utilisation des **71 entrées quotidiennes** du rapport factuel antérieur, conservées dans l’annexe cumulative.
-- Contrôles primaires actuels : références Git distantes, ascendance Wave2→canonical, workflow et étapes/logs du run courant, lanceur, host-wake, contrat AGENTS du code, README projet, état d’autorité et registre des capacités.
-- Énumération courante de **279 branches**, **270 pointes distinctes**, sur quatre pages API dont la dernière vide. Le précédent inventaire de 275 branches reste sa photographie historique.
-- Aucun test logiciel réexécuté pour cette appréciation. Les logs distants ont été lus. Aucun hôte Oracle observé.
+Ces mécanismes expliquent une partie importante des recommencements documentés. Ils ne permettent pas de chiffrer toutes les heures perdues ni de déclarer inutile tout le travail de contrôle.
 
-**Correction de périmètre nécessaire :** le nouvel agent a couvert toutes les semaines et les journées indexées, avec une descente sur les éléments jugés décisionnels. Son checkpoint final déclare explicitement `FULL_SEMANTIC_READ_OF_EVERY_BLOB=FALSE`. Les 22, 25 et 29 octobre conservent notamment des détails inconnus ; 969 occurrences restent sans date exploitable. Il serait inexact de présenter son travail comme une revue ligne par ligne de chaque fichier et commentaire de toute l’histoire.
+**Le problème n’a pas été un manque de raisonnement ou de code. Le projet a insuffisamment transformé le travail produit en état partagé, récupérable, intégré et réutilisé.**
 
-Cette limite autorise les conclusions ci-dessous sur les chaînes documentées. Elle interdit de certifier qu’aucun défaut latent n’existe ou que toutes les capacités ont été exercées ensemble aujourd’hui. Elle ne justifie pas un nouvel audit global : seule une contradiction précise qui change une décision mérite une nouvelle lecture ciblée.
+Cela conduit à une stratégie simple : garder le meilleur code courant, sa mémoire scientifique et les contrôles qui ont effectivement trouvé des erreurs ; alléger les relais, limiter les chantiers ouverts, réparer les points de passage ; puis démontrer l’usage réel. Le ménage doit réduire la surface de travail sans effacer les preuves.
 
-### Statuts de lecture du rapport
+Aucune proximité de fin en pourcentage ou en heures n’est démontrée. La construction est avancée ; l’autonomie complète, le paper-live courant et la valeur économique restent des sujets de preuve distincts.
 
-- **Fait vérifié ici :** objet distant ou fichier courant directement contrôlé.
-- **Fait reconstruit :** contenu du nouvel audit, avec ses preuves et son plafond ; pas une nouvelle reproduction indépendante.
-- **Interprétation :** explication soutenue par plusieurs événements, sans prétendre mesurer une causalité ou un temps perdu non documentés.
-- **Recommandation :** méthode proposée, à distinguer d’une règle déjà appliquée.
-- **Inconnu :** donnée non établie ; son effet est limité à l’action qui en dépend.
+## 2. Ce que la nouvelle passe change à mon rapport précédent
 
-## 2. Le parcours cumulé : ce qui s’est réellement transformé
+Cette édition n’est pas une reformulation du même diagnostic. Elle corrige quatre omissions ou formulations trop générales.
 
-### Juillet–août : du chercheur de stratégies à une discipline de falsification
+### 2.1 La réforme statistique doit apparaître dans son ordre historique
 
-Au départ, Quant contient prédiction NASDAQ, volatilité, overlays, meta-labeling et premiers assemblages. Les 14–15 juillet introduisent des corrections de causalité, une sigma walk-forward, des gels et une simplification vers la baseline. Les 24–26 juillet ajoutent de vraies recettes de robustesse, mais des défauts de drawdown, de transformation et de lookahead invalident ensuite une partie de la confiance antérieure.
+L’histoire comporte d’abord une lutte nécessaire contre le sous-comptage des essais adaptatifs, puis une correction d’un excès inverse. Le 8 octobre, Fahim s’inquiète d’un compteur universel croissant qui rendrait les hypothèses toujours plus difficiles à confirmer. Les deux agents répondent en distinguant familles, historique de sélection, exploration, confirmation et insuffisance de puissance.
 
-Les 27–29 juillet industrialisent la génération et l’évaluation des idées. Cette cadence est une construction réelle de méthode ; les 626 commits de ces trois jours ne sont toutefois pas 626 capacités. Le challenge du 29 juillet révèle surtout le problème des essais adaptatifs : une dernière famille de 13 variantes ne résume pas les quelque 110 cycles qui l’ont précédée. Les résultats intermédiaires favorables ne deviennent pas un edge confirmé.
+Mon rapport précédent insistait surtout sur la première moitié de cette histoire. Il faut conserver la seconde : **tout l’historique doit être divulgué, mais chaque hypothèse nouvelle n’hérite pas mécaniquement de la pénalité de toutes les expériences du projet**. Inversement, changer le nom ou le dataset ne crée pas artificiellement une indépendance.
 
-Début août, la batterie Règle 9 et la fermeture de familles négatives renforcent cette discipline. Le 13 août révèle une faiblesse de mémoire : les doublons étaient arrêtés trop tard. La correction moderne de ce problème est plus légère que la règle historique : autoriser la génération bornée, puis examiner l’identité concrète avant de figer une hypothèse.
+Cette réécriture rapporte la réforme historique. Elle ne certifie pas qu’une unique formule statistique convient à tous les futurs protocoles, ni que cette réforme est exécutée correctement sur chaque chemin actuel. [P05–P07, B12–B14]
 
-**Interprétation :** cette période n’a pas fourni un portefeuille de stratégies validées. Elle a fourni des erreurs identifiées, des familles négatives et les fondations d’une factory plus honnête. Sa valeur est récupérée si elle empêche réellement de refaire les mêmes essais, et si ses leçons restent dans le chemin exécuté.
+### 2.2 WP2 n’est pas seulement « objections ouvertes, aucune réparation retrouvée »
 
-### Septembre : du script au système persistant, puis à des garanties spécialisées
+Le 30 octobre, un agent a décrit une correction locale des deux objections P1/P2 : appel réel à l’exécution, validation du résultat exécuté et identité de fixture durable avant claim/recovery. Il a annoncé 65 tests et 29 sous-tests réussis, puis un push impossible faute de remote.
 
-Restaurant-stock apparaît dans le même dépôt. Son métier reste hors Quant ; son expérience de perte de contexte apporte néanmoins une leçon de relais durable.
+La formulation correcte est donc : **objections indépendantes établies → réparation locale déclarée et testée selon son reçu → publication distante et qualification indépendante de ce correctif non établies**.
 
-Les 12–14 septembre construisent l’objectif système, Control/Data/Research/Desk/Book/Learning et des primitives de persistance. La correction du 13 septembre est centrale : une erreur de calendrier décision→fill gonflait les métriques. La réparation ajoute ou consolide WAL, sleeves, risque sur l’état final et liveness. Le nouvel audit retrouve ces invariants dans le code canonique courant. Il serait donc improductif de reconstruire V1 simplement parce que plusieurs PR historiques sont fermées sans fusion.
+Ce correctif local ne doit pas être effacé du récit ; il ne doit pas non plus être substitué au head distant effectivement disponible. Les liens du reçu vers l’ancien head ne prouvent pas que le patch local y a été publié. [P11, B24–B25]
 
-La seconde moitié de septembre approfondit Evidence/PIT, capture SEC, concurrence, fingerprint et firewall. Certaines revues ont trouvé des faux PASS sur le chemin réellement exécuté. Ces corrections étaient utiles ; elles n’établissaient pas, à elles seules, un système complet actif.
+### 2.3 Il existe des exemples positifs très concrets d’efficacité
 
-Le 24 septembre simplifie déjà les routeurs ; le 25 autorise un rail rapide borné ; le 27 montre simultanément une perte de session avec zéro trial et une collecte data-feeds réellement planifiée.
+La nouvelle lecture retrouve notamment EDGE-FLOW, la reprise d’acquisition F1, l’arrêt du travail A2 sans valeur économique immédiate, le refus de construire un second modèle de coûts et l’utilisation de fichiers exacts pour survivre à la disparition des sessions.
 
-**Interprétation :** la persistance du produit a progressé plus vite que la persistance de la conduite du projet. Les composants savaient de mieux en mieux survivre aux crashes ; les agents et l’Owner restaient exposés à des ruptures de contexte, d’autorité ou de routage.
+Ce sont des méthodes déjà essayées dans le projet. La solution doit les réemployer ; inventer un nouveau protocole général ferait oublier cette expérience. [B06, B09–B18, B23, B28]
 
-### Octobre : profondeur, convergence et difficulté à matérialiser l’autonomie
+### 2.4 La nouvelle passe exhaustive n’est pas encore clôturée
 
-Weather distingue progressivement sûreté, transport vers le futur, autorisation et efficacité économique. Ces distinctions sont fondées ; l’Owner met finalement A2 en rail de sécurité différé. F1 suit une chaîne plus économique : sélection, gel, test scellé négatif, fermeture de la famille sans retune.
+La précédente reconstruction est close dans son **périmètre décisionnel**. La nouvelle passe contient 30 lots et un curseur `SEMANTIC_READING_ACTIVE`. Ce sont deux missions de couverture différentes.
 
-Research OS, Edge Lab, identités stables et anti-replay gagnent en structure. Les CP/W1/Mega/Wave2 accumulent puis relient des capacités. Le code actuel est **un descendant vérifié de Wave2 C2**, avec 10 commits d’avance et aucun retard d’ascendance dans la comparaison contrôlée. L’ancien diagnostic « tout ce travail est resté sur des rails perdus » était trop large.
+Après rapprochement par identifiants et empreintes :
+- 307 objets distincts figurent dans les 30 lots ;
+- 297 sont marqués lus directement et 10 strictement identiques à un objet lu ;
+- parmi les 7 objets de la base ancienne, 6 réapparaissent dans ces lots ;
+- l’union documentée est donc **308 objets sur 423**, dont 298 lectures directes distinctes, pas 314 ;
+- **115 objets** du registre initial n’ont pas encore de disposition de lecture dans cette union.
 
-La fin octobre distingue les preuves synthétiques, les critiques indépendantes et le pont GPT-OSS/Codex. WP2 reste contesté malgré un PASS antérieur et une CI verte : les objections ultérieures PR41 ne sont pas effacées. PR46 possède sa propre chaîne de corrections et de qualification ; ses apports ont été portés sélectivement.
+Le chiffre 314 du curseur est une estimation qui double compte les six objets. Les 30 lots ne contiennent, eux, aucun doublon d’identifiant entre lots. Cette correction de compteur ne remet pas en cause leurs contenus.
 
-Le 1er novembre, un challenge de raccordement constate que le timer existant n’appelait pas l’orchestrateur. Le correctif ajoute une couture host-wake, conserve le timer et produit un run ciblé vert après une correction du harness. **C’est un exemple particulièrement utile de progression efficace : réutiliser l’existant, prouver le défaut du raccord, réparer ce raccord, vérifier.**
+Pour les documents, le curseur conserve une base de 52 blobs lus sur 6 465 inventoriés et aucun delta documentaire dans cette passe. Il ne prouve donc pas une lecture exhaustive de toutes les versions documentaires. Les 16 semaines profondes antérieures constituent une autre lecture, qu’il ne faut pas additionner arbitrairement à ce dénominateur.
 
-## 3. Conclusions interprétatives, avec leur force et leur contre-exemple
+**Je peux produire une appréciation approfondie des éléments disponibles ; je ne peux pas annoncer un audit exhaustif terminé.** La présente demande de réécriture est traitée sans relancer les lots déjà réalisés.
 
-### 3.1 Le projet a surtout souffert d’une conversion incomplète entre ses états
+## 3. La trajectoire cumulée, depuis le commencement
 
-**Appui :** ZIP appelé prêt en juillet ; systèmes V1 qualifiés mais PR non fusionnées ; gates locaux distincts ; modèles/VM historiques sans preuve actuelle ; pont qualifié mais boucle hôte non établie.
+### 3.1 Juillet : chercher une stratégie, puis apprendre à invalider les faux succès
 
-**Conclusion — forte :** le vocabulaire de livraison était parfois plus avancé que la preuve d’usage. Le suivi doit dire pour quel objet l’on a construit, testé, intégré et observé l’utilisation.
+Le projet commence avec diagnostics NASDAQ, volatilité, prédiction, overlay et meta-labeling. Les 14–15 juillet apportent des corrections de lookahead, un calcul causal et une simplification vers une baseline.
 
-**Contre-exemple :** certaines intégrations ont bien eu lieu, notamment dans les lignées SEC et Wave2. La correction n’est pas « rien n’a jamais été intégré ». Il faut retrouver le propriétaire courant et son chemin, pas compter seulement les PR fusionnées.
+Les 24–26 juillet ajoutent une machinerie de robustesse réelle : reproductibilité, perturbations, régimes, fenêtres et stabilité. Les défauts de drawdown, de fractional differencing et de calendrier des variables montrent ensuite pourquoi les qualificatifs « robuste » ou « prêt » étaient prématurés.
 
-### 3.2 Les vérifications spécialisées ont parfois pris la place de la preuve globale
+La production devient intensive les 27–29 juillet. C’est une transition vers une factory de recherche ; ce n’est pas une collection de centaines de capacités indépendantes. Les audits ultérieurs découvrent que le dernier ensemble de variantes sous-estime l’historique adaptatif qui a permis de le sélectionner.
 
-**Appui :** lookahead corrigé en juillet ; métrique V1 corrigée en septembre ; chemin main SEC contourné par les tests ; WP2 execute/evaluator contesté ; timer→orchestrateur absent malgré les suites vertes.
+**Ce qu’il faut conserver :** la capacité à retirer une conclusion favorable, à comparer à une baseline et à corriger une méthode.  
+**Ce qu’il faut retirer de l’autorité active :** les labels économiques d’avant correction et les vieux packages présentés comme déployés sans preuve de leur utilisation.
 
-**Conclusion — forte :** les coutures entre composants sont des points de risque récurrents. Une qualification doit comprendre le chemin nominal effectivement appelé, avec une panne de reprise pertinente.
+### 3.2 Août : des négatifs utiles et un début d’anti-recommencement
 
-**Limite :** un scénario intégré n’élimine pas le besoin des tests locaux. Il permet de les situer au service du produit.
+TIPS, volatilité, canal monétaire, short-volume et Form 4 produisent des verdicts négatifs dans leurs périmètres. La batterie Règle 9 distingue un bon résultat local d’un résultat admissible après coûts, sous-périodes et multiplicité.
 
-### 3.3 Une partie de la gouvernance a protégé la validité scientifique
+Le 13 août, trois propositions sont reconnues comme des doublons avant de nouveaux calculs. Le défaut était clair : consulter la mémoire à l’exécution ne suffisait pas si la file de travail la contournait en amont.
 
-**Appui :** résultats invalidés, compteurs d’essais adaptatifs, contamination SEC, distinction discovery/confirmation, F1 rejeté sans retune, WP1 bloqué avant nouvelle exposition.
+La règle moderne retrouvée dans le corpus est mieux placée : une tâche de génération bornée peut exister avant que son candidat soit identifié ; le candidat concret doit être examiné avant son gel et sa transmission à la validation. Cela protège la mémoire sans exiger une preuve de nouveauté d’un objet qui n’existe pas encore.
 
-**Conclusion — forte :** effacer les contraintes de timing, provenance, multiplicité et irréversibilité recréerait des faux succès. Ce sont des contrôles à conserver, idéalement dans le code et aux transitions qui comptent.
+**Interprétation :** cette période produit surtout une connaissance de ce qui n’a pas été validé et de la manière de chercher plus proprement. Sa valeur est réelle si le pipeline l’utilise ; elle ne se mesure pas en stratégies gagnantes.
 
-**Limite :** la nécessité d’un contrôle scientifique ne prouve pas la nécessité d’une approbation humaine pour chaque réparation technique.
+### 3.3 Septembre : du chercheur au système, avec des corrections d’intégrité majeures
 
-### 3.4 La gouvernance devient coûteuse quand une réparation locale ouvre un nouveau programme
+Le sous-projet restaurant-stock apparaît dans le dépôt. Son métier reste hors Quant. Son expérience de perte de plan uniquement conversationnel révèle cependant un risque commun : le travail et la reprise doivent vivre ailleurs que dans le chat.
 
-**Appui :** succession de rails, routeurs historiques contradictoires, règles d’autorité à réconcilier, recommandations répétées d’arrêter d’ajouter une plateforme de continuité.
+Les 12–14 septembre construisent ou relient Control, Data, Research, Desk, Book et Learning. La correction V1 du 13 septembre est structurante : les métriques créditaient un intervalle décision→fill auquel la stratégie n’avait pas droit. La correction change la conclusion économique et renforce persistance, WAL, sleeves, risque sur portefeuille final et liveness.
 
-**Conclusion — interprétation soutenue :** la multiplication des unités de pilotage a augmenté le travail nécessaire pour savoir où agir. Les traces ne permettent pas de chiffrer les heures perdues ni d’attribuer toute la dérive à une personne ou un agent.
+La suite approfondit Evidence/PIT, capture SEC, fingerprint, concurrence et firewall. PR17 illustre une critique utile : plusieurs tests verts ne voyaient pas un défaut du véritable point d’entrée. La revue le retrouve. Il ne s’agissait donc pas uniquement de cérémonial.
 
-**Correction :** une objection reproductible doit produire une réparation, un PARK ou un changement explicite de décision ; elle ne doit pas automatiquement engendrer une nouvelle architecture.
+La fermeture de plusieurs PR historiques correspond aussi à un déplacement d’autorité, avec conservation des branches. Elle ne prouve ni leur fusion ni l’effacement de leurs capacités. Le devenir se vérifie dans le code courant et les ports ultérieurs. [B01–B02]
 
-### 3.5 Deux branches d’autorité sont déjà présentes ; deux branches distantes ne sont pas obtenues
+**Interprétation :** le projet apprend à rendre ses composants persistants, mais sa propre conduite reste fragile. La fiabilité du Book et la fiabilité de la transmission entre agents sont deux problèmes distincts.
 
-**Faits vérifiés :** `project/canonical` et `code/canonical` existent. L’API expose encore 279 branches ; la branche par défaut reste `blue/master-v2-2026-09-20`.
+### 3.4 Fin septembre–début octobre : une infrastructure sûre devient un objectif trop durable
 
-**Conclusion — forte :** il reste une simplification d’accès et de dépendances, puis éventuellement un retrait de références. Recréer deux nouvelles branches aggraverait le problème.
+Weather accumule les réparations d’inférence, les autorisations conditionnelles et les prérequis d’activation. Ces distinctions ne sont pas absurdes : une fuite de données ou une affirmation prospective erronée change réellement la valeur scientifique d’un résultat.
 
-**Limite :** la hausse depuis 275 est une différence entre photographies, pas une preuve que quatre nouvelles capacités ont été créées.
+Mais le programme peut rester longtemps sur la faisabilité et l’encadrement sans produire l’information économique recherchée. La nouvelle passe montre que les agents s’en aperçoivent eux-mêmes : tâches différées, vérifications mécaniques automatisées, priorité à une tâche d’information économique.
 
-### 3.6 Les portes d’entrée actuelles peuvent encore provoquer un retour en arrière
+Cette inflexion était bonne. Elle ne suffisait pas à provoquer les réveils suivants : un rappel constate plus de six heures sans réponse, puis Fahim constate un nouvel arrêt. Une règle écrite d’autonomie ne devient pas un mécanisme de réveil par sa seule publication. [P01–P02, B04–B08]
 
-**Faits vérifiés :** le AGENTS du code demande de relire les anciens routeurs Blue et de résoudre la branche Blue vivante ; le README projet présente le checkpoint forensic initial comme un audit partiel en cours. L’état courant du projet dit pourtant que la reconstruction est terminée.
+### 3.5 Le 8 octobre : journée charnière, beaucoup plus riche que son ancien résumé
 
-**Conclusion — forte :** le problème de mémoire n’est pas seulement l’absence de documents. Une instruction périmée, encore présentée comme actuelle, peut faire repartir un agent vers la mauvaise époque.
+La nouvelle lecture révèle une séquence essentielle. Les heures suivantes sont celles des commentaires GitHub, converties en Europe/Paris ; elles ne sont pas toutes des heures de début d’exécution.
 
-**Correction proposée :** raccourcir ces entrées, leur faire rejoindre le routeur canonique et classer leur ancien contenu comme histoire. Ce rapport ne modifie pas le SHA logiciel qualifié.
-
-### 3.7 Préserver l’histoire ne nécessite pas de la relire à chaque réveil
-
-**Appui :** relais hebdomadaires, identités stables, test de succession du 28 octobre ; les deux agents retrouvent l’action sans historique de chat.
-
-**Conclusion — forte dans ce périmètre :** une reprise compacte, des références exactes et un curseur suffisent à une mission bornée. La conservation exhaustive doit se faire dans les archives, la consultation active par besoin.
-
-**Limite :** ce test borné ne prouve pas la continuité illimitée de tous les agents ni un runtime H24.
-
-### 3.8 La critique indépendante a une valeur démontrée lorsqu’elle reproduit un défaut
-
-**Appui :** juillet, correction V1, SEC, alias WP2, objections PR41, parser PR46.
-
-**Conclusion — forte :** garder une séparation effective sur les points à conséquence ; demander une objection concrète et sa disposition.
-
-**Allègement :** une revue de contenu ne doit pas être répétée intégralement pour un descendant qui ne change que la projection documentaire, si le diff exact le démontre. Une simple permutation de rôles dans une même session n’est pas une revue indépendante.
-
-### 3.9 Le statut « négatif » doit distinguer science, données et exécution
-
-**Appui :** F1 REJECT ; WP1 capture invalide ; F2 permission ; Rail C zéro trial ; NO_CANDIDATE 0DTE.
-
-**Conclusion — forte :** ces états conduisent à des prochaines actions différentes. Les confondre ferait rejeter une idée jamais testée, ou relancer une famille réellement fermée.
-
-**Correction :** conserver le verdict et la raison, avec l’identité de l’essai et la condition éventuelle de réouverture.
-
-### 3.10 L’autonomie comporte plusieurs objets distincts
-
-**Faits :** la factory peut générer et filtrer des candidats ; le runtime peut gérer une file ; PR46 peut poursuivre une tâche fournie ; le lanceur actuel reçoit encore task/prompt/issue/branche/head de l’environnement.
-
-**Conclusion — forte :** autonomie de recherche locale, continuité d’une tâche technique et choix de la prochaine mission globale ne se déduisent pas mutuellement.
-
-**Correction :** prouver le pont réel, puis réutiliser les politiques de sélection existantes pour traiter le passage entre tâches. Éviter de reconstruire un second Control Plane.
-
-### 3.11 Le seul blocage actif déclaré n’est pas la liste complète du produit restant
-
-**Fait :** le routeur courant donne priorité à l’accès hôte pour le canary multi-wake. Il garde la sélection globale après DONE/PARK en attente.
-
-**Conclusion — forte :** « prochaine action = VM » ne signifie pas « Quant complet après VM ». La chaîne système courante et le paper-live doivent encore avoir leurs propres preuves avant d’être annoncés opérationnels.
-
-**Limite :** l’absence de ces preuves dans ce corpus ne démontre pas l’absence de tous les codes correspondants.
-
-### 3.12 La mémoire scientifique négative est un actif, avec un périmètre
-
-**Appui :** overlays, canal monétaire, F1 et mécanismes écartés ; Legacy/Scientific Memory dans le chemin de sélection.
-
-**Conclusion — forte :** les échecs évitent une recherche redondante et peuvent améliorer la productivité future.
-
-**Limite :** H0 non rejetée ne prouve pas une absence universelle d’edge. Une famille fermée doit rester liée à son mécanisme, ses données, sa période et ses contraintes. Une prémisse réellement nouvelle se juge comme telle.
-
-### 3.13 Le tableau de bord aide lorsqu’il expose la vérité du runtime
-
-**Appui :** reducer déterministe et projection Live Lab ; distinction scène/événement/état.
-
-**Conclusion — soutenue :** une interface peut réduire le besoin de demander « ça avance ? » si elle montre source, fraîcheur, blocage et prochaine action.
-
-**Limite :** ses tickets, animations ou profits affichés ne créent aucune preuve. La 3D reste secondaire tant que la boucle utile n’est pas observée.
-
-### 3.14 Le volume d’activité a masqué la distance restante
-
-**Appui :** itérations ML agrégées, commits data-feeds, heartbeats, NOOP, centaines de CP/événements.
-
-**Conclusion — forte :** commits, tests et documents sont des unités de production, pas une mesure directe d’achèvement. Aucun pourcentage crédible de fin ni estimation horaire globale ne découle de ces volumes.
-
-**Mesure proposée :** suivre les capacités effectivement intégrées et les critères produit satisfaits ; expliciter les travaux d’information indispensables sans les appeler capacités livrées.
-
-## 4. Les pratiques positives à conserver et à reproduire
-
-| Pratique | Exemple historique | Pourquoi elle aide | Forme légère à garder |
-|---|---|---|---|
-| Reproduire avant de réparer | lookahead, V1, D5, parser PR46 | évite les réparations imaginaires | un cas rouge ou un chemin de source précis |
-| Simplifier vers une baseline | 15 juillet, overlay sans valeur | limite la sophistication sans bénéfice | comparaison à la baseline pertinente |
-| Chercher à disconfirmer tôt | 0DTE NO_CANDIDATE | économise trials et outcomes | mécanisme puis contre-évidence avant gel |
-| Conserver les négatifs | canal monétaire, F1 | empêche les reprises déguisées | identité, verdict, raison, source |
-| Partager la logique recherche/Desk | causalité V1 corrigée | réduit l’écart simulation/exécution | un chemin de calcul propriétaire |
-| Écrire l’intention avant mutation | journal WAL, replay Book | protège les reprises partielles | identifiants d’opération et journal durable |
-| Travailler par blocs cohérents | CP/capacités reliés puis Wave2 | permet une vraie profondeur | lot défini par comportement final |
-| Intégrer transversalement | Wave2, ports Mega | transforme les modules en produit | intégrateur et test de raccord prévus dès le départ |
-| Porter sélectivement | CP099/GIGA/PR46 | récupère la valeur sans importer tout le passé | défaut actuel → delta minimal |
-| Reprendre par curseur | relais profonds et succession | réduit la dépendance au chat | un état courant et un lien vers le lot terminé |
-| Réutiliser le scheduler | host-wake du 1er novembre | ferme le raccord avec peu d’architecture | même timer, une route explicite |
-| Séparer preuve et autorité | Weather/F1/SEC | évite les élargissements implicites | contrôle à la transition sensible |
-| Accepter un vrai arrêt local | BLOCK/PARK/UNKNOWN/NO_CHANGE_REQUIRED | évite l’activité artificielle | condition de reprise précise |
-| Vérifier le résultat distant | CI et SHA exact | évite le travail local perdu | commit poussé, lien relu |
-
-Le schéma horizontal / vertical / transversal était raisonnable : couverture des modules, profondeur des invariants et intégration sont trois besoins réels. Sa réutilisation efficace demande un même code de départ, des interfaces définies et une destination d’intégration. Ce sont trois angles de travail sur le même produit ; ils ne doivent pas devenir trois systèmes d’autorité permanents.
-
-Une petite équipe parallèle peut aider un futur lot indépendant. Le corpus ne démontre pas qu’un nombre fixe d’agents est optimal. La consigne doit surtout empêcher des branches sans destination et des validations locales sans jointure.
-
-## 5. Ce qu’il faut alléger, sans retirer les contrôles qui ont trouvé des erreurs
-
-| Ancienne friction ou risque | Allègement recommandé | Contrôle conservé |
+| Heure de publication | Élément établi | Conséquence |
 |---|---|---|
-| Relire toutes les règles historiques à chaque reprise | état courant + preuve du dernier lot ; histoire sur demande | revalidation des SHA pertinents |
-| Retour Owner pour une décision réversible | enveloppe de travail bornée déjà autorisée | escalade d’une frontière réelle |
-| Nouvelle revue complète pour un changement documentaire | diff exact et revue proportionnée | revue distincte si sémantique change |
-| Prérequis de nouveauté avant toute tâche de génération | autoriser une génération limitée | screen du candidat avant freeze/handoff |
-| Tous les UNKNOWN bloquent tout | bloquer uniquement l’action dépendante | ne pas transformer UNKNOWN en PASS |
-| Chaque hardening devient un chantier | défaut reproduit ou risque décisionnel précis | correction et régression correspondante |
-| Chaque checkpoint termine l’exécution | poursuivre au prochain critère incomplet | checkpoint durable avant interruption |
-| Tous les vieux modules à importer | comparer le propriétaire courant | port si invariant utile réellement absent |
-| Tous les audits à recommencer | réutiliser les conclusions et leurs limites | relire une contradiction ciblée |
-| Branche permanente par rôle/expérience | code/projet canoniques ; branches temporaires seulement si nécessaires | pas de perte d’objets uniques |
-| Documentation actuelle en plusieurs copies | une source propriétaire, liens ailleurs | garder les versions historiques |
-| Tests volumineux sans chemin nominal | petit scénario courant complet, puis panne ciblée | suites locales nécessaires |
-| Zéro activité considéré échec | accepter IDLE/NOOP justifié | vérifier que la sélection n’a pas oublié un travail admissible |
+| 09:17:27 | rappel signalant plus de six heures sans réponse | la continuation reste dépendante d’un relais |
+| 10:45:45 | Fahim signale que les deux agents se sont de nouveau arrêtés | la réforme de coordination n’est pas démontrée comme auto-déclenchante |
+| 11:44:07 | contre-lecture Q21 : 36 expressions antérieures et validation déjà utilisée | empêcher une « nouvelle validation » sur un échantillon déjà consommé |
+| 13:05:24 | B4 est publié `FAMILY_REJECTED` malgré un rendement net brut positif | le verdict respecte les critères annoncés |
+| 17:02:24 | un agent consigne une décision Owner élargissant la recherche publique gratuite | alléger le passage par dataset ; c’est ici une décision rapportée avec référence |
+| 17:14:15–17:16:01 | objection de Fahim puis réforme de la multiplicité et du statut sous-puissant | éviter la pénalité universelle et le rejet trop large |
+| 18:14:02 | directive Owner EDGE-FLOW directement publiée | plafonner le travail ouvert et passer à l’exécution quand aucun défaut décisionnel ne reste |
 
-Les quatre frontières reprises par l’audit restent spécifiques : capital réel/live, première exposition scientifique irréversible, redéfinition de protocole gelé et mutation externe irréversible hors enveloppe. Elles ne justifient pas de solliciter Fahim pour chaque ligne de code.
+La séquence B2/B4 mérite d’être conservée. Q21 voulait tester du relatif sectoriel comme une nouveauté ; la revue retrouve des expressions antérieures et une fenêtre dépensée. Le test devient une **réplication négative**, pas une nouvelle confirmation. B4 explore une autre expression macro temporelle, ferme ses ambiguïtés avant exécution puis échoue aux critères prévus. Une interprétation « surtout en cash/neutre » est ensuite retirée : une exposition moyenne signée faible ne prouve pas une faible exposition brute.
 
-**Point d’équilibre :** supprimer le cérémonial redondant ; rendre exécutables les quelques interdictions importantes ; exiger une preuve proportionnée à la conclusion annoncée.
+Ces corrections sont de la valeur scientifique et méthodologique. Elles ne démontrent pas d’edge. Elles montrent surtout que des verdicts doivent conserver leur périmètre et leurs errata. [P03–P08, B09–B14]
 
-## 6. Ce que le code courant permet de dire aujourd’hui
+### 3.6 Les 8–10 octobre : les meilleures avancées combinent méthode courte et exécution reprenable
 
-Le [run 41265514716](https://github.com/fahimahmedb/Quant-Trade/actions/runs/41265514716), commencé le 1er novembre à 03:30:53 heure de Paris, est lié au head `13c9ff03f0898e9af28abaa3dab78a520c70c887`. Les étapes et les logs consultés montrent :
+EDGE-FLOW fixe un plafond de deux familles, pas un objectif de remplissage, un pilot et un falsifier, des objections capables de changer une décision, une communication par deltas et l’automatisation du mécanique.
 
-| Groupe | Preuve distante lue |
-|---|---|
-| Identité du head et compilation | PASS |
-| CP099 porté | 22 tests, OK |
-| PR46 + host-wake | 21 tests, OK |
-| Isolation du lanceur | contrôle statique PASS |
-| Échantillon Wave2 | 48 tests, OK |
-| Challenge GIGA-Q | 110 passed + 44 subtests |
-| Autorités fermées et checkout propre | PASS |
+F1 met aussi en évidence ce que la continuité requiert réellement. L’acquisition était privée, le successeur n’avait pas les données ni les mêmes accès, et certains correctifs locaux n’étaient pas publiés. La reprise ne pouvait donc pas se résoudre par un meilleur résumé.
 
-Il s’agit d’une **qualification ciblée** des deltas et raccords ; le workflow dit explicitement « Wave2 non-regression sample ». Le contrôle d’isolation du lanceur vérifie notamment des chaînes de source ; ce n’est pas, isolément, une démonstration de toutes les impossibilités de contournement. Les suites du pont apportent leurs propres tests de comportement.
+Le relais vers une acquisition Actions avec fichiers compressés, plan stable et contrôle de couverture change la situation. Un timeout après 300 minutes laisse 33 100 archives sur 35 789 récupérables ; la reprise complète les clés manquantes sans consommer un nouvel essai économique.
 
-On peut donc annoncer un raccord logiciel intégré et qualifié dans ce périmètre. On ne peut pas en déduire une installation actuelle, une indépendance scientifique complète, une qualification exhaustive du produit ou une capacité économique.
+F1 Stage A fournit une information positive mais faible et sous-puissante. Le Stage B scellé est négatif pour l’expression retenue ; la famille est fermée sans retune. Un échec de publication du commentaire ne justifie pas un nouveau calcul du résultat.
 
-| Dimension | État retenu |
-|---|---|
-| Descendance Wave2 dans le code courant | vérifiée ici |
-| Ports CP099/GIGA/PR46 | présents dans la comparaison et le registre ; suites ciblées vertes |
-| Couture vers le timer existant | source vérifiée ; qualification ciblée verte |
-| Santé hôte actuelle / release installée | inconnue ici |
-| Deux wakes automatiques avec résultat Codex réellement consommé | non prouvés |
-| Sélection d’une nouvelle mission après terminal | limite connue, en attente dans le routeur |
-| Chemin Quant complet courant exercé jusqu’au Book et au feedback | non établi par cette qualification ciblée |
-| Paper-live courant | non établi |
-| Valeur économique nette / capital réel | non démontrée / autorité fermée |
+**Le progrès efficace est ici très concret : les heures de collecte deviennent récupérables, le calcul ne dépend plus d’une session en vie et le négatif conduit à une décision.** [P09–P10, B15–B18]
 
-Le système peut accepter NO_TRADE comme décision correcte ; son objectif durable de découverte et de monétisation d’edge reste une ambition empirique. Une bonne architecture ne garantit aucun profit futur.
+### 3.7 Ensuite : qualification des sources, Research OS et convergence
 
-## 7. La cible à deux branches : réutiliser la paire existante
+COIN-M s’arrête sur la causalité et les modalités de sa source avant un résultat économique : ce n’est pas une réfutation de son mécanisme. EURUSD demeure un design/harness pré-outcome ; le moteur de volatilité existant est réparé et réutilisé plutôt que dupliqué.
 
-| Branche | Responsabilité recommandée | À éviter |
+Research OS, Edge Lab, identité des hypothèses, règles de reprise et mécanismes de mémoire gagnent en structure. Les CP/W1/Mega/Wave2 relient une partie substantielle du système.
+
+La comparaison Git actuelle prouve que Wave2 C2 `ebc72b9f…` est l’ancêtre commun direct retenu du code `13c9ff03…`, avec dix commits d’avance et aucun retard d’ascendance. Il faut donc cesser de parler de Wave2 comme d’un ancien produit absent de la lignée actuelle. Cela ne prouve pas, à lui seul, que toutes les branches parallèles ont une équivalence fonctionnelle. [B19–B20, S-ANCESTRY]
+
+### 3.8 Fin octobre : les mêmes pertes se reproduisent jusque dans le chantier de continuité
+
+WP1 distingue correctement un checkout inaccessible d’une preuve absente. L’accès GitHub rétabli retrouve un reçu Swagger, mais pas ses octets historiques ; les champs de source restent non qualifiés.
+
+WP2 établit un raccord synthétique, perd une première implémentation locale, reconstruit un candidat transportable, répare une alias mutable, obtient une revue bornée favorable, puis rencontre deux nouvelles objections P1/P2. Une correction locale est annoncée mais son push échoue. Le vert ultérieur du head distant antérieur ne qualifie pas cette correction locale.
+
+PR46 reproduit ensuite le défaut de capitalisation : deux implémentations parallèles annoncées, aucune retrouvée sur GitHub, leurs fichiers devenus irrécupérables. Un premier changement de procédure ne suffit même pas : une nouvelle prétention de transport via métadonnées PR ne publie toujours pas les octets.
+
+Le changement effectif intervient lorsque les fichiers complets et leurs empreintes sont persistés dans le commentaire distant. Des reproductions exactes ultérieures deviennent possibles. À partir d’un candidat durable, les réparations restent sur la même branche : l’accumulation redevient possible.
+
+Enfin, un worker avec un checkout périmé refuse correctement une mutation. C’est une bonne protection locale ; ce n’est pas une résolution du défaut distant. Le contrôle doit constater l’absence de progrès, changer de voie disponible et éviter de lancer deux réparateurs concurrents. [P11–P15, B20–B30]
+
+## 4. Les causes que les preuves permettent de retenir
+
+Les tableaux suivants séparent la force de l’interprétation de l’existence d’un événement. Ils ne constituent pas une mesure statistique des causes de tout le projet.
+
+| Conclusion | Appui | Portée et limite |
 |---|---|---|
-| `project/canonical` | objectif, état courant, décisions d’autorité, liens de preuve, histoire et backlog borné | deuxième runtime ou réécriture des verdicts scientifiques |
-| `code/canonical` | produit, tests, schémas exécutables, adaptateurs, services et workflows | mission courante reconstruite depuis Blue ou commentaires historiques |
+| 1. La perte de fichiers a causé du rework réel | WP2 V1 perdu, candidats Phase 1 irrécupérables | mécanisme documenté ; coût total non mesuré |
+| 2. La transmission des données était aussi nécessaire que celle du code | acquisition privée F1 inaccessible au successeur | connaître la prochaine action ne donne pas ses données |
+| 3. Une règle de continuation n’est pas un réveil | silence, rappels, nouvelles instructions | pas une preuve que tous les timers historiques étaient absents |
+| 4. Les limites d’un environnement ont été confondues avec celles du projet | checkout shallow/403 alors que GitHub natif fournit les objets | changer de voie légitime avant de déclarer un blocage global |
+| 5. Les revues sans accès exact ont produit peu de résultat substantiel | retours BLOCK/UNKNOWN sur WP2 | ces retours étaient honnêtes ; le mauvais routage était évitable |
+| 6. La critique a parfois trouvé des défauts déterminants | SEC main, shadow parsing, coûts F1, WP2, PR46 | elle n’est pas superflue par principe |
+| 7. Les allers-retours sont coûteux quand ils transportent surtout de la répétition | reformes TOKEN_EFFICIENCY et retransmissions | un diff substantiel ou une preuve exacte reste nécessaire |
+| 8. Le projet a parfois surinvesti la faisabilité | A2 différé et diagnostic de coûts parké après reset Owner | ne prouve pas que toute infrastructure était dispensable |
+| 9. Certains arrêts étaient scientifiquement nécessaires | fenêtre exposée, permission, source non causale | les retirer aurait produit de faux résultats |
+| 10. Une règle trop large peut empêcher la recherche utile | réforme du compteur et des statuts le 8 octobre | ne légitime aucun abaissement opportuniste après outcome |
+| 11. La fermeture administrative ne préjuge pas du contenu conservé | PR historiques closes, ports ultérieurs, Wave2 ancêtre | vérifier arbre, comportement et destination |
+| 12. Les réunions de composants ne suffisent pas | WP2 plan/evaluator sans execute, raccord timer manquant | exercer la chaîne réellement appelée |
+| 13. Les statuts générés peuvent gêner la qualification | STATE 371→377, 380→381, 1140→1148 | projection périmée distincte d’un défaut de sémantique |
+| 14. Les rôles doivent suivre les capacités réelles | exécuteur réseau et falsifier répartis selon l’accès | pas de partage fixe optimal démontré entre modèles |
+| 15. Une pause locale peut être bonne et une inertie globale mauvaise | NO_CHANGE sur checkout périmé, défaut distant toujours ouvert | le contrôleur doit rerouter, pas culpabiliser le worker prudent |
+| 16. La mémoire doit porter la succession des états | PASS puis contre-exemple puis réparation locale non publiée | ni effacer le PASS historique ni l’utiliser comme verdict actuel |
+| 17. Deux branches d’autorité ne suffisent pas si les entrées sont périmées | AGENTS code, README projet, default Blue | simplification documentaire encore nécessaire |
+| 18. L’autonomie de tâche ne garantit pas la direction du projet | task/prompt/issue/head fournis au lanceur | la sélection post-terminal reste une preuve séparée |
+| 19. L’activité automatique peut être utile sans être une capacité nouvelle | feeds, heartbeats, relectures de quotas identiques | mesure d’exploitation distincte du progrès produit |
+| 20. Les acquis peuvent réduire le travail restant, sans le quantifier | owners retrouvés, ports sélectifs, test de succession | aucune estimation de fin crédible à partir des seuls volumes |
 
-Les deux branches peuvent diverger par leurs arbres et servir des rôles différents. Elles n’ont pas à être fusionnées en permanence. Leur jonction se fait par les identités : le projet référence le SHA de code vérifié ; le code donne une route de reprise vers le projet. Le registre indique un propriétaire par capacité.
+Le contre-exemple à une explication trop simple est important : **alléger toute la vérification aurait fait avancer plus vite des erreurs**. Le bon objectif est de retirer les contrôles qui ne changent plus une décision, et de rendre les contrôles utiles moins dépendants du chat et d’une succession d’approbations humaines.
 
-### 7.1 Simplification utilisable immédiatement
+## 5. Ce qui a réellement bien fonctionné et mérite de devenir la méthode
 
-1. Aligner le README projet et le AGENTS du code sur le routeur canonique existant.
-2. Conserver trois points de lecture actifs : objectif, contrat agent bref, état courant. Les chemins techniques et preuves restent derrière des liens.
-3. Garder dans l’état courant la prochaine action, le blocage qui l’affecte et le critère de sortie. Éviter un NEXT_ACTION supplémentaire si cela duplique déjà ce contenu.
-4. Classer le vieux plan à deux branches comme plan historique partiellement exécuté : ses instructions de créer le candidat depuis Wave2 ne doivent plus refaire un candidat déjà créé.
-5. Faire utiliser la paire canonique par les nouveaux travaux, sans attendre la suppression des 277 autres références.
-6. Réconcilier les workflows, tâches planifiées et configurations qui ciblent encore une branche historique avant de la retirer.
+### 5.1 Reprendre les principes EDGE-FLOW, en les appliquant au lot courant
 
-Le North Star courant doit avoir un propriétaire explicite ; ses autres copies servent de pointeurs ou de snapshots épinglés. La même discipline vaut pour les schémas : les contrats exécutables restent dans le code, les décisions humaines dans le projet.
+La directive du 8 octobre est un des supports les plus utiles retrouvés. Elle propose :
 
-### 7.2 Retrait des branches : préserver les dépendances et les objets, puis supprimer les noms
+- peu de travail ouvert, sans obligation de remplir le plafond ;
+- réflexion indépendante avant convergence sur une décision intellectuelle ;
+- un responsable de livraison et un contradicteur ciblé ;
+- un défaut exprimé par sa conséquence sur données, protocole, sélection ou verdict ;
+- exécution lorsqu’aucune objection décisionnelle ne reste ;
+- deltas dans les commentaires, artefacts persistants pour les contenus complets ;
+- pas de nouveau framework tant que le verdict du travail engagé manque.
 
-Le plan existant signale une dépendance data-feeds à une branche dédiée. Sa santé courante et les autres références externes ne sont pas toutes réobservées ici. Elles restent à vérifier dans le lot de retrait, sans reprendre l’audit scientifique.
+Ces principes valent pour l’ingénierie aussi, avec un critère produit à la place du verdict économique. Ils ne réouvrent pas l’ancienne autorité de recherche : le 30 octobre, une directive Owner distincte a explicitement gelé la science pendant la qualification du système autonome. [P08, P16]
 
-Le reçu de retraite décrit une préservation de toutes les pointes comme parents Git de la branche projet. C’est une stratégie d’archivage ; **la présence de ce reçu n’est pas, seule, une preuve que chaque pointe courante est récupérable**. Une ascendance d’archive ne prouve pas davantage une intégration fonctionnelle dans l’arbre produit.
+### 5.2 Placer la publication durable dans la définition de la livraison
 
-Avant une suppression effective :
+Le chemin normal est un commit réellement poussé, dont la référence et les fichiers sont vérifiés. Si le worker ne peut pas publier, la tâche doit prévoir dès le départ un canal de transport qui conserve les fichiers exacts et un destinataire capable de les matérialiser.
 
-- réactualiser les références et leur SHA, avec protection contre une modification concurrente ;
-- établir pour chaque branche : absorbée, preuve archivée, donnée à migrer, dépendance à rediriger ou blocage ;
-- vérifier que toute pointe unique est joignable depuis une référence durable conservée, avec une récupération testée ;
-- préserver séparément discussions et preuves externes nécessaires : elles ne sont pas contenues dans un simple nom de branche ;
-- rediriger les workflows et sorties générées ; vérifier une collecte et une reprise équivalentes ;
-- vérifier le résultat distant et la disponibilité des deux branches canoniques.
+Le commentaire contenant des fichiers complets est une **solution de secours démontrée**, pas le format normal de chaque échange. Une fois l’artefact distant accessible, les échanges suivants sont des liens, hashes et deltas. Il ne faut pas remplacer l’ancien gaspillage par la recopie permanente de tous les fichiers.
 
-Le registre courant porte explicitement `DESTRUCTIVE_REPOSITORY_CLEANUP_AUTHORIZED=FALSE`. La demande présente est une appréciation et une consigne ; elle ne supprime pas de branches. Le lot de retrait pourra être préparé entièrement avant la décision finale, sans revenir demander une validation pour chaque ligne.
+### 5.3 Rendre l’acquisition et l’exécution reprenables
 
-**Décision proposée :** adopter immédiatement deux branches de travail ; traiter « exactement deux références de branche sur GitHub » comme un retrait technique borné, après préservation et redirection. Les tags/archives peuvent garder l’histoire sans rester des espaces de travail concurrents.
+Le cas F1 montre une amélioration tangible : manifeste stable, écriture atomique, fichiers déjà vérifiés ignorés à la reprise, couverture complète exigée avant calcul, résultat sauvegardé séparément de sa publication.
 
-### 7.3 Branche par défaut
+Le principe se généralise aux tâches longues : le travail déjà accompli doit pouvoir être réutilisé par un autre processus, avec les mêmes permissions scientifiques. Un nouvel essai d’infrastructure n’est pas automatiquement un nouvel essai économique ; il faut savoir ce qui a été réellement lu.
 
-La branche par défaut reste Blue. La proposition est de faire de `project/canonical` la porte d’entrée humaine et agent. Cette proposition ne constitue pas une migration réalisée.
+### 5.4 Préparer l’accès avant de lancer un agent ou une revue
 
-Avant changement, identifier les workflows planifiés dépendant du default et conserver leur fonctionnement sur la nouvelle entrée. Les permissions affichées dans une métadonnée de dépôt ne garantissent pas que le canal utilisé accepte une mutation administrative ; le précédent échec de migration est une limite à résoudre sur le canal réel.
+Un contrôle très court doit établir que le rôle peut lire le SHA exact et les preuves requises. Pour un builder, vérifier aussi la voie de publication disponible. Pour un exécuteur, vérifier l’accès à l’état utile sans exposer prématurément les outcomes.
 
-## 8. Méthode de travail à conserver après le ménage
+Ce préflight ne doit pas devenir un audit général : il répond à quelques questions binaires sur la mission immédiate. Une capacité manquante oriente vers le bon rôle ou le bon canal ; elle n’invite pas à réécrire le produit.
 
-Une mission commence par **le comportement final à obtenir**, son propriétaire et la preuve qui permet de dire terminé. Elle couvre un bloc substantiel et cohérent ; « la plus petite action » ne doit pas devenir une succession de micro-tâches administratives.
+### 5.5 Critiquer une affirmation par un contre-exemple qui la falsifie
 
-Le cycle recommandé est :
+Quelques exemples à conserver :
+- remplacer execute par une fonction qui échoue et vérifier que COMPLETE devient impossible ;
+- changer les données après t et vérifier que la sortie observable avant t ne change pas ;
+- modifier un input après claim/recovery et vérifier le rejet du résultat ;
+- comparer coût de liquidation à la date de sortie, pas seulement d’entrée ;
+- tester le vrai launcher et pas seulement sa fonction interne.
 
-1. Lire l’état courant et réconcilier les preuves nouvelles utiles.
-2. Chercher le propriétaire existant : réutiliser, raccorder, réparer.
-3. Choisir un lot qui rapproche un critère produit de sa satisfaction.
-4. Examiner un contre-exemple, un contournement et un angle mort pertinents.
-5. Exécuter la réparation ou conclure explicitement sans changement.
-6. Vérifier le comportement au niveau modifié, puis le raccord concerné.
-7. Pousser et vérifier le résultat durable ; mettre à jour seulement l’état nécessaire.
-8. Continuer dans le périmètre autorisé. Un checkpoint est une reprise possible, pas un arrêt automatique.
+Ces tests attaquent le comportement revendiqué. Ils sont plus informatifs que rejouer indéfiniment les mêmes suites vertes.
 
-Une activité apporte de la valeur lorsqu’elle livre un comportement utilisable, élimine un blocage, falsifie une voie ou résout une inconnue indispensable. Un rapport peut être nécessaire ; il ne remplace pas le comportement dont il parle.
+### 5.6 Réparer sur la même lignée et intégrer pendant le travail
 
-### Indicateurs utiles, sans nouveau tableau bureaucratique
+Quand le candidat distant existe, le cycle PR46 devient plus constructif : objection précise, réparation étroite, régression, head suivant. Les versions successives s’accumulent et restent inspectables.
 
-- critère produit satisfait / restant ;
-- capacité reliée et utilisée sur le chemin courant ;
-- reprises/routages humains nécessaires ;
-- temps d’exécution bloqué, avec cause observable ;
-- essais scientifiques admissibles et connaissance négative conservée ;
-- incidents de reprise/duplication/état périmé ;
-- coût mesuré lorsque disponible.
+Il faut appliquer cette logique aux builders horizontal, vertical et transversal : base commune explicite, interfaces convenues, propriétaire d’intégration, test de raccord et destination déterminée. Les trois angles restent utiles ; leurs branches ne doivent pas devenir trois produits permanents.
 
-Pas d’objectif de commits, de pages, de CP, de nombre d’agents ou de tests pour eux-mêmes. Aucun budget temporel « optimal » n’est démontré par les données présentes.
+## 6. Les règles à alléger, corriger ou préserver
 
-## 9. Suite logique du produit : une priorité actuelle, plusieurs preuves futures
+| Sujet | Règle à retenir | Allègement ou correction |
+|---|---|---|
+| Reprise | état actuel et dernier delta d’abord | ne pas relire tous les handoffs historiques |
+| Owner | décision importante ≠ décision réservée | préautoriser les réparations réversibles |
+| Lecture | ouvrir les preuves utiles au lot | pas d’archéologie pour remplir un UNKNOWN sans effet |
+| Revue | contre-exemple concret, périmètre clair | pas de nouvelle revue pour répéter l’absence d’objection |
+| Nombre de tours | deux tours ordinaires peuvent être un plafond de coordination utile | un défaut matériel non résolu interdit toujours de déclarer PASS ; un résultat nouveau justifie le travail ciblé |
+| Multiplicité | historique de sélection pertinent et familles déclarées avant résultat | ni compteur universel automatique ni remise à zéro par renommage/dataset |
+| Puissance | distinguer absence d’effet établie et résultat insuffisant | ne pas étiqueter chaque non-significatif « mécanisme mort » |
+| Mémoire des négatifs | verdict, périmètre et information nécessaire pour reconsidérer | garder l’idée sans refaire discrètement la même expression |
+| Génération | tâche bornée possible avant candidat identifié | screen concret avant freeze/handoff |
+| NOOP/IDLE | état vivant possible sans travail utile dû | ne pas faire travailler un agent uniquement pour qu’il soit occupé |
+| Délais | attente avec échéance et route de reprise | ne pas transformer le silence en approbation ou une cible de délai en garantie |
+| Échec CI | distinguer policy pré-job, dépendance, projection et défaut produit | réparer la bonne couche, puis exécuter les vérifications nécessaires |
+| Qualification | exacte sur son sujet et son périmètre | une projection seule ne demande pas une nouvelle revue sémantique complète si le diff le démontre |
+| Publication | commit distant vérifié, ou secours exact transportable | un SHA local et des métadonnées de PR ne suffisent pas |
+| Checkpoint | protège la reprise | n’arrête pas automatiquement la mission |
+| Risque externe | une frontière réelle bloque l’action concernée | ne pas reconvertir tout refus local en arrêt du projet |
 
-**Maintenant :** la priorité d’exécution du routeur reste la preuve VM multi-wake sur l’hôte existant authentifié. Tant que cet accès manque, elle reste BLOCK ; davantage de CI ne le remplace pas. La préparation documentaire de la simplification peut se faire sans prétendre lever ce blocage.
+**Ce que je ne retiendrais pas comme règle universelle :** toujours deux agents, toujours deux tâches prêtes, toujours un nouvel audit, toujours un seuil statistique croissant, toujours une approbation Owner parce que le sujet est important.
 
-**Après cette preuve :**
+## 7. La mémoire utile doit préserver trois choses différentes
 
-- vérifier la sélection et la succession de missions, en réutilisant les politiques existantes ;
-- faire exercer le chemin système canonique courant de bout en bout sur données synthétiques, jusqu’au Book persistant et au feedback, avec une reprise ciblée ;
-- relier une décision autonome suivante à ces résultats et montrer les critères qui la dirigent ;
-- réouvrir la recherche seulement dans son autorité, puis qualifier une expérience indépendante et ses coûts ;
-- établir séparément les prérequis du paper-live ; le capital réel ne suit pas automatiquement.
+Le nouveau détail révèle que le mot « mémoire » couvrait plusieurs besoins.
 
-C’est un ordre de validation proposé pour le produit. La présence de nombreuses briques peut réduire le travail de raccord ; elle ne permet pas d’annoncer leur durée ou leur achèvement sans exécution.
+| Mémoire | Exemple d’échec | Ce qui doit survivre |
+|---|---|---|
+| Compréhension | successeur sans contexte ou ancien router | objectif, décision actuelle, raison, preuve, prochaine action |
+| Matériaux | patch local disparu, données privées inaccessibles | fichiers exacts, données admises, manifests et emplacements récupérables |
+| Exécution | aucune action après fin de session ou attente silencieuse | tâche durable, propriétaire/lease, statut, événement ou échéance de réveil |
 
-## 10. Consigne complète que j’appliquerais à cette mission
+Un rapport peut résoudre une partie de la compréhension. Il ne préserve pas automatiquement les fichiers et ne déclenche pas une tâche. Un timer peut déclencher une tâche ; il ne lui donne pas automatiquement les bons objectifs et permissions.
 
-Le texte suivant est autonome et réutilisable. Il commande une appréciation du travail existant, puis une simplification préparée ; il n’ordonne pas un nouvel audit brut ni une suppression immédiate.
+La reprise compacte doit donc relier ces trois éléments, sans recopier tout leur contenu dans le même document.
 
----
+La meilleure preuve de reprise est qu’un processus frais peut retrouver le prochain lot, accéder à ses matériaux, vérifier les identités et poursuivre sans demander à Fahim de refaire le routage. Le test de succession antérieur est utile dans son périmètre ; la preuve VM multi-wake reste distincte.
 
-### QUANT-TRADE — APPRÉCIATION CUMULATIVE ET SIMPLIFICATION VERS DEUX BRANCHES
+## 8. Organisation proposée autour des deux branches existantes
 
-Tu dois convertir la reconstruction historique existante en compréhension utile, méthode de travail plus légère et plan de consolidation directement exécutable.
+### 8.1 Deux responsabilités, avec une relation explicite
 
-**Objectif final.** Quant vise un système persistant et autonome : données traçables → découverte/falsification → sélection → sizing/risque → exécution → Book persistant → retour d’expérience → prochaine action. Le succès économique reste une question empirique ; activité, code et CI n’en constituent pas la preuve.
+| Branche | Propriétaire de | Relation avec l’autre |
+|---|---|---|
+| `project/canonical` | objectif, état de programme, décisions, preuves référencées, historique et travaux restants | désigne le SHA code auquel s’applique chaque qualification |
+| `code/canonical` | logiciel, tests, schémas, services et workflows | donne une route courte vers l’état projet courant |
 
-**Point de départ.** Résous à distance `project/canonical` et `code/canonical`. Lis leur état courant et réconcilie ce qui a changé depuis les derniers checkpoints. Au 1er novembre, le projet est ancré à `e862ee10…` et le code à `13c9ff03…`, qualifié dans son périmètre ciblé par le run `41265514716`. Ces identités sont des bornes historiques, à ne pas supposer éternellement courantes.
+Ne pas créer deux nouvelles branches. Ne pas fusionner toute la branche projet dans l’arbre produit. Ne pas supposer qu’une ascendance d’archivage fait entrer ses fichiers dans le runtime.
 
-**Corpus obligatoire.** Utilise les 16 DEEP_WEEK, les 16 HANDOFF_WEEK, le MASTER_CURSOR, la clôture historique, le checkpoint final de décisions et le rapport factuel à 71 journées. Conserve un registre des documents réellement lus et de leurs SHA. Aucun mois ni journée indexée ne disparaît du bilan. Les jours sans trace et les détails inconnus restent tels quels.
+Les résultats opérationnels doivent conserver un support adapté. Une base, un artefact ou un stockage de données n’a pas à devenir un troisième projet de code ; son identité et son accès doivent être référencés sans le vider dans le routeur.
 
-Ne recommence pas les 6 393 commits. Descends aux fichiers/diffs/commentaires/logs primaires lorsqu’une conclusion importante est contestée, qu’une preuve manque ou qu’un choix de consolidation en dépend. Le corpus profond est décisionnel ; ne le présente jamais comme une lecture sémantique de chaque blob.
+### 8.2 Première passe de ménage, réversible et utile
 
-**Première passe : cumul.** Pour chaque journée active, conserve le point de départ, la demande, la construction ou correction, les tests annoncés/exécutés/réussis, l’intégration et le devenir. Une étape suivante s’ajoute aux précédentes : elle ne les efface pas. A mis de côté, B construit, C intégré et D invalidé doivent rester visibles avec leurs périmètres.
+Le code n’a pas changé depuis la précédente observation. Son AGENTS pointe encore vers les anciennes surfaces Blue ; le README projet commence encore par l’ancien audit partiel. Le default demeure Blue, tandis que le routeur courant désigne code/canonical et project/canonical.
 
-**Deuxième passe : interprétation.** Pour chaque conclusion, indique :
-- son appui daté ;
-- ce qui est fait vérifié, reconstruit ou déduction ;
-- l’effet sur l’objectif système ;
-- le contre-exemple ou la limite ;
-- la décision pratique qui en découle.
+Je recommande donc un lot documentaire restreint :
+1. faire rejoindre le routeur actuel depuis le README projet et le contrat agent du code ;
+2. garder l’ancien contenu comme histoire identifiée, sans le présenter comme instruction courante ;
+3. séparer explicitement le travail de lecture exhaustive de l’action produit ;
+4. reconnaître que les étapes déjà exécutées du vieux plan à deux branches sont terminées ;
+5. garder un seul emplacement pour la prochaine action et son blocage, plutôt qu’ajouter un nouveau NEXT_ACTION concurrent.
 
-Cherche aussi les succès méthodologiques : reproduction d’un défaut, refus d’un faux positif, négatif utile, bonne intégration, reprise durable, port sélectif, simplification de règle et réparation d’un raccord. Ne transforme pas l’audit en réquisitoire. Ne quantifie pas le gaspillage ou la proximité de fin sans données.
+Ce lot ne doit pas reconstruire Wave2 ni modifier la sémantique de code. Toute modification du checkout de déploiement reste identifiable ; elle ne doit pas hériter silencieusement du SHA de qualification antérieur.
 
-**Troisième passe : méthode.** Conserve ce qui a effectivement rapproché le produit de son objectif. Supprime les étapes de pilotage redondantes. Réserve les escalades aux frontières réelles ; les travaux réversibles et autorisés continuent sans Owner routing. Une règle doit viser un risque précis et être placée à la bonne transition ; ne réclame pas de preuve impossible avant que l’objet existe.
+### 8.3 Préparer le retrait des références par leurs dépendances
 
-**Quatrième passe : deux branches.** Réutilise la paire existante :
-- projet : objectif, décisions, état courant, références des preuves et mémoire ;
-- code : produit, tests, schémas, services et workflows.
+L’inventaire actuel expose 279 branches et 270 pointes distinctes. Ce nombre ne mesure ni 279 systèmes ni 279 capacités à fusionner.
 
-Ne crée pas deux nouvelles branches. Vérifie et corrige d’abord les portes d’entrée, sources de vérité et références contradictoires. Propose un seul propriétaire par capacité et une carte des dépendances. Distingue propriété du code, archive d’ascendance et intégration fonctionnelle.
+Le tableau de retrait doit réutiliser les inventaires existants et ranger chaque branche :
+- capacité absorbée dans le code courant ;
+- preuve ou expérience historique à conserver ;
+- code unique potentiellement utile, avec besoin précis ou PARK ;
+- données générées ou dépendance opérationnelle à rediriger ;
+- référence temporaire sans rôle encore actif.
 
-Prépare le devenir de toutes les branches actuelles par règles vérifiables : absorbée, archive unique, donnée à migrer, dépendance externe, historique ou blocage. Réutilise les inventaires et registres déjà produits. Une branche d’outputs ne disparaît qu’après preuve de conservation et redirection. Préserve les objets uniques et les preuves hors Git utiles. Ne fais aucune suppression ni migration administrative sur la seule base de ce prompt.
+Le reçu de retraite ancien annonce des pointes préservées comme parents Git. Réutiliser cette conservation lorsqu’elle est démontrée ; ne pas refaire un archivage intégral par principe. Avant une suppression actuelle, vérifier néanmoins que les objets uniques et les nouvelles pointes concernées restent récupérables.
 
-**Cinquième passe : challenge et correction.** Vérifie notamment :
-- le code qualifié appelle-t-il le chemin nominal réellement exécuté ?
-- une CI verte masque-t-elle une étape absente ou une objection indépendante ouverte ?
-- l’agent sans conversation trouve-t-il la même mission que le routeur courant ?
-- deux branches conservent-elles des autorités concurrentes ?
-- le retrait casserait-il scheduler, données, Site, configuration ou automatisation ?
-- le bilan confond-il pont autonome et Quant complet ?
+Les échanges GitHub, artefacts expirables, données privées et services externes ne sont pas préservés simplement parce que le commit est joignable. Il faut conserver ce qui est nécessaire aux décisions et à la reprise, sans promettre une récupération impossible d’objets déjà perdus.
 
-Corrige tes conclusions lorsque les preuves changent. Répète seulement si cela peut changer le résultat. UNKNOWN peut bloquer l’action concernée sans déclencher un audit général.
+### 8.4 Deux branches de travail d’abord, exactement deux références ensuite
 
-**Livrables.** Fournis un rapport cumulatif avec annexe quotidienne, des conclusions positives et négatives sourcées, une méthode courte conservée, une carte à deux branches, un lot de simplification préparé et une liste finie des vrais travaux restants. Le rapport détaillé et sa synthèse doivent coexister ; la synthèse ne remplace pas le détail.
+La paire canonique peut devenir la seule surface de nouveaux travaux pendant que les anciens noms restent historiques. Le retrait physique se fait après redirection des dépendances, notamment data-feeds et les workflows dépendant du default.
 
-**Continuité.** Travaille par lots cohérents. Après chaque lot substantiel et avant interruption, publie les identités, résultats, inconnus et prochaine action dans les supports GitHub existants. Vérifie la publication distante. À la reprise, réconcilie le curseur ; ne recommence pas le lot.
+L’état d’autorité consulté maintient le nettoyage destructif et le déploiement fermés. La présente mission réécrit l’appréciation ; elle n’autorise pas implicitement une suppression ou une activation. Le lot de retrait doit être préparé concrètement avant la décision finale, sans demandes de validation par fichier.
 
-**Frontières.** Aucun résultat historique n’est relancé. Aucun outcome neuf, science prospective, capital/live, déploiement ou retrait irréversible n’est autorisé implicitement. Prépare les actions réversibles dans l’autorité disponible. Si une approbation finale est nécessaire, apporte d’abord le lot concret et la raison exacte.
+La migration du default vers project/canonical est une option de simplification. Avant de l’appliquer, il faut préserver les schedules/workflows dont l’exécution dépend de cette branche et vérifier la permission effective du canal administratif. Le nom du default ne doit plus servir à choisir le produit.
 
-**Critère de fin.** Chaque journée indexée est représentée, chaque conclusion importante est traçable, les contradictions restent visibles, chaque capacité conservée a un propriétaire et chaque retrait proposé préserve sa valeur. L’agent suivant doit pouvoir agir avec l’état GitHub courant et un seul prochain lot, sans nouvelle enquête générale.
+## 9. Où le produit en est réellement à la photographie contrôlée
 
-Conclue par : résultat, raisons, limites, prochaine action.
-
----
-
-## 11. Challenge de la présente appréciation
-
-| Objection | Réponse retenue |
+| Niveau | État que les preuves permettent d’annoncer |
 |---|---|
-| « Tout ceci crée encore un audit » | L’analyse réutilise le corpus terminé. Elle ne déclenche ni collecte globale ni nouvelle architecture. Ses nouvelles vérifications visent le head, le chemin courant et les routes de reprise. |
-| « La gouvernance était nécessaire » | Oui pour les risques documentés. L’allègement porte sur la répétition, les autorités concurrentes et les Owner gates des réparations ordinaires. |
-| « Les deux branches résolvent tout » | Non : elles simplifient le travail ; la boucle runtime et la chaîne produit doivent encore être prouvées. |
-| « Tous les anciens travaux sont inutiles » | Faux : invariants, négatifs et ports sont explicitement conservés. L’ancien packaging ou nom de branche n’est pas le bon objet à restaurer. |
-| « Un vert actuel suffit » | Non : le run courant contient un échantillon Wave2 et des contrôles ciblés ; il n’exerce pas la VM. |
-| « Une archive par parents vaut intégration » | Non : joignabilité des objets et capacité active sont deux preuves distinctes. |
-| « Tout est complet parce que le cursor dit COMPLETE » | La clôture est décisionnelle et bornée ; elle déclare elle-même les limites de lecture. |
-| « L’inconnu prouve une lacune à réparer » | Non : il reste inconnu ; une réparation exige un défaut ou un besoin démontré. |
+| Histoire et causes | chronologie et analyse décisionnelle approfondies ; passe exhaustive documentaire encore ouverte |
+| Lignée produit | Wave2 est un ancêtre vérifié du code courant |
+| Deltas CP099/GIGA/PR46/host-wake | intégration décrite et qualification ciblée actuelle |
+| Qualification courante | run `41265514716` SUCCESS sur `13c9ff03…` |
+| VM installée et saine actuellement | non observée dans cette mission |
+| GPT-OSS→Codex→GPT-OSS, deux wakes automatiques | non démontré dans les preuves courantes consultées |
+| Nouvelle mission après terminal DONE/PARK | limite connue ; pas prouvée par le lanceur à tâche fournie |
+| Chaîne Quant courante entière, jusqu’au Book et feedback | pas démontrée par le seul run ciblé |
+| Paper-live actuel | non établi |
+| Edge économique final, gains réels | non démontrés ; capital/live non autorisés |
 
-**Décision :** conserver le code canonique courant comme base de travail qualifiée dans son périmètre ; réutiliser l’histoire pour orienter et éviter les reprises ; aligner les entrées documentaires ; préparer le retrait par dépendances et préservation. Ne pas rouvrir la construction globale.
+Le workflow courant comprend un échantillon Wave2 et des régressions focalisées. Le vert est réel ; sa portée ne doit pas devenir « tout le système a été validé ». La consultation de ce run n’est pas une nouvelle exécution des tests.
 
-## 12. Sources primaires et corpus
+Le fait que les composants existent et soient parfois avancés peut limiter les réparations nécessaires. Il ne suffit pas à annoncer qu’il ne reste qu’à sélectionner des idées économiques.
 
-Base des liens projet : [project/canonical figé](https://github.com/fahimahmedb/Quant-Trade/tree/e862ee10b4a2d3eee319004614b75677412973ff).  
-Base du code : [code/canonical figé](https://github.com/fahimahmedb/Quant-Trade/tree/13c9ff03f0898e9af28abaa3dab78a520c70c887).
+La directive du 30 octobre vise plusieurs tâches techniques consécutives sans routage humain. **Deux wakes sont un canary du pont ; ils ne peuvent pas, à eux seuls, prouver la sélection de missions et la fin de Quant.** Utiliser des noms de verdicts différents pour ces objets éviterait le retour de cette confusion. [P16, S-STATE, S-RUN]
 
-- [Master cursor profond](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/MASTER_CURSOR.md).
-- [État projet courant à la photographie](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/CURRENT_PROJECT_STATE.md).
-- [Clôture historique](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/FORENSIC_HISTORY_CLOSURE_2026-11-01.md).
-- [Checkpoint final des décisions](https://github.com/fahimahmedb/Quant-Trade/blob/73878dda9f1452e1dbb89e832c792510d0185807/governance/forensic-20261031/deep/CHECKPOINT_DECISION_HISTORY_FINAL_20261101.md).
-- [Comparaison Wave2→code courant](https://github.com/fahimahmedb/Quant-Trade/compare/ebc72b9fd14f91420c37e0b7607f9bfb584a289a...13c9ff03f0898e9af28abaa3dab78a520c70c887).
-- [Workflow courant](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/.github/workflows/canonical-code-qualification.yml) ; [run 41265514716](https://github.com/fahimahmedb/Quant-Trade/actions/runs/41265514716) ; job `124727398257`, étapes et log consultés.
-- [Lanceur borné](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/scripts/gpt_oss_orchestrator.py) ; [host-wake](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/research/research_os/host_wake.py).
-- [AGENTS du code](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/AGENTS.md) ; [README du projet](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/README.md).
-- [État d’autorité](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/AUTHORITY_STATE.json) ; [registre de capacités](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/CAPABILITY_REGISTRY.md).
-- [Plan historique à deux branches](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/forensic-20261031/TWO_BRANCH_CONVERGENCE_PLAN.md).
-- [Reçu historique de retrait préparé](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/BRANCH_RETIREMENT_RECEIPT.json).
-- Rapport factuel cumulatif original du 1er novembre, fichier `libfile_963a06b4d4ac81919710b05a8d6561a0` : source des 71 entrées quotidiennes reprises dans l’annexe suivante. Son état ancien est complété par la reconstruction profonde et les contrôles actuels ; son histoire n’est pas réécrite.
+## 10. Prochaine trajectoire, sans nouvelle architecture générale
 
-Les références des 16 semaines et leurs blobs sont données après l’annexe. Le registre de lecture a vérifié les octets Git des copies des 38 documents projet collectés ; cela vérifie leur identité, pas leur vérité scientifique.
+### Travail autorisé par la présente mission
 
+Réécriture fondée sur les nouveaux lots, corrections d’interprétation, rapprochement de couverture et publication de cette mémoire. Aucun nouveau test économique, déploiement ou retrait de branche n’est exécuté.
 
-## Annexe A — Lecture interprétative des 71 journées, sans remplacement des faits
+### Prochain lot de simplification recommandé
 
-Chaque entrée garde les faits du rapport initial à sa photographie. L’appréciation ajoute la lecture du corpus profond. Les sources hebdomadaires sont épinglées ; les déclarations de tests restent des déclarations lorsqu’elles n’ont pas été vérifiées ici.
+Aligner les portes d’entrée et les sources d’autorité, conserver un code owner par capacité, puis préparer le tableau de retrait et les redirections. Cela réduit immédiatement le risque de reprise sur la mauvaise époque.
+
+La passe exhaustive continue selon son propre curseur si son autorisation reste active ; elle n’a pas à refaire l’inventaire ni les 30 lots. Une précision statistique du compteur se corrige par union d’identifiants, pas par nouvelle lecture intégrale.
+
+### Priorité runtime actuelle
+
+L’état courant donne la priorité à une preuve multi-wake sur l’hôte existant authentifié. Tant qu’aucun canal d’exécution sur cet hôte n’est disponible, cette action reste bloquée ; davantage de CI ne crée pas l’accès.
+
+À l’arrivée de cet accès : inventorier le service et la release actifs, raccorder le candidat seulement si nécessaire, puis obtenir un résultat Codex réel consommé par une décision suivante et tester la reprise concernée. Ne pas substituer des commentaires humains à une boucle sans humain.
+
+### Après la preuve du pont
+
+Réutiliser la sélection de travail déjà existante pour éprouver le passage d’une tâche terminale à la suivante. Choisir les critères incomplets de la phase courante, avec leurs dépendances et permissions, plutôt que demander au modèle de « faire ce qui semble utile ».
+
+Puis exercer le chemin système canonique actuel sur un scénario synthétique cohérent : données → recherche → opportunité → risque/exécution papier → Book persistant → feedback → prochaine action. Réparer uniquement les coutures défaillantes, sans reconstruire les modules.
+
+La recherche et le paper-live disposent ensuite de leurs propres conditions de réouverture et de qualification. La construction d’un système peut être clôturée sur des comportements finis ; la découverte d’edge et l’apprentissage constituent ensuite une activité continue, dont le succès économique reste empirique.
+
+## 11. La méthode courte que je garderais
+
+**Avant :** objectif concret, code/état exacts et accès utiles.  
+**Pendant :** un lot cohérent, un propriétaire, un contradicteur pertinent, une destination d’intégration.  
+**Après :** résultat réellement observé, fichiers récupérables, preuve distante et prochaine action.
+
+La mission continue sans Fahim pour les choix réversibles compris dans son enveloppe. Elle ne continue pas à produire des travaux périphériques pour éviter un état BLOCK ou IDLE.
+
+L’état de reprise minimal doit permettre de retrouver :
+- ce qui doit être terminé ;
+- le sujet et le SHA concernés ;
+- le résultat et sa preuve ;
+- l’objection encore ouverte ou sa résolution ;
+- l’action suivante, son propriétaire et son déclencheur ;
+- la frontière qui exigerait une décision externe.
+
+Ces informations peuvent rester dans les supports actuels. La proposition n’exige ni nouveau moteur ni nouvelle couche de formulaires.
+
+Une livraison utile satisfait un critère produit, retire un blocage, falsifie une voie ou résout une inconnue indispensable. Un nouveau document, une nouvelle suite de tests ou une nouvelle branche ne compte pas automatiquement comme capacité livrée.
+
+## 12. Consigne révisée, prête à être reprise
+
+> Reprends Quant-Trade depuis les références distantes de project/canonical, code/canonical et du corpus d’audit. Traite les anciens rapports comme des sources versionnées, pas comme une autorité supérieure aux nouvelles preuves.
+>
+> Lis les nouveaux lots non encore utilisés par l’appréciation, conserve la chronologie quotidienne existante et reconstruis les états successifs : demande, construction, défaut, correction, qualification, publication, intégration, utilisation et devenir. Une version suivante n’efface pas la précédente.
+>
+> Réécris l’appréciation entière au regard de l’objectif système autonome. Pour chaque conclusion importante, donne un événement daté ou un objet exact, distingue déclaration et vérification, expose une limite ou un contre-exemple, puis indique la conséquence pratique.
+>
+> Recherche autant les progrès efficaces que les échecs. Réemploie les pratiques déjà démontrées : EDGE-FLOW, communication par deltas, préflight d’accès, publication vérifiée, acquisitions reprenables, mémoire des résultats et réparations sur la même lignée. Ne crée pas de méthode supplémentaire lorsque les supports actuels suffisent.
+>
+> Réconcilie les compteurs par identités stables. La somme de compteurs historiques peut compter deux fois un objet. INDEXÉ n’est pas LU ; LU n’est pas VÉRIFIÉ ; objet archivé n’est pas capacité intégrée. Déduplique les octets identiques sans perdre les événements et leurs dates.
+>
+> Ne rouvre les sources brutes que pour vérifier une conclusion importante ou une contradiction. Ne relance pas les 6 393 commits, les anciens essais ou les lots terminés. La lecture exhaustive et le chemin produit ont des états séparés.
+>
+> Pour simplifier, réutilise code/canonical comme propriétaire du produit et project/canonical comme propriétaire de l’objectif, des décisions et de l’état courant. Aligne d’abord les portes d’entrée. Prépare ensuite le devenir de chaque référence en réutilisant les registres existants, en préservant les objets uniques et en redirigeant les dépendances.
+>
+> Ne restaure pas une branche entière à partir de son nom ou de son âge. Détermine si sa valeur est déjà intégrée, s’il manque un raccord, si un défaut reproduit exige une réparation, ou si le bon résultat est PARK/NO_CHANGE_REQUIRED.
+>
+> Préserve les critères scientifiques aux transitions qui les nécessitent. Ne convertis pas la multiplicité en compteur universel automatique, ni un manque de puissance en rejet définitif. N’abaisse aucun seuil après avoir vu le résultat.
+>
+> Continue les décisions réversibles autorisées. Une difficulté de checkout n’est pas automatiquement un blocage global : utilise un canal légitime disponible. Si tous les canaux nécessaires manquent, bloque cette action précisément et conserve la preuve. Ne demande pas à Fahim de router les étapes ordinaires.
+>
+> Produis le rapport détaillé, l’annexe quotidienne cumulative, les corrections du rapport précédent, la méthode à garder et un lot de ménage concret. Prépare toute mutation irréversible avant de demander la décision finale. N’exécute aucune suppression, activation, expérience ou extension d’autorité par simple effet du texte.
+>
+> Termine par le résultat, les raisons, les limites et la prochaine action. Publie et relis la mémoire GitHub ; l’agent suivant doit pouvoir continuer sans reprendre cette analyse depuis zéro.
+
+## 13. Challenge de cette réécriture et vérifications effectuées
+
+| Objection à mon diagnostic | Traitement |
+|---|---|
+| Tout attribuer à la gouvernance | rejeté : défauts scientifiques, accès, quotas, matériaux perdus et vrais raccords manquants sont distingués |
+| Se fier aux nouveaux résumés uniquement | 15 commentaires primaires rapprochés de leurs SHA-256 de collecte ; directive de gel Owner lue directement ; heads et run actuels revérifiés |
+| Faire croire que le nouvel audit est complet | rejeté : état actif et couverture corrigée, sans clôture inventée |
+| Retenir le vert WP2 et oublier les objections | rejeté : PASS historique, objections, patch local et absence de preuve distante coexistent |
+| Oublier la réforme de multiplicité | corrigé explicitement ; historique de sélection et budget familial restent distincts |
+| Déclarer inutiles toutes les répétitions de revue | rejeté : plusieurs revues tardives ont changé la décision ; les revues sans accès et les répétitions sans delta sont critiquées séparément |
+| Refaire un système de continuité | rejeté : reprise des mécanismes existants, publication et raccord avant architecture |
+| Deux branches suffisent à prouver Quant | rejeté : topologie du dépôt, runtime, science et économie sont séparés |
+| NO_CHANGE_REQUIRED termine toujours une mission | corrigé : bon verdict local possible, mais le contrôleur doit traiter le travail restant |
+| Réparer les compteurs en modifiant le curseur d’un autre agent | non exécuté : la correction est documentée ici et dans le routeur projet ; le curseur source reste intact |
+
+**Vérifications nouvelles de cette mission :**
+- 31 objets Git collectés pour la nouvelle passe : 30 lots + un curseur ; octets confrontés à leurs blobs Git ;
+- 307 identifiants de lots uniques ; 297 READ, 10 BYTE_IDENTICAL ; dix relations d’identité valides ; empreintes des 307 objets concordantes avec le registre collecté ;
+- union avec les sept objets de base calculée explicitement ; six recouvrements identifiés ;
+- quinze corps de commentaires primaires récupérés ; leurs quinze SHA-256 correspondent aux empreintes de l’audit ;
+- comparaison Wave2→head courant et identité/conclusion du run ciblé revérifiées ;
+- aucun test logiciel nouveau exécuté ; aucun runtime externe observé ; aucun outcome neuf acquis ; aucune branche supprimée.
+
+Les 15 commentaires primaires confortent les conclusions qu’ils supportent. Ils ne constituent pas une vérification indépendante de tous les calculs ou exécutions que leurs auteurs rapportent.
+
+## 14. Résultat, limites et décision proposée
+
+**Résultat :** l’histoire montre une accumulation technique et scientifique réelle, plusieurs méthodes efficaces et des pertes de capitalisation précisément documentées. Elle ne montre ni un projet vide, ni un système autonome complet déjà prouvé.
+
+**Raisons :** les contrôles ont évité des faux succès ; la persistance des matériaux et le déclenchement des prochaines actions n’ont pas toujours suivi. Quand publication, acquisition et intégration sont devenues reprenables, les progrès ont mieux survécu aux sessions.
+
+**Limites :** couverture exhaustive encore incomplète ; calculs historiques non rejoués ; runtime actuel non observé ; absence de preuve finale d’edge et de paper-live. Les nouveaux lots enrichissent l’interprétation ; ils ne démontrent pas un port logiciel supplémentaire nécessaire.
+
+**Décision proposée :** conserver la lignée actuelle, aligner ses entrées, travailler seulement sur la paire canonique, préparer le retrait des références par dépendances et préservation, puis fermer le chemin d’exécution actuel par ses preuves réelles. La simplification doit réduire les occasions de recommencer.
+
+**Prochaine action documentaire :** corriger les portes d’entrée périmées dans un lot restreint, avec une seule route de reprise.  
+**Prochaine action runtime selon l’état courant :** canary sur l’hôte existant authentifié ; si cet accès manque, BLOCK ciblé, sans nouvelle architecture.
+
+## Annexe A — Les 71 journées, avec leur évolution cumulée
+
+Les faits initiaux ci-dessous proviennent du rapport factuel cumulatif. Ils sont conservés à leur photographie, puis complétés par l’appréciation réécrite ; leurs déclarations de tests ne deviennent pas de nouvelles exécutions vérifiées. Les entrées journalières suivent les dates UTC de l’index d’origine. Les heures détaillées en section 3.5 sont converties en Europe/Paris ; on ne décale pas artificiellement toutes les journées de l’ancien index.
+
+Les journées du 8–10 et du 30–31 octobre reçoivent les précisions de la nouvelle passe. Les autres états restent liés au corpus antérieur et à leur devenir connu. Une absence de nouveau détail ne vaut ni confirmation ni oubli de l’état antérieur.
 
 ### 2026-07-13 — Démarrage NASDAQ, diagnostics et prédiction
 
-**Faits conservés à la photographie initiale :** Les commits introduisent diagnostics, volatilité, données NASDAQ, prediction.py, overlay et meta-labeling. La PR #1 est ouverte ; sa description rapporte l’absence de signal actif supérieur au Buy & Hold selon le seuil déclaré.
+**Faits de départ conservés :** Les commits introduisent diagnostics, volatilité, données NASDAQ, prediction.py, overlay et meta-labeling. La PR #1 est ouverte ; sa description rapporte l’absence de signal actif supérieur au Buy & Hold selon le seuil déclaré.
 
-**Appréciation :** Socle de recherche réel ; sa maturité économique dépend des corrections et verdicts ultérieurs.
+**Devenir et appréciation réécrite :** Point de départ : outils de recherche et premiers résultats. L’ambition système viendra ensuite ; ne pas juger ce socle comme un produit autonome déjà livré.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md).
+**Références :** W01.
 
 ### 2026-07-14 — Pipeline intégré puis premiers correctifs de causalité
 
-**Faits conservés à la photographie initiale :** Ajout de integrated_pipeline.py, d’ensembles et de tests cross-market. Un rapport annonce une généralisation échouée. PBO/CSCV et tests anti-lookahead apparaissent ensuite ; overlay.py et volatility.py sont corrigés.
+**Faits de départ conservés :** Ajout de integrated_pipeline.py, d’ensembles et de tests cross-market. Un rapport annonce une généralisation échouée. PBO/CSCV et tests anti-lookahead apparaissent ensuite ; overlay.py et volatility.py sont corrigés.
 
-**Appréciation :** Un défaut reproduit puis corrigé apporte plus de confiance qu’un rapport de généralisation seul.
+**Devenir et appréciation réécrite :** Le résultat initial est suivi d’un test de causalité et de correctifs. La valeur durable est la correction, avec conservation de ce qu’elle invalide.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md).
+**Références :** W01.
 
 ### 2026-07-15 — Embargo, sigma causal et simplification déclarée
 
-**Faits conservés à la photographie initiale :** Pré-enregistrement cap=1,50/pctl=95 et embargo de 21 jours ; sigma triple-barrier calculé en walk-forward. Un test d’isolation est ajouté. Le commit 5932795643 consigne un retour à Buy & Hold.
+**Faits de départ conservés :** Pré-enregistrement cap=1,50/pctl=95 et embargo de 21 jours ; sigma triple-barrier calculé en walk-forward. Un test d’isolation est ajouté. Le commit 5932795643 consigne un retour à Buy & Hold.
 
-**Appréciation :** La simplification vers une baseline est un progrès lorsqu’une couche ajoute une complexité sans valeur validée.
+**Devenir et appréciation réécrite :** Le gel et la simplification réduisent les degrés de liberté. La baseline devient une issue acceptable lorsque la surcouche n’apporte pas de valeur démontrée.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md).
+**Références :** W01.
 
 ### 2026-07-20 — Annonce d’un robot paper
 
-**Faits conservés à la photographie initiale :** Le commit 97b961cece annonce un robot paper sans coût et un déploiement « complete ». Les sources lues ne donnent pas de preuve directe d’une installation externe et de sa continuité.
+**Faits de départ conservés :** Le commit 97b961cece annonce un robot paper sans coût et un déploiement « complete ». Les sources lues ne donnent pas de preuve directe d’une installation externe et de sa continuité.
 
-**Appréciation :** Un package de déploiement n’établit pas l’installation ni l’utilisation ; garder cette frontière dès la livraison.
+**Devenir et appréciation réécrite :** La construction d’un robot déployable est une étape distincte de son installation et de son exploitation ; le label historique ne ferme pas ces deux dernières preuves.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md).
+**Références :** W02.
 
 ### 2026-07-24 — Audit de robustesse A/C/D
 
-**Faits conservés à la photographie initiale :** Correctifs annoncés de reproductibilité SPA, walk-forward et alignement du proxy. Ajout d’un driver de perturbation, régimes, stress cross-window et CSCV/PBO ; publication de sorties et d’un statut « deployment ready ».
+**Faits de départ conservés :** Correctifs annoncés de reproductibilité SPA, walk-forward et alignement du proxy. Ajout d’un driver de perturbation, régimes, stress cross-window et CSCV/PBO ; publication de sorties et d’un statut « deployment ready ».
 
-**Appréciation :** Les recettes de robustesse sont réutilisables ; leur verdict favorable reste antérieur aux invalidations du 25.
+**Devenir et appréciation réécrite :** Les recettes de robustesse restent utiles. Leur conclusion de maturité doit être lue avec les erreurs découvertes le lendemain.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md).
+**Références :** W02.
 
 ### 2026-07-25 — Réorganisation et invalidation de résultats
 
-**Faits conservés à la photographie initiale :** Déplacement du travail dans finance/, divers/robot-politique/ et cours/. Le commit f70ae6713d annonce des corrections de calc_mdd() et frac_diff() et requalifie plusieurs résultats. O5 est décrit en fin de journée comme overlay défensif.
+**Faits de départ conservés :** Déplacement du travail dans finance/, divers/robot-politique/ et cours/. Le commit f70ae6713d annonce des corrections de calc_mdd() et frac_diff() et requalifie plusieurs résultats. O5 est décrit en fin de journée comme overlay défensif.
 
-**Appréciation :** Conserver l’invalidation avec le résultat initial évite de ressusciter plus tard une performance erronée.
+**Devenir et appréciation réécrite :** L’invalidation est un acquis méthodologique : elle empêche de réutiliser un faux résultat favorable. Le mécanisme et son implémentation erronée ont des destins distincts.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md).
+**Références :** W02.
 
 ### 2026-07-26 — S5, package paper et rebuild anti-snooping
 
-**Faits conservés à la photographie initiale :** S5/EMA est annoncée candidate cross-market avec correction DSR encore prévue. Publication d’un package paper, puis rebuild anti-data-snooping et itérations ML. La première tentative d’Iteration 3 est retirée après un off-by-one et 48 erreurs sur 50.
+**Faits de départ conservés :** S5/EMA est annoncée candidate cross-market avec correction DSR encore prévue. Publication d’un package paper, puis rebuild anti-data-snooping et itérations ML. La première tentative d’Iteration 3 est retirée après un off-by-one et 48 erreurs sur 50.
 
-**Appréciation :** Les annonces S5, le rebuild et l’itération en échec sont trois états distincts ; le retry annoncé ne prouve pas son succès.
+**Devenir et appréciation réécrite :** La succession candidate S5, rebuild causal, package et itération en erreur doit rester visible. Ni l’emballage ni l’annonce d’un retry ne valent preuve d’utilisation ou de réussite.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md).
+**Références :** W02.
 
 ### 2026-07-27 — Exploration ML, test unique D-v2 et alternatives
 
-**Faits conservés à la photographie initiale :** La lignée publie des itérations ML, des utilitaires Telegram et PROTOCOLE_ANTI_SNOOPING.md. D-v2 est pré-enregistrée puis rapportée en échec 0/3 marchés. Des alternatives Kelly/risk-parity sont explorées.
+**Faits de départ conservés :** La lignée publie des itérations ML, des utilitaires Telegram et PROTOCOLE_ANTI_SNOOPING.md. D-v2 est pré-enregistrée puis rapportée en échec 0/3 marchés. Des alternatives Kelly/risk-parity sont explorées.
 
-**Appréciation :** La recherche devient plus organisée ; le gel D-v2 n’efface pas l’information déjà apprise sur ses marchés.
+**Devenir et appréciation réécrite :** La recherche se structure et ferme D-v2. Les marchés ayant inspiré sa modification ne sont pas redevenus une validation vierge par simple pré-enregistrement.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-27_2026-08-02.md).
+**Références :** W03.
 
 ### 2026-07-28 — Backlog non-ML industrialisé
 
-**Faits conservés à la photographie initiale :** Pré-enregistrements, exécutions, audits indépendants, anti-cheat et classements PASS/FAIL se succèdent. NONML_STRATEGY_BACKLOG.md, des PREREG et des pistes PEAD/funding-rate apparaissent.
+**Faits de départ conservés :** Pré-enregistrements, exécutions, audits indépendants, anti-cheat et classements PASS/FAIL se succèdent. NONML_STRATEGY_BACKLOG.md, des PREREG et des pistes PEAD/funding-rate apparaissent.
 
-**Appréciation :** Une factory répétable apparaît ; son débit doit s’accompagner du comptage de la recherche adaptative globale.
+**Devenir et appréciation réécrite :** L’industrialisation constitue une capacité de recherche. Son débit nécessite une mémoire de sélection ; les expériences ne sont pas des modules indépendants.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-27_2026-08-02.md).
+**Références :** W03.
 
 ### 2026-07-29 — Audit adversarial SPA/DSR et fermeture de PR #1
 
-**Faits conservés à la photographie initiale :** Les cycles se poursuivent. Le commit c60c8ab20b3f08add097e25e7295ba1196b0e4a6 rapporte un faux positif de l’audit corrigé et « H0 non rejetée ». PR #1 est fermée sans fusion à 17:50:01 UTC selon la timeline reprise.
+**Faits de départ conservés :** Les cycles se poursuivent. Le commit c60c8ab20b3f08add097e25e7295ba1196b0e4a6 rapporte un faux positif de l’audit corrigé et « H0 non rejetée ». PR #1 est fermée sans fusion à 17:50:01 UTC selon la timeline reprise.
 
-**Appréciation :** Le challenge corrige aussi son propre calcul ; retenir le verdict familial final plutôt que les PASS intermédiaires.
+**Devenir et appréciation réécrite :** Le challenge final corrige aussi une erreur de son propre calcul et limite les PASS antérieurs. La réforme ultérieure par familles complète cette discipline sans l’effacer.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-27_2026-08-02.md).
+**Références :** W03.
 
 ### 2026-08-04 — Référence au cycle TIPS #202
 
-**Faits conservés à la photographie initiale :** Une référence de la timeline PR #1 pointe vers le cycle #202, overlay défensif DFII10, rapporté FAIL net 0/5. Aucun commit daté du jour ne figure dans le corpus principal.
+**Faits de départ conservés :** Une référence de la timeline PR #1 pointe vers le cycle #202, overlay défensif DFII10, rapporté FAIL net 0/5. Aucun commit daté du jour ne figure dans le corpus principal.
 
-**Appréciation :** Un test causal propre peut conclure à un échec économique ; cette séparation est utile et réutilisable.
+**Devenir et appréciation réécrite :** Causalité et alignement corrects peuvent aboutir à un échec économique. Cette séparation permet d’apprendre sans confondre infrastructure et edge.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md).
+**Références :** W04.
 
 ### 2026-08-05 — Batterie Règle 9
 
-**Faits conservés à la photographie initiale :** Trois références portent sur les cycles #226, #229 et #247. Le cas Yang-Zhang est rapporté 4/5 avec DSR échoué ; les autres restent également non validés selon la batterie.
+**Faits de départ conservés :** Trois références portent sur les cycles #226, #229 et #247. Le cas Yang-Zhang est rapporté 4/5 avec DSR échoué ; les autres restent également non validés selon la batterie.
 
-**Appréciation :** Quatre contrôles réussis sur cinq ne suffisent pas si le cinquième est obligatoire ; l’ancien calcul DSR garde ses limites.
+**Devenir et appréciation réécrite :** Un contrôle obligatoire échoué suffit à refuser la promotion. L’exemple ne valide pas une pénalité universelle pour toutes les familles futures.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md).
+**Références :** W04.
 
 ### 2026-08-06 — Fermeture déclarée du canal monétaire
 
-**Faits conservés à la photographie initiale :** Le cycle #347 WALCL est rapporté FAIL net 0/5 ; son message déclare fermer le canal après M2, M2V et WALCL, conformément au bornage pré-enregistré.
+**Faits de départ conservés :** Le cycle #347 WALCL est rapporté FAIL net 0/5 ; son message déclare fermer le canal après M2, M2V et WALCL, conformément au bornage pré-enregistré.
 
-**Appréciation :** Fermer une famille bornée crée une mémoire utile, sans prétendre rejeter tout mécanisme monétaire possible.
+**Devenir et appréciation réécrite :** La fermeture du canal dans son périmètre économise des recherches répétées ; elle ne devient pas un verdict universel sur toutes les hypothèses monétaires.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md).
+**Références :** W04.
 
 ### 2026-08-07 — Short-volume et Form 4 négatifs
 
-**Faits conservés à la photographie initiale :** Deux références PR #1 concernent le ratio FINRA QQQ et la pression nette des initiés SEC Form 4, rapportés FAIL net 0/5. Une transaction MSFT au prix aberrant est exclue selon le compte rendu.
+**Faits de départ conservés :** Deux références PR #1 concernent le ratio FINRA QQQ et la pression nette des initiés SEC Form 4, rapportés FAIL net 0/5. Une transaction MSFT au prix aberrant est exclue selon le compte rendu.
 
-**Appréciation :** Qualité de source et lien économique au marché sont deux questions ; conserver les anomalies et les négatifs.
+**Devenir et appréciation réécrite :** Conserver l’échec et l’anomalie de source. Un protocole propre ne rend pas automatiquement pertinente une variable pour tous les marchés.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md).
+**Références :** W04.
 
 ### 2026-08-13 — Doublons refusés avant calcul
 
-**Faits conservés à la photographie initiale :** Le commit d93c92bc7a28c7ee7fa4e012a0c8cce2f88ad67a retire des idées déjà couvertes. Aucun pré-enregistrement, script ou résultat n’est créé pour #420. La nouveauté doit désormais être justifiée dès l’entrée en file.
+**Faits de départ conservés :** Le commit d93c92bc7a28c7ee7fa4e012a0c8cce2f88ad67a retire des idées déjà couvertes. Aucun pré-enregistrement, script ou résultat n’est créé pour #420. La nouveauté doit désormais être justifiée dès l’entrée en file.
 
-**Appréciation :** Déplacer le screen avant le gel du candidat ; ne pas exiger une preuve de nouveauté avant toute tâche de génération.
+**Devenir et appréciation réécrite :** La mémoire doit agir avant le gel d’un candidat concret. La tâche de génération en amont peut rester légère, sans preuve prématurée de nouveauté.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-10_2026-08-16.md).
+**Références :** W05.
 
 ### 2026-09-01 — Introduction de restaurant-stock
 
-**Faits conservés à la photographie initiale :** Une branche issue de l’ancienne base 35cf6d626e crée restaurant-stock, FastAPI/Jinja2/SQLite. Des correctifs UI et mouvements de stock suivent. Deux runs de tests sont rapportés réussis dans la source.
+**Faits de départ conservés :** Une branche issue de l’ancienne base 35cf6d626e crée restaurant-stock, FastAPI/Jinja2/SQLite. Des correctifs UI et mouvements de stock suivent. Deux runs de tests sont rapportés réussis dans la source.
 
-**Appréciation :** Sous-projet distinct ; sa présence dans le dépôt n’en fait pas une capacité Quant à réintégrer.
+**Devenir et appréciation réécrite :** Le sous-projet stock coexiste dans le dépôt ; ce n’est pas une capacité Quant à restaurer.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md).
+**Références :** W08.
 
 ### 2026-09-02 — Restaurant-stock V1.2
 
-**Faits conservés à la photographie initiale :** Refonte visuelle, navigation, design tokens et non-régression mobile ; le commit fe3f03ad19ef5bcc37b7876713347b1b2ba6f583 annonce 167 tests locaux.
+**Faits de départ conservés :** Refonte visuelle, navigation, design tokens et non-régression mobile ; le commit fe3f03ad19ef5bcc37b7876713347b1b2ba6f583 annonce 167 tests locaux.
 
-**Appréciation :** Profondeur UI hors Quant ; le volume de tests n’établit pas une contribution au système financier.
+**Devenir et appréciation réécrite :** Les efforts UI appartiennent au sous-projet ; le nombre de tests ne mesure pas l’achèvement de Quant.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md).
+**Références :** W08.
 
 ### 2026-09-03 — Généralisation UI et corrections fonctionnelles
 
-**Faits conservés à la photographie initiale :** La refonte restaurant-stock s’étend aux ventes, livraisons, réglages et authentification. Le commit 36f282ac23f80775502c74e816534f3463451e2b annonce 184 tests et des corrections, dont counted_by.
+**Faits de départ conservés :** La refonte restaurant-stock s’étend aux ventes, livraisons, réglages et authentification. Le commit 36f282ac23f80775502c74e816534f3463451e2b annonce 184 tests et des corrections, dont counted_by.
 
-**Appréciation :** L’évolution du stock reste cumulative dans son propre périmètre, sans compter comme progression Quant.
+**Devenir et appréciation réécrite :** Le développement métier du stock progresse dans son propre périmètre. Sa présence Git ne doit pas imposer une convergence fonctionnelle.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md).
+**Références :** W08.
 
 ### 2026-09-04 — Finition restaurant-stock
 
-**Faits conservés à la photographie initiale :** Le commit 0bd6bc8576e168fdd36501b6f34fda207a0504a2 corrige couleurs, saisie décimale française, imports et identité produit ; 205 tests locaux sont annoncés.
+**Faits de départ conservés :** Le commit 0bd6bc8576e168fdd36501b6f34fda207a0504a2 corrige couleurs, saisie décimale française, imports et identité produit ; 205 tests locaux sont annoncés.
 
-**Appréciation :** La qualité de finition est réelle pour ce sous-projet ; aucune migration métier vers Quant n’en découle.
+**Devenir et appréciation réécrite :** Les correctifs de finition sont conservés dans l’histoire, sans être promus en chantier financier.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md).
+**Références :** W08.
 
 ### 2026-09-05 — Restaurant-stock IA-0 et CI distante rouge
 
-**Faits conservés à la photographie initiale :** Corrections V1.2 puis fonctions IA-0, dont F7 de planification. Le bilan 90504b2811de8ebc07f23415414fadee0b8324df distingue données contrôlées et pilote ; le run final 33992017621 est rapporté en échec.
+**Faits de départ conservés :** Corrections V1.2 puis fonctions IA-0, dont F7 de planification. Le bilan 90504b2811de8ebc07f23415414fadee0b8324df distingue données contrôlées et pilote ; le run final 33992017621 est rapporté en échec.
 
-**Appréciation :** Conserver les deux états local/distant ; ne pas réinterpréter un build adjacent comme système Quant qualifié.
+**Devenir et appréciation réécrite :** Le bilan conserve local favorable et CI distante rouge. Il montre l’importance du périmètre et de la publication, pas une régression Quant déduite de ce sous-projet.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md).
+**Références :** W08.
 
 ### 2026-09-08 — Plans et handoffs persistants
 
-**Faits conservés à la photographie initiale :** Le commit b74ff0f629bf47a7163ed26c2ecd137ea8849d52 ajoute context-strategy, feature-plans et handoffs après qu’une spécification n’avait été transmise qu’en conversation.
+**Faits de départ conservés :** Le commit b74ff0f629bf47a7163ed26c2ecd137ea8849d52 ajoute context-strategy, feature-plans et handoffs après qu’une spécification n’avait été transmise qu’en conversation.
 
-**Appréciation :** La perte d’un plan de conversation démontre la valeur d’un relais durable, indépendamment du métier du projet.
+**Devenir et appréciation réécrite :** La perte d’un plan seulement conversationnel fournit une leçon transférable : le relais durable doit porter l’action et ses matériaux.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md).
+**Références :** W09.
 
 ### 2026-09-09 — Restaurant-stock IA-2
 
-**Faits conservés à la photographie initiale :** Plusieurs fonctions IA-2 sont construites ; e161060deacea28ba8f8e287e728b43921d92076 clôt cinq tickets du lot.
+**Faits de départ conservés :** Plusieurs fonctions IA-2 sont construites ; e161060deacea28ba8f8e287e728b43921d92076 clôt cinq tickets du lot.
 
-**Appréciation :** Les tickets livrés témoignent d’un développement distinct ; la méthode peut être réutilisée sans importer son code.
+**Devenir et appréciation réécrite :** La valeur pour Quant est la méthode de livraison réutilisable, pas le métier IA-2 du sous-projet.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md).
+**Références :** W09.
 
 ### 2026-09-10 — F27 appris en mode ombre
 
-**Faits conservés à la photographie initiale :** 8f29f565b7ced11f15dad671c8414464606d3f84 introduit Holt-Winters appris par ingrédient. Le compte rendu mentionne peu de données réelles, une sélection instable et le mode ombre.
+**Faits de départ conservés :** 8f29f565b7ced11f15dad671c8414464606d3f84 introduit Holt-Winters appris par ingrédient. Le compte rendu mentionne peu de données réelles, une sélection instable et le mode ombre.
 
-**Appréciation :** Le mode ombre et le faible échantillon limitent la conclusion ; le vocabulaire de maturité doit rester proportionné.
+**Devenir et appréciation réécrite :** L’échantillon faible et le mode ombre limitent la conclusion ; une fonction construite n’est pas une fonction effectivement utilisée et validée.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md).
+**Références :** W09.
 
 ### 2026-09-11 — Contre-exemples F27 et CI rouge
 
-**Faits conservés à la photographie initiale :** e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0 ajoute SYN-W et SYN-X. Il annonce 451 tests locaux ; le run distant 34645090191 est rapporté failure.
+**Faits de départ conservés :** e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0 ajoute SYN-W et SYN-X. Il annonce 451 tests locaux ; le run distant 34645090191 est rapporté failure.
 
-**Appréciation :** Les contre-exemples sont utiles ; une annonce locale élevée ne résout pas un échec distant.
+**Devenir et appréciation réécrite :** Les contre-exemples enrichissent la qualification ; leur existence ne transforme pas la CI distante en réussite.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md).
+**Références :** W09.
 
 ### 2026-09-12 — Nouvelle lignée Quant et règles scientifiques
 
-**Faits conservés à la photographie initiale :** Depuis l’ancienne base 35cf6d626e sont ajoutés constitution d’objectif terminal, registre d’expériences immuable, gate de candidats et Judge adversarial ; une phase 0 d’audit économique est consignée.
+**Faits de départ conservés :** Depuis l’ancienne base 35cf6d626e sont ajoutés constitution d’objectif terminal, registre d’expériences immuable, gate de candidats et Judge adversarial ; une phase 0 d’audit économique est consignée.
 
-**Appréciation :** L’objectif système et la mémoire deviennent explicites ; éviter ensuite un nouveau ledger pour chaque phase.
+**Devenir et appréciation réécrite :** L’objectif, le registre et la validation prennent une forme système. Leurs propriétaires modernes évitent de créer ensuite plusieurs constitutions concurrentes.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md).
+**Références :** W09.
 
 ### 2026-09-13 — Primitives persistantes et système V1
 
-**Faits conservés à la photographie initiale :** Les PR #5 à #13 se succèdent : Alpha Factory, reconstruction autonome, verticale, runtime, campagne et système V1. La correction efcc494b4de05676dd912629b9106a432e83afe9 traite la causalité des fills ; PR #12/#13 restent fermées sans fusion.
+**Faits de départ conservés :** Les PR #5 à #13 se succèdent : Alpha Factory, reconstruction autonome, verticale, runtime, campagne et système V1. La correction efcc494b4de05676dd912629b9106a432e83afe9 traite la causalité des fills ; PR #12/#13 restent fermées sans fusion.
 
-**Appréciation :** Correction structurante : une timeline unique, WAL et risque final relient justesse scientifique et fiabilité de l’exécution.
+**Devenir et appréciation réécrite :** La correction V1 transforme la causalité, le risque et la reprise. Elle retire des métriques trompeuses ; sa valeur dépasse le simple accroissement du nombre de tests.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md).
+**Références :** W09.
 
 ### 2026-09-14 — Whole-system PR #14 et Evidence/PIT Builder C
 
-**Faits conservés à la photographie initiale :** PR #14 décrit le système paper/shadow persistant. PR #15 développe Evidence Store et identité PIT. Le gate Builder C 34879109585 est rapporté success sur b8f7dff ; le census SEC a parallèlement un run rouge.
+**Faits de départ conservés :** PR #14 décrit le système paper/shadow persistant. PR #15 développe Evidence Store et identité PIT. Le gate Builder C 34879109585 est rapporté success sur b8f7dff ; le census SEC a parallèlement un run rouge.
 
-**Appréciation :** Deux capacités avancent en parallèle ; leurs qualifications ne se transfèrent pas automatiquement.
+**Devenir et appréciation réécrite :** Assemblage système et Evidence/PIT avancent parallèlement. Les qualifications restent distinctes et doivent rejoindre un propriétaire courant.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md).
+**Références :** W10.
 
 ### 2026-09-15 — Reprise SEC et index Blue/Astra
 
-**Faits conservés à la photographie initiale :** La capture SEC reprend depuis le cache préservé après schema drift, mais les runs restent rouges dans la source. Les checkpoints Blue deviennent un index de règles canoniques après corrections Astra.
+**Faits de départ conservés :** La capture SEC reprend depuis le cache préservé après schema drift, mais les runs restent rouges dans la source. Les checkpoints Blue deviennent un index de règles canoniques après corrections Astra.
 
-**Appréciation :** Reprendre depuis le cache préserve le travail ; un index de règles aide seulement si son actualité est claire.
+**Devenir et appréciation réécrite :** La reprise depuis le cache conserve l’effort ; le routeur facilite la suite seulement si les versions historiques ne continuent pas à commander le travail.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md).
+**Références :** W10.
 
 ### 2026-09-17 — Gel des règles D09 et de liquidité
 
-**Faits conservés à la photographie initiale :** Des commits figent effet économique pondéré par allocation, identité temporelle de liquidité, anti-sélection du lookback et dépendances spécifiques à la fenêtre.
+**Faits de départ conservés :** Des commits figent effet économique pondéré par allocation, identité temporelle de liquidité, anti-sélection du lookback et dépendances spécifiques à la fenêtre.
 
-**Appréciation :** Le gel protège l’expérience future ; il doit rester une contrainte de protocole, pas un résultat économique.
+**Devenir et appréciation réécrite :** Le gel ajoute des contraintes de protocole. Il ne constitue pas encore l’exécution de l’expérience qu’il encadre.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md).
+**Références :** W10.
 
 ### 2026-09-18 — Capture SEC intégrée et fuite de visibilité enregistrée
 
-**Faits conservés à la photographie initiale :** PR #16 est fusionnée dans la lignée Blue. PR #17 traite retries cachés, fingerprint et instrumentation. 1450af4a7352ccbe938030a49f774c33b7d61a80 consigne une fuite de compteurs et maintient t0 non déclaré.
+**Faits de départ conservés :** PR #16 est fusionnée dans la lignée Blue. PR #17 traite retries cachés, fingerprint et instrumentation. 1450af4a7352ccbe938030a49f774c33b7d61a80 consigne une fuite de compteurs et maintient t0 non déclaré.
 
-**Appréciation :** L’intégration est réelle dans sa lignée ; le leak conserve un effet historique que le correctif ne peut effacer.
+**Devenir et appréciation réécrite :** Intégration réelle et contamination historique coexistent. Le fix futur du firewall ne rend pas le passé à nouveau aveugle.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md).
+**Références :** W10.
 
 ### 2026-09-19 — Restart, fingerprint actif et concurrence
 
-**Faits conservés à la photographie initiale :** Correction de l’identification des restarts manuels et du fingerprint réellement actif. PR #18 est fusionnée dans une lignée Astra. Le rodage rapporté conserve INVALIDATING_INTERVENTION et t0 non déclaré.
+**Faits de départ conservés :** Correction de l’identification des restarts manuels et du fingerprint réellement actif. PR #18 est fusionnée dans une lignée Astra. Le rodage rapporté conserve INVALIDATING_INTERVENTION et t0 non déclaré.
 
-**Appréciation :** Concurrence et identité du runtime étaient de vrais défauts ; leur réparation ne déclare pas le début d’une observation valide.
+**Devenir et appréciation réécrite :** Les défauts de concurrence et de fingerprint étaient concrets ; la reprise invalidée doit rester telle quelle dans la séquence.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md).
+**Références :** W10.
 
 ### 2026-09-20 — Fault matrix Gate A
 
-**Faits conservés à la photographie initiale :** Campagne sur les crash boundaries de publication raw et readiness. Le handoff e5c4c720e758cd8ab3f0e04faf541b26e204be16 est associé au run 35545784230 success selon la source.
+**Faits de départ conservés :** Campagne sur les crash boundaries de publication raw et readiness. Le handoff e5c4c720e758cd8ab3f0e04faf541b26e204be16 est associé au run 35545784230 success selon la source.
 
-**Appréciation :** Le fault matrix cible des crashes importants ; sa portée ne s’étend pas spontanément à toute la durée du service.
+**Devenir et appréciation réécrite :** Le gate réussit sur son sujet. Le nouveau lot B02 rappelle que les fermetures administratives ultérieures ne fusionnent pas mécaniquement les capacités.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md).
+**Références :** W10.
 
 ### 2026-09-21 — Gate B et réouverture déclarée de R3
 
-**Faits conservés à la photographie initiale :** PR #19/#20 servent à observer la CI et sont fermées sans fusion. 8af21cf2df140361f4fc2dfdf1bd2d1a1aa9a31c relève l’absence de coût fixe modélisé et la dépendance au capital ; R3 est réécrit OPEN.
+**Faits de départ conservés :** PR #19/#20 servent à observer la CI et sont fermées sans fusion. 8af21cf2df140361f4fc2dfdf1bd2d1a1aa9a31c relève l’absence de coût fixe modélisé et la dépendance au capital ; R3 est réécrit OPEN.
 
-**Appréciation :** Un gate économique dépend des coûts et du capital effectivement déclarés ; les hypothèses manquantes empêchent sa fermeture.
+**Devenir et appréciation réécrite :** La réouverture économique est fondée sur les coûts et le capital mal spécifiés. Elle ne démontre pas qu’un capital simulé représente des fonds réels.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md).
+**Références :** W11.
 
 ### 2026-09-23 — Audit non autoritatif et décisions déléguées
 
-**Faits conservés à la photographie initiale :** edfbb0aa4a23c806376d5d72858bb027566d5e3b publie une revue globale explicitement non autoritative. e39694e9a1192ea0b429dd1db8ae01bf0b659f01 consigne décisions déléguées et voie historique PIT bornée.
+**Faits de départ conservés :** edfbb0aa4a23c806376d5d72858bb027566d5e3b publie une revue globale explicitement non autoritative. e39694e9a1192ea0b429dd1db8ae01bf0b659f01 consigne décisions déléguées et voie historique PIT bornée.
 
-**Appréciation :** Séparer revue et délégation permet d’alléger les retours Owner sans inventer une autorité.
+**Devenir et appréciation réécrite :** La revue et la délégation ont des fonctions différentes. Les reconnaître permet d’éviter de soumettre tout choix d’ingénierie à un nouveau gate humain.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md).
+**Références :** W11.
 
 ### 2026-09-24 — Reprise compacte et prototype relié aux plans
 
-**Faits conservés à la photographie initiale :** d59f04c56c5dc2d0f523934d58b537f0cbcd8d32 réduit les routeurs vivants et classe d’anciens snapshots historiques. Une carte lab→plans Quant et des correctifs du prototype suivent.
+**Faits de départ conservés :** d59f04c56c5dc2d0f523934d58b537f0cbcd8d32 réduit les routeurs vivants et classe d’anciens snapshots historiques. Une carte lab→plans Quant et des correctifs du prototype suivent.
 
-**Appréciation :** Bonne simplification de méthode : peu d’entrées vivantes et des archives accessibles ; le problème réapparaît si les pointeurs vieillissent.
+**Devenir et appréciation réécrite :** La reprise compacte est une bonne pratique déjà présente. La difficulté a été de maintenir sa route actuelle après les changements de phase.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md).
+**Références :** W11.
 
 ### 2026-09-25 — Moteur scellé et Rail C accepté
 
-**Faits conservés à la photographie initiale :** Construction annoncée d’un évaluateur sans outcomes et pré-enregistrements fast-rail. PR #21 reste proposition. Le commit Blue bd19712641cb990fc50c609c2cb65a440e80bd6a accepte Rail C paper/shadow avec budget borné.
+**Faits de départ conservés :** Construction annoncée d’un évaluateur sans outcomes et pré-enregistrements fast-rail. PR #21 reste proposition. Le commit Blue bd19712641cb990fc50c609c2cb65a440e80bd6a accepte Rail C paper/shadow avec budget borné.
 
-**Appréciation :** Un rail rapide borné est compatible avec la rigueur ; le commit d’adoption, plutôt que la proposition, fixe son autorité.
+**Devenir et appréciation réécrite :** Le rail rapide est effectivement adopté dans un périmètre borné. Conserver ce périmètre ; ne pas appliquer rétrospectivement ses autorisations à toute la suite.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md).
+**Références :** W11.
 
 ### 2026-09-27 — Session perdue et data-feeds planifié
 
-**Faits conservés à la photographie initiale :** Une itération fast-rail rapporte 0 trial après perte d’agents. 09ba64b8bee1419076ec8a30f8d75a916932c2ba ajoute le workflow planifié data-feeds sur la branche par défaut ; il exécute la branche de données dédiée.
+**Faits de départ conservés :** Une itération fast-rail rapporte 0 trial après perte d’agents. 09ba64b8bee1419076ec8a30f8d75a916932c2ba ajoute le workflow planifié data-feeds sur la branche par défaut ; il exécute la branche de données dédiée.
 
-**Appréciation :** La session perdue est un échec d’orchestration ; la collecte planifiée, elle, constitue une exécution automatisée observable.
+**Devenir et appréciation réécrite :** Le zéro trial est une panne de coordination. L’activation de data-feeds est, elle, une exécution automatique réelle ; les deux ne doivent pas être fusionnés en un même verdict.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md).
+**Références :** W11.
 
 ### 2026-09-28 — Snapshots data-feeds
 
-**Faits conservés à la photographie initiale :** Les six commits du jour sont des mises à jour data: feeds par l’identité quant-data-feeds.
+**Faits de départ conservés :** Les six commits du jour sont des mises à jour data: feeds par l’identité quant-data-feeds.
 
-**Appréciation :** Agrégation nécessaire : six snapshots sont de la donnée et de la liveness, pas six constructions de produit.
+**Devenir et appréciation réécrite :** Les snapshots prolongent la collecte. Les agréger comme observations facilite la compréhension sans perdre les traces.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-09-29 — Ordres de recherche et settlement/liquidity
 
-**Faits conservés à la photographie initiale :** Des agents livrent classements et useful negatives. Le travail settlement-liquidity réacquiert les marchés dont T_DET a changé et conserve Research only / No orders.
+**Faits de départ conservés :** Des agents livrent classements et useful negatives. Le travail settlement-liquidity réacquiert les marchés dont T_DET a changé et conserve Research only / No orders.
 
-**Appréciation :** Les négatifs améliorent la connaissance ; les classements de recherche ne deviennent pas des ordres.
+**Devenir et appréciation réécrite :** Les négatifs et classements enrichissent la recherche ; ils ne démontrent ni ordres ni allocation active.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-09-30 — Weather R3 retire le label prospectif inconditionnel
 
-**Faits conservés à la photographie initiale :** Settlement/liquidity poursuit son accounting. 3086efb3bb67012ed6159b6d23036e5c3ee33756 retire les labels prospectifs inconditionnels Weather faute de bridge theta_W→theta_P ; un SHADOW_CONTINUATION_SIGNAL est introduit.
+**Faits de départ conservés :** Settlement/liquidity poursuit son accounting. 3086efb3bb67012ed6159b6d23036e5c3ee33756 retire les labels prospectifs inconditionnels Weather faute de bridge theta_W→theta_P ; un SHADOW_CONTINUATION_SIGNAL est introduit.
 
-**Appréciation :** Une correction d’inférence prospective est substantielle ; garder le périmètre réalisé et différer l’affirmation future.
+**Devenir et appréciation réécrite :** La correction Weather limite l’inférence prospective. Elle retire une extrapolation injustifiée, sans effacer l’information sur la fenêtre observée.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-10-01 — Propagation de la correction Weather
 
-**Faits conservés à la photographie initiale :** 01a5b5d557533940798c1226ca1f9bc631b81de0 propage D4-C3-M2 dans les spécifications. Les feeds continuent.
+**Faits de départ conservés :** 01a5b5d557533940798c1226ca1f9bc631b81de0 propage D4-C3-M2 dans les spécifications. Les feeds continuent.
 
-**Appréciation :** Propager une correction aux spécifications évite la réapparition d’une conclusion périmée ; ne pas multiplier les copies actives.
+**Devenir et appréciation réécrite :** Propager une correction aux spécifications protège la reprise. Cela ne demande pas que chaque copie documentaire reste une autorité vivante.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-10-02 — Weather en pause et orchestration planifiée
 
-**Faits conservés à la photographie initiale :** 116e86c1664242212aabd52cf3b278db7ae96997 consigne un coordinator hold. a1a4bc68aa560559768d30d0b2f60fc576293cd6 ajoute un plan Codex/task/worktree.
+**Faits de départ conservés :** 116e86c1664242212aabd52cf3b278db7ae96997 consigne un coordinator hold. a1a4bc68aa560559768d30d0b2f60fc576293cd6 ajoute un plan Codex/task/worktree.
 
-**Appréciation :** Le hold et le plan sont des états explicites ; leur existence ne prouve pas la réalisation des tâches.
+**Devenir et appréciation réécrite :** Le hold est explicite ; le plan d’orchestration est une préparation. L’exécution des tâches doit avoir ses preuves distinctes.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-10-03 — Collecte automatisée
 
-**Faits conservés à la photographie initiale :** La passe de surface décrit la journée comme dominée par data-feeds ; sept commits et dix occurrences GitHub sont indexés.
+**Faits de départ conservés :** La passe de surface décrit la journée comme dominée par data-feeds ; sept commits et dix occurrences GitHub sont indexés.
 
-**Appréciation :** La collecte peut continuer pendant une pause de recherche ; les indicateurs doivent distinguer ces activités.
+**Devenir et appréciation réécrite :** L’acquisition peut continuer sans que la campagne de recherche ait repris. Le statut doit dire quelle activité est vivante.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-10-04 — Phase-gate et recheck statique A2
 
-**Faits conservés à la photographie initiale :** d669e603b87ac95c85c80861646de859df1b8819 présente des choix Owner sans exécution. 2602b993a98ef565a164e48bf4c801b0b86a8994 persiste un recheck Astra A2 D1–D5 ; le run 37242092133 est rapporté success.
+**Faits de départ conservés :** d669e603b87ac95c85c80861646de859df1b8819 présente des choix Owner sans exécution. 2602b993a98ef565a164e48bf4c801b0b86a8994 persiste un recheck Astra A2 D1–D5 ; le run 37242092133 est rapporté success.
 
-**Appréciation :** La CI réussit tandis que D5 reste ouvert dans l’audit : lire le contenu du gate et son domaine.
+**Devenir et appréciation réécrite :** Le vert CI coexiste avec D5 encore ouvert dans l’audit. La lecture des étapes et du verdict vaut davantage que la couleur seule.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md).
+**Références :** W12.
 
 ### 2026-10-05 — Tests offline A2 et revue runtime bornée
 
-**Faits conservés à la photographie initiale :** Un périmètre de tests offline est autorisé ; Builder consigne réparation D5 et tests ; Astra revoit la preuve runtime bornée. Les sources sont 45f5c940, 78d537de et 2776fed7.
+**Faits de départ conservés :** Un périmètre de tests offline est autorisé ; Builder consigne réparation D5 et tests ; Astra revoit la preuve runtime bornée. Les sources sont 45f5c940, 78d537de et 2776fed7.
 
-**Appréciation :** Exemple positif complet : régression rouge, réparation D5, suite verte, revue des preuves ; l’auditeur n’a pas fait de replay.
+**Devenir et appréciation réécrite :** Bonne séquence : cas défaillant, réparation, tests exécutés par Builder, revue des preuves par Astra. La revue n’est pas un replay indépendant.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13.
 
 ### 2026-10-06 — Snapshots certains, détails partiellement non résolus
 
-**Faits conservés à la photographie initiale :** Quatre des huit commits sont identifiés comme snapshots data-feeds. La passe conserve UNKNOWN_DETAIL_NOT_BLOCKING pour les quatre autres.
+**Faits de départ conservés :** Quatre des huit commits sont identifiés comme snapshots data-feeds. La passe conserve UNKNOWN_DETAIL_NOT_BLOCKING pour les quatre autres.
 
-**Appréciation :** Détail partiel conservé ; aucun défaut produit actuel ne se déduit du seul nombre de commits inexpliqués.
+**Devenir et appréciation réécrite :** La part non résolue reste inconnue. Aucune preuve nouvelle ne lui attribue ici une capacité ou un défaut actuel.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13.
 
 ### 2026-10-07 — Documentation et autorité conditionnelle
 
-**Faits conservés à la photographie initiale :** Astra consigne input CLEAR_SUPPORTED et output/cumulative disclosure UNRESOLVED. Une policy D2 est identifiée. La ratification E est déclarée conditionnelle et non effective, sans activation.
+**Faits de départ conservés :** Astra consigne input CLEAR_SUPPORTED et output/cumulative disclosure UNRESOLVED. Une policy D2 est identifiée. La ratification E est déclarée conditionnelle et non effective, sans activation.
 
-**Appréciation :** Une ratification conditionnelle doit être lisible comme conditionnelle ; éviter son usage ultérieur comme activation accomplie.
+**Devenir et appréciation réécrite :** La ratification conditionnelle, les gels et la coordination préparent la suite. Ils ne prouvent pas que les conditions d’activation sont remplies.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13.
 
 ### 2026-10-08 — Trusted root candidate et revue bloquée
 
-**Faits conservés à la photographie initiale :** 73280c3e produit un trusted_root.py candidat. La revue f236ab2b rapporte des tests adversariaux mais conclut BLOCKED_INCOMPLETE_EVIDENCE. Un run-sheet Owner et un dry-run sont préparés.
+**Faits de départ conservés :** 73280c3e produit un trusted_root.py candidat. La revue f236ab2b rapporte des tests adversariaux mais conclut BLOCKED_INCOMPLETE_EVIDENCE. Un run-sheet Owner et un dry-run sont préparés.
 
-**Appréciation :** Le root reste candidat ; l’absence de défaut trouvé ne résout pas une preuve externe manquante.
+**Devenir et appréciation réécrite :** Les nouveaux lots changent profondément la lecture de cette journée : arrêts répétés, freeze réversible A2, B2 réplication négative, B4 rejeté, correction de puissance/multiplicité, EDGE-FLOW puis réparations F1 pré-outcome. Voir la séquence horaire en section 3.5 ; l’ancien résumé sur le root ne suffit plus.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13; B03–B16, P01–P09.
 
 ### 2026-10-09 — F1 Stage A, capture durable et F2 bloqué
 
-**Faits conservés à la photographie initiale :** PR #25 persiste la discovery A, gèle theta=0,20 et une réservation anti-rerun. PR #27 conserve BLOCKED_DATA_PERMISSION après lecture des termes F2.
+**Faits de départ conservés :** PR #25 persiste la discovery A, gèle theta=0,20 et une réservation anti-rerun. PR #27 conserve BLOCKED_DATA_PERMISSION après lecture des termes F2.
 
-**Appréciation :** Discovery et autorisation de données sont des axes distincts ; un résultat faible et un BLOCK de permission se conservent séparément.
+**Devenir et appréciation réécrite :** F1 produit son information A avec limites, puis prépare B. La collecte reprenable et le timeout préservant 33 100 archives illustrent une avancée de continuité réelle ; une collecte n’est pas encore un résultat B.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13; B16–B18, P09–P10.
 
 ### 2026-10-10 — F1 B rejeté et EURUSD gelé
 
-**Faits conservés à la photographie initiale :** PR #26 publie le rejet B de la règle choisie par A. PR #28 décrit un harness EURUSD gelé avant accès aux prix. Les mises à jour tardives des corps de PR ne sont pas rétrodatées à cette journée.
+**Faits de départ conservés :** PR #26 publie le rejet B de la règle choisie par A. PR #28 décrit un harness EURUSD gelé avant accès aux prix. Les mises à jour tardives des corps de PR ne sont pas rétrodatées à cette journée.
 
-**Appréciation :** F1 ferme proprement une expression ; EURUSD reste une voie différente gelée avant outcome, sans edge oublié.
+**Devenir et appréciation réécrite :** Le résultat B ferme l’expression F1 sans retune. Source COIN-M et design EURUSD sont des voies différentes ; leurs états ne réhabilitent pas F1 et ne prouvent pas d’edge.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13; B18–B19.
 
 ### 2026-10-11 — Reçu d’exécution single-use Edge Lab
 
-**Faits conservés à la photographie initiale :** 5920e21152d606a3fb15cd1f79ce459f6b1686ba enregistre un reçu durable à usage unique. Une lecture fraîche du room est consignée.
+**Faits de départ conservés :** 5920e21152d606a3fb15cd1f79ce459f6b1686ba enregistre un reçu durable à usage unique. Une lecture fraîche du room est consignée.
 
-**Appréciation :** Les reçus single-use créent une vraie capacité de contrôle ; ne pas transformer chaque heartbeat en module à restaurer.
+**Devenir et appréciation réécrite :** Le single-use est une capacité durable. Les reçus et heartbeats sont ses traces, pas autant de nouveaux moteurs à intégrer.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md).
+**Références :** W13.
 
 ### 2026-10-12 — Time-to-edge et télémétrie
 
-**Faits conservés à la photographie initiale :** 1a44fad78a8583a93c93a013a30e70385551b937 finalise un record de méthode time-to-edge. Télémétrie et data-feeds continuent.
+**Faits de départ conservés :** 1a44fad78a8583a93c93a013a30e70385551b937 finalise un record de méthode time-to-edge. Télémétrie et data-feeds continuent.
 
-**Appréciation :** Mesurer le temps vers l’edge aide si les coûts et les états sont observés ; la méthode ne prouve pas l’edge.
+**Devenir et appréciation réécrite :** Time-to-edge et télémétrie peuvent aider à mesurer la recherche. Ils ne démontrent pas la valeur économique ni, à eux seuls, la nouvelle boucle d’ingénierie.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-13 — Continuation Edge Lab
 
-**Faits conservés à la photographie initiale :** La journée est décrite comme dominée par Edge Lab et des heartbeats, dont b034f998091f716aeff96da95246f8d2fc561e32.
+**Faits de départ conservés :** La journée est décrite comme dominée par Edge Lab et des heartbeats, dont b034f998091f716aeff96da95246f8d2fc561e32.
 
-**Appréciation :** La télémétrie décrit l’exécution de l’outil existant ; elle ne prouve pas une nouvelle boucle d’ingénierie autonome.
+**Devenir et appréciation réécrite :** La continuation fournit des traces de l’outil existant ; son périmètre ne doit pas devenir une preuve de toute l’autonomie Quant.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-14 — Projection Live Lab déterministe
 
-**Faits conservés à la photographie initiale :** fa553fac947f8a1e0cbecd8fb1deff19cf909cc9 ajoute une machine d’état événementielle déterministe au Live Lab UX.
+**Faits de départ conservés :** fa553fac947f8a1e0cbecd8fb1deff19cf909cc9 ajoute une machine d’état événementielle déterministe au Live Lab UX.
 
-**Appréciation :** Bonne séparation : la projection peut être déterministe sans devenir une source de vérité scientifique.
+**Devenir et appréciation réécrite :** La projection déterministe rend l’état lisible. Elle doit rester dérivée de faits, sans créer une vérité par son animation.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-15 — Research OS persistant et rendu 3D
 
-**Faits conservés à la photographie initiale :** Le SHA 083f7bc7 reçoit un gate Research OS success avec registres immuables et autorités false ; le gate SEC sur le même SHA est rapporté failure. PR #29 livre un rendu WebGL ; sa CI dédiée passe selon la source.
+**Faits de départ conservés :** Le SHA 083f7bc7 reçoit un gate Research OS success avec registres immuables et autorités false ; le gate SEC sur le même SHA est rapporté failure. PR #29 livre un rendu WebGL ; sa CI dédiée passe selon la source.
 
-**Appréciation :** Research OS et 3D ont leurs qualifications ; la profondeur d’un sous-système ne clôt ni le dépôt ni le runtime global.
+**Devenir et appréciation réécrite :** Research OS et Live Lab sont des progrès distincts. Les qualifications de domaines doivent être reliées au produit et à l’utilisation réelle.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-16 — Disconfirmation 0DTE avant candidat
 
-**Faits conservés à la photographie initiale :** 0392dda1dd80af797072a892002545fb4935dd25 consigne NO_CANDIDATE pour le mécanisme SPX 0DTE, sans candidat gelé, outcome économique ou observation prospective.
+**Faits de départ conservés :** 0392dda1dd80af797072a892002545fb4935dd25 consigne NO_CANDIDATE pour le mécanisme SPX 0DTE, sans candidat gelé, outcome économique ou observation prospective.
 
-**Appréciation :** Disconfirmer avant freeze économise une exposition et un trial ; NO_CANDIDATE peut être un progrès réel.
+**Devenir et appréciation réécrite :** NO_CANDIDATE avant gel peut économiser un trial. C’est un résultat utile de disconfirmation, pas une incapacité de la factory.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-17 — Runner Form 144 à usage unique
 
-**Faits conservés à la photographie initiale :** f2a71f220dea3acc50ddb8d0657fe37f3bbb61fa ajoute un runner Form 144 pinned single-look.
+**Faits de départ conservés :** f2a71f220dea3acc50ddb8d0657fe37f3bbb61fa ajoute un runner Form 144 pinned single-look.
 
-**Appréciation :** Généraliser le contrôle single-look dans Edge Lab évite un moteur indépendant pour chaque source.
+**Devenir et appréciation réécrite :** Le runner single-look applique une règle générique existante. Éviter de construire un moteur indépendant pour chaque source.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-18 — Freeze leveraged ETF et ouverture de l’audit
 
-**Faits conservés à la photographie initiale :** 178bdd2ca720bf2c116b8b948ac50d6e9b7b2b72 gèle un mécanisme daily-reset leveraged ETF. Le README de l’audit situe son démarrage au 18 à 23:51 UTC, soit le 19 à 01:51 Paris.
+**Faits de départ conservés :** 178bdd2ca720bf2c116b8b948ac50d6e9b7b2b72 gèle un mécanisme daily-reset leveraged ETF. Le README de l’audit situe son démarrage au 18 à 23:51 UTC, soit le 19 à 01:51 Paris.
 
-**Appréciation :** Freeze et audit commencent en parallèle ; aucun outcome ne doit être déduit d’un mécanisme simplement déclaré.
+**Devenir et appréciation réécrite :** Freeze de mécanisme et audit avancent en parallèle. Ni le mécanisme ni le lancement d’un audit ne valent expérience économique exécutée.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md).
+**Références :** W14.
 
 ### 2026-10-19 — Identités stables et checkpoints d’audit
 
-**Faits conservés à la photographie initiale :** 8b5f89e5b28fbaef7007fca077ae6f774c1e4806 consigne CP2a.4 et la normalisation des fichiers d’hypothèses vers un stable ID. L’audit conserve ses premières photographies et reprises.
+**Faits de départ conservés :** 8b5f89e5b28fbaef7007fca077ae6f774c1e4806 consigne CP2a.4 et la normalisation des fichiers d’hypothèses vers un stable ID. L’audit conserve ses premières photographies et reprises.
 
-**Appréciation :** Les identités stables permettent de suivre une hypothèse malgré changements de chemins ou de branches.
+**Devenir et appréciation réécrite :** Les stable IDs préservent l’identité scientifique malgré les déplacements de fichiers et les changements de branches.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-20 — Wakes bornés, NOOP et CP057
 
-**Faits conservés à la photographie initiale :** La journée contient des wakes Research OS, dont NOOP_FRONTIER_EXHAUSTED. CP057 fecd09e0839f1208d9f876c311331221bde3ab7d ajoute la provenance exacte des sources de qualification ; le run Oracle V2 39517451814 est rapporté success.
+**Faits de départ conservés :** La journée contient des wakes Research OS, dont NOOP_FRONTIER_EXHAUSTED. CP057 fecd09e0839f1208d9f876c311331221bde3ab7d ajoute la provenance exacte des sources de qualification ; le run Oracle V2 39517451814 est rapporté success.
 
-**Appréciation :** NOOP à frontière épuisée est une décision ; CP057 ajoute une provenance de qualification sans preuve de déploiement.
+**Devenir et appréciation réécrite :** Le NOOP peut être correct sur une frontière épuisée ; CP057 renforce la provenance de qualification sans annoncer de déploiement.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-21 — Convergence W1/Mega et CP058→CP099
 
-**Faits conservés à la photographie initiale :** Les reçus décrivent réévaluations et durcissements de mémoire, sources, readiness, causalité, trials, freeze, epoch et membrane. W1/Mega A/B/C0/D0/E et Multi-Source sont portés/adaptés. La qualification du parent f4534b8… est directement retrouvée.
+**Faits de départ conservés :** Les reçus décrivent réévaluations et durcissements de mémoire, sources, readiness, causalité, trials, freeze, epoch et membrane. W1/Mega A/B/C0/D0/E et Multi-Source sont portés/adaptés. La qualification du parent f4534b8… est directement retrouvée.
 
-**Appréciation :** Valeur de l’intégration transversale : l’ascendance actuelle confirme que Wave2 n’a pas été perdu.
+**Devenir et appréciation réécrite :** L’intégration transversale est un acquis. La descendance actuelle depuis Wave2 vérifiée évite de reconstruire ce qui a déjà convergé.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-22 — Activité indexée, détail restant partiel
 
-**Faits conservés à la photographie initiale :** 166 commits et dix occurrences GitHub sont indexés. Le checkpoint de surface ne résout pas chaque modification et conserve UNKNOWN_DETAIL_NOT_BLOCKING.
+**Faits de départ conservés :** 166 commits et dix occurrences GitHub sont indexés. Le checkpoint de surface ne résout pas chaque modification et conserve UNKNOWN_DETAIL_NOT_BLOCKING.
 
-**Appréciation :** Le nouvel audit conserve un détail inconnu ; la chronologie couvre la journée sans prétendre expliquer chaque diff.
+**Devenir et appréciation réécrite :** La journée reste partiellement expliquée ; sa couverture chronologique ne doit pas être présentée comme une lecture exhaustive de chaque diff.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-23 — Scellement documentaire Wave2 C2
 
-**Faits conservés à la photographie initiale :** Le commit ebc72b9fd14f91420c37e0b7607f9bfb584a289a est daté du 23 à 01:10:52 UTC. Il ajoute les checkpoints de clôture et le manifeste final, après le run vert du parent du 21.
+**Faits de départ conservés :** Le commit ebc72b9fd14f91420c37e0b7607f9bfb584a289a est daté du 23 à 01:10:52 UTC. Il ajoute les checkpoints de clôture et le manifeste final, après le run vert du parent du 21.
 
-**Appréciation :** Scellement et qualifications restent à lire par gate : le rapport initial conserve aussi le non-sceau du cumulatif et un gate Mega E rouge.
+**Devenir et appréciation réécrite :** Conserver la distinction entre scellement documentaire, qualification du parent et autres gates. Le rapport initial signalait aussi un gate Mega E rouge et l’absence de sceau final du cumulatif.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-24 — GIGA-F et GIGA-Q post-Wave2
 
-**Faits conservés à la photographie initiale :** Les sources décrivent fédération durable de seeds, exécution bornée par tâche/budget, rejet des clocks malformées et qualification legacy sur le runtime Python testé.
+**Faits de départ conservés :** Les sources décrivent fédération durable de seeds, exécution bornée par tâche/budget, rejet des clocks malformées et qualification legacy sur le runtime Python testé.
 
-**Appréciation :** Hardenings descendants, plutôt que systèmes à ressusciter ; récupérer seulement les invariants utiles absents.
+**Devenir et appréciation réécrite :** Les GIGA sont des hardenings descendants. Seul un écart utile encore présent justifierait un nouveau port.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-25 — Continuité post-Wave2
 
-**Faits conservés à la photographie initiale :** 151 commits et onze occurrences GitHub sont indexés ; le checkpoint conserve un détail sémantique partiellement inconnu.
+**Faits de départ conservés :** 151 commits et onze occurrences GitHub sont indexés ; le checkpoint conserve un détail sémantique partiellement inconnu.
 
-**Appréciation :** Le détail reste partiel ; cela n’établit ni défaut actuel ni autorisation de recommencer l’archéologie.
+**Devenir et appréciation réécrite :** Le détail partiel ne suffit ni à inventer une régression ni à autoriser un nouveau cycle global d’archéologie.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md).
+**Références :** W15.
 
 ### 2026-10-26 — Continuity, intake V3 et challenger
 
-**Faits conservés à la photographie initiale :** Les branches de continuité, intake multi-source V3 et challenge sont distinguées. L’ancre post-challenge 40c590189e1389502d179e63f6e0925df8513d2c est consignée.
+**Faits de départ conservés :** Les branches de continuité, intake multi-source V3 et challenge sont distinguées. L’ancre post-challenge 40c590189e1389502d179e63f6e0925df8513d2c est consignée.
 
-**Appréciation :** Une bonne reprise conserve les UNKNOWN et la frontière d’exposition ; elle ne transforme pas un checkpoint en produit.
+**Devenir et appréciation réécrite :** Le post-challenge conserve les inconnues et les imports rétrospectifs ; ce sont des états de preuve, pas une nouvelle architecture produit.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md).
+**Références :** W16.
 
 ### 2026-10-27 — One-shot non qualifié, puis réparation C0
 
-**Faits conservés à la photographie initiale :** La lignée one-shot retire certains modules bornés CP03/04/06 et se termine à d19b1237… en NOT_QUALIFIED. Une réparation C0 est suivie d’un échec membrane puis d’un nouveau SHA 13721384… avec run 40437918834 success.
+**Faits de départ conservés :** La lignée one-shot retire certains modules bornés CP03/04/06 et se termine à d19b1237… en NOT_QUALIFIED. Une réparation C0 est suivie d’un échec membrane puis d’un nouveau SHA 13721384… avec run 40437918834 success.
 
-**Appréciation :** Le one-shot non qualifié reste historique ; le correctif C0 ultérieur possède une preuve différente et bornée.
+**Devenir et appréciation réécrite :** Le one-shot non qualifié demeure historique. La réparation C0 ultérieure a son SHA et sa portée ; elle ne réécrit pas ce verdict.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md).
+**Références :** W16.
 
 ### 2026-10-28 — Succession minimale et WP1 bloqué
 
-**Faits conservés à la photographie initiale :** 42affc56635b9dc7de411b544f657f98967f2371 consigne une succession observée à deux agents. Le descendant WP1 Book Pressure 1c9e9f6a… reste bloqué avant exposition.
+**Faits de départ conservés :** 42affc56635b9dc7de411b544f657f98967f2371 consigne une succession observée à deux agents. Le descendant WP1 Book Pressure 1c9e9f6a… reste bloqué avant exposition.
 
-**Appréciation :** La succession par dépôt est une preuve utile de méthode ; WP1 reste un blocage de preuves, pas un rejet économique.
+**Devenir et appréciation réécrite :** La succession par dépôt montre une reprise bornée possible. WP1 reste bloqué par son contrat/source, sans devenir un résultat économique négatif.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md).
+**Références :** W16.
 
 ### 2026-10-29 — Travail de branches, détail partiel
 
-**Faits conservés à la photographie initiale :** 148 commits et sept occurrences GitHub sont indexés ; la passe de surface ne requalifie pas chaque modification.
+**Faits de départ conservés :** 148 commits et sept occurrences GitHub sont indexés ; la passe de surface ne requalifie pas chaque modification.
 
-**Appréciation :** Activité réelle mais détail non décisionnel non résolu ; ne pas lui inventer une importance ou une complétude.
+**Devenir et appréciation réécrite :** Le détail non décisionnel reste inconnu. La recommandation est de rouvrir seulement une contradiction pouvant changer le prochain lot.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md).
+**Références :** W16.
 
 ### 2026-10-30 — WP2 et continuité GPT-OSS/Codex
 
-**Faits conservés à la photographie initiale :** Le run 41069767444 réussit sur 8f8df47d184f0f1594280bec7e9e7941962cf1c5. Issues #37–#45 traitent la continuité ; #44 vise la réutilisation du worker GPT-OSS pour dispatch, observation et décision suivante.
+**Faits de départ conservés :** Le run 41069767444 réussit sur 8f8df47d184f0f1594280bec7e9e7941962cf1c5. Issues #37–#45 traitent la continuité ; #44 vise la réutilisation du worker GPT-OSS pour dispatch, observation et décision suivante.
 
-**Appréciation :** La preuve WP2 est contestée par PR41 malgré sa CI ; la délégation et la liveness fine restent une voie méthodologique utile.
+**Devenir et appréciation réécrite :** Les nouveaux lots précisent WP2 : réparation locale P1/P2 annoncée avec 65 tests/29 sous-tests, publication distante non établie. Puis PR46 : gel scientifique explicite, variantes locales perdues, transport distant exact, critiques et réparations ciblées. Aucun de ces états ne doit disparaître derrière le dernier PASS.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md).
+**Références :** W16; B20–B29, P11–P13, P16.
 
 ### 2026-10-31 — Pont qualifié, paire canonique et nouveau challenge rouge
 
-**Faits conservés à la photographie initiale :** PR46 afedfd579… passe le run 41203216122. Une candidate code issue de Wave2 reçoit des ports CP099 et PR46 ; après un premier échec, fd3f8ce… passe 41216401503. Le challenge GIGA-Q ajouté sur 1d5d76c… échoue dans 41218076177.
+**Faits de départ conservés :** PR46 afedfd579… passe le run 41203216122. Une candidate code issue de Wave2 reçoit des ports CP099 et PR46 ; après un premier échec, fd3f8ce… passe 41216401503. Le challenge GIGA-Q ajouté sur 1d5d76c… échoue dans 41218076177.
 
-**Appréciation :** La convergence sélective et le challenge GIGA-Q ont exposé un vrai manque ; le vert courant ultérieur ne réécrit pas ce rouge.
+**Devenir et appréciation réécrite :** Le défaut dépendance/projection et les retours sur checkout périmé expliquent une partie des relances. La convergence et le challenge GIGA-Q sont conservés avec leurs résultats successifs ; le vert du 1er novembre ne réécrit pas ce jour.
 
-[Reconstruction profonde de la semaine](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md).
+**Références :** W16; B29–B30, P14.
 
-### 2026-11-01 — Réconciliation ajoutée à la chronologie
+### 2026-11-01 — Code qualifié, reprise documentaire à simplifier, nouvelle lecture exhaustive
 
-**Faits vérifiés ici :** head code 13c9ff03…, run ciblé 41265514716 vert ; projet e862ee10… avec 16 semaines closes. Le raccord host-wake est dans le code ; l’hôte n’a pas été observé. Le AGENTS code et le README projet conservent encore un routage historique. L’inventaire courant compte 279 branches.
+Le code courant reste 13c9ff03… ; le run 41265514716 est SUCCESS. Le raccord host-wake est construit et qualifié dans son périmètre, sans preuve actuelle de l’hôte dans cette mission. Les branches projet et code existent, les portes d’entrée historiques ne sont pas toutes alignées. La nouvelle passe produit 30 lots, enrichit l’histoire détaillée et reste ouverte dans son registre.
 
-**Appréciation :** la priorité consiste à rendre l’existant opérable et facile à reprendre. Le constat d’entrées documentaires périmées justifie une correction documentaire bornée ; il ne remet pas en cause l’ascendance Wave2 ni ne réclame une nouvelle architecture.
+L’appréciation réécrite ajoute les corrections statistiques, la réparation WP2 locale, les pertes de fichiers et de données, les exemples d’efficacité et le rapprochement exact de couverture. Ce sont des corrections de compréhension et de conduite ; aucun changement logiciel supplémentaire n’en est déduit sans reproduction d’un défaut courant.
 
-### Journées sans trace datée dans l’index initial
-
-Les 40 journées suivantes restent sans activité datée reconstruite ; ce n’est pas une preuve d’absence de travail :
+### Les 40 journées sans trace datée dans l’index initial
 
 2026-07-16, 2026-07-17, 2026-07-18, 2026-07-19, 2026-07-21, 2026-07-22, 2026-07-23, 2026-07-30, 2026-07-31, 2026-08-01, 2026-08-02, 2026-08-03, 2026-08-08, 2026-08-09, 2026-08-10, 2026-08-11, 2026-08-12, 2026-08-14, 2026-08-15, 2026-08-16, 2026-08-17, 2026-08-18, 2026-08-19, 2026-08-20, 2026-08-21, 2026-08-22, 2026-08-23, 2026-08-24, 2026-08-25, 2026-08-26, 2026-08-27, 2026-08-28, 2026-08-29, 2026-08-30, 2026-08-31, 2026-09-06, 2026-09-07, 2026-09-16, 2026-09-22, 2026-09-26.
 
-## Annexe B — Les 16 semaines et les relais intégralement lus
+Ces dates restent sans activité datée reconstruite dans cet index. Cela ne prouve pas l’absence absolue de travail.
 
-| Semaine | Document profond | Blob profond | Blob du relais |
+## Annexe B — Les 30 nouveaux lots intégralement lus pour cette réécriture
+
+Les numéros B01–B30 correspondent aux fichiers READ_BATCH. Les lignes ci-dessous résument leur apport, sans remplacer leur contenu complet. Tous les liens visent le SHA d’audit figé, pas une branche mobile.
+
+| ID | Objet principal de la lecture | Objets traités dans le lot | Source |
+|---|---|---:|---|
+| B01 | SEC : corrections, CI et défaut du vrai point d’entrée | 8 | [lot 01](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_001_20261101.json) |
+| B02 | Fermeture des anciennes PR : migration d’autorité sans fusion | 10 | [lot 02](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_002_20261101.json) |
+| B03 | Coordination A2 : brouillon, gel, ratification et revue | 13 | [lot 03](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_003_20261101.json) |
+| B04 | Tests bornés, efficacité et réserves manquantes | 7 | [lot 04](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_004_20261101.json) |
+| B05 | Q13 et première critique de la boucle de coordination | 8 | [lot 05](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_005_20261101.json) |
+| B06 | Tâches inutiles différées, gap VM et rappel après six heures | 9 | [lot 06](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_006_20261101.json) |
+| B07 | Watchdog, travail permanent contesté et publication locale absente | 10 | [lot 07](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_007_20261101.json) |
+| B08 | Continuité bornée, délais, Q13 réparé et preuves distantes | 10 | [lot 08](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_008_20261101.json) |
+| B09 | A2 gelé, Q21 contaminé reclassé en réplication négative | 8 | [lot 09](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_009_20261101.json) |
+| B10 | B2 exécuté, B4 pré-enregistré et ambiguïtés corrigées | 8 | [lot 10](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_010_20261101.json) |
+| B11 | B4 : revues matérielles, quota et verdict négatif unique | 10 | [lot 11](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_011_20261101.json) |
+| B12 | Q30 : puissance, coûts, réutilisation FILLS et retransmission | 16 | [lot 12](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_012_20261101.json) |
+| B13 | Reset vers l’edge, recherche publique et réforme de multiplicité | 10 | [lot 13](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_013_20261101.json) |
+| B14 | EDGE-FLOW, deltas et réparation de sélection/cost F1 | 16 | [lot 14](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_014_20261101.json) |
+| B15 | Réentrée bloquée, données privées et progrès solo avant outcome | 9 | [lot 15](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_015_20261101.json) |
+| B16 | Acquisition reprenable, ACK, PR23 et transport Actions | 9 | [lot 16](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_016_20261101.json) |
+| B17 | F1 A, contrôleur B et reprise après timeout | 6 | [lot 17](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_017_20261101.json) |
+| B18 | F1 B REJECT et préqualification COIN-M | 5 | [lot 18](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_018_20261101.json) |
+| B19 | Source COIN-M bloquée, pause puis EURUSD pré-outcome | 7 | [lot 19](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_019_20261101.json) |
+| B20 | Multi-Source exact-SHA et WP1 reçu sans payload | 7 | [lot 20](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_020_20261101.json) |
+| B21 | Modèle autonome borné et pont d’accès aux preuves | 9 | [lot 21](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_021_20261101.json) |
+| B22 | Gap WP2 puis perte d’une implémentation locale | 13 | [lot 22](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_022_20261101.json) |
+| B23 | Octets WP2 publiés, alias réparé et revue bornée | 9 | [lot 23](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_023_20261101.json) |
+| B24 | WP2 : prompt périmé, objections P1/P2 et patch local non poussé | 11 | [lot 24](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_024_20261101.json) |
+| B25 | Revue sans accès, liveness et enveloppe d’autorité | 10 | [lot 25](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_025_20261101.json) |
+| B26 | Worker historique, continuation et raccord plutôt que scheduler | 19 | [lot 26](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_026_20261101.json) |
+| B27 | Phase 1 : variantes perdues et procédure transport-first | 13 | [lot 27](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_027_20261101.json) |
+| B28 | Transport exact distant, critique de sécurité et réparation même lignée | 20 | [lot 28](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_028_20261101.json) |
+| B29 | Sujets de revue successifs et qualification distante encore en cours | 10 | [lot 29](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_029_20261101.json) |
+| B30 | Dépendance unittest, worker périmé et relance unique après stall | 7 | [lot 30](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/READ_BATCH_030_20261101.json) |
+
+### Corpus antérieur conservé : 16 semaines et 16 relais
+
+Ces documents avaient été lus dans la précédente mission. Leur utilisation est conservée ; cette réécriture ne prétend pas les avoir tous relus une seconde fois.
+
+| ID | Semaine | Sources épinglées |
+|---|---|---|
+| W01 | 2026-07-13 → 2026-07-19 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-07-13_2026-07-19.md) |
+| W02 | 2026-07-20 → 2026-07-26 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-07-20_2026-07-26.md) |
+| W03 | 2026-07-27 → 2026-08-02 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-27_2026-08-02.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-07-27_2026-08-02.md) |
+| W04 | 2026-08-03 → 2026-08-09 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-03_2026-08-09.md) |
+| W05 | 2026-08-10 → 2026-08-16 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-10_2026-08-16.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-10_2026-08-16.md) |
+| W06 | 2026-08-17 → 2026-08-23 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-17_2026-08-23.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-17_2026-08-23.md) |
+| W07 | 2026-08-24 → 2026-08-30 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-24_2026-08-30.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-24_2026-08-30.md) |
+| W08 | 2026-08-31 → 2026-09-06 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-31_2026-09-06.md) |
+| W09 | 2026-09-07 → 2026-09-13 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-07_2026-09-13.md) |
+| W10 | 2026-09-14 → 2026-09-20 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-14_2026-09-20.md) |
+| W11 | 2026-09-21 → 2026-09-27 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-21_2026-09-27.md) |
+| W12 | 2026-09-28 → 2026-10-04 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-28_2026-10-04.md) |
+| W13 | 2026-10-05 → 2026-10-11 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-05_2026-10-11.md) |
+| W14 | 2026-10-12 → 2026-10-18 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-12_2026-10-18.md) |
+| W15 | 2026-10-19 → 2026-10-25 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-19_2026-10-25.md) |
+| W16 | 2026-10-26 → 2026-11-01 | [profondeur](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md) · [relais](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-26_2026-11-01.md) |
+
+## Annexe C — Commentaires primaires revérifiés et autres sources
+
+Les corps P01–P15 ont une empreinte SHA-256 identique à celle de la collecte de l’audit. Cela prouve l’identité des textes, pas la réussite indépendante de tous les tests qu’ils rapportent. P16 est la directive de gel lue directement.
+
+| ID | Date de publication Paris | Objet | Source |
 |---|---|---|---|
-| 2026-07-13 → 2026-07-19 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-07-13_2026-07-19.md) | 60ee59be46cd702406fb4421645c63989f5c593c | 20734ea86a49b719a26095f1f08b783aae694395 |
-| 2026-07-20 → 2026-07-26 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-07-20_2026-07-26.md) | f85595534c90e54184d3c6ce1175ee5b56029d86 | b9335be184ca76628f689cbc7bbf24d3e15978a7 |
-| 2026-07-27 → 2026-08-02 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-07-27_2026-08-02.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-07-27_2026-08-02.md) | 5d79487be92dde4652add76d8eee9965c609f02a | db16206fed177c530ee019c4c561912021a145f2 |
-| 2026-08-03 → 2026-08-09 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-03_2026-08-09.md) | abe34d6375f2544872bd1d084bbf72e10ac08137 | e773960ee3cc01ca8e558485f9cf36f5b347f250 |
-| 2026-08-10 → 2026-08-16 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-10_2026-08-16.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-10_2026-08-16.md) | 434916a4f205c8aa67e2a8265e221dbdc2742eea | 125716f2c30bf0ea7e8650ca930bbfd603e3ee53 |
-| 2026-08-17 → 2026-08-23 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-17_2026-08-23.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-17_2026-08-23.md) | c1c3f38db257a1059762ace0b79ca949de80e377 | 902aec5aac9c47f7962141591fcc903fd51c15c8 |
-| 2026-08-24 → 2026-08-30 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-24_2026-08-30.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-24_2026-08-30.md) | 329e6ce8c44cf1452935cb8069ccb03537ba7edd | 6d03d0f4240fbb7ee9143b29183a75ad7b6f80ca |
-| 2026-08-31 → 2026-09-06 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-08-31_2026-09-06.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-08-31_2026-09-06.md) | 4a83c20e38722345eab30e21e9809c8f4ef1f2da | b424a9a07b7441a4287bd1a6a9d33659a75e2747 |
-| 2026-09-07 → 2026-09-13 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-07_2026-09-13.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-07_2026-09-13.md) | ebf3c4970d3dc291b6b644137e432f2698de136b | 1c2309c02ebd0755595ca574058f47789db8556d |
-| 2026-09-14 → 2026-09-20 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-14_2026-09-20.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-14_2026-09-20.md) | a30dddc8d575c0c0073a6495040a73ef4fe800f7 | dea9fe2eb9104ce3e6e35fc868e20a1bf51a7131 |
-| 2026-09-21 → 2026-09-27 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-21_2026-09-27.md) | 59de1845835997632e7d3628a9a5aebd758240e9 | 58a46392dfccf3eb992ab9d6d2384484c722427c |
-| 2026-09-28 → 2026-10-04 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-09-28_2026-10-04.md) | b0ae66d8e645f559481a46ea81de00364b83e2f1 | 7a0cc266c2271871d5542e0c35099fd1b31d0db8 |
-| 2026-10-05 → 2026-10-11 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-05_2026-10-11.md) | fa22af044e7ea4c6db7d73171bfa7161e19a16f3 | 7d35fdf73ae0812acbb3a14f5f1ce8d13f22c57c |
-| 2026-10-12 → 2026-10-18 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-12_2026-10-18.md) | 1520248ba44a87813c571601c9829ecd084c0da5 | 3b985ac92b5afb8dd4bb59f16a6a4d670f14cad3 |
-| 2026-10-19 → 2026-10-25 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-19_2026-10-25.md) | 580af6cd13ab29fc0f5f16da05cc1eb03421107f | 310d6dcbb541ceac6644f4ef9838f21c720689b1 |
-| 2026-10-26 → 2026-11-01 | [DEEP_WEEK](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/DEEP_WEEK_2026-10-26_2026-11-01.md) · [HANDOFF](https://github.com/fahimahmedb/Quant-Trade/blob/e862ee10b4a2d3eee319004614b75677412973ff/governance/deep-reconstruction/HANDOFF_WEEK_2026-10-26_2026-11-01.md) | 38e315b7b79cc7924b740189c503c6f950f536ae | 0fefaa35947efd24ce49a242dcf4ccfc7c3d79f6 |
+| P01 | 2026-10-08 09:17:27 | Rappel après silence de plus de six heures | [commentaire 6054717993](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6054717993) |
+| P02 | 2026-10-08 10:45:45 | Fahim constate le nouvel arrêt | [commentaire 6056181016](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6056181016) |
+| P03 | 2026-10-08 11:44:07 | 36 expressions et validation déjà dépensée | [commentaire 6057137291](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6057137291) |
+| P04 | 2026-10-08 13:05:24 | Verdict B4 et ses limites | [commentaire 6058486458](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6058486458) |
+| P05 | 2026-10-08 17:14:15 | Objection de Fahim sur le compteur universel | [commentaire 6062989770](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6062989770) |
+| P06 | 2026-10-08 17:15:35 | Correction par familles et historique de sélection | [commentaire 6063017475](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6063017475) |
+| P07 | 2026-10-08 17:16:01 | Puissance et statuts de résultat | [commentaire 6063026490](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6063026490) |
+| P08 | 2026-10-08 18:14:02 | Directive EDGE-FLOW | [commentaire 6064142254](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6064142254) |
+| P09 | 2026-10-09 01:13:37 | Acquisition compressée persistante Actions | [commentaire 6070897287](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6070897287) |
+| P10 | 2026-10-09 14:56:32 | Timeout de 300 minutes et reprise | [commentaire 6081332376](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6081332376) |
+| P11 | 2026-10-30 13:24:21 | Patch WP2 local, tests rapportés et push impossible | [commentaire 6522774726](https://github.com/fahimahmedb/Quant-Trade/pull/39#issuecomment-6522774726) |
+| P12 | 2026-10-30 21:22:01 | Deux variantes Phase 1 non publiées | [commentaire 6532692577](https://github.com/fahimahmedb/Quant-Trade/issues/44#issuecomment-6532692577) |
+| P13 | 2026-10-30 21:44:02 | Transport complet des fichiers exacts | [commentaire 6533078016](https://github.com/fahimahmedb/Quant-Trade/issues/44#issuecomment-6533078016) |
+| P14 | 2026-10-31 05:42:49 | Relance unique du worker classé STALLED | [commentaire 6539142653](https://github.com/fahimahmedb/Quant-Trade/issues/44#issuecomment-6539142653) |
+| P15 | 2026-10-08 17:02:24 | Élargissement de recherche publique rapporté par un agent | [commentaire 6062754587](https://github.com/fahimahmedb/Quant-Trade/pull/22#issuecomment-6062754587) |
+| P16 | 2026-10-30 21:08:12 | Directive Owner : système avant reprise économique | [commentaire 6532450889](https://github.com/fahimahmedb/Quant-Trade/issues/44#issuecomment-6532450889) |
 
-**Rapprochement final :** 71/71 entrées actives reprises, 40 journées sans trace conservées, mise à jour du 1er novembre ajoutée, 16/16 semaines et 16/16 relais lus. Aucun statut d’accès hôte, de trading, de suppression ou de test nouvellement exécuté n’est déduit de ce rapprochement.
+### Autres preuves et supports utilisés
+
+- **S-ANCESTRY :** [comparaison Wave2→code courant](https://github.com/fahimahmedb/Quant-Trade/compare/ebc72b9fd14f91420c37e0b7607f9bfb584a289a...13c9ff03f0898e9af28abaa3dab78a520c70c887).
+- **S-RUN :** [qualification 41265514716](https://github.com/fahimahmedb/Quant-Trade/actions/runs/41265514716), head 13c9ff03f0898e9af28abaa3dab78a520c70c887 ; workflow [canonical-code-qualification.yml](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/.github/workflows/canonical-code-qualification.yml).
+- **S-STATE :** [routeur courant avant réécriture](https://github.com/fahimahmedb/Quant-Trade/blob/822a370d4626a2c15eb21115501ae53a26ff127a/governance/CURRENT_PROJECT_STATE.md).
+- [AGENTS du code](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/AGENTS.md), [README projet](https://github.com/fahimahmedb/Quant-Trade/blob/822a370d4626a2c15eb21115501ae53a26ff127a/README.md), [lanceur borné](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/scripts/gpt_oss_orchestrator.py) et [host-wake](https://github.com/fahimahmedb/Quant-Trade/blob/13c9ff03f0898e9af28abaa3dab78a520c70c887/research/research_os/host_wake.py).
+- [Autorités fermées](https://github.com/fahimahmedb/Quant-Trade/blob/822a370d4626a2c15eb21115501ae53a26ff127a/governance/AUTHORITY_STATE.json) et [registre des capacités](https://github.com/fahimahmedb/Quant-Trade/blob/822a370d4626a2c15eb21115501ae53a26ff127a/governance/CAPABILITY_REGISTRY.md).
+- [Clôture décisionnelle antérieure](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/deep/CHECKPOINT_DECISION_HISTORY_FINAL_20261101.md).
+- [Plan historique à deux branches](https://github.com/fahimahmedb/Quant-Trade/blob/822a370d4626a2c15eb21115501ae53a26ff127a/governance/forensic-20261031/TWO_BRANCH_CONVERGENCE_PLAN.md) et [reçu de préservation préparée](https://github.com/fahimahmedb/Quant-Trade/blob/822a370d4626a2c15eb21115501ae53a26ff127a/governance/BRANCH_RETIREMENT_RECEIPT.json).
+- Rapport factuel cumulatif : [version de référence](https://chatgpt.com/library?file_id=libfile_963a06b4d4ac81919710b05a8d6561a0&account_id=personal). Les 71 entrées de l’annexe A conservent ses faits, pas ses anciennes bornes de complétude comme verdict actuel.
+- Première édition de l’appréciation : [version Git conservée](https://github.com/fahimahmedb/Quant-Trade/blob/ddecba62a067c504bd1eb9654528ae2df5133220/governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md).
+
+## Annexe D — Preuve du rapprochement des compteurs
+
+Sources : [EXHAUSTIVE_CURSOR](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/exhaustive/EXHAUSTIVE_CURSOR.json), [discussion-coverage.csv](https://github.com/fahimahmedb/Quant-Trade/blob/1b537233652b8c9a719855269b4907b14ad5a100/governance/forensic-20261031/discussion-coverage.csv) et les 30 lots ci-dessus.
+
+| Ensemble | Nombre |
+|---|---:|
+| Objets de discussion du registre initial | 423 |
+| Commentaires de conversation / inline / revues | 326 / 62 / 35 |
+| Entrées des 30 lots, identifiants distincts | 307 |
+| READ / BYTE_IDENTICAL dans les lots | 297 / 10 |
+| Base ancienne marquée lue | 7 |
+| Base déjà présente parmi les 307 | 6 |
+| Union des objets traités documentés | 307 + 7 − 6 = **308** |
+| Lectures directes distinctes documentées | 297 + 7 − 6 = **298** |
+| Objets non traités dans cette union | 423 − 308 = **115** |
+| Couverture documentée de cette union | **72,81 %** |
+
+Les six identifiants déjà présents dans la base sont : 6522387159, 6522396340, 6524600243, 6524768666, 6525472558 et 6536761071. Les types ont été normalisés de issue-comment vers issue-comments avant l’union ; les empreintes de collecte concordent.
+
+La lecture directe de cette mission porte sur les 30 rapports de lots et les sources primaires indiquées. Elle ne revendique pas une lecture directe de chacun des 308 objets bruts. Les statuts READ de ces objets sont ceux du registre de l’agent auditeur, dont le présent rapport a rapproché les identités.
+
+Le miroir Git complet reste NOT_PROVEN dans le curseur de la nouvelle passe ; son transport d’archives est déclaré vérifié dans cette source. Cette distinction reste pertinente pour un futur retrait destructif ; elle ne bloque pas la présente appréciation ni ne prouve que les objets Git sont perdus.
+
+Les dates de collecte, de lecture et d’exécution sont différentes. Les compteurs d’objets ne mesurent ni les heures d’audit ni le coût des erreurs. Aucune estimation chiffrée de gaspillage global n’est présentée.
 
 Réponse qui respecte le protocole imposé par Fahim
