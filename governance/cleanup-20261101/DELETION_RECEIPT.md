@@ -2,9 +2,9 @@
 
 - Snapshot: `2026-11-01T13:39:34.460914+00:00`
 - Start branches: **279**
-- Deleted so far: **120**
+- Deleted so far: **160**
 - Default branch preserved: `blue/master-v2-2026-09-20`
-- Active auditor preserved: `audit/forensic-checkpoint-20261019` @ `531f72b7b3ed2f3a71f6041a84a9e7047f1d7a4c`
+- Active auditor preserved: `audit/forensic-checkpoint-20261019` @ `f9f5bcfc7bef96e42196693a62ef159a592e427b`
 
 ## Deleted refs
 
@@ -130,6 +130,46 @@
 | `builder/post-p0-vertical-interface-map-2026-09-21` | `8d40af1f2333474d8f26509b61cb257d96f8772d` |
 | `builder/research-factory-core-v2` | `ca8ffe439953b063fb9d049773ce0b6245958c7d` |
 | `builder/research-os-econ-readiness-activation-20261017` | `e980d201d3c84d16d7d91fde0d27a06c9a2c3121` |
+| `builder/sec-form4-census-v2a` | `08dcfc39b4b22e0b25e54edde7b6accbb2bc4502` |
+| `builder/sec-form4-p0-raw-capture` | `348c4e42bf4efb29d6e4135cc39b2e5ae31bf5ef` |
+| `builder/site-e2e-20261012` | `e06fa1b5a20e1d05aed857cbe6158d09a5697bfa` |
+| `builder/w1-data-evidence-sec-depth-20261021` | `c0fda9bd809594711ebaf2fa2422a0410812e1df` |
+| `builder/w1-economic-portfolio-depth-20261021` | `83bb495104acf7de8617593bc737a8a204c99b32` |
+| `builder/w1-factory-experiment-depth-20261021` | `dfaf0bd7be04926a2b16dc585ccb82699c6dd0e4` |
+| `builder/w1-scientific-memory-depth-20261021` | `9d92c9f859efd39fdfd94372b10ba91ad73c31b4` |
+| `builder/wave2-base-repair-20261021` | `a19ee49a6e87b3d95fa95b4c9f0e7b334a47d193` |
+| `builder/wave2-c2-final-qualification-repair-20261021` | `699256f7de051c3f7271bd64713f2739c47ac889` |
+| `builder/wave2-c2-multisource-grep-repair-20261021` | `bab911f45e6fe8a889c5acb8da24bc48790c1f50` |
+| `builder/wave2-convergence2-foreman-20261021` | `2dedbe0bf7994b15567bad1562338ef9faf4a392` |
+| `builder/wave2-seal-preflight-20261021` | `4651105825eda35b703e567e9daeee50850bd5af` |
+| `builder/weather-v4-a2-astra-d1-d5-static-repair-2026-10-05` | `fa81d3fbddca2802e43ea0b05fe85e608b98a61d` |
+| `builder/weather-v4-a2-bounded-offline-harness-tests-2026-10-05` | `a13a15ff41b231628bb55613edc2fef060e35e48` |
+| `builder/weather-v4-a2-d5-public-state-type-repair-tests-2026-10-05` | `78d537de681363ed83a6c7787aba4319f3c73c4d` |
+| `builder/weather-v4-a2-dedicated-harness-construction-2026-10-04` | `649be59e69d8e0724d61352cc76abcac7f3f588e` |
+| `builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08` | `73280c3e9d8604b2f2d8e6d2d174aa940389a760` |
+| `builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08` | `44bee3b053401111f5e35a06a8bee9df92019188` |
+| `builder/weather-v4-a2-lot2-l2i-verification-2026-10-08` | `5b381d34ccdfc938727ccecaf1d09447dcd29ab5` |
+| `builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08` | `5358c7ac582b46804be0008cffc78a043751d910` |
+| `builder/weather-v4-a2-lot2-owner-package-2026-10-08` | `103799938755605aef55e07b3f31e2fe69ad8890` |
+| `builder/weather-v4-a2-lot2-q22-host-attestation-2026-10-08` | `b8725677da7b8cfef3ceea54675b35a10fd6e124` |
+| `builder/weather-v4-a2-lot2-q27-retention-2026-10-08` | `7ba9879512f6df2561efe8135702c21cfec12174` |
+| `builder/weather-v4-a2-lot2-tooling-2026-10-07` | `51f49c81d843e57111135df283b06368cc1546bf` |
+| `builder/weather-v4-a2-lot2-vm-kit-2026-10-08` | `2b3c42fc4d0e6ea9a7bc6554b4a52dd56a68d3f6` |
+| `builder/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05` | `2bc718711d507b38176981c2b3e55dd607c9547b` |
+| `claude/charming-allen-948kd8` | `0cfdd4d25ef74e8158403ed6037fccc341fb7639` |
+| `claude/confident-allen-xw7eb6` | `edd13079050681fea82e5e812794dc9d43647e63` |
+| `claude/confident-mendel-h4qqo4` | `9e6431dedaa621d58218f6ffb09ed1300de1bd1b` |
+| `claude/dazzling-dirac-foklrv` | `4682fbbf335257f931209b433e0f10ea7b4f3b14` |
+| `claude/deep-research-project-6vr22g` | `337c4b7c78cb769550e165be00e0b12da4c9d65d` |
+| `claude/dreamy-franklin-1vki4t` | `e1cf4ca0851eace2912ce8a9bcd4a8400ebf4250` |
+| `claude/epic-cannon-1sy39m` | `fff0cca0773f542e9039be726d9b49519fe2b56e` |
+| `claude/exciting-edison-w68tos` | `454d8522061c441659570dff4b3ec6b59cb526b5` |
+| `claude/exciting-planck-uq6rir` | `10c025dca8bb082c5c9c8e012a427a90189bc5fd` |
+| `claude/gallant-cerf-e0rpao` | `94381734a22df464331c7654d70371faa48748c3` |
+| `claude/hopeful-dirac-4ahy2z` | `7cdfe2ff8899a4a7788f4997db2bc2100a7d39bf` |
+| `claude/hopeful-hamilton-81rab1` | `85483fb9f85c6beea36e0af969e3f0a3e939e07f` |
+| `claude/intelligent-gates-msidml` | `726070a199957a6fc05515ebb3027e945028fddc` |
+| `claude/magical-ramanujan-wsktyr` | `501093d1f6760201a5d81e638e74aa16ff75c3a8` |
 
 ## Safety rule
 

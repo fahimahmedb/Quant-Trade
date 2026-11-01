@@ -24,50 +24,10 @@ This register is intentionally compact. It records only material that prevented 
 | `builder/research-os-autonomous-econ-readiness-port-20261016` | KEEP_ACTIVE | live repository dependency: .github/workflows/economic-readiness-integration-ci.yml | 0 | YES |
 | `builder/research-os-autonomous-loop-20261015` | KEEP_ACTIVE | active autonomous-agent working ref | 0 | YES |
 | `builder/research-os-vm-autonomy-20261019` | PARK | exact branch ref appears in open issue/comment(s): 38 | 0 | YES |
-| `builder/sec-form4-census-v2a` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/sec-form4-p0-raw-capture` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/site-e2e-20261012` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/v2-forward-20261020` | KEEP_ACTIVE | live repository dependency: .github/workflows/live-lab-3d-ci.yml,.github/workflows/live-lab-oracle-ci.yml,.github/workflows/oracle-v2-core.yml,deploy/oracle_v2_deploy.py,deploy/oracle_v2_host_prepare.py | 0 | YES |
-| `builder/w1-data-evidence-sec-depth-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/w1-economic-portfolio-depth-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/w1-factory-experiment-depth-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/w1-scientific-memory-depth-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/wave2-base-repair-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/wave2-c2-final-qualification-repair-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/wave2-c2-multisource-grep-repair-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/wave2-convergence2-foreman-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/wave2-seal-preflight-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-astra-d1-d5-static-repair-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-bounded-offline-harness-tests-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-d5-public-state-type-repair-tests-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-dedicated-harness-construction-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-doc-integration-root-candidate-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-j1-context-pins-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-l2i-verification-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-l2j-dossier-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-owner-package-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-q22-host-attestation-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-q27-retention-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-tooling-2026-10-07` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-lot2-vm-kit-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/wp1-book-pressure-preexposure-20261028` | PARK | exact branch ref appears in open issue/comment(s): 36,38,36,36,36 | 0 | YES |
 | `builder/wp2-single-lineage-binding-20261030` | PARK | exact branch ref appears in open issue/comment(s): 40,42,42 | 0 | YES |
-| `claude/charming-allen-948kd8` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/confident-allen-xw7eb6` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/confident-mendel-h4qqo4` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `claude/data-feeds-6vr22g` | KEEP_ACTIVE | live repository dependency: .github/workflows/data-feeds.yml | 4 | YES |
-| `claude/dazzling-dirac-foklrv` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/deep-research-project-6vr22g` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/dreamy-franklin-1vki4t` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/epic-cannon-1sy39m` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/exciting-edison-w68tos` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/exciting-planck-uq6rir` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/gallant-cerf-e0rpao` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/hopeful-dirac-4ahy2z` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/hopeful-hamilton-81rab1` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/intelligent-gates-msidml` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `claude/magical-ramanujan-wsktyr` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `claude/nasdaq-trading-model-design-h3mp4n` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `claude/new-session-0ydmkg` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `claude/new-session-3ujgeu` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
