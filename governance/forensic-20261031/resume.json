@@ -1,14 +1,17 @@
 {
   "mission": "QUANT_FORENSIC_20261031",
-  "status": "FORENSIC_RECONSTRUCTION_COMPLETE_FOR_CONVERGENCE",
-  "phase": "TWO_BRANCH_CONVERGENCE_READY",
-  "method": "CHRONOLOGICAL_SURFACE_PLUS_CAPABILITY_RECONCILIATION_WITH_POST_CLOSE_DEEP_SUPPLEMENT",
+  "status": "FORENSIC_HISTORY_RECONSTRUCTION_COMPLETE_DECISION_RELEVANT_SCOPE",
+  "phase": "HISTORY_CLOSED_FOLLOW_PROJECT_CANONICAL",
+  "method": "CHRONOLOGICAL_SURFACE_PLUS_CP055_CP099_DEEP_SUPPLEMENT_PLUS_DECISION_DISCUSSION_DEEP_CLOSE",
   "surface_cursor": {
     "commit_traces": 6393,
     "commit_traces_surface_reviewed": 6393,
     "surface_reviewed_active_days": 71,
     "dated_surface_complete_through": "2026-10-31",
+    "calendar_days_indexed": 111,
+    "source_occurrences_indexed": 13471,
     "undated_occurrences": 969,
+    "undated_occurrence_policy": "UNKNOWN_BY_DATE_UNLESS_A_SPECIFIC_SHA_DATE_CONTRADICTION_BECOMES_DECISION_RELEVANT",
     "surface_complete": true,
     "anti_restart": true
   },
@@ -26,54 +29,72 @@
     "destructive_cleanup_authorized": false
   },
   "post_close_deep_supplement": {
-    "checkpoint": "deep/CHECKPOINT_CP055_CP099_20261031.md",
-    "classification": "SUPPLEMENTAL_EVIDENCE_DOES_NOT_REOPEN_FORENSIC_MISSION",
+    "cp055_cp099_checkpoint": "deep/CHECKPOINT_CP055_CP099_20261031.md",
+    "decision_history_checkpoint": "deep/CHECKPOINT_DECISION_HISTORY_FINAL_20261101.md",
+    "classification": "SUPPLEMENTAL_EVIDENCE_CLOSES_HISTORY_WITHOUT_REOPENING_GLOBAL_FORENSICS",
     "cp055_cp099_deep_read": true,
+    "decision_changing_discussion_history_complete": true,
+    "history_reconstruction_complete_for_decision_relevant_scope": true,
     "cp099_exact_head": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
     "cp099_oracle_v2_run": 39660277404,
     "cp099_sec_run": 39660277407,
     "cp099_exact_head_qualified": true,
     "cp100_documentary_receipt": "ABSENT",
-    "changes_main_convergence_decision": false,
-    "lineage_summary": [
-      "EVIDENCE_HISTORY_REUSE_CONNECT",
-      "DATA_SOURCE_ADMISSION_REPAIR",
-      "READINESS_PROVENANCE_FROZEN_INPUT_CAUSAL_CLOCK_REPAIR",
-      "SOURCE_CANDIDATE_TRIAL_EPOCH_FREEZE_PROPOSAL_ATTRIBUTION_REPAIR",
-      "DOCUMENTARY_ECONOMIC_IDENTITY_PORTFOLIO_REPAIR_CONNECT",
-      "HISTORICAL_BLOCK_MEMORY_REUSE_CONNECT",
-      "MODEL_AND_TEMPORAL_POLICY_REPAIR",
-      "OUTCOME_MEMBRANE_REPAIR"
-    ]
+    "wp2_history_correction": {
+      "classification": "CONTESTED_ENGINEERING_EVIDENCE",
+      "earlier_pr39_independent_bounded_pass": "EXISTS",
+      "later_pr41_p1_p2_findings": "UNRESOLVED",
+      "issue42_fresh_context_semantic_verdict": "UNKNOWN",
+      "hosted_run_41069767444": "SUCCESS",
+      "global_autonomy_proof": false,
+      "decision": "PRESERVE_AS_USEFUL_SYNTHETIC_EVIDENCE_BUT_NOT_CLEAN_INDEPENDENT_CLOSURE_PROOF"
+    },
+    "issue45_astra_gate": {
+      "request_exists": true,
+      "executed": false,
+      "result": "ABSENT"
+    },
+    "pr46_final_history": {
+      "repair_sha": "afedfd57986aa042e9e97aa53b9db53b4619764f",
+      "hosted_run": 41203216122,
+      "engineering_qualified": true,
+      "deployed": false,
+      "real_multi_wake_loop_proven": false
+    }
   },
   "bounded_unknowns_and_blocks": [
-    "PRODUCTION_VM_INSTALLATION_AND_LIVENESS",
+    "WP1_HISTORICAL_PRIMARY_PAYLOAD_AND_RIGHTS_ADMISSIBILITY",
+    "WP2_SYNTHETIC_SEMANTIC_CLOSURE_CONTESTED_BY_LATER_PR41_P1_P2",
+    "PRODUCTION_VM_INSTALLATION_AND_CURRENT_LIVENESS",
     "ACTUAL_MULTI_WAKE_AUTONOMY",
-    "SEMANTIC_COGNITIVE_INDEPENDENCE_BEYOND_R0",
     "REAL_PRIMARY_READY_AND_ECONOMIC_EDGE_PREMISES",
-    "HISTORICAL_PRIMARY_PROVENANCE_WHEN_DECISION_RELEVANT",
-    "POST_WAVE2_AND_PR46_PORT_COMPATIBILITY_DURING_CODE_CANDIDATE_BUILD",
-    "GENERATED_DATA_STORAGE_FOR_TWO_BRANCH_TARGET"
+    "GENERATED_DATA_STORAGE_FOR_TWO_BRANCH_TARGET",
+    "969_UNDATED_OCCURRENCES_ONLY_IF_FUTURE_DECISION_MAKES_DATE_MATERIAL"
   ],
   "authority": {
     "economic_experiment_authorized": false,
     "prospective_observation_authorized": false,
     "real_capital_authorized": false,
-    "live_trading_authorized": false
+    "live_trading_authorized": false,
+    "destructive_cleanup_authorized": false
   },
   "laws": [
     "REUSE > CONNECT > REPAIR > BUILD",
     "CONSTRUCTION != QUALIFICATION != INTEGRATION != PROMOTION != ACTIVATION != USE != END_TO_END_PROOF",
     "PATH_ABSENCE != CAPABILITY_LOSS",
     "CI_GREEN != DEPLOYMENT_OR_SCIENTIFIC_AUTHORITY",
+    "SELF_PASS != DURABLE_PASS != INDEPENDENT_PASS",
+    "LATER_COUNTEREVIDENCE_MUST_NOT_BE_NORMALIZED_AWAY",
     "BLOCKED != FAILED",
     "PARK_DATA != KILL",
     "DECLARED_ONLY != SOURCE_FACT",
     "DO_NOT_INVENT_MISSING_CP_OR_RECEIPT",
     "NO_GLOBAL_FORENSIC_RESTART_WITHOUT_CONCRETE_DECISION_CHANGING_CONTRADICTION"
   ],
-  "next_action": "CODE_CANDIDATE_BUILD",
-  "next_action_detail": "Create a non-destructive candidate from exact Wave2 C2; compare post-Wave2 hardenings and selectively import only necessary semantics; selectively port PR46 autonomy delta; qualify exact head plus Wave2 regressions and semantic review; then prove the real non-economic VM multi-wake loop and build the condensed governance branch.",
+  "next_action": "FOLLOW_PROJECT_CANONICAL",
+  "next_action_detail": "Historical reconstruction is closed for decision-relevant scope. Do not resume archaeology. Read project/canonical for the current engineering/runtime critical path; reopen forensic evidence only for a specific falsifiable contradiction that can change a current decision.",
   "forensic_reconstruction_complete_for_convergence": true,
+  "history_reconstruction_complete_for_decision_relevant_scope": true,
+  "full_semantic_read_of_every_blob": false,
   "global_forensic_continuation_authorized": false
 }
