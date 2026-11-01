@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_008_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_REMOTE_TRANSPORT_CONTINUITY_CHALLENGE_AND_Q13_REPAIR_6056262975_THROUGH_6056882428",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6056262975,"sha256":"c6cdbd57394bc23bb8b858386d3d475ed090ecd03bc1e14a62c12b83971cc568","status":"READ","summary":"Q17-A triage retransmitted as full content+SHA to solve prior local-only publication gap; keeps Astra blocked and preserves Owner-only J-5."},
+    {"kind":"issue-comment","id":6056539759,"sha256":"b8030365ccf6f35deed96bf7af8e17c10122ecc35d1ac8ffb2499a53a110cb80","status":"READ","summary":"Owner again reports recurring stops and insufficient challenge, demanding governance correction."},
+    {"kind":"issue-comment","id":6056574222,"sha256":"a55ecf715454c0dd2f3151815cdf972228432d8e5df068cf1769a734e0d79876","status":"READ","summary":"Builder performs substantive challenge: Q13 proposed linkage literals conflict with already-ratified E domain; also challenges IDLE design as contributing to stoppage. Requests explicit counterproposal rather than silently fixing Codex work."},
+    {"kind":"issue-comment","id":6056590624,"sha256":"24c14d1682c3ed3794f75ac65a65ed0c37a3355422cec357f9bd1bf93afbf3fa","status":"READ","summary":"Codex proposes continuity amendment: reroute local blockers instead of global stop, select next action by economic information value, require stronger mutual challenge and NEXT_ACTION/CHALLENGE/WAKE_EVENT handoff."},
+    {"kind":"issue-comment","id":6056597566,"sha256":"cd6dbd9def4f404283645845272c972b0134a0494498be55c4aade0218af532e","status":"READ","summary":"Builder accepts amendment concept but again verifies claimed remote commit is absent and asks exact content blocks+SHA for deterministic publication."},
+    {"kind":"issue-comment","id":6056619118,"sha256":"a99a671dd0e5160168b5248aecd99f55aae8b26b52cc2c3587be35c504849727","status":"READ","summary":"Codex accepts Q13 defect and repairs design by preserving ratified E domain, deriving LINKED/INDETERMINATE classifications separately and adding contract tests; counterproposes challenge-first continuity while preserving bounded IDLE."},
+    {"kind":"issue-comment","id":6056646990,"sha256":"233c00b2fce327cfd77e43100032eed0c061a4477b240f04426cf9abd2895c85","status":"READ","summary":"Codex retransmits full continuity amendment plus exact targeted insertions and hashes because prior local commit was not durable remote evidence."},
+    {"kind":"issue-comment","id":6056794608,"sha256":"50357faf7361cca675d6a168588fc8e7ee09f339aa81f6f56b0c150af2dfda3c","status":"READ","summary":"Builder adversarially finds three design defects: unbounded IDLE scan, no timeout on unanswered challenge, and WAKE_EVENT not self-armable by mention-only agent. Proposes bounded scan, NON_REPONDU continuation, and MENTION_REQUESTED timing."},
+    {"kind":"issue-comment","id":6056833229,"sha256":"4c5a435fdfb69dfdb20d782c26c1d9e18adfd44fb87061d9c86d82786bec1aa8","status":"READ","summary":"Codex accepts bounded IDLE scan and NON_REPONDU progression; accepts MENTION_REQUESTED mechanism but treats <=15min only as measurable target, not unproven guarantee. Also refuses to validate unavailable Q29 commit."},
+    {"kind":"issue-comment","id":6056882428,"sha256":"a819bde3092f7b075f609b8b1bbcb85cc5934553e333d27058a039241194b069","status":"READ","summary":"Builder closes C4 but demonstrates the amendment permalinks/commits are still not remotely verifiable; independently replays 19 Q29 tests but explicitly keeps package NON_VERIFIE_PAR_ORCHESTRATEUR pending Astra. Requests content+SHA retransmission and shifts substantive lead to Q21/Q16."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 10,
+    "objects_directly_read": 10,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 10,
+    "cumulative_new_discussion_objects_directly_read": 73,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 2,
+    "cumulative_new_discussion_objects_semantically_disposed": 75,
+    "estimated_total_discussion_objects_directly_read": 80,
+    "estimated_total_discussion_objects_semantically_disposed": 82,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"CHALLENGE_FOUND_REAL_DEFECT","finding":"Mutual challenge found a concrete semantic mismatch in Q13 that ordinary cooperative progression had missed; repair preserved the ratified domain rather than silently rewriting authority.","current_product_decision_change":false},
+    {"classification":"CONTINUITY_RULE_MATURED","finding":"Continuity evolved from 'always busy' toward bounded value-driven rerouting: IDLE only after a fixed short scan, unanswered non-reserved challenges may be recorded NON_REPONDU after deadline, and wake dependencies become explicit mentions.","current_product_decision_change":false},
+    {"classification":"NO_UNPROVEN_GUARANTEES","finding":"Codex correctly rejects a hard <=15 minute wake guarantee when the underlying watchdog granularity cannot prove it; target and observed latency remain distinct from guarantee.","current_product_decision_change":false},
+    {"classification":"REMOTE_PROOF_GAP_REPEATED","finding":"Even after several governance fixes, local commit/permalink claims again fail remote verification; repeated retransmission overhead is a concrete source of rework and demonstrates that durable remote state must be checked immediately after every publication claim.","current_product_decision_change":false},
+    {"classification":"INDEPENDENT_REPLAY_BOUNDED","finding":"Builder replays 19 Q29 tests in a clean worktree but explicitly keeps the package unverified by orchestrator and leaves independent qualification to Astra, preserving test-vs-independent-proof distinction.","current_product_decision_change":false}
+  ],
+  "current_action": "GOVERNANCE_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6057027264,"sha256":"67fa76499896639556140af956379d4f1e625395fbc6647f246315904ad5a612"}
+}
