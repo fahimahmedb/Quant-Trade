@@ -1,7 +1,22 @@
-# Quant-Trade — canonical project state
+# Quant-Trade — canonical project entrypoint
 
-Project decisions, scientific memory and recoverable evidence live on `project/canonical`. Executable product, tests, deployment helpers and workflows live on [`code/canonical`](https://github.com/fahimahmedb/Quant-Trade/tree/code/canonical).
+Current authority is split deliberately:
 
-Read [QUANT_NORTH_STAR.md](QUANT_NORTH_STAR.md), [AGENTS.md](AGENTS.md), then the [final migration state](governance/cleanup-20261101/FINAL_MIGRATION_STATE.json). The dated [current project router](governance/CURRENT_PROJECT_STATE_2026-10-31.md) supplies historical mission context; the migration state supersedes its old working-ref bindings. Scientific and capital authorities remain closed.
+- `project/canonical` — objective, decisions, current router, scientific memory, evidence/receipts, blockers and next action;
+- `code/canonical` — executable product, tests, workflows and deployment/runtime helpers.
 
-The completed reconstruction and prior audit entrypoint remain recoverable from this file’s Git history. Do not restart them.
+Every human or AI should start from the same sequence:
+
+1. [QUANT_NORTH_STAR.md](QUANT_NORTH_STAR.md)
+2. [AGENTS.md](AGENTS.md)
+3. [governance/AI_WORKING_METHOD_V1.md](governance/AI_WORKING_METHOD_V1.md)
+4. [governance/CURRENT_PROJECT_STATE.md](governance/CURRENT_PROJECT_STATE.md)
+5. resolve the exact current `code/canonical` SHA.
+
+The machine-readable method is [governance/AI_WORKING_METHOD_V1.json](governance/AI_WORKING_METHOD_V1.json).
+
+Historical audits, dated routers, checkpoints, old branches and old build missions remain evidence only. Do not restart them unless the current router identifies a precise contradiction or reopening condition.
+
+The repository default branch is not engineering authority. Code/tests do not grant scientific, deployment, real-capital or live-trading authority.
+
+Operating rule: `REUSE > CONNECT > REPAIR > BUILD`.
