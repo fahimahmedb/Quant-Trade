@@ -52,7 +52,7 @@ def validate_host_config(config, release):
         raise ValueError('QUALIFIED_RELEASE_PATH_MISMATCH')
     if config.get('cache') != '/var/lib/quant-research/github.git' or config.get('lane') != 'auto':
         raise ValueError('CANONICAL_SERVICE_CACHE_AND_AUTO_LANE_REQUIRED')
-    if config['repository'] != 'fahimahmedb/Quant-Trade' or config['branch'] != 'builder/oracle-economic-loop-recovery-20261019':
+    if config['repository'] != 'fahimahmedb/Quant-Trade' or config['branch'] != 'code/canonical':
         raise ValueError('OWNER_AUTHORIZED_REPOSITORY_AND_BRANCH_REQUIRED')
     if not config.get('vm_ocid', '').startswith('ocid1.instance.'):
         raise ValueError('EXPLICIT_VM_OCID_REQUIRED')

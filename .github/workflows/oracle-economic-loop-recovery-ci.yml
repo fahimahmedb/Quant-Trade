@@ -3,7 +3,7 @@ name: Oracle Economic Loop Recovery CI
 on:
   push:
     branches:
-      - builder/oracle-economic-loop-recovery-20261019
+      - code/canonical
     paths:
       - 'deploy/**'
       - 'tests/test_oracle*.py'

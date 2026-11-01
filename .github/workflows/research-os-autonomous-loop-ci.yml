@@ -3,7 +3,7 @@ name: Research OS autonomous loop CI
 on:
   push:
     branches:
-      - builder/research-os-autonomous-loop-20261015
+      - code/canonical
   workflow_dispatch:
 
 jobs:

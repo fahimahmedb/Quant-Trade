@@ -8,7 +8,7 @@ Codex is a build/repair plane, never a scheduled runtime dependency.
 ## Source of truth
 
 The state branch is an explicit runtime configuration. The recovery deployment
-uses `builder/oracle-economic-loop-recovery-20261019`. Executable releases are
+defaults to `code/canonical`; existing hosts must explicitly migrate their configured ref before retirement. Executable releases are
 identified by exact immutable Git SHA; state is fetched fresh from the configured
 branch on every wake and before critical transitions.
 

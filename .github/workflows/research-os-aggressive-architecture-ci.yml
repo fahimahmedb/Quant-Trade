@@ -3,7 +3,7 @@ name: Research OS aggressive architecture CI
 on:
   push:
     branches:
-      - builder/research-os-aggressive-architecture-20261015
+      - code/canonical
     paths:
       - 'research/research_os/expansion/**'
       - 'research/research_os/simulations/aggressive_architecture_fixture.json'

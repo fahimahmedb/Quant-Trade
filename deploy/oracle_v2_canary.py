@@ -22,7 +22,7 @@ from research.research_os.expansion.v2_stage_executor import v2_artifact_path
 from research.research_os.expansion.v2_state import V2StateStore
 from research.research_os.worker_preflight import run_worker_preflight
 
-V1_BRANCH = "builder/oracle-economic-loop-recovery-20261019"
+V1_BRANCH = "code/canonical"
 SCIENCE = tuple(PREFIX + name for name in ("tasks/", "events/", "receipts/", "artifacts/", "hypotheses/", "assessments/", "runtime/worker_wakes/"))
 
 

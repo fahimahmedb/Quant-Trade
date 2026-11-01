@@ -3,9 +3,7 @@ name: Live Lab Oracle integration CI
 on:
   push:
     branches:
-      - builder/live-lab-oracle-canonical-20261020
-      - builder/v2-forward-20261020
-      - builder/oracle-v2-core-20261020
+      - code/canonical
     paths:
       - 'research/live_lab_ux/**'
       - 'research/research_os/live_lab_contract.py'

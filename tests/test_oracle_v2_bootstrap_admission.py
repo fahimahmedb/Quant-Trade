@@ -122,10 +122,10 @@ class BootstrapAdmissionTests(unittest.TestCase):
             # Capture the wrapper command, then execute it against a temporary fixture.
             with patch.object(bootstrap.subprocess, 'run') as child:
                 bootstrap.prepare_installed_release(release, 101, 102,
-                    qualification_source_branch=bootstrap.QUALIFICATION_SOURCE_BRANCHES[1])
+                    qualification_source_branch=bootstrap.QUALIFICATION_SOURCE_BRANCHES[0])
             command = child.call_args.args[0]
             self.assertIn('-I', command)
             self.assertIn('-B', command)
             result = subprocess.run(command, cwd='/', check=True, capture_output=True, text=True, timeout=15)
             self.assertEqual(json.loads(result.stdout), dict(path=str(release),
-                source=bootstrap.QUALIFICATION_SOURCE_BRANCHES[1], runs=[101, 102]))
+                source=bootstrap.QUALIFICATION_SOURCE_BRANCHES[0], runs=[101, 102]))

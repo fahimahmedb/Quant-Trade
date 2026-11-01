@@ -3,10 +3,7 @@ name: Live Lab 3D CI
 on:
   push:
     branches:
-      - builder/live-lab-3d-full-build-20261015
-      - builder/live-lab-owner-ux-rebuild-20261015
-      - builder/v2-forward-20261020
-      - builder/oracle-v2-core-20261020
+      - code/canonical
     paths:
       - 'research/live_lab_ux/**'
       - '.github/workflows/live-lab-3d-ci.yml'

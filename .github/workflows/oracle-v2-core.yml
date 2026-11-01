@@ -3,8 +3,7 @@ name: Oracle V2 Core
 on:
   push:
     branches:
-      - builder/oracle-v2-core-20261020
-      - builder/v2-forward-20261020
+      - code/canonical
   workflow_dispatch:
 
 permissions:

@@ -22,7 +22,7 @@ import tempfile
 import urllib.request
 
 REPOSITORY = 'fahimahmedb/Quant-Trade'
-BRANCH = 'builder/oracle-economic-loop-recovery-20261019'
+BRANCH = 'code/canonical'
 VM = 'ocid1.instance.oc1.eu-paris-1.anrwiljrtoradqacmugziwzu3sls2orieua6i7vkjveiq7q5wsiypa3mejpa'
 INSTALLER_SHA256 = '1c2f753b69e6b6a8bdc5af904f51bb894f7d31eb289e66003b677bb90b73fc7d'
 

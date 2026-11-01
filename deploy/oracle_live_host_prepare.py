@@ -90,7 +90,7 @@ def install(args):
         raise ValueError('EXACT_SOURCE_AND_SEALED_PAYLOAD_HASH_REQUIRED')
     for run_id, name in ((args.ci_run, 'Oracle V2 Core'), (args.sec_ci_run, 'SEC P0 pre-t0 gate')):
         run = json.loads(fetch('https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs/' + str(run_id)))
-        if (run.get('head_sha') != args.sha or run.get('head_branch') != 'builder/oracle-v2-core-20261020'
+        if (run.get('head_sha') != args.sha or run.get('head_branch') != 'code/canonical'
                 or run.get('name') != name or run.get('status') != 'completed' or run.get('conclusion') != 'success'):
             raise ValueError('EXACT_OBSERVER_CI_REQUIRED')
     core = Path('/opt/quant-research/releases') / CORE_SHA

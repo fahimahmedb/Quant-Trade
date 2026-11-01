@@ -3,7 +3,7 @@ name: Research OS multi-engine CI
 on:
   push:
     branches:
-      - builder/research-os-autonomous-loop-20261015
+      - code/canonical
     paths:
       - 'research/research_os/**'
       - 'research/live_lab_ux/adapters/platform-native.js'

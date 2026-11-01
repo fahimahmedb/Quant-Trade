@@ -3,8 +3,7 @@ name: Economic Readiness Integration CI
 on:
   push:
     branches:
-      - builder/econ-readiness-integration-20261016
-      - builder/research-os-autonomous-econ-readiness-port-20261016
+      - code/canonical
   workflow_dispatch:
 
 permissions:

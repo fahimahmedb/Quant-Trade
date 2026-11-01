@@ -67,7 +67,7 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         return {
             "research_contract_version": "v2-core",
             "repository": "owner/repo",
-            "branch": "builder/oracle-v2-core-20261020",
+            "branch": "code/canonical",
             "cache": "/tmp/not-used",
             "worker_id": "oracle-v2-test",
             "release_sha": "f" * 40,

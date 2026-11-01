@@ -3,7 +3,7 @@ name: Research OS final-shape simulation
 on:
   push:
     branches:
-      - builder/research-os-autonomous-loop-20261015
+      - code/canonical
     paths:
       - 'research/research_os/**'
       - '.github/workflows/research-os-final-shape-sim.yml'

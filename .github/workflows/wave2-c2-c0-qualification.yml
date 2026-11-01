@@ -3,7 +3,7 @@ name: Wave2 C2 Canonical C0 Qualification
 on:
   push:
     branches:
-      - builder/convergence-wave2-canonical-20261021
+      - code/canonical
   workflow_dispatch:
 
 permissions:

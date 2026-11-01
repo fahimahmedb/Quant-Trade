@@ -3,7 +3,7 @@ name: Wave2 C2 Refresh Status Artifacts
 on:
   push:
     branches:
-      - builder/convergence-wave2-canonical-20261021
+      - code/canonical
 
 permissions:
   contents: write
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: builder/convergence-wave2-canonical-20261021
+          ref: code/canonical
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -39,4 +39,4 @@ jobs:
           test -z "${unexpected}"
           git add STATE.md CHIEF_BRIEF.md
           git commit -m "chore(wave2-c2): refresh generated status artifacts"
-          git push origin HEAD:builder/convergence-wave2-canonical-20261021
+          git push origin HEAD:code/canonical

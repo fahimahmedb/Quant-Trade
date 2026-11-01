@@ -46,10 +46,10 @@ class ReleaseProvenanceTests(unittest.TestCase):
                 network.assert_not_called()
 
     def test_foreign_mixed_or_unsuccessful_ci_cannot_qualify_a_release(self):
-        branch = "builder/v2-forward-20261020"
+        branch = "code/canonical"
         config = dict(self.config(), qualification_source_branch=branch)
         for index in (0, 1):
-            for key, value in (("head_sha", "a" * 40), ("head_branch", deploy.BRANCH),
+            for key, value in (("head_sha", "a" * 40), ("head_branch", deploy.BRANCH + "-unqualified"),
                                ("head_branch", "main"), ("name", "Other workflow"),
                                ("status", "in_progress"), ("conclusion", "failure")):
                 runs = self.runs(branch)
@@ -60,15 +60,15 @@ class ReleaseProvenanceTests(unittest.TestCase):
                         deploy.verify_ci(config)
 
     def test_source_branch_permission_never_redirects_canonical_scientific_state(self):
-        config = dict(self.config(), qualification_source_branch="builder/v2-forward-20261020",
-                      branch="builder/v2-forward-20261020")
+        config = dict(self.config(), qualification_source_branch="code/canonical",
+                      branch="code/canonical-unqualified")
         with patch.object(Path, "read_text") as read:
             with self.assertRaisesRegex(ValueError, "V2_CANONICAL_CONFIG_REQUIRED"):
                 deploy.validate_config(config)
             read.assert_not_called()
 
     def test_explicit_preparation_keeps_active_v2_handoff_gate_and_closed_authorities(self):
-        source = "builder/v2-forward-20261020"
+        source = "code/canonical"
         old = self.config()
         old["vm_ocid"] = "synthetic-vm-identity"
         account = SimpleNamespace(pw_uid=123, pw_gid=123, pw_dir="/var/lib/quant-research")

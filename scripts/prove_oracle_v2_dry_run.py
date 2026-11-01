@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 REPOSITORY = "fahimahmedb/Quant-Trade"
-BRANCH = "builder/oracle-v2-core-20261020"
+BRANCH = "code/canonical"
 AUTHORITY_KEYS = (
     "economic_experiment_authorized", "prospective_observation_authorized",
     "real_capital_authorized", "live_trading_authorized",

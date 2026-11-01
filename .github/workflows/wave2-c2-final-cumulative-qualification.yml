@@ -2,7 +2,7 @@ name: Wave2 C2 Final Cumulative Qualification
 
 on:
   push:
-    branches: [builder/convergence-wave2-canonical-20261021]
+    branches: [code/canonical]
   workflow_dispatch:
 
 permissions:
@@ -63,8 +63,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin "+refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
-          observed="$(git rev-parse refs/remotes/origin/builder/multi-source-ideation-intake-20261021)"
+          git fetch origin bbdea6a794377f8cab54fa8bcb6ad2242616e426
+          observed="$(git rev-parse bbdea6a794377f8cab54fa8bcb6ad2242616e426)"
           git merge-base --is-ancestor "$MULTISOURCE_REVIEWED_SOURCE_HEAD" "$observed"
           git diff --name-only "$MULTISOURCE_REVIEWED_SOURCE_HEAD" "$observed" > /tmp/ms-future.paths
           if test -s /tmp/ms-future.paths && grep -Ev '^(tests/test_multi_source_ideation_v2_.*\.py|STATE\.md|\.github/workflows/multisource-(diagnostic|refresh-status)\.yml)$' /tmp/ms-future.paths; then echo 'UNREVIEWED_MULTISOURCE_PRODUCT_DRIFT=TRUE' >&2; cat /tmp/ms-future.paths >&2; exit 1; fi

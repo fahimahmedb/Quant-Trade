@@ -3,7 +3,7 @@ name: Wave2 C2 Multi-Source Late Adversarial Closure
 on:
   push:
     branches:
-      - builder/convergence-wave2-canonical-20261021
+      - code/canonical
   workflow_dispatch:
 
 permissions:
@@ -37,7 +37,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
           git merge-base --is-ancestor "${WAVE2_IMMUTABLE_BASE_SHA}" HEAD
           git merge-base --is-ancestor "${MULTISOURCE_OUTCOME_FIREWALL_REPAIR}" HEAD
-          git fetch origin "+refs/heads/builder/multi-source-ideation-intake-20261021:refs/remotes/origin/builder/multi-source-ideation-intake-20261021"
+          git fetch origin bbdea6a794377f8cab54fa8bcb6ad2242616e426
           git cat-file -e "${MULTISOURCE_PRIOR_QUALIFICATION_HEAD}^{commit}"
           git cat-file -e "${MULTISOURCE_LATE_QUALIFICATION_HEAD}^{commit}"
           git merge-base --is-ancestor "${MULTISOURCE_PRIOR_QUALIFICATION_HEAD}" "${MULTISOURCE_LATE_QUALIFICATION_HEAD}"

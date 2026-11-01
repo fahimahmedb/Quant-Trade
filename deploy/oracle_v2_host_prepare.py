@@ -10,7 +10,7 @@ import subprocess
 import urllib.request
 
 QUALIFICATION_SOURCE_BRANCHES = (
-    "builder/oracle-v2-core-20261020", "builder/v2-forward-20261020",
+    "code/canonical",
 )
 V2_UNITS = ("quant-research-worker-v2.timer", "quant-research-worker-v2.service")
 

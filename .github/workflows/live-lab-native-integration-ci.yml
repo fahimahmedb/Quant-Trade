@@ -3,7 +3,7 @@ name: Live Lab native integration CI
 on:
   push:
     branches:
-      - builder/live-lab-native-integration-20261015
+      - code/canonical
     paths:
       - 'research/live_lab_ux/**'
       - '.github/workflows/live-lab-native-integration-ci.yml'

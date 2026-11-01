@@ -3,7 +3,7 @@ name: Research OS canonical spine CI
 on:
   push:
     branches:
-      - builder/research-os-aggressive-architecture-20261015
+      - code/canonical
     paths:
       - 'research/research_os/**'
       - '.github/workflows/research-os-canonical-spine-ci.yml'

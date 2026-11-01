@@ -19,8 +19,8 @@ from research.research_os.expansion.v2_core import assert_authority_closed, cano
 from research.research_os.oracle_worker import backend_from_config
 from research.research_os.oracle_worker_v2 import _require_v2_config
 
-BRANCH = "builder/oracle-v2-core-20261020"
-QUALIFICATION_SOURCE_BRANCHES = (BRANCH, "builder/v2-forward-20261020")
+BRANCH = "code/canonical"
+QUALIFICATION_SOURCE_BRANCHES = (BRANCH,)
 CONFIG = Path("/etc/quant-research-v2/worker.json")
 ROOT_QUALIFICATION = CONFIG.parent / "qualification.root.json"
 STATE = Path("/var/lib/quant-research-v2")

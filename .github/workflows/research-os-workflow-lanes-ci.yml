@@ -3,7 +3,7 @@ name: Research OS workflow lanes CI
 on:
   push:
     branches:
-      - builder/research-os-autonomous-loop-20261015
+      - code/canonical
     paths:
       - 'research/research_os/runtime/**'
       - 'research/research_os/tests/test_workflow_lanes.py'
