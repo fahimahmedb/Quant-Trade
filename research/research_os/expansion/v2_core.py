@@ -138,6 +138,7 @@ def build_epoch_manifest(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if export_cutoff > scheduled_close:
         raise V2ContractError("EXPORT_CUTOFF_AFTER_CLOSE")
     manifest = deepcopy(dict(payload))
+    manifest.pop("epoch_manifest_hash", None)
     manifest["close_policy_hash"] = canonical_hash({"close_policy": payload["close_policy"],
                                                     "max_candidate_exports": payload["max_candidate_exports"],
                                                     "scheduled_close_at": payload["scheduled_close_at"]})
@@ -200,6 +201,7 @@ def build_research_trial(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if not isinstance(payload["discarded_proposals"], list):
         raise V2ContractError("INVALID_DISCARDED_PROPOSALS")
     trial = deepcopy(dict(payload))
+    trial.pop("trial_hash", None)
     trial["proposal_count"] = len(trial["generated_proposals"])
     trial["discard_count"] = len(trial["discarded_proposals"])
     trial["trial_hash"] = canonical_hash(trial)
@@ -333,9 +335,20 @@ def build_negative_memory(payload: Mapping[str, Any]) -> Dict[str, Any]:
         "failure_reason", "revisit_conditions", "revisit_policy",
     }
     _require(payload, required, "NEGATIVE_MEMORY")
+    for key in ("negative_knowledge_id", "failure_scope", "failure_reason", "revisit_policy"):
+        value = payload[key]
+        if not isinstance(value, str) or not value.strip() or value.strip().upper() == "UNKNOWN":
+            raise V2ContractError("NEGATIVE_MEMORY_SCOPED_VALUE_REQUIRED:" + key)
+    for key in ("assumptions", "revisit_conditions"):
+        if not isinstance(payload[key], list):
+            raise V2ContractError("NEGATIVE_MEMORY_LIST_REQUIRED:" + key)
+    for key in ("regime_context", "source_context"):
+        if not isinstance(payload[key], Mapping):
+            raise V2ContractError("NEGATIVE_MEMORY_CONTEXT_REQUIRED:" + key)
     if payload.get("failure_reason") == "IDEA_FALSE_FOREVER" and not payload.get("logical_proof"):
         raise V2ContractError("UNSCOPED_PERMANENT_NEGATIVE_CLAIM")
     record = deepcopy(dict(payload))
+    record.pop("negative_knowledge_hash", None)
     record["negative_knowledge_hash"] = canonical_hash(record)
     return record
 
@@ -366,6 +379,7 @@ def build_frozen_export_intent(payload: Mapping[str, Any]) -> Dict[str, Any]:
     if hits:
         raise V2ContractError("OUTCOME_DATA_IN_RESEARCH_EXPORT:" + ",".join(hits))
     export = deepcopy(dict(payload))
+    export.pop("export_bundle_hash", None)
     export["event_type"] = "FROZEN_EXPORT_INTENT"
     export["export_bundle_hash"] = canonical_hash(export)
     return export
