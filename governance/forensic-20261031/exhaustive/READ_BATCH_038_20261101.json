@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_038_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_B2_B4_METADATA_MULTIPLICITY_TIEBREAK_AND_PERSISTENT_RESULT_INTEGRITY_4217713284_THROUGH_4217754856",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4217713284,"sha256":"5d63fbfd3fd92a46230337a6536f98b03aed5306b6aee5daf26127f89f2e937a","status":"READ","summary":"P2 B2 review finds dataset metadata is never validated, so altered/missing meta.json can still yield NEGATIVE_REPLICATION_CONFIRMED despite preregistration requiring provenance/PIT metadata to match. Metadata identity must be part of the input gate."},
+    {"kind":"review-comment","id":4217720553,"sha256":"161f7fe02b72f5b12aacadde29c9541b33fe2df45060a338728046dc4454ded9","status":"READ","summary":"Builder confirms B4 multiplicity-source conflict fix in 7ed3c7f808: registry and STATE are both checked when present; disagreement now yields INVALID_TRIAL_COUNT with dedicated tests."},
+    {"kind":"review-comment","id":4217720735,"sha256":"d671e59b1d63b6e653d1c907670c5824a110055d1d335b55b454f85f7f92c602","status":"READ","summary":"Builder does not rerun already-spent B2; instead performs post-hoc evidence check showing meta.json unchanged since ingestion, matching fingerprint/range/validation. B2 result is retained while missing harness gate is acknowledged and added to B4."},
+    {"kind":"review-comment","id":4217754839,"sha256":"73661382e3f7bf856acf817f0b9bb1fce3a252a8752caaa218971b4369e60c36","status":"READ","summary":"P2 B4 review finds iterative tolerance tie-break can choose a later lookback through a chain of near-ties even though preregistration requires the smallest lookback within tolerance of the global maximum. Selection must compute max first, then choose minimum eligible L."},
+    {"kind":"review-comment","id":4217754856,"sha256":"876ed4e05c0921e3e4fdaf2fdac99422ac8e0c4b8a2d633c62f0b3412e3b968c","status":"READ","summary":"P2 B4 review finds post-write repository mutation returns rc=3 but leaves an already-written JSON claiming the old valid RESULT/return_code. Persistent artifact must be removed or rewritten invalid before exit so disk evidence cannot contradict process failure."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 348,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 358,
+    "estimated_total_discussion_objects_directly_read": 355,
+    "estimated_total_discussion_objects_semantically_disposed": 365,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"METADATA_PROVENANCE_IS_PART_OF_DATA_IDENTITY","finding":"A stable CSV hash alone is insufficient when preregistration relies on metadata for dataset identity, date range, validation and PIT properties; metadata must be bound and checked too.","current_product_decision_change":false},
+    {"classification":"POST_HOC_VERIFICATION_CAN_PRESERVE_SINGLE_USE_RESULT_WITHOUT_RERUN","finding":"When a single-use run omitted a gate but independent primary evidence proves the actual input metadata was unchanged and valid, the control deficiency can be recorded and corrected prospectively without consuming the outcome again.","current_product_decision_change":false},
+    {"classification":"TIEBREAK_SEMANTICS_ARE_PART_OF_THE_FROZEN_PROTOCOL","finding":"Numerically small selection differences can change the chosen specification; preregistered tie rules must be implemented against the global maximum rather than path-dependent iterative comparisons.","current_product_decision_change":false},
+    {"classification":"PROCESS_FAILURE_MUST_INVALIDATE_PERSISTENT_RESULT","finding":"If a late integrity check fails after result serialization, the durable artifact must reflect failure; exit code alone is not enough because future readers may only see the JSON.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4217760542,"sha256":"99b1d91302c0b0ec1e93840e2641a3fcc03af1a469c2c2f31c5c252cbf683a56"}
+}
