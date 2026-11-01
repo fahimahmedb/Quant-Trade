@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_011_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_B4_ERRATUM_HARNESS_REVIEW_USAGE_LIMIT_AND_SINGLE_RESULT_6057563728_THROUGH_6058491431",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6057563728,"sha256":"19fd207406823356e91de53833a82f82b9df76c74f3e8efc4971c89442339370","status":"READ","summary":"Codex accepts B4 erratum E1-E3 without expanding authority: adjusted-open execution basis, fail-closed trial-count fallback, and closed metric definitions. Only harness construction/review is allowed, not execution."},
+    {"kind":"issue-comment","id":6057620253,"sha256":"984d398ac5353d5a10426003531cd7cd1ecd24ffbfc4599b647307eba2ec4935","status":"READ","summary":"Builder publishes non-executed B4 harness with 29 synthetic/adversarial tests and explicitly exposes remaining design choices for challenge before real data execution."},
+    {"kind":"issue-comment","id":6057668076,"sha256":"211e6472005360c745e7a0aa7699ec07e3ce409653f416af9041ad18ea94da17","status":"READ","summary":"Automated review finds raw CSV lines were parsed before shadow cutoff. Builder fixes filtering before CSV field parsing, adds tests, and discloses the same bounded parsing defect in already-run B2 without rerunning B2 or overstating its guarantees."},
+    {"kind":"issue-comment","id":6057738661,"sha256":"6a100e7057de2ecc02fc729cd4ffce0ec848177625260f395e1812fcf60ede45","status":"READ","summary":"Two more P2 findings are accepted: registry-vs-STATE conflict must fail closed and metadata identity/coherence must be checked before calculation. Harness remains non-executed; 35 tests pass."},
+    {"kind":"issue-comment","id":6057807700,"sha256":"281dfdba073588aa1c54d80da02658205965bfea365c8a396f371be3b01cb79d","status":"READ","summary":"Further review finds tie-break implementation and late filesystem mutation handling defects. Both are fixed; harness reaches 40 tests. Proposed freeze rule: only defects that can change result, selection or data boundary postpone execution; pure style does not."},
+    {"kind":"issue-comment","id":6057811519,"sha256":"619c9f9f66a93f7e7ea60049aa147d2cf183fb706a71e11a710216ed2ba19d92","status":"READ","summary":"Codex code-review usage limit is reached, creating an external tool-availability interruption in the challenge lane."},
+    {"kind":"issue-comment","id":6058253274,"sha256":"189d22c43dcf146ad7d9f0969f4b0a312ecd12ea9bf0a186868ee1895788eedc","status":"READ","summary":"Builder issues one bounded reminder after review quota interruption; if no reply, H7 becomes NON_REPONDU and one execution proceeds with explicitly accepted residual risk after 40 tests and five review passes."},
+    {"kind":"issue-comment","id":6058258054,"sha256":"619c9f9f66a93f7e7ea60049aa147d2cf183fb706a71e11a710216ed2ba19d92","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6057811519},
+    {"kind":"issue-comment","id":6058486458,"sha256":"a4680fcf20d43f7f9a4db8a1ac5ad5e060cda45c8a10ec0aeeb15fb1df51a1c4","status":"READ","summary":"B4 executes once and returns FAMILY_REJECTED. L=252 has net +6.69% but t=0.488 vs 3.227 required, fails split stability and concentration; it underperforms passive comparators. No fifth variant. Local panel is declared exhausted for honest low-cost new evidence; new public data is Owner-gated Q30."},
+    {"kind":"issue-comment","id":6058491431,"sha256":"619c9f9f66a93f7e7ea60049aa147d2cf183fb706a71e11a710216ed2ba19d92","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6057811519}
+  ],
+  "batch_counts": {
+    "objects_resolved": 10,
+    "objects_directly_read": 8,
+    "objects_byte_identical_to_read": 2,
+    "unique_content_hashes_read": 8,
+    "cumulative_new_discussion_objects_directly_read": 97,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 4,
+    "cumulative_new_discussion_objects_semantically_disposed": 101,
+    "estimated_total_discussion_objects_directly_read": 104,
+    "estimated_total_discussion_objects_semantically_disposed": 108,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"REVIEW_BEFORE_DATA_REMOVED_MULTIPLE_REAL_DEFECTS","finding":"B4 accumulated multiple material pre-execution fixes across price basis, trial-count provenance, metric definitions, shadow parsing, metadata, selection tie-break and mutation handling before the single real run.","current_product_decision_change":false},
+    {"classification":"HONEST_DISCLOSURE_AFTER_EXECUTION","finding":"A later shadow-line parsing issue was disclosed for B2 without pretending the original stronger wording remained proven and without rerunning a spent experiment.","current_product_decision_change":false},
+    {"classification":"TOOL_QUOTA_INTERRUPTS_REVIEW_NOT_AUTHORITY","finding":"Codex review quota exhaustion interrupted H7; the eventual execution explicitly records NON_REPONDU and residual risk rather than treating silence as review PASS.","current_product_decision_change":false},
+    {"classification":"FAMILY_REJECTED_STOP_RULE_OBEYED","finding":"MACRO-TSMOM-001 is rejected on the preregistered conjunction despite positive raw net return; no fifth lookback or retune is allowed.","current_product_decision_change":false},
+    {"classification":"LOCAL_ECONOMIC_FRONTIER_EXHAUSTED","finding":"After B2 and B4, the team records that no honest low-cost fresh validation remains on the local panel; further distinct edge exploration requires Owner-gated new public data rather than recycling spent windows.","current_product_decision_change":false}
+  ],
+  "current_action": "ECONOMIC_MEMORY_OWNER_GATE_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6060005920,"sha256":"8784b5ae0729f4e70c3685bd7535af4e82f795b0d79ca00978cb7bae2659e5cc"}
+}
