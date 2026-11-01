@@ -283,9 +283,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:29:57.671596+00:00",
-  "project_subject_before_receipt": "bd67b2127ba483189c9c760ba0c6fba29a5f6c95",
-  "code_canonical_sha": "d500d96a8ab5024557319add41e8030ebf392883",
+  "updated_utc": "2026-11-01T15:30:11.312297+00:00",
+  "project_subject_before_receipt": "e47b3feddc19f47c8a782760b9bb9c5ed2b3950b",
+  "code_canonical_sha": "538ed009c5958e37586a4f04e60ddad5485eeebc",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "PARK",
@@ -473,5 +473,89 @@
     "decision": "BLOCK_DEFAULT_MUTATION_ONLY"
   },
   "pre_deletion_status": "READY_FOR_INDEPENDENT_DOCUMENTARY_FAMILY_ONLY",
-  "all_independent_migrations_qualified": true
+  "all_independent_migrations_qualified": true,
+  "active_batch": {
+    "branches": [
+      "audit/owner-recovery-preserved-20261026",
+      "builder/autonomy-e2e-20261012",
+      "builder/evidence-store-identity-v2",
+      "builder/issue44-gpt-oss-codex-phase1-remote-20261030",
+      "builder/mega-e-autonomous-runtime-20261021",
+      "builder/research-os-vm-autonomy-20261019"
+    ],
+    "gate_snapshot": {
+      "observed_at": "2026-11-01T15:28:53.092Z",
+      "open_prs": [],
+      "issues": [
+        {
+          "n": 48,
+          "updated_at": "2026-11-01T13:17:01Z",
+          "classification": "META_AUDIT_COMPLETED_EVIDENCE_ARCHIVED"
+        },
+        {
+          "n": 44,
+          "updated_at": "2026-11-01T04:11:05Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 43,
+          "updated_at": "2026-10-30T19:10:04Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 42,
+          "updated_at": "2026-10-30T14:42:28Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 40,
+          "updated_at": "2026-10-30T12:04:38Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 38,
+          "updated_at": "2026-10-30T08:04:25Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 37,
+          "updated_at": "2026-10-30T02:05:35Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 36,
+          "updated_at": "2026-10-30T01:07:06Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 35,
+          "updated_at": "2026-10-21T20:16:49Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        },
+        {
+          "n": 34,
+          "updated_at": "2026-10-21T20:54:42Z",
+          "classification": "HISTORICAL_WORK_REQUEST_SUPERSEDED_BY_CANONICAL_AND_TERMINAL_STATE"
+        }
+      ],
+      "active_run_branches": [
+        "code/canonical",
+        "code/canonical",
+        "code/canonical",
+        "blue/master-v2-2026-09-20"
+      ],
+      "canonical_qualification": {
+        "run": 41321169062,
+        "sha": "f3a29907c4bb664a5a7b5daf671fb03935c3cef0",
+        "result": "success"
+      },
+      "external_parked": [
+        "builder/oracle-v2-core-20261020",
+        "builder/oracle-economic-loop-recovery-20261019",
+        "builder/research-os-autonomous-loop-20261015"
+      ],
+      "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
+    },
+    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
+  }
 }
