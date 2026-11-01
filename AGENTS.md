@@ -1,20 +1,8 @@
-# AGENTS.md — Quant System Agent Contract
+# AGENTS.md — canonical code working contract
 
-Read in this order before acting:
+Read `QUANT_NORTH_STAR.md`, then the current [project migration state](https://github.com/fahimahmedb/Quant-Trade/blob/project/canonical/governance/cleanup-20261101/FINAL_MIGRATION_STATE.json) and project decision/authority records on `project/canonical`. Reconcile fresh canonical heads and the exact subject before acting. `code/canonical` owns executable product, tests, workflows and runtime helpers; `project/canonical` owns project/scientific memory and evidence. Dated Blue handoffs and old working-branch names below or in history are provenance, not current routing authority.
 
-1. `QUANT_NORTH_STAR.md`
-2. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact current route
-3. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md` — current project routing/authority
-4. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md` — current Blue durable state
-5. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`
-6. the exact mission handoff/checkpoint for the branch being worked on
-7. `SYSTEM_ARCHITECTURE.md`
-8. `OPERATING_MODEL.md`
-9. `MISSION.md`
-10. `SOURCE_BASIS.md`
-11. `STATE.md` — runtime/research snapshot, **not** current governance authority
-
-For current work, do not infer the active mission from `STATE.md`, `CHIEF_BRIEF.md`, an old issue, the repository default branch, or historical `NEXT_BUILD_MISSION.md` content. Resolve the live Blue branch and exact mission SHA first.
+Economic experiments, prospective observation, real capital and live trading remain unauthorized. Migration/CI is not activation or runtime proof.
 
 ## Prime rule
 

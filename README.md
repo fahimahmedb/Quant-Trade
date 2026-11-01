@@ -4,22 +4,9 @@ Quant exists to increase real capital by repeatedly discovering, selecting and e
 
 Read **`QUANT_NORTH_STAR.md` first**. It is the highest-level product specification for this repository.
 
-## Current governance / restart surface
+## Current project / restart surface
 
-For **current project work**, do not use the GitHub default branch, `STATE.md`, `CHIEF_BRIEF.md`, historical issues or old handoffs to infer the active mission.
-
-After the North Star, read:
-
-1. `handoff/BLUE_CONTEXT_REACQUISITION_F11_2026-09-21.md` — latest compact restart surface
-2. `governance/CURRENT_GOVERNANCE_STATE_2026-09-20.md`
-3. `handoff/BLUE_MASTER_V2_STATE_2026-09-20.md`
-4. `handoff/BLUE_PROJECT_GOVERNANCE_CHECKPOINT_2026-09-21.md`
-5. the exact active mission/audit handoff referenced there
-
-Resolve the live HEAD of `blue/master-v2-2026-09-20`. The repository default is now this Blue branch, but default-branch status alone is still not proof of the active mission or gate state.
-
-`STATE.md` and `CHIEF_BRIEF.md` describe generated/runtime/research state; they are not governance routing documents.
-
+Read [AGENTS.md](AGENTS.md) and the fresh [migration state on project/canonical](https://github.com/fahimahmedb/Quant-Trade/blob/project/canonical/governance/cleanup-20261101/FINAL_MIGRATION_STATE.json). Project decisions and scientific memory live there; this branch owns executable product, workflows and tests. Dated Blue handoffs remain historical evidence. `STATE.md` is generated state, not project authority.
 
 Quant is not a backtester, a scanner, an LLM wrapper or a collection of strategies. The target is a persistent system combining:
 
