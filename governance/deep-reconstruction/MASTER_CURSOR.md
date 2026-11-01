@@ -55,10 +55,6 @@ Durable decisions:
 - early prediction/overlay/meta-labeling implementations -> `RETIRE_FROM_ACTIVE_SCOPE`;
 - no historical code port required.
 
-Proof boundary:
-- source behavior inspected at fixed SHA;
-- `NEW_RUNTIME_MUTATION_TEST_EXECUTED=FALSE`.
-
 Read:
 - `governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md`
 - `governance/deep-reconstruction/HANDOFF_WEEK_2026-07-13_2026-07-19.md`
@@ -85,34 +81,57 @@ Durable decisions:
 Authority rule:
 `LATER PRIMARY DEFECT/CORRECTION OUTRANKS EARLIER FINAL/READY/VALIDATED LABELS.`
 
-Proof boundary:
-- `HISTORICAL_BACKTESTS_RERUN_THIS_PASS=FALSE`;
-- `NEW_RUNTIME_TESTS_EXECUTED_THIS_PASS=FALSE`;
-- primary diffs/source inspected.
-
 Read:
 - `governance/deep-reconstruction/DEEP_WEEK_2026-07-20_2026-07-26.md`
 - `governance/deep-reconstruction/HANDOFF_WEEK_2026-07-20_2026-07-26.md`
 
+### 2026-07-27 -> 2026-08-02
+
+Status: `COMPLETE`.
+
+Durable decisions:
+- D-v2 was preregistered before rerun but used markets that had already informed hypothesis generation; therefore `INDEPENDENT_UNTOUCHED_HOLDOUT=FALSE`;
+- D-v2 0/3 result -> `GOVERNANCE_ONLY` negative memory; implementation retired;
+- scientific law -> preregistration cannot restore independence to a dataset already used for diagnosis/hypothesis generation;
+- Kelly and four-equity-index risk-parity -> `PARK` as allocation/diversification explorations;
+- 626 commits across 27-29 July are aggregated into an evolving research-factory/search process, not treated as independent capabilities;
+- 28-Jul prereg/audit/anti-cheat factory -> principle `NO_CHANGE_REQUIRED`; modern Research OS is stronger;
+- PEAD -> `PARK` with known survivorship/PIT gap and global multiplicity caveat;
+- local `N_trials=1` does not imply global effective trials=1 after adaptive candidate selection;
+- 29-Jul adversarial SPA/DSR audit -> durable falsification memory: best member unstable across folds, n_trials=13 likely undercounts ~110 adaptive historical looks, H0 not rejected;
+- modern canonical ExperimentInfrastructureBinding already models observed/effective trials, multiplicity, source/PIT/code/environment identity and pre-outcome receipts;
+- PR #1 closed without merge -> not integration proof;
+- no code port or current repair proved necessary.
+
+Authority rules:
+- `PREREGISTERED_BEFORE_REEXECUTION != INDEPENDENT_HOLDOUT` if the dataset already influenced the hypothesis;
+- effective multiplicity counts adaptive historical looks, not only final family rows;
+- later family-level falsification outranks intermediate PASS labels;
+- closed PR != integrated branch.
+
+Read:
+- `governance/deep-reconstruction/DEEP_WEEK_2026-07-27_2026-08-02.md`
+- `governance/deep-reconstruction/HANDOFF_WEEK_2026-07-27_2026-08-02.md`
+
 ## Current cursor
 
-`CURRENT_WEEK_START=2026-07-27`
-`CURRENT_WEEK_END=2026-08-02`
+`CURRENT_WEEK_START=2026-08-03`
+`CURRENT_WEEK_END=2026-08-09`
 `CURRENT_WEEK_STATUS=IN_PROGRESS`
 
-Known starting objects:
-1. 27-Jul large ML iteration chain — aggregate repetitive iterations; isolate semantic protocol changes only.
-2. `5a0b0b8dbd` — preregister D-v2 without leverage.
-3. `1307611d50` — final unique D-v2 test / reported 0-of-3 full-criterion failure; preserve no-retune-on-same-markets law.
-4. `8d5cd59278` — Kelly leverage and risk-parity/diversification alternatives; reported exploration only until independently qualified.
-5. Continue chronologically through 28 July -> 2 August using the forensic surface/index and primary commits for any object capable of changing a modern decision.
+Known starting objects from surface evidence:
+1. 4 Aug referenced cycle #202 / TIPS real-rate defensive overlay -> reported FAIL 0/5; prove identity/status without treating PR reference as merge.
+2. 5 Aug Rule-9 batteries: #226 kurtosis vol-targeting, #229 Yang-Zhang, #247 Bollinger-width; identify what Rule 9 adds beyond the existing canonical qualification stack.
+3. 6 Aug onward: use `surface/CHECKPOINT_2026-08-06_2026-09-01.md` and primary evidence only for semantic transitions that can change a modern decision.
 
 ## Open cross-week gaps
 
 `NONE_REQUIRING_CODE_CHANGE_FROM_COMPLETED_WEEKS`
 
-Forward qualification requirement only:
-if a future transformation path needs an adversarial causality test, mutate observations strictly after t and prove outputs at/before t are invariant. Do not reuse the historical outcome-shuffle heuristic as proof.
+Forward qualification requirements only:
+- a future causality mutation test must mutate observations strictly after t and prove outputs at/before t invariant;
+- future prospective experiments must preserve the distinction between preregistration and untouched holdout independence;
+- effective trial accounting must include adaptive search history or remain explicitly UNKNOWN rather than use a falsely narrow family count.
 
 ## Resume law
 
@@ -121,5 +140,5 @@ Do NOT assume absence from filename/search-term absence.
 Do NOT promote historical experiment verdicts into current economic truth.
 Do NOT merge or delete branches as part of this reconstruction.
 Do NOT reread completed weeks unless contradictory primary evidence can change a canonical decision.
-Do NOT treat repetitive ML iterations as independent capabilities.
+Do NOT treat repetitive ML/non-ML iterations as independent capabilities.
 Resume from `CURRENT_WEEK_*`, publish the weekly evidence document and handoff, then advance to the next calendar week.
