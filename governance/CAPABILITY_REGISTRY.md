@@ -1,6 +1,6 @@
 # Canonical capability registry
 
-This is the live routing registry. Detailed history remains in `governance/forensic-20261031/` and Git history.
+This is the live routing registry. Detailed history remains in `governance/forensic-20261031/`, `governance/FORENSIC_HISTORY_CLOSURE_2026-11-01.md` and Git history.
 
 | Capability | Owner | Status | Current proof / limit |
 |---|---|---|---|
@@ -11,8 +11,9 @@ This is the live routing registry. Detailed history remains in `governance/foren
 | Existing V1 timer → GPT-OSS/Codex host wake seam | `code/canonical` | CONNECTED_AND_ENGINEERING_QUALIFIED | `host_wake.py` + existing systemd timer; exact head `13c9ff03f0898e9af28abaa3dab78a520c70c887`; run `41265514716` SUCCESS |
 | Canonical combined-code qualification | `code/canonical` | ENGINEERING_QUALIFIED | head `13c9ff03f0898e9af28abaa3dab78a520c70c887`; Wave2 sample `48/48 PASS`; authority closed; clean checkout |
 | Scientific / negative memory | project + immutable code ledgers | REUSE | rejected/superseded knowledge preserved; no scientific semantics changed by host-wake seam |
+| Historical WP2 synthetic single-lineage evidence | forensic history only | CONTESTED / PARK | PR39 bounded PASS exists and hosted run `41069767444` succeeded, but later PR41 P1/P2 findings remain unresolved and Issue42 fresh semantic review remained UNKNOWN; not a clean autonomy proof |
 | Authority state | `project/canonical` | ACTIVE_CLOSED | real capital/live trading/unblinding/production/cleanup remain false |
-| Forensic reconstruction | `project/canonical` | HISTORICAL_REFERENCE | complete for convergence; no restart |
+| Forensic reconstruction | `project/canonical` | COMPLETE_DECISION_RELEVANT_HISTORY | surface `6393/6393` + CP055→CP099 deep supplement + final decision-history checkpoint; `969` occurrences remain intentionally UNKNOWN_BY_DATE; no global restart |
 | Actual VM deployment of `13c9ff03…` | external runtime | NOT_PROVEN / BLOCK_EXTERNAL_HOST_ACCESS | current host state unknown; no authenticated OCI/SSH/host-command channel demonstrated |
 | Real VM multi-wake GPT-OSS → Codex → GPT-OSS | external runtime + `code/canonical` | NOT_PROVEN / BLOCK_EXTERNAL_HOST_ACCESS | needs ≥2 automatic wakes and causal Codex result consumed by following GPT-OSS decision |
 | Global post-terminal project mission selection | future control layer | PARK | current launcher is task-bounded; do not build before real VM bridge proof |
@@ -38,6 +39,18 @@ Preceding challenge is retained:
 - `a0115d8a0b3f83e32d321d73d2dfb560f221a406`, run `41265426984` FAILURE;
 - failure isolated to two tests where mocked `os.execve` returned into an unreachable-production exception;
 - one-file correction produced `13c9ff03…`; full qualification then passed.
+
+## Historical evidence law
+
+A historical PASS is not erased when later counterevidence appears, but neither may later counterevidence be normalized away. In particular:
+
+`SELF_PASS != DURABLE_PASS != INDEPENDENT_PASS`
+
+and
+
+`EARLIER_INDEPENDENT_PASS + LATER_UNRESOLVED_INDEPENDENT_FINDINGS = CONTESTED`, not clean closure.
+
+See `governance/FORENSIC_HISTORY_CLOSURE_2026-11-01.md`.
 
 ## Routing law
 
