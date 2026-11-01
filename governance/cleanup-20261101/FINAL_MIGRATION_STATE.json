@@ -923,5 +923,60 @@
     "edge_lab_scientific_files_ported": 207,
     "forensic_evidence_files_ported": 73,
     "meta_audit_evidence_files_ported": 6
+  },
+  "jobs_access_probe": {
+    "run_id": 41329578009,
+    "job_id": 124916653510,
+    "subject_sha": "679cbdd2e39e4a181e54513c63e94cc39c1b5e67",
+    "status": "COMPLETED_READ_ONLY",
+    "observations": [
+      {
+        "probe": "READ_ONLY_NO_HOST_EXECUTION",
+        "runner_environment": "github-hosted",
+        "subject": "679cbdd2e39e4a181e54513c63e94cc39c1b5e67"
+      },
+      {
+        "surface": "repository",
+        "http_status": 200,
+        "default_branch": "blue/master-v2-2026-09-20",
+        "permissions": {
+          "admin": false,
+          "maintain": false,
+          "push": false,
+          "triage": false,
+          "pull": false
+        }
+      },
+      {
+        "surface": "workflow_policy",
+        "http_status": 403
+      },
+      {
+        "surface": "registered_runners",
+        "http_status": 403
+      },
+      {
+        "surface": "secret_names_only",
+        "http_status": 403
+      },
+      {
+        "surface": "project_protection",
+        "http_status": 403
+      },
+      {
+        "surface": "code_protection",
+        "http_status": 403
+      },
+      {
+        "native_oci_profile_exists": false,
+        "native_ssh_config_exists": false,
+        "credential_values_read": false,
+        "http_mutations": 0
+      }
+    ],
+    "scope": "User asked whether Jobs offer an already-authorized access route; operational migration remains paused per Owner. No default/protection/host mutation or residual deletion.",
+    "interpretation": "This GitHub-hosted probe token lacks administrative read surfaces. Registered runners and secret names could not be enumerated (403); their existence is UNKNOWN, not absent. No native OCI profile/SSH config was observed on the ephemeral runner. A separate authorized App/PAT or OCI/SSH credential, or an existing self-hosted runner, is still required.",
+    "documentation": "https://docs.github.com/en/actions/tutorials/authenticate-with-github_token",
+    "temporary_workflow": "Removed after successful diagnostic; native run logs preserve evidence"
   }
 }
