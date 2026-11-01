@@ -4,6 +4,9 @@ STATUS=AUTHORIZED_METHOD
 MODE=DEEP_SELECTIVE_RECONSTRUCTION
 GLOBAL_FORENSIC_RESTART=FALSE
 BRANCH_DELETION_AUTHORIZED=FALSE
+WEEKLY_CHECKPOINT_REQUIRED=TRUE
+WEEKLY_HANDOFF_REQUIRED=TRUE
+WEEK_BOUNDARY=MONDAY_TO_SUNDAY_EUROPE_PARIS
 
 ## Objective
 
@@ -63,20 +66,64 @@ The pass should be capability-centered, not commit-centered. At minimum inspect:
 11. economic experiment rails and rejected hypotheses;
 12. support infrastructure that may be useful but should not remain active architecture.
 
-## Checkpoint rule
+## Weekly checkpoint and handoff law
 
-After every substantive capability block, push a durable checkpoint containing:
+Historical work is grouped by calendar week, Monday through Sunday in `Europe/Paris`.
 
-- scope covered;
-- exact evidence IDs / SHAs / runs;
+After EVERY historical week inspected, push BOTH:
+
+1. `governance/deep-reconstruction/DEEP_WEEK_<YYYY-MM-DD>_<YYYY-MM-DD>.md`
+2. `governance/deep-reconstruction/HANDOFF_WEEK_<YYYY-MM-DD>_<YYYY-MM-DD>.md`
+
+The weekly deep checkpoint must contain:
+
+- exact week bounds and active days actually present;
+- source surface checkpoints reused;
+- exact commits / PRs / issues / blobs / workflow runs inspected where decision-relevant;
+- capability identities reconstructed;
+- BUILT / QUALIFIED / INTEGRATED / PROMOTED / ACTIVE / USED / END_TO_END_PROVEN distinctions;
 - recovered value;
-- contradictions found;
-- canonical comparison;
-- action classification;
-- gaps remaining;
-- next capability block.
+- negative / superseded scientific memory;
+- contradictions and later corrections;
+- comparison against `code/canonical` and `project/canonical`;
+- classification for each material object;
+- canonical gap candidates discovered;
+- whether any port / repair is justified;
+- unresolved UNKNOWNs and why they do or do not block;
+- exact next week.
 
-A checkpoint does not stop the mission.
+The weekly handoff must be deliberately shorter and sufficient for another AI to resume without rereading the full week. It must contain:
+
+- authoritative branch heads observed;
+- completed historical week;
+- decisions that MUST NOT be reopened absent contradictory primary evidence;
+- open gaps / blockers;
+- exact next week and first evidence objects to inspect;
+- any pending mutation or qualification run;
+- explicit statement that global forensic restart is forbidden.
+
+Publishing a weekly checkpoint never pauses the mission.
+
+## Efficiency without quality loss
+
+Allowed optimizations:
+
+- reuse existing surface chronology, capability maps, crosswalks and exact-SHA checkpoints as navigation indices;
+- batch related commit / file / run lookups when the evidence question is shared;
+- compare ancestry or file diffs before opening full branches;
+- use one representative primary proof when multiple later artifacts are byte-for-byte or semantically equivalent;
+- stop descending into an object once a stronger later proof demonstrably supersedes it and no hidden value can change the canonical decision;
+- mark `NO_CHANGE_REQUIRED`, `PARK`, `RETIRE_FROM_ACTIVE_SCOPE` or bounded `UNKNOWN` rather than auditing low-value detail indefinitely.
+
+Forbidden shortcuts:
+
+- treating summaries, branch names, commit messages or CI green as sufficient proof;
+- inferring integration from construction, promotion from qualification, activation from deployment intent, or end-to-end use from unit tests;
+- skipping a known contradiction because a later summary looks cleaner;
+- restoring a historical system wholesale instead of isolating the missing semantic;
+- reducing evidence depth merely to finish faster.
+
+Optimization is valid only when it preserves or increases confidence in the canonical decision.
 
 ## Final outputs
 
