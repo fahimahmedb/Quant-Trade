@@ -26,27 +26,30 @@
     "status": "COMPLETE_423_OF_423",
     "closure_receipt": "governance/forensic-20261031/exhaustive/DISCUSSION_SEMANTIC_CLOSURE_20261101.json",
     "last_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json",
-    "last_ledger_object": {"kind":"reviews","id":5718871390,"sha256":"9cfb6329142e00d483f894a3258cd45a816ee30f768af504b752cd375f8bd6c6"},
-    "counting_note": "Closure proven by exhaustion of ordered 423-object ledger plus preserved baseline reads. Historical estimated counters overlapped the baseline and are not summed."
+    "last_ledger_object": {"kind":"reviews","id":5718871390,"sha256":"9cfb6329142e00d483f894a3258cd45a816ee30f768af504b752cd375f8bd6c6"}
   },
   "document_phase": {
-    "status": "INDEX_READY_BUNDLE_GENERATION_PENDING",
+    "status": "ACTIVE",
     "index_path": "governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv",
     "index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
     "index_extraction_receipt": "governance/forensic-20261031/exhaustive/DOCUMENT_INDEX_EXTRACTION_RECEIPT.json",
-    "unique_document_blobs": 6465,
-    "baseline_reads_overlay": "governance/forensic-20261031/reads-overlay.json",
+    "bundle_generation_run_0001": 41317167703,
+    "bundle_generation_run_0001_result": "SUCCESS",
+    "baseline_read_blobs": 52,
+    "new_document_blobs_read": 20,
+    "document_blobs_disposed": 72,
+    "document_blob_denominator": 6465,
+    "latest_bundle": "governance/forensic-20261031/exhaustive/documents/DOC_BUNDLE_0001.md",
+    "latest_read_batch": "governance/forensic-20261031/exhaustive/documents/DOC_READ_BATCH_0001_20261101.json",
     "reading_method": "HASH_FIRST_VERSION_FAMILY_FIRST_BUNDLED_FULL_CONTENT_OR_EXPLICIT_BINARY_UNAVAILABLE",
-    "next_cursor": "GENERATE_DOCUMENT_SEMANTIC_BUNDLES"
+    "next_cursor": "GENERATE_DOC_BUNDLE_0002"
   },
-  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json",
   "resume_law": [
     "Do not restart raw inventory, discussion reading, or decision-relevant chronology.",
-    "All 423 discussion objects are closed; do not reopen them without a concrete contradiction.",
-    "Continue document coverage from the extracted 6465-blob document index.",
-    "Deduplicate only by exact Git blob identity / exact collected hash; preserve every path appearance in the manifest.",
-    "Use version-family/path bundles to reduce tool overhead, but assign an explicit semantic status to every unique document blob.",
-    "Keep historical document claims separate from current project authority.",
+    "All 423 discussion objects are closed; reopen only for a concrete contradiction.",
+    "Continue document coverage from DOCUMENT_VERSIONS.csv using bundle generation and explicit per-blob read batches.",
+    "Deduplicate only by exact Git blob identity / exact collected hash; preserve every path appearance in manifests.",
+    "Historical instructions are evidence, not executable current authority.",
     "Do not mutate code/canonical, runtime, scientific outcomes, or economic authority during exhaustive reading."
   ]
 }
