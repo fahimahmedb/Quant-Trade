@@ -131,7 +131,7 @@ Valid outcomes: `NO_CHANGE_REQUIRED`, `CONNECT`, `REPAIR`, `PARK`, `BLOCK`, `UNK
 
 ## Cumulative retrospective — rewritten 2026-11-01
 
-Owner requested a complete rewrite based on the newer, detailed audit pass. Current assessment: `governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md`, commit `9edd9a7772e46f2f570a4a4b39877d804160d592`. The first edition remains in Git history at `ddecba62a067c504bd1eb9654528ae2df5133220`.
+Owner requested a complete rewrite based on the newer, detailed audit pass. Current assessment: `governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md`, commit `7c11cbf68ca56bee9fc29ed2412a4a6e6abbe6ab`. The first edition remains in Git history at `ddecba62a067c504bd1eb9654528ae2df5133220`.
 
 NEW_AUDIT_SOURCE=`audit/forensic-checkpoint-20261019@1b537233652b8c9a719855269b4907b14ad5a100`
 NEW_PASS_STATUS=`SEMANTIC_READING_ACTIVE`; decision-relevant historical closure and exhaustive semantic coverage are separate scopes.
