@@ -18,21 +18,28 @@ jobs:
   method-gate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact code subject
+      - name: Checkout exact triggering code subject
         uses: actions/checkout@v4
         with:
-          ref: code/canonical
+          ref: ${{ github.sha }}
           fetch-depth: 0
+
+      - name: Verify exact code subject
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "CODE_SUBJECT_SHA=$GITHUB_SHA"
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Fetch canonical project contract
+      - name: Fetch canonical project contract and record identity
         run: |
           git fetch --no-tags origin project/canonical
-          git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/AI_WORKING_METHOD_V1.json
+          PROJECT_CONTRACT_SHA="$(git rev-parse FETCH_HEAD)"
+          echo "PROJECT_CONTRACT_SHA=$PROJECT_CONTRACT_SHA"
+          git show "$PROJECT_CONTRACT_SHA":governance/AI_WORKING_METHOD_V1.json > /tmp/AI_WORKING_METHOD_V1.json
 
       - name: Snapshot remote branch names
         run: |
