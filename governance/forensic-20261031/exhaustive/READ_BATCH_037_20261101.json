@@ -32,6 +32,6 @@
     {"classification":"MULTIPLICITY_STATE_MUST_FAIL_CLOSED_ON_SOURCE_CONFLICT","finding":"A trial-count registry cannot silently override contradictory project state; multiplicity thresholds depend on the denominator and ambiguity must invalidate the run before execution.","current_product_decision_change":false},
     {"classification":"REVIEW_THEN_MINIMAL_FIX_BEFORE_OUTCOME_IS_HIGH_VALUE","finding":"These reviews changed causal/data boundaries before single-use execution, making them expensive but necessary rather than governance waste.","current_product_decision_change":false}
   ],
-  "current_action": "CONTINUE_EXHAUSTIVE_DISCUSSION_READING_NO_PRODUCT_MUTATION",
-  "next_cursor": null
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4217713284,"sha256":"5d63fbfd3fd92a46230337a6536f98b03aed5306b6aee5daf26127f89f2e937a"}
 }
