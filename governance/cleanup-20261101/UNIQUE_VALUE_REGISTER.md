@@ -4,49 +4,9 @@ This register is intentionally compact. It records only material that prevented 
 
 | Branch | Disposition | Reason | Unique commits vs canonicals | Tree/blob delta |
 |---|---|---|---:|---|
-| `__temp_should_not_create__` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/checkpoint-gate-a-v2-independent-audit-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/first-vertical-independent-review-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/gate-b-evidence-schema-false-pass-recheck-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/gate-b-f11-lock-identity-recheck-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/gate-b-run-authority-mechanisms-independent-review-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/gate-b-run-authority-mechanisms-recheck-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/gate-b-v4-transition-independent-preactivation-review-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-deep-adversarial-2026-09-19` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-deep-adversarial-pre-t0` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-gate-a-v2-independent-audit-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-gate-a-v3-independent-audit-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-gate-a-v4-independent-audit-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-hybrid-fault-matrix-independent-review-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/p0-restart-burst-proof-recheck-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-forward-v2-independent-reaudit-2026-09-29` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-bounded-runtime-test-evidence-audit-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-d1-d5-static-recheck-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-d5-type-repair-runtime-evidence-audit-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-dedicated-harness-static-audit-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-doc-integration-lot1-review-2026-10-07` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-lot3-independent-review-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-a2-residual-d5-final-static-recheck-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-edge-map-overfit-audit-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `astra/weather-v4-pre-op-contract-audit-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `audit/forensic-checkpoint-20261019` | PROTECTED_ACTIVE_AUDIT | active forensic semantic-reading branch | 91 | YES |
 | `audit/owner-recovery-preserved-20261026` | PARK | exact branch ref appears in open issue/comment(s): 44,44 | 0 | YES |
-| `blue/checkpoint-gate-a-v2-audit-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/forward-finalization-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-activation-seal-host-relay-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-f11-final-integration-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-post-astra-convergence-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-route1-seal-integration-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-run-authority-repair-dispatch-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-run-authority-repair-integration-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-run-reservation-activation-preseal-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/gate-b-run-reservation-host-relay-preseal-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/integration-readiness-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/long-horizon-research-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `blue/master-v2-2026-09-20` | PARK | repository default branch; admin-level default migration not performed by cleanup | 0 | YES |
-| `blue/p0-audit-authority-fix-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-audit-authority-red-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-calendar-direct-reconcile-red-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `blue/p0-calendar-dst-proof-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `blue/p0-continuity-qualification-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `blue/p0-gate-a-long-history-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
