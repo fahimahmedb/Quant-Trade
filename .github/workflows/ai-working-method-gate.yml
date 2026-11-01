@@ -1,0 +1,54 @@
+name: AI Working Method Gate
+
+on:
+  push:
+    branches:
+      - code/canonical
+    paths:
+      - AGENTS.md
+      - scripts/validate_ai_working_method.py
+      - tests/test_ai_working_method.py
+      - .github/workflows/ai-working-method-gate.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  method-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact code subject
+        uses: actions/checkout@v4
+        with:
+          ref: code/canonical
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch canonical project contract
+        run: |
+          git fetch --no-tags origin project/canonical
+          git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/AI_WORKING_METHOD_V1.json
+
+      - name: Snapshot remote branch names
+        run: |
+          git ls-remote --heads origin \
+            | awk '{sub("refs/heads/", "", $2); print $2}' \
+            | sort > /tmp/remote-branches.txt
+
+      - name: Validate canonical entrypoint and method contract
+        run: |
+          python scripts/validate_ai_working_method.py \
+            /tmp/AI_WORKING_METHOD_V1.json \
+            AGENTS.md \
+            --branches-file /tmp/remote-branches.txt
+
+      - name: Install test runner
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run anti-regression tests
+        run: python -m pytest -q tests/test_ai_working_method.py
