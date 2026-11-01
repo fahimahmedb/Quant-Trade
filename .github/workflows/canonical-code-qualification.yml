@@ -29,6 +29,7 @@ jobs:
       - name: Compile integrated deltas
         run: |
           python -m py_compile \
+            research/research_os/host_wake.py \
             research/research_os/expansion/v2_core.py \
             research/research_os/expansion/v2_pipeline.py \
             research/research_os/expansion/v2_stage_executor.py \
@@ -45,11 +46,11 @@ jobs:
             tests.test_research_os_trial_epoch_window \
             tests.test_research_os_trial_proposal_export_binding \
             tests.test_research_os_native_trial_lineage
-      - name: PR46 autonomy regressions
+      - name: PR46 autonomy and host-wake regressions
         env:
           PYTHONPATH: .:src
         run: |
-          python -m unittest -v tests.test_codex_adapter tests.test_codex_policy
+          python -m unittest -v tests.test_codex_adapter tests.test_codex_policy tests.test_host_wake_router
           python - <<'PY'
           from pathlib import Path
           source = Path('scripts/gpt_oss_orchestrator.py').read_text(encoding='utf-8')
