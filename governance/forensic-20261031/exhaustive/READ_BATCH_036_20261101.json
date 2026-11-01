@@ -32,6 +32,6 @@
     {"classification":"PARSER_SCOPE_MUST_EXCLUDE_ALL_EMBEDDED_DOCUMENT_CONTENT","finding":"Integrity metadata should be parsed only from the external declaration surface; content inside any fenced document block is evidence payload, not control syntax.","current_product_decision_change":false},
     {"classification":"REVIEW_FINDINGS_WERE_ACTUALLY_REPAIRED","finding":"At least two bounded review findings in this batch have explicit same-lineage fixes and tests, showing that review value was realized rather than merely documented.","current_product_decision_change":false}
   ],
-  "current_action": "CONTINUE_EXHAUSTIVE_DISCUSSION_READING_NO_PRODUCT_MUTATION",
-  "next_cursor": null
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4217462975,"sha256":"a71c516ee9dab6757f3b71787b76a446e291a307b35272fdb7c597d369394ee8"}
 }
