@@ -29,5 +29,7 @@ Previous 247 deletions stand; no re-audit or restoration.
 | `reviewer/v1-final-red-team` | `37f298423ca4a100c1c633da2c3c6c2641d8dd8e` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:22.149258+00:00 |
 | `claude/data-feeds-6vr22g` | `e11a9da0f8b11e7fbce06a537412baeae26625ab` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:25.550593+00:00 |
 | `research/edge-lab-continuous` | `68bbab8ec990c813310224bc8737c41480853108` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:29.092809+00:00 |
+| `audit/independent-meta-audit-20261101` | `0881c2b765837d8f833fb7b2567dab7ac3cca081` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:37:59.849834+00:00 |
+| `audit/forensic-checkpoint-20261019` | `d14415c09b63b26e5839fee445ba100989c429fe` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:38:04.367350+00:00 |
 
 Full gate/test/provenance details are in FINAL_MIGRATION_STATE.json and MIGRATION_RECEIPT.md.

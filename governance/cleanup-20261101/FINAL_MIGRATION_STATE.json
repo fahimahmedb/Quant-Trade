@@ -370,6 +370,22 @@
       "verified_absent_at": "2026-11-01T15:36:29.092809+00:00",
       "lease": "--force-with-lease=refs/heads/research/edge-lab-continuous:68bbab8ec990c813310224bc8737c41480853108",
       "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "audit/independent-meta-audit-20261101",
+      "sha": "0881c2b765837d8f833fb7b2567dab7ac3cca081",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:37:59.849834+00:00",
+      "lease": "--force-with-lease=refs/heads/audit/independent-meta-audit-20261101:0881c2b765837d8f833fb7b2567dab7ac3cca081",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "audit/forensic-checkpoint-20261019",
+      "sha": "d14415c09b63b26e5839fee445ba100989c429fe",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:38:04.367350+00:00",
+      "lease": "--force-with-lease=refs/heads/audit/forensic-checkpoint-20261019:d14415c09b63b26e5839fee445ba100989c429fe",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
     }
   ],
   "blocked": {
@@ -485,18 +501,18 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:37:53.086628+00:00",
-  "project_subject_before_receipt": "1b4c86c2e07a58881bfc6c5e222e0625e2e6991e",
+  "updated_utc": "2026-11-01T15:38:04.409873+00:00",
+  "project_subject_before_receipt": "1ec0ec70f1c9052c53563c46f4607f8b5e6c1816",
   "code_canonical_sha": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "d14415c09b63b26e5839fee445ba100989c429fe"
     },
     "audit/independent-meta-audit-20261101": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "0881c2b765837d8f833fb7b2567dab7ac3cca081"
     },
     "audit/owner-recovery-preserved-20261026": {
@@ -755,7 +771,7 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
+    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
   },
   "legacy_workflow_limits": {
     "classification": "HISTORICAL_SNAPSHOT_GATES_AND_PRE_EXISTING_BASELINE_FAILURES; NOT_CURRENT_CANONICAL_QUALIFICATION",
