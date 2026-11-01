@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_043_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_F2_MIRROR_UNIVERSE_WP2_EXECUTION_FIXTURE_IDENTITY_AND_PR46_AUTHORITY_REVIEW_CAUSALITY_4222281969_THROUGH_4428638084",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4222281969,"sha256":"2a24c7b8dacdd01ea0e5fef2fb2f8754d5d20917e448276213e8c7b1eb5ae66a","status":"READ","summary":"P2 F2 review finds non-gating longshot mirror does not reuse all primary-universe filters (binary/result/minimum-duration), so it can compare a different sample while being labelled a side-only sensitivity. Mirror must reuse the exact primary predicate and change only purchased side."},
+    {"kind":"review-comment","id":4423489791,"sha256":"fd4108280f32abd23f94054d262cf6c9a5065d67ba113e13a8fec3543fef3d33","status":"READ","summary":"P1 WP2 review proves the synthetic binding only plans and verify_bindings; runner.execute is never invoked and execution/evaluation lineage is falsely claimed. Existing documentary execution/validation components must be exercised and persisted before COMPLETE."},
+    {"kind":"review-comment","id":4423489800,"sha256":"7bc4af5a321af2495119a47f193df3c75268a3ec321094ab2cedf95d9dac1ae7","status":"READ","summary":"P2 WP2 review finds fixture digest is cached in constructor, neither persisted with task before claim nor recomputed from consumed inputs; crash/recovery or post-construction input mutation can complete same task ID with changed or mismatched fixture identity."},
+    {"kind":"review-comment","id":4428638080,"sha256":"6ce31da59634ce8c55827877af0857fddd174e79b4f4853aa80b899c76d8b4c4","status":"READ","summary":"P1 PR46 review proves model-issued CONTINUE can replace next builder prompt with unrestricted instructions while authority checks remain only on original task metadata; a continuation can request scientific unblinding/live trading unless immutable engineering authority is carried across delegation."},
+    {"kind":"review-comment","id":4428638084,"sha256":"ecef47b5a6532ab1a6cff94de3311982cd6a378003af7a7476b0e6f92fe48872","status":"READ","summary":"P1 PR46 review proves same GitHub bot identity can pre-seed a PASS review marker in builder response before any review request and drive state to QUALIFIED_RESULT/DONE. Review acceptance must bind to a distinct post-request review execution/run, not only shared actor plus predictable marker fields."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 373,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 383,
+    "estimated_total_discussion_objects_directly_read": 380,
+    "estimated_total_discussion_objects_semantically_disposed": 390,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"SENSITIVITY_ANALYSIS_MUST_HOLD_UNIVERSE_CONSTANT","finding":"A mirror test cannot be interpreted as side-only sensitivity if its eligibility universe differs from the primary test; all non-varied predicates must be reused exactly.","current_product_decision_change":false},
+    {"classification":"PLANNING_AND_BINDING_ARE_NOT_EXECUTION_AND_EVALUATION","finding":"WP2 demonstrated that a receipt can look causally complete while never invoking the executor. Completion claims must carry identities/evidence for actual execution result and evaluation, not only a frozen plan and binding check.","current_product_decision_change":false},
+    {"classification":"RECOVERY_IDENTITY_MUST_BE_DURABLY_BOUND_BEFORE_CLAIM","finding":"Task recovery is not trustworthy if seed/config/qualification identity can change under the same durable task ID. Expected fixture identity must be persisted before first claim and recomputed from actual consumed inputs on every execution/recovery.","current_product_decision_change":false},
+    {"classification":"AUTHORITY_MUST_PROPAGATE_ACROSS_MODEL_DELEGATION","finding":"Validating an action label is insufficient when model-generated continuation text can widen scope. Immutable authority denials and engineering envelope must be machine-enforced on every delegated next task.","current_product_decision_change":false},
+    {"classification":"INDEPENDENT_REVIEW_REQUIRES_POST_REQUEST_CAUSAL_IDENTITY","finding":"Shared bot principal and predictable review marker fields do not prove a separate review occurred. Review evidence must be causally downstream of the specific review request and independently identifiable from builder result production.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4428638093,"sha256":"cf7ef9ebad58ed2162894a5013cb74bf79b62ae00466c1347abb9954e7deda0d"}
+}
