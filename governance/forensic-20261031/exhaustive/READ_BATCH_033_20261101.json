@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_033_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_INLINE_REVIEWS_QUEUE_WAKE_FETCH_HASH_AND_WATCHDOG_FAILURE_MODES_4213560995_THROUGH_4216334668",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4213560995,"sha256":"eb4375bd9c3a268c4814618369dd41203052f81010a162bf5c0e0ebf93bc95c8","status":"READ","summary":"P2 review finds Q8 marked complete while Q9 still carries pre-Q8 BLOCKED text and stale placeholder references; because autopilot selects only READY tasks, Astra review could silently fail to launch."},
+    {"kind":"review-comment","id":4213566126,"sha256":"51da8deb4f70ceeb20c6a3e3c318c93e5e591411b2ba30ef4555d1f318064639","status":"READ","summary":"Builder/Owner reply confirms the Q9 inconsistency was already corrected: references updated, Q9 moved READY then IN_PROGRESS, and Astra was launched at 00:58Z. No further action required."},
+    {"kind":"review-comment","id":4213613610,"sha256":"bdd40b8cfb82007e211a035a7e658f2189695cf996df09b6c403a844f33950a0","status":"READ","summary":"P2 review finds a2_team_status.py ignores git fetch/read failures; stale or absent refs can be interpreted as no READY work and marker state can be overwritten, turning uncertainty into false idle."},
+    {"kind":"review-comment","id":4213613622,"sha256":"554357295d69d340c03d2c8036f3d29ffbdeb59e727623f22cf8d2b20def442d","status":"READ","summary":"P2 review finds a2_publish_block.py treats every backticked 64-hex value anywhere in a comment as a declared publication checksum, so documentary SHA references can create false rejection."},
+    {"kind":"review-comment","id":4213706361,"sha256":"8d64b9f25b3b4c0f70aa90aa5d2f2fc65c69b2df3db2af89bb776446c8f6ff5f","status":"READ","summary":"P2 review finds the team-status branch allowlist already omits active/future task branches such as Q15/Q23; wake logic can miss new work and incorrectly conclude no useful event arrived."},
+    {"kind":"review-comment","id":4213706365,"sha256":"d617fcc3df28c33767b7e9362d2a384bf675567cf4722aa32ecc5d05d06b4f4d","status":"READ","summary":"P2 review finds the checksum parser still accepts blocks when hash appears anywhere rather than only among explicitly declared publication checksums; declaration semantics must be distinct from documentary references."},
+    {"kind":"review-comment","id":4216334650,"sha256":"a5914a29b52b595132de492c63eac42edae52a1528f7e4dba0aacb472487e98b","status":"READ","summary":"P1 review finds watchdog ignores a raw authentic Owner STOP because STOP lacks an A2-TEAM header, so old waits can continue to wake/ping an explicitly stopped team."},
+    {"kind":"review-comment","id":4216334657,"sha256":"d3532c7b3ed9b580ec59c713e7a8c7c9c9d27eeb4030ea8d806004df1ea4b85a","status":"READ","summary":"P1 review finds any later comment by the target is treated as closing a wait even if unrelated; waits need causal IDs/references rather than mere later activity."},
+    {"kind":"review-comment","id":4216334668,"sha256":"9c3d03cbf0491ec77920bae76350fbcaaf34befd01345c1ee11d0287736f613b","status":"READ","summary":"P2 review finds watchdog emits no durable dedupe state for reminders; the same expired wait or silence alert can be reissued every scheduled run, creating an expensive wake loop."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 9,
+    "objects_directly_read": 9,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 9,
+    "cumulative_new_discussion_objects_directly_read": 324,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 334,
+    "estimated_total_discussion_objects_directly_read": 331,
+    "estimated_total_discussion_objects_semantically_disposed": 341,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"INLINE_REVIEW_FOUND_EXECUTION_STOPPERS","finding":"Inline reviews identified queue-state, branch-monitoring and watchdog defects capable of stopping or misrouting automation despite valid work existing. These reviews changed execution behavior rather than style.","current_product_decision_change":false},
+    {"classification":"FAIL_CLOSED_READS_ARE_REQUIRED","finding":"Fetch/read failures must terminate a coordination decision as UNKNOWN/BLOCK; converting stale or failed reads into no-work/idle can silently halt progress.","current_product_decision_change":false},
+    {"classification":"CHECKSUM_DECLARATION_IS_NOT_HASH_PRESENCE","finding":"Publication integrity requires explicit binding between a declared checksum and its block; merely finding the same hash elsewhere in text is insufficient.","current_product_decision_change":false},
+    {"classification":"WATCHDOG_NEEDS_CAUSAL_WAIT_IDS_AND_DEDUPE","finding":"Without STOP precedence, causal closure IDs and durable reminder dedupe, a watchdog can both miss unfinished waits and amplify noise with repeated wake/alert actions.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4216475369,"sha256":"d68481369e786a244d7fd0fac2639a26c6d50b133618fa6f96b36a08c184da6d"}
+}
