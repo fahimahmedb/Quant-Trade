@@ -32,6 +32,6 @@
     {"classification":"IDEMPOTENCE_KEYS_NEED_CAUSAL_SUBJECT_IDENTITY","finding":"Wait closure/dedupe keys must include the source object identity, not only a reusable human ID, or later work can be suppressed by historical state.","current_product_decision_change":false},
     {"classification":"DATA_ACCESS_BOUNDARY_MUST_PRECEDE_MATERIALIZATION","finding":"A claim of no shadow access is false if protected rows are materialized before later restriction. The access boundary must be enforced before parsing/materialization, not only before statistics.","current_product_decision_change":false}
   ],
-  "current_action": "CONTINUE_EXHAUSTIVE_DISCUSSION_READING_NO_PRODUCT_MUTATION",
-  "next_cursor": null
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4217441660,"sha256":"f12479d37f064b7f366eb95065b1024b77e90cef2e32f650b6ad90af278cace1"}
 }
