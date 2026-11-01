@@ -7,50 +7,10 @@ This register is intentionally compact. It records only material that prevented 
 | `audit/forensic-checkpoint-20261019` | PROTECTED_ACTIVE_AUDIT | active forensic semantic-reading branch | 91 | YES |
 | `audit/owner-recovery-preserved-20261026` | PARK | exact branch ref appears in open issue/comment(s): 44,44 | 0 | YES |
 | `blue/master-v2-2026-09-20` | PARK | repository default branch; admin-level default migration not performed by cleanup | 0 | YES |
-| `blue/p0-calendar-dst-proof-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-continuity-qualification-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-gate-a-long-history-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-gate-a-v2-final-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-gate-a-v2-staging-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-gate-a-v3-frozen-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-gate-a-v4-frozen-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-manual-operator-provenance-fix-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-manual-probe-fix-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/p0-manual-probe-red-2026-09-20` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v3-orchestration-2026-10-02` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-a1-documentation-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-a2-consolidated-preparation-2026-10-06` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-a2-governance-configuration-draft-2026-10-05` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-a2-harness-attestation-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-a2-harness-suitability-assessment-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-od04-od12-decision-support-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-phase-gate-decision-support-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-research-design-repair-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `blue/weather-v4-structural-pre-op-contract-2026-10-04` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `build-review/research-os-depth-64a6c455-20261015` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/__scratch-never-push` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/__scratch-never-push-2` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/__scratch-never-push-3` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/autonomy-e2e-20261012` | PARK | exact branch ref appears in open issue/comment(s): 38,38 | 0 | YES |
-| `builder/codex-p0-hybrid-fault-matrix-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/codex-p0-hybrid-known-bad-replay-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/codex-p0-hybrid-restart-burst-proof-fix-2026-09-21` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/convergence-cp069-wave2-base-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/convergence-cp079-wave2-base-20261021` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/convergence-wave2-canonical-20261021` | KEEP_ACTIVE | live repository dependency: .github/workflows/wave2-c2-acceptance.yml,.github/workflows/wave2-c2-c0-qualification.yml,.github/workflows/wave2-c2-final-cumulative-qualification.yml,.github/workflows/wave2-c2-mega-e-qualification.yml,.github/workflows/wave2-c2-multisource-late-adversarial.yml,.github/workflows/wave2-c2-multisource-qualification.yml,.github/workflows/wave2-c2-refresh-status-artifacts.yml,.github/workflows/wave2-c2-scientific-economic-seam.yml | 0 | YES |
-| `builder/convergence2-multisource-pinned-b5ba7541` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/econ-readiness-experiment-20261016` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/econ-readiness-identity-portfolio-20261016` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/econ-readiness-implementability-20261016` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/econ-readiness-integration-20261016` | KEEP_ACTIVE | live repository dependency: .github/workflows/economic-readiness-integration-ci.yml | 0 | YES |
-| `builder/econ-readiness-producer-evidence-20261016` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/econ-readiness-validation-20261016` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/econ-test-flow-ust-auction-20261019` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/evidence-store-identity-v2` | PARK | exact branch ref appears in open issue/comment(s): 38 | 0 | YES |
-| `builder/f1-decision-integrity-repair-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/f1-persistent-stage-a-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/f1-sealed-stage-b-capture-2026-10-09` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `builder/f1-stage-a-evidence-37900200192-1` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/f1-stage-a-evidence-37903239892-1` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/f1-stage-a-evidence-37915190172-1` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
 | `builder/f1-stage-a-execution-2026-10-09` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
