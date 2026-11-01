@@ -485,9 +485,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:36:29.136494+00:00",
-  "project_subject_before_receipt": "b1e65105536a5f630caeca74480d687b429130a7",
-  "code_canonical_sha": "c470c367979455b80e879d334ff9943dd94b306d",
+  "updated_utc": "2026-11-01T15:37:53.086628+00:00",
+  "project_subject_before_receipt": "1b4c86c2e07a58881bfc6c5e222e0625e2e6991e",
+  "code_canonical_sha": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "PARK",
@@ -679,12 +679,8 @@
   "all_independent_migrations_qualified": true,
   "active_batch": {
     "branches": [
-      "builder/research-os-aggressive-architecture-20261015",
-      "builder/research-os-autonomous-econ-readiness-port-20261016",
-      "builder/v2-forward-20261020",
-      "reviewer/v1-final-red-team",
-      "claude/data-feeds-6vr22g",
-      "research/edge-lab-continuous"
+      "audit/independent-meta-audit-20261101",
+      "audit/forensic-checkpoint-20261019"
     ],
     "gate_snapshot": {
       "observed_at": "2026-11-01T15:28:53.092Z",
@@ -759,7 +755,7 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
+    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
   },
   "legacy_workflow_limits": {
     "classification": "HISTORICAL_SNAPSHOT_GATES_AND_PRE_EXISTING_BASELINE_FAILURES; NOT_CURRENT_CANONICAL_QUALIFICATION",
