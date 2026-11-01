@@ -4,13 +4,6 @@ on:
   push:
     branches:
       - project/canonical
-    paths:
-      - AGENTS.md
-      - README.md
-      - governance/AI_WORKING_METHOD_V1.md
-      - governance/AI_WORKING_METHOD_V1.json
-      - governance/CURRENT_PROJECT_STATE.md
-      - .github/workflows/ai-working-method-project-gate.yml
   workflow_dispatch:
 
 permissions:
