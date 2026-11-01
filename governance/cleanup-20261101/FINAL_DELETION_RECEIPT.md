@@ -23,5 +23,11 @@ Previous 247 deletions stand; no re-audit or restoration.
 | `builder/live-lab-oracle-canonical-20261020` | `d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:16.879797+00:00 |
 | `builder/live-lab-owner-ux-rebuild-20261015` | `8583ea6e46b123e831e8af489ad1043b810a0cf4` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:20.676880+00:00 |
 | `builder/multi-source-ideation-intake-20261021` | `bbdea6a794377f8cab54fa8bcb6ad2242616e426` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:24.462005+00:00 |
+| `builder/research-os-aggressive-architecture-20261015` | `43ed98dcab5e8108ee5190a4a53fc7f511fe41e0` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:11.906056+00:00 |
+| `builder/research-os-autonomous-econ-readiness-port-20261016` | `d5e6d55ba6084729b585a7bb41cede62d8d0f01b` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:15.220515+00:00 |
+| `builder/v2-forward-20261020` | `ded4228de74ce3b6926d9ea3e3c2114ff1be8208` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:18.692289+00:00 |
+| `reviewer/v1-final-red-team` | `37f298423ca4a100c1c633da2c3c6c2641d8dd8e` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:22.149258+00:00 |
+| `claude/data-feeds-6vr22g` | `e11a9da0f8b11e7fbce06a537412baeae26625ab` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:25.550593+00:00 |
+| `research/edge-lab-continuous` | `68bbab8ec990c813310224bc8737c41480853108` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:29.092809+00:00 |
 
 Full gate/test/provenance details are in FINAL_MIGRATION_STATE.json and MIGRATION_RECEIPT.md.

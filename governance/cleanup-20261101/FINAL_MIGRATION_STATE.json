@@ -322,6 +322,54 @@
       "verified_absent_at": "2026-11-01T15:34:24.462005+00:00",
       "lease": "--force-with-lease=refs/heads/builder/multi-source-ideation-intake-20261021:bbdea6a794377f8cab54fa8bcb6ad2242616e426",
       "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/research-os-aggressive-architecture-20261015",
+      "sha": "43ed98dcab5e8108ee5190a4a53fc7f511fe41e0",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:36:11.906056+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/research-os-aggressive-architecture-20261015:43ed98dcab5e8108ee5190a4a53fc7f511fe41e0",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/research-os-autonomous-econ-readiness-port-20261016",
+      "sha": "d5e6d55ba6084729b585a7bb41cede62d8d0f01b",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:36:15.220515+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/research-os-autonomous-econ-readiness-port-20261016:d5e6d55ba6084729b585a7bb41cede62d8d0f01b",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/v2-forward-20261020",
+      "sha": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:36:18.692289+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/v2-forward-20261020:ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "reviewer/v1-final-red-team",
+      "sha": "37f298423ca4a100c1c633da2c3c6c2641d8dd8e",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:36:22.149258+00:00",
+      "lease": "--force-with-lease=refs/heads/reviewer/v1-final-red-team:37f298423ca4a100c1c633da2c3c6c2641d8dd8e",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "claude/data-feeds-6vr22g",
+      "sha": "e11a9da0f8b11e7fbce06a537412baeae26625ab",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:36:25.550593+00:00",
+      "lease": "--force-with-lease=refs/heads/claude/data-feeds-6vr22g:e11a9da0f8b11e7fbce06a537412baeae26625ab",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "research/edge-lab-continuous",
+      "sha": "68bbab8ec990c813310224bc8737c41480853108",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:36:29.092809+00:00",
+      "lease": "--force-with-lease=refs/heads/research/edge-lab-continuous:68bbab8ec990c813310224bc8737c41480853108",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
     }
   ],
   "blocked": {
@@ -437,8 +485,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:36:06.338839+00:00",
-  "project_subject_before_receipt": "daf624f41c157ad93c0916fb67e1e525f933abe1",
+  "updated_utc": "2026-11-01T15:36:29.136494+00:00",
+  "project_subject_before_receipt": "b1e65105536a5f630caeca74480d687b429130a7",
   "code_canonical_sha": "c470c367979455b80e879d334ff9943dd94b306d",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -527,13 +575,13 @@
       "sha_at_snapshot": "0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1"
     },
     "builder/research-os-aggressive-architecture-20261015": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "43ed98dcab5e8108ee5190a4a53fc7f511fe41e0"
     },
     "builder/research-os-autonomous-econ-readiness-port-20261016": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "d5e6d55ba6084729b585a7bb41cede62d8d0f01b"
     },
     "builder/research-os-autonomous-loop-20261015": {
@@ -547,8 +595,8 @@
       "sha_at_snapshot": "8a1bdadc9bc52c4889ee19d0472bcee61fe24318"
     },
     "builder/v2-forward-20261020": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208"
     },
     "builder/wp1-book-pressure-preexposure-20261028": {
@@ -562,8 +610,8 @@
       "sha_at_snapshot": "8f8df47d184f0f1594280bec7e9e7941962cf1c5"
     },
     "claude/data-feeds-6vr22g": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "e11a9da0f8b11e7fbce06a537412baeae26625ab"
     },
     "code/canonical": {
@@ -592,8 +640,8 @@
       "sha_at_snapshot": "77ef69acddc997a613f5f133abbe6a81e687f24b"
     },
     "research/edge-lab-continuous": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "68bbab8ec990c813310224bc8737c41480853108"
     },
     "review/independent-architecture-challenger-20261026": {
@@ -602,8 +650,8 @@
       "sha_at_snapshot": "642b551985f499b37286c3bc21b89c57294f63ca"
     },
     "reviewer/v1-final-red-team": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "37f298423ca4a100c1c633da2c3c6c2641d8dd8e"
     }
   },
@@ -711,7 +759,7 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
+    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
   },
   "legacy_workflow_limits": {
     "classification": "HISTORICAL_SNAPSHOT_GATES_AND_PRE_EXISTING_BASELINE_FAILURES; NOT_CURRENT_CANONICAL_QUALIFICATION",
