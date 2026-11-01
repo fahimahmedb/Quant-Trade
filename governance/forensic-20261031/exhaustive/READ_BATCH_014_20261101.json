@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_014_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_CLAUDE_BOARD_TOKEN_EFFICIENCY_EDGE_FLOW_AND_F1_PREOUTCOME_DEFECT_FIX_6063171858_THROUGH_6064447092",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6063171858,"sha256":"fcec284fd93d27078043d89f91a3659848b1280a687fdda1bf21444790e4c566","status":"READ","summary":"Claude publishes independent Edge Search Board before convergence. Provisional top three: crypto carry, Kalshi favorite-longshot OOS, Form-4 insider clusters; family-level error budgets and underpowered status are fixed pre-outcome."},
+    {"kind":"issue-comment","id":6063177771,"sha256":"619c9f9f66a93f7e7ea60049aa147d2cf183fb706a71e11a710216ed2ba19d92","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6057811519},
+    {"kind":"issue-comment","id":6063258240,"sha256":"0d90323d89ab3a8ab2fd17d0b94f29c8c5213134ccb356533ab90cd4800b277d","status":"READ","summary":"Owner introduces TOKEN_EFFICIENCY patch: delta-only handoffs, bounded fixed read set, complexity-based routing, reset/compact discipline, useful-only subagents, no mechanical ping-pong, compact checkpoints and explicit read scope/stop condition; tokens should go to edge information, not governance repetition."},
+    {"kind":"issue-comment","id":6063263056,"sha256":"a2c961202073358fe99ffb030712bddf6d2168b7c69da27b5fda1f2335c25cf2","status":"READ","summary":"Codex generic usage limit reached; tool availability interruption, no project authority or scientific result."},
+    {"kind":"issue-comment","id":6063301649,"sha256":"d23d8d93ae732eb24247b0ed647ee08feb4d97d23f29c98b0a3de20cb55ce5c3","status":"READ","summary":"Claude applies TOKEN_EFFICIENCY_V1 immediately: delta-only handoff, compact checkpoint, fixed refs, one independent reviewer per preregistration, full verbatim+SHA only for true proof artifacts. F1/F2 preregisters advance while Codex quota is unavailable."},
+    {"kind":"issue-comment","id":6063734233,"sha256":"4a280d2084e37e31b82914149aaeb43780b01ca7b4317adeb6d9adc3d67b4473","status":"READ","summary":"Owner allows Claude to continue while Codex tokens recover. F1 Stage A preregistration/harness frozen, acquisition begins; F2 Terms 429 and F3 SEC contact remain blockers. Codex challenge is deferred to before Stage B rather than blocking Stage A indefinitely."},
+    {"kind":"issue-comment","id":6063738219,"sha256":"a2c961202073358fe99ffb030712bddf6d2168b7c69da27b5fda1f2335c25cf2","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6063263056},
+    {"kind":"issue-comment","id":6064142254,"sha256":"c53b57a94f1c3baa4d5be4d7da070043e0ba5118ad455aa9af07011c829bea0c","status":"READ","summary":"Owner establishes EDGE-FLOW baseline: primary objective find/falsify real edge, WIP<=2 ceiling, pilot/falsifier roles, only decision-changing defects, max two substantive challenge rounds, DO_NOT_DO_IT for non-decision-changing work, no A2/meta/framework/new-family work before F1 economic verdict."},
+    {"kind":"issue-comment","id":6064146636,"sha256":"a2c961202073358fe99ffb030712bddf6d2168b7c69da27b5fda1f2335c25cf2","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6063263056},
+    {"kind":"issue-comment","id":6064156786,"sha256":"25bc4c71a2bfa071f92c0f5b5382912c1062e50c8995f3dd580e7f556d5fabdc","status":"READ","summary":"EDGE-FLOW applied: F1 only active family, F2 blocked, Stage-A acquisition underway after pre-outcome infra fix, two adversarial reads complete, DEFECT=NONE and DECISION=EXECUTE for one Stage-A harness run after download."},
+    {"kind":"issue-comment","id":6064359333,"sha256":"c2151ca18f71c597fd5dd403060acd179b1da4b1acaa0de830e223312c1695a7","status":"READ","summary":"Falsifier finds decision-changing pre-outcome F1 bug: low-slippage top-20 ranked by median quote volume instead of preregistered aggregate trailing-30d spot quote-volume, changing 2bp-vs-10bp costs and potentially theta/verdict."},
+    {"kind":"issue-comment","id":6064364143,"sha256":"a2c961202073358fe99ffb030712bddf6d2168b7c69da27b5fda1f2335c25cf2","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6063263056},
+    {"kind":"issue-comment","id":6064431157,"sha256":"adb9345b4ccb33fa85e3967a71377fe627f337ea597263eb5782f57c2867fe08","status":"READ","summary":"Minimal F1 fix implemented before outcome: retain median for 5m eligibility but rank low-slippage top-20 by aggregate trailing-30d spot quote-volume; targeted regression test added, data/manifests unchanged, remote branch verified."},
+    {"kind":"issue-comment","id":6064437091,"sha256":"a2c961202073358fe99ffb030712bddf6d2168b7c69da27b5fda1f2335c25cf2","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6063263056},
+    {"kind":"issue-comment","id":6064443481,"sha256":"10dfb0d09efb4efaa5729f7784e2f4143be09df835346fa7f94402ebc4876aa0","status":"READ","summary":"Corrected F1 harness is fast-forwarded with lease onto PR22 remote HEAD; no concurrent commit overwritten. Old harness is explicitly forbidden for Stage-A outcome run."},
+    {"kind":"issue-comment","id":6064447092,"sha256":"a2c961202073358fe99ffb030712bddf6d2168b7c69da27b5fda1f2335c25cf2","status":"BYTE_IDENTICAL_TO_READ_OBJECT","identical_to":6063263056}
+  ],
+  "batch_counts": {
+    "objects_resolved": 16,
+    "objects_directly_read": 10,
+    "objects_byte_identical_to_read": 6,
+    "unique_content_hashes_read": 10,
+    "cumulative_new_discussion_objects_directly_read": 133,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 143,
+    "estimated_total_discussion_objects_directly_read": 140,
+    "estimated_total_discussion_objects_semantically_disposed": 150,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"TOKEN_EFFICIENCY_BECAME_OPERATING_METHOD","finding":"Delta-only handoffs, bounded read sets, compact checkpoints and proof-by-reference were actually adopted while preserving verbatim+SHA publication for preregistrations/results.","current_product_decision_change":false},
+    {"classification":"EDGE_FLOW_CLOSES_META_LOOP","finding":"Owner explicitly caps WIP, challenge rounds and meta-work, and requires execution once no decision-changing defect remains. This is the strongest historical anti-governance-bloat rule found so far.","current_product_decision_change":false},
+    {"classification":"DECISION_CHANGING_REVIEW_WORKS","finding":"F1 falsification found a concrete cost-selection mismatch that could alter selection and economic verdict; minimal repair was made before any outcome and immediately verified remotely.","current_product_decision_change":false},
+    {"classification":"QUOTA_INTERRUPTION_DEDUPED","finding":"Repeated identical Codex usage-limit comments are byte-identical and add no semantic information; they are disposed by hash rather than reread.","current_product_decision_change":false},
+    {"classification":"INDEPENDENCE_DEFERRED_NOT_DROPPED","finding":"When Codex was unavailable, Owner allowed Claude to proceed through acquisition/Stage A while keeping Codex falsification due before Stage B, reducing idle time without falsely claiming independent review had occurred.","current_product_decision_change":false}
+  ],
+  "current_action": "ECONOMIC_F1_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6065047870,"sha256":"523da7ccb4ed61bbc5eda40084ae06cb82f5b2a71e537abe55f8a7a8d43e9f53"}
+}
