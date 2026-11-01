@@ -1,34 +1,48 @@
 # Canonical capability registry
 
-This is the live routing registry. Detailed historical proof remains in `governance/forensic-20261031/CAPABILITY_MAP.md`.
+This is the live routing registry. Detailed history remains in `governance/forensic-20261031/` and Git history.
 
-| Capability | Canonical owner | Status | Evidence / limit |
+| Capability | Owner | Status | Current proof / limit |
 |---|---|---|---|
 | Wave2 integrated research/evidence/factory/economic backbone | `code/canonical` | REUSE | base `ebc72b9fd14f91420c37e0b7607f9bfb584a289a` |
-| CP099 V2 pre-outcome hardening spine | `code/canonical` | CONNECTED_SELECTIVELY | source `ded4228de74ce3b6926d9ea3e3c2114ff1be8208`; conflicting source-line files were not wholesale merged |
-| Post-Wave2 GIGA-Q hardenings | `code/canonical` | CONNECTED_SELECTIVELY_AND_QUALIFIED | source `4efadddf694eff0c0df00925b5b4b89194f32f8e`; non-overlapping blobs selectively recovered, then only proven `v2_core.py` identity/negative-memory semantics repaired |
-| GPT-OSS/Codex bounded orchestration | `code/canonical` | CONNECTED_AND_QUALIFIED_IN_CI | PR46 source `afedfd57986aa042e9e97aa53b9db53b4619764f`; current exact-head tests pass; runtime deployment/use still separate |
-| Canonical combined-code qualification | `code/canonical` | ENGINEERING_QUALIFIED | head `6039cfd7a8502e0a4727a6928a4ef4cb75a3bb6e`; workflow run `41264501411` SUCCESS |
-| Scientific/negative memory | `project/canonical` + code-owned immutable ledgers | REUSE | rejected/superseded history is preserved; GIGA-Q fail-closed negative-memory shape/hash tests pass at current head |
-| Authority state | `project/canonical` | ACTIVE_CLOSED | `governance/AUTHORITY_STATE.json`; destructive cleanup also PARK/false |
-| Forensic/history | `project/canonical` | HISTORICAL_REFERENCE | global archaeology complete; no restart |
-| Actual VM multi-wake GPT-OSS → Codex → GPT-OSS autonomy | external runtime + `code/canonical` | NOT_PROVEN | needs real host/runtime receipts over multiple wakes; CI is insufficient |
-| Real-capital/live-trading | none | CLOSED | explicit false authority |
-| Side project `restaurant-stock/` | none | RETIRE_FROM_ACTIVE_QUANT | out of Quant scope; no destructive deletion authorized |
-| Legacy review/challenge/handoff branches | none | PARK / RETIRE_AFTER_PRESERVATION | evidence remains referenced by SHA/history; branch deletion not authorized |
+| CP099 V2 pre-outcome hardening | `code/canonical` | CONNECTED_SELECTIVELY | carried forward; current run `41265514716`: `22/22 PASS` |
+| Post-Wave2 GIGA-Q hardening | `code/canonical` | CONNECTED_SELECTIVELY_AND_QUALIFIED | source `4efadddf694eff0c0df00925b5b4b89194f32f8e`; current run: `110/110 PASS + 44 subtests` |
+| PR46 bounded GPT-OSS/Codex orchestration | `code/canonical` | CONNECTED_AND_QUALIFIED | source `afedfd57986aa042e9e97aa53b9db53b4619764f`; current PR46+host tests `21/21 PASS`; launcher isolation PASS |
+| Existing V1 timer → GPT-OSS/Codex host wake seam | `code/canonical` | CONNECTED_AND_ENGINEERING_QUALIFIED | `host_wake.py` + existing systemd timer; exact head `13c9ff03f0898e9af28abaa3dab78a520c70c887`; run `41265514716` SUCCESS |
+| Canonical combined-code qualification | `code/canonical` | ENGINEERING_QUALIFIED | head `13c9ff03f0898e9af28abaa3dab78a520c70c887`; Wave2 sample `48/48 PASS`; authority closed; clean checkout |
+| Scientific / negative memory | project + immutable code ledgers | REUSE | rejected/superseded knowledge preserved; no scientific semantics changed by host-wake seam |
+| Authority state | `project/canonical` | ACTIVE_CLOSED | real capital/live trading/unblinding/production/cleanup remain false |
+| Forensic reconstruction | `project/canonical` | HISTORICAL_REFERENCE | complete for convergence; no restart |
+| Actual VM deployment of `13c9ff03…` | external runtime | NOT_PROVEN / BLOCK_EXTERNAL_HOST_ACCESS | current host state unknown; no authenticated OCI/SSH/host-command channel demonstrated |
+| Real VM multi-wake GPT-OSS → Codex → GPT-OSS | external runtime + `code/canonical` | NOT_PROVEN / BLOCK_EXTERNAL_HOST_ACCESS | needs ≥2 automatic wakes and causal Codex result consumed by following GPT-OSS decision |
+| Global post-terminal project mission selection | future control layer | PARK | current launcher is task-bounded; do not build before real VM bridge proof |
+| Real-capital/live-trading | none | CLOSED | authority false |
+| Legacy branches / restaurant-stock / review surfaces | none | PARK / RETIRE_FROM_ACTIVE_SCOPE | retain evidence; destructive deletion not authorized |
 
-## Current exact-head qualification proof
+## Current exact-head proof
 
-`code/canonical=6039cfd7a8502e0a4727a6928a4ef4cb75a3bb6e`
+`code/canonical=13c9ff03f0898e9af28abaa3dab78a520c70c887`
 
-Run `41264501411` executed successfully on that exact head:
-- CP099 carried-hardening regressions: `22/22 PASS`;
-- PR46 autonomy regressions: `16/16 PASS` plus `GPT_OSS_LAUNCHER_ISOLATION=PASS`;
-- Wave2 non-regression sample: `48/48 PASS`;
-- post-Wave2 GIGA-Q focused challenge: `110/110 PASS` plus `44 subtests PASS`;
+Run `41265514716`:
+- exact-head identity PASS;
+- compile PASS;
+- CP099 `22/22 PASS`;
+- PR46 + host-wake `21/21 PASS`;
+- `GPT_OSS_LAUNCHER_ISOLATION=PASS`;
+- Wave2 sample `48/48 PASS`;
+- GIGA-Q `110/110 PASS + 44 subtests PASS`;
 - `CANONICAL_AUTHORITY_CLOSED=PASS`;
-- clean checkout: PASS.
+- clean checkout PASS.
 
-This proves the current combined code candidate at the hosted CI level. It does **not** prove deployment, actual VM use, or multi-wake autonomy.
+Preceding challenge is retained:
+- `a0115d8a0b3f83e32d321d73d2dfb560f221a406`, run `41265426984` FAILURE;
+- failure isolated to two tests where mocked `os.execve` returned into an unreachable-production exception;
+- one-file correction produced `13c9ff03…`; full qualification then passed.
 
-Rule: `REUSE > CONNECT > REPAIR > BUILD`. `PARK`, `BLOCK`, `UNKNOWN`, and `NO_CHANGE_REQUIRED` remain valid outcomes.
+## Routing law
+
+`REUSE > CONNECT > REPAIR > BUILD`.
+
+Current critical path: `VM_MULTI_WAKE_PROOF` only.
+If authenticated host access is absent: `BLOCK_EXTERNAL_HOST_ACCESS`.
+Do not reopen global audit, build another scheduler, manually simulate autonomous routing, or start global mission-selection work before the bridge is runtime-proven.
