@@ -126,7 +126,7 @@ La nouvelle lecture révèle une séquence essentielle. Les heures suivantes son
 | 09:17:27 | rappel signalant plus de six heures sans réponse | la continuation reste dépendante d’un relais |
 | 10:45:45 | Fahim signale que les deux agents se sont de nouveau arrêtés | la réforme de coordination n’est pas démontrée comme auto-déclenchante |
 | 11:44:07 | contre-lecture Q21 : 36 expressions antérieures et validation déjà utilisée | empêcher une « nouvelle validation » sur un échantillon déjà consommé |
-| 13:05:24 | B4 est publié `FAMILY_REJECTED` malgré un rendement net brut positif | le verdict respecte les critères annoncés |
+| 13:05:24 | B4 est publié `FAMILY_REJECTED` malgré un rendement net positif | le verdict respecte les critères annoncés |
 | 17:02:24 | un agent consigne une décision Owner élargissant la recherche publique gratuite | alléger le passage par dataset ; c’est ici une décision rapportée avec référence |
 | 17:14:15–17:16:01 | objection de Fahim puis réforme de la multiplicité et du statut sous-puissant | éviter la pénalité universelle et le rejet trop large |
 | 18:14:02 | directive Owner EDGE-FLOW directement publiée | plafonner le travail ouvert et passer à l’exécution quand aucun défaut décisionnel ne reste |
