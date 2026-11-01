@@ -6,7 +6,7 @@ GLOBAL_FORENSIC_RESTART=FALSE
 ## Canonical anchors
 
 - `code/canonical` observed head for completed week 2026-07-13 -> 2026-07-19: `13c9ff03f0898e9af28abaa3dab78a520c70c887`
-- `project/canonical` parent before weekly checkpoint publication: `0447b74d0939b00720e2c8a210ea4c7dc719a0f4`
+- `project/canonical` original parent before first weekly checkpoint publication: `0447b74d0939b00720e2c8a210ea4c7dc719a0f4`
 
 These are comparison anchors, not proof that every historical invariant is covered.
 
@@ -44,15 +44,21 @@ Do not advance the cursor beyond a week until both artifacts exist.
 
 ### 2026-07-13 -> 2026-07-19
 
-Status: `COMPLETE_WITH_ONE_BOUNDED_UNKNOWN`.
+Status: `COMPLETE`.
 
 Durable decisions:
-- preregistration / embargo -> `NO_CHANGE_REQUIRED`;
+- preregistration / pre-outcome freeze -> `NO_CHANGE_REQUIRED`;
+- literal historical 21-day embargo implementation -> `PARK`, no identical port required;
 - source PIT identity -> `NO_CHANGE_REQUIRED`;
+- current executable Quant factory anti-lookahead / transformation causality -> `NO_CHANGE_REQUIRED`, proved by source inspection at `code/canonical@13c9ff03f0898e9af28abaa3dab78a520c70c887`;
 - historical Buy & Hold verdict -> `GOVERNANCE_ONLY`;
 - early prediction/overlay/meta-labeling implementations -> `RETIRE_FROM_ACTIVE_SCOPE`;
-- transformation-level causal invariance in current modern experiment path -> `UNKNOWN/PARK` pending a bounded adversarial future-data mutation test when economically relevant;
 - no historical code port required from this week.
+
+Proof boundary:
+- source behavior was inspected at a fixed SHA;
+- `NEW_RUNTIME_MUTATION_TEST_EXECUTED=FALSE`;
+- do not relabel source inspection as a newly executed adversarial runtime test.
 
 Read first if challenged:
 - `governance/deep-reconstruction/DEEP_WEEK_2026-07-13_2026-07-19.md`
@@ -70,11 +76,11 @@ Known material starting objects:
 3. 25 July critical corrections/invalidation (`f70ae6713d`) and defensive overlay reclassification (`5dcf49c7cd`).
 4. 26 July S5 candidate / paper package / anti-data-snooping / ML retry chain through `2b1f03b13f`.
 
-## Open cross-week gap carried forward
+## Open cross-week gaps
 
-`TRANSFORMATION_CAUSALITY_PROOF=UNKNOWN_PARK`
+`NONE_CARRIED_FROM_2026-07-13_2026-07-19`
 
-Do not build merely to close it. Reopen only when the exact modern transformation path is decision-relevant to a prospective economic test, then prove pre-t output invariance to post-t data mutation.
+A future transformation path outside the current executable Quant factory must independently satisfy the same causal law when it becomes active; this is a forward qualification requirement, not an active repair gap.
 
 ## Resume law
 
