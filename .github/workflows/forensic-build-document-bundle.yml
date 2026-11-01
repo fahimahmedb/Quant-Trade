@@ -1,0 +1,155 @@
+name: Forensic build document semantic bundle
+
+on:
+  push:
+    branches:
+      - audit/forensic-checkpoint-20261019
+    paths:
+      - governance/forensic-20261031/exhaustive/DOCUMENT_BUNDLE_TRIGGER.txt
+
+permissions:
+  contents: write
+
+jobs:
+  build-document-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout forensic branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/forensic-checkpoint-20261019
+          fetch-depth: 1
+
+      - name: Build next bounded semantic bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, csv, hashlib, json, os, pathlib, re, urllib.request
+
+          root = pathlib.Path('governance/forensic-20261031/exhaustive')
+          outdir = root/'documents'
+          outdir.mkdir(parents=True, exist_ok=True)
+          versions = list(csv.DictReader((root/'DOCUMENT_VERSIONS.csv').open()))
+
+          by_blob = {}
+          for r in versions:
+              by_blob.setdefault(r['blob'], set()).add(r['path'])
+
+          baseline = set()
+          overlay = pathlib.Path('governance/forensic-20261031/reads-overlay.json')
+          if overlay.exists():
+              for x in json.loads(overlay.read_text()):
+                  if x.get('blob') in by_blob:
+                      baseline.add(x['blob'])
+
+          disposed = set(baseline)
+          for f in sorted(outdir.glob('DOC_READ_BATCH_*.json')):
+              try:
+                  data = json.loads(f.read_text())
+              except Exception:
+                  continue
+              for x in data.get('objects', []):
+                  if x.get('status') in {'READ','BYTE_IDENTICAL_TO_READ_OBJECT','UNAVAILABLE','RESTRICTED','BINARY_EXAMINED'}:
+                      disposed.add(x['blob'])
+
+          ordered = sorted((min(paths), blob, sorted(paths)) for blob, paths in by_blob.items() if blob not in disposed)
+          existing = sorted(outdir.glob('DOC_BUNDLE_*.json'))
+          n = len(existing) + 1
+          selected = []
+          total_text = 0
+          max_docs = 20
+          max_text = 160_000
+          token = os.environ['GH_TOKEN']
+          repo = os.environ['GH_REPO']
+
+          def fetch_blob(sha):
+              req = urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}/git/blobs/{sha}',
+                  headers={'Authorization': f'Bearer {token}', 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28'}
+              )
+              with urllib.request.urlopen(req, timeout=30) as resp:
+                  obj = json.load(resp)
+              return base64.b64decode(obj['content'])
+
+          for rep, blob, paths in ordered:
+              raw = fetch_blob(blob)
+              try:
+                  text = raw.decode('utf-8')
+                  encoding_status = 'UTF8'
+              except UnicodeDecodeError:
+                  text = ''
+                  encoding_status = 'BINARY_OR_NON_UTF8'
+              size = len(raw)
+              if encoding_status == 'UTF8' and selected and (len(selected) >= max_docs or total_text + len(text.encode()) > max_text):
+                  break
+              item = {
+                  'blob': blob,
+                  'representative_path': rep,
+                  'paths': paths,
+                  'path_count': len(paths),
+                  'bytes': size,
+                  'encoding_status': encoding_status,
+                  'sha256_content': hashlib.sha256(raw).hexdigest(),
+                  'text': text
+              }
+              selected.append(item)
+              if encoding_status == 'UTF8':
+                  total_text += len(text.encode())
+              if len(selected) >= max_docs:
+                  break
+
+          if not selected:
+              raise SystemExit('No undisposed document blobs remain.')
+
+          md = []
+          manifest_objects = []
+          for idx, x in enumerate(selected, 1):
+              md.append(f"===== DOCUMENT {idx:03d} =====")
+              md.append(f"BLOB: {x['blob']}")
+              md.append(f"REPRESENTATIVE_PATH: {x['representative_path']}")
+              md.append(f"PATH_COUNT: {x['path_count']}")
+              md.append('PATHS: ' + ' | '.join(x['paths']))
+              md.append(f"BYTES: {x['bytes']}")
+              md.append(f"ENCODING_STATUS: {x['encoding_status']}")
+              md.append(f"SHA256_CONTENT: {x['sha256_content']}")
+              md.append('----- CONTENT START -----')
+              if x['encoding_status'] == 'UTF8':
+                  md.append(x['text'])
+              else:
+                  md.append('[BINARY_OR_NON_UTF8_CONTENT_NOT_RENDERED_IN_TEXT_BUNDLE]')
+              md.append('----- CONTENT END -----')
+              md.append(f"===== END DOCUMENT {idx:03d} =====")
+              md.append('')
+              manifest_objects.append({k:v for k,v in x.items() if k != 'text'})
+
+          stem = f'DOC_BUNDLE_{n:04d}'
+          (outdir/(stem+'.md')).write_text('\n'.join(md), encoding='utf-8')
+          manifest = {
+              'schema_version': 1,
+              'bundle_id': stem,
+              'source_document_index_sha256': '1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb',
+              'baseline_read_blobs_matched': len(baseline),
+              'disposed_before_bundle': len(disposed),
+              'objects': manifest_objects,
+              'object_count': len(manifest_objects),
+              'text_bytes': total_text,
+              'selection_order': 'REPRESENTATIVE_PATH_THEN_BLOB',
+              'status': 'READY_FOR_SEMANTIC_READ'
+          }
+          (outdir/(stem+'.json')).write_text(json.dumps(manifest, indent=2)+'\n')
+          print(json.dumps({'bundle': stem, 'objects': len(selected), 'text_bytes': total_text, 'baseline': len(baseline), 'disposed': len(disposed)}))
+          PY
+
+      - name: Publish forensic bundle only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'quant-forensic-doc-bot'
+          git config user.email 'quant-forensic-doc-bot@users.noreply.github.com'
+          git add governance/forensic-20261031/exhaustive/documents/
+          git commit -m 'forensic: publish next document semantic bundle'
+          git push origin HEAD:audit/forensic-checkpoint-20261019
