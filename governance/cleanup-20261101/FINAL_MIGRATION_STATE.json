@@ -381,9 +381,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:33:15.110087+00:00",
-  "project_subject_before_receipt": "fa966e9662271f722dd5e01aaaa77e9e3bf87b86",
-  "code_canonical_sha": "538ed009c5958e37586a4f04e60ddad5485eeebc",
+  "updated_utc": "2026-11-01T15:33:54.868620+00:00",
+  "project_subject_before_receipt": "f59951798c677622fd5080f5ee97961209d94455",
+  "code_canonical_sha": "0365dd960d088157ec79ffd7a4c9a6e843e5ab4e",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "PARK",
@@ -575,12 +575,13 @@
   "all_independent_migrations_qualified": true,
   "active_batch": {
     "branches": [
-      "builder/wp1-book-pressure-preexposure-20261028",
-      "builder/wp2-single-lineage-binding-20261030",
-      "codex/c0-membrane-qualification-20261027",
-      "codex/horizontal-completeness-prewave2-20261021",
-      "codex/vertical-depth-prewave2-20261021",
-      "review/independent-architecture-challenger-20261026"
+      "builder/convergence-wave2-canonical-20261021",
+      "builder/econ-readiness-integration-20261016",
+      "builder/live-lab-3d-full-build-20261015",
+      "builder/live-lab-native-integration-20261015",
+      "builder/live-lab-oracle-canonical-20261020",
+      "builder/live-lab-owner-ux-rebuild-20261015",
+      "builder/multi-source-ideation-intake-20261021"
     ],
     "gate_snapshot": {
       "observed_at": "2026-11-01T15:28:53.092Z",
@@ -655,7 +656,7 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
+    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
   },
   "legacy_workflow_limits": {
     "classification": "HISTORICAL_SNAPSHOT_GATES_AND_PRE_EXISTING_BASELINE_FAILURES; NOT_CURRENT_CANONICAL_QUALIFICATION",
