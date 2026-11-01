@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "bundle_id": "DOC_BUNDLE_0005",
+  "source_document_index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
+  "baseline_read_blobs_matched": 52,
+  "disposed_before_bundle": 132,
+  "objects": [
+    {
+      "blob": "b85b4d261353a10d097e2fd77eb633352c9519f6",
+      "representative_path": "DEPLOYMENT_GUIDE.md",
+      "paths": [
+        "DEPLOYMENT_GUIDE.md"
+      ],
+      "path_count": 1,
+      "bytes": 6180,
+      "encoding_status": "UTF8",
+      "sha256_content": "515ddf36766c67b86dbbfcf19384b82a0ec382c39889c26a9185d27212205d08"
+    },
+    {
+      "blob": "22584a7d402df0fdf64ce7e566e14bb11b910ef9",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 4217,
+      "encoding_status": "UTF8",
+      "sha256_content": "32566f9d69d0f3339ff17e1ceebb4ce0dd1124cd022b769998e1ef7c93b17cdf"
+    },
+    {
+      "blob": "3af77189c207078fa9efc889b81a7ec01e07ef58",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 3844,
+      "encoding_status": "UTF8",
+      "sha256_content": "1271878fcb8434fbb158e66e218e40be2d6ec5accafc09dc41f248c2c442ad47"
+    },
+    {
+      "blob": "4fcf85d24047af25c5a85e88fa783cd4374c0b8e",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/4fcf85d24047af25c5a85e88fa783cd4374c0b8e.txt"
+      ],
+      "path_count": 2,
+      "bytes": 2612,
+      "encoding_status": "UTF8",
+      "sha256_content": "8dc0c22c8a46b6b514e174899513da80c6926f70cb6ca6e801e6281f73c7bf33"
+    },
+    {
+      "blob": "509c06a2ce2c0bd1fdf7c748703f273cb3e26f0f",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 3943,
+      "encoding_status": "UTF8",
+      "sha256_content": "94a55eb0fa0ef62c5666f18cd8b4fc2791f3e36428666b8470645c6bd57ccfa9"
+    },
+    {
+      "blob": "7337a7f477bec394da319c780a9de9e427c4c62a",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 4735,
+      "encoding_status": "UTF8",
+      "sha256_content": "887647e908ead450eff53cf395f1b79a9a0dd6ac44ddfaecbebc7faae94f7eec"
+    },
+    {
+      "blob": "78c8d85461557708a7130e704bbbf70e6cc1f3ea",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/78c8d85461557708a7130e704bbbf70e6cc1f3ea.txt"
+      ],
+      "path_count": 2,
+      "bytes": 3195,
+      "encoding_status": "UTF8",
+      "sha256_content": "48a52f2974b12f052afe3c942a1d157693b1a78c64a0c8da3d4ca5e6dcfdda53"
+    },
+    {
+      "blob": "7c0eef13b061e208122f10c1d4b26ffe736fa6e5",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 3701,
+      "encoding_status": "UTF8",
+      "sha256_content": "fc65fa8d7d07a4c4a0f6788b3123099b3fe15dd2b22082fe9fca0a8f1c73b533"
+    },
+    {
+      "blob": "831230c7bc664d04d7efe00e75bc74a686dc7195",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 2851,
+      "encoding_status": "UTF8",
+      "sha256_content": "c6c3c93c62c0235a3040d8f9d3c43c14c6e238ba9b5772015b83480b7c866b07"
+    },
+    {
+      "blob": "88cc782561ab3cf4c1a253b7d7ce5a4a61c17963",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 3319,
+      "encoding_status": "UTF8",
+      "sha256_content": "6e0dd879a222974071e8beb7a6605c1a372600c3bc83a4f86ce4b441344db564"
+    },
+    {
+      "blob": "8970b151602f0ea50e072aa683e04b587d5cfb9b",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 7496,
+      "encoding_status": "UTF8",
+      "sha256_content": "3f739963b73a986770b369bbe4e0ca95f1a05ab03c645b81f7ea07925e64ed63"
+    },
+    {
+      "blob": "8c6d7ca127aac0d2defb37172a3dee66397ecf78",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 6445,
+      "encoding_status": "UTF8",
+      "sha256_content": "931f52e3c08143bbfb6d7e5567d948b994977bce18bf1b2aa429ece3f3ac8554"
+    },
+    {
+      "blob": "9fa45b105fc003b9bcbce3149e08f89a9afca8f4",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 6594,
+      "encoding_status": "UTF8",
+      "sha256_content": "13d0f70bc9df1b3fb4b845240889f1c622fd984f11921604e266366721228a70"
+    },
+    {
+      "blob": "be2b67282863af6fca722891b39729645818aac2",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 4934,
+      "encoding_status": "UTF8",
+      "sha256_content": "62ae13f4789ceb85842bcea14f26ba552a1a654d51e4a3761e54fc1ca7f5d7e6"
+    },
+    {
+      "blob": "c394fc3ce86fa1af86dcfba80a38dfa6d4a50f1a",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 7827,
+      "encoding_status": "UTF8",
+      "sha256_content": "ee21071af4ab29c04dca44bcd43a1e258d1ebffe6f9c27ecf59c65c5dccbf849"
+    },
+    {
+      "blob": "c5f903e3884392944ac0b55d6b190423bbe14e75",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 849,
+      "encoding_status": "UTF8",
+      "sha256_content": "e683a1cbde7b44c5ae1f311289e353f91bf7ef74f1f73f880a52cee87c6460ae"
+    },
+    {
+      "blob": "d5d59966309beb0708d3f6ca6a12a61205ee511d",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 4547,
+      "encoding_status": "UTF8",
+      "sha256_content": "468a01e5f44a222230524f67e631e12d9dc44889d3bd72e215b7e5be06fc2a50"
+    },
+    {
+      "blob": "df4d80a3c8198dfe5235a940f8b105e47a9331fd",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 4120,
+      "encoding_status": "UTF8",
+      "sha256_content": "26dd20aae417a48220d8edb138824eb09897b94ee9b22dab5d2d493b160fd4b9"
+    },
+    {
+      "blob": "e58c51cd8a02c8df14acd08ae3956a0ba90c7f68",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 4472,
+      "encoding_status": "UTF8",
+      "sha256_content": "65104b8aae95b5739f7b65d18c4c155da5c5512bbf92575471f62057e68a7eea"
+    },
+    {
+      "blob": "ecfaafc22e6551ac7321ab482b74423708b2e3d1",
+      "representative_path": "FAST_RAIL_STATE.md",
+      "paths": [
+        "FAST_RAIL_STATE.md"
+      ],
+      "path_count": 1,
+      "bytes": 5048,
+      "encoding_status": "UTF8",
+      "sha256_content": "f3bc5dc99d7a8183a6ec85ffe3bada86e419e0345c9095b6f7db76741a03fa0e"
+    }
+  ],
+  "object_count": 20,
+  "text_bytes": 90929,
+  "selection_order": "REPRESENTATIVE_PATH_THEN_BLOB",
+  "status": "READY_FOR_SEMANTIC_READ"
+}
