@@ -128,3 +128,13 @@ Do not build that next layer before the real bridge is proven; otherwise we woul
 
 Canonical method: `REUSE > CONNECT > REPAIR > BUILD`.
 Valid outcomes: `NO_CHANGE_REQUIRED`, `CONNECT`, `REPAIR`, `PARK`, `BLOCK`, `UNKNOWN`.
+
+## Cumulative retrospective — 2026-11-01
+
+Owner-requested interpretation of the completed reconstruction is published in `governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md`, commit `ddecba62a067c504bd1eb9654528ae2df5133220`.
+
+Reading: all 16 deep weeks and 16 handoffs; 71 dated daily entries preserved plus the November 1 update. Historical closure remains decision-relevant, not semantic reading of every blob. Current refs, Wave2 ancestry and exact qualification run/steps/log were checked; no tests rerun or host accessed for the retrospective.
+
+Bounded documentary findings at code `13c9ff03…` / project `e862ee10…`: code `AGENTS.md` still routes to historical Blue authorities; project `README.md` still presents the initial forensic checkpoint as an audit in progress. Prepare entry-point alignment to this current router without rebuilding code or restarting history. The old two-branch plan is partly executed and must not create a new Wave2 candidate.
+
+Two authority branches already exist; the fresh paginated inventory still exposes 279 branches / 270 tips. Branch removal, default migration and data/workflow dependencies are a separate prepared retirement lot, not authorized or executed by the retrospective. Destructive cleanup remains false. The runtime critical path and global-mission-selection limitation above are unchanged. Assessment recommendations are not runtime or economic qualification.
