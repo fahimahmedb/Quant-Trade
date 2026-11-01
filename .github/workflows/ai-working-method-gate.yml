@@ -4,13 +4,6 @@ on:
   push:
     branches:
       - code/canonical
-    paths:
-      - AGENTS.md
-      - CLAUDE.md
-      - CODEX.md
-      - scripts/validate_ai_working_method.py
-      - tests/test_ai_working_method.py
-      - .github/workflows/ai-working-method-gate.yml
   workflow_dispatch:
 
 permissions:
