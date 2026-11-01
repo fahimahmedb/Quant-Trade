@@ -32,6 +32,47 @@
     "next_action",
     "owner_authorization_required"
   ],
+  "mission_admission": {
+    "receipt_path": ".quant/MISSION_ADMISSION.json",
+    "identity": "sha256(canonical-json(admission))",
+    "required_for_material_ai_mission": true,
+    "completion_binding_required": true,
+    "material_change_exempt_prefixes": [
+      "data/feeds/"
+    ],
+    "required_fields": [
+      "mission_id",
+      "mission_kind",
+      "receipt_timestamp",
+      "project_canonical_sha",
+      "code_canonical_sha",
+      "current_router_identity",
+      "current_subject",
+      "current_blocker_or_decision",
+      "target_gate_or_blocker",
+      "existing_capability",
+      "why_this_work_can_change_the_decision",
+      "minimal_decisive_test",
+      "counterexample",
+      "durable_output_required",
+      "next_action_after_pass_fail_block",
+      "owner_authorization_required",
+      "active_seam",
+      "active_decision_lanes",
+      "mutating_builders_on_seam",
+      "requested_action"
+    ],
+    "stale_after_project_head_move": true,
+    "stale_after_code_head_move": true,
+    "stale_after_router_identity_move": true,
+    "copied_receipt_allowed": false
+  },
+  "enforcement_levels": {
+    "agent_pre_work_validation": "REQUIRED_BY_CANONICAL_ENTRYPOINT",
+    "post_push_ci_detection": "AI Working Method Gate",
+    "server_side_required_check": "NOT_PROVEN_CONFIGURED",
+    "behavioral_agent_enforcement": "REQUIRES_FRESH_AGENT_RECOVERY_PROOF"
+  },
   "existing_capability_order": [
     "REUSE",
     "CONNECT",
@@ -65,7 +106,7 @@
     {
       "id": "F1_RECOVERABLE_CANONICAL_STATE",
       "required": true,
-      "proof": "Fresh agent can recover objective, authority, current exact code head, blocker and next action from project/canonical; both branch entrypoints agree."
+      "proof": "A genuinely fresh agent/session with repository-only bootstrap can recover objective, authority, fresh project/code heads, router/blocker, next action and working method without chat context or a parallel methodology."
     },
     {
       "id": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION",

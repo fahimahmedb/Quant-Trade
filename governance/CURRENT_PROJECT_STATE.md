@@ -1,125 +1,127 @@
-> **Current branch-migration overlay — 2026-11-01.** The dated code SHA, branch counts, audit activity and cleanup restrictions in the historical body below are superseded for this Owner-authorized survivor migration by [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json) and its [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv). Resolve fresh `code/canonical` before work; its exact qualification is recorded there. The forensic cursor is `PAUSED_BY_OWNER`, not active. Current Oracle V2 automatic branch writes are observed in November, while host configuration/health and real Codex multi-wake autonomy remain unverified. The remaining default/host/automation gates are scoped there; no scientific, runtime activation, capital or trading authority is added. Do not resume the stopped audit or old implementation branches.
-
 # Quant-Trade — current canonical project state
 
-STATUS=`CANONICAL_CODE_ENGINEERING_CONNECTED_AND_QUALIFIED_VM_MULTI_WAKE_BLOCKED_EXTERNAL_HOST_ACCESS`
-DATE=`2026-11-01`
+STATUS=`METHOD_ENFORCEMENT_CODE_PASS_BEHAVIORAL_BLOCK__VM_MULTI_WAKE_BLOCKED_EXTERNAL_HOST_ACCESS`
+DATE=`2026-11-02`
 
-## Canonical authority
+This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
 
-- CODE AUTHORITY: `code/canonical`
-- PROJECT / GOVERNANCE AUTHORITY: `project/canonical`
-- repository default branch is not engineering authority
-- `BRANCH_DELETION_AUTHORIZED=FALSE`
-- `BRANCH_RETIREMENT=PARK`
+## Authority
 
-Historical branches and forensic evidence remain preserved. Do not restart global archaeology.
+- PROJECT/GOVERNANCE AUTHORITY: `project/canonical`
+- EXECUTABLE CODE AUTHORITY: `code/canonical`
+- resolve both heads fresh before every material mission;
+- repository default branch and historical branches are not current authority;
+- no destructive branch cleanup is authorized by this router.
 
-## Current exact code head
+Current code subject at this update:
+`code/canonical=7eb3f61f75d08a50c2d39c2faa74a42bf8d3e8a2`
 
-`code/canonical=13c9ff03f0898e9af28abaa3dab78a520c70c887`
+## Current working method
 
-Base lineage remains Wave2 C2:
-`ebc72b9fd14f91420c37e0b7607f9bfb584a289a`.
+Canonical method only:
+`governance/AI_WORKING_METHOD_V1.md`
+Machine contract:
+`governance/AI_WORKING_METHOD_V1.json`
 
-The canonical code contains selective CP099 hardening, selective GIGA-Q hardening/repair, PR46 bounded GPT-OSS/Codex orchestration, and now the minimal host-wake connection to the existing V1 systemd timer.
+`REUSE > CONNECT > REPAIR > BUILD`
 
-### Exact-head qualification
+Material AI work now requires a real fresh admission receipt at:
+`code/canonical:.quant/MISSION_ADMISSION.json`
 
-Workflow run `41265514716` completed `SUCCESS` on exact head `13c9ff03f0898e9af28abaa3dab78a520c70c887`.
+The receipt must be validated before substantive work and material completion must bind its immutable admission identity to the exact published/tested subject. Stale/copied/wrong-SHA receipts and local-only PASS are invalid.
 
-Executed proof:
-- exact head identity: PASS;
-- compile integrated deltas: PASS;
-- CP099 carried-hardening regressions: `22/22 PASS`;
-- PR46 autonomy + host-wake regressions: `21/21 PASS`;
-- `GPT_OSS_LAUNCHER_ISOLATION=PASS`;
-- Wave2 non-regression sample: `48/48 PASS`;
-- post-Wave2 GIGA-Q challenge: `110/110 PASS` plus `44 subtests PASS`;
-- `CANONICAL_AUTHORITY_CLOSED=PASS`;
-- clean checkout: PASS.
+`governance/POST_OPERATIONAL_RESUME_PROGRAM_2026-11-02.md=NON_AUTHORITATIVE_HISTORICAL_PREPARED_EVIDENCE`
+`POST_OPERATIONAL_RESUME_PROGRAM_BOOTSTRAP_REQUIRED=FALSE`
+Do not turn that program into a second methodology/router. Decision-changing working rules belong in AI_WORKING_METHOD_V1; current facts belong here.
 
-Claim ceiling:
-`ENGINEERING_CONNECTED_AND_QUALIFIED=TRUE`
-`ACTUAL_VM_MULTI_WAKE_AUTONOMY_PROVEN=FALSE`
+## Method-enforcement seam — 2026-11-02
 
-CI proves the code seam and regressions. It does not prove deployment, current VM health, timer activation, a real Codex wake, or multi-wake autonomous continuation.
+`METHOD_SPECIFICATION=PASS`
+`METHOD_UNIT_TESTS=PASS`
+`METHOD_ENTRYPOINT_WIRING=PASS`
+`REAL_MISSION_ADMISSION_IMPLEMENTED=TRUE`
+`REAL_MISSION_VALIDATOR_INTEGRATED=TRUE`
+`BOOTSTRAP_RECEIPT_IMPLEMENTED=TRUE`
+`ADMISSION_TO_COMPLETION_BINDING=TRUE`
+`AGENT_PRE_WORK_VALIDATION=REQUIRED_BY_CANONICAL_ENTRYPOINT`
+`POST_PUSH_CI_DETECTION=PASS`
+`BEHAVIORAL_AGENT_ENFORCEMENT=NOT_PROVEN`
+`F1_RECOVERABLE_CANONICAL_STATE=NOT_PROVEN_BEHAVIORALLY`
+`F1_BEHAVIORAL_RECOVERY=BLOCK_ENVIRONMENT_FRESH_AGENT_UNAVAILABLE`
+`SERVER_SIDE_REQUIRED_CHECK=BLOCK_ADMIN_PERMISSION`
+`CLAIM_CEILING=METHOD_ENFORCEMENT_CODE_PASS_BEHAVIORAL_BLOCK`
 
-## Latest evidence → challenge → correction chain
+Published exact code subject:
+`7eb3f61f75d08a50c2d39c2faa74a42bf8d3e8a2`
 
-Preserve, do not rewrite:
+Exact hosted enforcement run:
+`AI Working Method Gate #7 / run 41364108915 = SUCCESS`
 
-1. `6039cfd7a8502e0a4727a6928a4ef4cb75a3bb6e`
-   - prior combined canonical candidate;
-   - run `41264501411`: SUCCESS;
-   - CP099 `22/22`, PR46 `16/16`, Wave2 `48/48`, GIGA-Q `110/110 + 44 subtests`.
+Executed on that exact SHA:
+- fresh real receipt validation: PASS;
+- admission identity: `sha256:fe9f01394f58839a21a547cb890c47215f41333afb01687df0b6dcd015746e03`;
+- AGENTS/CLAUDE/CODEX entrypoint validation: PASS;
+- `tests/test_ai_working_method.py`: `29 passed`;
+- exact-SHA completion binding: PASS.
 
-2. Runtime-seam challenge discovered after that PASS:
-   - canonical systemd V1 service still directly executed `research.research_os.oracle_worker`;
-   - neither `oracle_worker` nor `oracle_worker_v2` invoked `scripts/gpt_oss_orchestrator.py`;
-   - under `ProtectSystem=strict`, the Codex orchestration state also required an explicit writable root under `/var/lib/quant-research`.
-   - verdict: `CONNECT_REQUIRED`, not a second daemon/scheduler.
+Adversarial real-interface coverage executed by that suite:
+- stale receipt: rejected;
+- copied unrelated receipt: rejected;
+- unnecessary BUILD with reusable/connectable/repairable capability: rejected;
+- duplicate REVIEW without new decision-changing input: rejected;
+- local-only PASS: rejected;
+- local blocker causing unjustified global stop: rejected;
+- missing next action: rejected;
+- false finish with unresolved F0–F6 gate: rejected;
+- canonical head movement after admission: reconciliation/rejection path proven;
+- same-seam mutating-builder count >1: rejected;
+- wrong completion SHA and admission-identity mismatch: rejected.
 
-3. `a0115d8a0b3f83e32d321d73d2dfb560f221a406`
-   - added `research/research_os/host_wake.py`;
-   - existing V1 timer now routes exactly one wake: default existing `oracle_worker`, feature flag `=1` bounded GPT-OSS/Codex orchestrator;
-   - requires orchestration state below `/var/lib/quant-research`;
-   - no second timer, daemon or scientific queue;
-   - run `41265426984`: FAILURE only in the new host-wake test harness after CP099 passed. Two tests mocked `os.execve`; the mock returned and reached a deliberately impossible post-execve exception. This was not a demonstrated production routing failure.
+Concurrency evidence for this mutation:
+- no open PR or published same-seam method branch was observed before mutation;
+- both canonical heads were re-fetched before publication;
+- `code/canonical` was advanced with an expected-head lease from `a9876c732cb88bd4383aacc433d0d2cba2feaeb5` to `7eb3f61f75d08a50c2d39c2faa74a42bf8d3e8a2`; no concurrent overwrite occurred.
 
-4. `13c9ff03f0898e9af28abaa3dab78a520c70c887`
-   - one-file correction: remove the unreachable production post-`execve` exception so mocked `execve` can return in tests;
-   - real `execve` semantics unchanged: production process replacement remains one-process/one-wake;
-   - run `41265514716`: full SUCCESS with all regression/challenge suites above.
+GitHub server-side status:
+- `code/canonical` and `project/canonical` are not protected;
+- required status-check enforcement is off;
+- repository rulesets list is empty;
+- current connector surface does not expose administration writes for branch protection/rulesets.
+Therefore hosted CI is detection/qualification, not demonstrated server-side prevention.
 
-Decision: the host-wake software connection is closed at hosted engineering qualification. Do not reopen CP099/GIGA-Q/PR46 or build another scheduler absent contradictory primary evidence.
+### Remaining behavioral blocker
 
-## VM multi-wake proof
+This execution surface cannot launch a genuinely independent fresh AI/session with no prior chat context and repository-only bootstrap. The required F1 behavioral witness is therefore not simulated with another fixture.
+
+`NEXT_ACTION_METHOD=RUN_GENUINELY_FRESH_REPOSITORY_ONLY_AGENT_RECOVERY_TEST`
+
+Required witness must recover objective, authority pair, fresh project/code SHAs, current blocker/critical path, next action, working-method rules, already-complete work, correct REUSE/CONNECT/REPAIR/BUILD disposition, and stop evidence without chat context. Until that passes, do not claim `AI_METHOD_FULLY_ENFORCED`.
+
+## Existing runtime critical path — unchanged by method enforcement
+
+The method-enforcement repair does not grant runtime deployment or replace the existing host proof.
 
 `VM_MULTI_WAKE_PROOF=BLOCK_EXTERNAL_HOST_ACCESS`
 `CURRENT_HOST_STATE=UNKNOWN`
-`HOST_ACCESS_IN_THIS_SESSION=BLOCKED_EXTERNAL`
-`CURRENT_ORACLE_STATE_BRANCH_LAST_ACTIVITY=2026-10-20`
-`SOFTWARE_CONNECTION_GAP=RESOLVED_AND_QUALIFIED`
 `LIVE_HOST_DEPLOYMENT=NOT_PROVEN`
 `REAL_CODEX_WAKE_FROM_VM=NOT_PROVEN`
 `TWO_AUTOMATIC_WAKES=NOT_PROVEN`
+`GLOBAL_PROJECT_MISSION_SELECTION=PARK_AFTER_VM_BRIDGE_PROOF`
 
-Fresh primary evidence:
-- state branch `builder/oracle-economic-loop-recovery-20261019` remains at `0837f419c4e3a9e17a39269994f27d97fcf79757`, authored `2026-10-20T11:00:11Z`; therefore it is not current November host evidence;
-- issue #44 remains open and its durable terminal evidence says the PR46 engineering repair was qualified/published but actual VM rebind remained blocked by missing authenticated host access;
-- no later issue receipt proves deployment or a real multi-wake loop;
-- the current session has authenticated GitHub access but no demonstrated authenticated OCI Run Command / SSH / host-command channel.
+The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. When authenticated intended-host execution becomes available, inventory actual deployed state first, then perform only the minimal rebind/configuration required and prove two automatic wakes plus one real Codex result causally consumed by the following decision.
 
-Do not fake the E2E by manually posting a Codex comment: the acceptance requires zero human relaunch/routing on the normal path.
+A local/environment blocker affects only its dependent lane. It does not authorize global stop or substitute architecture.
 
-## Next action — single critical path
+## Finish gates / authority ceiling
 
-`NEXT_ACTION=VM_MULTI_WAKE_PROOF_ON_AUTHENTICATED_EXISTING_HOST`
+F0–F6 remain governed only by `AI_WORKING_METHOD_V1`.
 
-When authenticated host execution becomes available:
-1. inventory the actual intended VM: active release SHA, V1/V2 unit, timer, env/config, GPT-OSS command/model and GitHub principal;
-2. deploy/rebind only if exact inventory proves it is required, using qualified `13c9ff03f0898e9af28abaa3dab78a520c70c887`;
-3. configure `QUANT_CODEX_ORCHESTRATION_ENABLED=1` and a `QUANT_CODEX_ORCHESTRATION_ROOT` strictly below `/var/lib/quant-research`, plus the already-defined bounded task/issue/head/model/GitHub environment;
-4. prove at least two consecutive automatic timer wakes with no Owner relaunch;
-5. prove one real Codex dispatch/result causally bound to the following GPT-OSS decision;
-6. bind task/dispatch/attempt/expected-head/result identities, exact-head CI and distinct review;
-7. exercise duplicate/restart/stale-head/retry recovery;
-8. preserve scientific semantics and all closed authorities;
-9. persist sanitized host receipts in GitHub.
+This router does not claim `QUANT_SYSTEM_V1_FINISHED`. In particular:
+- F1 behavioral recovery remains BLOCK in this environment;
+- F3 real VM multi-wake remains BLOCK_EXTERNAL_HOST_ACCESS;
+- later F4–F6 require their own exact evidence.
 
-If host access remains unavailable, correct result is `BLOCK_EXTERNAL_HOST_ACCESS`; do not substitute more architecture, more CI, or another scheduler.
-
-## Known next-layer limitation — PARK until VM bridge proof
-
-Issue #44 evidence also shows the current launcher is task-bounded: environment supplies a fixed task/prompt/issue/branch/head. It can continue that task through dispatch/result/CI/review/DONE/PARK, but it does not yet prove global autonomous selection of the next unmet Quant-Trade mission after terminal completion.
-
-Status: `GLOBAL_PROJECT_MISSION_SELECTION=PARK_AFTER_VM_BRIDGE_PROOF`.
-
-Do not build that next layer before the real bridge is proven; otherwise we would expand unproven autonomy instead of closing the current critical path.
-
-## Closed authorities
-
+Closed authorities remain:
 `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
 `PROSPECTIVE_OBSERVATION_AUTHORIZED=FALSE`
 `SCIENTIFIC_UNBLINDING_AUTHORIZED=FALSE`
@@ -128,24 +130,10 @@ Do not build that next layer before the real bridge is proven; otherwise we woul
 `PRODUCTION_DEPLOYMENT_AUTHORIZED=FALSE`
 `DESTRUCTIVE_REPOSITORY_CLEANUP_AUTHORIZED=FALSE`
 
-Canonical method: `REUSE > CONNECT > REPAIR > BUILD`.
-Valid outcomes: `NO_CHANGE_REQUIRED`, `CONNECT`, `REPAIR`, `PARK`, `BLOCK`, `UNKNOWN`.
+## Next bounded actions
 
-## Cumulative retrospective — rewritten 2026-11-01
+1. `METHOD`: run the genuinely fresh repository-only recovery witness when an independent fresh-agent/session surface is available; no more synthetic proxy.
+2. `RUNTIME`: when authenticated intended-host access is available, execute the bounded VM multi-wake proof; do not build another scheduler/control plane.
+3. `OTHER`: independent lanes may proceed only when current authority admits them and they do not bypass the two blockers above.
 
-Owner requested a complete rewrite based on the newer, detailed audit pass. Current assessment: `governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md`, commit `7c11cbf68ca56bee9fc29ed2412a4a6e6abbe6ab`. The first edition remains in Git history at `ddecba62a067c504bd1eb9654528ae2df5133220`.
-
-NEW_AUDIT_SOURCE=`audit/forensic-checkpoint-20261019@1b537233652b8c9a719855269b4907b14ad5a100`
-NEW_PASS_STATUS=`SEMANTIC_READING_ACTIVE`; decision-relevant historical closure and exhaustive semantic coverage are separate scopes.
-
-All 30 new read batches were read for this rewrite. Their 307 distinct objects comprise 297 READ + 10 BYTE_IDENTICAL entries. Six of the seven baseline READ objects also occur in the new batches: 6522387159, 6522396340, 6524600243, 6524768666, 6525472558, 6536761071. Correct documented union = 308/423 objects (298 distinct direct reads + 10 byte-identical dispositions), 115 remaining in that snapshot. The source cursor estimates 314/304 by adding an overlapping baseline. The 307 hashes match the collected ledger and the ten exact-dedup links are valid. No source auditor cursor was mutated. Source baseline document coverage remains 52/6465 with delta 0 in this pass; no exhaustive document-read completion is claimed.
-
-Material interpretation corrections:
-- statistical history includes an October-8 reform against an indiscriminate universal trial penalty, with family/selection-aware budgets and underpowered outcomes distinct from rejection;
-- WP2 P1/P2 repair was reported and tested locally at `a95d38fd9cbb640075af92b94352532668b85a50` (comment 6522774726); remote publication/independent closure of that repair is not established. Preserve local work in the history without qualifying the older remote head;
-- exact-byte publication, transferable/resumable acquisition, access-ready review, narrow same-lineage repair and EDGE-FLOW are retained effective methods. Written continuation laws alone did not prove actual wakeup;
-- 71 historical active days plus November-1 update remain in the cumulative appendix; 15 primary comment bodies match the audit SHA256s, and the later Owner science-freeze directive was read directly.
-
-Current code/head and targeted run identity were rechecked unchanged; no new software tests, runtime activation, fresh economic look or branch retirement was performed. Two authority branches exist; fresh paginated inventory still has 279 branches / 270 distinct tips. Code AGENTS and project README still need bounded entry-point alignment; the old convergence plan must not recreate an already-built Wave2 candidate.
-
-This retrospective does not grant deployment, science or destructive cleanup authority and does not change the active VM critical path above. Read the rewritten assessment for interpretation/method; use this router for execution.
+Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
