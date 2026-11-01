@@ -2,7 +2,7 @@
 
 - Snapshot: `2026-11-01T13:39:34.460914+00:00`
 - Start branches: **279**
-- Deleted so far: **240**
+- Deleted so far: **247**
 - Default branch preserved: `blue/master-v2-2026-09-20`
 - Active auditor preserved: `audit/forensic-checkpoint-20261019` @ `f9f5bcfc7bef96e42196693a62ef159a592e427b`
 
@@ -250,6 +250,13 @@
 | `review/independent-wp1a-blind-pass-a-20261027` | `e830bd78444350c2c6512a6bdc34fb17aee1106c` |
 | `review/post-disclosure-pass-b-20261027` | `c081a05692e81ad0b999bf46d5f8988649aa7d24` |
 | `review/wp2-independent-d40053-20261030` | `47e944fbcc5acb450b3cd63ab5920aa548c01309` |
+| `sol/scout-crypto-20261008-1847` | `a6961e5fc02785c7c2d797f0e1fca94425150705` |
+| `sol/scout-events-f413d` | `afd69b74c12d02cb9b8f731137ba5c357819ab24` |
+| `sol/scout-macro-tauc-gfs` | `5bb78345e0cc9d02ac38c13d2c0981cb380021be` |
+| `sol/scout-prediction-flb-nr` | `2b66b1937257651b3a941bba6d7a1e5e45c01137` |
+| `team/weather-v4-a2-coordination-2026-10-08` | `5a992b031ee2ecf996fc9c258f02907ee807a5af` |
+| `tmp/deep-week-20260713` | `0447b74d0939b00720e2c8a210ea4c7dc719a0f4` |
+| `ux/intake-20261015` | `6102583019c1d638518dad11726996e73310462c` |
 
 ## Safety rule
 

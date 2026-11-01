@@ -34,10 +34,3 @@ This register is intentionally compact. It records only material that prevented 
 | `research/edge-lab-continuous` | KEEP_ACTIVE | live repository dependency: .github/workflows/edge-lab-binance-funding-reversal.yml,.github/workflows/edge-lab-monthend-pension-rebalance.yml,.github/workflows/edge-lab-sector-relative-shock-reversal.yml,.github/workflows/edge-lab-stockbond-joint-stress-rebound.yml,.github/workflows/edge-lab.yml | 0 | YES |
 | `review/independent-architecture-challenger-20261026` | PARK | exact branch ref appears in open issue/comment(s): 44,44 | 0 | YES |
 | `reviewer/v1-final-red-team` | KEEP_ACTIVE | live repository dependency: .github/workflows/v1-proof-gate.yml | 0 | YES |
-| `sol/scout-crypto-20261008-1847` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `sol/scout-events-f413d` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `sol/scout-macro-tauc-gfs` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `sol/scout-prediction-flb-nr` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `team/weather-v4-a2-coordination-2026-10-08` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `tmp/deep-week-20260713` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
-| `ux/intake-20261015` | DELETE_PROVEN_SAFE | current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found | 0 | YES |
