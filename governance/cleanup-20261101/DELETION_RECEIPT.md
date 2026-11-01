@@ -2,7 +2,7 @@
 
 - Snapshot: `2026-11-01T13:39:34.460914+00:00`
 - Start branches: **279**
-- Deleted so far: **80**
+- Deleted so far: **120**
 - Default branch preserved: `blue/master-v2-2026-09-20`
 - Active auditor preserved: `audit/forensic-checkpoint-20261019` @ `531f72b7b3ed2f3a71f6041a84a9e7047f1d7a4c`
 
@@ -90,6 +90,46 @@
 | `builder/f1-persistent-stage-a-2026-10-08` | `a0a07c12a8fbb6e9bff59fd19bbed0da06c15040` |
 | `builder/f1-sealed-stage-b-capture-2026-10-09` | `ea9d2d0e0e057199bb168249c963acbc88e89de5` |
 | `builder/f1-stage-a-evidence-37900200192-1` | `58c708c271885a213f50a421191ebc3f7556b198` |
+| `builder/f1-stage-a-evidence-37903239892-1` | `354ea1aba5987caa282bb93449da2db5d026dd7c` |
+| `builder/f1-stage-a-evidence-37915190172-1` | `5cfdddbd49fda9f0083b3cff2d2dfa558af38700` |
+| `builder/f1-stage-a-execution-2026-10-09` | `0b0f5b416f7c958b763216450d5889feea692cc3` |
+| `builder/f1-stage-b-evidence-38006324356-1` | `d4332b8748968832b3fed08a0bb8ebef939d42ec` |
+| `builder/forward-market-recorder-v2` | `87bd049574ec41fe9d22b2ffcfdfc06ec7b7166a` |
+| `builder/gate-b-deployed-byte-verifier-m4-repair-2026-09-21` | `e19f45709b9e0c2a6d6d22c4d666b701a5bced86` |
+| `builder/gate-b-evidence-reception-prestage-2026-09-21` | `f5721d62bd025b70f141cee8cf0b4dd8ba8e35a1` |
+| `builder/gate-b-evidence-schema-false-pass-fix-2026-09-21` | `12a666fde821d80f7323f527c64c96ff1c290058` |
+| `builder/gate-b-f11-lock-identity-repair-2026-09-21` | `8a30bd385f6f6c04c085bb72cb0c853c5de3c3b8` |
+| `builder/gate-b-lock-path-identity-repair-2026-09-21` | `e600295b2aa7056e8176e0286f9d67f5c65b1c11` |
+| `builder/gate-b-offline-lifecycle-sanitization-prestage-2026-09-21` | `6693b1e91febe907151e69f27807373c10eb40da` |
+| `builder/gate-b-route1-concrete-mutation-pack-2026-09-21` | `929cba23282007b39520b2c3d33ff0a5281a0b5b` |
+| `builder/gate-b-run-authority-m1-m3-repair-2026-09-21` | `2d2ff4e32f239fb7ef41d9e44745005f5f5fb44a` |
+| `builder/gate-b-run-authority-mechanisms-2026-09-21` | `845dfa3609a9bbb2f81b76cd4375189a30ec2232` |
+| `builder/gate-b-run-authority-retention-prestage-2026-09-21` | `51a2b9074340bacfc2c337e57cb68a7d344b4b04` |
+| `builder/gate-b-v4-materialization-activation-prestage-2026-09-21` | `478735d5924df8bc79777b837e710c9083817512` |
+| `builder/gate-c-prospective-event-plan-prestage-2026-09-21` | `4c8312582e28ce16a3f12ed5bace78c39a151230` |
+| `builder/giga-f-idea-federation-autonomous-feed-20261023` | `79329f15bbf02c25fa61e5d5ef6028e5abfb1493` |
+| `builder/giga-q-final-whole-system-hardening-20261023` | `4efadddf694eff0c0df00925b5b4b89194f32f8e` |
+| `builder/live-lab-full-autonomy-20261015` | `fdfee2006869ff3770f752f32fb672da0b0fc4ac` |
+| `builder/live-lab-oracle-integration-20261020` | `a48bbb3594036b1a5c323af42a2723c8defcf555` |
+| `builder/live-lab-owner-ux-rebuild-20261015-checkpoint` | `6076774f52ca2e619caaab57fb6a278f47608349` |
+| `builder/live-lab-owner-ux-rebuild-20261015-checkpoint-2` | `6076774f52ca2e619caaab57fb6a278f47608349` |
+| `builder/live-lab-platform-probes-20261013` | `809ec7e3d088a4ba4c5857771e6422ab91a139f4` |
+| `builder/live-lab-ux-vision-20261014` | `13d2e7c435b465a58af740ce2f2e6674cbab6639` |
+| `builder/mega-a-research-intelligence-20261021` | `29c6faa4ac334d74f2c90d49897346047beaa5d0` |
+| `builder/mega-b-discovery-engine-20261021` | `bfc9fad9c36790abce71f80aead2485d6e022cdb` |
+| `builder/mega-c0-scientific-adjudication-20261021` | `6dc84f35e80aec709e67e3d5d3ce0cdcfaee3bcf` |
+| `builder/mega-d0-economic-lifecycle-20261021` | `4262462e0c853d917f32e8f87c2423f93a313167` |
+| `builder/minimal-durable-continuity-20261028` | `42affc56635b9dc7de411b544f657f98967f2371` |
+| `builder/multi-source-ideation-intake-v3-20261026` | `0691a4c1c905c8cfa1e68d521b12d66655ec4dd3` |
+| `builder/multi-source-outcome-firewall-repair-20261021` | `884632a1fc332df8155eaa5e0557521497dc6d4b` |
+| `builder/oracle-v2-live-lab-bridge-20261020` | `4dd1400452f624ad27bddd96b07a3d6d9abef1da` |
+| `builder/p0-effective-unit-digest-stability-v4-2026-09-20` | `b10cde0dd193714346abdfe87afb841482e9b7c8` |
+| `builder/p0-gate-a-v3-2026-09-20` | `2da079d8ad75c69eb3fc2990c512735cb4bdc02b` |
+| `builder/p0-hybrid-qualification-harness-2026-09-20` | `d4d446c412258b2a9e4792cdcd9e2442ef24b615` |
+| `builder/post-p0-first-vertical-shadow-loop-2026-09-21` | `5c8b5b71ef627ac0ec0faa509edc40b7d9d0c4df` |
+| `builder/post-p0-vertical-interface-map-2026-09-21` | `8d40af1f2333474d8f26509b61cb257d96f8772d` |
+| `builder/research-factory-core-v2` | `ca8ffe439953b063fb9d049773ce0b6245958c7d` |
+| `builder/research-os-econ-readiness-activation-20261017` | `e980d201d3c84d16d7d91fde0d27a06c9a2c3121` |
 
 ## Safety rule
 
