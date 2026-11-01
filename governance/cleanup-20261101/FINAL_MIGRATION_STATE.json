@@ -412,7 +412,7 @@
     "wave2_nonregression_local": "48/48 PASS",
     "live_lab_js_local": "57/57 PASS",
     "yaml_shell_syntax": "all retained executable workflows parse; bash -n PASS",
-    "hosted_exact_head": "Canonical Code Qualification 41322121663 SUCCESS on exact final code/canonical 89dd5e7a1bd66adaba955db4656cfa393c9b62d7, including reconciled concurrent canonical-agent-method changes",
+    "hosted_exact_head": "Final exact code/canonical cacffe4fba32ed393c4501638dcc76a8c370e063: Canonical Code Qualification 41322678126 SUCCESS; AI Working Method Gate 41322678197 SUCCESS. Concurrent delta after 89dd5e7a changes only AI gate path filters.",
     "scientific_state_port": "207 original Edge Lab files byte-identical; four live Lab source blobs explicitly compared at project/canonical; no experiment run",
     "meta_audit_port": "6 original artifacts byte-identical, original commit retained as project parent",
     "paused_forensic_port": "73 added/updated evidence files byte-identical, 128 unique commits retained as project parent; PAUSED_BY_OWNER preserved",
@@ -445,6 +445,18 @@
       "id": 41322121663,
       "sha": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
       "workflow": "Canonical Code Qualification",
+      "result": "success"
+    },
+    {
+      "id": 41322678126,
+      "sha": "cacffe4fba32ed393c4501638dcc76a8c370e063",
+      "workflow": "Canonical Code Qualification",
+      "result": "success"
+    },
+    {
+      "id": 41322678197,
+      "sha": "cacffe4fba32ed393c4501638dcc76a8c370e063",
+      "workflow": "AI Working Method Gate",
       "result": "success"
     }
   ],
@@ -510,9 +522,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:45:37.307423+00:00",
-  "project_subject_before_receipt": "f8770ae16c8e166bb73d272a299aa1874b37d25c",
-  "code_canonical_sha": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
+  "updated_utc": "2026-11-01T15:47:49.102300+00:00",
+  "project_subject_before_receipt": "cc689d3fc3d7711cc9d332a6f532b47260fde28d",
+  "code_canonical_sha": "cacffe4fba32ed393c4501638dcc76a8c370e063",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -642,7 +654,7 @@
     "code/canonical": {
       "disposition": "CANONICAL",
       "reason": "Canonical authority",
-      "sha_at_snapshot": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7"
+      "sha_at_snapshot": "cacffe4fba32ed393c4501638dcc76a8c370e063"
     },
     "codex/c0-membrane-qualification-20261027": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -662,7 +674,7 @@
     "project/canonical": {
       "disposition": "CANONICAL",
       "reason": "Canonical authority",
-      "sha_at_snapshot": "f8770ae16c8e166bb73d272a299aa1874b37d25c"
+      "sha_at_snapshot": "cc689d3fc3d7711cc9d332a6f532b47260fde28d"
     },
     "research/edge-lab-continuous": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -805,8 +817,8 @@
     "builder/oracle-economic-loop-recovery-20261019": "99f0496296a34a767dfd95a092523b10ad5fbf49",
     "builder/oracle-v2-core-20261020": "1800723221809180afa58f64db43a28bf4a75829",
     "builder/research-os-autonomous-loop-20261015": "47cb12bead9910d6fce7f30cf6408c752a713ded",
-    "code/canonical": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
-    "project/canonical": "f8770ae16c8e166bb73d272a299aa1874b37d25c"
+    "code/canonical": "cacffe4fba32ed393c4501638dcc76a8c370e063",
+    "project/canonical": "cc689d3fc3d7711cc9d332a6f532b47260fde28d"
   },
   "branch_count_end": 6,
   "branches_deleted_this_mission": 27,

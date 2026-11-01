@@ -23,7 +23,7 @@ Forensic source `d14415c09b63b26e5839fee445ba100989c429fe` explicitly says PAUSE
 
 ## Exact tests and limits
 
-- Final reconciled code subject `89dd5e7a1bd66adaba955db4656cfa393c9b62d7`: Canonical Code Qualification run `41322121663` SUCCESS. Earlier migrated exact heads also passed runs `41320797151`, `41321169062`, `41321331348`.
+- Final reconciled code subject `cacffe4fba32ed393c4501638dcc76a8c370e063`: Canonical Code Qualification run `41322678126` SUCCESS and AI Working Method Gate `41322678197` SUCCESS. Concurrent delta after qualified `89dd5e7a` changes only AI gate path filters. Earlier migrated exact heads also passed runs `41320797151`, `41321169062`, `41321331348`.
 - Local executed checks: canonical/CP099/autonomy 43 PASS; collector/deployment 61 PASS; Wave2 48 PASS; Live Lab 57 PASS; metadata-link Edge Lab 168 PASS; current AI-method 14 PASS. YAML parsing and shell syntax PASS.
 - Site: 50 server + 49 embedded JS tests PASS; generated Worker and asset hashes validated; actual deployed MCP read verified canonical routing and unchanged ledger.
 - Legacy broad/frozen gates did not all pass on the new trunk. Exact failing runs and steps are retained in FINAL_MIGRATION_STATE.json. V2 synthetic failures reproduce unchanged on pre-migration `13c9ff03` (4 failures/1 error across 12 tests; zero product/test diff in the affected surfaces). Frozen owned-blob assertions and older readiness harness assumptions are not current canonical qualification. They were not weakened to manufacture PASS. No product-wide, runtime, science, promotion or E2E PASS is claimed.
