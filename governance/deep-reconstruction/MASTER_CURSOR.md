@@ -5,19 +5,19 @@ GLOBAL_FORENSIC_RESTART=FALSE
 
 ## Canonical anchors
 
-- `code/canonical` observed head used for completed July weeks: `13c9ff03f0898e9af28abaa3dab78a520c70c887`
-- project memory is updated incrementally on `project/canonical`; always reconcile a newer remote head before writing.
+- `code/canonical` July/August comparison anchor used so far: `13c9ff03f0898e9af28abaa3dab78a520c70c887`.
+- project memory is incremental on `project/canonical`; always reconcile a newer remote head before writing.
 
-These are comparison anchors, not proof that every historical invariant is covered.
+These are evidence anchors, not blanket guarantees over future code paths.
 
 ## Mission
 
-Reconstruct remaining project history in depth, week by week, to recover decision-relevant value that the surface audit could have missed.
+Reconstruct remaining project history in depth, week by week, recovering only decision-relevant value missed by surface chronology.
 
-For each material object link where useful:
-`intent -> commits -> files/blobs -> tests/runs -> PR/issues/reviews -> integration/ancestry -> later supersession -> current canonical state -> gap/disposition`.
+For material objects link where useful:
+`intent -> commits -> files/blobs -> tests/runs -> PR/issues/reviews -> integration/ancestry -> supersession -> current canonical state -> gap/disposition`.
 
-Primary evidence outranks branch names, summaries, prompts and prose claims.
+Primary evidence outranks names, summaries, prompts and maturity labels.
 
 ## Decision vocabulary
 
@@ -27,88 +27,73 @@ Construction, qualification, integration, promotion, activation, use and end-to-
 
 ## Efficiency law
 
-Reuse forensic indexes, crosswalks, capability maps, value-recovery checkpoints and prior weekly checkpoints as navigation aids.
-Descend to commits/files/runs only when doing so can change a canonical decision, recover value, expose a contradiction, or close a material unknown.
-Do not reread thousands of commits merely to reproduce proven chronology.
-Aggregate repetitive automation/iteration activity when no distinct semantic change is hidden inside it.
+Reuse forensic indexes, crosswalks, capability maps, value-recovery checkpoints and prior weekly CPs as navigation aids.
+Descend to commits/files/runs only when doing so can change a canonical decision, recover value, expose contradiction, or close a material unknown.
+Aggregate repetitive automation/experimental iterations only when no distinct semantic change is hidden.
+Do not infer semantic work from commit-volume counters alone.
 
 ## Weekly checkpoint law
 
-Every completed historical calendar week MUST publish:
-1. `DEEP_WEEK_YYYY-MM-DD_YYYY-MM-DD.md` — evidence, analysis, canonical comparison and decisions.
-2. `HANDOFF_WEEK_YYYY-MM-DD_YYYY-MM-DD.md` — concise autonomous resume for another AI.
+Every completed calendar week MUST publish:
+1. `DEEP_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`
+2. `HANDOFF_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`
 
-Do not advance the cursor beyond a week until both artifacts exist.
+Do not advance the cursor until both exist.
 
 ## Completed weeks
 
-### 2026-07-13 -> 2026-07-19
-Status: `COMPLETE`.
-Key result: early causal/preregistration laws preserved; old implementations retired; no code port required.
-Read `DEEP_WEEK_2026-07-13_2026-07-19.md` and matching handoff.
+### 2026-07-13 -> 2026-07-19 — COMPLETE
+Early causal/preregistration laws preserved; current factory causal path source-proven; old implementations retired; no code port.
 
-### 2026-07-20 -> 2026-07-26
-Status: `COMPLETE`.
-Key result: later primary defects outrank earlier FINAL/READY labels; old deployment/strategy implementations retired; robustness recipes parked; no code port required.
-Read `DEEP_WEEK_2026-07-20_2026-07-26.md` and matching handoff.
+### 2026-07-20 -> 2026-07-26 — COMPLETE
+Later primary defects supersede earlier FINAL/READY labels; old deployment/strategy implementations retired; robustness recipes parked; no code port.
 
-### 2026-07-27 -> 2026-08-02
-Status: `COMPLETE`.
-Key result: preregistration does not restore an already-informed holdout; adaptive multiplicity must count historical looks; family-level falsification outranks intermediate PASS; no code port required.
-Read `DEEP_WEEK_2026-07-27_2026-08-02.md` and matching handoff.
+### 2026-07-27 -> 2026-08-02 — COMPLETE
+Preregistration does not restore an already-informed holdout; adaptive multiplicity must include historical looks; family-level falsification outranks candidate PASS; PR #1 closed without merge; no code port.
 
-### 2026-08-03 -> 2026-08-09
-Status: `COMPLETE`.
+### 2026-08-03 -> 2026-08-09 — COMPLETE
+Rule 9 adds conjunctive/fail-closed qualification; causal plumbing != economic edge; bounded family closure is durable scientific memory; modern Scientific Memory + Legacy anti-restart gate already own family-aware duplicate/known-negative blocking; no code port.
+
+### 2026-08-10 -> 2026-08-16 — COMPLETE
+Material object: `d93c92bc7a28c7ee7fa4e012a0c8cce2f88ad67a` on 13 Aug.
 
 Durable decisions:
-- #202 TIPS real-rate overlay: clean causal/alignment audit but economic FAIL 0/5; implementation retired, negative result preserved;
-- Rule 9 adds conjunctive qualification semantics: cost stress, crisis stress, temporal stability, SPA and DSR/multiplicity; one failed mandatory control blocks promotion;
-- #229 Yang-Zhang passes 4/5 historical Rule-9 controls but DSR fails -> no strengthened PASS; exact old heterogeneous-backlog DSR approximation is not promoted as a gold standard;
-- #347 explicitly closes the monetary M2/M2V/WALCL channel at 0 PASS/3 -> durable closed-family scientific memory;
-- #367 QQQ short-volume and #369 Form-4 pressure are negative experiments, not active capabilities;
-- Form-4 source anomaly handling is preserved as provenance/data-quality memory;
-- post-close PR #1 references prove chronology/continuation, not merge or integration;
-- modern canonical already owns stronger fail-closed trial accounting, multiplicity, scientific negative memory and PIT/source identity;
-- no historical code port or current repair proved necessary.
-
-Authority rules:
-- `CAUSAL_AUDIT_CONFORME != ECONOMIC_EDGE_VALIDATED`;
-- qualification is conjunctive/fail-closed;
-- global/adaptive multiplicity outranks local PASS labels;
-- bounded family closure is durable scientific memory;
-- GitHub `referenced` event != integration proof.
+- three duplicate ideas were removed before preregistration/script/calculation;
+- historical defect was duplicate checking at execution but not queue-writing time;
+- recovered law: `NO_IDEA_ENTERS_QUEUE_WITHOUT_NOVELTY_EVIDENCE`;
+- historical grep/backlog implementation -> `RETIRE_FROM_ACTIVE_SCOPE`;
+- admission-time anti-restart invariant -> `NO_CHANGE_REQUIRED` / `GOVERNANCE_ONLY` because modern Scientific Memory + executable Legacy anti-restart gate is stronger;
+- local non-ML frontier saturation / refusal to invent a strategy merely to fill the queue -> durable `NO_CHANGE_REQUIRED` program law consistent with later `NOOP_FRONTIER_EXHAUSTED`;
+- no historical code port, repair or new governance subsystem required.
 
 Read:
-- `governance/deep-reconstruction/DEEP_WEEK_2026-08-03_2026-08-09.md`
-- `governance/deep-reconstruction/HANDOFF_WEEK_2026-08-03_2026-08-09.md`
-
-## Current cursor
-
-`CURRENT_WEEK_START=2026-08-10`
-`CURRENT_WEEK_END=2026-08-16`
-`CURRENT_WEEK_STATUS=IN_PROGRESS`
-
-Known starting object from surface evidence:
-1. `d93c92bc7a28c7ee7fa4e012a0c8cce2f88ad67a` on 13 Aug — rejects three duplicate ideas before calculation and adds a proof-of-novelty admission rule after repeated rediscovery failures.
-2. Determine whether any other activity on 10-12 or 14-16 Aug introduces a distinct semantic transition; do not invent activity absent evidence.
-3. Compare novelty/identity memory with modern canonical hypothesis/scientific memory; port only if a real anti-restart gap remains.
+- `governance/deep-reconstruction/DEEP_WEEK_2026-08-10_2026-08-16.md`
+- `governance/deep-reconstruction/HANDOFF_WEEK_2026-08-10_2026-08-16.md`
 
 ## Open cross-week gaps
 
 `NONE_REQUIRING_CODE_CHANGE_FROM_COMPLETED_WEEKS`
 
-Forward qualification requirements only:
-- future causality mutation tests must mutate observations strictly after t and prove outputs at/before t invariant;
-- future prospective experiments must distinguish preregistration from untouched holdout independence;
-- effective trial accounting must include adaptive search history or remain explicitly UNKNOWN;
-- closed scientific families and previously tested hypothesis identities must remain discoverable to prevent accidental reruns.
+Parked diagnostics/economic seeds remain non-authoritative and should only reopen when a prospective economic decision makes them relevant.
+
+## Current cursor
+
+`CURRENT_WEEK_START=2026-08-17`
+`CURRENT_WEEK_END=2026-08-23`
+`CURRENT_WEEK_STATUS=IN_PROGRESS`
+
+First action:
+1. resolve exact material objects from completed forensic evidence/census;
+2. do not infer semantic activity solely from raw commit counts;
+3. aggregate repetitive search iterations;
+4. descend only on protocol/capability/authority transitions;
+5. compare against current canonical owners before any port/repair decision.
 
 ## Resume law
 
 Do NOT restart the global forensic audit.
-Do NOT assume absence from filename/search-term absence.
-Do NOT promote historical experiment verdicts into current economic truth.
-Do NOT merge or delete branches as part of this reconstruction.
+Do NOT assume filename/search-term absence proves behavioral absence.
+Do NOT promote historical experiment verdicts or READY/FINAL labels into current truth.
+Do NOT merge/delete branches as part of reconstruction.
 Do NOT reread completed weeks unless contradictory primary evidence can change a canonical decision.
-Do NOT treat repetitive ML/non-ML iterations as independent capabilities.
-Resume from `CURRENT_WEEK_*`, publish the weekly evidence document and handoff, then advance to the next calendar week.
+Resume from `CURRENT_WEEK_*`, publish weekly analysis + handoff, then advance.
