@@ -218,6 +218,54 @@
       "verified_absent_at": "2026-11-01T15:30:36.701110+00:00",
       "lease": "--force-with-lease=refs/heads/builder/research-os-vm-autonomy-20261019:8a1bdadc9bc52c4889ee19d0472bcee61fe24318",
       "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/wp1-book-pressure-preexposure-20261028",
+      "sha": "1c9e9f6a1a35faf4a3ef75dddf03961c57ab265f",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:31:49.963027+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/wp1-book-pressure-preexposure-20261028:1c9e9f6a1a35faf4a3ef75dddf03961c57ab265f",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/wp2-single-lineage-binding-20261030",
+      "sha": "8f8df47d184f0f1594280bec7e9e7941962cf1c5",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:31:53.596842+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/wp2-single-lineage-binding-20261030:8f8df47d184f0f1594280bec7e9e7941962cf1c5",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "codex/c0-membrane-qualification-20261027",
+      "sha": "13721384fe5b94b0136fb4548192e05d5e34e605",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:31:56.662279+00:00",
+      "lease": "--force-with-lease=refs/heads/codex/c0-membrane-qualification-20261027:13721384fe5b94b0136fb4548192e05d5e34e605",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "codex/horizontal-completeness-prewave2-20261021",
+      "sha": "7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:32:01.009588+00:00",
+      "lease": "--force-with-lease=refs/heads/codex/horizontal-completeness-prewave2-20261021:7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "codex/vertical-depth-prewave2-20261021",
+      "sha": "5d628db2949144ca6abf94327de3146f3983ecea",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:32:04.122700+00:00",
+      "lease": "--force-with-lease=refs/heads/codex/vertical-depth-prewave2-20261021:5d628db2949144ca6abf94327de3146f3983ecea",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "review/independent-architecture-challenger-20261026",
+      "sha": "642b551985f499b37286c3bc21b89c57294f63ca",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:32:07.342191+00:00",
+      "lease": "--force-with-lease=refs/heads/review/independent-architecture-challenger-20261026:642b551985f499b37286c3bc21b89c57294f63ca",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
     }
   ],
   "blocked": {
@@ -332,8 +380,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:31:45.090779+00:00",
-  "project_subject_before_receipt": "f751d3cd28cdd69e39cdacad42ff82c599046832",
+  "updated_utc": "2026-11-01T15:32:07.389078+00:00",
+  "project_subject_before_receipt": "470a78a9768b32389f0edb61baa1bac1ae043e7e",
   "code_canonical_sha": "538ed009c5958e37586a4f04e60ddad5485eeebc",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -447,13 +495,13 @@
       "sha_at_snapshot": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208"
     },
     "builder/wp1-book-pressure-preexposure-20261028": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "1c9e9f6a1a35faf4a3ef75dddf03961c57ab265f"
     },
     "builder/wp2-single-lineage-binding-20261030": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "8f8df47d184f0f1594280bec7e9e7941962cf1c5"
     },
     "claude/data-feeds-6vr22g": {
@@ -467,18 +515,18 @@
       "sha_at_snapshot": "13c9ff03f0898e9af28abaa3dab78a520c70c887"
     },
     "codex/c0-membrane-qualification-20261027": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "13721384fe5b94b0136fb4548192e05d5e34e605"
     },
     "codex/horizontal-completeness-prewave2-20261021": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f"
     },
     "codex/vertical-depth-prewave2-20261021": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "5d628db2949144ca6abf94327de3146f3983ecea"
     },
     "project/canonical": {
@@ -492,8 +540,8 @@
       "sha_at_snapshot": "68bbab8ec990c813310224bc8737c41480853108"
     },
     "review/independent-architecture-challenger-20261026": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "642b551985f499b37286c3bc21b89c57294f63ca"
     },
     "reviewer/v1-final-red-team": {
@@ -605,6 +653,6 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
+    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
   }
 }
