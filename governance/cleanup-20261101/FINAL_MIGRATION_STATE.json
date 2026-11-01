@@ -395,15 +395,15 @@
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Existing Oracle host release/state binding uninspected: no SSH/OCI/host execution connector/identity or TCP grant. Current V2 writes observed at 0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1. Inventory /etc/quant-research/worker.json, unit/timer, deployed SHA and clone ref; back up, prove canonical equivalence, rebind ref only, verify bounded healthy wake."
+      "reason": "Observed live Oracle automatic writer; pre-workflow tip b8171ecac172f868831b3c6978f0167a154ce926, current ref includes only a canonical collector YAML update after that tip. No SSH/OCI/host execution identity or TCP grant. Inventory deployed release, /etc/quant-research/worker.json, clone ref and V2 unit/timer; prove canonical byte equivalence, back up, rebind ref only and verify bounded health/wake."
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Existing Oracle host release/state binding uninspected: no SSH/OCI/host execution connector/identity or TCP grant. Current V2 writes observed at 0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1. Inventory /etc/quant-research/worker.json, unit/timer, deployed SHA and clone ref; back up, prove canonical equivalence, rebind ref only, verify bounded healthy wake."
+      "reason": "Known historical Oracle V1/recovery state ref and fallback configuration; current installed binding cannot be inspected. Historical V1-inactive receipt is insufficient to prove present absence. Authenticate intended host, inspect worker.json/unit/timer and prove ref unused or safely rebind to code/canonical with rollback/health receipt."
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
-      "reason": "Ten recurring prompts rebound to code/canonical; two enabled prompts read back. Immediate wake verification unavailable: run_now HTTP 404 Action not found. Observe a completed post-rebind bounded wake with exact canonical ref and no admissible task, then retire source with fresh SHA lease."
+      "reason": "Ten recurring worker prompts rebound and read back on code/canonical; enabled state/cadence preserved. Immediate run tool returns 404. Post-rebind independent_challenge run 9c467a95-f010-832d-a6bc-fd4ee0597885 is recorded completed at 15:35:01Z, but result payload is null, so exact canonical state read is unverified. Fundamental lane last result predates rebinding. Obtain a payload-bound canonical SHA/no-task wake (or next scheduled result), then fresh-lease retire this source."
     }
   },
   "tests": {
@@ -412,13 +412,15 @@
     "wave2_nonregression_local": "48/48 PASS",
     "live_lab_js_local": "57/57 PASS",
     "yaml_shell_syntax": "all retained executable workflows parse; bash -n PASS",
-    "hosted_exact_head": "Canonical Code Qualification 41321331348 SUCCESS on exact final code/canonical d500d96a8ab5024557319add41e8030ebf392883",
+    "hosted_exact_head": "Canonical Code Qualification 41322121663 SUCCESS on exact final code/canonical 89dd5e7a1bd66adaba955db4656cfa393c9b62d7, including reconciled concurrent canonical-agent-method changes",
     "scientific_state_port": "207 original Edge Lab files byte-identical; four live Lab source blobs explicitly compared at project/canonical; no experiment run",
     "meta_audit_port": "6 original artifacts byte-identical, original commit retained as project parent",
     "paused_forensic_port": "73 added/updated evidence files byte-identical, 128 unique commits retained as project parent; PAUSED_BY_OWNER preserved",
     "edge_lab_metadata_links": "168/168 synthetic Edge Lab tests PASS after canonical metadata-link rebind",
     "lab_site": "50/50 server tests and 49/49 embedded Live Lab JS tests PASS; artifact/source hashes validated; deployed existing Site v27; fresh MCP read resolves project/canonical@bd67b2127ba483189c9c760ba0c6fba29a5f6c95; stale=false and ledger unchanged",
-    "baseline_counterexample": "Original code/canonical 13c9ff03: same 4 failures + 1 error in 12 V2 synthetic tests; zero migration diff in core/pipeline/affected tests proves failures pre-exist branch rebind"
+    "baseline_counterexample": "Original code/canonical 13c9ff03: same 4 failures + 1 error in 12 V2 synthetic tests; zero migration diff in core/pipeline/affected tests proves failures pre-exist branch rebind",
+    "ai_working_method": "14/14 tests PASS on exact final code SHA; preceding owner AI-method hosted run 41322095998 PASS on 4b1aa98d (not misattributed to final SHA)",
+    "parked_source_workflow": "All three surviving worker-source manual collector workflows now have identical blob 442711623fe0cf57b450742ad02a224ec45d2c21 to qualified canonical workflow; each update diff is exactly that one YAML file; task/runtime/deployed bytes unchanged"
   },
   "workflow_runs": [
     {
@@ -436,6 +438,12 @@
     {
       "id": 41321331348,
       "sha": "d500d96a8ab5024557319add41e8030ebf392883",
+      "workflow": "Canonical Code Qualification",
+      "result": "success"
+    },
+    {
+      "id": 41322121663,
+      "sha": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
       "workflow": "Canonical Code Qualification",
       "result": "success"
     }
@@ -490,8 +498,9 @@
     "live_trading_authorized": false
   },
   "known_external_unverified": [
-    "Existing Oracle host: no SSH/OCI/host connector, credentials or TCP grant; live branch writes observed.",
-    "GitHub Pages/deployment/environment settings and branch protection: connector endpoint not supported; direct gh API Forbidden."
+    "Oracle host unit/timer/worker.json/active clone and release binding: no authorized execution identity/connector or TCP grant. Current V2 automatic GitHub writes observed; health and deployed bytes not inferred.",
+    "Worker post-rebind exact-state wake payload: immediate run tool unavailable; one completed scheduler record has null payload.",
+    "GitHub repository settings mutation, environment/deployment configuration: no supported mutation/read surface. has_pages=false; rulesets=[]; fresh branch protected=false. Unknown systems beyond observed consumers are not claimed absent."
   ],
   "adversarial_review": [
     "Counterexample found: Oracle V2 tip advanced during fetch with a current NOOP wake. Preserve that branch and record final exact delta; do not infer host absence from missing credentials.",
@@ -501,8 +510,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:38:04.409873+00:00",
-  "project_subject_before_receipt": "1ec0ec70f1c9052c53563c46f4607f8b5e6c1816",
+  "updated_utc": "2026-11-01T15:45:37.307423+00:00",
+  "project_subject_before_receipt": "f8770ae16c8e166bb73d272a299aa1874b37d25c",
   "code_canonical_sha": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -523,7 +532,7 @@
     "blue/master-v2-2026-09-20": {
       "disposition": "BLOCK",
       "reason": "Repository default; no supported authenticated repository-settings mutation, Pages/environment/protection endpoint access unavailable (gh API Forbidden; connector routes unsupported). Collector workflow now rebinds code/canonical. Complete settings preflight, carry existing schedule to project/canonical, PATCH default_branch, verify default and one scheduled routing before deletion.",
-      "sha_at_snapshot": "2d0af7cb7e8ea0c095bf2e4e1cc7461dc0542832"
+      "sha_at_snapshot": "28e588f59853aaa4c48efc2264969994a0c44799"
     },
     "builder/autonomy-e2e-20261012": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -582,13 +591,13 @@
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Existing Oracle host release/state binding uninspected: no SSH/OCI/host execution connector/identity or TCP grant. Current V2 writes observed at 0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1. Inventory /etc/quant-research/worker.json, unit/timer, deployed SHA and clone ref; back up, prove canonical equivalence, rebind ref only, verify bounded healthy wake.",
-      "sha_at_snapshot": "0837f419c4e3a9e17a39269994f27d97fcf79757"
+      "reason": "Known historical Oracle V1/recovery state ref and fallback configuration; current installed binding cannot be inspected. Historical V1-inactive receipt is insufficient to prove present absence. Authenticate intended host, inspect worker.json/unit/timer and prove ref unused or safely rebind to code/canonical with rollback/health receipt.",
+      "sha_at_snapshot": "99f0496296a34a767dfd95a092523b10ad5fbf49"
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Existing Oracle host release/state binding uninspected: no SSH/OCI/host execution connector/identity or TCP grant. Current V2 writes observed at 0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1. Inventory /etc/quant-research/worker.json, unit/timer, deployed SHA and clone ref; back up, prove canonical equivalence, rebind ref only, verify bounded healthy wake.",
-      "sha_at_snapshot": "0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1"
+      "reason": "Observed live Oracle automatic writer; pre-workflow tip b8171ecac172f868831b3c6978f0167a154ce926, current ref includes only a canonical collector YAML update after that tip. No SSH/OCI/host execution identity or TCP grant. Inventory deployed release, /etc/quant-research/worker.json, clone ref and V2 unit/timer; prove canonical byte equivalence, back up, rebind ref only and verify bounded health/wake.",
+      "sha_at_snapshot": "1800723221809180afa58f64db43a28bf4a75829"
     },
     "builder/research-os-aggressive-architecture-20261015": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -602,8 +611,8 @@
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
-      "reason": "Ten recurring prompts rebound to code/canonical; two enabled prompts read back. Immediate wake verification unavailable: run_now HTTP 404 Action not found. Observe a completed post-rebind bounded wake with exact canonical ref and no admissible task, then retire source with fresh SHA lease.",
-      "sha_at_snapshot": "d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec"
+      "reason": "Ten recurring worker prompts rebound and read back on code/canonical; enabled state/cadence preserved. Immediate run tool returns 404. Post-rebind independent_challenge run 9c467a95-f010-832d-a6bc-fd4ee0597885 is recorded completed at 15:35:01Z, but result payload is null, so exact canonical state read is unverified. Fundamental lane last result predates rebinding. Obtain a payload-bound canonical SHA/no-task wake (or next scheduled result), then fresh-lease retire this source.",
+      "sha_at_snapshot": "47cb12bead9910d6fce7f30cf6408c752a713ded"
     },
     "builder/research-os-vm-autonomy-20261019": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -633,7 +642,7 @@
     "code/canonical": {
       "disposition": "CANONICAL",
       "reason": "Canonical authority",
-      "sha_at_snapshot": "13c9ff03f0898e9af28abaa3dab78a520c70c887"
+      "sha_at_snapshot": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7"
     },
     "codex/c0-membrane-qualification-20261027": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -653,7 +662,7 @@
     "project/canonical": {
       "disposition": "CANONICAL",
       "reason": "Canonical authority",
-      "sha_at_snapshot": "77ef69acddc997a613f5f133abbe6a81e687f24b"
+      "sha_at_snapshot": "f8770ae16c8e166bb73d272a299aa1874b37d25c"
     },
     "research/edge-lab-continuous": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -675,7 +684,7 @@
   "evidence_archive_commit": "fac556b52ff048255d987bed6a6755eab4766fd5",
   "evidence_archive_integration_commit": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
   "migration_commit": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-  "status": "MIGRATED_QUALIFICATION_AND_TRANSACTIONAL_RETIREMENT_IN_PROGRESS",
+  "status": "COMPLETE_WITH_EXPLICIT_SCOPED_EXCEPTIONS",
   "default_binding_commit": "fe310c0a",
   "default_preflight": {
     "scheduled_workflows": [
@@ -683,13 +692,16 @@
     ],
     "collector_checkout_after_migration": "code/canonical",
     "collector_script_and_dataset_port": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-    "default_sha_after_binding": "fe310c0aeacfe04cb40bacb139a474a9cc664b9b",
+    "default_sha_after_binding": "28e588f59853aaa4c48efc2264969994a0c44799",
     "rulesets": [],
     "protections_environments_pages": "UNAVAILABLE_FROM_SUPPORTED_CONNECTOR_AND_LOCAL_NETWORK",
     "readme_entrypoint": "project/canonical README repaired with current source links; current North Star and AGENTS copied",
     "host_checkout": "UNKNOWN; independently PARK Oracle refs",
     "decision": "BLOCK_DEFAULT_MUTATION_ONLY",
-    "scheduled_workflow_prepared_on_project": ".github/workflows/data-feeds.yml; explicit code/canonical checkout; same existing cron; runs only when selected as default"
+    "scheduled_workflow_prepared_on_project": ".github/workflows/data-feeds.yml; explicit code/canonical checkout; same existing cron; runs only when selected as default",
+    "has_pages": false,
+    "protected_at_fresh_branch_inventory": false,
+    "remaining_block": "No authenticated repository-settings mutation surface; environments/deployments settings not readable from supported connector. Preserve current default until settings preflight and default PATCH can be executed."
   },
   "pre_deletion_status": "READY_FOR_INDEPENDENT_DOCUMENTARY_FAMILY_ONLY",
   "all_independent_migrations_qualified": true,
@@ -787,5 +799,117 @@
     ],
     "evidence": "GitHub job steps show preserved immutable-blob/ownership assertions differ on post-Wave2 canonical. Oracle V2 synthetic tests reproduce exactly failures=4/errors=1 on original 13c9ff03 pre-migration SHA; affected v2 core/pipeline/tests have zero diff to baseline. Readiness wide job lacks pytest and src path and contains pre-existing systemd-comment assertion. No scientific semantics or failing tests weakened to manufacture PASS.",
     "next_action": "Separate bounded legacy CI modernization only if those historical gates are selected for current authority; no runtime promotion follows from this migration."
+  },
+  "final_heads": {
+    "blue/master-v2-2026-09-20": "28e588f59853aaa4c48efc2264969994a0c44799",
+    "builder/oracle-economic-loop-recovery-20261019": "99f0496296a34a767dfd95a092523b10ad5fbf49",
+    "builder/oracle-v2-core-20261020": "1800723221809180afa58f64db43a28bf4a75829",
+    "builder/research-os-autonomous-loop-20261015": "47cb12bead9910d6fce7f30cf6408c752a713ded",
+    "code/canonical": "89dd5e7a1bd66adaba955db4656cfa393c9b62d7",
+    "project/canonical": "f8770ae16c8e166bb73d272a299aa1874b37d25c"
+  },
+  "branch_count_end": 6,
+  "branches_deleted_this_mission": 27,
+  "branches_remaining": [
+    "blue/master-v2-2026-09-20",
+    "builder/oracle-economic-loop-recovery-20261019",
+    "builder/oracle-v2-core-20261020",
+    "builder/research-os-autonomous-loop-20261015",
+    "code/canonical",
+    "project/canonical"
+  ],
+  "final_verdict": "PASS_WITH_BOUNDED_EXTERNAL_UNKNOWN",
+  "two_branch_target_reached": false,
+  "unknown_unclassified_branches": [],
+  "f0_two_branch_gate": "NOT_SATISFIED; 2 canonical + 3 PARK + 1 BLOCK",
+  "parked_source_workflow_updates": [
+    {
+      "branch": "builder/oracle-economic-loop-recovery-20261019",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "commit_sha": "99f0496296a34a767dfd95a092523b10ad5fbf49",
+          "content_sha": "442711623fe0cf57b450742ad02a224ec45d2c21"
+        },
+        "isError": false
+      }
+    },
+    {
+      "branch": "builder/oracle-v2-core-20261020",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "commit_sha": "1800723221809180afa58f64db43a28bf4a75829",
+          "content_sha": "442711623fe0cf57b450742ad02a224ec45d2c21"
+        },
+        "isError": false
+      }
+    },
+    {
+      "branch": "builder/research-os-autonomous-loop-20261015",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "commit_sha": "47cb12bead9910d6fce7f30cf6408c752a713ded",
+          "content_sha": "442711623fe0cf57b450742ad02a224ec45d2c21"
+        },
+        "isError": false
+      }
+    }
+  ],
+  "final_verification": {
+    "fresh_remote_branch_count": 6,
+    "deleted_refs_absent": 27,
+    "all_deleted_exact_tips_reachable_from_retained_authority": true,
+    "open_prs": 0,
+    "default_branch": "blue/master-v2-2026-09-20",
+    "canonical_workflow_and_deployment_binding_scan": "PASS; no deleted ref in canonical/default operational workflows or current deployment defaults",
+    "remaining_legacy_workflow_hits": "STALE_CONFIGURATION / historical filters on PARK worker-source snapshots; consumed economic workflows have no reachable push trigger and no dispatch; telemetry job has false ref guard. Three manual collector fallback refs proactively canonicalized. These snapshots are not promoted to executable authority.",
+    "remaining_document_hits": "HISTORICAL_REFERENCE / DOCUMENTATION_ONLY / TEST_FIXTURE_ONLY; includes exact provenance and archived frozen experiments, not current ref resolution",
+    "prior_deleted_name_hits": "Only lexical search when a current operational file named one; no 247-tip re-audit or branch restoration",
+    "scientific_memory": "207 original Edge Lab files exact; 73 forensic and 6 meta-audit evidence files ported; original complete source tips reachable via archive parents",
+    "external_lab": "Deployed v27, source 78a45bf8aa2f039612bbea644878929ede90712a, fresh MCP resolves project authority; ledger unchanged",
+    "host_health": "UNKNOWN; no host mutation",
+    "automation": "Prompts verified; execution payload gate remains PARK",
+    "worktree_clean": "Verified before final receipt commit; verify again after publication",
+    "independent_review_claimed": false,
+    "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
+  },
+  "next_action": "Recover payload-bound canonical worker wake, authenticate existing Oracle host and migrate ref-only binding with rollback/health proof, obtain repository-settings access and switch prepared default to project/canonical; re-read affected tips and delete only these four residual refs after their individual gates pass.",
+  "final_heads_observation_method": "Fresh ls-remote before final receipt publication. Project receipt commit is a descendant of the recorded project head; resolve the published receipt/remote ref for its own SHA rather than embedding a recursive self SHA.",
+  "final_counters": {
+    "start": 33,
+    "deleted": 27,
+    "end": 6,
+    "canonical": 2,
+    "park": 3,
+    "block": 1,
+    "unknown": 0,
+    "recurring_prompts_rebound": 10,
+    "canonical_workflows_rebound": 25,
+    "default_workflows_rebound": 2,
+    "parked_source_workflow_copies_rebound": 3,
+    "deployed_external_lab_consumers_rebound": 1,
+    "external_host_refs_rebound": 0,
+    "executable_and_test_files_ported": 7,
+    "append_only_feed_files_preserved": 43,
+    "edge_lab_scientific_files_ported": 207,
+    "forensic_evidence_files_ported": 73,
+    "meta_audit_evidence_files_ported": 6
   }
 }
