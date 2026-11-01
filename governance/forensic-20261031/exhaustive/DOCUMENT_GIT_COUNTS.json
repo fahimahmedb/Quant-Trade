@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-10-31T13:41:04.101399+00:00",
+  "refs": 320,
+  "branches": 275,
+  "distinct_heads": 266,
+  "commits": 6393,
+  "document_blob_path_versions": 12936,
+  "unique_document_blobs": 6465,
+  "document_blobs_read": 0
+}
