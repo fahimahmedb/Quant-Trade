@@ -48,22 +48,25 @@ Every completed calendar week publishes:
 - `2026-09-07 -> 2026-09-13`: COMPLETE — economic terminal objective, ledger/gate/Judge laws retained; corrected V1 invariants already current; PR #12/#13 closed unmerged; old gap-inflated metrics superseded.
 - `2026-09-14 -> 2026-09-20`: COMPLETE — exact-head/scoped qualification and merge authority reconstructed; current SEC P0 owns key semantics; contamination irreversible; no port.
 - `2026-09-21 -> 2026-09-27`: COMPLETE — CI-only authority, economic-parameter truthfulness, Rail C adoption and scheduled data collection reconstructed; no code port.
+- `2026-09-28 -> 2026-10-04`: COMPLETE — Weather transport correction, same-session independence limit, bounded A1 authority and A2 static/CI distinction reconstructed; no code port.
 
-## Latest completed week — 2026-09-21 -> 2026-09-27
+## Latest completed week — 2026-09-28 -> 2026-10-04
 
 Durable decisions:
-- PR #19 and PR #20 -> `CI_ONLY/GOVERNANCE_ONLY`, closed unmerged; PR #20 explicitly leaves Gate B unauthorized and t0 undeclared.
-- prior R3 economic closure -> `SUPERSEDED`: illustrative capital / incomplete fixed-cost model cannot close an economic gate; repository simulation capital is not demonstrated real capital.
-- `NON_AUTHORITATIVE_REVIEW`, delegated Builder decision, proposal and Owner adoption remain distinct authority states.
-- PR #21 -> proposal only, closed unmerged.
-- `bd19712641cb990fc50c609c2cb65a440e80bd6a` -> actual Blue adoption of two-speed research; Rail C paper/shadow only, bounded 10 iterations / 200 trials / 5 agents, Owner decision at FORWARD_PASS, real capital false.
-- 27-Sep Rail C zero-trial iteration due agent/session loss -> operational failure, not scientific result.
-- `09ba64b8bee1419076ec8a30f8d75a916932c2ba` -> scheduled data-feeds actually enabled; no orders; repetitive automatic feed commits aggregate as observations.
-- no historical code port/current repair/branch cleanup authorized.
+- automated `quant-data-feeds` commits -> one `SCHEDULED_DATA_COLLECTION` observation capability; commit volume is not architectural progress or trading evidence.
+- 29-Sep research/useful negatives -> scientific memory only; settlement/liquidity remains research-only, real capital false, no orders.
+- Weather R3 `3086efb3bb67012ed6159b6d23036e5c3ee33756` -> prior unconditional prospective-positive labels `SUPERSEDED`; realized-window `theta_W` inference cannot imply future `theta_P` without a frozen justified transport bridge.
+- same-session Astra/Architect role switching -> not independent review.
+- 2-Oct hold -> durable paused state; Codex/task/worktree plan -> orchestration only, not execution/qualification.
+- Astra pre-op `926741e7a67cb80bccde0ff428f2837bb200cf19` -> structural PASS for Owner consideration only; no phase authority.
+- Owner `728cf23e7d69a373306f3c1a3fb5d11240210cda` -> A1 documentation only; A2 execution blocked/unauthorized.
+- A2 static recheck `2602b993a98ef565a164e48bf4c801b0b86a8994` -> D1-D4 closed, D5 still open, `REPAIR_REQUIRED`, no code/tests/runtime execution in the audit, A2 unauthorized.
+- Actions run `37242092133` -> exact-head SUCCESS on `2602b993...`; qualifies workflow/SHA only and does not override D5 or create runtime proof.
+- no historical code port/current repair/branch cleanup authorized from this week alone.
 
 Read:
-- `governance/deep-reconstruction/DEEP_WEEK_2026-09-21_2026-09-27.md`
-- `governance/deep-reconstruction/HANDOFF_WEEK_2026-09-21_2026-09-27.md`
+- `governance/deep-reconstruction/DEEP_WEEK_2026-09-28_2026-10-04.md`
+- `governance/deep-reconstruction/HANDOFF_WEEK_2026-09-28_2026-10-04.md`
 
 ## Cross-week authority laws
 
@@ -77,7 +80,16 @@ Read:
 - current candidate memory screening is required before freeze, not before identity-less frontier generation;
 - `CI_OBSERVATION_SURFACE != INTEGRATION_AUTHORITY != GATE_AUTHORITY`;
 - `ILLUSTRATIVE_CAPITAL_OR_INCOMPLETE_COST_MODEL_CANNOT_CLOSE_AN_ECONOMIC_GATE`;
-- `ZERO_TRIALS_DUE_TO_ORCHESTRATION_FAILURE != NEGATIVE_ECONOMIC_RESULT`.
+- `ZERO_TRIALS_DUE_TO_ORCHESTRATION_FAILURE != NEGATIVE_ECONOMIC_RESULT`;
+- `AUTOMATED_OBSERVATION != ARCHITECTURAL_PROGRESS`;
+- `RESEARCH_OUTPUT != CAPITAL_AUTHORITY`;
+- `REALIZED_WINDOW_INFERENCE != PROSPECTIVE_TRANSPORT`;
+- `NO_FROZEN_TRANSPORT_BRIDGE => PROSPECTIVE_ABSTENTION`;
+- `SAME_SESSION_ROLE_SWITCH != INDEPENDENT_REVIEW`;
+- `ORCHESTRATION_PLAN != TASK_EXECUTION != QUALIFIED_RESULT`;
+- `AUDIT_PASS != OWNER_AUTHORIZATION`;
+- `OWNER_A1_DOCUMENTATION_AUTHORIZATION != A2_EXECUTION_AUTHORIZATION`;
+- `CI_GREEN != AUDIT_VERDICT_UPGRADE != EXECUTION_AUTHORITY != RUNTIME_PROOF`.
 
 ## Open cross-week gaps
 
@@ -87,16 +99,16 @@ Support/economic surfaces may remain PARK until prospectively decision-relevant;
 
 ## Current cursor
 
-`CURRENT_WEEK_START=2026-09-28`
-`CURRENT_WEEK_END=2026-10-04`
+`CURRENT_WEEK_START=2026-10-05`
+`CURRENT_WEEK_END=2026-10-11`
 `CURRENT_WEEK_STATUS=IN_PROGRESS`
 
 Start with:
-1. scheduled feed automation (aggregate observations);
-2. 29 Sep parallel research/useful negatives and settlement-liquidity research-only;
-3. 30 Sep Weather transport correction superseding earlier prospective verdict;
-4. 1-2 Oct Weather pause/orchestration/relaunch plan;
-5. 4 Oct distinguish non-executed Owner choices from A2 D1-D5 static proof and exact-head gate qualification.
+1. 5-8 Oct Weather V4 A2 dedicated harness, D5 repair chain, static/runtime adversarial audits and exact-head qualification;
+2. prove separately construction, Owner repair authority, Astra qualification, remote run status, integration and any runtime claim;
+3. continue 9-11 Oct from the completed 9-12 Oct surface checkpoint, stopping at the calendar-week boundary;
+4. aggregate data-feeds, repetitive CI and duplicate documentation;
+5. do not infer current repair need until comparing any surviving invariant with `code/canonical`.
 
 ## Resume law
 
