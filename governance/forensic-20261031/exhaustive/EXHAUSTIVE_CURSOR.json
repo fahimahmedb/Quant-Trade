@@ -1,13 +1,14 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
   "owner_contract_comment_id": 6543997679,
-  "status": "SEMANTIC_READING_ACTIVE",
+  "status": "DOCUMENT_BLOB_SEMANTIC_READING_ACTIVE",
   "decision_relevant_forensic_status": "CLOSED_DO_NOT_REOPEN_WITHOUT_CONTRADICTION",
   "collection_status": {
     "raw_inventory": "COLLECTED",
     "durable_archives": "VERIFIED",
     "archive_checkpoint_sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
+    "analysis_archive_sha256": "5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe",
     "full_git_mirror_equivalence": "NOT_PROVEN",
     "local_git_mirror_this_session": "BLOCK_ENVIRONMENT_DNS_RESOLUTION"
   },
@@ -15,38 +16,37 @@
     "branches": 275,
     "commits": 6393,
     "file_blob_versions": 17221,
+    "document_blob_path_rows": 12936,
     "document_blobs": 6465,
     "discussion_objects": 423,
     "timeline_events": 1775,
     "unique_runs": 4806
   },
-  "baseline_semantic_coverage": {
-    "document_blobs_read": 52,
-    "discussion_objects_read": 7,
-    "semantic_review_complete": false
+  "discussion_phase": {
+    "status": "COMPLETE_423_OF_423",
+    "closure_receipt": "governance/forensic-20261031/exhaustive/DISCUSSION_SEMANTIC_CLOSURE_20261101.json",
+    "last_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json",
+    "last_ledger_object": {"kind":"reviews","id":5718871390,"sha256":"9cfb6329142e00d483f894a3258cd45a816ee30f768af504b752cd375f8bd6c6"},
+    "counting_note": "Closure proven by exhaustion of ordered 423-object ledger plus preserved baseline reads. Historical estimated counters overlapped the baseline and are not summed."
   },
-  "incremental_semantic_coverage": {
-    "batches_complete": 46,
-    "new_discussion_objects_directly_read": 394,
-    "new_discussion_objects_byte_identical_to_read": 23,
-    "new_discussion_objects_semantically_disposed": 417,
-    "estimated_total_fields_status": "PENDING_FINAL_LEDGER_RECONCILIATION_BASELINE_OVERLAP",
-    "document_blobs_directly_read_delta": 0
+  "document_phase": {
+    "status": "INDEX_READY_BUNDLE_GENERATION_PENDING",
+    "index_path": "governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv",
+    "index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
+    "index_extraction_receipt": "governance/forensic-20261031/exhaustive/DOCUMENT_INDEX_EXTRACTION_RECEIPT.json",
+    "unique_document_blobs": 6465,
+    "baseline_reads_overlay": "governance/forensic-20261031/reads-overlay.json",
+    "reading_method": "HASH_FIRST_VERSION_FAMILY_FIRST_BUNDLED_FULL_CONTENT_OR_EXPLICIT_BINARY_UNAVAILABLE",
+    "next_cursor": "GENERATE_DOCUMENT_SEMANTIC_BUNDLES"
   },
-  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_046_20261101.json",
-  "next_cursor": {
-    "source": "governance/forensic-20261031/discussion-coverage.csv",
-    "kind": "reviews",
-    "id": 5709575146,
-    "sha256": "8442956d1999e87af10d4cb1e8614e365cc663b26f5af80a01cff5ddefda9268"
-  },
+  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json",
   "resume_law": [
-    "Do not restart raw inventory or decision-relevant chronology.",
-    "Continue from next_cursor in discussion-coverage.csv.",
-    "A semantic object is complete only as READ, BYTE_IDENTICAL_TO_READ_OBJECT, or explicitly UNAVAILABLE with proof.",
-    "Deduplicate only by exact collected sha256.",
-    "Keep historical review findings separate from current project authority.",
-    "Do not mutate product/runtime during exhaustive reading.",
-    "Do not add baseline and incremental semantic counts until final ledger overlap is reconciled."
+    "Do not restart raw inventory, discussion reading, or decision-relevant chronology.",
+    "All 423 discussion objects are closed; do not reopen them without a concrete contradiction.",
+    "Continue document coverage from the extracted 6465-blob document index.",
+    "Deduplicate only by exact Git blob identity / exact collected hash; preserve every path appearance in the manifest.",
+    "Use version-family/path bundles to reduce tool overhead, but assign an explicit semantic status to every unique document blob.",
+    "Keep historical document claims separate from current project authority.",
+    "Do not mutate code/canonical, runtime, scientific outcomes, or economic authority during exhaustive reading."
   ]
 }
