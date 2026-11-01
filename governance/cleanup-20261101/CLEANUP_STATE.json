@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "mission": "DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP",
+  "status": "AUTHORIZED_STARTING",
+  "cleanup_snapshot_timestamp": "2026-11-01T14:31:00+01:00",
+  "owner_authorized_delete_proven_safe": true,
+  "authority_note": "Owner explicitly authorized branch cleanup on 2026-11-01 subject to the DELETE_PROVEN_SAFE gate; this supersedes the prior parked/no-deletion cleanup decision only for refs that pass the new dependency-first gate.",
+  "project_canonical_observed_sha": "c84024478a22b4f32fef4e86e6fb8a777ff0c454",
+  "code_canonical_observed_sha": "1c1964015fc597802d7ca5139de9268af6b3a740",
+  "auditor_ref": "audit/forensic-checkpoint-20261019",
+  "auditor_observed_sha": "b9de58aabb025690a939a583f8e19b708aeb893c",
+  "default_branch_observed": "blue/master-v2-2026-09-20",
+  "protected_refs": [
+    "project/canonical",
+    "code/canonical",
+    "audit/forensic-checkpoint-20261019",
+    "builder/research-os-autonomous-loop-20261015",
+    "blue/master-v2-2026-09-20"
+  ],
+  "existing_recovery_mechanism": "governance/BRANCH_RETIREMENT_RECEIPT.json plus the already-existing project/canonical preservation-parent commits; do not rebuild this mechanism.",
+  "execution_policy": "CLASSIFY_FAST -> DEEP_DIVE_ONLY_AMBIGUOUS_VALUE -> VERIFY_REPLACEMENT_OR_RECOVERY -> DELETE_ONLY_DELETE_PROVEN_SAFE",
+  "next_action": "Run a fresh remote snapshot and dependency gate through the existing final-two-branch-cleanup workflow, with per-ref remote-SHA recheck immediately before deletion."
+}
