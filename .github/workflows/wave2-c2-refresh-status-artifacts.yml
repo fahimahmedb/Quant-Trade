@@ -1,9 +1,7 @@
-name: Wave2 C2 Refresh Status Artifacts
+name: Wave2 C2 Refresh Status Artifacts (manual projection)
 
 on:
-  push:
-    branches:
-      - code/canonical
+  workflow_dispatch:
 
 permissions:
   contents: write
