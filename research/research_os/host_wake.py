@@ -30,7 +30,7 @@ def _codex_environment() -> dict[str, str]:
         raise SystemExit("QUANT_CODEX_ORCHESTRATION_ROOT_MUST_BE_STATE_SUBDIRECTORY")
 
     # The systemd unit has ProtectSystem=strict and only /var/lib/quant-research
-    # is writable.  Require the orchestration ledger there rather than silently
+    # is writable. Require the orchestration ledger there rather than silently
     # falling back to the read-only release tree.
     env["QUANT_CODEX_ORCHESTRATION_ROOT"] = str(root)
 
@@ -59,10 +59,9 @@ def _exec_one(config: str) -> None:
             config,
         ]
 
-    # execve replaces this router process, preserving the one-process/one-wake
-    # semantics and the existing systemd timeout, lock and sandbox.
+    # execve replaces this router process in production, preserving the
+    # one-process/one-wake semantics and the existing systemd lock/sandbox.
     os.execve(sys.executable, argv, env)
-    raise RuntimeError("EXECVE_RETURNED_UNEXPECTEDLY")
 
 
 def main(argv=None) -> int:
