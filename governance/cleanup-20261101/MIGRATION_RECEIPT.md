@@ -1,5 +1,7 @@
 # Final survivor dependency migration receipt
 
+> Current operational resumption: Owner recovered SSH access; exact host inventory, backup, canonical rebinding and two post-rebind automatic wakes remain pending. The dated completion below describes the earlier bounded cleanup, not completion of the two-branch target. See FINAL_MIGRATION_STATE.json operational_resume.
+
 Status: COMPLETE_WITH_EXPLICIT_SCOPED_EXCEPTIONS. Verdict: PASS_WITH_BOUNDED_EXTERNAL_UNKNOWN.
 
 33 starting survivors → 27 exact-lease deletions → 6 retained refs: two canonical authorities, three PARK, one BLOCK. The target of two branches is not claimed. All 33 starting survivors have a final disposition in SURVIVOR_DEPENDENCY_MATRIX.csv. The previous 247 deletions were neither reopened nor restored.
@@ -71,3 +73,15 @@ Secure configuration, when access is available:
 - Never paste credential values into the conversation. No extra authorization is being requested; missing credentials are the execution blocker.
 
 The previously missing worker wake proof is now available from both 16:15Z fundamental and 16:36Z independent-challenge payloads on the canonical code ref. The old automation source has no demonstrated remaining consumer; its retirement is deferred to the requested operational closure sequence and fresh exact lease check. The original 27 deletion receipts remain unchanged. No additional branch was deleted and no default, protection, live host or scientific state was changed by this job installation.
+
+## Operational resumption — existing Oracle host access recovered
+
+Owner explicitly resumed the original mission after recovering the September 20 SSH key. Its public fingerprint matches the historical launch public key; no private key bytes or credential-bearing paths are persisted here. The Owner reports the Mac SSH connection working. This is a manual authenticated execution route; it does not grant the agent control of the terminal or a direct TCP network grant. Root read access will be proven by the requested inventory, not inferred from the report.
+
+Owner-executed OCI Run Command confirms `ocarun` and the fixed no-argument V1/V2 sudo allowlist, with no general sudo. The later fixed V2 status reports boot `4aa3fb04-ff14-49fa-8f08-0171d41c6701`, existing release `a67ffec48fff895d5edc42171855e2213e49cf0d`, V2 timer active/enabled, service result success, V1 timer inactive and local model PASS. The input is truncated; complete wake identities and the reported evidence-file hash have not been independently verified. This is a pre-migration baseline, not proof of a canonical binding or two post-rebind wakes.
+
+Fresh GitHub REST reads show six branches, zero open PRs, old Blue default, rulesets empty and all six refs unprotected. The live V2 tip is `0426e1b9e735ecff442dff19ea753f905d6b0790`; final deletion must reread it. Local Git fetch lags REST for the active writer and project ref, so REST observations are recorded explicitly and local stale tips must not be used for destructive leases. The current qualified code SHA remains `8d9a33053a834f7a4612da2b0f665bade57bc3e5`; run 41330854246 was read back completed/success on that exact SHA.
+
+REUSE: `scripts/quant_host_inventory.py` at that qualified code SHA, SHA256 `199bf0060b1a13be6b9c0696f84461b5585fd834c20418b7f549b5056996f5a9`. The prepared Owner command verifies the source hash before execution, runs as root and emits only the existing allowlisted V1/V2 units, configs and release identities. It performs no install, scheduler start/restart, model inference, scientific change or config mutation. No new code or tests are introduced by this receipt. The admission seam is F0 plus durable F1 continuation; original Owner migration authorization already applies.
+
+No branch, default, protection, host binding or activation was changed in this resumption checkpoint. The prior 247 deletions and the 27 recorded final-survivor deletions are unchanged. The next concrete action is the existing privileged read-only inventory, followed by private backup and the smallest verified ref-only migration preserving the deployed release. Two additional automatic wakes and fallback/default/consumer/lease gates remain mandatory.
