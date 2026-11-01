@@ -1,6 +1,6 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`CANONICAL_CODE_ENGINEERING_QUALIFIED_VM_AUTONOMY_NOT_PROVEN_BRANCH_RETIREMENT_PARKED`
+STATUS=`CANONICAL_CODE_ENGINEERING_QUALIFIED_VM_MULTI_WAKE_BLOCKED_EXTERNAL_HOST_ACCESS_BRANCH_RETIREMENT_PARKED`
 DATE=`2026-11-01`
 
 ## Canonical authority
@@ -103,7 +103,7 @@ The destructive cleanup workflow remains parked. No legacy branch deletion is au
 `PRODUCTION_DEPLOYMENT_AUTHORIZED=FALSE`
 `DESTRUCTIVE_REPOSITORY_CLEANUP_AUTHORIZED=FALSE`
 
-`governance/AUTHORITY_STATE.json` is corrected in the same project-memory update to remove the stale cleanup=true contradiction.
+`governance/AUTHORITY_STATE.json` records the same closed authority state.
 
 ## Current claim ceiling
 
@@ -115,23 +115,47 @@ The destructive cleanup workflow remains parked. No legacy branch deletion is au
 
 Actual VM `GPT-OSS -> Codex -> GPT-OSS` multi-wake autonomy remains `NOT_PROVEN`; CI does not establish deployment or runtime use.
 
+## VM multi-wake proof — bounded external blocker
+
+Fresh reconciliation performed after canonical code qualification. Result:
+
+`CURRENT_HOST_STATE=UNKNOWN`
+`HOST_ACCESS_IN_THIS_SESSION=BLOCKED_EXTERNAL`
+`VM_MULTI_WAKE_PROOF=NOT_EXECUTED`
+`SOFTWARE_GAP_REQUIRING_NEW_BUILD=FALSE`
+`RUNBOOK_MISSING=FALSE`
+`NEXT_ACTION_REQUIRES_AUTHENTICATED_HOST_CHANNEL=TRUE`
+
+Primary evidence retained:
+- historical VM-autonomy checkpoint `8a1bdadc9bc52c4889ee19d0472bcee61fe24318` explicitly recorded `VM_SERVICE_IMPLEMENTED=FALSE` and `VM_SERVICE_ENABLED=FALSE` at that checkpoint;
+- historical OCI one-shot installer `35d3b8a9faba2015b05b54477f61fff7268d7d20` was installation-only and explicitly wrote `scheduler_started=false`;
+- later OCI repair lineage through `6e8ea155b05086f8e5eabcf830a5f835d3e3d09c` remained fail-closed when agent delivery was not confirmed;
+- default Control Tower state of 2026-10-31 records historical Oracle timer/model activation and 29 successful wakes but classifies current VM health as `UNKNOWN`; those receipts are historical, not current multi-wake Codex-loop proof;
+- Issue #44 / PR46 durable terminal verdict: engineering repair qualified/published, actual VM rebind blocked by missing authenticated host access; PR46 real loop remains not deployed/not proven;
+- current canonical `deploy/ORACLE_H24_RUNBOOK.md` is present at blob `5b00ba9955deb35716c0f3447e8f2a830db84a36` and already defines inventory, exact-release gates, canary, activation, automatic wake, journald binding, two-wake/restart evidence and rollback;
+- the current Chat session has authenticated GitHub access but no OCI CLI/config, SSH identity/agent, host-command connector, or readable connected browser tab for Oracle runtime state.
+
+Decision:
+- do **not** add another scheduler, daemon, deployment workflow or speculative VM code;
+- do **not** rerun global architecture/forensic work;
+- do **not** claim deployment from CI or historical wakes;
+- the missing evidence is now an external runtime observation/execution boundary, not a software-construction gap.
+
 ## Next action
 
-`VM_MULTI_WAKE_PROOF`.
+`VM_MULTI_WAKE_PROOF` remains the only active engineering/evidence action, but it is currently `BLOCK_EXTERNAL_HOST_ACCESS`.
 
-First inspect the real host/VM state. Then, if the runtime and permissions exist, demonstrate a non-economic causal sequence over multiple wakes:
+Once an authenticated OCI Run Command or SSH channel to the intended existing VM is available, execute the existing canonical runbook in this order:
+1. inventory active V1/V2 release, units, config, model and exact deployed SHA;
+2. rebind only the existing timer/hook to the qualified canonical release if the inventory proves a rebind is required and authorized;
+3. run the finite non-economic synthetic acceptance;
+4. prove at least two consecutive automatic wakes with one real causally bound Codex result consumed by the following GPT-OSS decision;
+5. bind task/dispatch/attempt/head/result identities and exact-head CI/review;
+6. exercise duplicate/restart/stale-head/retry recovery;
+7. preserve protected science and all closed authorities;
+8. persist sanitized host receipts durably in GitHub.
 
-`GPT-OSS decision -> Codex dispatch/result -> GPT-OSS next decision`
-
-Required proof:
-- exact task / branch / head binding;
-- no human relaunch or routing between wakes;
-- at least one real causally bound Codex result consumed by the following GPT-OSS decision;
-- duplicate / restart / stale-head behavior remains fail-closed or reconciled;
-- protected science unchanged;
-- all scientific/economic/capital/trading/deployment authorities remain false unless separately authorized.
-
-If host/runtime access is unavailable or stale, mark the affected proof `BLOCK` or `UNKNOWN`; do not reopen global architecture work.
+Until that host channel exists, the correct state is `BLOCK_EXTERNAL_HOST_ACCESS`, not another code build and not a request to restart the audit.
 
 ## Rapport factuel cumulatif — preserved reference
 
