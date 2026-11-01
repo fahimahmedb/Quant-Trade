@@ -32,3 +32,27 @@ for _name in dir(_impl):
 # Keep the public canonical value explicit even if source internals evolve.
 WAVE2_IMMUTABLE_BASE_SHA = "2b99d8aeb8a342f1ef32544247d366cb8a26037e"
 C2_D0_INTERNAL_ADAPTER = True
+
+# Public reference admission must prove explicit closed evidence. The preserved
+# kernel's optional-field guard remains appropriate for generic diagnostics,
+# but absence in a serialized canonical reference is not a FALSE observation.
+_source_validate_economic_identity_ref = _impl.validate_economic_identity_ref
+_source_validate_portfolio_readiness_ref = _impl.validate_portfolio_readiness_ref
+
+
+def validate_economic_identity_ref(ref):
+    _source_validate_economic_identity_ref(ref)
+    for key in ("outcome_accessed", "empirical_return_data_consumed"):
+        if ref.get(key) is not False:
+            raise ValueError(f"EconomicIdentityRef.{key} must be explicitly false")
+
+
+def validate_portfolio_readiness_ref(ref, identity_ref):
+    _source_validate_portfolio_readiness_ref(ref, identity_ref)
+    for key in (*AUTHORITY_STATE, "return_series_consumed"):
+        if ref.get(key) is not False:
+            raise ValueError(f"PortfolioReadinessRef.{key} must be explicitly false")
+
+
+_impl.validate_economic_identity_ref = validate_economic_identity_ref
+_impl.validate_portfolio_readiness_ref = validate_portfolio_readiness_ref

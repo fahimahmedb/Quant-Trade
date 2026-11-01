@@ -164,8 +164,11 @@ def validate_local_observation_receipt(value):
     terminal = value.get("canonical_terminal")
     if terminal is not None:
         if (not isinstance(terminal, dict)
-                or set(terminal) - {"event_id", "session_id", "generation", "event_seq", "source_commit"}
-                or terminal.get("session_id") != source["session_id"]):
+                or set(terminal) != {"event_id", "session_id", "generation", "event_seq", "source_commit"}
+                or terminal.get("session_id") != source["session_id"]
+                or terminal.get("generation") != source["generation"]
+                or type(terminal.get("event_seq")) is not int
+                or terminal["event_seq"] <= source["event_seq"]):
             raise ValueError("LOCAL_OBSERVATION_TERMINAL_INVALID")
         for key in ("event_id", "session_id"):
             if key in terminal: _bounded_text(terminal[key], "TERMINAL_" + key.upper())

@@ -119,6 +119,10 @@ def lane_test_count() -> int:
 
 
 def run(command: list[str]) -> dict[str, object]:
+    # Dependency installation and verification must use the same interpreter.
+    # PATH below intentionally constrains tools, but must not select a second
+    # system Python with a different site-packages set.
+    command = [sys.executable, *command[1:]] if command and command[0] == "python3" else command
     environment = {"PYTHONPATH": "src", "PATH": "/usr/bin:/bin:/usr/local/bin"}
     import os
     merged = {**os.environ, **environment}

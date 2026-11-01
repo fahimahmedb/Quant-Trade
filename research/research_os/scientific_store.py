@@ -2,6 +2,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
+import threading
+from copy import deepcopy
+from math import isfinite
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
@@ -17,8 +22,33 @@ def sha256_json(value: Any) -> str:
 class AppendOnlyHashLedger:
     def __init__(self) -> None:
         self.entries: List[Dict[str, Any]] = []
+        self._lock = threading.RLock()
 
     def append(self, kind: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+        with self._lock:
+            if not self.verify():
+                raise ValueError("cannot append to an invalid scientific chain")
+            if not isinstance(kind, str) or not kind.strip():
+                raise ValueError("scientific entry kind must be nonempty text")
+            if not isinstance(payload, dict):
+                raise ValueError("scientific payload must be an object")
+            self._validate_json_keys(payload)
+            return self._append(kind, json.loads(canonical_json(payload)))
+
+    @staticmethod
+    def _validate_json_keys(value: Any) -> None:
+        if isinstance(value, float) and not isfinite(value):
+            raise ValueError("scientific ledger values must be finite")
+        if isinstance(value, dict):
+            if any(not isinstance(key, str) for key in value):
+                raise ValueError("scientific JSON object keys must be strings")
+            for item in value.values():
+                AppendOnlyHashLedger._validate_json_keys(item)
+        elif isinstance(value, (list, tuple)):
+            for item in value:
+                AppendOnlyHashLedger._validate_json_keys(item)
+
+    def _append(self, kind: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         previous_hash = self.entries[-1]["entry_hash"] if self.entries else None
         envelope = {
             "seq": len(self.entries) + 1,
@@ -34,11 +64,27 @@ class AppendOnlyHashLedger:
             "payload_hash": envelope["payload_hash"],
         })
         self.entries.append(envelope)
-        return envelope
+        return deepcopy(envelope)
 
     def verify(self) -> bool:
+        with self._lock:
+            try:
+                return self._verify()
+            except (TypeError, ValueError, KeyError):
+                return False
+
+    def _verify(self) -> bool:
         previous_hash = None
         for index, entry in enumerate(self.entries, 1):
+            if not isinstance(entry, dict) or set(entry) != {
+                "seq", "kind", "previous_hash", "payload_hash", "payload", "entry_hash"
+            }:
+                return False
+            if type(entry.get("seq")) is not int or not isinstance(entry.get("payload"), dict):
+                return False
+            if not isinstance(entry.get("kind"), str) or not entry["kind"].strip():
+                return False
+            self._validate_json_keys(entry["payload"])
             if entry.get("seq") != index:
                 return False
             if entry.get("previous_hash") != previous_hash:
@@ -57,8 +103,26 @@ class AppendOnlyHashLedger:
         return True
 
     def write_jsonl(self, path: Path) -> None:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("".join(canonical_json(entry) + "\n" for entry in self.entries))
+        with self._lock:
+            if not self.verify():
+                raise ValueError("cannot publish an invalid scientific chain")
+            body = "".join(canonical_json(entry) + "\n" for entry in self.entries)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            fd, name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+            temporary = Path(name)
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                    handle.write(body)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                os.replace(temporary, path)
+                directory = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(directory)
+                finally:
+                    os.close(directory)
+            finally:
+                temporary.unlink(missing_ok=True)
 
 
 def scientific_snapshot(*, run_id: str, candidate: Dict[str, Any], timestamp: str) -> Dict[str, Any]:

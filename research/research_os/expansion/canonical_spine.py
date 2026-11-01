@@ -269,7 +269,12 @@ def run_canonical_spine(
 
     legacy = LegacyKnowledgeBase.load(base, legacy_ledger_path)
     legacy_screen = legacy.screen_candidate(output["candidate"])
-    legacy_blocked = legacy_screen["status"] == "BLOCK_EXACT_LEGACY_DUPLICATE"
+    legacy_blocked = legacy_screen.get("status") != "NO_EXACT_LEGACY_CONFLICT"
+    legacy_block_status = (
+        "BLOCKED_EXACT_LEGACY_DUPLICATE"
+        if legacy_screen.get("status") == "BLOCK_EXACT_LEGACY_DUPLICATE"
+        else "BLOCKED_LEGACY_REVIEW"
+    )
     emit(
         "LEGACY_SCREEN",
         "legacy-anti-restart.v1",
@@ -303,7 +308,7 @@ def run_canonical_spine(
 
     if legacy_blocked:
         persistence_artifact = {
-            "status": "BLOCKED_EXACT_LEGACY_DUPLICATE",
+            "status": legacy_block_status,
             "ledger_verified_before_receipts": ledger.verify(),
             "downstream_stage_count": 0,
         }
@@ -326,7 +331,7 @@ def run_canonical_spine(
         events = worker_events(run_id, stages, base_time=base_time)
         final = {
             "run_id": run_id,
-            "status": "BLOCKED_EXACT_LEGACY_DUPLICATE",
+            "status": legacy_block_status,
             "synthetic_only": context.synthetic_only,
             "event_provenance": "BUILD_REPLAY_NOT_LIVE",
             "governance": governance,

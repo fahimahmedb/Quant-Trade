@@ -12,6 +12,7 @@ from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
 from .multi_source_ideation import OUTCOME_BEARING_KEYS, POLICIES, _reject_outcome_fields
+from .expansion.experiment_outcome_firewall import OutcomeFirewallError, assert_pre_outcome_payload
 
 
 def _hash(value: Any) -> str:
@@ -169,6 +170,10 @@ class DurableProposalLedger:
         if not isinstance(record, Mapping):
             raise ValueError("Proposal Ledger record must be a mapping")
         row = deepcopy(dict(record))
+        try:
+            assert_pre_outcome_payload(row)
+        except OutcomeFirewallError as error:
+            raise ValueError(f"outcome-bearing Proposal Ledger record: {error}") from error
         self._reject_operational_keys(row)
         self._reject_observed_truth(row)
         status = str(row.get("status", "")).strip().upper()
