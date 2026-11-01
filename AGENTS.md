@@ -1,147 +1,90 @@
-# AGENTS.md — canonical code working contract
+# AGENTS.md — Quant-Trade code/canonical agent entrypoint
 
-Read `QUANT_NORTH_STAR.md`, then the current [project migration state](https://github.com/fahimahmedb/Quant-Trade/blob/project/canonical/governance/cleanup-20261101/FINAL_MIGRATION_STATE.json) and project decision/authority records on `project/canonical`. Reconcile fresh canonical heads and the exact subject before acting. `code/canonical` owns executable product, tests, workflows and runtime helpers; `project/canonical` owns project/scientific memory and evidence. Dated Blue handoffs and old working-branch names below or in history are provenance, not current routing authority.
+This branch is the executable product authority. It is NOT the project/governance authority.
 
-Economic experiments, prospective observation, real capital and live trading remain unauthorized. Migration/CI is not activation or runtime proof.
+## Mandatory bootstrap
 
-## Prime rule
+Before substantive work, fetch/reconcile both canonical branches and read, in this order:
 
-Do not reduce Quant to the subsystem currently being worked on.
+1. `project/canonical:QUANT_NORTH_STAR.md`
+2. `project/canonical:governance/AI_WORKING_METHOD_V1.md`
+3. `project/canonical:governance/CURRENT_PROJECT_STATE.md`
+4. the exact current `code/canonical` SHA and only the evidence needed for the current decision.
 
-A research worker, runtime, data adapter, Book, dashboard or Codex task is a component of Quant, not Quant itself.
+Machine-readable method contract:
+`project/canonical:governance/AI_WORKING_METHOD_V1.json`.
 
-When local implementation choices conflict with the North Star, prefer the North Star.
+Do not route current work through old Blue handoffs, the repository default branch, historical `NEXT_BUILD_MISSION.md`, stale issues/prompts, or chat memory. Those may be evidence only.
 
-## Agent roles
+## Authority split
 
-### Codex / engineering agent
+- `project/canonical` owns objective, current router, decisions, scientific memory, receipts, blockers and next action.
+- `code/canonical` owns executable code, tests, workflows and deployment/runtime helpers.
 
-Primary role: **Builder / Quant Engineer**.
+No third branch may become current authority. After final migration, extra branch creation is a policy failure unless Owner authority explicitly changes the contract.
 
-Build, repair and extend the persistent Quant system. Do not assume your task lifetime is the runtime lifetime.
+## Work rule
 
-A build task should leave:
+Follow:
 
-- coherent persistent state contracts;
-- tests;
-- observability;
-- a known next system/research action;
-- no silent redefinition of project objectives.
+`REUSE > CONNECT > REPAIR > BUILD`
 
-### Research function
+For a material mission, prove:
 
-Searches broadly for economically meaningful edge, generates falsifiable hypotheses, tests them, preserves lessons and chooses the next research action through ordinary failures.
+- exact current subject;
+- current blocker/decision;
+- how the work can change that decision or close/protect an F0–F6 finish gate;
+- existing capability disposition;
+- minimal decisive test;
+- one concrete counterexample;
+- durable output required;
+- next action after PASS/FAIL/BLOCK;
+- whether Owner authorization is required.
 
-### Validation function
+If the mission cannot change a current decision, close a finish gate, prevent a demonstrated regression or collect required evidence, return `PARK` or `NO_CHANGE_REQUIRED`.
 
-Attempts to falsify promising results using timing, leakage, out-of-sample behavior, costs, factor/beta attribution, sensitivity and concentration checks as relevant.
+## Concurrency
 
-### Capital-decision functions
+- one mutating Builder per capability/seam;
+- at most two active decision-changing lanes total;
+- independent Reviewer is read-only on the exact published subject;
+- if `code/canonical` moves, reconcile before publishing; never overwrite newer canonical work;
+- a blocked lane is PARK/BLOCK, not permission to build substitute architecture.
 
-The project uses the logical paper/shadow chain:
+## Evidence law
 
-`SCAN -> VET -> SIZE -> RISK -> FILLS -> BOOK`
+Built, tested, qualified, integrated, promoted, active, used and end-to-end proven are different states.
 
-These roles should be stateful, traceable functions. They do not require one LLM each.
+- local-only work is never PASS;
+- CI/review for SHA A does not qualify SHA B;
+- reviewer without exact candidate/evidence returns BLOCK_EVIDENCE/UNKNOWN;
+- publish exact remotely recoverable bytes/state before handoff or completion claim;
+- preserve one bounded next action after every material interruption.
 
-### Control / Clock function
+## Scientific / operational boundaries
 
-Maintains system lifetime, due work, event routing, recovery, liveness and major role state.
+Never simplify away exact identity, causal/PIT provenance, frozen scientific exposure, negative memory, fail-closed authority, or the distinction between hosted CI and actual deployment/use/E2E proof.
 
-## Objective hierarchy
+A code PASS grants no economic experiment, prospective observation, production deployment, real-capital or live-trading authority.
 
-When priorities conflict:
+## Finish line
 
-1. expected real economic relevance to future wealth growth;
-2. empirical truth and causal correctness;
-3. whole-system coherence with `QUANT_NORTH_STAR.md`;
-4. ability to distinguish edge from noise/beta/implementation illusion;
-5. value of information and discovery throughput;
-6. persistence/reproducibility/observability;
-7. code quality;
-8. presentation.
+The bounded engineering/autonomy finish contract is F0–F6 in `governance/AI_WORKING_METHOD_V1.md` on `project/canonical`.
 
-Do not optimize a lower-ranked item at the expense of a higher-ranked one.
-
-## Research autonomy
-
-The human should not have to invent the next strategy after every ordinary failure.
-
-Within available data/resources, Quant should choose markets, research lanes, hypotheses, tests, rejections and follow-up work itself.
-
-A failed experiment should normally produce:
-
-`RESULT -> LESSON -> PRIORITY UPDATE -> NEXT ACTION`
-
-not a request for the human to supply another idea.
-
-## Wide/cheap -> narrow/deep
-
-Use broad inexpensive/deterministic monitoring before expensive reasoning.
-
-Reserve deeper reasoning and engineering for candidates with sufficient information value.
-
-This principle comes directly from the source architecture and is foundational.
-
-## Research versus current opportunity
-
-Do not confuse:
-
-- discovering/validating a strategy;
-- a strategy producing a current candidate;
-- accepting that candidate;
-- sizing it in the paper/shadow Book;
-- portfolio-context evaluation;
-- observed paper/shadow outcome.
-
-These are distinct stages and should leave distinct evidence.
-
-## Persistent state
-
-Important state survives process restarts and build tasks.
-
-At minimum, the architecture should converge toward persistent state for:
-
-- datasets;
-- research tickets and memory;
-- strategy lifecycle;
-- current opportunity tickets;
-- paper/shadow Book;
-- system events;
-- build tasks/capability gaps.
-
-`IDLE` means alive with no useful work due now. It is not `FINISHED`.
-
-## Existing repository work
-
-The historical NASDAQ work is prior research, not the product definition.
-
-PR #7 is a useful bounded Research Factory worker.
-
-PR #9 is useful Control Plane / persistent research-runtime bootstrap work.
-
-Preserve useful code, but reposition it under the whole-system architecture rather than allowing it to redefine Quant.
-
-## Human escalation
-
-Do not escalate ordinary research negatives or routine implementation decisions.
-
-Escalate genuine boundaries such as unavailable external resources, paid/permissioned access, credentials, irreversible integrations or strategic ambiguity that evidence cannot resolve.
+Every proposed material task must identify which finish gate or current blocker it changes. Do not expand architecture merely to create activity.
 
 ## Reporting
 
-Report milestones in terms of the whole system:
+A completion report must state:
 
-- North-Star subsystem(s) advanced;
-- persistent state added/changed;
-- research/economic capability newly enabled;
-- evidence produced or invalidated;
-- genuine blockers;
-- what the Clock/system will do next;
-- what remains missing before Quant System V1 is coherent.
+- exact branch + SHA;
+- what changed;
+- tests actually executed and results;
+- claim ceiling;
+- durable project-state update if decision-changing;
+- blockers/unknowns;
+- next bounded action.
 
-## Final rule
+Final rule:
 
-Build the smallest coherent **whole system** that improves Quant's ability to discover, select, evaluate and learn from economic edge.
-
-Do not optimize for looking sophisticated. Do not optimize for activity. Do not mistake plumbing for the product.
+`CLOSE THE NEXT REAL GATE. REUSE BEFORE BUILD. PUBLISH BEFORE HANDOFF. TEST THE EXACT SUBJECT. PRESERVE THE NEXT ACTION.`
