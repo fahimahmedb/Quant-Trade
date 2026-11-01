@@ -2,7 +2,7 @@
 
 - Snapshot: `2026-11-01T13:39:34.460914+00:00`
 - Start branches: **279**
-- Deleted so far: **160**
+- Deleted so far: **200**
 - Default branch preserved: `blue/master-v2-2026-09-20`
 - Active auditor preserved: `audit/forensic-checkpoint-20261019` @ `f9f5bcfc7bef96e42196693a62ef159a592e427b`
 
@@ -170,6 +170,46 @@
 | `claude/hopeful-hamilton-81rab1` | `85483fb9f85c6beea36e0af969e3f0a3e939e07f` |
 | `claude/intelligent-gates-msidml` | `726070a199957a6fc05515ebb3027e945028fddc` |
 | `claude/magical-ramanujan-wsktyr` | `501093d1f6760201a5d81e638e74aa16ff75c3a8` |
+| `claude/nasdaq-trading-model-design-h3mp4n` | `8fea558143d0c46bc6eeb9f2aa57527b4e6c1fce` |
+| `claude/new-session-0ydmkg` | `fa2aaef93243a0553c6428223d7a7aec72663ac6` |
+| `claude/new-session-3ujgeu` | `5255ba2a1c3f8983ac145ce107289db7685bdfe2` |
+| `claude/new-session-3ujgeu-wip-h002` | `1903aed7212cda271948b42f5b446a1b1bb11ac8` |
+| `claude/new-session-3ujgeu-wip-h004` | `fd1d2e1e09d6acc82667ac2bb163d3ccd089dc89` |
+| `claude/new-session-3ujgeu-wip-h006` | `bc9974d36eb1d90c11ca632cba0646114ec3c9b3` |
+| `claude/new-session-8msq33` | `57b0c68a691f172db68318f7dacd76adbab40c01` |
+| `claude/new-session-kfwf1b` | `d33c1da4d846e9192d9ce7d7d406ac9785466eaf` |
+| `claude/new-session-qr4nsz` | `52e5ff27583f3480ea443acdf6b358d3a44242f5` |
+| `claude/new-session-z4pdlx` | `0f9cb618997173155860afe6941e02cf20833481` |
+| `claude/order-12b-anytime-valid` | `e43f74efdc07044504d4d1d6ca3ef70ad5331be1` |
+| `claude/project-review-audit-q5kfb9` | `ef0f66ecdc806867783e35d8a960c29f433714a8` |
+| `claude/prompt-recherche-praticiens-dfy1l0` | `09b0974a38d705182e97f46ed4f5db17833f9266` |
+| `claude/prototype-futures-trend-carry-6vr22g` | `afd8fe5455518000bfbf28d1939c041ad5ae5f3a` |
+| `claude/relaxed-johnson-mqca45` | `af5dcff5aade75d4cc4a3056b3f6217983f2a8cf` |
+| `claude/restaurant-stock-management-mvp-6oq43e` | `e083cc70e3f4c2ce31ea04f4fc43be35e9549ab0` |
+| `claude/two-speed-cleanup-6vr22g` | `d6cc72454f7598bbc9ff798ee9f7dfc8aeeb5b24` |
+| `claude/weather-v3-s0-compute-2026-10-02` | `1fa81100d3d4f32cd8f8842356c043c3d502910d` |
+| `claude/weather-v3-s1-data-archaeology-2026-10-02` | `697865d4f8ba5ecfcb23025272b50b5eee2b2f30` |
+| `claude/weather-v3-s2-capture-architecture-2026-10-02` | `9751368c90150a71eb88147ff69446f0711c81f2` |
+| `claude/zen-einstein-9moyry` | `5760ffa5b5da2a988cfe6d1503c86c561acf9b1f` |
+| `code/canonical-qualified-tmp` | `fd3f8ce77d3a2f20cc5954c184c4487b44dac1d3` |
+| `codex/c0-confirmation-repair-20261027` | `df443d12bb4d7a1d908862ad993c855a11a71852` |
+| `codex/horizontal-completeness-convergence1-20261021` | `6d9dc40b5833442c597f7e7ab8aa631b3d481e83` |
+| `codex/test` | `723a778e302b6bc96e72030ded91440f75769aba` |
+| `codex/verified-autonomous-continuity-20261026` | `40c590189e1389502d179e63f6e0925df8513d2c` |
+| `codex/verified-autonomous-continuity-oneshot-20261027` | `d19b1237636d2311cd42f97f0b02feb55168347b` |
+| `codex/weather-v3-s0-finish-2026-10-03` | `1fa81100d3d4f32cd8f8842356c043c3d502910d` |
+| `codex/weather-v3-s4-forecast-hindcast-2026-10-03` | `697865d4f8ba5ecfcb23025272b50b5eee2b2f30` |
+| `codex/weather-v3-s6-cohort-expansion-2026-10-03` | `697865d4f8ba5ecfcb23025272b50b5eee2b2f30` |
+| `docs/owner-edge-audit-2026-10-10` | `fae3be50549d8b023c3e9a42eb14a51613bcb8c4` |
+| `executor/f1-trailing-volume-ranking-fix-2026-10-08` | `25b95cdad27e4f1dfb00fdc4cfb670d6a25bd46b` |
+| `f1/crypto-carry-001-stage-a-look` | `8d93861edc4e1ff07b6265d4e80e6a429cffd0b7` |
+| `f1/crypto-carry-001-stage-b-look` | `2620ba065e790b1c255f43bcd941fc336ad5ef4d` |
+| `operator/gate-b-f5-route1-host-evidence-closure-2026-09-21` | `17d692beaa8013101670c0c0164c9bb204f471d9` |
+| `operator/gate-b-f5-route1-host-feasibility-2026-09-21` | `a5493f052c458e1bbf76e00cbc4943dca8632e71` |
+| `operator/gate-b-read-only-preflight-2026-09-21` | `44285788fce3d5d048b037dd8d1089e1f08f43e9` |
+| `operator/gate-b-target-host-read-only-rebind-2026-09-21` | `4a503eed81df6656d6aec856f8440b66c5c39943` |
+| `ops/oci-one-shot-install-20261019` | `6e8ea155b05086f8e5eabcf830a5f835d3e3d09c` |
+| `owner/weather-v4-a2-bounded-offline-harness-test-authority-2026-10-05` | `45f5c940140788bb96c7b6da8581d9aa7c627dfa` |
 
 ## Safety rule
 
