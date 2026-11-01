@@ -1,0 +1,73 @@
+name: Forensic extract document index
+
+on:
+  push:
+    branches:
+      - audit/forensic-checkpoint-20261019
+    paths:
+      - governance/forensic-20261031/exhaustive/EXTRACT_DOCUMENT_INDEX_TRIGGER.txt
+
+permissions:
+  contents: write
+
+jobs:
+  extract-document-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact forensic branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/forensic-checkpoint-20261019
+          fetch-depth: 1
+
+      - name: Reassemble and verify analysis archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat governance/forensic-20261031/analysis-export.tar.gz.part-* > /tmp/analysis-export.tar.gz
+          printf '%s  %s\n' \
+            '5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe' \
+            '/tmp/analysis-export.tar.gz' | sha256sum -c -
+          tar -tzf /tmp/analysis-export.tar.gz > /tmp/archive-list.txt
+          DOC_PATH="$(grep -E '(^|/)document-versions\.csv$' /tmp/archive-list.txt | head -n1)"
+          COUNTS_PATH="$(grep -E '(^|/)git-counts\.json$' /tmp/archive-list.txt | head -n1)"
+          test -n "$DOC_PATH"
+          test -n "$COUNTS_PATH"
+          tar -xOf /tmp/analysis-export.tar.gz "$DOC_PATH" > governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv
+          tar -xOf /tmp/analysis-export.tar.gz "$COUNTS_PATH" > governance/forensic-20261031/exhaustive/DOCUMENT_GIT_COUNTS.json
+          python - <<'PY'
+          import csv, hashlib, json, pathlib
+          root = pathlib.Path('governance/forensic-20261031/exhaustive')
+          doc = root/'DOCUMENT_VERSIONS.csv'
+          rows = list(csv.DictReader(doc.open()))
+          unique_blobs = sorted({r['blob'] for r in rows})
+          read_blobs = sorted({r['blob'] for r in rows if str(r.get('read','')).lower() in {'1','true'}})
+          receipt = {
+              'schema_version': 1,
+              'source_archive_sha256': '5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe',
+              'document_versions_sha256': hashlib.sha256(doc.read_bytes()).hexdigest(),
+              'document_blob_path_rows': len(rows),
+              'unique_document_blobs': len(unique_blobs),
+              'already_read_unique_blobs_from_index': len(read_blobs),
+              'first_blob': unique_blobs[0] if unique_blobs else None,
+              'last_blob': unique_blobs[-1] if unique_blobs else None,
+              'status': 'EXTRACTED_FROM_VERIFIED_ANALYSIS_ARCHIVE'
+          }
+          (root/'DOCUMENT_INDEX_EXTRACTION_RECEIPT.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          PY
+
+      - name: Publish only forensic index outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'quant-forensic-index-bot'
+          git config user.email 'quant-forensic-index-bot@users.noreply.github.com'
+          git add governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv \
+                  governance/forensic-20261031/exhaustive/DOCUMENT_GIT_COUNTS.json \
+                  governance/forensic-20261031/exhaustive/DOCUMENT_INDEX_EXTRACTION_RECEIPT.json
+          if git diff --cached --quiet; then
+            echo 'No index delta to publish.'
+            exit 0
+          fi
+          git commit -m 'forensic: publish document semantic index'
+          git push origin HEAD:audit/forensic-checkpoint-20261019
