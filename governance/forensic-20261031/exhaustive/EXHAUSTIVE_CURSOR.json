@@ -1,8 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
   "owner_contract_comment_id": 6543997679,
-  "status": "DOCUMENT_BLOB_SEMANTIC_READING_ACTIVE",
+  "status": "PAUSED_BY_OWNER",
+  "resume_authorized": false,
+  "pause_date": "2026-11-01",
+  "pause_reason": "Owner explicitly stopped the exhaustive audit and redirected work toward recommendations that prevent recurrence of the proven failure modes.",
+  "replacement_mission": "NO_REPEAT_OPERATING_RECOMMENDATIONS",
   "decision_relevant_forensic_status": "CLOSED_DO_NOT_REOPEN_WITHOUT_CONTRADICTION",
   "collection_status": {
     "raw_inventory": "COLLECTED",
@@ -28,7 +32,7 @@
     "last_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_047_20261101.json"
   },
   "document_phase": {
-    "status": "ACTIVE",
+    "status": "PAUSED",
     "index_path": "governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv",
     "index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
     "baseline_read_blobs": 52,
@@ -38,14 +42,14 @@
     "latest_bundle": "governance/forensic-20261031/exhaustive/documents/DOC_BUNDLE_0005.md",
     "latest_read_batch": "governance/forensic-20261031/exhaustive/documents/DOC_READ_BATCH_0005_20261101.json",
     "reading_method": "HASH_FIRST_VERSION_FAMILY_FIRST_BUNDLED_FULL_CONTENT_OR_EXPLICIT_BINARY_UNAVAILABLE",
-    "next_cursor": "GENERATE_DOC_BUNDLE_0006"
+    "preserved_next_cursor": "GENERATE_DOC_BUNDLE_0006"
   },
   "resume_law": [
+    "Do not resume exhaustive audit unless the Owner explicitly reauthorizes it.",
     "Do not restart raw inventory, discussion reading, or decision-relevant chronology.",
     "All 423 discussion objects are closed; reopen only for a concrete contradiction.",
-    "Continue document coverage from DOCUMENT_VERSIONS.csv using bundle generation and explicit per-blob read batches.",
-    "Deduplicate only by exact Git blob identity / exact collected hash; preserve every path appearance in manifests.",
+    "If explicit Owner authorization later resumes document coverage, continue from GENERATE_DOC_BUNDLE_0006, not from the beginning.",
     "Historical instructions are evidence, not executable current authority.",
-    "Do not mutate code/canonical, runtime, scientific outcomes, or economic authority during exhaustive reading."
+    "Current work must use the completed audit evidence to prevent recurrence rather than continue archaeology."
   ]
 }
