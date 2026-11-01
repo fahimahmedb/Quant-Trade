@@ -297,7 +297,8 @@
     "meta_audit_port": "6 original artifacts byte-identical, original commit retained as project parent",
     "paused_forensic_port": "73 added/updated evidence files byte-identical, 128 unique commits retained as project parent; PAUSED_BY_OWNER preserved",
     "edge_lab_metadata_links": "168/168 synthetic Edge Lab tests PASS after canonical metadata-link rebind",
-    "lab_site": "50/50 server tests and 49/49 embedded Live Lab JS tests PASS; artifact/source hashes validated; deployed existing Site v27; fresh MCP read resolves project/canonical@bd67b2127ba483189c9c760ba0c6fba29a5f6c95; stale=false and ledger unchanged"
+    "lab_site": "50/50 server tests and 49/49 embedded Live Lab JS tests PASS; artifact/source hashes validated; deployed existing Site v27; fresh MCP read resolves project/canonical@bd67b2127ba483189c9c760ba0c6fba29a5f6c95; stale=false and ledger unchanged",
+    "baseline_counterexample": "Original code/canonical 13c9ff03: same 4 failures + 1 error in 12 V2 synthetic tests; zero migration diff in core/pipeline/affected tests proves failures pre-exist branch rebind"
   },
   "workflow_runs": [
     {
@@ -380,8 +381,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:32:07.389078+00:00",
-  "project_subject_before_receipt": "470a78a9768b32389f0edb61baa1bac1ae043e7e",
+  "updated_utc": "2026-11-01T15:33:15.110087+00:00",
+  "project_subject_before_receipt": "fa966e9662271f722dd5e01aaaa77e9e3bf87b86",
   "code_canonical_sha": "538ed009c5958e37586a4f04e60ddad5485eeebc",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -567,7 +568,8 @@
     "protections_environments_pages": "UNAVAILABLE_FROM_SUPPORTED_CONNECTOR_AND_LOCAL_NETWORK",
     "readme_entrypoint": "project/canonical README repaired with current source links; current North Star and AGENTS copied",
     "host_checkout": "UNKNOWN; independently PARK Oracle refs",
-    "decision": "BLOCK_DEFAULT_MUTATION_ONLY"
+    "decision": "BLOCK_DEFAULT_MUTATION_ONLY",
+    "scheduled_workflow_prepared_on_project": ".github/workflows/data-feeds.yml; explicit code/canonical checkout; same existing cron; runs only when selected as default"
   },
   "pre_deletion_status": "READY_FOR_INDEPENDENT_DOCUMENTARY_FAMILY_ONLY",
   "all_independent_migrations_qualified": true,
@@ -654,5 +656,20 @@
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
     "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
+  },
+  "legacy_workflow_limits": {
+    "classification": "HISTORICAL_SNAPSHOT_GATES_AND_PRE_EXISTING_BASELINE_FAILURES; NOT_CURRENT_CANONICAL_QUALIFICATION",
+    "final_migrated_subject": "d500d96a8ab5024557319add41e8030ebf392883",
+    "failing_runs": [
+      41321331443,
+      41321331376,
+      41321331305,
+      41321331344,
+      41321331425,
+      41321331342,
+      41321331313
+    ],
+    "evidence": "GitHub job steps show preserved immutable-blob/ownership assertions differ on post-Wave2 canonical. Oracle V2 synthetic tests reproduce exactly failures=4/errors=1 on original 13c9ff03 pre-migration SHA; affected v2 core/pipeline/tests have zero diff to baseline. Readiness wide job lacks pytest and src path and contains pre-existing systemd-comment assertion. No scientific semantics or failing tests weakened to manufacture PASS.",
+    "next_action": "Separate bounded legacy CI modernization only if those historical gates are selected for current authority; no runtime promotion follows from this migration."
   }
 }
