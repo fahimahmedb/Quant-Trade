@@ -13,8 +13,8 @@ This file is the single current-state router. Historical detail remains in Git h
 - repository default branch and historical branches are not current authority;
 - no destructive branch cleanup is authorized by this router.
 
-Current code subject at this update:
-`code/canonical=7eb3f61f75d08a50c2d39c2faa74a42bf8d3e8a2`
+Current exact code subject at this update:
+`code/canonical=232782db0b45a0663a4dfb7d10819119beb931bb`
 
 ## Current working method
 
@@ -25,16 +25,18 @@ Machine contract:
 
 `REUSE > CONNECT > REPAIR > BUILD`
 
-Material AI work now requires a real fresh admission receipt at:
+Every material AI mission must create/replace the real admission object at:
 `code/canonical:.quant/MISSION_ADMISSION.json`
 
-The receipt must be validated before substantive work and material completion must bind its immutable admission identity to the exact published/tested subject. Stale/copied/wrong-SHA receipts and local-only PASS are invalid.
+The receipt is validated before substantive work against fresh project head, admitted code base, router identity and mission identity. Material completion must bind the immutable admission identity to the exact resulting published/tested SHA. Copied/stale/wrong-SHA receipts and local-only PASS are invalid.
+
+A completed mission receipt is historical evidence after final durable state changes. It is NOT a permanently reusable token. The next material mission must fetch the then-current canonical pair/router and create a new receipt. This avoids both stale reuse and a meaningless project-head/code-head ping-pong after completion.
 
 `governance/POST_OPERATIONAL_RESUME_PROGRAM_2026-11-02.md=NON_AUTHORITATIVE_HISTORICAL_PREPARED_EVIDENCE`
 `POST_OPERATIONAL_RESUME_PROGRAM_BOOTSTRAP_REQUIRED=FALSE`
-Do not turn that program into a second methodology/router. Decision-changing working rules belong in AI_WORKING_METHOD_V1; current facts belong here.
+Do not turn that program into a second methodology/router.
 
-## Method-enforcement seam — 2026-11-02
+## Method-enforcement seam — closed at code level, behavioral proof blocked
 
 `METHOD_SPECIFICATION=PASS`
 `METHOD_UNIT_TESTS=PASS`
@@ -51,53 +53,108 @@ Do not turn that program into a second methodology/router. Decision-changing wor
 `SERVER_SIDE_REQUIRED_CHECK=BLOCK_ADMIN_PERMISSION`
 `CLAIM_CEILING=METHOD_ENFORCEMENT_CODE_PASS_BEHAVIORAL_BLOCK`
 
-Published exact code subject:
+### Exact published proof
+
+Implementation commit:
 `7eb3f61f75d08a50c2d39c2faa74a42bf8d3e8a2`
 
-Exact hosted enforcement run:
-`AI Working Method Gate #7 / run 41364108915 = SUCCESS`
+Final reconciled code head:
+`232782db0b45a0663a4dfb7d10819119beb931bb`
 
-Executed on that exact SHA:
-- fresh real receipt validation: PASS;
-- admission identity: `sha256:fe9f01394f58839a21a547cb890c47215f41333afb01687df0b6dcd015746e03`;
+Final admitted project contract used by the exact-SHA gate:
+`7b60a4cb0dc2597fe1588496f5546aa13cd40d0c`
+
+Final admission identity:
+`sha256:610cc00a1ee9455d138f0a05b5cde631c9078807f9e529caeeb651649e940b09`
+
+Exact hosted enforcement run:
+`AI Working Method Gate #8 / run 41364475038 = SUCCESS`
+
+Exact smallest canonical regression run:
+`Canonical Code Qualification #24 / run 41364474863 = SUCCESS`
+
+Executed on exact code SHA `232782db0b45a0663a4dfb7d10819119beb931bb`:
+- real admission receipt validation: PASS;
 - AGENTS/CLAUDE/CODEX entrypoint validation: PASS;
 - `tests/test_ai_working_method.py`: `29 passed`;
-- exact-SHA completion binding: PASS.
+- exact-SHA admission -> completion binding: PASS;
+- canonical code qualification: PASS.
 
-Adversarial real-interface coverage executed by that suite:
-- stale receipt: rejected;
-- copied unrelated receipt: rejected;
-- unnecessary BUILD with reusable/connectable/repairable capability: rejected;
-- duplicate REVIEW without new decision-changing input: rejected;
-- local-only PASS: rejected;
-- local blocker causing unjustified global stop: rejected;
-- missing next action: rejected;
-- false finish with unresolved F0–F6 gate: rejected;
-- canonical head movement after admission: reconciliation/rejection path proven;
-- same-seam mutating-builder count >1: rejected;
-- wrong completion SHA and admission-identity mismatch: rejected.
+### Real head-move freshness proof
 
-Concurrency evidence for this mutation:
+The first valid admission was created against project head `4e3eb58c939d1c738b74794ab1e86500a04268e1` and router blob `7f703c1b5e956fe0a4879faa8e8751460f55f94b`.
+
+After project/canonical moved to `7b60a4cb0dc2597fe1588496f5546aa13cd40d0c`, the same old code workflow was rerun intentionally. `AI Working Method Gate` run `41364108915`, attempt 2, failed as required with:
+- `STALE_PROJECT_SHA`;
+- `STALE_ROUTER_IDENTITY`;
+- `MISSING_EXACT_SUBJECT`.
+
+A fresh reconciled receipt was then published and run `41364475038` passed. Therefore head movement does not silently reuse the old receipt.
+
+### Adversarial real-interface coverage executed
+
+- `STALE_SHA_RECEIPT`: REJECTED;
+- `COPIED_RECEIPT`: REJECTED;
+- `UNNECESSARY_BUILD`: REJECTED;
+- `DUPLICATE_REVIEW`: `NO_CHANGE_REQUIRED` / rejected as unnecessary;
+- `LOCAL_ONLY_PASS`: REJECTED;
+- `LOCAL_BLOCKER_GLOBAL_STOP`: REJECTED/PARK affected lane only;
+- `MISSING_NEXT_ACTION`: REJECTED;
+- `FALSE_FINISH`: REJECTED while any required F0-F6 gate is unresolved;
+- `HEAD_MOVED_AFTER_ADMISSION`: real stale receipt rejected, then reconciled receipt accepted;
+- `CONCURRENT_SAME_SEAM_BUILDERS`: count >1 rejected;
+- wrong completion SHA: REJECTED;
+- admission identity mismatch: REJECTED.
+
+Tests are recorded only as executed when actually run; planned-only tests are not promoted to PASS.
+
+### Concurrency evidence
+
 - no open PR or published same-seam method branch was observed before mutation;
-- both canonical heads were re-fetched before publication;
-- `code/canonical` was advanced with an expected-head lease from `a9876c732cb88bd4383aacc433d0d2cba2feaeb5` to `7eb3f61f75d08a50c2d39c2faa74a42bf8d3e8a2`; no concurrent overwrite occurred.
+- canonical heads were re-fetched before each publication;
+- code publications used expected-head leases: `a9876c7 -> 7eb3f61` then `7eb3f61 -> 232782d`;
+- project publication used expected-head lease `4e3eb58 -> 7b60a4c`;
+- no concurrent overwrite occurred.
 
-GitHub server-side status:
-- `code/canonical` and `project/canonical` are not protected;
-- required status-check enforcement is off;
+## Enforcement levels / claim ceiling
+
+`AGENT_PRE_WORK_VALIDATION=REQUIRED_BY_CANONICAL_ENTRYPOINT`
+`POST_PUSH_CI_DETECTION=PASS`
+`SERVER_SIDE_REQUIRED_CHECK=BLOCK_ADMIN_PERMISSION`
+`BEHAVIORAL_AGENT_ENFORCEMENT=BLOCK_ENVIRONMENT_FRESH_AGENT_UNAVAILABLE`
+
+GitHub evidence at closure:
+- `code/canonical` is unprotected and required status-check enforcement is off;
+- `project/canonical` is unprotected and required status-check enforcement is off;
 - repository rulesets list is empty;
-- current connector surface does not expose administration writes for branch protection/rulesets.
-Therefore hosted CI is detection/qualification, not demonstrated server-side prevention.
+- available authenticated connector surface exposes no branch-protection/ruleset administration write.
 
-### Remaining behavioral blocker
+Therefore the hosted workflow is a post-push detector/qualifier, NOT demonstrated server-side prevention.
 
-This execution surface cannot launch a genuinely independent fresh AI/session with no prior chat context and repository-only bootstrap. The required F1 behavioral witness is therefore not simulated with another fixture.
+Do not report `AI_METHOD_FULLY_ENFORCED` until a genuinely fresh repository-only AI/session passes F1 recovery.
+
+## Remaining behavioral blocker
+
+This execution surface cannot launch a genuinely independent fresh AI/session with no prior chat context and repository-only bootstrap. Do not simulate that proof with another fixture in the same process.
 
 `NEXT_ACTION_METHOD=RUN_GENUINELY_FRESH_REPOSITORY_ONLY_AGENT_RECOVERY_TEST`
 
-Required witness must recover objective, authority pair, fresh project/code SHAs, current blocker/critical path, next action, working-method rules, already-complete work, correct REUSE/CONNECT/REPAIR/BUILD disposition, and stop evidence without chat context. Until that passes, do not claim `AI_METHOD_FULLY_ENFORCED`.
+PASS witness must independently recover:
+1. project objective;
+2. authority pair;
+3. fresh project/canonical SHA;
+4. fresh code/canonical SHA;
+5. current blocker / critical path;
+6. current next action;
+7. applicable final working-method rules;
+8. already-complete work that must not be restarted;
+9. correct `REUSE | CONNECT | REPAIR | BUILD` disposition;
+10. evidence that would make it stop.
 
-## Existing runtime critical path — unchanged by method enforcement
+Until that witness exists:
+`F1_RECOVERABLE_CANONICAL_STATE=NOT_PROVEN_BEHAVIORALLY`.
+
+## Existing runtime critical path — unchanged
 
 The method-enforcement repair does not grant runtime deployment or replace the existing host proof.
 
@@ -114,12 +171,12 @@ A local/environment blocker affects only its dependent lane. It does not authori
 
 ## Finish gates / authority ceiling
 
-F0–F6 remain governed only by `AI_WORKING_METHOD_V1`.
+F0-F6 remain governed only by `AI_WORKING_METHOD_V1`.
 
-This router does not claim `QUANT_SYSTEM_V1_FINISHED`. In particular:
+This router does not claim `QUANT_SYSTEM_V1_FINISHED`:
 - F1 behavioral recovery remains BLOCK in this environment;
-- F3 real VM multi-wake remains BLOCK_EXTERNAL_HOST_ACCESS;
-- later F4–F6 require their own exact evidence.
+- F3 real VM multi-wake remains `BLOCK_EXTERNAL_HOST_ACCESS`;
+- later F4-F6 require their own exact evidence.
 
 Closed authorities remain:
 `ECONOMIC_EXPERIMENT_AUTHORIZED=FALSE`
@@ -132,8 +189,8 @@ Closed authorities remain:
 
 ## Next bounded actions
 
-1. `METHOD`: run the genuinely fresh repository-only recovery witness when an independent fresh-agent/session surface is available; no more synthetic proxy.
-2. `RUNTIME`: when authenticated intended-host access is available, execute the bounded VM multi-wake proof; do not build another scheduler/control plane.
-3. `OTHER`: independent lanes may proceed only when current authority admits them and they do not bypass the two blockers above.
+1. `METHOD`: run the genuinely fresh repository-only recovery witness when an independent fresh-agent/session surface exists; no more synthetic proxy.
+2. `RUNTIME`: when authenticated intended-host access exists, execute the bounded VM multi-wake proof; do not build another scheduler/control plane.
+3. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
 Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
