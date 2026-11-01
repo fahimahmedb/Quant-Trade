@@ -28,7 +28,7 @@
     "cumulative_new_discussion_objects_byte_identical_to_read": 10,
     "cumulative_new_discussion_objects_semantically_disposed": 238,
     "estimated_total_discussion_objects_directly_read": 235,
-    "estimated_total_discussion_objects_semantically_disposed_total": 245,
+    "estimated_total_discussion_objects_semantically_disposed": 245,
     "discussion_denominator": 423
   },
   "cross_object_findings": [
