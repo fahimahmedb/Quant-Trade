@@ -1,3 +1,5 @@
+> **Current branch-migration overlay — 2026-11-01.** The dated code SHA, branch counts, audit activity and cleanup restrictions in the historical body below are superseded for this Owner-authorized survivor migration by [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json) and its [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv). Resolve fresh `code/canonical` before work; its exact qualification is recorded there. The forensic cursor is `PAUSED_BY_OWNER`, not active. Current Oracle V2 automatic branch writes are observed in November, while host configuration/health and real Codex multi-wake autonomy remain unverified. The remaining default/host/automation gates are scoped there; no scientific, runtime activation, capital or trading authority is added. Do not resume the stopped audit or old implementation branches.
+
 # Quant-Trade — current canonical project state
 
 STATUS=`CANONICAL_CODE_ENGINEERING_CONNECTED_AND_QUALIFIED_VM_MULTI_WAKE_BLOCKED_EXTERNAL_HOST_ACCESS`
