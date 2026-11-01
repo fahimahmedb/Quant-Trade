@@ -332,8 +332,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:30:36.750580+00:00",
-  "project_subject_before_receipt": "813fb255acd55057cd4ac3e3394ddd02faa8ba65",
+  "updated_utc": "2026-11-01T15:31:45.090779+00:00",
+  "project_subject_before_receipt": "f751d3cd28cdd69e39cdacad42ff82c599046832",
   "code_canonical_sha": "538ed009c5958e37586a4f04e60ddad5485eeebc",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -525,12 +525,12 @@
   "all_independent_migrations_qualified": true,
   "active_batch": {
     "branches": [
-      "audit/owner-recovery-preserved-20261026",
-      "builder/autonomy-e2e-20261012",
-      "builder/evidence-store-identity-v2",
-      "builder/issue44-gpt-oss-codex-phase1-remote-20261030",
-      "builder/mega-e-autonomous-runtime-20261021",
-      "builder/research-os-vm-autonomy-20261019"
+      "builder/wp1-book-pressure-preexposure-20261028",
+      "builder/wp2-single-lineage-binding-20261030",
+      "codex/c0-membrane-qualification-20261027",
+      "codex/horizontal-completeness-prewave2-20261021",
+      "codex/vertical-depth-prewave2-20261021",
+      "review/independent-architecture-challenger-20261026"
     ],
     "gate_snapshot": {
       "observed_at": "2026-11-01T15:28:53.092Z",
@@ -605,6 +605,6 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
+    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
   }
 }
