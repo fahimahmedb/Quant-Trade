@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_035_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_INLINE_REVIEWS_PAGINATION_ROLE_AUTH_CLOSURE_ID_OUTPUT_RESIDUE_AND_SHADOW_READ_4216894865_THROUGH_4217441647",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4216894865,"sha256":"0068086b7554a658765436d519da705b1ea74b7d4fca6d4fa78f5a4322c7a0e9","status":"READ","summary":"P1 review finds gh api --paginate output is multiple JSON pages, while direct json.loads after naive replacement can raise Extra data; watchdog can fail entirely beyond 100 comments unless pages are slurped/flattened correctly."},
+    {"kind":"review-comment","id":4216894876,"sha256":"a56678fe9c6b4448bbe53039c665c9b90fcd965d70aa00828a63c6888f9ccdbe","status":"READ","summary":"P2 review finds A2 role identity is trusted from free-form comment headers without authenticating GitHub author identity, allowing third-party comments to spoof builder/orchestrator, inject waits or suppress reminders."},
+    {"kind":"review-comment","id":4216894885,"sha256":"6ba1695e37b85459637c5ec8beda21736446b1baa76a13b845b3a209f6d7cc0c","status":"READ","summary":"P2 review finds CLOS[id] keys only on the bare ID; later reuse of the same ID can make a new wait appear already closed. Closure must bind to original wait/comment identity or enforce global uniqueness."},
+    {"kind":"review-comment","id":4216894903,"sha256":"8f858c4cfa887e15af2d3c2a0822058cfb046f474cca1576d51e981a1f2f3891","status":"READ","summary":"P2 review finds publish-block output directories are reused without cleanup; stale block_N files can survive a later successful extraction and be accidentally republished. Output must be empty/atomic per run."},
+    {"kind":"review-comment","id":4217441647,"sha256":"0e6d5c4075bdc25af04da774316d074687bbf86ffa799d9e829ee95dcd9fff42","status":"READ","summary":"P1 scientific review finds B2's claimed shadow-read prohibition is violated if PricePanel.load materializes the entire CSV before restriction; causal invariant requires raw-row filtering before panel construction or a weaker explicitly stated no-derived-statistics claim."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 333,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 343,
+    "estimated_total_discussion_objects_directly_read": 340,
+    "estimated_total_discussion_objects_semantically_disposed": 350,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"SECOND_ORDER_REVIEWS_FOUND_REAL_FAILURE_MODES","finding":"Even after first-order fixes, bounded inline reviews found pagination crashes, actor spoofing, closure-ID aliasing and stale-output contamination. These are decision-relevant counterexamples, not stylistic review churn.","current_product_decision_change":false},
+    {"classification":"TEXTUAL_ROLE_CLAIMS_ARE_NOT_AUTHENTICATION","finding":"Coordination automation must bind role-bearing statements to attested GitHub identities; a DE: header alone cannot grant routing authority.","current_product_decision_change":false},
+    {"classification":"IDEMPOTENCE_KEYS_NEED_CAUSAL_SUBJECT_IDENTITY","finding":"Wait closure/dedupe keys must include the source object identity, not only a reusable human ID, or later work can be suppressed by historical state.","current_product_decision_change":false},
+    {"classification":"DATA_ACCESS_BOUNDARY_MUST_PRECEDE_MATERIALIZATION","finding":"A claim of no shadow access is false if protected rows are materialized before later restriction. The access boundary must be enforced before parsing/materialization, not only before statistics.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_DISCUSSION_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": null
+}
