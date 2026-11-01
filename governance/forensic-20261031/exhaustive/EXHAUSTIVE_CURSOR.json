@@ -26,20 +26,20 @@
     "semantic_review_complete": false
   },
   "incremental_semantic_coverage": {
-    "batches_complete": 5,
-    "new_discussion_objects_directly_read": 44,
+    "batches_complete": 6,
+    "new_discussion_objects_directly_read": 53,
     "new_discussion_objects_byte_identical_to_read": 2,
-    "new_discussion_objects_semantically_disposed": 46,
-    "estimated_discussion_objects_directly_read_total": 51,
-    "estimated_discussion_objects_semantically_disposed_total": 53,
+    "new_discussion_objects_semantically_disposed": 55,
+    "estimated_discussion_objects_directly_read_total": 60,
+    "estimated_discussion_objects_semantically_disposed_total": 62,
     "document_blobs_directly_read_delta": 0
   },
-  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_005_20261101.json",
+  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_006_20261101.json",
   "next_cursor": {
     "source": "governance/forensic-20261031/discussion-coverage.csv",
     "kind": "issue-comments",
-    "id": 6050019045,
-    "sha256": "c8a079c99e1cb418175085a982d92ebce0a019c3b1170d10c93fa7c7a5c13343"
+    "id": 6055113249,
+    "sha256": "26fed137a6b8ed17370acb08f336def6349e6047de1030f7158c2218fef8e56b"
   },
   "resume_law": [
     "Do not restart raw inventory or decision-relevant chronology.",
