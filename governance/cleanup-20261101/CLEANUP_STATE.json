@@ -1,23 +1,34 @@
 {
-  "schema_version": 1,
-  "mission": "DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP",
-  "status": "AUTHORIZED_STARTING",
-  "cleanup_snapshot_timestamp": "2026-11-01T14:31:00+01:00",
-  "owner_authorized_delete_proven_safe": true,
-  "authority_note": "Owner explicitly authorized branch cleanup on 2026-11-01 subject to the DELETE_PROVEN_SAFE gate; this supersedes the prior parked/no-deletion cleanup decision only for refs that pass the new dependency-first gate.",
-  "project_canonical_observed_sha": "c84024478a22b4f32fef4e86e6fb8a777ff0c454",
-  "code_canonical_observed_sha": "1c1964015fc597802d7ca5139de9268af6b3a740",
-  "auditor_ref": "audit/forensic-checkpoint-20261019",
-  "auditor_observed_sha": "b9de58aabb025690a939a583f8e19b708aeb893c",
-  "default_branch_observed": "blue/master-v2-2026-09-20",
-  "protected_refs": [
+  "active_protected_refs": [
     "project/canonical",
     "code/canonical",
     "audit/forensic-checkpoint-20261019",
     "builder/research-os-autonomous-loop-20261015",
     "blue/master-v2-2026-09-20"
   ],
-  "existing_recovery_mechanism": "governance/BRANCH_RETIREMENT_RECEIPT.json plus the already-existing project/canonical preservation-parent commits; do not rebuild this mechanism.",
-  "execution_policy": "CLASSIFY_FAST -> DEEP_DIVE_ONLY_AMBIGUOUS_VALUE -> VERIFY_REPLACEMENT_OR_RECOVERY -> DELETE_ONLY_DELETE_PROVEN_SAFE",
-  "next_action": "Run a fresh remote snapshot and dependency gate through the existing final-two-branch-cleanup workflow, with per-ref remote-SHA recheck immediately before deletion."
+  "auditor_sha_at_last_reconcile": "463e90970f5de02176f8a4696b94dce8f757c58a",
+  "batch_total": 7,
+  "code_canonical_sha_at_classification": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+  "counts_by_final_disposition": {
+    "DELETE_PROVEN_SAFE": 247,
+    "KEEP_ACTIVE": 18,
+    "PARK": 13,
+    "PROTECTED_ACTIVE_AUDIT": 1
+  },
+  "current_batch": 0,
+  "current_true_blockers": [],
+  "default_branch": "blue/master-v2-2026-09-20",
+  "deleted_count": 0,
+  "exact_tip_groups": 7,
+  "final": false,
+  "last_deleted_ref": null,
+  "mission": "DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP",
+  "next_batch": 1,
+  "owner_authorized_delete_proven_safe": true,
+  "project_canonical_sha_at_classification": "966ba64775520fb37c28f9f06eb6366b5e835e26",
+  "recovery_basis": "Exact pre-cleanup tips recorded in governance/BRANCH_RETIREMENT_RECEIPT.json and old snapshot tips already attached as reachable parents of project/canonical. New or changed unreachable tips are not deleted.",
+  "schema_version": 1,
+  "snapshot_timestamp": "2026-11-01T13:39:34.460914+00:00",
+  "status": "RUNNING",
+  "total_remote_branches_at_start": 279
 }
