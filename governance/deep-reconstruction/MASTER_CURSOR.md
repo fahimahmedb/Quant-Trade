@@ -12,9 +12,7 @@ Fresh remote state must be reconciled before every write.
 
 ## Mission
 
-Recover only decision-relevant historical value missed by the completed surface chronology.
-
-Primary evidence outranks names, prose, READY/FINAL labels, local test claims and commit volume.
+Recover only decision-relevant historical value missed by the completed surface chronology. Primary evidence outranks names, prose, READY/FINAL labels, local test claims and commit volume.
 
 Decision vocabulary:
 `NO_CHANGE_REQUIRED | CONNECT | PORT_SELECTIVELY | REPAIR | GOVERNANCE_ONLY | PARK | RETIRE_FROM_ACTIVE_SCOPE | BLOCK | UNKNOWN`.
@@ -27,8 +25,8 @@ Construction != qualification != integration != promotion != activation != use !
 - descend only when primary evidence can change a present decision;
 - aggregate repeated CI/heartbeats/feeds/iterations;
 - do not rebuild if a stronger canonical owner exists;
-- no-activity/out-of-scope/NO_CHANGE_REQUIRED are valid completed results;
-- details live in weekly checkpoints; this cursor remains a compact router, not a duplicate archive.
+- no-activity/out-of-scope/NO_CHANGE_REQUIRED/UNKNOWN_DETAIL_NOT_BLOCKING are valid completed results;
+- details live in weekly checkpoints; this cursor is a router, not a duplicate archive.
 
 ## Completed weeks
 
@@ -46,82 +44,74 @@ Construction != qualification != integration != promotion != activation != use !
 - 2026-09-28 -> 2026-10-04 — COMPLETE
 - 2026-10-05 -> 2026-10-11 — COMPLETE
 - 2026-10-12 -> 2026-10-18 — COMPLETE
+- 2026-10-19 -> 2026-10-25 — COMPLETE
 
-Every week has both:
-`DEEP_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`
-and
-`HANDOFF_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`.
+Every completed week has both `DEEP_WEEK_*` and `HANDOFF_WEEK_*`.
 
-## Latest completed week — 2026-10-12 -> 2026-10-18
+## Latest completed week — 2026-10-19 -> 2026-10-25
 
 Read first:
-- `governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md`
-- `governance/deep-reconstruction/HANDOFF_WEEK_2026-10-12_2026-10-18.md`
+- `governance/deep-reconstruction/DEEP_WEEK_2026-10-19_2026-10-25.md`
+- `governance/deep-reconstruction/HANDOFF_WEEK_2026-10-19_2026-10-25.md`
 
 Durable decisions:
-- Edge-Lab heartbeats/telemetry are liveness of one capability, not architecture growth.
-- current `src/quant/edge_lab/discovery.py` is the stronger generalized owner for frozen contracts, single-use claims, no replay, append-only exposure/result history, closed families and multiplicity.
-- Live Lab reducer/state-machine pattern is observability only: UI cannot create research/economic truth.
-- Research OS run `38740440664` exact head `083f7bc7...` SUCCESS qualifies the domain shape only; authorities remain false and repo-wide inherited gates can still fail.
-- current Research OS pipeline already owns persistent synthetic scientific infrastructure, Legacy gate, ledgers, validation/red-team and shadow-without-observation.
-- PR #29 Live Lab 3D is closed unmerged; qualified UX candidate != integration/promotion/deployment.
-- 16-Oct `NO_CANDIDATE` after mechanism disconfirmation is a valid terminal scientific state before trial/outcome access.
-- 17-Oct Form-144 pinned single-look is an instance of current Edge-Lab, not a new engine.
-- 18-Oct leveraged-ETF daily-reset mechanism is `FROZEN_PRE_OUTCOME`; freeze != result.
-- `CODE_PORT_REQUIRED=FALSE` and `CODE_REPAIR_PROVEN_REQUIRED=FALSE`.
+- stable scientific identity is independent from path/branch naming; identity/path mismatch fails closed;
+- `NOOP_FRONTIER_EXHAUSTED` with zero model calls/writes is valid autonomous abstention;
+- CP057 binds exact qualification source/SHA/workflow/status without redirecting scientific state and without deployment inference;
+- run `39517451814` is exact-head Oracle V2 Core SUCCESS on `fecd09e0...`, CI proof only;
+- Git compare proves Wave2 C2 `ebc72b9f...` is the merge base of current `13c9ff03...`; canonical is ahead by 10 and behind by 0;
+- Wave2 C2 is therefore a proven integrated ancestor; GIGA descendants are hardening lineage, not separate products;
+- 22-Oct and 25-Oct unresolved details remain `UNKNOWN_DETAIL_NOT_BLOCKING`;
+- no historical port/current repair is required from this week.
 
 ## Cross-week laws retained
 
 - later primary correction outranks earlier labels;
-- preregistration != untouched holdout after data-informed hypothesis generation;
+- preregistration != untouched holdout after data-informed generation;
 - adaptive historical looks count toward multiplicity;
 - closed-unmerged PR != integrated capability;
 - qualification is exact-head and scope-local;
 - `BUILT != QUALIFIED != INTEGRATED != PROMOTED != AUTHORIZED != USED != END_TO_END_PROVEN`;
 - information-leak repair != retroactive blindness;
 - candidate memory screening is required before freeze, not before identity-less frontier generation;
-- CI surface/success != integration/permission/authority/runtime proof;
-- illustrative capital or incomplete costs cannot close an economic gate;
-- orchestration failure with zero trials != negative scientific result;
+- CI success != integration/permission/authority/runtime/deployment proof;
 - automated observation/telemetry != architectural progress;
-- research output/proxy != live/capital authority;
 - realized-window evidence != prospective transport without a frozen bridge;
 - same-session role switch != independent review;
 - audit/evidence review != Owner authorization != independent replay;
 - ratified authority != effective authority != activation != execution;
 - unknown prior exposure remains UNKNOWN;
-- sealed negative verdict closes the frozen family; integration/publication failure does not buy another scientific look;
+- sealed negative verdict closes the frozen family; no post-outcome retune;
 - observability UI != research truth;
 - mechanism disconfirmation may validly terminate as NO_CANDIDATE;
-- mechanism freeze != test result.
+- mechanism freeze != test result;
+- hypothesis path/branch name != hypothesis id;
+- frontier exhausted -> NOOP;
+- qualification-source provenance != scientific-state redirection;
+- proven ancestry > branch-name narrative;
+- port/adapt/reexport != capability lost;
+- descendant hardening != new product architecture.
 
 ## Current project blocker
 
-Current project router identifies the active engineering critical path as external-host VM multi-wake proof.
+Per `governance/CURRENT_PROJECT_STATE.md`:
+`VM_MULTI_WAKE_PROOF=BLOCK_EXTERNAL_HOST_ACCESS`.
 
-`VM_MULTI_WAKE_PROOF=BLOCK_EXTERNAL_HOST_ACCESS`
-
-Historical Weather/F1/F2/EURUSD reconstruction is not current implementation work.
-
-## Open gaps inherited from completed weeks
-
-`NONE_REQUIRING_CODE_CHANGE_FROM_COMPLETED_WEEKS`
-
-Branch cleanup remains PARK unless separately authorized.
+Historical reconstruction is not current implementation work. `NONE_REQUIRING_CODE_CHANGE_FROM_COMPLETED_WEEKS`.
 
 ## Current cursor
 
-`CURRENT_WEEK_START=2026-10-19`
-`CURRENT_WEEK_END=2026-10-25`
+`CURRENT_WEEK_START=2026-10-26`
+`CURRENT_WEEK_END=2026-11-01`
 `CURRENT_WEEK_STATUS=IN_PROGRESS`
 
 Start with:
-1. 19-Oct stable hypothesis identity;
-2. 20-Oct bounded autonomous `NOOP_FRONTIER_EXHAUSTED` and Oracle V2/CP057 exact qualification-source provenance;
-3. 21-24 Oct completed surface checkpoint;
-4. 25 Oct from the next checkpoint only;
-5. prove separately engineering qualification, scientific authority, integration, deployment and current canonical ownership;
-6. aggregate repeated wakes/CI/telemetry rather than treating them as capabilities.
+1. 26-Oct verified-autonomous-continuity / ideation intake / independent challenger / post-challenge resume anchor;
+2. 27-Oct historical one-shot non-qualified state, then later C0 and membrane repairs without rewriting the historical failure;
+3. 28-Oct minimal continuity/succession evidence and WP1 pre-exposure block;
+4. 29-31 Oct final surface checkpoint and forensic closure;
+5. compare surviving invariants with current `code/canonical` and current project router;
+6. if no new current gap survives, close DEEP_RECONSTRUCTION rather than extending archaeology.
 
 ## Resume law
 
@@ -129,4 +119,4 @@ Do NOT restart completed weeks.
 Do NOT infer significance from branch names, commit counts or labels.
 Do NOT reopen historical science unless new primary evidence changes a present decision.
 Do NOT merge/delete branches during reconstruction.
-Publish the weekly checkpoint + handoff before advancing this cursor.
+Publish the final weekly checkpoint + handoff, then close or explicitly hand off any surviving gap.
