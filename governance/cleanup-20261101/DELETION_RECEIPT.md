@@ -2,7 +2,7 @@
 
 - Snapshot: `2026-11-01T13:39:34.460914+00:00`
 - Start branches: **279**
-- Deleted so far: **200**
+- Deleted so far: **240**
 - Default branch preserved: `blue/master-v2-2026-09-20`
 - Active auditor preserved: `audit/forensic-checkpoint-20261019` @ `f9f5bcfc7bef96e42196693a62ef159a592e427b`
 
@@ -210,6 +210,46 @@
 | `operator/gate-b-target-host-read-only-rebind-2026-09-21` | `4a503eed81df6656d6aec856f8440b66c5c39943` |
 | `ops/oci-one-shot-install-20261019` | `6e8ea155b05086f8e5eabcf830a5f835d3e3d09c` |
 | `owner/weather-v4-a2-bounded-offline-harness-test-authority-2026-10-05` | `45f5c940140788bb96c7b6da8581d9aa7c627dfa` |
+| `owner/weather-v4-a2-dedicated-harness-builder-decision-2026-10-04` | `37e3b25f17a7c5d3b3bc8d37df730aa988585b6c` |
+| `owner/weather-v4-a2-execution-authority-draft-2026-10-08` | `a56467a63805365deae2e64e8c35fccb0a2cf63b` |
+| `owner/weather-v4-a2-execution-authority-e-d2-2026-10-08` | `6e0320f15d48a924cef9507af5641e47de9fe938` |
+| `owner/weather-v4-a2-harness-attestation-decision-2026-10-04` | `0f50e10c68ba6ab6f4f3152f6e06335906d818f0` |
+| `owner/weather-v4-a2-harness-suitability-decision-2026-10-04` | `1684cd6b41992a73547b0665400d32d0c124f256` |
+| `owner/weather-v4-a2-lot2-freezes-2026-10-08` | `79f6e9290121869cece6d23a259249883b32941a` |
+| `owner/weather-v4-a2-lot2-technical-authorization-2026-10-07` | `9d0698b5ae73bed8f670a94d0ffd62016b1dc8a2` |
+| `owner/weather-v4-a2-partial-configuration-decision-2026-10-06` | `3ed9607add11618862043e707c687053d208dff6` |
+| `owner/weather-v4-a2-residual-d5-final-state-invariant-repair-2026-10-05` | `d1447fd515e814a21e34118d0a0b063a44220bbd` |
+| `owner/weather-v4-a2-static-audit-repair-decision-2026-10-05` | `08b40c41bdadb05b572a88fc1279310c436d32f7` |
+| `owner/weather-v4-a2-team-charter-ratification-2026-10-08` | `3425be1f7436ae4dfca06f4919d0de149c3442a2` |
+| `owner/weather-v4-od01-od03-decision-2026-10-04` | `377af70116f24f486feac7b4da5d2873107822a2` |
+| `owner/weather-v4-od04-od12-structural-decision-2026-10-04` | `9391ce7a3f66cfc5bff2c745ca2dbb1072bba954` |
+| `owner/weather-v4-phase-gate-a1-decision-2026-10-04` | `728cf23e7d69a373306f3c1a3fb5d11240210cda` |
+| `parallel/antigravity-gate-b-run-authority-adversarial-precheck-2026-09-21` | `644da76eb0227be275b8e3448118dac0cc7096ca` |
+| `parallel/antigravity-post-p0-vertical-shadow-loop-design-2026-09-21` | `568eea1e028302e14f96a06eb2515bb89aa73ad4` |
+| `parallel/claude-economic-question-falsification-map-2026-09-21` | `7a411524d6238ee7544d48c82637db2dc5f74ec0` |
+| `parallel/claude-economic-v2-2026-09-20` | `35dff27b8fac53618da434ee6d31febbddcc0e69` |
+| `parallel/claude-first-slice-cohort-geometry-2026-09-21` | `6eb0c23da0c8f16a2dcc0c50bd1898baaa9b21d0` |
+| `parallel/claude-forward-data-2026-09-20` | `83521dbfdd90027c90d04adfb7d814593c2355c5` |
+| `parallel/claude-post-p0-vertical-build-prep-2026-09-21` | `ce8b1ffe1e09d58162d96f52bea3b10aac1fb6ec` |
+| `parallel/claude-research-frozen-effect-estimate-prestage-2026-09-21` | `1226427082e55e7b3c51f96c5f091b90a6278447` |
+| `parallel/claude-s11-dependence-interval-challenge-2026-09-21` | `7080288b5c88cf70b9b908837f5fc859255d571a` |
+| `parallel/codex-wave1-economic-system-2026-09-19` | `738a5879ef8634d3e08c717a2d439632fe64e1ff` |
+| `parallel/economic-acceleration-2026-09-21` | `8af21cf2df140361f4fc2dfdf1bd2d1a1aa9a31c` |
+| `recovery/claude-sec-local-20260914` | `ac37339ed31b59f2c16caed6a5e914e647006671` |
+| `research/close-auction-source-readiness-20261017` | `a2ef88b07823e963e779196cf808b01339624115` |
+| `research/delta-research-pack-v1-20261015` | `07a75ee44138bef4fc64613c9cf53ac740823323` |
+| `research/design-v1` | `2da2d1b6786e9a7b1d34f94f5066dca79abf8e07` |
+| `research/duebill-source-readiness-20261017` | `b9f6ee8a6775ddd61c4f562da50cfc7e279e1f2a` |
+| `research/economic-reorientation-checkpoint-2026-09-29` | `0f8f2d1a99aa25a871a524c616b8e6beb06eaafd` |
+| `research/economic-test-form144-supply-20261017` | `9faba4fe0639e6835ae2b9d43f81f37252f86e3d` |
+| `research/f2-primary-terms-decision-2026-10-09` | `e7344cfda865b987e57c0d0ad8eb37f4f164cf9e` |
+| `research/legacy-economic-reconciliation-20261015` | `183ad65ff260b903a16548ce37948f54d47a9ec8` |
+| `research/paused-lanes-qualification-20261015` | `8d89ca7a6071e85bea5a74cb1e51e30ee5ae00ab` |
+| `research/technical-signals-literature-2026-10-10` | `e42d4924a33efa78bab97939d654424cc1501fb8` |
+| `review/blind-roadmap-pass-a-20261027` | `b9b0f351de8cb9838e83222fea87c81a68074934` |
+| `review/independent-wp1a-blind-pass-a-20261027` | `e830bd78444350c2c6512a6bdc34fb17aee1106c` |
+| `review/post-disclosure-pass-b-20261027` | `c081a05692e81ad0b999bf46d5f8988649aa7d24` |
+| `review/wp2-independent-d40053-20261030` | `47e944fbcc5acb450b3cd63ab5920aa548c01309` |
 
 ## Safety rule
 
