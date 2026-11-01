@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_002_20261101",
+  "status": "COMPLETE",
+  "scope": "DISCUSSION_COVERAGE_LEDGER_CONTINUATION_5750320891_THROUGH_5752594620",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {
+      "kind": "issue-comment",
+      "id": 5750320891,
+      "sha256": "443514bcab53d213417dd5c8432cdbff5ede695ea789a54817c63c3c9d0865e9",
+      "status": "READ",
+      "thread": "PR_8",
+      "summary": "Governance cleanup: PR8 historical/superseded; closing preserves branch/commits and performs no merge/rebase/retarget."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750322149,
+      "sha256": "75c8c8e70c01b1005ef837f04241bfda7497a9e510d537d195d156c7e1c48c5a",
+      "status": "READ",
+      "thread": "PR_9",
+      "summary": "Historical persistent-research orchestrator line superseded; evidence retained and deletion not authorized."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750322458,
+      "sha256": "1b3b589164a9dcf57068d36dc8ae0b6b78a078cf433c2de3c5313ef4502d89e4",
+      "status": "READ",
+      "thread": "PR_10",
+      "summary": "Historical whole-system architecture line superseded by current Blue governance/later runtime lineage; no destructive action authorized."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750322772,
+      "sha256": "b5ea8e74f552cefc2759f63ec3a81d7f785652f760fdf50cf40ff30afe91efe1",
+      "status": "READ",
+      "thread": "PR_11",
+      "summary": "Historical divergent restart-safe research-runtime line not selected as current authority; branch/commits retained."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750323128,
+      "sha256": "3ab1db3cbd8ebd9f503ec7d744225b903f47644ef655f9ec24a36774a4bb8615",
+      "status": "READ",
+      "thread": "PR_12",
+      "summary": "Historical corrective Quant System V1 line absorbed/superseded; closing PR does not delete evidence or integrate content."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750323538,
+      "sha256": "3ef17b4dbc5382b001d8a9ceeb5976244a86e77451a6fbb9bf6dcef8d46efed0",
+      "status": "READ",
+      "thread": "PR_13",
+      "summary": "Historical V1 integrity-repair line absorbed/superseded; evidence remains retained."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750323981,
+      "sha256": "9363a8ecb67ad8530bd07d132be9054f282afd188ef45811577129339f1eaa6a",
+      "status": "READ",
+      "thread": "PR_14",
+      "summary": "Historical divergent all-planes/product-era line is not a current integration base; cleanup is non-destructive."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750324389,
+      "sha256": "97819ee7bf9c79d4059aacd08931b959d084ada2c53037657f12e5e9a46080ae",
+      "status": "READ",
+      "thread": "PR_15",
+      "summary": "Historical divergent Evidence Store/PIT line; evidence remains reachable on branch and is not merged by cleanup."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5750324796,
+      "sha256": "878ddde4d41cf1f77f90e223b60a602481b959c01489cc05cd348fb70f6b1e60",
+      "status": "READ",
+      "thread": "PR_17",
+      "summary": "Historical P0 pre-t0 baseline PR closed only as container; branch/commits retained as Gate A v3/Astra audit evidence."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5752594620,
+      "sha256": "e608d86b16fd1a03d7f6040b608042d1f4a47559326ffd2e02727c781af2f5a1",
+      "status": "READ",
+      "thread": "ISSUE_2",
+      "summary": "Phase-0 issue declared historical/superseded. Original bootstrap references are absent on then-current Blue authority branch; restart authority moved to QUANT_NORTH_STAR, CURRENT_GOVERNANCE_STATE, BLUE_MASTER_V2_STATE and BLUE_CONTEXT_REACQUISITION. Closing preserves historical record."
+    }
+  ],
+  "batch_counts": {
+    "objects_resolved": 10,
+    "objects_directly_read": 10,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 10,
+    "cumulative_new_discussion_objects_directly_read": 16,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 2,
+    "cumulative_new_discussion_objects_semantically_disposed": 18,
+    "estimated_total_discussion_objects_directly_read": 23,
+    "estimated_total_discussion_objects_semantically_disposed": 25,
+    "discussion_denominator": 423
+  },
+  "cross_object_finding": {
+    "classification": "HISTORICAL_AUTHORITY_MIGRATION_CLEANUP",
+    "finding": "The 2026-09-20 cleanup closes old PR/issue containers while explicitly preserving branch/commit evidence. Closure is not merge, deletion, retargeting, or proof that historical capability disappeared. Authority moved to then-current Blue/Gate-A routing surfaces.",
+    "current_product_decision_change": false,
+    "current_action": "NO_CHANGE_REQUIRED"
+  },
+  "next_cursor": {
+    "ledger": "governance/forensic-20261031/discussion-coverage.csv",
+    "next_kind": "issue-comments",
+    "next_id": 6048877150,
+    "next_sha256": "2c3b5356d926dcfeb605ff10355eff8854ebc815dce45bd8e182eb5cbb9f9536",
+    "method": "continue in ledger order; deduplicate only by exact collected sha256"
+  }
+}
