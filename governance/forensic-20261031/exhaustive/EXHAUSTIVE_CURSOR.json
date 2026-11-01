@@ -26,20 +26,19 @@
     "semantic_review_complete": false
   },
   "incremental_semantic_coverage": {
-    "batches_complete": 45,
-    "new_discussion_objects_directly_read": 383,
-    "new_discussion_objects_byte_identical_to_read": 10,
-    "new_discussion_objects_semantically_disposed": 393,
-    "estimated_discussion_objects_directly_read_total": 390,
-    "estimated_discussion_objects_semantically_disposed_total": 400,
+    "batches_complete": 46,
+    "new_discussion_objects_directly_read": 394,
+    "new_discussion_objects_byte_identical_to_read": 23,
+    "new_discussion_objects_semantically_disposed": 417,
+    "estimated_total_fields_status": "PENDING_FINAL_LEDGER_RECONCILIATION_BASELINE_OVERLAP",
     "document_blobs_directly_read_delta": 0
   },
-  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_045_20261101.json",
+  "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_046_20261101.json",
   "next_cursor": {
     "source": "governance/forensic-20261031/discussion-coverage.csv",
     "kind": "reviews",
-    "id": 5454069781,
-    "sha256": "3cb4a1bcb64b7552a454420c50a69f742c8f7071730adef859aefbac383dc4d1"
+    "id": 5709575146,
+    "sha256": "8442956d1999e87af10d4cb1e8614e365cc663b26f5af80a01cff5ddefda9268"
   },
   "resume_law": [
     "Do not restart raw inventory or decision-relevant chronology.",
@@ -47,6 +46,7 @@
     "A semantic object is complete only as READ, BYTE_IDENTICAL_TO_READ_OBJECT, or explicitly UNAVAILABLE with proof.",
     "Deduplicate only by exact collected sha256.",
     "Keep historical review findings separate from current project authority.",
-    "Do not mutate product/runtime during exhaustive reading."
+    "Do not mutate product/runtime during exhaustive reading.",
+    "Do not add baseline and incremental semantic counts until final ledger overlap is reconciled."
   ]
 }
