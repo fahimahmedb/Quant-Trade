@@ -6,13 +6,11 @@ name: data feeds
 # reads through git. It places no orders and needs no credentials except the
 # optional ODDS_API_KEY secret.
 #
-# Push trigger: only the dedicated data branch. The schedule only fires once
+# Existing acquisition cadence is unchanged; manual dispatch remains available.
+# The schedule only fires once
 # this file is on the default branch (GitHub rule).
 
 on:
-  push:
-    branches:
-      - 'claude/data-feeds-**'
   schedule:
     - cron: '17 */6 * * *'
     # H-001 closing-line run: hourly, odds_api lane only. It spends Odds API
@@ -35,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'push' && github.ref_name || 'claude/data-feeds-6vr22g' }}
+          ref: code/canonical
           fetch-depth: 1
 
       - uses: actions/setup-python@v5
