@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_047_20261101",
+  "status": "COMPLETE",
+  "scope": "FINAL_REVIEWS_PR39_PR41_PR46_5709575146_THROUGH_5718871390",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review","id":5709575146,"sha256":"8442956d1999e87af10d4cb1e8614e365cc663b26f5af80a01cff5ddefda9268","status":"READ","summary":"Owner independent WP2 review on exact head d40053bd112164826273a866199e2941259919b0 records a bounded engineering PASS for the V3 synthetic join after the receipt-aliasing defect was fixed. It explicitly limits the claim: no product code change, no hosted CI, no science/economic readiness, no deployment/runtime authority, WP1 still blocked and global join not admissible."},
+    {"kind":"review","id":5712084844,"sha256":"bc208316502bba125e2900db256530cfb7fa21ca8ec2bb36074543d69c05557a","status":"READ","summary":"Codex review-receipt envelope identifies exact reviewed commit d40053bd112164826273a866199e2941259919b0. The envelope is subject identity, not an additional semantic PASS beyond associated findings/review evidence."},
+    {"kind":"review","id":5712040248,"sha256":"5679d2191f9a424c5698a6d9e91499d7d826befbaf9b24355dc3ae6153fea6c6","status":"READ","summary":"Independent Codex review on exact commit 47e944fbcc5acb450b3cd63ab5920aa548c01309 finds two material WP2 defects: P1 the synthetic path can return COMPLETE without runner.execute/evaluation, and P2 fixture identity is not durably pinned before claim/recovery, allowing the same durable task to switch scientific subject. This directly contradicts a broader interpretation of the earlier bounded PASS and justifies WP2=CONTESTED_ENGINEERING_EVIDENCE historically."},
+    {"kind":"review","id":5718852976,"sha256":"beb9a1fd696746fa486da55a54ee2975efcc82e866aae94dc5b4a77d39d2f463","status":"READ","summary":"Codex review-receipt envelope binds review activity to PR46 exact commit 3c779549854124315a12dbc6b9b836821b80a072. It is chronology/subject evidence only; later head movement means it cannot qualify newer PR46 heads."},
+    {"kind":"review","id":5718871390,"sha256":"9cfb6329142e00d483f894a3258cd45a816ee30f768af504b752cd375f8bd6c6","status":"READ","summary":"Codex review-receipt envelope binds review activity to later PR46 commit ea454e6c35b12d6a2749f9debc0420ac54f57567. It confirms exact-head review progression but is not itself a technical verdict and cannot qualify still-later heads."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 399,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 23,
+    "cumulative_new_discussion_objects_semantically_disposed": 422,
+    "discussion_denominator": 423,
+    "baseline_overlap_note": "The original baseline sample contains seven already-read discussion objects, six of which overlap objects later traversed by the ordered exhaustive batches. Exact union is reconciled separately at discussion closure."
+  },
+  "cross_object_findings": [
+    {"classification":"WP2_PASS_WAS_BOUNDED_AND_LATER_CONTESTED","finding":"The review stream itself proves why WP2 cannot be summarized as a clean autonomous PASS: owner review d40053bd established a narrow synthetic engineering equivalence, while later exact-code review 47e944fb demonstrated missing execution/evaluation and durable fixture-identity semantics. The correct historical status is contested engineering evidence, not scientific/runtime proof.","current_product_decision_change":false},
+    {"classification":"REVIEW_SUBJECT_MUST_MATCH_EXACT_HEAD","finding":"PR46 review receipts bind to 3c779549... and ea454e6... separately. They establish review chronology but cannot be transferred to later hardened heads. This corroborates the exact-SHA qualification law used in current canonical convergence.","current_product_decision_change":false},
+    {"classification":"DISCUSSION_LEDGER_END_REACHED","finding":"Review 5718871390 is the final entry in discussion-coverage.csv. All ordered discussion objects are now either handled by exhaustive batches or part of the previously-read baseline sample pending exact union reconciliation.","current_product_decision_change":false}
+  ],
+  "current_action": "RECONCILE_DISCUSSION_COVERAGE_UNION_THEN_BEGIN_DOCUMENT_BLOB_PHASE_NO_PRODUCT_MUTATION",
+  "next_cursor": null
+}
