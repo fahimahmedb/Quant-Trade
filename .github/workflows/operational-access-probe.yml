@@ -1,0 +1,48 @@
+name: Temporary operational access probe (read only)
+on:
+  push:
+    branches: [project/canonical]
+    paths: [.github/workflows/operational-access-probe.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Read bounded repository access metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUNNER_KIND: ${{ runner.environment }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.error
+          from pathlib import Path
+          repo = os.environ['REPO']
+          print(json.dumps({'probe':'READ_ONLY_NO_HOST_EXECUTION','runner_environment':os.environ['RUNNER_KIND'], 'subject':os.environ['GITHUB_SHA']}))
+          endpoints = [
+            ('repository',''),
+            ('workflow_policy','/actions/permissions'),
+            ('registered_runners','/actions/runners?per_page=100'),
+            ('secret_names_only','/actions/secrets?per_page=100'),
+            ('project_protection','/branches/project%2Fcanonical/protection'),
+            ('code_protection','/branches/code%2Fcanonical/protection'),
+          ]
+          for label, suffix in endpoints:
+            req = urllib.request.Request('https://api.github.com/repos/'+repo+suffix, headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+            try:
+              with urllib.request.urlopen(req, timeout=15) as response:
+                data=json.load(response); result={'surface':label,'http_status':response.status}
+              if label=='repository':result.update(default_branch=data.get('default_branch'),permissions=data.get('permissions'))
+              elif label=='registered_runners':result.update(total_count=data.get('total_count'),runners=[{'id':r['id'],'name':r['name'],'status':r['status'],'busy':r['busy']} for r in data.get('runners',[])])
+              elif label=='secret_names_only':result.update(total_count=data.get('total_count'),names=[s['name'] for s in data.get('secrets',[])])
+              elif label=='workflow_policy':result.update(enabled=data.get('enabled'),allowed_actions=data.get('allowed_actions'))
+            except urllib.error.HTTPError as e:
+              result={'surface':label,'http_status':e.code}
+            except (OSError,ValueError) as e:
+              result={'surface':label,'error_type':type(e).__name__}
+            print(json.dumps(result),flush=True)
+          print(json.dumps({'native_oci_profile_exists':(Path.home()/'.oci/config').is_file(),'native_ssh_config_exists':(Path.home()/'.ssh/config').is_file(),'credential_values_read':False,'http_mutations':0}))
+          PY
