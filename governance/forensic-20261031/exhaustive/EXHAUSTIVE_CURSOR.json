@@ -32,13 +32,13 @@
     "index_path": "governance/forensic-20261031/exhaustive/DOCUMENT_VERSIONS.csv",
     "index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
     "baseline_read_blobs": 52,
-    "new_document_blobs_read": 80,
-    "document_blobs_disposed": 132,
+    "new_document_blobs_read": 100,
+    "document_blobs_disposed": 152,
     "document_blob_denominator": 6465,
-    "latest_bundle": "governance/forensic-20261031/exhaustive/documents/DOC_BUNDLE_0004.md",
-    "latest_read_batch": "governance/forensic-20261031/exhaustive/documents/DOC_READ_BATCH_0004_20261101.json",
+    "latest_bundle": "governance/forensic-20261031/exhaustive/documents/DOC_BUNDLE_0005.md",
+    "latest_read_batch": "governance/forensic-20261031/exhaustive/documents/DOC_READ_BATCH_0005_20261101.json",
     "reading_method": "HASH_FIRST_VERSION_FAMILY_FIRST_BUNDLED_FULL_CONTENT_OR_EXPLICIT_BINARY_UNAVAILABLE",
-    "next_cursor": "GENERATE_DOC_BUNDLE_0005"
+    "next_cursor": "GENERATE_DOC_BUNDLE_0006"
   },
   "resume_law": [
     "Do not restart raw inventory, discussion reading, or decision-relevant chronology.",
