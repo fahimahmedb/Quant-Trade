@@ -108,3 +108,26 @@ Execute the reuse-first value recovery classification against the current canoni
 4. `ECONOMIC_FOCUS_BACKLOG`.
 
 Do not delete, rename, or retire legacy branches until a new explicit Owner instruction authorizes that cleanup.
+
+
+## Rapport factuel cumulatif — publication du 1er novembre 2026
+
+A separate factual report has been delivered: **Quant_Trade_Rapport_Factuel_Cumulatif_2026-11-01.md**, 80,870 bytes, SHA-256 `f0b79cce7d55e373a8309d7b5738753d67c4df2f1f1213f8143db94c28a9b06f`.
+
+Reader link: https://chatgpt.com/library?file_id=libfile_963a06b4d4ac81919710b05a8d6561a0&account_id=personal
+
+Scope: 71 dated active days, the 40 calendar days without dated traces, cumulative predecessor/successor/correction/park history, 17 read chronological records, and 15 read value-recovery checkpoints through October 20. The initial daily counts were recomputed: 6,393 commits plus 6,109 dated GitHub occurrences; 969 undated occurrences remain undated. Documented assertions are distinguished from directly checked GitHub commits/runs/logs. This is a factual report, not a new architecture recommendation, a fresh full semantic audit of every document, or a closure of the ongoing recovery mission.
+
+Immutable source snapshots: audit `7dc528830ea3516445f343375f8f0a1f827f69e1`; project `498a6fce3132a225a64497d425798b741ed1cd84`. Preserve previous states cumulatively.
+
+Directly verified successive qualification evidence:
+- Wave2 parent `f4534b8ebaf45f41cc1c69adf93c0579e1b43d28`: run `39673556332` SUCCESS.
+- Wave2 seal commit `ebc72b9fd14f91420c37e0b7607f9bfb584a289a`, October 23: cumulative run `39882531103` SUCCESS with log `WAVE2_INTEGRATED_SHA_EMITTED=FALSE`; separate Mega E run `39882531036` FAILURE, three pytest import errors. Preserve all of these facts.
+- Earlier canonical candidate `fd3f8ce77d3a2f20cc5954c184c4487b44dac1d3`: run `41216401503` SUCCESS, retained as historical qualification.
+- Later/current observed code head `1d5d76c8450b14481cc73eec4d4588698184c3a2`: run `41218076177` FAILURE. Identity, compile, carried CP099 regressions, PR46 regressions and Wave2 sample PASS; post-Wave2 GIGA-Q challenge FAIL; later authority/clean-checkout steps SKIPPED. Log: 107 failed, 40 passed, 7 subtests passed. These are execution counts, not independent root causes.
+
+The report also records, without resolving or mutating authority, the difference between this document's branch-retirement PARK and the older `AUTHORITY_STATE.json` cleanup=true field at the pinned project SHA.
+
+Recovery continuation remains the existing October 21–24 work, then October 25–28 and 29–31, followed by VALUE_RECOVERY_LEDGER, CANONICAL_GAP_LIST, PROJECT_CLOSURE_GATE and ECONOMIC_FOCUS_BACKLOG. No test rerun, product change, branch removal, deployment or scientific execution was performed to prepare this report.
+
+Réponse qui respecte le protocole imposé par Fahim
