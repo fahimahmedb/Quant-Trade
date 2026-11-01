@@ -1,0 +1,114 @@
+{
+  "contract_version": 1,
+  "status": "ACTIVE_METHOD",
+  "authorities": {
+    "project_branch": "project/canonical",
+    "code_branch": "code/canonical",
+    "project_router": "governance/CURRENT_PROJECT_STATE.md",
+    "method_document": "governance/AI_WORKING_METHOD_V1.md"
+  },
+  "two_branch_mode": "MIGRATING",
+  "allowed_outcomes": [
+    "NO_CHANGE_REQUIRED",
+    "REUSE",
+    "CONNECT",
+    "REPAIR",
+    "BUILD_REQUIRED",
+    "PASS",
+    "FAIL",
+    "PARK",
+    "BLOCK",
+    "UNKNOWN",
+    "BLOCK_EVIDENCE"
+  ],
+  "mission_required_fields": [
+    "current_subject",
+    "current_blocker_or_decision",
+    "decision_impact",
+    "existing_capability",
+    "minimal_decisive_test",
+    "counterexample",
+    "durable_output_required",
+    "next_action",
+    "owner_authorization_required"
+  ],
+  "existing_capability_order": [
+    "REUSE",
+    "CONNECT",
+    "REPAIR",
+    "BUILD_REQUIRED",
+    "UNKNOWN"
+  ],
+  "concurrency": {
+    "max_active_decision_lanes": 2,
+    "max_mutating_builders_per_capability": 1,
+    "reviewer_mutates_subject": false
+  },
+  "hard_laws": {
+    "local_only_pass_allowed": false,
+    "stale_prompt_is_authority": false,
+    "branch_name_is_authority": false,
+    "default_branch_is_engineering_authority": false,
+    "wrong_sha_qualification_allowed": false,
+    "unknown_authorizes_global_audit": false,
+    "external_block_global_stops_independent_lane": false,
+    "build_allowed_when_reuse_connect_repair_proven": false,
+    "review_without_new_decision_evidence_allowed": false,
+    "code_pass_grants_scientific_or_capital_authority": false
+  },
+  "finish_gates": [
+    {
+      "id": "F0_TWO_BRANCH_AUTHORITY",
+      "required": true,
+      "proof": "Only project/canonical and code/canonical remain as current remote branches and no known live consumer depends on historical branch names."
+    },
+    {
+      "id": "F1_RECOVERABLE_CANONICAL_STATE",
+      "required": true,
+      "proof": "Fresh agent can recover objective, authority, current exact code head, blocker and next action from project/canonical; both branch entrypoints agree."
+    },
+    {
+      "id": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION",
+      "required": true,
+      "proof": "Required canonical regression/challenge suite passes on exact current code/canonical SHA."
+    },
+    {
+      "id": "F3_REAL_VM_MULTI_WAKE",
+      "required": true,
+      "proof": "Authenticated intended host proves two consecutive automatic wakes without Owner relaunch and one real Codex result is consumed by the following decision."
+    },
+    {
+      "id": "F4_GLOBAL_MISSION_CONTINUATION",
+      "required": true,
+      "proof": "After terminal bounded task state, system selects next legitimate unmet mission or durable NOOP/PARK without human task substitution."
+    },
+    {
+      "id": "F5_IDENTITY_CONSERVING_E2E",
+      "required": true,
+      "proof": "Bounded non-economic/synthetic-safe canonical witness preserves identity through research/control/result/memory and restart/duplicate/stale-head recovery."
+    },
+    {
+      "id": "F6_OPERATIONAL_HANDOFF",
+      "required": true,
+      "proof": "No P0 engineering/autonomy blocker remains and normal future work can proceed as scientific/economic system use without another architecture campaign."
+    }
+  ],
+  "finish_claim": "QUANT_SYSTEM_V1_FINISHED",
+  "finish_claim_excludes": [
+    "PROFITABLE_EDGE_PROVEN",
+    "REAL_CAPITAL_AUTHORIZED",
+    "LIVE_TRADING_AUTHORIZED"
+  ],
+  "checkpoint_required_fields": [
+    "subject",
+    "completed",
+    "tests_executed",
+    "decision_changed",
+    "blockers_unknowns",
+    "next_action"
+  ],
+  "post_migration_remote_branches": [
+    "project/canonical",
+    "code/canonical"
+  ]
+}
