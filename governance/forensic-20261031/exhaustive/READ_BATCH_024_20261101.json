@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_024_20261101",
+  "status": "COMPLETE",
+  "scope": "STALE_WP2_REEXECUTION_NEUTRALIZED_SECOND_REVIEW_P1_P2_AND_LOCAL_REPAIR_6522136091_THROUGH_6524600243",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6522136091,"sha256":"7765c0b036b37b6c1c583a5326e37676c5df8cfbad30e0ed148cb3d44cf27c96","status":"READ","summary":"Owner issues a stale-looking WP2 execution prompt referencing old mission-anchor head ec3f821 despite later durable closure evidence existing on d40053bd."},
+    {"kind":"issue-comment","id":6522200261,"sha256":"877ae46d61504216ed0bd80f0d84adcf0325403677401bd1f2581e847c784a75","status":"READ","summary":"Codex reconciles current state instead of rebuilding: detects exact independently reviewed d40053bd candidate, reruns 8 WP2 and 29 targeted tests/subtests, makes no code/commit/PR changes and effectively returns NO_CHANGE_REQUIRED."},
+    {"kind":"issue-comment","id":6522266440,"sha256":"8c1dffaa835347871448353171269df2924ebe3a28ce1dc2ae94233457966932","status":"READ","summary":"Owner starts a fresh independent review of exact d40053bd against 13721384, explicitly challenging canonical lineage, sink, executor injection, receipt durability/hash integrity and reuse law without implementation edits."},
+    {"kind":"issue-comment","id":6522308229,"sha256":"d48bf2ee858c5d6799ea28400cf3d927dfd5ab8ccda4db23cf980fe8e155c9e8","status":"READ","summary":"First independent reviewer returns BLOCK_EVIDENCE because exact base/head are unavailable locally and fetch is 403. No WP2 tests execute and all identities remain UNKNOWN_UNVERIFIED; this is evidence-access failure, not substantive contradiction."},
+    {"kind":"issue-comment","id":6522387159,"sha256":"25c3e2cce39bd2acc1767fea79a2b377c2266eb0e33c9d4f40f70360e3478206","status":"READ","summary":"Owner relocates independent review to PR #41 whose review head directly descends from exact implementation d40053bd, removing the prior evidence-access blocker while prohibiting implementation edits."},
+    {"kind":"issue-comment","id":6522396340,"sha256":"cbcf08f6f547db9f8ec57f5b7c32d0f139dad7ed201d9645221133780779708c","status":"READ","summary":"Codex review summary on PR #41 reports completed review with unresolved findings on review head 47e944f, establishing that exact-checkout review found material issues rather than merely repeating prior access failure."},
+    {"kind":"issue-comment","id":6522508887,"sha256":"d8ad0ca28a3caee24f76326967aec28983cde48b0343fea92a3b2c3d8a009690","status":"READ","summary":"Owner records two independently demonstrated narrow defects on d40053bd. P1: binding never calls runner.execute and verify_bindings alone does not prove execution->evaluation. P2: fixture identity is constructor-cached rather than durably pinned to task before claim/recovery, allowing seed/qualification changes under same task id. Prior PASS is downgraded to REQUEST_CHANGES_NARROW."},
+    {"kind":"issue-comment","id":6522515805,"sha256":"b95e23260229034346d19ac8e72d285df7c409000e09bf7ab6a0359bf5b93498","status":"READ","summary":"Codex review summary confirms completed exact-head review on d40053bd with unresolved findings, aligning with P1/P2 correction requirement."},
+    {"kind":"issue-comment","id":6522659321,"sha256":"4cc628b96551f3696f98d8cb4b1dc5b6b5b4629cd70867d3d74d2a00baa15a55","status":"READ","summary":"Owner authorizes only P1/P2 repairs: actual documentary execution plus executed-result validation/identity, and durable task-pinned fixture identity recomputed from consumed inputs on execution/recovery. No scope expansion."},
+    {"kind":"issue-comment","id":6522774726,"sha256":"61f70906965c32c4783fe85fbf9f495033a768152c019efc4beb95c744bd52cf","status":"READ","summary":"Codex implements P1/P2 locally: runner.execute plus validator_diagnostics_v2, plan/execution/evaluation subject bindings, task-pinned fixture identity and recovery mutation tests. 65 tests plus 29 subtests pass, but push fails because no origin remote; a95d38f remains local only, so no durable PASS is claimed."},
+    {"kind":"issue-comment","id":6524600243,"sha256":"ed991f92318a3dfb8980dee40b19c6641bab5b4dcd841cf5f34b7379da066b72","status":"READ","summary":"Later hosted run on durable d40053bd is blocked only by generated STATE.md freshness (1140 vs 1148 discovered tests); other status/schema/SEC checks pass and full suite is skipped behind the projection gate. Owner scopes continuation to projection freshness only, explicitly separating this repository gate from WP2 semantics."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 11,
+    "objects_directly_read": 11,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 11,
+    "cumulative_new_discussion_objects_directly_read": 218,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 228,
+    "estimated_total_discussion_objects_directly_read": 225,
+    "estimated_total_discussion_objects_semantically_disposed": 235,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"DURABLE_MEMORY_NEUTRALIZES_STALE_PROMPT","finding":"A stale WP2 execution prompt did not trigger reconstruction: Codex reconciled the newer durable reviewed head and returned effectively NO_CHANGE_REQUIRED. This is direct evidence that durable state can prevent restart/rework when consulted.","current_product_decision_change":false},
+    {"classification":"REVIEW_WITHOUT_PRIMARY_ACCESS_ADDS_NO_SUBSTANTIVE_VERDICT","finding":"Issue #40 review spent coordination effort but could only return BLOCK_EVIDENCE because exact objects were inaccessible. It neither supports nor contradicts the existing PASS.","current_product_decision_change":false},
+    {"classification":"EXACT_CHECKOUT_REVIEW_JUSTIFIED_ITS_COST","finding":"Once the reviewer had exact bytes, it falsified two material claims: no actual execution/evaluation arrow and no durable pre-claim fixture pin. The prior independent PASS was therefore too strong and correctly downgraded to REQUEST_CHANGES_NARROW.","current_product_decision_change":false},
+    {"classification":"GREEN_TESTS_AND_PRIOR_REVIEW_STILL_NOT_FINAL","finding":"P1 and P2 survived earlier green tests and review rounds, showing that challenge must target semantic claims rather than merely repeat test execution. The counterexamples directly changed the decision.","current_product_decision_change":false},
+    {"classification":"LOCAL_REPAIR_NOT_DURABLE_REPAIR","finding":"The P1/P2 correction passed a larger local suite but could not be pushed. Treating a95d38f as remote/durable would repeat the same memory-loss error already observed in WP2 V1.","current_product_decision_change":false},
+    {"classification":"STATUS_PROJECTION_GATE_NOT_WP2_DEFECT","finding":"Hosted CI on the older durable head failed at stale generated STATE.md test count before full suite. The correct action is projection freshness only; this should not be misreported as a WP2 semantic failure.","current_product_decision_change":false}
+  ],
+  "current_action": "WP2_P1_P2_NARROW_REPAIR_PENDING_DURABLE_REMOTE_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6524768666,"sha256":"1f735c9e50ae7db500b6e49cdb6da3e1f8d1360389746798e23b67865d285435"}
+}
