@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "mission": "INDEPENDENT_META_AUDIT",
+  "status": "COMPLETE_BOUNDED_EVIDENCE_SCOPE",
+  "branch": "audit/independent-meta-audit-20261101",
+  "local_repository_head_at_entry": "2d0af7cb7e8ea0c095bf2e4e1cc7461dc0542832",
+  "audit_base_ref": "e4b64bb1e621af13f79cb706694a4ca726c84296",
+  "project_canonical_head": "a2a254694ae800be8093578aedead1d58d098fbe",
+  "code_canonical_head": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+  "final_commit_sha": "0881c2b765837d8f833fb7b2567dab7ac3cca081",
+  "final_commit_resolution": "This native Git note records the containing artifact commit without an impossible self-reference in its tree.",
+  "identity_note": "A commit cannot embed its own SHA. Exact completion HEAD is recorded in final delivery; this immutable file identifies its containing commit through native Git, not an invented self hash.",
+  "files_written": [
+    "EVIDENCE_INDEX.md",
+    "INDEPENDENT_META_AUDIT.md",
+    "PRIMARY_EXCERPTS.json",
+    "TURNING_POINTS.csv",
+    "verification.json",
+    "resume.json"
+  ],
+  "remote_refresh_status": "REMOTE_REFRESH_AVAILABLE",
+  "remote_durability": "REMOTE_BRANCH_SHA_VERIFIED",
+  "primary_evidence_coverage": {
+    "mode": "SELECTIVE_PRIMARY_WITH_EXISTING_RECONSTRUCTION_INDEXES",
+    "fresh_primary_comments": 7,
+    "batch_object_lists_checked": 40,
+    "batch_disposed_union": 368,
+    "discussion_denominator": 423,
+    "hash_mismatches": 12,
+    "primary_sample_confirms_wrong_batch_hashes": 2,
+    "full_history_repeated": false
+  },
+  "evidence_limitations": [
+    "No fresh VM or restricted host payload read",
+    "Historical test outputs generally reported, not re-executed; exact current run metadata freshly verified",
+    "No total effort/time denominator; no waste percentage or days-saved estimate",
+    "Fetch advertised heads/tags is not a full PR/notes/deleted-ref mirror equivalence claim",
+    "Source audit advanced concurrently; findings frozen at audit_base_ref",
+    "Batch status union is a documentary accounting check, not direct comprehension of every primary body"
+  ],
+  "unresolved_unknowns": [
+    "Total lost labor and attributable fractions",
+    "Ten remaining batch hash mismatches not sampled against fresh bodies",
+    "Availability of reported local WP2 repair bytes outside this checkout",
+    "Actual VM identity/liveness/deployment/multi-wake E2E",
+    "Full current scientific/data-rights/economic readiness"
+  ],
+  "current_true_gaps": [
+    "Authenticated existing-host synthetic multi-wake proof",
+    "Documentary entry-point alignment",
+    "Global next-mission selection PARK after bridge proof",
+    "Economic/admissibility gates PARK under science freeze",
+    "Generated data storage replacement only before two-ref cleanup"
+  ],
+  "most_important_process_failure": "WORK_NOT_CAPITALIZED_AS_RECOVERABLE_CANONICAL_CAUSAL_STATE",
+  "most_important_positive_method": "EXACT_SUBJECT_BOUNDED_FALSIFICATION_PLUS_DURABLE_CONTINUATION",
+  "shortest_future_operating_rule": "Resolve current subject; reuse/connect; test decisive seam; persist exact state and next action; stop.",
+  "next_action": "NO_MORE_META_AUDIT: follow project/canonical current router; authenticated host proof remains next engineering action. Documentary hash/union/entrypoint corrections are bounded followups, not prerequisite global archaeology.",
+  "reopen_only_if": "Specific primary contradiction can change a current decision",
+  "checks": [
+    "git diff --check",
+    "JSON parse validation",
+    "report nonempty",
+    "CSV row shape and 16 turning points",
+    "only dedicated meta-audit paths staged"
+  ],
+  "authority_changes": false,
+  "runtime_or_scientific_mutation": false
+}
