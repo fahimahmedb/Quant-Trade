@@ -3,7 +3,7 @@ from quant.state import utc_now
 from .store import event
 
 REPO = "https://github.com/fahimahmedb/Quant-Trade"
-BRANCH = "research/edge-lab-continuous"
+BRANCH = "project/canonical"
 BASE = "09ba64b8bee1419076ec8a30f8d75a916932c2ba"
 REPORT = REPO + "/blob/fae3be50549d8b023c3e9a42eb14a51613bcb8c4/research/mission_audit_2026-10-10/REPORT.md"
 AUTOMATION = "6ac978ecda1081918fba4d76dee437f4"
