@@ -266,6 +266,62 @@
       "verified_absent_at": "2026-11-01T15:32:07.342191+00:00",
       "lease": "--force-with-lease=refs/heads/review/independent-architecture-challenger-20261026:642b551985f499b37286c3bc21b89c57294f63ca",
       "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/convergence-wave2-canonical-20261021",
+      "sha": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:00.006314+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/convergence-wave2-canonical-20261021:ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/econ-readiness-integration-20261016",
+      "sha": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:04.403452+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/econ-readiness-integration-20261016:b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/live-lab-3d-full-build-20261015",
+      "sha": "6076774f52ca2e619caaab57fb6a278f47608349",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:08.208157+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/live-lab-3d-full-build-20261015:6076774f52ca2e619caaab57fb6a278f47608349",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/live-lab-native-integration-20261015",
+      "sha": "fdfee2006869ff3770f752f32fb672da0b0fc4ac",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:13.204861+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/live-lab-native-integration-20261015:fdfee2006869ff3770f752f32fb672da0b0fc4ac",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/live-lab-oracle-canonical-20261020",
+      "sha": "d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:16.879797+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/live-lab-oracle-canonical-20261020:d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/live-lab-owner-ux-rebuild-20261015",
+      "sha": "8583ea6e46b123e831e8af489ad1043b810a0cf4",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:20.676880+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/live-lab-owner-ux-rebuild-20261015:8583ea6e46b123e831e8af489ad1043b810a0cf4",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/multi-source-ideation-intake-20261021",
+      "sha": "bbdea6a794377f8cab54fa8bcb6ad2242616e426",
+      "replacement": "project/canonical reachable original lineage; code/canonical current executable authority",
+      "verified_absent_at": "2026-11-01T15:34:24.462005+00:00",
+      "lease": "--force-with-lease=refs/heads/builder/multi-source-ideation-intake-20261021:bbdea6a794377f8cab54fa8bcb6ad2242616e426",
+      "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
     }
   ],
   "blocked": {
@@ -381,8 +437,8 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:33:54.868620+00:00",
-  "project_subject_before_receipt": "f59951798c677622fd5080f5ee97961209d94455",
+  "updated_utc": "2026-11-01T15:34:24.504834+00:00",
+  "project_subject_before_receipt": "18ef18f84a916c28a8806c9686051754bd16be9a",
   "code_canonical_sha": "0365dd960d088157ec79ffd7a4c9a6e843e5ab4e",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
@@ -411,13 +467,13 @@
       "sha_at_snapshot": "fed1acd62d95bb30dfa285cc1ab01305d1f42937"
     },
     "builder/convergence-wave2-canonical-20261021": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a"
     },
     "builder/econ-readiness-integration-20261016": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d"
     },
     "builder/evidence-store-identity-v2": {
@@ -431,23 +487,23 @@
       "sha_at_snapshot": "afedfd57986aa042e9e97aa53b9db53b4619764f"
     },
     "builder/live-lab-3d-full-build-20261015": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "6076774f52ca2e619caaab57fb6a278f47608349"
     },
     "builder/live-lab-native-integration-20261015": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "fdfee2006869ff3770f752f32fb672da0b0fc4ac"
     },
     "builder/live-lab-oracle-canonical-20261020": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec"
     },
     "builder/live-lab-owner-ux-rebuild-20261015": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "8583ea6e46b123e831e8af489ad1043b810a0cf4"
     },
     "builder/mega-e-autonomous-runtime-20261021": {
@@ -456,8 +512,8 @@
       "sha_at_snapshot": "82da975878eb9b525e1845103fe7b35e7aeca404"
     },
     "builder/multi-source-ideation-intake-20261021": {
-      "disposition": "PARK",
-      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "disposition": "DELETE_PROVEN_SAFE",
+      "reason": "Deleted with exact lease; remote absence verified; provenance reachable from retained project authority",
       "sha_at_snapshot": "bbdea6a794377f8cab54fa8bcb6ad2242616e426"
     },
     "builder/oracle-economic-loop-recovery-20261019": {
@@ -656,7 +712,7 @@
       ],
       "live_surface_review": "All 33 survivors scanned; current canonical/default executable consumers rebound, historic branch-only scripts/filters are stale snapshots; actual Lab binding still pending publication and its source branch excluded from this batch."
     },
-    "phase": "PREPARED_BEFORE_DESTRUCTIVE_MUTATION"
+    "phase": "VERIFIED_REMOTE_ABSENCE_AND_RECEIPTED"
   },
   "legacy_workflow_limits": {
     "classification": "HISTORICAL_SNAPSHOT_GATES_AND_PRE_EXISTING_BASELINE_FAILURES; NOT_CURRENT_CANONICAL_QUALIFICATION",

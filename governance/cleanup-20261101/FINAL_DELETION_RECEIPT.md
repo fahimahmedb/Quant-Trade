@@ -16,5 +16,12 @@ Previous 247 deletions stand; no re-audit or restoration.
 | `codex/horizontal-completeness-prewave2-20261021` | `7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:32:01.009588+00:00 |
 | `codex/vertical-depth-prewave2-20261021` | `5d628db2949144ca6abf94327de3146f3983ecea` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:32:04.122700+00:00 |
 | `review/independent-architecture-challenger-20261026` | `642b551985f499b37286c3bc21b89c57294f63ca` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:32:07.342191+00:00 |
+| `builder/convergence-wave2-canonical-20261021` | `ebc72b9fd14f91420c37e0b7607f9bfb584a289a` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:00.006314+00:00 |
+| `builder/econ-readiness-integration-20261016` | `b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:04.403452+00:00 |
+| `builder/live-lab-3d-full-build-20261015` | `6076774f52ca2e619caaab57fb6a278f47608349` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:08.208157+00:00 |
+| `builder/live-lab-native-integration-20261015` | `fdfee2006869ff3770f752f32fb672da0b0fc4ac` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:13.204861+00:00 |
+| `builder/live-lab-oracle-canonical-20261020` | `d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:16.879797+00:00 |
+| `builder/live-lab-owner-ux-rebuild-20261015` | `8583ea6e46b123e831e8af489ad1043b810a0cf4` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:20.676880+00:00 |
+| `builder/multi-source-ideation-intake-20261021` | `bbdea6a794377f8cab54fa8bcb6ad2242616e426` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:34:24.462005+00:00 |
 
 Full gate/test/provenance details are in FINAL_MIGRATION_STATE.json and MIGRATION_RECEIPT.md.
