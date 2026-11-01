@@ -1,0 +1,105 @@
+{
+  "audit_base_ref": "e4b64bb1e621af13f79cb706694a4ca726c84296",
+  "project_canonical_head": "a2a254694ae800be8093578aedead1d58d098fbe",
+  "code_canonical_head": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+  "batch_count": 40,
+  "baseline_read_ids": [
+    6522387159,
+    6522396340,
+    6524600243,
+    6524768666,
+    6525472558,
+    6536761071,
+    6543997679
+  ],
+  "batch_entries": 368,
+  "batch_unique_ids": 368,
+  "baseline_overlap": [
+    6522387159,
+    6522396340,
+    6524600243,
+    6524768666,
+    6525472558,
+    6536761071,
+    6543997679
+  ],
+  "distinct_direct_union": 358,
+  "distinct_disposed_union": 368,
+  "remaining": 55,
+  "ledger_size": 423,
+  "hash_mismatches": [
+    4213566126,
+    4213613610,
+    4213613622,
+    4213706361,
+    4213706365,
+    4216334650,
+    4216334657,
+    4216334668,
+    4216475369,
+    4216475379,
+    4216475390,
+    4216475401
+  ],
+  "duplicate_ids": [],
+  "cursor": {
+    "schema_version": 1,
+    "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+    "owner_contract_comment_id": 6543997679,
+    "status": "SEMANTIC_READING_ACTIVE",
+    "decision_relevant_forensic_status": "CLOSED_DO_NOT_REOPEN_WITHOUT_CONTRADICTION",
+    "collection_status": {
+      "raw_inventory": "COLLECTED",
+      "durable_archives": "VERIFIED",
+      "archive_checkpoint_sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
+      "full_git_mirror_equivalence": "NOT_PROVEN",
+      "local_git_mirror_this_session": "BLOCK_ENVIRONMENT_DNS_RESOLUTION"
+    },
+    "denominators": {
+      "branches": 275,
+      "commits": 6393,
+      "file_blob_versions": 17221,
+      "document_blobs": 6465,
+      "discussion_objects": 423,
+      "timeline_events": 1775,
+      "unique_runs": 4806
+    },
+    "baseline_semantic_coverage": {
+      "document_blobs_read": 52,
+      "discussion_objects_read": 7,
+      "semantic_review_complete": false
+    },
+    "incremental_semantic_coverage": {
+      "batches_complete": 40,
+      "new_discussion_objects_directly_read": 358,
+      "new_discussion_objects_byte_identical_to_read": 10,
+      "new_discussion_objects_semantically_disposed": 368,
+      "estimated_discussion_objects_directly_read_total": 365,
+      "estimated_discussion_objects_semantically_disposed_total": 375,
+      "document_blobs_directly_read_delta": 0
+    },
+    "latest_batch": "governance/forensic-20261031/exhaustive/READ_BATCH_040_20261101.json",
+    "next_cursor": {
+      "source": "governance/forensic-20261031/discussion-coverage.csv",
+      "kind": "review-comments",
+      "id": 4219729762,
+      "sha256": "d65b9ddc08de189aacf77bfca2e37e5b9be2275b2fc61d82f5b56618f22285c7"
+    },
+    "resume_law": [
+      "Do not restart raw inventory or decision-relevant chronology.",
+      "Continue from next_cursor in discussion-coverage.csv.",
+      "A semantic object is complete only as READ, BYTE_IDENTICAL_TO_READ_OBJECT, or explicitly UNAVAILABLE with proof.",
+      "Deduplicate only by exact collected sha256.",
+      "Keep historical review findings separate from current project authority.",
+      "Do not mutate product/runtime during exhaustive reading."
+    ]
+  },
+  "ancestry_wave2_to_code": "0\t10",
+  "remote_branches_after_refresh": 279,
+  "tags": [],
+  "limitations": [
+    "union verifies documentary dispositions not actual reader comprehension",
+    "all heads frozen at refresh; audit worker advanced during this mission",
+    "fetch heads/tags is not proof of mirror equivalence to every PR/notes/deleted ref"
+  ]
+}
