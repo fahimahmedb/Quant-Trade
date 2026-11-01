@@ -1,17 +1,572 @@
-name: Final Two Branch Cleanup — PARKED
+name: Final Two Branch Cleanup — Dependency First
 
 on:
+  push:
+    branches:
+      - project/canonical
+    paths:
+      - .github/workflows/final-two-branch-cleanup.yml
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: quant-trade-dependency-first-cleanup
+  cancel-in-progress: false
 
 jobs:
-  parked:
+  cleanup:
+    if: github.ref == 'refs/heads/project/canonical'
     runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ github.token }}
+      PROJECT_REF: project/canonical
+      CODE_REF: code/canonical
+      AUDITOR_REF: audit/forensic-checkpoint-20261019
+      ACTIVE_AGENT_REF: builder/research-os-autonomous-loop-20261015
+      CLEANUP_DIR: governance/cleanup-20261101
+      BATCH_SIZE: '40'
     steps:
-      - name: Branch retirement is parked by Owner decision
+      - name: Checkout project authority with full history
+        uses: actions/checkout@v4
+        with:
+          ref: project/canonical
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Dependency-first classify, challenge, delete, and persist receipts
+        shell: bash
         run: |
-          echo "PARK: do not delete or rename repository branches."
-          echo "Owner decision 2026-10-31: branch cleanup will be performed later."
-          echo "No repository mutation is authorized by this workflow."
+          set -euo pipefail
+          git config user.name "quant-trade-cleanup[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+          python3 <<'PY'
+          import csv
+          import datetime as dt
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+          import urllib.request
+          from collections import defaultdict
+          from pathlib import Path
+
+          REPO = os.environ['REPO']
+          PROJECT = os.environ['PROJECT_REF']
+          CODE = os.environ['CODE_REF']
+          AUDITOR = os.environ['AUDITOR_REF']
+          ACTIVE_AGENT = os.environ['ACTIVE_AGENT_REF']
+          CLEANUP_DIR = Path(os.environ['CLEANUP_DIR'])
+          BATCH_SIZE = int(os.environ.get('BATCH_SIZE', '40'))
+          TOKEN = os.environ['GH_TOKEN']
+          CLEANUP_DIR.mkdir(parents=True, exist_ok=True)
+
+          def run(args, check=True, text=True):
+              p = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=text)
+              if check and p.returncode != 0:
+                  raise RuntimeError(f"command failed ({p.returncode}): {' '.join(args)}\n{p.stderr}")
+              return p
+
+          def git(*args, check=True):
+              return run(['git', *args], check=check)
+
+          def api(path):
+              url = f'https://api.github.com{path}'
+              out = []
+              while url:
+                  req = urllib.request.Request(url, headers={
+                      'Authorization': f'Bearer {TOKEN}',
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'quant-trade-dependency-first-cleanup'
+                  })
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      data = json.load(r)
+                      if isinstance(data, list):
+                          out.extend(data)
+                      else:
+                          return data
+                      link = r.headers.get('Link', '')
+                      nxt = None
+                      for part in link.split(','):
+                          if 'rel="next"' in part:
+                              m = re.search(r'<([^>]+)>', part)
+                              if m:
+                                  nxt = m.group(1)
+                      url = nxt
+              return out
+
+          def remote_snapshot():
+              git('fetch', '--prune', 'origin', '+refs/heads/*:refs/remotes/origin/*')
+              p = git('for-each-ref', '--format=%(refname:strip=3)\t%(objectname)\t%(committerdate:iso8601-strict)', 'refs/remotes/origin')
+              snap = {}
+              for line in p.stdout.splitlines():
+                  if not line.strip():
+                      continue
+                  parts = line.split('\t', 2)
+                  if len(parts) < 2:
+                      continue
+                  name, sha = parts[0], parts[1]
+                  if name == 'HEAD':
+                      continue
+                  snap[name] = {'sha': sha, 'date': parts[2] if len(parts) > 2 else ''}
+              return snap
+
+          def is_ancestor(sha, refsha):
+              return git('merge-base', '--is-ancestor', sha, refsha, check=False).returncode == 0
+
+          def tree_sha(sha):
+              p = git('rev-parse', f'{sha}^{{tree}}', check=False)
+              return p.stdout.strip() if p.returncode == 0 else ''
+
+          def unique_count(sha, project_sha, code_sha):
+              p = git('rev-list', '--count', sha, '--not', project_sha, code_sha, check=False)
+              try:
+                  return int(p.stdout.strip()) if p.returncode == 0 else None
+              except ValueError:
+                  return None
+
+          def remote_sha(branch):
+              p = git('ls-remote', '--heads', 'origin', f'refs/heads/{branch}', check=False)
+              if p.returncode != 0 or not p.stdout.strip():
+                  return None
+              return p.stdout.split()[0]
+
+          def load_receipt():
+              path = Path('governance/BRANCH_RETIREMENT_RECEIPT.json')
+              if not path.exists():
+                  return {}
+              data = json.loads(path.read_text(encoding='utf-8'))
+              return {x['name']: x['sha'] for x in data.get('branches_before', []) if 'name' in x and 'sha' in x}
+
+          LIVE_PREFIXES = (
+              '.github/workflows/', '.github/actions/', 'scripts/', 'ops/', 'infra/',
+              'deploy/', 'deployment/', 'systemd/', 'services/', 'config/', 'configs/',
+              'docker/', 'k8s/', 'kubernetes/', 'terraform/', 'ansible/'
+          )
+          LIVE_BASENAMES = {
+              'Makefile', 'Dockerfile', 'docker-compose.yml', 'docker-compose.yaml',
+              'compose.yml', 'compose.yaml', 'Procfile'
+          }
+          DOC_PATHS = {
+              'AGENTS.md', 'README.md', 'RESUME.md',
+              'governance/CURRENT_PROJECT_STATE.md', 'governance/AUTHORITY_STATE.json'
+          }
+
+          def ref_text_index(ref):
+              operational = []
+              docs = []
+              p = git('ls-tree', '-r', '--name-only', ref, check=False)
+              if p.returncode != 0:
+                  return operational, docs
+              for path in p.stdout.splitlines():
+                  is_live = path.startswith(LIVE_PREFIXES) or Path(path).name in LIVE_BASENAMES
+                  is_doc = path in DOC_PATHS
+                  if not (is_live or is_doc):
+                      continue
+                  show = git('show', f'{ref}:{path}', check=False)
+                  if show.returncode != 0:
+                      continue
+                  item = (path, show.stdout)
+                  (operational if is_live else docs).append(item)
+              return operational, docs
+
+          def refs_in_text(branch, items):
+              return [path for path, text in items if branch in text]
+
+          def load_open_dependencies():
+              prs = api(f'/repos/{REPO}/pulls?state=open&per_page=100')
+              pr_refs = set()
+              for pr in prs:
+                  pr_refs.add(pr.get('head', {}).get('ref', ''))
+                  pr_refs.add(pr.get('base', {}).get('ref', ''))
+              issues = api(f'/repos/{REPO}/issues?state=open&per_page=100')
+              issue_texts = []
+              open_issue_numbers = []
+              for issue in issues:
+                  if 'pull_request' in issue:
+                      continue
+                  n = issue.get('number')
+                  open_issue_numbers.append(n)
+                  issue_texts.append((n, (issue.get('title') or '') + '\n' + (issue.get('body') or '')))
+              for n in open_issue_numbers:
+                  try:
+                      comments = api(f'/repos/{REPO}/issues/{n}/comments?per_page=100')
+                  except Exception:
+                      comments = []
+                  for c in comments:
+                      issue_texts.append((n, c.get('body') or ''))
+              return pr_refs, issue_texts
+
+          def auditor_cursor_text():
+              parts = []
+              cursor_path = 'governance/forensic-20261031/exhaustive/EXHAUSTIVE_CURSOR.json'
+              p = git('show', f'origin/{AUDITOR}:{cursor_path}', check=False)
+              if p.returncode == 0:
+                  parts.append(p.stdout)
+                  try:
+                      cursor = json.loads(p.stdout)
+                      latest = cursor.get('latest_batch')
+                      if latest:
+                          q = git('show', f'origin/{AUDITOR}:{latest}', check=False)
+                          if q.returncode == 0:
+                              parts.append(q.stdout)
+                  except Exception:
+                      pass
+              return '\n'.join(parts)
+
+          def write_outputs(rows, start_count, start_ts, project_sha, code_sha, auditor_sha,
+                            default_branch, current_batch, batch_total, deleted, blockers,
+                            last_deleted, exact_groups, final=False):
+              fields = [
+                  'BRANCH','TIP_SHA','LAST_COMMIT_DATE','AUDITED_SHA','CHANGED_SINCE_AUDIT',
+                  'ANCESTOR_OF_PROJECT_CANONICAL','ANCESTOR_OF_CODE_CANONICAL',
+                  'IDENTICAL_TIP_GROUP','UNIQUE_COMMIT_COUNT','UNIQUE_TREE_OR_BLOB_DELTA',
+                  'OPEN_PR_DEPENDENCY','OPEN_ISSUE_DEPENDENCY','WORKFLOW_DEPENDENCY',
+                  'RUNTIME_DEPENDENCY','AUDITOR_DEPENDENCY','DOCUMENTATION_REFERENCE',
+                  'SCIENTIFIC_EVIDENCE_VALUE','CURRENT_REPLACEMENT','CLASSIFICATION',
+                  'STATUS_DETAIL','COUNTEREXAMPLE_SEARCH','FINAL_DISPOSITION'
+              ]
+              with (CLEANUP_DIR / 'BRANCH_CLASSIFICATION.csv').open('w', newline='', encoding='utf-8') as f:
+                  w = csv.DictWriter(f, fieldnames=fields)
+                  w.writeheader()
+                  for r in sorted(rows.values(), key=lambda x: x['BRANCH']):
+                      w.writerow({k: r.get(k, '') for k in fields})
+
+              counts = defaultdict(int)
+              for r in rows.values():
+                  disp = r.get('FINAL_DISPOSITION') or r.get('CLASSIFICATION')
+                  counts[disp] += 1
+              state = {
+                  'schema_version': 1,
+                  'mission': 'DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP',
+                  'status': 'COMPLETE' if final else 'RUNNING',
+                  'snapshot_timestamp': start_ts,
+                  'project_canonical_sha_at_classification': project_sha,
+                  'code_canonical_sha_at_classification': code_sha,
+                  'auditor_sha_at_last_reconcile': auditor_sha,
+                  'default_branch': default_branch,
+                  'total_remote_branches_at_start': start_count,
+                  'exact_tip_groups': exact_groups,
+                  'deleted_count': len(deleted),
+                  'current_batch': current_batch,
+                  'batch_total': batch_total,
+                  'last_deleted_ref': last_deleted,
+                  'next_batch': None if final or current_batch >= batch_total else current_batch + 1,
+                  'active_protected_refs': [PROJECT, CODE, AUDITOR, ACTIVE_AGENT, default_branch],
+                  'current_true_blockers': blockers,
+                  'counts_by_final_disposition': dict(counts),
+                  'owner_authorized_delete_proven_safe': True,
+                  'recovery_basis': 'Exact pre-cleanup tips recorded in governance/BRANCH_RETIREMENT_RECEIPT.json and old snapshot tips already attached as reachable parents of project/canonical. New or changed unreachable tips are not deleted.',
+                  'final': final
+              }
+              (CLEANUP_DIR / 'CLEANUP_STATE.json').write_text(json.dumps(state, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+              residual = [r for r in rows.values() if (r.get('FINAL_DISPOSITION') or '') != 'DELETED' and r['BRANCH'] not in (PROJECT, CODE)]
+              uv = [
+                  '# Unique Value / Residual Register', '',
+                  'This register is intentionally compact. It records only material that prevented pointer deletion or requires later reconciliation.', '',
+                  '| Branch | Disposition | Reason | Unique commits vs canonicals | Tree/blob delta |',
+                  '|---|---|---|---:|---|'
+              ]
+              for r in sorted(residual, key=lambda x: x['BRANCH']):
+                  uv.append(f"| `{r['BRANCH']}` | {r.get('FINAL_DISPOSITION') or r.get('CLASSIFICATION')} | {r.get('STATUS_DETAIL','').replace('|','/')} | {r.get('UNIQUE_COMMIT_COUNT','')} | {r.get('UNIQUE_TREE_OR_BLOB_DELTA','')} |")
+              if len(uv) == 6:
+                  uv.append('| — | — | No residual unique-value blocker | — | — |')
+              (CLEANUP_DIR / 'UNIQUE_VALUE_REGISTER.md').write_text('\n'.join(uv) + '\n', encoding='utf-8')
+
+              receipt = [
+                  '# Dependency-First Branch Deletion Receipt', '',
+                  f'- Snapshot: `{start_ts}`',
+                  f'- Start branches: **{start_count}**',
+                  f'- Deleted so far: **{len(deleted)}**',
+                  f'- Default branch preserved: `{default_branch}`',
+                  f'- Active auditor preserved: `{AUDITOR}` @ `{auditor_sha}`',
+                  '',
+                  '## Deleted refs', '',
+                  '| Branch | Audited/current tip at deletion |',
+                  '|---|---|'
+              ]
+              for name, sha in deleted:
+                  receipt.append(f'| `{name}` | `{sha}` |')
+              if not deleted:
+                  receipt.append('| — | — |')
+              receipt += ['', '## Safety rule', '', 'Each deletion used a server-side force-with-lease against the exact re-read remote SHA. A changed ref, live dependency, open PR/issue dependency, active auditor/agent ref, default branch, or tip not reachable from a retained ref was not deleted.']
+              (CLEANUP_DIR / 'DELETION_RECEIPT.md').write_text('\n'.join(receipt) + '\n', encoding='utf-8')
+
+          def persist_outputs(rows, *args, **kwargs):
+              # Reconcile project/canonical before writing durable batch state. Never force-push.
+              remote = remote_sha(PROJECT)
+              local = git('rev-parse', 'HEAD').stdout.strip()
+              if remote and remote != local:
+                  git('fetch', 'origin', PROJECT)
+                  git('reset', '--hard', f'origin/{PROJECT}')
+              write_outputs(rows, *args, **kwargs)
+              git('add', str(CLEANUP_DIR))
+              if git('diff', '--cached', '--quiet', check=False).returncode == 0:
+                  return git('rev-parse', 'HEAD').stdout.strip()
+              batch = kwargs.get('current_batch', args[6] if len(args) > 6 else '?')
+              final = kwargs.get('final', False)
+              msg = f"cleanup: persist dependency-first {'final' if final else 'batch ' + str(batch)} receipt"
+              git('commit', '-m', msg)
+              for attempt in range(3):
+                  p = git('push', 'origin', f'HEAD:{PROJECT}', check=False)
+                  if p.returncode == 0:
+                      return git('rev-parse', 'HEAD').stdout.strip()
+                  git('fetch', 'origin', PROJECT)
+                  git('rebase', f'origin/{PROJECT}', check=False)
+              raise RuntimeError('Unable to persist cleanup state without force-push after 3 attempts')
+
+          start_ts = dt.datetime.now(dt.timezone.utc).isoformat()
+          snapshot = remote_snapshot()
+          start_count = len(snapshot)
+          if PROJECT not in snapshot or CODE not in snapshot or AUDITOR not in snapshot:
+              raise RuntimeError('Required authority/auditor ref missing from fresh snapshot')
+
+          project_sha = snapshot[PROJECT]['sha']
+          code_sha = snapshot[CODE]['sha']
+          auditor_sha = snapshot[AUDITOR]['sha']
+          repo_meta = api(f'/repos/{REPO}')
+          default_branch = repo_meta['default_branch']
+          receipt_map = load_receipt()
+          pr_refs, issue_texts = load_open_dependencies()
+          project_ops, project_docs = ref_text_index(f'origin/{PROJECT}')
+          code_ops, code_docs = ref_text_index(f'origin/{CODE}')
+          op_items = project_ops + code_ops
+          doc_items = project_docs + code_docs
+          audit_text = auditor_cursor_text()
+
+          groups = defaultdict(list)
+          for name, meta in snapshot.items():
+              groups[meta['sha']].append(name)
+          duplicate_group_count = sum(1 for names in groups.values() if len(names) > 1)
+
+          protected = {PROJECT, CODE, AUDITOR, ACTIVE_AGENT, default_branch}
+          rows = {}
+          project_tree = tree_sha(project_sha)
+          code_tree = tree_sha(code_sha)
+
+          for branch, meta in snapshot.items():
+              tip = meta['sha']
+              audited_sha = receipt_map.get(branch, '')
+              changed = bool(audited_sha and audited_sha != tip)
+              anc_project = is_ancestor(tip, project_sha)
+              anc_code = is_ancestor(tip, code_sha)
+              group = groups[tip]
+              workflow_paths = [p for p in refs_in_text(branch, op_items) if p.startswith('.github/workflows/') or p.startswith('.github/actions/')]
+              runtime_paths = [p for p in refs_in_text(branch, op_items) if p not in workflow_paths]
+              doc_paths = refs_in_text(branch, doc_items)
+              open_pr = branch in pr_refs
+              issue_hits = [str(n) for n, text in issue_texts if branch in text]
+              auditor_dep = branch != AUDITOR and branch in audit_text
+              t_sha = tree_sha(tip)
+              tree_delta = 'NO' if t_sha in (project_tree, code_tree) else 'YES'
+              ucount = 0 if anc_project or anc_code else unique_count(tip, project_sha, code_sha)
+              sci = 'PRESERVED_BY_RETAINED_GIT_REACHABILITY' if anc_project or anc_code else 'NOT_PROVEN_PRESERVED_FOR_CURRENT_TIP'
+              replacement = 'project/canonical reachable-history archive' if anc_project else ('code/canonical reachable history' if anc_code else '')
+
+              classification = 'UNKNOWN'
+              detail = ''
+              counter = 'NOT_RUN'
+              if branch == PROJECT or branch == CODE:
+                  classification, detail, counter = 'KEEP_ACTIVE', 'canonical authority', 'NOT_APPLICABLE'
+              elif branch == AUDITOR:
+                  classification, detail, counter = 'PROTECTED_ACTIVE_AUDIT', 'active forensic semantic-reading branch', 'NOT_APPLICABLE'
+              elif branch == ACTIVE_AGENT:
+                  classification, detail, counter = 'KEEP_ACTIVE', 'active autonomous-agent working ref', 'NOT_APPLICABLE'
+              elif branch == default_branch:
+                  classification, detail, counter = 'PARK', 'repository default branch; admin-level default migration not performed by cleanup', 'BLOCKED_BY_DEFAULT_BRANCH'
+              elif open_pr:
+                  classification, detail, counter = 'KEEP_ACTIVE', 'head/base of an open PR', 'LIVE_PR_DEPENDENCY'
+              elif workflow_paths or runtime_paths:
+                  classification = 'KEEP_ACTIVE'
+                  detail = 'live repository dependency: ' + ','.join(workflow_paths + runtime_paths)
+                  counter = 'LIVE_BRANCH_NAME_DEPENDENCY'
+              elif auditor_dep:
+                  classification, detail, counter = 'PROTECTED_ACTIVE_AUDIT', 'referenced by current auditor cursor/batch', 'ACTIVE_AUDITOR_DEPENDENCY'
+              elif issue_hits:
+                  classification, detail, counter = 'PARK', 'exact branch ref appears in open issue/comment(s): ' + ','.join(issue_hits), 'OPEN_ISSUE_COUNTEREXAMPLE'
+              elif anc_project or anc_code:
+                  classification = 'DELETE_PROVEN_SAFE'
+                  detail = 'current tip is reachable from retained authority history; no live branch-name/PR/issue/auditor dependency found'
+                  counter = 'PASS'
+              else:
+                  # New/changed unique history is not deleted merely because final tree may look equivalent.
+                  classification = 'PARK'
+                  if changed:
+                      detail = 'CHANGED_SINCE_AUDIT and current tip is not reachable from retained authority history'
+                      counter = 'CURRENT_TIP_NOT_ARCHIVED'
+                  elif not audited_sha:
+                      detail = 'new/unindexed current tip is not reachable from retained authority history'
+                      counter = 'UNARCHIVED_NEW_REF'
+                  else:
+                      detail = 'historical ref has current unique commits not reachable from retained authority history'
+                      counter = 'UNREACHABLE_UNIQUE_HISTORY'
+
+              rows[branch] = {
+                  'BRANCH': branch,
+                  'TIP_SHA': tip,
+                  'LAST_COMMIT_DATE': meta['date'],
+                  'AUDITED_SHA': audited_sha,
+                  'CHANGED_SINCE_AUDIT': 'YES' if changed else 'NO',
+                  'ANCESTOR_OF_PROJECT_CANONICAL': 'YES' if anc_project else 'NO',
+                  'ANCESTOR_OF_CODE_CANONICAL': 'YES' if anc_code else 'NO',
+                  'IDENTICAL_TIP_GROUP': ';'.join(sorted(group)) if len(group) > 1 else '',
+                  'UNIQUE_COMMIT_COUNT': '' if ucount is None else str(ucount),
+                  'UNIQUE_TREE_OR_BLOB_DELTA': tree_delta,
+                  'OPEN_PR_DEPENDENCY': 'YES' if open_pr else 'NO',
+                  'OPEN_ISSUE_DEPENDENCY': ','.join(issue_hits),
+                  'WORKFLOW_DEPENDENCY': ','.join(workflow_paths),
+                  'RUNTIME_DEPENDENCY': ','.join(runtime_paths),
+                  'AUDITOR_DEPENDENCY': 'YES' if auditor_dep else 'NO',
+                  'DOCUMENTATION_REFERENCE': ','.join(doc_paths),
+                  'SCIENTIFIC_EVIDENCE_VALUE': sci,
+                  'CURRENT_REPLACEMENT': replacement,
+                  'CLASSIFICATION': classification,
+                  'STATUS_DETAIL': detail,
+                  'COUNTEREXAMPLE_SEARCH': counter,
+                  'FINAL_DISPOSITION': ''
+              }
+
+          candidates = [b for b, r in rows.items() if r['CLASSIFICATION'] == 'DELETE_PROVEN_SAFE']
+          candidates.sort()
+          batch_total = (len(candidates) + BATCH_SIZE - 1) // BATCH_SIZE
+          deleted = []
+          blockers = []
+          last_deleted = None
+
+          # Persist complete initial classification before first destructive mutation.
+          persist_outputs(rows, start_count, start_ts, project_sha, code_sha, auditor_sha,
+                          default_branch, 0, batch_total, deleted, blockers, last_deleted,
+                          duplicate_group_count, final=False)
+
+          for batch_index in range(batch_total):
+              batch = candidates[batch_index * BATCH_SIZE:(batch_index + 1) * BATCH_SIZE]
+              # Refresh all mutable evidence once per batch.
+              snapshot_now = remote_snapshot()
+              current_project_sha = snapshot_now.get(PROJECT, {}).get('sha')
+              current_code_sha = snapshot_now.get(CODE, {}).get('sha')
+              current_auditor_sha = snapshot_now.get(AUDITOR, {}).get('sha')
+              if not current_project_sha or not current_code_sha or not current_auditor_sha:
+                  raise RuntimeError('Authority/auditor ref disappeared during cleanup')
+              auditor_sha = current_auditor_sha
+              pr_refs_now, issue_texts_now = load_open_dependencies()
+              project_ops_now, _ = ref_text_index(f'origin/{PROJECT}')
+              code_ops_now, _ = ref_text_index(f'origin/{CODE}')
+              op_items_now = project_ops_now + code_ops_now
+              audit_text_now = auditor_cursor_text()
+
+              for branch in batch:
+                  row = rows[branch]
+                  expected = row['TIP_SHA']
+                  current = remote_sha(branch)
+                  if current is None:
+                      row['FINAL_DISPOSITION'] = 'DELETED'
+                      row['STATUS_DETAIL'] += '; ref already absent at mutation gate'
+                      continue
+                  if current != expected:
+                      row['CLASSIFICATION'] = 'CHANGED_SINCE_AUDIT'
+                      row['FINAL_DISPOSITION'] = 'PARK'
+                      row['STATUS_DETAIL'] = f'CHANGED_SINCE_AUDIT at deletion gate: {expected} -> {current}'
+                      row['COUNTEREXAMPLE_SEARCH'] = 'STALE_SNAPSHOT_BLOCKED'
+                      blockers.append({'branch': branch, 'reason': 'CHANGED_SINCE_AUDIT', 'audited_sha': expected, 'current_sha': current})
+                      continue
+                  if branch in {PROJECT, CODE, AUDITOR, ACTIVE_AGENT, default_branch}:
+                      row['FINAL_DISPOSITION'] = 'KEEP_ACTIVE' if branch != default_branch else 'PARK'
+                      row['STATUS_DETAIL'] = 'protected ref at deletion gate'
+                      blockers.append({'branch': branch, 'reason': 'PROTECTED_AT_GATE'})
+                      continue
+                  if branch in pr_refs_now:
+                      row['FINAL_DISPOSITION'] = 'KEEP_ACTIVE'
+                      row['STATUS_DETAIL'] = 'became open-PR dependency before deletion'
+                      blockers.append({'branch': branch, 'reason': 'OPEN_PR_DEPENDENCY'})
+                      continue
+                  issue_hits_now = [str(n) for n, text in issue_texts_now if branch in text]
+                  if issue_hits_now:
+                      row['FINAL_DISPOSITION'] = 'PARK'
+                      row['STATUS_DETAIL'] = 'open issue/comment dependency appeared before deletion: ' + ','.join(issue_hits_now)
+                      blockers.append({'branch': branch, 'reason': 'OPEN_ISSUE_DEPENDENCY', 'issues': issue_hits_now})
+                      continue
+                  live_paths_now = refs_in_text(branch, op_items_now)
+                  if live_paths_now:
+                      row['FINAL_DISPOSITION'] = 'KEEP_ACTIVE'
+                      row['STATUS_DETAIL'] = 'live workflow/runtime dependency found at deletion gate: ' + ','.join(live_paths_now)
+                      blockers.append({'branch': branch, 'reason': 'LIVE_DEPENDENCY', 'paths': live_paths_now})
+                      continue
+                  if branch in audit_text_now:
+                      row['FINAL_DISPOSITION'] = 'PARK'
+                      row['STATUS_DETAIL'] = 'current auditor cursor/batch references branch at deletion gate'
+                      blockers.append({'branch': branch, 'reason': 'AUDITOR_DEPENDENCY'})
+                      continue
+                  # Re-evaluate reachability against fresh authority heads. This is the material counterexample gate.
+                  if not (is_ancestor(current, current_project_sha) or is_ancestor(current, current_code_sha)):
+                      row['FINAL_DISPOSITION'] = 'PARK'
+                      row['STATUS_DETAIL'] = 'current tip no longer proven reachable from retained authority history'
+                      row['COUNTEREXAMPLE_SEARCH'] = 'UNREACHABLE_AT_DELETE_GATE'
+                      blockers.append({'branch': branch, 'reason': 'UNREACHABLE_AT_DELETE_GATE', 'sha': current})
+                      continue
+
+                  # Server-side lease makes the deletion fail if the ref changes after the re-read.
+                  lease = f'--force-with-lease=refs/heads/{branch}:{current}'
+                  delete_spec = f':refs/heads/{branch}'
+                  p = git('push', lease, 'origin', delete_spec, check=False)
+                  verify = remote_sha(branch)
+                  if p.returncode == 0 and verify is None:
+                      row['FINAL_DISPOSITION'] = 'DELETED'
+                      row['STATUS_DETAIL'] += '; deleted after fresh dependency/reachability challenge'
+                      deleted.append((branch, current))
+                      last_deleted = branch
+                  else:
+                      row['CLASSIFICATION'] = 'BLOCK'
+                      row['FINAL_DISPOSITION'] = 'BLOCK'
+                      row['STATUS_DETAIL'] = 'deletion rejected/failed; no retry with force: ' + (p.stderr or '').strip()[:500]
+                      blockers.append({'branch': branch, 'reason': 'DELETE_REJECTED', 'sha': current})
+
+              persist_outputs(rows, start_count, start_ts, project_sha, code_sha, auditor_sha,
+                              default_branch, batch_index + 1, batch_total, deleted, blockers,
+                              last_deleted, duplicate_group_count, final=False)
+
+          # Assign final dispositions to every non-deleted row.
+          for branch, row in rows.items():
+              if row['FINAL_DISPOSITION']:
+                  continue
+              c = row['CLASSIFICATION']
+              if c == 'DELETE_PROVEN_SAFE':
+                  row['FINAL_DISPOSITION'] = 'PARK'
+                  row['STATUS_DETAIL'] += '; candidate was not processed to deletion'
+              elif c == 'PROTECTED_ACTIVE_AUDIT':
+                  row['FINAL_DISPOSITION'] = 'KEEP_ACTIVE'
+              elif c in ('KEEP_ACTIVE', 'KEEP_EVIDENCE', 'PARK', 'BLOCK', 'UNKNOWN'):
+                  row['FINAL_DISPOSITION'] = c
+              elif c == 'CHANGED_SINCE_AUDIT':
+                  row['FINAL_DISPOSITION'] = 'PARK'
+              else:
+                  row['FINAL_DISPOSITION'] = 'PARK'
+
+          # Final auditor delta reconciliation: only current head/cursor; no rescan.
+          git('fetch', '--prune', 'origin', f'+refs/heads/{AUDITOR}:refs/remotes/origin/{AUDITOR}')
+          final_auditor_sha = git('rev-parse', f'origin/{AUDITOR}').stdout.strip()
+          auditor_sha = final_auditor_sha
+          persist_outputs(rows, start_count, start_ts, project_sha, code_sha, auditor_sha,
+                          default_branch, batch_total, batch_total, deleted, blockers,
+                          last_deleted, duplicate_group_count, final=True)
+
+          print(json.dumps({
+              'start_branches': start_count,
+              'delete_candidates': len(candidates),
+              'deleted': len(deleted),
+              'residual': sum(1 for r in rows.values() if r['FINAL_DISPOSITION'] != 'DELETED'),
+              'default_branch': default_branch,
+              'project_sha_at_start': project_sha,
+              'code_sha_at_start': code_sha,
+              'auditor_sha_final': auditor_sha,
+              'cleanup_dir': str(CLEANUP_DIR)
+          }, indent=2))
+          PY
