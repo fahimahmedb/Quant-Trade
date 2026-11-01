@@ -129,12 +129,21 @@ Do not build that next layer before the real bridge is proven; otherwise we woul
 Canonical method: `REUSE > CONNECT > REPAIR > BUILD`.
 Valid outcomes: `NO_CHANGE_REQUIRED`, `CONNECT`, `REPAIR`, `PARK`, `BLOCK`, `UNKNOWN`.
 
-## Cumulative retrospective — 2026-11-01
+## Cumulative retrospective — rewritten 2026-11-01
 
-Owner-requested interpretation of the completed reconstruction is published in `governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md`, commit `ddecba62a067c504bd1eb9654528ae2df5133220`.
+Owner requested a complete rewrite based on the newer, detailed audit pass. Current assessment: `governance/RETROSPECTIVE_AND_TWO_BRANCH_METHOD_2026-11-01.md`, commit `9edd9a7772e46f2f570a4a4b39877d804160d592`. The first edition remains in Git history at `ddecba62a067c504bd1eb9654528ae2df5133220`.
 
-Reading: all 16 deep weeks and 16 handoffs; 71 dated daily entries preserved plus the November 1 update. Historical closure remains decision-relevant, not semantic reading of every blob. Current refs, Wave2 ancestry and exact qualification run/steps/log were checked; no tests rerun or host accessed for the retrospective.
+NEW_AUDIT_SOURCE=`audit/forensic-checkpoint-20261019@1b537233652b8c9a719855269b4907b14ad5a100`
+NEW_PASS_STATUS=`SEMANTIC_READING_ACTIVE`; decision-relevant historical closure and exhaustive semantic coverage are separate scopes.
 
-Bounded documentary findings at code `13c9ff03…` / project `e862ee10…`: code `AGENTS.md` still routes to historical Blue authorities; project `README.md` still presents the initial forensic checkpoint as an audit in progress. Prepare entry-point alignment to this current router without rebuilding code or restarting history. The old two-branch plan is partly executed and must not create a new Wave2 candidate.
+All 30 new read batches were read for this rewrite. Their 307 distinct objects comprise 297 READ + 10 BYTE_IDENTICAL entries. Six of the seven baseline READ objects also occur in the new batches: 6522387159, 6522396340, 6524600243, 6524768666, 6525472558, 6536761071. Correct documented union = 308/423 objects (298 distinct direct reads + 10 byte-identical dispositions), 115 remaining in that snapshot. The source cursor estimates 314/304 by adding an overlapping baseline. The 307 hashes match the collected ledger and the ten exact-dedup links are valid. No source auditor cursor was mutated. Source baseline document coverage remains 52/6465 with delta 0 in this pass; no exhaustive document-read completion is claimed.
 
-Two authority branches already exist; the fresh paginated inventory still exposes 279 branches / 270 tips. Branch removal, default migration and data/workflow dependencies are a separate prepared retirement lot, not authorized or executed by the retrospective. Destructive cleanup remains false. The runtime critical path and global-mission-selection limitation above are unchanged. Assessment recommendations are not runtime or economic qualification.
+Material interpretation corrections:
+- statistical history includes an October-8 reform against an indiscriminate universal trial penalty, with family/selection-aware budgets and underpowered outcomes distinct from rejection;
+- WP2 P1/P2 repair was reported and tested locally at `a95d38fd9cbb640075af92b94352532668b85a50` (comment 6522774726); remote publication/independent closure of that repair is not established. Preserve local work in the history without qualifying the older remote head;
+- exact-byte publication, transferable/resumable acquisition, access-ready review, narrow same-lineage repair and EDGE-FLOW are retained effective methods. Written continuation laws alone did not prove actual wakeup;
+- 71 historical active days plus November-1 update remain in the cumulative appendix; 15 primary comment bodies match the audit SHA256s, and the later Owner science-freeze directive was read directly.
+
+Current code/head and targeted run identity were rechecked unchanged; no new software tests, runtime activation, fresh economic look or branch retirement was performed. Two authority branches exist; fresh paginated inventory still has 279 branches / 270 distinct tips. Code AGENTS and project README still need bounded entry-point alignment; the old convergence plan must not recreate an already-built Wave2 candidate.
+
+This retrospective does not grant deployment, science or destructive cleanup authority and does not change the active VM critical path above. Read the rewritten assessment for interpretation/method; use this router for execution.
