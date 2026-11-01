@@ -11,16 +11,15 @@
   "code_canonical_sha_at_classification": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
   "counts_by_final_disposition": {
     "DELETED": 247,
-    "KEEP_ACTIVE": 18,
-    "PARK": 13,
-    "PROTECTED_ACTIVE_AUDIT": 1
+    "KEEP_ACTIVE": 19,
+    "PARK": 13
   },
   "current_batch": 7,
   "current_true_blockers": [],
   "default_branch": "blue/master-v2-2026-09-20",
   "deleted_count": 247,
   "exact_tip_groups": 7,
-  "final": false,
+  "final": true,
   "last_deleted_ref": "ux/intake-20261015",
   "mission": "DEPENDENCY_FIRST_TOTAL_REPOSITORY_CLEANUP",
   "next_batch": null,
@@ -29,6 +28,6 @@
   "recovery_basis": "Exact pre-cleanup tips recorded in governance/BRANCH_RETIREMENT_RECEIPT.json and old snapshot tips already attached as reachable parents of project/canonical. New or changed unreachable tips are not deleted.",
   "schema_version": 1,
   "snapshot_timestamp": "2026-11-01T13:39:34.460914+00:00",
-  "status": "RUNNING",
+  "status": "COMPLETE",
   "total_remote_branches_at_start": 279
 }

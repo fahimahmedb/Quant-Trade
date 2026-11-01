@@ -4,7 +4,7 @@ This register is intentionally compact. It records only material that prevented 
 
 | Branch | Disposition | Reason | Unique commits vs canonicals | Tree/blob delta |
 |---|---|---|---:|---|
-| `audit/forensic-checkpoint-20261019` | PROTECTED_ACTIVE_AUDIT | active forensic semantic-reading branch | 91 | YES |
+| `audit/forensic-checkpoint-20261019` | KEEP_ACTIVE | active forensic semantic-reading branch | 91 | YES |
 | `audit/owner-recovery-preserved-20261026` | PARK | exact branch ref appears in open issue/comment(s): 44,44 | 0 | YES |
 | `blue/master-v2-2026-09-20` | PARK | repository default branch; admin-level default migration not performed by cleanup | 0 | YES |
 | `builder/autonomy-e2e-20261012` | PARK | exact branch ref appears in open issue/comment(s): 38,38 | 0 | YES |
