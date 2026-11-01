@@ -1,3 +1,5 @@
+> **Historical pre-convergence mission record.** Current branch bindings, audit pause, canonical evidence and residual host gates are in [FINAL_MIGRATION_STATE.json on project/canonical](https://github.com/fahimahmedb/Quant-Trade/blob/project/canonical/governance/cleanup-20261101/FINAL_MIGRATION_STATE.json). Implementation refs below are preserved historical identities, replaced operationally by `code/canonical`; do not restart their tasks.
+
 # CURRENT PROJECT STATE — 2026-10-31
 
 Status: **ACTIVE CONTROL TOWER ROUTER — evidence-bound navigation, not autonomous runtime authority**.
