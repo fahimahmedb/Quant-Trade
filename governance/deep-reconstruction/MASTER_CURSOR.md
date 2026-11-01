@@ -3,130 +3,130 @@
 STATUS=DEEP_RECONSTRUCTION_ACTIVE
 GLOBAL_FORENSIC_RESTART=FALSE
 
-## Canonical anchor
+## Anchors
 
 `CODE_CANONICAL_COMPARISON_HEAD=13c9ff03f0898e9af28abaa3dab78a520c70c887`
+`PROJECT_MEMORY_BRANCH=project/canonical`
 
-Project memory is incremental on `project/canonical`; reconcile fresh remote state before every write.
+Fresh remote state must be reconciled before every write.
 
 ## Mission
 
-Recover only decision-relevant historical value missed by completed surface chronology.
+Recover only decision-relevant historical value missed by the completed surface chronology.
 
-Primary evidence outranks branch names, prose, READY/FINAL labels, local test claims and raw commit volume.
+Primary evidence outranks names, prose, READY/FINAL labels, local test claims and commit volume.
 
 Decision vocabulary:
 `NO_CHANGE_REQUIRED | CONNECT | PORT_SELECTIVELY | REPAIR | GOVERNANCE_ONLY | PARK | RETIRE_FROM_ACTIVE_SCOPE | BLOCK | UNKNOWN`.
 
 Construction != qualification != integration != promotion != activation != use != end-to-end proof.
 
-## Efficiency law
+## Efficiency / anti-restart law
 
-- reuse completed forensic surface/census/checkpoints as navigation;
-- descend only when primary evidence can change a current decision;
-- aggregate repetitive iterations/automation;
-- no-material-activity/out-of-scope weeks are valid complete results;
-- do not rebuild an old implementation if a stronger canonical owner exists;
-- do not invent missing SHAs when bounded evidence only exists in the frozen forensic checkpoint.
+- reuse completed surface/checkpoints/handoffs as navigation;
+- descend only when primary evidence can change a present decision;
+- aggregate repeated CI/heartbeats/feeds/iterations;
+- do not rebuild if a stronger canonical owner exists;
+- no-activity/out-of-scope/NO_CHANGE_REQUIRED are valid completed results;
+- details live in weekly checkpoints; this cursor remains a compact router, not a duplicate archive.
 
-## Weekly checkpoint law
+## Completed weeks
 
-Every completed calendar week publishes:
-1. `DEEP_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`
-2. `HANDOFF_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`
+- 2026-07-13 -> 2026-07-19 — COMPLETE
+- 2026-07-20 -> 2026-07-26 — COMPLETE
+- 2026-07-27 -> 2026-08-02 — COMPLETE
+- 2026-08-03 -> 2026-08-09 — COMPLETE
+- 2026-08-10 -> 2026-08-16 — COMPLETE/CORRECTED
+- 2026-08-17 -> 2026-08-23 — COMPLETE / NO_MATERIAL_ACTIVITY
+- 2026-08-24 -> 2026-08-30 — COMPLETE / NO_MATERIAL_ACTIVITY
+- 2026-08-31 -> 2026-09-06 — COMPLETE / OUT_OF_SCOPE_SIDE_PROJECT
+- 2026-09-07 -> 2026-09-13 — COMPLETE
+- 2026-09-14 -> 2026-09-20 — COMPLETE
+- 2026-09-21 -> 2026-09-27 — COMPLETE
+- 2026-09-28 -> 2026-10-04 — COMPLETE
+- 2026-10-05 -> 2026-10-11 — COMPLETE
+- 2026-10-12 -> 2026-10-18 — COMPLETE
 
-## Completed weeks — compressed
+Every week has both:
+`DEEP_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`
+and
+`HANDOFF_WEEK_YYYY-MM-DD_YYYY-MM-DD.md`.
 
-- `2026-07-13 -> 2026-07-19`: COMPLETE — current causal/preregistration owners; old overlay/Buy&Hold not active; no port.
-- `2026-07-20 -> 2026-07-26`: COMPLETE — later defects supersede FINAL/READY; old deployment/strategy code retired; no port.
-- `2026-07-27 -> 2026-08-02`: COMPLETE — prereg != untouched holdout; adaptive multiplicity; PR #1 unmerged; no port.
-- `2026-08-03 -> 2026-08-09`: COMPLETE — Rule 9 fail-closed; negative-family closure; canonical Scientific Memory/Legacy gate owns anti-restart.
-- `2026-08-10 -> 2026-08-16`: COMPLETE/CORRECTED — bounded generation may precede identity; concrete candidate screened before freeze/handoff; no over-governance.
-- `2026-08-17 -> 2026-08-23`: COMPLETE / no decision-relevant object recovered in frozen surface.
-- `2026-08-24 -> 2026-08-30`: COMPLETE / no decision-relevant object recovered in frozen surface.
-- `2026-08-31 -> 2026-09-06`: COMPLETE / restaurant-stock out of Quant scope.
-- `2026-09-07 -> 2026-09-13`: COMPLETE — economic terminal objective, ledger/gate/Judge laws retained; corrected V1 invariants already current; PR #12/#13 closed unmerged; old gap-inflated metrics superseded.
-- `2026-09-14 -> 2026-09-20`: COMPLETE — exact-head/scoped qualification and merge authority reconstructed; current SEC P0 owns key semantics; contamination irreversible; no port.
-- `2026-09-21 -> 2026-09-27`: COMPLETE — CI-only authority, economic-parameter truthfulness, Rail C adoption and scheduled data collection reconstructed; no code port.
-- `2026-09-28 -> 2026-10-04`: COMPLETE — Weather transport correction, same-session independence limit, bounded A1 authority and A2 static/CI distinction reconstructed; no code port.
-- `2026-10-05 -> 2026-10-11`: COMPLETE — bounded A2 runtime proof vs replay/activation separated; F1 negative family closure, F2 permission block, current Edge-Lab single-use owner confirmed; no port.
+## Latest completed week — 2026-10-12 -> 2026-10-18
 
-## Latest completed week — 2026-10-05 -> 2026-10-11
+Read first:
+- `governance/deep-reconstruction/DEEP_WEEK_2026-10-12_2026-10-18.md`
+- `governance/deep-reconstruction/HANDOFF_WEEK_2026-10-12_2026-10-18.md`
 
 Durable decisions:
-- `45f5c940140788bb96c7b6da8581d9aa7c627dfa` -> bounded offline harness-test authority only; no A2 research execution.
-- `78d537de681363ed83a6c7787aba4319f3c73c4d` -> Builder preserves real regression-first bounded execution evidence and D5 repair, including final `279/279 PASS`; no economic/A2 authority.
-- `2776fed7fcfb8a10e0be6ad924c7f2fc8f6c9a26` -> Astra accepts bounded runtime-test evidence but does not independently replay/execute tests.
-- `6e0320f15d48a924cef9507af5641e47de9fe938` -> execution authority E ratified conditional, not effective; no activation/VM action/A2 execution/release/merge.
-- `f236ab2b9840471bc790a631c6267010ed5ebf64` -> lot-3 independent review `BLOCKED_INCOMPLETE_EVIDENCE`; no root blocking defect found does not activate E.
-- PR #25 -> F1 discovery only, closed unmerged, predecessor private exposure remains UNKNOWN.
-- PR #26 -> sealed F1 B result `FAMILY_STATUS=REJECT`, closed unmerged; no post-outcome retune/rerun.
-- PR #27 -> F2 `BLOCKED_DATA_PERMISSION`, closed unmerged; exact-head CI does not clear permission.
-- PR #28 -> EURUSD proxy frozen before market-price access, closed unmerged; proxy pass could not grant confirmation/live authority.
-- `5920e21152d606a3fb15cd1f79ce459f6b1686ba` -> historical single-use Edge-Lab receipt; current `src/quant/edge_lab/discovery.py` owns stronger generalized no-replay/frozen-contract/append-only/closed-family semantics.
-- current project router: active critical path is VM multi-wake host proof; historical Weather/F1/F2/EURUSD reactivation is not current work.
-- no historical code port/current repair/branch cleanup authorized.
+- Edge-Lab heartbeats/telemetry are liveness of one capability, not architecture growth.
+- current `src/quant/edge_lab/discovery.py` is the stronger generalized owner for frozen contracts, single-use claims, no replay, append-only exposure/result history, closed families and multiplicity.
+- Live Lab reducer/state-machine pattern is observability only: UI cannot create research/economic truth.
+- Research OS run `38740440664` exact head `083f7bc7...` SUCCESS qualifies the domain shape only; authorities remain false and repo-wide inherited gates can still fail.
+- current Research OS pipeline already owns persistent synthetic scientific infrastructure, Legacy gate, ledgers, validation/red-team and shadow-without-observation.
+- PR #29 Live Lab 3D is closed unmerged; qualified UX candidate != integration/promotion/deployment.
+- 16-Oct `NO_CANDIDATE` after mechanism disconfirmation is a valid terminal scientific state before trial/outcome access.
+- 17-Oct Form-144 pinned single-look is an instance of current Edge-Lab, not a new engine.
+- 18-Oct leveraged-ETF daily-reset mechanism is `FROZEN_PRE_OUTCOME`; freeze != result.
+- `CODE_PORT_REQUIRED=FALSE` and `CODE_REPAIR_PROVEN_REQUIRED=FALSE`.
 
-Read:
-- `governance/deep-reconstruction/DEEP_WEEK_2026-10-05_2026-10-11.md`
-- `governance/deep-reconstruction/HANDOFF_WEEK_2026-10-05_2026-10-11.md`
+## Cross-week laws retained
 
-## Cross-week authority laws
-
-- later primary correction outranks earlier FINAL/READY/VALIDATED labels;
-- preregistration does not recreate untouched holdout independence;
-- adaptive historical looks count toward effective multiplicity;
+- later primary correction outranks earlier labels;
+- preregistration != untouched holdout after data-informed hypothesis generation;
+- adaptive historical looks count toward multiplicity;
 - closed-unmerged PR != integrated capability;
 - qualification is exact-head and scope-local;
-- `BUILT != QUALIFIED != INTEGRATED != PROMOTED != T0_AUTHORIZED != CONTINUOUSLY_PROVEN`;
-- `INFORMATION_LEAK_CORRECTION != RETROACTIVE_BLINDNESS_RESTORATION`;
-- current candidate memory screening is required before freeze, not before identity-less frontier generation;
-- `CI_OBSERVATION_SURFACE != INTEGRATION_AUTHORITY != GATE_AUTHORITY`;
-- `ILLUSTRATIVE_CAPITAL_OR_INCOMPLETE_COST_MODEL_CANNOT_CLOSE_AN_ECONOMIC_GATE`;
-- `ZERO_TRIALS_DUE_TO_ORCHESTRATION_FAILURE != NEGATIVE_ECONOMIC_RESULT`;
-- `AUTOMATED_OBSERVATION != ARCHITECTURAL_PROGRESS`;
-- `RESEARCH_OUTPUT != CAPITAL_AUTHORITY`;
-- `REALIZED_WINDOW_INFERENCE != PROSPECTIVE_TRANSPORT`;
-- `NO_FROZEN_TRANSPORT_BRIDGE => PROSPECTIVE_ABSTENTION`;
-- `SAME_SESSION_ROLE_SWITCH != INDEPENDENT_REVIEW`;
-- `ORCHESTRATION_PLAN != TASK_EXECUTION != QUALIFIED_RESULT`;
-- `AUDIT_PASS != OWNER_AUTHORIZATION`;
-- `OWNER_A1_DOCUMENTATION_AUTHORIZATION != A2_EXECUTION_AUTHORIZATION`;
-- `CI_GREEN != AUDIT_VERDICT_UPGRADE != EXECUTION_AUTHORITY != RUNTIME_PROOF`;
-- `BOUNDED_RUNTIME_TEST_AUTHORITY != A2_RESEARCH_EXECUTION_AUTHORITY`;
-- `BUILDER_TEST_EXECUTION != INDEPENDENT_REPLAY`;
-- `RATIFIED_AUTHORITY != EFFECTIVE_AUTHORITY != ACTIVATION != EXECUTION`;
-- `UNKNOWN_PRIOR_EXPOSURE != PROVEN_UNEXPOSED`;
-- `DISCOVERY_RESULT != CONFIRMATORY_VERDICT`;
-- `CI_SUCCESS != DATA_PERMISSION`;
-- `SEALED_NEGATIVE_VERDICT => CLOSE_FROZEN_FAMILY; NO_POST_OUTCOME_RETUNING`;
-- `PROXY_PASS != CONFIRMATION != LIVE_AUTHORITY`.
+- `BUILT != QUALIFIED != INTEGRATED != PROMOTED != AUTHORIZED != USED != END_TO_END_PROVEN`;
+- information-leak repair != retroactive blindness;
+- candidate memory screening is required before freeze, not before identity-less frontier generation;
+- CI surface/success != integration/permission/authority/runtime proof;
+- illustrative capital or incomplete costs cannot close an economic gate;
+- orchestration failure with zero trials != negative scientific result;
+- automated observation/telemetry != architectural progress;
+- research output/proxy != live/capital authority;
+- realized-window evidence != prospective transport without a frozen bridge;
+- same-session role switch != independent review;
+- audit/evidence review != Owner authorization != independent replay;
+- ratified authority != effective authority != activation != execution;
+- unknown prior exposure remains UNKNOWN;
+- sealed negative verdict closes the frozen family; integration/publication failure does not buy another scientific look;
+- observability UI != research truth;
+- mechanism disconfirmation may validly terminate as NO_CANDIDATE;
+- mechanism freeze != test result.
 
-## Open cross-week gaps
+## Current project blocker
+
+Current project router identifies the active engineering critical path as external-host VM multi-wake proof.
+
+`VM_MULTI_WAKE_PROOF=BLOCK_EXTERNAL_HOST_ACCESS`
+
+Historical Weather/F1/F2/EURUSD reconstruction is not current implementation work.
+
+## Open gaps inherited from completed weeks
 
 `NONE_REQUIRING_CODE_CHANGE_FROM_COMPLETED_WEEKS`
 
-Current live critical path remains external-host VM multi-wake proof per `governance/CURRENT_PROJECT_STATE.md`; this reconstruction must not expand that blocker into historical rebuilds.
+Branch cleanup remains PARK unless separately authorized.
 
 ## Current cursor
 
-`CURRENT_WEEK_START=2026-10-12`
-`CURRENT_WEEK_END=2026-10-18`
+`CURRENT_WEEK_START=2026-10-19`
+`CURRENT_WEEK_END=2026-10-25`
 `CURRENT_WEEK_STATUS=IN_PROGRESS`
 
 Start with:
-1. 12 Oct Edge-Lab/telemetry/time-to-edge only where it changes current ownership or scientific memory;
-2. reuse completed 13-16 Oct surface checkpoint for autonomous research-loop transitions, trial closure and any canonical/convergence decisions;
-3. continue 17-18 Oct only to the calendar boundary from the next completed surface checkpoint;
-4. aggregate heartbeats, telemetry, data-feeds and repetitive CI;
-5. compare surviving semantics with current `code/canonical`; no port unless a concrete missing invariant survives.
+1. 19-Oct stable hypothesis identity;
+2. 20-Oct bounded autonomous `NOOP_FRONTIER_EXHAUSTED` and Oracle V2/CP057 exact qualification-source provenance;
+3. 21-24 Oct completed surface checkpoint;
+4. 25 Oct from the next checkpoint only;
+5. prove separately engineering qualification, scientific authority, integration, deployment and current canonical ownership;
+6. aggregate repeated wakes/CI/telemetry rather than treating them as capabilities.
 
 ## Resume law
 
-Do NOT restart the global audit or completed weeks.
-Do NOT infer significance from commit count or branch name.
-Do NOT promote CI/local labels into integration/use.
-Do NOT infer real-capital economics from simulation capital.
-Do NOT treat automated feed observations as architectural progress.
+Do NOT restart completed weeks.
+Do NOT infer significance from branch names, commit counts or labels.
+Do NOT reopen historical science unless new primary evidence changes a present decision.
 Do NOT merge/delete branches during reconstruction.
-Resume from `CURRENT_WEEK_*`, publish checkpoint + handoff, then advance.
+Publish the weekly checkpoint + handoff before advancing this cursor.
