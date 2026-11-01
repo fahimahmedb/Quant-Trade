@@ -1,0 +1,40 @@
+{
+  "experiment_id": "disc-sec-form4-eod-l1-v0",
+  "decision": "PARK",
+  "subtype": "PARK_DATA",
+  "label": "EXPLORATORY_NOT_EXECUTED",
+  "at": "2026-10-11T22:23:23.734417+00:00",
+  "public_source_head": "08dcfc39b4b22e0b25e54edde7b6accbb2bc4502",
+  "evidence": [
+    {
+      "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/git/trees/08dcfc39b4b22e0b25e54edde7b6accbb2bc4502?recursive=1",
+      "fact": "Tree contains census implementation and tests, but no artifacts/sec_form4_census/events.jsonl or census output dataset."
+    },
+    {
+      "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/git/ref/heads/builder/sec-form4-census-v2a",
+      "fact": "Current source head remains08dcfc39b4b22e0b25e54edde7b6accbb2bc4502."
+    },
+    {
+      "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/workflows/sec-form4-census-proof.yml/runs?per_page=3",
+      "fact": "Three latest runs failed; latest35416321420,2026-09-19."
+    },
+    {
+      "url": "https://api.github.com/repos/fahimahmedb/Quant-Trade/actions/runs/35416321420/artifacts",
+      "fact": "total_count=0; no surviving run artifact listed."
+    }
+  ],
+  "outcome_access": false,
+  "economic_test_count": 0,
+  "paid_usd": 0,
+  "verdict": {
+    "RESULT": "PARK: the referenced built census is code, not an accessible completed event dataset at the current source head.",
+    "EFFECT_SIZE": "NOT_MEASURED",
+    "UNCERTAINTY": "Earlier caches/private outputs may exist; their absence globally is not asserted. No new SEC crawl or live worker launched.",
+    "POWER_LIMITATION": "No event population loaded; N unknown, not zero market events.",
+    "ECONOMIC_SIGNIFICANCE": "No test of insider underreaction or EOD returns. Relaxing survivorship cannot supply a missing event census.",
+    "FAILED_CRITERIA": "Existing event population retrievable within cheap reuse route.",
+    "LESSON": "Implementation/proof workflow is not an acquired census; verify the actual dataset before promising EOD results.",
+    "FAMILY_STATUS": "PARK_DATA, not KILL; F3 cluster relationship preserved.",
+    "NEXT_DECISION": "Reuse actual saved event/census artifact if located with hashes; no multi-hour census rebuild in this cycle. Proceed France."
+  }
+}

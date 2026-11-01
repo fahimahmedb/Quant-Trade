@@ -1,0 +1,51 @@
+{
+  "CHEAP_DATA_NOW": "SEC notice/indenture documents are public; complete exchange ticker/denomination, unconditional notice, raw daily price and correct clean/dirty treatment still need proof.",
+  "CHEAP_EXPRESSION": "One fixed small position after notice, held to full contractual redemption; no partial-call lottery, make-whole rate reconstruction or high-yield bond proxy.",
+  "ECONOMIC_SIGNIFICANCE": "Contractual principal is not captured spread without the correct traded instrument and accrual.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "Complete free event-to-listed-note mapping and unconditional fixed-payment route."
+  ],
+  "FAMILY_STATUS": "PARK_DATA",
+  "FATAL_PROBLEM": "Bounded search located full calls and $25 denomination schedules separately, but did not establish one complete exchange-listed $25 unconditional full-call data chain. Equity ticker in issuer press release is not proof the called notes are exchange traded.",
+  "LESSON": "A common-stock exchange ticker in a debt-call press release does not establish an exchange-traded note.",
+  "MECHANISM": "After an unconditional full redemption notice, a small exchange-listed debt position becomes a short-duration contractual cash claim; liquidity-demanding sellers may leave a transient discount before delisting.",
+  "NEXT_DECISION": "Only reopen on a concrete mapped $25 full-call notice plus documented raw OHLC/accrual route; next L0 CEF DRIP discounted share issuance.",
+  "POWER_LIMITATION": "No event or economic sample.",
+  "RESULT": "PARK_DATA",
+  "UNCERTAINTY": "A usable event may exist; bounded metadata search did not qualify it.",
+  "WHO_PAYS": "Issuer owes contractual principal/accrual; any trading rent would come from secondary-market sellers demanding immediacy, not from the call creating wealth.",
+  "WHY_PERSIST": "Small $25-note issues, thin liquidity, delisting operations, credit/notice-condition risk and awkward interest accounting reduce institutional scale.",
+  "classification": "PARK_DATA",
+  "exposure": {
+    "economic_look": false,
+    "incidental": "Firy call and other historical full-redemption snippets; FedEx supplemental final consideration and Performance Shipping preferred-redemption completion appeared unsolicited. Exclude all from fresh confirmation. No entry-price or return joined.",
+    "private_history": "UNKNOWN",
+    "search_exposed_ciks": [
+      "1630805",
+      "1675149",
+      "1048911",
+      "893538",
+      "1687187",
+      "1464343",
+      "1801661",
+      "884614",
+      "1481241"
+    ]
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "05edb8f50d6afbdb954d79c52b07aea8c49e70e7",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:14:46.225781+00:00",
+  "sources": [
+    {
+      "fact": "Full note call, but make-whole term and note exchange listing/denomination unresolved.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1630805/000110465926082840/tm2620294d1_ex99-2.htm"
+    },
+    {
+      "fact": "$25 note scheduled call prices and Nasdaq/NYSE delisting language; does not itself prove a new full-call event.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1464343/000143774924002534/ex_620567.htm"
+    }
+  ]
+}

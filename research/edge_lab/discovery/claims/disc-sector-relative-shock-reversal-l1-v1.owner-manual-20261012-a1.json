@@ -1,0 +1,19 @@
+{
+  "experiment_id": "disc-sector-relative-shock-reversal-l1-v1",
+  "invocation_id": "owner-manual-20261012-a1",
+  "claimed_at_utc": "2026-10-12T13:18:00Z",
+  "predeclaration_commit": "d959e32bedb2871f963c666743d391f1c7d76d89",
+  "source_scope": [
+    "committed data/datasets/us_sector_etf_daily.csv",
+    "committed data/datasets/us_sector_etf_daily.meta.json"
+  ],
+  "dataset_fingerprint_expected": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+  "outcome_access_before_claim": false,
+  "metadata_only_before_claim": true,
+  "attempt": 1,
+  "replay_allowed": false,
+  "paid_usd": 0,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "authority_note": "Manual Discovery V4.2 claim committed after metadata/schema planning only and before computing any return, event, payoff or threshold count for this expression. One frozen economic execution only."
+}

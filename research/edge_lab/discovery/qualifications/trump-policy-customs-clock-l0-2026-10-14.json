@@ -1,0 +1,326 @@
+{
+  "recorded_at": "2026-10-14T08:29:37.783349+00:00",
+  "head_observed": "8ebddec33bd5d1812a6dc2eae067d261981daceb",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "ONE_SEED_DOCUMENTARY_L0",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "completed_question": {
+    "id": "trump_policy_event_transmission_l0:customs-clock",
+    "status": "PARK",
+    "decision": "One source/clock qualification completed with access gap; no retry, alternative proxy or economic look."
+  },
+  "RESULT": "PARK_DATA: CUSTOMS_NOTICE_CLOCK_UNQUALIFIED; CBP_DOCUMENTATION_HTTP403; BROAD_POLICY_MECHANISM_ALREADY_RECORDED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "No CSMS document body, historical coverage, immutable release timestamp, rights or first-economic-publication provenance acquired. This URL failure does not prove universal CBP unavailability or rejection of policy effects.",
+  "POWER_LIMITATION": "Four saved documentation/method packets reused, one primary access attempt denied before body read; zero policy event population, price/return/sentiment payloads or economic tests.",
+  "ECONOMIC_SIGNIFICANCE": "A precise administrative timestamp is not necessarily new information to investors. Treating publication or implementation as initial surprise could manufacture apparent timing. The limited attempt does not support a delayed policy edge.",
+  "FAILED_CRITERIA": [
+    "No authenticated first-public customs implementation corpus or revision semantics.",
+    "No ex-ante novelty/surprise criterion backed by event provenance.",
+    "No admissible selected expression, matched executable benchmark, fees or frozen outcome protocol."
+  ],
+  "LESSON": "Keep politician identity, original public knowledge, legal publication and effective-date mechanics separate. Reuse existing family evidence and park a denied documentary route rather than substitute news tone or retune event selection.",
+  "FAMILY_STATUS": "Trump seed consumed once with PARK_DATA scoped to the customs clock subquestion; existing policy-announcement-repricing HYPOTHESIS remains untested. No new independent family/trial, no directional conclusion. All three specified seeds have dispositions; no rebranding.",
+  "NEXT_DECISION": {
+    "kind": "L0_DOCUMENTARY_SCOUT",
+    "status": "OPEN",
+    "family": "us-savings-bond-accrual-calendar",
+    "economic_access_authorized": false,
+    "reuse_reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "question": "After original frozen-prospective priorities, qualify one different small-player mechanism: whether official US savings-bond issue/accrual/redemption calendar rules create a bounded timing benefit relative to leaving the same cash in an appropriate liquid benchmark. Start with issuer cashing/interest-accrual rules and eligibility/holding/penalty constraints only. No current or historical rates, calculator examples executed, purchase/redemption, account, price/payoff data or test before a separate linked declaration and claim. Reject the idea if timing benefit is merely an apparent gain from ignoring mandatory holding, early-redemption penalty, inflation reset, liquidity, taxes or opportunity cost. Do not presume attractive rates or accessible eligibility.",
+    "primary_document_candidates": [
+      "https://www.treasurydirect.gov/savings-bonds/i-bonds/cashing-a-bond/"
+    ],
+    "source_status": "PROPOSED_NOT_ACCESSED_OR_QUALIFIED; primary issuer documentation candidate, no data/rights/operational availability asserted",
+    "causal_distinction": "Potential issuer contractual calendar treatment of retail savings cash, not auction inventory price pressure, sovereign news, crypto funding carry, ETF timing, liquidation-service competition or prediction-market arbitrage. Shared rates/inflation/liquidity exposure is acknowledged. This may be a small capped cash-management benefit, never market alpha by assumption.",
+    "decision_use": "Determine from contractual rules whether a nontrivial bounded timing question survives obvious holding/penalty/benchmark objections before spending any economic look or data effort.",
+    "prospective_A_E_priority": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "latest_metadata_snapshot": {
+        "candidate_forms_observed": 0,
+        "coverage_complete_since_T0": false,
+        "entries": 100,
+        "new_entries_vs_prior": 24,
+        "newest_updated": "2026-10-13T21:52:38-04:00",
+        "observed_at": "2026-10-14T06:21:57.661754+00:00",
+        "oldest_updated": "2026-10-13T20:03:19-04:00",
+        "sha256": "ad5c480525ca8e0ed8780b2dd899af70695b670c5cecf7dcbaa3d5bb725983df"
+      },
+      "pending": "One new bounded feed snapshot adds 24 entries (forms 4/3/144 only) versus the saved snapshot and contains no A-E candidate form. Earlier incomplete sources and chronology remain unresolved; no event selected and no universal absence claim.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN"
+    },
+    "passive_VX_priority": {
+      "prospective_T0": "2026-10-15T00:00:00Z",
+      "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+      "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+      "status": "NOT_DUE_BEFORE_T0"
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
+      "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+      "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers.",
+      "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection."
+    },
+    "seed_history": [
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+        "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+        "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
+      },
+      {
+        "seed_id": "trump_policy_event_transmission_l0",
+        "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+        "L0_verdict": "PARK_DATA",
+        "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+        "same_candidate_id": "policy-announcement-repricing",
+        "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial."
+      }
+    ],
+    "unconsumed_seeds": [],
+    "resume_rule": "A-E fresh admissible event evidence and mechanically due VX retain priority. All three named seeds now have scoped dispositions, none resets a trial. Consume no second mechanism in this pass. A new SEC metadata time window may be checked when useful; do not replay incomplete filings or choose a later event around unresolved chronology. No actual account or money action is authorized."
+  },
+  "l0": {
+    "seed_id": "trump_policy_event_transmission_l0",
+    "matched_family": "policy-announcement-repricing",
+    "subquestion": "customs-implementation-notice-first-public-clock",
+    "verdict": "PARK_DATA",
+    "MECHANISM": "Unexpected changes or clarifications to tariff implementation could change near-term importer costs and relative company/sector valuations. This is a narrowed source/clock question within the existing policy-announcement mechanism, not a new strategy merely because Trump is mentioned.",
+    "WHO_PAYS": "Hypothesized import-exposed firms or constrained holders/hedgers needing adjustments when genuinely new implementation information arrives; no forced transaction or slow incorporation established by the reviewed sources.",
+    "WHY_PERSIST": "Interpretation, implementation and supply-chain frictions might delay adjustment, but official technical guidance may simply repeat an already public decision. Persisting rent is not established.",
+    "CHEAP_DATA_NOW": "Cached Federal Register documentation establishes a keyless informational API, not earliest announcement or verified current source records. Cached GDELT documentation supplies coverage/timestamp cautions. One official CBP messaging documentation route returns403; no usable CSMS schema, first-public timestamps, contents/history or reuse permission qualified.",
+    "CHEAP_EXPRESSION": "Only a candidate surface: import-exposure-relative repricing following an objectively novel customs implementation notice. No issuer/sector basket, direction, deadline, window, exposure score, benchmark, threshold or sample selected. Needs a distinct linked declaration if later justified.",
+    "FATAL_PROBLEM": "First public knowledge may precede Register filing, implementation notice or legal effective date; apparent novelty can be retrospective; policy reversals and simultaneous macro/factor news confound direction; exact source availability and executable/costed benchmark are unqualified.",
+    "WHY_NOT_ARBITRAGED": "Not established. Official notice dissemination can be rapid and widely anticipated. Administrative timestamp precision does not establish economic surprise or a delayed tradable response."
+  },
+  "cached_primary_evidence": [
+    {
+      "evidence_id": "policy-federal-register-free-api-20261011",
+      "path": "research/edge_lab/STATE.json",
+      "packet_digest": "0708c8393ab621e703661a87cb658786c843402fd0c3ee597591b2ade25a855f",
+      "url": "https://www.federalregister.gov/developers/documentation/api/v1",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "Federal Register API primary documentation"
+      },
+      "fact": "No Owner API account is needed to qualify this metadata source. Document date, public-inspection filing, signature, publication, amendment and our first reception are different clocks; none automatically gives the earliest public Trump statement.",
+      "passage": "Public API endpoints require an HTTP client and no API key. The website XML is informational; official legal editions are linked govinfo PDFs.",
+      "limit": "Documentation only; no live API records, documents, prices, return, sentiment score or economic outcome read. Govinfo authentication/rights and actual API schema/clock need separate qualification.",
+      "reuse_only": true
+    },
+    {
+      "evidence_id": "policy-gdelt-sentiment-clock-limits-20261011",
+      "path": "research/edge_lab/STATE.json",
+      "packet_digest": "ec96b73756f615b17b6a949b16d358eca688774089ef0a1d86855374c4c97bcc",
+      "url": "https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/",
+      "version": {
+        "issued": "2017-06-20",
+        "observed_at": "2026-10-11",
+        "scope": "published DOC2.0 specification, not verified2026production retention"
+      },
+      "fact": "News tone is editorial coverage, not investors’ expected-return positioning. A capped query-dependent corpus, multilingual repeats, retrospective timestamps, refresh lag and smoothing can create false predictive timing. Historical2017description cannot authenticate today’s coverage or first publication.",
+      "passage": "Document API combines machine-translated news, mean tone/coverage and query-dependent article lists. ArticleList defaults to75/max250; modes differ, and smoothing shifts peaks. Rolling3month wording also coexists with back-to-Jan2017 wording.",
+      "limit": "No API/tonechart/articles/underlying publishers extracted. GDELT does not confer underlying publishers’ extraction rights. Recheck only a distinct current-source question, not replay this old documentation. No market reaction or positive performance paper consulted.",
+      "reuse_only": true
+    },
+    {
+      "evidence_id": "policy-public-inspection-access-window-20261011",
+      "path": "research/edge_lab/STATE.json",
+      "packet_digest": "a59d8085bccb3117ff3d73582e547513fa664a38bb6a354f5d64c1a5090b73dc",
+      "url": "https://www.federalregister.gov/api/v1/public-inspection-documents.json?per_page=1&fields%5B%5D=document_number&fields%5B%5D=filed_at&fields%5B%5D=publication_date&fields%5B%5D=type",
+      "version": {
+        "claim_commit": "4697b05532cd5fda3c3c060d609b07b20c5a3b7d",
+        "claim_id": "347095c6ff5a77e451129776d7f74f4e344d633ed4505e5d554a98a1c8257dab",
+        "observed_at": "2026-10-11T16:26:10.933758+00:00",
+        "sha256": "d46a3d2d868e3953675bed2036b761fd5409a2004dcc5cb37481801ba52d3b10"
+      },
+      "fact": "A real keyless official metadata request succeeded. Current list is source-declared unavailable, not a zero-event universe. Earliest useful next single schema/clock probe is13Oct2026 12:45UTC (America/New_York EDT). The initial source response cannot qualify filed_at, amendment schema, first-public news, retrospective vintages or execution.",
+      "passage": "The API returnedHTTP200 withcount0 and its own message: Public Inspection list unavailable after midnightEastern; returnsTuesday13October08:45Eastern. No result records returned.",
+      "limit": "Only228B, one request0retries,0marketrecords/0sentimentvalues/0economiclooks; snapshot/hash/raw retained. Do not poll the known closure hourly or treat publication/filing as earliest Trump news. Announced return is not guaranteed server availability; no API account needed.",
+      "reuse_only": true
+    },
+    {
+      "evidence_id": "policy-sentiment-model-causality-challenge-20261011",
+      "path": "research/edge_lab/STATE.json",
+      "packet_digest": "cc44db35181113a5753c572e3f2eb3955da7bebe53f98349256600f4470cdb50",
+      "url": "https://github.com/fahimahmedb/Quant-Trade/tree/research/edge-lab-continuous/research/edge_lab",
+      "version": {
+        "observed_at": "2026-10-11",
+        "source": "own preregistration design challenge; no external claim of predictability"
+      },
+      "fact": "A current LLM may remember historical event outcomes; retrospectively choosing phrases, Trump episodes or best asset/horizon is data leakage/selection. Begin only with official-source metadata availability, no automatic bullish/bearish mapping and no blanket sentiment index.",
+      "passage": "Separate economic policy content, surprise versus past expectations and investor positioning. Freeze taxonomy and causal classifier before market outcomes; archive exact event bytes, corrections, first-receipt UTC and corpus coverage.",
+      "limit": "No event/asset/horizon/threshold/grid selected using returns. Future test requires public-information exposure accounting, matched executable prices, latency/clock, costs/borrow/funding/margin, clustered events/days and a fixed decision contract. Prospective observations and exploratory backtest are distinct.",
+      "reuse_only": true
+    }
+  ],
+  "source_receipts": [
+    {
+      "url": "https://www.cbp.gov/trade/automated/cargo-systems-messaging-service",
+      "observed_at": "2026-10-14T08:26:51.065137+00:00",
+      "scope": "One Trump-policy seed L0: primary customs messaging documentation and public timestamp semantics only; no market prices, returns, sentiment values or event-return join",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 403,
+      "error_body_read": false,
+      "wall_seconds": 0.5015595540171489,
+      "semantic_status": "PRIMARY_DOCUMENT_ACCESS_REFUSED_HTTP_403",
+      "body_sha256": null,
+      "response_body_bytes_read": 0,
+      "document_version": "UNAVAILABLE: body not read",
+      "limitation": "Observed refusal for this URL/environment only; no assertion that all CBP publication routes are inaccessible or that CSMS first-public availability is qualified. No retry or alternate-route bypass."
+    }
+  ],
+  "contradictions": [
+    "The existing policy family already includes Trump; naming a politician creates no distinct mechanism.",
+    "Cached Federal Register evidence distinguishes signature, public-inspection filing, publication, amendment and receipt from earliest public statement.",
+    "A technical customs notice may repeat an earlier announcement or implement a previously known rule; legal effective time is not automatically a surprise time.",
+    "Cached GDELT article/tone corpus is query-dependent, capped and subject to timestamp/smoothing/translation issues; it is not investor positioning or a replacement first-public clock.",
+    "Prior LLM exposure to historical episodes prevents selecting remembered winners or asserting pristine history."
+  ],
+  "reuse": {
+    "prior_proof": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+    "prior_sha256": "442695410ac304bdfd7b5da3892d87851310cc0b8e00f588406ad5c7989a757f",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "VX_protocol_and_register_unchanged": {
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.md": "56fd0be311eb4672136008cdb2b6655afe5ac1d3b9db5bfdef9c7f23a7d72a15",
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.register.json": "316aa2bf3ed1fbe29e515d8888e2324ec9eeeed9113b646eda4e7db26018f768"
+    },
+    "seed_sha256_before": "ed97daa42ff131ba4b3ad7ec0ed149872564e250591f7579226b28c3c0e2317d",
+    "method_sha256": "cdf528c28394a87f22a905b75783be0ced4468b3ea49d1ec60757527a7aa6f92",
+    "catalogue_check": "Existing STATE sources/evidence have no CBP/CSMS or TreasuryDirect/savings-bond entry; bounded name check only, not proof against unknown private exposure."
+  },
+  "priority_check": {
+    "A_E": "Last saved metadata snapshot at 2026-10-14T06:21:57Z reused; earlier partial sources and chronology remain unresolved. No new admissible event established, no absence claim or selection. No repeat feed this pass.",
+    "active_discovery_running": [],
+    "legacy_looks": {
+      "look:smard-2025-fixed-hours-proxy-v1": "UNKNOWN_OUTCOME",
+      "look:smard-2025-solar-noon-evening-proxy-v1": "COMPLETED_SPENT"
+    },
+    "VX": "Current time precedes 2026-10-15T00:00:00Z; not due, no economics/backfill/early payoff.",
+    "Public_Inspection": "Saved closure/window packet reused; no re-probe merely because its old not_before passed.",
+    "previous_UNKNOWN_not_resolved": true
+  },
+  "exposure": {
+    "type": "DOCUMENTARY_SOURCE_FEASIBILITY",
+    "scope": "One seed narrative, saved policy documentation/clock cautions and HTTP403 metadata. No CBP body, current or past tariff event record, selected market price/NAV/payoff/return/sentiment value or join. Next savings-bond idea is only proposed, not qualified or executed in this pass.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "seed_consumptions_this_pass": 1,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_document_requests": 1,
+    "response_body_bytes_read": 0,
+    "request_wall_seconds_sum": 0.5015595540171489,
+    "retries": 0,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "economic_payloads": 0,
+    "max_agent_minutes": 15,
+    "max_bytes_per_document": 524288,
+    "max_primary_document_requests": 3,
+    "max_total_document_bytes": 1572864,
+    "retries": 0
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "VX_register_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false,
+    "account_created": false,
+    "denied_source_bypassed": false
+  }
+}

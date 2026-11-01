@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_027_20261101",
+  "status": "COMPLETE",
+  "scope": "ISSUE44_PHASE1_BUILD_DIVERGENCE_BYTE_LOSS_AND_TRANSPORT_FIRST_REBUILD_LAW_6532389758_THROUGH_6532857531",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6532389758,"sha256":"9f3c382b33ad339523130b6ebdc8eade362a7e138339981c5f66b1cca7a8b103","status":"READ","summary":"Codex corrects architecture so existing GPT-OSS/VM worker remains scheduler/orchestrator and adds a bounded adapter, VM launcher, fencing, idempotent GitHub comments and causal readback. Local qualification passes; real dispatch/readback/unattended runtime remains unproven."},
+    {"kind":"issue-comment","id":6532450889,"sha256":"73a12264e1fb37ffd0c763dfd0a1a1d690b915df13997868745585fe8884bd28","status":"READ","summary":"Owner freezes all economic/scientific execution until the autonomy system itself reaches qualified READY_FOR_SCIENCE. Issue #44 must use synthetic/non-economic tasks only and preserve capital/live/prospective-exposure false."},
+    {"kind":"issue-comment","id":6532484687,"sha256":"6e9dd4dc66b158dc664b650c1ba36981b26c15d02247ca083a19cb5e26090ac7","status":"READ","summary":"Owner narrows critical path to Phase 1 connection only: existing worker hook, durable state, authenticated Codex dispatch/readback, GPT-OSS next decision, feature-flag isolation, synthetic recovery/fencing qualification, remote durability and runtime observability."},
+    {"kind":"issue-comment","id":6532527828,"sha256":"4c7783198572869a6412bd5fc88bfb8dc825dbb984ee1a866bf900247637c4dd","status":"READ","summary":"Owner asks informational model/reasoning-level question during active mission."},
+    {"kind":"issue-comment","id":6532540651,"sha256":"23cfd408f06a9eb812e5a32ae0d2c898145a752d435acbb4c5eb105bd646965d","status":"READ","summary":"Codex answers model/reasoning question without modifying project, explicitly noting exact reasoning effort is not proven from the session. This informational detour does not advance Phase 1."},
+    {"kind":"issue-comment","id":6532568158,"sha256":"97dd63e40a8e67e33db1bf0a77b2cad257f52d86e2719ded357ae4b7710d03a9","status":"READ","summary":"Owner explicitly resumes Phase 1 and forbids treating the informational model question as mission supersession; audit must not restart and critical path remains orchestrator connection."},
+    {"kind":"issue-comment","id":6532626851,"sha256":"cbd60d441099193e2d2f79d444c0d9f0912bfa0ec471cceb9c96fed450c938eb","status":"READ","summary":"Codex reports one local Phase 1 implementation with opt-in ResearchCampaign hook, durable orchestration state, authenticated GitHub dispatch/readback, exact causal identities and synthetic recovery/fencing tests. Local SHA 3f7ae0f... and remote durability/runtime observability remain unproven."},
+    {"kind":"issue-comment","id":6532650477,"sha256":"f59530453bbfeab7ebc40f1c4f8720efba91ff240e5b290f461b81166c5e3fb1","status":"READ","summary":"A second parallel local Phase 1 implementation is reported at 79cbacd... with similar adapter/VM executable semantics and green tests. Again VM deployment, remote durability and authenticated runtime loop remain unproven."},
+    {"kind":"issue-comment","id":6532692577,"sha256":"c85d4c52377bc4a36c6898ef962f121e8dceba0c7c2564ffb09f814cbbd5db7d","status":"READ","summary":"External remote verification finds both parallel Phase 1 SHAs absent. Owner classifies REMOTE_DURABILITY=false and the parallel outputs themselves as a convergence/fencing defect, forbids a third implementation and requires complete transportable bytes/hashes/base/manifest in Issue #44."},
+    {"kind":"issue-comment","id":6532724561,"sha256":"5cd40729d691886a063a7c1a13ce7febc1db4097aa15838521cac0ba5e2e393e","status":"READ","summary":"Codex exhaustively searches object DB, refs, reflogs, fsck and workspace and cannot recover either Phase 1 candidate. It refuses prose-based reconstruction and records exact recovery input needed. No third implementation is created."},
+    {"kind":"issue-comment","id":6532814030,"sha256":"2de8b3f224b0acbb5c7a07373da1217c9d4a8b59ac6c923964326bbe2240c61f","status":"READ","summary":"Owner resumes the transport challenge, first requiring reconciliation to any already-produced canonical package and otherwise exact recovery of one prior variant; no new implementation allowed."},
+    {"kind":"issue-comment","id":6532855569,"sha256":"317081df988853215f340f64fcfcc437038289d320fdbe0d3b3df22d550f2997","status":"READ","summary":"Codex proves all accessible candidate bytes are unrecoverable, including two later and two earlier implementation SHAs, filesystem/session/object stores. This closes recovery and establishes that exact Phase 1 work was lost because bytes were not transported durably."},
+    {"kind":"issue-comment","id":6532857531,"sha256":"ea96049d8ffcf0cf6912d4b20acd42f3664acb043aec78a56d072293e6abba18","status":"READ","summary":"Owner changes procedure to transport-first canonical rebuild: immutable base 42affc..., remote target branch pre-created, existing runtime/orchestrator primitives verified, max-small additive patch, exact full UTF-8 file bytes + per-file hashes + manifest hash + tests + VM commands required in Issue #44 before session ends."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 13,
+    "objects_directly_read": 13,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 13,
+    "cumulative_new_discussion_objects_directly_read": 260,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 270,
+    "estimated_total_discussion_objects_directly_read": 267,
+    "estimated_total_discussion_objects_semantically_disposed": 277,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"PARALLEL_LOCAL_BUILDS_WITHOUT_DURABLE_CONVERGENCE_CAUSE_LOSS","finding":"Two nearly equivalent Phase 1 implementations were built and tested in parallel, neither persisted remotely, and both exact byte sets disappeared. This is a direct, concrete example of large effort not capitalized because convergence/persistence occurred after construction rather than before worker termination.","current_product_decision_change":false},
+    {"classification":"PROSE_SUMMARY_NOT_RECOVERABLE_IMPLEMENTATION","finding":"Detailed summaries, test counts and local commit identifiers were insufficient to reconstruct the exact implementation once Git objects/workspaces disappeared. Exact bytes or a hash-addressed patch/bundle are required for durable engineering memory.","current_product_decision_change":false},
+    {"classification":"TRANSPORT_FIRST_INVERTS_FAILURE_MODE","finding":"The corrective procedure fixes immutable base and remote target before build and requires exact file contents/hashes/manifest in Issue #44 before session end. Persistence becomes a prerequisite to finishing the build, not an afterthought.","current_product_decision_change":false},
+    {"classification":"REUSE_EXISTING_RESEARCHCAMPAIGN_SEAM","finding":"Remote base inspection proves ResearchCampaign already supports injected workers and durable runtime primitives, so the canonical rebuild should be an additive adapter/hook rather than replacement scheduler/control plane.","current_product_decision_change":false},
+    {"classification":"SCIENTIFIC_FREEZE_SEPARATES_SYSTEM_QUALIFICATION_FROM_EDGE_RESEARCH","finding":"Economic hypothesis/outcome/prospective work is explicitly frozen during autonomy qualification, preventing infrastructure tests from contaminating science or making progress metrics ambiguous.","current_product_decision_change":false}
+  ],
+  "current_action": "ISSUE44_TRANSPORT_FIRST_CANONICAL_PHASE1_REBUILD_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6532906892,"sha256":"30e8426aea5dee3a0f073caa3d4929405974941fb46f1c2117e4be745708412a"}
+}

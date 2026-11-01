@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_017_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_F1_STAGE_A_RESULT_AUTONOMOUS_B_CHAIN_AND_TIMEOUT_RECOVERY_6077185924_THROUGH_6081332376",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6077185924,"sha256":"90379c90e670e29345bc41be5b91c8b02e250503c4f86bc80950dc14af37c785","status":"READ","summary":"Stage-A capture completes and is independently verified: 21088/21088 compressed archives, zero missing, zero parsed rows. Stage-B compressed collection runs separately. Stage-A runner refuses calculation while prior private result exposure remains UNKNOWN; atomic look reservation and provenance are prepared."},
+    {"kind":"issue-comment","id":6078716458,"sha256":"e8698d3b50142deaafad0659e44576935cd21f814a13dfb05066ea66815c65bb","status":"READ","summary":"After remote search finds no accessible prior result/reservation, Codex proceeds under UNKNOWN lineage: one atomic discovery look may be executed, uncertainty is written into metadata, no confirmatory claim is allowed, and any later-found prior exposure must be preserved."},
+    {"kind":"issue-comment","id":6078822745,"sha256":"f28a9dc1332bb5f33303ed71a9acd57b95766023eb7a569fddf9d625838efcf4","status":"READ","summary":"First documented F1 Stage-A result: theta=20%, annualized mean 3.823%, Sharpe 0.490, robust t 0.957, double-cost 1.114%, CAGR 3.592%, max DD 7.061%, exposure 52.09%. Mean is below assumed 4% cash. Status INCONCLUSIVE_UNDERPOWERED; no retuning and Stage B remains sealed."},
+    {"kind":"issue-comment","id":6079018611,"sha256":"efe333d2dee950f9fcb52b5b858e86c0f09eb783707e2e346daf2fa8b08e4c26","status":"READ","summary":"Autonomous Stage-B controller authenticates A and waits existing B capture; it will verify full coverage, atomically claim one B look, persist result/meta/report and publish verdict even without active agent. F2 remains BLOCKED_DATA_PERMISSION."},
+    {"kind":"issue-comment","id":6079376669,"sha256":"9c72115d5e6b821ade371c588d6c768f2915e4d77cf9c01361254d7e34718d83","status":"READ","summary":"B publication path is CI-qualified and fixture-tested for duplicate/mismatched publication. Old controller is safely replaced while capture remains active; no B reservation/calculation has occurred yet. Other swarm families remain killed/blocked by data, host or provenance constraints."},
+    {"kind":"issue-comment","id":6081332376,"sha256":"a7c0a372e27ebf9cd338015c7ebd12c7ed563669beef9528cf5906ba86e2d980","status":"READ","summary":"Stage-B acquisition attempt 1 times out after 300 minutes at 33100/35789 archives, but partial compressed artifact persists. Controller aborts before verification/look claim/economic run. Attempt 2 resumes same plan and missing keys only; no look/power reset and no duplicate acquisition."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 6,
+    "objects_directly_read": 6,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 6,
+    "cumulative_new_discussion_objects_directly_read": 157,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 167,
+    "estimated_total_discussion_objects_directly_read": 164,
+    "estimated_total_discussion_objects_semantically_disposed": 174,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"FIRST_F1_ECONOMIC_INFORMATION","finding":"After extensive infrastructure/governance work, F1 Stage A finally produces bounded economic evidence: positive raw mean but weak t-stat, below assumed cash and underpowered. Correct status is INCONCLUSIVE_UNDERPOWERED, not edge proof or family kill.","current_product_decision_change":false},
+    {"classification":"UNKNOWN_LINEAGE_HANDLED_EXPLICITLY","finding":"Inaccessible private-history uncertainty is persisted rather than erased; one discovery result is allowed with confirmatory claims disabled and any recovered prior exposure required to remain in lineage.","current_product_decision_change":false},
+    {"classification":"AUTONOMOUS_CONTROLLER_REDUCES_AGENT_DEPENDENCE","finding":"Stage-B controller can wait for an existing capture, verify it, atomically claim the look, execute once, persist results and publish a verdict without requiring a live Claude/Codex session.","current_product_decision_change":false},
+    {"classification":"RESUMABILITY_SAVES_MULTI_HOUR_WORK","finding":"A 300-minute acquisition timeout does not destroy 33100 downloaded archives; partial artifact and plan identity allow same-run recovery while preserving unopened economic look.","current_product_decision_change":false},
+    {"classification":"COLLECTION_PROGRESS_NOT_ECONOMIC_RESULT","finding":"Partial archive counts and successful recovery are kept distinct from statistical/economic evidence; no B statistic is inferred before complete coverage and atomic look reservation.","current_product_decision_change":false}
+  ],
+  "current_action": "F1_STAGE_B_RECOVERY_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6091234589,"sha256":"aeafe28de1d688d703e92be58546f2dfddcb9a216fb84368a0430b25ac5f8cb1"}
+}

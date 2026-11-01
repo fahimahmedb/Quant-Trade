@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:18:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_DOCUMENTARY_ORDERING",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "protocols": [
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+    "disc-us-reverse-split-round-up-prospective-l1-v2.md"
+  ],
+  "prospective_t0": "2026-10-12T21:00:00Z",
+  "economic_look_opened": false,
+  "selected_price_payload_accessed": false,
+  "decision": "PARK_ORDERING_PRIMARY_ACCEPTANCE_PROOF_INCOMPLETE",
+  "candidate_review": [
+    {
+      "issuer": "SkinHealth Systems Inc.",
+      "ticker": "SKIN",
+      "cik": "0001818093",
+      "accession": "0001628280-26-065833",
+      "fractional_treatment": "cash in lieu",
+      "fixed_ratio": "1-for-20",
+      "post_split_trading_date": "2026-10-14",
+      "edgar_accepted": "2026-10-14T09:15:29-04:00",
+      "status": "INELIGIBLE_PRE_T0_PUBLIC_TERMS",
+      "reason": "The October 14 filing states the company had already issued a press release on October 9 announcing the fixed 1-for-20 split and October 14 effective time. The protocol requires the first public SEC filing containing operative terms strictly after T0 and bars pre-T0 exposed/public events; the event cannot be made prospective by the later effectiveness filing.",
+      "primary_sources": [
+        "https://www.sec.gov/Archives/edgar/data/1818093/000162828026065833/0001628280-26-065833-index.htm",
+        "https://www.sec.gov/Archives/edgar/data/1818093/000162828026065833/skin-20261014.htm"
+      ]
+    },
+    {
+      "issuer": "NEXGEL, Inc.",
+      "ticker": "NXGL",
+      "cik": "0001468929",
+      "fractional_treatment": "round up to one whole share",
+      "fixed_ratio": "1-for-20",
+      "effective_time": "2026-10-12T00:01:00-04:00",
+      "status": "INELIGIBLE_EFFECTIVE_BEFORE_T0",
+      "reason": "The split was already effective on October 12 before the v2 prospective T0 at 21:00Z. It cannot supply the required post-announcement entry window after T0.",
+      "primary_source": "https://www.sec.gov/Archives/edgar/data/1468929/000149315226046154/form8-k.htm"
+    },
+    {
+      "issuer": "Kandi Technologies Group, Inc.",
+      "ticker": "KNDI",
+      "cik": "0001720250",
+      "accession": "0001213900-26-109026",
+      "fractional_treatment": "rounded up to nearest whole share at a participant level",
+      "fixed_ratio": "1-for-10",
+      "post_split_trading_date": "2026-10-16",
+      "status": "CANDIDATE_NOT_CLAIMED",
+      "reason": "The SEC-hosted Exhibit 99.1 supplies ratio, future effective trading date and explicit participant-level round-up, and the company is Nasdaq-listed. A secondary filing reproduction reports EDGAR acceptance at 2026-10-13 16:10 EDT, which would be after T0, but the exact SEC filing-detail/index acceptance timestamp was not retrievable through the current primary route. The protocol requires primary accepted-clock proof and FIRST-event ordering before any price payload, so no economic claim is opened.",
+      "primary_source": "https://www.sec.gov/Archives/edgar/data/1720250/000121390026109026/ea030846101ex99-1.htm",
+      "secondary_clock_receipt": "https://www.stocktitan.net/sec-filings/KNDI/6-k-kandi-technologies-group-inc-current-report-foreign-issuer-f5a84e3d4185.html"
+    }
+  ],
+  "bounded_ordering_search": {
+    "scope": "Public web/SEC-indexed search for fixed reverse-split cash-in-lieu or round-up events around October 12-13, 2026; no market prices or outcomes.",
+    "observed": [
+      "NEXGEL: effective before T0",
+      "SkinHealth: operative announcement publicly made October 9 before T0",
+      "Kandi: apparent post-T0 filing and future effective date, but primary accepted-clock proof unavailable in current route",
+      "Several proxy-stage proposals expose possible future round-up/cash treatment but lack a fixed implemented ratio/effective event and therefore are not qualifying cases."
+    ],
+    "coverage_limit": "Search-engine coverage is not an exhaustive SEC census. Absence of another earlier event is not proven. Therefore KNDI is not declared FIRST and cannot be selected by convenience."
+  },
+  "next_action": "Reopen KNDI only when the exact SEC filing-detail/header acceptance timestamp and ordering relative to any earlier post-T0 qualifying event can be proved from a primary route. If that gate clears while no other economic look is active, persist the claim before reading KNDI market prices. Do not substitute a later reverse split because KNDI ordering is inconvenient.",
+  "inference_ceiling": [
+    "No reverse-split economic result",
+    "No claim that KNDI is first eligible",
+    "No price/payoff inference",
+    "No live or real-capital authorization"
+  ]
+}

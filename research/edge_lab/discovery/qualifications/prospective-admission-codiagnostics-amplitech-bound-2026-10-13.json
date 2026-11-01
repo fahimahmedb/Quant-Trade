@@ -1,0 +1,199 @@
+{
+  "recorded_at": "2026-10-13T18:20:39.739217+00:00",
+  "head_observed": "289723bbbfc4426093a571e501098e2ae23ec26b",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_scope": "One bounded admission action: reject the current Co-Diagnostics loan clause as sufficient B/C event evidence and preserve an incomplete AmpliTech source. Not a family return rejection; no first event selected and no universal absence claim.",
+  "RESULT": "NO_FIXED_CODIAGNOSTICS_SPLIT_FROM_CURRENT_AGREEMENT; AMPLITECH_SUPPLEMENT_PARTIAL_AT_BOUND; NO_EVENT_ADMITTED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "No reading of the unreceived AmpliTech image suffix; no asserted contents or legal change. Co-Diagnostics parent8-K/other exhibits not globally declared clear. Other A-E candidates and chronological coverage remain unresolved.",
+  "POWER_LIMITATION": "Three primary requests, one complete legal agreement and an incomplete image; zero economic cases, price observations, outcomes or statistical tests.",
+  "ECONOMIC_SIGNIFICANCE": "A maximum reverse-split ratio and a lender condition do not define the actual share conversion, eligible purchase deadline or fractional entitlement required by the frozen test. Do not model the maximum1:750 as an adopted ratio.",
+  "FAILED_CRITERIA": [
+    {
+      "cik": "1692415",
+      "accession": "0001493152-26-046676",
+      "document": "EX10.1",
+      "failure": "Loan agreement defines Board-discretionary split ranges up to1:750 and future preliminary proxy/approval, not one fixedR and an operative entitlement/fractional-treatment clock. Current keyword match is insufficient for B/C admission."
+    },
+    {
+      "cik": "1518461",
+      "accession": "0001493152-26-046687",
+      "document": "DEFA14A graphic",
+      "failure": "Only first524288bytes received; no ending JPEG EOI marker. The source is incomplete and has not been decoded. Its contents cannot be assumed equivalent to the earlier routine proxy."
+    }
+  ],
+  "LESSON": "A financing condition to seek split approval is not an implemented split. A source size limit is an access limitation, not negative evidence about the missing legal terms; preserve the partial receipt and stop that retrieval.",
+  "FAMILY_STATUS": "A/B-v2/C-v2/D/E admission unresolved; no economic family activated/killed/promoted; no L0 fabricated from a missing source. Parked dependencies unchanged.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "No first A-E event established. Co-Diagnostics current loan agreement offers only Board-discretionary ranges and prospective approval, not fixed operative B/C terms. AmpliTech DEFA14A accepted06:15:19Eastern verified; its graphic reached524288-byte bound and lacks JPEG end marker. Supplement remains unresolved; no retry or conclusion about unread content. Cached497/497K candidates and other earlier possibilities/coverage remain unresolved. Current17:26Z A feed has only post-T0 amendments, not fresh commencements.",
+    "question": "Qualify the legal event/type of the cached Invesco Counselor Series Trust497/497K candidates (CIK1112996, accessions0001193125-26-419673 and0001193125-26-419674, feed07:00:17/07:00:40Eastern), from index metadata and event/vehicle-type terms only. Is there a new listed-ETF liquidation notice with both required dates, or only an ordinary fund prospectus? Do not read NAV/performance/distribution payloads before a valid claim. No fund/event substitution. Earlier unresolved possibilities continue to prevent any later economic selection.",
+    "resume_rule": "Reuse existing receipts. Do not re-fetch the AmpliTech graphic/index or Co-Diagnostics current loan agreement, or previously consumed documents. Do not repair an incomplete source by assuming its contents. Metadata/type-only work may continue, but any economic selection still requires earliest accepted ordering across A-E, original exclusions and exact protocol gates.",
+    "reuse_reference": "qualifications/prospective-admission-codiagnostics-amplitech-bound-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN"
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1518461/000149315226046687/0001493152-26-046687-index.htm",
+      "observed_at": "2026-10-13T18:16:40.454980+00:00",
+      "scope": "SEC index metadata only; no filing body, price or payoff",
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 7124,
+      "sha256": "0fb2d97ecc577e766dde18c2f8377e8cd7b42b0b00bdf81e4e10f19d7cf66d7f",
+      "complete": true,
+      "metadata_excerpt": "Filing Date 2026-10-13 Accepted 2026-10-13 06:15:19 Documents 2 ",
+      "documents": [
+        "/Archives/edgar/data/1518461/000149315226046687/formdefa14a.htm",
+        "/Archives/edgar/data/1518461/000149315226046687/formdefa14a.jpg",
+        "/Archives/edgar/data/1518461/000149315226046687/0001493152-26-046687.txt"
+      ],
+      "wall_seconds": 0.38698160799685866
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1518461/000149315226046687/formdefa14a.jpg",
+      "observed_at": "2026-10-13T18:17:17.855581+00:00",
+      "scope": "Primary legal/proxy document identity and event eligibility only",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 524288,
+      "sha256": "4abf7d9d5be26edcf2e2698fcbcc729f5fc11cb97bb81f2dd3980820d185cb25",
+      "complete": false,
+      "content_type": "image/jpeg",
+      "wall_seconds": 0.40670285499072634,
+      "jpeg_end_of_image_marker_present_at_end": false,
+      "interpretation": "Partial response at byte cap; not decoded or treated as a complete proxy card. No re-request.",
+      "hash_scope": "SHA256 of received524288-byte prefix only, not a complete image hash",
+      "unread_suffix": "UNKNOWN; no decode, no interpretation as a completed document, no retry"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1692415/000149315226046676/ex10-1.htm",
+      "observed_at": "2026-10-13T18:17:17.866340+00:00",
+      "scope": "Primary legal/proxy document identity and event eligibility only",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 326565,
+      "sha256": "66ce1d20d309df0d9b41a0bb830e33565bd9f4f67993f705e2bd77e73fec8187",
+      "complete": true,
+      "content_type": "text/html",
+      "header_excerpt": "EX-10.1 3 ex10-1.htm EX-10.1 Exhibit 10.1 LOAN AGREEMENT This Loan Agreement (this “ Agreement ”) is dated as of October 9, 2026 (the “ Agreement Date ”) and is made and entered into between Co-Diagnostics, Inc. , a Utah corporation (the “ Company ”), and J.J. Astor & Co. , a Utah corporation ( “ Astor ”), acting on behalf of itself and one or more participating lender or lenders to whom Astor may, in the exercise of its sole discretion, assign a",
+      "excerpts": [
+        "one or more reverse stock splits to be consummated at the sole direction of the Board of Directors at ranges of up to one share of Common Stock for each750 outstanding shares of Common Stock as set forth in a new preliminary proxy statement to be filed with the SEC within five(5)days of the Closing Date of the Initial Loan",
+        "Stockholder Approval shall have been obtained and the reverse stock splits contemplated therein shall have been effected [as a condition of additional funding]."
+      ],
+      "wall_seconds": 0.483706421990064
+    }
+  ],
+  "ordering": {
+    "AmpliTech_supplement_accepted_eastern": "2026-10-13 06:15:19",
+    "AmpliTech_supplement_accepted_utc": "2026-10-13T10:15:19Z",
+    "CoDiagnostics_clock": "feed06:10:19Eastern only; exact index not fetched because no economic admission is made",
+    "selected_event": null,
+    "claim": null
+  },
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-amplitech-and-oddlot-feed-2026-10-13.json",
+    "sha256": "e2488f10c8158cacb16d330c0882fbd5779bb8df0aae68cdf0c39070b965335c",
+    "original_metadata": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "latest_A_feed_reused": "17:26Z receipt in previous proof; no repeat poll"
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_nonterminal_at_head": [],
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "PRIMARY_CORPORATE_TERMS_AND_BOUNDED_SOURCE_PREFIX",
+    "scope": "AmpliTech supplement index and unrendered JPEG prefix; Co-Diagnostics full public loan agreement with financing/legal terms. No selected stock-price/NAV/distribution/realized-payoff endpoint or calculation. The agreement/issuer remain documentary-exposed and cannot be presented as unseen. Received prefix preserved privately with hash and explicit incomplete scope.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "received_body_bytes_including_partial": 857977,
+    "request_wall_seconds_sum": 1.277390884977649,
+    "partial_documents": 1,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

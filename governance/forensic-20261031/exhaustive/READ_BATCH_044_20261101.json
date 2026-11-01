@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_044_20261101",
+  "status": "COMPLETE",
+  "scope": "PR46_INLINE_REVIEWS_POSTING_IDENTITY_MARKER_LAUNDERING_SUBJECT_BINDING_AND_FINAL_HEAD_REVALIDATION_4428638093_THROUGH_4428653008",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4428638093,"sha256":"cf7ef9ebad58ed2162894a5013cb74bf79b62ae00466c1347abb9954e7deda0d","status":"READ","summary":"P2 PR46 review finds posting-principal verification occurs after actionable dispatch/review comment is already published; wrong token actor can trigger external work and then raise locally. Identity must be established before posting control comments."},
+    {"kind":"review-comment","id":4428638098,"sha256":"6d52063b55d55cb4ae0b6e6930d9ed8e6c8706ebe1216dea1a67b57376cd433f","status":"READ","summary":"P2 PR46 review finds lower-trust model continuation prompt is embedded inside trusted orchestrator comment and marker parser scans entire body; prompt can inject a future control marker and suppress the real later dispatch. Trusted markers need a canonical isolated envelope."},
+    {"kind":"review-comment","id":4428638104,"sha256":"29bc3e15c820b11a4a1bcd39eac8d7517ea40513d878d84ecf21709d3813ced1","status":"READ","summary":"P2 PR46 review finds durable state binds only task_id, not repository/issue/target branch. Reconfiguring same state namespace to another GitHub subject can return old DONE without inspecting new subject. Persist immutable subject identity and require reconciliation on change."},
+    {"kind":"review-comment","id":4428653008,"sha256":"ce2c5bdad867de6567608e7f5910ff733d964c00fa540e98a488d427cdbd1912","status":"READ","summary":"P2 PR46 review finds target branch can advance from qualified candidate B to C while waiting for review, yet PASS for B can still produce DONE. Target head must be revalidated immediately before QUALIFIED_RESULT/decision and stale changes reconciled."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 4,
+    "objects_directly_read": 4,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 4,
+    "cumulative_new_discussion_objects_directly_read": 377,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 387,
+    "estimated_total_discussion_objects_directly_read": 384,
+    "estimated_total_discussion_objects_semantically_disposed": 394,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"FAIL_CLOSED_IDENTITY_CHECK_MUST_PRECEDE_EXTERNAL_SIDE_EFFECT","finding":"Verifying the posting principal after publishing is not fail closed; authentication must precede any control-plane side effect.","current_product_decision_change":false},
+    {"classification":"TRUSTED_CONTROL_ENVELOPE_MUST_EXCLUDE_MODEL_TEXT","finding":"Author authentication alone cannot make embedded lower-trust prompt text into trusted control data. Parse control markers only from a canonical envelope outside delegated content.","current_product_decision_change":false},
+    {"classification":"DURABLE_STATE_MUST_BIND_TO_EXTERNAL_SUBJECT_IDENTITY","finding":"Restart-safe state is unsafe if the same task namespace can be pointed at another repository/issue/branch and inherit terminal state. Subject identity is part of durable state semantics.","current_product_decision_change":false},
+    {"classification":"QUALIFICATION_MUST_REVALIDATE_THE_LIVE_TARGET_AT_DECISION_TIME","finding":"CI/review evidence for candidate B cannot terminate a task after branch advanced to C. Exact-head identity must be checked again immediately before qualification or terminal decision.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"reviews","id":5450182603,"sha256":"0024f5568da7256db40f5d072a4a481c0f1dc167c8b87c0144b15c3202b318bc"}
+}

@@ -1,0 +1,70 @@
+{
+  "probe": {
+    "scope": "SINGLE_OFFICIAL_METADATA_SCHEMA_PROBE_NO_MARKET_OUTCOME",
+    "claim_id": "347095c6ff5a77e451129776d7f74f4e344d633ed4505e5d554a98a1c8257dab",
+    "claim_commit": "4697b05532cd5fda3c3c060d609b07b20c5a3b7d",
+    "requested_url": "https://www.federalregister.gov/api/v1/public-inspection-documents.json?per_page=1&fields%5B%5D=document_number&fields%5B%5D=filed_at&fields%5B%5D=publication_date&fields%5B%5D=type",
+    "started_at": "2026-10-11T16:26:10.521547+00:00",
+    "max_accepted_bytes": 262144,
+    "http_timeout_seconds": 15,
+    "requests_planned": 1,
+    "retries": 0,
+    "market_price_records_read": 0,
+    "sentiment_scores_read": 0,
+    "status_code": 200,
+    "headers": {
+      "Date": "Sun, 11 Oct 2026 16:26:10 GMT",
+      "Content-Type": "application/json; charset=utf-8",
+      "Content-Length": "228",
+      "ETag": null,
+      "Last-Modified": null
+    },
+    "final_url": "https://www.federalregister.gov/api/v1/public-inspection-documents.json?per_page=1&fields%5B%5D=document_number&fields%5B%5D=filed_at&fields%5B%5D=publication_date&fields%5B%5D=type",
+    "received_at_utc": "2026-10-11T16:26:10.933758+00:00",
+    "observed_body_bytes": 228,
+    "sha256": "d46a3d2d868e3953675bed2036b761fd5409a2004dcc5cb37481801ba52d3b10",
+    "top_level_fields": [
+      "count",
+      "description",
+      "meta"
+    ],
+    "metadata_rows_returned": 0,
+    "returned_record_fields": [],
+    "status": "EMPTY_METADATA_NO_CLOCK_PROOF",
+    "wall_seconds": 0.41267955400326173,
+    "cpu_seconds": 0.016661397999999994,
+    "first_public_news_time_authenticated": false,
+    "retrospective_versions_authenticated": false,
+    "execution_costs_authenticated": false,
+    "rights_scope": "Public keyless API metadata only; no general article extraction or market entitlement",
+    "paid_usd": 0,
+    "ended_at": "2026-10-11T16:26:10.934220+00:00"
+  },
+  "raw_response_json": {
+    "description": "All Public Inspection Documents",
+    "count": 0,
+    "meta": {
+      "pil_unavailability_message": "The Public Inspection list is unavailable after 12AM Eastern time and will return on Tuesday, October 13 at 8:45AM Eastern time."
+    }
+  },
+  "cas_loss_before_source": {
+    "kind": "CLAIM_CAS_LOST_BEFORE_SOURCE_ACCESS",
+    "local_claim_id": "dc5ef08a78a672f95e4a8132c0b419581500fb3f8268e909309ae86d05eff9fd",
+    "local_commit": "58a9122ce93ee822c9ac5ace901ea85f119ea6ea",
+    "remote_head": "b6f99cfb39477dacef8d3ccf3aa010b268d763a8",
+    "source_requests_started": 0,
+    "outcomes_started": 0,
+    "operation": "Git fast-forward publication refused; no force or rebase; hydrate authoritative metadata-only advance before claiming useful question"
+  },
+  "verdict": {
+    "RESULT": "WAIT: SOURCE_ANNOUNCED_TEMPORARY_CLOSURE",
+    "EFFECT_SIZE": "NOT_ESTIMATED; no economic test",
+    "UNCERTAINTY": "Schema/event clock/first-news availability unknown, announced return not guaranteed",
+    "POWER_LIMITATION": "Zero metadata records returned during announced closure is not zero independent economic events or evidence of an empty population",
+    "ECONOMIC_SIGNIFICANCE": "No profit measured, no economic claim; a free access and timing decision only",
+    "FAILED_CRITERIA": "No event rows/filing/amendment schema, historical first-public news or matched executable costs",
+    "LESSON": "Respect source-announced downtime and retain transport success separately from data/clock qualification",
+    "FAMILY_STATUS": "DESIGN_UNTESTED_WAIT_ON_DECLARED_SOURCE_WINDOW",
+    "NEXT_DECISION": "2026-10-13T12:45:00+00:00; one distinct metadata schema/receipt gate, never price/retest"
+  }
+}

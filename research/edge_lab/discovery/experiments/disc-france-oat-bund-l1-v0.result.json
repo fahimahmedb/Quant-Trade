@@ -1,0 +1,46 @@
+{
+  "experiment_id": "disc-france-oat-bund-l1-v0",
+  "label": "EXPLORATORY",
+  "decision": "PARK",
+  "subtype": "PARK_DATA",
+  "predeclaration_commit": "8e820f454f018a5c7bc7b61bf8002797b4a813d8",
+  "completed_at": "2026-10-11T22:25:50.501096+00:00",
+  "receipts": [
+    {
+      "country": "FR",
+      "url": "https://data-api.ecb.europa.eu/service/data/FM/D.FR.EUR.4F.BB.FR10YT_RR.YLDA?startPeriod=2022-01-01&endPeriod=2025-12-31&format=csvdata",
+      "at": "2026-10-11T22:23:50.486707+00:00",
+      "preregistration": "8e820f454f018a5c7bc7b61bf8002797b4a813d8",
+      "max_bytes": 1048576,
+      "max_seconds": 30,
+      "retries": 0,
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "payload_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 1.2380850449990248,
+      "cpu_seconds": 0.006974500999999994,
+      "paid_usd": 0
+    }
+  ],
+  "economic_test_completed": false,
+  "verdict": {
+    "RESULT": "PARK_DATA: first declared ECB daily France series request returned404; Germany was not requested.",
+    "EFFECT_SIZE": "NOT_MEASURED",
+    "UNCERTAINTY": "This key may be unavailable or incorrect; this does NOT show that public sovereign-yield history does not exist.",
+    "POWER_LIMITATION": "Zero series rows; no event return computed.",
+    "ECONOMIC_SIGNIFICANCE": "No fiscal/default or trading inference.",
+    "FAILED_CRITERIA": "Declared daily proxy pair retrievable.",
+    "LESSON": "An SDMX key is not verified by a plausible country/instrument name; reuse an actual catalogue series next time, without selecting a price window after exposure.",
+    "FAMILY_STATUS": "PARK_DATA, exact economic expression untested.",
+    "NEXT_DECISION": "No retry or key guessing in this experiment; next admissible cheap prospective test. Reopen France only with a distinct verified dataset route."
+  },
+  "observable_cost": {
+    "paid_usd": 0,
+    "payload_bytes": 0,
+    "http_wall_seconds": 1.2380850449990248,
+    "http_cpu_seconds": 0.006974500999999994,
+    "tokens": null,
+    "global_bill": null
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "recorded_at": "2026-10-14T01:27:21.762977+00:00",
+  "head_observed": "1e02b5e9ebdc819861e7ce4816e9a53afba485ec",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "family": "us-spinoff-mandate-disposal",
+  "stage": "NON_OUTCOME_L1_FEASIBILITY",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "completed_question": {
+    "status": "PARK",
+    "question": "Qualify a free first-regular-way clock plus child-price/benchmark route in one bounded cycle",
+    "decision": "NO_ADMISSIBLE_L1_IN_CURRENT_ACCESS; no declaration or economic claim"
+  },
+  "RESULT": "SPINOFF_DESIGN_PARKED_BEFORE_OUTCOMES; NASDAQ_CORPORATE_ACTION_ROUTE_REQUIRES_SUBSCRIPTION_APPROVAL; FREE_PRICE_ROUTE_UNQUALIFIED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "No numerical fee verified, no historical/event file fetched. Public issuer notices could still be an alternative but no complete free clock/price route was established here. Neither access limits nor the corporate-doc screen reject spin-off economics.",
+  "POWER_LIMITATION": "Three requests: one retired documentation page, one live product page, one 100-entry metadata snapshot. No selected spin-off, price, return, actual sale or auction payload.",
+  "ECONOMIC_SIGNIFICANCE": "A first-trading-window strategy cannot be tested honestly by substituting when-issued trading for regular-way liquidity or assuming undocumented raw/adjusted child prices. The reviewed history product cannot be treated as freely accessible within the zero-account/zero-paid mandate.",
+  "FAILED_CRITERIA": [
+    "No permitted free complete distribution/when-issued/regular-way clock route qualified.",
+    "No permitted free numeric child-price and benchmark route qualified; cached Yahoo route rights remain unresolved and Alpha Vantage support alone does not establish an admissible endpoint.",
+    "Nasdaq page requires secured access, ordering documentation and prior approval; no authorized subscription/account was created."
+  ],
+  "LESSON": "A public product description is evidence about fields and access conditions, not a freely usable dataset. Reuse existing source failures instead of repeating them for each equity idea; close an infeasible design before spending a look.",
+  "FAMILY_STATUS": "us-spinoff-mandate-disposal PARK_DATA before L1; other closed families unchanged. A-E remains prospective with unresolved coverage. Next mechanism is a documentary scout only, not a second active economic family.",
+  "NEXT_DECISION": {
+    "kind": "L0_DOCUMENTARY_SCOUT",
+    "status": "OPEN",
+    "family": "permissionless-collateral-auction-liquidator",
+    "economic_access_authorized": false,
+    "reuse_reference": "qualifications/spinoff-clock-price-feasibility-2026-10-14.json",
+    "prospective_A_E_priority": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "pending": "Fresh bounded 100-entry snapshot contains forms 4/144/13D/13D-A/3 only, no candidate A-E form. It does not fill the earlier time gap. No qualifying event established; earlier source/coverage uncertainty preserved. No event/issuer selected.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/spinoff-clock-price-feasibility-2026-10-14.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN",
+      "latest_metadata_snapshot": {
+        "observed_at": "2026-10-14T01:24:10.705182+00:00",
+        "sha256": "1e7af164790bf7d3f50852766e881051601c0dcad9be2373d41a9401660d6a64",
+        "entries": 100,
+        "newest_updated": "2026-10-13T21:21:48-04:00",
+        "oldest_updated": "2026-10-13T19:59:19-04:00",
+        "candidate_forms_observed": 0,
+        "coverage_complete_since_previous": false
+      }
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers.",
+      "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes."
+    },
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "question": "Qualify ONE causally distinct protocol-service mechanism: compensation/discounts to participants clearing an on-chain collateral auction. Consult only primary Maker/Sky liquidation contract documentation and public Ethereum log-access documentation, no price/oracle values, auction results, selected transaction receipts or logs before a new declaration/claim. Determine who funds compensation, what collateral/credit/inventory and gas/competition risks remain, and whether public event history could support a cheap upper-bound falsification under zero paid services. If no usable permitted data route is established, park; do not build a collector.",
+    "primary_document_candidates": [
+      "https://docs.makerdao.com/smart-contract-modules/dog-and-clipper-detailed-documentation",
+      "https://ethereum.org/en/developers/docs/apis/json-rpc/"
+    ],
+    "causal_distinction": "Protocol-level payment/auction economics for liquidation service, not carry, a post-liquidation market-return signal, order-book pressure, or the rejected prediction-market expression. Shared crypto/liquidation risk is acknowledged; no claim of an independent trial or qualified source until documents are read.",
+    "source_status": "PROPOSED_DOCUMENTARY_SCOUT_ONLY; neither page accessed or evidence asserted in this pass",
+    "resume_rule": "Do not reopen the parked spin-off design or re-probe paid Nasdaq/free-unqualified Yahoo/Alpha Vantage routes without a distinct new source fact. A-E admission retains priority for admissible new primary metadata; preserve all historical exposures and original ordering. No event outcomes, accounts, paid RPC, bots, framework or real-capital action."
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.nasdaqtrader.com/Trader.aspx?id=DailyList",
+      "observed_at": "2026-10-14T01:23:45.376740+00:00",
+      "scope": "Generic exchange corporate-action product documentation only; no selected event/prices/outcomes",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/Trader.aspx?id=http404",
+      "body_bytes": 42994,
+      "sha256": "60005f448cfffccc9be93426e27b6acb6672b9e7507c941bf4ed5fbdbb35f13c",
+      "complete": true,
+      "content_type": "text/html; charset=utf-8",
+      "excerpts": [
+        "Page may have been moved or has been retired. You can use the site search to locate information on this web site."
+      ],
+      "wall_seconds": 1.5594970550009748,
+      "semantic_status": "PAGE_NOT_AVAILABLE_SOFT_404; HTTP200 is not product availability",
+      "distinct_primary_link_found": {
+        "anchor": "Daily List",
+        "href": "/Trader.aspx?id=DailyListPD",
+        "followed_once": true,
+        "same_url_retry": false
+      }
+    },
+    {
+      "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&owner=include&count=100&output=atom",
+      "observed_at": "2026-10-14T01:24:10.705182+00:00",
+      "scope": "One fresh bounded SEC Atom metadata snapshot after more than seven hours; no filing body, price/NAV/distribution/payoff",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 56209,
+      "sha256": "1e7af164790bf7d3f50852766e881051601c0dcad9be2373d41a9401660d6a64",
+      "complete": true,
+      "entry_count": 100,
+      "newest_updated": "2026-10-13T21:21:48-04:00",
+      "oldest_updated": "2026-10-13T19:59:19-04:00",
+      "wall_seconds": 1.525999077988672,
+      "form_counts": {
+        "4": 80,
+        "144": 6,
+        "SCHEDULE 13D/A": 8,
+        "SCHEDULE 13D": 4,
+        "3": 2
+      },
+      "A_E_candidate_forms_observed": [],
+      "coverage_limit": "100 latest entries only, 2026-10-13 19:59:19..21:21:48 Eastern. Does not cover the full interval since the earlier snapshot or establish worldwide absence. No bodies opened; exact accepted clocks are not inferred from Atom updated alone."
+    },
+    {
+      "url": "https://www.nasdaqtrader.com/Trader.aspx?id=DailyListPD",
+      "observed_at": "2026-10-14T01:24:36.408400+00:00",
+      "scope": "Generic exchange corporate-action product documentation only; no selected event/prices/outcomes",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.nasdaqtrader.com/Trader.aspx?id=DailyListPD",
+      "body_bytes": 59094,
+      "sha256": "5b6a71bf59d6fe5fa3420b2e532f68298bf22f8b7066a53682667a0300d27944",
+      "complete": true,
+      "content_type": "text/html; charset=utf-8",
+      "excerpts": [
+        "Daily List (Monthly Subscription) Login",
+        "The Daily List provides key corporate action data – including new listings, delistings, symbol and name changes and dividends – for the Nasdaq Stock Market to the trading and market data community.",
+        "Next Day Ex-Date: Summarizes the securities with dividend adjustments to be applied to the previous closing price on the next business day. The Daily List offers historical corporate action data dating back to 1999.",
+        "Daily List files for the current business month are available for download via a secured FTP interface. Daily List files are also available for download, viewing, or searching from a secured website interface.",
+        "Pricing: Please refer to the U.S Equities Price List for pricing information.",
+        "To order this web-based data product, firms must submit the appropriate documentation and receive prior approval from Nasdaq: Data Feed Request Form; Nasdaq Global Data Agreement; System Application [requirements depend on use as described on the product page]."
+      ],
+      "wall_seconds": 0.5100586699991254,
+      "source_version": "Current product description retrieved at observed_at; no publication/version date asserted; SHA256 pins returned text",
+      "limits": "No price list, agreement, login, FTP, historical file or event row fetched. No fee amount invented. No claim that every possible issuer/exchange route is paid. Product summary does not authenticate first regular-way versus when-issued timestamps for a selected spin-off."
+    }
+  ],
+  "reopen_only_if": "Distinct primary evidence establishes permitted zero-cost first-regular-way/event timing and child-price/benchmark access appropriate to a new linked frozen protocol; no automatic retry or vendor substitution.",
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-and-spinoff-flow-l0-2026-10-14.json",
+    "sha256": "683609d645038b25d313d5fa40103f605955448240134d4c05155eec68c44e1f",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "cached_route_receipts": [
+      {
+        "path": "qualifications/russell-deletion-calendar-preflight-2026-10-13.json",
+        "sha256": "473d91da83796b12558298bc5ca343e4e8a645870aeba20c3cb07c9a227c6787",
+        "scope": "Only cached route status and source-access limitations reused; no price/result recalculation or new request to these providers"
+      },
+      {
+        "path": "qualifications/hurricane-insurer-prospective-feasibility-2026-10-13.json",
+        "sha256": "21fd6c361e4a773fad69ff323d73f86353b3aa36638d2ce9e1acc6a4a1753dcf",
+        "scope": "Only cached route status and source-access limitations reused; no price/result recalculation or new request to these providers"
+      }
+    ],
+    "SEC_SLB4_FINRA5330": "Cached prior primary documents reused, no re-fetch"
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_statuses_preserved": {
+      "look:smard-2025-fixed-hours-proxy-v1": "UNKNOWN_OUTCOME",
+      "look:smard-2025-solar-noon-evening-proxy-v1": "COMPLETED_SPENT"
+    },
+    "legacy_unknown_not_resolved_or_replayed": true,
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "EXCHANGE_PRODUCT_METADATA_AND_SEC_FORM_METADATA",
+    "scope": "Generic Nasdaq product/access text and 100 SEC filing metadata entries. No filing body in the fresh snapshot or selected market price/NAV/distribution/payoff. The spin-off documentary candidate remains exposed/parked, not a virgin or economically rejected test. Proposed next protocol-service candidate has no source or economic exposure in this pass.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "received_body_bytes": 158297,
+    "request_wall_seconds_sum": 3.5955548029887723,
+    "partial_documents": 0,
+    "soft_404_documents": 1,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false,
+    "account_created": false,
+    "provider_contacted_for_access": false
+  }
+}

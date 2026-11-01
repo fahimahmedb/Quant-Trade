@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_030_20261101",
+  "status": "COMPLETE",
+  "scope": "ISSUE44_HOSTED_UNIT_DEPENDENCY_FAILURE_STALL_CLASSIFICATION_AND_SINGLE_RELAUNCH_6538452086_THROUGH_6539162431",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6538452086,"sha256":"bb2bcc4c154b9fdae5754a379cb27ae511aea120163a6a626d99e808ebc1d173","status":"READ","summary":"Hosted run 41158223304 on exact head 2f3c1db6 fails after 381 tests at one collection error: tests/test_codex_policy.py imports pytest only for raises, while hosted unittest environment lacks pytest. SEC fail-closed, schema drift and status freshness already pass; failure is dependency-local, not orchestration semantic."},
+    {"kind":"issue-comment","id":6538467341,"sha256":"0ecf3fbff3018b596507654bb150d657c13ff02f843fbb1342796dae31afd8ac","status":"READ","summary":"Codex prepares exact dependency-neutral patch replacing pytest with unittest.assertRaises, but stale checkout/no remote prevents application to authoritative head. Patch is transported; no hosted PASS is claimed."},
+    {"kind":"issue-comment","id":6538795807,"sha256":"faa42e333f6a4aa8484064cd83f1f183605980f88aedd3b04d3fabea2f8b6e65","status":"READ","summary":"Control loop reconciles remote state and intentionally avoids duplicate Codex instruction while the existing exact repair instruction is still actionable. Status is WAITING_FOR_CODEX_RESULT, not terminal block."},
+    {"kind":"issue-comment","id":6538800141,"sha256":"e53b0bb8c96cc3faf1010cecc7c42602747b141f6358372ae633df8dae848e92","status":"READ","summary":"Stale-base worker correctly returns NO_CHANGE_REQUIRED/no mutation because it cannot reconcile authoritative head, preventing a competing implementation. This does not repair the actionable remote defect."},
+    {"kind":"issue-comment","id":6539142653,"sha256":"50294726e75f4b75fbe8774789141d6c9017b5a15e8bc8d1e9ecaba2e8b38c7b","status":"READ","summary":"After an additional wake with no repair, Owner classifies the worker STALLED and issues one non-concurrent continuity relaunch, requiring lane switching rather than another reconciliation-only return and targeting the whole hosted qualification block."},
+    {"kind":"issue-comment","id":6539143760,"sha256":"00d794ccaf7451938eb61cd34c9bfc6cc34b45cd3882e3265bd47ea8a534f958","status":"READ","summary":"Checkpoint records CODEX_RELAUNCHED_AFTER_STALL, preserves exact remote head/run and forbids another concurrent worker while the single relaunch is active."},
+    {"kind":"issue-comment","id":6539162431,"sha256":"f4c83e90aa45ba947bec6530e3f3b6be8f20ebc5d89aa19f4f55df7480346790","status":"READ","summary":"Relaunched worker builds a fail-closed transport script that verifies each expected pytest expression occurs exactly once before transforming it, but authoritative branch remains inaccessible. Synthetic transform/compile/diff checks pass; remote hosted qualification remains unexecuted."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 7,
+    "objects_directly_read": 7,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 7,
+    "cumulative_new_discussion_objects_directly_read": 297,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 307,
+    "estimated_total_discussion_objects_directly_read": 304,
+    "estimated_total_discussion_objects_semantically_disposed": 314,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"HOSTED_FAILURE_LOCALIZED_NOT_ARCHITECTURAL","finding":"The decisive hosted run reached the full unit suite and failed only because one test unnecessarily imported pytest. Earlier security/schema/projection gates passed. The smallest correct repair is dependency-neutral test syntax, not broader CI/package or orchestration changes.","current_product_decision_change":false},
+    {"classification":"STALE_WORKER_NO_CHANGE_IS_SAFE_BUT_NOT_PROGRESS","finding":"NO_CHANGE_REQUIRED on a stale checkout prevented a competing branch, which is correct safety behavior; however the actionable remote defect remained unresolved, so the liveness controller later had to classify the worker stalled and relaunch once.","current_product_decision_change":false},
+    {"classification":"SINGLE_RELAUNCH_AVOIDS_DUPLICATE_WORK","finding":"The continuity controller waits through one wake, then issues exactly one relaunch after evidence of stall, explicitly forbidding parallel workers. This is a practical anti-duplication rule grounded in remote state rather than fixed arbitrary retries.","current_product_decision_change":false},
+    {"classification":"TRANSPORT_SCRIPT_NOT_REMOTE_REPAIR","finding":"A local fail-closed patch generator and synthetic test are useful transport artifacts but do not change PR #46 or qualify its exact head. Remote application plus hosted rerun remain required before any PASS claim.","current_product_decision_change":false}
+  ],
+  "current_action": "ISSUE44_DEPENDENCY_NEUTRAL_REPAIR_PENDING_REMOTE_APPLICATION_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6540092678,"sha256":"e514681814e60c248feb8453f6583d6f14152d1b6ebbe7eba4cba6693112d425"}
+}

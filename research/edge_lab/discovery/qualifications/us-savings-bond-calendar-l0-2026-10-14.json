@@ -1,0 +1,322 @@
+{
+  "recorded_at": "2026-10-14T09:21:01.713780+00:00",
+  "head_observed": "7277eb7e72b10d95242c0701827c14aeec0056ba",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "DOCUMENTARY_L0_WITH_UNPLANNED_RATE_PANEL_EXPOSURE",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "completed_question": {
+    "id": "us-savings-bond-accrual-calendar:eligibility-redemption",
+    "status": "COMPLETED",
+    "decision": "Minimum hold, penalty and eligibility gates documented; exact accrual-calendar subquestion remains unqualified. Record accidental public-rate exposure without a retroactive look."
+  },
+  "RESULT": "PARK_DATA: HOLDING_PENALTY_ELIGIBILITY_CONFIRMED; ACCRUAL_TIMING_UNQUALIFIED; ONE_UNPLANNED_PUBLIC_RATE_PANEL_EXPOSURE_RECORDED.",
+  "EFFECT_SIZE": "NO_PAYOFF_OR_BENCHMARK_COMPUTED",
+  "UNCERTAINTY": "Exact issuer monthly-credit/issue-date/settlement semantics and after-tax benchmark remain unqualified. Owner eligibility unknown, not inferred from language/location. Accidental current-rate panel prevents treating that information as unexposed.",
+  "POWER_LIMITATION": "Two general rules pages plus one404; no economic sample, realized investment return, calculator or comparison. Three displayed rate values are documentary-page contamination, not independent observations or test evidence.",
+  "ECONOMIC_SIGNIFICANCE": "Any calendar benefit must survive mandatory holding, forfeited interest, liquidity and benchmark costs. A nominal accrual convention alone would not establish economically superior cash management or trading alpha.",
+  "FAILED_CRITERIA": [
+    "Exact accrual/issue-date convention not qualified from these pages.",
+    "No fixed cash-availability/penalty/tax/FX benchmark comparison or eligibility assumption justified.",
+    "The general buying page contained current rates despite the documentary-only intent; exposure-before-declaration gate was not satisfied for those displayed values. No later reservation can repair that ordering."
+  ],
+  "LESSON": "General financial-product documentation can embed economic values. Record unexpected public exposure exactly and stop calculations, rather than claim a clean period or retroactively reserve it. Qualify a contractual feature before choosing rates or dates.",
+  "FAMILY_STATUS": "PARK_DATA for candidate; redemption/eligibility source question completed. One explicitly spent public-data exposure, no economic test/alpha/real-capital authority. Existing families/results/unknowns preserved.",
+  "NEXT_DECISION": {
+    "kind": "L0_SOURCE_FEASIBILITY",
+    "status": "OPEN",
+    "family": "us-savings-bond-accrual-calendar",
+    "economic_access_authorized": false,
+    "reuse_reference": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json",
+    "question": "One bounded documentary-only continuation to resolve issuer issue-date/monthly-accrual and redemption-calendar semantics from the already-linked savings-bond regulations page and its exact applicable legal text. Do not refetch buying/cashing pages, current-rate panels or calculators. Determine whether a calendar timing benefit is a real contractual feature after a one-year minimum hold and last-three-month penalty, and identify eligibility/benchmark/tax limitations without using numerical current/historical rates or calculating a payoff. If these semantics cannot be qualified, keep PARK_DATA and stop this candidate. If qualified, next action can only be a separate linked design that carries the recorded May-October2026 public-rate exposure; no automatic economic look.",
+    "primary_document_candidates": [
+      "https://www.treasurydirect.gov/laws-and-regulations/savings-bond-regulations/"
+    ],
+    "source_status": "Exact link observed in acquired issuer pages; regulations page not accessed yet. No assumption that it resolves the question.",
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "prospective_A_E_priority": {
+      "bounds": {
+        "economic_payloads": 0,
+        "max_agent_minutes": 15,
+        "max_bytes_per_document": 524288,
+        "max_primary_document_requests": 3,
+        "max_total_document_bytes": 1572864,
+        "retries": 0
+      },
+      "closed_dependencies": {
+        "WTI": "PARK_DATA; no CME/DataMine re-probe",
+        "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+        "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+      },
+      "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+      "economic_access_authorized": false,
+      "family": "A/B-v2/C-v2/D/E",
+      "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+      "latest_metadata_snapshot": {
+        "candidate_forms_observed": 0,
+        "coverage_complete_since_T0": false,
+        "entries": 100,
+        "new_entries_vs_prior": 24,
+        "newest_updated": "2026-10-13T21:52:38-04:00",
+        "observed_at": "2026-10-14T06:21:57.661754+00:00",
+        "oldest_updated": "2026-10-13T20:03:19-04:00",
+        "sha256": "ad5c480525ca8e0ed8780b2dd899af70695b670c5cecf7dcbaa3d5bb725983df"
+      },
+      "pending": "One new bounded feed snapshot adds 24 entries (forms 4/3/144 only) versus the saved snapshot and contains no A-E candidate form. Earlier incomplete sources and chronology remain unresolved; no event selected and no universal absence claim.",
+      "question": "Preserve original A-E clocks/exclusions and first-event ordering. Resume chronological admission only for a distinct unconsumed primary source or genuinely new filing/time delta; no retries of consumed/incomplete documents and no later-event substitution.",
+      "resume_rule": "No re-fetch of either Xponential index or the reviewed 8-K. Reuse all saved sources; do not retry incomplete AmpliTech/Fusion documents or re-open completed corporate-document reviews. Any new temporal feed snapshot must have a real new-filing/time delta and retain bounded-coverage limits. Original event ordering, exclusions and admission-before-price gates remain unchanged.",
+      "reuse_reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+      "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+      "status": "OPEN"
+    },
+    "passive_VX_priority": {
+      "prospective_T0": "2026-10-15T00:00:00Z",
+      "protocol": "disc-cfe-vix-term-premium-prospective-oos-v1",
+      "rule": "Service only after mechanically eligible quarterly contract reaches its frozen exit and no other economic look is unresolved; unchanged original 45-to-15-day/plus-minus-4-day/cost semantics; no historical backfill or early payoff.",
+      "status": "NOT_DUE_BEFORE_T0"
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "france_fiscal_political_stress_l0": "Consumed once: DUPLICATE for the cached debt-content -> France/Germany repricing surface. Original TEC10 expression remains PARK_DATA before outcomes. Broader France mechanism untested; banks/equities are not rejected or newly authorized. Resume only on genuinely new causal/data/timestamp evidence with a separate linked declaration if needed, not a new narrative name.",
+      "market-sentiment-cftc-cad-positioning": "PARK_DATA after the one permitted source-gap continuation. Exact TFF CAD fields/as-published availability and permitted daily FX proxy/benchmark remain unqualified. Official backlog/holiday notices refute fixed-Friday availability. No repeat overview/schema/notes probes or narrative rebranding; reopen only on genuinely new primary usable vintage/rights/clock evidence.",
+      "permissionless-collateral-auction-liquidator": "PARK_DATA L0. Sky documents gross service incentives but exact current deployment and a permitted free no-account historical logs/receipts route are not established. Resume only on genuinely new primary operational access/version evidence; do not repeat these three documents or build a keeper/collector. No economic rejection or positive return claim.",
+      "trump_policy_event_transmission_l0": "Consumed once: PARK_DATA for customs-implementation first-public-clock qualification. CBP CSMS documentation request returned403; existing Federal Register/GDELT limitations unchanged. Do not repeat CBP probe, stale Public Inspection date gate or broad Trump narrative absent genuinely new authorized source/timestamp evidence. No return test or family-wide rejection.",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-spinoff-mandate-disposal": "PARK_DATA after one bounded design cycle. Nasdaq Daily List route is a subscription/approval product; first regular-way versus when-issued clock and an admissible free child-price/benchmark route are not qualified. Reopen only on genuinely new free permitted source evidence, not repeating SEC/FINRA/Nasdaq or failed Yahoo terms probes.",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "seed_history": [
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T03:29:10.443560+00:00",
+        "reference": "qualifications/market-sentiment-cot-clock-l0-2026-10-14.json",
+        "same_candidate_id": "market-sentiment-cftc-cad-positioning",
+        "seed_id": "market_sentiment_dislocation_l0",
+        "source_followup": {
+          "decision": "PARK_DATA",
+          "reference": "qualifications/market-sentiment-cot-access-followup-2026-10-14.json",
+          "repeat_allowed_without_new_fact": false,
+          "status": "PARK"
+        }
+      },
+      {
+        "L0_verdict": "DUPLICATE",
+        "consumed_at": "2026-10-14T06:24:36.220297+00:00",
+        "reference": "qualifications/france-fiscal-seed-overlap-l0-2026-10-14.json",
+        "same_candidate_id": "france-sovereign-repricing",
+        "scope": "Current debt-content-to-relative-sovereign-repricing surface already covered; not a rejection of all French risk expressions.",
+        "seed_id": "france_fiscal_political_stress_l0"
+      },
+      {
+        "L0_verdict": "PARK_DATA",
+        "consumed_at": "2026-10-14T08:29:37.783349+00:00",
+        "reference": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+        "same_candidate_id": "policy-announcement-repricing",
+        "scope": "Customs-implementation notice clock subquestion only; the broad policy family already existed, no independent new family or trial.",
+        "seed_id": "trump_policy_event_transmission_l0"
+      }
+    ],
+    "unconsumed_seeds": [],
+    "spent_exposure_reference": {
+      "proof": "qualifications/us-savings-bond-calendar-l0-2026-10-14.json",
+      "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+      "pre_reserved": false,
+      "must_not_be_treated_as_pristine": true
+    },
+    "resume_rule": "A-E new admissible event evidence and mechanically due VX retain priority. All three named seeds remain consumed with original scoped dispositions. No actual account, cash, purchase or redemption authority. No economic access without a separate predeclaration and original CAS ordering; never backdate a claim for the rate-panel exposure."
+  },
+  "l0": {
+    "candidate_id": "us-savings-bond-accrual-calendar",
+    "verdict": "PARK_DATA",
+    "MECHANISM": "Hypothesized issuer calendar accrual/issue-date treatment could grant an eligible saver some credited interest relative to actual cash commitment time. This contractual timing mechanism is not established by the two pages read.",
+    "WHO_PAYS": "If the contractual feature exists, the US issuer under its savings-bond terms, with saver opportunity/liquidity/tax costs. No realized public payment or investment superiority measured.",
+    "WHY_PERSIST": "A statutory retail product may contain capped administrative/calendar conventions rather than competitively auctioned pricing. One-year lockup, redemption penalty, eligibility and annual limits constrain any benefit; actual positive rent is unknown.",
+    "CHEAP_DATA_NOW": "Official freely readable buying/redemption rules qualify one-year hold, three-month forfeiture before five years, ownership/eligibility categories and purchase caps. Exact issue/accrual/purchase-clearing convention not yet qualified. No rates needed for this source question; inadvertent displayed rates are separately retained as exposure.",
+    "CHEAP_EXPRESSION": "Possible future fixed cash-calendar comparison versus an appropriate liquid same-currency benchmark with equal cash-availability and full holding/penalty/tax/FX accounting. No rate, calendar window, investment quantity, entry date or benchmark series chosen.",
+    "FATAL_PROBLEM": "A putative free month cannot be compared to a liquid investment while ignoring a year of restricted liquidity and early-redemption penalty. Eligibility is not universal or known for Owner. Issue-date/accrual convention unqualified and current rates now exposed; no clean retrospective test may be claimed.",
+    "WHY_NOT_ARBITRAGED": "Not established. A capped nontransferable eligibility-limited contract might prevent scaling, but the source does not yet prove the proposed advantage exists after opportunity costs.",
+    "causal_distinction": "Issuer retail contractual-calendar treatment, not bond-auction price pressure, crypto carry, policy-news response or a liquidation-service spread. Shared inflation/rates/liquidity risks retained; no independence claim."
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.treasurydirect.gov/savings-bonds/i-bonds/cashing-a-bond/",
+      "observed_at": "2026-10-14T09:17:32.995027+00:00",
+      "scope": "Savings-bond L0: issuer rules, accrual/redemption/eligibility only; no selected interest-rate series, calculator execution, market/payoff payload, account or purchase",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 404,
+      "error_body_read": false,
+      "wall_seconds": 0.5303953579859808,
+      "limitation": "Wrong series-specific path, HTTP404; no body read. A different canonical savings-bonds cashing path was subsequently accessed, not a retry of this URL or bypass of access control."
+    },
+    {
+      "url": "https://www.treasurydirect.gov/savings-bonds/cashing-a-bond/",
+      "observed_at": "2026-10-14T09:17:43.388641+00:00",
+      "scope": "Savings-bond L0: issuer rules, accrual/redemption/eligibility only; no selected interest-rate series, calculator execution, market/payoff payload, account or purchase",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.treasurydirect.gov/savings-bonds/cashing-a-bond/",
+      "body_bytes": 37233,
+      "sha256": "5c476b9d1ad5c4e70214fc6ab0230018d04d46a3a1d712116306414c968d8efe",
+      "complete": true,
+      "content_type": "text/html",
+      "wall_seconds": 0.49672846400062554,
+      "excerpts": [
+        "You can get your cash for an EE or I savings bond any time after you have owned it for 1 year.",
+        "If you cash in the bond in less than 5 years, you lose the last 3 months of interest.",
+        "Do not buy savings bonds from someone else or in an online auction site. You cannot cash them."
+      ],
+      "limitation": "Official general redemption rules, not exact issue-date/monthly-accrual/purchase-clearing semantics, investor tax advice or benchmark returns."
+    },
+    {
+      "url": "https://www.treasurydirect.gov/savings-bonds/buy-a-bond/",
+      "observed_at": "2026-10-14T09:18:01.518503+00:00",
+      "scope": "Savings-bond L0: issuer rules, accrual/redemption/eligibility only; no selected interest-rate series, calculator execution, market/payoff payload, account or purchase",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "final_url": "https://www.treasurydirect.gov/savings-bonds/buy-a-bond/",
+      "body_bytes": 29284,
+      "sha256": "7cfcd86fa34ee8636bb85f10d8fb9cdfaee1e7e3b20f1ffc45ff7584b712e0b4",
+      "complete": true,
+      "content_type": "text/html",
+      "wall_seconds": 0.20935047301463783,
+      "excerpts": [
+        "In any one calendar year, you may buy up to $10,000 in Series EE electronic savings bonds AND up to $10,000 in Series I electronic savings bonds for yourself as owner of the bonds.",
+        "The person must have a Social Security Number.",
+        "The person must also meet any one of these three conditions: United States citizen, whether the person lives in the U.S. or abroad, or United States resident, or Civilian employee of the United States, no matter where that person lives"
+      ],
+      "limitation": "Eligibility categories and retail limits only; no Owner eligibility inferred, no account opened. Current-rate panel was unexpectedly included and seen during local text reading; explicit spent exposure below. No interest-rate page or calculator requested."
+    }
+  ],
+  "unplanned_public_exposure": {
+    "id": "unplanned-treasurydirect-current-rate-panel-20261014",
+    "type": "UNPLANNED_PUBLIC_ECONOMIC_DATA_EXPOSURE",
+    "consumed": true,
+    "pre_reserved": false,
+    "claim_id": null,
+    "source_url": "https://www.treasurydirect.gov/savings-bonds/buy-a-bond/",
+    "received_at": "2026-10-14T09:18:01.518503+00:00",
+    "body_sha256": "7cfcd86fa34ee8636bb85f10d8fb9cdfaee1e7e3b20f1ffc45ff7584b712e0b4",
+    "scope": "Current Rates panel on the general Buying savings bonds documentation page; three displayed rates for the stated May-October2026 issue period. Not a return/strategy result or a selected price history.",
+    "displayed_contract_rates_percent": {
+      "Series_EE": 2.4,
+      "Series_I_composite": 4.26,
+      "Series_I_fixed_component": 0.9
+    },
+    "displayed_issue_period": [
+      "2026-05-01",
+      "2026-10-31"
+    ],
+    "used_for_rule_window_threshold_or_verdict_selection": false,
+    "remediation": "Stop economic access/calculation; retain source hash, exact scope and public rates as spent exposure. No retroactive claim, no pristine-period claim, no tuning or calculator/rate re-request. Any later declaration must explicitly carry this exposure and UNKNOWN private history.",
+    "accounting": "One unreserved public-data exposure, zero new reserved looks and zero economic tests. Existing reserved-experiment counters remain unchanged; this separately counted exposure is appended to the event ledger. Effective independent M remains UNKNOWN."
+  },
+  "contradictions": [
+    "A one-year minimum hold and last-three-month interest penalty defeat a naive freely liquid one-month comparison.",
+    "Purchases from another holder cannot simply be cashed by an unrelated buyer; this is not a freely transferable arbitrage asset.",
+    "SSN plus specified eligibility conditions and annual purchase caps constrain participation; no Owner eligibility assumed.",
+    "Observed rates alone cannot choose dates, horizon, rule or conclude profit; exact proposed calendar feature is still unknown."
+  ],
+  "reuse": {
+    "prior_proof": "qualifications/trump-policy-customs-clock-l0-2026-10-14.json",
+    "prior_sha256": "c4409899344f2a1cd2291d0c93836e4272759da775e6cc38497b84bf851a01e0",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "VX_protocol_and_register_unchanged": {
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.md": "56fd0be311eb4672136008cdb2b6655afe5ac1d3b9db5bfdef9c7f23a7d72a15",
+      "discovery/experiments/disc-cfe-vix-term-premium-prospective-oos-v1.register.json": "316aa2bf3ed1fbe29e515d8888e2324ec9eeeed9113b646eda4e7db26018f768"
+    },
+    "all_three_seed_dispositions_preserved": true
+  },
+  "priority_check": {
+    "A_E": "Saved admission snapshot/earlier chronology and partial-source uncertainty retained. No new admissible event established or absence asserted, no event selected.",
+    "active_discovery_running": [],
+    "VX": "Current time before2026-10-15T00:00:00Z; not due, no history/backfill/early-payoff access.",
+    "legacy_UNKNOWN_remains_consumed": true
+  },
+  "exposure": {
+    "type": "RULE_DOCUMENTATION_PLUS_UNPLANNED_CURRENT_RATE_PANEL",
+    "new_reserved_looks": 0,
+    "unplanned_public_economic_exposures": 1,
+    "new_return_or_strategy_tests": 0,
+    "seed_consumptions_this_pass": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_document_requests": 3,
+    "received_success_body_bytes": 66517,
+    "failed_response_bodies_read": 0,
+    "request_wall_seconds_sum": 1.2364742950012442,
+    "retries": 0,
+    "dedicated_rate_price_or_payoff_endpoint_requests": 0,
+    "documentation_responses_containing_unplanned_economic_values": 1,
+    "economic_calculations": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "economic_payloads": 0,
+    "max_agent_minutes": 15,
+    "max_bytes_per_document": 524288,
+    "max_primary_document_requests": 3,
+    "max_total_document_bytes": 1572864,
+    "retries": 0
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "VX_register_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "full_raw_documents_redistributed": false,
+    "account_created": false,
+    "calculator_run": false,
+    "retroactive_claim_created": false
+  }
+}

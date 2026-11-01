@@ -1,0 +1,256 @@
+{
+  "recorded_at": "2026-10-13T13:26:57.594511+00:00",
+  "head_observed": "b521b986f32b4f16680bfdcc2ff0f34d79ec95bf",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "L0_CONTRACT_TO_FLOW_FEASIBILITY_WITH_MANDATORY_PROSPECTIVE_SCREEN",
+  "family": "us-variable-conversion-financing-supply",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_scope": "One causally distinct documentary L0 using the same new SEC note already acquired for A-E admission. No admitted A-E event was established; this is not a claim that no qualifying event exists. The L0 is not a return rejection, a promotion or a new economic look.",
+  "RESULT": "Public primary financing terms are accessible and distinguish optional/conditional conversion from deterministic calendar supply. Actual conversion exercise, issuance and onward sale are not established on a usable public clock; PARK_DATA before L1.",
+  "EFFECT_SIZE": "NOT_COMPUTED; contractual95% conversion factor is not an observed profit or a payoff to common shareholders.",
+  "UNCERTAINTY": "Only one legal instrument reviewed, selected through a reverse-split keyword match, not an unbiased financing-event sample. Actual notices, lender decisions, borrower cash choices, conversion, selling and borrow/execution costs unobserved. Public availability of the contract does not establish public real-time notices.",
+  "POWER_LIMITATION": "No price, conversion-realization or return sample. A single contract can contradict a universal forced-monthly-flow assumption but cannot estimate a financing-pressure premium.",
+  "ECONOMIC_SIGNIFICANCE": "A financing-constrained issuer can compensate a secured lender through conversion rights/discounts; existing shareholders may bear dilution. Potential lender resale could create inventory pressure, but choice, credit risk, endogenous share prices and borrowing frictions can explain/remove any secondary-market opportunity. Buying the common stock does not transfer note-holder rights.",
+  "FAILED_CRITERIA": [
+    "Section3.1: ordinary fixed redemptions start after12months and require a lender notice at its discretion; cash, shares or a mix are borrower options, subject to conditions. No deterministic monthly share delivery follows from the label Fixed Redemptions.",
+    "Section2 provides a distinct conditional limited-redemption share-delivery route; it must not be erased when describing optional ordinary redemption. Trigger/exercise/Exchange Cap and other conditions remain unobserved.",
+    "A11 makes the limited-redemption trigger depend on contemporaneous prices. Treating it as an exogenous calendar shock would be invalid.",
+    "No public point-in-time exercise/actual-issuance/sale clock or viable short-borrow/execution route established in the permitted documents."
+  ],
+  "LESSON": "Separate financing announcement, contingent conversion entitlement, actual lender exercise, share issuance and sale. The note supports a possible conditional flow mechanism; it falsifies a mechanical monthly-sale shortcut and does not give a retail common shareholder the contractual lender discount.",
+  "FAMILY_STATUS": "PARK_DATA at L0; untested, no economic family activated, no alpha inference",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "No first event has been established. IX current8-K is not admitted; any qualification must come from an identified operative pre-event proxy/notice that satisfies original timing/exclusion rules, not its vote/redemption results. Other cached candidates and global coverage remain unresolved, including Fusion Fuel for which the consumed oversized body cannot be retried. Reuse original cached feed/search URLs and discriminate documentary notices without a new SEC census.",
+    "question": "Continue the first qualifying A-E event from cached metadata without rereading consumed sources. SS Innovations EX4.1 keyword hit is a conditional lender-protection clause, not a fixed reverse-split announcement. IX index describes a vote-report8-K with October7 period, not evidence of an open post-T0 redemption opportunity; leave its completion/payoff body unopened. Resolve remaining earlier potential notices across A-E before any later event selection. Claim exact eligibility/accepted identity via CAS before any selected market/NAV/payoff payload.",
+    "resume_rule": "No repeat of consumed Mitesco/Adagio, IX/SS indexes or SS EX4.1. Recorded legal terms/issuers remain exposed. First qualifying accepted timestamp across A-E, then CIK and frozen protocol ties. No later substitution while an earlier possibility remains unresolved.",
+    "reuse_reference": "qualifications/prospective-admission-and-convertible-flow-l0-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN"
+  },
+  "mechanism": {
+    "who_pays": "Issuer purchasing financing/liquidity; dilution may be borne by existing shareholders. The secured lender supplies capital and bears contractual/credit/execution risks. Secondary-market pressure would require actual issuance and sale.",
+    "why_persist": "Financing frictions and limited risk-bearing capital could support contractual compensation, while share borrow/liquidity risk may limit outsiders. Persistence and capture are hypotheses, not findings.",
+    "distinctness": "Negotiated secured-financing optionality/supply differs from fractional-share corporate-action settlement, SPAC trust redemption and lockup permission. Possible common liquidity-risk dependence remains; no independent-trial claim or reset.",
+    "accessible_primary_data": "SEC index and full public note successfully retrieved without key/account/payment. Only documentary terms are qualified; future event or price availability not asserted.",
+    "discriminated_question": "Can this public note by itself define an exogenous deterministic share-supply schedule for a cheap L1? No: choices, price-contingent trigger and unobserved notices break that clock. An announcement-only hypothesis would be a separate declaration, not a silent proxy substitution."
+  },
+  "primary_passages": [
+    {
+      "source": "ss-ex4-1",
+      "section": "3.1",
+      "quote": "Beginning on the twelve (12) month anniversary of the Purchase Price Date, Lender shall have the right, exercisable at any time in its sole and absolute discretion ... by providing Borrower with a notice",
+      "implication": "Eligibility date is not actual exercise/date of share issuance."
+    },
+    {
+      "source": "ss-ex4-1",
+      "section": "3.1",
+      "quote": "Payments ... may be made, in Borrower’s discretion, (a) in cash, (b) by converting ... or (c) by any combination of the foregoing",
+      "implication": "Ordinary redemption does not force common-share supply."
+    },
+    {
+      "source": "ss-ex4-1",
+      "section": "2",
+      "quote": "if ... a Limited Redemption Event occurs, Lender shall have the right to submit ... a conversion notice ... Borrower must pay ... by delivery ... of ... Common Shares",
+      "implication": "There is also a conditional share-delivery path; no claim that all conversion is borrower-optional. Cap/other exceptions preserved."
+    },
+    {
+      "source": "ss-ex4-1",
+      "section": "A11",
+      "quote": "Common Shares trade at a price that is at least ten percent (10%) greater than the Market Price for such Trading Day",
+      "implication": "Trigger is endogenous to market prices, not a predetermined independent supply date; no actual trigger checked."
+    },
+    {
+      "source": "ss-ex4-1",
+      "section": "A3",
+      "quote": "Conversion Price ... means ninety-five percent (95%) of the Market Price on the applicable measurement date",
+      "implication": "Contractual note-holder term; no realized profit inference or public-share entitlement."
+    }
+  ],
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1852019/000110465926115162/0001104659-26-115162-index.htm",
+      "observed_at": "2026-10-13T13:20:34.143233+00:00",
+      "scope": "SEC index metadata only; no filing body, price or payoff",
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 9704,
+      "sha256": "b0cf4c5a6d5b5c6b3ffdf0547accb4cf14f8bd8276cc5a76c3d272e514057754",
+      "complete": true,
+      "metadata_excerpt": "Filing Date 2026-10-13 Accepted 2026-10-13 06:03:17 Documents 11 Period of Report 2026-10-07 Items Item 5.07: Submission of Matters to a Vote of Security Holders Item 8.01: Other Events Interactive Data ",
+      "documents": [
+        "/ix?doc=/Archives/edgar/data/1852019/000110465926115162/tm2627454d1_8k.htm",
+        "/Archives/edgar/data/1852019/000110465926115162/0001104659-26-115162.txt",
+        "/Archives/edgar/data/1852019/000110465926115162/ixaqu-20261007.xsd",
+        "/Archives/edgar/data/1852019/000110465926115162/ixaqu-20261007_lab.xml",
+        "/Archives/edgar/data/1852019/000110465926115162/ixaqu-20261007_pre.xml",
+        "/Archives/edgar/data/1852019/000110465926115162/tm2627454d1_8k_htm.xml"
+      ],
+      "wall_seconds": 5.256741322999005
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1676163/000121390026108624/0001213900-26-108624-index.htm",
+      "observed_at": "2026-10-13T13:20:34.190011+00:00",
+      "scope": "SEC index metadata only; no filing body, price or payoff",
+      "retries": 0,
+      "status": 200,
+      "body_bytes": 28749,
+      "sha256": "4bcd738884c6988f3dd4a7e8fd455ae494145876b0348c834ed3b103d6a3b1c6",
+      "complete": true,
+      "metadata_excerpt": "Filing Date 2026-10-13 Accepted 2026-10-13 06:05:14 Documents 65 Period of Report 2026-10-09 Items Item 1.01: Entry into a Material Definitive Agreement Item 2.03: Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant Item 9.01: Financial Statements and Exhibits Interactive Data ",
+      "documents": [
+        "/ix?doc=/Archives/edgar/data/1676163/000121390026108624/ea0308062-8k_ssinnova.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/ea030806201ex4-1.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/ea030806201ex5-1.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/ea030806201ex10-1.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/ea030806201ex10-2.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/ea030806201ex10-3.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/ea030806201ex10-4.htm",
+        "/Archives/edgar/data/1676163/000121390026108624/0001213900-26-108624.txt",
+        "/Archives/edgar/data/1676163/000121390026108624/ssii-20261009.xsd",
+        "/Archives/edgar/data/1676163/000121390026108624/ssii-20261009_lab.xml",
+        "/Archives/edgar/data/1676163/000121390026108624/ssii-20261009_pre.xml",
+        "/Archives/edgar/data/1676163/000121390026108624/ea0308062-8k_ssinnova_htm.xml"
+      ],
+      "wall_seconds": 0.2764875369903166,
+      "image_links_omitted": 48
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1676163/000121390026108624/ea030806201ex4-1.htm",
+      "observed_at": "2026-10-13T13:21:10.198303+00:00",
+      "scope": "Legal instrument identity and conditional split clause only; no market/NAV/payoff endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 84658,
+      "sha256": "a071b7a1c43fedbe8bf7ce5849baadcfa55011c9e98fcd9d67ad4186fa96ae0d",
+      "complete": true,
+      "header_excerpt": "EX-4.1 2 ea030806201ex4-1.htm SECURED CONVERTIBLE PROMISSORY NOTE, DATED OCTOBER 9, 2026 Exhibit 4.1 SECURED CONVERTIBLE PROMISSORY NOTE October 9, 20",
+      "conditional_terms_excerpts": [
+        "Borrower effectuates a reverse split of its Common Shares without twenty (20) Trading Days prior written notice to Lender other than a reverse split of its Common Shares to maintain compliance with the minimum bid price requirements of the Nasdaq",
+        "SECURED CONVERTIBLE PROMISSORY NOTE, DATED OCTOBER 9, 2026"
+      ],
+      "wall_seconds": 0.19739919700077735
+    }
+  ],
+  "prospective_screen": {
+    "status": "NO_EVENT_ADMITTED; EARLIEST QUALIFYING EVENT AND COVERAGE STILL UNRESOLVED",
+    "claim": null,
+    "economic_look": false,
+    "IX": {
+      "cik": "1852019",
+      "accession": "0001104659-26-115162",
+      "accepted_eastern": "2026-10-13 06:03:17",
+      "period_of_report": "2026-10-07",
+      "items": [
+        "5.07",
+        "8.01"
+      ],
+      "decision": "NOT_ADMITTED_FROM_INDEX_METADATA; body deliberately not fetched because vote/completion/payoff information could contaminate D. Index does not establish an open eligible right. Do not assert exact meeting/redemption terms from index alone."
+    },
+    "SS": {
+      "cik": "1676163",
+      "accession": "0001213900-26-108624",
+      "accepted_eastern": "2026-10-13 06:05:14",
+      "period_of_report": "2026-10-09",
+      "items": [
+        "1.01",
+        "2.03",
+        "9.01"
+      ],
+      "decision": "EXCLUDE_THIS_EX4.1_KEYWORD_MATCH_AS_OPERATIVE_B_C_EVENT: reverse-split language is a conditional default/covenant in a secured convertible note, with no fixed announced split ratio, entitlement clock or fractional treatment. Other unread filings/exhibits are not globally declared ineligible."
+    },
+    "limits": "Three-request bound reached. No fresh feed/pagination/census or separate issuer request. Reused historical metadata retains its recorded completeness limits; absence of a new qualifying event is not proven."
+  },
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-mitesco-adagio-2026-10-13.json",
+    "sha256": "ec8c0201844cc21b56183a3744cdef9c0b396bd8bedf51a705183556ff822d5b",
+    "original_metadata": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_nonterminal_at_head": []
+  },
+  "exposure": {
+    "type": "PRIMARY_DOCUMENTARY_TERMS_AND_L0_MECHANISM_SELECTION",
+    "scope": "IX index metadata; SS index and full EX4.1 legal note, including contractual financing terms. SS is documentary calibration for this new L0, never an unseen prospective validation case. No selected market/NAV/distribution or realized-payout payload, no event-return join. Note contractual redemption amounts are terms, not observed cash/price outcomes.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "body_bytes": 123111,
+    "request_wall_seconds_sum": 5.730628056990099,
+    "extra_network_requests_for_L0": 0,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "previous_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "artifacts": {
+    "stderr": "/workspace/Quant-Trade-source-admission-20261011/research/edge_lab/receipts/1a9da9ccf2d5f0574dd7544a4f1e540b198bbdfa0039aa90da8d70edfaccf814/stderr.bin",
+    "stderr_sha256": "af0c4c2c19dd39a0f9107a2fa1b3b49c4425e8ba22f518e116e9165a61f7e327",
+    "stdout": "/workspace/Quant-Trade-source-admission-20261011/research/edge_lab/receipts/1a9da9ccf2d5f0574dd7544a4f1e540b198bbdfa0039aa90da8d70edfaccf814/stdout.bin",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cost": {
+    "cpu_seconds": 0.03768599999999998,
+    "wall_seconds": 0.06639080699915212
+  },
+  "data_fingerprint": "7024c2103e91694dbeb055f9a7269e29e46d6aaf22cfe7412263dbd41c002fa5",
+  "error": "CalledProcessError",
+  "look_id": "look:smard-2025-fixed-hours-proxy-v1",
+  "process_stopped": true,
+  "protocol_hash": "4b039fa2ec00964cfc9b3e44c58597aa22d7c533015632a3d29734ec6d50e471",
+  "result_digest": null,
+  "running_commit": "e3331466e4867939884e523b784f1d5f26eb4f55",
+  "schema": 1,
+  "started_event_hash": "26760e7b6a88d5b364cb47a80d1ca361b539848759c8a57a5428bcf0d2a54e82"
+}

@@ -1,0 +1,76 @@
+{
+  "recorded_at": "2026-10-15T11:00:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before_pass": "6b5dec719a5870aaf6948996ae4b61d8cb548ecb",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_SOURCE_GAP_RESOLUTION",
+  "economic_access_authorized": false,
+  "economic_verdict": null,
+  "result": "VALARIS_OVERSIZE_BLOCKER_RESOLVED_AS_MERGER_PROXY_INELIGIBLE_FROZEN_A_E; HDFC_BODY_GAP_RESOLVED_AS_EARNINGS_CALL_NOTICE_INELIGIBLE_A_E; CALAMOS_REMAINS_UNRESOLVED; NO_EVENT_SELECTED.",
+  "valaris_defm14a": {
+    "issuer": "Valaris Ltd.",
+    "form": "DEFM14A",
+    "accession": "0001140361-26-039488",
+    "accepted_at_verified_from_prior_receipt": "2026-10-14T06:01:02-04:00",
+    "prior_status": "PARK_DOCUMENT_SCOPE_NOT_REVIEWED",
+    "new_status": "LEGAL_CONTENT_RESOLVED_INELIGIBLE_FROZEN_A_E",
+    "resolution_route": "A distinct indexed excerpt for the exact Valaris accession plus the matching SEC-hosted Transocean joint definitive proxy section established the operative transaction mechanics without downloading the 4.8 MB Valaris body.",
+    "reason": "The filing is the Transocean-Valaris merger proxy. Valaris shares are exchanged for Transocean shares and fractional Transocean shares are settled in cash. This merger fractional cash-in-lieu is outside the frozen reverse-split B/C definitions and is not an issuer odd-lot tender, SPAC public-shareholder redemption or ETF liquidation.",
+    "incidental_exposure": {
+      "consumed": true,
+      "pre_reserved": false,
+      "scope": "The fixed merger exchange ratio 15.235 and fractional cash-in-lieu mechanics are consumed public transaction disclosures. No selected market price, merger-spread return, future return, benchmark or payoff calculation was accessed."
+    }
+  },
+  "hdfc_bank_6k": {
+    "issuer": "HDFC BANK LTD",
+    "form": "6-K",
+    "accession": "0001193125-26-420933",
+    "cached_feed_updated": "2026-10-14T06:02:14-04:00",
+    "prior_status": "PARK_DOCUMENTARY_SOURCE_GAP",
+    "new_status": "LEGAL_CONTENT_RESOLVED_INELIGIBLE_A_E_CLOCK_SECONDARY_ONLY",
+    "resolution_route": "SEC entity landing confirms an Oct-14 6-K with Oct-13 reporting date; a filing mirror reproduces the exact 6-K and a second EDGAR mirror states SEC acceptance around 06:02 EDT.",
+    "reason": "The filing is an earnings-call notice for October 17, 2026 concerning unaudited quarter/half-year results. It describes no issuer tender/odd-lot preference, reverse-split fractional entitlement, SPAC public-shareholder redemption, or listed-ETF liquidation.",
+    "accepted_at_verified": null,
+    "clock_note": "Secondary mirror reports acceptance at approximately 06:02 EDT; exact primary SEC acceptance seconds were not recovered, so the cached 06:02:14 feed time remains provisional rather than upgraded to primary-verified acceptance."
+  },
+  "calamos_497": {
+    "issuer": "Calamos ETF Trust",
+    "form": "497",
+    "accession": "0001104659-26-115676",
+    "cached_feed_updated": "2026-10-14T06:01:39-04:00",
+    "status": "PARK_DOCUMENTARY_SOURCE_GAP",
+    "reason": "New search evidence shows Calamos ETF Trust filed prospectus/497 material on Oct 14, including a Least-Of Autocallable Income ETF supplement, but the exact accession-to-document mapping and primary accepted clock for 115676 remain unresolved. A later-looking 06:18 mirror entry cannot safely be substituted for the cached 06:01:39 candidate. No eligibility inference is made."
+  },
+  "ordering_and_integrity": {
+    "first_event_selected": false,
+    "first_event_claim_allowed": false,
+    "remaining_saved_slice_blocker": "Calamos ETF Trust 497 accession 0001104659-26-115676",
+    "additional_preexisting_blockers": "Earlier Fusion/AmpliTech/IX chronology/source gaps remain as recorded in prior state.",
+    "selected_market_price_payloads": 0,
+    "nav_payloads": 0,
+    "distribution_or_redemption_payoff_payloads": 0,
+    "economic_calculations": 0,
+    "new_return_or_strategy_tests": 0
+  },
+  "next_decision": {
+    "kind": "SOURCE_GAP_RESOLUTION_OR_NEW_ADMISSIBLE_DELTA",
+    "status": "OPEN",
+    "economic_access_authorized": false,
+    "question": "Attempt no blind retry. Resolve Calamos accession 0001104659-26-115676 only if a genuinely distinct exact-accession primary/indexed route appears. Otherwise retain PARK and move only to a genuinely new SEC metadata delta or another already-authorized documentary task. Do not read price/NAV/distribution/payoff data and do not claim universal absence or FIRST event while chronology gaps remain."
+  },
+  "sources": [
+    "https://gosleesignals.com/filing/2006802",
+    "https://www.sec.gov/Archives/edgar/data/1451505/000110465926115680/tm269762-10_defm14a.htm",
+    "https://www.sec.gov/edgar/browse/?CIK=1144967",
+    "https://www.stocktitan.net/sec-filings/HDB/6-k-hdfc-bank-ltd-current-report-foreign-issuer-8e64517680df.html",
+    "https://it.advfn.com/mercati/NYSE/HDB/notizie/99488689/form-6-k-report-of-foreign-issuer-rules-13a-16",
+    "https://www.secinfo.com/$/SEC/Registrant.asp?CIK=1579881&View=About"
+  ]
+}

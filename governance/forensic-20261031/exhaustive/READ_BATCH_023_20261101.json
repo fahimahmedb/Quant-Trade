@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_023_20261101",
+  "status": "COMPLETE",
+  "scope": "WP2_V2_BYTE_FREEZE_REMOTE_MATERIALIZATION_V3_INDEPENDENT_REVIEW_AND_CLOSURE_6515364918_THROUGH_6518009789",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6515364918,"sha256":"f0cc67588a9477182d83f442aef85d5e994adc7d5c48599195601ab8bf6b02b1","status":"READ","summary":"Codex emits a complete WP2 V2 PATCH_BUNDLE before durable PASS: exact contents and SHA256 for synthetic_binding.py and its test, exact base parent, fixture/runner/evaluator/sink identities and test results. This preserves the tested candidate even if the worker disappears."},
+    {"kind":"issue-comment","id":6517481521,"sha256":"6b3e7698f6d45bd2da47ff3eb3e4c54e7ddf86fafcf16d5c50297632e413a298","status":"READ","summary":"Owner restarts the exact-base WP2 mission on PR #39 with REUSE > CONNECT > REPAIR > BUILD, bounded synthetic-only scope and stop at implementation PASS pending independent review."},
+    {"kind":"issue-comment","id":6517511014,"sha256":"57e02b068774b54ba39dd870757615992a26baed204701b7ed5f4db1ae1f6dc9","status":"READ","summary":"Independent remote verification still sees only the mission anchor, so the reported implementation is classified UNPUBLISHED_LOCAL_RESULT. Owner requires publication to the exact PR branch before any implementation-PASS claim."},
+    {"kind":"issue-comment","id":6517530384,"sha256":"fb63dc85e82d68eb152e1c140b7ee345c54b875497988cc27fb0e27b1a366bb2","status":"READ","summary":"Codex materializes the exact frozen bundle with matching hashes, reruns 8 WP2 tests and 29 targeted tests/subtests, commits qualification-only apparatus and reports WP2_IMPLEMENTATION_PASS_PENDING_INDEPENDENT_REVIEW; product code remains unchanged."},
+    {"kind":"issue-comment","id":6517555865,"sha256":"2981c76f5a399d3d13940de2a9bb81da339876400638a1045a4861a54c6a83f4","status":"READ","summary":"Exact bundle is published durably to PR #39 branch as remote commit 91a7d45..., directly descending from the mission anchor. Frozen hashes and tests are reverified; claim ceiling remains SELF_PASS != INDEPENDENT_PASS."},
+    {"kind":"issue-comment","id":6517669995,"sha256":"8e05987490ce822196b6b16498d7644cf5fd8ff7a37fc2f3b83ccc2922f12d34","status":"READ","summary":"Independent review finds one narrow receipt-integrity defect: worker output and sink receipt alias the same mutable dict, allowing worker-added metadata after receipt_hash computation. Review rejects independent PASS and requires non-aliasing plus final persisted-hash verification only."},
+    {"kind":"issue-comment","id":6517719862,"sha256":"6d984e8d2889e31efbd2a2d59b2f50bb02100c3ff14418bc155e58f481982897","status":"READ","summary":"Codex V3 applies the minimal deep-copy non-aliasing repair, strengthens tests to recompute final sink receipt hash and prove worker metadata isolation, and emits a new complete exact-byte PATCH_BUNDLE before PASS. Product code remains unchanged."},
+    {"kind":"issue-comment","id":6517964836,"sha256":"148e30c36d32d37e6b1980d640f616a205116b2ddc3bd87fc46659c0eddfdd76","status":"READ","summary":"Owner records durable independent closure on exact reviewed head d40053bd...: WP2 gap proven, repair PASS, causality proof PASS_BOUNDED_SYNTHETIC, independent code/evidence review PASS, product code unchanged, hosted CI explicitly NOT_PRESENT. WP1 and WP3 boundaries remain unchanged."},
+    {"kind":"issue-comment","id":6518009789,"sha256":"69d881c7db2c26ad360164f6a95d28f8c45027dddd7bf95ccb5bf59cb4546b37","status":"READ","summary":"Bounded orchestrator persists WP2 closure and recomputes critical path: WP1 is sole global-join blocker; WP2 must stay closed absent contradiction; WP3 is at Owner gate. PR #39 is not merged and no authority/science/runtime boundary was crossed."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 9,
+    "objects_directly_read": 9,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 9,
+    "cumulative_new_discussion_objects_directly_read": 207,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 217,
+    "estimated_total_discussion_objects_directly_read": 214,
+    "estimated_total_discussion_objects_semantically_disposed": 224,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"BYTE_FREEZE_PREVENTS_EPHEMERAL_WORKER_LOSS","finding":"V2 preserves exact tested bytes in the PR comment before any durable PASS, making candidate reconstruction possible even when workspace-only commits disappear. This directly repairs a demonstrated memory/restart failure mode.","current_product_decision_change":false},
+    {"classification":"INDEPENDENT_REVIEW_FOUND_REAL_DEFECT_AFTER_GREEN_TESTS","finding":"Eight WP2 tests and targeted regressions were green, yet independent review reproduced a mutable-aliasing flaw that invalidated receipt-hash integrity. Green tests alone were insufficient; decision-changing challenge added value.","current_product_decision_change":false},
+    {"classification":"MINIMAL_V3_REPAIR_NOT_ARCHITECTURE_REBUILD","finding":"The correct fix was a deep-copy separation plus stronger receipt-hash assertions, not a new scheduler/evaluator/sink. Scope remained two qualification files and product code unchanged.","current_product_decision_change":false},
+    {"classification":"WP2_CLOSED_AT_BOUNDED_CLAIM_CEILING","finding":"WP2 is independently closed only as bounded synthetic engineering proof. Hosted CI, production autonomy, scientific exposure, deployment, promotion and global join are explicitly not implied.","current_product_decision_change":false},
+    {"classification":"CRITICAL_PATH_COLLAPSES_TO_REAL_BLOCKERS","finding":"After WP2 closure, the orchestrator correctly stops reopening solved work: WP1 is the sole global-join blocker and WP3 is already at an Owner gate.","current_product_decision_change":false}
+  ],
+  "current_action": "WP2_BOUNDED_SYNTHETIC_CLOSURE_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6522136091,"sha256":"7765c0b036b37b6c1c583a5326e37676c5df8cfbad30e0ed148cb3d44cf27c96"}
+}

@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:23:00Z",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PRE_OUTCOME_CLOCK_GATE",
+  "family": "us-cef-optional-cash-discounted-issuance",
+  "experiment": "disc-us-cef-optional-cash-discount-tyg-prospective-l1-v1",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "selected_target_nav_or_market_payload_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "target_case": {
+    "ticker": "TYG",
+    "declared_target_monthly_investment_date": "2026-10-30",
+    "optional_cash_usd": 5000,
+    "status": "NOT_ARMED_FOR_NUMERIC_FIXING_ACCESS"
+  },
+  "first_broken_transition": "DISTRIBUTION_PAYMENT_DATE_TO_OPTIONAL_CASH_MONTHLY_INVESTMENT_PURCHASE_CLOCK",
+  "observed_fact": "The operative Plan text distinguishes the monthly investment date (payment date), the next succeeding purchase date, and the pricing day preceding the relevant cash-purchase investment date. It directs participants to obtain a schedule of relevant dates from the issuer website or by phone. The current public TYG fund/distribution page establishes an October 30, 2026 distribution payment date, but no public primary page located in this bounded pass uniquely establishes that October 30 is also the optional-cash monthly investment date, the next succeeding purchase date, or the exact optional-cash pricing/fixing day. Treating the distribution payment date as the cash-purchase investment date would therefore be inference, which the predeclared protocol forbids before target NAV/market access.",
+  "primary_evidence": [
+    {
+      "url": "https://cef.tortoisecapital.com/media/2337/tyg-tyg-prospectus-mandatory-redeemable-preferred-series-b-tyg-preferred.pdf",
+      "facts": [
+        "Optional cash investments must be received no later than two business days before the monthly investment date (the payment date).",
+        "Cash is applied to purchase shares on the next succeeding purchase date.",
+        "Participants may obtain a schedule of relevant dates from the issuer website or by phone.",
+        "Directly issued optional-cash shares use NAV/market values on the day preceding the relevant cash purchase investment date.",
+        "Premium branch issues shares directly; discount branch uses open-market purchases."
+      ]
+    },
+    {
+      "url": "https://tortoisecapital.com/news/tortoise-capital-announces-distributions-for-tyg-3/",
+      "facts": [
+        "TYG declared a distribution payable October 30, 2026 to holders of record October 23, 2026.",
+        "This announcement is a distribution schedule, not an explicit optional-cash purchase schedule."
+      ]
+    },
+    {
+      "url": "https://tortoisecapital.com/cef/tortoise-energy-infrastructure-corp/",
+      "facts": [
+        "The public fund page lists October 30, 2026 as a distribution payment date and leaves its future market/NAV/DRIP fields TBD at observation time.",
+        "No explicit public optional-cash monthly investment/purchase-date mapping was located on the page in this bounded pass."
+      ]
+    }
+  ],
+  "failed_criteria": [
+    "Official October 2026 optional-cash monthly investment date not uniquely established from public primary evidence.",
+    "Next succeeding purchase date not uniquely established.",
+    "Exact day governing optional-cash NAV/market formula not uniquely established.",
+    "Protocol forbids substituting a distribution payment date, nearby session, November case, or inferred business-day convention."
+  ],
+  "disconfirmation": "The plan's own wording makes the tempting October 30 distribution row insufficient: distribution reinvestment and optional-cash purchase clocks are described separately. A real schedule may exist for participants, but absence from this bounded public pass is not proof that the schedule does not exist.",
+  "next_action": "Do not read October 2026 target NAV/market values for this optional-cash experiment. Reopen only if a new public primary issuer/Plan/agent source uniquely identifies the October 2026 monthly investment date, succeeding purchase date and fixing day under the same frozen case. No phone/account contact, no alternate month, no historical reconstruction and no source substitution after target outcome access.",
+  "inference_ceiling": [
+    "No conclusion on economic profitability",
+    "No direct-issuance branch determination for the target case",
+    "No alpha/edge claim",
+    "No live or real-capital authorization"
+  ]
+}

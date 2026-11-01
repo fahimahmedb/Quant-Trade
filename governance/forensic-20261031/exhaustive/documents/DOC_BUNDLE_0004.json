@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "bundle_id": "DOC_BUNDLE_0004",
+  "source_document_index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
+  "baseline_read_blobs_matched": 52,
+  "disposed_before_bundle": 112,
+  "objects": [
+    {
+      "blob": "0b10b99c8a3aae7cded50d0d67768f3d385b389e",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md"
+      ],
+      "path_count": 1,
+      "bytes": 2364,
+      "encoding_status": "UTF8",
+      "sha256_content": "b5bbaf75999095d6fb67829dc3e60aeb84f32273a6091f58599ea23f894d50cb"
+    },
+    {
+      "blob": "112f720287c727f3b5faac0cd1f187ec59a0fd74",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/112f720287c727f3b5faac0cd1f187ec59a0fd74.txt"
+      ],
+      "path_count": 2,
+      "bytes": 2444,
+      "encoding_status": "UTF8",
+      "sha256_content": "e6332dba074f1fcd82fcf463090ed4e1a88a5bcded961e28cf953321fa140b8e"
+    },
+    {
+      "blob": "294659c77aeb1079d2272defbff8cf924ac9c2f9",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/294659c77aeb1079d2272defbff8cf924ac9c2f9.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/CLAUDE_CURRENT_MISSION.md"
+      ],
+      "path_count": 3,
+      "bytes": 1592,
+      "encoding_status": "UTF8",
+      "sha256_content": "48ad9d690ffcdc0589d8139b7abb84f4e97c2719256c23b0ac193d1e071e19b0"
+    },
+    {
+      "blob": "33d0e83cd7a7be48617c00417a7b879be8bc16af",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/33d0e83cd7a7be48617c00417a7b879be8bc16af.txt"
+      ],
+      "path_count": 2,
+      "bytes": 1569,
+      "encoding_status": "UTF8",
+      "sha256_content": "8085068ae0df5def8cc3501ab8cdf5e4d80c4247e9522a12510735e60c1ac4a5"
+    },
+    {
+      "blob": "39975fc39f9f139c8354f3e6e541ec7da65ac655",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/39975fc39f9f139c8354f3e6e541ec7da65ac655.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/CLAUDE_CURRENT_MISSION.md"
+      ],
+      "path_count": 4,
+      "bytes": 1625,
+      "encoding_status": "UTF8",
+      "sha256_content": "5271a66a55117fb6489a2914a236278883bf78524604160da7a494c7e38d9a8f"
+    },
+    {
+      "blob": "665fcfb242ddbd2bb9c6ce3cf098e63cfbbc91f7",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/665fcfb242ddbd2bb9c6ce3cf098e63cfbbc91f7.txt"
+      ],
+      "path_count": 2,
+      "bytes": 1088,
+      "encoding_status": "UTF8",
+      "sha256_content": "42fffe731c908ab30f9784720987dfac64af46f8ccf863eaeb7e2f82725e65fb"
+    },
+    {
+      "blob": "8c36ef86f2022ae314d1bb79b7af49d67f34d2de",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/8c36ef86f2022ae314d1bb79b7af49d67f34d2de.txt"
+      ],
+      "path_count": 2,
+      "bytes": 1787,
+      "encoding_status": "UTF8",
+      "sha256_content": "65a14016c25ded49ae68121720b8fd1cd2631d5f677d99cfe931b54dc886dcff"
+    },
+    {
+      "blob": "b9b6594cdf1c3b8cf45d4b3a70f0091a5b867e67",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/b9b6594cdf1c3b8cf45d4b3a70f0091a5b867e67.txt"
+      ],
+      "path_count": 2,
+      "bytes": 682,
+      "encoding_status": "UTF8",
+      "sha256_content": "98eeedc90b6472204052cac70f1a8f3c8e8f710c3d30b2484791f3018bc4b244"
+    },
+    {
+      "blob": "db796c64576cfae3b412c1e6e70ec02aa4c40c3a",
+      "representative_path": "CLAUDE_CURRENT_MISSION.md",
+      "paths": [
+        "CLAUDE_CURRENT_MISSION.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/db796c64576cfae3b412c1e6e70ec02aa4c40c3a.txt"
+      ],
+      "path_count": 2,
+      "bytes": 4033,
+      "encoding_status": "UTF8",
+      "sha256_content": "0af42bc0f18381304f7b81c8226cffbd7da9f843e43efc8168aceb26b13130a4"
+    },
+    {
+      "blob": "24d8fbeb70a172959023c81276f48e164484e141",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/24d8fbeb70a172959023c81276f48e164484e141.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/CODEX.md"
+      ],
+      "path_count": 12,
+      "bytes": 3736,
+      "encoding_status": "UTF8",
+      "sha256_content": "0781b7454da9fd0e044fac80194ea8ff16df183e21dfa5238b0614ae51aaf2e1"
+    },
+    {
+      "blob": "5a52099d2d83204cb87ef8eaca4ac41081fdf88f",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/5a52099d2d83204cb87ef8eaca4ac41081fdf88f.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/CODEX.md"
+      ],
+      "path_count": 3,
+      "bytes": 3615,
+      "encoding_status": "UTF8",
+      "sha256_content": "c801f621da425d2f1386a785dec8f7b8c5f3b7d3bf76e109d23232bcbbbecbb8"
+    },
+    {
+      "blob": "63ad60e433256df4daa2a0b9de474caf6137671c",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md"
+      ],
+      "path_count": 1,
+      "bytes": 5081,
+      "encoding_status": "UTF8",
+      "sha256_content": "7ecdf330f71143df60e7e4a94ae070c4c9a3017cff1c1bf440832f785007613c"
+    },
+    {
+      "blob": "93595474a84cca3342c04c16904d39f781bfcf4f",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/93595474a84cca3342c04c16904d39f781bfcf4f.txt"
+      ],
+      "path_count": 2,
+      "bytes": 3434,
+      "encoding_status": "UTF8",
+      "sha256_content": "31ff2cb60f5cd3eb5b728403acd8e75160be5e0809c9f64bed39472a745225fe"
+    },
+    {
+      "blob": "a2c794e6755a15f4978cc2a9ba1fb672a3125518",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md"
+      ],
+      "path_count": 1,
+      "bytes": 5131,
+      "encoding_status": "UTF8",
+      "sha256_content": "27485e1993d35a605feed8b5f3af07c24829d4cac715b8c00cc630227caf969d"
+    },
+    {
+      "blob": "bae61889e044e9408dea11a38408260f3a6d223e",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md"
+      ],
+      "path_count": 1,
+      "bytes": 5063,
+      "encoding_status": "UTF8",
+      "sha256_content": "51f8f8aec278cc17ce6f976dd0902ca4f1a2e40bef6576a459ece95624ed4c22"
+    },
+    {
+      "blob": "d9e51767fe0938e36d78dfbc8730d60356652cb0",
+      "representative_path": "CODEX.md",
+      "paths": [
+        "CODEX.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/d9e51767fe0938e36d78dfbc8730d60356652cb0.txt"
+      ],
+      "path_count": 2,
+      "bytes": 3809,
+      "encoding_status": "UTF8",
+      "sha256_content": "e35470ee6494e46e8682a624a2db4b39aba2df092ce4c43d4377021f406da592"
+    },
+    {
+      "blob": "04dc4c9a9279c8b77cca49f330b022879760d465",
+      "representative_path": "CODEX_BOOTSTRAP.md",
+      "paths": [
+        "CODEX_BOOTSTRAP.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/04dc4c9a9279c8b77cca49f330b022879760d465.txt"
+      ],
+      "path_count": 2,
+      "bytes": 381,
+      "encoding_status": "UTF8",
+      "sha256_content": "ad9187bb4340e5ab2b6394a29dface80048730455f87e95faaef4e3fe26f77ec"
+    },
+    {
+      "blob": "7572f54cc6b17a79024f817ab33ebd59bbb52adb",
+      "representative_path": "CODEX_BOOTSTRAP.md",
+      "paths": [
+        "CODEX_BOOTSTRAP.md"
+      ],
+      "path_count": 1,
+      "bytes": 10468,
+      "encoding_status": "UTF8",
+      "sha256_content": "c25f223e98078b39b0a752ab3f6f0e05150ddfdcb8b980d809747edd041f1700"
+    },
+    {
+      "blob": "f29d29713f5a55a07d0472091cfd731c796f2eba",
+      "representative_path": "CODEX_BOOTSTRAP.md",
+      "paths": [
+        "CODEX_BOOTSTRAP.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/f29d29713f5a55a07d0472091cfd731c796f2eba.txt"
+      ],
+      "path_count": 2,
+      "bytes": 13466,
+      "encoding_status": "UTF8",
+      "sha256_content": "74c4a7b843b56cdb253b4aacebde6c8da79a0989cfa433eeb73aeddd6ea1b2aa"
+    },
+    {
+      "blob": "6fb97b8f16965afdff1c929582b88f0eb20246ae",
+      "representative_path": "CODEX_LAUNCH.md",
+      "paths": [
+        "CODEX_LAUNCH.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/6fb97b8f16965afdff1c929582b88f0eb20246ae.txt"
+      ],
+      "path_count": 2,
+      "bytes": 4264,
+      "encoding_status": "UTF8",
+      "sha256_content": "84fe3924000c2a756acb3bc4fd520a1a975795df36ce0d8a5943ca8af61bb44c"
+    }
+  ],
+  "object_count": 20,
+  "text_bytes": 75632,
+  "selection_order": "REPRESENTATIVE_PATH_THEN_BLOB",
+  "status": "READY_FOR_SEMANTIC_READ"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:15:18Z",
+  "branch": "research/edge-lab-continuous",
+  "actor": "interactive-research-continuation",
+  "control_summary": {"paused": false, "real_capital_authorized": false, "live_trading_authorized": false, "paid_usd_total": 0},
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "HDFC Bank Limited",
+    "cik": "0001144967",
+    "form": "6-K",
+    "accession": "0001193125-26-420933",
+    "saved_feed_updated": "2026-10-14T06:02:14-04:00"
+  },
+  "primary_observed_fact": "The exact October 14, 2026 HDFC Bank 6-K reports only the scheduling of an October 17 earnings call regarding unaudited standalone and consolidated results for the quarter and half-year ended September 30, 2026. The exhibit contains conference-call logistics and does not announce any issuer tender, reverse split or fractional entitlement, SPAC redemption, ETF liquidation, or closed-end-fund rights offering.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The filing subject is an earnings-call scheduling notice. It fails every frozen A-E/CEF mechanism gate before any selected market-price, NAV, liquidation distribution or payoff access.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I issuer tender or odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional cash-in-lieu entitlement.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up entitlement.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption mechanism.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: operating bank, not an ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: not a US listed closed-end fund rights offering; filing predates CEF protocol T0."
+  },
+  "source_receipts": [
+    {"source":"SEC EDGAR entity/directory","url":"https://www.sec.gov/Archives/edgar/data/1144967/000119312526420933","observed_fact":"Directory for accession exists and lists d154910d6k.htm plus exhibit 99; accepted/file timestamp 2026-10-14 06:02:14."},
+    {"source":"filing-text mirror of EDGAR 6-K","url":"https://it.advfn.com/mercati/NYSE/HDB/notizie/99488689/form-6-k-report-of-foreign-issuer-rules-13a-16","observed_fact":"Reproduces filing text: earnings call scheduled for October 17, 2026 concerning September-quarter/half-year unaudited results."}
+  ],
+  "exposure_accounting": {
+    "economic_look_opened": false,
+    "selected_market_price_requested": false,
+    "incidental_unrequested_market_price_snippet_surfaced_in_search_results": true,
+    "incidental_exposure_note": "Broad filing searches surfaced unrelated HDFC price-history snippets for October 14, 2026. They were not used for eligibility or economic inference. Treat that issuer/date price window as exposed for any future HDFC-specific market study."
+  },
+  "ordering_effect": "HDFC may be removed from the saved documentary queue. Earlier unresolved Calamos 497 remains the chronology blocker for a later FIRST ETF-liquidation event claim.",
+  "next_action": "Continue saved queue with SK hynix, Evotec and Banco Santander without opening an economic look; preserve all earlier chronology blockers and exposures.",
+  "inference_ceiling": ["No economic verdict", "No earnings-alpha inference", "No exhaustive coverage claim", "No live or real-capital authorization"]
+}

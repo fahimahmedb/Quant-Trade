@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "bundle_id": "DOC_BUNDLE_0001",
+  "source_document_index_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
+  "baseline_read_blobs_matched": 52,
+  "disposed_before_bundle": 52,
+  "objects": [
+    {
+      "blob": "cf13ab91b7981763dc1df247e8ba9f74201f2f9a",
+      "representative_path": ".claude/agents/README.md",
+      "paths": [
+        ".claude/agents/README.md"
+      ],
+      "path_count": 1,
+      "bytes": 2886,
+      "encoding_status": "UTF8",
+      "sha256_content": "fa9c132d63423a105f691bc03c9c03aa04b740cb0e63b1e1a3f1db1519e75a7a"
+    },
+    {
+      "blob": "7804d324afd152236f565f86a705cdabe23ae542",
+      "representative_path": ".claude/agents/quant-backtest-indices.md",
+      "paths": [
+        ".claude/agents/quant-backtest-indices.md"
+      ],
+      "path_count": 1,
+      "bytes": 1691,
+      "encoding_status": "UTF8",
+      "sha256_content": "da3227f941145c04e3d65ce677da40cfc037ac9e3d284fd3757e7fa83e563643"
+    },
+    {
+      "blob": "bdd197fc2a0becf2158d9454aa5f7962e735d045",
+      "representative_path": ".claude/agents/quant-data-fetcher.md",
+      "paths": [
+        ".claude/agents/quant-data-fetcher.md"
+      ],
+      "path_count": 1,
+      "bytes": 4192,
+      "encoding_status": "UTF8",
+      "sha256_content": "f16c89bd648e08f66ace080db11c3e741e0747287c2c47fdedff48ca85dd6db0"
+    },
+    {
+      "blob": "91c2c472f6fd4f33136d49b8314aa946558e46a4",
+      "representative_path": ".claude/agents/quant-defensive-overlay.md",
+      "paths": [
+        ".claude/agents/quant-defensive-overlay.md"
+      ],
+      "path_count": 1,
+      "bytes": 4476,
+      "encoding_status": "UTF8",
+      "sha256_content": "bcb72b760ca1db759017450fad3cb08414f6e43237370daf0870ed817d0f0878"
+    },
+    {
+      "blob": "4a0caff5d208889a979addab9be21d8565f26d2d",
+      "representative_path": ".claude/agents/quant-executive-report.md",
+      "paths": [
+        ".claude/agents/quant-executive-report.md"
+      ],
+      "path_count": 1,
+      "bytes": 2008,
+      "encoding_status": "UTF8",
+      "sha256_content": "950e583bbd9097250d74815bc81c6876f820be09323ba6ce747c4676f81f98ce"
+    },
+    {
+      "blob": "bc5cf0e90f07d4e0bb8714aebccefe9e108b108d",
+      "representative_path": ".claude/agents/quant-integrated-pipeline.md",
+      "paths": [
+        ".claude/agents/quant-integrated-pipeline.md"
+      ],
+      "path_count": 1,
+      "bytes": 1992,
+      "encoding_status": "UTF8",
+      "sha256_content": "4f940e6778f6db76f2da3f8fc855dd251cd32c098980d8fed22f67522e0e2a59"
+    },
+    {
+      "blob": "81c94df12aa957250ebc232be12727069207dbdf",
+      "representative_path": ".claude/agents/quant-meta-labeling.md",
+      "paths": [
+        ".claude/agents/quant-meta-labeling.md"
+      ],
+      "path_count": 1,
+      "bytes": 4346,
+      "encoding_status": "UTF8",
+      "sha256_content": "458faa22fa37aeaee9e8d6d1ebfd2a455147a4893182c8e8f9eac9fef965ce83"
+    },
+    {
+      "blob": "03ed6751ebb97ed8c9fa2861c1764933179da66c",
+      "representative_path": ".claude/agents/quant-multimodel-ensemble.md",
+      "paths": [
+        ".claude/agents/quant-multimodel-ensemble.md"
+      ],
+      "path_count": 1,
+      "bytes": 1703,
+      "encoding_status": "UTF8",
+      "sha256_content": "4802a1d242d88fec0b3f2c03ebd926defcd303ec09c6451f53d840e920769ca2"
+    },
+    {
+      "blob": "604d945eb1c4f19936882f4c066494df9ac68b6e",
+      "representative_path": ".claude/agents/quant-report-writer.md",
+      "paths": [
+        ".claude/agents/quant-report-writer.md"
+      ],
+      "path_count": 1,
+      "bytes": 3272,
+      "encoding_status": "UTF8",
+      "sha256_content": "0dc9ca379a69708d3eb4129594a33dd6736f33b2aaa02886bb6657fa818f7b32"
+    },
+    {
+      "blob": "a70058b332c5c80353386f9f73d431433175e0ce",
+      "representative_path": ".claude/rules/state-integrity.md",
+      "paths": [
+        ".claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/a70058b332c5c80353386f9f73d431433175e0ce.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/.claude/rules/state-integrity.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/.claude/rules/state-integrity.md"
+      ],
+      "path_count": 13,
+      "bytes": 864,
+      "encoding_status": "UTF8",
+      "sha256_content": "815956755b74df4af85de1e7c2314c0b55b5c7a198b60311acd138131f8f05ec"
+    },
+    {
+      "blob": "655d14061bd1d7575a03cfd0131bc0f7ca23681a",
+      "representative_path": ".claude/rules/testing.md",
+      "paths": [
+        ".claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/655d14061bd1d7575a03cfd0131bc0f7ca23681a.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/.claude/rules/testing.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/.claude/rules/testing.md"
+      ],
+      "path_count": 13,
+      "bytes": 768,
+      "encoding_status": "UTF8",
+      "sha256_content": "fb2f757a9f5746e7dbdf5fb70a682b56870d8fcb9a942ea75bc0e3d7a83931f1"
+    },
+    {
+      "blob": "8e2e30905a2dfddd5036d19fbe958439c580a22e",
+      "representative_path": ".claude/skills/quant-audit/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/8e2e30905a2dfddd5036d19fbe958439c580a22e.txt"
+      ],
+      "path_count": 2,
+      "bytes": 946,
+      "encoding_status": "UTF8",
+      "sha256_content": "b55cbe74ebb5949a6dbf0a6dc22ed560bb6012a386d937f888646843e4c73d65"
+    },
+    {
+      "blob": "9fc3f582aa015908ac146765af329eb434a1e653",
+      "representative_path": ".claude/skills/quant-audit/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/9fc3f582aa015908ac146765af329eb434a1e653.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/.claude/skills/quant-audit/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/.claude/skills/quant-audit/SKILL.md"
+      ],
+      "path_count": 13,
+      "bytes": 1120,
+      "encoding_status": "UTF8",
+      "sha256_content": "b4f4c8254c92abfeae78f1e192aaa88b31b1eb33beb56b55cebea1aa93be6294"
+    },
+    {
+      "blob": "7fbdecf5623aff836efe6caaa64ab5452d84f4af",
+      "representative_path": ".claude/skills/quant-handoff/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/7fbdecf5623aff836efe6caaa64ab5452d84f4af.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/.claude/skills/quant-handoff/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/.claude/skills/quant-handoff/SKILL.md"
+      ],
+      "path_count": 13,
+      "bytes": 727,
+      "encoding_status": "UTF8",
+      "sha256_content": "41d259d4eac0ee0544aac5a8734091ea09d79afd3514327f0648ffb3db588e39"
+    },
+    {
+      "blob": "2658ef6928903a509ebbd616e8b3c6f68c0b3af0",
+      "representative_path": ".claude/skills/quant-orient/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/2658ef6928903a509ebbd616e8b3c6f68c0b3af0.txt"
+      ],
+      "path_count": 2,
+      "bytes": 786,
+      "encoding_status": "UTF8",
+      "sha256_content": "7bb2f2f4f34f1cd6b2fcd36527860b59bb03a111e7d441f41dde97f7091e87e0"
+    },
+    {
+      "blob": "501ae38099fdac38ddeeb59a1d9058721f7602fe",
+      "representative_path": ".claude/skills/quant-orient/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/501ae38099fdac38ddeeb59a1d9058721f7602fe.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/.claude/skills/quant-orient/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/.claude/skills/quant-orient/SKILL.md"
+      ],
+      "path_count": 13,
+      "bytes": 1169,
+      "encoding_status": "UTF8",
+      "sha256_content": "7e79ddcf5b669ad5c5aa4bea2a294847e059eb3e200d1ce6fab61c9c60a95397"
+    },
+    {
+      "blob": "5ef609a9263b78f6c63e29ea69fa32d6b1495349",
+      "representative_path": ".claude/skills/quant-proof/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/5ef609a9263b78f6c63e29ea69fa32d6b1495349.txt"
+      ],
+      "path_count": 2,
+      "bytes": 901,
+      "encoding_status": "UTF8",
+      "sha256_content": "639d69d1f991548acd445b5dc3bb52a84386663b7d23e34add0c590b5c7fc84b"
+    },
+    {
+      "blob": "95dbbae43f4841d5f756e604feaf9223ad35b60e",
+      "representative_path": ".claude/skills/quant-proof/SKILL.md",
+      "paths": [
+        ".claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/95dbbae43f4841d5f756e604feaf9223ad35b60e.txt",
+        "audit/owner-recovery/20261026/pass-01/snapshots/canonical_w2/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/default/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/edge_lab/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_f/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/giga_q/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_c1/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/horizontal_pre/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/intake_v3/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v1/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/runtime_v2/.claude/skills/quant-proof/SKILL.md",
+        "audit/owner-recovery/20261026/pass-01/snapshots/vertical/.claude/skills/quant-proof/SKILL.md"
+      ],
+      "path_count": 13,
+      "bytes": 1142,
+      "encoding_status": "UTF8",
+      "sha256_content": "833a643e1258886aec90ab41d7947fe4d1a5ae0059c6de188d8ab8d9ec857c5a"
+    },
+    {
+      "blob": "431ef3de22f005a954e358695104fd396b0b351e",
+      "representative_path": "AGENTS.md",
+      "paths": [
+        "AGENTS.md",
+        "audit/owner-recovery/20261026/pass-01/evidence/blobs/431ef3de22f005a954e358695104fd396b0b351e.txt"
+      ],
+      "path_count": 2,
+      "bytes": 419,
+      "encoding_status": "UTF8",
+      "sha256_content": "d2361b4d85a33ca37950f2bce46e484c3259d6f245493bf01ffcdd00be6e24a8"
+    },
+    {
+      "blob": "5fcf0ce01f2635c2ff718d468a050df06aa10605",
+      "representative_path": "AGENTS.md",
+      "paths": [
+        "AGENTS.md"
+      ],
+      "path_count": 1,
+      "bytes": 6844,
+      "encoding_status": "UTF8",
+      "sha256_content": "bfef2825ced64b1d2ad5bb8c298e45bfc8e70b2d4060aa323b132522573c9ac6"
+    }
+  ],
+  "object_count": 20,
+  "text_bytes": 42252,
+  "selection_order": "REPRESENTATIVE_PATH_THEN_BLOB",
+  "status": "READY_FOR_SEMANTIC_READ"
+}

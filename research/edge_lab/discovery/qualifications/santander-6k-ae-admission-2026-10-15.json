@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:15:18Z",
+  "branch": "research/edge-lab-continuous",
+  "actor": "interactive-research-continuation",
+  "control_summary": {"paused": false, "real_capital_authorized": false, "live_trading_authorized": false, "paid_usd_total": 0},
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Banco Santander, S.A.",
+    "cik": "0000891478",
+    "form": "6-K",
+    "accession": "0000950103-26-015545",
+    "saved_feed_updated": "2026-10-14T06:02:36-04:00"
+  },
+  "primary_observed_fact": "The October 14, 2026 6-K announces Santander's irrevocable optional early redemption of all outstanding 4.750% Non-Step-Up Non-Cumulative Contingent Convertible Perpetual Preferred Tier 1 Securities on November 12, 2026 at nominal amount plus accrued but unpaid distribution. This is a bank-capital security redemption, not a common-equity issuer tender, reverse split/fractional entitlement, SPAC redemption, ETF liquidation, or CEF rights offering.",
+  "decision": "INELIGIBLE_DOCUMENT_FOR_FROZEN_A_E_CEF_FAMILIES",
+  "decision_reason": "The filing contains a real redemption mechanism, but for Santander CoCo/Tier-1 securities. It does not satisfy any currently frozen common-equity/fund/SPAC event protocol, so no selected security price or payoff is read under those families.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I common-share issuer tender and no odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split/fractional cash-in-lieu mechanism.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split/fractional round-up mechanism.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: redemption concerns bank Tier-1 CoCo securities, not a SPAC trust redemption.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: bank debt/capital instrument redemption, not ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: not a CEF rights offering and predates CEF protocol T0."
+  },
+  "source_receipts": [
+    {"source":"filing-text reproduction","url":"https://jp.advfn.com/exchanges/NYSE/SAN/share-news/99488697/form-6-k-report-of-foreign-issuer-rules-13a-16","observed_fact":"Reproduces the 6-K inside-information notice: all outstanding 4.750% CoCos to be redeemed November 12, 2026 at nominal amount plus accrued distribution."},
+    {"source":"EDGAR filing-text mirror","url":"https://www.stocktitan.net/sec-filings/SAN/6-k-banco-santander-s-a-current-report-foreign-issuer-67147af5d11a.html","observed_fact":"Reproduces formal notice of redemption and identifies exact Series 10 CoCo securities."}
+  ],
+  "outcome_exposure": {"selected_market_price": false, "nav": false, "liquidation_distribution": false, "tender_spread": false, "future_return_or_pnl": false, "economic_look_opened": false},
+  "research_note": "This filing may motivate a distinct future L0 on exchange-listed bank-capital security call/redemption convergence, but it must not be treated as a free extra trial or folded into the current SPAC/ETF/common-equity families without a separate preregistered mechanism and source/price qualification.",
+  "ordering_effect": "Santander may be removed from the saved A-E/CEF documentary queue. It creates no admissible event under the frozen protocols.",
+  "next_action": "Reconcile the remaining saved queue and chronology blockers. Preserve Calamos as unresolved for ETF-first-event ordering and do not open an economic look until a frozen protocol admits a case.",
+  "inference_ceiling": ["No CoCo profitability conclusion", "No economic verdict under current families", "No family promotion", "No live or real-capital authorization"]
+}

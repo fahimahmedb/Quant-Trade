@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_018_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_F1_STAGE_B_REJECT_CLOSEOUT_AND_COINM_SOURCE_PREFLIGHT_6091234589_THROUGH_6092098835",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6091234589,"sha256":"aeafe28de1d688d703e92be58546f2dfddcb9a216fb84368a0430b25ac5f8cb1","status":"READ","summary":"Stage-B capture attempt 2 completes 35789/35789 archives with zero rows parsed, but controller stops before look on wrong plan hash copied from synthetic Stage-A test. Production acquisition hash is recovered from both real jobs; only reference is corrected under R7."},
+    {"kind":"issue-comment","id":6091284118,"sha256":"61753ea135d8658529ef4774c4158ea7236ca6423492f358fdabb84cd81bb34a","status":"READ","summary":"Single F1 Stage-B evaluation at theta=0.20 returns REJECT: mean/year -1.3569%, Sharpe -0.4485, robust t -0.8435, doubled-cost mean -2.9574%, final NAV 0.9622, 4/11 positive quarters and -5.3569pp vs assumed 4% cash. No retune or rerun; bytes/arithmetic authenticated independently."},
+    {"kind":"issue-comment","id":6091365936,"sha256":"0cac0a283de14b31e2dee92172189d74275afbc939d4ca279477d5600a872324","status":"READ","summary":"F1 fixed expression is closed and continuation starts from REJECT, never reruns for failed comment publication. Next action is source qualification for public Binance COIN-M liquidation snapshots; archive existence is not treated as complete labels or valid event time."},
+    {"kind":"issue-comment","id":6091666287,"sha256":"490007152de9fd215957b787a672e7e12f5836395d743b15963843aca44e4872","status":"READ","summary":"Parallel literature review of nine primary technical-signal sources produces no local economic look or family activation. Trend+signed-volume reserved as research lead; correlated indicators are not counted as independent evidence. F1 REJECT/F2 blocked remain unchanged."},
+    {"kind":"issue-comment","id":6092098835,"sha256":"00650bd836700960dae96d0d8f2bf7e88d010b258d5bdd3a53f74872cf50b3f4","status":"READ","summary":"COIN-M source preflight recovers primary semantics: forceOrder is one latest order per symbol per 1000ms, Event Time differs from Order Trade Time, and official repo reports discontinued snapshot publication/duplicate rows. Four-file structural sample is frozen with header-only inspection; no economic field may be parsed before source qualification."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 162,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 172,
+    "estimated_total_discussion_objects_directly_read": 169,
+    "estimated_total_discussion_objects_semantically_disposed": 179,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"F1_FIXED_EXPRESSION_REJECTED","finding":"F1 moves from underpowered positive discovery to a clearly negative sealed Stage-B result and is closed without retuning. This is real economic information, not engineering qualification.","current_product_decision_change":false},
+    {"classification":"PRODUCTION_PROVENANCE_NOT_TEST_OUTPUT","finding":"A wrong plan hash copied from synthetic test output stopped Stage B before the look; actual acquisition-step provenance was recovered and only the reference was corrected, preserving data and statistical design.","current_product_decision_change":false},
+    {"classification":"PUBLIC_ARCHIVE_EXISTENCE_NOT_SOURCE_QUALITY","finding":"COIN-M archive listings are treated only as data availability. Snapshot sampling, duplicate-row reports, event/trade time semantics and publication continuity must be qualified before any economic experiment.","current_product_decision_change":false},
+    {"classification":"LITERATURE_DOES_NOT_RESET_LOCAL_EVIDENCE","finding":"External technical-indicator literature is retained as idea/source context but does not create a local look, reset prior negatives or establish tradable edge.","current_product_decision_change":false}
+  ],
+  "current_action": "POST_F1_SOURCE_QUALIFICATION_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6092272009,"sha256":"dee5a1dec93b314fd732b8353d2a53f0fcce614e3657d787b612283c90230759"}
+}

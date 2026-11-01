@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_036_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_INLINE_REVIEWS_EXACT_WAIT_REFERENCE_FROZEN_STATUS_MARKDOWN_SCOPE_AND_FIX_REPLIES_4217441660_THROUGH_4217462732",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4217441660,"sha256":"f12479d37f064b7f366eb95065b1024b77e90cef2e32f650b6ad90af278cace1","status":"READ","summary":"P2 review finds wait IDs are matched by raw substring; C90/XC9/C9x/path/SHA text can accidentally satisfy ATTENTE[C9]. Closure requires an exact delimited reference such as REF[C9] or equivalent whole-token rule."},
+    {"kind":"review-comment","id":4217441670,"sha256":"ead0c4df69b4dfa80195158c5d7d56f735cfc4fdba53ae0207acc9a774a8a53c","status":"READ","summary":"P2 review finds open_work_in treats GELÉ as open work, generating false Owner alerts when all executable work is finished/blocked/frozen. Frozen reversible work must be non-open."},
+    {"kind":"review-comment","id":4217441684,"sha256":"ba143f61e1ddb1ee8cd2cf9e1c6a4bd4717140b29608aa8158d8d46c1426570d","status":"READ","summary":"P2 review finds checksum announcement parsing excludes only recognized candidate markdown blocks; illustrative blocks with documentary SHA-256 text can still be misread as external declarations. All fenced markdown content must be excluded from announcement scanning."},
+    {"kind":"review-comment","id":4217462490,"sha256":"2bf63eca49ac4f46c18ddf6b2ad79b96ad0076a469e4931180b14f2c2516753c","status":"READ","summary":"Builder reply confirms GELÉ handling was corrected in bc388adf61 with tests for frozen-only, frozen+READY and misleading status text outside the status cell."},
+    {"kind":"review-comment","id":4217462732,"sha256":"d560d14904c48ddbd93c7fa6b0da30dae2d55c58ad4bd88c5d49c453adb47fb0","status":"READ","summary":"Builder reply confirms wait-ID matching was tightened in bc388adf61 so C90/XC9/C9x/C9-bis no longer close ATTENTE[C9]; exact-token behavior is tested."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 338,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 348,
+    "estimated_total_discussion_objects_directly_read": 345,
+    "estimated_total_discussion_objects_semantically_disposed": 355,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"WATCHDOG_CORRECTNESS_REQUIRES_EXACT_CAUSAL_REFERENCES","finding":"A watchdog can still suppress legitimate waits after authentication/idempotence fixes if references are substring-matched rather than causally delimited.","current_product_decision_change":false},
+    {"classification":"FROZEN_IS_NOT_OPEN_WORK","finding":"A reversible GELÉ lane should not keep the system artificially non-idle or trigger Owner alerts when no executable positive-value work exists.","current_product_decision_change":false},
+    {"classification":"PARSER_SCOPE_MUST_EXCLUDE_ALL_EMBEDDED_DOCUMENT_CONTENT","finding":"Integrity metadata should be parsed only from the external declaration surface; content inside any fenced document block is evidence payload, not control syntax.","current_product_decision_change":false},
+    {"classification":"REVIEW_FINDINGS_WERE_ACTUALLY_REPAIRED","finding":"At least two bounded review findings in this batch have explicit same-lineage fixes and tests, showing that review value was realized rather than merely documented.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4217462975,"sha256":"a71c516ee9dab6757f3b71787b76a446e291a307b35272fdb7c597d369394ee8"}
+}

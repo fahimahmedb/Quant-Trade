@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_029_20261101",
+  "status": "COMPLETE",
+  "scope": "ISSUE44_FINAL_HEAD_REVIEW_POST_REVIEW_REPAIR_AND_TRUSTED_HOSTED_QUALIFICATION_6533923028_THROUGH_6537564055",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6533923028,"sha256":"9fe0488d26969c98aed17fcb7282edfab1d17d1b9558481d9a2a3d9259374270","status":"READ","summary":"Owner requests security review only on exact frozen Phase-1 subject 768eaa77..., explicitly retesting authority envelope persistence, actor verification, review causality, marker spoof resistance, replay and scientific/economic isolation."},
+    {"kind":"issue-comment","id":6533948452,"sha256":"6362a460768f68c8976d0434b75a5a72f95bd692feb43252e386cc2005483529","status":"READ","summary":"Codex reports substantive local hardening: AuthorityEnvelope hashing/fail-closed receiver profile, durable causal IDs/ledger, head fencing, nonblocking lock/tick semantics, pagination, adversarial tests and fresh STATE projection. 383 tests + 101 subtests pass locally, but the reported repair SHA is not remotely published due no remote/403."},
+    {"kind":"issue-comment","id":6533955669,"sha256":"d1ace68a444f84e3ae39979055d4d5c5a5645e7e888a936ac88eb166b5a8be96","status":"READ","summary":"Exact code review receipt on commit 768eaa77 reports no major issues. This qualifies only the code-review dimension on that SHA; hosted qualification, security/runtime deployment and E2E remain separate."},
+    {"kind":"issue-comment","id":6536761071,"sha256":"5a019385f5b8ea36bf77dafc40cfc99097c90334f0156a57a4d4479e0ac9b2a1","status":"READ","summary":"Later remote head 7ef16618 is challenged on three remaining concrete defects: trusted control-marker laundering through lower-trust prompt text, durable state not bound to repo/issue/branch subject, and no target-head revalidation immediately before qualified DONE. Repair is restricted to those three findings only."},
+    {"kind":"issue-comment","id":6536876505,"sha256":"acdc61313d40ee006b05d7dfb4194124c72ded38d4076eaed124451884b4413e","status":"READ","summary":"Codex locally repairs all three findings: first-line trusted marker envelope, immutable GitHub subject binding, and pre-qualification target-head revalidation; adds mandatory counter-tests and preserves scheduler/science isolation. 17 focused tests + 388 tests/104 subtests pass. Local de2a685... cannot be pushed, so exact binary patch transport is emitted."},
+    {"kind":"issue-comment","id":6536945366,"sha256":"6aaf9d38f98dd3adadd500e926bfb89aefe8796be325da13de9ca51c9d7c25a8","status":"READ","summary":"Controlling chat re-establishes authoritative remote state at head 7ef16618, 12 commits ahead of base. Hosted SEC P0 run 41132867903 is action_required with zero jobs, therefore a pre-job policy/approval state rather than test PASS/FAIL. Exact-head hosted qualification and VM E2E remain required."},
+    {"kind":"issue-comment","id":6536977330,"sha256":"323b7bf4a25cb6a6eaac4bb4d94f48758769b5db0f944eeb9b92cd98e9db3290","status":"READ","summary":"Codex records durable checkpoint: 41132867903 is classified as pre-job GitHub policy/approval gate with subtype UNKNOWN; implementation is remotely present but hosted exact-head PASS, VM activation and real E2E/unattended continuity remain unproven. READY_FOR_SCIENCE stays NO."},
+    {"kind":"issue-comment","id":6537553096,"sha256":"532cc07b451caa2783370827f5c5b0bd6302d2997ec4de180175b857cc7b8f70","status":"READ","summary":"Overnight checkpoint records later canonical exact head 2f3c1db6 with same tree as projection-only 3f10db7. Prior trusted run failed only stale STATE 380->381; refresh workflow succeeded; a trusted zero-file trigger starts exact-head run 41158223304, IN_PROGRESS at checkpoint."},
+    {"kind":"issue-comment","id":6537559972,"sha256":"562494f120ecbec2705f3eaa08b511c10f615286ae4c23f05c1e2b2c51a737da","status":"READ","summary":"Issue #44 confirms exact-head hosted run 41158223304 has passed checkout, Python, environment, SEC fail-closed and schema drift; Status artifact freshness is current step, while full unit/SEC/E2E/artifact remain pending. No duplicate Codex dispatch is started."},
+    {"kind":"issue-comment","id":6537564055,"sha256":"821edb390f66628d910dab12c51f64806c4cd1feddaa901c8f7aee25f41cfce2","status":"READ","summary":"A stale-base worker cannot inspect run 41158223304 due 403/no auth/no remote and correctly refuses mutation. RUN result and exact-head reconciliation remain UNKNOWN for that worker; no competing implementation is created."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 10,
+    "objects_directly_read": 10,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 10,
+    "cumulative_new_discussion_objects_directly_read": 290,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 300,
+    "estimated_total_discussion_objects_directly_read": 297,
+    "estimated_total_discussion_objects_semantically_disposed": 307,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"FINAL_LABEL_NOT_FINAL_IF_POSTERIOR_EVIDENCE_EXISTS","finding":"A head described as FINAL FROZEN at 768eaa77 was later superseded by posterior findings and newer heads. Human labels are not authority over later primary evidence; exact chronology must dominate naming.","current_product_decision_change":false},
+    {"classification":"POST_REVIEW_REPAIRS_REMAIN_TRANSPORT_BOUND","finding":"Even after a strong local repair and large green suite, remote durability remained the gating distinction. Binary patch transport was required rather than accepting local de2a685 as completion.","current_product_decision_change":false},
+    {"classification":"ACTION_REQUIRED_WITH_ZERO_JOBS_IS_NOT_TEST_FAILURE","finding":"Run 41132867903 never executed checkout/tests. It must be classified as GitHub policy/approval gate, not adapter failure or PASS. This prevents CI-status overinterpretation.","current_product_decision_change":false},
+    {"classification":"PROJECTION_ONLY_REPAIR_PRESERVES_CODE_IDENTITY","finding":"STATE.md 380->381 correction was performed via existing bounded refresh workflow; later trusted zero-tree-delta commit triggers qualification without changing orchestration code. Projection drift is isolated from product semantics.","current_product_decision_change":false},
+    {"classification":"STALE_WORKER_CORRECTLY_REFUSES_COMPETING_MUTATION","finding":"A worker on base 42affc with no GitHub visibility returns UNKNOWN and makes no edits rather than recreating or overwriting the authoritative 2f3c1db6 lane. Durable memory prevents another parallel build."},
+    {"classification":"READY_FOR_SCIENCE_REMAINS_FALSE_UNTIL_HOSTED_AND_VM_E2E","finding":"Remote code presence, local tests and code review do not prove deployment or repeated GPT-OSS↔Codex continuation. Scientific freeze remains correct until exact-head hosted qualification and VM E2E are proven."}
+  ],
+  "current_action": "ISSUE44_TRUSTED_EXACT_HEAD_HOSTED_QUALIFICATION_IN_PROGRESS_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6538452086,"sha256":"bb2bcc4c154b9fdae5754a379cb27ae511aea120163a6a626d99e808ebc1d173"}
+}

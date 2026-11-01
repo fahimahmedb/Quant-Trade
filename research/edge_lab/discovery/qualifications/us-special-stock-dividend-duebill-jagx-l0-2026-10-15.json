@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_DOCUMENTARY_MECHANISM_AND_CLOCK_FEASIBILITY",
+  "family": "us-special-stock-dividend-duebill-entitlement",
+  "candidate": "Jaguar Health, Inc. Series R Convertible Preferred Stock Dividend",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "market_price_or_forward_return_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "MECHANISM": "A very large non-cash stock dividend whose record date precedes payment and whose exchange ex-date may be set after payment can trade with a due-bill entitlement attached to common shares. During the due-bill period, a seller transfers the dividend right with the common share; after the ex-date the common should mechanically shed the entitlement. If the deliverable security is hard to value or operationally awkward, there may be a temporary entitlement-pricing question, but there is no free dividend because the common/share-right package should adjust economically.",
+  "WHO_PAYS": "No contractual free payer is established. Any apparent spread would have to come from investors mispricing or avoiding the due-bill entitlement, while arbitrageurs bear settlement, deliverable valuation, dilution, conversion, liquidity and broker-processing risk. The issuer creates the dividend security but existing owners are diluted when it converts; this is not external cash wealth creation.",
+  "WHY_PERSIST": "The dividend is unusual: one Series R preferred share per common share, automatic conversion into five common shares on November 2, 2026, exchange-set ex-date mechanics, due bills and substantial dilution. Operational complexity and uncertain preferred-share transfer/liquidity can discourage simple arbitrage, but the same complexity can make reliable valuation impossible.",
+  "CHEAP_DATA_NOW": "Primary SEC filings establish the October 13 record date, October 15 payment date, one-for-one Series R dividend, automatic five-common-share conversion on November 2, and the issuer's statement that the Nasdaq ex-dividend date would be announced later. A later October 14 market report says Nasdaq set October 16 as ex-date and that sellers during the dividend-right period transfer the dividend right, but the exact exchange/issuer primary notice for that update was not located in this bounded pass.",
+  "CHEAP_EXPRESSION": "A future test would need to freeze the exact primary Nasdaq due-bill/ex-date notice, define the common-plus-dividend-right package before ex-date and the economically equivalent common-share exposure after automatic conversion, then account for dilution, conversion caps, delivery timing, broker due-bill processing and any preferred-share trading restrictions. No price window, direction or threshold is declared here.",
+  "FATAL_PROBLEM": "The deliverable is not independent cash: each Series R preferred automatically converts into five common shares, creating major dilution and mechanically linking entitlement value to the issuer's common equity. A raw pre/post ex-date common return would be invalid unless the distributed/conversion shares and due-bill transfer are correctly included. The primary Nasdaq due-bill clock is not yet preserved, and public broker-processing/transferability evidence for the Series R security is incomplete.",
+  "primary_sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526413233/d183888d8k.htm",
+      "facts": [
+        "Jaguar announced one Series R preferred share per common share and certain eligible warrant share on the October 13 record date.",
+        "Payment date was set for October 15, 2026.",
+        "The filing said Nasdaq would determine/announce the ex-dividend date; investors trading during the period were told to consult brokers regarding entitlement."
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526413233/d183888dex991.htm",
+      "facts": [
+        "Each Series R preferred share is scheduled to convert into five common shares on November 2, 2026.",
+        "The issuer described the dividend as dilution protection rather than cash income."
+      ]
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1585608/000119312526417938/d78419ddef14a.htm",
+      "facts": [
+        "The later proxy repeats the October 13 record date, October 15 payment date and five-for-one conversion mechanics.",
+        "It still states that the ex-dividend date would be announced by Nasdaq, so this filing does not itself preserve the later due-bill/ex-date update."
+      ]
+    }
+  ],
+  "secondary_clock_exposure": {
+    "fact_seen": "An October 14 report states Nasdaq set October 16 as ex-dividend date and that sales during the dividend-right period carry the dividend right via due-bill procedures.",
+    "use": "CLOCK_DISCOVERY_ONLY_NOT_PRIMARY_QUALIFICATION",
+    "economic_values_seen": false
+  },
+  "disconfirmation": [
+    "A stock dividend plus due bill is normally accompanied by mechanical price adjustment; the headline quantity of five conversion shares is not a free return.",
+    "Conversion-induced dilution can neutralize apparent entitlement value.",
+    "If Series R cannot be freely traded or is credited late, common-only hedge arithmetic is incomplete.",
+    "A record-date strategy that ignores due bills can assign the dividend to the wrong holder."
+  ],
+  "failed_criteria": [
+    "Exact primary Nasdaq/issuer due-bill and ex-dividend notice not preserved in this pass.",
+    "Series R trading/transfer/credit mechanics for ordinary beneficial owners not fully qualified.",
+    "No lawful predeclared total-return construction yet accounts for common shares, entitlement, automatic conversion and dilution without outcome-driven choices."
+  ],
+  "next_action": "PARK_DATA. Reopen only on a primary Nasdaq/issuer due-bill notice plus public beneficial-owner delivery/transfer mechanics. If those become available, design one prospective/forward entitlement-accounting test before accessing a selected future price window. Do not backtest the already-exposed October 2026 JAGX price path or compare pre/post ex-date common prices alone.",
+  "inference_ceiling": [
+    "No JAGX profitability conclusion",
+    "No claim that due bills create alpha",
+    "No price-direction conclusion",
+    "No live or real-capital authorization"
+  ]
+}

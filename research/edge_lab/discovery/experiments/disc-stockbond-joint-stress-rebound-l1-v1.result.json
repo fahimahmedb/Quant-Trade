@@ -1,0 +1,135 @@
+{
+  "adequacy": {
+    "endpoint_coverage": 1.0,
+    "from_2022_events": 68,
+    "observed_events": 83,
+    "qualifying_events": 83,
+    "requires_each_block_at_least": 5,
+    "requires_endpoint_coverage": 1.0,
+    "requires_total_at_least": 20,
+    "through_2021_events": 15
+  },
+  "attempt": 1,
+  "claim_ceiling": "PROMOTE_EXPRESSION",
+  "claim_commit": "56506050acaca7212e3c684bfb367a67804b8b3e",
+  "dataset_proof": {
+    "meta_fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "meta_first_date": "2016-09-12",
+    "meta_last_date": "2026-09-11",
+    "meta_rows": 30168,
+    "raw_csv_sha256_observed": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1"
+  },
+  "decision": "KILL_EXPRESSION",
+  "economics_computed": true,
+  "edge_validated": false,
+  "event_population_sha256": "115394e7df31170b0e542deb7a682c8cdc63e6843d9625bfb6333ac7a6304538",
+  "experiment_id": "disc-stockbond-joint-stress-rebound-l1-v1",
+  "frozen": {
+    "central_roundtrip_cost": 0.0008,
+    "dataset": "data/datasets/us_sector_etf_daily.csv",
+    "expected_fingerprint": "sha256:f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "payoff": "next aligned session equal-weight SPY/TLT open-to-close",
+    "spy_close_to_close_threshold": -0.01,
+    "stress_roundtrip_cost": 0.0015,
+    "symbols": [
+      "SPY",
+      "TLT"
+    ],
+    "tlt_close_to_close_threshold": -0.005
+  },
+  "invocation_id": "owner-manual-20261012-a1",
+  "label": "EXPLORATORY",
+  "limits": {
+    "alpha_validated": false,
+    "capacity": "UNKNOWN",
+    "causal_identification": false,
+    "closed_daily_etf_b2_b4_reopened": false,
+    "daily_bars_are_fills": false,
+    "forced_flow_observed": false,
+    "leverage_financing_modelled": false
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "predeclaration_commit": "6c6797b608fb702032b38f44691c8042d86f74e0",
+  "primary": {
+    "best_central_net_return": 0.06428056675708407,
+    "block_event_counts": {
+      "from_2022": 68,
+      "through_2021": 15
+    },
+    "central_net_hit_rate": 0.39759036144578314,
+    "mean_central_net_from_2022": -0.0005834355095729776,
+    "mean_central_net_return": -0.0009995546544003969,
+    "mean_central_net_through_2021": -0.0028859614442846974,
+    "mean_gross_return": -0.0001995546544003967,
+    "mean_stress_net_return": -0.0016995546544003968,
+    "median_central_net_return": -0.0011780560878018923,
+    "worst_central_net_return": -0.034588220420600314,
+    "yearly": {
+      "2016": {
+        "events": 1,
+        "mean_central_net": -0.0003822102348997929,
+        "sum_central_net": -0.0003822102348997929
+      },
+      "2018": {
+        "events": 2,
+        "mean_central_net": -0.007291722752686308,
+        "sum_central_net": -0.014583445505372616
+      },
+      "2020": {
+        "events": 4,
+        "mean_central_net": -0.009542758381736951,
+        "sum_central_net": -0.038171033526947805
+      },
+      "2021": {
+        "events": 8,
+        "mean_central_net": 0.0012309084503687193,
+        "sum_central_net": 0.009847267602949754
+      },
+      "2022": {
+        "events": 28,
+        "mean_central_net": -0.003765220615010418,
+        "sum_central_net": -0.10542617722029171
+      },
+      "2023": {
+        "events": 12,
+        "mean_central_net": -0.00028761445757456277,
+        "sum_central_net": -0.003451373490894753
+      },
+      "2024": {
+        "events": 7,
+        "mean_central_net": -0.0014785894839081273,
+        "sum_central_net": -0.01035012638735689
+      },
+      "2025": {
+        "events": 13,
+        "mean_central_net": 0.006956376782020501,
+        "sum_central_net": 0.09043289816626651
+      },
+      "2026": {
+        "events": 8,
+        "mean_central_net": -0.0013598544648357033,
+        "sum_central_net": -0.010878835718685627
+      }
+    }
+  },
+  "real_capital_authorized": false,
+  "red_team": {
+    "executed": false,
+    "passed": false,
+    "reason": "primary kill rule"
+  },
+  "replay_allowed": false,
+  "schema_checks": {
+    "aligned_sessions": 2514,
+    "first_date": "2016-09-12",
+    "last_date": "2026-09-11",
+    "max_abs_raw_close_to_close_return": 0.1094237347171908,
+    "max_abs_raw_close_to_close_where": {
+      "date": "2020-03-16",
+      "raw_close_to_close_return": -0.1094237347171908,
+      "symbol": "SPY"
+    }
+  },
+  "typed_verdict": "KILL_EXPRESSION"
+}

@@ -1,0 +1,96 @@
+{
+  "recorded_at": "2026-10-15T10:58:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before_pass": "109f29a07df83d10722d4d5ce770b34464345b2e",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_verdict": null,
+  "result": "SANTANDER_PREFERRED_AT1_REDEMPTION_INELIGIBLE_A_E; PHARMING_CLINICAL_DISCLOSURE_INELIGIBLE_A_E; TRANSOCEAN_VALARIS_MERGER_PROXY_INELIGIBLE_FROZEN_A_E_WITH_FRACTIONAL_CIL_EXPOSURE; VERASTEM_RESULTS_CEO_CHANGE_INELIGIBLE_A_E_WITH_FINANCIAL_DISCLOSURE_EXPOSURE; NO_EVENT_SELECTED.",
+  "banco_santander_6k": {
+    "issuer": "Banco Santander, S.A.",
+    "form": "6-K",
+    "accession": "0000950103-26-015545",
+    "cached_feed_updated": "2026-10-14T06:02:36-04:00",
+    "accepted_at_verified": null,
+    "status": "LEGAL_CONTENT_REVIEWED_INELIGIBLE_A_E_CLOCK_UNVERIFIED",
+    "reason": "The filing announces optional early redemption of Santander's outstanding 4.750% Non-Step-Up Non-Cumulative Contingent Convertible Perpetual Preferred Tier 1 Securities. Frozen A-E does not admit preferred/AT1 contingent-capital redemptions as operating-company common-stock odd-lot tenders, reverse-split fractional entitlements, SPAC public-shareholder redemptions, or listed-ETF liquidations.",
+    "incidental_exposure": {
+      "consumed": true,
+      "pre_reserved": false,
+      "scope": "The security coupon/name and existence of the redemption were visible as legal descriptors. No redemption-price calculation, selected market quote, yield, return, benchmark or strategy payoff was accessed or computed."
+    }
+  },
+  "pharming_6k": {
+    "issuer": "Pharming Group N.V.",
+    "form": "6-K",
+    "accession": "0001828316-26-000045",
+    "cached_feed_updated": "2026-10-14T06:03:16-04:00",
+    "accepted_at_verified": null,
+    "status": "ISSUER_OFFICIAL_DESCRIPTION_REVIEWED_INELIGIBLE_A_E_CLOCK_UNVERIFIED",
+    "reason": "Pharming's official SEC-filings page identifies the October 14 6-K as positive Phase II topline data for leniolisib in genetic PIDs with immune dysregulation at ESID 2026. This is a clinical-development disclosure, not an A-E shareholder entitlement.",
+    "incidental_exposure": {
+      "consumed": true,
+      "pre_reserved": false,
+      "scope": "Positive clinical-outcome language was publicly exposed. No stock-price response, PnL, event-study outcome, benchmark, valuation or strategy payoff was requested or computed."
+    }
+  },
+  "transocean_defm14a": {
+    "issuer": "Transocean Ltd.",
+    "form": "DEFM14A",
+    "accession": "0001104659-26-115680",
+    "cached_feed_updated": "2026-10-14T06:03:31-04:00",
+    "accepted_at_verified": null,
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/1451505/000110465926115680/tm269762-10_defm14a.htm",
+    "status": "PRIMARY_LEGAL_CONTENT_REVIEWED_INELIGIBLE_FROZEN_A_E_CLOCK_UNVERIFIED",
+    "reason": "The definitive joint proxy describes the Transocean-Valaris business combination. Valaris shares are exchanged for Transocean shares and fractional Transocean shares are settled in cash through aggregate sale mechanics. This is merger consideration, not the frozen reverse-split B/C mechanism; it is also not an issuer odd-lot tender, SPAC public-shareholder redemption, or ETF liquidation. Merger fractional cash-in-lieu must not be relabeled as a fresh B/C case.",
+    "incidental_exposure": {
+      "consumed": true,
+      "pre_reserved": false,
+      "scope": "The fixed merger exchange ratio 15.235 and cash-in-lieu mechanics were exposed by the primary proxy. They are consumed public transaction mechanics, not a reserved economic look or payoff calculation."
+    }
+  },
+  "verastem_8k": {
+    "issuer": "Verastem, Inc.",
+    "form": "8-K",
+    "accession": "0001104659-26-115687",
+    "cached_feed_updated": "2026-10-14T06:08:11-04:00",
+    "accepted_at_verified": null,
+    "status": "PRIMARY_AND_ISSUER_FILING_DESCRIPTION_REVIEWED_INELIGIBLE_A_E_CLOCK_SECONDARY_ONLY",
+    "reason": "The saved 8-K reports preliminary operating results and a planned CEO transition/succession. It contains no A-E corporate-action entitlement. Same-day later prospectus/offering filings are separate accessions and must not be substituted into this saved candidate.",
+    "incidental_exposure": {
+      "consumed": true,
+      "pre_reserved": false,
+      "scope": "Public preliminary financial-result language was exposed. No selected share-price payload, future return, benchmark comparison, offering economics, or strategy payoff was requested or computed."
+    }
+  },
+  "ordering_and_integrity": {
+    "first_event_selected": false,
+    "first_event_claim_allowed": false,
+    "reason": "The saved slice is now legally triaged through its latest listed candidate, but unresolved earlier blockers remain: Valaris oversized primary proxy, Calamos 497 source gap, HDFC exact primary-body source gap, and pre-existing Fusion/AmpliTech/IX chronology/source gaps. Later ineligible reviews cannot establish FIRST eligible event or universal absence.",
+    "selected_market_price_payloads": 0,
+    "nav_payloads": 0,
+    "distribution_or_redemption_payoff_payloads": 0,
+    "economic_calculations": 0,
+    "new_return_or_strategy_tests": 0
+  },
+  "next_decision": {
+    "kind": "SOURCE_GAP_RESOLUTION_OR_NEW_ADMISSIBLE_DELTA",
+    "status": "OPEN",
+    "economic_access_authorized": false,
+    "question": "Do not repeat failed routes. First, check whether a genuinely distinct primary SEC route can resolve Calamos 497 or HDFC 6-K content/accepted clock within existing bounds, or whether a bounded section-level route can resolve the earlier Valaris DEFM14A without fetching the 4.8 MB body. If none is newly available, leave those items PARK and only resume prospective admission on a genuinely new SEC metadata delta. No price/NAV/payoff access and no economic test until ordering/admission gates are clean."
+  },
+  "sources": [
+    "https://www.santander.com/en/shareholders-and-investors/financial-and-economic-information",
+    "https://www.pharming.com/investors/investor-materials/sec-filings",
+    "https://www.sec.gov/Archives/edgar/data/1451505/000110465926115680/tm269762-10_defm14a.htm",
+    "https://investor.verastem.com/financial-information/sec-filings",
+    "https://www.sec.gov/Archives/edgar/data/1526119/000110465926115687/tm2627537d4_ex99-1.htm"
+  ]
+}

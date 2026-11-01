@@ -1,0 +1,33 @@
+{
+  "attempt": 1,
+  "claim_commit": "38e3d97cefc90cc99397ea4bb40db71806bc62b9",
+  "decision": "PARK_DATA",
+  "economics_computed": false,
+  "edge_validated": false,
+  "error": "HTTPError: HTTP Error 451: ",
+  "experiment_id": "disc-binance-extreme-funding-reversal-l1-v1",
+  "frozen": {
+    "abs_funding_threshold": 0.0005,
+    "end_utc": "2025-12-31T23:59:59+00:00",
+    "funding_endpoint": "/fapi/v1/fundingRate",
+    "horizon_hours": 8,
+    "interval": "5m",
+    "price_endpoint": "/fapi/v1/klines",
+    "roundtrip_cost": 0.001,
+    "start_utc": "2021-01-01T00:00:00+00:00",
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT"
+    ]
+  },
+  "invocation_id": "owner-manual-20261012-a1",
+  "label": "EXPLORATORY",
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "predeclaration_commit": "99e94a37e9b580189042c686f385ea17bf6a0b11",
+  "real_capital_authorized": false,
+  "reason": "Frozen official Binance funding source could not be retrieved in the one-shot execution; no threshold or source substitution is allowed.",
+  "replay_allowed": false,
+  "source_access": "FUNDING_ENDPOINT_FAILED",
+  "typed_verdict": "PARK_DATA"
+}

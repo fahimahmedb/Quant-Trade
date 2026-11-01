@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_001_20261101",
+  "status": "COMPLETE",
+  "scope": "EARLIEST_UNREAD_DISCUSSION_OBJECTS_FROM_DISCUSSION_COVERAGE",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "inventory_reconciliation": {
+    "preflight_inventory_commit": "c40b738bfd48a83a0249f12e4b9bbc1a745f91af",
+    "preflight_stage": "PREFLIGHT_INVENTORY_ONLY",
+    "archival_checkpoint_sha": "ae26de2fa580516a54544bbbdacbab48763a1c5c",
+    "raw_export_sha256": "a676c40debe397999d40f5f19a32088258e48d3375b3e4b1cffed7133816c38e",
+    "analysis_export_sha256": "5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe",
+    "tips_verified_reachable": 289,
+    "durable_archival_transport": "VERIFIED",
+    "full_git_mirror_equivalence": "NOT_PROVEN",
+    "local_git_transport_this_session": "BLOCK_ENVIRONMENT_DNS_RESOLUTION",
+    "note": "The durable split raw/analysis archives and exact hashes are verified repository evidence. This session could not perform git clone --mirror because github.com was not DNS-resolvable from the local runtime. Do not normalize VERIFIED_ARCHIVAL_CHECKPOINT into FULL_GIT_MIRROR_PROVEN."
+  },
+  "frozen_denominators_from_coverage_summary": {
+    "branches": 275,
+    "commits": 6393,
+    "file_blob_versions": 17221,
+    "document_blobs": 6465,
+    "issues": 46,
+    "prs": 35,
+    "discussion_objects": 423,
+    "conversation_comments": 326,
+    "inline_comments": 62,
+    "review_submissions": 35,
+    "review_threads": 48,
+    "timeline_events": 1775,
+    "runs": 4806,
+    "unique_runs": 4806,
+    "raw_files": 252,
+    "raw_bytes": 82236724,
+    "baseline_document_blobs_read": 52,
+    "baseline_discussion_objects_read": 7,
+    "baseline_semantic_review_complete": false
+  },
+  "objects": [
+    {
+      "kind": "issue-comment",
+      "id": 5735060755,
+      "sha256": "d714886bc4c958682de9fb65f07ebdca4449d1ae51ae1a2d0a29bcca78752fa3",
+      "status": "READ",
+      "thread": "PR_17",
+      "summary": "Blue blocks merge/t0 at d1b164fe: retrospective audit many-to-many false-pass, lifecycle provenance/cadence binding defects, visibility firewall count leak, and missing CI provenance. P0 raw capture operational is not revoked."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5735611827,
+      "sha256": "e9c78d9f156d6e330e8bd2bff8961fe162a5cbdbc9c2c6d7dbeb9344c4c15f21",
+      "status": "READ",
+      "thread": "PR_17",
+      "summary": "Builder accepts all Blue findings at 1450af4a, repairs obligation identity/provenance/firewall, finds two additional count/firewall-tier defects, reports exact-head CI green, but leaves t0 undeclared and continuous operation/systemd deployment unproven."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5737904365,
+      "sha256": "88d2a577a1db9b8fd605fd32213deea93ded640f7f66b12aedab91d9c7a8f214",
+      "status": "READ",
+      "thread": "PR_17",
+      "summary": "Blue re-verifies prior repairs but still blocks t0 on service-manager cause ambiguity and stale/materialized fingerprint not bound to active service/final rodage."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5738180324,
+      "sha256": "604683ed75854c3fa81fbbd766ad9bc6b30174b96d2719693c110b20f2dce53d",
+      "status": "READ",
+      "thread": "PR_17",
+      "summary": "Builder at 8d5dbb41 closes the two follow-ups plus a newly discovered service-entry-point fingerprint gap; exact-head push/PR CI green; final rodage intentionally records invalidating intervention; t0 remains undeclared and real systemd/multi-day proof absent."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5738242887,
+      "sha256": "e044320f1aeeab31e5b1c4efad9ac46f6b5c471ae3f585acf401b029294b886d",
+      "status": "READ",
+      "thread": "PR_17",
+      "summary": "Blue final review finds a real full-path HOST_BOOT_ID_SHADOWED_BY_CHILD_BOOT_ID defect that unit-level classify tests missed; verdict FAIL, handoff to Astra, PR17 unmerged, t0 undeclared. Also warns boot-id/timing inference is not authoritative automation provenance."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5749722864,
+      "sha256": "9bac3f74fa19216b45db719afd941833e7002e9b37a350766ba19054a6f27c15",
+      "status": "READ",
+      "thread": "PR_7",
+      "summary": "Blue V2 governance cleanup closes PR as historical/superseded, retains branch/commits for forensic history, points program authority to blue/master-v2-2026-09-20, and forbids merge."
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5749723963,
+      "sha256": "9bac3f74fa19216b45db719afd941833e7002e9b37a350766ba19054a6f27c15",
+      "status": "BYTE_IDENTICAL_TO_READ_OBJECT",
+      "identical_to": 5749722864
+    },
+    {
+      "kind": "issue-comment",
+      "id": 5749725250,
+      "sha256": "9bac3f74fa19216b45db719afd941833e7002e9b37a350766ba19054a6f27c15",
+      "status": "BYTE_IDENTICAL_TO_READ_OBJECT",
+      "identical_to": 5749722864
+    }
+  ],
+  "batch_counts": {
+    "objects_resolved": 8,
+    "objects_directly_read": 6,
+    "objects_byte_identical_to_read": 2,
+    "unique_content_hashes_read": 6,
+    "estimated_total_direct_reads_after_batch": 13,
+    "estimated_total_semantically_disposed_discussion_objects_after_batch": 15,
+    "discussion_denominator": 423
+  },
+  "cross_object_finding": {
+    "classification": "HISTORICAL_ENGINEERING_REVIEW_CHAIN",
+    "finding": "Multiple repair cycles and green CI did not close PR17: Blue later found a full real-launcher-path defect missed by direct unit tests. This reinforces that CI/test success is scoped and later counterevidence must remain authoritative for the historical object.",
+    "current_product_decision_change": false,
+    "current_action": "NO_CHANGE_REQUIRED"
+  },
+  "next_cursor": {
+    "ledger": "governance/forensic-20261031/discussion-coverage.csv",
+    "next_kind": "issue-comments",
+    "next_id": 5750320891,
+    "method": "continue in ledger order; deduplicate only by exact collected sha256; never infer semantic equality from similar text"
+  }
+}

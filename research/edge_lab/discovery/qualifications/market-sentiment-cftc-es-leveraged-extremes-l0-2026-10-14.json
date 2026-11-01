@@ -1,0 +1,51 @@
+{
+  "recorded_date": "2026-10-14",
+  "stage": "L0_SOURCE_FEASIBILITY",
+  "candidate_id": "market-sentiment-cftc-es-leveraged-extremes",
+  "seed_family": "market_sentiment_dislocation",
+  "decision": "L1_NOW",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "MECHANISM": "Extreme net positioning by Leveraged Funds in E-mini S&P 500 futures may proxy crowded risk-taking/hedging. If extremes partly reflect forced or constrained positioning rather than information, the subsequent cash-index move can mean-revert after the public COT release; if instead positioning is informed/trend-following, the sign may continue and the contrarian expression should fail.",
+  "WHO_PAYS": "Potentially leveraged/speculative participants forced to rebalance, cover shorts or unwind crowded longs; this is only a mechanism hypothesis, not an attribution claim.",
+  "WHY_PERSIST": "Leverage limits, margin/risk constraints and mandate-driven hedging can recur. The effect may nevertheless be fully arbitraged, contaminated by trend exposure, or too delayed because COT positions are measured Tuesday and published later.",
+  "OBSERVABLE_TRIGGER": "Public CFTC Traders in Financial Futures Futures-Only report for the E-MINI S&P 500 contract, using Leveraged Funds long and short positions relative to total open interest and a release-lag-safe signal date.",
+  "CHEAP_DATA_NOW": "CFTC publishes annual complete TFF Futures-Only files from 2010 onward and a public reporting dataset. Official variable definitions include Leveraged Money long/short positions and open interest. FRED series SP500 provides daily S&P 500 close history for the most recent ten years.",
+  "CHEAP_EXPRESSION": "One frozen cross-time percentile/extreme rule on lagged Leveraged-Funds net positioning, entered only after the COT report could have been public, evaluated on a fixed subsequent S&P 500 close-to-close horizon. No contemporaneous Tuesday-to-Friday look-ahead.",
+  "WHY_NOT_ARBITRAGED": "Not established. COT is widely known and delayed; any simple effect should be expected to be weak. L1 is justified only as a cheap falsification screen because both source routes are public and reproducible.",
+  "FATAL_PROBLEM": "Publication timing is nontrivial: report dates refer to Tuesday positions, not release time, and 2025 had delayed/backlogged publications during the appropriations lapse. A naïve Tuesday signal would look ahead. The S&P 500 cash close is not an executable futures fill, and positioning extremes are regime-dependent. If a release-safe clock cannot be defined mechanically for the frozen sample, PARK_DATA before economics.",
+  "source_routes": [
+    {
+      "authority": "Commodity Futures Trading Commission",
+      "dataset": "Traders in Financial Futures — Futures Only",
+      "historical_page": "https://www.cftc.gov/MarketReports/CommitmentsofTraders/HistoricalCompressed/index.htm",
+      "public_data_hub": "https://publicreportinghub.cftc.gov/d/gpe5-46if",
+      "contract": "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
+      "known_cftc_code": "13874A",
+      "required_fields": [
+        "Report_Date_as_MM_DD_YYYY",
+        "Open_Interest_All",
+        "Lev_Money_Positions_Long_All",
+        "Lev_Money_Positions_Short_All"
+      ]
+    },
+    {
+      "authority": "Federal Reserve Bank of St. Louis / S&P Dow Jones Indices LLC",
+      "dataset": "FRED SP500",
+      "series_id": "SP500",
+      "frequency": "Daily, Close",
+      "known_history_start": "2016-09-26"
+    }
+  ],
+  "exposure_accounting": {
+    "generic_current_or_2025_cot_rows_seen_during_source_qualification": true,
+    "joined_historical_signal_return_pairs_seen": false,
+    "historical_extreme_threshold_computed": false,
+    "future_return_or_pnl_computed": false,
+    "note": "Generic CFTC rows, including one June 2025 E-mini S&P 500 row, were visible while proving field semantics/source accessibility. No joined sample, percentile threshold or subsequent S&P return was inspected before this L0 decision. No pristine-source claim is made for those generic rows."
+  },
+  "next_action": "Predeclare exactly one L1 before downloading/joining the fixed historical sample. Freeze sample years, release-safe clock, normalization, extreme threshold, direction, horizon, costs/hurdle, adequacy and one adversarial check. Do not tune percentile or horizon after outcome access."
+}

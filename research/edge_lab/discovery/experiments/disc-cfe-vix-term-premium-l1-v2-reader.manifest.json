@@ -1,0 +1,376 @@
+{
+  "created_at": "2026-10-12T08:18:06.754044+00:00",
+  "experiment_id": "disc-cfe-vix-term-premium-l1-v2-reader",
+  "files": [
+    {
+      "contract": "H2013",
+      "entry_target": "2013-02-03",
+      "exit_target": "2013-03-05",
+      "expiry": "2013-03-20",
+      "payload_bytes": 13805,
+      "prior_status": 200,
+      "sha256": "fec608165d22c39f327b5fbf9709e3954fc72bce667c7b700469197be79e61fe",
+      "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_H13_VX.csv"
+    },
+    {
+      "contract": "M2013",
+      "entry_target": "2013-05-05",
+      "exit_target": "2013-06-04",
+      "expiry": "2013-06-19",
+      "payload_bytes": 13674,
+      "prior_status": 200,
+      "sha256": "731321cfa8c54f5b9f64e76acf33b2d6bc21a2fed4fef365ea6faa44f3de86f5",
+      "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_M13_VX.csv"
+    },
+    {
+      "contract": "U2013",
+      "entry_target": "2013-08-04",
+      "exit_target": "2013-09-03",
+      "expiry": "2013-09-18",
+      "payload_bytes": 13849,
+      "prior_status": 200,
+      "sha256": "3cd8e7d68e910faa0aff589ff562189fe0913bb0d1d8e43dc3811ff00e7a6a6d",
+      "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_U13_VX.csv"
+    },
+    {
+      "contract": "Z2013",
+      "entry_target": "2013-11-03",
+      "exit_target": "2013-12-03",
+      "expiry": "2013-12-18",
+      "payload_bytes": 14084,
+      "prior_status": 200,
+      "sha256": "a3801da2596a86a84f5fa741fc79e6873c6871a4e68e4f087b53e642b04007f8",
+      "url": "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_Z13_VX.csv"
+    },
+    {
+      "contract": "H2014",
+      "entry_target": "2014-02-01",
+      "exit_target": "2014-03-03",
+      "expiry": "2014-03-18",
+      "payload_bytes": 15978,
+      "prior_status": 200,
+      "sha256": "71324b5a73ba18d4859ceb33da5f83bb3cf9cdaa82be3cd1ec17ed88aa4ce629",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-03-18.csv"
+    },
+    {
+      "contract": "M2014",
+      "entry_target": "2014-05-04",
+      "exit_target": "2014-06-03",
+      "expiry": "2014-06-18",
+      "payload_bytes": 16047,
+      "prior_status": 200,
+      "sha256": "67f188b5710a653e22b3c8afd911b25a42bc3ac1be237a38e4de4481e7594549",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-06-18.csv"
+    },
+    {
+      "contract": "U2014",
+      "entry_target": "2014-08-03",
+      "exit_target": "2014-09-02",
+      "expiry": "2014-09-17",
+      "payload_bytes": 15930,
+      "prior_status": 200,
+      "sha256": "c7f363c0ba88a335e8d477a997e73f15b12ca34e3aa6ef8a7a5a4da410c42a2a",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-09-17.csv"
+    },
+    {
+      "contract": "Z2014",
+      "entry_target": "2014-11-02",
+      "exit_target": "2014-12-02",
+      "expiry": "2014-12-17",
+      "payload_bytes": 16259,
+      "prior_status": 200,
+      "sha256": "22d871cdfbc45dfeee9695ec46ddc5ca4e3218150634fc9ebb4acabdf9801d2c",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2014-12-17.csv"
+    },
+    {
+      "contract": "H2015",
+      "entry_target": "2015-02-01",
+      "exit_target": "2015-03-03",
+      "expiry": "2015-03-18",
+      "payload_bytes": 16023,
+      "prior_status": 200,
+      "sha256": "a6f97e10b12cfd879c1909726e36f78f67308a25b64306ab7cb035336da6b728",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-03-18.csv"
+    },
+    {
+      "contract": "M2015",
+      "entry_target": "2015-05-03",
+      "exit_target": "2015-06-02",
+      "expiry": "2015-06-17",
+      "payload_bytes": 16092,
+      "prior_status": 200,
+      "sha256": "dfd038349b2bf5b42201098bfd773154dffc00e95fca40a546460895706ae5b3",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-06-17.csv"
+    },
+    {
+      "contract": "U2015",
+      "entry_target": "2015-08-02",
+      "exit_target": "2015-09-01",
+      "expiry": "2015-09-16",
+      "payload_bytes": 15977,
+      "prior_status": 200,
+      "sha256": "8cd9ed89f3b134dcd079d75836c4b484eb7996220327f96ed3fe7eacbfe86f71",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-09-16.csv"
+    },
+    {
+      "contract": "Z2015",
+      "entry_target": "2015-11-01",
+      "exit_target": "2015-12-01",
+      "expiry": "2015-12-16",
+      "payload_bytes": 16231,
+      "prior_status": 200,
+      "sha256": "781f9d1b72a9b9ba842c57a3462497db7cfe106a638e6f76ac06fe58c388308a",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2015-12-16.csv"
+    },
+    {
+      "contract": "H2016",
+      "entry_target": "2016-01-31",
+      "exit_target": "2016-03-01",
+      "expiry": "2016-03-16",
+      "payload_bytes": 15926,
+      "prior_status": 200,
+      "sha256": "3cd20339c7a6fef1c0979e90df62a17cae3158344eb2e89c0d499d86c7260745",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-03-16.csv"
+    },
+    {
+      "contract": "M2016",
+      "entry_target": "2016-05-01",
+      "exit_target": "2016-05-31",
+      "expiry": "2016-06-15",
+      "payload_bytes": 15852,
+      "prior_status": 200,
+      "sha256": "1101fe08a03e5ede056d1566dc44bf2becd64d385620c04701b827edd1f7a71d",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-06-15.csv"
+    },
+    {
+      "contract": "U2016",
+      "entry_target": "2016-08-07",
+      "exit_target": "2016-09-06",
+      "expiry": "2016-09-21",
+      "payload_bytes": 16302,
+      "prior_status": 200,
+      "sha256": "f778fc3e4642c0e992e6ad5582db7ca31bc94a43039c999f40556696a2e937df",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-09-21.csv"
+    },
+    {
+      "contract": "Z2016",
+      "entry_target": "2016-11-06",
+      "exit_target": "2016-12-06",
+      "expiry": "2016-12-21",
+      "payload_bytes": 16599,
+      "prior_status": 200,
+      "sha256": "59548c21843d208954c670faa8e7332bf98c7ecff9131ef99faa97844eb17c12",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2016-12-21.csv"
+    },
+    {
+      "contract": "H2017",
+      "entry_target": "2017-02-05",
+      "exit_target": "2017-03-07",
+      "expiry": "2017-03-22",
+      "payload_bytes": 16321,
+      "prior_status": 200,
+      "sha256": "dad65fc550fdb332ec587126650a8035cc267985a6f56ce69931ce4bcbabd977",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-03-22.csv"
+    },
+    {
+      "contract": "M2017",
+      "entry_target": "2017-05-07",
+      "exit_target": "2017-06-06",
+      "expiry": "2017-06-21",
+      "payload_bytes": 15971,
+      "prior_status": 200,
+      "sha256": "a510e1faecbcecb1017a6afd7abeffc1703a65d3f8aeeb87749e24c82b677201",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-06-21.csv"
+    },
+    {
+      "contract": "U2017",
+      "entry_target": "2017-08-06",
+      "exit_target": "2017-09-05",
+      "expiry": "2017-09-20",
+      "payload_bytes": 15957,
+      "prior_status": 200,
+      "sha256": "75713d9de1021f98b522c38a89acead6346f895df5d0c7c4c8459621e72ac05e",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-09-20.csv"
+    },
+    {
+      "contract": "Z2017",
+      "entry_target": "2017-11-05",
+      "exit_target": "2017-12-05",
+      "expiry": "2017-12-20",
+      "payload_bytes": 16239,
+      "prior_status": 200,
+      "sha256": "6ef323577e4ae0cb605abbf681b38d52b35648284c0c51435554ca1c3c6859cb",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2017-12-20.csv"
+    },
+    {
+      "contract": "H2018",
+      "entry_target": "2018-02-04",
+      "exit_target": "2018-03-06",
+      "expiry": "2018-03-21",
+      "payload_bytes": 16117,
+      "prior_status": 200,
+      "sha256": "7c78a94b9f9c7403467f5236093412a798969c4bdc2e72e7ba577942cbf1a38e",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-03-21.csv"
+    },
+    {
+      "contract": "M2018",
+      "entry_target": "2018-05-06",
+      "exit_target": "2018-06-05",
+      "expiry": "2018-06-20",
+      "payload_bytes": 16073,
+      "prior_status": 200,
+      "sha256": "6c5ca228bdd8bce9d72703720c77b7ca80462b073829a53a890ff768a46114b1",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-06-20.csv"
+    },
+    {
+      "contract": "U2018",
+      "entry_target": "2018-08-05",
+      "exit_target": "2018-09-04",
+      "expiry": "2018-09-19",
+      "payload_bytes": 16000,
+      "prior_status": 200,
+      "sha256": "95e63535525b24056476129ce86927156fa43c2f192be7ce3573becb56306c81",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-09-19.csv"
+    },
+    {
+      "contract": "Z2018",
+      "entry_target": "2018-11-04",
+      "exit_target": "2018-12-04",
+      "expiry": "2018-12-19",
+      "payload_bytes": 16228,
+      "prior_status": 200,
+      "sha256": "b95cf1efd7df610ae76a19ff4c816c62e7bd808d147b36d52fc55d06beef7e6b",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2018-12-19.csv"
+    },
+    {
+      "contract": "H2019",
+      "entry_target": "2019-02-02",
+      "exit_target": "2019-03-04",
+      "expiry": "2019-03-19",
+      "payload_bytes": 15966,
+      "prior_status": 200,
+      "sha256": "2f86c6a1d6eed44390b8134bff68e186d2a1ae34469deaea1e594eb97ebe91a6",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-03-19.csv"
+    },
+    {
+      "contract": "M2019",
+      "entry_target": "2019-05-05",
+      "exit_target": "2019-06-04",
+      "expiry": "2019-06-19",
+      "payload_bytes": 16127,
+      "prior_status": 200,
+      "sha256": "a0a122738217db57d59481294dd3c2206555d508a1f6f2ea88b7a64324b9162b",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-06-19.csv"
+    },
+    {
+      "contract": "U2019",
+      "entry_target": "2019-08-04",
+      "exit_target": "2019-09-03",
+      "expiry": "2019-09-18",
+      "payload_bytes": 15998,
+      "prior_status": 200,
+      "sha256": "8fbdffbd379c70d7c1b754b2ca9ea97d01bb916aea84c6b5f7984379f57cc350",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-09-18.csv"
+    },
+    {
+      "contract": "Z2019",
+      "entry_target": "2019-11-03",
+      "exit_target": "2019-12-03",
+      "expiry": "2019-12-18",
+      "payload_bytes": 16291,
+      "prior_status": 200,
+      "sha256": "426d90a4d696bb9592e022b311be766a6c6ac808c71a68f4e66712b4a6ef6f32",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2019-12-18.csv"
+    },
+    {
+      "contract": "H2020",
+      "entry_target": "2020-02-02",
+      "exit_target": "2020-03-03",
+      "expiry": "2020-03-18",
+      "payload_bytes": 15992,
+      "prior_status": 200,
+      "sha256": "b0754a52316241f15d66f41706d3569f20cdfe1703bbd4cd7f87146cf57beb50",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-03-18.csv"
+    },
+    {
+      "contract": "M2020",
+      "entry_target": "2020-05-03",
+      "exit_target": "2020-06-02",
+      "expiry": "2020-06-17",
+      "payload_bytes": 15951,
+      "prior_status": 200,
+      "sha256": "5d66bb8cbdd182c0fad4e984fa60ffbde7122388dc218fb91bb10a02faa82d1a",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-06-17.csv"
+    },
+    {
+      "contract": "U2020",
+      "entry_target": "2020-08-02",
+      "exit_target": "2020-09-01",
+      "expiry": "2020-09-16",
+      "payload_bytes": 16535,
+      "prior_status": 200,
+      "sha256": "bb0fd4d378b682148f1999323e35227a71a4b8a18e95deba5980267bf3c65cf4",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-09-16.csv"
+    },
+    {
+      "contract": "Z2020",
+      "entry_target": "2020-11-01",
+      "exit_target": "2020-12-01",
+      "expiry": "2020-12-16",
+      "payload_bytes": 15678,
+      "prior_status": 200,
+      "sha256": "bbb2ec67e0c3993a1c78ba6f77123c52709ff1c142604042eb70d048a71a99fd",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2020-12-16.csv"
+    },
+    {
+      "contract": "H2021",
+      "entry_target": "2021-01-31",
+      "exit_target": "2021-03-02",
+      "expiry": "2021-03-17",
+      "payload_bytes": 15494,
+      "prior_status": 200,
+      "sha256": "ee3ba3bd455cad5772198f3f04d3d3e7179779319cf74d22fe90b23f40a21ff7",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-03-17.csv"
+    },
+    {
+      "contract": "M2021",
+      "entry_target": "2021-05-02",
+      "exit_target": "2021-06-01",
+      "expiry": "2021-06-16",
+      "payload_bytes": 15551,
+      "prior_status": 200,
+      "sha256": "b87dac062797b9da171f294d5cd2bcfd2d1513d6b7816ddbba2c7737347b658c",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-06-16.csv"
+    },
+    {
+      "contract": "U2021",
+      "entry_target": "2021-08-01",
+      "exit_target": "2021-08-31",
+      "expiry": "2021-09-15",
+      "payload_bytes": 15468,
+      "prior_status": 200,
+      "sha256": "c73076114fc912535a6f27f2ceb418f7cf32e08e4f536a4e146de8be48ef9526",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-09-15.csv"
+    },
+    {
+      "contract": "Z2021",
+      "entry_target": "2021-11-07",
+      "exit_target": "2021-12-07",
+      "expiry": "2021-12-22",
+      "payload_bytes": 16373,
+      "prior_status": 200,
+      "sha256": "e929a9ce4fbde81983feb0029503af903a3170ee09c7422ff51669ca75de9f6e",
+      "url": "https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_2021-12-22.csv"
+    }
+  ],
+  "parent_experiment_id": "disc-cfe-vix-term-premium-l1-v1",
+  "prior_receipt_commit": "6543f2299b314cfbcf46bdac8a1ef8b7cb66cd5d",
+  "selection_reason": "Same36-contract population/rule/costs asv1. Source QA stopped before any payoffs on an exact standardCFEdisclaimer prefix, header row2 inU2013. No economic outcomes used to change design; all earlier source exposure retained.",
+  "software_repair": {
+    "acquisition_retries": 0,
+    "affected_source": "U2013",
+    "existing_successful_cache_reused": true,
+    "observed_header_row": 2,
+    "source_disposition_commit": "c4b5dbd23ab757cc512b3aeccf7211b52e6b50a8"
+  }
+}

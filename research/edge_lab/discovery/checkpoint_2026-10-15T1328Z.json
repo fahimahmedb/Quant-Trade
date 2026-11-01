@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T13:28:00Z",
+  "branch": "research/edge-lab-continuous",
+  "purpose": "Owner-requested durable checkpoint before continuing autonomous economic research in the same session.",
+  "control": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "economic_look_status": "NONE_OPENED_BY_THIS_CONTINUATION",
+  "progress_since_prior_owner_checkpoint": [
+    {
+      "commit": "7dd5c527820804a99ae8ac831cbec91fdd2de3e2",
+      "artifact": "qualifications/santander-coco-call-convergence-l0-2026-10-15.json",
+      "decision": "DUPLICATE",
+      "summary": "Closed Santander AT1 call seed as duplicate of the existing full-call convergence cluster; no secondary prices accessed."
+    },
+    {
+      "commit": "99a30432fd3a67483b3d60403463a80bfe8e2205",
+      "artifact": "qualifications/us-spinoff-mandate-disposal-route-2026-10-15.json",
+      "decision": "READY_TO_PREDECLARE_PROSPECTIVE_ONLY",
+      "summary": "Qualified a free Nasdaq Trader spin-off clock route plus a previously qualified public daily-price schema; explicitly no free historical census claim."
+    },
+    {
+      "commit": "befa6b6cab4b614f45ac708c96e8fae7263ac170",
+      "artifact": "experiments/disc-us-spinoff-mandate-disposal-prospective-l1-v1.md",
+      "decision": "PREDECLARED_BEFORE_PROSPECTIVE_EVENT",
+      "summary": "Froze a future Nasdaq spin-off first-regular-way, 5-close, SPY-relative case protocol with 50/100 bp costs before any selected child/benchmark outcome access."
+    },
+    {
+      "commit": "0685dffb6373559b9dacdbb3a10148f6ebd6271f",
+      "artifact": "qualifications/reverse-split-post-t0-ordering-kndi-skin-2026-10-15.json",
+      "decision": "PARK_ORDERING_PRIMARY_ACCEPTANCE_PROOF_INCOMPLETE",
+      "summary": "Bounded reverse-split ordering review: NEXGEL pre-T0/effective too early, SkinHealth pre-T0 public terms, Kandi possible post-T0 round-up candidate but not claimable until primary accepted-clock and FIRST-event ordering are proved. No price payload accessed."
+    },
+    {
+      "commit": "bdce05837c95affe70f105970fbd13a8e65b4fba",
+      "artifact": "qualifications/us-fda-recall-public-clock-followup-2026-10-15.json",
+      "decision": "PARK_DATA",
+      "summary": "Resolved FDA first-posted clock conceptually via iRES `postedinternetdt`, but current exact PIT/history API is credential-gated; no issuer/outcome join opened."
+    }
+  ],
+  "active_research_frontier": [
+    "Frozen A-E prospectives and CEF-rights remain higher priority when a mechanically admissible event can be established.",
+    "New spin-off prospective is live only for alerts dated 2026-10-16 or later; no historical backfill.",
+    "Kandi reverse-split round-up remains documentary-only until primary SEC accepted timestamp and chronological FIRST-event proof are established.",
+    "Closed source blockers are not to be repeatedly re-probed without genuinely new evidence."
+  ],
+  "resume_instruction": "Continue immediately from this checkpoint with productive documentary/prospective research. Do not spend work on routine telemetry, governance or heartbeat-only updates. Preserve one-economic-look-at-a-time, no retuning after outcomes, zero paid services and no real/live capital."
+}

@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:15:18Z",
+  "branch": "research/edge-lab-continuous",
+  "actor": "interactive-research-continuation",
+  "control_summary": {"paused": false, "real_capital_authorized": false, "live_trading_authorized": false, "paid_usd_total": 0},
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Evotec SE",
+    "cik": "0001412558",
+    "form": "6-K",
+    "accession": "0001104659-26-115678",
+    "saved_feed_updated": "2026-10-14T06:02:29-04:00"
+  },
+  "primary_observed_fact": "The October 14, 2026 6-K furnishes Evotec's ad-hoc announcement of preliminary unaudited nine-month 2026 financial results above market expectations while reaffirming full-year guidance. It is a financial-results disclosure by an operating biotechnology company, not a tender, reverse split/fractional entitlement, SPAC redemption, ETF liquidation, or CEF rights offering.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The filing subject fails every frozen A-E/CEF mechanism gate before any selected market-price, NAV, liquidation-distribution or payoff access.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I issuer tender or odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional cash-in-lieu entitlement.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up entitlement.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption mechanism.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: operating biotech issuer, not an ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: not a US listed closed-end fund rights offering; filing predates CEF protocol T0."
+  },
+  "source_receipts": [
+    {"source":"EDGAR filing-text mirror with SEC acceptance metadata","url":"https://www.stocktitan.net/sec-filings/EVO/6-k-evotec-se-current-report-foreign-issuer-85d09e06295b.html","observed_fact":"Reproduces the 6-K and Exhibit 99.1: preliminary nine-month 2026 results above expectations, guidance reaffirmed; accepted 2026-10-14 around 06:02 EDT."},
+    {"source":"filing-text mirror","url":"https://de.advfn.com/borse/NASDAQ/EVO/nachrichten/99488683/form-6-k-report-of-foreign-issuer-rules-13a-16","observed_fact":"Same filing subject and exhibit description."}
+  ],
+  "outcome_exposure": {"selected_market_price": false, "nav": false, "liquidation_distribution": false, "tender_spread": false, "future_return_or_pnl": false, "economic_look_opened": false},
+  "ordering_effect": "Evotec may be removed from the saved documentary queue. Earlier unresolved chronology blockers remain unchanged.",
+  "next_action": "Continue with Banco Santander 6-K documentary qualification, then reconcile remaining saved queue gaps without opening an economic look.",
+  "inference_ceiling": ["No economic verdict", "No earnings-alpha inference", "No exhaustive coverage claim", "No live or real-capital authorization"]
+}

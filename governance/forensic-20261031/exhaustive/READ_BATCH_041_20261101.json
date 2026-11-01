@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_041_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_COST_DIAGNOSTIC_AUDITABILITY_DESK_MODEL_ROLE_LABELS_POWER_AND_FAMILY_SCOPED_MULTIPLICITY_4219729762_THROUGH_4220841579",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4219729762,"sha256":"d65b9ddc08de189aacf77bfca2e37e5b9be2275b2fc61d82f5b56618f22285c7","status":"READ","summary":"P1 cost-diagnostic review finds single-use artifact omits preregistered diagnostics such as drawdown, monetary/per-turnover costs, total break-even and per-session notional/side/ADV/participation/shortfall; without persisting them the non-rerunnable result cannot be fully audited."},
+    {"kind":"review-comment","id":4219729770,"sha256":"360ce762416c29a265ec55ee557e702d3db20b0621dcabb1bf3ffe8ce11b48aa","status":"READ","summary":"P2 cost-model review finds central scenario does not exactly reuse ExecutionModel.fill: commission is recomputed on reference notional instead of fill-adjusted price and sell quantity sign is lost, so claimed FILLS equivalence can differ near thresholds."},
+    {"kind":"review-comment","id":4219729783,"sha256":"04df5916f2ef21701793e4296ff29edadad3552f02177f633a21954115f2ad44","status":"READ","summary":"P2 review finds B4 L=21/63/126 comparison lookbacks receive indistinguishable COST_* statuses despite E4 fixing L=252 as selected; result must persist role=selected versus comparison_only_not_for_selection to prevent post-hoc reselection."},
+    {"kind":"review-comment","id":4220841564,"sha256":"415a531d65c0c4c517ccc771d80acbd3709eaf0fac2cb3e5b2fbdddf74d7adab","status":"READ","summary":"P1 scientific review rejects blanket FAMILY_REJECTED when the test lacks preregistered power to detect a plausible effect; failure to reach t threshold under severe power limits should be INCONCLUSIVE_UNDERPOWERED for the tested specification rather than proof the entire causal family is absent."},
+    {"kind":"review-comment","id":4220841579,"sha256":"3eab920854ddb1863088e264702f24fefa36184cb5c09bc97b86d8d4618fe7a4","status":"READ","summary":"P1 multiplicity review finds dataset-level trial count charges all prior B2 expressions to a causally distinct B4 family while a dataset change resets debt. It recommends alpha budgets/counters identified by cohort and family plus a separately controlled global budget."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 363,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 373,
+    "estimated_total_discussion_objects_directly_read": 370,
+    "estimated_total_discussion_objects_semantically_disposed": 380,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"SINGLE_USE_DIAGNOSTIC_MUST_PERSIST_ALL_DECISION_RELEVANT_OUTPUTS","finding":"When rerun is forbidden, an artifact that omits preregistered diagnostics cannot be reconstructed later without violating the single-use design; auditability must be designed before execution.","current_product_decision_change":false},
+    {"classification":"REUSE_MODEL_MEANS_REUSE_ITS_ACTUAL_ACCOUNTING","finding":"Calling an existing execution model but recomputing some cost posts differently is not semantic reuse. Exact desk accounting and signed order semantics must remain bound to the claimed model.","current_product_decision_change":false},
+    {"classification":"COMPARISON_RESULTS_NEED_EXPLICIT_NON_SELECTION_ROLE","finding":"Publishing alternative specifications without role labels creates a post-hoc reselection channel even when the preregistration froze one selected candidate.","current_product_decision_change":false},
+    {"classification":"UNDERPOWERED_IS_NOT_FAMILY_REJECTED","finding":"Scientific rigor must distinguish failure to confirm from evidence of absence; otherwise conservative thresholds can erase plausible families without enough information to falsify them.","current_product_decision_change":false},
+    {"classification":"MULTIPLICITY_MUST_TRACK_SELECTION_FAMILY_NOT_ONLY_DATASET","finding":"Universal dataset debt can make future discovery impossible while dataset switching resets debt artificially; family/cohort budgets plus global oversight better match actual selection history.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4220841589,"sha256":"31e82d62040945eb5170acec732f5c08480cdaf7c4c69fa9d09e69fefb834d52"}
+}

@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:26:00Z",
+  "branch": "research/edge-lab-continuous",
+  "actor": "interactive-research-continuation",
+  "control_summary": {"paused": false, "real_capital_authorized": false, "live_trading_authorized": false, "paid_usd_total": 0},
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Verastem, Inc.",
+    "cik": "0001526119",
+    "form": "8-K",
+    "accession": "0001104659-26-115687",
+    "saved_feed_updated": "2026-10-14T06:08:11-04:00"
+  },
+  "primary_observed_fact": "Verastem's own SEC-filings page lists accession 0001104659-26-115687 as an October 14, 2026 8-K. Verastem's issuer releases at the filing time describe a planned CEO transition and preliminary operating/clinical updates. The 8-K is an operating-company current report, not a tender, reverse split, SPAC redemption, ETF liquidation or CEF rights offering.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "First-party issuer materials establish the filing subject sufficiently to fail all frozen event-family gates before any selected market price, NAV, liquidation distribution or payoff access.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no SC TO-I issuer tender or odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional cash-in-lieu event.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up event.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption event.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: operating biotech issuer, not an ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: not a closed-end fund rights offering; filing predates CEF protocol T0."
+  },
+  "source_receipts": [
+    {"source":"Verastem issuer SEC filings","url":"https://investor.verastem.com/financial-information/sec-filings","observed_fact":"Issuer lists the exact 2026-10-14 8-K accession."},
+    {"source":"Verastem issuer press release","url":"https://investor.verastem.com/news-releases/news-release-details/verastem-oncology-announces-planned-chief-executive-officer","observed_fact":"Issuer announced planned CEO transition on October 14, 2026."}
+  ],
+  "outcome_exposure": {"selected_market_price": false, "nav": false, "liquidation_distribution": false, "tender_spread": false, "future_return_or_pnl": false, "economic_look_opened": false},
+  "ordering_effect": "Verastem may be removed from the saved documentary queue. Earlier unresolved chronology blockers remain unchanged.",
+  "next_action": "Continue documentary-only queue work and preserve all first-event ordering constraints.",
+  "inference_ceiling": ["No economic verdict", "No biotech/clinical market inference", "No exhaustive coverage claim", "No live or real-capital authorization"]
+}

@@ -1,0 +1,78 @@
+{
+  "CHEAP_DATA_NOW": "Official May 22 preliminary Russell 3000 deletion PDF and March 2 reconstitution schedule public. Existing Yahoo schema provides daily unadjusted quote fields; selected-symbol/data adequacy must still pass after claim.",
+  "CHEAP_EXPRESSION": "One coarse fixed basket from the first eight company rows of the initial published list; buy at June 26 rebalance close, exit July 6 close. No final-list filtering, price-based selection, intraday optimization or shorting.",
+  "ECONOMIC_SIGNIFICANCE": "A price-blind one-shot can kill or support only this small exploratory proxy.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [],
+  "FAMILY_STATUS": "READY_TO_PREDECLARE",
+  "FATAL_PROBLEM": "Daily closes do not identify actual mandatory selling or executable fills; preliminary constituents may change; one correlated event can reflect market/healthcare beta. Delist/mapping, splits or dividends can defeat minimum proxy adequacy.",
+  "LESSON": "Use initial public list without hindsight final-membership or survivor filtering; do not infer pure alpha from inventory return.",
+  "MECHANISM": "Index-linked sellers must implement announced membership removals near the scheduled rebalance close; small liquidity suppliers may absorb price-insensitive flow and earn a later inventory unwind.",
+  "NEXT_DECISION": "Freeze exact eight symbols, dates, fractional $100 normalization, fixed costs, all-or-nothing data and one concentration adversary; claim remotely before first selected quote.",
+  "POWER_LIMITATION": "One rebalance and eight correlated names, not eight independent strategy tests.",
+  "RESULT": "L1_NOW_COARSE_CALENDAR_EXPRESSION",
+  "UNCERTAINTY": "No PIT-list authenticity/actual-deletion attribution or market hedge proof.",
+  "WHO_PAYS": "Benchmark-constrained funds seeking low tracking error; suppliers bear ordinary equity, liquidity and event risk.",
+  "WHY_PERSIST": "Mandated execution timing, small-stock depth and tracking-error constraints can create low-capacity inventory compensation; anticipatory arbitrage may eliminate it.",
+  "classification": "L1_NOW",
+  "document_receipt": {
+    "bytes": 182787,
+    "sha256": "c6f176c2727ac1ddc35e394a0cbdd24ab3d095d54fba8d5424a983f6c364ac9e",
+    "status": 200,
+    "url": "https://www.lseg.com/content/dam/ftse-russell/en_us/documents/other/ru3000-deletions-20260522.pdf"
+  },
+  "documentary_clocks": {
+    "preliminary_list_schedule": "2026-05-22 after 18:00 America/New_York; exact first-upload minute not attested",
+    "rebalance_event": "2026-06-26T20:00:00Z",
+    "timing_scope": "Known calendar rebalance, not a news-speed/first-release test. Current retrieval of a dated list is not full archived PIT proof."
+  },
+  "exposure": {
+    "economic_look": false,
+    "general_literature": "Public index-rebalance pressure literature is known; no numerical result used.",
+    "pristine_history_claim": false,
+    "private_history": "UNKNOWN",
+    "selected_symbol_quotes_accessed": false,
+    "type": "IDEA_GENERATED + DATA_FEASIBILITY"
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "price_blind_basket": [
+    {
+      "company": "AARDVARK THERAPEUTICS",
+      "symbol": "AARD"
+    },
+    {
+      "company": "ACCURAY INC",
+      "symbol": "ARAY"
+    },
+    {
+      "company": "ACTUATE THERAPEUTICS",
+      "symbol": "ACTU"
+    },
+    {
+      "company": "AIRSHIP AI HOLDINGS",
+      "symbol": "AISP"
+    },
+    {
+      "company": "ALDEYRA THERAPEUTICS INC",
+      "symbol": "ALDX"
+    },
+    {
+      "company": "ALIGHT INC (A)",
+      "symbol": "ALIT"
+    },
+    {
+      "company": "AMERICAN OUTDOOR BRANDS",
+      "symbol": "AOUT"
+    },
+    {
+      "company": "AMERICAN VANGUARD CORP",
+      "symbol": "AVD"
+    }
+  ],
+  "publication_parent": "8c58ea5489cfb35434c88e831ce3858212495326",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:31:51.526788+00:00",
+  "schedule_source": "https://www.lseg.com/en/media-centre/press-releases/ftse-russell/2026/russell-reconstitution-2026-schedule",
+  "selection_reason": "Fixed bounded source-row prefix chosen before prices; not chosen by returns or final survival. No final deletions document read."
+}

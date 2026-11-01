@@ -1,0 +1,57 @@
+{
+  "recorded_date": "2026-10-14",
+  "branch": "research/edge-lab-continuous",
+  "stage": "L0_SOURCE_FEASIBILITY_LEGAL_FOLLOWUP",
+  "candidate_id": "us-savings-bond-accrual-calendar",
+  "parent_reference": "research/edge_lab/discovery/qualifications/us-savings-bond-calendar-l0-2026-10-14.json",
+  "decision": "L1_NOW",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "result": "CONTRACTUAL_MONTH_GRANULARITY_CONFIRMED; ECONOMIC_MAGNITUDE_UNTESTED; READY_ONLY_FOR_LINKED_PREDECLARED_L1_DESIGN.",
+  "mechanism": "For book-entry Series I savings bonds, the contractual issue date is the first day of the month in which the security posts to current holdings, while interest accrues on the first day of each month and compounds semiannually. This creates a real month-granularity timing feature if a purchase made late in a month actually posts before month-end.",
+  "who_pays": "The U.S. Treasury under the savings-bond contract. Any apparent benefit is constrained by eligibility, posting timing, one-year minimum redemption hold, the three-month interest penalty before five years, federal tax, cash opportunity cost and non-transferability/low capacity.",
+  "why_persist": "The feature is contractual/administrative rather than an exchange-cleared arbitrage and is capacity-capped, operationally awkward and unavailable to many institutional pools. That can make it rationally ignored even if a small retail timing benefit survives full opportunity-cost accounting.",
+  "cheap_data_now": "Primary TreasuryDirect regulations page points to 31 CFR Part 359. Current GovInfo/CFR text states that a book-entry Series I bond's issue date is the first day of the month in which it posts to current holdings; CFR text also states interest accrues on the first day of each month and compounds semiannually. TreasuryDirect tax guidance states federal income tax applies while state/local income tax does not.",
+  "cheap_expression": "Prospective paper-only month-end timing comparison. Predeclare a purchase-submission window, require evidence that the hypothetical security would have posted in the same month, hold to a fixed redemption horizon compatible with the one-year minimum, apply the pre-existing three-month penalty rule where relevant, and compare against one fixed same-currency benchmark with matched cash-availability assumptions. No rate/date/benchmark value may be selected after outcome access.",
+  "fatal_problem": "The contract does not guarantee that a late-month purchase request posts before month-end. A posting slip into the next month destroys the hypothesized calendar advantage. The one-year lock, early-redemption penalty, federal tax and foregone liquid-benchmark return may dominate the nominal timing gain. Owner eligibility is not assumed.",
+  "why_not_arbitraged": "Potentially low capacity, retail-only/eligibility-limited, non-transferable and operationally nuisance-heavy. This is a small-actor contractual timing candidate, not evidence of scalable market alpha.",
+  "source_findings": [
+    {
+      "url": "https://www.treasurydirect.gov/laws-and-regulations/savings-bond-regulations/",
+      "finding": "TreasuryDirect identifies 31 CFR Part 359 as the offering rules for Series I savings bonds and says it governs attributes and interest calculation/payment."
+    },
+    {
+      "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title31-vol2/pdf/CFR-2025-title31-vol2-sec359-47.pdf",
+      "finding": "Current CFR edition includes 31 CFR 359.49: the issue date of a book-entry Series I savings bond is the first day of the month in which the security posts to the current holdings of the account owner."
+    },
+    {
+      "url": "https://www.govinfo.gov/link/cfr/31/359?link-type=pdf&sectionnum=4&year=mostrecent",
+      "finding": "Part 359 text includes 31 CFR 359.16: interest accrues on the first day of each month and accrued interest compounds semiannually."
+    },
+    {
+      "url": "https://www.treasurydirect.gov/savings-bonds/tax-information-ee-i-bonds/",
+      "finding": "TreasuryDirect states EE/I interest is subject to federal income tax but not state or local income tax; reporting may generally be deferred until interest is received."
+    }
+  ],
+  "exposure_accounting": {
+    "prior_unplanned_rate_panel_exposure_preserved": true,
+    "prior_reference": "unplanned-treasurydirect-current-rate-panel-20261014",
+    "new_rate_values_accessed_for_this_followup": false,
+    "new_market_prices_accessed_for_this_followup": false,
+    "signal_future_return_or_pnl_accessed": false,
+    "economic_look_count_increment": 0
+  },
+  "next_action": {
+    "kind": "LINKED_L1_PREDECLARATION_ONLY",
+    "instruction": "If this candidate is selected after higher-priority frozen prospectives, create one linked L1 contract before any additional rate/benchmark values are read. Carry the prior public-rate exposure explicitly; freeze posting-date rule, horizon, penalty treatment, tax convention, benchmark and invalidation. Do not execute an economic look in the same step."
+  },
+  "priority_constraints": {
+    "prospective_A_E_admission_remains_higher_priority": true,
+    "vx_oos_protocol_remains_passive_until_due": true,
+    "one_economic_look_global": true,
+    "no_real_purchase_or_account_action": true
+  }
+}

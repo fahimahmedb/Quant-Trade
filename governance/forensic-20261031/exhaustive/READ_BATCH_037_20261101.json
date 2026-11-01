@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_037_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_INLINE_REVIEW_FIX_REPLIES_AND_B4_PREEXECUTION_CAUSAL_GATES_4217462975_THROUGH_4217713276",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4217462975,"sha256":"a71c516ee9dab6757f3b71787b76a446e291a307b35272fdb7c597d369394ee8","status":"READ","summary":"Builder confirms markdown announcement-scope fix in bc388adf61: all closed illustrative blocks are excluded from declaration scanning, with a dedicated SHA-256-in-illustrative-block test."},
+    {"kind":"review-comment","id":4217463191,"sha256":"05a065fcf7ecd22581071cfd7ad2db9bb1bd3a0fc54fca5b1e6c206c27fecb79","status":"READ","summary":"Builder confirms B2 harness was changed to filter CSV raw lines before PricePanel parsing; remaining claim is narrowed honestly to no shadow bar analyzed while raw-byte hashing still reads the file bytes."},
+    {"kind":"review-comment","id":4217676847,"sha256":"27cb42ac64cd4df7232c2b07a40f54cdbd5b148e82596323601216816b81b4cf","status":"READ","summary":"P1 B4 review finds csv.DictReader itself parses forbidden post-2025-03-12 rows before date filtering, violating the preregistered no-parsing boundary; raw-line date filtering must precede CSV field splitting."},
+    {"kind":"review-comment","id":4217684043,"sha256":"0f9541aa25f4e7358a6f21046df8c8e1d5aa3fb262d7c2f1d463f3f5665acd3d","status":"READ","summary":"Builder confirms B4 raw-line filtering fix in bfb81f20bb, adds parser spy and rejects lines without leading ISO date; 31 tests green."},
+    {"kind":"review-comment","id":4217713276,"sha256":"3ce06aa87d321e6062bb5259e286d839fe53ebb0a9cc465a887a9181b71df322","status":"READ","summary":"P2 B4 review finds trial-count source returns REGISTRY immediately when registry says 36 without checking conflicting STATE.md; E2 requires fail-closed INVALID_TRIAL_COUNT when both sources disagree because multiplicity threshold becomes ambiguous."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 343,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 353,
+    "estimated_total_discussion_objects_directly_read": 350,
+    "estimated_total_discussion_objects_semantically_disposed": 360,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"PREEXECUTION_REVIEW_PROTECTED_DATA_BOUNDARIES","finding":"B2/B4 reviews caught data materialization/parsing that would have violated stated shadow boundaries before economic execution, and fixes were applied before outcome consumption.","current_product_decision_change":false},
+    {"classification":"CLAIM_NARROWING_IS_VALID_CORRECTION","finding":"Where raw-byte hashing necessarily touches the dataset file, the evidence claim was narrowed from no access to no shadow bar analyzed instead of pretending stronger isolation than implemented.","current_product_decision_change":false},
+    {"classification":"MULTIPLICITY_STATE_MUST_FAIL_CLOSED_ON_SOURCE_CONFLICT","finding":"A trial-count registry cannot silently override contradictory project state; multiplicity thresholds depend on the denominator and ambiguity must invalidate the run before execution.","current_product_decision_change":false},
+    {"classification":"REVIEW_THEN_MINIMAL_FIX_BEFORE_OUTCOME_IS_HIGH_VALUE","finding":"These reviews changed causal/data boundaries before single-use execution, making them expensive but necessary rather than governance waste.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4217713284,"sha256":"5d63fbfd3fd92a46230337a6536f98b03aed5306b6aee5daf26127f89f2e937a"}
+}

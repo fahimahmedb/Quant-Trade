@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "source_archive_sha256": "5ca98410b1e78427d9d2e8a433c9f4d2c282ca8042b2703359cfd35c03257ffe",
+  "document_versions_sha256": "1e37aa3793f5e279764fbe88e2afb4404fec070ee00e339ae3ea29cf387b7ddb",
+  "document_blob_path_rows": 12936,
+  "unique_document_blobs": 6465,
+  "already_read_unique_blobs_from_index": 9,
+  "first_blob": "00025d156edc7f1fca00229538b0d5c01ab7edd4",
+  "last_blob": "fffc090b9d4e3d9a138c6d99492d6ef0ea092f87",
+  "status": "EXTRACTED_FROM_VERIFIED_ANALYSIS_ARCHIVE"
+}

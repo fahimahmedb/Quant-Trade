@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_013_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_ROADMAP_EDGE_RESET_PUBLIC_DATA_AUTHORITY_INDEPENDENT_BOARDS_AND_MULTIPLICITY_REFORM_6061794628_THROUGH_6063026490",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6061794628,"sha256":"477df49e5dafb138a3b5eb1d9cfe9bab0dca8abef14ba17456ed47d74c9a45f5","status":"READ","summary":"Codex gives simple roadmap snapshot: A2 frozen and evidence-blocked, B2/B4 negative, active route is bounded cost diagnostic then only later named public-data acquisition if needed. Snapshot is explanatory, not execution proof."},
+    {"kind":"issue-comment","id":6061968640,"sha256":"37d5c9900a8c86f22b1583acfc8a80eb35cc753bb4081c6a5c5de1cbe94c913d","status":"READ","summary":"Owner explicitly resets priority to FIND A REAL EDGE: stop infrastructure/governance unless necessary to test edge, independently reopen research history, search genuinely different families, and preregister top three before new outcome data."},
+    {"kind":"issue-comment","id":6062032456,"sha256":"1a8e0410776ea0186af36bb3cb0225a9f37b81be9fe83ac01ad5386e35e2bc82","status":"READ","summary":"Codex produces initial independent Edge Search Board and preregisters three distinct families (crypto funding reversal, weather forecast revisions→gas, filing-timestamp PEAD) without downloading outcome data or reopening A2."},
+    {"kind":"issue-comment","id":6062699215,"sha256":"e4f263b9233e1702a8eac4f13e83373a041226cdea11e8c289859383968b13a1","status":"READ","summary":"Builder returns after session restart, parks cost diagnostic because it no longer changes edge decision, insists on its own independent shortlist before convergence, and notes Codex board commit is again absent remotely; full block+SHA requested."},
+    {"kind":"issue-comment","id":6062754587,"sha256":"5002df9a1a1e11c9585fe8b8580181b3152a583f228f0e87cf6e76cda5fe6714","status":"READ","summary":"Owner decision is recorded as lifting the real-data reservation only for credential-free public paper/shadow research. Still closed: real capital/orders, spending/accounts, identifiers, t0, VM and destructive/merge authority. Scientific preregistration/provenance/sealed-block/multiplicity/negative-memory rules remain method, not guards."},
+    {"kind":"issue-comment","id":6062774345,"sha256":"285e34be4478b340697fc60c2113f2f05237aaa694f8b64803e1aa943d633052","status":"READ","summary":"Codex retransmits its independent board as full plaintext+SHA after public-data authority change, with seven families and top-three preregistrations; no outcome series acquired/read at board construction."},
+    {"kind":"issue-comment","id":6062844703,"sha256":"a41e339bafa64c23d9d7777c3964012ee2b4f27f02b2c2f115a2e8e272770774","status":"READ","summary":"Codex publishes a second independently framed board with explicit family histories, candidate rankings, sealed-holdout design and top-three preregistrations under the new public-data research authority."},
+    {"kind":"issue-comment","id":6062989770,"sha256":"cddcca712e879000d4ab2f3b57952f578bd05bab10970eb5d25f7ff57daf32f6","status":"READ","summary":"Owner challenges over-severe multiplicity: an ever-growing universal trial count could make discovery impossible and destroy hypotheses unnecessarily."},
+    {"kind":"issue-comment","id":6063017475,"sha256":"466505a2793af3718000de141282e5a85c2188a3b2ff3e9a788b3879b3fc8c3d","status":"READ","summary":"Codex accepts objection: multiplicity budget belongs within economically equivalent families/selection histories, not across all causally independent hypotheses. Negative tests reject expressions/current evidence, not entire mechanisms by default; resurrection requires genuinely new information."},
+    {"kind":"issue-comment","id":6063026490,"sha256":"21140b8e7173fd20bedbfcf2514c8dc5ae46df2ebad82ee4495427f9f5b3472e","status":"READ","summary":"Claude independently converges on power-aware reform: REJECTED vs INCONCLUSIVE_UNDERPOWERED vs CONFIRMED, family-level error budgets fixed pre-outcome, high-N/event/cross-section designs and forward accumulation, no post-outcome threshold lowering."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 10,
+    "objects_directly_read": 10,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 10,
+    "cumulative_new_discussion_objects_directly_read": 123,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 4,
+    "cumulative_new_discussion_objects_semantically_disposed": 127,
+    "estimated_total_discussion_objects_directly_read": 130,
+    "estimated_total_discussion_objects_semantically_disposed": 134,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"OWNER_PRIORITY_RESET_TO_ECONOMICS","finding":"Owner explicitly states A2/infrastructure are not objectives; work must route to robust falsifiable edge discovery, with infrastructure reopened only when economic evidence requires it.","current_product_decision_change":false},
+    {"classification":"PUBLIC_DATA_RESEARCH_AUTHORITY_WIDENED_BUT_BOUNDED","finding":"Credential-free public paper/shadow data acquisition no longer requires per-dataset Owner approval, but capital/orders/spending/accounts/identifiers/t0/VM/destructive authority remain closed and scientific controls remain mandatory.","current_product_decision_change":false},
+    {"classification":"INDEPENDENT_BOARDS_BEFORE_CONVERGENCE","finding":"Owner requires independent Claude and Codex rankings before convergence, reducing correlated reasoning and rubber-stamp agreement.","current_product_decision_change":false},
+    {"classification":"MULTIPLICITY_RULE_CORRECTED_FOR_POWER","finding":"Universal ever-growing trial penalty is rejected as over-conservative; family-specific selection history and preallocated error budgets replace it, while global history remains disclosed.","current_product_decision_change":false},
+    {"classification":"UNDERPOWERED_IS_NOT_REJECTED","finding":"Historical methodology explicitly separates REJECTED from INCONCLUSIVE_UNDERPOWERED, preventing low-power tests from killing plausible mechanisms and preserving justified resurrection conditions.","current_product_decision_change":false},
+    {"classification":"REMOTE_PUBLICATION_GAP_REPEATED","finding":"The first Edge Search Board again required block+SHA retransmission because its claimed commit was not visible remotely, reinforcing remote-state verification as an immediate post-publication requirement.","current_product_decision_change":false}
+  ],
+  "current_action": "ECONOMIC_RESEARCH_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6063171858,"sha256":"fcec284fd93d27078043d89f91a3659848b1280a687fdda1bf21444790e4c566"}
+}

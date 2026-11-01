@@ -1,0 +1,163 @@
+{
+  "recorded_at": "2026-10-13T05:25:58.412354+00:00",
+  "publication_parent": "0bd32cef7037a4f49f5229ac35c54cf5b168d5a5",
+  "family": "us-ipo-lockup-expiry-supply",
+  "stage": "L0_MECHANISM_AND_PUBLIC_CLOCK",
+  "decision": "PREPARE_L1",
+  "economic_verdict": null,
+  "decision_scope": "Documentary preparation only, not promotion or a statistical rejection",
+  "RESULT": "CONDITIONAL_NOTICE_ROUTE_QUALIFIED_FOR_NON_OUTCOME_DESIGN; universal180-day forced-sale premise unsupported",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "No issuer contract or notice selected. No actual selling, executable price route, quantity, borrow or friction established. Rule applicability is scoped; not all expirations create a required news-service announcement. An issuer notice and EDGAR acceptance can differ from first public availability.",
+  "POWER_LIMITATION": "No event sample, issuer returns or empirical estimate; source documentation cannot establish an edge.",
+  "ECONOMIC_SIGNIFICANCE": "Previously restricted holders can demand diversification/liquidity after release, potentially compensating inventory suppliers. Public anticipation, underwriter information/selection and rational adverse-selection risk can explain the same price pattern. No compulsory seller identified.",
+  "FAILED_CRITERIA": [
+    "Universal IPO+180 clock is not valid: contractual terms vary",
+    "Permission to sell is not a commitment or requirement to sell",
+    "Price access/execution adequacy and an empirical result remain unqualified"
+  ],
+  "LESSON": "An explicit public waiver notice can define a narrow observable information event, but must not be relabelled a mandatory sale or a universal expiry calendar.",
+  "FAMILY_STATUS": "READY_FOR_NON_OUTCOME_DESIGN_ONLY; no economic look or PROMOTE decision",
+  "NEXT_DECISION": {
+    "kind": "L1_PREDECLARE",
+    "family": "us-ipo-lockup-expiry-supply",
+    "status": "OPEN",
+    "economic_access_authorized": false,
+    "question": "Prepare, without issuer prices or outcomes, the smallest notice-defined prospective L1 for an explicitly dated unconditional officer/director lockup release/waiver. Do not use IPO+180, infer a sale, or treat EDGAR acceptance as first public news. Freeze scope, independent notice/operative clocks, quantity/costs, fixed horizon, adequacy, benchmark and one adversary only if an admissible market-data route and discriminating question can be stated; otherwise PARK_DATA/PARK_ECONOMICS. A-E admission keeps priority. No newly admitted issuer or collector in this preparation task.",
+    "source_proof": "qualifications/us-ipo-lockup-clock-and-supply-l0-2026-10-13.json",
+    "scope_guard": "Rule5131(d)(2) covers officer/director restrictions and exceptions; .03 permits issuer/member notices or qualifying secondary registration disclosure. Normal expirations and all shareholders are not assumed covered.",
+    "bounds": {
+      "max_agent_minutes": 15,
+      "max_primary_document_requests": 3,
+      "retries": 0,
+      "economic_payloads": 0
+    },
+    "reuse_only": "Use the saved SEC/FINRA sources; no repeat lookup absent a version delta. No issuer examples chosen by past performance or actual sales.",
+    "prospective_priority": {
+      "not_before": "2026-10-13T10:00:00Z",
+      "protocols": "A/B-v2/C-v2/D/E",
+      "ordering": "earliest qualifying EDGAR accepted across A-E, then smaller CIK; original exclusions and protocol-specific ties unchanged"
+    }
+  },
+  "mechanism": {
+    "who_pays": "Potentially concentrated insiders/early investors seeking liquidity or diversification, and liquidity-demanding counterparties; actual selling and realised transfers are unobserved.",
+    "why_persist": "Contractual resale restrictions can bunch optional liquidity demand; capital and adverse-selection constraints may limit absorption. Anticipation can remove any premium.",
+    "distinctness": "Voluntary supply unlocked by contracts differs from mandated index deletion. Both may share an inventory/flow cluster, so no independence claim or multiplicity reset.",
+    "main_alternative": "Endogenous early waivers may coincide with favourable issuer information, secondary offerings or past performance, rather than a mechanical liquidity shock."
+  },
+  "sources": [
+    {
+      "url": "https://www.sec.gov/answers/lockup.htm",
+      "observed_at": "2026-10-13T05:21:53.129778+00:00",
+      "status": 200,
+      "bytes": 5394,
+      "sha256": "32725535b2bb8ccd982aa16068eaf5b440e7a2c193a77fa0c7c75b31e34cd24d",
+      "last_modified": null,
+      "final_url": "https://www.sec.gov/answers/lockup.htm",
+      "wall_seconds": 0.6492814000012004
+    },
+    {
+      "url": "https://www.finra.org/rules-guidance/rulebooks/finra-rules/5131",
+      "observed_at": "2026-10-13T05:21:53.779083+00:00",
+      "status": 200,
+      "bytes": 106227,
+      "sha256": "a714720f3d52181177e43bb665ee9acd0f5e5c98deeb85fe8387b59d831598a0",
+      "last_modified": "Mon, 12 Oct 2026 21:40:29 GMT",
+      "final_url": "https://www.finra.org/rules-guidance/rulebooks/finra-rules/5131",
+      "wall_seconds": 0.5292501820003963
+    },
+    {
+      "url": "https://www.finra.org/rules-guidance/notices/12-24",
+      "purpose": "Linked official interpretive notice: distinguish lockup announcement obligation from a compulsory sale/calendar.",
+      "observed_at": "2026-10-13T05:22:39.861893+00:00",
+      "status": 200,
+      "bytes": 90932,
+      "sha256": "fa1241f903c16cca354612130c9c49b66af0298d66e6831cbedfe59849ed4010",
+      "last_modified": "Mon, 12 Oct 2026 23:15:26 GMT",
+      "final_url": "https://www.finra.org/rules-guidance/notices/12-24",
+      "wall_seconds": 0.44323724200512515
+    }
+  ],
+  "primary_facts": [
+    {
+      "url": "https://www.sec.gov/answers/lockup.htm",
+      "sha256": "32725535b2bb8ccd982aa16068eaf5b440e7a2c193a77fa0c7c75b31e34cd24d",
+      "version_basis": "Legacy SEC educational page as retrieved; no authenticated original-publication time.",
+      "facts": [
+        "Insider lockup restrictions are contractual and can differ in duration and quantity; the article describes180 days as common, not universal.",
+        "Registration documents/prospectus disclose applicable terms. A commercial expiry calendar is not endorsed evidence of issuer-specific terms.",
+        "The SEC discusses possible anticipatory price pressure, a public qualitative prior rather than a new return observation."
+      ]
+    },
+    {
+      "url": "https://www.finra.org/rules-guidance/rulebooks/finra-rules/5131",
+      "sha256": "a714720f3d52181177e43bb665ee9acd0f5e5c98deeb85fe8387b59d831598a0",
+      "version_basis": "Rulebook text retrieved now; response Last-Modified is metadata, not historical effectiveness for every transaction. Current page lists amendments including SR-FINRA-2026-007.",
+      "passages": [
+        "FINRA5131(d)(2)(A)-(B)",
+        ".03 Lock-up Announcements"
+      ],
+      "facts": [
+        "For the officer/director restrictions covered by paragraph(d)(2), the provision specifies notification to the issuer and public announcement at least two business days before a release/waiver, subject to stated exceptions.",
+        "Specified no-consideration or immediate-family transfers can be excepted when the transferee accepts the original restriction. Exclude these from any supply expression rather than assuming cash sales.",
+        "Supplementary Material.03 allows announcement by lead manager, another member or issuer; qualifying secondary-offering registration disclosure can satisfy the announcement requirement."
+      ],
+      "limits": [
+        "Not evidence that all ordinary scheduled expirations or non-officer/director holders have the same announcement rule.",
+        "No evidence that released shares will be sold, that the news is surprising or that a stock moves in a profitable direction."
+      ]
+    },
+    {
+      "url": "https://www.finra.org/rules-guidance/notices/12-24",
+      "sha256": "fa1241f903c16cca354612130c9c49b66af0298d66e6831cbedfe59849ed4010",
+      "published_date": "2012-05-15",
+      "relevance": "NOT_RELied_ON_FOR_LOCKUP_CLOCK",
+      "fact": "Linked Notice12-24 addresses pre-secondary-trading market-order restrictions under5131(d)(4), not the lockup-clock interpretation sought. Retained as a source mismatch; no fourth request."
+    }
+  ],
+  "design_boundaries": [
+    "Only a future separately declared notice-defined scope may be prepared; no issuer admitted here.",
+    "No issuer+180 automatic calendar, historical winners, reconstructed first-public clock or inferred actual sale.",
+    "Do not treat a release conditional on market prices as unconditional; any such price-dependent eligibility would itself require pre-access declaration/claim.",
+    "No short/borrow route assumed free. Long inventory or other payoff definition and costs must be fixed before outcomes.",
+    "Do not shorten horizons or replace cost/issuer rules after results; existing closed families remain closed."
+  ],
+  "exposure": {
+    "type": "IDEA_AND_DOCUMENTARY_QUALIFICATION",
+    "scope": "Generic SEC lockup education and FINRA rules; qualitative public anticipation hypothesis, no named issuer sample or prices/sales outcomes",
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN",
+    "new_expression_executions": 0,
+    "new_economic_looks": 0
+  },
+  "prospective_check": {
+    "observed_at": "2026-10-13T05:25:58.412354+00:00",
+    "basis": "Before October13 10:00Z EDGAR reopening. Reuse saved holiday/calendar receipt, not duplicate feeds.",
+    "receipt": "qualifications/prospective-feed-check-2026-10-12T2106Z.json",
+    "receipt_sha256": "cad7e9d735507ab474d720c8b6b2bb630dbe566d47e2671fb4c15aa08baed96d",
+    "valid_protocol_hashes": {
+      "disc-us-issuer-oddlot-priority-prospective-l1-v1.md": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+      "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+      "disc-us-reverse-split-round-up-prospective-l1-v2.md": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+      "disc-us-spac-redemption-floor-prospective-l1-v1.md": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+      "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7"
+    },
+    "new_event_feed_requests": 0,
+    "event_selected": null,
+    "claim_created": false
+  },
+  "observable_cost": {
+    "primary_document_requests": 3,
+    "successful_document_payload_bytes": 202553,
+    "request_wall_seconds_sum": 1.6217688240067218,
+    "total_network_bytes": null,
+    "paid_usd": 0,
+    "tokens": null,
+    "global_bill": null,
+    "market_payload_requests": 0,
+    "economic_executions": 0,
+    "architecture_changes": 0
+  },
+  "real_capital_authorized": false,
+  "live_trading_authorized": false
+}

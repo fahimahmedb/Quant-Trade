@@ -1,0 +1,257 @@
+{
+  "recorded_at": "2026-10-13T20:20:56.530238+00:00",
+  "head_observed": "9ab5db1607b7d63b4365c73ad8a5a6fa47d5c147",
+  "branch": "research/edge-lab-continuous",
+  "actor": "fallback-research-worker",
+  "control_sha256": "a9998e826eb4afa5b19578ed8da92cce52ab88a5f435e4c48629f299210cc342",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "decision": "PARK_DATA",
+  "economic_verdict": null,
+  "decision_scope": "One bounded admission action resolves the Invesco 497K and MiniMed current-document questions; the parent prospective first-event selection remains unresolved. No economic rejection, selected issuer or look.",
+  "completed_questions": [
+    {
+      "status": "COMPLETED",
+      "accession": "0001193125-26-419674",
+      "decision": "CURRENT_DOCUMENT_NOT_ELIGIBLE_FOR_E: manager changes, not liquidation"
+    },
+    {
+      "status": "COMPLETED",
+      "accession": "0001104659-26-115141",
+      "decision": "CURRENT_DOCUMENT_NOT_ELIGIBLE_FOR_A_E: annual-meeting director/auditor/say-on-pay votes, not a frozen entitlement event"
+    }
+  ],
+  "RESULT": "INVESCO_497K_MANAGER_UPDATE_CONFIRMED; MINIMED_ROUTINE_VOTES_CONFIRMED; NO_EVENT_ADMITTED.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "UNCERTAINTY": "This resolves two current documents only. Xponential and other unread/partial candidates, earlier chronology and feed coverage remain unresolved. No conclusion about a different future filing by either issuer; documentary exposure is retained.",
+  "POWER_LIMITATION": "Three requests: two complete legal documents and one SEC index; zero economic observations or tests. This is not a comprehensive SEC census.",
+  "ECONOMIC_SIGNIFICANCE": "Neither changing fund managers nor voting on directors, auditor and executive-pay matters creates the fixed tender, split, redemption or liquidation cash/share entitlement required by A-E. These documents cannot justify opening a price/NAV look.",
+  "FAILED_CRITERIA": [
+    {
+      "accession": "0001193125-26-419674",
+      "failure": "No new ETF liquidation announcement, last exchange trading date or later liquidation date."
+    },
+    {
+      "accession": "0001104659-26-115141",
+      "failure": "No frozen A-E tender commencement, fixed split entitlement, SPAC redemption deadline or ETF liquidation notice. The disclosed meeting occurred October 9, before the prospective T0s; October 13 filing alone does not make its historical votes fresh."
+    }
+  ],
+  "LESSON": "Verify neighboring filings independently before declaring them duplicates. The now-read 497K shares the complete normalized management text of the cached 497. Accepted timestamp identifies publication, while an earlier meeting date and routine vote agenda do not establish a fresh economic entitlement.",
+  "FAMILY_STATUS": "A/B-v2/C-v2/D/E admission unresolved; no economic family activated, killed or promoted; parked dependencies unchanged.",
+  "NEXT_DECISION": {
+    "bounds": {
+      "economic_payloads": 0,
+      "max_agent_minutes": 15,
+      "max_bytes_per_document": 524288,
+      "max_primary_document_requests": 3,
+      "max_total_document_bytes": 1572864,
+      "retries": 0
+    },
+    "closed_dependencies": {
+      "WTI": "PARK_DATA; no CME/DataMine re-probe",
+      "us-ipo-lockup-expiry-supply": "PARK_DATA: resume only on genuinely new evidence of an admissible price route and independent notice/operative clocks; no re-audit of cached SEC/FINRA sources",
+      "us-variable-conversion-financing-supply": "PARK_DATA L0: a public financing contract is not a publicly observed conversion/sale clock. Reopen only on distinct primary evidence of point-in-time exercise/issuance notices and usable event/price/borrow routes, or a separately defined announcement-only question before any outcome. Do not assume monthly mandatory issuance or lender discount accessible to listed-share buyers."
+    },
+    "earlier_metadata_reference": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "economic_access_authorized": false,
+    "family": "A/B-v2/C-v2/D/E",
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "pending": "The Invesco 497 and now independently reviewed 497K are management supplements, not liquidation notices. MiniMed 8-K accepted 06:00:51 Eastern reports four routine annual-meeting votes, not an A-E event. Their documentary admission reviews are completed. Xponential notices, earlier unread/partial possibilities and overall chronology/coverage remain unresolved; no first eligible event has been established.",
+    "question": "Qualify the cached Xponential Fitness 8-K (CIK 1802156, accession 0001193125-26-419697, feed 07:11:32 Eastern) and decision-relevant 8-A12B (0001193125-26-419698, feed 07:15:51 Eastern) using exact accepted metadata and operative corporate-rights terms only. Is this an admissible fixed prospective A-E event or a different corporate-rights registration? No market-price/NAV/distribution/payoff payload; do not infer eligibility from a keyword or filing type. Earlier unresolved possibilities still prevent a later economic selection.",
+    "resume_rule": "Reuse all saved receipts; do not re-fetch Invesco 497/497K bodies or indices, MiniMed index/body, AmpliTech consumed graphic/index, Co-Diagnostics agreement or earlier consumed documents. Respect original exclusions and exact accepted-time ordering across A-E; do not treat bounded coverage or a partial source as universal absence.",
+    "reuse_reference": "qualifications/prospective-admission-invesco-497k-minimed-2026-10-13.json",
+    "safety": "B/C v1 invalid. Historical/calibration exclusions and all exposure history retained. If another economic claim is unresolved, documentary work only. No historical issuer becomes fresh by changing form or supplier.",
+    "status": "OPEN"
+  },
+  "source_receipts": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/1112996/000119312526419674/d107481d497k.htm",
+      "observed_at": "2026-10-13T20:19:05.244766+00:00",
+      "scope": "497K legal supplement, vehicle/event qualification only; not a selected numeric market/NAV/distribution endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 11672,
+      "sha256": "1431e0c56828c17df60990d64904f8d5a500335fe0ae3ed898886b74e6155cd9",
+      "complete": true,
+      "document_header": "497K 1 d107481d497k.htm 497K 497K SUPPLEMENT DATED OCTOBER 13, 2026 TO THE CURRENT SUMMARY AND STATUTORY PROSPECTUSES AND STATEMENT OF ADDITIONAL INFORMATION FOR: Invesco Senior Floating Rate Fund (the “Fund”) This supplement amends the Summary Prospectus, Statutory Prospectus, and Statement of Additional Information (“SAI”) of the above referenced Fund and is in addition to any other supplement(s). You should read this supplement in conjunction ",
+      "legal_excerpts": [
+        "David Lukkes will no longer serve as a Portfolio Manager of the Fund. All references to Mr. Lukkes in the Summary and Statutory Prospectuses and SAI are hereby removed."
+      ],
+      "keyword_counts": {
+        "liquidat": 0,
+        "last trading": 0,
+        "terminate": 0,
+        "dissol": 0,
+        "expense": 0,
+        "portfolio manager": 9,
+        "amend": 1,
+        "supplement": 4
+      },
+      "wall_seconds": 0.3157586099987384,
+      "reuse_comparison": {
+        "method": "Full normalized visible text beginning at SUPPLEMENT DATED compared with privately cached prior 497, ignoring only leading filing metadata",
+        "equal": true,
+        "prior_document_sha256": "896b3af6befae7fcc946a9ce03a6ef816932e50bcc9e7acc048932e0a11184b3",
+        "normalized_compared_text_sha256": "6f77f738d83e6668778ad0a89866b7bc9e4965ff5c7b4026e15053c21e60723a",
+        "new_request_for_previous_497": false
+      }
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/2062583/000110465926115141/0001104659-26-115141-index.htm",
+      "observed_at": "2026-10-13T20:19:14.158949+00:00",
+      "scope": "SEC filing index metadata only; no document/NAV/market-price/performance/distribution payload",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 9652,
+      "sha256": "b17a26ed6f72acd77d5648dad0eb7aefc25259a12ee78682496d9710402a54e9",
+      "complete": true,
+      "document_links": [
+        "/ix?doc=/Archives/edgar/data/2062583/000110465926115141/tm2627388d1_8k.htm",
+        "/Archives/edgar/data/2062583/000110465926115141/0001104659-26-115141.txt",
+        "/Archives/edgar/data/2062583/000110465926115141/mmed-20261009.xsd",
+        "/Archives/edgar/data/2062583/000110465926115141/mmed-20261009_lab.xml",
+        "/Archives/edgar/data/2062583/000110465926115141/mmed-20261009_pre.xml",
+        "/Archives/edgar/data/2062583/000110465926115141/tm2627388d1_8k_htm.xml"
+      ],
+      "wall_seconds": 0.2646846870047739,
+      "metadata_excerpt": " Latest Filings Filings search tools Filing Detail SEC Home » Company Search » Current Page Form 8-K - Current report: SEC Accession No. 0001104659-26-115141 Filing Date 2026-10-13 Accepted 2026-10-13 06:00:51 Documents 11 Period of Report 2026-10-09 Items Item 5.07: Submission of Matters to a Vote of Security Holders Item 9.01: Financial Statements and Exhibits Interactive Data Document Format Files Seq Description Document Type Size 1 FORM 8-K tm2627388d1_8k.htm iXBRL 8-K 34972 Complete submission text file 0001104659-26-115141.txt 198717 Data Files Seq Description Document Type Size 2 XBRL TAXONOMY EXTENSION SCHEMA mmed-20261009.xsd EX-101.SCH 3011 3 XBRL TAXONOMY EXTENSION LABEL LINKBASE mmed-20261009_lab.xml EX-101.LAB 34239 4 XBRL TAXONOMY EXTENSION PRESENTATION LINKBASE mmed-20261009_pre.xml EX-101.PRE 22356 14 EXTRACTED XBRL INSTANCE DOCUMENT tm2627388d1_8k_htm.xml XML 3079 Mailing Address 18000 DEVONSHIRE ST. NORTHRIDGE CA 91325 Business Address 18000 DEVONSHIRE ST. NORTHRIDGE CA 91325 763-222-9423 MiniMed Group, Inc. (Filer) CIK : 0002062583 (see all company filings) EIN. : 333985981 | State of Incorp.: DE | Fiscal Year End: 1231 Type: 8-K | Act: 34 | File No.: 001-43183 | Film No.: 261454246 SIC : 3841 Surgical & Medical Instruments & Apparatus (CF Office: 08 Industrial Applications and Services)"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/2062583/000110465926115141/tm2627388d1_8k.htm",
+      "observed_at": "2026-10-13T20:19:27.418718+00:00",
+      "scope": "8-K operative corporate terms, vehicle/event qualification only; not a selected numeric market/NAV/distribution endpoint",
+      "retries": 0,
+      "max_body_bytes": 524288,
+      "status": 200,
+      "body_bytes": 35090,
+      "sha256": "f43b2881c79218f975119aa47972f131869eeb497f24632debda7002ad590e9a",
+      "complete": true,
+      "document_header": "false 0002062583 0002062583 2026-10-09 2026-10-09 iso4217:USD xbrli:shares iso4217:USD xbrli:shares UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): October 9, 2026 MiniMed Group, Inc. (Exact name of registrant as specified in its charter) Delaware 001-43183 33-3985981 (State or ot",
+      "legal_excerpts": [
+        "MiniMed Group, Inc. (the “Company”) held its 2026 Annual Meeting of Stockholders on October 9, 2026 (the “Annual Meeting”), at which stockholders voted on the following four proposals.",
+        "Proposal 1 - Election of Directors",
+        "Proposal 2 - Ratification of Appointment of PricewaterhouseCoopers LLP as Independent Registered Public Accounting Firm",
+        "Proposal 3 – Advisory Resolution to Approve Named Executive Officer Compensation",
+        "Proposal 4 – Advisory Vote on Frequency of Say-on-Pay Vote"
+      ],
+      "keyword_counts": {
+        "Item 5.07": 1,
+        "Proposal": 6,
+        "reverse": 0,
+        "split": 0,
+        "redeem": 0,
+        "redemption": 0,
+        "liquidat": 0,
+        "tender": 0,
+        "Nasdaq": 1,
+        "annual meeting": 4
+      },
+      "wall_seconds": 0.2552740599930985
+    }
+  ],
+  "ordering": {
+    "Invesco_497K": {
+      "accession": "0001193125-26-419674",
+      "cik": "1112996",
+      "accepted_eastern": "2026-10-13 07:00:40",
+      "accepted_utc": "2026-10-13T11:00:40Z",
+      "timestamp_source": "previous immutable index receipt, no re-fetch"
+    },
+    "MiniMed": {
+      "accession": "0001104659-26-115141",
+      "cik": "2062583",
+      "accepted_eastern": "2026-10-13 06:00:51",
+      "accepted_utc": "2026-10-13T10:00:51Z",
+      "meeting_date": "2026-10-09",
+      "timestamp_source": "current complete SEC index"
+    },
+    "selected_event": null,
+    "claim": null
+  },
+  "reuse": {
+    "previous_proof": "qualifications/prospective-admission-invesco-management-supplement-2026-10-13.json",
+    "sha256": "bb792840554b536f2bad1d8827645b3d10fbf5e78248c1375636244c40a98564",
+    "valid_protocols_unchanged": [
+      {
+        "path": "experiments/disc-us-issuer-oddlot-priority-prospective-l1-v1.md",
+        "sha256": "a8efaae4f5d0865c2886ae644ce89ddc4efbffb98518a3652fb8250f7792689c",
+        "t0": "2026-10-12T20:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-cash-in-lieu-prospective-l1-v2.md",
+        "sha256": "9c833d5b28c2495cd340af250f37c0871f947fa81335c4c0fe318f77c1058beb",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-reverse-split-round-up-prospective-l1-v2.md",
+        "sha256": "314c9392c36bb37cb28151be7baeaca194508e4b750f09faf30afff5859ca806",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-spac-redemption-floor-prospective-l1-v1.md",
+        "sha256": "9d37cd33808121a6e7be44269441863ab6f033d5fb7a57e4ed32268383239c42",
+        "t0": "2026-10-12T21:00:00Z"
+      },
+      {
+        "path": "experiments/disc-us-etf-liquidation-nav-convergence-prospective-l1-v1.md",
+        "sha256": "7d4f4a28597381577860529c171421f4e8740511935303332fac80041323b5c7",
+        "t0": "2026-10-12T21:00:00Z"
+      }
+    ],
+    "B_C_v1_invalid": true,
+    "original_metadata": "qualifications/prospective-admission-and-lockup-design-2026-10-13.json",
+    "latest_A_feed_reused": "2026-10-13T17:26Z snapshot; not refreshed in this batch and not a current absence proof"
+  },
+  "look_check": {
+    "discovery_running_at_head": [],
+    "legacy_statuses_preserved": {
+      "look:smard-2025-fixed-hours-proxy-v1": "UNKNOWN_OUTCOME",
+      "look:smard-2025-solar-noon-evening-proxy-v1": "COMPLETED_SPENT"
+    },
+    "legacy_unknown_not_resolved_or_replayed": true,
+    "economic_execution": false
+  },
+  "exposure": {
+    "type": "PRIMARY_SEC_METADATA_AND_CORPORATE_TERMS",
+    "scope": "Full Invesco 497K management supplement and MiniMed index/8-K annual-meeting vote report read. Vote counts/legal approval statements are corporate documentary exposure, not prices, investment returns or distribution/payoff amounts. All issuer/document exposures remain recorded; nothing is declared virgin. Raw documents private; bounded legal excerpts and receipts published.",
+    "new_economic_looks": 0,
+    "new_expression_executions": 0,
+    "private_history": "UNKNOWN",
+    "effective_independent_trials": "UNKNOWN"
+  },
+  "observable_cost": {
+    "primary_requests": 3,
+    "retries": 0,
+    "received_body_bytes": 56414,
+    "request_wall_seconds_sum": 0.8357173569966108,
+    "partial_documents": 0,
+    "economic_payload_requests": 0,
+    "economic_executions": 0,
+    "paid_usd": 0,
+    "architecture_changes": 0,
+    "tokens": null,
+    "global_bill": null,
+    "transport_total_bytes": null
+  },
+  "bounds": {
+    "max_agent_minutes": 15,
+    "max_primary_requests": 3,
+    "max_bytes_per_document": 524288,
+    "max_total_document_bytes": 1572864,
+    "max_request_seconds": 20
+  },
+  "safety": {
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "frozen_protocols_modified": false,
+    "old_results_replayed": false,
+    "WTI_reprobed": false,
+    "raw_documents_redistributed": false
+  }
+}

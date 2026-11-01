@@ -1,0 +1,72 @@
+{
+  "recorded_at": "2026-10-15T10:40:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before_pass": "93534d9c365b52f2aa80c4277da1cac4e7338d31",
+  "actor": "interactive-research-continuation",
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_verdict": null,
+  "result": "CALAMOS_SOURCE_GAP_RETAINED; SK_TELECOM_PRIMARY_LEGAL_CONTENT_INELIGIBLE_A_E_WITH_CLOCK_UNVERIFIED; FORTUNEX_PRIMARY_LEGAL_CONTENT_INELIGIBLE_D_WITH_CLOCK_UNVERIFIED; NO_EVENT_SELECTED.",
+  "calamos_497": {
+    "issuer": "Calamos ETF Trust",
+    "form": "497",
+    "accession": "0001104659-26-115676",
+    "cached_feed_updated": "2026-10-14T06:01:39-04:00",
+    "accepted_at_verified": null,
+    "status": "PARK_DOCUMENTARY_SOURCE_GAP",
+    "reason": "The exact SEC index/accepted clock and operative primary 497 text were not successfully retrieved in this pass. Search exposed secondary mirrors describing a same-day prospectus supplement for Calamos Least-Of Autocallable Income ETF and related registration material, but that is insufficient to certify either E eligibility or ineligibility under the frozen primary-source rule.",
+    "inference": "Do not treat the absence of liquidation language in mirrors as proof of no ETF liquidation. Do not skip this blocker for FIRST-event selection."
+  },
+  "sk_telecom_6k": {
+    "issuer": "SK Telecom Co., Ltd.",
+    "form": "6-K",
+    "accession": "0001193125-26-420931",
+    "cached_feed_updated": "2026-10-14T06:01:47-04:00",
+    "accepted_at_verified": null,
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/1015650/000119312526420931/d153043d6k.htm",
+    "status": "PRIMARY_LEGAL_CONTENT_REVIEWED_INELIGIBLE_A_E_CLOCK_UNVERIFIED",
+    "reason": "The primary 6-K is a clarification of media reports about AI data-center expansion plans. It describes no issuer tender/odd-lot priority, reverse-split fractional entitlement, SPAC shareholder cash-redemption notice, or ETF liquidation. Exact accepted timestamp was not independently verified from the filing index in this pass, so chronology remains unproven even though the legal content is non-qualifying."
+  },
+  "fortunex_8k": {
+    "issuer": "FortuneX Acquisition Corporation",
+    "form": "8-K",
+    "accession": "0001829126-26-011104",
+    "cached_feed_updated": "2026-10-14T06:01:53-04:00",
+    "accepted_at_verified": null,
+    "primary_document": "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/fortunexacq_8k.htm",
+    "status": "PRIMARY_LEGAL_CONTENT_REVIEWED_INELIGIBLE_D_CLOCK_UNVERIFIED",
+    "reason": "The primary 8-K reports an amendment to the business-combination agreement and changes merger consideration. It does not announce a public-shareholder cash-redemption window, redemption deadline, trust payout, extension vote, or liquidation/redemption event required by frozen D. Exact accepted timestamp was not independently verified from the filing index in this pass.",
+    "incidental_exposure": {
+      "consumed": true,
+      "scope": "Merger-consideration amounts/share counts were incidentally displayed in the primary 8-K/search result and related exhibit text. They are consumed public economic disclosure, not a reserved economic look, not a payoff calculation, and not pristine future evidence."
+    }
+  },
+  "ordering_and_integrity": {
+    "first_event_selected": false,
+    "first_event_claim_allowed": false,
+    "reason": "Valaris remains PARK_DOCUMENT_SCOPE_NOT_REVIEWED; Calamos remains PARK_DOCUMENTARY_SOURCE_GAP; earlier Fusion/AmpliTech/IX chronology gaps also remain. Later legal reviews cannot substitute for these unresolved earlier positions.",
+    "selected_market_price_payloads": 0,
+    "nav_payloads": 0,
+    "distribution_or_redemption_payoff_payloads": 0,
+    "economic_calculations": 0,
+    "new_return_or_strategy_tests": 0
+  },
+  "next_decision": {
+    "kind": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+    "status": "OPEN",
+    "question": "Continue the cached list with HDFC Bank Ltd 6-K accession 0001193125-26-420933 using primary legal content only. Verify exact accepted clock if an index route is available. Do not read selected price/NAV/payoff data. Preserve Calamos, Valaris and earlier chronology gaps as blockers to FIRST-event selection; do not substitute a later favorable filing.",
+    "economic_access_authorized": false
+  },
+  "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1015650/000119312526420931/d153043d6k.htm",
+    "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/fortunexacq_8k.htm",
+    "https://www.sec.gov/Archives/edgar/data/2121703/000182912626011104/fortunexacq_ex2-1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1579881/000110465926115676/0001104659-26-115676-index.htm"
+  ]
+}

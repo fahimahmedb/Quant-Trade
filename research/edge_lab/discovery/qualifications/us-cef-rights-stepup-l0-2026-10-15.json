@@ -1,0 +1,62 @@
+{
+  "recorded_at": "2026-10-15T11:04:00Z",
+  "branch": "research/edge-lab-continuous",
+  "head_observed_before_pass": "4bb73d6627ef1301cb9cce8a8789585968a7f74b",
+  "actor": "interactive-research-continuation",
+  "stage": "DOCUMENTARY_L0",
+  "decision": "L1_NOW",
+  "economic_verdict": null,
+  "economic_access_authorized": false,
+  "control_summary": {
+    "paused": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false,
+    "paid_usd_total": 0
+  },
+  "candidate": {
+    "id": "us-cef-rights-small-holder-stepup",
+    "mechanism_cluster": "subscription-rights-allocation",
+    "MECHANISM": "Some US listed closed-end-fund rights offerings explicitly grant a step-up privilege when a record-date shareholder receives fewer rights than the normal subscription ratio requires for one new share. The holder can subscribe for one whole new share at the offering subscription price without supplying the otherwise-missing rights. This is a mechanical small-holder allocation rule, distinct from forecasting market direction.",
+    "WHO_PAYS": "Economically, the issuer/fund and nonparticipating or diluted shareholders bear the incremental allocation at the stated subscription price. Any apparent benefit is reduced by the cost and risk of owning the minimal record-date position, rights value, fees, taxes, price moves and post-issuance dilution.",
+    "WHY_PERSIST": "Capacity is intrinsically tiny per beneficial holder, deadlines and subscription-agent mechanics are operationally annoying, fractional/step-up language varies by offering, and large capital cannot scale a one-share privilege. No multi-account multiplication is contemplated or allowed.",
+    "CHEAP_DATA_NOW": "Primary SEC prospectus/subscription-agent exhibits can state record date, rights ratio, transferability, subscription-price formula, step-up privilege, oversubscription rules, deadlines and allocation. A 2026 SEC subscription-agent document for BlackRock Capital Allocation Term Trust explicitly states a 1-for-5 basic ratio and a step-up privilege for holders issued fewer than five rights. Public filings also show transferable-rights and oversubscription structures in other 2026 offerings. No market-price payload is required for this L0 source gate.",
+    "CHEAP_EXPRESSION": "Prospective-only first-event test after a new T0: select the first newly announced US exchange-listed closed-end-fund rights offering whose primary filing, before any price access, explicitly grants a small-holder step-up privilege. Freeze the minimum qualifying record-date share count, subscription ratio, subscription-price rule, deadlines, rights transferability and one post-expiry valuation convention before reading the selected security's market prices. Evaluate only one hypothetical beneficial-owner position; no account multiplication.",
+    "FATAL_PROBLEM": "The privilege is not free money. Acquiring/holding the record-date shares can expose the investor to a price drop larger than the one-share discount; transferable rights have opportunity value; subscription price may float with market/NAV; brokers can impose fees or deadlines; the fund can extend/cancel/modify; post-offering dilution can erase the apparent discount. If these costs cannot be bounded prospectively, PARK rather than infer an edge.",
+    "WHY_NOT_ARBITRAGED": "Potential persistence is capacity/operations, not informational superiority. A one-share incremental privilege can be economically irrelevant to institutional capital even if positive for a tiny holder. This is a hypothesis to test, not a claim that institutions overlook it.",
+    "DISTINCTNESS": "Different from issuer-tender odd-lot priority and reverse-split cash-in-lieu: the contractual entitlement is subscription allocation in a rights offering, with an explicit small-holder step-up. It is also different from generic oversubscription because the testable mechanical increment is the missing-right waiver for a tiny holder."
+  },
+  "historical_and_current_exposure": {
+    "must_not_be_used_as_fresh_evidence": true,
+    "examples_exposed": [
+      "BlackRock Capital Allocation Term Trust 2026 rights-offering subscription-agent language: 1-for-5 basic ratio and explicit small-holder step-up privilege.",
+      "Cohen & Steers Quality Income Realty Fund 2026 rights-offering/oversubscription mechanics and later exercise information.",
+      "UWM Holdings 2026 current transferable-rights/oversubscription terms, including a subscription-price formula and record date that already passed before this declaration.",
+      "Greenfire Resources 2026 preliminary rights-offering subscription outcome.",
+      "Other 2026 rights-offering documents with oversubscription mechanics."
+    ],
+    "rule": "All named/exposed 2026 examples are calibration/documentary contamination only. They cannot count as fresh economic cases, pristine holdout evidence or support for profitability."
+  },
+  "inference_rights": {
+    "L0_CAN_SAY": "Mechanism and primary-source feasibility are real enough to justify a prospective L1 declaration.",
+    "L0_CANNOT_SAY": [
+      "ALPHA",
+      "POSITIVE_EXPECTED_RETURN",
+      "EXECUTABLE_PNL",
+      "BROKER_FEASIBILITY",
+      "TAX_TREATMENT",
+      "REPEATABILITY",
+      "CAPACITY_BEYOND_ONE_BENEFICIAL_HOLDER"
+    ]
+  },
+  "next_decision": {
+    "kind": "PREDECLARE_PROSPECTIVE_L1",
+    "status": "OPEN",
+    "economic_access_authorized": false,
+    "question": "Create one frozen prospective protocol for the first future qualifying small-holder step-up rights offering accepted after T0. Before any selected price payload, fix eligibility, beneficial-owner aggregation, minimum share count, rights ratio, subscription-price semantics, entry/holding convention, one central cost case and one adverse cost/price-risk check. Exclude every already-exposed 2026 example. No historical backfill and no current UWM/BlackRock payoff calculation."
+  },
+  "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1809541/000119312526405592/d158492dex99k6.htm",
+    "https://www.sec.gov/Archives/edgar/data/1783398/000162828026063816/uwmc-rights424b5.htm",
+    "https://www.sec.gov/Archives/edgar/data/1157842/000119312526307275/xslF345X06/ownership.xml"
+  ]
+}

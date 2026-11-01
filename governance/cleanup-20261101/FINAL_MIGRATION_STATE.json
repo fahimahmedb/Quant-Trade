@@ -1,0 +1,301 @@
+{
+  "mission": "FINAL_SURVIVOR_DEPENDENCY_MIGRATION_20261101",
+  "branch_count_start": 33,
+  "snapshot_utc": "2026-11-01T15:23:05.114332+00:00",
+  "initial_heads": {
+    "audit/forensic-checkpoint-20261019": "d14415c09b63b26e5839fee445ba100989c429fe",
+    "audit/independent-meta-audit-20261101": "0881c2b765837d8f833fb7b2567dab7ac3cca081",
+    "audit/owner-recovery-preserved-20261026": "e97bb3834f2c1a1b3de3a5719c1e94b416c52d2e",
+    "blue/master-v2-2026-09-20": "2d0af7cb7e8ea0c095bf2e4e1cc7461dc0542832",
+    "builder/autonomy-e2e-20261012": "fed1acd62d95bb30dfa285cc1ab01305d1f42937",
+    "builder/convergence-wave2-canonical-20261021": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a",
+    "builder/econ-readiness-integration-20261016": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d",
+    "builder/evidence-store-identity-v2": "b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba",
+    "builder/issue44-gpt-oss-codex-phase1-remote-20261030": "afedfd57986aa042e9e97aa53b9db53b4619764f",
+    "builder/live-lab-3d-full-build-20261015": "6076774f52ca2e619caaab57fb6a278f47608349",
+    "builder/live-lab-native-integration-20261015": "fdfee2006869ff3770f752f32fb672da0b0fc4ac",
+    "builder/live-lab-oracle-canonical-20261020": "d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec",
+    "builder/live-lab-owner-ux-rebuild-20261015": "8583ea6e46b123e831e8af489ad1043b810a0cf4",
+    "builder/mega-e-autonomous-runtime-20261021": "82da975878eb9b525e1845103fe7b35e7aeca404",
+    "builder/multi-source-ideation-intake-20261021": "bbdea6a794377f8cab54fa8bcb6ad2242616e426",
+    "builder/oracle-economic-loop-recovery-20261019": "0837f419c4e3a9e17a39269994f27d97fcf79757",
+    "builder/oracle-v2-core-20261020": "0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1",
+    "builder/research-os-aggressive-architecture-20261015": "43ed98dcab5e8108ee5190a4a53fc7f511fe41e0",
+    "builder/research-os-autonomous-econ-readiness-port-20261016": "d5e6d55ba6084729b585a7bb41cede62d8d0f01b",
+    "builder/research-os-autonomous-loop-20261015": "d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec",
+    "builder/research-os-vm-autonomy-20261019": "8a1bdadc9bc52c4889ee19d0472bcee61fe24318",
+    "builder/v2-forward-20261020": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208",
+    "builder/wp1-book-pressure-preexposure-20261028": "1c9e9f6a1a35faf4a3ef75dddf03961c57ab265f",
+    "builder/wp2-single-lineage-binding-20261030": "8f8df47d184f0f1594280bec7e9e7941962cf1c5",
+    "claude/data-feeds-6vr22g": "e11a9da0f8b11e7fbce06a537412baeae26625ab",
+    "code/canonical": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+    "codex/c0-membrane-qualification-20261027": "13721384fe5b94b0136fb4548192e05d5e34e605",
+    "codex/horizontal-completeness-prewave2-20261021": "7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f",
+    "codex/vertical-depth-prewave2-20261021": "5d628db2949144ca6abf94327de3146f3983ecea",
+    "project/canonical": "77ef69acddc997a613f5f133abbe6a81e687f24b",
+    "research/edge-lab-continuous": "68bbab8ec990c813310224bc8737c41480853108",
+    "review/independent-architecture-challenger-20261026": "642b551985f499b37286c3bc21b89c57294f63ca",
+    "reviewer/v1-final-red-team": "37f298423ca4a100c1c633da2c3c6c2641d8dd8e"
+  },
+  "prior_247_deletions": "NOT_REOPENED_OR_RESTORED",
+  "default_branch": "blue/master-v2-2026-09-20",
+  "default_candidate": "project/canonical",
+  "default_selection_reason": "Project recovery/decisions/scientific-memory entrypoint; code authority remains independently qualified. Preserve scheduled collector via code checkout before switching.",
+  "open_prs": [],
+  "open_issues": [
+    48,
+    44,
+    43,
+    42,
+    40,
+    38,
+    37,
+    36,
+    35,
+    34
+  ],
+  "active_or_queued_actions_at_start": [],
+  "active_forensic_auditor": {
+    "branch": "audit/forensic-checkpoint-20261019",
+    "sha": "d14415c09b63b26e5839fee445ba100989c429fe",
+    "status": "PAUSED_BY_OWNER",
+    "resume_authorized": false
+  },
+  "automations": [],
+  "external_consumers": [],
+  "deleted": [],
+  "blocked": {},
+  "tests": {},
+  "workflow_runs": [],
+  "operational_scan": {
+    "branches_scanned": 33,
+    "distinct_text_capable_blobs": 2108,
+    "total_exact_name_hits": 11426,
+    "skipped_oversized_files": [],
+    "files_per_branch": {
+      "audit/forensic-checkpoint-20261019": 4,
+      "audit/independent-meta-audit-20261101": 92,
+      "audit/owner-recovery-preserved-20261026": 1792,
+      "blue/master-v2-2026-09-20": 92,
+      "builder/autonomy-e2e-20261012": 118,
+      "builder/convergence-wave2-canonical-20261021": 260,
+      "builder/econ-readiness-integration-20261016": 154,
+      "builder/evidence-store-identity-v2": 65,
+      "builder/issue44-gpt-oss-codex-phase1-remote-20261030": 95,
+      "builder/live-lab-3d-full-build-20261015": 127,
+      "builder/live-lab-native-integration-20261015": 126,
+      "builder/live-lab-oracle-canonical-20261020": 191,
+      "builder/live-lab-owner-ux-rebuild-20261015": 127,
+      "builder/mega-e-autonomous-runtime-20261021": 253,
+      "builder/multi-source-ideation-intake-20261021": 252,
+      "builder/oracle-economic-loop-recovery-20261019": 189,
+      "builder/oracle-v2-core-20261020": 1921,
+      "builder/research-os-aggressive-architecture-20261015": 150,
+      "builder/research-os-autonomous-econ-readiness-port-20261016": 146,
+      "builder/research-os-autonomous-loop-20261015": 146,
+      "builder/research-os-vm-autonomy-20261019": 147,
+      "builder/v2-forward-20261020": 248,
+      "builder/wp1-book-pressure-preexposure-20261028": 91,
+      "builder/wp2-single-lineage-binding-20261030": 263,
+      "claude/data-feeds-6vr22g": 103,
+      "code/canonical": 265,
+      "codex/c0-membrane-qualification-20261027": 263,
+      "codex/horizontal-completeness-prewave2-20261021": 248,
+      "codex/vertical-depth-prewave2-20261021": 252,
+      "project/canonical": 6,
+      "research/edge-lab-continuous": 122,
+      "review/independent-architecture-challenger-20261026": 1791,
+      "reviewer/v1-final-red-team": 61
+    },
+    "method": "Every current survivor tree: all supplied operational directories plus src, runtime, runbook, state/config/router, root agent/readme and container/build entrypoints; blob-deduplicated exact survivor and previously retired names. Frozen economic payloads not executed. Historical branch-only files are non-operational unless an actual current consumer was found."
+  },
+  "classification_rule": "A branch filter alone does not resolve a ref. Old issue/PR commands are historical after later terminal receipts; exact SHAs stay recoverable. Historical scripts are not current authorization.",
+  "authority": {
+    "economic_experiment_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "live_trading_authorized": false
+  },
+  "known_external_unverified": [
+    "Existing Oracle host: no SSH/OCI/host connector, credentials or TCP grant; live branch writes observed.",
+    "GitHub Pages/deployment/environment settings and branch protection: connector endpoint not supported; direct gh API Forbidden."
+  ],
+  "adversarial_review": [
+    "Counterexample found: Oracle V2 tip advanced during fetch with a current NOOP wake. Preserve that branch and record final exact delta; do not infer host absence from missing credentials.",
+    "Counterexample found: default scheduled data collector executes another branch and has data/code absent from canonical working tree. Port exact executable dependencies and append-only dataset before rebinding.",
+    "Counterexample found: Multi-Source historical qualification compares against a reviewed source. Pin the preserved immutable source SHA rather than replacing that oracle by the entire new canonical tree.",
+    "Counterexample found: consumed economic push workflows would re-execute frozen looks if naively rebound. Retire the five obsolete economic/telemetry workflow launchers from active code, retain exact originals in authority history, do not run a look.",
+    "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
+    "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
+  ],
+  "updated_utc": "2026-11-01T15:23:05.114347+00:00",
+  "project_subject_before_receipt": "77ef69acddc997a613f5f133abbe6a81e687f24b",
+  "code_canonical_sha": "13c9ff03f0898e9af28abaa3dab78a520c70c887",
+  "branch_dispositions": {
+    "audit/forensic-checkpoint-20261019": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "d14415c09b63b26e5839fee445ba100989c429fe"
+    },
+    "audit/independent-meta-audit-20261101": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "0881c2b765837d8f833fb7b2567dab7ac3cca081"
+    },
+    "audit/owner-recovery-preserved-20261026": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "e97bb3834f2c1a1b3de3a5719c1e94b416c52d2e"
+    },
+    "blue/master-v2-2026-09-20": {
+      "disposition": "BLOCK",
+      "reason": "Default branch; authenticated repository-settings mutation and Pages/environment/protection checks unavailable. Complete settings preflight then PATCH default_branch=project/canonical and verify schedules.",
+      "sha_at_snapshot": "2d0af7cb7e8ea0c095bf2e4e1cc7461dc0542832"
+    },
+    "builder/autonomy-e2e-20261012": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "fed1acd62d95bb30dfa285cc1ab01305d1f42937"
+    },
+    "builder/convergence-wave2-canonical-20261021": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "ebc72b9fd14f91420c37e0b7607f9bfb584a289a"
+    },
+    "builder/econ-readiness-integration-20261016": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d"
+    },
+    "builder/evidence-store-identity-v2": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "b8f7dffbe040753cb1e47b7f38f3ab4485e1e7ba"
+    },
+    "builder/issue44-gpt-oss-codex-phase1-remote-20261030": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "afedfd57986aa042e9e97aa53b9db53b4619764f"
+    },
+    "builder/live-lab-3d-full-build-20261015": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "6076774f52ca2e619caaab57fb6a278f47608349"
+    },
+    "builder/live-lab-native-integration-20261015": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "fdfee2006869ff3770f752f32fb672da0b0fc4ac"
+    },
+    "builder/live-lab-oracle-canonical-20261020": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "d14b96c6517f6a14a28bf67ab98bcfc71f49a3ec"
+    },
+    "builder/live-lab-owner-ux-rebuild-20261015": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "8583ea6e46b123e831e8af489ad1043b810a0cf4"
+    },
+    "builder/mega-e-autonomous-runtime-20261021": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "82da975878eb9b525e1845103fe7b35e7aeca404"
+    },
+    "builder/multi-source-ideation-intake-20261021": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "bbdea6a794377f8cab54fa8bcb6ad2242616e426"
+    },
+    "builder/oracle-economic-loop-recovery-20261019": {
+      "disposition": "PARK",
+      "reason": "EXTERNAL_DEPENDENCY_UNKNOWN: existing Oracle release/state branch; current V2 automatic writes observed. Authenticate intended host, capture worker.json/unit/timer/SHA, prove equivalent canonical bytes, back up, rebind only ref, verify bounded healthy wake.",
+      "sha_at_snapshot": "0837f419c4e3a9e17a39269994f27d97fcf79757"
+    },
+    "builder/oracle-v2-core-20261020": {
+      "disposition": "PARK",
+      "reason": "EXTERNAL_DEPENDENCY_UNKNOWN: existing Oracle release/state branch; current V2 automatic writes observed. Authenticate intended host, capture worker.json/unit/timer/SHA, prove equivalent canonical bytes, back up, rebind only ref, verify bounded healthy wake.",
+      "sha_at_snapshot": "0950ac0dcb9e4b196bb5b4a4eb5c856a331961e1"
+    },
+    "builder/research-os-aggressive-architecture-20261015": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "43ed98dcab5e8108ee5190a4a53fc7f511fe41e0"
+    },
+    "builder/research-os-autonomous-econ-readiness-port-20261016": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "d5e6d55ba6084729b585a7bb41cede62d8d0f01b"
+    },
+    "builder/research-os-autonomous-loop-20261015": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "d0dc70f5dd71f3e6cb8097d2f15807bb99ebc8ec"
+    },
+    "builder/research-os-vm-autonomy-20261019": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "8a1bdadc9bc52c4889ee19d0472bcee61fe24318"
+    },
+    "builder/v2-forward-20261020": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "ded4228de74ce3b6926d9ea3e3c2114ff1be8208"
+    },
+    "builder/wp1-book-pressure-preexposure-20261028": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "1c9e9f6a1a35faf4a3ef75dddf03961c57ab265f"
+    },
+    "builder/wp2-single-lineage-binding-20261030": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "8f8df47d184f0f1594280bec7e9e7941962cf1c5"
+    },
+    "claude/data-feeds-6vr22g": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "e11a9da0f8b11e7fbce06a537412baeae26625ab"
+    },
+    "code/canonical": {
+      "disposition": "CANONICAL",
+      "reason": "Canonical authority",
+      "sha_at_snapshot": "13c9ff03f0898e9af28abaa3dab78a520c70c887"
+    },
+    "codex/c0-membrane-qualification-20261027": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "13721384fe5b94b0136fb4548192e05d5e34e605"
+    },
+    "codex/horizontal-completeness-prewave2-20261021": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "7aaeea99d51d3ab53c4d7cc2b73b67a7cee2c76f"
+    },
+    "codex/vertical-depth-prewave2-20261021": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "5d628db2949144ca6abf94327de3146f3983ecea"
+    },
+    "project/canonical": {
+      "disposition": "CANONICAL",
+      "reason": "Canonical authority",
+      "sha_at_snapshot": "77ef69acddc997a613f5f133abbe6a81e687f24b"
+    },
+    "research/edge-lab-continuous": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "68bbab8ec990c813310224bc8737c41480853108"
+    },
+    "review/independent-architecture-challenger-20261026": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "642b551985f499b37286c3bc21b89c57294f63ca"
+    },
+    "reviewer/v1-final-red-team": {
+      "disposition": "PARK",
+      "reason": "Migration qualification pending; no deletion authorized by provisional classification",
+      "sha_at_snapshot": "37f298423ca4a100c1c633da2c3c6c2641d8dd8e"
+    }
+  }
+}

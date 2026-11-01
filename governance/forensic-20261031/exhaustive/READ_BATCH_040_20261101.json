@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_040_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_AUTHENTICATED_BALANCE_AND_POST_EXECUTION_B2_DEFECT_DISPOSITION_4219035322_THROUGH_4219244983",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review-comment","id":4219035322,"sha256":"067c8d1bacbffd50dc373a47c17f0816172ed99beb5e554a3331fbeb8b0ae71c","status":"READ","summary":"Builder confirms balance metric identity fix in 0f30ac8eee: orchestrator must be Codex connector account; builder must be repository Owner account plus Claude Code footer; forged headers and missing footer are tested."},
+    {"kind":"review-comment","id":4219237911,"sha256":"d9be1fa4c5efbb479e7904fbe93e435091ee0ed6e6074d718382938cc34ebf31","status":"READ","summary":"P2 review finds B2 has same late-mutation persistent-artifact defect previously fixed in B4: process can return 3 while JSON still says NEGATIVE_REPLICATION_CONFIRMED/return_code 0. Future-safe behavior would invalidate or remove the artifact."},
+    {"kind":"review-comment","id":4219237916,"sha256":"f5736cacc363a071421cd184c56e42e2ef413f96f99bf23b10fc79f7fe0397f7","status":"READ","summary":"P3 coordination review finds authenticated balance warning is asymmetric: only Builder share >60% is flagged, so orchestrator dominance can be silently reported as balanced."},
+    {"kind":"review-comment","id":4219244743,"sha256":"abcb04124e45837dbc16a2f16815c91dad8e2e19a38a19e7121b65ef196f2f3f","status":"READ","summary":"Builder confirms symmetric balance fix in 9f3442e247: flag names whichever agent exceeds 60%, with boundary tests at 0/39/40/50/60/61/100."},
+    {"kind":"review-comment","id":4219244983,"sha256":"747efc78070fb4b61200124812501ba48adaf284e21d99eedfc0b982db0f7bbc","status":"READ","summary":"Builder declines to modify already-executed frozen B2 bytes because result provenance is tied to that exact blob. Instead it verifies actual B2 execution had no late filesystem delta and records the harness limitation; future harnesses inherit B4 fix without rerunning B2."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 5,
+    "objects_directly_read": 5,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 5,
+    "cumulative_new_discussion_objects_directly_read": 358,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 368,
+    "estimated_total_discussion_objects_directly_read": 365,
+    "estimated_total_discussion_objects_semantically_disposed": 375,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"POST_EXECUTION_DEFECT_DOES_NOT_AUTOMATICALLY_AUTHORIZE_RERUN","finding":"For a single-use frozen experiment, a newly discovered harness defect should trigger bounded impact analysis. If primary evidence proves the defect did not occur in the historical execution, preserve the original bytes/result and fix future harnesses rather than consume the look again.","current_product_decision_change":false},
+    {"classification":"FROZEN_PROVENANCE_CAN_OUTWEIGH_RETROACTIVE_CODE_CLEANUP","finding":"Changing B2 after execution would sever byte identity from the published result. Recording the limitation plus prospective repair preserved stronger provenance than silently rewriting history.","current_product_decision_change":false},
+    {"classification":"COORDINATION_METRICS_MUST_BE_SYMMETRIC_AND_AUTHENTICATED","finding":"A balance metric is only meaningful if both role identities are authenticated and either side can be flagged; otherwise automation may steer work based on spoofed or one-sided counts.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_COMMENT_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"review-comments","id":4219729762,"sha256":"d65b9ddc08de189aacf77bfca2e37e5b9be2275b2fc61d82f5b56618f22285c7"}
+}

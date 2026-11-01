@@ -1,0 +1,4404 @@
+[
+  {
+    "id": "bitmex-quote-correct-prefix",
+    "url": "https://s3-eu-west-1.amazonaws.com/public.bitmex.com/?prefix=data/quote/2025&max-keys=366",
+    "status": 200,
+    "sha256": "01265974d8ee5402a266bb0ee2aa4776bb1f0243e946801f8190a10af18c254f",
+    "payload_bytes": 110568,
+    "files": [
+      {
+        "key": "data/quote/20250101.csv.gz",
+        "size": 202228214,
+        "etag": "\"6e8c33d2e7f0c42603f31d7d67f730f6\"",
+        "last_modified": "2025-01-02T05:03:24.000Z"
+      },
+      {
+        "key": "data/quote/20250102.csv.gz",
+        "size": 261544303,
+        "etag": "\"9973d1f1f8cc37f0e918f466dbc0f0ec\"",
+        "last_modified": "2025-01-03T05:03:57.000Z"
+      },
+      {
+        "key": "data/quote/20250103.csv.gz",
+        "size": 226204825,
+        "etag": "\"830ee2637ab9faf914a05bc873b4b99f\"",
+        "last_modified": "2025-01-04T05:03:27.000Z"
+      },
+      {
+        "key": "data/quote/20250104.csv.gz",
+        "size": 189125690,
+        "etag": "\"6309c666cdc27b23d4fce73f4ff93d33\"",
+        "last_modified": "2025-01-05T05:03:04.000Z"
+      },
+      {
+        "key": "data/quote/20250105.csv.gz",
+        "size": 160991190,
+        "etag": "\"8ffb726039936f533a0a9cdbef80eaea\"",
+        "last_modified": "2025-01-06T05:02:42.000Z"
+      },
+      {
+        "key": "data/quote/20250106.csv.gz",
+        "size": 252594698,
+        "etag": "\"f1f234ea633bada32860ebd87ccfd569\"",
+        "last_modified": "2025-01-07T05:04:02.000Z"
+      },
+      {
+        "key": "data/quote/20250107.csv.gz",
+        "size": 258606487,
+        "etag": "\"7ae29a8e96415ccc4ac53c1a83df4c61\"",
+        "last_modified": "2025-01-08T05:04:14.000Z"
+      },
+      {
+        "key": "data/quote/20250108.csv.gz",
+        "size": 328428124,
+        "etag": "\"55a4bf05ccd3f8483216a89a51c2d6d6\"",
+        "last_modified": "2025-01-09T05:05:07.000Z"
+      },
+      {
+        "key": "data/quote/20250109.csv.gz",
+        "size": 324806113,
+        "etag": "\"a39852c9a3de77e7bfd170f8c9aa5c1a\"",
+        "last_modified": "2025-01-15T09:49:19.000Z"
+      },
+      {
+        "key": "data/quote/20250110.csv.gz",
+        "size": 282769388,
+        "etag": "\"6412c47851541c7c363344eff0c2e4e7\"",
+        "last_modified": "2025-01-15T09:49:21.000Z"
+      },
+      {
+        "key": "data/quote/20250111.csv.gz",
+        "size": 187427011,
+        "etag": "\"94253e146938b6766ebc0594acb47542\"",
+        "last_modified": "2025-01-15T09:49:25.000Z"
+      },
+      {
+        "key": "data/quote/20250112.csv.gz",
+        "size": 183260564,
+        "etag": "\"880c34918f203211dd73b5a8f8524bde\"",
+        "last_modified": "2025-01-15T09:49:26.000Z"
+      },
+      {
+        "key": "data/quote/20250113.csv.gz",
+        "size": 349251682,
+        "etag": "\"b0315294fcb13e530058f287bf88eddf\"",
+        "last_modified": "2025-01-15T09:49:28.000Z"
+      },
+      {
+        "key": "data/quote/20250114.csv.gz",
+        "size": 266630541,
+        "etag": "\"e90f31f907b9ab0b307559b9b16b17c0\"",
+        "last_modified": "2025-01-15T09:23:43.000Z"
+      },
+      {
+        "key": "data/quote/20250115.csv.gz",
+        "size": 283686192,
+        "etag": "\"8c85237ffd000a79ae2fc517081cdc23\"",
+        "last_modified": "2025-01-16T05:04:30.000Z"
+      },
+      {
+        "key": "data/quote/20250116.csv.gz",
+        "size": 295927571,
+        "etag": "\"d52b1e2b407aba8c39b6ca03582be57d\"",
+        "last_modified": "2025-01-17T05:04:46.000Z"
+      },
+      {
+        "key": "data/quote/20250117.csv.gz",
+        "size": 277021312,
+        "etag": "\"943d6f7e83197d12ef7d73881dddc4e9\"",
+        "last_modified": "2025-01-18T05:04:37.000Z"
+      },
+      {
+        "key": "data/quote/20250118.csv.gz",
+        "size": 318546625,
+        "etag": "\"30df99201983eef754d7c0e291722437\"",
+        "last_modified": "2025-01-19T05:05:12.000Z"
+      },
+      {
+        "key": "data/quote/20250119.csv.gz",
+        "size": 375344375,
+        "etag": "\"7f76744e5d1f6065b075b74878aa7158\"",
+        "last_modified": "2025-01-20T05:06:14.000Z"
+      },
+      {
+        "key": "data/quote/20250120.csv.gz",
+        "size": 462370786,
+        "etag": "\"6c5519110ac84675e9f9ea033141bdd2\"",
+        "last_modified": "2025-01-21T05:07:28.000Z"
+      },
+      {
+        "key": "data/quote/20250121.csv.gz",
+        "size": 404701206,
+        "etag": "\"0f8955de3629612dadc49cda6697ff92\"",
+        "last_modified": "2025-01-22T05:06:31.000Z"
+      },
+      {
+        "key": "data/quote/20250122.csv.gz",
+        "size": 316499957,
+        "etag": "\"80ec2dde286837350e6355419885a014\"",
+        "last_modified": "2025-01-23T05:05:17.000Z"
+      },
+      {
+        "key": "data/quote/20250123.csv.gz",
+        "size": 313218417,
+        "etag": "\"7c3b06037bfa80dca7ec5e31373e502f\"",
+        "last_modified": "2025-01-24T05:05:15.000Z"
+      },
+      {
+        "key": "data/quote/20250124.csv.gz",
+        "size": 281910037,
+        "etag": "\"add02744dc77fc1886439e4ce8dc4bf8\"",
+        "last_modified": "2025-01-25T05:04:33.000Z"
+      },
+      {
+        "key": "data/quote/20250125.csv.gz",
+        "size": 228329913,
+        "etag": "\"019deaf9963afa7cc9525159dc37db83\"",
+        "last_modified": "2025-01-26T05:03:46.000Z"
+      },
+      {
+        "key": "data/quote/20250126.csv.gz",
+        "size": 189730463,
+        "etag": "\"e9d880985a38ed340d4c43da49f5da3d\"",
+        "last_modified": "2025-01-27T05:03:24.000Z"
+      },
+      {
+        "key": "data/quote/20250127.csv.gz",
+        "size": 383264117,
+        "etag": "\"9b26582e0efdbf4d36440d97c6890357\"",
+        "last_modified": "2025-01-28T05:06:08.000Z"
+      },
+      {
+        "key": "data/quote/20250128.csv.gz",
+        "size": 288010738,
+        "etag": "\"25f2da2fb73b7fd340265a3e405d8eda\"",
+        "last_modified": "2025-01-29T05:04:46.000Z"
+      },
+      {
+        "key": "data/quote/20250129.csv.gz",
+        "size": 300238888,
+        "etag": "\"9f5d165cbcf97eae7b29f6072a7c6f43\"",
+        "last_modified": "2025-01-30T05:05:02.000Z"
+      },
+      {
+        "key": "data/quote/20250130.csv.gz",
+        "size": 260593528,
+        "etag": "\"3bb428bb9d1e32cad59205d76837e521\"",
+        "last_modified": "2025-01-31T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20250131.csv.gz",
+        "size": 274403020,
+        "etag": "\"c54a8f3704a2ad1c46e6a52d4b015377\"",
+        "last_modified": "2025-02-01T05:04:22.000Z"
+      },
+      {
+        "key": "data/quote/20250201.csv.gz",
+        "size": 254347919,
+        "etag": "\"9462a12f3364250b63fbf1c4f8be50d7\"",
+        "last_modified": "2025-02-02T05:04:28.000Z"
+      },
+      {
+        "key": "data/quote/20250202.csv.gz",
+        "size": 384776712,
+        "etag": "\"6c1ba2ca1dcd9f5ce667d00e2130a7f5\"",
+        "last_modified": "2025-02-03T05:05:55.000Z"
+      },
+      {
+        "key": "data/quote/20250203.csv.gz",
+        "size": 492307163,
+        "etag": "\"72a351be564eaaaaf9768e911c060d7c\"",
+        "last_modified": "2025-02-04T05:07:15.000Z"
+      },
+      {
+        "key": "data/quote/20250204.csv.gz",
+        "size": 408275871,
+        "etag": "\"124f6142736e940b82e35545f597e867\"",
+        "last_modified": "2025-02-05T05:06:26.000Z"
+      },
+      {
+        "key": "data/quote/20250205.csv.gz",
+        "size": 350656918,
+        "etag": "\"b6423de8d5d5fbb456a8f084f8200f91\"",
+        "last_modified": "2025-02-06T05:05:43.000Z"
+      },
+      {
+        "key": "data/quote/20250206.csv.gz",
+        "size": 366644522,
+        "etag": "\"3696a3e752562e46d0230d83508b6272\"",
+        "last_modified": "2025-02-07T05:06:07.000Z"
+      },
+      {
+        "key": "data/quote/20250207.csv.gz",
+        "size": 356583789,
+        "etag": "\"7fa96c2aa0ab9680d7c10ecaa398bbbc\"",
+        "last_modified": "2025-02-08T05:05:25.000Z"
+      },
+      {
+        "key": "data/quote/20250208.csv.gz",
+        "size": 231228268,
+        "etag": "\"9297a4330d9c4f618abb62b83576ba77\"",
+        "last_modified": "2025-02-09T05:03:48.000Z"
+      },
+      {
+        "key": "data/quote/20250209.csv.gz",
+        "size": 263981164,
+        "etag": "\"12f7c8a541757e099b8805791d2209a2\"",
+        "last_modified": "2025-02-10T05:04:22.000Z"
+      },
+      {
+        "key": "data/quote/20250210.csv.gz",
+        "size": 324308994,
+        "etag": "\"abb13c4772da7e24ee88dc8639d60ec8\"",
+        "last_modified": "2025-02-11T05:05:10.000Z"
+      },
+      {
+        "key": "data/quote/20250211.csv.gz",
+        "size": 311539949,
+        "etag": "\"7910e34f8a0fc3e06c8564333132bfeb\"",
+        "last_modified": "2025-02-12T05:05:10.000Z"
+      },
+      {
+        "key": "data/quote/20250212.csv.gz",
+        "size": 323148473,
+        "etag": "\"bd76e36fc21f7849cfef4d5533a94baa\"",
+        "last_modified": "2025-02-13T05:05:08.000Z"
+      },
+      {
+        "key": "data/quote/20250213.csv.gz",
+        "size": 290095696,
+        "etag": "\"57cb6bc91844f3c47a68e2a7e81ec230\"",
+        "last_modified": "2025-02-14T05:04:42.000Z"
+      },
+      {
+        "key": "data/quote/20250214.csv.gz",
+        "size": 301143379,
+        "etag": "\"fbd852169ad229d61d90b5887c1b84ff\"",
+        "last_modified": "2025-02-15T05:05:04.000Z"
+      },
+      {
+        "key": "data/quote/20250215.csv.gz",
+        "size": 216501712,
+        "etag": "\"10d791791ce925064d80d88fd6c625e3\"",
+        "last_modified": "2025-02-16T05:03:43.000Z"
+      },
+      {
+        "key": "data/quote/20250216.csv.gz",
+        "size": 207703240,
+        "etag": "\"19888a5edf15c84a0fc7a282df930360\"",
+        "last_modified": "2025-02-17T05:03:32.000Z"
+      },
+      {
+        "key": "data/quote/20250217.csv.gz",
+        "size": 292605803,
+        "etag": "\"c1979795e7b2e8fc44802293475ae9ec\"",
+        "last_modified": "2025-02-18T05:05:09.000Z"
+      },
+      {
+        "key": "data/quote/20250218.csv.gz",
+        "size": 342988597,
+        "etag": "\"fc5f72c1d88396d28b972b9d5118fa00\"",
+        "last_modified": "2025-02-19T05:05:57.000Z"
+      },
+      {
+        "key": "data/quote/20250219.csv.gz",
+        "size": 281402928,
+        "etag": "\"9a2dc87270fa6f898f09dd96416d1396\"",
+        "last_modified": "2025-02-20T05:04:38.000Z"
+      },
+      {
+        "key": "data/quote/20250220.csv.gz",
+        "size": 265748518,
+        "etag": "\"b74023eac1d0217d8a33f49dd2c1b7b8\"",
+        "last_modified": "2025-02-21T05:04:25.000Z"
+      },
+      {
+        "key": "data/quote/20250221.csv.gz",
+        "size": 335712960,
+        "etag": "\"76b94050cc57c298f7ce3c1894fd0b84\"",
+        "last_modified": "2025-02-22T05:05:29.000Z"
+      },
+      {
+        "key": "data/quote/20250222.csv.gz",
+        "size": 210100544,
+        "etag": "\"c035f33ed54237d6958c6e9585e46598\"",
+        "last_modified": "2025-02-23T05:03:34.000Z"
+      },
+      {
+        "key": "data/quote/20250223.csv.gz",
+        "size": 194006001,
+        "etag": "\"cabdf6fa64c867a7d8fd911ae1fc83a9\"",
+        "last_modified": "2025-02-24T05:03:32.000Z"
+      },
+      {
+        "key": "data/quote/20250224.csv.gz",
+        "size": 357525857,
+        "etag": "\"fbe13196a60ea14f6093b8ca4c27db2f\"",
+        "last_modified": "2025-02-25T05:11:15.000Z"
+      },
+      {
+        "key": "data/quote/20250225.csv.gz",
+        "size": 487837436,
+        "etag": "\"0f8c559af9b9475ba9fc5e75071be196\"",
+        "last_modified": "2025-02-26T05:07:34.000Z"
+      },
+      {
+        "key": "data/quote/20250226.csv.gz",
+        "size": 388724061,
+        "etag": "\"80d5074542bde5097f0f7d2c550c1340\"",
+        "last_modified": "2025-02-27T05:06:24.000Z"
+      },
+      {
+        "key": "data/quote/20250227.csv.gz",
+        "size": 365232517,
+        "etag": "\"178104dd5564b128ddaace4f54270f0d\"",
+        "last_modified": "2025-02-28T05:05:58.000Z"
+      },
+      {
+        "key": "data/quote/20250228.csv.gz",
+        "size": 448564413,
+        "etag": "\"049d3d3edc1326f335e648dfc9a1d0f2\"",
+        "last_modified": "2025-03-01T05:07:00.000Z"
+      },
+      {
+        "key": "data/quote/20250301.csv.gz",
+        "size": 283395031,
+        "etag": "\"40c504c0cba460745c9ab3d1fd4b182e\"",
+        "last_modified": "2025-03-02T05:04:41.000Z"
+      },
+      {
+        "key": "data/quote/20250302.csv.gz",
+        "size": 358472895,
+        "etag": "\"025e2b70a3248cd16348c4f9faea9362\"",
+        "last_modified": "2025-03-03T05:05:28.000Z"
+      },
+      {
+        "key": "data/quote/20250303.csv.gz",
+        "size": 461627908,
+        "etag": "\"b56294e3cdc8fdf7f35df07641addeee\"",
+        "last_modified": "2025-03-04T05:10:17.000Z"
+      },
+      {
+        "key": "data/quote/20250304.csv.gz",
+        "size": 493115894,
+        "etag": "\"648413e0bd8ef3087b8b5f4ce058f61d\"",
+        "last_modified": "2025-03-05T05:07:27.000Z"
+      },
+      {
+        "key": "data/quote/20250305.csv.gz",
+        "size": 395978667,
+        "etag": "\"d96f138895b79f3670cdd506614e1cae\"",
+        "last_modified": "2025-03-06T05:06:18.000Z"
+      },
+      {
+        "key": "data/quote/20250306.csv.gz",
+        "size": 427124695,
+        "etag": "\"e50a47078d2e70b1c8ce862d55fa9ec2\"",
+        "last_modified": "2025-03-07T05:06:47.000Z"
+      },
+      {
+        "key": "data/quote/20250307.csv.gz",
+        "size": 450887423,
+        "etag": "\"60d98e70f18c6f51934ec41dd64a04f5\"",
+        "last_modified": "2025-03-08T05:06:57.000Z"
+      },
+      {
+        "key": "data/quote/20250308.csv.gz",
+        "size": 298467501,
+        "etag": "\"17e61004cbbda20194389c439b8eab8a\"",
+        "last_modified": "2025-03-09T05:04:54.000Z"
+      },
+      {
+        "key": "data/quote/20250309.csv.gz",
+        "size": 348324482,
+        "etag": "\"80884a3b95a947ed57154344645ed752\"",
+        "last_modified": "2025-03-10T05:05:37.000Z"
+      },
+      {
+        "key": "data/quote/20250310.csv.gz",
+        "size": 452564080,
+        "etag": "\"0cf44f816e3ba726cc6ae300008bfd17\"",
+        "last_modified": "2025-03-11T05:07:06.000Z"
+      },
+      {
+        "key": "data/quote/20250311.csv.gz",
+        "size": 441198858,
+        "etag": "\"f9159465fbb41cddc8ddb32d62dab1b3\"",
+        "last_modified": "2025-03-12T05:07:09.000Z"
+      },
+      {
+        "key": "data/quote/20250312.csv.gz",
+        "size": 381333826,
+        "etag": "\"0e69c2570896aa2b06760cb56497bd3e\"",
+        "last_modified": "2025-03-13T05:05:52.000Z"
+      },
+      {
+        "key": "data/quote/20250313.csv.gz",
+        "size": 341838047,
+        "etag": "\"e3db17c57a11b9ba80347aa0691315b7\"",
+        "last_modified": "2025-03-14T05:05:34.000Z"
+      },
+      {
+        "key": "data/quote/20250314.csv.gz",
+        "size": 308339686,
+        "etag": "\"bd34f0bcfaa13d5c517aa8f03cd39b76\"",
+        "last_modified": "2025-03-15T05:05:05.000Z"
+      },
+      {
+        "key": "data/quote/20250315.csv.gz",
+        "size": 256145397,
+        "etag": "\"c6a5897d7f5944e7f569222b63e9dd7b\"",
+        "last_modified": "2025-03-16T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20250316.csv.gz",
+        "size": 291189316,
+        "etag": "\"026182f3b4a2c2640c8c4aec2220d632\"",
+        "last_modified": "2025-03-17T05:04:48.000Z"
+      },
+      {
+        "key": "data/quote/20250317.csv.gz",
+        "size": 291098943,
+        "etag": "\"3b53f4bb422dfed61509d3de0e04d759\"",
+        "last_modified": "2025-03-18T05:04:54.000Z"
+      },
+      {
+        "key": "data/quote/20250318.csv.gz",
+        "size": 302329674,
+        "etag": "\"67d53cb1289ce3c527c02606d30d7b54\"",
+        "last_modified": "2025-03-19T05:05:10.000Z"
+      },
+      {
+        "key": "data/quote/20250319.csv.gz",
+        "size": 305624784,
+        "etag": "\"9b5f8a893f8210cf4047b585367de12a\"",
+        "last_modified": "2025-03-20T05:05:07.000Z"
+      },
+      {
+        "key": "data/quote/20250320.csv.gz",
+        "size": 269473566,
+        "etag": "\"28b172e177ccfbf9a665004c1ad999f6\"",
+        "last_modified": "2025-03-21T05:04:35.000Z"
+      },
+      {
+        "key": "data/quote/20250321.csv.gz",
+        "size": 272069675,
+        "etag": "\"ae6ef73b8757195c0083da1c9f4e6eb4\"",
+        "last_modified": "2025-03-22T05:04:35.000Z"
+      },
+      {
+        "key": "data/quote/20250322.csv.gz",
+        "size": 158859092,
+        "etag": "\"1bf844791dc3f320ff809733808575f8\"",
+        "last_modified": "2025-03-23T05:02:42.000Z"
+      },
+      {
+        "key": "data/quote/20250323.csv.gz",
+        "size": 177783833,
+        "etag": "\"b8b45277a999f0ce31975a0a33fe2ee6\"",
+        "last_modified": "2025-03-24T05:03:07.000Z"
+      },
+      {
+        "key": "data/quote/20250324.csv.gz",
+        "size": 288041484,
+        "etag": "\"78e4eca5f0d55afdba0f5243804590da\"",
+        "last_modified": "2025-03-25T05:04:53.000Z"
+      },
+      {
+        "key": "data/quote/20250325.csv.gz",
+        "size": 297399321,
+        "etag": "\"ab0e90f54294a95c3ad75c8d33f11584\"",
+        "last_modified": "2025-03-26T05:04:53.000Z"
+      },
+      {
+        "key": "data/quote/20250326.csv.gz",
+        "size": 291082733,
+        "etag": "\"64711bdada16086b862d7c9718454043\"",
+        "last_modified": "2025-03-27T05:04:55.000Z"
+      },
+      {
+        "key": "data/quote/20250327.csv.gz",
+        "size": 273650667,
+        "etag": "\"0e31271832f5bb434a764c597e6335df\"",
+        "last_modified": "2025-03-28T05:04:45.000Z"
+      },
+      {
+        "key": "data/quote/20250328.csv.gz",
+        "size": 297648307,
+        "etag": "\"450088f8629b77033e219d50c544e80b\"",
+        "last_modified": "2025-03-29T05:05:00.000Z"
+      },
+      {
+        "key": "data/quote/20250329.csv.gz",
+        "size": 275488737,
+        "etag": "\"b73672789b17333fc2ff140243dbbb82\"",
+        "last_modified": "2025-03-30T05:04:44.000Z"
+      },
+      {
+        "key": "data/quote/20250330.csv.gz",
+        "size": 258859046,
+        "etag": "\"91db9a7a58261f5205b6293816025078\"",
+        "last_modified": "2025-03-31T05:04:30.000Z"
+      },
+      {
+        "key": "data/quote/20250331.csv.gz",
+        "size": 367726980,
+        "etag": "\"be9d9fb98bde749dffe419bbcdd91622\"",
+        "last_modified": "2025-04-01T05:06:01.000Z"
+      },
+      {
+        "key": "data/quote/20250401.csv.gz",
+        "size": 321454758,
+        "etag": "\"5afe864e4bfe60989c9b038ecb0fc786\"",
+        "last_modified": "2025-04-02T05:05:26.000Z"
+      },
+      {
+        "key": "data/quote/20250402.csv.gz",
+        "size": 369147819,
+        "etag": "\"4306b484f472d07b3d7c5de100385fe5\"",
+        "last_modified": "2025-04-03T05:05:20.000Z"
+      },
+      {
+        "key": "data/quote/20250403.csv.gz",
+        "size": 356993797,
+        "etag": "\"c150c1a3ba95d8502499ac62423f3569\"",
+        "last_modified": "2025-04-04T05:05:11.000Z"
+      },
+      {
+        "key": "data/quote/20250404.csv.gz",
+        "size": 366471411,
+        "etag": "\"30bad13cbf7319b8230374b8322bdb96\"",
+        "last_modified": "2025-04-05T05:05:25.000Z"
+      },
+      {
+        "key": "data/quote/20250405.csv.gz",
+        "size": 181324059,
+        "etag": "\"83b95dc51428bc7fab80c5be3da926c8\"",
+        "last_modified": "2025-04-06T05:02:58.000Z"
+      },
+      {
+        "key": "data/quote/20250406.csv.gz",
+        "size": 288960971,
+        "etag": "\"7246d1006696e8de478d414651c4f999\"",
+        "last_modified": "2025-04-07T05:04:34.000Z"
+      },
+      {
+        "key": "data/quote/20250407.csv.gz",
+        "size": 532645896,
+        "etag": "\"20d1cc9848b3258fbfd69f68ff4db5bf\"",
+        "last_modified": "2025-04-08T05:08:07.000Z"
+      },
+      {
+        "key": "data/quote/20250408.csv.gz",
+        "size": 402641743,
+        "etag": "\"f3335d9e98f4fdc80bbc7b5a5adcd494\"",
+        "last_modified": "2025-04-09T05:06:19.000Z"
+      },
+      {
+        "key": "data/quote/20250409.csv.gz",
+        "size": 433237090,
+        "etag": "\"da6777976cc7c8c2263cef7d7e7beaac\"",
+        "last_modified": "2025-04-10T05:06:46.000Z"
+      },
+      {
+        "key": "data/quote/20250410.csv.gz",
+        "size": 343199023,
+        "etag": "\"51f540247735719907a2d9e7ccc91df0\"",
+        "last_modified": "2025-04-11T05:05:37.000Z"
+      },
+      {
+        "key": "data/quote/20250411.csv.gz",
+        "size": 258611041,
+        "etag": "\"5783dcd68de75b6a18a5f900e2778c8e\"",
+        "last_modified": "2025-04-12T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20250412.csv.gz",
+        "size": 205661390,
+        "etag": "\"e22cb0c91bf6cd6df7871e893616443b\"",
+        "last_modified": "2025-04-13T05:03:17.000Z"
+      },
+      {
+        "key": "data/quote/20250413.csv.gz",
+        "size": 245742093,
+        "etag": "\"6853a1dcd4a198a375378c7565268513\"",
+        "last_modified": "2025-04-14T05:04:06.000Z"
+      },
+      {
+        "key": "data/quote/20250414.csv.gz",
+        "size": 297277042,
+        "etag": "\"dd677fa1048722715e9d4b5f050a58c3\"",
+        "last_modified": "2025-04-15T05:04:45.000Z"
+      },
+      {
+        "key": "data/quote/20250415.csv.gz",
+        "size": 242683636,
+        "etag": "\"3eca9e41632ea9085d32d6cd7e478a3f\"",
+        "last_modified": "2025-04-16T05:03:51.000Z"
+      },
+      {
+        "key": "data/quote/20250416.csv.gz",
+        "size": 267465353,
+        "etag": "\"9ed2e12678c729c94f65e61e6619f703\"",
+        "last_modified": "2025-04-17T05:04:17.000Z"
+      },
+      {
+        "key": "data/quote/20250417.csv.gz",
+        "size": 210918364,
+        "etag": "\"a5b220927adad314eeb4ef3b58082d06\"",
+        "last_modified": "2025-04-18T05:03:55.000Z"
+      },
+      {
+        "key": "data/quote/20250418.csv.gz",
+        "size": 144498996,
+        "etag": "\"edfa4664d6983f287b7232411f6f1a71\"",
+        "last_modified": "2025-04-19T05:02:36.000Z"
+      },
+      {
+        "key": "data/quote/20250419.csv.gz",
+        "size": 118805924,
+        "etag": "\"e81b8482e1a67c8fc3278dbc9359a272\"",
+        "last_modified": "2025-04-20T05:02:07.000Z"
+      },
+      {
+        "key": "data/quote/20250420.csv.gz",
+        "size": 133138113,
+        "etag": "\"7390c568d098d6e08fd4b41a37a284fe\"",
+        "last_modified": "2025-04-21T05:02:22.000Z"
+      },
+      {
+        "key": "data/quote/20250421.csv.gz",
+        "size": 223901077,
+        "etag": "\"cb68167252e77552f96f0a180eecd452\"",
+        "last_modified": "2025-04-22T05:03:37.000Z"
+      },
+      {
+        "key": "data/quote/20250422.csv.gz",
+        "size": 284247760,
+        "etag": "\"fc22b410c02f86a98c0e529b6f3d88e6\"",
+        "last_modified": "2025-04-23T05:04:44.000Z"
+      },
+      {
+        "key": "data/quote/20250423.csv.gz",
+        "size": 317948253,
+        "etag": "\"518b9925ae51a70981b820ea0c5e0653\"",
+        "last_modified": "2025-04-24T05:05:07.000Z"
+      },
+      {
+        "key": "data/quote/20250424.csv.gz",
+        "size": 270310355,
+        "etag": "\"e9e4fa26eba4a93b4b22f3233980168a\"",
+        "last_modified": "2025-04-25T05:04:20.000Z"
+      },
+      {
+        "key": "data/quote/20250425.csv.gz",
+        "size": 291884456,
+        "etag": "\"270835ca8d05a14441b28f70b7e85e93\"",
+        "last_modified": "2025-04-26T05:04:56.000Z"
+      },
+      {
+        "key": "data/quote/20250426.csv.gz",
+        "size": 230453220,
+        "etag": "\"06af332c62cf0ad127850e51dd6c4657\"",
+        "last_modified": "2025-04-27T05:03:41.000Z"
+      },
+      {
+        "key": "data/quote/20250427.csv.gz",
+        "size": 212953271,
+        "etag": "\"c11a62a026b27dfae3913565bced2200\"",
+        "last_modified": "2025-04-28T05:03:34.000Z"
+      },
+      {
+        "key": "data/quote/20250428.csv.gz",
+        "size": 266845585,
+        "etag": "\"b6d1b623becf1662d820ed0de43dbbd1\"",
+        "last_modified": "2025-04-29T05:04:26.000Z"
+      },
+      {
+        "key": "data/quote/20250429.csv.gz",
+        "size": 241137501,
+        "etag": "\"ce67a994327d9f8045ef218cff009d7f\"",
+        "last_modified": "2025-04-30T05:04:02.000Z"
+      },
+      {
+        "key": "data/quote/20250430.csv.gz",
+        "size": 245555732,
+        "etag": "\"1b8978ceed1e2c2e17b39846b1d00b2b\"",
+        "last_modified": "2025-05-01T05:03:59.000Z"
+      },
+      {
+        "key": "data/quote/20250501.csv.gz",
+        "size": 245617041,
+        "etag": "\"68a468775dff8ac59d9f6c89d7f725fe\"",
+        "last_modified": "2025-05-02T05:04:07.000Z"
+      },
+      {
+        "key": "data/quote/20250502.csv.gz",
+        "size": 239089797,
+        "etag": "\"88752073e61f6f80b53bbc845beb6128\"",
+        "last_modified": "2025-05-03T05:03:39.000Z"
+      },
+      {
+        "key": "data/quote/20250503.csv.gz",
+        "size": 174334503,
+        "etag": "\"fef249c6ddfa161ab4b0ad5aaeeb09a9\"",
+        "last_modified": "2025-05-04T05:02:41.000Z"
+      },
+      {
+        "key": "data/quote/20250504.csv.gz",
+        "size": 199690228,
+        "etag": "\"1856f082a64d7e69255658ce739ef560\"",
+        "last_modified": "2025-05-05T05:03:08.000Z"
+      },
+      {
+        "key": "data/quote/20250505.csv.gz",
+        "size": 239700509,
+        "etag": "\"353c5d818e535f00d99d609b7676809e\"",
+        "last_modified": "2025-05-06T05:03:42.000Z"
+      },
+      {
+        "key": "data/quote/20250506.csv.gz",
+        "size": 267167087,
+        "etag": "\"62a6242da6a6522adaa256b79bf0d048\"",
+        "last_modified": "2025-05-07T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20250507.csv.gz",
+        "size": 253105266,
+        "etag": "\"8a203b7e2a04e9969f0a5b0e7c16ea2b\"",
+        "last_modified": "2025-05-08T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20250508.csv.gz",
+        "size": 317534536,
+        "etag": "\"6449ed773e3cd9c1a0f4c943e2bd5e4f\"",
+        "last_modified": "2025-05-09T05:04:49.000Z"
+      },
+      {
+        "key": "data/quote/20250509.csv.gz",
+        "size": 375262184,
+        "etag": "\"aac9e2766afe87de9feffae82377dc2a\"",
+        "last_modified": "2025-05-10T05:05:40.000Z"
+      },
+      {
+        "key": "data/quote/20250510.csv.gz",
+        "size": 299925638,
+        "etag": "\"416fd0b03e9b3471863ad6f2b9d333e2\"",
+        "last_modified": "2025-05-11T05:05:12.000Z"
+      },
+      {
+        "key": "data/quote/20250511.csv.gz",
+        "size": 307272730,
+        "etag": "\"9ddfc8181bb753c2480e3bdf1ca89c72\"",
+        "last_modified": "2025-05-12T05:04:51.000Z"
+      },
+      {
+        "key": "data/quote/20250512.csv.gz",
+        "size": 417042061,
+        "etag": "\"61084822bda34e22be1ef7e751260756\"",
+        "last_modified": "2025-05-13T05:06:39.000Z"
+      },
+      {
+        "key": "data/quote/20250513.csv.gz",
+        "size": 340749200,
+        "etag": "\"0bffc97a7e077f0e745f5683c35eb2fb\"",
+        "last_modified": "2025-05-14T05:05:39.000Z"
+      },
+      {
+        "key": "data/quote/20250514.csv.gz",
+        "size": 345684175,
+        "etag": "\"495ae36c2d12db0a3669b73b28fa8341\"",
+        "last_modified": "2025-05-15T05:05:52.000Z"
+      },
+      {
+        "key": "data/quote/20250515.csv.gz",
+        "size": 375265020,
+        "etag": "\"cac9ab23406aec3fc1e6c5384206c0af\"",
+        "last_modified": "2025-05-16T05:06:06.000Z"
+      },
+      {
+        "key": "data/quote/20250516.csv.gz",
+        "size": 337255279,
+        "etag": "\"b2b2e8a040a2dff22c08b7f53871d74d\"",
+        "last_modified": "2025-05-17T05:05:27.000Z"
+      },
+      {
+        "key": "data/quote/20250517.csv.gz",
+        "size": 312733384,
+        "etag": "\"796c5a273949a838b365b6c30ca38e69\"",
+        "last_modified": "2025-05-18T05:05:35.000Z"
+      },
+      {
+        "key": "data/quote/20250518.csv.gz",
+        "size": 300423678,
+        "etag": "\"51db698f0539d5a11884fe309d54b66e\"",
+        "last_modified": "2025-05-19T05:05:10.000Z"
+      },
+      {
+        "key": "data/quote/20250519.csv.gz",
+        "size": 354940398,
+        "etag": "\"3c08fa546b21be72273af7cafc98b43e\"",
+        "last_modified": "2025-05-20T05:05:49.000Z"
+      },
+      {
+        "key": "data/quote/20250520.csv.gz",
+        "size": 271569786,
+        "etag": "\"9d2f20a23e2d7c38c724540b9ad66d6d\"",
+        "last_modified": "2025-05-21T05:04:22.000Z"
+      },
+      {
+        "key": "data/quote/20250521.csv.gz",
+        "size": 340678400,
+        "etag": "\"e267b3650f98d0a86474394eea2dad1e\"",
+        "last_modified": "2025-05-22T05:05:38.000Z"
+      },
+      {
+        "key": "data/quote/20250522.csv.gz",
+        "size": 277567279,
+        "etag": "\"24643193799070d3fdae5c580c5fc16b\"",
+        "last_modified": "2025-05-23T05:04:33.000Z"
+      },
+      {
+        "key": "data/quote/20250523.csv.gz",
+        "size": 318005964,
+        "etag": "\"673cda0c541497534d36c81ce253694a\"",
+        "last_modified": "2025-05-24T05:05:19.000Z"
+      },
+      {
+        "key": "data/quote/20250524.csv.gz",
+        "size": 207023156,
+        "etag": "\"555a2d0d48c1dd7f4fd3c0b15d2f480c\"",
+        "last_modified": "2025-05-25T05:03:41.000Z"
+      },
+      {
+        "key": "data/quote/20250525.csv.gz",
+        "size": 215489109,
+        "etag": "\"a0fed9b31b52ceb1f025ae76db9398e1\"",
+        "last_modified": "2025-05-26T05:03:38.000Z"
+      },
+      {
+        "key": "data/quote/20250526.csv.gz",
+        "size": 217217292,
+        "etag": "\"316617769055e35eb927cc8b5f20700a\"",
+        "last_modified": "2025-05-27T05:03:38.000Z"
+      },
+      {
+        "key": "data/quote/20250527.csv.gz",
+        "size": 230843665,
+        "etag": "\"a32e220c84f833ee1906d8f8c9f58346\"",
+        "last_modified": "2025-05-28T05:03:55.000Z"
+      },
+      {
+        "key": "data/quote/20250528.csv.gz",
+        "size": 232323340,
+        "etag": "\"88f5986f06bf15747cb99987863c23e2\"",
+        "last_modified": "2025-05-29T05:03:53.000Z"
+      },
+      {
+        "key": "data/quote/20250529.csv.gz",
+        "size": 252712499,
+        "etag": "\"dabc7c5c55956d03191561e07c597ee1\"",
+        "last_modified": "2025-05-30T05:04:09.000Z"
+      },
+      {
+        "key": "data/quote/20250530.csv.gz",
+        "size": 310335677,
+        "etag": "\"e5e39a423c94935c582182cd792844d4\"",
+        "last_modified": "2025-05-31T05:16:10.000Z"
+      },
+      {
+        "key": "data/quote/20250531.csv.gz",
+        "size": 252257952,
+        "etag": "\"522e5bbca87ef0b417c07974cbbb533d\"",
+        "last_modified": "2025-06-01T05:03:58.000Z"
+      },
+      {
+        "key": "data/quote/20250601.csv.gz",
+        "size": 217301916,
+        "etag": "\"516857ba1291936221fd055c719522a4\"",
+        "last_modified": "2025-06-02T05:03:00.000Z"
+      },
+      {
+        "key": "data/quote/20250602.csv.gz",
+        "size": 244771471,
+        "etag": "\"6e9bdec0d5b2ccd9c6326d1227908f38\"",
+        "last_modified": "2025-06-03T05:03:07.000Z"
+      },
+      {
+        "key": "data/quote/20250603.csv.gz",
+        "size": 234667488,
+        "etag": "\"d80ab3ef06d456da9036ec470d1a1e06\"",
+        "last_modified": "2025-06-04T05:03:12.000Z"
+      },
+      {
+        "key": "data/quote/20250604.csv.gz",
+        "size": 227229287,
+        "etag": "\"dec7fd379938c0f60f389d0ad31e0787\"",
+        "last_modified": "2025-06-05T05:03:23.000Z"
+      },
+      {
+        "key": "data/quote/20250605.csv.gz",
+        "size": 255472773,
+        "etag": "\"126f1fb1275123ee2827828766761eb5\"",
+        "last_modified": "2025-06-06T05:04:07.000Z"
+      },
+      {
+        "key": "data/quote/20250606.csv.gz",
+        "size": 264292024,
+        "etag": "\"b594eac2e73e467fb2a6a044951368cc\"",
+        "last_modified": "2025-06-07T05:04:16.000Z"
+      },
+      {
+        "key": "data/quote/20250607.csv.gz",
+        "size": 159015413,
+        "etag": "\"5ef322cd8ff115c655c2a52aeb96e835\"",
+        "last_modified": "2025-06-08T05:02:39.000Z"
+      },
+      {
+        "key": "data/quote/20250608.csv.gz",
+        "size": 191251524,
+        "etag": "\"62b6ff047a7e053c8ddaea7f1e948d39\"",
+        "last_modified": "2025-06-09T05:03:11.000Z"
+      },
+      {
+        "key": "data/quote/20250609.csv.gz",
+        "size": 274199934,
+        "etag": "\"f1b75e100259b1bce37a76b1bfad0810\"",
+        "last_modified": "2025-06-10T05:04:19.000Z"
+      },
+      {
+        "key": "data/quote/20250610.csv.gz",
+        "size": 270474647,
+        "etag": "\"600fa35c9ef915580ff7968ea97bb41f\"",
+        "last_modified": "2025-06-11T05:04:02.000Z"
+      },
+      {
+        "key": "data/quote/20250611.csv.gz",
+        "size": 284865027,
+        "etag": "\"504bd0a16c35cd90d4f48d0112a9f71a\"",
+        "last_modified": "2025-06-12T05:04:29.000Z"
+      },
+      {
+        "key": "data/quote/20250612.csv.gz",
+        "size": 291546439,
+        "etag": "\"5becf0c572cfe0baf74049174caa02f7\"",
+        "last_modified": "2025-06-13T05:04:37.000Z"
+      },
+      {
+        "key": "data/quote/20250613.csv.gz",
+        "size": 367932721,
+        "etag": "\"ec2c8b3d84437c00134dbbfb80d9dfc1\"",
+        "last_modified": "2025-06-14T05:05:16.000Z"
+      },
+      {
+        "key": "data/quote/20250614.csv.gz",
+        "size": 167864622,
+        "etag": "\"d51540a0bb51a540bce36dc9e668148e\"",
+        "last_modified": "2025-06-15T05:02:57.000Z"
+      },
+      {
+        "key": "data/quote/20250615.csv.gz",
+        "size": 211351913,
+        "etag": "\"fd1da1ca21f18163fdef5408f30e0e7d\"",
+        "last_modified": "2025-06-16T05:03:41.000Z"
+      },
+      {
+        "key": "data/quote/20250616.csv.gz",
+        "size": 273509571,
+        "etag": "\"73cced6b4c97f5d0c87f11a68aaad275\"",
+        "last_modified": "2025-06-17T05:04:13.000Z"
+      },
+      {
+        "key": "data/quote/20250617.csv.gz",
+        "size": 321675314,
+        "etag": "\"4f2360d948c52b26c47d1adf419bfde9\"",
+        "last_modified": "2025-06-18T05:05:31.000Z"
+      },
+      {
+        "key": "data/quote/20250618.csv.gz",
+        "size": 293885694,
+        "etag": "\"9939fa1caefdfb85e09771510bc370d9\"",
+        "last_modified": "2025-06-19T05:04:38.000Z"
+      },
+      {
+        "key": "data/quote/20250619.csv.gz",
+        "size": 210252713,
+        "etag": "\"6c3f741dc5f3a51162e990b6a1f40c35\"",
+        "last_modified": "2025-06-20T05:03:35.000Z"
+      },
+      {
+        "key": "data/quote/20250620.csv.gz",
+        "size": 244308345,
+        "etag": "\"d36d98ca0d165ad64dc94ed45765a0db\"",
+        "last_modified": "2025-06-21T05:03:47.000Z"
+      },
+      {
+        "key": "data/quote/20250621.csv.gz",
+        "size": 203090291,
+        "etag": "\"2369511a339e32512b57fd04dce4d871\"",
+        "last_modified": "2025-06-22T05:03:49.000Z"
+      },
+      {
+        "key": "data/quote/20250622.csv.gz",
+        "size": 332614303,
+        "etag": "\"feb400a62249582cf77c049f6c7a1b32\"",
+        "last_modified": "2025-06-23T05:08:26.000Z"
+      },
+      {
+        "key": "data/quote/20250623.csv.gz",
+        "size": 303371958,
+        "etag": "\"9e1d97d03d4674488e0584b99877c51a\"",
+        "last_modified": "2025-06-24T05:07:21.000Z"
+      },
+      {
+        "key": "data/quote/20250624.csv.gz",
+        "size": 261542821,
+        "etag": "\"90eb7174e0fe066a28e47380a36bc959\"",
+        "last_modified": "2025-06-25T05:06:54.000Z"
+      },
+      {
+        "key": "data/quote/20250625.csv.gz",
+        "size": 250260869,
+        "etag": "\"37a38cd7f9f391d889d2d044f4599c8c\"",
+        "last_modified": "2025-06-26T05:06:30.000Z"
+      },
+      {
+        "key": "data/quote/20250626.csv.gz",
+        "size": 239056819,
+        "etag": "\"174eb91ef98a2a0c5dd8503498c9683a\"",
+        "last_modified": "2025-06-27T05:05:51.000Z"
+      },
+      {
+        "key": "data/quote/20250627.csv.gz",
+        "size": 206842746,
+        "etag": "\"235b824479293f535b769e40c99d2159\"",
+        "last_modified": "2025-06-28T05:04:59.000Z"
+      },
+      {
+        "key": "data/quote/20250628.csv.gz",
+        "size": 133130138,
+        "etag": "\"ae53c46ed6d597d1c10ec12987f2d513\"",
+        "last_modified": "2025-06-29T05:03:12.000Z"
+      },
+      {
+        "key": "data/quote/20250629.csv.gz",
+        "size": 157972775,
+        "etag": "\"3b5dc6540943b89ceb833f633653fc5c\"",
+        "last_modified": "2025-06-30T05:04:04.000Z"
+      },
+      {
+        "key": "data/quote/20250630.csv.gz",
+        "size": 207465312,
+        "etag": "\"c87572826a86a3be56194ed6e565057d\"",
+        "last_modified": "2025-07-01T05:04:11.000Z"
+      },
+      {
+        "key": "data/quote/20250701.csv.gz",
+        "size": 178274455,
+        "etag": "\"f9ab5132cd95c4a17c8db346aa69fc77\"",
+        "last_modified": "2025-07-02T05:03:29.000Z"
+      },
+      {
+        "key": "data/quote/20250702.csv.gz",
+        "size": 210901416,
+        "etag": "\"74aaf2b6e29d6aa88d2e8bb376fc29bb\"",
+        "last_modified": "2025-07-03T05:04:31.000Z"
+      },
+      {
+        "key": "data/quote/20250703.csv.gz",
+        "size": 210305631,
+        "etag": "\"f9c1cee212c83c9bf5251ae045702358\"",
+        "last_modified": "2025-07-04T05:04:18.000Z"
+      },
+      {
+        "key": "data/quote/20250704.csv.gz",
+        "size": 186290188,
+        "etag": "\"be3973c867bc7a503591c629a5cb6e06\"",
+        "last_modified": "2025-07-05T05:03:24.000Z"
+      },
+      {
+        "key": "data/quote/20250705.csv.gz",
+        "size": 119123755,
+        "etag": "\"bba4091c719040eb97d6725c63b8c398\"",
+        "last_modified": "2025-07-06T05:02:17.000Z"
+      },
+      {
+        "key": "data/quote/20250706.csv.gz",
+        "size": 143332843,
+        "etag": "\"724ccabaa45e63368fc77eb08a4b84c0\"",
+        "last_modified": "2025-07-07T05:03:00.000Z"
+      },
+      {
+        "key": "data/quote/20250707.csv.gz",
+        "size": 176929943,
+        "etag": "\"4f817b0121523b1d4fecbd52720a61d4\"",
+        "last_modified": "2025-07-08T05:03:37.000Z"
+      },
+      {
+        "key": "data/quote/20250708.csv.gz",
+        "size": 172030031,
+        "etag": "\"cb6dee266e82af9444e169354ef8cac9\"",
+        "last_modified": "2025-07-09T05:03:22.000Z"
+      },
+      {
+        "key": "data/quote/20250709.csv.gz",
+        "size": 204597922,
+        "etag": "\"20cae071a484da90d0c4f0a80a0e38df\"",
+        "last_modified": "2025-07-10T05:03:47.000Z"
+      },
+      {
+        "key": "data/quote/20250710.csv.gz",
+        "size": 240476789,
+        "etag": "\"7e46be6173fe0a8bbfc2b40a0557415f\"",
+        "last_modified": "2025-07-11T05:06:20.000Z"
+      },
+      {
+        "key": "data/quote/20250711.csv.gz",
+        "size": 318081149,
+        "etag": "\"367e9e45e75a19339712aa6816856bec\"",
+        "last_modified": "2025-07-12T05:07:09.000Z"
+      },
+      {
+        "key": "data/quote/20250712.csv.gz",
+        "size": 220230540,
+        "etag": "\"53ac2c21f98e7b0cb4222db4f66c6527\"",
+        "last_modified": "2025-07-13T05:04:08.000Z"
+      },
+      {
+        "key": "data/quote/20250713.csv.gz",
+        "size": 239731462,
+        "etag": "\"9194e23e4db77efeb437364c902a95ab\"",
+        "last_modified": "2025-07-14T05:06:31.000Z"
+      },
+      {
+        "key": "data/quote/20250714.csv.gz",
+        "size": 350655129,
+        "etag": "\"3d488db49c24147799d7ff8684c08e1b\"",
+        "last_modified": "2025-07-15T05:10:12.000Z"
+      },
+      {
+        "key": "data/quote/20250715.csv.gz",
+        "size": 343010699,
+        "etag": "\"351f1b1af02b27056fc403c97548aaab\"",
+        "last_modified": "2025-07-16T05:08:11.000Z"
+      },
+      {
+        "key": "data/quote/20250716.csv.gz",
+        "size": 329871465,
+        "etag": "\"0d76284758c93b92b86959a8dcc50731\"",
+        "last_modified": "2025-07-17T05:09:40.000Z"
+      },
+      {
+        "key": "data/quote/20250717.csv.gz",
+        "size": 380221832,
+        "etag": "\"8bb15bca85bb9ea95679c2520b57ae61\"",
+        "last_modified": "2025-07-18T05:10:54.000Z"
+      },
+      {
+        "key": "data/quote/20250718.csv.gz",
+        "size": 385353335,
+        "etag": "\"f097e0e86b6ed506cccc0c3b141f0d18\"",
+        "last_modified": "2025-07-19T05:10:36.000Z"
+      },
+      {
+        "key": "data/quote/20250719.csv.gz",
+        "size": 255190845,
+        "etag": "\"046175e177fcae0bb04d336f9a011ce2\"",
+        "last_modified": "2025-07-20T05:06:06.000Z"
+      },
+      {
+        "key": "data/quote/20250720.csv.gz",
+        "size": 302077669,
+        "etag": "\"7e672e0efcca2ecd957937ea9ea3090d\"",
+        "last_modified": "2025-07-21T05:08:08.000Z"
+      },
+      {
+        "key": "data/quote/20250721.csv.gz",
+        "size": 349329982,
+        "etag": "\"3f74edc1901d536c79aa22d8edaafdce\"",
+        "last_modified": "2025-07-22T05:10:25.000Z"
+      },
+      {
+        "key": "data/quote/20250722.csv.gz",
+        "size": 376904860,
+        "etag": "\"837d080ea0ce4bf2f22e52e87144e7e5\"",
+        "last_modified": "2025-07-23T05:10:19.000Z"
+      },
+      {
+        "key": "data/quote/20250723.csv.gz",
+        "size": 338619497,
+        "etag": "\"38104c5f9405614d2e5f42947ccae02d\"",
+        "last_modified": "2025-07-24T05:08:27.000Z"
+      },
+      {
+        "key": "data/quote/20250724.csv.gz",
+        "size": 364167089,
+        "etag": "\"bfc956977838dd2ef2b2cd9e8c2efe36\"",
+        "last_modified": "2025-07-25T05:10:50.000Z"
+      },
+      {
+        "key": "data/quote/20250725.csv.gz",
+        "size": 359908610,
+        "etag": "\"824c70413c5216f16cbd638a6f7d457c\"",
+        "last_modified": "2025-07-26T05:09:31.000Z"
+      },
+      {
+        "key": "data/quote/20250726.csv.gz",
+        "size": 191209399,
+        "etag": "\"653d98cb7cd3cee3598a5228193512d9\"",
+        "last_modified": "2025-07-27T05:03:52.000Z"
+      },
+      {
+        "key": "data/quote/20250727.csv.gz",
+        "size": 229536866,
+        "etag": "\"93eee29340b8cf51383a67d898cad5f2\"",
+        "last_modified": "2025-07-28T05:06:21.000Z"
+      },
+      {
+        "key": "data/quote/20250728.csv.gz",
+        "size": 307903199,
+        "etag": "\"9c8e77a51c9a699007d4626cfaf4f78a\"",
+        "last_modified": "2025-07-29T05:08:53.000Z"
+      },
+      {
+        "key": "data/quote/20250729.csv.gz",
+        "size": 302000220,
+        "etag": "\"54cb21e6ca6110d3ddc9c4292b3fc5a3\"",
+        "last_modified": "2025-07-30T05:06:59.000Z"
+      },
+      {
+        "key": "data/quote/20250730.csv.gz",
+        "size": 304385514,
+        "etag": "\"d62bdd3bb4ef5f9e6375293bce5a5237\"",
+        "last_modified": "2025-07-31T05:08:11.000Z"
+      },
+      {
+        "key": "data/quote/20250731.csv.gz",
+        "size": 280669047,
+        "etag": "\"d37aa387deffe6f86ed3583aceca892d\"",
+        "last_modified": "2025-08-01T05:07:42.000Z"
+      },
+      {
+        "key": "data/quote/20250801.csv.gz",
+        "size": 366220502,
+        "etag": "\"f850727cecee02b7fff5dbf2f68e67aa\"",
+        "last_modified": "2025-08-02T05:07:16.000Z"
+      },
+      {
+        "key": "data/quote/20250802.csv.gz",
+        "size": 279244288,
+        "etag": "\"98090e6713d841293e44ef76d2840262\"",
+        "last_modified": "2025-08-03T05:07:11.000Z"
+      },
+      {
+        "key": "data/quote/20250803.csv.gz",
+        "size": 214939614,
+        "etag": "\"918c0cde32875134611dd1fbac4c2a19\"",
+        "last_modified": "2025-08-04T05:04:46.000Z"
+      },
+      {
+        "key": "data/quote/20250804.csv.gz",
+        "size": 247049902,
+        "etag": "\"1f68480dae4dc178d49d5953c016721d\"",
+        "last_modified": "2025-08-05T05:09:03.000Z"
+      },
+      {
+        "key": "data/quote/20250805.csv.gz",
+        "size": 266348897,
+        "etag": "\"7fff0d5ecd0dee441e57d90e7e1b0c8e\"",
+        "last_modified": "2025-08-06T05:10:09.000Z"
+      },
+      {
+        "key": "data/quote/20250806.csv.gz",
+        "size": 264185025,
+        "etag": "\"29cd29fd77cf5e099532b653b71e4e06\"",
+        "last_modified": "2025-08-07T05:06:04.000Z"
+      },
+      {
+        "key": "data/quote/20250807.csv.gz",
+        "size": 264378986,
+        "etag": "\"7d03c2ea4fc59af3bae25843058f2252\"",
+        "last_modified": "2025-08-08T05:07:41.000Z"
+      },
+      {
+        "key": "data/quote/20250808.csv.gz",
+        "size": 297997797,
+        "etag": "\"5281bb1f711a9dda3a31da7fce159f12\"",
+        "last_modified": "2025-08-09T05:07:56.000Z"
+      },
+      {
+        "key": "data/quote/20250809.csv.gz",
+        "size": 257685982,
+        "etag": "\"dbd9c9672799d2b87d93e55c5860b487\"",
+        "last_modified": "2025-08-10T05:07:16.000Z"
+      },
+      {
+        "key": "data/quote/20250810.csv.gz",
+        "size": 273915315,
+        "etag": "\"abe56e89f7107306cfa23f90e59a505d\"",
+        "last_modified": "2025-08-11T05:08:14.000Z"
+      },
+      {
+        "key": "data/quote/20250811.csv.gz",
+        "size": 354290288,
+        "etag": "\"dbe4f5f49a79e1043f2b2d5c2ed8c586\"",
+        "last_modified": "2025-08-12T05:08:01.000Z"
+      },
+      {
+        "key": "data/quote/20250812.csv.gz",
+        "size": 329284107,
+        "etag": "\"bbee58de5ba280eb6d06322815b2aeab\"",
+        "last_modified": "2025-08-13T05:12:21.000Z"
+      },
+      {
+        "key": "data/quote/20250813.csv.gz",
+        "size": 354292500,
+        "etag": "\"03631f81b6d1234304b27da91f67b808\"",
+        "last_modified": "2025-08-14T05:13:34.000Z"
+      },
+      {
+        "key": "data/quote/20250814.csv.gz",
+        "size": 354218111,
+        "etag": "\"471707c7710be935bcf478581e50089a\"",
+        "last_modified": "2025-08-22T07:28:03.000Z"
+      },
+      {
+        "key": "data/quote/20250815.csv.gz",
+        "size": 303677025,
+        "etag": "\"2e0fff8e4b810a80a5351821392a8688\"",
+        "last_modified": "2025-08-16T05:11:31.000Z"
+      },
+      {
+        "key": "data/quote/20250816.csv.gz",
+        "size": 236528064,
+        "etag": "\"56ed58b45c8452223fd5452b84784dc8\"",
+        "last_modified": "2025-08-17T05:05:24.000Z"
+      },
+      {
+        "key": "data/quote/20250817.csv.gz",
+        "size": 234117727,
+        "etag": "\"a17a03ed1e496014e57d0581a8411e98\"",
+        "last_modified": "2025-08-18T05:08:45.000Z"
+      },
+      {
+        "key": "data/quote/20250818.csv.gz",
+        "size": 332839902,
+        "etag": "\"9f551be7c7aa2ec088ddde4f41ed0cc7\"",
+        "last_modified": "2026-03-19T04:27:59.000Z"
+      },
+      {
+        "key": "data/quote/20250819.csv.gz",
+        "size": 329027133,
+        "etag": "\"ca7f98b71c578b9bc7dd04130b35d51f\"",
+        "last_modified": "2025-08-20T05:12:20.000Z"
+      },
+      {
+        "key": "data/quote/20250820.csv.gz",
+        "size": 313161567,
+        "etag": "\"aa8d2f2b547b565cf8c809e5a83cb501\"",
+        "last_modified": "2025-08-22T06:56:41.000Z"
+      },
+      {
+        "key": "data/quote/20250821.csv.gz",
+        "size": 267945720,
+        "etag": "\"e9e91ec095f5b614289f3acc03167df7\"",
+        "last_modified": "2025-08-22T06:56:44.000Z"
+      },
+      {
+        "key": "data/quote/20250822.csv.gz",
+        "size": 304648722,
+        "etag": "\"45265bf8bc3c92ac398784da4a3d1e93\"",
+        "last_modified": "2025-08-23T05:06:25.000Z"
+      },
+      {
+        "key": "data/quote/20250823.csv.gz",
+        "size": 119565494,
+        "etag": "\"9c100e115b3f60945e943e3662125ec9\"",
+        "last_modified": "2025-08-24T05:03:01.000Z"
+      },
+      {
+        "key": "data/quote/20250824.csv.gz",
+        "size": 196988953,
+        "etag": "\"dd399f8c2bbd40f4c3ca89a852262dc6\"",
+        "last_modified": "2025-08-25T05:05:00.000Z"
+      },
+      {
+        "key": "data/quote/20250825.csv.gz",
+        "size": 319710840,
+        "etag": "\"4a624246bb1b2b3cae90918aa348cba7\"",
+        "last_modified": "2025-08-26T05:10:20.000Z"
+      },
+      {
+        "key": "data/quote/20250826.csv.gz",
+        "size": 264371383,
+        "etag": "\"9de07d6f5c985ce92f6b436dab645809\"",
+        "last_modified": "2025-08-27T05:06:24.000Z"
+      },
+      {
+        "key": "data/quote/20250827.csv.gz",
+        "size": 269796570,
+        "etag": "\"704c687cec99dee99444b9bfa836f343\"",
+        "last_modified": "2025-08-28T05:09:16.000Z"
+      },
+      {
+        "key": "data/quote/20250828.csv.gz",
+        "size": 244363207,
+        "etag": "\"ea0175d3ce25ff2abbbffdd2847fa395\"",
+        "last_modified": "2025-08-29T05:07:57.000Z"
+      },
+      {
+        "key": "data/quote/20250829.csv.gz",
+        "size": 287686280,
+        "etag": "\"50c5e3a0020b16d298ed111f9bdbf9f8\"",
+        "last_modified": "2025-08-30T10:55:25.000Z"
+      },
+      {
+        "key": "data/quote/20250830.csv.gz",
+        "size": 170715504,
+        "etag": "\"f11d277e2a21e77c8a8c4f7fedbccba2\"",
+        "last_modified": "2025-08-31T05:03:49.000Z"
+      },
+      {
+        "key": "data/quote/20250831.csv.gz",
+        "size": 178665877,
+        "etag": "\"f2e6f802d8d5cb2fb96e007184724e99\"",
+        "last_modified": "2025-09-01T05:06:04.000Z"
+      },
+      {
+        "key": "data/quote/20250901.csv.gz",
+        "size": 288806811,
+        "etag": "\"ba5934445d39466115b3a30f0f542720\"",
+        "last_modified": "2025-09-02T05:05:45.000Z"
+      },
+      {
+        "key": "data/quote/20250902.csv.gz",
+        "size": 279739077,
+        "etag": "\"e9c4b0dff5a38cae2077f94373295171\"",
+        "last_modified": "2025-09-03T05:05:54.000Z"
+      },
+      {
+        "key": "data/quote/20250903.csv.gz",
+        "size": 216237770,
+        "etag": "\"97d84ce0c24b306d15eaf887c5760a29\"",
+        "last_modified": "2025-09-04T05:06:59.000Z"
+      },
+      {
+        "key": "data/quote/20250904.csv.gz",
+        "size": 232957602,
+        "etag": "\"12824ead4a1e81433b5ef6215b56a68e\"",
+        "last_modified": "2025-09-05T05:08:24.000Z"
+      },
+      {
+        "key": "data/quote/20250905.csv.gz",
+        "size": 239586575,
+        "etag": "\"62adb8e42072a74619434191dab8a5bc\"",
+        "last_modified": "2025-09-06T05:08:50.000Z"
+      },
+      {
+        "key": "data/quote/20250906.csv.gz",
+        "size": 172407057,
+        "etag": "\"b0d9ed151d612b2745fa35b212264d23\"",
+        "last_modified": "2025-09-07T05:04:10.000Z"
+      },
+      {
+        "key": "data/quote/20250907.csv.gz",
+        "size": 173682356,
+        "etag": "\"5d70995576a5c65c08b76a13a2d77ae9\"",
+        "last_modified": "2025-09-08T05:06:28.000Z"
+      },
+      {
+        "key": "data/quote/20250908.csv.gz",
+        "size": 253896794,
+        "etag": "\"341bac689bb10f37ac7fc7da2dc5c353\"",
+        "last_modified": "2025-09-09T05:05:20.000Z"
+      },
+      {
+        "key": "data/quote/20250909.csv.gz",
+        "size": 285373459,
+        "etag": "\"97af152015a64b15f041688adbc579ba\"",
+        "last_modified": "2025-09-10T05:06:11.000Z"
+      },
+      {
+        "key": "data/quote/20250910.csv.gz",
+        "size": 258382084,
+        "etag": "\"1879a31bd8a90ba747d0f20f8d93c7ef\"",
+        "last_modified": "2025-09-11T05:09:17.000Z"
+      },
+      {
+        "key": "data/quote/20250911.csv.gz",
+        "size": 243148691,
+        "etag": "\"ab3dfb2e1efc840cddc9e86662114326\"",
+        "last_modified": "2025-09-12T05:05:47.000Z"
+      },
+      {
+        "key": "data/quote/20250912.csv.gz",
+        "size": 271247859,
+        "etag": "\"0d91eef240e52d650b56f39ec70233d8\"",
+        "last_modified": "2025-09-13T05:09:41.000Z"
+      },
+      {
+        "key": "data/quote/20250913.csv.gz",
+        "size": 244745602,
+        "etag": "\"d1bab4e63cd1fbb16b78fc995f945f86\"",
+        "last_modified": "2025-09-14T05:08:19.000Z"
+      },
+      {
+        "key": "data/quote/20250914.csv.gz",
+        "size": 242552999,
+        "etag": "\"e354eedf8415b4d4078728d9e4653380\"",
+        "last_modified": "2025-09-15T05:05:56.000Z"
+      },
+      {
+        "key": "data/quote/20250915.csv.gz",
+        "size": 270310868,
+        "etag": "\"61d005583eb2a6041927002d49f57240\"",
+        "last_modified": "2025-09-16T05:05:52.000Z"
+      },
+      {
+        "key": "data/quote/20250916.csv.gz",
+        "size": 238819483,
+        "etag": "\"4b8f0e9b84f81af62d3dabff0ed18d3d\"",
+        "last_modified": "2025-09-17T05:05:10.000Z"
+      },
+      {
+        "key": "data/quote/20250917.csv.gz",
+        "size": 261896631,
+        "etag": "\"66d90c1f5502f8c8a0f9ba81536ebe47\"",
+        "last_modified": "2025-09-18T05:05:50.000Z"
+      },
+      {
+        "key": "data/quote/20250918.csv.gz",
+        "size": 274704390,
+        "etag": "\"bc03dedc1b9cbc35d907bd082cbd4aba\"",
+        "last_modified": "2025-09-19T05:06:25.000Z"
+      },
+      {
+        "key": "data/quote/20250919.csv.gz",
+        "size": 245134715,
+        "etag": "\"3bf23e9b4bf0bf74901de154b73b22f5\"",
+        "last_modified": "2025-09-20T05:04:07.000Z"
+      },
+      {
+        "key": "data/quote/20250920.csv.gz",
+        "size": 156720030,
+        "etag": "\"8775426e34f424fbc0dc10b36968c9a3\"",
+        "last_modified": "2025-09-21T05:04:11.000Z"
+      },
+      {
+        "key": "data/quote/20250921.csv.gz",
+        "size": 164709515,
+        "etag": "\"3dcbb1c1cb59d88aa9d5bf64121902ca\"",
+        "last_modified": "2025-09-22T05:04:57.000Z"
+      },
+      {
+        "key": "data/quote/20250922.csv.gz",
+        "size": 299497527,
+        "etag": "\"d7ea1bc1447aff07bd2256fd7b68de88\"",
+        "last_modified": "2025-09-23T05:07:07.000Z"
+      },
+      {
+        "key": "data/quote/20250923.csv.gz",
+        "size": 271731170,
+        "etag": "\"6053ece19e6bea3280e00e62510b4d6d\"",
+        "last_modified": "2025-09-24T05:08:41.000Z"
+      },
+      {
+        "key": "data/quote/20250924.csv.gz",
+        "size": 248960181,
+        "etag": "\"91eacbd914abc39c351c0cca5ee80e18\"",
+        "last_modified": "2025-09-25T05:06:06.000Z"
+      },
+      {
+        "key": "data/quote/20250925.csv.gz",
+        "size": 333422028,
+        "etag": "\"2f1484743b57fe89d1e466b3dc0d3868\"",
+        "last_modified": "2025-09-26T05:04:58.000Z"
+      },
+      {
+        "key": "data/quote/20250926.csv.gz",
+        "size": 292439893,
+        "etag": "\"58a60240b6b9e95b516eecb3e4a98751\"",
+        "last_modified": "2025-09-27T05:08:39.000Z"
+      },
+      {
+        "key": "data/quote/20250927.csv.gz",
+        "size": 184718728,
+        "etag": "\"8bc30bd9ea7a0f0e063300580a572f94\"",
+        "last_modified": "2025-09-28T05:04:19.000Z"
+      },
+      {
+        "key": "data/quote/20250928.csv.gz",
+        "size": 188142892,
+        "etag": "\"0c3f639aaeae0b07d411b1a6ce7dd9b5\"",
+        "last_modified": "2025-09-29T05:03:55.000Z"
+      },
+      {
+        "key": "data/quote/20250929.csv.gz",
+        "size": 232465820,
+        "etag": "\"0af07d6e82bc23aec8fd380d6e1f6ed5\"",
+        "last_modified": "2025-09-30T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20250930.csv.gz",
+        "size": 236252756,
+        "etag": "\"2c6f82bdb435ab0bde5da628507225f8\"",
+        "last_modified": "2025-10-01T05:04:04.000Z"
+      },
+      {
+        "key": "data/quote/20251001.csv.gz",
+        "size": 246377275,
+        "etag": "\"18c0e05d49014678852143a9800ee402\"",
+        "last_modified": "2025-10-02T05:04:32.000Z"
+      },
+      {
+        "key": "data/quote/20251002.csv.gz",
+        "size": 247848662,
+        "etag": "\"e88429c2d06b80a0c0a8c4d99854c1f2\"",
+        "last_modified": "2025-10-03T05:04:26.000Z"
+      },
+      {
+        "key": "data/quote/20251003.csv.gz",
+        "size": 256043991,
+        "etag": "\"1c5544ae54a8568caf6ffee664cf9122\"",
+        "last_modified": "2025-10-04T05:07:24.000Z"
+      },
+      {
+        "key": "data/quote/20251004.csv.gz",
+        "size": 176934923,
+        "etag": "\"028c69bf9d9ebfd2f1d214dcaf55c13a\"",
+        "last_modified": "2025-10-05T05:03:43.000Z"
+      },
+      {
+        "key": "data/quote/20251005.csv.gz",
+        "size": 232763613,
+        "etag": "\"a87c8878fd250f056cb9de36dba9476d\"",
+        "last_modified": "2025-10-06T05:07:12.000Z"
+      },
+      {
+        "key": "data/quote/20251006.csv.gz",
+        "size": 254116867,
+        "etag": "\"40ba3f75ae4113340b1fbad3cad02453\"",
+        "last_modified": "2025-10-07T05:07:34.000Z"
+      },
+      {
+        "key": "data/quote/20251007.csv.gz",
+        "size": 274826102,
+        "etag": "\"2ece3e3bdc111bcb0e0d433b4f2edc3c\"",
+        "last_modified": "2025-10-08T05:04:56.000Z"
+      },
+      {
+        "key": "data/quote/20251008.csv.gz",
+        "size": 263892067,
+        "etag": "\"a1ea8663fd7e13a69e1bd1c7676d4b7d\"",
+        "last_modified": "2025-10-09T05:06:14.000Z"
+      },
+      {
+        "key": "data/quote/20251009.csv.gz",
+        "size": 278586303,
+        "etag": "\"6827153c11676ab39be2b152022f1742\"",
+        "last_modified": "2025-10-10T05:08:21.000Z"
+      },
+      {
+        "key": "data/quote/20251010.csv.gz",
+        "size": 353494362,
+        "etag": "\"52e57ae177ac1de769ac2dad18cbd374\"",
+        "last_modified": "2025-11-03T10:26:33.000Z"
+      },
+      {
+        "key": "data/quote/20251011.csv.gz",
+        "size": 424166240,
+        "etag": "\"f7f29581d3b167ac5c895bb219ee62f4\"",
+        "last_modified": "2025-10-12T05:09:55.000Z"
+      },
+      {
+        "key": "data/quote/20251012.csv.gz",
+        "size": 406742360,
+        "etag": "\"7dc2b65f2ad525ab9b2503371e4bf404\"",
+        "last_modified": "2025-10-13T05:09:00.000Z"
+      },
+      {
+        "key": "data/quote/20251013.csv.gz",
+        "size": 432758216,
+        "etag": "\"60d6ea54c3af953af346c3c134697f5c\"",
+        "last_modified": "2025-10-14T05:09:57.000Z"
+      },
+      {
+        "key": "data/quote/20251014.csv.gz",
+        "size": 401546038,
+        "etag": "\"610200a1548c768449842fe7e6f24ec4\"",
+        "last_modified": "2025-10-15T05:14:21.000Z"
+      },
+      {
+        "key": "data/quote/20251015.csv.gz",
+        "size": 335248187,
+        "etag": "\"23cfba8cd70df75ea0216460ab88e192\"",
+        "last_modified": "2025-10-16T05:06:58.000Z"
+      },
+      {
+        "key": "data/quote/20251016.csv.gz",
+        "size": 357372814,
+        "etag": "\"33a19193785b70f70f76ab40cdda962e\"",
+        "last_modified": "2025-10-17T08:37:56.000Z"
+      },
+      {
+        "key": "data/quote/20251017.csv.gz",
+        "size": 386394147,
+        "etag": "\"2483fb1f6fdeaf2b4fffacd45e562656\"",
+        "last_modified": "2025-10-18T05:08:40.000Z"
+      },
+      {
+        "key": "data/quote/20251018.csv.gz",
+        "size": 206604748,
+        "etag": "\"315014c25ee65e74a45cbe0cc2b91820\"",
+        "last_modified": "2025-10-19T05:04:15.000Z"
+      },
+      {
+        "key": "data/quote/20251019.csv.gz",
+        "size": 240006853,
+        "etag": "\"6cdb82534a19ad373e8ad31b30899d3b\"",
+        "last_modified": "2025-10-20T05:05:21.000Z"
+      },
+      {
+        "key": "data/quote/20251020.csv.gz",
+        "size": 277031354,
+        "etag": "\"d911cc6890435f2cf9a3d3cdbf0886bf\"",
+        "last_modified": "2025-10-21T05:08:17.000Z"
+      },
+      {
+        "key": "data/quote/20251021.csv.gz",
+        "size": 315485974,
+        "etag": "\"baa9879320217e600644018f81fc0d25\"",
+        "last_modified": "2025-10-22T05:05:12.000Z"
+      },
+      {
+        "key": "data/quote/20251022.csv.gz",
+        "size": 316315278,
+        "etag": "\"ced36a50eea8f3c924a39a81a8368248\"",
+        "last_modified": "2025-10-23T05:06:36.000Z"
+      },
+      {
+        "key": "data/quote/20251023.csv.gz",
+        "size": 244551147,
+        "etag": "\"053256c8f74ca1f71ded2803bbc52886\"",
+        "last_modified": "2025-10-24T05:05:29.000Z"
+      },
+      {
+        "key": "data/quote/20251024.csv.gz",
+        "size": 222603367,
+        "etag": "\"f6b73790aee1f027b75e72f0e59a08cf\"",
+        "last_modified": "2025-10-25T05:05:43.000Z"
+      },
+      {
+        "key": "data/quote/20251025.csv.gz",
+        "size": 158430738,
+        "etag": "\"863c9155ec84f9144b20bb5f8704e82b\"",
+        "last_modified": "2025-10-26T05:03:16.000Z"
+      },
+      {
+        "key": "data/quote/20251026.csv.gz",
+        "size": 169717629,
+        "etag": "\"cd4e7997f2dd360e5ea2e897ef3d2411\"",
+        "last_modified": "2025-10-27T05:03:01.000Z"
+      },
+      {
+        "key": "data/quote/20251027.csv.gz",
+        "size": 246348559,
+        "etag": "\"f5a63be96dd36118a77d5f6694fec47f\"",
+        "last_modified": "2025-10-28T05:07:54.000Z"
+      },
+      {
+        "key": "data/quote/20251028.csv.gz",
+        "size": 266399968,
+        "etag": "\"e9c2928447ee4fcfc2c518b6c319b793\"",
+        "last_modified": "2025-10-29T05:05:04.000Z"
+      },
+      {
+        "key": "data/quote/20251029.csv.gz",
+        "size": 302820929,
+        "etag": "\"c2cd0375bf614adaeaa683e8c9fb7c9c\"",
+        "last_modified": "2025-10-30T05:07:21.000Z"
+      },
+      {
+        "key": "data/quote/20251030.csv.gz",
+        "size": 372075373,
+        "etag": "\"82867cc9b969fb952638db3b7d0d4ff7\"",
+        "last_modified": "2025-10-31T05:05:44.000Z"
+      },
+      {
+        "key": "data/quote/20251031.csv.gz",
+        "size": 282278093,
+        "etag": "\"334b482a8a90ea9511e372973076f009\"",
+        "last_modified": "2025-11-01T05:07:15.000Z"
+      },
+      {
+        "key": "data/quote/20251101.csv.gz",
+        "size": 243228201,
+        "etag": "\"687757f1229760bbd1ff6e6c995f7c0d\"",
+        "last_modified": "2025-11-02T05:04:29.000Z"
+      },
+      {
+        "key": "data/quote/20251102.csv.gz",
+        "size": 233723854,
+        "etag": "\"343a6b0322c2d38cc57987e42008508d\"",
+        "last_modified": "2025-11-03T05:04:33.000Z"
+      },
+      {
+        "key": "data/quote/20251103.csv.gz",
+        "size": 416769855,
+        "etag": "\"83df48690a34ffd3607b37a6fb85fe12\"",
+        "last_modified": "2025-11-04T05:07:46.000Z"
+      },
+      {
+        "key": "data/quote/20251104.csv.gz",
+        "size": 467544886,
+        "etag": "\"157214a0a356f67813fdf65c07aefbeb\"",
+        "last_modified": "2025-11-05T05:15:11.000Z"
+      },
+      {
+        "key": "data/quote/20251105.csv.gz",
+        "size": 363432397,
+        "etag": "\"ca745763144aeb035200253b80628c0b\"",
+        "last_modified": "2025-11-06T05:10:58.000Z"
+      },
+      {
+        "key": "data/quote/20251106.csv.gz",
+        "size": 332394699,
+        "etag": "\"436183cae2fc942406a3d0d216bcebb6\"",
+        "last_modified": "2025-11-07T05:10:03.000Z"
+      },
+      {
+        "key": "data/quote/20251107.csv.gz",
+        "size": 390384037,
+        "etag": "\"66df5567bfd1b49a5c6cd890ce928cd4\"",
+        "last_modified": "2025-11-08T05:07:36.000Z"
+      },
+      {
+        "key": "data/quote/20251108.csv.gz",
+        "size": 281877888,
+        "etag": "\"c8218d58c13fd6ebef799d840f398aa8\"",
+        "last_modified": "2025-11-09T05:08:48.000Z"
+      },
+      {
+        "key": "data/quote/20251109.csv.gz",
+        "size": 275973198,
+        "etag": "\"265dfac27a5cf51188a32a241929d4c4\"",
+        "last_modified": "2025-11-10T05:09:13.000Z"
+      },
+      {
+        "key": "data/quote/20251110.csv.gz",
+        "size": 320298608,
+        "etag": "\"ee4b4972a86d304528bc2e88bf774396\"",
+        "last_modified": "2025-11-11T05:11:07.000Z"
+      },
+      {
+        "key": "data/quote/20251111.csv.gz",
+        "size": 311068705,
+        "etag": "\"47ac08939f7266ea0974fcb915f1eaae\"",
+        "last_modified": "2025-11-12T05:10:26.000Z"
+      },
+      {
+        "key": "data/quote/20251112.csv.gz",
+        "size": 295104558,
+        "etag": "\"7b33fda3e2b66dd977e849890260dd81\"",
+        "last_modified": "2025-11-13T05:06:47.000Z"
+      },
+      {
+        "key": "data/quote/20251113.csv.gz",
+        "size": 391512815,
+        "etag": "\"8a5556c29c429c21e581b5d5faecad2b\"",
+        "last_modified": "2025-11-14T05:06:14.000Z"
+      },
+      {
+        "key": "data/quote/20251114.csv.gz",
+        "size": 435879550,
+        "etag": "\"1245a9f959eca53243fd5ede00c01eaa\"",
+        "last_modified": "2025-11-18T06:02:56.000Z"
+      },
+      {
+        "key": "data/quote/20251115.csv.gz",
+        "size": 225954419,
+        "etag": "\"fa61d8c66e97f055ca10540fa7041c04\"",
+        "last_modified": "2025-11-18T06:03:27.000Z"
+      },
+      {
+        "key": "data/quote/20251116.csv.gz",
+        "size": 273731185,
+        "etag": "\"ea9669ee1099308d1518fd7e541ab25f\"",
+        "last_modified": "2025-11-17T05:04:08.000Z"
+      },
+      {
+        "key": "data/quote/20251117.csv.gz",
+        "size": 325719661,
+        "etag": "\"a8c7110b29d716f944b2fe8f4cc6eb8e\"",
+        "last_modified": "2025-11-18T05:11:11.000Z"
+      },
+      {
+        "key": "data/quote/20251118.csv.gz",
+        "size": 359059988,
+        "etag": "\"fa815b4fdc8e2c6ede9d999f696c17a1\"",
+        "last_modified": "2025-11-19T05:12:14.000Z"
+      },
+      {
+        "key": "data/quote/20251119.csv.gz",
+        "size": 341271168,
+        "etag": "\"8e48d6fe9efff39d1fb016f3c44f17ac\"",
+        "last_modified": "2025-11-20T05:07:38.000Z"
+      },
+      {
+        "key": "data/quote/20251120.csv.gz",
+        "size": 345639069,
+        "etag": "\"c46cd5e51a19ad399086b1c252da530a\"",
+        "last_modified": "2025-11-21T05:12:33.000Z"
+      },
+      {
+        "key": "data/quote/20251121.csv.gz",
+        "size": 453746284,
+        "etag": "\"e5d01f3299e2dc009e44dc7691500e27\"",
+        "last_modified": "2025-11-22T05:10:47.000Z"
+      },
+      {
+        "key": "data/quote/20251122.csv.gz",
+        "size": 291575728,
+        "etag": "\"72eebf41fd48089d0410d7000934304e\"",
+        "last_modified": "2025-11-23T05:05:34.000Z"
+      },
+      {
+        "key": "data/quote/20251123.csv.gz",
+        "size": 258821960,
+        "etag": "\"a6116a417c9b15bd8fcaa80f2cb76ed4\"",
+        "last_modified": "2025-11-24T05:05:30.000Z"
+      },
+      {
+        "key": "data/quote/20251124.csv.gz",
+        "size": 309582352,
+        "etag": "\"d13d6c876d7673078f8b3c120b8c4654\"",
+        "last_modified": "2025-11-25T05:08:50.000Z"
+      },
+      {
+        "key": "data/quote/20251125.csv.gz",
+        "size": 259767176,
+        "etag": "\"5e32281181b458ff311da0849684cac8\"",
+        "last_modified": "2025-11-26T05:06:12.000Z"
+      },
+      {
+        "key": "data/quote/20251126.csv.gz",
+        "size": 244695594,
+        "etag": "\"1e2b730e6f410c98fe3c822b4a19c185\"",
+        "last_modified": "2025-11-27T05:05:14.000Z"
+      },
+      {
+        "key": "data/quote/20251127.csv.gz",
+        "size": 170822135,
+        "etag": "\"d7034744e91370ef6dc9482aa75bd2bf\"",
+        "last_modified": "2025-11-28T05:02:59.000Z"
+      },
+      {
+        "key": "data/quote/20251128.csv.gz",
+        "size": 202714525,
+        "etag": "\"2db8f2949f8801495cef31103cee49a4\"",
+        "last_modified": "2025-11-29T05:03:08.000Z"
+      },
+      {
+        "key": "data/quote/20251129.csv.gz",
+        "size": 132112151,
+        "etag": "\"eb930c506a14d0410e85be868a064924\"",
+        "last_modified": "2025-11-30T05:02:13.000Z"
+      },
+      {
+        "key": "data/quote/20251130.csv.gz",
+        "size": 139484550,
+        "etag": "\"bfcece48105d43aa9fe7c95c33fa7969\"",
+        "last_modified": "2025-12-01T05:03:01.000Z"
+      },
+      {
+        "key": "data/quote/20251201.csv.gz",
+        "size": 298017747,
+        "etag": "\"fa6806035c6f01eed4503b95f83a8b2f\"",
+        "last_modified": "2025-12-02T05:05:00.000Z"
+      },
+      {
+        "key": "data/quote/20251202.csv.gz",
+        "size": 252281768,
+        "etag": "\"2f05816a091b77c2c23c61f3c2794c88\"",
+        "last_modified": "2025-12-03T05:04:48.000Z"
+      },
+      {
+        "key": "data/quote/20251203.csv.gz",
+        "size": 275273153,
+        "etag": "\"0c0b627d03df5725aea126550675520b\"",
+        "last_modified": "2025-12-04T05:09:19.000Z"
+      },
+      {
+        "key": "data/quote/20251204.csv.gz",
+        "size": 242318765,
+        "etag": "\"2cee15cb4937ae684bfc9d806055c360\"",
+        "last_modified": "2025-12-05T05:06:51.000Z"
+      },
+      {
+        "key": "data/quote/20251205.csv.gz",
+        "size": 244091175,
+        "etag": "\"e34058d54e5d1bfa98c60a555e3034b7\"",
+        "last_modified": "2025-12-06T05:07:26.000Z"
+      },
+      {
+        "key": "data/quote/20251206.csv.gz",
+        "size": 136579981,
+        "etag": "\"be5596347e235956ef995d42eb3da333\"",
+        "last_modified": "2025-12-07T05:03:58.000Z"
+      },
+      {
+        "key": "data/quote/20251207.csv.gz",
+        "size": 205162199,
+        "etag": "\"55a291687ad6fc553f64719c323448ae\"",
+        "last_modified": "2025-12-08T05:07:17.000Z"
+      },
+      {
+        "key": "data/quote/20251208.csv.gz",
+        "size": 248444576,
+        "etag": "\"67f2c991cdf42b2dbb42fe7931910d82\"",
+        "last_modified": "2025-12-09T05:07:56.000Z"
+      },
+      {
+        "key": "data/quote/20251209.csv.gz",
+        "size": 250662754,
+        "etag": "\"5d0400c93f36f911261c14cdd7a01f21\"",
+        "last_modified": "2025-12-10T05:08:04.000Z"
+      },
+      {
+        "key": "data/quote/20251210.csv.gz",
+        "size": 263664444,
+        "etag": "\"c13ead3d3013a17071d47ceee700849f\"",
+        "last_modified": "2025-12-11T05:08:32.000Z"
+      },
+      {
+        "key": "data/quote/20251211.csv.gz",
+        "size": 262042763,
+        "etag": "\"dfc875725d445ac5e43b038437f63dec\"",
+        "last_modified": "2025-12-12T05:08:32.000Z"
+      },
+      {
+        "key": "data/quote/20251212.csv.gz",
+        "size": 218160144,
+        "etag": "\"1df395d1e53579fb08debe232a16d913\"",
+        "last_modified": "2025-12-13T05:05:47.000Z"
+      },
+      {
+        "key": "data/quote/20251213.csv.gz",
+        "size": 117049393,
+        "etag": "\"4a6bb649c6ac48946cc9c1a959a110c4\"",
+        "last_modified": "2025-12-14T05:03:16.000Z"
+      },
+      {
+        "key": "data/quote/20251214.csv.gz",
+        "size": 168813843,
+        "etag": "\"71062a56d00edbd266c33865bcfc9577\"",
+        "last_modified": "2025-12-15T05:06:00.000Z"
+      },
+      {
+        "key": "data/quote/20251215.csv.gz",
+        "size": 262208233,
+        "etag": "\"f5218d23ac0a7755bd8aff77ebfac7b0\"",
+        "last_modified": "2025-12-16T05:08:12.000Z"
+      },
+      {
+        "key": "data/quote/20251216.csv.gz",
+        "size": 257951297,
+        "etag": "\"3bbeb7fa5702f5cdc1efd2faaee2b9db\"",
+        "last_modified": "2025-12-17T05:07:11.000Z"
+      },
+      {
+        "key": "data/quote/20251217.csv.gz",
+        "size": 272858007,
+        "etag": "\"4cf313702865cd0dbda4b474d34969c1\"",
+        "last_modified": "2025-12-18T05:08:56.000Z"
+      },
+      {
+        "key": "data/quote/20251218.csv.gz",
+        "size": 301458532,
+        "etag": "\"f311d43173c26cbd3922031a4b89e64c\"",
+        "last_modified": "2025-12-19T05:10:08.000Z"
+      },
+      {
+        "key": "data/quote/20251219.csv.gz",
+        "size": 296127216,
+        "etag": "\"3c7613a49fa5c6985db5e70f8bb5fee7\"",
+        "last_modified": "2025-12-20T05:09:48.000Z"
+      },
+      {
+        "key": "data/quote/20251220.csv.gz",
+        "size": 143485280,
+        "etag": "\"fb4f0ef06fbcdc5f52449c86c6589391\"",
+        "last_modified": "2025-12-21T05:03:11.000Z"
+      },
+      {
+        "key": "data/quote/20251221.csv.gz",
+        "size": 167983715,
+        "etag": "\"61d872ee4f515f1ee24a3d9c3738c8a1\"",
+        "last_modified": "2025-12-22T05:05:47.000Z"
+      },
+      {
+        "key": "data/quote/20251222.csv.gz",
+        "size": 253538049,
+        "etag": "\"ddb0c7e28fcfb3e872fcaa241381e0b3\"",
+        "last_modified": "2025-12-23T05:06:53.000Z"
+      },
+      {
+        "key": "data/quote/20251223.csv.gz",
+        "size": 203179888,
+        "etag": "\"3f29109e3d6afb525c50148b5ceeb682\"",
+        "last_modified": "2025-12-24T05:06:09.000Z"
+      },
+      {
+        "key": "data/quote/20251224.csv.gz",
+        "size": 184734451,
+        "etag": "\"83672b0dbbbcfded766eb3161361c071\"",
+        "last_modified": "2025-12-25T05:04:16.000Z"
+      },
+      {
+        "key": "data/quote/20251225.csv.gz",
+        "size": 161450608,
+        "etag": "\"65a339468cf7c946ec961f5dc396b29f\"",
+        "last_modified": "2025-12-26T05:05:12.000Z"
+      },
+      {
+        "key": "data/quote/20251226.csv.gz",
+        "size": 188797278,
+        "etag": "\"0fd66d7b08a2d89d0a57126dbaee711a\"",
+        "last_modified": "2025-12-27T05:05:23.000Z"
+      },
+      {
+        "key": "data/quote/20251227.csv.gz",
+        "size": 116800816,
+        "etag": "\"27152326a106b454d0fcf629b0114361\"",
+        "last_modified": "2025-12-28T05:02:44.000Z"
+      },
+      {
+        "key": "data/quote/20251228.csv.gz",
+        "size": 142026580,
+        "etag": "\"9e6fa191750612ba9e2f91d919268311\"",
+        "last_modified": "2025-12-29T05:04:43.000Z"
+      },
+      {
+        "key": "data/quote/20251229.csv.gz",
+        "size": 234903635,
+        "etag": "\"3a2646156eedad29a29fe2ae09f874ab\"",
+        "last_modified": "2025-12-30T05:06:12.000Z"
+      },
+      {
+        "key": "data/quote/20251230.csv.gz",
+        "size": 192479820,
+        "etag": "\"7b30a8847f3250c73cd13f2a3956f54d\"",
+        "last_modified": "2025-12-31T05:05:02.000Z"
+      },
+      {
+        "key": "data/quote/20251231.csv.gz",
+        "size": 175537546,
+        "etag": "\"56706ae1e2985cbc9d92bcb97b7fc905\"",
+        "last_modified": "2026-01-01T05:04:30.000Z"
+      }
+    ],
+    "truncated": "false",
+    "wall_seconds": 1.2977847100000872
+  },
+  {
+    "id": "bitmex-trade-correct-prefix",
+    "url": "https://s3-eu-west-1.amazonaws.com/public.bitmex.com/?prefix=data/trade/2025&max-keys=366",
+    "status": 200,
+    "sha256": "3d8e99f494b4cd0cc6ccd35abf6c7cbf73021e467396f9f38c4e33022f21ff20",
+    "payload_bytes": 109858,
+    "files": [
+      {
+        "key": "data/trade/20250101.csv.gz",
+        "size": 2615842,
+        "etag": "\"4161614fe452cd71497dc8cb835dd192\"",
+        "last_modified": "2025-01-02T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250102.csv.gz",
+        "size": 5357643,
+        "etag": "\"bee305f6c05fd8c467d8c518c170f003\"",
+        "last_modified": "2025-01-03T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250103.csv.gz",
+        "size": 4021782,
+        "etag": "\"bda1c48a06584fb989eec05ca480c8d8\"",
+        "last_modified": "2025-01-04T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250104.csv.gz",
+        "size": 2385143,
+        "etag": "\"5ec7c84aac52ffaeb5178fadcd6ad110\"",
+        "last_modified": "2025-01-05T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250105.csv.gz",
+        "size": 2474685,
+        "etag": "\"04d9ba3b271bf3a586389de7ab149c11\"",
+        "last_modified": "2025-01-06T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250106.csv.gz",
+        "size": 4702820,
+        "etag": "\"4aed3f8a335145305a5cfc719c64a955\"",
+        "last_modified": "2025-01-07T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250107.csv.gz",
+        "size": 6514242,
+        "etag": "\"fe14b0b77586ea52e4efb1d96fb56467\"",
+        "last_modified": "2025-01-08T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250108.csv.gz",
+        "size": 6648015,
+        "etag": "\"f71e35aafc85b8f5d5ea4ccbbebd6700\"",
+        "last_modified": "2025-01-09T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250109.csv.gz",
+        "size": 5741319,
+        "etag": "\"3d58a01ed83922bc9aecbf22d20f7b4e\"",
+        "last_modified": "2025-01-15T09:13:09.000Z"
+      },
+      {
+        "key": "data/trade/20250110.csv.gz",
+        "size": 5847878,
+        "etag": "\"f95ea6a37ada05a74070bb2fb0a4517e\"",
+        "last_modified": "2025-01-15T09:13:09.000Z"
+      },
+      {
+        "key": "data/trade/20250111.csv.gz",
+        "size": 2312313,
+        "etag": "\"4ff7fb1d535fc680950b1b472366b432\"",
+        "last_modified": "2025-01-15T09:13:09.000Z"
+      },
+      {
+        "key": "data/trade/20250112.csv.gz",
+        "size": 2163079,
+        "etag": "\"3545fbf334bececbd3b4b67ada9f8565\"",
+        "last_modified": "2025-01-15T09:13:09.000Z"
+      },
+      {
+        "key": "data/trade/20250113.csv.gz",
+        "size": 8225126,
+        "etag": "\"9389383775052c87af81cd5eedeb2ae4\"",
+        "last_modified": "2025-01-15T09:13:09.000Z"
+      },
+      {
+        "key": "data/trade/20250114.csv.gz",
+        "size": 4636089,
+        "etag": "\"07915f69806319e520d886df7b3dafb1\"",
+        "last_modified": "2025-01-15T08:52:46.000Z"
+      },
+      {
+        "key": "data/trade/20250115.csv.gz",
+        "size": 5915083,
+        "etag": "\"d9a2d5cc0ebcf985785b0690039806ea\"",
+        "last_modified": "2025-01-16T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250116.csv.gz",
+        "size": 6692698,
+        "etag": "\"fc73fe2fbdda5536c975ac89c783fbd3\"",
+        "last_modified": "2025-01-17T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250117.csv.gz",
+        "size": 7063232,
+        "etag": "\"f2f79aabab9336db2c92f38af4067c73\"",
+        "last_modified": "2025-01-18T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250118.csv.gz",
+        "size": 8896819,
+        "etag": "\"d7bd63678316dc27ff84d352e37b73b0\"",
+        "last_modified": "2025-01-19T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250119.csv.gz",
+        "size": 12291594,
+        "etag": "\"48936b6036bafbff011dcf875f52561f\"",
+        "last_modified": "2025-01-20T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250120.csv.gz",
+        "size": 15854470,
+        "etag": "\"4e412f4e09aaa26775f675c9900c0a7b\"",
+        "last_modified": "2025-01-21T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20250121.csv.gz",
+        "size": 9133876,
+        "etag": "\"46edc4ada4cd82221de74f046ea07a3d\"",
+        "last_modified": "2025-01-22T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250122.csv.gz",
+        "size": 5279985,
+        "etag": "\"6b82e1dd1899bb0518ca17828901048e\"",
+        "last_modified": "2025-01-23T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250123.csv.gz",
+        "size": 8969671,
+        "etag": "\"5d2227eb29fe7bd83cacf7776e594f5b\"",
+        "last_modified": "2025-01-24T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250124.csv.gz",
+        "size": 5239426,
+        "etag": "\"0ea0be340e5db79b496e1926e7bf1431\"",
+        "last_modified": "2025-01-25T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250125.csv.gz",
+        "size": 2678581,
+        "etag": "\"ac8bd15944ab6b9631727d8674804a30\"",
+        "last_modified": "2025-01-26T05:00:25.000Z"
+      },
+      {
+        "key": "data/trade/20250126.csv.gz",
+        "size": 2502668,
+        "etag": "\"5bd8f92972e336e673fdc78184a32350\"",
+        "last_modified": "2025-01-27T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250127.csv.gz",
+        "size": 7242688,
+        "etag": "\"392bf1c98e4de365117d709df2eb668a\"",
+        "last_modified": "2025-01-28T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250128.csv.gz",
+        "size": 4800513,
+        "etag": "\"7d83b6d9beb5f211694e39daa9981d20\"",
+        "last_modified": "2025-01-29T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250129.csv.gz",
+        "size": 4504191,
+        "etag": "\"fb14d5c8c3ecbdcb6c672b8b59379077\"",
+        "last_modified": "2025-01-30T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250130.csv.gz",
+        "size": 4095868,
+        "etag": "\"e3562345cc65684da25e78b3f4cce88d\"",
+        "last_modified": "2025-01-31T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250131.csv.gz",
+        "size": 4736387,
+        "etag": "\"cc9cb1975140d8df97e3a7ce9cf3780e\"",
+        "last_modified": "2025-02-01T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250201.csv.gz",
+        "size": 3451530,
+        "etag": "\"82da64726352f29744a337ae332c78c6\"",
+        "last_modified": "2025-02-02T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250202.csv.gz",
+        "size": 8407204,
+        "etag": "\"8d46c180e1ed0a4496688ecdf28e978b\"",
+        "last_modified": "2025-02-03T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250203.csv.gz",
+        "size": 16196851,
+        "etag": "\"48d604a5ede0ca3a9d7ab595e4ee5e90\"",
+        "last_modified": "2025-02-04T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20250204.csv.gz",
+        "size": 8455035,
+        "etag": "\"1b288985dd5420d53bde34cc549c9ca3\"",
+        "last_modified": "2025-02-05T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250205.csv.gz",
+        "size": 4955626,
+        "etag": "\"3c8d1435620f33291cf258b848bdbb66\"",
+        "last_modified": "2025-02-06T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250206.csv.gz",
+        "size": 5817146,
+        "etag": "\"987f28ab19f01890714ec8ad6cb2b25a\"",
+        "last_modified": "2025-02-07T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250207.csv.gz",
+        "size": 6577232,
+        "etag": "\"72914bd37936e3bb7c4f845379c73308\"",
+        "last_modified": "2025-02-08T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250208.csv.gz",
+        "size": 2542521,
+        "etag": "\"8b54b1605dfe4a1eef7282eb24745bea\"",
+        "last_modified": "2025-02-09T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250209.csv.gz",
+        "size": 3367953,
+        "etag": "\"f556ef95294b4244b7cd078a3e984ae3\"",
+        "last_modified": "2025-02-10T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250210.csv.gz",
+        "size": 4783461,
+        "etag": "\"95fd01348035e30dea62961ab3902e40\"",
+        "last_modified": "2025-02-11T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250211.csv.gz",
+        "size": 5229782,
+        "etag": "\"4aa3cb2bc32543e12f99b25352570912\"",
+        "last_modified": "2025-02-12T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250212.csv.gz",
+        "size": 6099174,
+        "etag": "\"f0e7c5ddb64d3da4ebe58d8b7d7e0435\"",
+        "last_modified": "2025-02-13T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250213.csv.gz",
+        "size": 4735099,
+        "etag": "\"446ff6fd0a92b799e292399327011e69\"",
+        "last_modified": "2025-02-14T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250214.csv.gz",
+        "size": 5731935,
+        "etag": "\"0a7fc9997417e39b96dcf6095a9d2195\"",
+        "last_modified": "2025-02-15T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250215.csv.gz",
+        "size": 2841497,
+        "etag": "\"87487d7b0c73c51bff6d931ea26aefa1\"",
+        "last_modified": "2025-02-16T05:00:25.000Z"
+      },
+      {
+        "key": "data/trade/20250216.csv.gz",
+        "size": 3105209,
+        "etag": "\"ac434aecec6d4542f8d95cc31a8c4f81\"",
+        "last_modified": "2025-02-17T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250217.csv.gz",
+        "size": 5327873,
+        "etag": "\"e6fd141557ad273479889ba3c58ee60b\"",
+        "last_modified": "2025-02-18T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250218.csv.gz",
+        "size": 6083199,
+        "etag": "\"48991919ead684865370303d97cae5b6\"",
+        "last_modified": "2025-02-19T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250219.csv.gz",
+        "size": 4647021,
+        "etag": "\"57b499aee35166b2f8a5fee8d87b47e0\"",
+        "last_modified": "2025-02-20T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250220.csv.gz",
+        "size": 4226440,
+        "etag": "\"9e5836a6907d880f0375900e855d9b73\"",
+        "last_modified": "2025-02-21T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250221.csv.gz",
+        "size": 6173928,
+        "etag": "\"ceae42351b5e1dcd8e482725248727cf\"",
+        "last_modified": "2025-02-22T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250222.csv.gz",
+        "size": 2561195,
+        "etag": "\"a6391e40b1332eeecb93d726a16443d0\"",
+        "last_modified": "2025-02-23T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250223.csv.gz",
+        "size": 2143537,
+        "etag": "\"a52b8e588343cfbe5d42f99af211a40e\"",
+        "last_modified": "2025-02-24T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250224.csv.gz",
+        "size": 8162492,
+        "etag": "\"d03f884df64dff0e9cbca77acfa1ea84\"",
+        "last_modified": "2025-02-25T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250225.csv.gz",
+        "size": 12748252,
+        "etag": "\"d933064d0cf962660d8f304501db6d1a\"",
+        "last_modified": "2025-02-26T05:00:43.000Z"
+      },
+      {
+        "key": "data/trade/20250226.csv.gz",
+        "size": 9244349,
+        "etag": "\"08abcebda052549866d002eea0bd0c63\"",
+        "last_modified": "2025-02-27T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250227.csv.gz",
+        "size": 6656822,
+        "etag": "\"f7375f47b549444edecb688994361322\"",
+        "last_modified": "2025-02-28T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250228.csv.gz",
+        "size": 11627152,
+        "etag": "\"d062c8346aa9baa0f06ea6d6d1ae39ee\"",
+        "last_modified": "2025-03-01T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20250301.csv.gz",
+        "size": 4274992,
+        "etag": "\"0f197d44fd68ad989b9b6db7ecb3cd76\"",
+        "last_modified": "2025-03-02T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250302.csv.gz",
+        "size": 9902219,
+        "etag": "\"0b0ab06dc624500ba84c86574e25b2c1\"",
+        "last_modified": "2025-03-03T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250303.csv.gz",
+        "size": 12327975,
+        "etag": "\"4ff39f8d7ff6d16b92dbf52e230168be\"",
+        "last_modified": "2025-03-04T05:04:20.000Z"
+      },
+      {
+        "key": "data/trade/20250304.csv.gz",
+        "size": 12802586,
+        "etag": "\"f28da019d4a7b7454e7b4e6dc9c25dc0\"",
+        "last_modified": "2025-03-05T05:00:43.000Z"
+      },
+      {
+        "key": "data/trade/20250305.csv.gz",
+        "size": 6871709,
+        "etag": "\"48d9e82c81dd9982739513a43f07a6ec\"",
+        "last_modified": "2025-03-06T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250306.csv.gz",
+        "size": 6770267,
+        "etag": "\"9ea1415e570e4af733e98f3eddae103c\"",
+        "last_modified": "2025-03-07T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250307.csv.gz",
+        "size": 9654036,
+        "etag": "\"fd92f4a34c1e949d7a559f0e3fa02c9b\"",
+        "last_modified": "2025-03-08T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250308.csv.gz",
+        "size": 3005379,
+        "etag": "\"2b4c61cbf756d8181622d31311d003bb\"",
+        "last_modified": "2025-03-09T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250309.csv.gz",
+        "size": 5249970,
+        "etag": "\"f6e0af7d703ec982e2b068ecde54a42b\"",
+        "last_modified": "2025-03-10T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250310.csv.gz",
+        "size": 8472270,
+        "etag": "\"d4c44c84373fa448c6ac64aa5a307d11\"",
+        "last_modified": "2025-03-11T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250311.csv.gz",
+        "size": 8950587,
+        "etag": "\"2e1a63eaa19b5e845e8d78e1144bbe3e\"",
+        "last_modified": "2025-03-12T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250312.csv.gz",
+        "size": 5946637,
+        "etag": "\"137aedc0f25d492595c8c3b0e94f7532\"",
+        "last_modified": "2025-03-13T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250313.csv.gz",
+        "size": 4483269,
+        "etag": "\"c9752fb95784e9b414983025a737428b\"",
+        "last_modified": "2025-03-14T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250314.csv.gz",
+        "size": 4409887,
+        "etag": "\"a80da28f64683db0c464dc23f9a2052c\"",
+        "last_modified": "2025-03-15T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250315.csv.gz",
+        "size": 2281728,
+        "etag": "\"f320ed6b629bfb01bf47f15c856ff0ac\"",
+        "last_modified": "2025-03-16T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250316.csv.gz",
+        "size": 3418277,
+        "etag": "\"077d3674f98587f423658df89729b47c\"",
+        "last_modified": "2025-03-17T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250317.csv.gz",
+        "size": 3728936,
+        "etag": "\"808c41b7ba6b99260cd245bf48d04568\"",
+        "last_modified": "2025-03-18T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250318.csv.gz",
+        "size": 3595828,
+        "etag": "\"7492424fc1a556311ffe694e598be085\"",
+        "last_modified": "2025-03-19T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250319.csv.gz",
+        "size": 5640579,
+        "etag": "\"804420cc342a44ca716798581c1771a9\"",
+        "last_modified": "2025-03-20T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250320.csv.gz",
+        "size": 4427887,
+        "etag": "\"5dd9230d18b2123fdd856ff8cee1d4ef\"",
+        "last_modified": "2025-03-21T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250321.csv.gz",
+        "size": 3366790,
+        "etag": "\"c9ad495e934afd64730371f382fe22a8\"",
+        "last_modified": "2025-03-22T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250322.csv.gz",
+        "size": 1572311,
+        "etag": "\"c458764ab5b196e7fc47d290d6c6278c\"",
+        "last_modified": "2025-03-23T05:00:24.000Z"
+      },
+      {
+        "key": "data/trade/20250323.csv.gz",
+        "size": 2007435,
+        "etag": "\"9c5f961c8c5a96f4754f83b0c478dafd\"",
+        "last_modified": "2025-03-24T05:00:26.000Z"
+      },
+      {
+        "key": "data/trade/20250324.csv.gz",
+        "size": 4358490,
+        "etag": "\"1d6653d84b66c38bc8e696d92fdcc91c\"",
+        "last_modified": "2025-03-25T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250325.csv.gz",
+        "size": 3913979,
+        "etag": "\"20ad9fc8a92ee2a5c244908f9c8677f8\"",
+        "last_modified": "2025-03-26T05:00:24.000Z"
+      },
+      {
+        "key": "data/trade/20250326.csv.gz",
+        "size": 4414789,
+        "etag": "\"3a021c5d930905df29c53f3338c7e5ae\"",
+        "last_modified": "2025-05-05T05:09:55.000Z"
+      },
+      {
+        "key": "data/trade/20250327.csv.gz",
+        "size": 4414707,
+        "etag": "\"cb83a2547b8071202cce97256c921c60\"",
+        "last_modified": "2025-03-28T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250328.csv.gz",
+        "size": 6018561,
+        "etag": "\"4fe0d7eaa96b78bec4ae059935c41186\"",
+        "last_modified": "2025-03-29T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250329.csv.gz",
+        "size": 4859764,
+        "etag": "\"4ecd994303499907016d4dc9fb0d4709\"",
+        "last_modified": "2025-03-30T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250330.csv.gz",
+        "size": 4314496,
+        "etag": "\"9b4e487e44a1ff42454edee86e09b814\"",
+        "last_modified": "2025-03-31T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250331.csv.gz",
+        "size": 6690430,
+        "etag": "\"8372c692fd776bac214c0ad8bd86491a\"",
+        "last_modified": "2025-04-01T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250401.csv.gz",
+        "size": 4824692,
+        "etag": "\"a9a5ad74c0dddf7d600e005c8f9a8148\"",
+        "last_modified": "2025-04-02T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250402.csv.gz",
+        "size": 7275571,
+        "etag": "\"3b7cf54c1760d29b8196c2943dbe7498\"",
+        "last_modified": "2025-04-03T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250403.csv.gz",
+        "size": 5343062,
+        "etag": "\"d5968d7e9dcda63172f187d2daa08668\"",
+        "last_modified": "2025-04-04T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250404.csv.gz",
+        "size": 6685603,
+        "etag": "\"21381d718b1575c3a296c0657246f91c\"",
+        "last_modified": "2025-04-05T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250405.csv.gz",
+        "size": 2740772,
+        "etag": "\"35b6fa217c12e37d92d374ed69e16d8d\"",
+        "last_modified": "2025-04-06T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250406.csv.gz",
+        "size": 8102934,
+        "etag": "\"be2740feb8b51dadc6404ea822875d7c\"",
+        "last_modified": "2025-04-07T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250407.csv.gz",
+        "size": 16117607,
+        "etag": "\"56d306282926c914b56154ba6c2ac9ba\"",
+        "last_modified": "2025-04-08T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250408.csv.gz",
+        "size": 6506616,
+        "etag": "\"edc105149cafc323815ddb71ad478b0b\"",
+        "last_modified": "2025-04-09T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250409.csv.gz",
+        "size": 10075091,
+        "etag": "\"b5c4f00d5878c73c36461f9e3ee06cf7\"",
+        "last_modified": "2025-04-10T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250410.csv.gz",
+        "size": 5843722,
+        "etag": "\"22cbef2a2e8ff8fd43a4c6f7200bba8f\"",
+        "last_modified": "2025-04-11T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250411.csv.gz",
+        "size": 6090292,
+        "etag": "\"2416736deead9155d0438110918525e1\"",
+        "last_modified": "2025-05-09T08:33:29.000Z"
+      },
+      {
+        "key": "data/trade/20250412.csv.gz",
+        "size": 4887150,
+        "etag": "\"e10698ca724788df152da8420906345d\"",
+        "last_modified": "2025-05-09T08:33:29.000Z"
+      },
+      {
+        "key": "data/trade/20250413.csv.gz",
+        "size": 5147936,
+        "etag": "\"f6f6d327eec01ce01e4b3b3d4ef3ee5b\"",
+        "last_modified": "2025-04-14T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250414.csv.gz",
+        "size": 5597450,
+        "etag": "\"3e1eb7794964f731b76445f41c1c4a78\"",
+        "last_modified": "2025-04-15T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250415.csv.gz",
+        "size": 4605663,
+        "etag": "\"74b3f7575deca503db5b23c1d80c32b8\"",
+        "last_modified": "2025-04-16T05:00:26.000Z"
+      },
+      {
+        "key": "data/trade/20250416.csv.gz",
+        "size": 4804621,
+        "etag": "\"b18228774ccceb192e8268dfeccb3e40\"",
+        "last_modified": "2025-04-17T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250417.csv.gz",
+        "size": 3556084,
+        "etag": "\"30ef24b9e3407b8135cc98e7357e1972\"",
+        "last_modified": "2025-04-18T05:00:26.000Z"
+      },
+      {
+        "key": "data/trade/20250418.csv.gz",
+        "size": 1972504,
+        "etag": "\"25a3bf783d61adc4efa3fa49c463d39e\"",
+        "last_modified": "2025-04-19T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250419.csv.gz",
+        "size": 2420660,
+        "etag": "\"8f078fbcc4139e44c447b2b5341033c2\"",
+        "last_modified": "2025-04-20T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250420.csv.gz",
+        "size": 2562833,
+        "etag": "\"6fc60070d97d5747af4cf13aea5d6993\"",
+        "last_modified": "2025-04-21T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250421.csv.gz",
+        "size": 5635629,
+        "etag": "\"ebfaec1d71517e9be5a2f2c6f82ae0d7\"",
+        "last_modified": "2025-04-22T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250422.csv.gz",
+        "size": 7104690,
+        "etag": "\"1773ccfa8711d03d539c0f79f50395df\"",
+        "last_modified": "2025-04-23T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250423.csv.gz",
+        "size": 7157108,
+        "etag": "\"c817f64d813930210c94ff49f3fd42cd\"",
+        "last_modified": "2025-04-24T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250424.csv.gz",
+        "size": 5286999,
+        "etag": "\"5939496a0265d5eb1bbfa0d9ab382fef\"",
+        "last_modified": "2025-04-25T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250425.csv.gz",
+        "size": 6007289,
+        "etag": "\"3779d025231850ada639a0a221dc438c\"",
+        "last_modified": "2025-04-26T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250426.csv.gz",
+        "size": 3842804,
+        "etag": "\"543fb78c91ad42e1d8e565958fce6f25\"",
+        "last_modified": "2025-04-27T05:00:26.000Z"
+      },
+      {
+        "key": "data/trade/20250427.csv.gz",
+        "size": 3231209,
+        "etag": "\"bd0b077fbc569bdb1a271b83d76ca71d\"",
+        "last_modified": "2025-04-28T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250428.csv.gz",
+        "size": 5333153,
+        "etag": "\"f56636e284316f087b0358da7d9a1da0\"",
+        "last_modified": "2025-04-29T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250429.csv.gz",
+        "size": 3880005,
+        "etag": "\"67a73a40d9c4311e84fb54f8727dcae4\"",
+        "last_modified": "2025-04-30T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250430.csv.gz",
+        "size": 3760853,
+        "etag": "\"ae7ba49480be7c66bb5c0a8571cf4443\"",
+        "last_modified": "2025-05-01T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250501.csv.gz",
+        "size": 4288096,
+        "etag": "\"b14ffd1889e8e2c14a9bc3e53b3ce3b5\"",
+        "last_modified": "2025-05-02T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250502.csv.gz",
+        "size": 3831535,
+        "etag": "\"274badddf1dbba62bc7a0f3220b482e1\"",
+        "last_modified": "2025-05-03T05:00:26.000Z"
+      },
+      {
+        "key": "data/trade/20250503.csv.gz",
+        "size": 2304990,
+        "etag": "\"cbd8a95bcc8925db109e36a38614559b\"",
+        "last_modified": "2025-05-04T05:00:25.000Z"
+      },
+      {
+        "key": "data/trade/20250504.csv.gz",
+        "size": 2989384,
+        "etag": "\"9b27599b93069e9c1cf6260d82446933\"",
+        "last_modified": "2025-05-05T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250505.csv.gz",
+        "size": 4018788,
+        "etag": "\"cc2ecbea13adf18103ab639cd260f1dc\"",
+        "last_modified": "2025-05-06T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250506.csv.gz",
+        "size": 4452961,
+        "etag": "\"d9dbc2e00050fbadce447227ee1b3bbb\"",
+        "last_modified": "2025-05-07T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250507.csv.gz",
+        "size": 4200547,
+        "etag": "\"f8e5c9f7c0bb08d895878829729cf862\"",
+        "last_modified": "2025-05-08T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250508.csv.gz",
+        "size": 7442649,
+        "etag": "\"62243f586fd198633149b076a2720c4a\"",
+        "last_modified": "2025-05-09T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250509.csv.gz",
+        "size": 7614052,
+        "etag": "\"6fc5dc396fb283b47126003ed24ee0f1\"",
+        "last_modified": "2025-05-10T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250510.csv.gz",
+        "size": 5514814,
+        "etag": "\"4b782e6c6a40f97fb8f104e48a8b1ff5\"",
+        "last_modified": "2025-05-11T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250511.csv.gz",
+        "size": 5404251,
+        "etag": "\"6e9cdcdb432c3d4f1b84214def290419\"",
+        "last_modified": "2025-05-12T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250512.csv.gz",
+        "size": 9647696,
+        "etag": "\"6629a1e48e59029c146c469e1a216971\"",
+        "last_modified": "2025-05-13T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250513.csv.gz",
+        "size": 6201268,
+        "etag": "\"fe42ae9f0472de6f1123af828f4ec50a\"",
+        "last_modified": "2025-05-14T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250514.csv.gz",
+        "size": 5471472,
+        "etag": "\"12b11e3c3cf6049a4c9c16598e5d39cf\"",
+        "last_modified": "2025-05-15T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250515.csv.gz",
+        "size": 6507035,
+        "etag": "\"3f24ffe6c450bbcea29605370b9ab362\"",
+        "last_modified": "2025-05-16T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250516.csv.gz",
+        "size": 5115049,
+        "etag": "\"4483017a8aae3ccb7f41a7a96d0daf36\"",
+        "last_modified": "2025-05-17T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250517.csv.gz",
+        "size": 4016419,
+        "etag": "\"3e3b9e04cb92880343dbe3867b2e9873\"",
+        "last_modified": "2025-05-18T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250518.csv.gz",
+        "size": 5508149,
+        "etag": "\"85afc864ef3628d8ccb0e65eb07b2756\"",
+        "last_modified": "2025-05-19T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250519.csv.gz",
+        "size": 6550193,
+        "etag": "\"fe537b6fa4363da4dd0cb31ff0ef4419\"",
+        "last_modified": "2025-05-20T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250520.csv.gz",
+        "size": 5213487,
+        "etag": "\"8105ff988106c5eebdc8657fa215cd9b\"",
+        "last_modified": "2025-05-21T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250521.csv.gz",
+        "size": 8429813,
+        "etag": "\"f8b3df93de8ae3e131ad9650be37ff65\"",
+        "last_modified": "2025-05-22T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250522.csv.gz",
+        "size": 6539734,
+        "etag": "\"b5c703ff05d8e2b6b211594b6bd78a24\"",
+        "last_modified": "2025-05-23T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250523.csv.gz",
+        "size": 8080643,
+        "etag": "\"d7315740b6c634ff8323be5ebb4c420f\"",
+        "last_modified": "2025-05-24T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250524.csv.gz",
+        "size": 2951299,
+        "etag": "\"6b5b6726b3f2e5bdae7fad3e8c9d80d0\"",
+        "last_modified": "2025-05-25T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250525.csv.gz",
+        "size": 3987709,
+        "etag": "\"4506f5d0bf72feec4046d8bb2d87f289\"",
+        "last_modified": "2025-05-26T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250526.csv.gz",
+        "size": 3821980,
+        "etag": "\"eb18369904f0e03dc614ef81c86c8815\"",
+        "last_modified": "2025-05-27T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250527.csv.gz",
+        "size": 5604087,
+        "etag": "\"fbc0c0ceca03b0c9724c042de0f5bcfd\"",
+        "last_modified": "2025-05-28T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250528.csv.gz",
+        "size": 5422621,
+        "etag": "\"484ba13dde0ca0ca8a7365c940f5c794\"",
+        "last_modified": "2025-05-29T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250529.csv.gz",
+        "size": 5811863,
+        "etag": "\"bf0698f4ec030c524a8a833a689bfae5\"",
+        "last_modified": "2025-05-30T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250530.csv.gz",
+        "size": 6363367,
+        "etag": "\"510222b9ce63042b7566c07315087cf6\"",
+        "last_modified": "2025-05-31T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250531.csv.gz",
+        "size": 3663588,
+        "etag": "\"3ee9ee64dbe88d5e276d79be715651d6\"",
+        "last_modified": "2025-06-01T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250601.csv.gz",
+        "size": 2726730,
+        "etag": "\"7c1ab147d8970b5cac58f477416d7a79\"",
+        "last_modified": "2025-06-02T05:00:27.000Z"
+      },
+      {
+        "key": "data/trade/20250602.csv.gz",
+        "size": 3929935,
+        "etag": "\"8d55e1e44a41e314f51dc6f662b5e2f4\"",
+        "last_modified": "2025-06-03T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250603.csv.gz",
+        "size": 4076271,
+        "etag": "\"1d0ce90e4ef94a73c1ba321564c55cdd\"",
+        "last_modified": "2025-06-04T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250604.csv.gz",
+        "size": 3249757,
+        "etag": "\"7e8655b889dbadfb9626e31e9e6e07fe\"",
+        "last_modified": "2025-06-05T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250605.csv.gz",
+        "size": 6332690,
+        "etag": "\"c7683261fbdbe26bbd245c94ade0aabc\"",
+        "last_modified": "2025-06-06T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250606.csv.gz",
+        "size": 4112037,
+        "etag": "\"c270579ba71eb591ca250aa331068e45\"",
+        "last_modified": "2025-06-07T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250607.csv.gz",
+        "size": 2047113,
+        "etag": "\"c723b9c8e134fc6b69d0f11221e39c14\"",
+        "last_modified": "2025-06-08T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250608.csv.gz",
+        "size": 1982947,
+        "etag": "\"7eec43820962f248ca213831823ef06b\"",
+        "last_modified": "2025-06-09T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250609.csv.gz",
+        "size": 4983105,
+        "etag": "\"4d884edd35f711f177bd7992d86badb3\"",
+        "last_modified": "2025-06-10T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250610.csv.gz",
+        "size": 5356144,
+        "etag": "\"bdf62a502d4ab0c6a60f8ecb7f7bd683\"",
+        "last_modified": "2025-06-11T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250611.csv.gz",
+        "size": 5202881,
+        "etag": "\"5649951e85f17d754864e039233c8805\"",
+        "last_modified": "2025-06-12T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250612.csv.gz",
+        "size": 4781069,
+        "etag": "\"50e595c75669cf498b2728ef5fb05d9a\"",
+        "last_modified": "2025-06-13T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250613.csv.gz",
+        "size": 8109106,
+        "etag": "\"fb07490bfc772ee38c699bfcbc80972a\"",
+        "last_modified": "2025-06-14T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250614.csv.gz",
+        "size": 2486622,
+        "etag": "\"38cb699241689c53e07ea3480b80dfcd\"",
+        "last_modified": "2025-06-15T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250615.csv.gz",
+        "size": 2723071,
+        "etag": "\"ae7f52d4aad4b9dae402d616bd8b9d15\"",
+        "last_modified": "2025-06-16T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250616.csv.gz",
+        "size": 5005629,
+        "etag": "\"7aedf1dbacfddbc4be06d31cc2d4998f\"",
+        "last_modified": "2025-06-17T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250617.csv.gz",
+        "size": 6324283,
+        "etag": "\"e0a002e4b08b5df1b94a0bb17978129d\"",
+        "last_modified": "2025-06-18T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250618.csv.gz",
+        "size": 4940568,
+        "etag": "\"e52d876893a80512dc9e22d8b8079475\"",
+        "last_modified": "2025-06-19T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250619.csv.gz",
+        "size": 3089285,
+        "etag": "\"dfac55a57615cfa4664f5c5052797e9e\"",
+        "last_modified": "2025-06-20T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250620.csv.gz",
+        "size": 4962410,
+        "etag": "\"8566d1c90dec58e098c822013e6bedd4\"",
+        "last_modified": "2025-06-21T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250621.csv.gz",
+        "size": 4131229,
+        "etag": "\"b6cd794b5cd2faa7afb47b89241bade7\"",
+        "last_modified": "2025-06-25T04:03:07.000Z"
+      },
+      {
+        "key": "data/trade/20250622.csv.gz",
+        "size": 8822099,
+        "etag": "\"1a2545cd3590695a3b602cd22dd0c245\"",
+        "last_modified": "2025-06-23T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20250623.csv.gz",
+        "size": 7625467,
+        "etag": "\"f250373b52c99367e2e45d213905c415\"",
+        "last_modified": "2025-06-24T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20250624.csv.gz",
+        "size": 4669326,
+        "etag": "\"2eb34509e849fc82f24fa4ce78e58a5c\"",
+        "last_modified": "2025-06-25T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250625.csv.gz",
+        "size": 4609685,
+        "etag": "\"4089782d3d1309b220f19b12b21b15dd\"",
+        "last_modified": "2025-06-26T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250626.csv.gz",
+        "size": 4257971,
+        "etag": "\"5b6b6bf7f11b216fa2601912ef5ddcfa\"",
+        "last_modified": "2025-06-27T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250627.csv.gz",
+        "size": 4194104,
+        "etag": "\"8eb11dfb6f306614f9f5fd23110eb01a\"",
+        "last_modified": "2025-06-28T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250628.csv.gz",
+        "size": 1998635,
+        "etag": "\"3b66e7ebacf065a3b5f10c68447d3995\"",
+        "last_modified": "2025-06-29T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250629.csv.gz",
+        "size": 2856983,
+        "etag": "\"49b658c918a2256f6206ec97bfc47abd\"",
+        "last_modified": "2025-06-30T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250630.csv.gz",
+        "size": 4522045,
+        "etag": "\"e11a9f6cf11cefe8f1c0b59bdf17fc40\"",
+        "last_modified": "2025-07-09T09:48:12.000Z"
+      },
+      {
+        "key": "data/trade/20250701.csv.gz",
+        "size": 4050536,
+        "etag": "\"1d3ff6f4902019fa47f684753df138aa\"",
+        "last_modified": "2025-07-02T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250702.csv.gz",
+        "size": 5161188,
+        "etag": "\"228f9bc253b6555d2891e0f8f20883ee\"",
+        "last_modified": "2025-07-03T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250703.csv.gz",
+        "size": 4743532,
+        "etag": "\"54f66fcf6da9b208bfd9bef0cad15425\"",
+        "last_modified": "2025-07-04T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250704.csv.gz",
+        "size": 3942889,
+        "etag": "\"0d4e9a93fe539eab035a1cb59a856d97\"",
+        "last_modified": "2025-07-05T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250705.csv.gz",
+        "size": 1674863,
+        "etag": "\"60ad29baded46bd7d64a84c1380c77cf\"",
+        "last_modified": "2025-07-06T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250706.csv.gz",
+        "size": 2880951,
+        "etag": "\"10507036f99c9914e46ff09843f4e855\"",
+        "last_modified": "2025-07-07T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250707.csv.gz",
+        "size": 3795909,
+        "etag": "\"177968ead71868ea1249775fc0be0e4d\"",
+        "last_modified": "2025-07-08T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250708.csv.gz",
+        "size": 3726883,
+        "etag": "\"383d406b6ecc18cc4d7a01c1549c7b22\"",
+        "last_modified": "2025-07-09T08:47:11.000Z"
+      },
+      {
+        "key": "data/trade/20250709.csv.gz",
+        "size": 5403085,
+        "etag": "\"51c8b0f63ba76a0aca7e0576ff08c891\"",
+        "last_modified": "2025-07-10T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250710.csv.gz",
+        "size": 6299056,
+        "etag": "\"43873c7ecb2c5f3fa8215fee6c6713ad\"",
+        "last_modified": "2025-07-11T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250711.csv.gz",
+        "size": 8292360,
+        "etag": "\"1a222926b4f7873033faead8b5797ea1\"",
+        "last_modified": "2025-07-12T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20250712.csv.gz",
+        "size": 4377491,
+        "etag": "\"d16bd5281240d167bb30152b068e19cc\"",
+        "last_modified": "2025-07-13T05:00:29.000Z"
+      },
+      {
+        "key": "data/trade/20250713.csv.gz",
+        "size": 4434207,
+        "etag": "\"06603bcddcfe15336a805121e87f0fc9\"",
+        "last_modified": "2025-07-14T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250714.csv.gz",
+        "size": 7989972,
+        "etag": "\"607d9740e99b73f4fed19ba2947f0744\"",
+        "last_modified": "2025-07-15T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20250715.csv.gz",
+        "size": 7554847,
+        "etag": "\"02d08c0eb8e48edc9554e307591f77fd\"",
+        "last_modified": "2025-07-16T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250716.csv.gz",
+        "size": 6926603,
+        "etag": "\"fb0c03a349994e88b177da0b8cd21da0\"",
+        "last_modified": "2025-07-17T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250717.csv.gz",
+        "size": 8245815,
+        "etag": "\"5fd97a95ad159f2c946e18abd479b5c9\"",
+        "last_modified": "2025-07-18T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250718.csv.gz",
+        "size": 9860294,
+        "etag": "\"bb16d57489c0236e56066b0ae1133447\"",
+        "last_modified": "2025-07-19T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20250719.csv.gz",
+        "size": 3800869,
+        "etag": "\"795d97eb8ae0ff2b3ef0b40ea9b1df42\"",
+        "last_modified": "2025-07-20T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250720.csv.gz",
+        "size": 6281535,
+        "etag": "\"2cebdc43f55a8f1753d907ecebbeb808\"",
+        "last_modified": "2025-07-21T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250721.csv.gz",
+        "size": 8085494,
+        "etag": "\"f36e8fdf58b93984f842ddccfc27bccd\"",
+        "last_modified": "2025-07-22T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250722.csv.gz",
+        "size": 8786359,
+        "etag": "\"a0cfb50f63c2e766317723e024bc8466\"",
+        "last_modified": "2025-07-23T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250723.csv.gz",
+        "size": 8129891,
+        "etag": "\"da73f32de01b23592d9ff3d6602dda4d\"",
+        "last_modified": "2025-07-24T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250724.csv.gz",
+        "size": 6776031,
+        "etag": "\"ac94661def08fed01001154b53c1f18b\"",
+        "last_modified": "2025-07-25T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250725.csv.gz",
+        "size": 8095201,
+        "etag": "\"05db225aa5927d10b4be1a6cd3dc9088\"",
+        "last_modified": "2025-07-26T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20250726.csv.gz",
+        "size": 2931524,
+        "etag": "\"b6a95b64011c45ac158a268a076b1197\"",
+        "last_modified": "2025-07-27T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250727.csv.gz",
+        "size": 3940184,
+        "etag": "\"f092abcc19aca5daaba1f737ef06ceec\"",
+        "last_modified": "2025-07-28T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250728.csv.gz",
+        "size": 6172593,
+        "etag": "\"7c5ed02c3c357e344267671624a27a00\"",
+        "last_modified": "2025-07-29T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250729.csv.gz",
+        "size": 5573803,
+        "etag": "\"eb2f6938bc26e832bd000b3bbd41a320\"",
+        "last_modified": "2025-07-30T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250730.csv.gz",
+        "size": 5976502,
+        "etag": "\"4aa1dcf81d0e7b07f0b00f6266898398\"",
+        "last_modified": "2025-07-31T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250731.csv.gz",
+        "size": 5214333,
+        "etag": "\"d275491eb210cda5992eb0fb8a135390\"",
+        "last_modified": "2025-08-01T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250801.csv.gz",
+        "size": 8491951,
+        "etag": "\"c35dd5cc1aece72e88f819d3fa3f08fa\"",
+        "last_modified": "2025-08-02T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20250802.csv.gz",
+        "size": 4557466,
+        "etag": "\"05420c7cadb701a0e04bb56495b5987d\"",
+        "last_modified": "2025-08-03T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250803.csv.gz",
+        "size": 3336173,
+        "etag": "\"fbe3f479adffae274a52e984e5a78783\"",
+        "last_modified": "2025-08-04T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250804.csv.gz",
+        "size": 4297998,
+        "etag": "\"8cb0f16182aebf33908ea0068b568f16\"",
+        "last_modified": "2025-08-05T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250805.csv.gz",
+        "size": 4714015,
+        "etag": "\"a007349c19dd7eb24992edbababb906d\"",
+        "last_modified": "2025-08-06T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250806.csv.gz",
+        "size": 4135076,
+        "etag": "\"5aacf6b26cb7fc973a5e02b37c28b7f2\"",
+        "last_modified": "2025-08-07T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250807.csv.gz",
+        "size": 5393900,
+        "etag": "\"3bb9b3dde9383d8d2aee2d1ab67eabd9\"",
+        "last_modified": "2025-08-08T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250808.csv.gz",
+        "size": 5663596,
+        "etag": "\"f53669d05538367c122024ebacee60d0\"",
+        "last_modified": "2025-08-09T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250809.csv.gz",
+        "size": 4797855,
+        "etag": "\"c11d30275a0192c731c913a07cc83b35\"",
+        "last_modified": "2025-08-10T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250810.csv.gz",
+        "size": 5005124,
+        "etag": "\"d4987e3298f44c0026d1d2cfd037cf45\"",
+        "last_modified": "2025-08-11T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250811.csv.gz",
+        "size": 6990436,
+        "etag": "\"0363c69253038721ebbbbc45004ee3c5\"",
+        "last_modified": "2025-08-12T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250812.csv.gz",
+        "size": 6994246,
+        "etag": "\"6109284d849d5abb837b28b34dc56022\"",
+        "last_modified": "2025-08-13T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250813.csv.gz",
+        "size": 8686356,
+        "etag": "\"3765dbde2b9bb18b81d788a438ee6202\"",
+        "last_modified": "2025-08-14T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250814.csv.gz",
+        "size": 9515964,
+        "etag": "\"71877d1e32e9b266f59e2400f2b79bd3\"",
+        "last_modified": "2025-08-15T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20250815.csv.gz",
+        "size": 5263723,
+        "etag": "\"94f47abed22a62424368f6edb5e1e808\"",
+        "last_modified": "2025-08-16T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250816.csv.gz",
+        "size": 2723456,
+        "etag": "\"fd8c5befc702946123a01d373be21c38\"",
+        "last_modified": "2025-08-17T05:00:28.000Z"
+      },
+      {
+        "key": "data/trade/20250817.csv.gz",
+        "size": 3512488,
+        "etag": "\"5ac58302083707ee1a74aaba14be084a\"",
+        "last_modified": "2025-08-18T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250818.csv.gz",
+        "size": 6192408,
+        "etag": "\"e0a58eb13f15d6284b337a72d438416e\"",
+        "last_modified": "2025-08-19T05:00:33.000Z"
+      },
+      {
+        "key": "data/trade/20250819.csv.gz",
+        "size": 6778065,
+        "etag": "\"84d187b1f67e9e4c2113b403a7c620f2\"",
+        "last_modified": "2025-08-20T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250820.csv.gz",
+        "size": 5969057,
+        "etag": "\"204fdbee94459b52f5678795a6fad14f\"",
+        "last_modified": "2025-08-21T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20250821.csv.gz",
+        "size": 4727631,
+        "etag": "\"c9ec4cb61aa00f126becd3f821d3c5a1\"",
+        "last_modified": "2025-08-22T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250822.csv.gz",
+        "size": 7817446,
+        "etag": "\"829364350d6a6b7e2ac623b22323e141\"",
+        "last_modified": "2025-08-23T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20250823.csv.gz",
+        "size": 1847589,
+        "etag": "\"a5b22620ffb1e3fe8b5859a127d0519e\"",
+        "last_modified": "2025-08-24T05:00:31.000Z"
+      },
+      {
+        "key": "data/trade/20250824.csv.gz",
+        "size": 5208167,
+        "etag": "\"4c61fd7cfeeab848fbc754230be65239\"",
+        "last_modified": "2025-08-25T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250825.csv.gz",
+        "size": 8711790,
+        "etag": "\"cd715a3dbcd03f0c4a87c633bbe6f8a7\"",
+        "last_modified": "2025-08-26T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20250826.csv.gz",
+        "size": 5887536,
+        "etag": "\"3c6f338252430518a2ecd1833946603e\"",
+        "last_modified": "2025-08-27T05:00:37.000Z"
+      },
+      {
+        "key": "data/trade/20250827.csv.gz",
+        "size": 5756833,
+        "etag": "\"3a13dfff1849c1366b3a6e9705590fc0\"",
+        "last_modified": "2025-08-28T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250828.csv.gz",
+        "size": 4109143,
+        "etag": "\"f4b7713cd44076273daf988f719064c1\"",
+        "last_modified": "2025-08-29T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250829.csv.gz",
+        "size": 6826256,
+        "etag": "\"e83b71cf2dcd21ed3f5666c7b8406a6a\"",
+        "last_modified": "2025-08-30T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250830.csv.gz",
+        "size": 2750445,
+        "etag": "\"1f64ff21e5623ef2ed1f832063c88593\"",
+        "last_modified": "2025-08-31T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250831.csv.gz",
+        "size": 2529005,
+        "etag": "\"1e97982c4984c63fae4887a108ca5641\"",
+        "last_modified": "2025-09-01T05:00:32.000Z"
+      },
+      {
+        "key": "data/trade/20250901.csv.gz",
+        "size": 6236763,
+        "etag": "\"763bdbba08775c486c2c8bb6be2335ee\"",
+        "last_modified": "2025-09-02T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20250902.csv.gz",
+        "size": 5795208,
+        "etag": "\"519ae3016047989b9a35f32983a349d4\"",
+        "last_modified": "2025-09-03T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20250903.csv.gz",
+        "size": 4256255,
+        "etag": "\"72329c8c6aa768cb9e31190ebcded4ea\"",
+        "last_modified": "2025-09-04T05:00:36.000Z"
+      },
+      {
+        "key": "data/trade/20250904.csv.gz",
+        "size": 4472875,
+        "etag": "\"0980a41f6fd9f62e54dcc40fdac7d50a\"",
+        "last_modified": "2025-09-05T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250905.csv.gz",
+        "size": 6391710,
+        "etag": "\"832c8f6b5c947f8bc8bf754b1261ccc4\"",
+        "last_modified": "2025-09-06T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250906.csv.gz",
+        "size": 2240833,
+        "etag": "\"a3842a3861ccb858f925d4d60a0f5468\"",
+        "last_modified": "2025-09-07T05:00:34.000Z"
+      },
+      {
+        "key": "data/trade/20250907.csv.gz",
+        "size": 2458533,
+        "etag": "\"2d6fee43dd5afc101ba181fec6d23c78\"",
+        "last_modified": "2025-09-08T05:00:30.000Z"
+      },
+      {
+        "key": "data/trade/20250908.csv.gz",
+        "size": 5836445,
+        "etag": "\"6ab38d37db4ad0d9ca110a99ebb3f9e6\"",
+        "last_modified": "2025-09-09T05:00:35.000Z"
+      },
+      {
+        "key": "data/trade/20250909.csv.gz",
+        "size": 7563416,
+        "etag": "\"4d16cc730740da586002abb4b97adcb8\"",
+        "last_modified": "2025-09-10T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20250910.csv.gz",
+        "size": 6208624,
+        "etag": "\"5bf629e11252d52e56268d208a32e377\"",
+        "last_modified": "2025-09-11T05:00:46.000Z"
+      },
+      {
+        "key": "data/trade/20250911.csv.gz",
+        "size": 5851023,
+        "etag": "\"e38a12e35414631ba6be04add6660213\"",
+        "last_modified": "2025-09-12T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20250912.csv.gz",
+        "size": 7257333,
+        "etag": "\"94b7d8677db37df1c8c5987a6ea43f87\"",
+        "last_modified": "2025-09-13T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20250913.csv.gz",
+        "size": 6124508,
+        "etag": "\"c8dd07fac2f39a8b8e15557f7a263448\"",
+        "last_modified": "2025-09-14T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20250914.csv.gz",
+        "size": 4717154,
+        "etag": "\"17aab72578232b214955bb3101da368a\"",
+        "last_modified": "2025-09-15T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20250915.csv.gz",
+        "size": 8671960,
+        "etag": "\"884a7e7d27cff8734e93f7a74c1858d7\"",
+        "last_modified": "2025-09-16T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20250916.csv.gz",
+        "size": 6168053,
+        "etag": "\"9244355515c6439ef82d0ecc2983458e\"",
+        "last_modified": "2025-09-17T05:00:46.000Z"
+      },
+      {
+        "key": "data/trade/20250917.csv.gz",
+        "size": 8190277,
+        "etag": "\"b78f00cc24ada01f8ddda2f5321d4863\"",
+        "last_modified": "2025-09-18T05:00:52.000Z"
+      },
+      {
+        "key": "data/trade/20250918.csv.gz",
+        "size": 7603203,
+        "etag": "\"49f2c768269f9e0251047e20ca396aab\"",
+        "last_modified": "2025-09-19T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20250919.csv.gz",
+        "size": 5564028,
+        "etag": "\"71ac7a59b8f29ad3107eaaef672b2c3d\"",
+        "last_modified": "2025-09-20T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20250920.csv.gz",
+        "size": 2424239,
+        "etag": "\"9bb76cdfcc59eed6f2bfb3a78d2d222b\"",
+        "last_modified": "2025-09-21T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250921.csv.gz",
+        "size": 2884461,
+        "etag": "\"8f9198eac1e05d45da3dea5abc3e6cfc\"",
+        "last_modified": "2025-09-22T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20250922.csv.gz",
+        "size": 10092576,
+        "etag": "\"2f0e42b39d24342718fd2c5ddc7c3c8b\"",
+        "last_modified": "2025-09-23T05:00:53.000Z"
+      },
+      {
+        "key": "data/trade/20250923.csv.gz",
+        "size": 7030971,
+        "etag": "\"69c04658fe47a4af18320aa906fa5c66\"",
+        "last_modified": "2025-09-24T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20250924.csv.gz",
+        "size": 7254168,
+        "etag": "\"50958a1bb613277aeb514a7b09adc42d\"",
+        "last_modified": "2025-09-25T05:00:54.000Z"
+      },
+      {
+        "key": "data/trade/20250925.csv.gz",
+        "size": 11277219,
+        "etag": "\"32b6c8f7227f4cac07371fcc526c9d95\"",
+        "last_modified": "2025-09-26T05:00:53.000Z"
+      },
+      {
+        "key": "data/trade/20250926.csv.gz",
+        "size": 7769456,
+        "etag": "\"065db370d1887ba3a26a9d424bc6bc4c\"",
+        "last_modified": "2025-09-27T05:00:50.000Z"
+      },
+      {
+        "key": "data/trade/20250927.csv.gz",
+        "size": 2774277,
+        "etag": "\"f73847b5153cf1e463dd2950f1305531\"",
+        "last_modified": "2025-09-28T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20250928.csv.gz",
+        "size": 4176910,
+        "etag": "\"6ce61ba4a878bc7058de2e95618d814e\"",
+        "last_modified": "2025-09-29T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20250929.csv.gz",
+        "size": 6481970,
+        "etag": "\"c4c31811eb82d04334bc224ce92876f2\"",
+        "last_modified": "2025-09-30T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20250930.csv.gz",
+        "size": 6414563,
+        "etag": "\"56c4ae30d107283b04cea83b10e9b3ff\"",
+        "last_modified": "2025-10-01T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20251001.csv.gz",
+        "size": 7349864,
+        "etag": "\"ce7a0157cafb99a0624e30a9b5639f3f\"",
+        "last_modified": "2025-10-02T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251002.csv.gz",
+        "size": 7229624,
+        "etag": "\"8c9bbdacfd3f04895dc5329d508f26be\"",
+        "last_modified": "2025-10-03T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20251003.csv.gz",
+        "size": 7327656,
+        "etag": "\"9070b60ffc4075e2581627dc2ba7d07e\"",
+        "last_modified": "2025-10-04T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251004.csv.gz",
+        "size": 4235001,
+        "etag": "\"25973c8f5fa03215829bb8e8e7edbdb1\"",
+        "last_modified": "2025-10-05T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251005.csv.gz",
+        "size": 7384347,
+        "etag": "\"b377759222a69827f4c9824a37b36d06\"",
+        "last_modified": "2025-10-06T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20251006.csv.gz",
+        "size": 7445759,
+        "etag": "\"c5ba12b554b71773bc75b11976c513ab\"",
+        "last_modified": "2025-10-07T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251007.csv.gz",
+        "size": 10157762,
+        "etag": "\"9f3337773ede7ba6a08b56582bff39a2\"",
+        "last_modified": "2025-10-08T05:00:50.000Z"
+      },
+      {
+        "key": "data/trade/20251008.csv.gz",
+        "size": 8000778,
+        "etag": "\"58d324173dbc73313b9ff4a1697d2200\"",
+        "last_modified": "2025-10-09T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20251009.csv.gz",
+        "size": 9310358,
+        "etag": "\"8ccd66ba13071bd5ba62139b89aa3e7d\"",
+        "last_modified": "2025-10-10T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20251010.csv.gz",
+        "size": 21916230,
+        "etag": "\"1a1c91a9099c97ae04e422fa9c0f4ef2\"",
+        "last_modified": "2025-10-11T05:01:18.000Z"
+      },
+      {
+        "key": "data/trade/20251011.csv.gz",
+        "size": 11810998,
+        "etag": "\"68b8a35048afb8fe744177aa7b0be3a1\"",
+        "last_modified": "2025-10-12T05:00:53.000Z"
+      },
+      {
+        "key": "data/trade/20251012.csv.gz",
+        "size": 11670257,
+        "etag": "\"f5d8b32c75c84722055d50ab886955ee\"",
+        "last_modified": "2025-10-13T05:00:58.000Z"
+      },
+      {
+        "key": "data/trade/20251013.csv.gz",
+        "size": 8945131,
+        "etag": "\"a7858688430a478b3bfefffbcc1bb21d\"",
+        "last_modified": "2025-10-14T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251014.csv.gz",
+        "size": 10686718,
+        "etag": "\"a750988caabac8ad83577f4f5fc0e358\"",
+        "last_modified": "2025-10-15T05:00:56.000Z"
+      },
+      {
+        "key": "data/trade/20251015.csv.gz",
+        "size": 7711023,
+        "etag": "\"1893ddc29a6a8bc1a21aa1df43d5894a\"",
+        "last_modified": "2025-10-16T05:00:50.000Z"
+      },
+      {
+        "key": "data/trade/20251016.csv.gz",
+        "size": 9611742,
+        "etag": "\"c6233726e73c3e4783222d0836e3b617\"",
+        "last_modified": "2025-10-17T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251017.csv.gz",
+        "size": 10335656,
+        "etag": "\"39515641b067661178ea455fbdcaa977\"",
+        "last_modified": "2025-10-18T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251018.csv.gz",
+        "size": 3437182,
+        "etag": "\"5c1205f9f578c3b835b1aa5ada99908e\"",
+        "last_modified": "2025-10-19T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251019.csv.gz",
+        "size": 5650464,
+        "etag": "\"5089ac7186747f6486da4ce038101c32\"",
+        "last_modified": "2025-10-20T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20251020.csv.gz",
+        "size": 7275340,
+        "etag": "\"843a8c828278cdb07280cb81a70ef22e\"",
+        "last_modified": "2025-10-21T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251021.csv.gz",
+        "size": 10833145,
+        "etag": "\"b7ee9ff7823c6dfd48bf2a9d4025540c\"",
+        "last_modified": "2025-10-22T05:00:57.000Z"
+      },
+      {
+        "key": "data/trade/20251022.csv.gz",
+        "size": 10402547,
+        "etag": "\"675514f332495556f002ca89d7118ea9\"",
+        "last_modified": "2025-10-23T05:00:59.000Z"
+      },
+      {
+        "key": "data/trade/20251023.csv.gz",
+        "size": 7447700,
+        "etag": "\"3f90f6a14e2581a5b1cc76d3ed9ef883\"",
+        "last_modified": "2025-10-24T05:00:52.000Z"
+      },
+      {
+        "key": "data/trade/20251024.csv.gz",
+        "size": 6733957,
+        "etag": "\"22fce0807a9b2c2986fe770405e993fd\"",
+        "last_modified": "2025-10-25T05:00:53.000Z"
+      },
+      {
+        "key": "data/trade/20251025.csv.gz",
+        "size": 3470494,
+        "etag": "\"7b77970b21d9a72c5787dfb14d88c809\"",
+        "last_modified": "2025-10-26T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251026.csv.gz",
+        "size": 5919969,
+        "etag": "\"db129cbfad7b42dbe9eeb0e845691918\"",
+        "last_modified": "2025-10-27T05:00:58.000Z"
+      },
+      {
+        "key": "data/trade/20251027.csv.gz",
+        "size": 7695815,
+        "etag": "\"e106a3ef53979d512e7906a1fb6cb467\"",
+        "last_modified": "2025-10-28T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251028.csv.gz",
+        "size": 7783279,
+        "etag": "\"917903821c6a27126003b3bd01f1824f\"",
+        "last_modified": "2025-10-29T05:00:56.000Z"
+      },
+      {
+        "key": "data/trade/20251029.csv.gz",
+        "size": 8083030,
+        "etag": "\"eb53099eea0856aae22885280284fc9b\"",
+        "last_modified": "2025-10-30T05:01:01.000Z"
+      },
+      {
+        "key": "data/trade/20251030.csv.gz",
+        "size": 9022453,
+        "etag": "\"95111c27f398aaa88509d11828c52aea\"",
+        "last_modified": "2025-10-31T05:01:00.000Z"
+      },
+      {
+        "key": "data/trade/20251031.csv.gz",
+        "size": 5848746,
+        "etag": "\"ef8bd5ad1792010b7fa1f7244cda7617\"",
+        "last_modified": "2025-11-01T05:00:58.000Z"
+      },
+      {
+        "key": "data/trade/20251101.csv.gz",
+        "size": 3165172,
+        "etag": "\"5ce01c945ced692f31b91314b0e78f8c\"",
+        "last_modified": "2025-11-02T05:00:52.000Z"
+      },
+      {
+        "key": "data/trade/20251102.csv.gz",
+        "size": 3637365,
+        "etag": "\"ca51362ac366dac33bf65367b6d381ed\"",
+        "last_modified": "2025-11-03T05:00:55.000Z"
+      },
+      {
+        "key": "data/trade/20251103.csv.gz",
+        "size": 8809428,
+        "etag": "\"185c58cb026c30ea018420aadbb4c393\"",
+        "last_modified": "2025-11-04T05:01:18.000Z"
+      },
+      {
+        "key": "data/trade/20251104.csv.gz",
+        "size": 11250748,
+        "etag": "\"f56ee51779f919d253959f0409fa5cd2\"",
+        "last_modified": "2025-11-05T05:01:07.000Z"
+      },
+      {
+        "key": "data/trade/20251105.csv.gz",
+        "size": 7106344,
+        "etag": "\"8a5c49986941049322bbabfc61cdc5f0\"",
+        "last_modified": "2025-11-06T05:01:00.000Z"
+      },
+      {
+        "key": "data/trade/20251106.csv.gz",
+        "size": 6017055,
+        "etag": "\"ee18b18ada5d2769311d49b61b4b2f36\"",
+        "last_modified": "2025-11-07T05:00:58.000Z"
+      },
+      {
+        "key": "data/trade/20251107.csv.gz",
+        "size": 6767856,
+        "etag": "\"305af6a9c0455845ca0e44ed9bd0da26\"",
+        "last_modified": "2025-11-08T05:00:54.000Z"
+      },
+      {
+        "key": "data/trade/20251108.csv.gz",
+        "size": 4126483,
+        "etag": "\"94dc70b56f1b1c209ba77d50ab4b629b\"",
+        "last_modified": "2025-11-09T05:00:54.000Z"
+      },
+      {
+        "key": "data/trade/20251109.csv.gz",
+        "size": 4434003,
+        "etag": "\"b1735f98c9b938080e6a4c7d2cbbc2bb\"",
+        "last_modified": "2025-11-10T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251110.csv.gz",
+        "size": 5684574,
+        "etag": "\"4f039265163e5c25e734da296ff38da2\"",
+        "last_modified": "2025-11-11T05:01:00.000Z"
+      },
+      {
+        "key": "data/trade/20251111.csv.gz",
+        "size": 5892428,
+        "etag": "\"92e43be01520384739b035b86cff6a01\"",
+        "last_modified": "2025-11-12T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20251112.csv.gz",
+        "size": 5405860,
+        "etag": "\"ccd06ccc48016e8720522fc0a8c25f75\"",
+        "last_modified": "2025-11-13T05:00:53.000Z"
+      },
+      {
+        "key": "data/trade/20251113.csv.gz",
+        "size": 7927419,
+        "etag": "\"1d58632c88c292c67fc9a4cc18dc717d\"",
+        "last_modified": "2025-11-14T05:00:57.000Z"
+      },
+      {
+        "key": "data/trade/20251114.csv.gz",
+        "size": 8305854,
+        "etag": "\"2b85fb34f6a27c47a25157e2b06f94bb\"",
+        "last_modified": "2025-11-15T05:01:01.000Z"
+      },
+      {
+        "key": "data/trade/20251115.csv.gz",
+        "size": 3510324,
+        "etag": "\"a15d016807033585b2654e6acb6fcd13\"",
+        "last_modified": "2025-11-16T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20251116.csv.gz",
+        "size": 5358243,
+        "etag": "\"3b66ab80d8261f95d6c22a6aeb030a8c\"",
+        "last_modified": "2025-11-17T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20251117.csv.gz",
+        "size": 6325484,
+        "etag": "\"98a959c65e3ce8f2d68653112cfd3a18\"",
+        "last_modified": "2025-11-18T05:00:56.000Z"
+      },
+      {
+        "key": "data/trade/20251118.csv.gz",
+        "size": 7178340,
+        "etag": "\"ea3c0b23819c700d76405173daee3e33\"",
+        "last_modified": "2025-11-19T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20251119.csv.gz",
+        "size": 6769214,
+        "etag": "\"f2405fe0cc0a8f5eb9baec4dfe5b562d\"",
+        "last_modified": "2025-11-20T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20251120.csv.gz",
+        "size": 6842119,
+        "etag": "\"fd36cf19229d749b96c7af1d184d3740\"",
+        "last_modified": "2025-11-21T05:00:43.000Z"
+      },
+      {
+        "key": "data/trade/20251121.csv.gz",
+        "size": 9276928,
+        "etag": "\"e4c44e38664f2f4405aa5e826386714d\"",
+        "last_modified": "2025-11-22T05:00:53.000Z"
+      },
+      {
+        "key": "data/trade/20251122.csv.gz",
+        "size": 4476789,
+        "etag": "\"be46d1653e68cf680ef37fe3b666e3e7\"",
+        "last_modified": "2025-11-23T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251123.csv.gz",
+        "size": 4510808,
+        "etag": "\"b91e915131b557ca4b9a71448fe0735f\"",
+        "last_modified": "2025-11-24T05:01:50.000Z"
+      },
+      {
+        "key": "data/trade/20251124.csv.gz",
+        "size": 6822935,
+        "etag": "\"2625455f4d20d90daf931df42cbc9606\"",
+        "last_modified": "2025-11-25T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20251125.csv.gz",
+        "size": 6070655,
+        "etag": "\"00591fc60d7c9a0c196c570627d1558f\"",
+        "last_modified": "2025-11-26T05:00:52.000Z"
+      },
+      {
+        "key": "data/trade/20251126.csv.gz",
+        "size": 5524355,
+        "etag": "\"8d6e6274e8921c81ad3a45eb43de7745\"",
+        "last_modified": "2025-11-27T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20251127.csv.gz",
+        "size": 3861222,
+        "etag": "\"530504589cd3c39e2aa66b485b335d34\"",
+        "last_modified": "2025-11-28T05:01:04.000Z"
+      },
+      {
+        "key": "data/trade/20251128.csv.gz",
+        "size": 5122553,
+        "etag": "\"19376096ccf6d2aa6e38510129305bea\"",
+        "last_modified": "2025-11-29T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251129.csv.gz",
+        "size": 2585558,
+        "etag": "\"d3a44baa069396b96d9fd6d2c50543ab\"",
+        "last_modified": "2025-11-30T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251130.csv.gz",
+        "size": 2754615,
+        "etag": "\"9393267e0dcb815375ea6ec4d49e2c89\"",
+        "last_modified": "2025-12-01T05:00:39.000Z"
+      },
+      {
+        "key": "data/trade/20251201.csv.gz",
+        "size": 7596523,
+        "etag": "\"222679d096ba033865ae3de4a32d8783\"",
+        "last_modified": "2025-12-02T05:00:52.000Z"
+      },
+      {
+        "key": "data/trade/20251202.csv.gz",
+        "size": 6242844,
+        "etag": "\"77b61e082c9a4bd6b836da2bbfefba52\"",
+        "last_modified": "2025-12-03T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251203.csv.gz",
+        "size": 6679066,
+        "etag": "\"7491b1d6138bf1087241864435f7ea3a\"",
+        "last_modified": "2025-12-04T05:00:51.000Z"
+      },
+      {
+        "key": "data/trade/20251204.csv.gz",
+        "size": 4794486,
+        "etag": "\"7fba12a9c13b274e7c2719e332e2fb97\"",
+        "last_modified": "2025-12-05T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20251205.csv.gz",
+        "size": 5080939,
+        "etag": "\"eef99286938e82500adc3b9a1c435e7c\"",
+        "last_modified": "2025-12-06T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251206.csv.gz",
+        "size": 2269141,
+        "etag": "\"9db119faab61f4e0bcf6475b65f19604\"",
+        "last_modified": "2025-12-07T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251207.csv.gz",
+        "size": 4575421,
+        "etag": "\"b6c468087d1be32425192f22a5b4ad42\"",
+        "last_modified": "2025-12-08T05:00:50.000Z"
+      },
+      {
+        "key": "data/trade/20251208.csv.gz",
+        "size": 4771936,
+        "etag": "\"acc9e36d10e3705de5713ccb979e81ed\"",
+        "last_modified": "2025-12-09T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20251209.csv.gz",
+        "size": 5537131,
+        "etag": "\"9ed8c8cfa7c84847362dea71c3c91811\"",
+        "last_modified": "2025-12-10T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251210.csv.gz",
+        "size": 5420815,
+        "etag": "\"70cc29ab62e4c4eb23feb55718fceb3f\"",
+        "last_modified": "2025-12-11T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251211.csv.gz",
+        "size": 5552849,
+        "etag": "\"222be988c7d8b660df4d82479483e20a\"",
+        "last_modified": "2025-12-12T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20251212.csv.gz",
+        "size": 4204413,
+        "etag": "\"c5950840b19daa5c7b294279922af3a8\"",
+        "last_modified": "2025-12-13T05:00:38.000Z"
+      },
+      {
+        "key": "data/trade/20251213.csv.gz",
+        "size": 1612179,
+        "etag": "\"ec52a63db3a4baa981ed6da6a5ab4fd2\"",
+        "last_modified": "2025-12-14T05:00:42.000Z"
+      },
+      {
+        "key": "data/trade/20251214.csv.gz",
+        "size": 3268532,
+        "etag": "\"40f5650be2efa7146459e43c3ac6c30b\"",
+        "last_modified": "2025-12-15T05:00:49.000Z"
+      },
+      {
+        "key": "data/trade/20251215.csv.gz",
+        "size": 5597163,
+        "etag": "\"25718c1cb948f42a137465f3750667ec\"",
+        "last_modified": "2025-12-16T05:00:43.000Z"
+      },
+      {
+        "key": "data/trade/20251216.csv.gz",
+        "size": 4714558,
+        "etag": "\"0dd8b840279d12523baaa550c9c44021\"",
+        "last_modified": "2025-12-17T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20251217.csv.gz",
+        "size": 5466072,
+        "etag": "\"2c3e8b9c43d9466c570a9eba29692fcb\"",
+        "last_modified": "2025-12-18T05:00:50.000Z"
+      },
+      {
+        "key": "data/trade/20251218.csv.gz",
+        "size": 6251214,
+        "etag": "\"20d92412d2ce960f422bdb3c1a66963d\"",
+        "last_modified": "2025-12-19T05:00:50.000Z"
+      },
+      {
+        "key": "data/trade/20251219.csv.gz",
+        "size": 5314360,
+        "etag": "\"b3fd6a4fc2a4f00a413bb09e967cb55b\"",
+        "last_modified": "2025-12-20T05:00:54.000Z"
+      },
+      {
+        "key": "data/trade/20251220.csv.gz",
+        "size": 1536829,
+        "etag": "\"4fe60612aee46d43ebf972f9dd0dc974\"",
+        "last_modified": "2025-12-21T05:00:41.000Z"
+      },
+      {
+        "key": "data/trade/20251221.csv.gz",
+        "size": 2582699,
+        "etag": "\"3e6993961f998e5dab4a13b98a9f8b9b\"",
+        "last_modified": "2025-12-22T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20251222.csv.gz",
+        "size": 4846309,
+        "etag": "\"098a863589915b3525f34bec1562b616\"",
+        "last_modified": "2025-12-23T05:00:44.000Z"
+      },
+      {
+        "key": "data/trade/20251223.csv.gz",
+        "size": 4102991,
+        "etag": "\"e17536000263aeaf21fe7198b45855db\"",
+        "last_modified": "2025-12-24T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20251224.csv.gz",
+        "size": 3074353,
+        "etag": "\"9ab5d8c5246d98e5787dfc3f84736558\"",
+        "last_modified": "2025-12-25T05:00:45.000Z"
+      },
+      {
+        "key": "data/trade/20251225.csv.gz",
+        "size": 2411238,
+        "etag": "\"92b8e00459a6f6a17ec86cdd8fa9f998\"",
+        "last_modified": "2025-12-26T05:00:47.000Z"
+      },
+      {
+        "key": "data/trade/20251226.csv.gz",
+        "size": 4090490,
+        "etag": "\"0c3102c17c49be18c52b9bbb9629529b\"",
+        "last_modified": "2025-12-27T05:00:46.000Z"
+      },
+      {
+        "key": "data/trade/20251227.csv.gz",
+        "size": 1589502,
+        "etag": "\"6c9747beddcd9d54f95b144dca30b3f4\"",
+        "last_modified": "2025-12-28T05:00:40.000Z"
+      },
+      {
+        "key": "data/trade/20251228.csv.gz",
+        "size": 1937750,
+        "etag": "\"71f1509649376db732fcb4b61099549d\"",
+        "last_modified": "2025-12-29T05:00:48.000Z"
+      },
+      {
+        "key": "data/trade/20251229.csv.gz",
+        "size": 5049311,
+        "etag": "\"54ac5e5ae2ac0b2545ce908e1a2baa4e\"",
+        "last_modified": "2025-12-30T05:01:15.000Z"
+      },
+      {
+        "key": "data/trade/20251230.csv.gz",
+        "size": 3709888,
+        "etag": "\"1363d074e9fd8008793f9a611832d540\"",
+        "last_modified": "2025-12-31T05:01:27.000Z"
+      },
+      {
+        "key": "data/trade/20251231.csv.gz",
+        "size": 2915527,
+        "etag": "\"5586097587106125c0166978ba1a515e\"",
+        "last_modified": "2026-01-01T05:00:54.000Z"
+      }
+    ],
+    "truncated": "false",
+    "wall_seconds": 1.2658629279999332
+  }
+]

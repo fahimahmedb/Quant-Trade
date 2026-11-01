@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_025_20261101",
+  "status": "COMPLETE",
+  "scope": "WP2_REMOTE_PERSISTENCE_HOSTED_REVIEW_ACCESS_AND_AUTONOMY_LIVENESS_DELEGATION_REDESIGN_6524768666_THROUGH_6531376944",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6524768666,"sha256":"1f735c9e50ae7db500b6e49cdb6da3e1f8d1360389746798e23b67865d285435","status":"READ","summary":"Projection freshness is repaired locally only (STATE 1140->1148); WP2 tests pass but push is blocked by HTTP 403, leaving BLOCKED_REMOTE_PERSISTENCE_AND_HOSTED_VERIFICATION. No WP2 semantics changed."},
+    {"kind":"issue-comment","id":6525095287,"sha256":"723b92190f9099f653b2f969c74c3e9cb17eda2a90cab2c33745cb7e7e36f0ce","status":"READ","summary":"Owner starts another review-only challenge of exact hosted subject 8f8df47..., base 13721384 and run 41069767444, explicitly treating hosted green as a claim rather than authority."},
+    {"kind":"issue-comment","id":6525112113,"sha256":"65f59dc59dd04800d58fbba6be6881105ea96588badb2a55fcf3c610a43295f1","status":"READ","summary":"Reviewer returns all semantic fields UNKNOWN because exact code/base/run artifacts are unavailable in its environment. No tests execute. This is another primary-evidence-access block, not a substantive WP2 verdict."},
+    {"kind":"issue-comment","id":6525472558,"sha256":"f34c94f876fdf64cb987131d2805c7fd5b6e63fcbea177e0f3a05b2517147ba6","status":"READ","summary":"Owner provides a read-only GitHub packet binding run 41069767444 to head 8f8df47..., successful gate job and artifact metadata, while explicitly challenging merge-ref artifact naming and requiring semantic review to stay separate from execution identity."},
+    {"kind":"issue-comment","id":6525496227,"sha256":"b777715f5a175b563cedd71def8ea5c4c61909b5d0ce4739e79a6361ad93f97e","status":"READ","summary":"Reviewer verifies hosted run/head identity from supplied primary metadata but leaves causal-lineage, fencing, runner/evaluator, receipt, sink and authority semantics UNKNOWN because exact candidate diff/code and artifact payload remain inaccessible. Hosted execution identity is not semantic proof."},
+    {"kind":"issue-comment","id":6531296944,"sha256":"3a5dd42ec908e1bd3ff5955e750c67a5334fcb1d46f2ef3280795e77455d3366","status":"READ","summary":"Owner starts adversarial autonomy-continuity review, explicitly asking whether any new autonomy layer is needed and prioritizing the smallest mechanism that removes human relaunch dependence."},
+    {"kind":"issue-comment","id":6531322852,"sha256":"7cf45fe396d50da123d06b9e6e5135ea21f2cc053185b7c72cf408d781b8e78b","status":"READ","summary":"Review identifies root cause as PRODUCT_ORCHESTRATION_LIVENESS_GAP, not missing Quant autonomy architecture. Recommends existing scheduled Automations/wakeups + durable GitHub state + bounded task-local workers, rejecting a persistent reasoning supervisor/control plane unless a single-launch test proves a missing primitive."},
+    {"kind":"issue-comment","id":6531326954,"sha256":"2e9c6780cfef52462ebe0968e1adede9d0f8c1c90cff4c162e5a4869a47697f3","status":"READ","summary":"Owner amendment requires minimizing human intermediation: important reversible engineering/qualification/routing decisions must continue under one predelegated authority envelope; only hard boundary crossings may require Owner intervention."},
+    {"kind":"issue-comment","id":6531358408,"sha256":"b7c4370ad71c86ae88dc2f57e6bb9fafe173e5064078e475d89a024ef7d2a0b4","status":"READ","summary":"Owner asks reviewer to aggressively challenge prior Owner-only transitions and classify each as preauthorize/automate, machine-policy-enforceable or truly non-delegable, with importance alone forbidden as an escalation reason."},
+    {"kind":"issue-comment","id":6531376944,"sha256":"d6140577911711d78f4d5a8660b774d4fa9238f90e405b80c9060bc3126e6f58","status":"READ","summary":"Revised autonomy model keeps liveness root cause and defines SINGLE_LAUNCH_CONTINUITY_WITHIN_A_PREAUTHORIZED_AUTHORITY_ENVELOPE. Most engineering decisions become autonomous/policy-enforced; only four boundary classes remain truly non-delegable, targeting zero Owner prompts on the normal engineering path."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 10,
+    "objects_directly_read": 10,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 10,
+    "cumulative_new_discussion_objects_directly_read": 228,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 238,
+    "estimated_total_discussion_objects_directly_read": 235,
+    "estimated_total_discussion_objects_semantically_disposed": 245,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"HOSTED_RUN_IDENTITY_NOT_SEMANTIC_PROOF","finding":"A successful GitHub Actions run can be bound to an exact head while causal semantics remain independently UNKNOWN if reviewers cannot inspect code/tests/artifact payload. Execution identity, qualification and semantic proof must remain distinct.","current_product_decision_change":false},
+    {"classification":"REPEATED_REVIEW_ACCESS_FAILURE_IS_COORDINATION_OVERHEAD","finding":"Multiple reviewers repeatedly returned UNKNOWN/BLOCK_EVIDENCE because their environments lacked exact primary objects. These attempts consumed coordination without changing the WP2 claim; evidence routing should be solved once rather than by repeated review invocation.","current_product_decision_change":false},
+    {"classification":"AUTONOMY_ROOT_CAUSE_IS_LIVENESS_NOT_REASONING","finding":"The observed relaunch dependence is explained by lack of a reliable wakeup/dispatch trigger after external changes, while repository-native fresh-worker recovery is already demonstrated. A new Quant reasoning/control plane is not warranted.","current_product_decision_change":false},
+    {"classification":"THIN_SCHEDULER_PLUS_DURABLE_STATE_BEFORE_NEW_CONTROL_PLANE","finding":"Existing scheduled wakeups/Automations plus GitHub durable state and bounded workers are the recommended minimum. A persistent supervisor or bespoke controller is conditional only on a failed single-launch test proving a missing primitive.","current_product_decision_change":false},
+    {"classification":"IMPORTANT_DECISION_NOT_OWNER_GATE","finding":"Owner intermediation is reduced by preauthorized authority envelopes and machine-checkable policies. Consequential but reversible engineering decisions should proceed autonomously; human interruption is reserved for truly non-containable boundary crossings.","current_product_decision_change":false},
+    {"classification":"FOUR_TRUE_NONDELEGABLE_BOUNDARIES","finding":"The revised model retains only four boundary classes: new/expanded live-capital authority, irreversible first unblinding/prospective exposure, redefinition of a frozen scientific protocol/lineage, and irreversible external mutation outside the signed envelope. Target normal-path Owner prompts = zero.","current_product_decision_change":false}
+  ],
+  "current_action": "LIVENESS_AND_PREAUTHORIZED_AUTHORITY_MODEL_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6531659726,"sha256":"bf6c6159905776c0585540da73dbc5f764b338e7639506d6193984263b31f94d"}
+}

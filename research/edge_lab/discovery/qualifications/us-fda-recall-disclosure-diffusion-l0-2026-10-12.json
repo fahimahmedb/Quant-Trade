@@ -1,0 +1,88 @@
+{
+  "CHEAP_DATA_NOW": "openFDA enforcement API free; one metadata sample exposes recall initiation, classification and weekly report dates. FDA documents a separate history feature with last-posted/modified dates, but it is not the same as the simple openFDA current record.",
+  "CHEAP_EXPRESSION": "A fixed public disclosure/classification update mapped to one traded parent, entered strictly after proven availability; never use recall initiation as first-public time.",
+  "ECONOMIC_SIGNIFICANCE": "No incremental news/payoff measured.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [
+    "First public-time clock and PIT classification state; stable parent mapping."
+  ],
+  "FAMILY_STATUS": "PARK_DATA_OPENFDA_ALONE",
+  "FATAL_PROBLEM": "openFDA sample has no first-public timestamp or PIT field history. Prior consignee/public notification may precede weekly report. Subsidiary mapping and precise public clock remain unresolved; a historical date-return join would leak/mis-time news.",
+  "LESSON": "Initiation, classification, weekly report and actual publication are different clocks. Preserve the newly documented history route without pretending the simple API is PIT.",
+  "MECHANISM": "Delayed processing of newly public severe product-recall information can reprice a listed issuer once investors recognize revenue/liability consequences.",
+  "NEXT_DECISION": "Reopen only with a bounded history-endpoint/time qualification. Next L0 public Russell deletion forced flows, with prices unopened.",
+  "POWER_LIMITATION": "One schema probe, zero issuer outcomes.",
+  "RESULT": "PARK_DATA",
+  "UNCERTAINTY": "Separate free FDA event/product-history route may support a later conservative/PIT clock; not qualified here.",
+  "WHO_PAYS": "Investors quoting before incorporating incremental public safety information; affected firm cash flows bear recall costs.",
+  "WHY_PERSIST": "Fragmented regulator updates, subsidiary/brand mapping and low-salience recalls can slow diffusion, especially in small issuers.",
+  "classification": "PARK_DATA",
+  "exposure": {
+    "economic_look": false,
+    "price_or_return_payload": false,
+    "private_history": "UNKNOWN",
+    "sample_recall": "D-321-2016 / event 72241",
+    "scope": "FDA dates/schema only, no traded-parent selection or return join."
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "155087b32f3e0f1de7704a4692e34fce2bfa0bb3",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:29:54.752845+00:00",
+  "source_receipt": {
+    "api_last_updated": "2026-09-30",
+    "at": "2026-10-12T21:27:11.594984+00:00",
+    "bytes": 1840,
+    "date_fields": {
+      "center_classification_date": "20151117",
+      "recall_initiation_date": "20150903",
+      "report_date": "20151125",
+      "termination_date": "20171229",
+      "voluntary_mandated": "Voluntary: Firm initiated"
+    },
+    "price_or_returns": false,
+    "record_identity": {
+      "event_id": "72241",
+      "recall_number": "D-321-2016"
+    },
+    "schema_fields": [
+      "status",
+      "city",
+      "state",
+      "country",
+      "classification",
+      "openfda",
+      "product_type",
+      "event_id",
+      "recalling_firm",
+      "address_1",
+      "address_2",
+      "postal_code",
+      "voluntary_mandated",
+      "initial_firm_notification",
+      "distribution_pattern",
+      "recall_number",
+      "product_description",
+      "product_quantity",
+      "reason_for_recall",
+      "recall_initiation_date",
+      "center_classification_date",
+      "termination_date",
+      "report_date",
+      "code_info"
+    ],
+    "sha256": "0686ad8a4043912528ae43c187467dd744371a08b13754b503caac47a6c5a6d1",
+    "status": 200,
+    "url": "https://api.fda.gov/drug/enforcement.json?limit=1"
+  },
+  "sources": [
+    {
+      "fact": "Weekly report date differs from firm notification; eventlmd identifies posting/modification and history endpoints track new values.",
+      "url": "https://www.fda.gov/safety/enforcement-reports/enforcement-report-api-definitions"
+    },
+    {
+      "fact": "FDA offers historical product/classification updates and recently-updated indicators; not an exact openFDA first-dissemination guarantee.",
+      "url": "https://www.fda.gov/safety/enforcement-reports/enforcement-report-history-feature"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_PRECOMMENCEMENT_WATCH",
+  "protocol": "disc-us-issuer-oddlot-priority-prospective-l1-v1",
+  "issuer": "SkyAI, Inc.",
+  "ticker": "SKYA",
+  "decision": "NOT_YET_ELIGIBLE_WAIT_FOR_SC_TO_I",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "selected_market_price_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "protocol_t0": "2026-10-12T20:00:00Z",
+  "observed_documentary_facts": [
+    "SkyAI filed post-T0 pre-commencement issuer-tender communications on October 13, 2026 under Rule 13e-4(c) / SC TO-C.",
+    "The communication says SkyAI intends to commence a cash tender at $3.00 per share for up to 95% of each eligible security class, subject to at least 50% of each class being tendered and SOL remaining above $100 during the offer period.",
+    "The communication says commencement was expected on or about October 15, 2026 but explicitly says the offer had not commenced and might not commence.",
+    "A bounded October 15 search located the SC TO-C/current communication but did not establish a commencement SC TO-I for SkyAI.",
+    "No explicit odd-lot priority was found in the pre-commencement communication."
+  ],
+  "primary_or_filing_sources": [
+    {
+      "source": "SC TO-C / incorporated 8-K communication",
+      "date": "2026-10-13",
+      "facts": [
+        "Issuer self-tender intention",
+        "$3.00 proposed fixed cash price",
+        "up to 95% of classes",
+        "50% minimum tender condition",
+        "SOL > $100 condition",
+        "offer not yet commenced"
+      ]
+    }
+  ],
+  "protocol_effect": "Protocol A requires the commencement Form SC TO-I itself, exchange-listed operating-company common stock, fixed cash price and explicit odd-lot priority before general proration. SC TO-C cannot be used as EVENT_TIME and cannot authorize market-price access. SkyAI is therefore not claimed and does not block a chronologically earlier qualifying SC TO-I if one exists.",
+  "failed_criteria": [
+    "No qualifying commencement SC TO-I established in this pass.",
+    "No explicit fewer-than-100-share odd-lot priority established.",
+    "No price-route or post-event entry may be accessed until those gates are met."
+  ],
+  "next_action": "On a genuinely new filing/time delta only, check whether SkyAI files a commencement SC TO-I. If it does, qualify the exact accepted timestamp and read the commencement terms for explicit odd-lot priority before any selected market price. If there is no odd-lot priority, classify INELIGIBLE immediately. Do not use the $3 headline versus any exposed/current market price as economic evidence before protocol admission.",
+  "inference_ceiling": [
+    "No SkyAI spread calculation",
+    "No tender profitability conclusion",
+    "No prospective case admitted yet",
+    "No live or real-capital authorization"
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "CHEAP_DATA_NOW": "Current SEC plan exhibits describe the issuance/open-market switch. Nuveen official fund page exposes dated NAV/pricing labels. Yahoo public daily JSON on excluded QQQX provides timestamp, timezone and raw OHLC schema. Selected-fund and fixing-date adequacy remains to be proved before economics.",
+  "CHEAP_EXPRESSION": "Fixed 100-share prospective eligible distribution; compare ideal reinvested shares marked at the exact contractual fixing close with identical cash distribution, then apply frozen incremental frictions. No total-stock-return or dividend-yield inference.",
+  "ECONOMIC_SIGNIFICANCE": "Conditional contractual issuance benefit is testable as an optimistic incremental ceiling; full investment profitability remains unknown.",
+  "EFFECT_SIZE": "NOT_COMPUTED",
+  "FAILED_CRITERIA": [],
+  "FAMILY_STATUS": "READY_TO_PREDECLARE",
+  "FATAL_PROBLEM": "Allocation may be delayed, split between market purchases/issuance or inaccessible through a broker. Discount can vanish with NAV/premium or actual sale timing; no assumption that formula value is credited executable wealth.",
+  "LESSON": "Reinvestment concession is conditional and attaches to the distribution only, not to the whole holding. Preserve API failure and distinguish a schema probe from an economic test.",
+  "MECHANISM": "A CEF distribution reinvestment plan can issue new shares at the greater of NAV and 95% of market when market >= NAV, giving participants an incremental issuance benefit relative to the same distribution paid in cash. Below NAV, the plan buys in the market and the discount is absent.",
+  "NEXT_DECISION": "Freeze one prospective 100-share cash-versus-issuance ceiling before T0; no price/NAV or allocation access for selected case until remote claim succeeds.",
+  "POWER_LIMITATION": "No event selected or economics tested.",
+  "RESULT": "L1_NOW_STRUCTURAL_ROUTES_QUALIFIED",
+  "UNCERTAINTY": "Actual crediting and future same-date NAV not guaranteed by HTML labels.",
+  "WHO_PAYS": "Issuing fund/nonparticipating shareholders bear dilution when issuance is below market; secondary demand sustaining a premium gives the issued shares their marked value.",
+  "WHY_PERSIST": "Limited distributions and plan participation, premium/crediting-time risk, broker eligibility, fractional handling, taxes and operations. This is a conditional issuance concession, not free total-position return.",
+  "classification": "L1_NOW",
+  "data_sufficiency": "Public structural route available for a future case; no selected-event NAV, prices, terms, broker credit or outcome admitted. Selected-event route/publication semantics must pass the frozen gate. Nasdaq HEAD 404 retained; not silently treated as usable.",
+  "exposure": {
+    "calibration_symbol": "QQQX",
+    "economic_look": false,
+    "excluded_calibration_ciks": [
+      "1227862",
+      "1380936",
+      "830487",
+      "1338561"
+    ],
+    "incidental": "QQQX historical benchmark definitions and reinvestment-plan risk warnings appeared in search; no numerical signal-return pairs or fund PnL used.",
+    "numeric_prices_or_returns_used": false,
+    "pristine_history_claim": false,
+    "private_history": "UNKNOWN",
+    "quote_body_acquired_for_schema": true,
+    "type": "IDEA_GENERATED + DATA_FEASIBILITY"
+  },
+  "live_trading_authorized": false,
+  "paid_usd": 0,
+  "publication_parent": "135c39b4ccd0ff824fb3ca1b22cd25dced392f2a",
+  "real_capital_authorized": false,
+  "recorded_at": "2026-10-12T21:20:24.646554+00:00",
+  "route_receipts": [
+    {
+      "at": "2026-10-12T21:15:55.236063+00:00",
+      "bytes": 542020,
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://www.nuveen.com/en-us/closed-end-funds/qqqx-nuveen-nasdaq-100-dynamic-overwrite-fund",
+      "method": "GET",
+      "numeric_values_parsed": false,
+      "route_links": [],
+      "schema_labels": [
+        "Net asset value",
+        "NAV",
+        "As of",
+        "Pricing",
+        "Distribution"
+      ],
+      "sha256": "a65ceffbb43d9b2539e827227e482b1f4d8eff4f32b8339459e0b03a8a40650a",
+      "status": 200,
+      "url": "https://www.nuveen.com/en-us/closed-end-funds/qqqx-nuveen-nasdaq-100-dynamic-overwrite-fund"
+    },
+    {
+      "at": "2026-10-12T21:15:55.236709+00:00",
+      "error": "HTTP Error 404: Not Found",
+      "method": "HEAD",
+      "numeric_values_parsed": false,
+      "url": "https://api.nasdaq.com/api/quote/QQQX/historical?assetclass=stocks&limit=1"
+    },
+    {
+      "at": "2026-10-12T21:18:43.142897+00:00",
+      "bytes": 1784,
+      "exchange": "NGM",
+      "exchange_timezone": "America/New_York",
+      "metadata_keys": [
+        "currency",
+        "symbol",
+        "exchangeName",
+        "fullExchangeName",
+        "instrumentType",
+        "firstTradeDate",
+        "regularMarketTime",
+        "hasPrePostMarketData",
+        "gmtoffset",
+        "timezone",
+        "exchangeTimezoneName",
+        "regularMarketPrice",
+        "regularMarketChangePercent",
+        "fulldayPrice",
+        "fulldayChange",
+        "fulldayChangePercent",
+        "fiftyTwoWeekHigh",
+        "fiftyTwoWeekLow",
+        "regularMarketDayHigh",
+        "regularMarketDayLow",
+        "regularMarketVolume",
+        "longName",
+        "shortName",
+        "chartPreviousClose",
+        "priceHint",
+        "currentTradingPeriod",
+        "dataGranularity",
+        "range",
+        "validRanges"
+      ],
+      "method": "GET_SCHEMA_ONLY_CALIBRATION",
+      "numeric_quote_values_emitted": false,
+      "quote_keys": [
+        "high",
+        "low",
+        "close",
+        "volume",
+        "open"
+      ],
+      "quote_row_count": 5,
+      "scope": "Calibration OHLC JSON body acquired; numeric prices not extracted/compared; no distribution signal or future-return join.",
+      "sha256": "9b69c506394559f817920bcd0f3694a7be2a7c2dcf60648f1b6669abca31fa6a",
+      "signal_outcome_join": false,
+      "status": 200,
+      "timestamps_present": true,
+      "timezone": "EDT",
+      "top_keys": [
+        "meta",
+        "timestamp",
+        "indicators"
+      ],
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/QQQX?interval=1d&range=5d"
+    }
+  ],
+  "sources": [
+    {
+      "fact": "Public plan exhibit describes NAV-vs-market branch, issuance max(NAV,95% market), market purchase delays and per-share processing fee; calibration only.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1227862/000119312526394600/d112142dex99e.htm"
+    },
+    {
+      "fact": "QQQX historical Nuveen plan text documents the mechanism; not evidence of current contract validity or economic return.",
+      "url": "https://www.sec.gov/Archives/edgar/data/1338561/000119312517279060/d402822dncsrs.htm"
+    },
+    {
+      "fact": "2026 Nuveen official reorganization document describes the same greater-of-NAV/95%-market issuance mechanism; search text only.",
+      "url": "https://documents.nuveen.com/Documents/Nuveen/Viewer.aspx?uniqueId=0779f60a-86ee-4128-87a3-1db9363e171e"
+    }
+  ]
+}

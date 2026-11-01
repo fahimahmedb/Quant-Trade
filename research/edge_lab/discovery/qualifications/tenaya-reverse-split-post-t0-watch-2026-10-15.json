@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "recorded_date": "2026-10-15",
+  "branch": "research/edge-lab-continuous",
+  "stage": "PROSPECTIVE_PREOPERATIVE_WATCH",
+  "protocols": [
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2",
+    "disc-us-reverse-split-round-up-prospective-l1-v2"
+  ],
+  "candidate": {
+    "issuer": "Tenaya Therapeutics, Inc.",
+    "ticker": "TNYA",
+    "cik": "0001858848",
+    "form": "PRE 14A",
+    "accession": "0001193125-26-420540",
+    "filing_date": "2026-10-13",
+    "special_meeting_date": "2026-12-09"
+  },
+  "decision": "NOT_YET_ELIGIBLE_WAIT_FOR_OPERATIVE_RATIO_EFFECTIVE_TIME",
+  "economic_verdict": null,
+  "economic_look_opened": false,
+  "market_price_payload_accessed": false,
+  "real_capital_authorized": false,
+  "live_trading_authorized": false,
+  "paid_usd_total": 0,
+  "primary_facts": [
+    "The post-T0 preliminary proxy seeks authority for a reverse split at a board-selected ratio from 1-for-10 through 1-for-25.",
+    "The board may elect not to implement the split even after stockholder approval.",
+    "If implemented, fractional post-split shares are not issued; registered holders receive cash equal to the fractional interest multiplied by the common closing price on the trading day immediately preceding the Effective Time, adjusted for the split.",
+    "The filing does not fix the final ratio, Effective Time, first split-adjusted trading session or an operative entitlement cutoff.",
+    "The special meeting is scheduled for December 9, 2026, so no current post-announcement purchase can yet be treated as an admitted split entitlement under protocol B."
+  ],
+  "primary_source": "https://www.sec.gov/Archives/edgar/data/1858848/000119312526420540/tnya-20261012.htm",
+  "protocol_effect": "Protocol B potentially matches the future cash-in-lieu structure, but admission requires fixed ratio + effective/entitlement timing and a post-event pre-entitlement regular-session window. This PRE 14A is only authorization-stage. Protocol C is inapplicable because fractional interests are cashed, not rounded up.",
+  "important_formula_fact": "Unlike many ambiguous cash-in-lieu provisions, Tenaya already states a deterministic formula based on the prior trading day's closing price, adjusted for the split. That makes the future event worth monitoring, but the formula alone does not authorize an outcome look before the operative filing exists.",
+  "failed_criteria": [
+    "Final ratio not fixed.",
+    "Effective Time not fixed.",
+    "Entitlement cutoff / split-adjusted first trading session not fixed.",
+    "Stockholder approval and board implementation remain future/conditional."
+  ],
+  "ordering_rule": "Do not reserve Tenaya as the protocol-B event now. If a later primary filing/press release fixes ratio + effective time, process it in chronological order against all other post-T0 operative B candidates. Earlier eligible events win. No market price may be read merely because the future formula looks attractive.",
+  "next_action": "Monitor only for a genuinely new operative Tenaya filing after stockholder/board action. If one fixes ratio and timing, establish whether at least one regular session remains strictly after EVENT_TIME but before entitlement cutoff; if not, classify ineligible before prices. Preserve the existing formula and do not alter Q/costs/window.",
+  "inference_ceiling": [
+    "No Tenaya prospective case admitted",
+    "No Tenaya payoff/price result",
+    "No cash-in-lieu family evidence",
+    "No live or real-capital authorization"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_045_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_REVIEW_SUBMISSION_IDENTITIES_5450182603_THROUGH_5453551367",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"review","id":5450182603,"sha256":"0024f5568da7256db40f5d072a4a481c0f1dc167c8b87c0144b15c3202b318bc","status":"READ","summary":"Codex automated review envelope submitted against exact commit a1879fcfd698...; body is standard review metadata and the substantive findings, if any, live in inline review comments."},
+    {"kind":"review","id":5450188036,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","status":"READ","summary":"Owner review submission on db184491... has an empty body. It records a review event/subject but contains no semantic verdict or technical evidence by itself."},
+    {"kind":"review","id":5450240444,"sha256":"00ab621ad99043cf08112484064db7d729d1392bb5d3d60a2b7f7fd6e4ab0cc2","status":"READ","summary":"Codex automated review envelope submitted against exact commit a0487cd7d3f6...; standard metadata only, with technical content represented by associated inline comments."},
+    {"kind":"review","id":5450343709,"sha256":"060b7a59c15e4675a54842464bb91098b9b715e238cd41119ecda4e5e4724003","status":"READ","summary":"Codex automated review envelope submitted against exact commit 246ce614d0b8...; identifies review subject but is not itself a PASS/FAIL qualification."},
+    {"kind":"review","id":5453379313,"sha256":"134717ea8dd908200953500983af162269bdd5d32027764c54ce3863a4fda595","status":"READ","summary":"Codex automated review envelope submitted against exact commit 088b3a6879cb...; standard review announcement, not standalone technical evidence."},
+    {"kind":"review","id":5453551367,"sha256":"294acd5343cf3786164e2ca2115a01295255f229396e9e8bd2d0f3690889b24c","status":"READ","summary":"Codex automated review envelope submitted against exact commit a1fcf85ac4a0...; useful for chronology/subject identity only unless paired with inline findings or explicit verdict."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 6,
+    "objects_directly_read": 6,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 6,
+    "cumulative_new_discussion_objects_directly_read": 383,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 393,
+    "estimated_total_discussion_objects_directly_read": 390,
+    "estimated_total_discussion_objects_semantically_disposed": 400,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"REVIEW_SUBMISSION_IS_NOT_REVIEW_VERDICT","finding":"A GitHub review object can be only an envelope identifying reviewed commit and review event. The substantive technical finding must be traced to inline comments or an explicit review body; the submission event alone does not qualify code.","current_product_decision_change":false},
+    {"classification":"EXACT_REVIEW_SUBJECT_IDENTITY_IS_STILL_USEFUL","finding":"Even boilerplate review submissions are useful to establish which commit was the review subject, preventing later findings from being silently transferred to a newer head.","current_product_decision_change":false},
+    {"classification":"EMPTY_REVIEW_BODY_HAS_NO_SEMANTIC_VERDICT","finding":"An empty review body is an event, not evidence of approval, rejection or technical correctness.","current_product_decision_change":false}
+  ],
+  "current_action": "CONTINUE_EXHAUSTIVE_REVIEW_READING_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"reviews","id":5454069781,"sha256":"3cb4a1bcb64b7552a454420c50a69f742c8f7071730adef859aefbac383dc4d1"}
+}

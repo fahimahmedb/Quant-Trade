@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T12:28:00Z",
+  "branch": "research/edge-lab-continuous",
+  "actor": "interactive-research-continuation",
+  "control_summary": {"paused": false, "real_capital_authorized": false, "live_trading_authorized": false, "paid_usd_total": 0},
+  "stage": "PROSPECTIVE_DOCUMENTARY_ADMISSION",
+  "economic_access_authorized": false,
+  "economic_payloads_accessed": 0,
+  "candidate": {
+    "issuer": "Transocean Ltd.",
+    "cik": "0001451505",
+    "form": "DEFM14A",
+    "accession": "0001104659-26-115680",
+    "saved_feed_updated": "2026-10-14T06:03:31-04:00"
+  },
+  "primary_observed_fact": "Transocean's own SEC-filings page identifies accession 0001104659-26-115680 as a definitive proxy statement relating to a merger/acquisition. The transaction is the Transocean-Valaris business combination; fractional Transocean shares are handled with cash in lieu as merger consideration. This is not a reverse split and therefore does not satisfy either frozen reverse-split entitlement protocol.",
+  "decision": "INELIGIBLE_DOCUMENT",
+  "decision_reason": "The exact form/accession and issuer description establish a merger proxy, and the fractional-share cash treatment arises from merger exchange mechanics rather than a reverse split. The candidate fails A-E/CEF gates before any market-price or payoff access.",
+  "protocol_implications": {
+    "disc-us-issuer-oddlot-priority-prospective-l1-v1": "INELIGIBLE: no issuer tender SC TO-I or odd-lot priority.",
+    "disc-us-reverse-split-cash-in-lieu-prospective-l1-v2": "INELIGIBLE: fractional cash is merger consideration, not reverse-split fractional treatment.",
+    "disc-us-reverse-split-round-up-prospective-l1-v2": "INELIGIBLE: no reverse split or fractional round-up entitlement.",
+    "disc-us-spac-redemption-floor-prospective-l1-v1": "INELIGIBLE: no SPAC redemption mechanism.",
+    "disc-us-etf-liquidation-nav-convergence-prospective-l1-v1": "INELIGIBLE: operating-company merger proxy, not ETF liquidation.",
+    "disc-us-cef-rights-stepup-prospective-l1-v1": "INELIGIBLE: not a closed-end fund rights offering; filing predates CEF protocol T0."
+  },
+  "source_receipts": [
+    {"source":"Transocean issuer SEC filings","url":"https://investor.deepwater.com/sec-filings","observed_fact":"Issuer lists exact 2026-10-14 DEFM14A accession and describes it as definitive proxy statement relating to merger/acquisition."}
+  ],
+  "outcome_exposure": {"selected_market_price": false, "nav": false, "liquidation_distribution": false, "tender_spread": false, "future_return_or_pnl": false, "economic_look_opened": false},
+  "ordering_effect": "Transocean may be removed from the saved documentary queue; no reverse-split prospective claim is created.",
+  "next_action": "Continue the remaining saved documentary candidates without opening an economic look and preserve Calamos as an unresolved ETF chronology blocker.",
+  "inference_ceiling": ["No merger-arbitrage inference", "No economic verdict", "No exhaustive coverage claim", "No live or real-capital authorization"]
+}

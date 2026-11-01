@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "mission": "QUANT_EXHAUSTIVE_REPOSITORY_RECONSTRUCTION",
+  "owner_contract_comment_id": 6543997679,
+  "batch_id": "READ_BATCH_016_20261101",
+  "status": "COMPLETE",
+  "scope": "PR22_F1_RESUMABLE_ACQUISITION_REACQUISITION_FALSIFIER_PR23_AND_ACTIONS_TRANSPORT_6068136072_THROUGH_6070897287",
+  "decision_relevant_history_reopened": false,
+  "product_or_runtime_mutation": false,
+  "objects": [
+    {"kind":"issue-comment","id":6068136072,"sha256":"e0aa272175e79786596888ceb29aff2674aac7f229427d024801275c047455d2","status":"READ","summary":"Worker restart stops private F1 acquisition around 8100/21100 Stage-A and 8200 sealed Stage-B files, with no decompression/statistics. Acquisition is made resumable with verified-file skipping and atomic writes. Codex local-only fixes are reimplemented because their commits are absent remotely."},
+    {"kind":"issue-comment","id":6068175268,"sha256":"0718a11b73cc6241dece07bdab7cd88804adf9bfb1457d89c9f9fc94c6de608b","status":"READ","summary":"Roles specialize by actual runtime capability: Claude executor for network/data, Codex research-lead/convergence and F1 falsifier. Other swarm candidates are converged with blockers; Treasury->ZF is exploratory and paid-data gated."},
+    {"kind":"issue-comment","id":6068187726,"sha256":"5d3a83d4261fcbc4fb2857b711d56f4d1f629ff8902330d17d5b907ee63dfd49","status":"READ","summary":"Owner decision: no spending on data until an edge is proven. Treasury->ZF becomes BLOCKED_PAID_DATA; F1 Stage A remains next."},
+    {"kind":"issue-comment","id":6068199741,"sha256":"cacf4d86676e22aaa792aaf75c291b0734a5210fab8e3cb8849943100c48b771","status":"READ","summary":"Codex accepts specialized executor/falsifier roles with two-round cap; confirms F1 Stage A still acquiring, no result published and Stage B sealed."},
+    {"kind":"issue-comment","id":6069732469,"sha256":"d195f0c95ae5a95231e0080b07df366271809142c3b5e2d9f93b5264323f14a6","status":"READ","summary":"Full REACQUISITION_ACK succeeds: 223 post-cutoff items replayed, required anchors reread, remote state reconstructed, no substantive action during reacquisition. F1 outcome remains unexposed and private data inaccessible to Codex."},
+    {"kind":"issue-comment","id":6069749223,"sha256":"c8c327941b7e7c4fbabec1550a542d54b7d284455df9f763546b88d2731be62c","status":"READ","summary":"F1 falsifier round 1 finds two decision-changing defects before outcome: manifest-success ZIP may disappear without fail-closed result and forced liquidation still uses entry slippage. Fix-before-single-run verdict; if Claude already exposed outcome it must be preserved, not rerun."},
+    {"kind":"issue-comment","id":6070082149,"sha256":"5dfa0d6eed3615ca460b51da13d31667e4b45c551339ab4d8161a6e19473085a","status":"READ","summary":"PR23 publishes remote F1 fixes for four reproduced cases: missing manifest file, entry-frozen liquidation slippage, same-size mutation and Stage-A result replacement race. 32 F1 tests, system CI evidence; no real outcome read. Network now responds 200 but private acquisition status remains unknown, so no blind restart."},
+    {"kind":"issue-comment","id":6070235528,"sha256":"991935cf7df9c033dc9676e35d27f90650c17db75e78f7c0f0aae1a2fe4ddb51","status":"READ","summary":"PR23 last remote commit is CI-qualified; four decision defects closed but no edge conclusion. Coordination branch is deliberately not switched because prior look exposure is unknown; private Stage-A result must be recovered first."},
+    {"kind":"issue-comment","id":6070897287,"sha256":"931d97fd821ecf537ca6c27eb56c0384f51122174b45e33a20351cd10def6559","status":"READ","summary":"With private capture unrecoverable, F1 compressed Stage-A acquisition is moved to GitHub Actions only: names frozen before download, every expected archive requires size+public checksum, resumable coverage tests, <=5 req/s, no analysis and no Stage B. Artifacts retain interrupted/complete state for 30 days."}
+  ],
+  "batch_counts": {
+    "objects_resolved": 9,
+    "objects_directly_read": 9,
+    "objects_byte_identical_to_read": 0,
+    "unique_content_hashes_read": 9,
+    "cumulative_new_discussion_objects_directly_read": 151,
+    "cumulative_new_discussion_objects_byte_identical_to_read": 10,
+    "cumulative_new_discussion_objects_semantically_disposed": 161,
+    "estimated_total_discussion_objects_directly_read": 158,
+    "estimated_total_discussion_objects_semantically_disposed": 168,
+    "discussion_denominator": 423
+  },
+  "cross_object_findings": [
+    {"classification":"RESUMABILITY_REDUCES_SESSION_REWORK","finding":"Worker restart interrupted a multi-hour acquisition; verified-file skipping, atomic writes and later Actions artifacts turn acquisition from session-local effort into resumable durable progress.","current_product_decision_change":false},
+    {"classification":"REMOTE_ABSENCE_CAUSED_REIMPLEMENTATION","finding":"Codex F1 fixes claimed in local commits were absent remotely and had to be reimplemented, a direct example of duplicated day-human effort caused by non-durable publication.","current_product_decision_change":false},
+    {"classification":"REENTRY_CAN_WORK_WITH_REMOTE_ACCESS","finding":"Once remote access is available, Codex completes a full 223-item delta replay and explicit ACK without substantive action, demonstrating that GitHub-only context recovery is feasible when the remote evidence surface is actually reachable.","current_product_decision_change":false},
+    {"classification":"FALSIFIER_FOUND_MORE_PREOUTCOME_DEFECTS","finding":"After successful reacquisition, the falsifier still finds missing-file and liquidation-cost defects plus integrity races before outcome, supporting bounded adversarial review as decision-relevant rather than ceremonial.","current_product_decision_change":false},
+    {"classification":"DATA_TRANSPORT_BECOMES_DURABLE","finding":"F1 acquisition is eventually relocated from private scratchpad to GitHub Actions artifact transport without performing analysis, directly addressing the data-state continuity gap while preserving the economic look.","current_product_decision_change":false},
+    {"classification":"NO_PAID_DATA_BEFORE_EDGE","finding":"Owner explicitly blocks paid-data Treasury work until an edge is demonstrated, preventing infrastructure/data spend from outrunning economic evidence.","current_product_decision_change":false}
+  ],
+  "current_action": "F1_DURABLE_ACQUISITION_MEMORY_NO_PRODUCT_MUTATION",
+  "next_cursor": {"kind":"issue-comments","id":6077185924,"sha256":"90379c90e670e29345bc41be5b91c8b02e250503c4f86bc80950dc14af37c785"}
+}
