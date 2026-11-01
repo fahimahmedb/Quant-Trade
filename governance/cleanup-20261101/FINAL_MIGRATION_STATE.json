@@ -403,7 +403,7 @@
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
-      "reason": "Ten recurring worker prompts rebound and read back on code/canonical; enabled state/cadence preserved. Immediate run tool returns 404. Post-rebind independent_challenge run 9c467a95-f010-832d-a6bc-fd4ee0597885 is recorded completed at 15:35:01Z, but result payload is null, so exact canonical state read is unverified. Fundamental lane last result predates rebinding. Obtain a payload-bound canonical SHA/no-task wake (or next scheduled result), then fresh-lease retire this source."
+      "reason": "Consumer gate now PASS: both enabled recurring lanes produced payload-bound canonical idle wakes (fundamental 1ce994cf-4edc-832a-8b2c-7370bf02004d at 16:15Z on cacffe4f; independent e257da90-823c-8324-816f-0a75baa79fc5 at 16:36Z on b31f5ddf). No remaining demonstrated automation consumer. Retirement is deferred to the requested operational closure sequence; recheck consumers and exact remote SHA immediately before leased deletion."
     }
   },
   "tests": {
@@ -522,7 +522,7 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T15:47:49.102300+00:00",
+  "updated_utc": "2026-11-01T17:22:05.831183+00:00",
   "project_subject_before_receipt": "cc689d3fc3d7711cc9d332a6f532b47260fde28d",
   "code_canonical_sha": "cacffe4fba32ed393c4501638dcc76a8c370e063",
   "branch_dispositions": {
@@ -902,7 +902,7 @@
     "independent_review_claimed": false,
     "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
   },
-  "next_action": "Recover payload-bound canonical worker wake, authenticate existing Oracle host and migrate ref-only binding with rollback/health proof, obtain repository-settings access and switch prepared default to project/canonical; re-read affected tips and delete only these four residual refs after their individual gates pass.",
+  "next_action": "Operational job is ready and tested. Owner has no access now: keep administration/host mutations and residual retirement blocked until credentials are configured securely; then resume from sanitized host inventory and the default/host/fallback/two-wake gates.",
   "final_heads_observation_method": "Fresh ls-remote before final receipt publication. Project receipt commit is a descendant of the recorded project head; resolve the published receipt/remote ref for its own SHA rather than embedding a recursive self SHA.",
   "final_counters": {
     "start": 33,
@@ -978,5 +978,69 @@
     "interpretation": "This GitHub-hosted probe token lacks administrative read surfaces. Registered runners and secret names could not be enumerated (403); their existence is UNKNOWN, not absent. No native OCI profile/SSH config was observed on the ephemeral runner. A separate authorized App/PAT or OCI/SSH credential, or an existing self-hosted runner, is still required.",
     "documentation": "https://docs.github.com/en/actions/tutorials/authenticate-with-github_token",
     "temporary_workflow": "Removed after successful diagnostic; native run logs preserve evidence"
+  },
+  "operational_job": {
+    "status": "INSTALLED_AND_TESTED_BLOCKED_MISSING_CREDENTIALS",
+    "owner_latest_constraint": "No GitHub or Oracle access available now; do not request secrets in chat or claim operational closure.",
+    "workflow": ".github/workflows/quant-operational-maintenance.yml",
+    "workflow_ui": "https://github.com/fahimahmedb/Quant-Trade/actions/workflows/quant-operational-maintenance.yml",
+    "code_sha": "8d9a33053a834f7a4612da2b0f665bade57bc3e5",
+    "canonical_qualification_run": 41330854246,
+    "canonical_qualification_result": "success",
+    "readiness_run": 41330910250,
+    "readiness_job": 124920627626,
+    "readiness_result": {
+      "status": "READINESS_ONLY",
+      "admin_token_configured": false,
+      "ssh_configuration_present": false,
+      "permissions_verified": false,
+      "mutations": 0,
+      "operation_requested": "check-access",
+      "repository": "fahimahmedb/Quant-Trade",
+      "code_subject_sha": "8d9a33053a834f7a4612da2b0f665bade57bc3e5"
+    },
+    "local_and_hosted_guard_tests": "11/11 PASS; mutation gates, idempotency, schedule continuity, strict host key checking, credential cleanup, no stderr/key disclosure",
+    "available_operations": [
+      "check-access",
+      "host-inventory",
+      "switch-default",
+      "protect-canonicals"
+    ],
+    "host_inventory": "Read only via existing SSH account and noninteractive sudo; V1 /etc/quant-research/worker.json and V2 /etc/quant-research-v2/worker.json; both original units/timers and immutable release identities. No service install/restart or config mutation.",
+    "host_mutation": "NOT_EXECUTED_AND_NOT_IMPLEMENTED_WITHOUT_REVIEWED_HOST_INVENTORY",
+    "admin_mutation": "NOT_EXECUTED; all mutation modes require custom administrative token and explicit operation selection",
+    "protection_policy": {
+      "rules": [
+        "deletion",
+        "non_fast_forward"
+      ],
+      "exact_refs": [
+        "refs/heads/project/canonical",
+        "refs/heads/code/canonical"
+      ],
+      "bypass_actors": [],
+      "ordinary_fast_forward_writes": "allowed with existing write permission",
+      "required_pr_or_status_checks": false,
+      "activation_gate": "exactly two remaining refs and project/canonical default",
+      "existing_ruleset_change": "block rather than overwrite a different existing policy"
+    },
+    "setup_secrets": {
+      "QUANT_GH_ADMIN_TOKEN": "Repository-scoped fine-grained token / App token: Administration write, Contents read, Actions read, Environments read, Deployments read. No token value supplied to this conversation.",
+      "QUANT_ORACLE_SSH_KEY": "Existing authorized noninteractive SSH private key; not supplied to this conversation",
+      "QUANT_ORACLE_KNOWN_HOSTS": "Previously verified host public key/known_hosts entry; never disable host key checking"
+    },
+    "setup_repository_variables": {
+      "QUANT_ORACLE_HOST": "Existing intended Oracle host address",
+      "QUANT_ORACLE_USER": "Existing authorized host account with required read access via sudo -n"
+    },
+    "setup_urls": {
+      "secrets": "https://github.com/fahimahmedb/Quant-Trade/settings/secrets/actions",
+      "variables": "https://github.com/fahimahmedb/Quant-Trade/settings/variables/actions"
+    },
+    "default_and_future_default_workflow_parity": "PASS: identical workflow on retained old default and project/canonical, so workflow_dispatch remains discoverable before/after default switch",
+    "scheduled_operation": false,
+    "new_scheduler": false,
+    "new_oracle": false,
+    "next_action": "When authorized credentials become available, configure them securely in GitHub, execute host-inventory, review sanitized actual configuration and rollback plan, perform the minimal ref migration and verify two additional automatic wakes; execute default/protection operations only when their individual gates pass."
   }
 }
