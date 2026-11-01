@@ -3,7 +3,7 @@ name: V1 proof gate
 on:
   push:
     branches:
-      - reviewer/v1-final-red-team
+      - code/canonical
   workflow_dispatch:
 
 jobs:
