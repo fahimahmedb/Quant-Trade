@@ -38,6 +38,10 @@ def contract():
             "build_allowed_when_reuse_connect_repair_proven": False,
             "review_without_new_decision_evidence_allowed": False,
             "code_pass_grants_scientific_or_capital_authority": False,
+            "exact_claim_without_opened_primary_source_allowed": False,
+            "primary_evidence_contradiction_may_be_overridden": False,
+            "unknown_source_may_be_filled_by_inference": False,
+            "stale_scoped_evidence_may_support_current_claim": False,
         },
         "mission_required_fields": [
             "current_subject",
@@ -67,6 +71,7 @@ def contract():
                 "why_this_work_can_change_the_decision",
                 "minimal_decisive_test",
                 "counterexample",
+                "primary_evidence",
                 "durable_output_required",
                 "next_action_after_pass_fail_block",
                 "owner_authorization_required",
@@ -74,6 +79,22 @@ def contract():
                 "active_decision_lanes",
                 "mutating_builders_on_seam",
                 "requested_action",
+            ],
+        },
+        "exact_claim_provenance": {
+            "required_for_material_decision": True,
+            "admission_field": "primary_evidence",
+            "required_item_fields": [
+                "claim_id", "claim", "source_kind", "object_identity",
+                "observed_value", "support", "scope", "opened",
+            ],
+            "allowed_support": ["SUPPORTS", "CONTRADICTS", "UNKNOWN_SOURCE"],
+            "allowed_scope": ["CURRENT", "HISTORICAL"],
+            "source_must_be_opened_for_support": True,
+            "primary_contradiction_wins": True,
+            "stale_scope_cannot_support_current_claim": True,
+            "locator_sources_are_not_primary_evidence": [
+                "OWNER_CLAIM", "SUMMARY", "SEARCH_RESULT", "COMMENT", "CHAT_MEMORY"
             ],
         },
         "checkpoint_required_fields": [
@@ -96,6 +117,21 @@ def contract():
         "finish_claim": "QUANT_SYSTEM_V1_FINISHED",
         "post_migration_remote_branches": ["project/canonical", "code/canonical"],
     }
+
+
+def primary_evidence(**overrides):
+    item = {
+        "claim_id": "code-head",
+        "claim": "current code subject is c1",
+        "source_kind": "GIT_REF",
+        "object_identity": "code/canonical@c1",
+        "observed_value": "c1",
+        "support": "SUPPORTS",
+        "scope": "CURRENT",
+        "opened": True,
+    }
+    item.update(overrides)
+    return [item]
 
 
 def base_mission(**overrides):
@@ -132,6 +168,7 @@ def base_admission(**overrides):
         "why_this_work_can_change_the_decision": "bind real missions to fresh canonical identity",
         "minimal_decisive_test": "real receipt accepted; stale/copy rejected",
         "counterexample": "agent can still push material work with copied receipt",
+        "primary_evidence": primary_evidence(),
         "durable_output_required": "exact SHA + run + router status",
         "next_action_after_pass_fail_block": "run fresh-agent recovery or record bounded environment block",
         "owner_authorization_required": False,
@@ -319,3 +356,36 @@ def test_data_feed_only_push_is_not_material_ai_mission():
 
 def test_code_or_workflow_change_requires_real_admission():
     assert material_change_requires_admission(["scripts/validate_ai_working_method.py"], contract()) is True
+
+
+# Exact-claim provenance adversarial tests.
+def test_primary_evidence_is_required_for_material_admission():
+    errors = validate(base_admission(primary_evidence=[]))
+    assert "MISSING_PRIMARY_EVIDENCE" in errors
+
+
+def test_unopened_primary_source_cannot_support_exact_claim():
+    errors = validate(base_admission(primary_evidence=primary_evidence(opened=False)))
+    assert any("EXACT_CLAIM_WITHOUT_OPENED_PRIMARY_SOURCE" in error for error in errors)
+
+
+def test_locator_source_cannot_support_exact_claim():
+    errors = validate(base_admission(primary_evidence=primary_evidence(source_kind="OWNER_CLAIM")))
+    assert any("NON_PRIMARY_SOURCE_USED_FOR_EXACT_CLAIM" in error for error in errors)
+
+
+def test_historical_evidence_cannot_support_current_decision():
+    errors = validate(base_admission(primary_evidence=primary_evidence(scope="HISTORICAL")))
+    assert any("STALE_SCOPED_EVIDENCE_USED_FOR_CURRENT_DECISION" in error for error in errors)
+
+
+def test_unknown_source_is_recordable_without_being_invented():
+    evidence = primary_evidence(
+        source_kind="UNKNOWN",
+        object_identity="UNKNOWN",
+        observed_value="UNKNOWN",
+        support="UNKNOWN_SOURCE",
+        scope="CURRENT",
+        opened=False,
+    )
+    assert validate(base_admission(primary_evidence=evidence)) == []

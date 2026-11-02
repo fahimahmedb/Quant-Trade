@@ -1,24 +1,60 @@
 {
   "mission_id": "PRIMARY_EVIDENCE_PROVENANCE_HARDENING_20261102",
   "mission_kind": "GOVERNANCE",
-  "receipt_timestamp": "2026-11-02T04:51:00+01:00",
-  "project_canonical_sha": "bf4ffdd3db9899a88c2fee4129cb194a1a312ccc",
-  "code_canonical_sha": "3f69179d6859c954ebb65bc668ae1002ceb92ca9",
+  "receipt_timestamp": "2026-11-02T04:58:00+01:00",
+  "project_canonical_sha": "981bda86c81328fc960ac38477ec6e9432db0efd",
+  "code_canonical_sha": "a85088c89918082084c82867098f504cc7336e0a",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@91bb276a8b10c93cf3d88ade6210a007aded2e53",
-  "current_subject": {"project_sha":"bf4ffdd3db9899a88c2fee4129cb194a1a312ccc","code_sha":"3f69179d6859c954ebb65bc668ae1002ceb92ca9","object":"repair exact-claim provenance and freshness enforcement after reproduced unsupported exact claim"},
-  "current_blocker_or_decision": "A fresh-agent test reproduced an unsupported exact SHA/title/path assertion contradicted by an already-opened primary object; a second test showed stale exact identities can be historically valid but invalid for current-head claims.",
-  "target_gate_or_blocker": "protect F1/F3 decision integrity by preventing unsupported or stale exact claims from becoming authoritative project decisions",
+  "current_subject": {
+    "project_sha": "981bda86c81328fc960ac38477ec6e9432db0efd",
+    "code_sha": "a85088c89918082084c82867098f504cc7336e0a",
+    "object": "exact-claim provenance hardening"
+  },
+  "current_blocker_or_decision": "Project contract now requires structured primary evidence for decision-changing exact claims; code enforcement is pending.",
+  "target_gate_or_blocker": "protect F1/F3 decision integrity",
   "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
-  "why_this_work_can_change_the_decision": "The existing method says primary evidence wins but does not mechanically bind decision-changing exact claims to opened primary objects or reject contradictory/stale provenance.",
-  "minimal_decisive_test": "The existing validator rejects unsupported exact claims, contradictory primary evidence and current-head claims backed only by stale-scoped evidence, while accepting correctly scoped opened primary evidence.",
-  "counterexample": "Text-only guidance could still be ignored; the repair must be represented in the existing machine contract and validator tests, not only prose.",
-  "durable_output_required": "Bounded update to existing method/contract/entrypoint and existing validator/tests; no new methodology, router, scheduler, memory system or runtime path.",
-  "next_action_after_pass_fail_block": "PASS: run a blind normal-mission fresh-agent test, then return to F3. FAIL: repair only the provenance/freshness seam. BLOCK: PARK the hardening and keep F3 runtime lane independent.",
+  "why_this_work_can_change_the_decision": "The existing validator does not yet validate the new primary_evidence structure.",
+  "minimal_decisive_test": "Hosted method gate accepts valid opened current evidence and rejects missing, unopened, locator-only or stale-scoped supporting evidence.",
+  "counterexample": "Text-only rules can be ignored, so the existing validator and tests must enforce the evidence structure.",
+  "primary_evidence": [
+    {
+      "claim_id": "project-head",
+      "claim": "current project head",
+      "source_kind": "GIT_REF",
+      "object_identity": "project/canonical@981bda86c81328fc960ac38477ec6e9432db0efd",
+      "observed_value": "981bda86c81328fc960ac38477ec6e9432db0efd",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "code-head",
+      "claim": "current admitted code head",
+      "source_kind": "GIT_REF",
+      "object_identity": "code/canonical@a85088c89918082084c82867098f504cc7336e0a",
+      "observed_value": "a85088c89918082084c82867098f504cc7336e0a",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "router",
+      "claim": "current router identity",
+      "source_kind": "GIT_BLOB",
+      "object_identity": "governance/CURRENT_PROJECT_STATE.md@91bb276a8b10c93cf3d88ade6210a007aded2e53",
+      "observed_value": "91bb276a8b10c93cf3d88ade6210a007aded2e53",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    }
+  ],
+  "durable_output_required": "Existing validator, tests and code AGENTS updated and qualified on exact SHA.",
+  "next_action_after_pass_fail_block": "PASS: run one blind normal-mission fresh-agent test, then return to F3. FAIL: repair only this seam. BLOCK: PARK this hardening and keep F3 independent.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "active_seam": "PRIMARY_EVIDENCE_PROVENANCE",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
-  "authority_scope": "Governance integrity only. No runtime F3 mutation, deployment, economic experiment, scientific change, real capital or live trading authority."
+  "authority_scope": "Governance integrity only; no runtime mutation."
 }

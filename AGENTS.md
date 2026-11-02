@@ -17,7 +17,7 @@ Machine-readable method contract:
 For every material AI mission, before substantive mutation:
 
 - create or replace `.quant/MISSION_ADMISSION.json` from fresh canonical state;
-- bind the exact fresh `project/canonical` SHA, admitted `code/canonical` base SHA, current router blob identity, mission identity, blocker/decision, F0–F6 gate or recorded blocker, capability disposition, decisive test, counterexample, durable output, next action, Owner-authority status and active-seam/concurrency count;
+- bind the exact fresh `project/canonical` SHA, admitted `code/canonical` base SHA, current router blob identity, mission identity, blocker/decision, F0–F6 gate or recorded blocker, capability disposition, decisive test, counterexample, minimal `primary_evidence` for decision-changing exact claims, durable output, next action, Owner-authority status and active-seam/concurrency count;
 - validate that real receipt with `scripts/validate_ai_working_method.py --admission ...` against the fresh identities;
 - if either canonical head or router identity moves before publication, reconcile and regenerate the admission instead of reusing it;
 - include a matching `Mission-ID: <mission_id>` commit trailer for a material code change.
@@ -70,6 +70,16 @@ Built, tested, qualified, integrated, promoted, active, used and end-to-end prov
 - reviewer without exact candidate/evidence returns BLOCK_EVIDENCE/UNKNOWN;
 - publish exact remotely recoverable bytes/state before handoff or completion claim;
 - preserve one bounded next action after every material interruption.
+
+For every decision-changing exact claim naming a SHA, commit title, path, blob, run, receipt, current head or runtime event:
+
+- open the decisive primary object in the current mission;
+- record the minimal provenance in `.quant/MISSION_ADMISSION.json:primary_evidence`;
+- Owner statements, summaries, comments, search results and chat memory may locate an object but do not prove the exact claim;
+- if the opened primary object contradicts the candidate claim, the primary object wins and the candidate claim is `CONTRADICTED`;
+- if no identifiable primary source exists, use `UNKNOWN_SOURCE`; never fill the gap by inference;
+- historical/stale evidence cannot prove a current-head/current-runtime claim without fresh equivalence;
+- never state an exact SHA/title/path/blob/run as verified unless the decisive primary object was actually opened.
 
 A material PASS/handoff must be bound to the validated admission identity. The AI Working Method Gate performs post-push exact-SHA validation; that is detection/qualification, not server-side prevention unless GitHub required-check enforcement is separately proven.
 

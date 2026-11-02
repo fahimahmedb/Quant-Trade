@@ -3,8 +3,8 @@
 
 The validator covers both the declarative method contract and the real mission
 admission/completion interface. It deliberately does not decide scientific or
-runtime truth; it verifies identity, freshness, bounded authority and durable
-handoff invariants that can be checked mechanically.
+runtime truth; it verifies identity, freshness, bounded authority, provenance
+shape and durable handoff invariants that can be checked mechanically.
 """
 
 from __future__ import annotations
@@ -76,6 +76,10 @@ def validate_contract(contract: Mapping[str, Any]) -> List[str]:
         "build_allowed_when_reuse_connect_repair_proven",
         "review_without_new_decision_evidence_allowed",
         "code_pass_grants_scientific_or_capital_authority",
+        "exact_claim_without_opened_primary_source_allowed",
+        "primary_evidence_contradiction_may_be_overridden",
+        "unknown_source_may_be_filled_by_inference",
+        "stale_scoped_evidence_may_support_current_claim",
     }
     for key in sorted(required_false):
         if laws.get(key) is not False:
@@ -122,6 +126,7 @@ def validate_contract(contract: Mapping[str, Any]) -> List[str]:
             "why_this_work_can_change_the_decision",
             "minimal_decisive_test",
             "counterexample",
+            "primary_evidence",
             "durable_output_required",
             "next_action_after_pass_fail_block",
             "owner_authorization_required",
@@ -132,6 +137,28 @@ def validate_contract(contract: Mapping[str, Any]) -> List[str]:
         ):
             if field not in required:
                 errors.append(f"mission_admission.required_fields missing {field}")
+
+    provenance = contract.get("exact_claim_provenance")
+    if not isinstance(provenance, Mapping):
+        errors.append("exact_claim_provenance contract required")
+    else:
+        if provenance.get("required_for_material_decision") is not True:
+            errors.append("exact_claim_provenance.required_for_material_decision must be true")
+        if provenance.get("admission_field") != "primary_evidence":
+            errors.append("exact_claim_provenance.admission_field must be primary_evidence")
+        if provenance.get("source_must_be_opened_for_support") is not True:
+            errors.append("exact_claim_provenance.source_must_be_opened_for_support must be true")
+        if provenance.get("primary_contradiction_wins") is not True:
+            errors.append("exact_claim_provenance.primary_contradiction_wins must be true")
+        if provenance.get("stale_scope_cannot_support_current_claim") is not True:
+            errors.append("exact_claim_provenance.stale_scope_cannot_support_current_claim must be true")
+        required_item_fields = set(provenance.get("required_item_fields", []))
+        expected_item_fields = {
+            "claim_id", "claim", "source_kind", "object_identity",
+            "observed_value", "support", "scope", "opened",
+        }
+        if not expected_item_fields.issubset(required_item_fields):
+            errors.append("exact_claim_provenance.required_item_fields incomplete")
     return errors
 
 
@@ -229,6 +256,7 @@ def admission_required_fields(contract: Mapping[str, Any]) -> Sequence[str]:
         "why_this_work_can_change_the_decision",
         "minimal_decisive_test",
         "counterexample",
+        "primary_evidence",
         "durable_output_required",
         "next_action_after_pass_fail_block",
         "owner_authorization_required",
@@ -237,6 +265,55 @@ def admission_required_fields(contract: Mapping[str, Any]) -> Sequence[str]:
         "mutating_builders_on_seam",
         "requested_action",
     )
+
+
+def validate_primary_evidence(contract: Mapping[str, Any], admission: Mapping[str, Any]) -> List[str]:
+    errors: List[str] = []
+    cfg = contract.get("exact_claim_provenance", {})
+    if not isinstance(cfg, Mapping):
+        return ["MISSING_EXACT_CLAIM_PROVENANCE_CONTRACT"]
+
+    field = str(cfg.get("admission_field") or "primary_evidence")
+    evidence = admission.get(field)
+    if cfg.get("required_for_material_decision", False) and (not isinstance(evidence, list) or not evidence):
+        return ["MISSING_PRIMARY_EVIDENCE"]
+    if evidence is None:
+        return errors
+    if not isinstance(evidence, list):
+        return ["INVALID_PRIMARY_EVIDENCE_SHAPE"]
+
+    required_fields = tuple(cfg.get("required_item_fields", ()))
+    allowed_support = set(cfg.get("allowed_support", ("SUPPORTS", "CONTRADICTS", "UNKNOWN_SOURCE")))
+    allowed_scope = set(cfg.get("allowed_scope", ("CURRENT", "HISTORICAL")))
+    locator_sources = set(cfg.get("locator_sources_are_not_primary_evidence", ()))
+
+    for index, item in enumerate(evidence):
+        prefix = f"PRIMARY_EVIDENCE_{index}"
+        if not isinstance(item, Mapping):
+            errors.append(f"{prefix}_INVALID_ITEM")
+            continue
+        for name in required_fields:
+            if name not in item or _missing(item[name]):
+                errors.append(f"{prefix}_MISSING_{name.upper()}")
+        if any(error.startswith(prefix + "_MISSING_") for error in errors):
+            continue
+
+        support = str(item.get("support"))
+        scope = str(item.get("scope"))
+        source_kind = str(item.get("source_kind"))
+        opened = item.get("opened")
+
+        if support not in allowed_support:
+            errors.append(f"{prefix}_INVALID_SUPPORT")
+        if scope not in allowed_scope:
+            errors.append(f"{prefix}_INVALID_SCOPE")
+        if support in {"SUPPORTS", "CONTRADICTS"} and opened is not True:
+            errors.append(f"{prefix}_EXACT_CLAIM_WITHOUT_OPENED_PRIMARY_SOURCE")
+        if support == "SUPPORTS" and source_kind in locator_sources:
+            errors.append(f"{prefix}_NON_PRIMARY_SOURCE_USED_FOR_EXACT_CLAIM")
+        if support == "SUPPORTS" and scope == "HISTORICAL":
+            errors.append(f"{prefix}_STALE_SCOPED_EVIDENCE_USED_FOR_CURRENT_DECISION")
+    return errors
 
 
 def validate_real_mission_admission(
@@ -276,6 +353,8 @@ def validate_real_mission_admission(
         errors.append("MISSING_BLOCKER_OR_DECISION")
     if not admission.get("next_action_after_pass_fail_block"):
         errors.append("MISSING_NEXT_ACTION")
+
+    errors.extend(validate_primary_evidence(contract, admission))
 
     existing = admission.get("existing_capability")
     if existing not in {"REUSE", "CONNECT", "REPAIR", "BUILD_REQUIRED", "UNKNOWN"}:
