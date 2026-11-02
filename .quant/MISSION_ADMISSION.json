@@ -1,28 +1,28 @@
 {
-  "mission_id": "ORACLE_OWNER_REBIND_RECEIPT_20261102T013446Z",
+  "mission_id": "F1_BEHAVIORAL_RECOVERY_CAPITALIZATION_20261102",
   "mission_kind": "OPERATOR",
-  "receipt_timestamp": "2026-11-02T02:38:47.290286+01:00",
+  "receipt_timestamp": "2026-11-02T02:42:00+01:00",
   "project_canonical_sha": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000",
-  "code_canonical_sha": "5f5196dd6570824c02a080bc82f6a890ae1bdfd0",
+  "code_canonical_sha": "e1712f131f3d21f1208562ccf4cbab00f7b0166d",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@22e5301448a50328578bebdc62c97318f9a9d5c8",
   "current_subject": {
     "project_sha": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000",
-    "code_sha": "5f5196dd6570824c02a080bc82f6a890ae1bdfd0",
-    "object": "Owner-executed existing Oracle V1/V2 ref-only rebind at 2026-11-02T01:34:46.002214Z; automatic wakes pending"
+    "code_sha": "e1712f131f3d21f1208562ccf4cbab00f7b0166d",
+    "object": "Fresh repository-only F1 behavioral recovery witness and minimal canonical router capitalization"
   },
-  "current_blocker_or_decision": "Root apply receipt now exists for both configs; two post-rebind automatic wakes and final operational consumers/admin/retirement gates remain unverified.",
-  "target_gate_or_blocker": "F0_TWO_BRANCH_AUTHORITY / current Oracle ref dependency; evidence checkpoint only",
+  "current_blocker_or_decision": "A genuine fresh repository-only session passed the F1 recovery contract on the exact current canonical pair, but the canonical router still records F1 as behaviorally unproven and fresh-agent access unavailable.",
+  "target_gate_or_blocker": "F1_RECOVERABLE_CANONICAL_STATE",
   "existing_capability": "REUSE",
   "requested_action": "REUSE",
-  "why_this_work_can_change_the_decision": "Preserve the new primary Owner host receipt and exact before/after hashes while continuing independent GitHub checks; prevent a false claim of two wakes or stale host-unavailable state.",
-  "minimal_decisive_test": "Qualified status-wrapper bytes match Owner after SHA256; preserve unchanged timer/release/model counters; wait for two distinct timer-correlated canonical receipts and final consumer checks before retirement.",
-  "counterexample": "A successful ref change or active timer is mistaken for two automatic wakes, or a stale old live tip is deleted before provenance/consumer gates.",
-  "durable_output_required": "Existing final migration state, dependency matrix, migration receipt and current router updated with attributed Owner evidence and exact remaining gates.",
-  "next_action_after_pass_fail_block": "Keep Owner observer running; consume its final JSON; independently finish scoped GitHub/host consumer and exact archive/lease checks only after applicable proof.",
+  "why_this_work_can_change_the_decision": "The existing bootstrap, method, validator and router are sufficient. The exact fresh witness and independent remote cross-check resolve F1 without new implementation; only the existing admission and router surfaces require capitalization.",
+  "minimal_decisive_test": "Verify both named canonical refs and router blob; prove no F1-critical semantic change from the witness subject; challenge objective, authority, current-router, test-scope, disposition, stop-law and authority-boundary recovery; validate this receipt with the canonical validator; qualify the exact final subjects.",
+  "counterexample": "A post-witness change to bootstrap, authority, method or router semantics would require retest; alternatively, a witness that treated one NOOP wake as F3, historical CI as newly executed, or default/historical branches as authority would fail F1.",
+  "durable_output_required": "A fresh admission and completion binding on code/canonical plus the existing project/canonical router updated with exact F1 witness identities, strict claim ceiling, current one-wake residual state and next real gate.",
+  "next_action_after_pass_fail_block": "After F1 capitalization, preserve F3 as open and verify two distinct automatic timer-correlated wakes plus real Codex-result consumption; do not rerun F1 absent contradictory F1-critical evidence.",
   "owner_authorization_required": false,
   "owner_authorized": true,
-  "active_seam": "ORACLE_REF_MIGRATION_EVIDENCE_CHECKPOINT",
-  "active_decision_lanes": 1,
+  "active_seam": "F1_BEHAVIORAL_RECOVERY_CAPITALIZATION",
+  "active_decision_lanes": 2,
   "mutating_builders_on_seam": 1,
-  "authority_scope": "Original Owner mission authorizes ref migration/conditional retirement. This checkpoint performs no host mutation, branch deletion, new deployment, experiment or manual worker wake."
+  "authority_scope": "The Owner explicitly requested F1-only canonical capitalization. This mission does not authorize runtime execution, branch cleanup, scientific changes, economic experiments, deployment, real capital or live trading."
 }
