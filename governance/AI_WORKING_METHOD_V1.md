@@ -52,7 +52,8 @@ The receipt is an input to enforcement, not documentation. It must contain fresh
 - next action after PASS/FAIL/BLOCK;
 - Owner-authorization requirement/status;
 - active seam and concurrency counts;
-- requested action.
+- requested action;
+- `primary_evidence` for decision-changing exact claims, as defined in §13.5.
 
 Before substantive work, validate the real receipt with the canonical validator on `code/canonical` against the fresh project SHA, admitted code SHA and router identity.
 
@@ -171,9 +172,32 @@ The real admission interface and its tests must fail closed for at least:
 - missing next action;
 - wrong-SHA completion;
 - false project finish while any required F0–F6 gate is OPEN/BLOCK/UNKNOWN;
-- head movement after admission without reconciliation.
+- head movement after admission without reconciliation;
+- decision-changing exact claims without opened primary provenance;
+- a claim promoted despite an opened primary object contradicting it;
+- current-state claims supported only by stale/historical-scoped exact evidence;
+- `UNKNOWN_SOURCE` silently filled by inference.
 
 Distinguish `TEST_PLANNED`, `TEST_EXECUTED` and `TEST_PASSED`.
+
+## 13.5 Exact-claim provenance and freshness law
+
+This law applies only to **decision-changing exact claims**, not to every descriptive sentence. An exact claim names or materially relies on a concrete SHA, commit title, path, blob, run, receipt, current head, runtime event or other exact identity.
+
+For each such claim used to admit work, change a canonical decision, declare PASS/FAIL/BLOCK, or select the next action:
+
+1. open the decisive primary object in the current mission;
+2. record it in the existing admission field `primary_evidence` with at least: `claim_id`, `claim`, `source_kind`, `object_identity`, `observed_value`, `support`, `scope`, and `opened=true`;
+3. use `support=SUPPORTS` only when the opened object actually supports the claim;
+4. if the opened primary object conflicts with the candidate claim, the primary object wins and the claim is `CONTRADICTED`; do not invent a reconciliation;
+5. if no identifiable primary source can be produced, use `UNKNOWN_SOURCE`; do not reconstruct a SHA/title/path/run from plausibility, memory, a summary or adjacent code;
+6. search results, Owner statements, summaries, comments and chat memory may locate evidence but are not sufficient primary evidence for an exact decision-changing claim;
+7. historical/stale evidence must be scoped as historical. It cannot prove a current-head/current-runtime claim unless freshness/equivalence is separately established;
+8. `EXISTS`, `BUILT`, `QUALIFIED`, `INTEGRATED`, `PROMOTED`, `ACTIVE`, `USED` and `PROVEN_END_TO_END` remain distinct claim levels.
+
+The evidence set must be minimal: record only exact claims that can change the decision, unblock the mission or reveal a material risk. Do not turn this rule into exhaustive repository archaeology.
+
+The machine contract/validator must fail closed when required provenance is missing, the source was not opened, an opened primary object is declared as supporting a claim it actually contradicts, or stale-scoped evidence is used as current authority. For mechanically inspectable Git identities, exact-object validation should be performed by the existing validator/CI rather than trusted from prose alone.
 
 ## 14. Stop law
 

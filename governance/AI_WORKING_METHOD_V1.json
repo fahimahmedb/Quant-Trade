@@ -19,7 +19,9 @@
     "PARK",
     "BLOCK",
     "UNKNOWN",
-    "BLOCK_EVIDENCE"
+    "BLOCK_EVIDENCE",
+    "UNKNOWN_SOURCE",
+    "CONTRADICTED"
   ],
   "mission_required_fields": [
     "current_subject",
@@ -54,6 +56,7 @@
       "why_this_work_can_change_the_decision",
       "minimal_decisive_test",
       "counterexample",
+      "primary_evidence",
       "durable_output_required",
       "next_action_after_pass_fail_block",
       "owner_authorization_required",
@@ -66,6 +69,40 @@
     "stale_after_code_head_move": true,
     "stale_after_router_identity_move": true,
     "copied_receipt_allowed": false
+  },
+  "exact_claim_provenance": {
+    "required_for_material_decision": true,
+    "admission_field": "primary_evidence",
+    "decision_changing_exact_claims_only": true,
+    "required_item_fields": [
+      "claim_id",
+      "claim",
+      "source_kind",
+      "object_identity",
+      "observed_value",
+      "support",
+      "scope",
+      "opened"
+    ],
+    "allowed_support": [
+      "SUPPORTS",
+      "CONTRADICTS",
+      "UNKNOWN_SOURCE"
+    ],
+    "allowed_scope": [
+      "CURRENT",
+      "HISTORICAL"
+    ],
+    "source_must_be_opened_for_support": true,
+    "primary_contradiction_wins": true,
+    "stale_scope_cannot_support_current_claim": true,
+    "locator_sources_are_not_primary_evidence": [
+      "OWNER_CLAIM",
+      "SUMMARY",
+      "SEARCH_RESULT",
+      "COMMENT",
+      "CHAT_MEMORY"
+    ]
   },
   "enforcement_levels": {
     "agent_pre_work_validation": "REQUIRED_BY_CANONICAL_ENTRYPOINT",
@@ -95,7 +132,11 @@
     "external_block_global_stops_independent_lane": false,
     "build_allowed_when_reuse_connect_repair_proven": false,
     "review_without_new_decision_evidence_allowed": false,
-    "code_pass_grants_scientific_or_capital_authority": false
+    "code_pass_grants_scientific_or_capital_authority": false,
+    "exact_claim_without_opened_primary_source_allowed": false,
+    "primary_evidence_contradiction_may_be_overridden": false,
+    "unknown_source_may_be_filled_by_inference": false,
+    "stale_scoped_evidence_may_support_current_claim": false
   },
   "finish_gates": [
     {
