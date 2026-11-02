@@ -31,5 +31,8 @@ Previous 247 deletions stand; no re-audit or restoration.
 | `research/edge-lab-continuous` | `68bbab8ec990c813310224bc8737c41480853108` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:36:29.092809+00:00 |
 | `audit/independent-meta-audit-20261101` | `0881c2b765837d8f833fb7b2567dab7ac3cca081` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:37:59.849834+00:00 |
 | `audit/forensic-checkpoint-20261019` | `d14415c09b63b26e5839fee445ba100989c429fe` | project/canonical reachable original lineage; code/canonical current executable authority | 2026-11-01T15:38:04.367350+00:00 |
+| `builder/research-os-autonomous-loop-20261015` | `47cb12bead9910d6fce7f30cf6408c752a713ded` | project/canonical archive `f48904e79f79707c21ac2f0913f28fe5a9653f32`; code/canonical runtime authority | 2026-11-02T02:31:31.268834Z |
+| `builder/oracle-economic-loop-recovery-20261019` | `99f0496296a34a767dfd95a092523b10ad5fbf49` | project/canonical archive `f48904e79f79707c21ac2f0913f28fe5a9653f32`; code/canonical runtime authority | 2026-11-02T02:31:31.268834Z |
+| `builder/oracle-v2-core-20261020` | `8fcd25aa4bd78574e2b97c1721de3cbd60b4f818` | project/canonical archive `f48904e79f79707c21ac2f0913f28fe5a9653f32`; code/canonical runtime authority | 2026-11-02T02:31:31.268834Z |
 
 Full gate/test/provenance details are in FINAL_MIGRATION_STATE.json and MIGRATION_RECEIPT.md.

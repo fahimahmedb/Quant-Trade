@@ -386,24 +386,33 @@
       "verified_absent_at": "2026-11-01T15:38:04.367350+00:00",
       "lease": "--force-with-lease=refs/heads/audit/forensic-checkpoint-20261019:d14415c09b63b26e5839fee445ba100989c429fe",
       "migration_proof": "FINAL_MIGRATION_STATE tests/bindings and MIGRATION_RECEIPT; no current actionable issue/PR/automation/external consumer; historical mentions classified, not ignored"
+    },
+    {
+      "branch": "builder/research-os-autonomous-loop-20261015",
+      "sha": "47cb12bead9910d6fce7f30cf6408c752a713ded",
+      "replacement": "project/canonical lineage archive f48904e79f79707c21ac2f0913f28fe5a9653f32; code/canonical executable/runtime authority",
+      "verified_absent_at": "2026-11-02T02:31:31.268834Z",
+      "deletion_method": "server-side atomic force-with-lease exact SHA"
+    },
+    {
+      "branch": "builder/oracle-economic-loop-recovery-20261019",
+      "sha": "99f0496296a34a767dfd95a092523b10ad5fbf49",
+      "replacement": "project/canonical lineage archive f48904e79f79707c21ac2f0913f28fe5a9653f32; code/canonical executable/runtime authority",
+      "verified_absent_at": "2026-11-02T02:31:31.268834Z",
+      "deletion_method": "server-side atomic force-with-lease exact SHA"
+    },
+    {
+      "branch": "builder/oracle-v2-core-20261020",
+      "sha": "8fcd25aa4bd78574e2b97c1721de3cbd60b4f818",
+      "replacement": "project/canonical lineage archive f48904e79f79707c21ac2f0913f28fe5a9653f32; code/canonical executable/runtime authority",
+      "verified_absent_at": "2026-11-02T02:31:31.268834Z",
+      "deletion_method": "server-side atomic force-with-lease exact SHA"
     }
   ],
   "blocked": {
     "blue/master-v2-2026-09-20": {
       "disposition": "BLOCK",
       "reason": "Repository default; no supported authenticated repository-settings mutation, Pages/environment/protection endpoint access unavailable (gh API Forbidden; connector routes unsupported). Collector workflow now rebinds code/canonical. Complete settings preflight, carry existing schedule to project/canonical, PATCH default_branch, verify default and one scheduled routing before deletion."
-    },
-    "builder/oracle-v2-core-20261020": {
-      "disposition": "PARK",
-      "reason": "V2 config rebound to code/canonical; two automatic primary V2 wakes and model health PASS, disabled V1 preserved. PARK only until targeted final host/GitHub other-consumer sweep, final tip provenance/reachability and immediate exact-SHA lease gates. No real Codex consumption claim."
-    },
-    "builder/oracle-economic-loop-recovery-20261019": {
-      "disposition": "PARK",
-      "reason": "V1 fallback config rebound to code/canonical; two automatic primary V2 wakes and model health PASS, disabled V1 preserved. PARK only until targeted final host/GitHub other-consumer sweep, final tip provenance/reachability and immediate exact-SHA lease gates. No real Codex consumption claim."
-    },
-    "builder/research-os-autonomous-loop-20261015": {
-      "disposition": "PARK",
-      "reason": "Consumer gate now PASS: both enabled recurring lanes produced payload-bound canonical idle wakes (fundamental 1ce994cf-4edc-832a-8b2c-7370bf02004d at 16:15Z on cacffe4f; independent e257da90-823c-8324-816f-0a75baa79fc5 at 16:36Z on b31f5ddf). No remaining demonstrated automation consumer. Retirement is deferred to the requested operational closure sequence; recheck consumers and exact remote SHA immediately before leased deletion."
     }
   },
   "tests": {
@@ -523,7 +532,7 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-02T02:24:38.041718+00:00",
+  "updated_utc": "2026-11-02T02:31:31.268834Z",
   "project_subject_before_receipt": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000",
   "code_canonical_sha": "d61cd4b6398376d4e4878003d64360a8e3ee1ffb",
   "branch_dispositions": {
@@ -695,9 +704,9 @@
   },
   "automation_wake_verification": "PASS: both enabled lanes have payload-bound post-rebind canonical idle wakes, as recorded in operational_job receipt and dependency matrix. Fresh consumer/lease checks remain required at retirement.",
   "evidence_archive_commit": "fac556b52ff048255d987bed6a6755eab4766fd5",
-  "evidence_archive_integration_commit": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
+  "evidence_archive_integration_commit": "f48904e79f79707c21ac2f0913f28fe5a9653f32",
   "migration_commit": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-  "status": "HOST_REF_REBOUND_TWO_AUTOMATIC_WAKES_PASS_FINAL_CONSUMER_ADMIN_PENDING",
+  "status": "THREE_BRANCHES_ONLY_OLD_DEFAULT_ADMIN_BLOCK",
   "default_binding_commit": "fe310c0a",
   "default_preflight": {
     "scheduled_workflows": [
@@ -815,21 +824,15 @@
   },
   "final_heads": {
     "blue/master-v2-2026-09-20": "9ceff5336ba35f61530ab01bbe8f6f8f3b5cb8b0",
-    "builder/oracle-economic-loop-recovery-20261019": "99f0496296a34a767dfd95a092523b10ad5fbf49",
-    "builder/oracle-v2-core-20261020": "8fcd25aa4bd78574e2b97c1721de3cbd60b4f818",
-    "builder/research-os-autonomous-loop-20261015": "47cb12bead9910d6fce7f30cf6408c752a713ded",
-    "code/canonical": "23c559e2670ed7206f7bceab2a949d425108adfa",
-    "project/canonical": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000"
+    "code/canonical": "69541aac14b216ffafa18be7b57451b01505286f",
+    "project/canonical": "f48904e79f79707c21ac2f0913f28fe5a9653f32"
   },
-  "branch_count_end": 6,
-  "branches_deleted_this_mission": 27,
+  "branch_count_end": 3,
+  "branches_deleted_this_mission": 30,
   "branches_remaining": [
     "blue/master-v2-2026-09-20",
-    "builder/oracle-economic-loop-recovery-20261019",
-    "builder/oracle-v2-core-20261020",
-    "builder/research-os-autonomous-loop-20261015",
-    "code/canonical",
-    "project/canonical"
+    "project/canonical",
+    "code/canonical"
   ],
   "final_verdict": "BLOCK",
   "two_branch_target_reached": false,
@@ -903,7 +906,7 @@
     "independent_review_claimed": false,
     "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
   },
-  "next_action": "Targeted read-only final host consumers and GitHub admin default migration; archive exact final tips and recheck leases before any deletion.",
+  "next_action": "Change GitHub default from blue/master-v2-2026-09-20 to project/canonical, verify one scheduled routing, then exact-lease delete old default and protect both canonicals.",
   "final_heads_observation_method": "Fresh GitHub REST branches before this project receipt; project SHA is the pre-receipt subject; live old V2 ref may still advance and requires a fresh lease read at retirement.",
   "final_counters": {
     "start": 33,
@@ -1112,11 +1115,30 @@
     },
     "host_rebind_executed": true,
     "post_rebind_automatic_wakes_verified": 2,
-    "branch_retirements_this_resume": 0,
+    "branch_retirements_this_resume": [
+      {
+        "branch": "builder/research-os-autonomous-loop-20261015",
+        "sha": "47cb12bead9910d6fce7f30cf6408c752a713ded",
+        "archive": "f48904e79f79707c21ac2f0913f28fe5a9653f32",
+        "verified_absent_at": "2026-11-02T02:31:31.268834Z"
+      },
+      {
+        "branch": "builder/oracle-economic-loop-recovery-20261019",
+        "sha": "99f0496296a34a767dfd95a092523b10ad5fbf49",
+        "archive": "f48904e79f79707c21ac2f0913f28fe5a9653f32",
+        "verified_absent_at": "2026-11-02T02:31:31.268834Z"
+      },
+      {
+        "branch": "builder/oracle-v2-core-20261020",
+        "sha": "8fcd25aa4bd78574e2b97c1721de3cbd60b4f818",
+        "archive": "f48904e79f79707c21ac2f0913f28fe5a9653f32",
+        "verified_absent_at": "2026-11-02T02:31:31.268834Z"
+      }
+    ],
     "branch_retirement_gate": "Inventory/back up; preserve release and behavior; minimally migrate V2 and V1 fallback binding; verify two automatic post-rebind wakes; final consumer/SHA/lease checks; default role separately migrated before its retirement.",
     "counterexample": "A timer can be active and the model healthy while the config still points at an old state branch or V1 fallback can later reintroduce it.",
-    "next_action": "Targeted read-only final host consumers and GitHub admin default migration; archive exact final tips and recheck leases before any deletion.",
-    "phase": "HOST_REF_REBOUND_TWO_AUTOMATIC_WAKES_PASS_FINAL_CONSUMER_ADMIN_PENDING",
+    "next_action": "Change GitHub default from blue/master-v2-2026-09-20 to project/canonical, verify one scheduled routing, then exact-lease delete old default and protect both canonicals.",
+    "phase": "THREE_BRANCHES_ONLY_OLD_DEFAULT_ADMIN_BLOCK",
     "root_inventory": {
       "source": "Owner-executed hash-verified 8d9a33053a834f7a4612da2b0f665bade57bc3e5 inventory helper via existing SSH; allowlisted JSON only",
       "received_utc": "2026-11-01T19:16:14.778448+00:00",

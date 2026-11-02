@@ -198,3 +198,5 @@ Closed authorities remain:
 Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
 
 Owner verified receipt at 2026-11-02T02:20:22.679034Z supersedes earlier pending timer-correlation statements above: two distinct automatic timer-correlated canonical A67 wakes PASS, model PASS, V1 inactive. Full identities/invariants are in cleanup-20261101/FINAL_MIGRATION_STATE.json. Existing A67 release remains installed; real Codex-result consumption/F3 is still NOT_PROVEN. Branch retirement awaits targeted final consumers, exact provenance/lease and GitHub default/admin gates.
+
+Final branch migration checkpoint: three historical survivor pointers were atomically exact-lease deleted at 2026-11-02T02:31:31.268834Z after full-lineage archive `f48904e79f79707c21ac2f0913f28fe5a9653f32`. Only `project/canonical`, `code/canonical`, and old GitHub default `blue/master-v2-2026-09-20` remain. F0 awaits only the admin default switch, scheduled-routing verification, old-default leased deletion and canonical protections.
