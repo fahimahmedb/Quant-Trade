@@ -1468,7 +1468,7 @@
       "admission_identity": "sha256:ba829e067c023ce810f7716c4ac12dfbba5ed16ae779a58a4b9eb9d40be3001a",
       "source_sha256": "d70077ab43f86102e9f06db3dbb21f69fbbb8b5aeb3bdcc3f6633b5f1e908f11",
       "diagnosis": "systemctl LastTriggerUSecMonotonic returns formatted duration; int rejects it. Read raw D-Bus uint64, preserving existing correlation and guards.",
-      "tests": "38 operational regression tests PASS on exact code subject; hosted qualification pending",
+      "tests": "38 operational regression tests PASS; exact-head hosted Canonical Code Qualification 41376572349 SUCCESS and AI Working Method Gate 41376572076 SUCCESS",
       "owner_journal": "four distinct canonical A67 NOOP wakes after apply; latest matching timer/service pair; second timer-correlated witness remains required",
       "next_action": "Observe only against existing private backup using repaired qualified helper; never reapply or manually start worker."
     }
