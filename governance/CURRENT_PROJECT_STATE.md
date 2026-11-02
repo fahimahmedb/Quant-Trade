@@ -5,6 +5,30 @@ DATE=`2026-11-02`
 
 This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
 
+## Current decision frontier
+
+This block is intentionally decision-first. A fresh agent must inspect the strongest existing evidence for the next gate before proposing any new mission or execution.
+
+`CURRENT_GATE=F3_REAL_VM_MULTI_WAKE`
+`CURRENT_BLOCKER=REAL_CODEX_RESULT_CONSUMPTION_NOT_PROVEN`
+`NEXT_GATE=F4_GLOBAL_MISSION_CONTINUATION`
+
+Strongest existing F4-relevant runtime witnesses already persisted on `code/canonical`:
+- `c58753604799eafaae6e06924efc57c809a62f9c` — real Research OS wake, `NOOP_FRONTIER_EXHAUSTED`, queue `72/72` terminal, `ready=0`, `active=0`, `writes=0`, `hosted_model_calls=0`, all economic/live authorities false;
+- `280c67f96e4ba8deeb2b212d6277fd6bee1c5d21` — earlier equivalent canonical runtime witness with the same bounded NOOP shape.
+
+These witnesses prove a real bounded runtime can reach terminal global queue state and persist a safe durable NOOP without inventing work. They do **not** by themselves authorize the statement `F4=PASS` until the canonical F4 definition is explicitly checked against the exact witness semantics.
+
+`MANDATORY_NEXT_DECISION=CHALLENGE_EXISTING_EVIDENCE_BEFORE_NEW_WORK`
+
+Before any new F4/F5 execution:
+1. compare the best existing witness against the exact F4/F5 gate definition;
+2. if the gate is already satisfied, return `NO_CHANGE_REQUIRED`, capitalize the PASS on exact evidence, and move to the next gate;
+3. if it is not satisfied, name the exact missing property and produce only the smallest additional witness capable of proving or falsifying that property;
+4. do not create a new scheduler, mission selector, control plane, router, memory system or architecture to obtain a proof that existing capability can already provide.
+
+This decision-frontier block is a surfacing aid inside the existing canonical router, not a second methodology and not authority to promote F4/F5 without exact qualification.
+
 ## Authority
 
 - PROJECT/GOVERNANCE AUTHORITY: `project/canonical`
@@ -14,7 +38,7 @@ This file is the single current-state router. Historical detail remains in Git h
 - no destructive branch cleanup is authorized by this router.
 
 Current exact code subject at this update:
-`code/canonical=b02994d690dec3e720a8288556dc26d8964ffbdc`
+`code/canonical=33d69af2a3acfcd2ea124aeef682278fce313f42`
 
 ## Current working method
 
@@ -165,11 +189,11 @@ A local/environment blocker affects only its dependent lane. It does not authori
 
 ### Owner-authorized final branch migration — rebound, automatic correlation pending
 
-The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The Owner confirms both bindings applied; four canonical NOOP receipts exist. The observer duration-format bug is repaired by exact code 72b73428307d4a3bdb966a99fef9f147a41e2592 (38 operational tests PASS; hosted Canonical Code Qualification 41376572349 and AI Working Method Gate 41376572076 SUCCESS). Owner observe-only verification now reports PASS_TWO_AUTOMATIC_WAKES. Final consumer/archive/lease checks and administrative closure remain pending. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
+The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The Owner confirms both bindings applied; four canonical NOOP receipts exist. The observer duration-format bug is repaired by exact code `72b73428307d4a3bdb966a99fef9f147a41e2592` (38 operational tests PASS; hosted Canonical Code Qualification `41376572349` and AI Working Method Gate `41376572076` SUCCESS). Owner observe-only verification now reports `PASS_TWO_AUTOMATIC_WAKES`. Final consumer/archive/lease checks and administrative closure remain pending. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
 
 Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The later admission/rebind/wake commits do not change those executable surfaces. The recorded Owner receipt supersedes the prior pending-rebind status, but two post-rebind timer-correlated wakes are now proven; real Codex-result consumption remains unproved.
 
-Current bounded state/proofs and exact residual dependencies: [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json), [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv), [migration receipt](cleanup-20261101/MIGRATION_RECEIPT.md), [deletion receipt](cleanup-20261101/FINAL_DELETION_RECEIPT.md). Six refs remain. Next: verify the remaining automatic-wake/consumption evidence and final consumer/archive/lease/admin gates from primary evidence. No new scheduler, Oracle instance, release rollout or economic experiment is admitted.
+Current bounded state/proofs and exact residual dependencies: [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json), [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv), [migration receipt](cleanup-20261101/MIGRATION_RECEIPT.md), [deletion receipt](cleanup-20261101/FINAL_DELETION_RECEIPT.md). Three remote refs remain at this checkpoint: `project/canonical`, `code/canonical`, and old default `blue/master-v2-2026-09-20`. F0 administrative closure still requires the default/admin/protection path to be resolved; this does not reopen deleted historical branches. No new scheduler, Oracle instance, release rollout or economic experiment is admitted.
 
 ## Finish gates / authority ceiling
 
@@ -193,10 +217,11 @@ Closed authorities remain:
 
 1. `METHOD`: F1 is capitalized; do not rerun it absent contradictory F1-critical evidence. Universal agent compliance and server-side prevention remain separate and unproven.
 2. `RUNTIME`: two timer-correlated A67 canonical wakes are proven; verify one real Codex result causally consumed by the following decision. Reuse the existing host/scheduler path; do not build another scheduler/control plane.
-3. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
+3. `POST-F3`: before executing any new F4/F5 mission, challenge the exact existing runtime witnesses in `Current decision frontier` against the canonical gate definition. `NO_CHANGE_REQUIRED` is the preferred result if they already satisfy the required semantics.
+4. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
 Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
 
-Owner verified receipt at 2026-11-02T02:20:22.679034Z supersedes earlier pending timer-correlation statements above: two distinct automatic timer-correlated canonical A67 wakes PASS, model PASS, V1 inactive. Full identities/invariants are in cleanup-20261101/FINAL_MIGRATION_STATE.json. Existing A67 release remains installed; real Codex-result consumption/F3 is still NOT_PROVEN. Branch retirement awaits targeted final consumers, exact provenance/lease and GitHub default/admin gates.
+Owner verified receipt at `2026-11-02T02:20:22.679034Z` supersedes earlier pending timer-correlation statements above: two distinct automatic timer-correlated canonical A67 wakes PASS, model PASS, V1 inactive. Full identities/invariants are in `cleanup-20261101/FINAL_MIGRATION_STATE.json`. Existing A67 release remains installed; real Codex-result consumption/F3 is still `NOT_PROVEN`.
 
-Final branch migration checkpoint: three historical survivor pointers were atomically exact-lease deleted at 2026-11-02T02:31:31.268834Z after full-lineage archive `f48904e79f79707c21ac2f0913f28fe5a9653f32`. Only `project/canonical`, `code/canonical`, and old GitHub default `blue/master-v2-2026-09-20` remain. F0 awaits only the admin default switch, scheduled-routing verification, old-default leased deletion and canonical protections.
+Final branch migration checkpoint: three historical survivor pointers were atomically exact-lease deleted at `2026-11-02T02:31:31.268834Z` after full-lineage archive `f48904e79f79707c21ac2f0913f28fe5a9653f32`. Only `project/canonical`, `code/canonical`, and old GitHub default `blue/master-v2-2026-09-20` remain. F0 awaits only the admin default switch, scheduled-routing verification, old-default leased deletion and canonical protections.
