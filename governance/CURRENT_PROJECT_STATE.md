@@ -163,9 +163,9 @@ The previously qualified host-wake connection must not be rebuilt absent contrad
 
 A local/environment blocker affects only its dependent lane. It does not authorize global stop or substitute architecture.
 
-### Owner-authorized final branch migration — preparation qualified
+### Owner-authorized final branch migration — rebound, automatic correlation pending
 
-The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The underlying timer-correlation observer result, final consumer/archive/lease checks and administrative closure remain pending or unverified. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
+The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The Owner confirms both bindings applied; four canonical NOOP receipts exist. The observer duration-format bug is repaired by exact code 72b73428307d4a3bdb966a99fef9f147a41e2592 (38 operational tests PASS; hosted qualification pending). Observe only using the existing private backup. Two timer-correlated witnesses, final consumer/archive/lease checks and administrative closure remain pending or unverified. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
 
 Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The later admission/rebind/wake commits do not change those executable surfaces. The recorded Owner receipt supersedes the prior pending-rebind status, but two post-rebind timer-correlated wakes and real Codex-result consumption remain unproved.
 

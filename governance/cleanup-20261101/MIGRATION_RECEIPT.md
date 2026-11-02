@@ -1,6 +1,6 @@
 # Final survivor dependency migration receipt
 
-> Current operational resumption: the Owner root baseline is received and the migration preparation is audited/qualified. Actual private backup, live canonical compatibility, ref application and two post-rebind automatic wakes remain unverified. The earlier completion below describes the bounded cleanup, not physical two-branch completion. See FINAL_MIGRATION_STATE.json operational_resume/preparation_audit.
+> Current operational resumption: the Owner supplied the successful V1/V2 ref-only application receipt. Private backup/live preflight and immediate status-health gates passed under the qualified helper contract; the two post-rebind automatic wakes and final consumer/admin/retirement gates remain unverified. The earlier completion below describes the bounded cleanup, not physical two-branch completion. See FINAL_MIGRATION_STATE.json operational_resume.
 
 Status: COMPLETE_WITH_EXPLICIT_SCOPED_EXCEPTIONS. Verdict: PASS_WITH_BOUNDED_EXTERNAL_UNKNOWN.
 
@@ -125,3 +125,23 @@ Prepared sequence, using the exact hash-verified helper and freshly reconciled i
 6. Old default migration still requires an available Owner/admin execution surface. Prepared protection remains exact canonical deletion + non-fast-forward prevention, with no new per-data-commit PR/CI gate that would block collector/worker CAS writes. Actual administration/readback and post-policy worker behavior are not claimed from payload tests.
 
 No host configuration, default, protection, scientific authority or branch pointer was changed by this preparation/audit. Six refs remain; the prior 247 retirements and the 27 recorded survivor deletions were not reopened or restored. No global F1 behavioral recovery, F3 real Codex consumption, all-legacy-workflows-green or system-wide-zero-risk claim is made. Next: Owner reconnects to the existing host; refresh admission/head if changed and execute the updated default preflight, returning only its allowlisted JSON.
+
+## Owner host application received — automatic witness still pending
+
+Owner executed the qualified, hash-verified helper and supplied `REBOUND_TWO_AUTOMATIC_WAKES_PENDING`, scope `both`, applied at `2026-11-02T01:34:46.002214Z`, on boot `4aa3fb04-ff14-49fa-8f08-0171d41c6701`. Applied canonical subject `5f5196dd6570824c02a080bc82f6a890ae1bdfd0` is the direct data-only child of qualified f03ab69d: seven append-only `data/feeds/**` changes, no executable or scientific-state delta. This is attributed Owner host execution, not an agent SSH observation.
+
+Private rollback directory: `/var/backups/quant-canonical-rebind-20261102T013425.925186Z` (contents remain on the host; no environment/credential data is published). Exact before/after SHA256 values are retained in FINAL_MIGRATION_STATE.json `operational_resume.owner_applied_receipt`:
+
+- V1 `worker.json`: `766b69d5…c48c9ea` → `1385d167…6772196`;
+- V2 `worker.json`: `5767f593…6c21a8f` → `41489ca3…8a1b2471`;
+- fixed V2 status: `ef7b72d1…f8cda074` → `261f1132…8561e9a`.
+
+The full new status-wrapper digest exactly matches the locally recomputed qualified adapter bytes. The qualified helper reports REBOUND only after its fresh root-only backup, zero-write/no-inference canonical compatibility probes, exact byte/metadata replacement and immediate model/status readback. Reported timer/release/model mutations and remote Git writes by that helper are all zero. Both known config bindings now target code/canonical; V1 remains disabled and existing A67/F394 releases/model/scheduler remain unchanged.
+
+The Owner one-off observer is currently waiting. `observed_automatic_wakes=[]` is the received application-stage result, not proof that no later wake occurred. No final correlated witness has been received; do not mark two wakes, F3/Codex consumption, complete host-consumer absence or DELETE_PROVEN_SAFE from this application receipt.
+
+Evidence-checkpoint admission: `ORACLE_OWNER_REBIND_RECEIPT_20261102T013446Z`, identity `sha256:9f9f31ae759c32c0898e8d8610ae190f33be8a51e49c7f7810863adb7b91ab6c`. Code checkpoint `23c559e2670ed7206f7bceab2a949d425108adfa`: Canonical Code Qualification 41373563721 SUCCESS and AI Working Method Gate 41373563699 SUCCESS, bound to pre-checkpoint project 57c517a5 and code base 5f5196dd. The checkpoint changes only admission metadata; it does not change the running host. Next: receive the final observer JSON while continuing independent final GitHub/consumer/provenance gates. No branch/default/protection mutation has been performed here.
+
+### Observer duration parsing repair
+
+Owner diagnostic shows four distinct canonical A67 NOOP receipts, all authorities closed, and latest timer trigger 1090572613516 us / service start 1090572624096 us (10,580 us apart). This proves the latest timer correlation, not two historical timer triggers. The earlier observer rejects systemctl human-duration output as an integer. Exact code 72b73428307d4a3bdb966a99fef9f147a41e2592 reads the raw D-Bus uint64 without rounding; all original safety and causality gates remain. 38 operational regression tests PASS; hosted qualification is pending at this checkpoint. Admission identity sha256:ba829e067c023ce810f7716c4ac12dfbba5ed16ae779a58a4b9eb9d40be3001a. Next: observe only with the existing backup; no configuration reapplication or manual worker start. Four NOOP receipts do not close F3/Codex consumption.

@@ -146,17 +146,17 @@
   "external_consumers": [
     {
       "system": "Oracle existing host",
-      "location": "/etc/quant-research/worker.json; systemd quant-research-worker-v2 timer/service; /opt/quant-research/releases",
+      "location": "/etc/quant-research/worker.json; /etc/quant-research-v2/worker.json; existing V2 timer/service and immutable releases",
       "old_branch": [
         "builder/oracle-v2-core-20261020",
         "builder/oracle-economic-loop-recovery-20261019"
       ],
       "why_used": "historical release/state config plus current automatic V2 commit",
       "target": "code/canonical",
-      "safe_to_rebind": "UNKNOWN_WITHOUT_HOST_INVENTORY",
-      "backup_or_rollback": "capture worker.json, unit/timer, deployed release and SHA before changing",
-      "migration_executed": false,
-      "post_migration_test": "NOT_EXECUTED; host access unavailable"
+      "safe_to_rebind": "OWNER_EXECUTED_QUALIFIED_GATES_PASSED",
+      "backup_or_rollback": "/var/backups/quant-canonical-rebind-20261102T013425.925186Z",
+      "migration_executed": true,
+      "post_migration_test": "Immediate fixed-status readback/health gate passed per qualified helper result; two automatic wakes still pending"
     },
     {
       "system": "Quant-Trade Laboratoire",
@@ -395,11 +395,11 @@
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks."
+      "reason": "Owner qualified-helper receipt proves V2 config branch rebound to code/canonical and fixed status adapted at 2026-11-02T01:34:46Z; exact status wrapper SHA256 matches qualified source. Existing timer, releases and model unchanged. PARK until two distinct timer-correlated canonical wakes, targeted final host/GitHub consumer sweep, exact final old-tip archive/reachability and fresh SHA lease checks."
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks."
+      "reason": "Owner qualified-helper receipt proves installed disabled V1 fallback config rebound to code/canonical in the same transaction; F394 release and inactive/disabled V1 timer preserved. PARK until primary V2 continuity witness and final fallback/host consumer sweep plus exact provenance/archive/lease gates; do not activate V1 to manufacture proof."
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
@@ -510,12 +510,10 @@
     "live_trading_authorized": false
   },
   "known_external_unverified": [
-    "Actual server private backup and live compatibility result not yet received",
-    "Actual fixed status/config application not executed by this preparation",
-    "Actual monotonic timer/service properties and two post-rebind automatic witnesses not yet observed",
-    "Remaining host systemd/cron/config/checkout exact-name consumer scan must precede deletion",
-    "Old default/protection/environment/deployment administrative preflight/mutation still requires available owner/admin execution surface",
-    "Agent direct SSH TCP access remains unavailable; actual host execution is via the Owner existing SSH terminal. Inaccessible external systems are not claimed absent."
+    "Two post-rebind automatic wakes: Owner one-off observer is running; no final result received yet.",
+    "Targeted final host systemd/cron/config/checkout consumer sweep and final old-tip evidence archive remain pending.",
+    "Default/protection/environment/deployment administrative preflight/mutation still requires an available Owner/admin execution surface.",
+    "Agent direct SSH remains blocked by configured TCP policy; inaccessible external systems are not claimed absent."
   ],
   "adversarial_review": [
     "Counterexample found: Oracle V2 tip advanced during fetch with a current NOOP wake. Preserve that branch and record final exact delta; do not infer host absence from missing credentials.",
@@ -525,9 +523,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-02T00:24:00.253963+00:00",
-  "project_subject_before_receipt": "92072550334632bab3f8c4759ce89e30af311555",
-  "code_canonical_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
+  "updated_utc": "2026-11-02T02:14:16.358582+00:00",
+  "project_subject_before_receipt": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000",
+  "code_canonical_sha": "23c559e2670ed7206f7bceab2a949d425108adfa",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -606,12 +604,12 @@
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks.",
+      "reason": "Owner qualified-helper receipt proves installed disabled V1 fallback config rebound to code/canonical in the same transaction; F394 release and inactive/disabled V1 timer preserved. PARK until primary V2 continuity witness and final fallback/host consumer sweep plus exact provenance/archive/lease gates; do not activate V1 to manufacture proof.",
       "sha_at_snapshot": "99f0496296a34a767dfd95a092523b10ad5fbf49"
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks.",
+      "reason": "Owner qualified-helper receipt proves V2 config branch rebound to code/canonical and fixed status adapted at 2026-11-02T01:34:46Z; exact status wrapper SHA256 matches qualified source. Existing timer, releases and model unchanged. PARK until two distinct timer-correlated canonical wakes, targeted final host/GitHub consumer sweep, exact final old-tip archive/reachability and fresh SHA lease checks.",
       "sha_at_snapshot": "1800723221809180afa58f64db43a28bf4a75829"
     },
     "builder/research-os-aggressive-architecture-20261015": {
@@ -699,7 +697,7 @@
   "evidence_archive_commit": "fac556b52ff048255d987bed6a6755eab4766fd5",
   "evidence_archive_integration_commit": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
   "migration_commit": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-  "status": "PREPARATION_AUDITED_QUALIFIED_HOST_EXECUTION_PENDING",
+  "status": "HOST_REBOUND_TWO_AUTOMATIC_WAKES_AND_FINAL_CONSUMER_GATES_PENDING",
   "default_binding_commit": "fe310c0a",
   "default_preflight": {
     "scheduled_workflows": [
@@ -818,10 +816,10 @@
   "final_heads": {
     "blue/master-v2-2026-09-20": "9ceff5336ba35f61530ab01bbe8f6f8f3b5cb8b0",
     "builder/oracle-economic-loop-recovery-20261019": "99f0496296a34a767dfd95a092523b10ad5fbf49",
-    "builder/oracle-v2-core-20261020": "2b4574ddc5c6fd8b2a881edfa700d3e9df8c4462",
+    "builder/oracle-v2-core-20261020": "8fcd25aa4bd78574e2b97c1721de3cbd60b4f818",
     "builder/research-os-autonomous-loop-20261015": "47cb12bead9910d6fce7f30cf6408c752a713ded",
-    "code/canonical": "f03ab69dc053aeda6e781d493a497b7926f36946",
-    "project/canonical": "92072550334632bab3f8c4759ce89e30af311555"
+    "code/canonical": "23c559e2670ed7206f7bceab2a949d425108adfa",
+    "project/canonical": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000"
   },
   "branch_count_end": 6,
   "branches_deleted_this_mission": 27,
@@ -905,7 +903,7 @@
     "independent_review_claimed": false,
     "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
   },
-  "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
+  "next_action": "Keep Owner SSH observer running and receive final JSON. Require PASS_TWO_AUTOMATIC_WAKES plus targeted host/GitHub consumer checks and exact archive/lease gates before any retirement. Default/protection remain separately gated by admin execution access.",
   "final_heads_observation_method": "Fresh GitHub REST branches before this project receipt; project SHA is the pre-receipt subject; live old V2 ref may still advance and requires a fresh lease read at retirement.",
   "final_counters": {
     "start": 33,
@@ -1010,7 +1008,7 @@
       "protect-canonicals"
     ],
     "host_inventory": "Read only via existing SSH account and noninteractive sudo; V1 /etc/quant-research/worker.json and V2 /etc/quant-research-v2/worker.json; both original units/timers and immutable release identities. No service install/restart or config mutation.",
-    "host_mutation": "NOT_IMPLEMENTED_IN_GITHUB_WORKFLOW; separate Owner-terminal helper f03ab69dc053aeda6e781d493a497b7926f36946 is qualified/prepared, actual host application unverified.",
+    "host_mutation": "OWNER_EXECUTED_QUALIFIED_SEPARATE_HELPER; both branch bindings and fixed V2 status shim applied at 01:34:46Z. GitHub maintenance workflow itself did not mutate host.",
     "admin_mutation": "NOT_EXECUTED; all mutation modes require custom administrative token and explicit operation selection",
     "protection_policy": {
       "rules": [
@@ -1044,7 +1042,7 @@
     "scheduled_operation": false,
     "new_scheduler": false,
     "new_oracle": false,
-    "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
+    "next_action": "Keep Owner SSH observer running and receive final JSON. Require PASS_TWO_AUTOMATIC_WAKES plus targeted host/GitHub consumer checks and exact archive/lease gates before any retirement. Default/protection remain separately gated by admin execution access.",
     "host_inventory_execution_route": "Owner SSH route succeeded: root-only helper returned V1/V2 config identities, active releases, units/timers and the V2 live-observer drop-in."
   },
   "operational_resume": {
@@ -1112,13 +1110,13 @@
       "execution": "COMPLETED_OWNER_ROOT_BASELINE; full result retained in root_inventory",
       "host_config_mutations": 0
     },
-    "host_rebind_executed": false,
+    "host_rebind_executed": true,
     "post_rebind_automatic_wakes_verified": 0,
     "branch_retirements_this_resume": 0,
     "branch_retirement_gate": "Inventory/back up; preserve release and behavior; minimally migrate V2 and V1 fallback binding; verify two automatic post-rebind wakes; final consumer/SHA/lease checks; default role separately migrated before its retirement.",
     "counterexample": "A timer can be active and the model healthy while the config still points at an old state branch or V1 fallback can later reintroduce it.",
-    "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
-    "phase": "PREPARATION_AUDITED_QUALIFIED_ACTUAL_HOST_PREFLIGHT_PENDING",
+    "next_action": "Keep Owner SSH observer running and receive final JSON. Require PASS_TWO_AUTOMATIC_WAKES plus targeted host/GitHub consumer checks and exact archive/lease gates before any retirement. Default/protection remain separately gated by admin execution access.",
+    "phase": "OWNER_REBOUND_BOTH_CONFIGS_WAITING_TWO_AUTOMATIC_WAKES",
     "root_inventory": {
       "source": "Owner-executed hash-verified 8d9a33053a834f7a4612da2b0f665bade57bc3e5 inventory helper via existing SSH; allowlisted JSON only",
       "received_utc": "2026-11-01T19:16:14.778448+00:00",
@@ -1420,6 +1418,59 @@
       "final_remote_snapshot_utc": "2026-11-02T00:25:15.951891+00:00",
       "remaining_branch_count": 6,
       "observed_old_live_tip_before_receipt": "2b4574ddc5c6fd8b2a881edfa700d3e9df8c4462"
+    },
+    "owner_applied_receipt": {
+      "source": "Owner pasted stdout from hash-verified qualified helper in existing SSH session; no agent direct host connection claimed",
+      "recorded_utc": "2026-11-02T01:44:35.649614+00:00",
+      "receipt": {
+        "operation": "EXISTING_HOST_REF_ONLY_MIGRATION",
+        "status": "REBOUND_TWO_AUTOMATIC_WAKES_PENDING",
+        "canonical_sha": "5f5196dd6570824c02a080bc82f6a890ae1bdfd0",
+        "scope": "both",
+        "backup_directory": "/var/backups/quant-canonical-rebind-20261102T013425.925186Z",
+        "before": {
+          "/usr/local/libexec/quant-v2-status": "ef7b72d1b15ff497c36c01d3b7eda023725c2d810a21b4d845583bf0f8cda074",
+          "/etc/quant-research/worker.json": "766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea",
+          "/etc/quant-research-v2/worker.json": "5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f"
+        },
+        "after": {
+          "/usr/local/libexec/quant-v2-status": "261f113229805d1902d82ca6dbb7e5227898429e4dec43e95b3b1cb338561e9a",
+          "/etc/quant-research/worker.json": "1385d1675af7de43417882a7e100a4a4c2c78f29ca374bb6229a07b3d6772196",
+          "/etc/quant-research-v2/worker.json": "41489ca380ae26ffbb59870176afd9cf9b17ee80332261bd22cf1cce8a1b2471"
+        },
+        "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+        "applied_monotonic_us": 1088443575691,
+        "observed_automatic_wakes": [],
+        "timer_mutations": 0,
+        "release_mutations": 0,
+        "model_mutations": 0,
+        "remote_writes": 0,
+        "applied_at": "2026-11-02T01:34:46.002214+00:00"
+      },
+      "qualified_helper_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
+      "qualified_helper_sha256": "da2dfa7c3cb7c4107eb950ff7c79ad057c8e55ec6da47fc8538a38a5c1263b64",
+      "status_wrapper_exact_hash_verified_against_qualified_source": true,
+      "owner_observer_currently_waiting": true,
+      "two_automatic_wakes_verified": false,
+      "code_checkpoint_completion": {
+        "mission_id": "ORACLE_OWNER_REBIND_RECEIPT_20261102T013446Z",
+        "admission_identity": "sha256:9f9f31ae759c32c0898e8d8610ae190f33be8a51e49c7f7810863adb7b91ab6c",
+        "project_sha": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000",
+        "subject_sha": "23c559e2670ed7206f7bceab2a949d425108adfa",
+        "tested_sha": "23c559e2670ed7206f7bceab2a949d425108adfa",
+        "claim": "PASS",
+        "durable_remote_output": true,
+        "next_action": "Persist Owner applied receipt; keep observer running; two automatic wakes and final host/GitHub consumer/archive/default/lease gates remain pending; no branch deletion yet."
+      }
+    },
+    "observer_repair": {
+      "subject_sha": "72b73428307d4a3bdb966a99fef9f147a41e2592",
+      "admission_identity": "sha256:ba829e067c023ce810f7716c4ac12dfbba5ed16ae779a58a4b9eb9d40be3001a",
+      "source_sha256": "d70077ab43f86102e9f06db3dbb21f69fbbb8b5aeb3bdcc3f6633b5f1e908f11",
+      "diagnosis": "systemctl LastTriggerUSecMonotonic returns formatted duration; int rejects it. Read raw D-Bus uint64, preserving existing correlation and guards.",
+      "tests": "38 operational regression tests PASS on exact code subject; hosted qualification pending",
+      "owner_journal": "four distinct canonical A67 NOOP wakes after apply; latest matching timer/service pair; second timer-correlated witness remains required",
+      "next_action": "Observe only against existing private backup using repaired qualified helper; never reapply or manually start worker."
     }
   }
 }
