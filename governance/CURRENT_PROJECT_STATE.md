@@ -1,6 +1,6 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`METHOD_ENFORCEMENT_CODE_PASS_BEHAVIORAL_BLOCK__VM_MULTI_WAKE_BLOCKED_EXTERNAL_HOST_ACCESS`
+STATUS=`METHOD_ENFORCEMENT_CODE_PASS_F1_RECOVERY_PASS__VM_MULTI_WAKE_NOT_PROVEN`
 DATE=`2026-11-02`
 
 This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
@@ -14,7 +14,7 @@ This file is the single current-state router. Historical detail remains in Git h
 - no destructive branch cleanup is authorized by this router.
 
 Current exact code subject at this update:
-`code/canonical=f03ab69dc053aeda6e781d493a497b7926f36946`
+`code/canonical=b02994d690dec3e720a8288556dc26d8964ffbdc`
 
 ## Current working method
 
@@ -36,7 +36,7 @@ A completed mission receipt is historical evidence after final durable state cha
 `POST_OPERATIONAL_RESUME_PROGRAM_BOOTSTRAP_REQUIRED=FALSE`
 Do not turn that program into a second methodology/router.
 
-## Method-enforcement seam — closed at code level, behavioral proof blocked
+## Method-enforcement seam — closed at code level, F1 recovery proven
 
 `METHOD_SPECIFICATION=PASS`
 `METHOD_UNIT_TESTS=PASS`
@@ -48,10 +48,10 @@ Do not turn that program into a second methodology/router.
 `AGENT_PRE_WORK_VALIDATION=REQUIRED_BY_CANONICAL_ENTRYPOINT`
 `POST_PUSH_CI_DETECTION=PASS`
 `BEHAVIORAL_AGENT_ENFORCEMENT=NOT_PROVEN`
-`F1_RECOVERABLE_CANONICAL_STATE=NOT_PROVEN_BEHAVIORALLY`
-`F1_BEHAVIORAL_RECOVERY=BLOCK_ENVIRONMENT_FRESH_AGENT_UNAVAILABLE`
+`F1_RECOVERABLE_CANONICAL_STATE=PASS`
+`F1_BEHAVIORAL_RECOVERY=PASS`
 `SERVER_SIDE_REQUIRED_CHECK=BLOCK_ADMIN_PERMISSION`
-`CLAIM_CEILING=METHOD_ENFORCEMENT_CODE_PASS_BEHAVIORAL_BLOCK`
+`CLAIM_CEILING=METHOD_ENFORCEMENT_CODE_PASS_F1_RECOVERY_PASS_UNIVERSAL_ENFORCEMENT_NOT_PROVEN`
 
 ### Exact published proof
 
@@ -121,7 +121,7 @@ Tests are recorded only as executed when actually run; planned-only tests are no
 `AGENT_PRE_WORK_VALIDATION=REQUIRED_BY_CANONICAL_ENTRYPOINT`
 `POST_PUSH_CI_DETECTION=PASS`
 `SERVER_SIDE_REQUIRED_CHECK=BLOCK_ADMIN_PERMISSION`
-`BEHAVIORAL_AGENT_ENFORCEMENT=BLOCK_ENVIRONMENT_FRESH_AGENT_UNAVAILABLE`
+`BEHAVIORAL_AGENT_ENFORCEMENT=NOT_PROVEN`
 
 GitHub evidence at closure:
 - `code/canonical` is unprotected and required status-check enforcement is off;
@@ -131,59 +131,53 @@ GitHub evidence at closure:
 
 Therefore the hosted workflow is a post-push detector/qualifier, NOT demonstrated server-side prevention.
 
-Do not report `AI_METHOD_FULLY_ENFORCED` until a genuinely fresh repository-only AI/session passes F1 recovery.
+The fresh F1 witness proves that the canonical repository state is recoverable by a genuinely fresh repository-only session. It does not prove universal compliance by every AI execution surface, server-side prevention or `AI_METHOD_FULLY_ENFORCED`.
 
-## Remaining behavioral blocker
+## F1 fresh repository-only behavioral recovery — PASS
 
-This execution surface cannot launch a genuinely independent fresh AI/session with no prior chat context and repository-only bootstrap. Do not simulate that proof with another fixture in the same process.
+Witness subject:
+- `project/canonical=57c517a5eb5dfdd50d5ad12d88780c4c01f5e000`;
+- `code/canonical=e1712f131f3d21f1208562ccf4cbab00f7b0166d`;
+- router blob `22e5301448a50328578bebdc62c97318f9a9d5c8`.
 
-`NEXT_ACTION_METHOD=RUN_GENUINELY_FRESH_REPOSITORY_ONLY_AGENT_RECOVERY_TEST`
+Independent GitHub-side checkpoints: issue #44 comments `6567074084` and `6567094368`. They are verification evidence, not substitutes for this router.
 
-PASS witness must independently recover:
-1. project objective;
-2. authority pair;
-3. fresh project/canonical SHA;
-4. fresh code/canonical SHA;
-5. current blocker / critical path;
-6. current next action;
-7. applicable final working-method rules;
-8. already-complete work that must not be restarted;
-9. correct `REUSE | CONNECT | REPAIR | BUILD` disposition;
-10. evidence that would make it stop.
+The fresh session resolved both named remote refs and recovered the project objective, two-branch authority, exact fresh heads, current router/blocker, next action, canonical method, already-complete work, `REUSE` disposition and valid `NO_CHANGE_REQUIRED | BLOCK | PARK | UNKNOWN | STOP` behavior. It distinguished current authority from default/historical branches, one bounded NOOP wake from F3, historical hosted qualification from tests executed during F1, and closed economic/live authorities from engineering evidence. It created no competing method, router, memory system, scheduler or control plane.
 
-Until that witness exists:
-`F1_RECOVERABLE_CANONICAL_STATE=NOT_PROVEN_BEHAVIORALLY`.
+No F1-critical bootstrap, authority, method or router semantic changed between the witness and capitalization admission. Subsequent/current evidence was limited to the mission-specific admission and the already-observed operational receipt/wake evidence. Do not rerun F1 absent a contradictory F1-critical change.
 
 ## Existing runtime critical path — unchanged
 
 The method-enforcement repair does not grant runtime deployment or replace the existing host proof.
 
-`VM_MULTI_WAKE_PROOF=BLOCK_LIVE_REBIND_AND_REAL_CODEX_CONSUMPTION_PROOF`
-`CURRENT_HOST_STATE=OWNER_ROOT_BASELINE_RECEIVED_LIVE_REBIND_PENDING`
+`F3_REAL_VM_MULTI_WAKE=NOT_PROVEN`
+`VM_MULTI_WAKE_PROOF=BLOCK_TWO_TIMER_CORRELATED_WAKES_AND_REAL_CODEX_CONSUMPTION_PROOF`
+`CURRENT_HOST_STATE=OWNER_REBIND_RECEIPT_RECORDED_ONE_CANONICAL_NOOP_WAKE`
 `LIVE_HOST_DEPLOYMENT=NOT_PROVEN`
 `REAL_CODEX_WAKE_FROM_VM=NOT_PROVEN`
+`REAL_CODEX_RESULT_CONSUMPTION=NOT_PROVEN`
 `TWO_AUTOMATIC_WAKES=NOT_PROVEN`
 `GLOBAL_PROJECT_MISSION_SELECTION=PARK_AFTER_VM_BRIDGE_PROOF`
 
-The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. When authenticated intended-host execution becomes available, inventory actual deployed state first, then perform only the minimal rebind/configuration required and prove two automatic wakes plus one real Codex result causally consumed by the following decision.
+The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. Code commit `23c559e2670ed7206f7bceab2a949d425108adfa` records the attributed Owner ref-only rebind receipt and explicitly leaves automatic wakes pending. Its child `e1712f131f3d21f1208562ccf4cbab00f7b0166d` records one A67 canonical `NOOP_FRONTIER_EXHAUSTED` wake with all economic/live authorities false. One wake is not two distinct timer-correlated wakes and contains no real Codex-result consumption proof.
 
 A local/environment blocker affects only its dependent lane. It does not authorize global stop or substitute architecture.
 
 ### Owner-authorized final branch migration — preparation qualified
 
-The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the method-enforcement mission itself grants no deployment/deletion authority. The Owner recovered SSH as `ubuntu` and supplied the complete root inventory. Last observed baseline: V2 config still names `builder/oracle-v2-core-20261020`, A67 release and native observer remain installed, V2 timer active/enabled; V1 fallback config still names `builder/oracle-economic-loop-recovery-20261019`, F394 release remains installed and V1 timer inactive/disabled. This is an attributed baseline, not a fresh unattended host-health claim.
+The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt is recorded on code/canonical, followed by one canonical NOOP wake. The underlying two-wake observer result, final consumer/archive/lease checks and administrative closure remain pending or unverified. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
 
-Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The helper defaults to private backup/read-only preflight; explicit apply changes only branch config values and the fixed status control, with rollback and distinct timer-correlated wake observation. No host application or two post-rebind wakes have been proved. This does not close F3 or prove a real Codex result consumption.
+Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The later admission/rebind/wake commits do not change those executable surfaces. The recorded Owner receipt supersedes the prior pending-rebind status, but two post-rebind timer-correlated wakes and real Codex-result consumption remain unproved.
 
-Current bounded state/proofs and exact residual dependencies: [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json), [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv), [migration receipt](cleanup-20261101/MIGRATION_RECEIPT.md), [deletion receipt](cleanup-20261101/FINAL_DELETION_RECEIPT.md). Six refs remain; no additional deletion/default/protection change occurred in this preparation. Agent direct SSH remains unavailable; actual host execution is via the Owner terminal. Next: reconnect, reconcile fresh identities/admission if changed and run the updated hash-verified preflight; actual backup/compatibility, ref-only application, two automatic wakes, final consumer/archive/lease and admin gates remain mandatory. No new scheduler, Oracle instance, release rollout or economic experiment is admitted.
+Current bounded state/proofs and exact residual dependencies: [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json), [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv), [migration receipt](cleanup-20261101/MIGRATION_RECEIPT.md), [deletion receipt](cleanup-20261101/FINAL_DELETION_RECEIPT.md). Six refs remain. Next: verify the remaining automatic-wake/consumption evidence and final consumer/archive/lease/admin gates from primary evidence. No new scheduler, Oracle instance, release rollout or economic experiment is admitted.
 
 ## Finish gates / authority ceiling
 
 F0-F6 remain governed only by `AI_WORKING_METHOD_V1`.
 
 This router does not claim `QUANT_SYSTEM_V1_FINISHED`:
-- F1 behavioral recovery remains BLOCK in this environment;
-- F3 real VM/Codex multi-wake remains blocked by actual live rebind/consumption evidence;
+- F1 behavioral recovery is PASS on the exact witness subject above;
+- F3 real VM/Codex multi-wake remains open because two timer-correlated wakes and real Codex-result consumption are not proven;
 - later F4-F6 require their own exact evidence.
 
 Closed authorities remain:
@@ -197,8 +191,8 @@ Closed authorities remain:
 
 ## Next bounded actions
 
-1. `METHOD`: run the genuinely fresh repository-only recovery witness when an independent fresh-agent/session surface exists; no more synthetic proxy.
-2. `RUNTIME`: use the recovered Owner SSH route for the already-prepared host preflight/ref migration and two automatic-wake witnesses; the separate real-Codex consumption gate remains unproven. Do not build another scheduler/control plane.
+1. `METHOD`: F1 is capitalized; do not rerun it absent contradictory F1-critical evidence. Universal agent compliance and server-side prevention remain separate and unproven.
+2. `RUNTIME`: verify two distinct automatic timer-correlated wakes and one real Codex result causally consumed by the following decision. Reuse the existing host/scheduler path; do not build another scheduler/control plane.
 3. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
 Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
