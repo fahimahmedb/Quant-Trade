@@ -395,11 +395,11 @@
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes."
+      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks."
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release."
+      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks."
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
@@ -510,9 +510,12 @@
     "live_trading_authorized": false
   },
   "known_external_unverified": [
-    "Root host inventory received and durable. Private backup, canonical compatibility, fixed status-control adaptation and ref-only migration are pending; agent still has no direct SSH TCP grant.",
-    "Two additional automatic post-rebind V2 wakes remain unproven. V1 inactivity is not absence of the installed fallback binding.",
-    "GitHub default/protection/environment/deployment settings still need an available owner/admin execution surface; repository connector has no administrative mutation capability."
+    "Actual server private backup and live compatibility result not yet received",
+    "Actual fixed status/config application not executed by this preparation",
+    "Actual monotonic timer/service properties and two post-rebind automatic witnesses not yet observed",
+    "Remaining host systemd/cron/config/checkout exact-name consumer scan must precede deletion",
+    "Old default/protection/environment/deployment administrative preflight/mutation still requires available owner/admin execution surface",
+    "Agent direct SSH TCP access remains unavailable; actual host execution is via the Owner existing SSH terminal. Inaccessible external systems are not claimed absent."
   ],
   "adversarial_review": [
     "Counterexample found: Oracle V2 tip advanced during fetch with a current NOOP wake. Preserve that branch and record final exact delta; do not infer host absence from missing credentials.",
@@ -522,9 +525,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-01T19:16:14.778448+00:00",
-  "project_subject_before_receipt": "748d23409d939e48aef8d2c71c6015630e932972",
-  "code_canonical_sha": "806faa691f49ffd7bed3d1fa660054ac97cfdd47",
+  "updated_utc": "2026-11-02T00:24:00.253963+00:00",
+  "project_subject_before_receipt": "92072550334632bab3f8c4759ce89e30af311555",
+  "code_canonical_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -603,12 +606,12 @@
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release.",
+      "reason": "Root inventory proves fallback /etc/quant-research/worker.json still names builder/oracle-economic-loop-recovery-20261019, SHA256 766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea, immutable F394 release; V1 timer inactive/disabled and service inactive. Back up and validate read-only canonical fallback compatibility; rebind this installed fallback without enabling it or changing its release. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks.",
       "sha_at_snapshot": "99f0496296a34a767dfd95a092523b10ad5fbf49"
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes.",
+      "reason": "Root inventory proves /etc/quant-research-v2/worker.json branch=builder/oracle-v2-core-20261020, SHA256 5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f; existing A67 release and active/enabled V2 timer, C564 observer drop-in. Back up, qualify canonical read-only compatibility and adjust fixed status-control old-branch validation before minimal config rebind; then verify two automatic post-rebind wakes. Prepared tool f03ab69dc053aeda6e781d493a497b7926f36946 and exact hosted canonical/method checks PASS; actual private backup, on-host preflight and config application remain unverified. No retirement until required live witnesses and final consumer/archive/lease checks.",
       "sha_at_snapshot": "1800723221809180afa58f64db43a28bf4a75829"
     },
     "builder/research-os-aggressive-architecture-20261015": {
@@ -696,7 +699,7 @@
   "evidence_archive_commit": "fac556b52ff048255d987bed6a6755eab4766fd5",
   "evidence_archive_integration_commit": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
   "migration_commit": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-  "status": "IN_PROGRESS_BACKUP_AND_CANONICAL_COMPATIBILITY_PENDING",
+  "status": "PREPARATION_AUDITED_QUALIFIED_HOST_EXECUTION_PENDING",
   "default_binding_commit": "fe310c0a",
   "default_preflight": {
     "scheduled_workflows": [
@@ -815,10 +818,10 @@
   "final_heads": {
     "blue/master-v2-2026-09-20": "9ceff5336ba35f61530ab01bbe8f6f8f3b5cb8b0",
     "builder/oracle-economic-loop-recovery-20261019": "99f0496296a34a767dfd95a092523b10ad5fbf49",
-    "builder/oracle-v2-core-20261020": "0426e1b9e735ecff442dff19ea753f905d6b0790",
+    "builder/oracle-v2-core-20261020": "2b4574ddc5c6fd8b2a881edfa700d3e9df8c4462",
     "builder/research-os-autonomous-loop-20261015": "47cb12bead9910d6fce7f30cf6408c752a713ded",
-    "code/canonical": "806faa691f49ffd7bed3d1fa660054ac97cfdd47",
-    "project/canonical": "748d23409d939e48aef8d2c71c6015630e932972"
+    "code/canonical": "f03ab69dc053aeda6e781d493a497b7926f36946",
+    "project/canonical": "92072550334632bab3f8c4759ce89e30af311555"
   },
   "branch_count_end": 6,
   "branches_deleted_this_mission": 27,
@@ -902,8 +905,8 @@
     "independent_review_claimed": false,
     "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
   },
-  "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed.",
-  "final_heads_observation_method": "Authoritative GitHub REST branches collection immediately before this operational receipt; project entry is the pre-receipt subject, not a self-referential receipt SHA. Live V2 head can advance and requires a fresh read before any deletion.",
+  "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
+  "final_heads_observation_method": "Fresh GitHub REST branches before this project receipt; project SHA is the pre-receipt subject; live old V2 ref may still advance and requires a fresh lease read at retirement.",
   "final_counters": {
     "start": 33,
     "deleted": 27,
@@ -1007,7 +1010,7 @@
       "protect-canonicals"
     ],
     "host_inventory": "Read only via existing SSH account and noninteractive sudo; V1 /etc/quant-research/worker.json and V2 /etc/quant-research-v2/worker.json; both original units/timers and immutable release identities. No service install/restart or config mutation.",
-    "host_mutation": "NOT_EXECUTED_AND_NOT_IMPLEMENTED_WITHOUT_REVIEWED_HOST_INVENTORY",
+    "host_mutation": "NOT_IMPLEMENTED_IN_GITHUB_WORKFLOW; separate Owner-terminal helper f03ab69dc053aeda6e781d493a497b7926f36946 is qualified/prepared, actual host application unverified.",
     "admin_mutation": "NOT_EXECUTED; all mutation modes require custom administrative token and explicit operation selection",
     "protection_policy": {
       "rules": [
@@ -1041,7 +1044,7 @@
     "scheduled_operation": false,
     "new_scheduler": false,
     "new_oracle": false,
-    "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed.",
+    "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
     "host_inventory_execution_route": "Owner SSH route succeeded: root-only helper returned V1/V2 config identities, active releases, units/timers and the V2 live-observer drop-in."
   },
   "operational_resume": {
@@ -1106,7 +1109,7 @@
       "sha256": "199bf0060b1a13be6b9c0696f84461b5585fd834c20418b7f549b5056996f5a9",
       "qualification_run": 41330854246,
       "qualification_result": "success",
-      "execution": "PENDING_OWNER_EXISTING_SSH_TERMINAL",
+      "execution": "COMPLETED_OWNER_ROOT_BASELINE; full result retained in root_inventory",
       "host_config_mutations": 0
     },
     "host_rebind_executed": false,
@@ -1114,8 +1117,8 @@
     "branch_retirements_this_resume": 0,
     "branch_retirement_gate": "Inventory/back up; preserve release and behavior; minimally migrate V2 and V1 fallback binding; verify two automatic post-rebind wakes; final consumer/SHA/lease checks; default role separately migrated before its retirement.",
     "counterexample": "A timer can be active and the model healthy while the config still points at an old state branch or V1 fallback can later reintroduce it.",
-    "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed.",
-    "phase": "ROOT_BASELINE_RECEIVED_BACKUP_AND_COMPATIBILITY_PENDING",
+    "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
+    "phase": "PREPARATION_AUDITED_QUALIFIED_ACTUAL_HOST_PREFLIGHT_PENDING",
     "root_inventory": {
       "source": "Owner-executed hash-verified 8d9a33053a834f7a4612da2b0f665bade57bc3e5 inventory helper via existing SSH; allowlisted JSON only",
       "received_utc": "2026-11-01T19:16:14.778448+00:00",
@@ -1253,15 +1256,170 @@
     },
     "backup_and_compatibility_helper": {
       "path": "scripts/quant_host_rebind_preflight.py",
-      "code_sha": "806faa691f49ffd7bed3d1fa660054ac97cfdd47",
-      "sha256": "046b4c2d663868923d676e71418bcdfc2498a604bd5a94a571fd5280ff288331",
-      "local_tests": "18/18 operational guards PASS, including 7 new preflight checks",
-      "canonical_ci_run": 41340693995,
+      "code_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
+      "sha256": "da2dfa7c3cb7c4107eb950ff7c79ad057c8e55ec6da47fc8538a38a5c1263b64",
+      "local_tests": "36 operational/real-legacy tests PASS; 29 method tests PASS",
+      "canonical_ci_run": 41366231532,
       "canonical_ci_status": "completed",
       "canonical_ci_conclusion": "success",
       "host_executed": false,
       "effect": "Checks inventoried config/release/source identity, makes private root-only rollback copies with original ownership/mode metadata, probes V1/V2 canonical snapshots with no remote writes/inference; binding/unit/release/timer/model unchanged. Active V2 tasks must be identical and canonical queue unclaimed/idle.",
-      "next_action": "Owner executes pinned/hash-verified helper with --canonical-sha 806faa691f49ffd7bed3d1fa660054ac97cfdd47; return allowlisted result. A failed guard leaves branch bindings unchanged and must not be bypassed."
+      "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
+      "available_actions": [
+        "preflight",
+        "apply",
+        "rollback",
+        "observe"
+      ],
+      "default_action": "preflight",
+      "status": "PREPARED_QUALIFIED_NOT_APPLIED_ON_HOST"
+    },
+    "preparation_audit": {
+      "status": "PASS_PREPARATION_ONLY_LIVE_APPLICATION_PENDING",
+      "recorded_utc": "2026-11-02T00:08:09.836639+00:00",
+      "code_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
+      "project_admission_sha": "92072550334632bab3f8c4759ce89e30af311555",
+      "admitted_code_base_sha": "1294c10cd5e89773db3bc7db0fbf35800f57fbc0",
+      "helper_path": "scripts/quant_host_rebind_preflight.py",
+      "helper_sha256": "da2dfa7c3cb7c4107eb950ff7c79ad057c8e55ec6da47fc8538a38a5c1263b64",
+      "admission_identity": "sha256:5ee42d61d8776cae66531be68a1a98b42cc9e4c12420acedb6b1fa34cb01685f",
+      "mission_id": "ORACLE_CANONICAL_REF_MIGRATION_PREPARATION_AND_AUDIT",
+      "completion_binding": {
+        "mission_id": "ORACLE_CANONICAL_REF_MIGRATION_PREPARATION_AND_AUDIT",
+        "admission_identity": "sha256:5ee42d61d8776cae66531be68a1a98b42cc9e4c12420acedb6b1fa34cb01685f",
+        "project_sha": "92072550334632bab3f8c4759ce89e30af311555",
+        "subject_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
+        "tested_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
+        "claim": "PASS",
+        "durable_remote_output": true,
+        "next_action": "Resume only the actual-host preflight/ref-only apply/automatic-wake gates, then final consumer/archive/lease/default/protection gates; do not claim live migration from these tests."
+      },
+      "qualification": {
+        "canonical_run": 41366231532,
+        "canonical_result": "success",
+        "method_run": 41366231392,
+        "method_result": "success",
+        "exact_subject": "f03ab69dc053aeda6e781d493a497b7926f36946"
+      },
+      "local_tests": {
+        "operational_guard_and_real_legacy_witness_tests": 36,
+        "method_tests": 29,
+        "results": "PASS"
+      },
+      "frozen_compatibility_witness": {
+        "scope": "OFFLINE_REAL_HISTORICAL_CODE_LOCAL_GIT_FIXTURE; not host proof",
+        "canonical_state_sha": "a9876c732cb88bd4383aacc433d0d2cba2feaeb5",
+        "v2_state_fixture_sha": "71e3f28d1e162152c93931b15cef993af6199632",
+        "v1_release": "f3943830e20b05d926d3013501573b8b21fdace7",
+        "v2_release": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+        "v1_result": "DRY_RUN_PASS",
+        "v2_result": "DRY_RUN_PASS_V2_POLICY_PASS",
+        "task_count": 72,
+        "v2_task_blobs_equal": true,
+        "selected_task": null,
+        "claimed_tasks": 0,
+        "remote_writes": 0,
+        "model_calls": 0
+      },
+      "adversarial_cases": [
+        {
+          "case": "A67 fixed status rejects canonical config",
+          "proof": "test_reproduces_old_control_failure_and_adapts_only_its_branch_validation",
+          "result": "REPRODUCED_AND_CONTROL_ADAPTER_TESTED; original validation preserved; real config passed to status; immutable core unchanged"
+        },
+        {
+          "case": "Failure after atomic rename or failing post-rebind control",
+          "proof": "test_failure_after_atomic_rename_restores_every_written_file; test_post_rebind_control_failure_restores_both_configs_and_status",
+          "result": "EXACT_BYTES_UID_GID_MODE_ROLLBACK_PASS"
+        },
+        {
+          "case": "Newer Owner bytes/permission edit or unsafe symlink",
+          "proof": "test_rollback_preserves_a_concurrent_owner_edit; test_newer_owner_permission_change_is_not_overwritten; test_source_drift_and_symlinks_block_before_replacement",
+          "result": "BLOCK_PRESERVE_OWNER_EDIT"
+        },
+        {
+          "case": "Old/manual/unmatched/duplicate journal entries mistaken for automatic wakes",
+          "proof": "test_automatic_wake_requires_timer_service_and_journal_causal_match; test_old_branch_invalid_head_wrong_release_or_dryrun_never_count; test_duplicate_invocation_or_same_timer_trigger_cannot_be_two_wakes",
+          "result": "REJECT_UNMATCHED_OR_DUPLICATE_WITNESS"
+        },
+        {
+          "case": "V1-only uncertainty stopping independent V2 work",
+          "proof": "test_scope_can_isolate_v2_from_an_unresolved_v1_fallback",
+          "result": "EXPLICIT_SCOPE_v1_v2_both; unresolved branch remains PARK"
+        },
+        {
+          "case": "Publication during concurrent canonical/method changes",
+          "proof": "normal Git push rejected a newer 232782db head; rebase preserved it. Method run 41364664784 rejected concurrent project/router move to 92072550. Refreshed admission then passed 41364983853.",
+          "result": "NO_FORCE_NO_OVERWRITE_NO_GATE_WEAKENING"
+        },
+        {
+          "case": "Credentials or raw command stderr leaked into migration result",
+          "proof": "test_post_rebind_control_failure_restores_both_configs_and_status; existing SSH stderr/cleanup guards",
+          "result": "FILTERED_RECEIPTS; private backups root-only; no private key/token/environment content committed"
+        },
+        {
+          "case": "Legacy rollback after old-ref retirement or scientific/control advancement",
+          "proof": "test_retired_old_ref_or_advanced_scientific_surface_blocks_legacy_rollback; test_real_snapshot_rollback_probe_rejects_retired_old_ref",
+          "result": "Guarded real snapshot read requires old refs still present and stable canonical/old scientific surface fingerprints; old local fixture ref deletion rejects before restore. No retired remote ref is created."
+        }
+      ],
+      "prepared_execution": [
+        {
+          "order": 1,
+          "action": "Refresh canonical/router identities and admission if changed; download exact qualified helper with SHA256 verification; default --action preflight --canonical-sha FRESH_QUALIFIED_HEAD --scope both",
+          "gate": "Actual inventoried bytes/configs, private durable backup, live V1/V2 zero-write/no-inference canonical compatibility; no binding mutation"
+        },
+        {
+          "order": 2,
+          "action": "Explicit --action apply with the fresh exact canonical subject, scope both or independently v2/v1",
+          "gate": "Fresh backup/preflight under existing worker flock; only selected JSON branch values and V2 fixed status wrapper change; no timer/release/model/unit/remote-ref mutation; health failure rolls back; owner edits block overwrite"
+        },
+        {
+          "order": 3,
+          "action": "--action observe --backup-directory ACTUAL_MIGRATION_OUTPUT --wait-seconds 1560, or bounded individual observations",
+          "gate": "Two distinct current canonical journal receipts, each matched to its real timer trigger/service start and InvocationID; original release tree fingerprints and unit/env hashes unchanged; V1 remains disabled/inactive and model PASS; no manual worker start by this tool Actual source/tree/timer properties are verified; no old/dry-run/manual/unmatched/duplicate receipt can count."
+        },
+        {
+          "order": "3b",
+          "action": "Optional --action rollback --backup-directory ACTUAL_MIGRATION_OUTPUT if necessary before retirement",
+          "gate": "Pre-retirement transaction recovery only. Reads old-ref existence and stable scientific/control fingerprints; NOOP wake/projection logs may advance but science may not. If a ref retired or state advanced, keep current bindings and return canonical-recovery BLOCK; never recreate deleted refs."
+        },
+        {
+          "order": 4,
+          "action": "Targeted actual-host operational consumer scan, fresh GitHub PR/issue/workflow/automation/default checks; preserve exact frozen old live tip and scientific/evidence lineage under retained project authority",
+          "gate": "No unresolved live exact-name dependency; historical mentions classified; exact archive reachability and provenance verified; do not re-audit the previous 247 deletions"
+        },
+        {
+          "order": 5,
+          "action": "Retire eligible autonomous-loop, Oracle refs and old default in Owner-requested sequence; immediate fresh SHA read and server-side force-with-lease; verify absence and receipts after each bounded batch",
+          "gate": "Only DELETE_PROVEN_SAFE. Old default cannot retire until owner/admin changes it to project/canonical and verifies default-dependent behavior. UNKNOWN never deletes"
+        },
+        {
+          "order": 6,
+          "action": "Protect only canonical refs after physical two-ref closure; verify readback and existing authorized collector/worker publications",
+          "gate": "Prepared policy deletion + non_fast_forward, no bypass, no new per-data-commit PR/CI gates. GitHub admin mutation and actual post-policy behavior remain unverified"
+        }
+      ],
+      "remaining_external_proof": [
+        "Actual server private backup and live compatibility result not yet received",
+        "Actual fixed status/config application not executed by this preparation",
+        "Actual monotonic timer/service properties and two post-rebind automatic witnesses not yet observed",
+        "Remaining host systemd/cron/config/checkout exact-name consumer scan must precede deletion",
+        "Old default/protection/environment/deployment administrative preflight/mutation still requires available owner/admin execution surface"
+      ],
+      "host_configuration_mutations_by_this_preparation": 0,
+      "branch_deletions_this_preparation": 0,
+      "new_scheduler": false,
+      "new_oracle_instance": false,
+      "claim_ceiling": "PREPARATION_AND_CODE_QUALIFICATION_ONLY; not host activation/use/E2E, F3 Codex consumption, F1 fresh-agent behavioral recovery, all legacy workflows green, economic value, or two-branch completion",
+      "next_action": "On Owner SSH reconnection, refresh the current canonical subject/admission and use the updated hash-verified default preflight; return only its allowlisted JSON before actual ref application.",
+      "helper_bytes": 34946,
+      "legacy_rollback_scope": "Pre-retirement transaction recovery only. Reads old-ref existence and stable scientific/control fingerprints; NOOP wake/projection logs may advance but science may not. If a ref retired or state advanced, keep current bindings and return canonical-recovery BLOCK; never recreate deleted refs.",
+      "updated_utc": "2026-11-02T00:24:00.253963+00:00",
+      "proof_scope": "Prepared/tested by this agent and hosted CI; actual root host baseline supplied by Owner. No separate independent reviewer or new host execution is claimed.",
+      "final_remote_snapshot_utc": "2026-11-02T00:25:15.951891+00:00",
+      "remaining_branch_count": 6,
+      "observed_old_live_tip_before_receipt": "2b4574ddc5c6fd8b2a881edfa700d3e9df8c4462"
     }
   }
 }

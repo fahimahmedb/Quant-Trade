@@ -14,7 +14,7 @@ This file is the single current-state router. Historical detail remains in Git h
 - no destructive branch cleanup is authorized by this router.
 
 Current exact code subject at this update:
-`code/canonical=232782db0b45a0663a4dfb7d10819119beb931bb`
+`code/canonical=f03ab69dc053aeda6e781d493a497b7926f36946`
 
 ## Current working method
 
@@ -158,8 +158,8 @@ Until that witness exists:
 
 The method-enforcement repair does not grant runtime deployment or replace the existing host proof.
 
-`VM_MULTI_WAKE_PROOF=BLOCK_EXTERNAL_HOST_ACCESS`
-`CURRENT_HOST_STATE=UNKNOWN`
+`VM_MULTI_WAKE_PROOF=BLOCK_LIVE_REBIND_AND_REAL_CODEX_CONSUMPTION_PROOF`
+`CURRENT_HOST_STATE=OWNER_ROOT_BASELINE_RECEIVED_LIVE_REBIND_PENDING`
 `LIVE_HOST_DEPLOYMENT=NOT_PROVEN`
 `REAL_CODEX_WAKE_FROM_VM=NOT_PROVEN`
 `TWO_AUTOMATIC_WAKES=NOT_PROVEN`
@@ -169,13 +169,21 @@ The previously qualified host-wake connection must not be rebuilt absent contrad
 
 A local/environment blocker affects only its dependent lane. It does not authorize global stop or substitute architecture.
 
+### Owner-authorized final branch migration — preparation qualified
+
+The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the method-enforcement mission itself grants no deployment/deletion authority. The Owner recovered SSH as `ubuntu` and supplied the complete root inventory. Last observed baseline: V2 config still names `builder/oracle-v2-core-20261020`, A67 release and native observer remain installed, V2 timer active/enabled; V1 fallback config still names `builder/oracle-economic-loop-recovery-20261019`, F394 release remains installed and V1 timer inactive/disabled. This is an attributed baseline, not a fresh unattended host-health claim.
+
+Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The helper defaults to private backup/read-only preflight; explicit apply changes only branch config values and the fixed status control, with rollback and distinct timer-correlated wake observation. No host application or two post-rebind wakes have been proved. This does not close F3 or prove a real Codex result consumption.
+
+Current bounded state/proofs and exact residual dependencies: [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json), [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv), [migration receipt](cleanup-20261101/MIGRATION_RECEIPT.md), [deletion receipt](cleanup-20261101/FINAL_DELETION_RECEIPT.md). Six refs remain; no additional deletion/default/protection change occurred in this preparation. Agent direct SSH remains unavailable; actual host execution is via the Owner terminal. Next: reconnect, reconcile fresh identities/admission if changed and run the updated hash-verified preflight; actual backup/compatibility, ref-only application, two automatic wakes, final consumer/archive/lease and admin gates remain mandatory. No new scheduler, Oracle instance, release rollout or economic experiment is admitted.
+
 ## Finish gates / authority ceiling
 
 F0-F6 remain governed only by `AI_WORKING_METHOD_V1`.
 
 This router does not claim `QUANT_SYSTEM_V1_FINISHED`:
 - F1 behavioral recovery remains BLOCK in this environment;
-- F3 real VM multi-wake remains `BLOCK_EXTERNAL_HOST_ACCESS`;
+- F3 real VM/Codex multi-wake remains blocked by actual live rebind/consumption evidence;
 - later F4-F6 require their own exact evidence.
 
 Closed authorities remain:
@@ -190,7 +198,7 @@ Closed authorities remain:
 ## Next bounded actions
 
 1. `METHOD`: run the genuinely fresh repository-only recovery witness when an independent fresh-agent/session surface exists; no more synthetic proxy.
-2. `RUNTIME`: when authenticated intended-host access exists, execute the bounded VM multi-wake proof; do not build another scheduler/control plane.
+2. `RUNTIME`: use the recovered Owner SSH route for the already-prepared host preflight/ref migration and two automatic-wake witnesses; the separate real-Codex consumption gate remains unproven. Do not build another scheduler/control plane.
 3. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
 Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
