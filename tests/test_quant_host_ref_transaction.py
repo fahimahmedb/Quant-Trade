@@ -19,6 +19,23 @@ from research.research_os.expansion.v2_core import assert_authority_closed
 
 
 class HostTransactionTests(unittest.TestCase):
+    def test_timer_duration_display_uses_exact_dbus_microseconds(self):
+        displayed = SimpleNamespace(stdout='LastTriggerUSecMonotonic=1w 5d 14h 56min 12.613516s\nActiveState=active\n')
+        raw = SimpleNamespace(stdout='t 1090572613516\n')
+        with patch.object(ops.subprocess, 'run', side_effect=[displayed, raw]) as run:
+            value = ops.show_properties('quant-research-worker-v2.timer', ('LastTriggerUSecMonotonic', 'ActiveState'))
+        self.assertEqual(value['LastTriggerUSecMonotonic'], '1090572613516')
+        self.assertEqual(value['ActiveState'], 'active')
+        self.assertIn('org.freedesktop.systemd1.Timer', run.call_args.args[0])
+
+    def test_timer_raw_wrong_type_or_display_value_fails_closed(self):
+        for raw in ('s "1090572613516"', 't 1w 5d', 't -1', ''):
+            with self.subTest(raw=raw), patch.object(ops.subprocess, 'run', side_effect=[
+                SimpleNamespace(stdout='LastTriggerUSecMonotonic=1090572613516\n'),
+                SimpleNamespace(stdout=raw),
+            ]), self.assertRaisesRegex(ops.Blocked, 'TIMER_RAW_MONOTONIC_UINT64_REQUIRED'):
+                ops.show_properties('quant-research-worker-v2.timer', ('LastTriggerUSecMonotonic',))
+
     def metadata(self, paths):
         return {str(p): dict(uid=p.stat().st_uid,gid=p.stat().st_gid,mode=oct(p.stat().st_mode & 0o777)) for p in paths}
 

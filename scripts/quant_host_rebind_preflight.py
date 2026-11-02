@@ -559,7 +559,20 @@ def append_automatic_witness(receipt, witness):
 def show_properties(unit, properties):
     child = subprocess.run(["systemctl","show",unit,*["--property="+p for p in properties]],
                            capture_output=True,text=True,check=True,timeout=10)
-    return dict(line.split("=",1) for line in child.stdout.splitlines() if "=" in line)
+    values = dict(line.split("=",1) for line in child.stdout.splitlines() if "=" in line)
+    if unit == 'quant-research-worker-v2.timer' and 'LastTriggerUSecMonotonic' in properties:
+        # systemctl formats this uint64 as a human duration on Ubuntu 24.04.
+        # Read exact microseconds; parsing/rounding the display could weaken causality.
+        raw = subprocess.run([
+            'busctl', '--system', 'get-property', 'org.freedesktop.systemd1',
+            '/org/freedesktop/systemd1/unit/quant_2dresearch_2dworker_2dv2_2etimer',
+            'org.freedesktop.systemd1.Timer', 'LastTriggerUSecMonotonic',
+        ], capture_output=True, text=True, check=True, timeout=10)
+        match = re.fullmatch(r't ([0-9]+)\s*', raw.stdout)
+        if not match:
+            raise Blocked('TIMER_RAW_MONOTONIC_UINT64_REQUIRED')
+        values['LastTriggerUSecMonotonic'] = match.group(1)
+    return values
 
 
 def observe_wakes(directory, wait_seconds=0):
