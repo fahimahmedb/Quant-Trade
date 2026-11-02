@@ -1,13 +1,13 @@
 {
   "mission_id": "ORACLE_CANONICAL_REF_MIGRATION_PREPARATION_AND_AUDIT",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-02T01:02:03.002997+01:00",
+  "receipt_timestamp": "2026-11-02T01:16:08.281799+01:00",
   "project_canonical_sha": "92072550334632bab3f8c4759ce89e30af311555",
-  "code_canonical_sha": "70771aa4b5baf46a46ec791b3f9d282041ca24e9",
+  "code_canonical_sha": "1294c10cd5e89773db3bc7db0fbf35800f57fbc0",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@4cd33d77af7faa91cc4d47701ec463b0a482d55a",
   "current_subject": {
     "project_sha": "92072550334632bab3f8c4759ce89e30af311555",
-    "code_sha": "70771aa4b5baf46a46ec791b3f9d282041ca24e9",
+    "code_sha": "1294c10cd5e89773db3bc7db0fbf35800f57fbc0",
     "object": "Existing Oracle A67 V2/F394 V1 branch bindings; prepared migration only; no host execution in this checkpoint"
   },
   "current_blocker_or_decision": "F0 remains open with six remote branches; current host still names both old refs; backup and live canonical compatibility remain pending; original A67 status validator rejects canonical branch.",
@@ -15,8 +15,8 @@
   "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
   "why_this_work_can_change_the_decision": "Reuse the existing preflight, deployed workers/status logic and systemd timer to prepare exact config-only rebind, guarded rollback and timer-correlated two-wake evidence. No new runtime architecture or scientific release.",
-  "minimal_decisive_test": "Real F394/A67 code on frozen local Git canonical snapshots preserves 72 tasks and performs zero writes/inference; reproduce/fix old control validation; inject rename/status failure, owner edits and stale/manual/duplicate wake evidence; exact-head hosted qualification.",
-  "counterexample": "A naive branch edit breaks the A67 fixed status control; rollback could overwrite an owner edit; two journal records alone can be mistaken for two automatic canonical wakes.",
+  "minimal_decisive_test": "36 operational/real-legacy tests: frozen F394/A67 canonical compatibility, actual local-Git retired-ref rollback rejection, scientific-surface advancement rejection, rename/status-failure rollback, Owner edit preservation and timer/service/journal correlation; exact-head hosted qualification and method completion binding.",
+  "counterexample": "The original fixed status rejects canonical; a rollback after old-ref deletion can break recovery, or can discard an advanced scientific surface. Two journal lines alone can fake automatic wake proof, and rollback can overwrite a newer Owner edit.",
   "durable_output_required": "Exact published code/CI/admission identity; bounded audit and resume plan in existing FINAL_MIGRATION_STATE, dependency matrix and MIGRATION_RECEIPT. No host migration or two-wake PASS before actual proof.",
   "next_action_after_pass_fail_block": "After code qualification, await Owner SSH reconnection and execute updated hash-verified preflight against fresh canonical head; apply only on fresh PASS, observe two distinct timer-correlated wakes, then final consumer/archive/lease retirement gates. Scope-block any unknown only.",
   "owner_authorization_required": false,

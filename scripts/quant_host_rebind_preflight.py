@@ -106,10 +106,16 @@ class NoModelCalls:
     def healthcheck(self,*a,**kw): raise RuntimeError('PREFLIGHT_MODEL_ACCESS_FORBIDDEN')
 def task_blobs(s):
     return {p:h for p,h in s.blobs.items() if p.startswith('research/research_os/tasks/')}
+def stable_surface(s):
+    ignored=('research/research_os/runtime/worker_wakes/','research/research_os/artifacts/live-observation/')
+    value={p:h for p,h in s.blobs.items() if not p.startswith(ignored)}
+    return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 old_tasks=None
+old_surface=None
 if flavor=='v2':
     with ReadOnlyStore(cache=Path(config['cache']),repository=config['repository'],branch=old_branch).snapshot() as s:
         old_tasks=task_blobs(s)
+        old_surface=stable_surface(s)
 config['branch']='code/canonical'
 store=ReadOnlyStore(cache=Path(config['cache']),repository=config['repository'],branch=config['branch'])
 if flavor=='v2':
@@ -118,12 +124,16 @@ if flavor=='v2':
 else:
     worker=ResearchOSWorker(store,lane=config.get('lane','auto'),worker_id=config['worker_id'],release_sha=config['release_sha'])
 with worker.store.snapshot() as s:
+    first_head=s.head
+    state_surface=stable_surface(s)
     tasks=s.tasks()
     same=old_tasks==task_blobs(s) if old_tasks is not None else None
     claimed=sum(t.get('status')=='CLAIMED' for t in tasks)
 result=worker.wake(mode='dry-run')
+if first_head!=result.get('input_head'):raise RuntimeError('PREFLIGHT_SNAPSHOT_MOVED_RETRY_FRESH_STATE')
 out={k:result.get(k) for k in ('status','writes','input_head','state_branch','selected_task','authority','hosted_model_calls')}
 out.update(model_calls=0,claimed_tasks=claimed,task_count=len(tasks),same_tasks_as_live_v2=same,
+           stable_canonical_surface_sha256=state_surface,stable_old_surface_sha256=old_surface,
            v2_preflight=(getattr(worker.store,'last_preflight',None) or {}).get('status'))
 print(json.dumps(out,sort_keys=True))
 '''
@@ -442,6 +452,16 @@ def rollback_binding(directory):
     if not receipt["before"] or not set(receipt["before"]) <= allowed or set(receipt["before"]) != set(receipt["after"]):
         raise Blocked("ROLLBACK_TARGET_OUTSIDE_FIXED_BINDINGS")
     with worker_lock():
+        if release_signatures(receipt['scope'])!=pre['release_signatures']:
+            raise Blocked('RELEASE_CHANGED_CANONICAL_RECOVERY_REQUIRED')
+        for key,spec in selected_specs(receipt['scope']).items():
+            probe_code=ROLLBACK_SNAPSHOT_PROBE
+            cmd=['runuser','-u','quant-research','--','env','HOME=/var/lib/quant-research',
+                 '/usr/bin/python3.12','-I','-B','-c',probe_code,
+                 '/opt/quant-research/releases/'+spec[2],spec[0],spec[3],key]
+            try: proof=bounded_probe(cmd)
+            except Exception: raise Blocked('OLD_REF_UNAVAILABLE_CANONICAL_RECOVERY_REQUIRED') from None
+            validate_rollback_surface(pre['probes'][key],proof,v2=key=='v2')
         before, restore = {}, {}
         for name, old_hash in reversed(list(receipt["before"].items())):
             path = Path(name); current = checked_bytes(path)
@@ -453,6 +473,40 @@ def rollback_binding(directory):
         receipt.update(status="ROLLED_BACK_EXACT_BYTES_AND_PERMISSIONS", rolled_back_at=datetime.now(timezone.utc).isoformat())
         atomic_file(directory / "migration.json", (json.dumps(receipt,sort_keys=True)+"\n").encode(),dict(uid=0,gid=0,mode="0o600"))
         return receipt
+
+
+ROLLBACK_SNAPSHOT_PROBE=r'''
+import hashlib,json,sys
+from pathlib import Path
+release,config_path,old_branch,flavor=sys.argv[1:]
+sys.path.insert(0,release)
+from research.research_os.github_state import GitHubStateStore
+config=json.loads(Path(config_path).read_text())
+class ReadOnlyStore(GitHubStateStore):
+    def commit(self,*a,**kw):raise RuntimeError('ROLLBACK_REMOTE_WRITE_FORBIDDEN')
+def surface(snapshot):
+    ignored=('research/research_os/runtime/worker_wakes/','research/research_os/artifacts/live-observation/')
+    value={p:h for p,h in snapshot.blobs.items() if not p.startswith(ignored)}
+    return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+old=ReadOnlyStore(cache=Path(config['cache']),repository=config['repository'],branch=old_branch)
+old._git('fetch','--no-tags',old.remote,'refs/heads/'+old_branch)
+old_digest=None
+if flavor=='v2':
+    with old.snapshot() as s:old_digest=surface(s)
+canonical=ReadOnlyStore(cache=Path(config['cache']),repository=config['repository'],branch='code/canonical')
+with canonical.snapshot() as s:canonical_digest=surface(s)
+print(json.dumps(dict(old_ref_exists=True,stable_canonical_surface_sha256=canonical_digest,
+                     stable_old_surface_sha256=old_digest)))
+'''
+
+
+def validate_rollback_surface(before, proof, *, v2=False):
+    canonical=before.get('stable_canonical_surface_sha256')
+    if (not proof.get('old_ref_exists') or not canonical
+            or proof.get('stable_canonical_surface_sha256')!=canonical
+            or (v2 and (not before.get('stable_old_surface_sha256')
+                        or proof.get('stable_old_surface_sha256')!=before['stable_old_surface_sha256']))):
+        raise Blocked('STATE_ADVANCED_OR_OLD_REF_RETIRED_CANONICAL_RECOVERY_REQUIRED')
 
 
 def automatic_wake(timer, service, rows, receipt):

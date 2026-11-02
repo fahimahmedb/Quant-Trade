@@ -89,6 +89,16 @@ class HostTransactionTests(unittest.TestCase):
             self.assertEqual(p.stat().st_mode & 0o777,0o600)
             self.assertEqual(p.read_bytes(),b'unchanged-bytes')
 
+    def test_retired_old_ref_or_advanced_scientific_surface_blocks_legacy_rollback(self):
+        before=dict(stable_canonical_surface_sha256='a'*64,stable_old_surface_sha256='b'*64)
+        valid=dict(before,old_ref_exists=True)
+        ops.validate_rollback_surface(before,valid,v2=True)
+        for key,value in [('old_ref_exists',False),('stable_canonical_surface_sha256','c'*64),
+                          ('stable_old_surface_sha256','d'*64)]:
+            with self.subTest(key=key),self.assertRaisesRegex(ops.Blocked,'CANONICAL_RECOVERY_REQUIRED'):
+                ops.validate_rollback_surface(before,dict(valid,**{key:value}),v2=True)
+        with self.assertRaises(ops.Blocked):ops.validate_rollback_surface({},valid)
+
     def test_no_argument_status_control_cannot_accept_caller_options(self):
         with tempfile.TemporaryDirectory() as tmp:
             wrapper=Path(tmp)/'status';wrapper.write_bytes(ops.status_wrapper());wrapper.chmod(0o700)

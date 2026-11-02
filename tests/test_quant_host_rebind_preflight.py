@@ -76,7 +76,7 @@ class HostPreflightTests(unittest.TestCase):
             def commit(self, *args, **kwargs): writes.append("REMOTE_WRITE")
             @contextlib.contextmanager
             def snapshot(self):
-                yield SimpleNamespace(tasks=lambda: [], blobs={})
+                yield SimpleNamespace(tasks=lambda: [], blobs={}, head="a" * 40)
         class Worker:
             def __init__(self, store, **kwargs): self.store = store
             def wake(self, **kwargs): self.store.commit("unexpected-publication")
