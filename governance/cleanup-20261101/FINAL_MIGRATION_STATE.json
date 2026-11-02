@@ -156,7 +156,7 @@
       "safe_to_rebind": "OWNER_EXECUTED_QUALIFIED_GATES_PASSED",
       "backup_or_rollback": "/var/backups/quant-canonical-rebind-20261102T013425.925186Z",
       "migration_executed": true,
-      "post_migration_test": "Immediate fixed-status readback/health gate passed per qualified helper result; two automatic wakes still pending"
+      "post_migration_test": "PASS_TWO_AUTOMATIC_WAKES at 2026-11-02T02:20:22.679034Z; two distinct timer-correlated canonical A67 NOOP invocations; model PASS; V1 inactive; no timer/release/model mutation or manual starts. Final other-consumer sweep still pending."
     },
     {
       "system": "Quant-Trade Laboratoire",
@@ -395,11 +395,11 @@
     },
     "builder/oracle-v2-core-20261020": {
       "disposition": "PARK",
-      "reason": "Owner qualified-helper receipt proves V2 config branch rebound to code/canonical and fixed status adapted at 2026-11-02T01:34:46Z; exact status wrapper SHA256 matches qualified source. Existing timer, releases and model unchanged. PARK until two distinct timer-correlated canonical wakes, targeted final host/GitHub consumer sweep, exact final old-tip archive/reachability and fresh SHA lease checks."
+      "reason": "V2 config rebound to code/canonical; two automatic primary V2 wakes and model health PASS, disabled V1 preserved. PARK only until targeted final host/GitHub other-consumer sweep, final tip provenance/reachability and immediate exact-SHA lease gates. No real Codex consumption claim."
     },
     "builder/oracle-economic-loop-recovery-20261019": {
       "disposition": "PARK",
-      "reason": "Owner qualified-helper receipt proves installed disabled V1 fallback config rebound to code/canonical in the same transaction; F394 release and inactive/disabled V1 timer preserved. PARK until primary V2 continuity witness and final fallback/host consumer sweep plus exact provenance/archive/lease gates; do not activate V1 to manufacture proof."
+      "reason": "V1 fallback config rebound to code/canonical; two automatic primary V2 wakes and model health PASS, disabled V1 preserved. PARK only until targeted final host/GitHub other-consumer sweep, final tip provenance/reachability and immediate exact-SHA lease gates. No real Codex consumption claim."
     },
     "builder/research-os-autonomous-loop-20261015": {
       "disposition": "PARK",
@@ -523,9 +523,9 @@
     "Counterexample found: external Lab git-ref parser and UI links hard-code Edge Lab branch. Preserve scientific bytes and rebind parser/tests/links before deletion.",
     "Unique commits are not dismissed by tree similarity: retain all exact original tips via project parent links; material current evidence additionally copied byte-for-byte."
   ],
-  "updated_utc": "2026-11-02T02:14:16.358582+00:00",
+  "updated_utc": "2026-11-02T02:24:38.041718+00:00",
   "project_subject_before_receipt": "57c517a5eb5dfdd50d5ad12d88780c4c01f5e000",
-  "code_canonical_sha": "23c559e2670ed7206f7bceab2a949d425108adfa",
+  "code_canonical_sha": "d61cd4b6398376d4e4878003d64360a8e3ee1ffb",
   "branch_dispositions": {
     "audit/forensic-checkpoint-20261019": {
       "disposition": "DELETE_PROVEN_SAFE",
@@ -697,7 +697,7 @@
   "evidence_archive_commit": "fac556b52ff048255d987bed6a6755eab4766fd5",
   "evidence_archive_integration_commit": "7ceb060732956d6354f2c1450b4b96d19f1f4c05",
   "migration_commit": "255136feeb585bf4bb2358c3e7919ce00ee8c3cc",
-  "status": "HOST_REBOUND_TWO_AUTOMATIC_WAKES_AND_FINAL_CONSUMER_GATES_PENDING",
+  "status": "HOST_REF_REBOUND_TWO_AUTOMATIC_WAKES_PASS_FINAL_CONSUMER_ADMIN_PENDING",
   "default_binding_commit": "fe310c0a",
   "default_preflight": {
     "scheduled_workflows": [
@@ -903,7 +903,7 @@
     "independent_review_claimed": false,
     "claim_ceiling": "Repository dependency migration and exact-code engineering qualification; no system-wide zero risk, host activation, autonomous E2E, science or capital claim"
   },
-  "next_action": "Keep Owner SSH observer running and receive final JSON. Require PASS_TWO_AUTOMATIC_WAKES plus targeted host/GitHub consumer checks and exact archive/lease gates before any retirement. Default/protection remain separately gated by admin execution access.",
+  "next_action": "Targeted read-only final host consumers and GitHub admin default migration; archive exact final tips and recheck leases before any deletion.",
   "final_heads_observation_method": "Fresh GitHub REST branches before this project receipt; project SHA is the pre-receipt subject; live old V2 ref may still advance and requires a fresh lease read at retirement.",
   "final_counters": {
     "start": 33,
@@ -1111,12 +1111,12 @@
       "host_config_mutations": 0
     },
     "host_rebind_executed": true,
-    "post_rebind_automatic_wakes_verified": 0,
+    "post_rebind_automatic_wakes_verified": 2,
     "branch_retirements_this_resume": 0,
     "branch_retirement_gate": "Inventory/back up; preserve release and behavior; minimally migrate V2 and V1 fallback binding; verify two automatic post-rebind wakes; final consumer/SHA/lease checks; default role separately migrated before its retirement.",
     "counterexample": "A timer can be active and the model healthy while the config still points at an old state branch or V1 fallback can later reintroduce it.",
-    "next_action": "Keep Owner SSH observer running and receive final JSON. Require PASS_TWO_AUTOMATIC_WAKES plus targeted host/GitHub consumer checks and exact archive/lease gates before any retirement. Default/protection remain separately gated by admin execution access.",
-    "phase": "OWNER_REBOUND_BOTH_CONFIGS_WAITING_TWO_AUTOMATIC_WAKES",
+    "next_action": "Targeted read-only final host consumers and GitHub admin default migration; archive exact final tips and recheck leases before any deletion.",
+    "phase": "HOST_REF_REBOUND_TWO_AUTOMATIC_WAKES_PASS_FINAL_CONSUMER_ADMIN_PENDING",
     "root_inventory": {
       "source": "Owner-executed hash-verified 8d9a33053a834f7a4612da2b0f665bade57bc3e5 inventory helper via existing SSH; allowlisted JSON only",
       "received_utc": "2026-11-01T19:16:14.778448+00:00",
@@ -1450,8 +1450,8 @@
       "qualified_helper_sha": "f03ab69dc053aeda6e781d493a497b7926f36946",
       "qualified_helper_sha256": "da2dfa7c3cb7c4107eb950ff7c79ad057c8e55ec6da47fc8538a38a5c1263b64",
       "status_wrapper_exact_hash_verified_against_qualified_source": true,
-      "owner_observer_currently_waiting": true,
-      "two_automatic_wakes_verified": false,
+      "owner_observer_currently_waiting": false,
+      "two_automatic_wakes_verified": true,
       "code_checkpoint_completion": {
         "mission_id": "ORACLE_OWNER_REBIND_RECEIPT_20261102T013446Z",
         "admission_identity": "sha256:9f9f31ae759c32c0898e8d8610ae190f33be8a51e49c7f7810863adb7b91ab6c",
@@ -1471,6 +1471,80 @@
       "tests": "38 operational regression tests PASS; exact-head hosted Canonical Code Qualification 41376572349 SUCCESS and AI Working Method Gate 41376572076 SUCCESS",
       "owner_journal": "four distinct canonical A67 NOOP wakes after apply; latest matching timer/service pair; second timer-correlated witness remains required",
       "next_action": "Observe only against existing private backup using repaired qualified helper; never reapply or manually start worker."
+    },
+    "owner_verified_receipt": {
+      "source": "Owner pasted full stdout of hash-verified observer 72b73428; GitHub exact output/input parent identities independently checked",
+      "receipt": {
+        "operation": "EXISTING_HOST_REF_ONLY_MIGRATION",
+        "status": "PASS_TWO_AUTOMATIC_WAKES",
+        "canonical_sha": "5f5196dd6570824c02a080bc82f6a890ae1bdfd0",
+        "scope": "both",
+        "backup_directory": "/var/backups/quant-canonical-rebind-20261102T013425.925186Z",
+        "before": {
+          "/usr/local/libexec/quant-v2-status": "ef7b72d1b15ff497c36c01d3b7eda023725c2d810a21b4d845583bf0f8cda074",
+          "/etc/quant-research/worker.json": "766b69d5189783ce38b2147c2d0d46ebfb0299a454b22f2bfe0d2faf7c48c9ea",
+          "/etc/quant-research-v2/worker.json": "5767f593055ca729abd62c892a7ae0b0306768913b59bdb14e3d8ee5e6c21a8f"
+        },
+        "after": {
+          "/usr/local/libexec/quant-v2-status": "261f113229805d1902d82ca6dbb7e5227898429e4dec43e95b3b1cb338561e9a",
+          "/etc/quant-research/worker.json": "1385d1675af7de43417882a7e100a4a4c2c78f29ca374bb6229a07b3d6772196",
+          "/etc/quant-research-v2/worker.json": "41489ca380ae26ffbb59870176afd9cf9b17ee80332261bd22cf1cce8a1b2471"
+        },
+        "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+        "applied_monotonic_us": 1088443575691,
+        "observed_automatic_wakes": [
+          {
+            "invocation_id": "535d795607c44100a1590973f1ca8129",
+            "timer_trigger_monotonic_us": 1090572613516,
+            "service_start_monotonic_us": 1090572624096,
+            "journal_timestamp_us": "1793585418214155",
+            "status": "NOOP_FRONTIER_EXHAUSTED",
+            "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+            "state_branch": "code/canonical",
+            "input_head": "9e063f372da1d844aa6a94f944b5cbb5a57ed34c",
+            "output_commit": "3f74ea8821fc68a8da0f9df4bb576c7de514e4bc",
+            "writes": 0,
+            "authority": {
+              "economic_experiment_authorized": false,
+              "live_trading_authorized": false,
+              "prospective_observation_authorized": false,
+              "real_capital_authorized": false
+            },
+            "hosted_model_calls": 0
+          },
+          {
+            "invocation_id": "1f8947b5fcfb4bf5a6b5c3d0f8867921",
+            "timer_trigger_monotonic_us": 1091162613367,
+            "service_start_monotonic_us": 1091162624093,
+            "journal_timestamp_us": "1793586008396800",
+            "status": "NOOP_FRONTIER_EXHAUSTED",
+            "release_sha": "a67ffec48fff895d5edc42171855e2213e49cf0d",
+            "state_branch": "code/canonical",
+            "input_head": "72b73428307d4a3bdb966a99fef9f147a41e2592",
+            "output_commit": "280c67f96e4ba8deeb2b212d6277fd6bee1c5d21",
+            "writes": 0,
+            "authority": {
+              "economic_experiment_authorized": false,
+              "live_trading_authorized": false,
+              "prospective_observation_authorized": false,
+              "real_capital_authorized": false
+            },
+            "hosted_model_calls": 0
+          }
+        ],
+        "timer_mutations": 0,
+        "release_mutations": 0,
+        "model_mutations": 0,
+        "remote_writes": 0,
+        "applied_at": "2026-11-02T01:34:46.002214+00:00",
+        "verified_at": "2026-11-02T02:20:22.679034+00:00",
+        "model_health": "PASS",
+        "v1_timer": "inactive",
+        "manual_worker_starts_by_this_tool": 0
+      },
+      "admission_identity": "sha256:fa4cac6c63ebe1922fc4c457aa3d6d4a1bed60a4b7835a0a95ae023953424ffd",
+      "admission_commit": "d61cd4b6398376d4e4878003d64360a8e3ee1ffb",
+      "claim_ceiling": "Existing A67 ref migration continuity PASS; real Codex result consumption/F3 not proved; no deletion safety claim."
     }
   }
 }

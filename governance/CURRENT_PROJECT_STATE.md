@@ -151,23 +151,23 @@ No F1-critical bootstrap, authority, method or router semantic changed between t
 The method-enforcement repair does not grant runtime deployment or replace the existing host proof.
 
 `F3_REAL_VM_MULTI_WAKE=NOT_PROVEN`
-`VM_MULTI_WAKE_PROOF=BLOCK_TWO_TIMER_CORRELATED_WAKES_AND_REAL_CODEX_CONSUMPTION_PROOF`
-`CURRENT_HOST_STATE=OWNER_REBIND_RECEIPT_RECORDED_TWO_CANONICAL_NOOP_WAKE_RECEIPTS_TIMER_CAUSALITY_UNPROVEN`
+`VM_MULTI_WAKE_PROOF=BLOCK_REAL_CODEX_CONSUMPTION_PROOF`
+`CURRENT_HOST_STATE=OWNER_BOTH_REFS_REBOUND_TWO_AUTOMATIC_A67_WAKES_PASS`
 `LIVE_HOST_DEPLOYMENT=NOT_PROVEN`
 `REAL_CODEX_WAKE_FROM_VM=NOT_PROVEN`
 `REAL_CODEX_RESULT_CONSUMPTION=NOT_PROVEN`
-`TWO_AUTOMATIC_WAKES=NOT_PROVEN`
+`TWO_AUTOMATIC_WAKES=PASS_EXISTING_A67_REF_MIGRATION_ONLY`
 `GLOBAL_PROJECT_MISSION_SELECTION=PARK_AFTER_VM_BRIDGE_PROOF`
 
-The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. Code commit `23c559e2670ed7206f7bceab2a949d425108adfa` records the attributed Owner ref-only rebind receipt. Commits `e1712f131f3d21f1208562ccf4cbab00f7b0166d` and `aedf4ef2c435689e8e1ebc994f60216a85b0a888` each persist an A67 canonical `NOOP_FRONTIER_EXHAUSTED` wake receipt with all economic/live authorities false. The two repository receipts do not by themselves prove two distinct timer-correlated automatic wakes, and neither contains real Codex-result consumption proof.
+The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. Code commit `23c559e2670ed7206f7bceab2a949d425108adfa` records the attributed Owner ref-only rebind receipt. Commits `e1712f131f3d21f1208562ccf4cbab00f7b0166d` and `aedf4ef2c435689e8e1ebc994f60216a85b0a888` each persist an A67 canonical `NOOP_FRONTIER_EXHAUSTED` wake receipt with all economic/live authorities false. The Owner final observer receipt now proves two distinct timer-correlated automatic wakes; neither contains real Codex-result consumption proof.
 
 A local/environment blocker affects only its dependent lane. It does not authorize global stop or substitute architecture.
 
 ### Owner-authorized final branch migration — rebound, automatic correlation pending
 
-The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The Owner confirms both bindings applied; four canonical NOOP receipts exist. The observer duration-format bug is repaired by exact code 72b73428307d4a3bdb966a99fef9f147a41e2592 (38 operational tests PASS; hosted Canonical Code Qualification 41376572349 and AI Working Method Gate 41376572076 SUCCESS). Observe only using the existing private backup. Two timer-correlated witnesses, final consumer/archive/lease checks and administrative closure remain pending or unverified. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
+The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The Owner confirms both bindings applied; four canonical NOOP receipts exist. The observer duration-format bug is repaired by exact code 72b73428307d4a3bdb966a99fef9f147a41e2592 (38 operational tests PASS; hosted Canonical Code Qualification 41376572349 and AI Working Method Gate 41376572076 SUCCESS). Owner observe-only verification now reports PASS_TWO_AUTOMATIC_WAKES. Final consumer/archive/lease checks and administrative closure remain pending. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
 
-Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The later admission/rebind/wake commits do not change those executable surfaces. The recorded Owner receipt supersedes the prior pending-rebind status, but two post-rebind timer-correlated wakes and real Codex-result consumption remain unproved.
+Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The later admission/rebind/wake commits do not change those executable surfaces. The recorded Owner receipt supersedes the prior pending-rebind status, but two post-rebind timer-correlated wakes are now proven; real Codex-result consumption remains unproved.
 
 Current bounded state/proofs and exact residual dependencies: [FINAL_MIGRATION_STATE.json](cleanup-20261101/FINAL_MIGRATION_STATE.json), [dependency matrix](cleanup-20261101/SURVIVOR_DEPENDENCY_MATRIX.csv), [migration receipt](cleanup-20261101/MIGRATION_RECEIPT.md), [deletion receipt](cleanup-20261101/FINAL_DELETION_RECEIPT.md). Six refs remain. Next: verify the remaining automatic-wake/consumption evidence and final consumer/archive/lease/admin gates from primary evidence. No new scheduler, Oracle instance, release rollout or economic experiment is admitted.
 
@@ -177,7 +177,7 @@ F0-F6 remain governed only by `AI_WORKING_METHOD_V1`.
 
 This router does not claim `QUANT_SYSTEM_V1_FINISHED`:
 - F1 behavioral recovery is PASS on the exact witness subject above;
-- F3 real VM/Codex multi-wake remains open because two timer-correlated wakes and real Codex-result consumption are not proven;
+- F3 real VM/Codex multi-wake remains open because real Codex-result consumption is not proven;
 - later F4-F6 require their own exact evidence.
 
 Closed authorities remain:
@@ -192,7 +192,9 @@ Closed authorities remain:
 ## Next bounded actions
 
 1. `METHOD`: F1 is capitalized; do not rerun it absent contradictory F1-critical evidence. Universal agent compliance and server-side prevention remain separate and unproven.
-2. `RUNTIME`: verify two distinct automatic timer-correlated wakes and one real Codex result causally consumed by the following decision. Reuse the existing host/scheduler path; do not build another scheduler/control plane.
+2. `RUNTIME`: two timer-correlated A67 canonical wakes are proven; verify one real Codex result causally consumed by the following decision. Reuse the existing host/scheduler path; do not build another scheduler/control plane.
 3. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
 Stop law: no new global audit, meta-audit, memory system, mission selector, scheduler, Oracle migration, scientific experiment, capital authorization or live trading is authorized by this method-enforcement mission.
+
+Owner verified receipt at 2026-11-02T02:20:22.679034Z supersedes earlier pending timer-correlation statements above: two distinct automatic timer-correlated canonical A67 wakes PASS, model PASS, V1 inactive. Full identities/invariants are in cleanup-20261101/FINAL_MIGRATION_STATE.json. Existing A67 release remains installed; real Codex-result consumption/F3 is still NOT_PROVEN. Branch retirement awaits targeted final consumers, exact provenance/lease and GitHub default/admin gates.
