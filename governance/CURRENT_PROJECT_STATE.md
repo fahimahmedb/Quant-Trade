@@ -152,20 +152,20 @@ The method-enforcement repair does not grant runtime deployment or replace the e
 
 `F3_REAL_VM_MULTI_WAKE=NOT_PROVEN`
 `VM_MULTI_WAKE_PROOF=BLOCK_TWO_TIMER_CORRELATED_WAKES_AND_REAL_CODEX_CONSUMPTION_PROOF`
-`CURRENT_HOST_STATE=OWNER_REBIND_RECEIPT_RECORDED_ONE_CANONICAL_NOOP_WAKE`
+`CURRENT_HOST_STATE=OWNER_REBIND_RECEIPT_RECORDED_TWO_CANONICAL_NOOP_WAKE_RECEIPTS_TIMER_CAUSALITY_UNPROVEN`
 `LIVE_HOST_DEPLOYMENT=NOT_PROVEN`
 `REAL_CODEX_WAKE_FROM_VM=NOT_PROVEN`
 `REAL_CODEX_RESULT_CONSUMPTION=NOT_PROVEN`
 `TWO_AUTOMATIC_WAKES=NOT_PROVEN`
 `GLOBAL_PROJECT_MISSION_SELECTION=PARK_AFTER_VM_BRIDGE_PROOF`
 
-The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. Code commit `23c559e2670ed7206f7bceab2a949d425108adfa` records the attributed Owner ref-only rebind receipt and explicitly leaves automatic wakes pending. Its child `e1712f131f3d21f1208562ccf4cbab00f7b0166d` records one A67 canonical `NOOP_FRONTIER_EXHAUSTED` wake with all economic/live authorities false. One wake is not two distinct timer-correlated wakes and contains no real Codex-result consumption proof.
+The previously qualified host-wake connection must not be rebuilt absent contradictory primary evidence. Code commit `23c559e2670ed7206f7bceab2a949d425108adfa` records the attributed Owner ref-only rebind receipt. Commits `e1712f131f3d21f1208562ccf4cbab00f7b0166d` and `aedf4ef2c435689e8e1ebc994f60216a85b0a888` each persist an A67 canonical `NOOP_FRONTIER_EXHAUSTED` wake receipt with all economic/live authorities false. The two repository receipts do not by themselves prove two distinct timer-correlated automatic wakes, and neither contains real Codex-result consumption proof.
 
 A local/environment blocker affects only its dependent lane. It does not authorize global stop or substitute architecture.
 
 ### Owner-authorized final branch migration — preparation qualified
 
-The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt is recorded on code/canonical, followed by one canonical NOOP wake. The underlying two-wake observer result, final consumer/archive/lease checks and administrative closure remain pending or unverified. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
+The separate original Owner branch-migration instruction remains the authority for this bounded operational work; the F1 capitalization mission grants no deployment/deletion authority. The Owner rebind receipt and two canonical NOOP wake receipts are recorded on code/canonical. The underlying timer-correlation observer result, final consumer/archive/lease checks and administrative closure remain pending or unverified. This is not F3, a fresh unattended host-health claim or a real Codex-consumption witness.
 
 Prepared exact code `f03ab69dc053aeda6e781d493a497b7926f36946`: Canonical Code Qualification `41366231532` SUCCESS and AI Working Method Gate `41366231392` SUCCESS; 36 operational/real-legacy witness tests plus 29 method tests PASS. The later admission/rebind/wake commits do not change those executable surfaces. The recorded Owner receipt supersedes the prior pending-rebind status, but two post-rebind timer-correlated wakes and real Codex-result consumption remain unproved.
 
