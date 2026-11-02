@@ -1,16 +1,16 @@
 {
   "mission_id": "F1_BEHAVIORAL_RECOVERY_CAPITALIZATION_20261102",
   "mission_kind": "OPERATOR",
-  "receipt_timestamp": "2026-11-02T02:48:00+01:00",
-  "project_canonical_sha": "4bdad8f9d0b7c7192e23a42a894b832321416b45",
-  "code_canonical_sha": "b02994d690dec3e720a8288556dc26d8964ffbdc",
-  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@30cbdc3901f4aaac6d7b6b5e41a2480c30bc74bc",
+  "receipt_timestamp": "2026-11-02T02:52:00+01:00",
+  "project_canonical_sha": "64c77c7db2f450821052a02019ac508e6de42a30",
+  "code_canonical_sha": "aedf4ef2c435689e8e1ebc994f60216a85b0a888",
+  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@f5ab5f976da2d73713403709e72610c29da8da26",
   "current_subject": {
-    "project_sha": "4bdad8f9d0b7c7192e23a42a894b832321416b45",
-    "code_sha": "b02994d690dec3e720a8288556dc26d8964ffbdc",
+    "project_sha": "64c77c7db2f450821052a02019ac508e6de42a30",
+    "code_sha": "aedf4ef2c435689e8e1ebc994f60216a85b0a888",
     "object": "Published F1 behavioral recovery capitalization router and exact final admission/completion binding"
   },
-  "current_blocker_or_decision": "The exact fresh witness passed continuity and adversarial checks and the existing canonical router now records F1 PASS; this refreshed admission binds final exact-head qualification and completion after the project/router movement.",
+  "current_blocker_or_decision": "The exact fresh witness passed continuity and adversarial checks and the existing canonical router records F1 PASS plus both current NOOP wake receipts without claiming timer causality or F3; this refreshed admission binds final exact-head qualification and completion.",
   "target_gate_or_blocker": "F1_RECOVERABLE_CANONICAL_STATE",
   "existing_capability": "REUSE",
   "requested_action": "REUSE",
