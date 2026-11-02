@@ -1,13 +1,13 @@
 {
   "mission_id": "ORACLE_CANONICAL_REF_MIGRATION_PREPARATION_AND_AUDIT",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-02T00:58:11.749452+01:00",
-  "project_canonical_sha": "7b60a4cb0dc2597fe1588496f5546aa13cd40d0c",
-  "code_canonical_sha": "232782db0b45a0663a4dfb7d10819119beb931bb",
-  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@a4d6cec2beeb9a261655bba695642a3b73576ab1",
+  "receipt_timestamp": "2026-11-02T01:02:03.002997+01:00",
+  "project_canonical_sha": "92072550334632bab3f8c4759ce89e30af311555",
+  "code_canonical_sha": "70771aa4b5baf46a46ec791b3f9d282041ca24e9",
+  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@4cd33d77af7faa91cc4d47701ec463b0a482d55a",
   "current_subject": {
-    "project_sha": "7b60a4cb0dc2597fe1588496f5546aa13cd40d0c",
-    "code_sha": "232782db0b45a0663a4dfb7d10819119beb931bb",
+    "project_sha": "92072550334632bab3f8c4759ce89e30af311555",
+    "code_sha": "70771aa4b5baf46a46ec791b3f9d282041ca24e9",
     "object": "Existing Oracle A67 V2/F394 V1 branch bindings; prepared migration only; no host execution in this checkpoint"
   },
   "current_blocker_or_decision": "F0 remains open with six remote branches; current host still names both old refs; backup and live canonical compatibility remain pending; original A67 status validator rejects canonical branch.",
@@ -25,5 +25,6 @@
   "active_decision_lanes": 2,
   "mutating_builders_on_seam": 1,
   "authority_scope": "The Owner directly authorized final branch dependency migration and explicitly resumed/prepared/audited it in this session. The newer method-enforcement mission grants no such authority by itself; this separate existing Owner authorization remains the scope. This preparation checkpoint executes no host mutation, activation, experiment or branch deletion.",
-  "concurrent_lane_observed": "Separate method-enforcement code/admission changes 7eb3f61f and 232782db reconciled and preserved in history; no method executable was overwritten."
+  "concurrent_lane_observed": "Separate method-enforcement code/admission changes 7eb3f61f and 232782db reconciled and preserved in history; no method executable was overwritten.",
+  "reconciliation_evidence": "Method run 41364664784 rejected 70771aa4 after concurrent project/router movement to 92072550/4cd33d77. Refresh admission only; host migration/helper/tests remain byte-identical to code qualified by 41364664727."
 }
