@@ -79,6 +79,8 @@ A new architecture, scheduler, control plane, memory system, framework or agent 
 
 `UNKNOWN` blocks only the affected action. It does not authorize repository-wide archaeology.
 
+Hosted reasoning is reserved for a demonstrated high-value engineering or validation gap that deterministic checks/local GPT-OSS cannot close. Routine inspection, prioritization, waiting, summaries and no-delta monitoring stay local. State an invocation budget before dispatch; do not silently renew it by renaming a failed task. The current F3 transport trial allows one builder and at most one review, with no paid automatic retry. Invocation limits are not a token or monetary ceiling; do not invent usage estimates.
+
 ## 6. Concurrency and ownership
 
 - one primary Builder may mutate a capability/seam at a time;

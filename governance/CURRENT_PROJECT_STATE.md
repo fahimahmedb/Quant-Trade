@@ -1,21 +1,21 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`ACTIVE_V2_F3_HANDOFF_CODE_QUALIFIED__HOST_APPLICATION_PENDING`
+STATUS=`OWNER_APPLIED_F3_DISPATCH_OBSERVED__CODEX_CHECKOUT_BLOCK__BOUNDED_PR_TRIAL_PREPARED`
 DATE=`2026-11-03`
 
 This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=ACTIVE_V2_F3_TRANSACTIONAL_HANDOFF_20261103`
+`LAST_MATERIAL_HANDOFF_MISSION=F3_PR_CONTEXT_AND_BOUNDED_CODEX_COST_20261103`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=74057412c66bbc6372a23e6549109bd1af47f697`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=Run the pinned operator script for candidate 74057412c66bbc6372a23e6549109bd1af47f697 in the existing Owner SSH session; return its sanitized handoff receipt, then verify natural wakes and real Codex-result consumption.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=New exact evidence falsifies V2-only rollback, credential isolation, qualified target binding or restart recovery.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=a18088e5f112968f2d11d7cea2462cd67c5904c7`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=Run the pinned bounded operator for a18088e5f112968f2d11d7cea2462cd67c5904c7 with expected current release 74057412c66bbc6372a23e6549109bd1af47f697 and draft PR 50; observe one read-only Codex execution and at most one review, without paid retries.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=New primary evidence falsifies the hosted-call cap, managed-dropin rollback or PR-context transport; preserve any failed trial and park rather than auto-retry.`
 
 Durable-continuation enforcement reuses the existing canonical router and AI Working Method Gate; it does not create a second memory or routing system. Code checkpoint `d27f6377fa2f285fd2687c5500a990f6a411a6df` adds the continuation validator, focused regression tests and hosted-gate wiring. Exact hosted `AI Working Method Gate` run `41557476759` is `SUCCESS` on that checkpoint. Under the active machine contract, `CHECKPOINT` may qualify intermediate material work but is not authoritative mission PASS; `FINAL_HANDOFF` is authoritative only when the hosted gate verifies the exact canonical router mission/result/subject/next-action/reopen markers. A boolean `durable_remote_output=true` is not sufficient by itself.
 
-## Active V2 → F3 handoff — qualified code, host proof pending
+## Prior V2 → F3 handoff — qualified code and attributed application
 
 Qualified immutable candidate: `74057412c66bbc6372a23e6549109bd1af47f697` on `code/canonical`.
 Admission: `sha256:c627e97f0afc1fdd3fd2e2f280219015006125fd3c109a43963463cfbbd25a94`.
@@ -37,11 +37,36 @@ Operator entrypoint: `scripts/resume_oracle_v2_f3.sh TARGET_SHA`; instructions: 
 `HANDOFF_CODE_QUALIFICATION=PASS`
 `ROLLBACK_CODE_PATH_QUALIFIED=PASS`
 `ROLLBACK_VM_PROVEN=NO`
-`HOST_APPLICATION=NOT_EXECUTED_BY_THIS_MISSION`
+`HOST_APPLICATION=OWNER_REPORTED_ACTIVE_F3_PENDING`
 `F3_REAL_VM_MULTI_WAKE=NOT_PROVEN`
 `REAL_CODEX_RESULT_CONSUMPTION=NOT_PROVEN`
 
 The Owner supplied an inventory captured at 2026-11-03T02:12:14Z: V2 timer enabled/active, V2 config/symlink A67, V1 timer disabled/inactive, shared V1/V2 worker.env, local-model service active. This is attributed dated host evidence, not a fresh unattended health assertion. The session has no host SSH identity/command connector. F4-F6 remain pending their own exact evidence; economic/prospective/capital/live authorities remain closed. This is code/predeployment completion only, not deployed/active/used/E2E or whole-system completion.
+
+## Bounded PR-context qualification and hosted-call cost
+
+Owner reported successful handoff to `74057412c66bbc6372a23e6549109bd1af47f697`, status `ACTIVE_F3_PROOF_PENDING`, private rollback `/var/backups/quant-v2-handoff-20261103T032903-fdf8ed8b`. This is attributed Owner terminal evidence, not a direct agent host command. Do not repeat the old A67-only installation.
+
+Primary GitHub event `issues/44#issuecomment-6594713816` independently proves that the actual VM path posted dispatch `f6c7767606e9ec4dde98442edc47b3594af5c93242f2dd5d3bf416650d751505` for `F3-ENGINEERING-20261103T032819Z`. Actual Codex task result `issues/44#issuecomment-6594735371` returned `BLOCK_EXPECTED_HEAD_UNAVAILABLE`: supplied project checkout `069a5c81d...`, expected code subject `b9ed3a49...` absent, no configured remote. No result marker or successful consumption exists. Preserve this failed trial.
+
+Owner explicitly requested Codex only for high-value work, with local GPT-OSS handling routine reasoning. The next qualification is necessary only to close the actual F3 checkout-transport blocker; it is not another F1 campaign or a routine summary. Draft PR #50 reuses code/canonical head and project/canonical base; DO NOT MERGE. Its actual checkout usefulness is still unproved. No new Codex invocation was issued by the coordinating agent.
+
+Qualified next candidate: `a18088e5f112968f2d11d7cea2462cd67c5904c7`.
+- AI Working Method Gate `41574120370`: SUCCESS;
+- Canonical Code Qualification `41574120436`: SUCCESS;
+- Oracle V2 Core `41574120386`: SUCCESS;
+- SEC P0 pre-t0 gate `41574120369`: SUCCESS.
+
+The service environment pins one builder attempt, at most one review and six unchanged observations before PARK. A tested READY guard prevents head adoption/restart from bypassing the builder cap. This bounds invocation count, not token count or account-wide monetary spending; measured Codex token usage remains UNKNOWN. Routine waiting/polling uses no new hosted call. The existing local-model adapter remains in charge of bounded decisions; no hosted fallback is added.
+
+The operator now avoids sudo -v, verifies exact PR head context, accepts an unchanged managed drop-in for a transactional existing-F3 upgrade and preserves modified/later drop-ins. Local focused adapter/deployment/router tests: 45 PASS; method/continuation/isolation tests: 41 PASS. Existing scientific contracts and all closed authorities remain unchanged.
+
+`F3_REAL_VM_MULTI_WAKE=NOT_PROVEN`
+`IMMEDIATE_BLOCK=ACTUAL_CODEX_CODE_CHECKOUT_AND_RESULT_CONSUMPTION_NOT_PROVEN`
+`NEXT_TRIAL_MAX_BUILDER_CALLS=1`
+`NEXT_TRIAL_MAX_REVIEW_CALLS=1`
+`PAID_AUTOMATIC_RETRIES=0`
+`CODEX_TOKEN_USAGE=UNKNOWN`
 
 ## Current decision frontier
 
@@ -76,7 +101,7 @@ This decision-frontier block is a surfacing aid inside the existing canonical ro
 - no destructive branch cleanup is authorized by this router.
 
 Immutable qualified handoff candidate:
-`code_candidate=74057412c66bbc6372a23e6549109bd1af47f697`
+`code_candidate=a18088e5f112968f2d11d7cea2462cd67c5904c7`
 Resolve the live code/canonical head fresh; automatic runtime receipts can advance it independently of this candidate.
 
 ## Current working method
@@ -257,7 +282,7 @@ Closed authorities remain:
 ## Next bounded actions
 
 1. `METHOD`: durable continuation now distinguishes `CHECKPOINT` from `FINAL_HANDOFF`; do not claim material PASS until the canonical router handoff is mechanically verified. F1 remains capitalized; do not rerun it absent contradictory F1-critical evidence.
-2. `RUNTIME`: Run the pinned operator script for candidate 74057412c66bbc6372a23e6549109bd1af47f697 in the existing Owner SSH session; return its sanitized handoff receipt, then verify natural wakes and real Codex-result consumption. Reuse the existing V2 scheduler; no V1 switch, new scheduler or scientific canary.
+2. `RUNTIME`: Run the pinned bounded operator for a18088e5f112968f2d11d7cea2462cd67c5904c7 with expected current release 74057412c66bbc6372a23e6549109bd1af47f697 and draft PR 50; observe one read-only Codex execution and at most one review, without paid retries.
 3. `POST-F3`: before executing any new F4/F5 mission, challenge the exact existing runtime witnesses in `Current decision frontier` against the canonical gate definition. `NO_CHANGE_REQUIRED` is the preferred result if they already satisfy the required semantics.
 4. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
