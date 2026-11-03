@@ -4,6 +4,13 @@ This extends `deploy.oracle_v2_deploy`; it reuses the existing V2 service/timer,
 exact-release receipt, both exact-SHA CI checks, VM identity and local backend.
 It does not run the scientific canary or transfer authority back to V1.
 
+The prepared operator entrypoint is `scripts/resume_oracle_v2_f3.sh TARGET_SHA`,
+run as `ubuntu` in the existing SSH session. It first requires all four exact
+CI gates, stages the candidate with the pinned CP1 installer, reuses or opens
+the native GitHub CLI browser login, writes a root-only credential input and
+invokes the explicit handoff. It never prints the token. The login is separate
+from SSH authentication. A failed gate leaves the active runtime untouched.
+
 Prerequisites: Owner/root SSH on the intended VM; the expected old release
 `a67ffec48fff895d5edc42171855e2213e49cf0d`; V2 timer active/enabled and service
 between wakes; V1 inactive/disabled; an immutable CP1-installed target with

@@ -6,6 +6,7 @@ name: SEC P0 pre-t0 gate
 on:
   push:
     branches:
+      - 'code/canonical'
       - 'builder/**'
       - 'blue/**'
       - 'astra/**'

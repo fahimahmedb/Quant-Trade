@@ -1,13 +1,13 @@
 {
   "mission_id": "ACTIVE_V2_F3_TRANSACTIONAL_HANDOFF_20261103",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-03T02:57:14.447234+00:00",
+  "receipt_timestamp": "2026-11-03T03:00:46.020905+00:00",
   "project_canonical_sha": "65d4ae571773f0364e3f22122c20527e113d9cc0",
-  "code_canonical_sha": "7a13d217e0eaed96655f101110f37574003422c0",
+  "code_canonical_sha": "0db804bf3ae503b0d11682dbd8c6493f2b832290",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@3b900fbe2dfad13d4524801b208b9e516b037b64",
   "current_subject": {
     "project_sha": "65d4ae571773f0364e3f22122c20527e113d9cc0",
-    "code_sha": "7a13d217e0eaed96655f101110f37574003422c0",
+    "code_sha": "0db804bf3ae503b0d11682dbd8c6493f2b832290",
     "object": "Existing V2 control transactional engineering-only F3 handoff"
   },
   "current_blocker_or_decision": "EXPLICIT_RUNNING_V2_TO_F3_HANDOFF_NOT_YET_PROVEN",
@@ -31,8 +31,8 @@
       "claim_id": "code-head",
       "claim": "HEAD exact admitted identity",
       "source_kind": "GIT_REF",
-      "object_identity": "code/canonical@7a13d217e0eaed96655f101110f37574003422c0",
-      "observed_value": "7a13d217e0eaed96655f101110f37574003422c0",
+      "object_identity": "code/canonical@0db804bf3ae503b0d11682dbd8c6493f2b832290",
+      "observed_value": "0db804bf3ae503b0d11682dbd8c6493f2b832290",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
@@ -66,9 +66,19 @@
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
+    },
+    {
+      "claim_id": "sec-workflow-routing",
+      "claim": "Existing required SEC gate does not run automatically on code/canonical; add that branch without changing its qualification steps.",
+      "source_kind": "GIT_BLOB",
+      "object_identity": ".github/workflows/sec-p0-pre-t0-gate.yml@8e88db050b2732440a452772815e6a3efaeac5db",
+      "observed_value": "push branches builder/** blue/** astra/** only; workflow_dispatch available",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
     }
   ],
-  "durable_output_required": "Published exact candidate and focused hosted regression evidence; existing canonical router records limits and next host action.",
+  "durable_output_required": "Published exact handoff candidate, mandatory hosted regression qualification and canonical router checkpoint; pinned one-shot operator script checks gates before touching the active runtime.",
   "next_action_after_pass_fail_block": "PASS: use exact qualified candidate for controlled host handoff; FAIL/BLOCK: preserve active A67 and record exact remaining gate. F3 remains unproven until real Codex result is consumed.",
   "owner_authorization_required": false,
   "owner_authorized": true,
