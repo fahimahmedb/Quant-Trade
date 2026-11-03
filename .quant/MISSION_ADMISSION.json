@@ -1,14 +1,14 @@
 {
   "mission_id": "F3_PR_CONTEXT_AND_BOUNDED_CODEX_COST_20261103",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-03T03:41:03.932145+00:00",
-  "project_canonical_sha": "069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
-  "code_canonical_sha": "b9ed3a49a8e6ff8172cf1ec896226599a50945a5",
-  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@6aace9353271f36e949dc8207a0fa53eda0c14cc",
+  "receipt_timestamp": "2026-11-03T03:57:47.312464+00:00",
+  "project_canonical_sha": "58522cac0e73dd6683912e54ee8aafcc8bbdd144",
+  "code_canonical_sha": "a18088e5f112968f2d11d7cea2462cd67c5904c7",
+  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@629cdc109195557e0aa60c01fef45d37517d7f40",
   "current_subject": {
-    "code_sha": "b9ed3a49a8e6ff8172cf1ec896226599a50945a5",
-    "project_sha": "069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
-    "object": "Reuse PR checkout transport and enforce one builder/one reviewer ceiling for the qualification trial"
+    "code_sha": "a18088e5f112968f2d11d7cea2462cd67c5904c7",
+    "project_sha": "58522cac0e73dd6683912e54ee8aafcc8bbdd144",
+    "object": "Final attestation of the qualified capped PR-context candidate; host application and F3 are pending."
   },
   "current_blocker_or_decision": "CODEX_ISSUE_CONTEXT_CHECKOUT_WRONG_BRANCH_AND_TOKEN_BUDGET",
   "target_gate_or_blocker": "F3_REAL_VM_MULTI_WAKE_PREDEPLOY_HANDOFF",
@@ -18,28 +18,58 @@
   "counterexample": "ADOPT_CURRENT_HEAD increments attempt then READY currently posts again without checking max_dispatch_attempts; model prompt alone is not a hard spending limit.",
   "primary_evidence": [
     {
-      "claim_id": "src/autonomous_research/codex_adapter.py",
-      "claim": "READY posts without enforcing max_dispatch_attempts after ADOPT_CURRENT_HEAD.",
+      "claim_id": "router",
+      "claim": "Canonical router records exact qualified bounded candidate and pending capped host trial.",
       "source_kind": "GIT_BLOB",
-      "object_identity": "src/autonomous_research/codex_adapter.py@b71ffffbbb0c860fe17129bdfdde02c6be4829cb",
-      "observed_value": "READY posts without enforcing max_dispatch_attempts after ADOPT_CURRENT_HEAD.",
+      "object_identity": "governance/CURRENT_PROJECT_STATE.md@629cdc109195557e0aa60c01fef45d37517d7f40",
+      "observed_value": "Exact handoff markers present; real F3 not proven; next trial builder=1 reviewer<=1.",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     },
     {
-      "claim_id": "scripts/resume_oracle_v2_f3.sh",
-      "claim": "Operator currently requests issue 44 and uses sudo -v without explicit Codex attempt caps.",
-      "source_kind": "GIT_BLOB",
-      "object_identity": "scripts/resume_oracle_v2_f3.sh@f9898b276d9f70c7113f8ad1d48d4078086b6dab",
-      "observed_value": "Operator currently requests issue 44 and uses sudo -v without explicit Codex attempt caps.",
+      "claim_id": "method",
+      "claim": "Required exact candidate qualification succeeded.",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41574120370",
+      "observed_value": "head_sha=a18088e5f112968f2d11d7cea2462cd67c5904c7; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "canonical",
+      "claim": "Required exact candidate qualification succeeded.",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41574120436",
+      "observed_value": "head_sha=a18088e5f112968f2d11d7cea2462cd67c5904c7; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "v2",
+      "claim": "Required exact candidate qualification succeeded.",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41574120386",
+      "observed_value": "head_sha=a18088e5f112968f2d11d7cea2462cd67c5904c7; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "sec",
+      "claim": "Required exact candidate qualification succeeded.",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41574120369",
+      "observed_value": "head_sha=a18088e5f112968f2d11d7cea2462cd67c5904c7; conclusion=success",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     }
   ],
   "durable_output_required": "Qualified bounded candidate, attributed first host handoff/failed transport evidence, one draft transport PR, and exact capped operator command. No F3 PASS without real consumed result.",
-  "next_action_after_pass_fail_block": "After exact qualification, rebind the existing V2 once into a new PR-context trial with one builder/one reviewer cap; observe natural wakes. Preserve the failed issue-context trial.",
+  "next_action_after_pass_fail_block": "Run the pinned bounded operator for a18088e5f112968f2d11d7cea2462cd67c5904c7 with expected current release 74057412c66bbc6372a23e6549109bd1af47f697 and draft PR 50; observe one read-only Codex execution and at most one review, without paid retries.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "User authorized reversible engineering repair and qualification. No science, capital, trading or unverified host mutation.",
@@ -47,5 +77,8 @@
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "requested_action": "REPAIR",
-  "completion_intent": "CHECKPOINT"
+  "completion_intent": "FINAL_HANDOFF",
+  "handoff_result": "PASS",
+  "handoff_subject_sha": "a18088e5f112968f2d11d7cea2462cd67c5904c7",
+  "handoff_reopen_condition": "New primary evidence falsifies the hosted-call cap, managed-dropin rollback or PR-context transport; preserve any failed trial and park rather than auto-retry."
 }
