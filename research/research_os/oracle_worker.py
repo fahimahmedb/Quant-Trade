@@ -260,43 +260,39 @@ class ResearchOSWorker:
 
     def _idle(self, snapshot, base_receipt, reason, *, persist=True):
         result = dict(base_receipt, status=reason, queue=queue_summary(snapshot.tasks()),
-                      observed_at=timestamp(self.now()), writes=0,
-                      worker_id=self.worker_id, lane=self.lane)
+                      observed_at=timestamp(self.now()), writes=0)
         if persist:
-            # The last immutable natural wake is already the durable witness.
-            # Do not move the executable code HEAD just to repeat the same
-            # NOOP every ten minutes: timestamp and observed input HEAD are
-            # transport metadata, not a changed scientific/queue decision.
-            prefix = PREFIX + 'runtime/worker_wakes/'
-            wake_clock = timestamp(self.now()).replace(':', '').replace('-', '')
-            candidates = [
-                path for path in snapshot.blobs
-                if path.startswith(prefix)
-                and re.fullmatch(r'[0-9]{8}T[0-9]{6}Z-[a-f0-9]{10}\.json',
-                                 path[len(prefix):])
-                # A restored fixture or skewed future clock must not hide
-                # the current worker's actual latest evidence.
-                and path[len(prefix):][:16] <= wake_clock
-            ]
-            if candidates:
-                last_path = max(candidates)
-                last = snapshot.read(last_path)
-                def meaningful(receipt):
-                    return {key: value for key, value in receipt.items()
-                            if key not in ('input_head', 'observed_at', 'output_commit')}
-                if meaningful(last) == meaningful(result):
-                    # A second fresh remote snapshot must still resolve the same
-                    # HEAD. If an Owner, another worker or the scheduler changed
-                    # state between checks, fail closed and retry next wake.
-                    with self.store.snapshot() as fresh:
-                        if fresh.head != snapshot.head:
-                            raise StateConflict('HEAD_CHANGED_BEFORE_IDLE_REUSE')
-                    return dict(result, deduplicated=True, reused_receipt=last_path)
-            wake_id = timestamp(self.now()).replace(':', '').replace('-', '') + '-' + uuid.uuid4().hex[:10]
-            path = prefix + wake_id + '.json'
-            result['output_commit'] = self.store.commit(snapshot, {path: result},
-                                                         create_only=[path],
-                                                         message='Research OS bounded wake ' + reason)
+            # First legitimate NOOP remains a Git receipt. Repeated identical
+            # state must not advance code/canonical by an unqualified [skip ci]
+            # commit every timer tick. Ignore only the time, input Git HEAD and
+            # earlier idle receipt paths: all other Research OS blobs are fenced.
+            semantic = {key: value for key, value in result.items()
+                        if key not in ('observed_at', 'input_head')}
+            state_blobs = sorted((path, sha) for path, sha in snapshot.blobs.items()
+                                 if not path.startswith(PREFIX + 'runtime/worker_wakes/'))
+            identity = canonical_hash({'semantic': semantic, 'state_blobs': state_blobs})
+            path = PREFIX + 'runtime/worker_wakes/idempotent-' + identity + '.json'
+            if path in snapshot.blobs:
+                previous = snapshot.read(path)
+                recorded = {key: value for key, value in previous.items()
+                            if key not in ('observed_at', 'input_head')}
+                if recorded != semantic:
+                    raise StateConflict('IDEMPOTENT_NOOP_RECEIPT_MISMATCH')
+                # A stale initial snapshot may hide an admitted task, frontier
+                # update or another Builder's commit. Read a fresh remote HEAD
+                # before returning without a push; never claim atomicity after
+                # this check, as later concurrent updates belong to next wake.
+                self.fault('before_idempotent_noop_freshness_check')
+                with self.store.snapshot() as fresh:
+                    if fresh.head != snapshot.head:
+                        raise StateConflict('HEAD_CHANGED_BEFORE_IDEMPOTENT_NOOP')
+                result['deduplicated'] = True
+                result['prior_durable_receipt'] = path
+                result['prior_receipt_head'] = snapshot.head
+            else:
+                result['output_commit'] = self.store.commit(
+                    snapshot, {path: result}, create_only=[path],
+                    message='Research OS bounded wake ' + reason)
         return result
 
     def _refill_or_idle(self, snapshot, base_receipt):

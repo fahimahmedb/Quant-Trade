@@ -136,6 +136,96 @@ class TerminalBridgeTests(unittest.TestCase):
                          worker.continuation_cause)
 
 
+    def test_f2_idempotent_noop_survives_cold_restart_and_records_real_state_change(self):
+        """The first state receives one Git receipt; identical cold wakes stay read-only."""
+        from research.research_os.tests.test_oracle_worker import WorkerTests, LocalStore, RELEASE
+        from research.research_os.github_state import PREFIX
+
+        harness = WorkerTests(methodName="test_two_wakes_continue_same_task_then_completed_restart_is_noop")
+        harness.setUp()
+        try:
+            cause = {"predecessor_task_id": "F3-SYNTHETIC"}
+            def worker(store, predecessor=cause):
+                w = ResearchOSWorker(store, lane="f2-nonexistent-lane",
+                                     worker_id="f2-idle", release_sha=RELEASE,
+                                     now=lambda: harness.now)
+                w.continuation_cause = predecessor
+                return w
+
+            first = worker(harness.store).wake(mode="run")
+            self.assertEqual(first["status"], "NO_ADMISSIBLE_LANE_TASK")
+            self.assertIn("output_commit", first)
+            original_head = first["output_commit"]
+            cold = LocalStore(harness.root / "f2-idle-cold", harness.remote)
+            second = worker(cold).wake(mode="run")
+            self.assertEqual(second["status"], first["status"])
+            self.assertTrue(second["deduplicated"])
+            self.assertEqual(second["causal_predecessor"], cause)
+            self.assertNotIn("output_commit", second)
+            with cold.snapshot() as snapshot:
+                self.assertEqual(snapshot.head, original_head)
+                idle = [p for p in snapshot.blobs
+                        if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")]
+                self.assertEqual(len(idle), 1)
+                self.assertEqual(snapshot.read(idle[0])["causal_predecessor"], cause)
+
+            # A material worker-state blob change, unlike a prior idle receipt,
+            # must produce a fresh durable decision.
+            mutator = LocalStore(harness.root / "f2-state-change", harness.remote)
+            with mutator.snapshot() as snap:
+                path = PREFIX + "artifacts/f2-source-change.json"
+                mutator.commit(snap, {path: {"source_evidence_changed": True}},
+                               create_only=[path], message="synthetic research state update")
+            changed = worker(LocalStore(harness.root / "f2-changed-cold", harness.remote)).wake(mode="run")
+            self.assertIn("output_commit", changed)
+            self.assertNotEqual(changed["output_commit"], original_head)
+            # A new causal subject is also a genuinely new decision identity.
+            distinct = worker(LocalStore(harness.root / "f2-new-cause", harness.remote),
+                              {"predecessor_task_id": "F3-OTHER"}).wake(mode="run")
+            self.assertIn("output_commit", distinct)
+            with mutator.snapshot() as snapshot:
+                idle = [p for p in snapshot.blobs
+                        if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")]
+                self.assertEqual(len(idle), 3)
+        finally:
+            harness.tearDown()
+
+    def test_f2_idempotent_noop_fresh_head_challenge_rejects_hidden_concurrent_work(self):
+        """An adversary changes Git HEAD precisely before the dedup freshness check."""
+        from research.research_os.tests.test_oracle_worker import WorkerTests, LocalStore, RELEASE
+        from research.research_os.github_state import PREFIX, StateConflict
+
+        harness = WorkerTests(methodName="test_two_wakes_continue_same_task_then_completed_restart_is_noop")
+        harness.setUp()
+        try:
+            def worker(store, fault=None):
+                return ResearchOSWorker(store, lane="f2-nonexistent-lane",
+                                        worker_id="f2-idle", release_sha=RELEASE,
+                                        now=lambda: harness.now, fault=fault)
+            first = worker(harness.store).wake(mode="run")
+            self.assertIn("output_commit", first)
+            competing = LocalStore(harness.root / "f2-competing", harness.remote)
+            changed = []
+            def inject(point):
+                if point != "before_idempotent_noop_freshness_check":
+                    return
+                with competing.snapshot() as snap:
+                    path = PREFIX + "artifacts/f2-concurrent-admission.json"
+                    changed.append(competing.commit(
+                        snap, {path: {"fresh": True}}, create_only=[path],
+                        message="adversarial concurrent task admission"))
+            cold = LocalStore(harness.root / "f2-stale-reader", harness.remote)
+            with self.assertRaisesRegex(StateConflict, "HEAD_CHANGED_BEFORE_IDEMPOTENT_NOOP"):
+                worker(cold, fault=inject).wake(mode="run")
+            self.assertEqual(len(changed), 1)
+            with competing.snapshot() as snapshot:
+                self.assertEqual(snapshot.head, changed[0])
+                paths = [p for p in snapshot.blobs
+                         if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")]
+                self.assertEqual(len(paths), 1, "stale worker must never add a second idle commit")
+        finally:
+            harness.tearDown()
+
     def test_f5_isolated_git_terminal_successor_memory_restart_and_fencing(self):
         """One synthetic predecessor -> local Git Research OS lifecycle; no GitHub push."""
         from research.research_os.tests.test_oracle_worker import WorkerTests, LocalStore, RELEASE

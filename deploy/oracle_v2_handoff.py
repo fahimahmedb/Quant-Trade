@@ -395,17 +395,18 @@ def verify_effective_f4_unit():
 
 
 def resume_terminal(release, expected_sha, v2_run, sec_run):
-    """Upgrade existing V2 F3 release without redispatching the frozen task.
+    """Transactionally promote frozen F3 -> F4 or an already terminal-only F4.
 
-    No scientific canary, new credential, PR comment, new task or timer is created.
-    Keep the existing original F3 env, exact ledger and shared V1 assets untouched.
+    Never create a Codex task, alter its private env, change the scheduler or
+    widen scientific/live authority. For a second F4 upgrade require the exact
+    previous root-only terminal-resume qualification, not an Owner assertion.
     """
     old = json.loads(control.CONFIG.read_text())
     if (old.get("release_sha") != expected_sha
             or old.get("runtime_mode") != "codex_engineering"
-            or expected_sha != F4_FROZEN_RESULT
             or control.validate_config(old) != control.CURRENT.resolve()):
-        raise ValueError("F4_EXPECTED_ACTIVE_F3_RELEASE_REQUIRED")
+        raise ValueError("F4_EXPECTED_ACTIVE_TERMINAL_RELEASE_REQUIRED")
+    original_f3 = expected_sha == F4_FROZEN_RESULT
     states = {unit: query(unit) for unit in
               (control.TIMER, control.SERVICE, control.V1_TIMER, control.V1_SERVICE)}
     if (states[control.TIMER]["ActiveState"] != "active"
@@ -416,12 +417,30 @@ def resume_terminal(release, expected_sha, v2_run, sec_run):
         raise ValueError("F4_WAITING_V2_SINGLE_TIMER_REQUIRED")
     # A later or edited systemd drop-in is not silently overwritten.
     dropins = [Path(p) for p in states[control.SERVICE].get("DropInPaths", "").split()]
-    if DROPIN not in dropins or DROPIN.read_bytes() != managed_dropin():
-        raise ValueError("F4_ORIGINAL_MANAGED_F3_DROPIN_REQUIRED")
+    expected_dropin = managed_dropin() if original_f3 else managed_f4_dropin()
+    if DROPIN not in dropins or DROPIN.read_bytes() != expected_dropin:
+        raise ValueError("F4_EXPECTED_MANAGED_TERMINAL_DROPIN_REQUIRED")
     if any(p.name > DROPIN.name for p in dropins):
         raise ValueError("F4_LATER_DROPIN_REQUIRES_RECONCILIATION")
 
     cause = frozen_f3_terminal()
+    if not original_f3:
+        # An already promoted F4 release can only be upgraded if the currently
+        # installed root qualification proves the same frozen cause and exact
+        # current config. Reject missing/stale/owner-edited evidence BEFORE
+        # stopping the scheduler or making any host mutation.
+        proof_stat = control.ROOT_QUALIFICATION.lstat()
+        if (not stat.S_ISREG(proof_stat.st_mode) or proof_stat.st_uid != ROOT_UID
+                or stat.S_IMODE(proof_stat.st_mode) != 0o600):
+            raise ValueError("F4_PRIOR_ROOT_QUALIFICATION_MODE_REQUIRED")
+        prior = json.loads(control.ROOT_QUALIFICATION.read_text())
+        if (prior.get("status") != "PASS_F4_TERMINAL_RESUME_PREDEPLOY_ONLY"
+                or prior.get("release_sha") != expected_sha
+                or prior.get("config_hash") != control.canonical_hash(old)
+                or prior.get("predecessor") != cause
+                or prior.get("external_agent_dispatches") != 0
+                or prior.get("f4_runtime_proven") is not False):
+            raise ValueError("F4_PRIOR_TERMINAL_QUALIFICATION_MISMATCH")
     config = dict(old, release_sha=release.name, runtime_mode="codex_engineering",
                   qualification_source_branch=control.BRANCH,
                   qualification_ci_runs={"v2_core": int(v2_run), "sec_p0": int(sec_run)})

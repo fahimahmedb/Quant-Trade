@@ -134,6 +134,55 @@ class ActiveV2HandoffTests(unittest.TestCase):
         h.rollback(Path(result["backup_directory"]))
         self.assert_restored()
 
+    def test_f4_second_terminal_only_upgrade_preserves_frozen_ledger_and_rollback(self):
+        cause = self.prepare_f4_fixture()
+        target = self.old.parent / ("c" * 40)
+        target.mkdir()
+        with patch.object(h, "frozen_f3_terminal", return_value=cause), \
+             patch.object(h, "verify_effective_f4_unit"), \
+             patch.object(h, "qualify_f3", side_effect=AssertionError("Codex preflight forbidden")):
+            first = h.resume_terminal(self.new, self.old.name, 12, 34)
+            self.assertEqual(c.CURRENT.resolve(), self.new)
+            preserved = {str(p): h.image(p) for p in h.paths_to_save(self.states)}
+            second = h.resume_terminal(target, self.new.name, 12, 34)
+            self.assertEqual(c.CURRENT.resolve(), target)
+            self.assertEqual(second["status"], "ACTIVE_F4_RUNTIME_PROOF_PENDING")
+            self.assertEqual(second["external_agent_dispatches"], 0)
+            self.assertEqual(second["predecessor"], cause)
+            self.assertEqual(h.image(h.ENV), preserved[str(h.ENV)])
+            self.assertEqual(h.image(h.SHARED_ENV), preserved[str(h.SHARED_ENV)])
+            self.assertEqual(h.DROPIN.read_bytes(), h.managed_f4_dropin())
+            h.rollback(Path(second["backup_directory"]))
+            for name, original in preserved.items():
+                self.assertEqual(h.image(name), original, name)
+            self.assertEqual(c.CURRENT.resolve(), self.new)
+            self.assertEqual(self.states[c.TIMER]["ActiveState"], "active")
+            self.assertEqual(self.states[c.V1_TIMER]["ActiveState"], "inactive")
+            self.assertTrue(Path(first["backup_directory"]).exists())
+
+    def test_f4_second_upgrade_fails_closed_on_stale_receipt_and_owner_dropin(self):
+        cause = self.prepare_f4_fixture()
+        target = self.old.parent / ("c" * 40)
+        target.mkdir()
+        with patch.object(h, "frozen_f3_terminal", return_value=cause), \
+             patch.object(h, "verify_effective_f4_unit"):
+            h.resume_terminal(self.new, self.old.name, 12, 34)
+            before = len(self.commands)
+            prior = c.ROOT_QUALIFICATION.read_bytes()
+            bad = json.loads(prior)
+            bad["config_hash"] = "forged-qualification"
+            c.ROOT_QUALIFICATION.write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, "F4_PRIOR_TERMINAL_QUALIFICATION_MISMATCH"):
+                h.resume_terminal(target, self.new.name, 12, 34)
+            self.assertEqual(len(self.commands), before)
+            self.assertEqual(c.CURRENT.resolve(), self.new)
+            c.ROOT_QUALIFICATION.write_bytes(prior)
+            h.DROPIN.write_bytes(h.DROPIN.read_bytes() + b"# Owner change\\n")
+            with self.assertRaisesRegex(ValueError, "F4_EXPECTED_MANAGED_TERMINAL_DROPIN_REQUIRED"):
+                h.resume_terminal(target, self.new.name, 12, 34)
+            self.assertEqual(len(self.commands), before)
+            self.assertEqual(self.states[c.TIMER]["ActiveState"], "active")
+
     def test_f4_missing_terminal_proof_refuses_downtime_and_any_mutation(self):
         self.prepare_f4_fixture()
         with patch.object(h, "frozen_f3_terminal", side_effect=ValueError("not terminal")):
