@@ -98,6 +98,18 @@ Every material unit follows:
 
 Construction, test, qualification, integration, activation, use and end-to-end proof are separate states. A test/review/CI run for SHA A cannot qualify SHA B unless equivalence is explicitly proven.
 
+## 7.1 Delegated execution without unnecessary Owner round trips
+
+A mission explicitly authorized as BUILD/REPAIR is one coherent work package, not one analysis or one test per Owner message. Within its admitted scope and remaining budget, the agent **must** reproduce a repairable defect, make the smallest permitted correction, re-test, check one material counterexample and continue toward the original acceptance criteria. An initial diagnosis, red test, routine CI failure, checkpoint or recoverable tool error is not by itself a mission-completion event. Do not change a read-only/review mandate into a build mandate.
+
+**Owner authority is a boundary, not a review of every technical choice.** Once delegated, bounded reversible sequencing, source reuse, fixes, test reruns, evidence recovery and independent-lane continuation do not require another Owner instruction. Reconcile exact project/code/router identity and renew the admission as required when heads move; this is a technical fence, not an automatic request for a new strategic decision. A local BLOCK/PARK must not stop unaffected admitted work.
+
+**External-agent/resource preflight.** Before any Codex, second agent, paid tool, automated dispatch or comment capable of triggering one: verify that the Owner has **explicitly authorized that dispatch**, the actual quota/budget is known and sufficient, the real execution surface can access the required canonical sources with the necessary permissions, and the seam has no competing mutator. A generic permission to build, a promising prompt, a connector reaction or a previously working checkout is not authorization or access proof. Unknown quota/permissions/access => do not dispatch; preserve the resource and continue independent work. Never hide a paid retry behind a renamed task.
+
+**Checkpoint versus closure.** CHECKPOINT preserves progress, identities, actual tests, blocker and exact next action; it does **not** mean FINAL_HANDOFF, require an Owner relaunch or prove autonomous re-dispatch. FINAL_HANDOFF is only for an evidenced terminal work-unit result, with the existing completion binding. Distinguish (1) in-session persistence, (2) fresh-agent recovery from durable state and (3) externally triggered automatic resumption; proof of one is not proof of another. Never claim a continuous session or automatic restart merely because the instructions request perseverance.
+
+The success measure is **qualified, materially useful progress per authorized resource**, together with avoidable Owner interruptions. Zero Owner interventions alone is not success if the agent did no useful work.
+
 ## 8. Review law
 
 A new independent review is justified only by at least one of:

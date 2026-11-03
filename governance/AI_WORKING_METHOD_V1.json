@@ -212,5 +212,14 @@
   "post_migration_remote_branches": [
     "project/canonical",
     "code/canonical"
-  ]
+  ],
+  "execution_continuity": {
+    "external_agent_dispatch_requires_explicit_owner_authorization": true,
+    "external_agent_dispatch_requires_verified_budget": true,
+    "external_agent_dispatch_requires_verified_transport": true,
+    "delegated_in_scope_repair_requires_new_owner_approval": false,
+    "checkpoint_implies_final_handoff": false,
+    "checkpoint_proves_autonomous_relaunch": false,
+    "local_blocker_stops_independent_work": false
+  }
 }
