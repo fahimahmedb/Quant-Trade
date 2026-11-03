@@ -7,7 +7,7 @@
     "project_router": "governance/CURRENT_PROJECT_STATE.md",
     "method_document": "governance/AI_WORKING_METHOD_V1.md"
   },
-  "two_branch_mode": "MIGRATING",
+  "two_branch_mode": "ENFORCED",
   "allowed_outcomes": [
     "NO_CHANGE_REQUIRED",
     "REUSE",

@@ -1,17 +1,17 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F4_REAL_VM_TERMINAL_SUCCESSOR_PASS__F5_BOUNDED_SYNTHETIC_PASS__F6_SCIENTIFIC_FRONTIER_BLOCKED`
+STATUS=`F0_ENFORCED_PASS__F4_F5_PRODUCT_B_PASS__F2_IDLE_STABILITY_REPAIR_NEXT__F6_SCIENTIFIC_FRONTIER_BLOCKED`
 DATE=`2026-11-03`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=PRODUCT_B_REAL_REPLAY_E2E_20261103`
+`LAST_MATERIAL_HANDOFF_MISSION=F0_TWO_BRANCH_KNOWN_CONSUMER_ENFORCEMENT_20261103`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=c787113ca55b2b2b1f9ab1ef5860eccc168a3e5f`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F6: resolve admissible scientific source/frontier behind NOOP_SEARCH_SPACE_INCOMPLETE using existing Research Intelligence policy; separately confirm F0 known live consumers and F2 qualification at the eventual final exact code head. Keep Product B done, F4/F5 bounded PASS and economic/prospective/capital/live authorities closed.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen Product B only if its exact hosted product E2E run 41707221169 / job 126165618622 is contradicted, or a new regression falsifies non-vacuous replay, Book idempotence or Learning strategy identity. F4/F5 reopen only under their existing stronger-primary-evidence conditions; unrelated historical whitespace warnings do not falsify Product B.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=2ea05ecf6ed17c91385faf19dcba7c9facc7d8ab`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F2: repair repeated unchanged Research OS idle commits with the existing worker and terminal V2 transaction; qualify the exact code head, then obtain a separately authorized VM witness of deduplicated natural wakes. Keep F6 scientific source/frontier BLOCK and economic/capital/live authority closed.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F0 only if a new remote branch exists, a verified live consumer requires a removed historical branch, or the current enforced validator/automation evidence is contradicted; no GitHub server-side branch-creation guarantee was established.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
@@ -28,6 +28,18 @@ The active durable-continuation mechanism remains the existing `AI Working Metho
 `REUSE > CONNECT > REPAIR > BUILD`
 
 No F3 result grants economic, prospective, capital or live-trading authority.
+
+## F0 — PASS: two current branches and known live consumers
+
+`F0_TWO_BRANCH_AUTHORITY=PASS`
+`F0_SCOPE=EXACT_REMOTE_REFS_AND_KNOWN_LIVE_CONSUMERS`
+`GITHUB_SERVER_SIDE_BRANCH_CREATION_PROTECTION=UNKNOWN`
+
+GitHub's exact remote branch inventory has only `project/canonical` and `code/canonical`; the repository default is `project/canonical`. The only open PR (#50) points from `code/canonical` to `project/canonical`. There is no surviving historical branch.
+
+The 28 current code workflow definitions and all three project/default workflows were inspected. The active qualification workflows select `code/canonical`, while the project method gate, scheduled `data feeds` and bounded maintenance workflows reside on `project/canonical`; feed and maintenance check out `code/canonical`. Actual scheduled feed run `41690208801` was SUCCESS on project authority, not a speculative cron. Some SEC workflow trigger globs still mention `builder/**`, `blue/**`, `astra/**`; these patterns are not live consumers requiring any absent branch. The real V2 research worker commit `934602276488699d21be5508b181e6c80655a145` reports `state_branch=code/canonical`, and the Owner's observed host had only the V2 timer enabled. Current project method run `41708346539` succeeded on `8a924cdc8f59f6a88200e8a41c4db0845ec1ffe0`.
+
+Minimal correction: the already implemented AI Working Method `validate_remote_branches` is switched to `two_branch_mode=ENFORCED` instead of `MIGRATING`, preserving the same exact two canonical branch names. The project and code method gates can now *detect* an extra branch. No verification of a preventive GitHub ruleset/permission was performed; do not mistake CI detection for server-side branch creation denial.
 
 ## F3 — PASS on exact real-VM multi-wake witness
 
@@ -145,13 +157,22 @@ Exact hosted `Canonical Code Qualification` run [41707221169](https://github.com
 
 Scope limit: this proves synthetic/non-economic product mechanics and causal **strategy/opportunity/Book/Learning** identity on a real implemented path; it does **not** prove profitable market edge, real-host economic use, F6 scientific admissibility, prospective observation, real capital, production or live trading. Other F0/F2/F6 finish gates retain their own exact-head acceptance conditions.
 
+## Current decision frontier — F2 (independent engineering seam)
+
+`CURRENT_GATE=F2_EXACT_HEAD_ENGINEERING_QUALIFICATION`
+`CURRENT_BLOCKER=F2_REPEATED_IDENTICAL_NOOP_COMMITS_ADVANCE_UNQUALIFIED_CODE_HEAD`
+`NEXT_GATE=F6_OPERATIONAL_HANDOFF`
+`MANDATORY_NEXT_DECISION=REPAIR_EXISTING_IDLE_DEDUP_AND_F4_SAFE_UPGRADE`
+`F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=NOT_PROVEN_AT_CURRENT_HEAD`
+
+The live V2 worker publishes a new `research/research_os/runtime/worker_wakes/<timestamp>-<random>.json` commit on `code/canonical` for each identical NOOP, with `[skip ci]`. This moves the actual code HEAD beyond any previously qualified executable SHA. Real consecutive receipts `934602276488699d21be5508b181e6c80655a145` and `d0cf17a6f1fad94ab889baa86fb1dfa37d6ca348` differ only in `input_head` and `observed_at`; queue, preflight, release, status and predecessor are the same.
+
+Reuse `ResearchOSWorker._idle`, the existing CAS state store and original F4 terminal-only transactional V2 handoff to publish the first NOOP per distinct semantic state but deduplicate identical wake receipts. Before a deduplicated return, refetch the remote HEAD to reject stale read/claim. Extend the existing transaction to safely upgrade an already running F4 terminal-only release without dispatching Codex. Exact hosted CI and separately authorized VM rollout/wake proof remain required; code construction alone is not runtime activation.
+
 ## Current decision frontier — F6
 
-`CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
-`CURRENT_BLOCKER=F6_SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
-`NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=REUSE_EXISTING_SCIENTIFIC_SOURCE_AND_FRONTIER_POLICY_BEFORE_BUILD`
 `F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
+`F6_LOCAL_BLOCKER=SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
 
 The live system has a working V2 timer, safe F3->F4 successor, frozen causal identity, existing Research Intelligence refill policy and safe durable NOOP. However the observed frontier is 72/72 terminal, 0 admissible ready tasks; `NOOP_SEARCH_SPACE_INCOMPLETE` explicitly does **not** certify scientific search-space completeness or any productive source/mandate. Do not fabricate novelty or equate autonomous idle with scientific/economic system use.
 
@@ -166,9 +187,9 @@ F1 durable witness remains the fresh repository-only recovery previously capital
 
 For F2, the executable F4 subject `f7949decd0e1b23c017c03bf57951f91a7303192` passed all four exact release gates listed under F4. The subsequent runtime-only receipt commits `9346022...` and `d0cf17a...` deliberately carry `[skip ci]`; do not claim F2 exact-current-head qualification from the earlier SHA. Recheck F2 against the exact then-current `code/canonical` SHA when closing the whole project.
 
-GitHub branch surface refetched at F4/F5 capitalization: exactly `project/canonical` and `code/canonical`; default is `project/canonical`. The live V2 timer uses code/canonical; F0 still requires a bounded known-live-consumer dependency check before PASS.
+F0 exact branch inventory and known live consumers have now been verified and capitalized; existing machine two-branch validation is set to `ENFORCED`. Server-side creation restrictions remain `UNKNOWN`.
 
-F4 and bounded synthetic F5 are now supported by the exact witnesses above. F0 known-live-consumer check, F2 exact eventual current head and F6 operational scientific/economic handoff remain open. This router does **not** claim `QUANT_SYSTEM_V1_FINISHED`.
+F0 known-live-consumer scope, F4 and bounded synthetic F5, and Product B qualified E2E have durable evidence. F2 exact-head stability and F6 scientific/economic operational handoff remain open. Do not claim `QUANT_SYSTEM_V1_FINISHED`.
 
 ## Authority ceiling
 
