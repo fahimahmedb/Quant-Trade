@@ -7,11 +7,11 @@ This file is the single current-state router. Historical detail remains in Git h
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=F4_F5_EVIDENCE_CAPITALIZATION_20261103`
+`LAST_MATERIAL_HANDOFF_MISSION=PRODUCT_B_REAL_REPLAY_E2E_20261103`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=934602276488699d21be5508b181e6c80655a145`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F6: use existing Research Intelligence / queue-refill contracts to resolve the smallest honest admissibility blocker behind NOOP_SEARCH_SPACE_INCOMPLETE; seek a qualified scientific source/mandate rather than force novelty, manufacture an economics claim or rebuild the scheduler. Separately check F0 known live consumers and exact-head F2 at the eventual finish snapshot.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F4 only if stronger primary evidence contradicts authenticated natural timer wake, original frozen F3 causal binding, legitimate bounded NOOP or remote receipt 934602276488699d21be5508b181e6c80655a145; reopen F5 only if its exact hosted isolated-Git identity/restart/stale-fence test is disproved. F3 remains closed absent new F3-critical contradictory primary evidence.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=c787113ca55b2b2b1f9ab1ef5860eccc168a3e5f`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F6: resolve admissible scientific source/frontier behind NOOP_SEARCH_SPACE_INCOMPLETE using existing Research Intelligence policy; separately confirm F0 known live consumers and F2 qualification at the eventual final exact code head. Keep Product B done, F4/F5 bounded PASS and economic/prospective/capital/live authorities closed.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen Product B only if its exact hosted product E2E run 41707221169 / job 126165618622 is contradicted, or a new regression falsifies non-vacuous replay, Book idempotence or Learning strategy identity. F4/F5 reopen only under their existing stronger-primary-evidence conditions; unrelated historical whitespace warnings do not falsify Product B.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
@@ -129,6 +129,21 @@ It used a synthetic frozen predecessor and real local bare Git remote to preserv
 - rejection of a stale lease/generation and a stale Git-head concurrent commit.
 
 Counterexample/limit: the executor intentionally reuses the existing non-economic legacy stage fixture; this **does not** prove real-VM scientific V2 epoch stages or live economic usage. F5 is closed only under the canonical contract's explicit bounded synthetic-safe scope. F4 separately has a genuine live-VM causal NOOP.
+
+## Product B — qualified real product E2E in synthetic-safe scope
+
+`PRODUCT_B_REAL_INTERRUPTED_BOOK_REPLAY=PASS_SYNTHETIC_SAFE`
+`PRODUCT_B_PRODUCT_SOURCE_SUBJECT=c787113ca55b2b2b1f9ab1ef5860eccc168a3e5f`
+`PRODUCT_B_QUALIFICATION_RUN=41707221169`
+`PRODUCT_B_QUALIFICATION_JOB=126165618622`
+
+The product delivery repairs the formerly vacuous `scripts/demo_quant_system.py` stage-6 replay check. Existing Data registration and research evidence feed the original QuantSystem, and existing Desk SCAN → VET → SIZE → RISK → FILLS → BOOK, DeskJournal, persistent evaluation Book and LearningStore are reused unchanged. A real nonempty evaluation fill intent is persisted, a process-boundary fault is deliberately injected after operations were durably applied and before journal commit, then a cold restart resumes the same opportunity. Source: `scripts/demo_quant_system.py@02845b9de4e39ad03c165cacd92efcd57e205dce`; focused test source: `tests/test_quant_system.py@edb60ac4e38f4e889fc14bb725928c2938c26c71`.
+
+Exact hosted `Canonical Code Qualification` run [41707221169](https://github.com/fahimahmedb/Quant-Trade/actions/runs/41707221169) on subject `c787113ca55b2b2b1f9ab1ef5860eccc168a3e5f`: **SUCCESS**, including added preexisting-workflow `Product B synthetic E2E crash replay and Learning qualification` step: `tests.test_quant_system` **75/75 PASS**, integrated demo **39/39 PASS**. Its primary job log proves the nonempty durable plan, prior Book operations, original pending ticket replay exactly once, no duplicate cash/fills/costs/attribution/operation IDs, exactly one recovered desk session, and persistent Learning of the same strategy identity. Negative tests reject absent/empty plans, missing/duplicated tickets and false replay counts. `AI Working Method Gate` run [41707220844](https://github.com/fahimahmedb/Quant-Trade/actions/runs/41707220844) **SUCCESS** on the same SHA. The prior full `V1 proof gate` run 41706289471 executed its unit and demo steps successfully but overall **FAILED** at historical broad-baseline whitespace `Diff check`; do not relabel that global gate PASS.
+
+`PRODUCT_B_METHOD_TEST_A=PASS_BOUNDED_SESSION_OBSERVED`: single mutation seam, GitHub-only, no Codex/secondary-agent/VM/economic or live action. `PRODUCT_B_METHOD_TEST_B=PASS_BOUNDED_REPAIR_AND_RETEST_OBSERVED`: stale proof inventory and a provenance receipt gate failure were repaired, then fresh admission and hosted qualification passed without a new Owner instruction. `PRODUCT_B_METHOD_TEST_C=PARK_FRESH_INDEPENDENT_AGENT_REQUIRED`: not falsely tested by this same agent.
+
+Scope limit: this proves synthetic/non-economic product mechanics and causal **strategy/opportunity/Book/Learning** identity on a real implemented path; it does **not** prove profitable market edge, real-host economic use, F6 scientific admissibility, prospective observation, real capital, production or live trading. Other F0/F2/F6 finish gates retain their own exact-head acceptance conditions.
 
 ## Current decision frontier — F6
 
