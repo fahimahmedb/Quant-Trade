@@ -143,10 +143,20 @@ def _exec_one(config: str, worker_version="v1") -> None:
     if flag not in ("", "0", "1"):
         raise SystemExit("INVALID_QUANT_CODEX_ORCHESTRATION_ENABLED")
 
+    terminal_only = os.environ.get("QUANT_F4_TERMINAL_RESUME_ONLY", "0").strip()
+    if terminal_only not in ("0", "1"):
+        raise SystemExit("INVALID_F4_TERMINAL_RESUME_MODE")
+    if terminal_only == "1" and (flag != "1" or worker_version != "v2"):
+        raise SystemExit("F4_TERMINAL_RESUME_REQUIRES_V2_FROZEN_CODEX_ENV")
+
     if flag == "1":
         env = _codex_environment(worker_version)
         cause = _terminal_continuation(env) if worker_version == "v2" else None
         if cause is None:
+            # F4 promotion must never silently fall back to a new paid Codex
+            # dispatch when the frozen predecessor ledger is missing or stale.
+            if terminal_only == "1":
+                raise SystemExit("F4_FROZEN_TERMINAL_PREDECESSOR_REQUIRED")
             script = _release_root() / "scripts" / "gpt_oss_orchestrator.py"
             argv = [sys.executable, str(script)]
         else:

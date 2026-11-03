@@ -263,7 +263,7 @@ def status(config):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--action", choices=("qualify", "activate", "status", "handoff", "rollback"), required=True)
+    parser.add_argument("--action", choices=("qualify", "activate", "status", "handoff", "resume-terminal", "rollback"), required=True)
     parser.add_argument("--release", type=Path)
     parser.add_argument("--expected-current-sha")
     parser.add_argument("--v2-ci-run", type=int)
@@ -272,7 +272,7 @@ def main():
     parser.add_argument("--backup-directory", type=Path)
     args = parser.parse_args()
     if os.geteuid() != 0: raise SystemExit("ROOT_REQUIRED_FOR_FIXED_V2_CONTROL")
-    if args.action in ("handoff", "rollback"):
+    if args.action in ("handoff", "resume-terminal", "rollback"):
         from deploy.oracle_v2_handoff import execute
         print(json.dumps(execute(args), sort_keys=True))
         return

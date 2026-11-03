@@ -328,12 +328,197 @@ def managed_dropin():
         + str(control.CONFIG) + "\nReadWritePaths=" + str(control.STATE) + "\n").encode()
 
 
+
+# The F3 successor is frozen: this path may reuse its state but must never
+# create a new F3 task, post a GitHub comment or call the Codex orchestrator.
+F4_FROZEN_TASK = "F3-ENGINEERING-20261103T160613Z"
+F4_FROZEN_RESULT = "e2d8f0c5679bc52c5d22a993dab2d0f50d14681a"
+F4_FROZEN_DISPATCH = "28ae3466232abdd373402aeeb9b80eeee4be7b25e4c485af2e5640f3aeb0f7c9"
+F4_FROZEN_PROJECT = "2b7d04286f35e1ca6fa5562cccb9daceb20b19b1"
+
+
+def frozen_f3_terminal():
+    """Read original private service ENV; never print/export credentials."""
+    st = ENV.lstat()
+    if not stat.S_ISREG(st.st_mode) or st.st_uid != ROOT_UID or stat.S_IMODE(st.st_mode) != 0o640:
+        raise ValueError("F4_FROZEN_F3_ENV_OWNER_MODE_REQUIRED")
+    values = {}
+    for line in ENV.read_text(encoding="utf-8").splitlines():
+        key, separator, raw = line.partition("=")
+        if (separator != "=" or not re.fullmatch(r"[A-Z][A-Z0-9_]*", key)
+                or key in values):
+            raise ValueError("F4_FROZEN_F3_ENV_FORMAT_INVALID")
+        try:
+            value = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise ValueError("F4_FROZEN_F3_ENV_FORMAT_INVALID") from exc
+        if not isinstance(value, str):
+            raise ValueError("F4_FROZEN_F3_ENV_FORMAT_INVALID")
+        values[key] = value
+    if (values.get("QUANT_CODEX_ORCHESTRATION_ENABLED") != "1"
+            or values.get("QUANT_CODEX_READONLY_PROBE") != "1"
+            or values.get("QUANT_CODEX_TASK_ID") != F4_FROZEN_TASK
+            or values.get("QUANT_CODEX_EXPECTED_HEAD_SHA") != F4_FROZEN_RESULT
+            or values.get("QUANT_CODEX_ORCHESTRATION_ROOT") != str(control.STATE / "codex_control_plane")
+            or values.get("QUANT_CODEX_PROJECT_BRANCH") != "project/canonical"
+            or values.get("QUANT_CODEX_TARGET_BRANCH") != control.BRANCH
+            or values.get("QUANT_REPOSITORY") != "fahimahmedb/Quant-Trade"
+            or values.get("QUANT_CODEX_ISSUE_NUMBER") != "50"):
+        raise ValueError("F4_FROZEN_F3_SERVICE_SUBJECT_MISMATCH")
+    from research.research_os.host_wake import _terminal_continuation
+    cause = _terminal_continuation(values)
+    if (not isinstance(cause, dict)
+            or cause.get("predecessor_task_id") != F4_FROZEN_TASK
+            or cause.get("predecessor_result_sha") != F4_FROZEN_RESULT
+            or cause.get("predecessor_dispatch_id") != F4_FROZEN_DISPATCH
+            or cause.get("predecessor_project_sha") != F4_FROZEN_PROJECT):
+        raise ValueError("F4_FROZEN_F3_TERMINAL_PROOF_MISMATCH")
+    return cause
+
+
+def managed_f4_dropin():
+    """Change only the existing service's routing mode; never touch F3 secrets."""
+    return managed_dropin().replace(
+        b"[Service]\n", b"[Service]\nEnvironment=QUANT_F4_TERMINAL_RESUME_ONLY=1\n", 1)
+
+
+def verify_effective_f4_unit():
+    verify_effective_unit()
+    result = subprocess.run(
+        ["systemctl", "show", control.SERVICE, "--property=Environment"],
+        capture_output=True, text=True, timeout=20)
+    if (result.returncode or not any(
+            line.startswith("Environment=") and
+            "QUANT_F4_TERMINAL_RESUME_ONLY=1" in line.split("=", 1)[1].split()
+            for line in result.stdout.splitlines())):
+        raise ValueError("F4_TERMINAL_ONLY_SYSTEMD_FENCE_NOT_EFFECTIVE")
+
+
+def resume_terminal(release, expected_sha, v2_run, sec_run):
+    """Upgrade existing V2 F3 release without redispatching the frozen task.
+
+    No scientific canary, new credential, PR comment, new task or timer is created.
+    Keep the existing original F3 env, exact ledger and shared V1 assets untouched.
+    """
+    old = json.loads(control.CONFIG.read_text())
+    if (old.get("release_sha") != expected_sha
+            or old.get("runtime_mode") != "codex_engineering"
+            or expected_sha != F4_FROZEN_RESULT
+            or control.validate_config(old) != control.CURRENT.resolve()):
+        raise ValueError("F4_EXPECTED_ACTIVE_F3_RELEASE_REQUIRED")
+    states = {unit: query(unit) for unit in
+              (control.TIMER, control.SERVICE, control.V1_TIMER, control.V1_SERVICE)}
+    if (states[control.TIMER]["ActiveState"] != "active"
+            or states[control.TIMER]["UnitFileState"] != "enabled"
+            or any(states[unit]["ActiveState"] != "inactive" for unit in
+                   (control.SERVICE, control.V1_TIMER, control.V1_SERVICE))
+            or states[control.V1_TIMER]["UnitFileState"] != "disabled"):
+        raise ValueError("F4_WAITING_V2_SINGLE_TIMER_REQUIRED")
+    # A later or edited systemd drop-in is not silently overwritten.
+    dropins = [Path(p) for p in states[control.SERVICE].get("DropInPaths", "").split()]
+    if DROPIN not in dropins or DROPIN.read_bytes() != managed_dropin():
+        raise ValueError("F4_ORIGINAL_MANAGED_F3_DROPIN_REQUIRED")
+    if any(p.name > DROPIN.name for p in dropins):
+        raise ValueError("F4_LATER_DROPIN_REQUIRES_RECONCILIATION")
+
+    cause = frozen_f3_terminal()
+    config = dict(old, release_sha=release.name, runtime_mode="codex_engineering",
+                  qualification_source_branch=control.BRANCH,
+                  qualification_ci_runs={"v2_core": int(v2_run), "sec_p0": int(sec_run)})
+    if control.validate_config(config) != release:
+        raise ValueError("F4_EXACT_INSTALLED_RELEASE_REQUIRED")
+    control.verify_ci(config)
+    control.instance_identity(config["vm_ocid"])
+    control.backend_from_config(config).healthcheck()
+    directory = BACKUPS / ("quant-v2-handoff-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:8])
+    directory.mkdir(mode=0o700)
+    mutable = [str(path) for path in
+               (control.CONFIG, control.CURRENT, DROPIN, control.ROOT_QUALIFICATION)]
+    record = {
+        "operation": "F4_TERMINAL_RESUME", "phase": "SNAPSHOT",
+        "old_sha": expected_sha, "target_sha": release.name,
+        "states": states, "mutable": mutable, "intended": {},
+        "files": {str(path): image(path) for path in paths_to_save(states)},
+    }
+    save(directory, record)
+    worker_fd = None
+    try:
+        record["phase"] = "QUIESCING"; save(directory, record)
+        quiesce()
+        worker_fd = os.open(WORKER_LOCK, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        fcntl.flock(worker_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if any(image(path) != old_image for path, old_image in record["files"].items()):
+            raise ValueError("F4_HOST_DRIFT_AFTER_SNAPSHOT")
+        if frozen_f3_terminal() != cause:
+            raise ValueError("F4_FROZEN_F3_LEDGER_CHANGED_BEFORE_REBIND")
+        record["phase"] = "APPLYING"; save(directory, record)
+        replace_file(directory, record, control.CONFIG,
+                     (json.dumps(config, indent=2) + "\n").encode(), 0o640,
+                     gid=control.CONFIG.stat().st_gid)
+        replace_file(directory, record, DROPIN, managed_f4_dropin(), 0o644)
+        pending = control.CURRENT.with_name(".current-f4-" + uuid.uuid4().hex)
+        record["intended"][str(control.CURRENT)] = {
+            "kind": "link", "uid": ROOT_UID, "gid": ROOT_GID,
+            "mode": 0o777, "target": str(release),
+        }
+        save(directory, record)
+        pending.symlink_to(release); pending.replace(control.CURRENT)
+        record["phase"] = "REBOUND"; save(directory, record)
+        control.checked(["systemctl", "daemon-reload"])
+        verify_effective_f4_unit()
+        if frozen_f3_terminal() != cause:
+            raise ValueError("F4_FROZEN_F3_LEDGER_CHANGED_AFTER_REBIND")
+        proof = {
+            "status": "PASS_F4_TERMINAL_RESUME_PREDEPLOY_ONLY",
+            "release_sha": release.name,
+            "config_hash": control.canonical_hash(config),
+            "predecessor": cause,
+            "external_agent_dispatches": 0,
+            "f4_runtime_proven": False,
+            "f5_vm_proven": False,
+        }
+        replace_file(directory, record, control.ROOT_QUALIFICATION,
+                     (json.dumps(proof, sort_keys=True) + "\n").encode(), 0o600)
+        control.verify_ci(config)
+        for preserved in (ENV, SHARED_ENV, V1_CONFIG, SUDOERS):
+            if image(preserved) != record["files"][str(preserved)]:
+                raise ValueError("F4_PRESERVED_HOST_ASSET_CHANGED")
+        control.checked(["systemctl", "enable", "--now", control.TIMER])
+        if (query(control.TIMER)["ActiveState"] != "active"
+                or any(query(u)["ActiveState"] != "inactive" for u in
+                       (control.V1_TIMER, control.V1_SERVICE))):
+            raise ValueError("F4_V2_SINGLE_TIMER_NOT_RESTORED")
+        record["phase"] = "ACTIVE_F4_RUNTIME_PROOF_PENDING"; save(directory, record)
+        return {
+            "status": record["phase"], "release_sha": release.name,
+            "backup_directory": str(directory), "f4_runtime_proven": False,
+            "external_agent_dispatches": 0, "predecessor": cause,
+        }
+    except BaseException:
+        try:
+            rollback(directory, record)
+        except BaseException:
+            raise RuntimeError("F4_ROLLBACK_REQUIRES_RECOVERY:" + str(directory)) from None
+        raise RuntimeError("F4_RESUME_FAILED_V2_RESTORED:" + str(directory)) from None
+    finally:
+        if worker_fd is not None:
+            os.close(worker_fd)
+
+
 def execute(args):
     with locked():
         if args.action == "rollback":
             if args.backup_directory is None:
                 raise ValueError("BACKUP_DIRECTORY_REQUIRED")
             return rollback(args.backup_directory)
+        if args.action == "resume-terminal":
+            if any(v is None for v in (args.release, args.expected_current_sha,
+                                        args.v2_ci_run, args.sec_ci_run)):
+                raise ValueError("F4_EXPLICIT_RESUME_ARGUMENTS_REQUIRED")
+            if args.orchestration_config is not None:
+                raise ValueError("F4_NEW_ORCHESTRATION_INPUT_FORBIDDEN")
+            return resume_terminal(args.release, args.expected_current_sha,
+                                   args.v2_ci_run, args.sec_ci_run)
         if any(v is None for v in (args.release, args.expected_current_sha, args.v2_ci_run,
                                     args.sec_ci_run, args.orchestration_config)):
             raise ValueError("EXPLICIT_HANDOFF_ARGUMENTS_REQUIRED")

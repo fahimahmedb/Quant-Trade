@@ -98,6 +98,41 @@ class HostWakeRouterTests(unittest.TestCase):
                 host_wake.main(["--config", "/etc/quant-research/worker.json"])
         execve.assert_not_called()
 
+    @patch("research.research_os.host_wake.os.execve")
+    def test_f4_terminal_only_refuses_missing_f3_state_without_codex_fallback(self, execve):
+        env = {"QUANT_CODEX_ORCHESTRATION_ENABLED": "1",
+               "QUANT_F4_TERMINAL_RESUME_ONLY": "1",
+               "QUANT_CODEX_ORCHESTRATION_ROOT": "/var/lib/quant-research-v2/codex_control_plane"}
+        with patch.dict(os.environ, env, clear=True), \
+             patch("research.research_os.host_wake._terminal_continuation", return_value=None):
+            with self.assertRaisesRegex(SystemExit, "F4_FROZEN_TERMINAL_PREDECESSOR_REQUIRED"):
+                host_wake.main(["--config", "/etc/quant-research-v2/worker.json", "--worker-version", "v2"])
+        execve.assert_not_called()
+
+    @patch("research.research_os.host_wake.os.execve")
+    def test_f4_terminal_only_routes_exactly_one_existing_v2_worker(self, execve):
+        env = {"QUANT_CODEX_ORCHESTRATION_ENABLED": "1",
+               "QUANT_F4_TERMINAL_RESUME_ONLY": "1",
+               "QUANT_CODEX_ORCHESTRATION_ROOT": "/var/lib/quant-research-v2/codex_control_plane"}
+        cause = {"predecessor_task_id": "F3-SYNTHETIC"}
+        with patch.dict(os.environ, env, clear=True), \
+             patch("research.research_os.host_wake._terminal_continuation", return_value=cause):
+            host_wake.main(["--config", "/etc/quant-research-v2/worker.json", "--worker-version", "v2"])
+        execve.assert_called_once()
+        self.assertEqual(execve.call_args.args[1][1:3], ["-m", "research.research_os.oracle_worker_v2"])
+        self.assertEqual(json.loads(execve.call_args.args[2]["QUANT_F4_CAUSAL_PREDECESSOR"]), cause)
+        self.assertNotIn("gpt_oss_orchestrator.py", " ".join(execve.call_args.args[1]))
+
+    @patch("research.research_os.host_wake.os.execve")
+    def test_f4_terminal_only_requires_v2_and_codex_flag(self, execve):
+        for flag, version in (("0", "v2"), ("1", "v1")):
+            with self.subTest(flag=flag, version=version), patch.dict(os.environ, {
+                    "QUANT_CODEX_ORCHESTRATION_ENABLED": flag,
+                    "QUANT_F4_TERMINAL_RESUME_ONLY": "1"}, clear=True):
+                with self.assertRaisesRegex(SystemExit, "F4_TERMINAL_RESUME_REQUIRES"):
+                    host_wake.main(["--config", "/fixture", "--worker-version", version])
+        execve.assert_not_called()
+
     def test_v1_systemd_service_uses_router_not_direct_worker(self):
         repository_root = Path(__file__).resolve().parents[1]
         service = (repository_root / "deploy" / "systemd" / "quant-research-worker.service").read_text()

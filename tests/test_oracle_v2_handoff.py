@@ -92,6 +92,75 @@ class ActiveV2HandoffTests(unittest.TestCase):
         self.assertEqual(self.states[c.TIMER]['UnitFileState'],'enabled')
         self.assertFalse(any(c.V1_TIMER in a and a[1] in ('start','enable') for a in self.commands))
 
+    def prepare_f4_fixture(self):
+        # Preserve the exact frozen F3 identity without relying on real VM/remote.
+        moved = self.old.with_name(h.F4_FROZEN_RESULT)
+        self.old.rename(moved)
+        self.old = moved
+        c.CURRENT.unlink()
+        c.CURRENT.symlink_to(self.old)
+        self.old_config.update(release_sha=self.old.name, runtime_mode="codex_engineering")
+        c.CONFIG.write_text(json.dumps(self.old_config))
+        h.DROPIN.write_bytes(h.managed_dropin())
+        self.states[c.SERVICE]["DropInPaths"] += " " + str(h.DROPIN)
+        h.ENV.write_bytes(b'F3_PRIVATE_FROZEN_VALUE="never-print-this"\n')
+        h.ENV.chmod(0o640)
+        self.before = {str(p): h.image(p) for p in h.paths_to_save(self.states)}
+        return {"predecessor_task_id": h.F4_FROZEN_TASK,
+                "predecessor_dispatch_id": h.F4_FROZEN_DISPATCH,
+                "predecessor_project_sha": h.F4_FROZEN_PROJECT,
+                "predecessor_result_sha": h.F4_FROZEN_RESULT}
+
+    def test_f4_terminal_upgrade_is_one_transaction_with_unchanged_f3_env(self):
+        cause = self.prepare_f4_fixture()
+        with patch.object(h, "frozen_f3_terminal", return_value=cause) as frozen, \
+             patch.object(h, "verify_effective_f4_unit") as unit, \
+             patch.object(h, "configuration", side_effect=AssertionError("new F3 input forbidden")), \
+             patch.object(h, "qualify_f3", side_effect=AssertionError("new Codex preflight forbidden")):
+            result = h.resume_terminal(self.new, self.old.name, 12, 34)
+        self.assertEqual(result["status"], "ACTIVE_F4_RUNTIME_PROOF_PENDING")
+        self.assertFalse(result["f4_runtime_proven"])
+        self.assertEqual(result["external_agent_dispatches"], 0)
+        self.assertEqual(result["predecessor"], cause)
+        self.assertEqual(c.CURRENT.resolve(), self.new)
+        self.assertEqual(h.image(h.ENV), self.before[str(h.ENV)])
+        self.assertEqual(h.image(h.SHARED_ENV), self.before[str(h.SHARED_ENV)])
+        self.assertEqual(h.image(h.V1_CONFIG), self.before[str(h.V1_CONFIG)])
+        self.assertIn("QUANT_F4_TERMINAL_RESUME_ONLY=1", h.DROPIN.read_text())
+        self.assertEqual(json.loads(c.ROOT_QUALIFICATION.read_text())["status"],
+                         "PASS_F4_TERMINAL_RESUME_PREDEPLOY_ONLY")
+        self.assertGreaterEqual(frozen.call_count, 2)
+        unit.assert_called_once()
+        h.rollback(Path(result["backup_directory"]))
+        self.assert_restored()
+
+    def test_f4_missing_terminal_proof_refuses_downtime_and_any_mutation(self):
+        self.prepare_f4_fixture()
+        with patch.object(h, "frozen_f3_terminal", side_effect=ValueError("not terminal")):
+            with self.assertRaisesRegex(ValueError, "not terminal"):
+                h.resume_terminal(self.new, self.old.name, 12, 34)
+        self.assertEqual(self.commands, [])
+        self.assert_restored()
+
+    def test_f4_failed_systemd_rebind_rolls_back_original_env_and_timer(self):
+        cause = self.prepare_f4_fixture()
+        with patch.object(h, "frozen_f3_terminal", return_value=cause), \
+             patch.object(h, "verify_effective_f4_unit",
+                          side_effect=ValueError("F4_SIMULATED_EFFECTIVE_UNIT_REJECT")):
+            with self.assertRaisesRegex(RuntimeError, "F4_RESUME_FAILED_V2_RESTORED"):
+                h.resume_terminal(self.new, self.old.name, 12, 34)
+        self.assert_restored()
+
+    def test_f4_effective_systemd_requires_terminal_only_guard(self):
+        with patch.object(h, "verify_effective_unit"), patch.object(h.subprocess, "run",
+                return_value=Mock(returncode=0, stdout=
+                    "Environment=QUANT_F4_TERMINAL_RESUME_ONLY=1\n")):
+            h.verify_effective_f4_unit()
+        with patch.object(h, "verify_effective_unit"), patch.object(h.subprocess, "run",
+                return_value=Mock(returncode=0, stdout="Environment=OTHER=1\n")):
+            with self.assertRaisesRegex(ValueError, "F4_TERMINAL_ONLY_SYSTEMD_FENCE"):
+                h.verify_effective_f4_unit()
+
     def test_success_reuses_timer_preserves_shared_env_and_keeps_f3_unproven(self):
         result=self.apply()
         self.assertFalse(result['f3_proven']); self.assertEqual(c.CURRENT.resolve(),self.new)
