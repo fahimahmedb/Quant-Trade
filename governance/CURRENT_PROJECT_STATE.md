@@ -1,17 +1,17 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F3_REAL_VM_MULTI_WAKE_PASS__F4_EVIDENCE_CHALLENGE_NEXT`
+STATUS=`F4_REAL_VM_TERMINAL_SUCCESSOR_PASS__F5_BOUNDED_SYNTHETIC_PASS__F6_SCIENTIFIC_FRONTIER_BLOCKED`
 DATE=`2026-11-03`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=F3_RUNTIME_PROOF_CAPITALIZATION_20261103`
+`LAST_MATERIAL_HANDOFF_MISSION=F4_F5_EVIDENCE_CAPITALIZATION_20261103`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=e2d8f0c5679bc52c5d22a993dab2d0f50d14681a`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=Challenge the strongest existing F4 runtime witnesses against the exact F4_GLOBAL_MISSION_CONTINUATION definition; if every required property is already proven return NO_CHANGE_REQUIRED and capitalize F4, otherwise name exactly one missing property and obtain only the smallest additional witness that can decide it.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F3 only if new primary evidence contradicts the frozen authority pair, natural-wake provenance, exact Codex result binding, READ_ONLY_PROBE_RESULT_CONSUMED receipt or terminal DONE state of task F3-ENGINEERING-20261103T160613Z.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=934602276488699d21be5508b181e6c80655a145`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F6: use existing Research Intelligence / queue-refill contracts to resolve the smallest honest admissibility blocker behind NOOP_SEARCH_SPACE_INCOMPLETE; seek a qualified scientific source/mandate rather than force novelty, manufacture an economics claim or rebuild the scheduler. Separately check F0 known live consumers and exact-head F2 at the eventual finish snapshot.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F4 only if stronger primary evidence contradicts authenticated natural timer wake, original frozen F3 causal binding, legitimate bounded NOOP or remote receipt 934602276488699d21be5508b181e6c80655a145; reopen F5 only if its exact hosted isolated-Git identity/restart/stale-fence test is disproved. F3 remains closed absent new F3-critical contradictory primary evidence.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
@@ -92,24 +92,55 @@ F3 classification for this bounded path:
 
 A valid Codex result alone was not counted as F3 PASS. PASS follows only from the subsequent causal-binding receipt, following local GPT-OSS consumption receipt and terminal DONE state on the same frozen identity.
 
-## Current decision frontier — F4
+## F4 — PASS: real VM post-terminal autonomous continuation
 
-`CURRENT_GATE=F4_GLOBAL_MISSION_CONTINUATION`
-`CURRENT_BLOCKER=F4_EXACT_EXISTING_EVIDENCE_CHALLENGE_NOT_YET_CAPITALIZED`
-`NEXT_GATE=F5_IDENTITY_CONSERVING_E2E`
-`MANDATORY_NEXT_DECISION=CHALLENGE_EXISTING_EVIDENCE_BEFORE_NEW_WORK`
+`F4_GLOBAL_MISSION_CONTINUATION=PASS`
+`F4_CLAIM_SCOPE=REAL_VM_NATURAL_WAKE_CAUSAL_DURABLE_NOOP`
 
-Canonical F4 definition: after a terminal bounded task state, the system selects the next legitimate unmet mission or a durable NOOP/PARK without human task substitution.
+After the frozen F3 task `F3-ENGINEERING-20261103T160613Z` reached `TERMINAL_DONE`, the Owner applied the bounded transactional F4 resume on the intended VM:
 
-Strongest existing F4-relevant runtime witnesses already persisted on canonical history:
-- `c58753604799eafaae6e06924efc57c809a62f9c` — real Research OS wake, `NOOP_FRONTIER_EXHAUSTED`, queue 72/72 terminal, `ready=0`, `active=0`, `writes=0`, `hosted_model_calls=0`, all economic/live authorities false;
-- `280c67f96e4ba8deeb2b212d6277fd6bee1c5d21` — earlier equivalent canonical runtime witness with the same bounded NOOP shape.
+- deployed exact qualified F4 release `f7949decd0e1b23c017c03bf57951f91a7303192`;
+- four exact-SHA hosted gates SUCCESS: AI Working Method `41698668039`, Canonical Code `41698667933`, Oracle V2 Core `41698668253`, SEC P0 `41698668221`;
+- transaction returned `ACTIVE_F4_RUNTIME_PROOF_PENDING`, `external_agent_dispatches=0`, rollback snapshot `/var/backups/quant-v2-handoff-20261103T191701-f2cfa727`. This pre-runtime receipt alone was **not** counted as PASS.
 
-These are evidence candidates, not an automatic F4 PASS. Before any F4/F5 runtime execution:
-1. open the exact current F4 definition and the strongest exact witness objects;
-2. if every required property is already proven, return `NO_CHANGE_REQUIRED`, capitalize F4 and continue;
-3. otherwise name exactly one decision-changing missing property and obtain only the smallest witness that can prove or falsify it;
-4. do not create a new scheduler, mission selector, control plane, router, memory system or architecture when existing capability can provide the proof.
+The authenticated VM timer triggered at `2026-11-03T19:18:06Z`. The worker process exited successfully and published the exact primary GitHub evidence:
+
+- commit `934602276488699d21be5508b181e6c80655a145`, author `Quant Research OS`;
+- receipt `research/research_os/runtime/worker_wakes/20261103T191809Z-5ebfccdd20.json` in that commit;
+- release identity `f7949decd0e1b23c017c03bf57951f91a7303192`, input head same;
+- original frozen predecessor task, dispatch `28ae3466232abdd373402aeeb9b80eeee4be7b25e4c485af2e5640f3aeb0f7c9`, result `e2d8f0c5679bc52c5d22a993dab2d0f50d14681a`, and ledger SHA256 `6e0630f4819c577a816ffab66824a0375a91fdb208e7708ec4f34ba8861441c7`;
+- `status=NOOP_SEARCH_SPACE_INCOMPLETE`, `task_count=72`, `terminal_count=72`, `ready_count=active_count=unknown_count=0`, `hosted_model_calls=0`; all economic, prospective, real-capital and live-trading authorities false.
+
+The same original cause was retained in the **second natural Research OS wake** at `2026-11-03T19:20:25Z`, durable commit `d0cf17a6f1fad94ab889baa86fb1dfa37d6ca348`, from input head `934602276488699d21be5508b181e6c80655a145`, with the same bounded `NOOP_SEARCH_SPACE_INCOMPLETE` decision.
+
+The preexisting Research Intelligence policy explicitly names `NOOP_SEARCH_SPACE_INCOMPLETE` as an admissible fail-closed decision; zero tasks were available to execute. F4 proves a legitimate, remotely durable post-terminal **NOOP** without Owner-created task substitution, **not** a new scientific mission or economic result.
+
+## F5 — PASS in the canonical bounded synthetic-safe scope only
+
+`F5_IDENTITY_CONSERVING_E2E=PASS`
+`F5_CLAIM_SCOPE=ISOLATED_GIT_SYNTHETIC_NON_ECONOMIC_ONLY`
+
+The qualified test `test_f5_isolated_git_terminal_successor_memory_restart_and_fencing` in `tests/test_f4_f5_terminal_continuation.py` ran as part of Canonical Code Qualification `41698667933` SUCCESS on exact executable F4 SHA `f7949decd0e1b23c017c03bf57951f91a7303192`.
+
+It used a synthetic frozen predecessor and real local bare Git remote to preserve its cause across:
+- V2 Research OS worker task selection and two legacy recovery-stage executions;
+- artifacts, two durable receipts, task COMPLETE and lease generation 2;
+- a restarted worker from an independent Git cache and a third cold-cache NOOP without duplicate execution;
+- rejection of a stale lease/generation and a stale Git-head concurrent commit.
+
+Counterexample/limit: the executor intentionally reuses the existing non-economic legacy stage fixture; this **does not** prove real-VM scientific V2 epoch stages or live economic usage. F5 is closed only under the canonical contract's explicit bounded synthetic-safe scope. F4 separately has a genuine live-VM causal NOOP.
+
+## Current decision frontier — F6
+
+`CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
+`CURRENT_BLOCKER=F6_SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
+`NEXT_GATE=F6_OPERATIONAL_HANDOFF`
+`MANDATORY_NEXT_DECISION=REUSE_EXISTING_SCIENTIFIC_SOURCE_AND_FRONTIER_POLICY_BEFORE_BUILD`
+`F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
+
+The live system has a working V2 timer, safe F3->F4 successor, frozen causal identity, existing Research Intelligence refill policy and safe durable NOOP. However the observed frontier is 72/72 terminal, 0 admissible ready tasks; `NOOP_SEARCH_SPACE_INCOMPLETE` explicitly does **not** certify scientific search-space completeness or any productive source/mandate. Do not fabricate novelty or equate autonomous idle with scientific/economic system use.
+
+Minimal next investigation: use the existing Research Intelligence policy, source catalog, frontier and capability registry to identify the smallest legitimate **non-economic** source/mandate that can be admitted for normal scientific use; if no grounded admissible source exists, return `BLOCK` for only that lane. No new scheduler, architecture campaign, task substitution, Codex dispatch, production trading or economic claim.
 
 ## Other finish-gate state retained
 
@@ -118,11 +149,11 @@ These are evidence candidates, not an automatic F4 PASS. Before any F4/F5 runtim
 
 F1 durable witness remains the fresh repository-only recovery previously capitalized in canonical history. Do not rerun F1 absent contradictory F1-critical evidence.
 
-For F2, the executable F3 subject `e2d8f0c...` passed all four exact release gates listed above. Governance/admission-only head movement after that subject does not rewrite the F3 runtime fact, but the final whole-project finish claim must still recheck F2 against the then-current exact `code/canonical` SHA.
+For F2, the executable F4 subject `f7949decd0e1b23c017c03bf57951f91a7303192` passed all four exact release gates listed under F4. The subsequent runtime-only receipt commits `9346022...` and `d0cf17a...` deliberately carry `[skip ci]`; do not claim F2 exact-current-head qualification from the earlier SHA. Recheck F2 against the exact then-current `code/canonical` SHA when closing the whole project.
 
-Current GitHub branch surface at this capitalization checkpoint is exactly two branches and default `project/canonical`; do not silently promote F0 solely from that observation if a current live-consumer dependency check is still required by the exact F0 definition.
+GitHub branch surface refetched at F4/F5 capitalization: exactly `project/canonical` and `code/canonical`; default is `project/canonical`. The live V2 timer uses code/canonical; F0 still requires a bounded known-live-consumer dependency check before PASS.
 
-F5 and F6 remain pending their own exact evidence. This router does not claim `QUANT_SYSTEM_V1_FINISHED`.
+F4 and bounded synthetic F5 are now supported by the exact witnesses above. F0 known-live-consumer check, F2 exact eventual current head and F6 operational scientific/economic handoff remain open. This router does **not** claim `QUANT_SYSTEM_V1_FINISHED`.
 
 ## Authority ceiling
 
