@@ -27,6 +27,15 @@ def contract():
             "max_mutating_builders_per_capability": 1,
             "reviewer_mutates_subject": False,
         },
+        "execution_continuity": {
+            "external_agent_dispatch_requires_explicit_owner_authorization": True,
+            "external_agent_dispatch_requires_verified_budget": True,
+            "external_agent_dispatch_requires_verified_transport": True,
+            "delegated_in_scope_repair_requires_new_owner_approval": False,
+            "checkpoint_implies_final_handoff": False,
+            "checkpoint_proves_autonomous_relaunch": False,
+            "local_blocker_stops_independent_work": False,
+        },
         "hard_laws": {
             "local_only_pass_allowed": False,
             "stale_prompt_is_authority": False,
@@ -389,3 +398,52 @@ def test_unknown_source_is_recordable_without_being_invented():
         opened=False,
     )
     assert validate(base_admission(primary_evidence=evidence)) == []
+
+# Bounded long-work mandates: real admission / pure decision policy, not live-agent proof.
+def test_external_agent_cannot_be_dispatched_from_generic_build_mandate():
+    assert evaluate_mission(contract(), base_mission(external_agent_dispatch_requested=True)) == "BLOCK_EXTERNAL_AGENT_AUTHORITY"
+
+
+def test_external_agent_budget_must_be_verified_even_when_owner_authorized():
+    mission = base_mission(external_agent_dispatch_requested=True, external_agent_dispatch_owner_authorized=True)
+    assert evaluate_mission(contract(), mission) == "BLOCK_EXTERNAL_AGENT_BUDGET"
+
+
+def test_external_agent_transport_must_be_verified_before_dispatch():
+    mission = base_mission(external_agent_dispatch_requested=True, external_agent_dispatch_owner_authorized=True,
+                           external_agent_budget_verified=True, external_agent_source_access_verified=False,
+                           external_agent_permission_verified=True)
+    assert evaluate_mission(contract(), mission) == "BLOCK_EXTERNAL_AGENT_TRANSPORT"
+
+
+def test_explicitly_bounded_and_verified_dispatch_is_admissible_not_executed():
+    mission = base_mission(external_agent_dispatch_requested=True, external_agent_dispatch_owner_authorized=True,
+                           external_agent_budget_verified=True, external_agent_source_access_verified=True,
+                           external_agent_permission_verified=True)
+    assert evaluate_mission(contract(), mission) == "ADMIT"
+
+
+def test_fresh_real_admission_rejects_unverified_secondary_agent_dispatch():
+    errors = validate(base_admission(external_agent_dispatch_requested=True))
+    assert "EXTERNAL_AGENT_DISPATCH_OWNER_AUTHORITY_MISSING" in errors
+    assert "EXTERNAL_AGENT_DISPATCH_BUDGET_UNVERIFIED" in errors
+    assert "EXTERNAL_AGENT_DISPATCH_TRANSPORT_UNVERIFIED" in errors
+
+
+def test_delegated_repairable_bug_continues_without_another_owner_round_trip():
+    mission = base_mission(repairable_in_scope_failure=True, remaining_budget_verified=True)
+    assert evaluate_mission(contract(), mission) == "CONTINUE_WITHIN_MANDATE"
+    assert evaluate_mission(contract(), dict(mission, remaining_budget_verified=False)) == "BLOCK_REPAIR_BUDGET"
+
+
+def test_checkpoint_cannot_be_presented_as_final_handoff():
+    mission = base_mission(checkpoint_only=True, final_handoff_requested=True)
+    assert evaluate_mission(contract(), mission) == "REJECT_CHECKPOINT_AS_FINAL"
+
+
+def test_execution_continuity_contract_cannot_silently_allow_paid_dispatch():
+    changed = contract()
+    changed["execution_continuity"]["external_agent_dispatch_requires_explicit_owner_authorization"] = False
+    assert any("external_agent_dispatch_requires_explicit_owner_authorization" in e
+               for e in validate_contract(changed))
+

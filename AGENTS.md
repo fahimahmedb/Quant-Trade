@@ -61,6 +61,16 @@ If the mission cannot change a current decision, close a finish gate, prevent a 
 - if `code/canonical` moves, reconcile before publishing; never overwrite newer canonical work;
 - a blocked lane is PARK/BLOCK, not permission to build substitute architecture.
 
+## Large admitted missions: continuation and external-resource discipline
+
+For an admitted BUILD/REPAIR scope, resolve ordinary reproducible defects in the **same** work unit: reproduce, make the smallest in-scope fix, execute real tests, challenge one material counterexample, and continue while budget and authority remain. An analysis-only or read-only mandate remains read-only. Do not return to the Owner for routine delegated technical choices.
+
+Before any Codex/secondary agent, paid dispatch, automatic triggering comment or retry, require explicit Owner authorization **for that dispatch**, verified remaining quota/budget, actual source/permission access in the intended agent environment and no concurrent mutator. A generic build mandate, prior successful access or a connector acknowledgement does not suffice. Unknown quota/access => BLOCK dispatch locally, continue independent permitted work. Do not silently dispatch another agent.
+
+CHECKPOINT records state and permits continuation; it is not FINAL_HANDOFF or proof of automatic next-session wake. Revalidate canonical heads/admission and publish exact test evidence as required, but do not turn a technical re-fence into an unnecessary Owner approval. Distinguish in-session repair, fresh-agent recovery and truly automatic re-dispatch; none implies the others.
+
+These rules supplement—not replace—the canonical project method. Machine admission checks cover **declared** agent-dispatch intent; they do not prove all real agents obey them. Report actual work qualified per authorized resource, not just zero Owner contacts.
+
 ## Evidence law
 
 Built, tested, qualified, integrated, promoted, active, used and end-to-end proven are different states.

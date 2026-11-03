@@ -85,6 +85,23 @@ def validate_contract(contract: Mapping[str, Any]) -> List[str]:
         if laws.get(key) is not False:
             errors.append(f"hard_laws.{key} must be false")
 
+    continuation = contract.get("execution_continuity")
+    required_continuation = {
+        "external_agent_dispatch_requires_explicit_owner_authorization": True,
+        "external_agent_dispatch_requires_verified_budget": True,
+        "external_agent_dispatch_requires_verified_transport": True,
+        "delegated_in_scope_repair_requires_new_owner_approval": False,
+        "checkpoint_implies_final_handoff": False,
+        "checkpoint_proves_autonomous_relaunch": False,
+        "local_blocker_stops_independent_work": False,
+    }
+    if not isinstance(continuation, Mapping):
+        errors.append("execution_continuity contract required")
+    else:
+        for key, expected in required_continuation.items():
+            if continuation.get(key) is not expected:
+                errors.append(f"execution_continuity.{key} must be {expected!r}")
+
     gate_ids = [gate.get("id") for gate in contract.get("finish_gates", [])]
     expected_gates = [
         "F0_TWO_BRANCH_AUTHORITY",
@@ -227,6 +244,26 @@ def evaluate_mission(contract: Mapping[str, Any], mission: Mapping[str, Any]) ->
 
     if mission.get("external_block", False) and mission.get("independent_lane_available", False):
         return "PARK_BLOCKED_LANE_CONTINUE_INDEPENDENT"
+
+    # External agent requests must independently pass a concrete transport/budget preflight.
+    # A generic BUILD admission does not grant any secondary-agent dispatch authority.
+    if mission.get("external_agent_dispatch_requested") is True:
+        if mission.get("external_agent_dispatch_owner_authorized") is not True:
+            return "BLOCK_EXTERNAL_AGENT_AUTHORITY"
+        if mission.get("external_agent_budget_verified") is not True:
+            return "BLOCK_EXTERNAL_AGENT_BUDGET"
+        if (mission.get("external_agent_source_access_verified") is not True
+                or mission.get("external_agent_permission_verified") is not True):
+            return "BLOCK_EXTERNAL_AGENT_TRANSPORT"
+
+    if mission.get("checkpoint_only") is True and mission.get("final_handoff_requested") is True:
+        return "REJECT_CHECKPOINT_AS_FINAL"
+
+    if mission.get("repairable_in_scope_failure") is True:
+        if mission.get("remaining_budget_verified") is not True:
+            return "BLOCK_REPAIR_BUDGET"
+        if mission.get("owner_authorization_required") is False:
+            return "CONTINUE_WITHIN_MANDATE"
 
     if not mission.get("next_action"):
         return "REJECT_MISSING_NEXT_ACTION"
@@ -386,6 +423,17 @@ def validate_real_mission_admission(
 
     if admission.get("owner_authorization_required", False) and not admission.get("owner_authorized", False):
         errors.append("OWNER_AUTHORITY_REQUIRED_BUT_MISSING")
+
+    # This validates declared dispatch intent; a tool invocation that bypasses
+    # admission still requires runtime/permission controls and is NOT proven safe.
+    if admission.get("external_agent_dispatch_requested") is True:
+        if admission.get("external_agent_dispatch_owner_authorized") is not True:
+            errors.append("EXTERNAL_AGENT_DISPATCH_OWNER_AUTHORITY_MISSING")
+        if admission.get("external_agent_budget_verified") is not True:
+            errors.append("EXTERNAL_AGENT_DISPATCH_BUDGET_UNVERIFIED")
+        if (admission.get("external_agent_source_access_verified") is not True
+                or admission.get("external_agent_permission_verified") is not True):
+            errors.append("EXTERNAL_AGENT_DISPATCH_TRANSPORT_UNVERIFIED")
 
     return errors
 
