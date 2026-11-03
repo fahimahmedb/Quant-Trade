@@ -4,7 +4,8 @@ This extends `deploy.oracle_v2_deploy`; it reuses the existing V2 service/timer,
 exact-release receipt, both exact-SHA CI checks, VM identity and local backend.
 It does not run the scientific canary or transfer authority back to V1.
 
-The prepared operator entrypoint is `scripts/resume_oracle_v2_f3.sh TARGET_SHA`,
+The prepared operator entrypoint is
+`scripts/resume_oracle_v2_f3.sh TARGET_SHA EXPECTED_CURRENT_SHA TRANSPORT_PR`,
 run as `ubuntu` in the existing SSH session. It first requires all four exact
 CI gates, stages the candidate with the pinned CP1 installer, reuses or opens
 the native GitHub CLI browser login, writes a root-only credential input and
@@ -46,7 +47,7 @@ cd /opt/quant-research/releases/TARGET_SHA
 sudo /usr/bin/python3.12 -B -m deploy.oracle_v2_deploy \
   --action handoff \
   --release /opt/quant-research/releases/TARGET_SHA \
-  --expected-current-sha a67ffec48fff895d5edc42171855e2213e49cf0d \
+  --expected-current-sha EXPECTED_CURRENT_SHA \
   --v2-ci-run EXACT_V2_RUN --sec-ci-run EXACT_SEC_RUN \
   --orchestration-config /etc/quant-research-v2/f3-input.json
 ```
@@ -77,3 +78,25 @@ wakes and bind the actual release, InvocationIDs, dispatch/result identity,
 subsequent GPT-OSS decision and durable receipts. Only actual Codex-result
 consumption can close F3. Local tests, a canary, CI or timer activity cannot.
 No economic, prospective, capital, trading or whole-system finish is claimed.
+
+## Hosted-call budget and PR context
+
+The default issue-context checkout was actually observed to supply the project
+branch, without the executable expected commit. The next qualification reuses a
+draft PR with `code/canonical` as head and `project/canonical` as base. It must
+never be merged; PR #50 is the bounded transport witness. Actual checkout access
+and real result consumption remain unproven until the trial runs.
+
+This trial is valuable only because it closes the current F3 transport blocker.
+It is read-only: no new code, commit, strategy, branch, audit or architecture is
+requested from Codex. Its GitHub response and existing published subject are
+the durable result. Routine state inspection, prioritization and waiting stay
+with deterministic code/local GPT-OSS.
+
+The generated service environment enforces one builder invocation and at most
+one reviewer invocation per task; head adoption/restart cannot bypass the cap.
+There are no paid automatic retries; six unchanged observations park the task.
+This bounds invocation count, not token count or account-wide monetary usage.
+No hosted-model fallback is introduced. Preserve the first failed trial as
+negative engineering evidence. An already-managed, byte-identical F3 drop-in
+may be upgraded transactionally; an Owner-modified or later drop-in blocks.

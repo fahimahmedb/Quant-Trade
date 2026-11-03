@@ -2,7 +2,10 @@
 # Run as ubuntu in the already authenticated SSH session. Never print credentials.
 set -euo pipefail
 quant_target_sha=${1:?Exact qualified target SHA required}
+quant_expected_sha=${2:-a67ffec48fff895d5edc42171855e2213e49cf0d}
+quant_pr_number=${3:?Explicit code/canonical transport PR number required}
 [[ "$quant_target_sha" =~ ^[0-9a-f]{40}$ ]] || exit 64
+[[ "$quant_expected_sha" =~ ^[0-9a-f]{40}$ && "$quant_pr_number" =~ ^[0-9]+$ ]] || exit 64
 quant_stage=$(mktemp -d)
 trap 'rm -rf "$quant_stage"' EXIT
 
@@ -34,7 +37,7 @@ Path(stage,'installer.py').write_bytes(data)
 print('EXACT_RELEASE_GATES=PASS')
 PY
 
-sudo -v
+sudo -n true
 # This installer creates an immutable candidate; it never stops/repoints a runtime.
 sudo /usr/bin/python3.12 -B "$quant_stage/installer.py" \
   --sha "$quant_target_sha" --base /opt/quant-research/releases
@@ -49,7 +52,7 @@ fi
 
 # Convert the normal CLI login into a private service credential, without stdout.
 quant_operator=$(id -un)
-quant_input=$(sudo /usr/bin/python3.12 - "$quant_operator" "$quant_stage/runs.json" <<'PY'
+quant_input=$(sudo /usr/bin/python3.12 - "$quant_operator" "$quant_pr_number" <<'PY'
 import json,os,pwd,subprocess,sys,tempfile,urllib.request
 from datetime import datetime,timezone
 user=sys.argv[1];pwd.getpwnam(user)
@@ -61,10 +64,10 @@ def get(url):
 actor=get('https://api.github.com/user')['login']
 head=get(base+'git/ref/heads/code/canonical')['object']['sha']
 stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-values={'QUANT_REPOSITORY':'fahimahmedb/Quant-Trade','QUANT_CODEX_ISSUE_NUMBER':'44',
+values={'QUANT_REPOSITORY':'fahimahmedb/Quant-Trade','QUANT_CODEX_ISSUE_NUMBER':sys.argv[2],
     'QUANT_CODEX_TARGET_BRANCH':'code/canonical','QUANT_CODEX_EXPECTED_HEAD_SHA':head,
     'QUANT_CODEX_TASK_ID':'F3-ENGINEERING-'+stamp,
-    'QUANT_CODEX_PROMPT':'Perform one bounded engineering-only canonical bootstrap verification. Follow the current canonical mission admission method, reuse existing qualification tests, and persist one verification receipt on code/canonical. Return the exact published result SHA. Preserve scientific files and all closed authorities.',
+    'QUANT_CODEX_PROMPT':'Perform exactly one read-only engineering checkout-transport qualification for F3. The PR head is code/canonical and its base is project/canonical. Establish the supplied expected commit from the local PR Git objects before working; a merge checkout may contain it as a parent. If no remote exists, the repository URL is https://github.com/fahimahmedb/Quant-Trade.git; a missing origin alone is not a transport failure. Verify the canonical authority pair and run the existing focused host-wake/adapter tests. Do not create commits, branches, a PR or modify files. The durable output is your GitHub response and the existing published expected SHA. If verified and NO_CHANGE_REQUIRED, return the required result marker with that existing SHA. If blocked, report the actual failing transport command without a success marker. Keep the response concise. No audit, architecture, task expansion or scientific mutation.',
     'QUANT_GITHUB_TOKEN':token,'QUANT_GITHUB_ACTOR':actor,
     'QUANT_GPT_OSS_COMMAND':'AUTO_LOCAL_BACKEND'}
 fd,path=tempfile.mkstemp(prefix='quant-f3-input-',suffix='.json',dir='/var/backups')
@@ -79,7 +82,7 @@ quant_sec_run=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["
 cd "/opt/quant-research/releases/$quant_target_sha"
 sudo /usr/bin/python3.12 -B -m deploy.oracle_v2_deploy \
   --action handoff --release "/opt/quant-research/releases/$quant_target_sha" \
-  --expected-current-sha a67ffec48fff895d5edc42171855e2213e49cf0d \
+  --expected-current-sha "$quant_expected_sha" \
   --v2-ci-run "$quant_v2_run" --sec-ci-run "$quant_sec_run" \
   --orchestration-config "$quant_input"
 printf '%s\n' 'Handoff terminé. Conserver le chemin backup_directory. F3 attend les réveils naturels et la consommation du résultat Codex.'

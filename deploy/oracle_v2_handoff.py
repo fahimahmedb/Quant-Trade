@@ -206,7 +206,9 @@ def configuration(path, release):
     if not command or not Path(command[0]).is_absolute():
         raise ValueError("EXPLICIT_MODEL_EXECUTABLE_REQUIRED")
     values.update(QUANT_CODEX_ORCHESTRATION_ENABLED="1",
-                  QUANT_CODEX_ORCHESTRATION_ROOT=str(control.STATE / "codex_control_plane"))
+                  QUANT_CODEX_ORCHESTRATION_ROOT=str(control.STATE / "codex_control_plane"),
+                  QUANT_CODEX_MAX_DISPATCH_ATTEMPTS="1", QUANT_CODEX_MAX_REVIEW_ATTEMPTS="1",
+                  QUANT_CODEX_MAX_NO_DELTA_CYCLES="6")
     # JSON string encoding matches systemd EnvironmentFile double-quoted values.
     return values, ("\n".join(k + "=" + json.dumps(v, ensure_ascii=False) for k, v in sorted(values.items())) + "\n").encode()
 
@@ -220,6 +222,8 @@ v=os.environ
 c=FencedGitHubIssueClient(v['QUANT_REPOSITORY'],int(v['QUANT_CODEX_ISSUE_NUMBER']),v['QUANT_GITHUB_TOKEN'],expected_actor=v['QUANT_GITHUB_ACTOR'])
 c._verify_identity()
 if c.branch_head(v['QUANT_CODEX_TARGET_BRANCH']) != v['QUANT_CODEX_EXPECTED_HEAD_SHA']: raise ValueError('STALE_CODEX_SUBJECT')
+p=c._request('GET','/repos/'+v['QUANT_REPOSITORY']+'/pulls/'+v['QUANT_CODEX_ISSUE_NUMBER'])
+if p.get('head',{}).get('ref')!=v['QUANT_CODEX_TARGET_BRANCH'] or p.get('head',{}).get('sha')!=v['QUANT_CODEX_EXPECTED_HEAD_SHA']: raise ValueError('EXACT_CODE_PR_CONTEXT_REQUIRED')
 c.comments()
 d=subprocess_json_decider(v['QUANT_GPT_OSS_COMMAND'])({'event':'ENGINEERING_PREFLIGHT','allowed_actions':['PARK'],'instruction':'Return a JSON action PARK and reason for this deployment rehearsal. No scientific queue, dispatch or mutation.'})
 if d.get('action') != 'PARK': raise ValueError('MODEL_PREFLIGHT_PARK_REQUIRED')
@@ -246,6 +250,8 @@ def handoff(release, expected_sha, v2_run, sec_run, orchestration_config):
             or states[control.V1_TIMER]["UnitFileState"] != "disabled"):
         raise ValueError("WAITING_V2_ENABLED_V1_DISABLED_REQUIRED")
     for p in states[control.SERVICE].get("DropInPaths", "").split():
+        if Path(p) == DROPIN and DROPIN.read_bytes() == managed_dropin():
+            continue
         if Path(p).name >= DROPIN.name:
             raise ValueError("LATER_DROPIN_REQUIRES_RECONCILIATION")
     values, env_bytes = configuration(orchestration_config, release)
@@ -279,11 +285,7 @@ def handoff(release, expected_sha, v2_run, sec_run, orchestration_config):
                      gid=control.CONFIG.stat().st_gid)
         replace_file(directory, record, ENV, env_bytes, 0o640, gid=control.CONFIG.stat().st_gid)
         DROPIN.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
-        dropin = ("[Service]\nEnvironmentFile=" + str(ENV) + "\nExecStart=\nExecStart="
-            "/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research "
-            "/usr/bin/python3.12 -B -s -m research.research_os.host_wake --worker-version v2 --config "
-            + str(control.CONFIG) + "\nReadWritePaths=" + str(control.STATE) + "\n")
-        replace_file(directory, record, DROPIN, dropin.encode(), 0o644)
+        replace_file(directory, record, DROPIN, managed_dropin(), 0o644)
         pending = control.CURRENT.with_name(".current-handoff-" + uuid.uuid4().hex)
         record["intended"][str(control.CURRENT)] = dict(kind="link", uid=ROOT_UID, gid=ROOT_GID, mode=0o777, target=str(release))
         save(directory, record)
@@ -313,6 +315,13 @@ def handoff(release, expected_sha, v2_run, sec_run, orchestration_config):
     finally:
         if worker_fd is not None:
             os.close(worker_fd)
+
+
+def managed_dropin():
+    return ("[Service]\nEnvironmentFile=" + str(ENV) + "\nExecStart=\nExecStart="
+        "/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research "
+        "/usr/bin/python3.12 -B -s -m research.research_os.host_wake --worker-version v2 --config "
+        + str(control.CONFIG) + "\nReadWritePaths=" + str(control.STATE) + "\n").encode()
 
 
 def execute(args):

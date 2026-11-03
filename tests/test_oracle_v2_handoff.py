@@ -100,6 +100,26 @@ class ActiveV2HandoffTests(unittest.TestCase):
         self.assertIn('--worker-version v2',h.DROPIN.read_text())
         h.rollback(Path(result['backup_directory'])); self.assert_restored()
 
+    def test_known_managed_dropin_allows_bounded_existing_f3_upgrade(self):
+        self.apply()
+        self.states[c.SERVICE]['DropInPaths'] += ' ' + str(h.DROPIN)
+        target=self.old.parent/('c'*40);target.mkdir()
+        result=h.handoff(target,self.new.name,12,34,self.input)
+        self.assertEqual(c.CURRENT.resolve(),target)
+        h.rollback(Path(result['backup_directory']))
+        self.assertEqual(c.CURRENT.resolve(),self.new)
+        self.assertIn('QUANT_CODEX_MAX_DISPATCH_ATTEMPTS="1"',h.ENV.read_text())
+        self.assertIn('QUANT_CODEX_MAX_REVIEW_ATTEMPTS="1"',h.ENV.read_text())
+
+    def test_owner_modified_managed_dropin_is_not_silently_reused(self):
+        self.apply()
+        self.states[c.SERVICE]['DropInPaths'] += ' ' + str(h.DROPIN)
+        h.DROPIN.write_bytes(h.DROPIN.read_bytes()+b'# Owner edit\n')
+        before=h.image(h.DROPIN)
+        with self.assertRaisesRegex(ValueError,'LATER_DROPIN'):
+            h.handoff(self.new,self.new.name,12,34,self.input)
+        self.assertEqual(h.image(h.DROPIN),before)
+
     def test_failure_after_rebind_restores_exact_bytes_modes_owner_and_link(self):
         def qualify(*args):
             if c.CURRENT.resolve()==self.new:

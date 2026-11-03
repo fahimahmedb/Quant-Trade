@@ -536,6 +536,14 @@ class CodexOrchestrationWorker:
 
             comments = self.client.comments()
             if state.status == "READY":
+                # Head adoption/restart must not bypass the hosted-call budget.
+                if state.attempt > self.config.max_dispatch_attempts:
+                    state.status = "BLOCKED_EXTERNAL"
+                    self._persist(state, state_path, receipt_path, "DISPATCH_BUDGET_EXHAUSTED")
+                    return {"terminal": True, "result": {
+                        "ticket_id": task.task_id, "outcome": "BLOCKED_EXTERNAL",
+                        "lesson": "hosted builder-call budget exhausted",
+                        "next_action_hint": "local orchestration must park; no automatic paid retry"}}
                 current_head = self.client.branch_head(self.config.target_branch)
                 if current_head != state.expected_head_sha:
                     decision = self._decision(

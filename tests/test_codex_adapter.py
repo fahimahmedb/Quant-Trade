@@ -238,7 +238,8 @@ class AdapterTests(unittest.TestCase):
                 "action": "ADOPT_CURRENT_HEAD", "expected_head_sha": SHA_C,
                 "reason": "reconcile advanced target"})
             worker = CodexOrchestrationWorker(
-                self.config(directory), client, decision, sleeper=lambda _: None)
+                self.config(directory, max_dispatch_attempts=1, max_review_attempts=1),
+                client, decision, sleeper=lambda _: None)
             worker.step(task())
             dispatch = _dispatch_id("orchestration-test", SHA_A, 1)
             client.head = SHA_B
@@ -261,6 +262,13 @@ class AdapterTests(unittest.TestCase):
             state = json.loads(state_path.read_text(encoding="utf-8"))
             self.assertEqual(state["status"], "READY")
             self.assertEqual(state["expected_head_sha"], SHA_C)
+            # Restart after head adoption must never issue a second paid call.
+            restarted = CodexOrchestrationWorker(
+                self.config(directory, max_dispatch_attempts=1, max_review_attempts=1),
+                client, DecisionQueue(), sleeper=lambda _: None)
+            self.assertTrue(restarted.step(task())["terminal"])
+            self.assertEqual(len([p for p in client.posts if p.startswith("<!-- QUANT_CODEX_DISPATCH ")]), 1)
+            self.assertEqual(len([p for p in client.posts if p.startswith("<!-- QUANT_CODEX_REVIEW_REQUEST ")]), 1)
 
     def test_no_material_delta_parks_after_bounded_polling(self):
         with tempfile.TemporaryDirectory() as directory:
