@@ -109,7 +109,8 @@ class ActiveV2HandoffTests(unittest.TestCase):
         h.rollback(Path(result['backup_directory']))
         self.assertEqual(c.CURRENT.resolve(),self.new)
         self.assertIn('QUANT_CODEX_MAX_DISPATCH_ATTEMPTS="1"',h.ENV.read_text())
-        self.assertIn('QUANT_CODEX_MAX_REVIEW_ATTEMPTS="1"',h.ENV.read_text())
+        self.assertIn('QUANT_CODEX_MAX_REVIEW_ATTEMPTS="0"',h.ENV.read_text())
+        self.assertIn('QUANT_CODEX_READONLY_PROBE="1"',h.ENV.read_text())
 
     def test_owner_modified_managed_dropin_is_not_silently_reused(self):
         self.apply()

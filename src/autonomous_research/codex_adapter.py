@@ -21,6 +21,11 @@ from typing import Any, Callable, Protocol
 from .runtime import ResearchTask
 
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+PROBE_SCOPE = "FROZEN_READ_ONLY_TEST_EXECUTION"
+PROBE_TEST_COMMAND = (
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src python3 -m unittest -q "
+    "tests.test_host_wake_router tests.test_codex_adapter tests.test_codex_policy"
+)
 _MARKER_RE = {
     "dispatch": re.compile(r"<!--\s*QUANT_CODEX_DISPATCH\s+(\{.*?\})\s*-->", re.DOTALL),
     "result": re.compile(r"<!--\s*QUANT_CODEX_RESULT\s+(\{.*?\})\s*-->", re.DOTALL),
@@ -108,6 +113,8 @@ class OrchestrationConfig:
     max_review_attempts: int = 3
     allowed_result_authors: tuple[str, ...] = ("chatgpt-codex-connector[bot]",)
     allowed_review_authors: tuple[str, ...] = ("chatgpt-codex-connector[bot]",)
+    readonly_probe: bool = False
+    project_branch: str | None = None
 
     @property
     def state_dir(self) -> Path:
@@ -130,13 +137,17 @@ class OrchestrationState:
     no_delta_cycles: int = 0
     last_observation_digest: str | None = None
     last_decision: dict[str, Any] | None = None
+    readonly_probe: bool = False
+    project_branch: str | None = None
+    project_head_sha: str | None = None
     created_at: str = field(default_factory=_utc_now)
     updated_at: str = field(default_factory=_utc_now)
 
     @classmethod
     def load_or_create(cls, path: Path, task_id: str, expected_head_sha: str,
                        current_prompt: str, repository: str, issue_number: int,
-                       target_branch: str) -> "OrchestrationState":
+                       target_branch: str, *, readonly_probe=False,
+                       project_branch=None) -> "OrchestrationState":
         if path.exists():
             payload = json.loads(path.read_text(encoding="utf-8"))
             subject = (repository, int(issue_number), target_branch)
@@ -146,13 +157,17 @@ class OrchestrationState:
                 raise ValueError(
                     "durable orchestration state GitHub subject mismatch; "
                     "explicit reconciliation or a new task/state namespace is required")
+            if (payload.get("readonly_probe", False) != readonly_probe
+                    or payload.get("project_branch") != project_branch):
+                raise ValueError("durable orchestration authority/probe mode mismatch")
             state = cls(**payload)
             if state.task_id != task_id:
                 raise ValueError("durable orchestration state belongs to another task")
             return state
         state = cls(
             task_id=task_id, expected_head_sha=expected_head_sha, current_prompt=current_prompt,
-            repository=repository, issue_number=int(issue_number), target_branch=target_branch)
+            repository=repository, issue_number=int(issue_number), target_branch=target_branch,
+            readonly_probe=readonly_probe, project_branch=project_branch)
         state.dispatch_id = _dispatch_id(task_id, expected_head_sha, 1)
         return state
 
@@ -281,6 +296,9 @@ class CodexOrchestrationWorker:
                 fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
     def _load(self, task: ResearchTask) -> tuple[OrchestrationState, Path, Path]:
+        if self.config.readonly_probe and (not self.config.project_branch
+                or self.config.max_dispatch_attempts != 1 or self.config.max_review_attempts != 0):
+            raise ValueError("PROBE_REQUIRES_PROJECT_FENCE_ONE_EXECUTION_ZERO_REVIEWS")
         expected = str(task.metadata.get("expected_head_sha") or "")
         if not _SHA_RE.fullmatch(expected):
             raise ValueError("task.metadata.expected_head_sha must be a lowercase 40-character SHA")
@@ -290,7 +308,8 @@ class CodexOrchestrationWorker:
         state_path, receipt_path, _ = self._paths(task.task_id)
         state = OrchestrationState.load_or_create(
             state_path, task.task_id, expected, current_prompt, self.config.repository,
-            self.config.issue_number, self.config.target_branch)
+            self.config.issue_number, self.config.target_branch,
+            readonly_probe=self.config.readonly_probe, project_branch=self.config.project_branch)
         return state, state_path, receipt_path
 
     def _persist(self, state: OrchestrationState, state_path: Path, receipt_path: Path,
@@ -323,18 +342,43 @@ class CodexOrchestrationWorker:
         return ", ".join(active) if active else None
 
     def _dispatch_payload(self, task: ResearchTask, state: OrchestrationState) -> dict[str, Any]:
-        return {
+        payload = {
             "task_id": task.task_id,
             "dispatch_id": state.dispatch_id,
             "attempt": state.attempt,
             "expected_head_sha": state.expected_head_sha,
         }
+        if self.config.readonly_probe:
+            payload.update(scope=PROBE_SCOPE, project_head_sha=state.project_head_sha)
+        return payload
 
     def _dispatch_body(self, task: ResearchTask, state: OrchestrationState) -> str:
         payload = self._dispatch_payload(task, state)
         contract = dict(payload)
         contract["result_sha"] = "<40-lowercase-hex-sha>"
         contract["result_branch"] = self.config.target_branch
+        if self.config.readonly_probe:
+            contract.update(result_sha=state.expected_head_sha, tests_passed=True,
+                            test_command=PROBE_TEST_COMMAND)
+            return (
+                f"{_marker('dispatch', payload)}\n"
+                f"{self.config.builder_mention} run the exact-commit test task below and reply with its result.\n\n"
+                "FROZEN READ-ONLY TEST ORDER — not a current-project decision or source-code change.\n"
+                "The authenticated VM supervisor has read both canonical refs and owns freshness checks "
+                "before dispatch and before accepting your reply. The project SHA is a fence, not a claim "
+                "you must independently refresh. Do not run git ls-remote, fetch, or other network commands. "
+                "This owner's narrowly scoped test order requires only local exact-object verification, "
+                "not global recovery, mission selection, admission publication or gate promotion.\n"
+                f"Verify the local Git commit {state.expected_head_sha} exists; if needed check it out "
+                "detached without creating a branch. Confirm HEAD equals that SHA and the source tree "
+                "is clean before and after the test command. Do not edit product/scientific files, "
+                "commit, publish, open a PR or claim current runtime/project readiness.\n"
+                f"Run exactly: {PROBE_TEST_COMMAND}\n"
+                "Only if the actual tests pass and the source tree stays unchanged, start your reply "
+                "with this raw first-line marker, then the observed test count/summary. Otherwise report "
+                "the concrete blocker without a success marker. No generic PR review or invented result.\n"
+                f"{_marker('result', contract)}"
+            )
         return (
             f"{_marker('dispatch', payload)}\n"
             f"{self.config.builder_mention}\n\n"
@@ -374,6 +418,14 @@ class CodexOrchestrationWorker:
             if self.config.allowed_result_authors and author not in self.config.allowed_result_authors:
                 continue
             result_sha = str(payload.get("result_sha") or "")
+            if self.config.readonly_probe and (
+                    payload.get("scope") != PROBE_SCOPE
+                    or payload.get("project_head_sha") != state.project_head_sha
+                    or payload.get("tests_passed") is not True
+                    or payload.get("test_command") != PROBE_TEST_COMMAND
+                    or result_sha != state.expected_head_sha
+                    or self.client.branch_head(self.config.project_branch) != state.project_head_sha):
+                continue
             if (payload.get("task_id") == state.task_id
                     and payload.get("dispatch_id") == state.dispatch_id
                     and payload.get("attempt") == state.attempt
@@ -534,6 +586,22 @@ class CodexOrchestrationWorker:
                     "lesson": f"non-delegable boundary requested: {boundary}",
                     "next_action_hint": "obtain separate explicit authority before crossing the boundary"}}
 
+            if self.config.readonly_probe:
+                project_head = self.client.branch_head(self.config.project_branch)
+                if not _SHA_RE.fullmatch(project_head):
+                    raise ValueError("INVALID_PROJECT_HEAD")
+                if state.project_head_sha is None and state.status == "READY":
+                    state.project_head_sha = project_head
+                    self._persist(state, state_path, receipt_path, "PROJECT_AUTHORITY_FENCED")
+                if (project_head != state.project_head_sha
+                        or self.client.branch_head(self.config.target_branch) != state.expected_head_sha):
+                    state.status = "BLOCKED_EXTERNAL"
+                    self._persist(state, state_path, receipt_path, "FROZEN_AUTHORITY_PAIR_MOVED")
+                    return {"terminal": True, "result": {
+                        "ticket_id": task.task_id, "outcome": "BLOCKED_EXTERNAL",
+                        "lesson": "frozen authority pair moved; no result accepted or paid retry",
+                        "next_action_hint": "reconcile the new primary evidence before any new work"}}
+
             comments = self.client.comments()
             if state.status == "READY":
                 # Head adoption/restart must not bypass the hosted-call budget.
@@ -567,13 +635,24 @@ class CodexOrchestrationWorker:
                 result_sha = self._valid_result(comments, state)
                 if result_sha:
                     state.result_sha = result_sha
-                    state.status = "WAITING_CI"
+                    state.status = "WAITING_PROBE_DECISION" if self.config.readonly_probe else "WAITING_CI"
                     state.no_delta_cycles = 0
                     self._persist(state, state_path, receipt_path, "RESULT_CAUSALLY_BOUND",
                                   {"result_sha": result_sha})
                     return {"terminal": False, "result": None}
                 digest = self._observe_digest(state, comments, {})
                 result = self._no_delta(task, state, state_path, receipt_path, digest)
+                return {"terminal": result is not None, "result": result}
+
+            if state.status == "WAITING_PROBE_DECISION" and self.config.readonly_probe:
+                decision = self._decision("READ_ONLY_PROBE_RESULT", state, {
+                    "result_sha": state.result_sha, "project_head_sha": state.project_head_sha,
+                    "scope": PROBE_SCOPE, "code_promotion_authorized": False,
+                    "scientific_queue_opened": False})
+                self._persist(state, state_path, receipt_path, "READ_ONLY_PROBE_RESULT_CONSUMED",
+                              {"result_sha": state.result_sha, "action": decision.get("action"),
+                               "code_promotion_authorized": False})
+                result = self._apply_decision(task, state, state_path, receipt_path, decision)
                 return {"terminal": result is not None, "result": result}
 
             if state.status == "WAITING_CI":

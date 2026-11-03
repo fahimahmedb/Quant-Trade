@@ -81,6 +81,19 @@ No economic, prospective, capital, trading or whole-system finish is claimed.
 
 ## Hosted-call budget and PR context
 
+Current repair adds a separate frozen read-only test profile. The VM authenticates
+and fences both canonical heads before dispatch, before result acceptance and
+before the following decision. Codex needs only its local exact-commit objects;
+the explicit execution request requires no remote Git refresh or project-level
+decision. Its strict result marker must bind the project SHA, scope, unchanged
+code SHA, exact test command and actual success. A generic PR review is rejected.
+
+This profile permits one execution, zero hosted reviews/retries, and only local
+DONE/PARK after consumption. It does not promote code, assert CI/review PASS or
+change the normal code-changing worker's qualification path. Deployment still
+requires all four exact release gates. Host use and F3 remain unproved until an
+actual structured result and subsequent automatic local decision are observed.
+
 The default issue-context checkout was actually observed to supply the project
 branch, without the executable expected commit. The next qualification reuses a
 draft PR with `code/canonical` as head and `project/canonical` as base. It must

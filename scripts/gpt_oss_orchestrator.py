@@ -116,6 +116,8 @@ def main() -> int:
         repository=repository,
         issue_number=issue_number,
         target_branch=target_branch,
+        readonly_probe=os.environ.get("QUANT_CODEX_READONLY_PROBE") == "1",
+        project_branch=os.environ.get("QUANT_CODEX_PROJECT_BRANCH") or None,
         poll_seconds=float(os.environ.get("QUANT_CODEX_POLL_SECONDS", "15")),
         max_poll_seconds=float(os.environ.get("QUANT_CODEX_MAX_POLL_SECONDS", "120")),
         max_no_delta_cycles=int(os.environ.get("QUANT_CODEX_MAX_NO_DELTA_CYCLES", "240")),

@@ -207,8 +207,10 @@ def configuration(path, release):
         raise ValueError("EXPLICIT_MODEL_EXECUTABLE_REQUIRED")
     values.update(QUANT_CODEX_ORCHESTRATION_ENABLED="1",
                   QUANT_CODEX_ORCHESTRATION_ROOT=str(control.STATE / "codex_control_plane"),
-                  QUANT_CODEX_MAX_DISPATCH_ATTEMPTS="1", QUANT_CODEX_MAX_REVIEW_ATTEMPTS="1",
+                  QUANT_CODEX_MAX_DISPATCH_ATTEMPTS="1", QUANT_CODEX_MAX_REVIEW_ATTEMPTS="0",
                   QUANT_CODEX_MAX_NO_DELTA_CYCLES="6")
+    values.update(QUANT_CODEX_READONLY_PROBE="1", QUANT_CODEX_PROJECT_BRANCH="project/canonical",
+                  QUANT_CODEX_MAX_REVIEW_ATTEMPTS="0")
     # JSON string encoding matches systemd EnvironmentFile double-quoted values.
     return values, ("\n".join(k + "=" + json.dumps(v, ensure_ascii=False) for k, v in sorted(values.items())) + "\n").encode()
 
@@ -222,6 +224,8 @@ v=os.environ
 c=FencedGitHubIssueClient(v['QUANT_REPOSITORY'],int(v['QUANT_CODEX_ISSUE_NUMBER']),v['QUANT_GITHUB_TOKEN'],expected_actor=v['QUANT_GITHUB_ACTOR'])
 c._verify_identity()
 if c.branch_head(v['QUANT_CODEX_TARGET_BRANCH']) != v['QUANT_CODEX_EXPECTED_HEAD_SHA']: raise ValueError('STALE_CODEX_SUBJECT')
+project=c.branch_head(v['QUANT_CODEX_PROJECT_BRANCH'])
+if len(project)!=40 or any(ch not in '0123456789abcdef' for ch in project): raise ValueError('PROJECT_AUTHORITY_UNAVAILABLE')
 p=c._request('GET','/repos/'+v['QUANT_REPOSITORY']+'/pulls/'+v['QUANT_CODEX_ISSUE_NUMBER'])
 if p.get('head',{}).get('ref')!=v['QUANT_CODEX_TARGET_BRANCH'] or p.get('head',{}).get('sha')!=v['QUANT_CODEX_EXPECTED_HEAD_SHA']: raise ValueError('EXACT_CODE_PR_CONTEXT_REQUIRED')
 c.comments()

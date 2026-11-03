@@ -8,6 +8,8 @@ from autonomous_research.codex_adapter import (
     OrchestrationConfig,
     _dispatch_id,
     _marker,
+    PROBE_SCOPE,
+    PROBE_TEST_COMMAND,
 )
 from autonomous_research.runtime import ResearchTask
 
@@ -50,6 +52,104 @@ class DecisionQueue:
         if not self.decisions:
             raise AssertionError("unexpected decision call")
         return self.decisions.pop(0)
+
+
+class FrozenProbeTests(unittest.TestCase):
+    def setUp(self):
+        from autonomous_research.codex_policy import PolicyFencedCodexOrchestrationWorker
+        self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
+        self.client = FakeClient()
+        self.client.project = SHA_C
+        self.client.branch_head = lambda branch: self.client.project if branch == 'project/canonical' else self.client.head
+        self.client.ci_state = lambda sha: (_ for _ in ()).throw(AssertionError('probe must not promote code through CI'))
+        self.decision = DecisionQueue({'action':'DONE','reason':'actual test result consumed'})
+        self.config = OrchestrationConfig(root=Path(self.tmp.name), repository='owner/repo',
+            issue_number=50,target_branch='builder/test',readonly_probe=True,project_branch='project/canonical',
+            max_dispatch_attempts=1,max_review_attempts=0,
+            allowed_result_authors=('builder',),allowed_review_authors=('reviewer',))
+        self.kind = PolicyFencedCodexOrchestrationWorker
+        self.worker = self.make_worker()
+
+    def make_worker(self):
+        return self.kind(self.config,self.client,self.decision,
+                         trusted_orchestrator_actor='orchestrator',sleeper=lambda _:None)
+
+    def emit(self, author='builder', **changes):
+        state,_,_=self.worker._load(task())
+        payload=self.worker._dispatch_payload(task(),state)
+        payload.update(result_sha=SHA_A,result_branch='builder/test',tests_passed=True,test_command=PROBE_TEST_COMMAND)
+        payload.update(changes)
+        self.client.items.append({'id':99,'author':author,'body':_marker('result',payload)})
+
+    def test_next_wake_consumes_actual_frozen_result_without_promotion_or_review(self):
+        self.assertFalse(self.worker.step(task())['terminal'])
+        self.assertIn('@codex run the exact-commit test task',self.client.posts[0])
+        self.assertIn('Do not run git ls-remote',self.client.posts[0])
+        self.emit()
+        self.assertFalse(self.worker.step(task())['terminal'])
+        self.assertEqual(self.worker._load(task())[0].status,'WAITING_PROBE_DECISION')
+        result=self.make_worker().step(task())
+        self.assertTrue(result['terminal']); self.assertEqual(result['result']['outcome'],'DONE')
+        self.assertEqual(self.decision.calls[0]['event'],'READ_ONLY_PROBE_RESULT')
+        self.assertFalse(self.decision.calls[0]['evidence']['code_promotion_authorized'])
+        self.assertEqual(len(self.client.posts),1)
+        _,_,receipts=self.worker._load(task())
+        events=[json.loads(line)['event'] for line in receipts.read_text().splitlines()]
+        self.assertIn('RESULT_CAUSALLY_BOUND',events)
+        self.assertIn('READ_ONLY_PROBE_RESULT_CONSUMED',events)
+        self.assertNotIn('CI_EXACT_HEAD_PASS',events)
+        self.assertNotIn('REVIEW_REQUEST_POSTED',events)
+        self.make_worker().step(task());self.assertEqual(len(self.client.posts),1)
+
+    def test_generic_review_cannot_become_a_probe_result(self):
+        self.worker.step(task())
+        self.client.items.append({'id':2,'author':'builder','body':'<!-- codex-review-receipt:v1 -->\nNo major issues.'})
+        self.assertFalse(self.worker.step(task())['terminal'])
+        self.assertIsNone(self.worker._load(task())[0].result_sha)
+        self.assertEqual(self.decision.calls,[])
+
+    def test_wrong_scope_failed_tests_project_command_or_author_cannot_qualify(self):
+        self.worker.step(task())
+        for values in [dict(scope='CODE_PROMOTION'),dict(tests_passed=False),dict(tests_passed=1),
+                       dict(project_head_sha=SHA_B),dict(test_command='echo pass'),dict(result_sha=SHA_B),
+                       dict(author='untrusted')]:
+            with self.subTest(values=values):
+                self.emit(**values)
+                self.assertIsNone(self.worker._valid_result(self.client.items,self.worker._load(task())[0]))
+
+    def test_project_movement_blocks_consumption_and_paid_retry(self):
+        self.worker.step(task());self.emit();self.client.project=SHA_B
+        result=self.worker.step(task())
+        self.assertTrue(result['terminal']);self.assertEqual(result['result']['outcome'],'BLOCKED_EXTERNAL')
+        self.assertEqual(len(self.client.posts),1);self.assertEqual(self.decision.calls,[])
+
+    def test_code_movement_blocks_even_a_trusted_result(self):
+        self.worker.step(task());self.emit();self.client.head=SHA_B
+        self.assertTrue(self.worker.step(task())['terminal'])
+        self.assertEqual(self.decision.calls,[])
+
+    def test_project_movement_after_binding_blocks_next_decision(self):
+        self.worker.step(task());self.emit();self.worker.step(task());self.client.project=SHA_B
+        self.assertTrue(self.make_worker().step(task())['terminal'])
+        self.assertEqual(self.decision.calls,[])
+
+    def test_persisted_probe_cannot_silently_switch_to_code_changing_mode(self):
+        self.worker.step(task());self.config.readonly_probe=False;self.config.project_branch=None
+        with self.assertRaisesRegex(ValueError,'authority/probe mode mismatch'):
+            self.make_worker().step(task())
+
+    def test_probe_rejects_larger_call_budgets_before_dispatch(self):
+        self.config.max_review_attempts=1
+        with self.assertRaisesRegex(ValueError,'ONE_EXECUTION_ZERO_REVIEWS'):
+            self.worker.step(task())
+        self.assertEqual(self.client.posts,[])
+
+    def test_local_model_cannot_continue_into_another_paid_task(self):
+        self.decision.decisions=[{'action':'CONTINUE','reason':'do more','prompt':'more','expected_head_sha':SHA_A}]
+        self.worker.step(task());self.emit();self.worker.step(task())
+        result=self.worker.step(task())
+        self.assertTrue(result['terminal']);self.assertEqual(result['result']['outcome'],'PARKED_NO_DELTA')
+        self.assertEqual(len(self.client.posts),1)
 
 
 def task(expected=SHA_A, authority=None, prompt="Make one bounded reversible change."):

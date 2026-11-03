@@ -14,6 +14,7 @@ from .codex_adapter import (
 
 
 _ALLOWED_ACTIONS_BY_EVENT: dict[str, set[str]] = {
+    "READ_ONLY_PROBE_RESULT": {"DONE", "PARK"},
     "STALE_HEAD": {"ADOPT_CURRENT_HEAD", "PARK"},
     "CI_FAIL": {"CONTINUE", "PARK"},
     "QUALIFIED_RESULT": {"DONE", "CONTINUE", "PARK"},

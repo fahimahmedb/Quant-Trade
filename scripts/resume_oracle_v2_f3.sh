@@ -67,7 +67,7 @@ stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 values={'QUANT_REPOSITORY':'fahimahmedb/Quant-Trade','QUANT_CODEX_ISSUE_NUMBER':sys.argv[2],
     'QUANT_CODEX_TARGET_BRANCH':'code/canonical','QUANT_CODEX_EXPECTED_HEAD_SHA':head,
     'QUANT_CODEX_TASK_ID':'F3-ENGINEERING-'+stamp,
-    'QUANT_CODEX_PROMPT':'Perform exactly one read-only engineering checkout-transport qualification for F3. The PR head is code/canonical and its base is project/canonical. Establish the supplied expected commit from the local PR Git objects before working; a merge checkout may contain it as a parent. If no remote exists, the repository URL is https://github.com/fahimahmedb/Quant-Trade.git; a missing origin alone is not a transport failure. Verify the canonical authority pair and run the existing focused host-wake/adapter tests. Do not create commits, branches, a PR or modify files. The durable output is your GitHub response and the existing published expected SHA. If verified and NO_CHANGE_REQUIRED, return the required result marker with that existing SHA. If blocked, report the actual failing transport command without a success marker. Keep the response concise. No audit, architecture, task expansion or scientific mutation.',
+    'QUANT_CODEX_PROMPT':'Execute only the supervisor-fenced local exact-commit tests. No agent-side network, current-project decision, admission publication, source change, commit or PR. Return only the actual structured test result and concise observations. Fresh canonical-reference checks belong to the authenticated supervisor.',
     'QUANT_GITHUB_TOKEN':token,'QUANT_GITHUB_ACTOR':actor,
     'QUANT_GPT_OSS_COMMAND':'AUTO_LOCAL_BACKEND'}
 fd,path=tempfile.mkstemp(prefix='quant-f3-input-',suffix='.json',dir='/var/backups')
