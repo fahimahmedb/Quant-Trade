@@ -72,8 +72,7 @@ The operator now avoids sudo -v, verifies exact PR head context, accepts an unch
 
 Subject `code/canonical@2145e46f1e3179dfb39561f98536c1633d595c39` is published, not deployed.
 Mission `F3_FROZEN_EXECUTION_PROBE_REPAIR_20261103`; admission identity
-`sha256:4d69ede29ad540cc007821827d463534cb2d522e62ae34c8715c2eadb4a5d1c8`
-was validated before mutation (the published receipt includes the updated pause/next action; recompute its exact identity from the immutable subject when resuming).
+`sha256:0f09dd72aafedf1dc74707559abe7d505fe8881118441c3f4352314c5791296c` (exact published receipt; pre-work admission validated and exact hosted method gate passed).
 
 Actual latest Owner receipt: active A180, status ACTIVE_F3_PROOF_PENDING, rollback
 `/var/backups/quant-v2-handoff-20261103T132751-e847fa80`. GitHub dispatch
