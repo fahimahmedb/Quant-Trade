@@ -34,9 +34,16 @@ def _codex_environment(worker_version="v1") -> dict[str, str]:
     # falling back to the read-only release tree.
     env["QUANT_CODEX_ORCHESTRATION_ROOT"] = str(root)
 
-    src = str(_release_root() / "src")
+    # The outer orchestration script imports autonomous_research from src, while
+    # its nested local GPT-OSS decision process imports research.* from the
+    # release root.  Supply both paths once at the wake boundary so the runtime
+    # matches the already-qualified handoff preflight environment.
+    release = _release_root()
     existing = env.get("PYTHONPATH", "")
-    env["PYTHONPATH"] = src + (os.pathsep + existing if existing else "")
+    bootstrap = [str(release / "src"), str(release)]
+    if existing:
+        bootstrap.append(existing)
+    env["PYTHONPATH"] = os.pathsep.join(bootstrap)
     return env
 
 

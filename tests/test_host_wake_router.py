@@ -74,7 +74,8 @@ class HostWakeRouterTests(unittest.TestCase):
         self.assertEqual(executable, sys.executable)
         self.assertEqual(argv, [sys.executable, str(release_root / "scripts" / "gpt_oss_orchestrator.py")])
         self.assertEqual(env["QUANT_CODEX_ORCHESTRATION_ROOT"], root)
-        self.assertEqual(env["PYTHONPATH"].split(os.pathsep)[0], str(release_root / "src"))
+        pythonpath = env["PYTHONPATH"].split(os.pathsep)
+        self.assertEqual(pythonpath[:3], [str(release_root / "src"), str(release_root), "existing-path"])
 
     @patch("research.research_os.host_wake.os.execve")
     def test_codex_state_must_use_systemd_writable_state_subdirectory(self, execve):
