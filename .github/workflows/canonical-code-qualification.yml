@@ -61,7 +61,7 @@ jobs:
         env:
           PYTHONPATH: .:src
         run: |
-          python -m unittest -v tests.test_codex_adapter tests.test_codex_policy tests.test_host_wake_router
+          python -m unittest -v tests.test_codex_adapter tests.test_codex_policy tests.test_host_wake_router tests.test_f4_f5_terminal_continuation
           python - <<'PY'
           from pathlib import Path
           source = Path('scripts/gpt_oss_orchestrator.py').read_text(encoding='utf-8')

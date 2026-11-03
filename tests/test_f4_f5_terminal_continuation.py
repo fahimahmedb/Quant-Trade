@@ -136,5 +136,98 @@ class TerminalBridgeTests(unittest.TestCase):
                          worker.continuation_cause)
 
 
+    def test_f5_isolated_git_terminal_successor_memory_restart_and_fencing(self):
+        """One synthetic predecessor -> local Git Research OS lifecycle; no GitHub push."""
+        from research.research_os.tests.test_oracle_worker import WorkerTests, LocalStore, RELEASE
+        from research.research_os.github_state import PREFIX, StateConflict
+        from research.research_os.oracle_worker_v2 import V2ResearchOSWorker
+        from research.research_os.worker_stages import CanonicalStageExecutor
+
+        with tempfile.TemporaryDirectory() as directory:
+            env, *_ = self.fixture(Path(directory))
+            cause = host_wake._terminal_continuation(env)
+            harness = WorkerTests(methodName="test_two_wakes_continue_same_task_then_completed_restart_is_noop")
+            harness.setUp()
+            try:
+                next_task_id = "RECOVER-TEST-001"
+                self.assertNotEqual(cause["predecessor_task_id"], next_task_id)
+
+                # V2 selection/fencing with the existing non-economic Legacy recovery executor;
+                # V2 scientific epoch-stage qualification remains a separate gate.
+                def successor(store):
+                    worker = V2ResearchOSWorker(
+                        store, lane="evidence_data", worker_id="f5-local-git",
+                        release_sha=RELEASE, now=lambda: harness.now,
+                        executor=CanonicalStageExecutor(harness.model))
+                    worker.continuation_cause = cause
+                    return worker
+
+                first = successor(harness.store).wake(mode="run")
+                self.assertEqual((first["task_id"], first["stage"], first["status"]),
+                                 (next_task_id, "recover_or_qualify", "READY"))
+                self.assertEqual(first["causal_predecessor"], cause)
+
+                # A new Git cache and worker must continue the same durable task.
+                restarted_store = LocalStore(harness.root / "f5-resume-cache", harness.remote)
+                second_worker = successor(restarted_store)
+                second = second_worker.wake(mode="run")
+                self.assertEqual((second["task_id"], second["stage"], second["status"]),
+                                 (next_task_id, "provenance_check", "COMPLETE"))
+                self.assertNotEqual(first["session_id"], second["session_id"])
+                self.assertEqual(second["causal_predecessor"], cause)
+
+                # Yet another cold cache must not duplicate either execution.
+                cold_store = LocalStore(harness.root / "f5-terminal-cache", harness.remote)
+                terminal = successor(cold_store).wake(mode="run")
+                self.assertEqual(terminal["status"], "NO_ADMISSIBLE_LANE_TASK")
+                self.assertEqual(terminal["causal_predecessor"], cause)
+
+                with cold_store.snapshot() as snapshot:
+                    task = snapshot.read(PREFIX + "tasks/" + next_task_id + ".json")
+                    self.assertEqual(task["status"], "COMPLETE")
+                    self.assertEqual(task["lease"]["generation"], 2)
+                    self.assertEqual(len(task["execution"]["completed_stages"]), 2)
+                    self.assertEqual(task["completion"]["result"], "COMPLETE")
+                    receipt_paths = sorted(p for p in snapshot.blobs if p.startswith(
+                        PREFIX + "receipts/" + next_task_id + "/"))
+                    self.assertEqual(len(receipt_paths), 2)
+                    for receipt_path in receipt_paths:
+                        receipt = snapshot.read(receipt_path)
+                        self.assertEqual(receipt["causal_predecessor"], cause)
+                        self.assertEqual(receipt["task_id"], next_task_id)
+                        for artifact in receipt["artifacts"]:
+                            self.assertIsInstance(snapshot.read(artifact), dict)
+                    self.assertIn(task["completion"]["receipt"], receipt_paths)
+                    noops = [
+                        snapshot.read(path) for path in snapshot.blobs
+                        if path.startswith(PREFIX + "runtime/worker_wakes/") and path.endswith(".json")
+                    ]
+                    self.assertTrue(any(
+                        receipt.get("status") == "NO_ADMISSIBLE_LANE_TASK"
+                        and receipt.get("causal_predecessor") == cause
+                        for receipt in noops))
+                    # An earlier generation cannot write after the terminal result.
+                    with self.assertRaises(StateConflict):
+                        second_worker._verify_lease(
+                            snapshot, next_task_id, 1, first["session_id"], "evidence_data")
+
+                # The real local Git ref lease must reject a write against a stale HEAD.
+                old_store = LocalStore(harness.root / "f5-old-cache", harness.remote)
+                competing = LocalStore(harness.root / "f5-competing-cache", harness.remote)
+                with old_store.snapshot() as stale:
+                    with competing.snapshot() as current:
+                        winner = PREFIX + "runtime/worker_wakes/f5-head-winner.json"
+                        competing.commit(
+                            current, {winner: {"synthetic_only": True}},
+                            create_only=[winner], message="synthetic F5 concurrent winner")
+                    loser = PREFIX + "runtime/worker_wakes/f5-head-loser.json"
+                    with self.assertRaises(StateConflict):
+                        old_store.commit(
+                            stale, {loser: {"synthetic_only": True}},
+                            create_only=[loser], message="synthetic F5 stale loser")
+            finally:
+                harness.tearDown()
+
+
 if __name__ == "__main__":
     unittest.main()

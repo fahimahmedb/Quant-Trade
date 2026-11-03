@@ -7,8 +7,6 @@ import json
 from unittest.mock import patch
 
 from research.research_os import host_wake
-# Collect the F4/F5 seam challenge under the already-qualified exact-head suite.
-from tests.test_f4_f5_terminal_continuation import TerminalBridgeTests
 
 
 class HostWakeRouterTests(unittest.TestCase):
