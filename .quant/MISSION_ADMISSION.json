@@ -1,21 +1,21 @@
 {
   "mission_id": "PRODUCT_B_REAL_REPLAY_E2E_20261103",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-03T19:35:00Z",
+  "receipt_timestamp": "2026-11-03T19:42:00Z",
   "project_canonical_sha": "691d22f68a23c6055436c995f3cad47367a39da6",
-  "code_canonical_sha": "549b8a1745670fa058d0ebcf0388650cc47b70d0",
+  "code_canonical_sha": "344bc43fcbc1e00fcd531441b354e503f1f43b80",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@e3ad22f57f18449ec193a645e1aab457344f7063",
   "current_subject": {
     "project_sha": "691d22f68a23c6055436c995f3cad47367a39da6",
-    "code_sha": "549b8a1745670fa058d0ebcf0388650cc47b70d0",
+    "code_sha": "344bc43fcbc1e00fcd531441b354e503f1f43b80",
     "object": "Product B: canonical QuantSystem Data/Research/Desk/Book/Learning recovery replay and non-vacuous assertion"
   },
-  "current_blocker_or_decision": "Admitted product replay defect: demo previously validated when zero tickets resumed. This commit repairs it, makes actual interrupted evaluation fills mandatory and adds original-id Book/Learning and false-positive counterexamples.",
+  "current_blocker_or_decision": "Product implementation exists at immutable 12931944. V1 proof gate on that exact SHA failed only at pre-test status_artifacts --check: STATE.md proof inventory is stale (1262/35, expected 1264/39); CHIEF_BRIEF fresh. Repair inventory to unblock product unit and demo tests; do not reopen unrelated historical CI failures.",
   "target_gate_or_blocker": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION / PRODUCT_B_E2E_REPLAY_INVARIANT",
   "existing_capability": "REPAIR",
-  "why_this_work_can_change_the_decision": "Correct demonstrably vacuous replay condition using existing DeskJournal/Ledger and exercise a real nonzero interrupted fill in the actual QuantSystem path, then prove idempotent restart, causal ticket identity and Learning persistence under synthetic-safe authority.",
-  "minimal_decisive_test": "Hosted V1 proof unit tests and demo on published subject must pass new CrashRecoveryTests negative, evaluation Book/Learning replay, and 40+ demo checks; canonical code and method gates exact SHA. If test fails repair same seam and requalify, no global audit.",
-  "counterexample": "Current demo stage 6 uses `all(...) if applied else True`, so no pending plan or ticket makes the recovery check green without replay. A lost opportunity id, duplicate Book operation or missing Learning strategy attribution must make new witness fail.",
+  "why_this_work_can_change_the_decision": "Hosted V1 gate stopped before targeted product tests solely on an exactly demonstrated stale inventory. Correct the generated-state count without changing product code, so real crash replay and causal Learning tests can run and reveal any product defect.",
+  "minimal_decisive_test": "V1 proof gate status_artifacts --check must now PASS, then 1264 unittest cases and integrated demo with 39 checks must execute. Follow exact-SHA hosted logs and correct any new product test failure; method gate and code qualification as supporting evidence.",
+  "counterexample": "If status generation changes other persisted values, an inventory-only edit would be insufficient; hosted job 126157102583 shows a single diff line and CHIEF_BRIEF fresh. Actual Book/replay tests are still unexecuted on prior run and must be awaited on new SHA.",
   "primary_evidence": [
     {
       "claim_id": "A_F4_F5_HANDOFF",
@@ -56,10 +56,20 @@
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
+    },
+    {
+      "claim_id": "REPAIRABLE_STATUS_INVENTORY_FAILURE",
+      "claim": "Exact V1 proof gate failed before product tests solely because generated proof inventory was stale.",
+      "source_kind": "GITHUB_ACTIONS_JOB_LOG",
+      "object_identity": "run 41704789681 / job 126157102583 / code 12931944acd14ea530e79af229e2a89448f01bbc",
+      "observed_value": "CHIEF_BRIEF.md fresh; STATE.md only difference 1262->1264 tests, 35->39 assertions; exit code 1 at Status artifact freshness.",
+      "support": "SUPPORTS",
+      "scope": "HISTORICAL",
+      "opened": true
     }
   ],
   "durable_output_required": "Publish admission, targeted source/test repair, GitHub hosted exact-SHA regression and demonstrable crash/recovery/causal Learning witness. Preserve F4/F5 PASS and F6 scientific boundary. No new architecture/branch.",
-  "next_action_after_pass_fail_block": "If exact-SHA product unit+demo qualification succeeds, publish bounded product-B handoff preserving F4/F5 PASS and F6 block; if a targeted test fails, correct/retest in this same mission without Owner prompt. Do not claim global F2 PASS from unrelated historical diff-check.",
+  "next_action_after_pass_fail_block": "If V1 unit/demo run PASS on this exact tested source, publish durable product B handoff; if the replay or Learning witness fails, fix/retest in scope without Owner prompting. Park unrelated historical diff-check failing outside product seam.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "Synthetic-safe source/tests on code/canonical only; no VM, Codex, deployment, economic/live rights.",
