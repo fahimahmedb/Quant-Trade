@@ -1,6 +1,6 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`OWNER_APPLIED_F3_DISPATCH_OBSERVED__CODEX_CHECKOUT_BLOCK__BOUNDED_PR_TRIAL_PREPARED`
+STATUS=`CHECKPOINT_FROZEN_EXECUTION_PROBE_REPAIR__SEC_PENDING__NO_NEW_HOST_TRIAL`
 DATE=`2026-11-03`
 
 This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
@@ -67,6 +67,44 @@ The operator now avoids sudo -v, verifies exact PR head context, accepts an unch
 `NEXT_TRIAL_MAX_REVIEW_CALLS=1`
 `PAID_AUTOMATIC_RETRIES=0`
 `CODEX_TOKEN_USAGE=UNKNOWN`
+
+## Current bounded checkpoint — frozen execution probe repair
+
+Subject `code/canonical@2145e46f1e3179dfb39561f98536c1633d595c39` is published, not deployed.
+Mission `F3_FROZEN_EXECUTION_PROBE_REPAIR_20261103`; admission identity
+`sha256:4d69ede29ad540cc007821827d463534cb2d522e62ae34c8715c2eadb4a5d1c8`
+was validated before mutation (the published receipt includes the updated pause/next action; recompute its exact identity from the immutable subject when resuming).
+
+Actual latest Owner receipt: active A180, status ACTIVE_F3_PROOF_PENDING, rollback
+`/var/backups/quant-v2-handoff-20261103T132751-e847fa80`. GitHub dispatch
+`50#issuecomment-6605102799` is task `F3-ENGINEERING-20261103T132729Z`.
+Only a native generic PR review (`6605109311`, `6605122001`) followed it; no valid
+QUANT_CODEX_RESULT was observed. Owner reports no coding task in the UI. These
+are distinct from the earlier 403 trial and must not be counted as F3 success.
+
+The repair keeps canonical-reference freshness in the authenticated VM supervisor,
+fencing both code/project heads before dispatch, acceptance and the following
+local decision. Codex receives a fixed exact-commit local test order, no network
+refresh or current-project decision. A strict trusted result must report the exact
+test command, actual success, unchanged code SHA and project fence. Native generic
+reviews are rejected. Only the read-only probe bypasses code-promotion CI/review:
+it cannot promote code or claim either qualification, and allows one execution,
+zero hosted reviews/retries and local DONE/PARK only. Normal code-changing tasks
+retain their CI/review path. Deployment still requires all four release gates.
+
+Executed locally: 50 focused adapter/policy/router/handoff tests PASS; 41 method,
+continuation and isolation tests PASS; Python compilation, shell syntax and diff
+checks PASS. Hosted on this exact subject: AI Working Method Gate 41649160978,
+Canonical Code Qualification 41649160921 and Oracle V2 Core 41649161128 SUCCESS;
+SEC P0 41649160926 still IN_PROGRESS at checkpoint. No qualified-release, actual
+host use or F3 claim follows until the remaining required evidence is observed.
+
+Owner requested token conservation. No new Codex invocation, manual wake or VM
+change was performed by this repair. Current action: wait for exact SEC result;
+if failure inspect only its first decisive step; if success reconcile fresh
+canonical identities and admission before presenting one explicitly bounded
+operator trial from the active A180. Do not repeat the prior operator/old tasks.
+F3 remains NOT_PROVEN; F4-F6 are not reopened by this checkpoint.
 
 ## Current decision frontier
 
@@ -282,7 +320,7 @@ Closed authorities remain:
 ## Next bounded actions
 
 1. `METHOD`: durable continuation now distinguishes `CHECKPOINT` from `FINAL_HANDOFF`; do not claim material PASS until the canonical router handoff is mechanically verified. F1 remains capitalized; do not rerun it absent contradictory F1-critical evidence.
-2. `RUNTIME`: Run the pinned bounded operator for a18088e5f112968f2d11d7cea2462cd67c5904c7 with expected current release 74057412c66bbc6372a23e6549109bd1af47f697 and draft PR 50; observe one read-only Codex execution and at most one review, without paid retries.
+2. `RUNTIME`: Respect the current frozen-probe checkpoint above: await exact SEC 41649160926, no new Codex or VM trial now.
 3. `POST-F3`: before executing any new F4/F5 mission, challenge the exact existing runtime witnesses in `Current decision frontier` against the canonical gate definition. `NO_CHANGE_REQUIRED` is the preferred result if they already satisfy the required semantics.
 4. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
