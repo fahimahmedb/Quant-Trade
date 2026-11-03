@@ -1,19 +1,47 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`METHOD_ENFORCEMENT_CODE_PASS_F1_RECOVERY_PASS__VM_MULTI_WAKE_NOT_PROVEN`
+STATUS=`ACTIVE_V2_F3_HANDOFF_CODE_QUALIFIED__HOST_APPLICATION_PENDING`
 DATE=`2026-11-03`
 
 This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=DURABLE_CONTINUATION_ENFORCEMENT_20261103`
+`LAST_MATERIAL_HANDOFF_MISSION=ACTIVE_V2_F3_TRANSACTIONAL_HANDOFF_20261103`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=d27f6377fa2f285fd2687c5500a990f6a411a6df`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=Continue F3 predeployment work without VM; use CHECKPOINT for intermediate material results and FINAL_HANDOFF only after canonical router capitalization.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=New primary evidence that FINAL_HANDOFF can pass while the canonical router is stale or mismatched.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=74057412c66bbc6372a23e6549109bd1af47f697`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=Run the pinned operator script for candidate 74057412c66bbc6372a23e6549109bd1af47f697 in the existing Owner SSH session; return its sanitized handoff receipt, then verify natural wakes and real Codex-result consumption.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=New exact evidence falsifies V2-only rollback, credential isolation, qualified target binding or restart recovery.`
 
 Durable-continuation enforcement reuses the existing canonical router and AI Working Method Gate; it does not create a second memory or routing system. Code checkpoint `d27f6377fa2f285fd2687c5500a990f6a411a6df` adds the continuation validator, focused regression tests and hosted-gate wiring. Exact hosted `AI Working Method Gate` run `41557476759` is `SUCCESS` on that checkpoint. Under the active machine contract, `CHECKPOINT` may qualify intermediate material work but is not authoritative mission PASS; `FINAL_HANDOFF` is authoritative only when the hosted gate verifies the exact canonical router mission/result/subject/next-action/reopen markers. A boolean `durable_remote_output=true` is not sufficient by itself.
+
+## Active V2 → F3 handoff — qualified code, host proof pending
+
+Qualified immutable candidate: `74057412c66bbc6372a23e6549109bd1af47f697` on `code/canonical`.
+Admission: `sha256:c627e97f0afc1fdd3fd2e2f280219015006125fd3c109a43963463cfbbd25a94`.
+
+Existing V2 control now exposes an explicit transactional engineering handoff and disk-backed rollback. It preserves the shared worker.env, uses a dedicated V2 env/drop-in, retains the same timer/service, requires both exact legacy CI gates and validates VM/local model/GitHub service principal without a scientific canary. The existing launcher reuses the configured local backend. Legacy V1-transfer qualification/activation reject engineering mode.
+
+Counterexamples closed by focused tests: failure after symlink replacement; failure after timer enable; restart recovery from the private manifest; concurrent Owner bytes/mode edits; stale rollback identity; ineffective unit binding; concurrent control lock. Recovery never starts V1. Original units/drop-ins/wrappers/sudoers and shared credentials are included in the protected snapshot. New engineering ledgers/external results are retained, not erased by configuration recovery.
+
+Local checks actually executed: 333 Oracle V2 workflow tests PASS; 52 focused deployment/router/bridge regressions PASS; 41 method/continuation/isolation tests PASS. The initial 1237-test run exposed only a stale published inventory; its repair passed on rerun, and the final hosted SEC gate passed its full unit suite plus generated exact-head verification artifact. Existing stale synthetic trial bindings/golden expectations were repaired without runtime scientific contract changes. Schemas and deterministic STATE/CHIEF_BRIEF freshness PASS. The required SEC dependency file was restored byte-for-byte from its existing pinned source, and the SEC workflow now includes code/canonical without dropping any check.
+
+Exact hosted qualification for this candidate:
+- AI Working Method Gate: run `41570260428` — SUCCESS;
+- Canonical Code Qualification: run `41570260330` — SUCCESS;
+- Oracle V2 Core: run `41570260347` — SUCCESS;
+- SEC P0 pre-t0 gate: run `41570260312` — SUCCESS.
+
+Operator entrypoint: `scripts/resume_oracle_v2_f3.sh TARGET_SHA`; instructions: `deploy/ORACLE_V2_F3_HANDOFF.md`. The operator rechecks all four gates before any active-runtime change, stages through the pinned scheduler-free CP1 installer, obtains/reuses native GitHub CLI login without printing its credential and invokes the explicit handoff. The original active A67 release is the required rollback identity. No direct VM access or application is claimed by this mission.
+
+`HANDOFF_CODE_QUALIFICATION=PASS`
+`ROLLBACK_CODE_PATH_QUALIFIED=PASS`
+`ROLLBACK_VM_PROVEN=NO`
+`HOST_APPLICATION=NOT_EXECUTED_BY_THIS_MISSION`
+`F3_REAL_VM_MULTI_WAKE=NOT_PROVEN`
+`REAL_CODEX_RESULT_CONSUMPTION=NOT_PROVEN`
+
+The Owner supplied an inventory captured at 2026-11-03T02:12:14Z: V2 timer enabled/active, V2 config/symlink A67, V1 timer disabled/inactive, shared V1/V2 worker.env, local-model service active. This is attributed dated host evidence, not a fresh unattended health assertion. The session has no host SSH identity/command connector. F4-F6 remain pending their own exact evidence; economic/prospective/capital/live authorities remain closed. This is code/predeployment completion only, not deployed/active/used/E2E or whole-system completion.
 
 ## Current decision frontier
 
@@ -47,8 +75,9 @@ This decision-frontier block is a surfacing aid inside the existing canonical ro
 - repository default branch and historical branches are not current authority;
 - no destructive branch cleanup is authorized by this router.
 
-Current exact code subject at this update:
-`code/canonical=d27f6377fa2f285fd2687c5500a990f6a411a6df`
+Immutable qualified handoff candidate:
+`code_candidate=74057412c66bbc6372a23e6549109bd1af47f697`
+Resolve the live code/canonical head fresh; automatic runtime receipts can advance it independently of this candidate.
 
 ## Current working method
 
@@ -228,7 +257,7 @@ Closed authorities remain:
 ## Next bounded actions
 
 1. `METHOD`: durable continuation now distinguishes `CHECKPOINT` from `FINAL_HANDOFF`; do not claim material PASS until the canonical router handoff is mechanically verified. F1 remains capitalized; do not rerun it absent contradictory F1-critical evidence.
-2. `RUNTIME`: two timer-correlated A67 canonical wakes are proven; verify one real Codex result causally consumed by the following decision. Reuse the existing host/scheduler path; do not build another scheduler/control plane.
+2. `RUNTIME`: Run the pinned operator script for candidate 74057412c66bbc6372a23e6549109bd1af47f697 in the existing Owner SSH session; return its sanitized handoff receipt, then verify natural wakes and real Codex-result consumption. Reuse the existing V2 scheduler; no V1 switch, new scheduler or scientific canary.
 3. `POST-F3`: before executing any new F4/F5 mission, challenge the exact existing runtime witnesses in `Current decision frontier` against the canonical gate definition. `NO_CHANGE_REQUIRED` is the preferred result if they already satisfy the required semantics.
 4. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
 
