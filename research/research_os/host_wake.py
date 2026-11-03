@@ -103,8 +103,9 @@ def _terminal_continuation(env):
         receipts = [json.loads(line) for line in receipts_raw.splitlines() if line.strip()]
     except (ValueError, UnicodeError) as exc:
         raise SystemExit("F4_INVALID_DURABLE_RECEIPTS") from exc
-    required = ["PROJECT_AUTHORITY_FENCED", "RESULT_CAUSALLY_BOUND",
-                "READ_ONLY_PROBE_RESULT_CONSUMED", "TERMINAL_DONE"]
+    required = ["PROJECT_AUTHORITY_FENCED", "CODEX_DISPATCH_POSTED",
+                "RESULT_CAUSALLY_BOUND", "READ_ONLY_PROBE_RESULT_CONSUMED",
+                "TERMINAL_DONE"]
     observed = []
     for item in receipts:
         if item.get("task_id") != task_id or item.get("dispatch_id") != dispatch:
@@ -114,13 +115,13 @@ def _terminal_continuation(env):
             continue
         if item.get("expected_head_sha") != sha:
             reject("RECEIPT_HEAD")
-        if event != required[0] and item.get("result_sha") != sha:
+        if event not in required[:2] and item.get("result_sha") != sha:
             reject("RECEIPT_RESULT")
-        if event == required[2] and (
+        if event == required[3] and (
                 (item.get("details") or {}).get("action") != "DONE"
                 or (item.get("details") or {}).get("code_promotion_authorized") is not False):
             reject("UNCONSUMED_RESULT")
-        if event == required[3] and item.get("status") != "DONE":
+        if event == required[4] and item.get("status") != "DONE":
             reject("TERMINAL_STATUS")
         observed.append(event)
     if observed != required or not receipts or receipts[-1].get("event") != required[-1]:
@@ -133,7 +134,7 @@ def _terminal_continuation(env):
         "predecessor_dispatch_id": dispatch,
         "predecessor_project_sha": project_sha,
         "predecessor_result_sha": sha,
-        "predecessor_terminal_receipt_sha256": hashlib.sha256(receipts_raw).hexdigest(),
+        "predecessor_ledger_sha256": hashlib.sha256(receipts_raw).hexdigest(),
     }
 
 

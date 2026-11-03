@@ -38,17 +38,18 @@ class TerminalBridgeTests(unittest.TestCase):
             "status": "DONE", "attempt": 1, "dispatch_id": dispatch_id,
             "last_decision": {"action": "DONE"},
         }
-        events = ["PROJECT_AUTHORITY_FENCED", "RESULT_CAUSALLY_BOUND",
-                  "READ_ONLY_PROBE_RESULT_CONSUMED", "TERMINAL_DONE"]
+        events = ["PROJECT_AUTHORITY_FENCED", "CODEX_DISPATCH_POSTED",
+                  "RESULT_CAUSALLY_BOUND", "READ_ONLY_PROBE_RESULT_CONSUMED",
+                  "TERMINAL_DONE"]
         receipts = []
         for event in events:
             receipts.append({
                 "task_id": task, "dispatch_id": dispatch_id, "event": event,
                 "expected_head_sha": code_sha,
-                "result_sha": None if event == events[0] else code_sha,
+                "result_sha": None if event in events[:2] else code_sha,
                 "status": "DONE" if event == events[-1] else "WAITING_PROBE_DECISION",
                 "details": {"action": "DONE", "code_promotion_authorized": False}
-                           if event == events[2] else {},
+                           if event == events[3] else {},
             })
         state_path.write_text(json.dumps(state))
         receipt_path.write_text("".join(json.dumps(x) + "\n" for x in receipts))
@@ -92,6 +93,14 @@ class TerminalBridgeTests(unittest.TestCase):
                 with self.assertRaisesRegex(SystemExit, "CAUSAL_CHAIN"):
                     host_wake._exec_one("/synthetic/v2.json", "v2")
             execve.assert_not_called()
+
+    def test_missing_dispatch_receipt_blocks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            env, _, receipt_path, _, receipts = self.fixture(Path(directory))
+            receipt_path.write_text("".join(json.dumps(x) + "\n" for x in receipts
+                                            if x["event"] != "CODEX_DISPATCH_POSTED"))
+            with self.assertRaisesRegex(SystemExit, "CAUSAL_CHAIN"):
+                host_wake._terminal_continuation(env)
 
     def test_pending_task_still_routes_to_original_codex_state_machine(self):
         with tempfile.TemporaryDirectory() as directory:
