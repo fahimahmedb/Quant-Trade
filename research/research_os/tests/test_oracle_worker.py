@@ -14,6 +14,7 @@ import subprocess
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
 from research.research_os.github_state import GitHubStateStore, PREFIX, StateConflict, StateUnavailable, json_bytes
 from research.research_os.model_backend import BackendUnavailable
@@ -122,6 +123,81 @@ class WorkerTests(unittest.TestCase):
     def count_paths(self, prefix):
         with self.store.snapshot() as snapshot:
             return len([p for p in snapshot.blobs if p.startswith(PREFIX + prefix)])
+
+    def _terminal_queue(self):
+        def finish(snapshot):
+            task = snapshot.read(PREFIX + 'tasks/RECOVER-TEST-001.json')
+            task['status'] = 'COMPLETE'
+            return {PREFIX + 'tasks/RECOVER-TEST-001.json': task}
+        self.remote_change(finish)
+
+    def test_identical_natural_noop_reuses_durable_receipt_after_cold_restart(self):
+        self._terminal_queue()
+        before = self.count_paths('runtime/worker_wakes/')
+        first = self.worker(lane='evidence_data').wake()
+        self.assertEqual(first['status'], 'NO_ADMISSIBLE_LANE_TASK')
+        self.assertIn('output_commit', first)
+        head = git(self.remote, 'rev-parse', 'recovery')
+        self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 1)
+        self.now += timedelta(minutes=10)
+        # Restart from a distinct Git cache: no process-local memoization.
+        self.store = LocalStore(self.root / 'fresh-cold-cache', self.remote)
+        second = self.worker(lane='evidence_data').wake()
+        self.assertEqual(second['status'], 'NO_ADMISSIBLE_LANE_TASK')
+        self.assertTrue(second['deduplicated'])
+        self.assertIn('reused_receipt', second)
+        self.assertNotIn('output_commit', second)
+        self.assertEqual(git(self.remote, 'rev-parse', 'recovery'), head)
+        self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 1)
+        self.assertEqual(self.model.calls, 0)
+
+    def test_idle_semantic_change_is_not_suppressed_and_ready_work_runs(self):
+        self._terminal_queue()
+        before = self.count_paths('runtime/worker_wakes/')
+        first = self.worker(lane='evidence_data').wake()
+        self.assertEqual(first['status'], 'NO_ADMISSIBLE_LANE_TASK')
+        self.now += timedelta(minutes=10)
+        other = self.worker(lane='independent_challenge', worker_id='different-worker').wake()
+        self.assertEqual(other['status'], 'NO_ADMISSIBLE_LANE_TASK')
+        self.assertIn('output_commit', other)
+        self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 2)
+        self.assertEqual(self.worker(lane='independent_challenge',
+                                     worker_id='different-worker').wake()['deduplicated'], True)
+        def rearm(snapshot):
+            task = snapshot.read(PREFIX + 'tasks/RECOVER-TEST-001.json')
+            task['status'] = 'READY'
+            return {PREFIX + 'tasks/RECOVER-TEST-001.json': task}
+        self.remote_change(rearm)
+        resumed = self.worker(lane='evidence_data').wake()
+        self.assertEqual(resumed['stage'], 'recover_or_qualify')
+        self.assertIn('output_commit', resumed)
+        self.assertEqual(self.model.calls, 0)
+
+    def test_idle_dedup_rejects_changed_head_before_reuse(self):
+        self._terminal_queue()
+        before = self.count_paths('runtime/worker_wakes/')
+        self.worker(lane='evidence_data').wake()
+        original = self.store.snapshot
+        n = {'calls': 0}
+
+        @contextmanager
+        def raced():
+            n['calls'] += 1
+            if n['calls'] == 2:
+                with original() as snap:
+                    self.store.commit(snap, {
+                        PREFIX + 'runtime/worker_wakes/unrelated-writer.json':
+                            {'observed': 'separate authoritative commit'}
+                    }, message='separate concurrent state publication')
+            with original() as snap:
+                yield snap
+
+        with patch.object(self.store, 'snapshot', raced):
+            with self.assertRaisesRegex(StateConflict, 'HEAD_CHANGED_BEFORE_IDLE_REUSE'):
+                self.worker(lane='evidence_data').wake()
+        self.assertEqual(n['calls'], 2)
+        self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 2)
+        self.assertEqual(self.model.calls, 0)
 
     def test_two_wakes_continue_same_task_then_completed_restart_is_noop(self):
         first = self.worker(lane='evidence_data').wake()
