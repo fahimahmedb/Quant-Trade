@@ -14,6 +14,7 @@
     "CONNECT",
     "REPAIR",
     "BUILD_REQUIRED",
+    "CHECKPOINT",
     "PASS",
     "FAIL",
     "PARK",
@@ -63,12 +64,31 @@
       "active_seam",
       "active_decision_lanes",
       "mutating_builders_on_seam",
-      "requested_action"
+      "requested_action",
+      "completion_intent"
     ],
     "stale_after_project_head_move": true,
     "stale_after_code_head_move": true,
     "stale_after_router_identity_move": true,
     "copied_receipt_allowed": false
+  },
+  "durable_continuation": {
+    "enabled": true,
+    "canonical_router": "governance/CURRENT_PROJECT_STATE.md",
+    "admission_field": "completion_intent",
+    "allowed_intents": [
+      "CHECKPOINT",
+      "FINAL_HANDOFF"
+    ],
+    "checkpoint_claim": "CHECKPOINT",
+    "final_handoff_claim": "PASS",
+    "router_markers": {
+      "mission_id": "LAST_MATERIAL_HANDOFF_MISSION",
+      "result": "LAST_MATERIAL_HANDOFF_RESULT",
+      "subject_sha": "LAST_MATERIAL_HANDOFF_SUBJECT",
+      "next_action": "LAST_MATERIAL_HANDOFF_NEXT_ACTION",
+      "reopen_condition": "LAST_MATERIAL_HANDOFF_REOPEN_CONDITION"
+    }
   },
   "exact_claim_provenance": {
     "required_for_material_decision": true,

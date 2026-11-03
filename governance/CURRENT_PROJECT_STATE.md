@@ -1,9 +1,19 @@
 # Quant-Trade — current canonical project state
 
 STATUS=`METHOD_ENFORCEMENT_CODE_PASS_F1_RECOVERY_PASS__VM_MULTI_WAKE_NOT_PROVEN`
-DATE=`2026-11-02`
+DATE=`2026-11-03`
 
 This file is the single current-state router. Historical detail remains in Git history and evidence files; do not reconstruct the project from old chats, branch names, audit stacks or program drafts.
+
+## Latest material handoff
+
+`LAST_MATERIAL_HANDOFF_MISSION=DURABLE_CONTINUATION_ENFORCEMENT_20261103`
+`LAST_MATERIAL_HANDOFF_RESULT=PASS`
+`LAST_MATERIAL_HANDOFF_SUBJECT=d27f6377fa2f285fd2687c5500a990f6a411a6df`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=Continue F3 predeployment work without VM; use CHECKPOINT for intermediate material results and FINAL_HANDOFF only after canonical router capitalization.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=New primary evidence that FINAL_HANDOFF can pass while the canonical router is stale or mismatched.`
+
+Durable-continuation enforcement reuses the existing canonical router and AI Working Method Gate; it does not create a second memory or routing system. Code checkpoint `d27f6377fa2f285fd2687c5500a990f6a411a6df` adds the continuation validator, focused regression tests and hosted-gate wiring. Exact hosted `AI Working Method Gate` run `41557476759` is `SUCCESS` on that checkpoint. Under the active machine contract, `CHECKPOINT` may qualify intermediate material work but is not authoritative mission PASS; `FINAL_HANDOFF` is authoritative only when the hosted gate verifies the exact canonical router mission/result/subject/next-action/reopen markers. A boolean `durable_remote_output=true` is not sufficient by itself.
 
 ## Current decision frontier
 
@@ -38,7 +48,7 @@ This decision-frontier block is a surfacing aid inside the existing canonical ro
 - no destructive branch cleanup is authorized by this router.
 
 Current exact code subject at this update:
-`code/canonical=33d69af2a3acfcd2ea124aeef682278fce313f42`
+`code/canonical=d27f6377fa2f285fd2687c5500a990f6a411a6df`
 
 ## Current working method
 
@@ -53,6 +63,8 @@ Every material AI mission must create/replace the real admission object at:
 `code/canonical:.quant/MISSION_ADMISSION.json`
 
 The receipt is validated before substantive work against fresh project head, admitted code base, router identity and mission identity. Material completion must bind the immutable admission identity to the exact resulting published/tested SHA. Copied/stale/wrong-SHA receipts and local-only PASS are invalid.
+
+For durable continuation, each material mission declares `completion_intent=CHECKPOINT|FINAL_HANDOFF`. `CHECKPOINT` is an intermediate qualified result and cannot claim authoritative PASS. `FINAL_HANDOFF` requires the canonical router to contain matching mission, result, subject, next action and reopen condition; the hosted gate verifies those exact markers before accepting PASS.
 
 A completed mission receipt is historical evidence after final durable state changes. It is NOT a permanently reusable token. The next material mission must fetch the then-current canonical pair/router and create a new receipt. This avoids both stale reuse and a meaningless project-head/code-head ping-pong after completion.
 
@@ -215,7 +227,7 @@ Closed authorities remain:
 
 ## Next bounded actions
 
-1. `METHOD`: F1 is capitalized; do not rerun it absent contradictory F1-critical evidence. Universal agent compliance and server-side prevention remain separate and unproven.
+1. `METHOD`: durable continuation now distinguishes `CHECKPOINT` from `FINAL_HANDOFF`; do not claim material PASS until the canonical router handoff is mechanically verified. F1 remains capitalized; do not rerun it absent contradictory F1-critical evidence.
 2. `RUNTIME`: two timer-correlated A67 canonical wakes are proven; verify one real Codex result causally consumed by the following decision. Reuse the existing host/scheduler path; do not build another scheduler/control plane.
 3. `POST-F3`: before executing any new F4/F5 mission, challenge the exact existing runtime witnesses in `Current decision frontier` against the canonical gate definition. `NO_CHANGE_REQUIRED` is the preferred result if they already satisfy the required semantics.
 4. `OTHER`: independent lanes may proceed only through fresh mission admission and only if they do not bypass the blockers above.
