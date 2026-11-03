@@ -1,21 +1,21 @@
 {
   "mission_id": "PRODUCT_B_REAL_REPLAY_E2E_20261103",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-03T19:46:00Z",
+  "receipt_timestamp": "2026-11-03T19:52:00Z",
   "project_canonical_sha": "691d22f68a23c6055436c995f3cad47367a39da6",
-  "code_canonical_sha": "3b6765be8ed60b0b62629bd41ec90c7384f9bfe2",
+  "code_canonical_sha": "134f78fb0f97b2c9b6810b41f0834ef8da2c3562",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@e3ad22f57f18449ec193a645e1aab457344f7063",
   "current_subject": {
     "project_sha": "691d22f68a23c6055436c995f3cad47367a39da6",
-    "code_sha": "3b6765be8ed60b0b62629bd41ec90c7384f9bfe2",
+    "code_sha": "134f78fb0f97b2c9b6810b41f0834ef8da2c3562",
     "object": "Product B: canonical QuantSystem Data/Research/Desk/Book/Learning recovery replay and non-vacuous assertion"
   },
-  "current_blocker_or_decision": "Current Product B qualification blocker: first V1 proof gate failed on predecessor 12931944 solely because checked-in STATE.md inventory was stale, now repaired on 3b6765. Correct stale-scope admission encoding (historical runner evidence supports a current repair decision, not any qualification of the new code head), then await exact current V1 unit/demo steps.",
+  "current_blocker_or_decision": "Product B source and tests have been published and unchanged since 12931944. Hosted V1 full-history checkout has not yet reached product tests; existing Canonical Code Qualification succeeded on 3b6765 but did not include product-specific tests. Connect existing product unittest/demo to the canonical qualification job, not a new CI framework, to gain decisive exact-SHA E2E evidence.",
   "target_gate_or_blocker": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION / PRODUCT_B_E2E_REPLAY_INVARIANT",
   "existing_capability": "REPAIR",
-  "why_this_work_can_change_the_decision": "Hosted V1 gate stopped before targeted product tests solely on an exactly demonstrated stale inventory. Correct the generated-state count without changing product code, so real crash replay and causal Learning tests can run and reveal any product defect.",
-  "minimal_decisive_test": "V1 proof gate status_artifacts --check must now PASS, then 1264 unittest cases and integrated demo with 39 checks must execute. Follow exact-SHA hosted logs and correct any new product test failure; method gate and code qualification as supporting evidence.",
-  "counterexample": "The prior V1 gate failure proves only stale inventory of predecessor SHA and must not be treated as PASS/FAIL for the current HEAD. The current V1 unit/demo must actually execute. No economic/production authority.",
+  "why_this_work_can_change_the_decision": "Canonically qualified code SHA without the product E2E test is insufficient; reuse the already-green Canonical Code Qualification workflow by adding one narrow synthetic-safe product test/demo step. This avoids confusing unit-demo proof with unrelated V1 historic diff check.",
+  "minimal_decisive_test": "Canonical Code Qualification on exact published SHA must execute tests.test_quant_system and scripts/demo_quant_system.py successfully, with nonvacuous 39-check replay and causal Learning evidence; AI Working Method Gate PASS on same SHA. Repair/retest any product failures.",
+  "counterexample": "The former Canonical Code Qualification could be green without executing any product-specific tests; a green transport suite cannot establish Data→Research→Desk→Book→Learning replay. This new step must actually execute and be verifiably green on exact SHA.",
   "primary_evidence": [
     {
       "claim_id": "A_F4_F5_HANDOFF",
@@ -69,7 +69,7 @@
     }
   ],
   "durable_output_required": "Publish admission, targeted source/test repair, GitHub hosted exact-SHA regression and demonstrable crash/recovery/causal Learning witness. Preserve F4/F5 PASS and F6 scientific boundary. No new architecture/branch.",
-  "next_action_after_pass_fail_block": "Continue checking same product V1 unit/demo on exact SOURCE-equivalent SHA; if failure is repairable, fix/retest with bounded CHECKPOINT. Only after tests PASS, publish final durable product-B handoff on new project router and validate final admission.",
+  "next_action_after_pass_fail_block": "If hosted product-specific exact-SHA E2E tests PASS, publish a durable bounded Product B FINAL_HANDOFF in existing project router and code admission; preserve F4/F5 PASS, F6 scientific admissibility blocker and no economic/live authority. If new step fails, repair same product seam and retest without Owner prompt.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "Synthetic-safe source/tests on code/canonical only; no VM, Codex, deployment, economic/live rights.",

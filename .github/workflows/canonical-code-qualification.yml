@@ -108,6 +108,13 @@ jobs:
             git show "$GIGA_Q_SHA:$f" > "$f"
           done
           python -m pytest -q "${files[@]}"
+      - name: Product B synthetic E2E crash replay and Learning qualification
+        env:
+          PYTHONPATH: .:src
+        run: |
+          set -euo pipefail
+          python -m unittest -v tests.test_quant_system
+          python scripts/demo_quant_system.py
       - name: Authority remains closed
         env:
           PYTHONPATH: .:src
