@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 from .github_state import GitHubStateStore, PREFIX, StateConflict
@@ -229,6 +230,13 @@ def main(argv=None):
             raise ValueError("EXECUTABLE_RELEASE_PATH_MISMATCH")
 
     worker = build_v2_worker(config, backend=backend)
+    forwarded = os.environ.get("QUANT_F4_CAUSAL_PREDECESSOR")
+    if forwarded:
+        from .host_wake import _terminal_continuation
+        cause = json.loads(forwarded)
+        if not isinstance(cause, dict) or cause != _terminal_continuation(os.environ):
+            raise ValueError("F4_CAUSAL_PREDECESSOR_MISMATCH")
+        worker.continuation_cause = cause
     result = worker.wake(mode=args.mode)
     result["research_contract_version"] = "v2-core"
     result["v2_preflight"] = worker.store.last_preflight

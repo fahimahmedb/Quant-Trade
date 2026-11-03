@@ -137,6 +137,8 @@ class ResearchOSWorker:
                             'state_repository': self.store.repository, 'state_branch': self.store.branch,
                             'authority': dict(AUTHORITY), 'preflight': preflight,
                             'one_lineage_per_wake': True, 'hosted_model_calls': 0}
+            if getattr(self, 'continuation_cause', None) is not None:
+                base_receipt['causal_predecessor'] = self.continuation_cause
             if mode == 'dry-run':
                 return dict(base_receipt, status='DRY_RUN', writes=0,
                             selected_task=task['task_id'] if task else None, lane=lane)
@@ -244,6 +246,8 @@ class ResearchOSWorker:
                        'input_head': stage_head, 'status': 'BLOCKED' if task['status'] == 'BLOCKED' or status == 'RETRY' else 'COMPLETE',
                        'summary': f'{stage}: {status}; task={task["status"]}; release={self.release_sha}',
                        'artifacts': [artifact], 'evidence_refs': [event_path], 'authority_assertion': dict(ASSERTION)}
+            if 'causal_predecessor' in base_receipt:
+                receipt['causal_predecessor'] = base_receipt['causal_predecessor']
             writes[execution['last_receipt']] = receipt
             self.fault('after_receipt_before_task_transition')
             immutable = list(writes)
