@@ -182,6 +182,8 @@ def run_as_worker(arguments, timeout):
 
 
 def qualify(config, release):
+    if config.get("runtime_mode") == "codex_engineering":
+        raise ValueError("F3_USE_EXPLICIT_HANDOFF_NOT_SCIENTIFIC_CANARY")
     verify_ci(config)
     instance_identity(config["vm_ocid"])
     if active(TIMER) in ("active", "activating"):
@@ -203,6 +205,8 @@ def qualify(config, release):
 
 
 def activate(config):
+    if config.get("runtime_mode") == "codex_engineering":
+        raise ValueError("F3_USE_EXPLICIT_HANDOFF_NOT_V1_TRANSFER")
     report = json.loads(ROOT_QUALIFICATION.read_text())
     verify_qualification(report, config)
     verify_ci(config)
@@ -259,9 +263,19 @@ def status(config):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--action", choices=("qualify", "activate", "status"), required=True)
+    parser.add_argument("--action", choices=("qualify", "activate", "status", "handoff", "rollback"), required=True)
+    parser.add_argument("--release", type=Path)
+    parser.add_argument("--expected-current-sha")
+    parser.add_argument("--v2-ci-run", type=int)
+    parser.add_argument("--sec-ci-run", type=int)
+    parser.add_argument("--orchestration-config", type=Path)
+    parser.add_argument("--backup-directory", type=Path)
     args = parser.parse_args()
     if os.geteuid() != 0: raise SystemExit("ROOT_REQUIRED_FOR_FIXED_V2_CONTROL")
+    if args.action in ("handoff", "rollback"):
+        from deploy.oracle_v2_handoff import execute
+        print(json.dumps(execute(args), sort_keys=True))
+        return
     config = json.loads(CONFIG.read_text())
     release = validate_config(config)
     if CURRENT.resolve() != release: raise ValueError("V2_CURRENT_RELEASE_CHANGED")

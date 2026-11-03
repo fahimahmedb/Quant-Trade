@@ -87,6 +87,7 @@ jobs:
             tests.test_research_os_frontier_source_planner_v2 \
             tests.test_research_os_evidence_acquisition_intents_v2 \
             tests.test_oracle_v2_deploy \
+            tests.test_oracle_v2_handoff \
             tests.test_oracle_v2_release_provenance \
             tests.test_oracle_v2_bootstrap_admission \
             tests.test_oracle_live_projection \

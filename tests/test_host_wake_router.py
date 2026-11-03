@@ -2,12 +2,40 @@ import os
 from pathlib import Path
 import sys
 import unittest
+import tempfile
+import json
 from unittest.mock import patch
 
 from research.research_os import host_wake
 
 
 class HostWakeRouterTests(unittest.TestCase):
+    def test_engineering_decider_reuses_local_backend_and_restricts_actions(self):
+        from scripts.gpt_oss_orchestrator import local_backend_decision
+        from unittest.mock import Mock
+        backend = Mock()
+        backend.generate_structured.return_value = {"action": "PARK", "reason": "rehearsal"}
+        with tempfile.TemporaryDirectory() as directory:
+            config = Path(directory) / "worker.json"
+            config.write_text(json.dumps({"model_backend": {"implementation": "gpt_oss"}}))
+            with patch("research.research_os.oracle_worker.backend_from_config", return_value=backend) as factory:
+                result = local_backend_decision(config, {"allowed_actions": ["PARK"]})
+                self.assertEqual(result["action"], "PARK")
+                self.assertEqual(backend.generate_structured.call_args.args[1]["properties"]["action"]["enum"], ["PARK"])
+                factory.assert_called_once()
+                with self.assertRaisesRegex(ValueError, "INVALID_ENGINEERING_ACTION_SET"):
+                    local_backend_decision(config, {"allowed_actions": ["TRADE"]})
+
+    @patch("research.research_os.host_wake.os.execve")
+    def test_v2_default_stays_v2_and_codex_state_stays_in_v2_sandbox(self, execve):
+        with patch.dict(os.environ, {"QUANT_CODEX_ORCHESTRATION_ENABLED": "0"}):
+            host_wake.main(["--config", "/etc/quant-research-v2/worker.json", "--worker-version", "v2"])
+        self.assertIn("research.research_os.oracle_worker_v2", execve.call_args.args[1])
+        with patch.dict(os.environ, {"QUANT_CODEX_ORCHESTRATION_ENABLED": "1",
+                "QUANT_CODEX_ORCHESTRATION_ROOT": "/var/lib/quant-research-v2/codex_control_plane"}):
+            host_wake.main(["--config", "/etc/quant-research-v2/worker.json", "--worker-version", "v2"])
+        self.assertIn("gpt_oss_orchestrator.py", execve.call_args.args[1][1])
+
     @patch("research.research_os.host_wake.os.execve")
     def test_default_path_preserves_existing_oracle_worker(self, execve):
         with patch.dict(os.environ, {"QUANT_CODEX_ORCHESTRATION_ENABLED": "0"}, clear=False):

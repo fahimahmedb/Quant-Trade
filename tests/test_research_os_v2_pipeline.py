@@ -103,8 +103,19 @@ class V2PipelineTests(unittest.TestCase):
             "feedback_lineage_qualified": True,
             "bounded_orchestration_qualified": True,
         }
-        bundle["validator"]["candidate_hash"] = build_candidate(bundle["candidate"])["candidate_hash"]
+        candidate = build_candidate(bundle["candidate"])
+        bundle["trial"]["generated_proposals"][0].update({
+            key: candidate[key] for key in ("hypothesis_id", "generation_id", "candidate_hash")
+        })
+        bundle["validator"]["candidate_hash"] = candidate["candidate_hash"]
         return bundle
+
+    def test_foreign_trial_proposal_cannot_qualify_repaired_fixture(self):
+        for key in ("hypothesis_id", "generation_id", "candidate_hash"):
+            bundle = self.bundle()
+            bundle["trial"]["generated_proposals"][0][key] = "foreign"
+            with self.subTest(field=key), self.assertRaisesRegex(V2ContractError, "TRIAL_PROPOSAL_BINDING_MISMATCH"):
+                run_pre_outcome_pipeline(bundle)
 
     def test_end_to_end_pre_outcome_receipt(self):
         receipt = run_pre_outcome_pipeline(self.bundle())

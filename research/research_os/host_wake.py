@@ -19,13 +19,13 @@ def _release_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
-def _codex_environment() -> dict[str, str]:
+def _codex_environment(worker_version="v1") -> dict[str, str]:
     env = os.environ.copy()
     raw_root = env.get("QUANT_CODEX_ORCHESTRATION_ROOT", "").strip()
     if not raw_root:
         raise SystemExit("QUANT_CODEX_ORCHESTRATION_ROOT_REQUIRED_ON_HOST")
     root = Path(raw_root).resolve()
-    state_root = STATE_ROOT.resolve()
+    state_root = (STATE_ROOT if worker_version == "v1" else Path("/var/lib/quant-research-v2")).resolve()
     if root == state_root or not root.is_relative_to(state_root):
         raise SystemExit("QUANT_CODEX_ORCHESTRATION_ROOT_MUST_BE_STATE_SUBDIRECTORY")
 
@@ -40,13 +40,13 @@ def _codex_environment() -> dict[str, str]:
     return env
 
 
-def _exec_one(config: str) -> None:
+def _exec_one(config: str, worker_version="v1") -> None:
     flag = os.environ.get("QUANT_CODEX_ORCHESTRATION_ENABLED", "0").strip()
     if flag not in ("", "0", "1"):
         raise SystemExit("INVALID_QUANT_CODEX_ORCHESTRATION_ENABLED")
 
     if flag == "1":
-        env = _codex_environment()
+        env = _codex_environment(worker_version)
         script = _release_root() / "scripts" / "gpt_oss_orchestrator.py"
         argv = [sys.executable, str(script)]
     else:
@@ -54,7 +54,7 @@ def _exec_one(config: str) -> None:
         argv = [
             sys.executable,
             "-m",
-            "research.research_os.oracle_worker",
+            "research.research_os.oracle_worker" + ("_v2" if worker_version == "v2" else ""),
             "--config",
             config,
         ]
@@ -67,8 +67,9 @@ def _exec_one(config: str) -> None:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True)
+    parser.add_argument("--worker-version", choices=("v1", "v2"), default="v1")
     args = parser.parse_args(argv)
-    _exec_one(args.config)
+    _exec_one(args.config, args.worker_version)
     return 0
 
 
