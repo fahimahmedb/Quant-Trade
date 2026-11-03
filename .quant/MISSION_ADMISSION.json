@@ -1,20 +1,20 @@
 {
   "mission_id": "PRODUCT_B_REAL_REPLAY_E2E_20261103",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-03T19:30:00Z",
+  "receipt_timestamp": "2026-11-03T19:35:00Z",
   "project_canonical_sha": "691d22f68a23c6055436c995f3cad47367a39da6",
-  "code_canonical_sha": "52cc37e1be057e148df02c5dcb46ec845c459d01",
+  "code_canonical_sha": "549b8a1745670fa058d0ebcf0388650cc47b70d0",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@e3ad22f57f18449ec193a645e1aab457344f7063",
   "current_subject": {
     "project_sha": "691d22f68a23c6055436c995f3cad47367a39da6",
-    "code_sha": "52cc37e1be057e148df02c5dcb46ec845c459d01",
+    "code_sha": "549b8a1745670fa058d0ebcf0388650cc47b70d0",
     "object": "Product B: canonical QuantSystem Data/Research/Desk/Book/Learning recovery replay and non-vacuous assertion"
   },
-  "current_blocker_or_decision": "F4 natural VM NOOP and F5 bounded synthetic PASS are handed off; Product B demo can currently report replay PASS when zero resumable tickets exist. Need real interruption after Book fills, replay identity and Learning linkage before any new E2E product claim.",
+  "current_blocker_or_decision": "Admitted product replay defect: demo previously validated when zero tickets resumed. This commit repairs it, makes actual interrupted evaluation fills mandatory and adds original-id Book/Learning and false-positive counterexamples.",
   "target_gate_or_blocker": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION / PRODUCT_B_E2E_REPLAY_INVARIANT",
   "existing_capability": "REPAIR",
   "why_this_work_can_change_the_decision": "Correct demonstrably vacuous replay condition using existing DeskJournal/Ledger and exercise a real nonzero interrupted fill in the actual QuantSystem path, then prove idempotent restart, causal ticket identity and Learning persistence under synthetic-safe authority.",
-  "minimal_decisive_test": "At least one durable pending opportunity with >=1 already applied fill; crash after booked fills but before journal commit; restart and replay same opportunity/operation ids exactly once, prove no added fill/cash/cost/attribution or duplicate sessions, preserve strategy lineage through Learning; adversarial zero-pending and duplicated-op cases fail; run exact-SHA hosted tests and demo.",
+  "minimal_decisive_test": "Hosted V1 proof unit tests and demo on published subject must pass new CrashRecoveryTests negative, evaluation Book/Learning replay, and 40+ demo checks; canonical code and method gates exact SHA. If test fails repair same seam and requalify, no global audit.",
   "counterexample": "Current demo stage 6 uses `all(...) if applied else True`, so no pending plan or ticket makes the recovery check green without replay. A lost opportunity id, duplicate Book operation or missing Learning strategy attribution must make new witness fail.",
   "primary_evidence": [
     {
@@ -59,7 +59,7 @@
     }
   ],
   "durable_output_required": "Publish admission, targeted source/test repair, GitHub hosted exact-SHA regression and demonstrable crash/recovery/causal Learning witness. Preserve F4/F5 PASS and F6 scientific boundary. No new architecture/branch.",
-  "next_action_after_pass_fail_block": "If admission PASS, repair product demo non-vacuous journal recovery, add focused regression incl negative counterexample and Learning causal identity; run qualification on exact published SHA. If local test fails, repair/retest in scope. No VM/Codex/agents.",
+  "next_action_after_pass_fail_block": "If exact-SHA product unit+demo qualification succeeds, publish bounded product-B handoff preserving F4/F5 PASS and F6 block; if a targeted test fails, correct/retest in this same mission without Owner prompt. Do not claim global F2 PASS from unrelated historical diff-check.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "Synthetic-safe source/tests on code/canonical only; no VM, Codex, deployment, economic/live rights.",

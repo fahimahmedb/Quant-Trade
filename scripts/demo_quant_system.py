@@ -61,6 +61,27 @@ def check(description: str, condition: bool) -> None:
     print(f"   [{'PASS' if condition else 'FAIL'}] {description}")
 
 
+def replay_proven(pending: dict, tickets: list[dict]) -> bool:
+    """Require an actual, non-empty journal replay, never a vacuous all()."""
+    if len(pending) != 1:
+        return False
+    opportunity_id, plan = next(iter(pending.items()))
+    fills = plan.get("fills") or []
+    if not fills:
+        return False
+    matching = [ticket for ticket in tickets
+                if ticket.get("opportunity_id") == opportunity_id]
+    if len(matching) != 1:
+        return False
+    ticket = matching[0]
+    return (ticket.get("strategy_id") == plan.get("strategy_id")
+            and ticket.get("ledger") == plan.get("ticket", {}).get("ledger")
+            and ticket.get("status") == "BOOKED"
+            and bool(ticket.get("stage_trace"))
+            and ticket["stage_trace"][-1].get("stage") == "BOOK"
+            and ticket.get("book_effect", {}).get("replayed_operations") == len(fills))
+
+
 def emit(stage: str, system: QuantSystem) -> None:
     state = system.state
     print(json.dumps({
@@ -152,38 +173,76 @@ def main() -> int:
         check("requeued work on unchanged data was skipped, not repeated",
               resumed.state.research_runs == runs_before)
 
-        stage("6. Kill the process mid-session, after fills are durable")
-        for _ in range(40):
-            if resumed.tick() != "SESSION":
-                break
-        fills_before = resumed.desk.evaluation.state.fills
-        sessions_before = resumed.state.desk_sessions
+        stage("6. Crash after durable evaluation fills; replay the original intent")
         original = DeskJournal.commit
-        DeskJournal.commit = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("killed"))
+        crash: dict = {}
+
+        def interrupt_filled_evaluation(journal, opportunity_id, *args, **kwargs):
+            plan = journal.pending_plan(opportunity_id)
+            if (plan and plan.get("fills")
+                    and plan["ticket"]["ledger"] == "EVALUATION"):
+                operations = {f"{opportunity_id}:{fill['symbol']}"
+                              for fill in plan["fills"]}
+                if operations.issubset(
+                        set(resumed.desk.evaluation.state.applied_operations)):
+                    crash.update(opportunity_id=opportunity_id,
+                                 strategy_id=plan["strategy_id"],
+                                 fill_count=len(plan["fills"]),
+                                 operations=sorted(operations))
+                    raise RuntimeError("killed after durable evaluation fills")
+            return original(journal, opportunity_id, *args, **kwargs)
+
+        DeskJournal.commit = interrupt_filled_evaluation
         crashed = False
         try:
-            resumed.tick()
-        except RuntimeError:
+            # Stop at the first eligible actual fill, not an arbitrary next tick
+            # that may contain only NO_TRADE or no pending journal entry.
+            for _ in range(400):
+                if resumed.tick() != "SESSION":
+                    break
+        except RuntimeError as exc:
+            if str(exc) != "killed after durable evaluation fills":
+                raise
             crashed = True
         finally:
             DeskJournal.commit = original
-        check("a session was interrupted after durable state changed", crashed)
+        check("a non-empty evaluation plan was interrupted after durable fills",
+              crashed and bool(crash))
+        if not crashed:
+            return 1
+        sessions_before = resumed.state.desk_sessions
         del resumed
 
         recovered = QuantSystem(demo)
         recovered.boot()
-        check("the interrupted session left a durable intent to resume",
-              bool(recovered.desk.journal.pending) or
-              recovered.desk.evaluation.state.fills >= fills_before)
         pending = dict(recovered.desk.journal.pending)
-        recovered.tick()
-        applied = [ticket for ticket in read_recent_tickets(demo)
-                   if ticket["opportunity_id"] in pending]
-        check("the resumed session re-applied its plan without duplicating fills",
-              all(ticket["book_effect"].get("replayed_operations", 0)
-                  == len(ticket["fills"]) for ticket in applied) if applied else True)
-        check("no session was double-counted",
-              recovered.state.desk_sessions >= sessions_before)
+        plan = pending.get(crash["opportunity_id"])
+        check("the original fill-bearing intent survived a cold restart",
+              bool(plan) and plan["strategy_id"] == crash["strategy_id"]
+              and len(plan["fills"]) == crash["fill_count"])
+        book = recovered.desk.evaluation
+        state = book.state
+        financial_before = (
+            state.cash, state.fills, state.fees_paid, state.realized_pnl,
+            json.dumps(state.attribution, sort_keys=True))
+        operations_before = list(state.applied_operations)
+        check("the recorded operations were already in the durable Book",
+              set(crash["operations"]).issubset(set(operations_before)))
+
+        result = recovered.tick()
+        tickets = read_recent_tickets(demo, limit=10_000)
+        check("a real pending ticket was replayed exactly once",
+              result == "SESSION" and replay_proven(pending, tickets))
+        check("replay preserved Book cash, fills, costs, attribution and operation ids",
+              financial_before == (
+                  state.cash, state.fills, state.fees_paid, state.realized_pnl,
+                  json.dumps(state.attribution, sort_keys=True))
+              and list(state.applied_operations) == operations_before)
+        check("the crashed session was counted exactly once",
+              recovered.state.desk_sessions == sessions_before + 1)
+        check("the journal committed the original opportunity and cleared the intent",
+              recovered.desk.journal.is_processed(crash["opportunity_id"])
+              and recovered.desk.journal.pending_plan(crash["opportunity_id"]) is None)
         emit("recovered_from_crash", recovered)
 
         stage("7. Continue to completion")
@@ -200,6 +259,11 @@ def main() -> int:
               == sorted(point["date"] for point in resumed.desk.capital.state.nav_history))
         check("rejections were scored against their counterfactual",
               resumed.learning.decision_quality.get("strategies_evaluated", 0) > 0)
+        check("replayed strategy identity reached persistent Learning",
+              crash["strategy_id"] in resumed.desk.evaluation.state.attribution
+              and any(item["strategy_id"] == crash["strategy_id"]
+                      for item in resumed.learning.decision_quality.get(
+                          "assessments", [])))
 
         stage("8. IDLE stays alive and wakes on due work")
         timer = DemoTimer()

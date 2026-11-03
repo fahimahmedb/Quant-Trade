@@ -1090,6 +1090,105 @@ class CrashRecoveryTests(unittest.TestCase):
             self.assertEqual(resumed.journal.stats_for("STR-TEST")["booked"], 2)
 
 
+    def test_demo_replay_guard_rejects_empty_intents_and_duplicate_tickets(self):
+        from scripts.demo_quant_system import replay_proven
+
+        ticket = {"opportunity_id": "OPP-S-1", "strategy_id": "S",
+                  "ledger": "EVALUATION", "status": "BOOKED",
+                  "stage_trace": [{"stage": "BOOK"}],
+                  "book_effect": {"replayed_operations": 1}}
+        plan = {"OPP-S-1": {"strategy_id": "S",
+                            "ticket": {"ledger": "EVALUATION"},
+                            "fills": [{"symbol": "AAA"}]}}
+        self.assertFalse(replay_proven({}, []))
+        self.assertFalse(replay_proven(
+            {"OPP-S-1": {**plan["OPP-S-1"], "fills": []}}, [ticket]))
+        self.assertFalse(replay_proven(plan, []))
+        self.assertFalse(replay_proven(plan, [ticket, ticket]))
+        self.assertFalse(replay_proven(
+            plan, [{**ticket, "book_effect": {"replayed_operations": 0}}]))
+        self.assertTrue(replay_proven(plan, [ticket]))
+
+    def test_replayed_evaluation_fill_retains_ticket_and_learning_identity(self):
+        """A real journal crash/restart must preserve strategy -> Book -> Learning."""
+        panel = fixture_panel(sessions=300)
+        dates = panel.aligned_dates(UNIVERSE)[20:33]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            desk = shadow_desk(root, panel)
+            definition = desk.strategies.get("STR-TEST")
+            definition.evaluation_track = True
+            definition.transition("RETIRED", "synthetic counterfactual evaluation")
+            desk.strategies.upsert(definition)
+            for index in range(6):
+                desk.run_session(panel, dates[index], dates[index + 1])
+
+            original = DeskJournal.commit
+            interrupted = {}
+
+            def kill_after_durable_fills(journal, opportunity_id, *args, **kwargs):
+                plan = journal.pending_plan(opportunity_id)
+                if plan and plan["fills"]:
+                    operations = {f"{opportunity_id}:{fill['symbol']}"
+                                  for fill in plan["fills"]}
+                    self.assertTrue(operations <= set(
+                        desk.evaluation.state.applied_operations))
+                    interrupted.update(opportunity_id=opportunity_id,
+                                       strategy_id=plan["strategy_id"],
+                                       fills=list(plan["fills"]))
+                    raise RuntimeError("killed after durable evaluation fills")
+                return original(journal, opportunity_id, *args, **kwargs)
+
+            DeskJournal.commit = kill_after_durable_fills
+            try:
+                with self.assertRaisesRegex(
+                        RuntimeError, "killed after durable evaluation fills"):
+                    desk.run_session(panel, dates[6], dates[7])
+            finally:
+                DeskJournal.commit = original
+            self.assertTrue(interrupted)
+            self.assertGreater(len(interrupted["fills"]), 0)
+            reopened = shadow_desk(root, panel)
+            op_id = interrupted["opportunity_id"]
+            self.assertIn(op_id, reopened.journal.pending)
+            before = (reopened.evaluation.state.cash,
+                      reopened.evaluation.state.fills,
+                      reopened.evaluation.state.fees_paid,
+                      list(reopened.evaluation.state.applied_operations))
+            summary = reopened.run_session(panel, dates[6], dates[7])
+            self.assertIn(op_id, summary["replayed"])
+            ticket = next(ticket for ticket in summary["tickets"]
+                          if ticket["opportunity_id"] == op_id)
+            self.assertEqual(ticket["strategy_id"], interrupted["strategy_id"])
+            self.assertEqual(ticket["ledger"], "EVALUATION")
+            self.assertEqual([trace["stage"] for trace in ticket["stage_trace"]],
+                             ["SCAN", "VET", "SIZE", "RISK", "FILLS", "BOOK"])
+            self.assertEqual(ticket["book_effect"]["replayed_operations"],
+                             len(interrupted["fills"]))
+            after = (reopened.evaluation.state.cash,
+                     reopened.evaluation.state.fills,
+                     reopened.evaluation.state.fees_paid,
+                     list(reopened.evaluation.state.applied_operations))
+            self.assertEqual(before, after, "replay cannot apply money twice")
+            self.assertTrue(reopened.journal.is_processed(op_id))
+            self.assertNotIn(op_id, reopened.journal.pending)
+
+            learning = LearningStore(QuantPaths(root).ensure().learning)
+            changed = learning.assess_rejections(
+                reopened.strategies, reopened.evaluation,
+                reopened.journal.stats_for)
+            self.assertEqual(len(changed), 1)
+            self.assertEqual(changed[0]["strategy_id"], ticket["strategy_id"])
+            restarted_learning = LearningStore(QuantPaths(root).ensure().learning)
+            self.assertEqual(
+                restarted_learning.decision_quality["assessments"][0]["strategy_id"],
+                ticket["strategy_id"])
+            self.assertEqual(
+                restarted_learning.assess_rejections(
+                    reopened.strategies, reopened.evaluation,
+                    reopened.journal.stats_for), [])
+
+
 class DeskTimelineTests(unittest.TestCase):
     """Invariant 1, desk side: the Book is marked where the orders executed."""
 
