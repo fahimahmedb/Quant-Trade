@@ -49,6 +49,7 @@ jobs:
           echo "PROJECT_CONTRACT_SHA=$PROJECT_CONTRACT_SHA" >> "$GITHUB_ENV"
           echo "ROUTER_IDENTITY=$ROUTER_IDENTITY" >> "$GITHUB_ENV"
           git show "$PROJECT_CONTRACT_SHA":governance/AI_WORKING_METHOD_V1.json > /tmp/AI_WORKING_METHOD_V1.json
+          git show "$PROJECT_CONTRACT_SHA":governance/CURRENT_PROJECT_STATE.md > /tmp/CURRENT_PROJECT_STATE.md
 
       - name: Snapshot remote branch names
         run: |
@@ -105,7 +106,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check pytest
 
       - name: Run anti-regression tests
-        run: python -m pytest -q tests/test_ai_working_method.py
+        run: python -m pytest -q tests/test_ai_working_method.py tests/test_durable_continuation.py
 
       - name: Bind exact-SHA completion to admission
         if: env.MATERIAL_AI_CHANGE == 'true'
@@ -117,17 +118,42 @@ jobs:
           import os
           from pathlib import Path
           from scripts.validate_ai_working_method import canonical_json_identity
+
           admission = json.loads(Path('.quant/MISSION_ADMISSION.json').read_text())
+          contract = json.loads(Path('/tmp/AI_WORKING_METHOD_V1.json').read_text())
+          continuation = contract.get('durable_continuation')
+          if isinstance(continuation, dict) and continuation.get('enabled') is True:
+              intent_field = continuation.get('admission_field', 'completion_intent')
+              intent = admission.get(intent_field)
+              if intent == 'CHECKPOINT':
+                  claim = continuation.get('checkpoint_claim', 'CHECKPOINT')
+              elif intent == 'FINAL_HANDOFF':
+                  claim = continuation.get('final_handoff_claim', 'PASS')
+              else:
+                  claim = 'INVALID_COMPLETION_INTENT'
+          else:
+              intent = 'LEGACY'
+              claim = 'PASS'
+
           completion = {
               'mission_id': admission['mission_id'],
               'admission_identity': canonical_json_identity(admission),
               'project_sha': os.environ['PROJECT_CONTRACT_SHA'],
               'subject_sha': os.environ['GITHUB_SHA'],
               'tested_sha': os.environ['GITHUB_SHA'],
-              'claim': 'PASS',
+              'claim': claim,
               'durable_remote_output': True,
               'next_action': admission['next_action_after_pass_fail_block'],
           }
+          if intent == 'FINAL_HANDOFF':
+              completion.update({
+                  'handoff_router_identity': os.environ['ROUTER_IDENTITY'],
+                  'handoff_mission_id': admission['mission_id'],
+                  'handoff_result': admission['handoff_result'],
+                  'handoff_subject_sha': admission['handoff_subject_sha'],
+                  'handoff_next_action': admission['next_action_after_pass_fail_block'],
+                  'handoff_reopen_condition': admission['handoff_reopen_condition'],
+              })
           Path('/tmp/mission-completion.json').write_text(json.dumps(completion, indent=2) + '\n')
           PY
           python scripts/validate_ai_working_method.py \
@@ -141,3 +167,10 @@ jobs:
             --completion-code-sha "$GITHUB_SHA" \
             --current-router-identity "$ROUTER_IDENTITY" \
             --expected-mission-id "$EXPECTED_MISSION_ID"
+
+          python scripts/validate_durable_continuation.py \
+            /tmp/AI_WORKING_METHOD_V1.json \
+            .quant/MISSION_ADMISSION.json \
+            /tmp/mission-completion.json \
+            --router-file /tmp/CURRENT_PROJECT_STATE.md \
+            --current-router-identity "$ROUTER_IDENTITY"
