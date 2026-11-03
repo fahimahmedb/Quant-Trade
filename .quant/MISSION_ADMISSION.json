@@ -1,65 +1,105 @@
 {
   "mission_id": "ACTIVE_V2_F3_TRANSACTIONAL_HANDOFF_20261103",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-03T03:07:11.704482+00:00",
-  "project_canonical_sha": "65d4ae571773f0364e3f22122c20527e113d9cc0",
-  "code_canonical_sha": "b569d7961cafc3757f725223fe536ad8f8e2af83",
-  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@3b900fbe2dfad13d4524801b208b9e516b037b64",
+  "receipt_timestamp": "2026-11-03T03:19:33.961544+00:00",
+  "project_canonical_sha": "069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
+  "code_canonical_sha": "afb7ab1af052e355f72ef729538af041394a4a43",
+  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@6aace9353271f36e949dc8207a0fa53eda0c14cc",
   "current_subject": {
-    "project_sha": "65d4ae571773f0364e3f22122c20527e113d9cc0",
-    "code_sha": "b569d7961cafc3757f725223fe536ad8f8e2af83",
-    "object": "Existing V2 control transactional engineering-only F3 handoff"
+    "project_sha": "069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
+    "code_sha": "afb7ab1af052e355f72ef729538af041394a4a43",
+    "object": "Final code-qualified V2 handoff attestation; immutable deployment candidate 74057412c66bbc6372a23e6549109bd1af47f697; actual VM application and F3 remain unproven."
   },
-  "current_blocker_or_decision": "EXPLICIT_RUNNING_V2_TO_F3_HANDOFF_NOT_YET_PROVEN",
+  "current_blocker_or_decision": "CAPITALIZE_QUALIFIED_V2_HANDOFF_WITH_EXACT_PENDING_HOST_ACTION",
   "target_gate_or_blocker": "F3_REAL_VM_MULTI_WAKE_PREDEPLOY_HANDOFF",
   "existing_capability": "REPAIR",
   "why_this_work_can_change_the_decision": "Reuse the existing scheduler/deployment gates while making active V2 replacement and failure recovery explicit and restart-safe. Qualification also repairs only stale synthetic test expectations/inline proposal bindings reproduced on the unchanged base; scientific runtime contracts remain unchanged.",
-  "minimal_decisive_test": "Restore exact existing pinned dependency file; correct only discovered-test count; require all four exact required CI gates. Existing 1237-test run had only the inventory failure; that assertion rerun passes and full artifact freshness check passes.",
+  "minimal_decisive_test": "Hosted final admission/completion gate must match the published canonical router handoff exactly; do not rerun implementation work or mutate the VM.",
   "counterexample": "Existing activate starts V1 on failure; an exception-only rollback also leaves a half-applied host after process death.",
   "primary_evidence": [
     {
       "claim_id": "project-head",
-      "claim": "origin/project/canonical exact admitted identity",
+      "claim": "069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
       "source_kind": "GIT_REF",
-      "object_identity": "project/canonical@65d4ae571773f0364e3f22122c20527e113d9cc0",
-      "observed_value": "65d4ae571773f0364e3f22122c20527e113d9cc0",
+      "object_identity": "project/canonical@069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
+      "observed_value": "069a5c81d3c089a2b30977f8fdee90cec0ed9d27",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     },
     {
       "claim_id": "code-head",
-      "claim": "HEAD exact admitted identity",
+      "claim": "afb7ab1af052e355f72ef729538af041394a4a43",
       "source_kind": "GIT_REF",
-      "object_identity": "code/canonical@b569d7961cafc3757f725223fe536ad8f8e2af83",
-      "observed_value": "b569d7961cafc3757f725223fe536ad8f8e2af83",
+      "object_identity": "code/canonical@afb7ab1af052e355f72ef729538af041394a4a43",
+      "observed_value": "afb7ab1af052e355f72ef729538af041394a4a43",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     },
     {
-      "claim_id": "sec-gate-packaging-failure",
-      "claim": "Required exact SEC gate stopped before running tests because tests/requirements-giga-q.txt was absent.",
-      "source_kind": "WORKFLOW_RUN",
-      "object_identity": "41569590848/job/125699131048",
-      "observed_value": "Install qualification dependencies failed: missing tests/requirements-giga-q.txt",
-      "support": "SUPPORTS",
-      "scope": "CURRENT",
-      "opened": true
-    },
-    {
-      "claim_id": "published-inventory",
-      "claim": "Published unit-test inventory is stale and must match authoritative discovery.",
+      "claim_id": "router-handoff",
+      "claim": "Exact mission/result/subject/next-action/reopen markers present; host execution and F3 explicitly pending.",
       "source_kind": "GIT_BLOB",
-      "object_identity": "STATE.md@1a900aacd2eba5f8010583b6e5cc78943dd8d027",
-      "observed_value": "1180 published versus 1237 discovered; unchanged scientific replay was verified fresh after inventory-only correction.",
+      "object_identity": "governance/CURRENT_PROJECT_STATE.md@6aace9353271f36e949dc8207a0fa53eda0c14cc",
+      "observed_value": "Exact mission/result/subject/next-action/reopen markers present; host execution and F3 explicitly pending.",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "run-41570260428",
+      "claim": "Exact immutable deployment candidate passed AI Working Method Gate",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41570260428",
+      "observed_value": "head_sha=74057412c66bbc6372a23e6549109bd1af47f697; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "run-41570260330",
+      "claim": "Exact immutable deployment candidate passed Canonical Code Qualification",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41570260330",
+      "observed_value": "head_sha=74057412c66bbc6372a23e6549109bd1af47f697; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "run-41570260347",
+      "claim": "Exact immutable deployment candidate passed Oracle V2 Core",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41570260347",
+      "observed_value": "head_sha=74057412c66bbc6372a23e6549109bd1af47f697; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "run-41570260312",
+      "claim": "Exact immutable deployment candidate passed SEC P0 pre-t0 gate",
+      "source_kind": "WORKFLOW_RUN",
+      "object_identity": "41570260312",
+      "observed_value": "head_sha=74057412c66bbc6372a23e6549109bd1af47f697; conclusion=success",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "candidate-equivalence",
+      "claim": "Intervening live head changes are automatic wake receipts only; candidate executable bytes unchanged.",
+      "source_kind": "GIT_COMPARE",
+      "object_identity": "74057412c66bbc6372a23e6549109bd1af47f697...afb7ab1af052e355f72ef729538af041394a4a43",
+      "observed_value": "Only runtime/worker_wakes paths differ: 1",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     }
   ],
-  "durable_output_required": "Published exact handoff candidate, mandatory hosted regression qualification and canonical router checkpoint; pinned one-shot operator script checks gates before touching the active runtime.",
-  "next_action_after_pass_fail_block": "PASS: use exact qualified candidate for controlled host handoff; FAIL/BLOCK: preserve active A67 and record exact remaining gate. F3 remains unproven until real Codex result is consumed.",
+  "durable_output_required": "Canonical router plus exact hosted FINAL_HANDOFF attestation. Immutable qualified deployment candidate remains 74057412c66bbc6372a23e6549109bd1af47f697.",
+  "next_action_after_pass_fail_block": "Run the pinned operator script for candidate 74057412c66bbc6372a23e6549109bd1af47f697 in the existing Owner SSH session; return its sanitized handoff receipt, then verify natural wakes and real Codex-result consumption.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "User authorized reversible engineering repair and qualification. No science, capital, trading or unverified host mutation.",
@@ -67,5 +107,8 @@
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "requested_action": "REPAIR",
-  "completion_intent": "CHECKPOINT"
+  "completion_intent": "FINAL_HANDOFF",
+  "handoff_result": "PASS",
+  "handoff_subject_sha": "74057412c66bbc6372a23e6549109bd1af47f697",
+  "handoff_reopen_condition": "New exact evidence falsifies V2-only rollback, credential isolation, qualified target binding or restart recovery."
 }
