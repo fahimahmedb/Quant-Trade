@@ -1,0 +1,31 @@
+{
+  "context_hash": "46767d1820fa15de2eeee98a825e619e932d7f0ab1fa693808e58be24b8c2f1e",
+  "discard_count": 0,
+  "discarded_proposals": [],
+  "earlier_attempt_proposals": "UNKNOWN_IF_NO_DURABLE_COMPLETION",
+  "executable_release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "generated_at": "2026-11-04T16:00:19Z",
+  "generated_proposals": [
+    {
+      "candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+      "generation_id": "G1",
+      "hypothesis_id": "DOC-FLOW-7ddc4c400115df87"
+    }
+  ],
+  "ideation_intents": [
+    "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/trial_intents/g000002.json"
+  ],
+  "model_identity": "DETERMINISTIC_ENGINE",
+  "prompt_hash": "06cc7401441c7d8f9e485bce4cd47eccf8498b9ecceb6591d7fa37fe4624e66b",
+  "proposal_count": 1,
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261104-002",
+  "research_trial_id": "ORACLE-V2-EPOCH-20261104-002::FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001::G1",
+  "retrieval_manifest_hash": "02999c861c0d8b96f11ef4e8c14e732daacc555ebc72bb12fbc2eee34a0a9cf7",
+  "retry_count": 0,
+  "sampling_parameters": {
+    "mode": "DETERMINISTIC_REGISTERED_ENGINE"
+  },
+  "source_packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+  "trial_hash": "72f6be5770c79002d04dff0cc6e102335053602d841e3e9200513adade24760e",
+  "trial_type": "RESEARCH_GENERATION_TRIAL"
+}

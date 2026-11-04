@@ -1,0 +1,63 @@
+{
+  "candidate_hash": "d5f54a080aac1120aa3065f414a683641515df7643dde0d7fba6a961509623fa",
+  "claim": "17 CFR 242.204, official 2025-04-01 edition, specifies a base next-settlement-day close-out and conditional three-settlement-day long-sale/market-maker and 35-calendar-day restricted-sale cases. The actual participant, fail quantity, exemption, current law, forced purchase, timing, price effect and payoff are UNKNOWN.",
+  "clock": "2026-11-04T03:26:37Z",
+  "decision_map": {
+    "premise_fails": "KILL_GENERATION",
+    "premise_survives": "EXPLORE"
+  },
+  "disconfirmation_manifest": {
+    "attempted": false,
+    "status": "PENDING"
+  },
+  "economic_expression": {
+    "direction": "NOT_YET_MEASURABLE",
+    "implementation_status": "NOT_YET_MEASURABLE",
+    "instrument": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN"
+  },
+  "evidence_manifest": {
+    "documentary_packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+    "engine_family": "INSTITUTIONAL_FLOW",
+    "engine_id": "engine.institutional_flow.v0",
+    "evidence_class": "DOCUMENTARY",
+    "source_blob": "8e6796e2752cd5e000b2667b8558d994b5552628",
+    "source_candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+    "source_path": "research/research_os/sources/reg_sho_rule204_2025.json",
+    "source_refs": [
+      "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+    ],
+    "synthetic_only": false
+  },
+  "extension": {
+    "binding_constraint": "Close out the fail by borrowing or purchasing equivalent securities under Rule 204 deadlines; exceptions and alternative allocations apply",
+    "forced_constrained_actor": "Participant of a registered clearing agency with a fail to deliver position in an equity security",
+    "instrument": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN",
+    "payer": "UNKNOWN",
+    "timing": "Statutory close-out clock only; tradable horizon UNKNOWN",
+    "type": "ForcedFlowExtension"
+  },
+  "falsification_scope": "Reject the premise if no eligible clearing participant or actual fail exists, an applicable exception or allocation changes the deadline, a lawful borrow satisfies it without a purchase, or later law supersedes the captured edition. Any claimed trading effect requires independent PIT fail and transaction evidence, costs and Legacy novelty review.",
+  "family": "forced_flow",
+  "generation_id": "G1",
+  "horizon": "UNQUALIFIED",
+  "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+  "known_confounders": [],
+  "mechanism_statement": "A registered clearing-agency participant with a real equity fail-to-deliver may face a dated Rule 204 close-out obligation, with borrow-or-purchase alternatives and different legal exceptions. A rule alone does not establish actual inventory pressure or a market opportunity.",
+  "producer_identity": {
+    "engine_family": "INSTITUTIONAL_FLOW",
+    "engine_id": "engine.institutional_flow.v0",
+    "lane": "market_discovery",
+    "process": {
+      "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+      "pid": 273108,
+      "start_ticks": "131317264"
+    },
+    "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+    "worker_id": "oracle-research-v2.market_discovery"
+  },
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261104-002",
+  "research_trial_id": "ORACLE-V2-EPOCH-20261104-002::FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001::G1",
+  "universe": [
+    "SEC_REG_SHO_242_204"
+  ]
+}

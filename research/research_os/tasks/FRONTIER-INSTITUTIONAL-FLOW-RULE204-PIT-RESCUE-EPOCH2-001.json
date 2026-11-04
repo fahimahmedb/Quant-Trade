@@ -110,9 +110,13 @@
       "legacy_duplicate_check": {
         "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/legacy_duplicate_check.json",
         "artifact_hash": "b503c81b3cfec993140fde581727734237146245f91005ede81d14d809061495"
+      },
+      "mechanism_research": {
+        "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/mechanism_research.json",
+        "artifact_hash": "ed2b1823f75ad4fb6952d3d29afd5771f7b50962e21457c4aaefa9d89798c3c4"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g1-65f58e947d14.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g2-6c228685122a.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
     "session_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g2-6c228685122a",
@@ -153,16 +157,16 @@
   },
   "lease": {
     "claimed_at": "2026-11-04T16:00:16Z",
-    "expires_at": "2026-11-04T16:10:16Z",
+    "expires_at": "2026-11-04T16:02:23Z",
     "generation": 2,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 75,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "At most one pre-outcome documented Rule204 mechanism is independently screened and sent to validation, or a durable NO_CANDIDATE/BLOCK is recorded; previous terminal blocked lineage and unobserved economics preserved.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-11-04T16:00:16Z"
+  "updated_at": "2026-11-04T16:02:23Z"
 }

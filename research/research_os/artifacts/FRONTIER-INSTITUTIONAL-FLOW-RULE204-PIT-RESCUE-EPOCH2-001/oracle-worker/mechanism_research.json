@@ -1,0 +1,597 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "candidate": {
+    "authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    },
+    "claim": "17 CFR 242.204, official 2025-04-01 edition, specifies a base next-settlement-day close-out and conditional three-settlement-day long-sale/market-maker and 35-calendar-day restricted-sale cases. The actual participant, fail quantity, exemption, current law, forced purchase, timing, price effect and payoff are UNKNOWN.",
+    "decision_map": {
+      "premise_fails": "KILL_GENERATION",
+      "premise_survives": "EXPLORE"
+    },
+    "documentary_evidence": {
+      "claim_source_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+      "economic_result": "NOT_OBSERVED",
+      "freeze_time": "2026-11-04T03:26:37Z",
+      "measurements": {
+        "actual_failed_quantity": "UNKNOWN",
+        "base_closeout_following_settlement_days": "1",
+        "directional_flow": "UNKNOWN",
+        "long_sale_grace_settlement_days": "3",
+        "market_maker_grace_settlement_days": "3",
+        "restricted_sale_grace_calendar_days": "35"
+      },
+      "packet": {
+        "actor": "Participant of a registered clearing agency with a fail to deliver position in an equity security",
+        "available_at": "2026-11-04T03:26:37Z",
+        "capture": {
+          "document_kind": "GOVINFO_2025_CFR_RULE204_OPERATIVE",
+          "edition_date": "2025-04-01",
+          "extractor": "govinfo-html-regsho-rule204-v1",
+          "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+          "raw_byte_length": 3175956,
+          "raw_sha256": "b96b2d2400e15fa391dc5cf0e75f2985037fbd6d155c869cf270b41b538e6870",
+          "retrieved_at": "2026-11-04T03:26:37Z",
+          "section": "17 CFR 242.204",
+          "section_text_sha256": "bf0583a656085d0bc267b8d49fed5e448e0672303600fc314c80789c6fcda882",
+          "section_text_zlib_b64": "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",
+          "source_artifact_id": 13293470473,
+          "source_url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+          "source_workflow_run": 41767148087
+        },
+        "constraint": "Close out the fail by borrowing or purchasing equivalent securities under Rule 204 deadlines; exceptions and alternative allocations apply",
+        "content_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+        "evidence_class": "DOCUMENTARY",
+        "facts": {
+          "base_closeout_following_settlement_days": "1",
+          "long_sale_grace_settlement_days": "3",
+          "market_maker_grace_settlement_days": "3",
+          "restricted_sale_grace_calendar_days": "35"
+        },
+        "horizon": "Statutory close-out clock only; tradable horizon UNKNOWN",
+        "instrument": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN",
+        "issuer_id": "SEC_REG_SHO_242_204",
+        "period": "CFR_2025_04_01_RULE_204",
+        "published_at": "2026-11-04T03:26:37Z",
+        "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+        "rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE",
+        "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+        "unit": "specified_statutory_deadline_days"
+      }
+    },
+    "economic_tags": [
+      "institutional_constraint",
+      "liquidity",
+      "settlement_fail_closeout"
+    ],
+    "evidence_timing": "UNDETERMINED",
+    "falsification_scope": "Reject the premise if no eligible clearing participant or actual fail exists, an applicable exception or allocation changes the deadline, a lawful borrow satisfies it without a purchase, or later law supersedes the captured edition. Any claimed trading effect requires independent PIT fail and transaction evidence, costs and Legacy novelty review.",
+    "generation_id": "G1",
+    "horizon": "UNQUALIFIED",
+    "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+    "issuer": "SEC_REG_SHO_242_204",
+    "mechanism": "A registered clearing-agency participant with a real equity fail-to-deliver may face a dated Rule 204 close-out obligation, with borrow-or-purchase alternatives and different legal exceptions. A rule alone does not establish actual inventory pressure or a market opportunity.",
+    "observation_authorization": "NOT_AUTHORIZED",
+    "research_decision": "EXPLORE"
+  },
+  "dossier": {
+    "blockers": [
+      "UNQUALIFIED_AFFECTED_UNIVERSE",
+      "UNQUALIFIED_CAPACITY_CONSTRAINTS",
+      "UNQUALIFIED_CONFOUNDERS",
+      "UNQUALIFIED_EXPECTED_FOOTPRINT",
+      "UNQUALIFIED_FORCED_ACTOR",
+      "UNQUALIFIED_IMPLEMENTATION_CLOCK"
+    ],
+    "candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+    "candidate_mutated": false,
+    "claim": "17 CFR 242.204, official 2025-04-01 edition, specifies a base next-settlement-day close-out and conditional three-settlement-day long-sale/market-maker and 35-calendar-day restricted-sale cases. The actual participant, fail quantity, exemption, current law, forced purchase, timing, price effect and payoff are UNKNOWN.",
+    "claim_ceiling": "DOCUMENTED_FACTS_ONLY",
+    "dossier": {
+      "active_disconfirmation": true,
+      "affected_universe": {
+        "limitations": [
+          "Conditional class only; no admitted individual trade or eligible population."
+        ],
+        "status": "PARTIAL",
+        "support": {
+          "available_at": "2026-11-04T03:26:37Z",
+          "freeze_time": "2026-11-04T03:26:37Z",
+          "issuer_id": "SEC_REG_SHO_242_204",
+          "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "paths": [
+            "instrument",
+            "capture"
+          ],
+          "period": "CFR_2025_04_01_RULE_204",
+          "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+          "source_refs": [
+            "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+          ],
+          "unit": "specified_statutory_deadline_days"
+        },
+        "values": {
+          "actual_eligible_quantity": "UNKNOWN",
+          "bounded_scope": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN"
+        }
+      },
+      "candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+      "capacity_constraints": {
+        "limitations": [
+          "No qualified evidence for this premise in the captured packet."
+        ],
+        "status": "UNKNOWN",
+        "support": null,
+        "values": {}
+      },
+      "confounders": {
+        "limitations": [
+          "No forced purchase, sale, flow magnitude or economic effect follows from T+1 alone."
+        ],
+        "status": "PARTIAL",
+        "support": {
+          "available_at": "2026-11-04T03:26:37Z",
+          "freeze_time": "2026-11-04T03:26:37Z",
+          "issuer_id": "SEC_REG_SHO_242_204",
+          "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "paths": [
+            "capture",
+            "constraint"
+          ],
+          "period": "CFR_2025_04_01_RULE_204",
+          "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+          "source_refs": [
+            "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+          ],
+          "unit": "specified_statutory_deadline_days"
+        },
+        "values": {
+          "directional_flow": "UNKNOWN",
+          "exceptions": [
+            "excluded securities",
+            "paragraph (b) exclusions/orders",
+            "paragraph (c) late-priced offering",
+            "paragraph (d) firm-commitment alternate date",
+            "express agreement at transaction time"
+          ],
+          "funding_pressure": "UNKNOWN",
+          "payer": "UNKNOWN"
+        }
+      },
+      "constraint_rule": {
+        "limitations": [
+          "The admitted edition is pinned; later amendments, exemption orders and actual applicability are unqualified."
+        ],
+        "status": "SUPPORTED",
+        "support": {
+          "available_at": "2026-11-04T03:26:37Z",
+          "freeze_time": "2026-11-04T03:26:37Z",
+          "issuer_id": "SEC_REG_SHO_242_204",
+          "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "paths": [
+            "rule_kind",
+            "constraint",
+            "capture"
+          ],
+          "period": "CFR_2025_04_01_RULE_204",
+          "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+          "source_refs": [
+            "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+          ],
+          "unit": "specified_statutory_deadline_days"
+        },
+        "values": {
+          "constraint": "Close out the fail by borrowing or purchasing equivalent securities under Rule 204 deadlines; exceptions and alternative allocations apply",
+          "current_legal_status": "UNKNOWN",
+          "legal_basis": "OFFICIAL_CFR_2025_EDITION",
+          "rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE"
+        }
+      },
+      "disconfirmation_checks": {
+        "limitations": [
+          "This is a declared check, not independent scientific validation."
+        ],
+        "status": "SUPPORTED",
+        "support": {
+          "candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+          "paths": [
+            "falsification_scope"
+          ]
+        },
+        "values": {
+          "declared_check": "Reject the premise if no eligible clearing participant or actual fail exists, an applicable exception or allocation changes the deadline, a lawful borrow satisfies it without a purchase, or later law supersedes the captured edition. Any claimed trading effect requires independent PIT fail and transaction evidence, costs and Legacy novelty review.",
+          "execution_status": "NOT_EXECUTED_AS_SCIENTIFIC_TEST"
+        }
+      },
+      "evidence_class": "DOCUMENTARY",
+      "expected_footprint": {
+        "limitations": [
+          "No qualified evidence for this premise in the captured packet."
+        ],
+        "status": "UNKNOWN",
+        "support": null,
+        "values": {}
+      },
+      "forced_actor": {
+        "limitations": [
+          "A legal obligation does not demonstrate actual binding pressure."
+        ],
+        "status": "PARTIAL",
+        "support": {
+          "available_at": "2026-11-04T03:26:37Z",
+          "freeze_time": "2026-11-04T03:26:37Z",
+          "issuer_id": "SEC_REG_SHO_242_204",
+          "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "paths": [
+            "actor",
+            "capture"
+          ],
+          "period": "CFR_2025_04_01_RULE_204",
+          "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+          "source_refs": [
+            "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+          ],
+          "unit": "specified_statutory_deadline_days"
+        },
+        "values": {
+          "actual_constrained_actor": "UNKNOWN",
+          "forced_quantity": "UNKNOWN",
+          "rule_actor": "Participant of a registered clearing agency with a fail to deliver position in an equity security"
+        }
+      },
+      "implementation_clock": {
+        "limitations": [
+          "Settlement timing is not a measured trading horizon."
+        ],
+        "status": "PARTIAL",
+        "support": {
+          "available_at": "2026-11-04T03:26:37Z",
+          "freeze_time": "2026-11-04T03:26:37Z",
+          "issuer_id": "SEC_REG_SHO_242_204",
+          "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "paths": [
+            "facts.standard_settlement_business_days",
+            "horizon"
+          ],
+          "period": "CFR_2025_04_01_RULE_204",
+          "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+          "source_refs": [
+            "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+          ],
+          "unit": "specified_statutory_deadline_days"
+        },
+        "values": {
+          "standard_settlement_business_days": "1",
+          "tradable_horizon": "UNKNOWN"
+        }
+      },
+      "outcome_accessed": false,
+      "source_clock_frozen": true
+    },
+    "dossier_hash": "23a86fa128566676fb7c5ac1cd8630d6815ffaabc507793d847ee6aed7635be1",
+    "economic_result": "NOT_OBSERVED",
+    "engine_family": "INSTITUTIONAL_FLOW",
+    "engine_id": "engine.institutional_flow.v0",
+    "evidence_class": "DOCUMENTARY",
+    "factual_binding_status": "PASS",
+    "falsification_scope": "Reject the premise if no eligible clearing participant or actual fail exists, an applicable exception or allocation changes the deadline, a lawful borrow satisfies it without a purchase, or later law supersedes the captured edition. Any claimed trading effect requires independent PIT fail and transaction evidence, costs and Legacy novelty review.",
+    "field_statuses": {
+      "affected_universe": "PARTIAL",
+      "capacity_constraints": "UNKNOWN",
+      "confounders": "PARTIAL",
+      "constraint_rule": "SUPPORTED",
+      "disconfirmation_checks": "SUPPORTED",
+      "expected_footprint": "UNKNOWN",
+      "forced_actor": "PARTIAL",
+      "implementation_clock": "PARTIAL"
+    },
+    "generation_id": "G1",
+    "horizon": "UNQUALIFIED",
+    "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+    "mechanism": "A registered clearing-agency participant with a real equity fail-to-deliver may face a dated Rule 204 close-out obligation, with borrow-or-purchase alternatives and different legal exceptions. A rule alone does not establish actual inventory pressure or a market opportunity.",
+    "outcome_accessed": false,
+    "source_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+    "source_refs": [
+      "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+    ],
+    "status": "BLOCK"
+  },
+  "economic_result": "NOT_OBSERVED",
+  "engine_output": {
+    "candidate": {
+      "claim": "17 CFR 242.204, official 2025-04-01 edition, specifies a base next-settlement-day close-out and conditional three-settlement-day long-sale/market-maker and 35-calendar-day restricted-sale cases. The actual participant, fail quantity, exemption, current law, forced purchase, timing, price effect and payoff are UNKNOWN.",
+      "decision_map": {
+        "premise_fails": "KILL_GENERATION",
+        "premise_survives": "EXPLORE"
+      },
+      "documentary_evidence": {
+        "claim_source_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+        "economic_result": "NOT_OBSERVED",
+        "freeze_time": "2026-11-04T03:26:37Z",
+        "measurements": {
+          "actual_failed_quantity": "UNKNOWN",
+          "base_closeout_following_settlement_days": "1",
+          "directional_flow": "UNKNOWN",
+          "long_sale_grace_settlement_days": "3",
+          "market_maker_grace_settlement_days": "3",
+          "restricted_sale_grace_calendar_days": "35"
+        },
+        "packet": {
+          "actor": "Participant of a registered clearing agency with a fail to deliver position in an equity security",
+          "available_at": "2026-11-04T03:26:37Z",
+          "capture": {
+            "document_kind": "GOVINFO_2025_CFR_RULE204_OPERATIVE",
+            "edition_date": "2025-04-01",
+            "extractor": "govinfo-html-regsho-rule204-v1",
+            "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+            "raw_byte_length": 3175956,
+            "raw_sha256": "b96b2d2400e15fa391dc5cf0e75f2985037fbd6d155c869cf270b41b538e6870",
+            "retrieved_at": "2026-11-04T03:26:37Z",
+            "section": "17 CFR 242.204",
+            "section_text_sha256": "bf0583a656085d0bc267b8d49fed5e448e0672303600fc314c80789c6fcda882",
+            "section_text_zlib_b64": "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",
+            "source_artifact_id": 13293470473,
+            "source_url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+            "source_workflow_run": 41767148087
+          },
+          "constraint": "Close out the fail by borrowing or purchasing equivalent securities under Rule 204 deadlines; exceptions and alternative allocations apply",
+          "content_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "evidence_class": "DOCUMENTARY",
+          "facts": {
+            "base_closeout_following_settlement_days": "1",
+            "long_sale_grace_settlement_days": "3",
+            "market_maker_grace_settlement_days": "3",
+            "restricted_sale_grace_calendar_days": "35"
+          },
+          "horizon": "Statutory close-out clock only; tradable horizon UNKNOWN",
+          "instrument": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN",
+          "issuer_id": "SEC_REG_SHO_242_204",
+          "period": "CFR_2025_04_01_RULE_204",
+          "published_at": "2026-11-04T03:26:37Z",
+          "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+          "rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE",
+          "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+          "unit": "specified_statutory_deadline_days"
+        }
+      },
+      "economic_tags": [
+        "institutional_constraint",
+        "liquidity",
+        "settlement_fail_closeout"
+      ],
+      "evidence_timing": "UNDETERMINED",
+      "falsification_scope": "Reject the premise if no eligible clearing participant or actual fail exists, an applicable exception or allocation changes the deadline, a lawful borrow satisfies it without a purchase, or later law supersedes the captured edition. Any claimed trading effect requires independent PIT fail and transaction evidence, costs and Legacy novelty review.",
+      "generation_id": "G1",
+      "horizon": "UNQUALIFIED",
+      "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+      "mechanism": "A registered clearing-agency participant with a real equity fail-to-deliver may face a dated Rule 204 close-out obligation, with borrow-or-purchase alternatives and different legal exceptions. A rule alone does not establish actual inventory pressure or a market opportunity.",
+      "observation_authorization": "NOT_AUTHORIZED",
+      "research_decision": "EXPLORE"
+    },
+    "engine_family": "INSTITUTIONAL_FLOW",
+    "engine_id": "engine.institutional_flow.v0",
+    "source_refs": [
+      "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm"
+    ],
+    "synthetic_only": false
+  },
+  "epoch_manifest_hash": "49869741ed4d4c9574c89a9e8758315b236b688dfc690508b6558a73b0e3813f",
+  "input_head": "06acfeb7819bf5ce3f3197d0d56c6017466da39a",
+  "outcome_accessed": false,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 15,
+      "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "recovered_source_review_count": 1,
+      "recovered_source_reviews_hash": "c7b141c2e4dbf2a5e1f8e5f14b116fd1aed2d49c38a0b91b45ca17ff04c256c6",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "7b7d2ba6e0b6de86cd5626dc40b386ee7669a11fe0194306a83022b0bf05b099",
+    "status": "PASS",
+    "task_authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    }
+  },
+  "reasoning": {
+    "backend_health": {
+      "model": "gpt-oss-10.2b-q4-k-m",
+      "runtime": "openai_compatible",
+      "status": "PASS"
+    },
+    "backend_health_hash": "10f3815e7217c7bbcde88e5bb8844726ee1e7b75ad1ca0591376043945113915",
+    "classification": "UNVERIFIED_MODEL_COMMENTARY",
+    "content": {
+      "disconfirmations": [
+        "No eligible clearing participant or actual fail exists.",
+        "No independent PIT fail and transaction evidence is provided."
+      ],
+      "summary": "The claim that 17\u202fC\u202fF\u202f242.204 (2025\u201104\u201101) mandates a base next\u2011settlement\u2011day close\u2011out, conditional three\u2011settlement\u2011day long\u2011sale/market\u2011maker and 35\u2011calendar\u2011day restricted\u2011sale cases is unverified. No evidence of an eligible clearing participant, actual fail, or applicable exception is provided. The mechanism described\u2014registered clearing\u2011agency participant with a real equity fail\u2011to\u2011deliver facing a dated Rule\u202f204 close\u2011out\u2014lacks independent PIT fail and transaction evidence, costs, or legacy novelty review. Thus the claim is falsified; missing evidence precludes validation."
+    }
+  },
+  "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "research_contract_version": "v2-core",
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261104-002",
+  "screen": {
+    "block_reasons": [],
+    "current": {
+      "block_reasons": [],
+      "candidate_generation_id": "G1",
+      "candidate_hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+      "current_corpus_snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0",
+      "matches": [],
+      "screen_hash": "4f7bafefb5e4bfe6d6fc801384fb63e95ed3dc9e16b7327b55c6034ec351c98a",
+      "status": "PASS_CURRENT_CORPUS_SCREEN"
+    },
+    "distinctness_claim": "NOT_ESTABLISHED_BY_LOW_TOKEN_OVERLAP",
+    "legacy": {
+      "empirical_correlation": "UNKNOWN",
+      "legacy_overlap_hints": [],
+      "lexical_review_required": false,
+      "lexical_review_status": "NO_LEXICAL_OVERLAP_REVIEW",
+      "matches": [],
+      "next_research_action": {
+        "blockers": [
+          "FOLLOW_UP_TASK_AUTHORITY_NOT_PROVEN_BY_SCREEN"
+        ],
+        "budget_units": "UNKNOWN",
+        "capability_route": {
+          "available": true,
+          "freshness": "UNKNOWN",
+          "state": "AVAILABLE"
+        },
+        "cheapest_candidate_action": {
+          "action": "ARCHAEOLOGY_LOOKUP",
+          "cost_units": "UNKNOWN",
+          "falsification_power": "IDENTITY_RESOLUTION_NOT_ECONOMIC_FALSIFICATION",
+          "relative_depth": "WIDE_CHEAP_FIRST"
+        },
+        "control_limits": {
+          "follow_up_task_requires_explicit_current_task_authority": true,
+          "free_form_task_invention_forbidden": true
+        },
+        "decision_enactable_in_current_screen": false,
+        "deep_escalation_if_still_unresolved": {
+          "action": "REUSE_EXISTING_EVIDENCE",
+          "capability_route": {
+            "available": true,
+            "freshness": "UNKNOWN",
+            "state": "AVAILABLE"
+          },
+          "relative_depth": "DEEPER_AFTER_ARCHAEOLOGY",
+          "required_capability": "economic_identity",
+          "requires_authorized_handoff": true,
+          "target_lane": "integrator_portfolio"
+        },
+        "economic_result": "NOT_OBSERVED",
+        "empirical_correlation": "UNKNOWN",
+        "expected_return": "UNKNOWN",
+        "next_action": "ARCHAEOLOGY_LOOKUP",
+        "outcome_accessed": false,
+        "required_capability": "legacy_recovery",
+        "requires_new_task": true,
+        "scheduler_mutation": false,
+        "schema_version": "research-action-receipt-v1",
+        "source_decision": "ARCHAEOLOGY_LOOKUP",
+        "target_lane": "evidence_data",
+        "task_created": false,
+        "uncertainty_to_resolve": {
+          "goal": "resolve candidate identity before duplicate/novelty judgement",
+          "missing_semantic_dimensions": [
+            "payer",
+            "timing_clock",
+            "universe",
+            "economic_exposure"
+          ]
+        },
+        "why": "semantic identity is incomplete; UNKNOWN identity cannot be counted as novelty"
+      },
+      "novelty_status": "UNRESOLVED_NOT_CLAIMED",
+      "recovered_source_matches": [],
+      "recovered_source_reviews_hash": "c7b141c2e4dbf2a5e1f8e5f14b116fd1aed2d49c38a0b91b45ca17ff04c256c6",
+      "scientific_memory": {
+        "canonical_count": 18,
+        "feedback": {
+          "action": "ARCHAEOLOGY_LOOKUP",
+          "allow_candidate_progress": false,
+          "candidate_id": "DOC-FLOW-7ddc4c400115df87",
+          "empirical_correlation": "UNKNOWN",
+          "empirical_similarity_computed": false,
+          "identity": {
+            "dimensions": {
+              "constrained_actor": "participant of a registered clearing agency with a fail to deliver position in an equity security",
+              "economic_exposure": "UNKNOWN",
+              "evidence_identity": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+              "instrument": "covered equity securities with a fail at a registered clearing agency actual issuer side and eligibility unknown",
+              "mechanism": "a registered clearing agency participant with a real equity fail to deliver may face a dated rule 204 close out obligation with borrow or purchase alternatives and different legal exceptions. a rule alone does not establish actual inventory pressure or a market opportunity.",
+              "payer": "UNKNOWN",
+              "source_family": "UNKNOWN",
+              "timing_clock": "UNKNOWN",
+              "universe": "UNKNOWN"
+            },
+            "evidence_key": "1921dc1dbad9f652a6f5304c7840411e9cf07185cc95a95d1eff37a4cacc2f89",
+            "mechanism_key": null,
+            "missing_core_dimensions": [
+              "payer",
+              "timing_clock",
+              "universe",
+              "economic_exposure"
+            ],
+            "resolved": false
+          },
+          "memory_influence": [],
+          "model_commentary_used_as_evidence": false,
+          "persistent_store_created": false,
+          "qualified_relation_count": 18,
+          "reason_codes": [
+            "SEMANTIC_IDENTITY_UNRESOLVED",
+            "UNKNOWN_IDENTITY_IS_NOT_NOVELTY"
+          ],
+          "same_family_count": 0,
+          "scheduler_mutation": false,
+          "scientific_equivalence": "NOT_ESTABLISHED"
+        },
+        "persistent_store_created": false,
+        "review_count": 2,
+        "view_hash": "80057e98ed21a5e9d5c3acc5cfeb8c4b749a0bfe7704d848207587e457814cdf"
+      },
+      "scientific_memory_matches": [],
+      "status": "NO_EXACT_LEGACY_CONFLICT",
+      "structural_overlap_is_empirical_correlation": false
+    },
+    "status": "PASS"
+  },
+  "source_blob": "8e6796e2752cd5e000b2667b8558d994b5552628",
+  "source_path": "research/research_os/sources/reg_sho_rule204_2025.json",
+  "stage": "mechanism_research",
+  "state_branch": "code/canonical",
+  "state_repository": "fahimahmedb/Quant-Trade",
+  "v2_sidecars": {
+    "candidate_draft": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/candidate_draft.json.json",
+    "leakage": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/leakage.json.json",
+    "research_trial": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/research_trial.json.json"
+  }
+}

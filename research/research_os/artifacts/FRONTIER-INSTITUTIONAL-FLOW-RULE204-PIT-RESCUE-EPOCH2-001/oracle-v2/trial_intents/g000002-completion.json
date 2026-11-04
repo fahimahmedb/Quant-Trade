@@ -1,0 +1,27 @@
+{
+  "blocker": null,
+  "disposition": "GENERATED_AND_SCREENED",
+  "generation": 2,
+  "intent": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/trial_intents/g000002.json",
+  "model_calls": [
+    {
+      "execution_state": "COMPLETE",
+      "method": "structured",
+      "model": "gpt-oss-10.2b-q4-k-m",
+      "model_pit": "NOT_PROVABLE",
+      "prompt_sha256": "ea74786196a9d2bead67de37a2c84785715690b017c8dccadcb35ea93da81705",
+      "sampling_parameters": {
+        "context_tokens": 8192,
+        "output_tokens": 768,
+        "retries": 0,
+        "seed": 19,
+        "temperature": 0,
+        "timeout_seconds": 240
+      },
+      "schema_hash": "8dcffce84c01790a3069459fa205650559ff2d21e9b700a7e690e6ccbb2f25e5"
+    }
+  ],
+  "outcome_accessed": false,
+  "scientific_decision": null,
+  "task_status": "READY"
+}
