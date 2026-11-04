@@ -1,0 +1,14 @@
+{
+  "action_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
+  "emitted_at": "2026-11-04T17:00:08Z",
+  "event_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726-1",
+  "event_seq": 1,
+  "event_type": "ACTION_STARTED",
+  "generation": 3,
+  "payload": {
+    "lineage": "DOC-FLOW-7ddc4c400115df87",
+    "queue_state": "WORKING"
+  },
+  "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726",
+  "worker_id": "oracle-research-v2.independent_challenge"
+}
