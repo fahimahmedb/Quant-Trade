@@ -1,0 +1,43 @@
+name: F6 one-shot official Rule 204 capture
+on:
+  push:
+    branches: [code/canonical]
+    paths:
+      - scripts/f6_capture_reg_sho_rule204.py
+      - tests/test_f6_capture_reg_sho_rule204.py
+      - .github/workflows/f6-rule204-primary-capture.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  primary-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline extractor adversarial tests
+        run: python -m unittest discover -s tests -p test_f6_capture_reg_sho_rule204.py -v
+      - name: Capture official 2025 CFR HTML bytes once
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/f6-rule204-capture
+          curl --fail --silent --show-error --location --proto '=https' \
+            --connect-timeout 20 --max-time 100 --retry 1 \
+            --user-agent 'Quant-Trade/1.0 (+research evidence integrity; no live trading)' \
+            'https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm' \
+            --output /tmp/f6-rule204-capture/original.html
+          test "$(stat -c %s /tmp/f6-rule204-capture/original.html)" -le 20000000
+          CAPTURED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          python scripts/f6_capture_reg_sho_rule204.py \
+            --input /tmp/f6-rule204-capture/original.html \
+            --output /tmp/f6-rule204-capture/receipt.json \
+            --captured-at "$CAPTURED_AT"
+      - name: Preserve original bytes and extracted receipt
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f6-rule204-official-raw-and-receipt
+          path: /tmp/f6-rule204-capture/
+          retention-days: 30
+          if-no-files-found: error
