@@ -242,7 +242,11 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertEqual(task["inputs"]["documentary_source_packet_hash"],
                          source_packet["content_hash"])
         validate_derived_task(task)
-        self.assertTrue(all(flag is False for flag in task["authority"].values()))
+        self.assertTrue(all(task["authority"][flag] is False for flag in (
+            "economic_experiment_authorized", "prospective_observation_authorized",
+            "real_capital_authorized", "live_trading_authorized",
+        )))
+        self.assertEqual(task["authority"]["scope"], "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY")
         again = derive_refill_task(
             frontier=ready_frontier, tasks=historical_tasks + [task],
             created_at="2026-11-04T15:41:00Z",
