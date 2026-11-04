@@ -1,0 +1,32 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/disconfirmation.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "causal_predecessor": {
+    "predecessor_dispatch_id": "28ae3466232abdd373402aeeb9b80eeee4be7b25e4c485af2e5640f3aeb0f7c9",
+    "predecessor_ledger_sha256": "6e0630f4819c577a816ffab66824a0375a91fdb208e7708ec4f34ba8861441c7",
+    "predecessor_project_sha": "2b7d04286f35e1ca6fa5562cccb9daceb20b19b1",
+    "predecessor_result_sha": "e2d8f0c5679bc52c5d22a993dab2d0f50d14681a",
+    "predecessor_task_id": "F3-ENGINEERING-20261103T160613Z",
+    "schema": "f4-terminal-research-v1"
+  },
+  "completed_at": "2026-11-04T16:11:49Z",
+  "evidence_refs": [
+    "research/research_os/events/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g3-15bb19c87ded-002.json"
+  ],
+  "input_head": "894541c0ce846862be1984d8bc7feab1dbd0d818",
+  "lease_generation": 3,
+  "receipt_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g3-15bb19c87ded",
+  "session_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g3-15bb19c87ded",
+  "started_at": "2026-11-04T16:10:18Z",
+  "status": "COMPLETE",
+  "summary": "disconfirmation: CONTINUE; task=READY; release=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+  "worker_id": "oracle-research-v2.market_discovery"
+}
