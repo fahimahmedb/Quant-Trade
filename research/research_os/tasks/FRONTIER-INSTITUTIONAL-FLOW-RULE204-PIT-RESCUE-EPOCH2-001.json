@@ -1,0 +1,149 @@
+{
+  "allowed_actions": [
+    "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+    "research one bounded institutional-flow mechanism from admissible public rules and documentary evidence",
+    "inspect public rules, institutional constraints, calendars and implementation mechanics",
+    "map forced actor, constraint, clock, affected universe, capacity and falsification",
+    "actively seek structural disconfirmation",
+    "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+  ],
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false,
+    "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
+  },
+  "created_at": "2026-11-04T15:40:23Z",
+  "derivation": {
+    "derivation_key": "506bc0655223e125d2df07d71ce4b925ebe9150902bfe9330b5e4ab53ee46f02",
+    "frontier_id": "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2",
+    "research_intelligence": {
+      "decision": {
+        "action": "GENERATE_MECHANISM",
+        "blockers": [],
+        "candidate_id": "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2",
+        "capability": {
+          "available": true,
+          "freshness": "UNKNOWN",
+          "state": "AVAILABLE"
+        },
+        "executable": true,
+        "frontier_id": "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2",
+        "identity": {
+          "dimensions": {
+            "constrained_actor": "UNKNOWN",
+            "economic_exposure": "UNKNOWN",
+            "evidence_identity": "UNKNOWN",
+            "instrument": "UNKNOWN",
+            "mechanism": "UNKNOWN",
+            "payer": "UNKNOWN",
+            "source_family": "UNKNOWN",
+            "timing_clock": "UNKNOWN",
+            "universe": "UNKNOWN"
+          },
+          "evidence_key": null,
+          "mechanism_key": null,
+          "missing_core_dimensions": [
+            "mechanism",
+            "payer",
+            "constrained_actor",
+            "timing_clock",
+            "universe",
+            "economic_exposure"
+          ],
+          "resolved": false
+        },
+        "memory_applicability": "DEFERRED_UNTIL_CANDIDATE_IDENTITY",
+        "memory_influence": [],
+        "novelty_status": "UNRESOLVED_NOT_CLAIMED",
+        "reason_codes": [
+          "FRONTIER_IS_GENERATION_MANDATE_NOT_CANDIDATE",
+          "UNKNOWN_IDENTITY_IS_NOT_NOVELTY",
+          "SCIENTIFIC_MEMORY_MATCH_DEFERRED_UNTIL_IDENTITY_RESOLVED",
+          "QUALIFIED_UNUSED_SOURCE_BOUND",
+          "CAPABILITY_AND_ROUTE_ACTIVE",
+          "ZERO_COST_RESEARCH_ACTION_NO_BUDGET_AUTHORITY_REQUIRED"
+        ],
+        "scheduler_mutation": false,
+        "selected_action": {
+          "action": "GENERATE_MECHANISM",
+          "cost_units": 0,
+          "depth": "WIDE",
+          "falsification_power": "NOT_APPLICABLE_BEFORE_IDENTITY",
+          "is_falsifier": false,
+          "required_capability": "institutional_flows",
+          "requires_authority": [],
+          "target_lane": "market_discovery",
+          "uncertainty_resolved": "candidate semantic identity and mechanism definition"
+        },
+        "selection_trace": [
+          "frontier mandate does not establish semantic novelty",
+          "validate capability and route before scheduling generation",
+          "require qualified unused source when source planning is active",
+          "defer family/evidence memory matching until candidate identity exists"
+        ],
+        "source_plan_status": "SOURCE_SELECTED",
+        "uncertainty_resolved": "candidate semantic identity and mechanism definition"
+      },
+      "frontier_state": {
+        "scientifically_exhausted": false,
+        "state": "ACTIVE_ACTIONABLE"
+      },
+      "policy_hash": "751d261a0828c962ec29821c16aae89ee90c1de2c69239c9a1875a1bee4cb648"
+    },
+    "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+    "sequence": 1,
+    "source_binding": {
+      "blob_sha": "8e6796e2752cd5e000b2667b8558d994b5552628",
+      "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+      "path": "research/research_os/sources/reg_sho_rule204_2025.json",
+      "record_hash": "01f1473dbd073ad9fee9694cc7ea9d1ca1147df311a4303c48d7404b02841700"
+    },
+    "steward_lane": "integrator_portfolio",
+    "target_lane": "market_discovery",
+    "type": "EMPTY_QUEUE_FRONTIER_REFILL"
+  },
+  "forbidden_actions": [
+    "candidate return inspection",
+    "backtest",
+    "post-outcome event selection or tuning",
+    "prospective observation",
+    "capital allocation",
+    "order generation",
+    "live trading"
+  ],
+  "inputs": {
+    "causal_distinctness_required": true,
+    "derivation_key": "506bc0655223e125d2df07d71ce4b925ebe9150902bfe9330b5e4ab53ee46f02",
+    "documentary_source": "research/research_os/sources/reg_sho_rule204_2025.json",
+    "documentary_source_blob": "8e6796e2752cd5e000b2667b8558d994b5552628",
+    "documentary_source_packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+    "documentary_source_record_hash": "01f1473dbd073ad9fee9694cc7ea9d1ca1147df311a4303c48d7404b02841700",
+    "frontier_id": "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2",
+    "legacy_gate_required": true,
+    "objective": "Successor-epoch pre-outcome review of the identical official Rule204 document after a prior pre-ideation PIT refusal. Previous blocked task remains immutable; this is a distinct governed post-capture research cohort, not an invented historical publication, new empirical claim or reset of scientific memory. Legacy duplication screening mandatory.",
+    "research_intelligence_contract": {
+      "action_class": "GENERATE_MECHANISM",
+      "novelty_status": "UNRESOLVED_NOT_CLAIMED",
+      "research_policy_hash": "751d261a0828c962ec29821c16aae89ee90c1de2c69239c9a1875a1bee4cb648",
+      "scientific_memory_applicability": "DEFERRED_UNTIL_CANDIDATE_IDENTITY",
+      "semantic_identity_required_before_novelty": true
+    },
+    "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
+  },
+  "lease": {
+    "claimed_at": null,
+    "expires_at": null,
+    "generation": 0,
+    "owner": null
+  },
+  "priority": 75,
+  "required_capability": "institutional_flows",
+  "research_contract_version": "v2-core",
+  "status": "READY",
+  "success_condition": "At most one pre-outcome documented Rule204 mechanism is independently screened and sent to validation, or a durable NO_CANDIDATE/BLOCK is recorded; previous terminal blocked lineage and unobserved economics preserved.",
+  "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+  "task_type": "INSTITUTIONAL_FLOW",
+  "updated_at": "2026-11-04T15:40:23Z"
+}

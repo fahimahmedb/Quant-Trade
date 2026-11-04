@@ -1,0 +1,21 @@
+{
+  "action_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+  "emitted_at": "2026-11-04T15:40:24Z",
+  "event_id": "506bc0655223e125d2df07d71ce4b925ebe9150902bfe9330b5e4ab53ee46f02",
+  "event_seq": 1,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 1,
+  "payload": {
+    "frontier_state": "ACTIVE_ACTIONABLE",
+    "next_lane": "market_discovery",
+    "next_task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+    "novelty_claimed": false,
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "research_intelligence_preflight": true,
+    "result": "DERIVED_ONE_READY_TASK",
+    "source_bound": true
+  },
+  "session_id": "506bc0655223e125d2df07d71ce4b925ebe9150902bfe9330b5e4ab53ee46f02",
+  "worker_id": "oracle-research-v2.integrator_portfolio"
+}
