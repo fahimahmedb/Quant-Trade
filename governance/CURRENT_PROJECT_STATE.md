@@ -160,9 +160,9 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F2 (VM idempotent NOOP closed)
 
 `CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
-`CURRENT_BLOCKER=SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
+`CURRENT_BLOCKER=F6_RULE204_VM_RELEASE_AND_FRONTIER_ADMISSION_PENDING`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=QUALIFY_NEW_NON_ECONOMIC_SOURCE_AND_OWNER_GOVERNED_FRONTIER_BEFORE_ADMISSION`
+`MANDATORY_NEXT_DECISION=QUALIFY_AND_INSTALL_RULE204_RELEASE_BEFORE_ENABLING_FRONTIER`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -183,31 +183,38 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 ## Current decision frontier — F6
 
 `F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
-`F6_LOCAL_BLOCKER=SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
-`F6_SOURCE_CANDIDATE=REG_SHO_RULE_204_PRIMARY_GOVINFO_2025_EDITON_REVIEW_ONLY`
-`F6_SOURCE_CANDIDATE_RAW_CAPTURE=UNKNOWN`
-`F6_SOURCE_CANDIDATE_NATIVE_ENGINE_ADAPTER=NOT_IMPLEMENTED`
-`F6_NEW_FRONTIER_MANDATE=NOT_ADMITTED`
+`F6_LOCAL_BLOCKER=RULE204_CURRENT_VM_RELEASE_NOT_INSTALLED`
+`F6_PRIMARY_OFFICIAL_SOURCE_CAPTURE=PASS`
+`F6_PRIMARY_CAPTURE_RUN=41767148087`
+`F6_PRIMARY_CAPTURE_ARTIFACT=13293470473`
+`F6_PRIMARY_RAW_SHA256=b96b2d2400e15fa391dc5cf0e75f2985037fbd6d155c869cf270b41b538e6870`
+`F6_PRIMARY_SECTION_SHA256=bf0583a656085d0bc267b8d49fed5e448e0672303600fc314c80789c6fcda882`
+`F6_SOURCE_PACKET_HASH=7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d`
+`F6_NATIVE_DOCUMENTARY_SOURCE_PREQUALIFICATION=PASS_HOSTED_BOUNDED`
+`F6_NEW_FRONTIER_MANDATE=BUILT_DISABLED_NOT_ACTIVATED`
+`F6_NEW_FRONTIER_ID=INSTITUTIONAL_FLOW_REGSHO_RULE204_2025`
 `F6_NEW_READY_TASK=NOT_CREATED`
 `F6_VM_SCIENTIFIC_CONTINUATION=NOT_PROVEN`
-`F6_OPERATING_DECISION=BLOCK_SOURCE_CAPTURE_AND_ENGINE_ADMISSIBILITY`
+`F6_NON_ECONOMIC_CODE_CANDIDATE_SHA=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
+`F6_VM_PROMOTION=NOT_EXECUTED`
+`F6_ECONOMIC_EDGE=NOT_OBSERVED`
+`F6_OPERATING_DECISION=BLOCK_EXACT_NEW_RELEASE_VM_INSTALL_THEN_SEPARATE_FRONTIER_ADMISSION`
 
+### Closed F6 source and native qualification step
 
-The live system has a working V2 timer, safe F3->F4 successor, frozen causal identity, existing Research Intelligence refill policy and a qualified repeated durable NOOP after the F2 upgrade. However the observed frontier is 72/72 terminal, 0 admissible ready tasks; `NOOP_SEARCH_SPACE_INCOMPLETE` explicitly does **not** certify scientific search-space completeness or any productive source/mandate. Do not fabricate novelty or equate autonomous idle with scientific/economic system use.
+The first F6 source blocker has been **actually lifted**, not inferred from a search result. Official 2025-04-01 GovInfo Rule 204 document `https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm` was fetched on a bounded read-only GitHub Actions runner: run `41767148087`, job `126368043880`, immutable original bytes and extracted receipt artifact `13293470473`. Raw original HTML was 3,175,956 bytes with SHA-256 `b96b2d2400e15fa391dc5cf0e75f2985037fbd6d155c869cf270b41b538e6870`; independently extracted section was 7,295 characters with SHA-256 `bf0583a656085d0bc267b8d49fed5e448e0672303600fc314c80789c6fcda882`. Frozen capture clock `2026-11-04T03:26:37Z` is **not** a claim of historical PIT prior to capture. A dated 2025 CFR edition is **not** itself proof of current November 2026 law or individual transaction applicability.
 
-Bounded primary F6 challenge: `research/research_os/runtime/RESEARCH_FRONTIER.json` blob `6e1fb65023e83c9140a664b22c8d56cea7c799ed` sets `max_issued_per_frontier=12`; fresh task inventory has **12 issued in each of four frontier families**, exhausting all 48 permitted issuances. This is an issuance cap, not proof the scientific search space is exhausted. Representative last-task artifacts prove exact current duplicates in Event Document and Fundamental, `STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research` in Institutional Flow, and `MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant` in Quant. Existing `queue_replenisher.py` counts blocked tasks as issued and cannot reopen them merely by adding a new source. Minimal next action: qualify one genuinely distinct **non-economic** documentary source and Owner-governed frontier mandate within existing Research Intelligence and legacy-memory checks; prove normal route/capability admissibility before scheduling a task. If no source/mandate is grounded, keep F6 `BLOCK`. Do not arbitrarily raise issuance caps, replay old tasks, use Codex, mutate VM, add a scheduler, or claim economic/capital/live authority.
+The existing source/adaptor/provenance route was CONNECTED, not replaced: `research/research_os/expansion/source_adapters_v1.py`, `engine_dossiers_v1.py` and `frontier_source_planner_v2.py` now qualify the exact official Rule 204 captured packet under `INSTITUTIONAL_FLOW` with pinned original and section hashes. The real packet at `research/research_os/sources/reg_sho_rule204_2025.json` is identical to staged packet blob `8e6796e2752cd5e000b2667b8558d994b5552628` and is source-kind isolated from prior 17 CFR 240.15c6-1 T+1 packet. The official dated Rule 204 legal closeout rule permits borrow as an alternative to purchase and contains many deadlines/exceptions. Actual fail volume, affected trades, directional forced purchase, historical PIT, empirical return, economic advantage and current legal opinion are all UNKNOWN or NOT_OBSERVED.
 
-### F6 primary-source/admissibility challenge (2026-11-04)
+The original four Owner-governed frontiers still have 12/12 issued each, and the existing V2 timer was observed at 72/72 terminal. Exactly one new source-scoped frontier `INSTITUTIONAL_FLOW_REGSHO_RULE204_2025` was added **DISABLED** under the existing `research/research_os/runtime/RESEARCH_FRONTIER.json` blob `69652e707a0b6930d1d00f8a951f626960d202c9`. Its `required_source_rule_kind=REG_SHO_CLOSEOUT_OPERATIVE_RULE`; all four forbidden economic/prospective/capital/live authority flags remain false. Never rewrite the old tasks or raise existing issuance quotas. The disabled state is intentional: the installed VM still runs older corrected release `d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`, which lacks the Rule 204 adapter and source-kind filter. Enabling before verified VM release promotion could create an invalid or misbound task.
 
-Scope: non-economic **source intake prequalification only**. The existing original four frontier mandates are issued at their cap 12/12 each; `queue_replenisher._issued_counts` counts even terminal/blocked issuances. The old last-task artifacts show exact-current duplicates (event/fundamental), `STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research` (institutional) and `MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant` (quant). Those facts are **not** evidence of scientific exhaustion and do not authorize replay or increasing the old cap.
+A hosted dedicated Rule 204 source workflow tested the original capture (3/3) and later the native packet, tamper resistance, documentary output, explicit UNKNOWN economics, strict source-kind matching, one-task in-memory derivation and disabled-runner safety (8/8). On the disabled-frontier candidate, that focused witness is run `41769040168` on SHA `d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`; its other exact same-SHA gate outcomes must be verified before a VM install, and any later code movement must be reconciled rather than inferred.
 
-A grounded, genuinely different **documentary topic to challenge** has been located, **not admitted**: SEC Regulation SHO Rule 204, 17 CFR 242.204, an equity-security fail-to-deliver close-out obligation for registered clearing-agency participants. Official 2025-04-01 U.S. GPO CFR text: `https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm`, at the Rule 204 close-out section (line 2515 onward in rendered HTML). This is a statutory **mechanism locator**, not an established profitable market opportunity, qualified legal opinion, or validated new scientific identity. Long-sale/bona-fide market-making exceptions and different deadlines must be evaluated; outcome, actual forced quantity, payer, tradable universe, causality beyond the regulation and usable timing remain UNKNOWN. The SEC educational Reg SHO page includes historical T+2-oriented material and is **not** authoritative proof of current settlement law; prefer the official dated CFR edition and check amendments.
+### Remaining F6 operational sequence and hard safety gate
 
-The visible primary text does **not** establish original captured bytes: exact original-source SHA-256 and frozen first-observed clock were not obtained in the available runtime (outbound raw download failed). Consequently `SOURCE_CAPTURE=UNKNOWN`, `PIT_SOURCE_ADMISSIBILITY=NOT_PROVEN` and `SOURCE_SELECTED=NOT_PROVEN`. Do **not** fabricate raw hashes, parser receipts or an issuer novelty claim from rendered web/search snippets. Existing `source_adapters_v1.py` and `engine_dossiers_v1.qualify_document_packet` accept a narrowly frozen 17 CFR 240.15c6-1 T+1 rule in the Institutional Flow family, **not** Rule 242.204. Reusing the T+1 packet, copying the old source as a fresh one, renaming a frontier ID or raising its issue budget would not qualify the distinct Rule 204 topic and risks duplicate scientific work.
+Next bounded technical step: install the immutable, four-gate-qualified `d12fffdb7...` on the **same intended VM** via the existing nine-module installer and existing root-controlled transactional `deploy.oracle_v2_deploy --action resume-terminal`, with explicit expected currently active SHA `d0414d7...` and exact Oracle V2 Core/SEC run IDs. The transaction fails closed on stale host state, altered root proof, mismatched release or check; do not force. Do not describe this as performed until an actual terminal receipt is observed.
 
-**Decision:** `BLOCK` only on F6 non-economic source-to-normal-worker admission; `PARK` speculative adapter/code expansion and all economic, prospective, capital and live work until qualified source and mandate exist. `NO_CHANGE_REQUIRED` for F2, F3, F4/F5 and the installed VM. No new scientific task, queue write, external agent, Codex or VM deployment was performed by this challenge. Minimal **conditional** sequence: (1) obtain exact official captured Rule 204 raw bytes, digest, retrieval clock and citation/provenance; (2) inspect actual section coverage/amendments and screen existing legacy/current scientific identity for causal distinctness; (3) if accepted, add only the narrow necessary source adapter/qualification checks, and a separately authorized bounded Owner-governed **one-task** frontier via the existing Research Intelligence intake; (4) qualify tests on the exact new code SHA; (5) only with an authorized VM promotion and natural wake witness claim F6 normal scientific use. A failed source or duplicate screen returns `PARK_SOURCE`, not a global rebuild.
-
-Current F6 checkpoint admission on `code/canonical`: `F6_DOCUMENTARY_ADMISSIBILITY_CHALLENGE_20261104`, prepared from code parent `38a812cbc028aea8d73a463fc71d299a0e70d96d` and project `6b92472c892e15a081c26c07d5d8558634aa47c7`; follow commit + hosted gate status, not the older F2 handoff. This is **CHECKPOINT/BLOCK**, not `FINAL_HANDOFF` or `QUANT_SYSTEM_V1_FINISHED`.
+**Only after** current VM release is verified active: separately admit and enable the exact one-source Rule 204 frontier through the existing canonical admission, respecting one mutating builder and immutable source/Legacy scientific checks. Then observe normal natural service wake(s) and durable source-bound task/legacy duplicate screen/NO_CANDIDATE or validation handoff, not a synthetic stand-in. F6 `PROVEN_END_TO_END` stays FALSE until this runtime witness exists; `QUANT_SYSTEM_V1_FINISHED` still NOT established. No autonomous Codex, extra agent, direct VM access, economic/prospective/capital/live action or forced publication is authorized by this checkpoint.
 
 ## Other finish-gate state retained
 
