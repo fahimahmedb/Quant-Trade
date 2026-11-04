@@ -124,7 +124,7 @@
     },
     {
       "frontier_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
-      "enabled": false,
+      "enabled": true,
       "priority": 75,
       "task_type": "INSTITUTIONAL_FLOW",
       "required_capability": "institutional_flows",

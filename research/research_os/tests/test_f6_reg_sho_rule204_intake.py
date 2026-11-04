@@ -123,16 +123,35 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertFalse((BASE / "tasks" / (task["task_id"] + ".json")).exists(),
                          "Preview must never publish to the operational research queue")
 
-    def test_operational_new_source_remains_disabled_before_vm_rebind(self):
-        from research.research_os.queue_replenisher import derive_from_repo
+    def test_operational_one_source_frontier_after_qualified_vm_rebind(self):
+        from research.research_os.queue_replenisher import derive_from_repo, load_source_catalog
         current = load_frontier(BASE)
         new = next(item for item in current["frontiers"]
                    if item["frontier_id"] == "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025")
-        self.assertFalse(new["enabled"], "No old installed worker may consume the new mandate")
+        self.assertTrue(new["enabled"], "Separate F6 admission requires qualified real-VM upgrade")
         self.assertEqual(new["required_source_rule_kind"], "REG_SHO_CLOSEOUT_OPERATIVE_RULE")
-        result = derive_from_repo(BASE, created_at="2026-11-04T03:28:00Z")
-        self.assertEqual(result["status"], "NOOP_SEARCH_SPACE_INCOMPLETE")
-        self.assertIsNone(result["task"])
+        self.assertEqual(current["max_new_tasks_per_refill"], 1)
+        self.assertFalse(current["producer_execution_same_refill_wake"])
+        self.assertFalse(current["recursive_refill_same_wake"])
+        self.assertTrue(all(value is False for value in current["authority"].values()))
+        first = derive_from_repo(BASE, created_at="2026-11-04T11:58:00Z")
+        self.assertEqual(first["status"], "DERIVED_ONE_READY_TASK")
+        task = first["task"]
+        self.assertEqual(task["derivation"]["frontier_id"], new["frontier_id"])
+        self.assertEqual(task["inputs"]["documentary_source"], TARGET)
+        self.assertEqual(task["inputs"]["documentary_source_packet_hash"],
+                         source()["documentary_packet"]["content_hash"])
+        validate_derived_task(task)
+        self.assertFalse((BASE / "tasks" / (task["task_id"] + ".json")).exists())
+        second = derive_refill_task(
+            frontier=current,
+            tasks=load_tasks(BASE) + [task],
+            created_at="2026-11-04T11:59:00Z",
+            source_catalog=load_source_catalog(BASE),
+            research_policy_context=load_research_policy_context(BASE),
+        )
+        self.assertEqual(second["status"], "NOOP_QUEUE_NOT_EMPTY")
+        self.assertIsNone(second["task"])
 
     def test_preflight_no_matching_source_yields_no_task(self):
         frontier = deepcopy(load_frontier(BASE))
