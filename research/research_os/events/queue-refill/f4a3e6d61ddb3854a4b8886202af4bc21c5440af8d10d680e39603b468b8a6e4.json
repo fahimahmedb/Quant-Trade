@@ -1,0 +1,21 @@
+{
+  "action_id": "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001",
+  "emitted_at": "2026-11-04T12:00:08Z",
+  "event_id": "f4a3e6d61ddb3854a4b8886202af4bc21c5440af8d10d680e39603b468b8a6e4",
+  "event_seq": 1,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 1,
+  "payload": {
+    "frontier_state": "ACTIVE_ACTIONABLE",
+    "next_lane": "market_discovery",
+    "next_task_id": "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001",
+    "novelty_claimed": false,
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "research_intelligence_preflight": true,
+    "result": "DERIVED_ONE_READY_TASK",
+    "source_bound": true
+  },
+  "session_id": "f4a3e6d61ddb3854a4b8886202af4bc21c5440af8d10d680e39603b468b8a6e4",
+  "worker_id": "oracle-research-v2.integrator_portfolio"
+}

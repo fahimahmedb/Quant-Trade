@@ -1,0 +1,328 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "causal_predecessor": {
+    "predecessor_dispatch_id": "28ae3466232abdd373402aeeb9b80eeee4be7b25e4c485af2e5640f3aeb0f7c9",
+    "predecessor_ledger_sha256": "6e0630f4819c577a816ffab66824a0375a91fdb208e7708ec4f34ba8861441c7",
+    "predecessor_project_sha": "2b7d04286f35e1ca6fa5562cccb9daceb20b19b1",
+    "predecessor_result_sha": "e2d8f0c5679bc52c5d22a993dab2d0f50d14681a",
+    "predecessor_task_id": "F3-ENGINEERING-20261103T160613Z",
+    "schema": "f4-terminal-research-v1"
+  },
+  "derivation": {
+    "derivation_key": "f4a3e6d61ddb3854a4b8886202af4bc21c5440af8d10d680e39603b468b8a6e4",
+    "queue": {
+      "active_count": 0,
+      "claimed_count": 0,
+      "ready_count": 0,
+      "task_count": 72,
+      "terminal_count": 72,
+      "unknown_count": 0
+    },
+    "research_intelligence": {
+      "admissible_frontier_ids": [
+        "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"
+      ],
+      "decisions": [
+        {
+          "action": "GENERATE_MECHANISM",
+          "blockers": [],
+          "candidate_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+          "capability": {
+            "available": true,
+            "freshness": "UNKNOWN",
+            "state": "AVAILABLE"
+          },
+          "executable": true,
+          "frontier_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+          "identity": {
+            "dimensions": {
+              "constrained_actor": "UNKNOWN",
+              "economic_exposure": "UNKNOWN",
+              "evidence_identity": "UNKNOWN",
+              "instrument": "UNKNOWN",
+              "mechanism": "UNKNOWN",
+              "payer": "UNKNOWN",
+              "source_family": "UNKNOWN",
+              "timing_clock": "UNKNOWN",
+              "universe": "UNKNOWN"
+            },
+            "evidence_key": null,
+            "mechanism_key": null,
+            "missing_core_dimensions": [
+              "mechanism",
+              "payer",
+              "constrained_actor",
+              "timing_clock",
+              "universe",
+              "economic_exposure"
+            ],
+            "resolved": false
+          },
+          "memory_applicability": "DEFERRED_UNTIL_CANDIDATE_IDENTITY",
+          "memory_influence": [],
+          "novelty_status": "UNRESOLVED_NOT_CLAIMED",
+          "reason_codes": [
+            "FRONTIER_IS_GENERATION_MANDATE_NOT_CANDIDATE",
+            "UNKNOWN_IDENTITY_IS_NOT_NOVELTY",
+            "SCIENTIFIC_MEMORY_MATCH_DEFERRED_UNTIL_IDENTITY_RESOLVED",
+            "QUALIFIED_UNUSED_SOURCE_BOUND",
+            "CAPABILITY_AND_ROUTE_ACTIVE",
+            "ZERO_COST_RESEARCH_ACTION_NO_BUDGET_AUTHORITY_REQUIRED"
+          ],
+          "scheduler_mutation": false,
+          "selected_action": {
+            "action": "GENERATE_MECHANISM",
+            "cost_units": 0,
+            "depth": "WIDE",
+            "falsification_power": "NOT_APPLICABLE_BEFORE_IDENTITY",
+            "is_falsifier": false,
+            "required_capability": "institutional_flows",
+            "requires_authority": [],
+            "target_lane": "market_discovery",
+            "uncertainty_resolved": "candidate semantic identity and mechanism definition"
+          },
+          "selection_trace": [
+            "frontier mandate does not establish semantic novelty",
+            "validate capability and route before scheduling generation",
+            "require qualified unused source when source planning is active",
+            "defer family/evidence memory matching until candidate identity exists"
+          ],
+          "source_plan_status": "SOURCE_SELECTED",
+          "uncertainty_resolved": "candidate semantic identity and mechanism definition"
+        }
+      ],
+      "frontier_state": {
+        "scientifically_exhausted": false,
+        "state": "ACTIVE_ACTIONABLE"
+      },
+      "noop_status": null,
+      "scheduler_mutation": false,
+      "schema_version": "research-refill-policy-v1",
+      "scientific_claims": {
+        "alpha_claimed": false,
+        "economic_outcome_accessed": false,
+        "empirical_correlation_claimed": false,
+        "novelty_claimed": false
+      }
+    },
+    "selected_frontier": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+    "source_plan": {
+      "qualified_count": 2,
+      "source": {
+        "blob_sha": "8e6796e2752cd5e000b2667b8558d994b5552628",
+        "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+        "path": "research/research_os/sources/reg_sho_rule204_2025.json",
+        "record_hash": "01f1473dbd073ad9fee9694cc7ea9d1ca1147df311a4303c48d7404b02841700"
+      },
+      "status": "SOURCE_SELECTED",
+      "unused_count": 2
+    },
+    "status": "DERIVED_ONE_READY_TASK",
+    "task": {
+      "allowed_actions": [
+        "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+        "research one bounded institutional-flow mechanism from admissible public rules and documentary evidence",
+        "inspect public rules, institutional constraints, calendars and implementation mechanics",
+        "map forced actor, constraint, clock, affected universe, capacity and falsification",
+        "actively seek structural disconfirmation",
+        "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+      ],
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false,
+        "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
+      },
+      "created_at": "2026-11-04T12:00:07Z",
+      "derivation": {
+        "derivation_key": "f4a3e6d61ddb3854a4b8886202af4bc21c5440af8d10d680e39603b468b8a6e4",
+        "frontier_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+        "research_intelligence": {
+          "decision": {
+            "action": "GENERATE_MECHANISM",
+            "blockers": [],
+            "candidate_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+            "capability": {
+              "available": true,
+              "freshness": "UNKNOWN",
+              "state": "AVAILABLE"
+            },
+            "executable": true,
+            "frontier_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+            "identity": {
+              "dimensions": {
+                "constrained_actor": "UNKNOWN",
+                "economic_exposure": "UNKNOWN",
+                "evidence_identity": "UNKNOWN",
+                "instrument": "UNKNOWN",
+                "mechanism": "UNKNOWN",
+                "payer": "UNKNOWN",
+                "source_family": "UNKNOWN",
+                "timing_clock": "UNKNOWN",
+                "universe": "UNKNOWN"
+              },
+              "evidence_key": null,
+              "mechanism_key": null,
+              "missing_core_dimensions": [
+                "mechanism",
+                "payer",
+                "constrained_actor",
+                "timing_clock",
+                "universe",
+                "economic_exposure"
+              ],
+              "resolved": false
+            },
+            "memory_applicability": "DEFERRED_UNTIL_CANDIDATE_IDENTITY",
+            "memory_influence": [],
+            "novelty_status": "UNRESOLVED_NOT_CLAIMED",
+            "reason_codes": [
+              "FRONTIER_IS_GENERATION_MANDATE_NOT_CANDIDATE",
+              "UNKNOWN_IDENTITY_IS_NOT_NOVELTY",
+              "SCIENTIFIC_MEMORY_MATCH_DEFERRED_UNTIL_IDENTITY_RESOLVED",
+              "QUALIFIED_UNUSED_SOURCE_BOUND",
+              "CAPABILITY_AND_ROUTE_ACTIVE",
+              "ZERO_COST_RESEARCH_ACTION_NO_BUDGET_AUTHORITY_REQUIRED"
+            ],
+            "scheduler_mutation": false,
+            "selected_action": {
+              "action": "GENERATE_MECHANISM",
+              "cost_units": 0,
+              "depth": "WIDE",
+              "falsification_power": "NOT_APPLICABLE_BEFORE_IDENTITY",
+              "is_falsifier": false,
+              "required_capability": "institutional_flows",
+              "requires_authority": [],
+              "target_lane": "market_discovery",
+              "uncertainty_resolved": "candidate semantic identity and mechanism definition"
+            },
+            "selection_trace": [
+              "frontier mandate does not establish semantic novelty",
+              "validate capability and route before scheduling generation",
+              "require qualified unused source when source planning is active",
+              "defer family/evidence memory matching until candidate identity exists"
+            ],
+            "source_plan_status": "SOURCE_SELECTED",
+            "uncertainty_resolved": "candidate semantic identity and mechanism definition"
+          },
+          "frontier_state": {
+            "scientifically_exhausted": false,
+            "state": "ACTIVE_ACTIONABLE"
+          },
+          "policy_hash": "9ef8b8d81f361ec0ccfde5971549905a0ee886f524eb770fdb72053d89b74850"
+        },
+        "selection_policy": "LOWEST_ISSUED_COUNT_THEN_HIGHEST_PRIORITY_THEN_FRONTIER_ID",
+        "sequence": 1,
+        "source_binding": {
+          "blob_sha": "8e6796e2752cd5e000b2667b8558d994b5552628",
+          "packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+          "path": "research/research_os/sources/reg_sho_rule204_2025.json",
+          "record_hash": "01f1473dbd073ad9fee9694cc7ea9d1ca1147df311a4303c48d7404b02841700"
+        },
+        "steward_lane": "integrator_portfolio",
+        "target_lane": "market_discovery",
+        "type": "EMPTY_QUEUE_FRONTIER_REFILL"
+      },
+      "forbidden_actions": [
+        "candidate return inspection",
+        "backtest",
+        "post-outcome event selection or tuning",
+        "prospective observation",
+        "capital allocation",
+        "order generation",
+        "live trading"
+      ],
+      "inputs": {
+        "causal_distinctness_required": true,
+        "derivation_key": "f4a3e6d61ddb3854a4b8886202af4bc21c5440af8d10d680e39603b468b8a6e4",
+        "documentary_source": "research/research_os/sources/reg_sho_rule204_2025.json",
+        "documentary_source_blob": "8e6796e2752cd5e000b2667b8558d994b5552628",
+        "documentary_source_packet_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d",
+        "documentary_source_record_hash": "01f1473dbd073ad9fee9694cc7ea9d1ca1147df311a4303c48d7404b02841700",
+        "frontier_id": "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+        "legacy_gate_required": true,
+        "objective": "Evaluate at most one new source-bound official SEC Rule 204 equity fail-to-deliver close-out documentary mechanism, preserving current dated statutory capture, Legacy duplicate screen and explicit UNKNOWN actual flows; no return, paper/capital or trading outcomes.",
+        "research_intelligence_contract": {
+          "action_class": "GENERATE_MECHANISM",
+          "novelty_status": "UNRESOLVED_NOT_CLAIMED",
+          "research_policy_hash": "9ef8b8d81f361ec0ccfde5971549905a0ee886f524eb770fdb72053d89b74850",
+          "scientific_memory_applicability": "DEFERRED_UNTIL_CANDIDATE_IDENTITY",
+          "semantic_identity_required_before_novelty": true
+        },
+        "source_policy": "PUBLIC_OR_EXPLICITLY_AUTHORIZED_NON_OUTCOME_SOURCES_ONLY"
+      },
+      "lease": {
+        "claimed_at": null,
+        "expires_at": null,
+        "generation": 0,
+        "owner": null
+      },
+      "priority": 75,
+      "required_capability": "institutional_flows",
+      "research_contract_version": "v2-core",
+      "status": "READY",
+      "success_condition": "One distinct documented Rule204 premise is legacy-screened and handed to independent validation, or NO_CANDIDATE/BLOCK is durably recorded; never infer a forced purchase or payoff from law alone.",
+      "task_id": "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001",
+      "task_type": "INSTITUTIONAL_FLOW",
+      "updated_at": "2026-11-04T12:00:07Z"
+    }
+  },
+  "hosted_model_calls": 0,
+  "input_head": "9cd67cb0f124a6c3aef0852c7cd2cfa80b335bab",
+  "one_lineage_per_wake": true,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 15,
+      "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "recovered_source_review_count": 1,
+      "recovered_source_reviews_hash": "c7b141c2e4dbf2a5e1f8e5f14b116fd1aed2d49c38a0b91b45ca17ff04c256c6",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "d27512df028229a405e57172aff792a42372637a2e23c014ea8c2bd6071770c3",
+    "status": "PASS",
+    "task_authority": null
+  },
+  "producer_execution_same_wake": false,
+  "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "state_branch": "code/canonical",
+  "state_repository": "fahimahmedb/Quant-Trade"
+}
