@@ -1,0 +1,56 @@
+{
+  "candidate_hash": "07611c996a950c175d9474d93f815509dd246e6edc96bef5a905ed479bf60026",
+  "epistemic_blockers": [
+    "DOCUMENTARY_DOSSIER_UNQUALIFIED_AFFECTED_UNIVERSE",
+    "DOCUMENTARY_DOSSIER_UNQUALIFIED_CAPACITY_CONSTRAINTS",
+    "DOCUMENTARY_DOSSIER_UNQUALIFIED_CONFOUNDERS",
+    "DOCUMENTARY_DOSSIER_UNQUALIFIED_EXPECTED_FOOTPRINT",
+    "DOCUMENTARY_DOSSIER_UNQUALIFIED_FORCED_ACTOR",
+    "DOCUMENTARY_DOSSIER_UNQUALIFIED_IMPLEMENTATION_CLOCK"
+  ],
+  "execution_state": "COMPLETE",
+  "generation_id": "G1",
+  "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+  "independence_evidence": {
+    "canonical_freeze_binding": {
+      "binding_hash": "19fdd078dee0bbccb66196f638f92cf19e538ccf52f2b7435b87742c0b2b8e98",
+      "frozen_hypothesis_hash": "31fd5b21fad864acd8890fed6e69428da0ed826baa47c1276d533e58cf594cd6",
+      "frozen_hypothesis_ref": "research/research_os/hypotheses/DOC-FLOW-7ddc4c400115df87.json",
+      "generation_id": "G1",
+      "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+      "source_candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+      "v2_candidate_hash": "07611c996a950c175d9474d93f815509dd246e6edc96bef5a905ed479bf60026"
+    },
+    "cognitive_independence": true,
+    "cognitive_scope": "R0_DETERMINISTIC_STRUCTURAL_CHECKS_ONLY",
+    "information_isolation": true,
+    "information_scope": "PRIMARY_SOURCE_AND_FROZEN_CANDIDATE_NO_PRODUCER_MODEL_COMMENTARY",
+    "outcome_accessed": false,
+    "process": {
+      "boot_id": "4aa3fb04-ff14-49fa-8f08-0171d41c6701",
+      "pid": 273661,
+      "start_ticks": "131556964"
+    },
+    "retrieval": {
+      "reconstructed_candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+      "reconstructed_v2_candidate_hash": "07611c996a950c175d9474d93f815509dd246e6edc96bef5a905ed479bf60026",
+      "snapshot_head": "3276ef2ae7b235bb1041dc5f35c8e2bd5e8b0956",
+      "source_blob": "8e6796e2752cd5e000b2667b8558d994b5552628",
+      "source_path": "research/research_os/sources/reg_sho_rule204_2025.json"
+    },
+    "retrieval_independence": true,
+    "semantic_diverse_review": "NOT_PROVEN_NO_SEMANTIC_PASS_GRANTED",
+    "state_isolation": true
+  },
+  "producer_identity_hash": "cf1ce171d918ea6e4fc01e14ceba7ac20b1042d4cb82602c0e71bcf312d07ce0",
+  "scientific_decision": "BLOCK",
+  "source_validation_hash": "7e951d1207d37a165c82dcdae392063fb0b639e8a49d7c1a608231c974110383",
+  "validator_context_hash": "da6fb8da06fd2ab94521ae0b214827cb04e5bdead0d015251d37a95b6a4fa32d",
+  "validator_hash": "0859a4d7913174d39ab1cb40b17a32cbca30c3316560955835dc09eba7d7bc6e",
+  "validator_identity": "oracle-research-v2.independent_challenge",
+  "validator_model": "R0_DETERMINISTIC_VALIDATOR_LOCAL_CRITIC_UNVERIFIED:gpt-oss-10.2b-q4-k-m",
+  "validator_prompt_hash": "644cbbebe68667c37bc9233886b4d7cc934a8c61fbe8ce6eca0c70393daf66c3",
+  "validator_retrieval_manifest_hash": "d0f5c2b6468c83c78851f048f0663d61eea28d4e5d87508e49f965e59499381f",
+  "validator_state_identity_hash": "dc38d08da014ddea5117a28e079c7afc2e37f7b6fd8dcd8d394afe0fc72032c8",
+  "validator_version": "oracle-v2-validator-bridge-v1"
+}
