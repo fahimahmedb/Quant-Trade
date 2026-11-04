@@ -1,0 +1,32 @@
+{
+  "artifacts": [
+    "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/red_team.json"
+  ],
+  "authority_assertion": {
+    "economic_experiment_performed": false,
+    "live_trading_performed": false,
+    "prospective_observation_performed": false,
+    "real_capital_used": false
+  },
+  "causal_predecessor": {
+    "predecessor_dispatch_id": "28ae3466232abdd373402aeeb9b80eeee4be7b25e4c485af2e5640f3aeb0f7c9",
+    "predecessor_ledger_sha256": "6e0630f4819c577a816ffab66824a0375a91fdb208e7708ec4f34ba8861441c7",
+    "predecessor_project_sha": "2b7d04286f35e1ca6fa5562cccb9daceb20b19b1",
+    "predecessor_result_sha": "e2d8f0c5679bc52c5d22a993dab2d0f50d14681a",
+    "predecessor_task_id": "F3-ENGINEERING-20261103T160613Z",
+    "schema": "f4-terminal-research-v1"
+  },
+  "completed_at": "2026-11-04T17:00:12Z",
+  "evidence_refs": [
+    "research/research_os/events/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726-002.json"
+  ],
+  "input_head": "fc03960d229c1d3710f10cf4d3ea8ffca77212dc",
+  "lease_generation": 3,
+  "receipt_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726",
+  "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726",
+  "started_at": "2026-11-04T17:00:08Z",
+  "status": "COMPLETE",
+  "summary": "red_team: CONTINUE; task=READY; release=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "task_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
+  "worker_id": "oracle-research-v2.independent_challenge"
+}
