@@ -31,7 +31,7 @@
     "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726.json",
     "lineage": "DOC-FLOW-7ddc4c400115df87",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
-    "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g3-ed3ac9a81726",
+    "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g4-98d151c7a412",
     "v2_epoch_binding": {
       "epoch_manifest_hash": "49869741ed4d4c9574c89a9e8758315b236b688dfc690508b6558a73b0e3813f",
       "policy_hash": "29156dd0fab6d19b8fc965c061df142f161008c94497ddea145168db65363a3d",
@@ -59,9 +59,9 @@
     "validation_mode": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
   "lease": {
-    "claimed_at": "2026-11-04T17:00:08Z",
-    "expires_at": "2026-11-04T17:00:12Z",
-    "generation": 3,
+    "claimed_at": "2026-11-04T17:10:16Z",
+    "expires_at": "2026-11-04T17:20:16Z",
+    "generation": 4,
     "owner": "oracle-research-v2.independent_challenge"
   },
   "lineage": {
@@ -74,9 +74,9 @@
   "priority": 75,
   "required_capability": "validator",
   "research_contract_version": "v2-core",
-  "status": "READY",
+  "status": "CLAIMED",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
   "task_type": "VALIDATION",
-  "updated_at": "2026-11-04T17:00:12Z"
+  "updated_at": "2026-11-04T17:10:16Z"
 }
