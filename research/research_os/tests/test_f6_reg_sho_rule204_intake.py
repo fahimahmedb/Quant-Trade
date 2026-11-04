@@ -123,6 +123,17 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertFalse((BASE / "tasks" / (task["task_id"] + ".json")).exists(),
                          "Preview must never publish to the operational research queue")
 
+    def test_operational_new_source_remains_disabled_before_vm_rebind(self):
+        from research.research_os.queue_replenisher import derive_from_repo
+        current = load_frontier(BASE)
+        new = next(item for item in current["frontiers"]
+                   if item["frontier_id"] == "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025")
+        self.assertFalse(new["enabled"], "No old installed worker may consume the new mandate")
+        self.assertEqual(new["required_source_rule_kind"], "REG_SHO_CLOSEOUT_OPERATIVE_RULE")
+        result = derive_from_repo(BASE, created_at="2026-11-04T03:28:00Z")
+        self.assertEqual(result["status"], "NOOP_SEARCH_SPACE_INCOMPLETE")
+        self.assertIsNone(result["task"])
+
     def test_preflight_no_matching_source_yields_no_task(self):
         frontier = deepcopy(load_frontier(BASE))
         frontier["frontiers"].append(frontier_entry())
