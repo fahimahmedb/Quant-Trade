@@ -106,6 +106,14 @@ def contract():
                 "OWNER_CLAIM", "SUMMARY", "SEARCH_RESULT", "COMMENT", "CHAT_MEMORY"
             ],
         },
+        "behavioral_opportunity_rescue": {
+            "terminal_claims": ["PARK", "BLOCK"],
+            "terminal_disposition_required": True,
+            "disposition_scopes": ["IMPLEMENTATION", "MECHANISM", "SCIENTIFIC", "AUTHORITY", "RUNTIME", "UNKNOWN"],
+            "require_implementation_rescue_evidence": True,
+            "require_exact_reopen_condition": True,
+            "forbid_mechanism_falsification_from_route_block": True,
+        },
         "checkpoint_required_fields": [
             "subject",
             "completed",
@@ -447,3 +455,214 @@ def test_execution_continuity_contract_cannot_silently_allow_paid_dispatch():
     assert any("external_agent_dispatch_requires_explicit_owner_authorization" in e
                for e in validate_contract(changed))
 
+
+# Bounded anti-PARK terminal completion contract, not a model-behavior proof.
+def rescue_completion(**overrides):
+    c = base_completion(claim="PARK", disposition_scope="IMPLEMENTATION",
+                        tested_implementation_route="broker A cash tender entitlement",
+                        exact_reopen_condition="verified broker entitlement or new lawful source",
+                        solution_search={
+                            "status": "CHECKED",
+                            "decisive_primary_ref": "code/canonical@c1",
+                            "material_obstacle": "one intermediary lacks voluntary tender rights",
+                            "chosen_action_or_stop_reason": "reopen only on signed broker confirmation",
+                            "mechanism_falsified": False,
+                            "paths_considered": [
+                                {"route": "broker A", "disposition": "BLOCKED"},
+                                {"route": "transfer agent", "disposition": "UNKNOWN"},
+                            ],
+                        })
+    c.update(overrides)
+    return c
+
+
+def rescue_errors(completion):
+    return validate_completion_binding(
+        contract(), base_admission(), completion,
+        current_project_sha="p1", current_code_sha="c2",
+    )
+
+
+def test_solution_search_completion_accepts_narrow_implementation_park():
+    assert rescue_errors(rescue_completion()) == []
+
+
+def test_solution_search_completion_missing_scope_rejected():
+    c = rescue_completion()
+    del c["disposition_scope"]
+    assert "TERMINAL_DISPOSITION_SCOPE_REQUIRED" in rescue_errors(c)
+
+
+def test_solution_search_completion_missing_reopen_rejected():
+    assert "TERMINAL_EXACT_REOPEN_CONDITION_REQUIRED" in rescue_errors(
+        rescue_completion(exact_reopen_condition="")
+    )
+
+
+def test_solution_search_completion_requires_evidence_of_paths_checked():
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], paths_considered=[])
+    assert "IMPLEMENTATION_PARK_MISSING_CHECKED_PATHS" in rescue_errors(c)
+
+
+def test_solution_search_completion_rejects_empty_evidence_masquerading_as_park():
+    c = rescue_completion()
+    c["solution_search"] = {"status": "CHECKED"}
+    err = rescue_errors(c)
+    assert "IMPLEMENTATION_PARK_MISSING_DECISION_EVIDENCE" in err
+    assert "IMPLEMENTATION_PARK_MISSING_CHECKED_PATHS" in err
+
+
+def test_solution_search_completion_prevents_route_block_falsifying_mechanism():
+    c = rescue_completion(mechanism_falsified=True)
+    assert "IMPLEMENTATION_BLOCK_CANNOT_FALSIFY_MECHANISM" in rescue_errors(c)
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], mechanism_falsified=True)
+    assert "IMPLEMENTATION_BLOCK_CANNOT_FALSIFY_MECHANISM" in rescue_errors(c)
+
+
+def test_solution_search_completion_hard_authority_stop_does_not_demand_unbounded_search():
+    c = rescue_completion(disposition_scope="AUTHORITY",
+                          exact_reopen_condition="fresh authorized owner mandate",
+                          solution_search=None)
+    assert rescue_errors(c) == []
+
+
+def test_solution_search_completion_hard_boundary_requires_reason_in_implementation_scope():
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], status="HARD_BOUNDARY", hard_boundary_reason=None)
+    assert "IMPLEMENTATION_PARK_MISSING_HARD_BOUNDARY_PROOF" in rescue_errors(c)
+
+
+def test_solution_search_completion_mechanism_falsification_needs_admission_linked_primary():
+    c = rescue_completion(disposition_scope="MECHANISM", mechanism_falsified=True,
+                          falsification_primary_ref="fabricated-ref")
+    assert "MECHANISM_FALSIFICATION_WITHOUT_LINKED_PRIMARY" in rescue_errors(c)
+    c["falsification_primary_ref"] = "code/canonical@c1"
+    assert rescue_errors(c) == []
+
+
+def test_solution_search_contract_prevents_disabling_required_guardrails():
+    c = contract()
+    assert validate_contract(c) == []
+    c["behavioral_opportunity_rescue"]["require_exact_reopen_condition"] = False
+    assert any("require_exact_reopen_condition" in e for e in validate_contract(c))
+
+
+def test_solution_search_pass_contract_still_accepts_existing_success_receipt():
+    assert rescue_errors(base_completion()) == []
+
+
+
+def test_solution_search_completion_fails_without_exact_tested_route():
+    assert "IMPLEMENTATION_PARK_MISSING_EXACT_TESTED_ROUTE" in rescue_errors(
+        rescue_completion(tested_implementation_route="")
+    )
+
+
+def test_solution_search_completion_rejects_fabricated_primary_reference():
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], decisive_primary_ref="fake-document")
+    assert "IMPLEMENTATION_PARK_UNLINKED_DECISIVE_PRIMARY" in rescue_errors(c)
+
+
+def test_solution_search_completion_no_alternative_claim_requires_reason():
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], status="NO_DECISION_CHANGING_ALTERNATIVE")
+    assert "IMPLEMENTATION_PARK_UNJUSTIFIED_NO_ALTERNATIVE" in rescue_errors(c)
+    c["solution_search"]["why_remaining_routes_cannot_change_decision"] = (
+        "all lawful available rights are prohibited by the same explicit broker term"
+    )
+    assert rescue_errors(c) == []
+
+
+
+def test_solution_search_completion_rejects_unhashable_adversarial_values():
+    c = rescue_completion(disposition_scope=[])
+    assert "TERMINAL_DISPOSITION_SCOPE_REQUIRED" in rescue_errors(c)
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], status=[])
+    assert "IMPLEMENTATION_PARK_INVALID_SOLUTION_SEARCH_STATUS" in rescue_errors(c)
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], decisive_primary_ref=[])
+    assert "IMPLEMENTATION_PARK_UNLINKED_DECISIVE_PRIMARY" in rescue_errors(c)
+    c = rescue_completion(disposition_scope="MECHANISM", mechanism_falsified=True,
+                          falsification_primary_ref=[])
+    assert "MECHANISM_FALSIFICATION_WITHOUT_LINKED_PRIMARY" in rescue_errors(c)
+
+
+def test_solution_search_completion_bounded_path_count_and_string_routes():
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], paths_considered=[
+        {"route": "a", "disposition": "UNKNOWN"} for _ in range(6)
+    ])
+    assert "IMPLEMENTATION_PARK_MISSING_CHECKED_PATHS" in rescue_errors(c)
+    c["solution_search"] = dict(c["solution_search"], paths_considered=[
+        {"route": {"untrusted": "payload"}, "disposition": "UNKNOWN"}
+    ])
+    assert "IMPLEMENTATION_PARK_MISSING_CHECKED_PATHS" in rescue_errors(c)
+
+
+
+
+def test_solution_search_completion_rejects_unhashable_path_disposition():
+    c = rescue_completion()
+    c["solution_search"] = dict(c["solution_search"], paths_considered=[
+        {"route": "source", "disposition": []}
+    ])
+    assert "IMPLEMENTATION_PARK_MISSING_CHECKED_PATHS" in rescue_errors(c)
+
+
+# The CI synthesizes PASS for FINAL_HANDOFF; the actual durable decision is
+# handoff_result in the admission, not the outer completion claim.
+def test_final_handoff_implementation_park_rejects_missing_admitted_rescue():
+    a = base_admission(completion_intent="FINAL_HANDOFF", handoff_result="PARK")
+    c = base_completion(a, claim="PASS", handoff_result="PARK")
+    errors = validate_completion_binding(
+        contract(), a, c, current_project_sha="p1", current_code_sha="c2",
+    )
+    assert "TERMINAL_DISPOSITION_SCOPE_REQUIRED" in errors
+    assert "TERMINAL_EXACT_REOPEN_CONDITION_REQUIRED" in errors
+
+
+def test_final_handoff_implementation_block_accepts_linked_admission_evidence():
+    witness = rescue_completion()
+    a = base_admission(
+        completion_intent="FINAL_HANDOFF", handoff_result="BLOCK",
+        disposition_scope=witness["disposition_scope"],
+        tested_implementation_route=witness["tested_implementation_route"],
+        exact_reopen_condition=witness["exact_reopen_condition"],
+        solution_search=witness["solution_search"],
+    )
+    c = base_completion(a, claim="PASS", handoff_result="BLOCK")
+    assert validate_completion_binding(
+        contract(), a, c, current_project_sha="p1", current_code_sha="c2",
+    ) == []
+
+
+def test_final_handoff_hard_authority_block_stops_without_rescue_search():
+    a = base_admission(
+        completion_intent="FINAL_HANDOFF", handoff_result="BLOCK",
+        disposition_scope="AUTHORITY",
+        exact_reopen_condition="Owner grants new mandate with verified budget",
+    )
+    c = base_completion(a, claim="PASS", handoff_result="BLOCK")
+    assert validate_completion_binding(
+        contract(), a, c, current_project_sha="p1", current_code_sha="c2",
+    ) == []
+
+
+def test_checkpoint_cannot_falsely_trigger_terminal_rescue_enforcement():
+    a = base_admission(completion_intent="CHECKPOINT")
+    c = base_completion(a, claim="CHECKPOINT")
+    assert validate_completion_binding(
+        contract(), a, c, current_project_sha="p1", current_code_sha="c2",
+    ) == []
+
+
+def test_final_handoff_unhashable_disposition_does_not_crash_validation():
+    a = base_admission(completion_intent="FINAL_HANDOFF", handoff_result=[])
+    c = base_completion(a, claim="PASS", handoff_result=[])
+    assert isinstance(validate_completion_binding(
+        contract(), a, c, current_project_sha="p1", current_code_sha="c2",
+    ), list)

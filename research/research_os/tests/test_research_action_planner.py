@@ -82,5 +82,46 @@ class ResearchActionPlannerTests(unittest.TestCase):
         self.assertFalse(result["task_created"])
 
 
+    def test_documentary_rescue_reaches_bounded_planner_handoff(self):
+        selected = {"action": "ACQUIRE_EVIDENCE_INTENT", "required_capability": "source_qualification",
+                    "target_lane": "evidence_data", "cost_units": 0,
+                    "decision_changing_evidence": "verify actual transfer-agent eligibility",
+                    "rescue_for": "EXTERNAL_ACCESS_REQUIRED"}
+        f = feedback("ACQUIRE_EVIDENCE_INTENT")
+        f["selected_action"] = selected
+        f["blockers"] = ["EXTERNAL_ACCESS_BLOCKED"]
+        r = plan_research_action(f, context())
+        self.assertEqual(r["next_action"], "ACQUIRE_EVIDENCE_INTENT")
+        self.assertFalse(r["task_created"])
+        self.assertFalse(r["scheduler_mutation"])
+        self.assertFalse(r["decision_enactable_in_current_screen"])
+        self.assertIn("FOLLOW_UP_TASK_AUTHORITY_NOT_PROVEN_BY_SCREEN", r["blockers"])
+        self.assertEqual(r["original_implementation_blockers"], ["EXTERNAL_ACCESS_BLOCKED"])
+        self.assertFalse(r["mechanism_falsified"])
+
+    def test_unbound_documentary_action_does_not_obtain_authority(self):
+        r = plan_research_action(feedback("ACQUIRE_EVIDENCE_INTENT"), context())
+        self.assertEqual(r["next_action"], "PARK")
+        self.assertFalse(r["task_created"])
+        self.assertIn("UNBOUND_DOCUMENTARY_ACTION", r["blockers"])
+
+    def test_reuse_existing_evidence_never_creates_task(self):
+        f = feedback("REUSE_EXISTING_EVIDENCE")
+        f["selected_action"] = {"action": "REUSE_EXISTING_EVIDENCE", "cost_units": 0}
+        r = plan_research_action(f, context())
+        self.assertEqual(r["next_action"], "REUSE_EXISTING_EVIDENCE")
+        self.assertFalse(r["requires_new_task"])
+        self.assertFalse(r["task_created"])
+        self.assertFalse(r["mechanism_falsified"])
+
+    def test_park_receipt_preserves_implementation_vs_mechanism(self):
+        r = plan_research_action(feedback("PARK"), context())
+        self.assertEqual(r["next_action"], "PARK")
+        self.assertEqual(r["rescue_status"], "NO_BOUNDED_AUTHORIZED_DOCUMENTARY_ROUTE_SELECTED")
+        self.assertEqual(r["cheapest_candidate_action"], "QUALIFY_ONE_DECISION_CHANGING_DOCUMENTARY_REOPEN_ROUTE_WITHIN_MANDATE")
+        self.assertFalse(r["mechanism_falsified"])
+        self.assertTrue(r["exact_reopen_evidence"])
+
+
 if __name__ == "__main__":
     unittest.main()

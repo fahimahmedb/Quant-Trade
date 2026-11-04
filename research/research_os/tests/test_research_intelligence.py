@@ -326,3 +326,106 @@ def test_choose_next_action_is_pure_and_cost_ordered():
 def test_capability_route_requires_both_surfaces():
     assert capability_route_status("quant_mechanisms", "market_discovery", CAPS, LANES)["available"] is True
     assert capability_route_status("missing", "market_discovery", CAPS, LANES)["state"] == "CAPABILITY_MISSING"
+
+# Behavioral implementation-rescue regressions (pre-outcome only).
+def documentary_rescue(*, reason="EXTERNAL_ACCESS_REQUIRED", cost=0, action="ACQUIRE_EVIDENCE_INTENT", **overrides):
+    route = {
+        "action": action,
+        "cost_units": cost,
+        "depth": "WIDE",
+        "rescue_for": reason,
+        "decision_changing_evidence": "verify a lawful broker entitlement and exact deadline",
+        "required_capability": "source_qualification",
+        "target_lane": "evidence_data",
+        "requires_authority": [],
+    }
+    route.update(overrides)
+    return route
+
+
+def test_broker_access_block_rescues_documentary_check_without_trading():
+    c = candidate(external_access_required=True, external_access_available=False,
+                  actions=[documentary_rescue()])
+    d = decide(c)
+    assert d["action"] == "ACQUIRE_EVIDENCE_INTENT"
+    assert d["executable"] is True
+    assert "EXTERNAL_ACCESS_BLOCKED" in d["blockers"]
+    assert d["scheduler_mutation"] is False
+    assert "BOUNDED_DOCUMENTARY_IMPLEMENTATION_RESCUE" in d["reason_codes"]
+
+
+def test_memory_block_rescues_only_matching_documentary_route():
+    c = candidate(actions=[documentary_rescue(
+        reason="HISTORICAL_BLOCKER_UNRESOLVED_NOT_NEGATIVE",
+        action="ARCHAEOLOGY_LOOKUP")])
+    d = decide(c, [memory("BLOCKED")])
+    assert d["action"] == "ARCHAEOLOGY_LOOKUP"
+    assert "MEMORY_BLOCKED_UNRESOLVED" in d["blockers"]
+
+
+def test_real_negative_cannot_be_overridden_by_rescue():
+    c = candidate(actions=[documentary_rescue(reason="HISTORICAL_BLOCKER_UNRESOLVED_NOT_NEGATIVE")])
+    d = decide(c, [memory("NEGATIVE")])
+    assert d["action"] == "NO_BUILD"
+
+
+def test_missing_or_unmatched_evidence_preserves_park():
+    c = candidate(external_access_required=True, external_access_available=False,
+                  actions=[documentary_rescue(decision_changing_evidence="")])
+    assert decide(c)["action"] == "PARK"
+    c["actions"] = [documentary_rescue(reason="OPEN_BLOCKER")]
+    assert decide(c)["action"] == "PARK"
+
+
+def test_rescue_rejects_outcomes_and_post_outcome_reparameterization():
+    c = candidate(external_access_required=True, external_access_available=False)
+    for defect in ({"outcome_accessed": True}, {"changes_frozen_protocol": True},
+                   {"reads_outcomes": True}, {"trading_action": True},
+                   {"paid_dispatch_requested": True},
+                   {"requires_authority": ["economic_experiment_authorized"]}):
+        c["actions"] = [documentary_rescue(**defect)]
+        assert decide(c)["action"] == "PARK", defect
+
+
+def test_rescue_budget_and_capability_fail_closed():
+    c = candidate(external_access_required=True, external_access_available=False,
+                  actions=[documentary_rescue(cost=3)])
+    assert decide(c, budget={"remaining_units": 2})["action"] == "PARK"
+    assert decide(c, budget={})["action"] == "PARK"
+    assert decide(c, caps={"capabilities": []})["action"] == "PARK"
+    assert decide(c, lanes={"lanes": []})["action"] == "PARK"
+
+
+def test_rescue_rejects_invalid_cost_and_unbounded_route_search():
+    c = candidate(external_access_required=True, external_access_available=False)
+    for cost in (-1, float("nan"), float("inf"), "not-a-cost"):
+        c["actions"] = [documentary_rescue(cost=cost)]
+        assert decide(c)["action"] == "PARK"
+    c["actions"] = [documentary_rescue() for _ in range(6)]
+    assert decide(c)["action"] == "PARK"
+
+
+def test_open_blocker_rescues_only_documentary_action():
+    c = candidate(blockers=[{"kind": "BROKER_ENTITLEMENT", "status": "OPEN"}],
+                  actions=[documentary_rescue(reason="OPEN_BLOCKER")])
+    d = decide(c)
+    assert d["action"] == "ACQUIRE_EVIDENCE_INTENT"
+    assert d["blockers"] == ["BROKER_ENTITLEMENT"]
+    c["actions"] = [documentary_rescue(reason="OPEN_BLOCKER", action="RUN_PRODUCER")]
+    assert decide(c)["action"] == "PARK"
+
+
+def test_documentary_choice_prefers_lower_cost_not_trade():
+    c = candidate(external_access_required=True, external_access_available=False,
+                  actions=[documentary_rescue(cost=3),
+                           documentary_rescue(cost=0, action="REUSE_EXISTING_EVIDENCE")])
+    d = decide(c)
+    assert d["action"] == "REUSE_EXISTING_EVIDENCE"
+    assert d["selected_action"]["cost_units"] == 0
+    assert d["scheduler_mutation"] is False
+
+
+def test_documentary_rescue_rejects_unhashable_action_type():
+    c = candidate(external_access_required=True, external_access_available=False,
+                  actions=[documentary_rescue(action=[])])
+    assert decide(c)["action"] == "PARK"

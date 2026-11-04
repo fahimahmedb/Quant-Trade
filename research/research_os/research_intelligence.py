@@ -18,6 +18,7 @@ Key safety properties:
 from __future__ import annotations
 
 import hashlib
+import math
 import json
 import re
 from copy import deepcopy
@@ -385,6 +386,94 @@ def _terminal_decision(
     }
 
 
+def _bounded_documentary_rescue(
+    candidate: Mapping[str, Any],
+    *,
+    reason: str,
+    identity: Mapping[str, Any],
+    memory: Sequence[Mapping[str, Any]],
+    blockers: Sequence[str],
+    capability_registry: Mapping[str, Any],
+    workflow_lanes: Mapping[str, Any],
+    authority: Mapping[str, Any],
+    budget_context: Optional[Mapping[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """Challenge a blocked implementation using declared, pre-outcome routes only.
+
+    This function neither invents an alternative nor grants any right to run it.
+    Missing/invalid route declarations preserve the original PARK decision.
+    """
+    routes = candidate.get("actions")
+    if not isinstance(routes, list) or len(routes) > 5:
+        return None
+    documentary = {"ARCHAEOLOGY_LOOKUP", "REUSE_EXISTING_EVIDENCE", "ACQUIRE_EVIDENCE_INTENT"}
+    forbidden_authorities = {
+        "economic_experiment_authorized", "prospective_observation_authorized",
+        "scientific_unblinding_authorized", "real_capital_authorized",
+        "live_trading_authorized",
+    }
+    admitted = []
+    for raw in routes:
+        if not isinstance(raw, Mapping):
+            continue
+        if not isinstance(raw.get("action"), str) or raw.get("action") not in documentary or raw.get("rescue_for") != reason:
+            continue
+        if not isinstance(raw.get("decision_changing_evidence"), str) or len(raw["decision_changing_evidence"].strip()) < 12:
+            continue
+        if any(raw.get(field) is True for field in (
+            "outcome_accessed", "reads_outcomes", "changes_frozen_protocol",
+            "trading_action", "paid_dispatch_requested",
+        )):
+            continue
+        required = raw.get("requires_authority") or []
+        if not isinstance(required, (list, tuple)) or any(
+            not isinstance(item, str) or item in forbidden_authorities for item in required
+        ):
+            continue
+        if str(raw.get("depth", "WIDE")).upper() != "WIDE":
+            continue
+        try:
+            cost = float(raw["cost_units"])
+        except (KeyError, ValueError, TypeError, OverflowError):
+            continue
+        if not math.isfinite(cost) or cost < 0:
+            continue
+        route = deepcopy(dict(raw))
+        route["cost_units"] = cost
+        route["depth"] = "WIDE"
+        route["is_falsifier"] = False
+        choice = _admit_action(
+            route,
+            capability_registry=capability_registry,
+            workflow_lanes=workflow_lanes,
+            authority=authority,
+            budget_context=budget_context,
+        )
+        if choice["admissible"]:
+            admitted.append(choice)
+    if not admitted:
+        return None
+    chosen = sorted(admitted, key=_action_sort_key)[0]["action"]
+    return {
+        "candidate_id": candidate.get("candidate_id") or candidate.get("hypothesis_id"),
+        "action": chosen["action"],
+        "executable": True,
+        "reason_codes": [reason, "BOUNDED_DOCUMENTARY_IMPLEMENTATION_RESCUE"],
+        "identity": identity_explanation(identity),
+        "memory_influence": [deepcopy(dict(item)) for item in memory],
+        "blockers": list(blockers),
+        "uncertainty_resolved": chosen["decision_changing_evidence"],
+        "selected_action": deepcopy(dict(chosen)),
+        "selection_trace": [
+            "original implementation blocker remains open",
+            "only a declared bounded documentary route was selected",
+            "source evidence and broker rights remain unproven until independently checked",
+            "no new scientific outcome, task or trading authority is granted",
+        ],
+        "scheduler_mutation": False,
+    }
+
+
 def decide_candidate(
     candidate: Mapping[str, Any],
     *,
@@ -464,28 +553,43 @@ def decide_candidate(
             }
 
     if "BLOCKED" in dispositions and candidate.get("memory_blockers_resolved") is not True:
+        reason = "HISTORICAL_BLOCKER_UNRESOLVED_NOT_NEGATIVE"
+        rescue = _bounded_documentary_rescue(
+            candidate, reason=reason, identity=identity, memory=same_family,
+            blockers=["MEMORY_BLOCKED_UNRESOLVED"], capability_registry=registry,
+            workflow_lanes=lanes, authority=authority_state, budget_context=budget_context,
+        )
+        if rescue is not None:
+            return rescue
         return _terminal_decision(
-            "PARK",
-            "HISTORICAL_BLOCKER_UNRESOLVED_NOT_NEGATIVE",
-            candidate=candidate,
-            identity=identity,
-            memory=same_family,
-            blockers=["MEMORY_BLOCKED_UNRESOLVED"],
+            "PARK", reason, candidate=candidate, identity=identity,
+            memory=same_family, blockers=["MEMORY_BLOCKED_UNRESOLVED"],
         )
 
     if candidate.get("external_access_required") is True and candidate.get("external_access_available") is not True:
+        reason = "EXTERNAL_ACCESS_REQUIRED"
+        rescue = _bounded_documentary_rescue(
+            candidate, reason=reason, identity=identity, memory=same_family,
+            blockers=["EXTERNAL_ACCESS_BLOCKED"], capability_registry=registry,
+            workflow_lanes=lanes, authority=authority_state, budget_context=budget_context,
+        )
+        if rescue is not None:
+            return rescue
         return _terminal_decision(
-            "PARK",
-            "EXTERNAL_ACCESS_REQUIRED",
-            candidate=candidate,
-            identity=identity,
-            memory=same_family,
-            blockers=["EXTERNAL_ACCESS_BLOCKED"],
+            "PARK", reason, candidate=candidate, identity=identity,
+            memory=same_family, blockers=["EXTERNAL_ACCESS_BLOCKED"],
         )
 
     open_blockers = _explicit_blockers(candidate)
     if open_blockers:
         kinds = [str(item.get("kind", "OPEN_BLOCKER")).upper() for item in open_blockers]
+        rescue = _bounded_documentary_rescue(
+            candidate, reason="OPEN_BLOCKER", identity=identity, memory=same_family,
+            blockers=kinds, capability_registry=registry, workflow_lanes=lanes,
+            authority=authority_state, budget_context=budget_context,
+        )
+        if rescue is not None:
+            return rescue
         return _terminal_decision(
             "PARK", "OPEN_BLOCKER", candidate=candidate, identity=identity, memory=same_family, blockers=kinds
         )

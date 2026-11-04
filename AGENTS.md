@@ -71,6 +71,18 @@ CHECKPOINT records state and permits continuation; it is not FINAL_HANDOFF or pr
 
 These rules supplement—not replace—the canonical project method. Machine admission checks cover **declared** agent-dispatch intent; they do not prove all real agents obey them. Report actual work qualified per authorized resource, not just zero Owner contacts.
 
+## Bounded opportunity-rescue decision
+
+Read `project/canonical:governance/AI_WORKING_METHOD_V1.md` §5.1
+(`SOLUTION_SEARCH_BEFORE_PARK`). Before an implementation-wide
+`PARK/BLOCK`, distinguish route-specific obstacles from mechanism
+falsification and examine lawful, pre-outcome documentary alternatives
+within existing authority/budget. Preserve frozen protocols, scientific
+memory, multiplicity and proof levels. A terminal material completion
+must carry the disposition scope, decision-changing review and exact
+reopen condition; no new task/trading right is implied. Do not delay
+a genuine authority or safety stop.
+
 ## Evidence law
 
 Built, tested, qualified, integrated, promoted, active, used and end-to-end proven are different states.

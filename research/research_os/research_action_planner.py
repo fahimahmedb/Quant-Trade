@@ -75,7 +75,39 @@ def plan_research_action(
             "requires_new_task": False,
             "decision_enactable_in_current_screen": True,
             "blockers": ["HISTORICAL_BLOCKER_UNRESOLVED"],
-            "cheapest_candidate_action": "PARK_UNTIL_BLOCKER_CHANGES",
+            "cheapest_candidate_action": "QUALIFY_ONE_DECISION_CHANGING_DOCUMENTARY_REOPEN_ROUTE_WITHIN_MANDATE",
+            "mechanism_falsified": False,
+            "rescue_status": "NO_BOUNDED_AUTHORIZED_DOCUMENTARY_ROUTE_SELECTED",
+            "exact_reopen_evidence": "one qualifying pre-outcome documentary alternative under existing authority",
+        }
+
+    if action in {"REUSE_EXISTING_EVIDENCE", "ACQUIRE_EVIDENCE_INTENT"}:
+        selected = feedback.get("selected_action")
+        if not isinstance(selected, Mapping) or selected.get("action") != action:
+            return {
+                **base,
+                "next_action": "PARK",
+                "why": "documentary action lacks a bound pre-outcome selection receipt",
+                "uncertainty_to_resolve": "recover the qualified source decision",
+                "requires_new_task": False,
+                "decision_enactable_in_current_screen": False,
+                "blockers": ["UNBOUND_DOCUMENTARY_ACTION"],
+                "cheapest_candidate_action": "RECONCILE_SOURCE_DECISION",
+                "mechanism_falsified": False,
+            }
+        return {
+            **base,
+            "next_action": action,
+            "why": "qualified pre-outcome documentary action can challenge the implementation block without changing the mechanism verdict",
+            "uncertainty_to_resolve": selected.get("decision_changing_evidence") or feedback.get("uncertainty_resolved") or UNKNOWN,
+            "requires_new_task": action == "ACQUIRE_EVIDENCE_INTENT",
+            "decision_enactable_in_current_screen": False,
+            "required_capability": selected.get("required_capability") or UNKNOWN,
+            "target_lane": selected.get("target_lane") or UNKNOWN,
+            "cheapest_candidate_action": deepcopy(dict(selected)),
+            "blockers": ["FOLLOW_UP_TASK_AUTHORITY_NOT_PROVEN_BY_SCREEN"] if action == "ACQUIRE_EVIDENCE_INTENT" else [],
+            "mechanism_falsified": False,
+            "original_implementation_blockers": list(feedback.get("blockers") or []),
         }
 
     if action == "NO_ACTION":
@@ -172,4 +204,6 @@ def plan_research_action(
         "decision_enactable_in_current_screen": True,
         "blockers": ["UNSUPPORTED_RESEARCH_ACTION:" + action],
         "cheapest_candidate_action": "PARK",
+        "mechanism_falsified": False,
+        "rescue_status": "UNRECOGNIZED_ACTION_NOT_EVIDENCE_OF_MECHANISM_FAILURE",
     }

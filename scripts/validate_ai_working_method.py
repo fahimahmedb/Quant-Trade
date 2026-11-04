@@ -102,6 +102,21 @@ def validate_contract(contract: Mapping[str, Any]) -> List[str]:
             if continuation.get(key) is not expected:
                 errors.append(f"execution_continuity.{key} must be {expected!r}")
 
+    rescue = contract.get("behavioral_opportunity_rescue")
+    if rescue is not None:
+        if not isinstance(rescue, Mapping):
+            errors.append("behavioral_opportunity_rescue must be an object")
+        else:
+            if rescue.get("terminal_claims") != ["PARK", "BLOCK"]:
+                errors.append("behavioral_opportunity_rescue.terminal_claims must be PARK/BLOCK")
+            required_scopes = {"IMPLEMENTATION", "MECHANISM", "SCIENTIFIC", "AUTHORITY", "RUNTIME", "UNKNOWN"}
+            if set(rescue.get("disposition_scopes") or []) != required_scopes:
+                errors.append("behavioral_opportunity_rescue.disposition_scopes mismatch")
+            for key in ("terminal_disposition_required", "require_implementation_rescue_evidence",
+                        "require_exact_reopen_condition", "forbid_mechanism_falsification_from_route_block"):
+                if rescue.get(key) is not True:
+                    errors.append(f"behavioral_opportunity_rescue.{key} must be true")
+
     gate_ids = [gate.get("id") for gate in contract.get("finish_gates", [])]
     expected_gates = [
         "F0_TWO_BRANCH_AUTHORITY",
@@ -462,6 +477,85 @@ def validate_completion_binding(
         errors.append("LOCAL_ONLY_PASS")
     if not completion.get("next_action"):
         errors.append("MISSING_NEXT_ACTION")
+
+    rescue_cfg = contract.get("behavioral_opportunity_rescue")
+    if not isinstance(rescue_cfg, Mapping):
+        rescue_cfg = {}
+    # The hosted Method Gate uses claim=PASS for a FINAL_HANDOFF, even when
+    # the admitted durable handoff_result is a legitimate terminal PARK/BLOCK.
+    # Inspect that real admitted disposition instead of silently skipping
+    # terminal anti-PARK validation on every production final handoff.
+    terminal_evidence = completion
+    terminal_claim = completion.get("claim")
+    if admission.get("completion_intent") == "FINAL_HANDOFF":
+        handoff_result = completion.get("handoff_result")
+        if isinstance(handoff_result, str) and handoff_result in {"PARK", "BLOCK"}:
+            terminal_claim = handoff_result
+            terminal_evidence = admission
+    if (rescue_cfg.get("terminal_disposition_required") is True
+            and isinstance(terminal_claim, str) and terminal_claim in {"PARK", "BLOCK"}):
+        scope = terminal_evidence.get("disposition_scope")
+        allowed_scopes = set(rescue_cfg.get("disposition_scopes") or [])
+        if not isinstance(scope, str) or scope not in allowed_scopes:
+            errors.append("TERMINAL_DISPOSITION_SCOPE_REQUIRED")
+        if not terminal_evidence.get("exact_reopen_condition"):
+            errors.append("TERMINAL_EXACT_REOPEN_CONDITION_REQUIRED")
+
+        if scope == "IMPLEMENTATION":
+            if not terminal_evidence.get("tested_implementation_route"):
+                errors.append("IMPLEMENTATION_PARK_MISSING_EXACT_TESTED_ROUTE")
+            review = terminal_evidence.get("solution_search")
+            if not isinstance(review, Mapping):
+                errors.append("IMPLEMENTATION_PARK_MISSING_BOUNDED_SOLUTION_SEARCH")
+            else:
+                status = review.get("status")
+                if not isinstance(status, str) or status not in {"CHECKED", "HARD_BOUNDARY", "NO_DECISION_CHANGING_ALTERNATIVE"}:
+                    errors.append("IMPLEMENTATION_PARK_INVALID_SOLUTION_SEARCH_STATUS")
+                if not review.get("material_obstacle") or not review.get("chosen_action_or_stop_reason"):
+                    errors.append("IMPLEMENTATION_PARK_MISSING_DECISION_EVIDENCE")
+                if isinstance(status, str) and status in {"CHECKED", "NO_DECISION_CHANGING_ALTERNATIVE"}:
+                    primary = admission.get("primary_evidence") or []
+                    qualified_refs = {
+                        item.get("object_identity") for item in primary
+                        if isinstance(item, Mapping) and isinstance(item.get("object_identity"), str)
+                        and item.get("opened") is True
+                        and item.get("support") == "SUPPORTS" and item.get("scope") == "CURRENT"
+                    }
+                    decisive_ref = review.get("decisive_primary_ref")
+                    if not isinstance(decisive_ref, str) or decisive_ref not in qualified_refs:
+                        errors.append("IMPLEMENTATION_PARK_UNLINKED_DECISIVE_PRIMARY")
+                if (status == "NO_DECISION_CHANGING_ALTERNATIVE"
+                        and not review.get("why_remaining_routes_cannot_change_decision")):
+                    errors.append("IMPLEMENTATION_PARK_UNJUSTIFIED_NO_ALTERNATIVE")
+                if status == "CHECKED":
+                    paths = review.get("paths_considered")
+                    if not isinstance(paths, list) or not (1 <= len(paths) <= 5) or not all(
+                        isinstance(item, Mapping) and isinstance(item.get("route"), str)
+                        and item.get("route").strip()
+                        and isinstance(item.get("disposition"), str)
+                        and item.get("disposition") in {"EXCLUDED", "BLOCKED", "UNKNOWN", "QUALIFIED"}
+                        for item in paths
+                    ):
+                        errors.append("IMPLEMENTATION_PARK_MISSING_CHECKED_PATHS")
+                if status == "HARD_BOUNDARY" and not review.get("hard_boundary_reason"):
+                    errors.append("IMPLEMENTATION_PARK_MISSING_HARD_BOUNDARY_PROOF")
+                if review.get("mechanism_falsified") is True:
+                    errors.append("IMPLEMENTATION_BLOCK_CANNOT_FALSIFY_MECHANISM")
+            if terminal_evidence.get("mechanism_falsified") is True:
+                errors.append("IMPLEMENTATION_BLOCK_CANNOT_FALSIFY_MECHANISM")
+
+        if scope != "MECHANISM" and terminal_evidence.get("mechanism_falsified") is True:
+            errors.append("MECHANISM_FALSIFICATION_SCOPE_MISMATCH")
+        if scope == "MECHANISM" and terminal_evidence.get("mechanism_falsified") is True:
+            ref = terminal_evidence.get("falsification_primary_ref")
+            primary = admission.get("primary_evidence") or []
+            qualified_refs = {
+                item.get("object_identity") for item in primary
+                if isinstance(item, Mapping) and item.get("opened") is True
+                and item.get("support") == "SUPPORTS" and item.get("scope") == "CURRENT"
+            }
+            if not isinstance(ref, str) or ref not in qualified_refs:
+                errors.append("MECHANISM_FALSIFICATION_WITHOUT_LINKED_PRIMARY")
 
     if completion.get("claim") == contract.get("finish_claim", "QUANT_SYSTEM_V1_FINISHED"):
         gates = completion.get("finish_gate_statuses", {})
