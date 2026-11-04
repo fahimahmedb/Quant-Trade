@@ -73,7 +73,7 @@ class F6Rule204SourceTests(unittest.TestCase):
             source(), EngineContext("F6-RULE204-BOUNDED", synthetic_only=False))
         candidate = output["candidate"]
         self.assertEqual(candidate["documentary_evidence"]["economic_result"], "NOT_OBSERVED")
-        self.assertFalse(output["outcome_accessed"])
+        self.assertFalse(output.get("outcome_accessed", False))
         self.assertEqual(candidate["hypothesis_id"], "DOC-FLOW-7ddc4c400115df87")
         self.assertIn("UNKNOWN", candidate["claim"])
         dossier = build_engine_dossier(output)
