@@ -1,22 +1,22 @@
 {
-  "mission_id": "ECONOMIC_CI_ENV_COVERAGE_AND_B7_PORT_REPAIR_20261104",
+  "mission_id": "ECONOMIC_CI_B7_NEW_MANIFEST_SCOPE_REPAIR_20261104",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-04T03:56:36.654Z",
+  "receipt_timestamp": "2026-11-04T04:00:08.694Z",
   "project_canonical_sha": "4baa2f383fdbc2996ebe8015e38c2639a493ac7d",
-  "code_canonical_sha": "eabe9e3b031f84708095dc893aae20a9a487c73f",
+  "code_canonical_sha": "92c2a69c8027206d9b64ff038dbcbf048ef450d6",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@41764611cb573fd052e2da5e427410626056a158",
   "current_subject": {
     "project_sha": "4baa2f383fdbc2996ebe8015e38c2639a493ac7d",
-    "code_sha": "eabe9e3b031f84708095dc893aae20a9a487c73f",
-    "object": "Economic Readiness Integration CI exact-head repair; historical B7 port proof and independent current nonregression"
+    "code_sha": "92c2a69c8027206d9b64ff038dbcbf048ef450d6",
+    "object": "Repair one B7 proof edge: original port receipt did not exist at B7 source; use pinned historical manifest instead of comparing nonexistent B7 file"
   },
-  "current_blocker_or_decision": "Run 41764481926 at 4a9381ea failed 8 imports: pytest absent in three Mega-B modules and src/quant absent in five W1 modules. Workflow 67baf5... lacks test deps and PYTHONPATH. After import repair, prior whole-head diff from shifted AUTONOMOUS_SOURCE_HEAD=89ece... would incorrectly reject 1794 legitimate changes; true historical port baseline is 3e778..., qualified port d5e6... changed exactly 74 allowlisted files, 73 B7-identical blobs and one pinned manifest. F6 has qualified disabled native Rule204 code on immutable d12fff... and is awaiting VM installation; no F6 live task/activation or code worker touched in this repair.",
+  "current_blocker_or_decision": "Economic Readiness Integration run 41770181687/job/126377788961: pinned deps+PYTHONPATH corrected imports, full unittest and full pytest passed 526 tests+207 subtests, schema drift passed. Historical proof step failed only because current-drift inventory tried git rev-parse B7_SOURCE_HEAD:ECON_READINESS_PORT_MANIFEST_20261016.json; original B7 has no such port receipt. Historical proof separately pins d5e6:manifest Git blob 9402b3b..., and previous block already skips this file for B7 blob identity. Exclude same file from current B7 drift inventory; retain 74 immutable historical changes and actual 20 current ported files.",
   "target_gate_or_blocker": "ECONOMIC_READINESS_INTEGRATION_CI",
   "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
-  "why_this_work_can_change_the_decision": "Remove false CI import failures and false historical-global-diff blocker; execute unittest and pytest on the same exact head; attest frozen B7 historical import separately from current economic tests and active runtime clean checkout. No economic experiment or scientific source admission.",
-  "minimal_decisive_test": "Same-SHA full Economic Readiness Integration CI python-readiness AND node-contracts jobs SUCCESS, explicit pytest Mega-B parametrized collection, exact historical 74-file B7 proof, current-head manifest from same run, no mutations to Research OS active runtime, and no authority escalated.",
-  "counterexample": "An old manifest recorded AUTONOMOUS_SOURCE_HEAD=89ece... after port had already occurred; using it as port baseline yields 1794 changed paths and cannot prove the original port. The immutable historical manifest at d5e6... instead identifies baseline 3e778..., exactly 74 allowed paths. Installing pytest alone also leaves unittest discovery blind to parameterized functions.",
+  "why_this_work_can_change_the_decision": "Minimal two-line test/proof correction after observed CI failure, no economic worker/runtime changes. Requalify entire economic workflow on exact new SHA.",
+  "minimal_decisive_test": "Economic Readiness Integration CI full Python unittest+pytest+historic B7 port proof+current drift inventory+clean runtime+artifact, and Node contracts SUCCESS on same SHA.",
+  "counterexample": "Port manifest is an introduced historical receipt, not B7 source; treating it as a ported B7 blob causes git exit 128, not a functional regression. Keep original receipt pinned and enumerate only 73 B7-existing file identities.",
   "primary_evidence": [
     {
       "claim_id": "ECON_IMPORT_8",
@@ -77,10 +77,20 @@
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
+    },
+    {
+      "claim_id": "ECON_CI_B7_MANIFEST_NEW_FILE",
+      "claim": "Original port manifest absent in immutable B7 and current proof first attempted invalid lookup",
+      "source_kind": "GITHUB_JOB_LOG",
+      "object_identity": "41770181687/job/126377788961",
+      "observed_value": "526 pytest passed and 207 subtests, then git rev-parse B7_SOURCE_HEAD:ECON_READINESS_PORT_MANIFEST_20261016.json exited 128; original historic manifest blob 9402b3... is separately pinned",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
     }
   ],
   "durable_output_required": "Exact code SHA full workflow qualification and downloadable immutable economic readiness artifact with historical B7 74-file receipt plus current-head drift inventory, safe runtime invariants, no new trading authority; follow existing checkpoint governance.",
-  "next_action_after_pass_fail_block": "If Economic Readiness Integration CI exact-sha full Python+Node succeeds, retain F6 pending on VM and do not claim profitability. If CI fails, inspect first blocking step, perform only necessary repair and rerun on new exact SHA. After PASS and F6 release, hand off qualified economic candidate preparation independently.",
+  "next_action_after_pass_fail_block": "On exact Economic Readiness Integration CI PASS for full Python and Node jobs plus current code Method, capture artifact and finalize bounded CI repair. On failure inspect and repair only first material defect. No F6 frontier activation, VM mutation, economic/prospective/capital/live work.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "Only GitHub CI workflow, admission metadata and offline verification. No VM, Codex, second agent, F6 frontier enablement, actual economic/prospective observation, real capital or live orders.",

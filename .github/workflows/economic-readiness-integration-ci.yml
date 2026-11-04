@@ -88,6 +88,8 @@ jobs:
               assert git('rev-parse', f'{historical_sha}:{path}') == git('rev-parse', f"{original['B7_SOURCE_HEAD']}:{path}"), f'B7_PORT_BLOB_MISMATCH:{path}'
           current_drift = []
           for path in original['FILES_PORTED']:
+              if path == str(port_path):
+                  continue  # B7 never contained the newly created historical port receipt.
               current_blob = git('rev-parse', f'HEAD:{path}')
               b7_blob = git('rev-parse', f"{original['B7_SOURCE_HEAD']}:{path}")
               if current_blob != b7_blob:
