@@ -1,6 +1,6 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_RULE204_REAL_VM_RESEARCH_IN_PROGRESS`
+STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_RULE204_SOURCE_PIT_BLOCKED_SAFE`
 DATE=`2026-11-04`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
@@ -160,9 +160,9 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F6 (F2 VM dedup closed)
 
 `CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
-`CURRENT_BLOCKER=F6_RULE204_REAL_TASK_NEXT_SCIENTIFIC_DISPOSITION_PENDING`
+`CURRENT_BLOCKER=F6_RULE204_SOURCE_CAPTURE_AFTER_FROZEN_EPOCH_KNOWLEDGE_CUTOFF`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=REUSE_EXISTING_V2_TIMER_AND_VERIFY_RULE204_MECHANISM_STAGE_NO_CANDIDATE_OR_VALIDATION_HANDOFF`
+`MANDATORY_NEXT_DECISION=BLOCK_REPLAY__QUALIFY_HISTORICAL_PIT_SOURCE_OR_GOVERN_NEW_EPOCH_BEFORE_NEXT_ADMISSION`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -183,7 +183,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 ## Current decision frontier — F6
 
 `F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
-`F6_LOCAL_BLOCKER=RULE204_READY_POST_REAL_LEGACY_DUPLICATE_CHECK`
+`F6_LOCAL_BLOCKER=RULE204_TERMINAL_BLOCK_V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION`
 `F6_PRIMARY_OFFICIAL_SOURCE_CAPTURE=PASS`
 `F6_PRIMARY_CAPTURE_RUN=41767148087`
 `F6_PRIMARY_CAPTURE_ARTIFACT=13293470473`
@@ -194,7 +194,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_NEW_FRONTIER_MANDATE=ACTIVE_ONE_SOURCE_CANONICALLY_ADMITTED`
 `F6_NEW_FRONTIER_ID=INSTITUTIONAL_FLOW_REGSHO_RULE204_2025`
 `F6_NEW_READY_TASK=PASS_REAL_VM_RULE204_ONE_TASK_PUBLISHED`
-`F6_VM_SCIENTIFIC_CONTINUATION=PASS_QUEUE_REFILL_AND_LEGACY_STAGE__FULL_DISPOSITION_PENDING`
+`F6_VM_SCIENTIFIC_CONTINUATION=PASS_QUEUE_REFILL_LEGACY_STAGE_AND_SAFE_TERMINAL_SOURCE_PIT_BLOCK`
 `F6_NON_ECONOMIC_CODE_CANDIDATE_SHA=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
 `F6_VM_PROMOTION=PASS_OPERATOR_TRANSACTIONAL_RECEIPT`
 `F6_VM_ACTIVE_RELEASE=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
@@ -208,9 +208,15 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_RULE204_LEGACY_DUPLICATE_CHECK=CONTINUE_REAL_VM`
 `F6_RULE204_TEST_RECOVERY_SHA=c910758c2588ea5f33bd8210b4a8c222ec2ef61c`
 `F6_RULE204_ADMISSION_METHOD_V2_PRIMARY=PASS_EXACT_SHA`
-`F6_RULE204_TERMINAL_DISPOSITION=NOT_PROVEN`
+`F6_RULE204_TERMINAL_DISPOSITION=BLOCKED_V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION`
+`F6_RULE204_TERMINAL_TASK_BLOB=7acdd16b8773c7ec3897adf490fba14c2e517b47`
+`F6_RULE204_TERMINAL_STAGE_ARTIFACT_BLOB=42bf5014ccb37e2e165faced0aed9a8e13cbb0a8`
+`F6_RULE204_TERMINAL_RECEIPT_BLOB=e4eddf65c8f7b1388a4edaf20a1c5963f9f03c37`
+`F6_RULE204_NOOP_AFTER_BLOCK_COMMIT=914800c47c5e2dcc07cb2925a0489f57bcd158af`
+`F6_V2_EPOCH_KNOWLEDGE_CUTOFF=2026-10-20T01:00:00Z`
+`F6_RULE204_FIRST_VERIFIED_SOURCE_CAPTURE=2026-11-04T03:26:37Z`
 `F6_ECONOMIC_EDGE=NOT_OBSERVED`
-`F6_OPERATING_DECISION=REUSE_EXISTING_V2_TIMER_OBSERVE_RULE204_NEXT_STAGE_NO_NEW_BUILD`
+`F6_OPERATING_DECISION=PARK_SOURCE_PIT_NOT_REPAIRABLE_BY_WAIT_OR_UNVERIFIED_REDATE`
 
 ### Closed F6 source and native qualification step
 
@@ -226,7 +232,7 @@ A hosted dedicated Rule 204 source workflow tested the original capture (3/3) an
 
 Completed VM upgrade: Owner-provided terminal output shows `F6_PROMOTION_PREFLIGHT_PASS` and transaction status `ACTIVE_F4_RUNTIME_PROOF_PENDING`, `release_sha=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`, `external_agent_dispatches=0`, backup `/var/backups/quant-v2-handoff-20261104T114445-2290aeb2`, active release symlink to `d12fffdb7...`, V2 timer active/enabled, worker inactive/result success. The separately opened GitHub primary commit `fdf346e76d45b457bfb13377f618ddbe559332a4` (2026-11-04 11:45:47 UTC) adds an actual bounded worker wake receipt with `release_sha=d12fffdb7...`, `preflight.status=PASS`, `status=NOOP_SEARCH_SPACE_INCOMPLETE`, all scientific/economic/capital/live authority flags false, and no hosted model calls. This proves the promoted release has executed and published a normal wake; it does not prove a new Rule 204 task.
 
-The admitted frontier has now produced a **real VM task and one executed stage**: at `2026-11-04T12:00:07Z` natural worker wake, commit `397415dbac51c0a80b511f128d92582ff6838fa5` added exactly one Rule204 READY task `FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001`, bound to source blob `8e6796e2752cd5e000b2667b8558d994b5552628` and packet `7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d`; corresponding durable queue-refill receipt blob `59f20d1cd258720d29aaeb383d79935e72922224` reports `DERIVED_ONE_READY_TASK`, `producer_execution_same_wake=false`, `hosted_model_calls=0`, four authority flags false. At natural wake `2026-11-04T12:10:15Z`, commit `74e2d2f4da67ca2d1a3df8fbd1c295f621b55698` records stage `legacy_duplicate_check: CONTINUE`, task still READY, artifact blob `20c64cb6d5b10cf13e43967d4a33cf3a80fe03c5`, stage receipt blob `944ed5efe10f1e3ec189cefd1a425b19a26df547`, same qualified release, no economic/capital/live authority. This proves bounded VM scientific queue refill and first legacy-screen stage, **not** a complete new frozen hypothesis, economic result or terminal scientific disposition. Current next action is to REUSE the existing natural timer and observe source-bound next stage, scientific disconfirmation, NO_CANDIDATE or independent validation handoff and non-duplicate recovery, without reactivation, new source or new architecture. F6 full operational E2E remains NOT PROVEN; QUANT_SYSTEM_V1_FINISHED and economic edge are not established. No new Codex, secondary agent, VM mutation, economic/prospective/capital/live action is authorized.
+The admitted frontier produced a **real VM task and one successful stage**: at `2026-11-04T12:00:07Z` natural worker wake, commit `397415dbac51c0a80b511f128d92582ff6838fa5` added exactly one Rule204 READY task `FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001`, bound to source blob `8e6796e2752cd5e000b2667b8558d994b5552628` and packet `7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d`; corresponding durable queue-refill receipt blob `59f20d1cd258720d29aaeb383d79935e72922224` reports `DERIVED_ONE_READY_TASK`, `producer_execution_same_wake=false`, `hosted_model_calls=0`, four authority flags false. At natural wake `2026-11-04T12:10:15Z`, commit `74e2d2f4da67ca2d1a3df8fbd1c295f621b55698` records stage `legacy_duplicate_check: CONTINUE`, task still READY, artifact blob `20c64cb6d5b10cf13e43967d4a33cf3a80fe03c5`, stage receipt blob `944ed5efe10f1e3ec189cefd1a425b19a26df547`, same qualified release, no economic/capital/live authority. This proves bounded VM scientific queue refill and first legacy-screen stage, **not** a complete new frozen hypothesis, economic result or terminal scientific disposition. Subsequent real VM wake at 2026-11-04T12:20:12Z ended the same task terminal `BLOCKED`, `retryable=false`, reason `V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION`. Primary artifact `research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001/oracle-worker/mechanism_research.json` blob `42bf5014ccb37e2e165faced0aed9a8e13cbb0a8`, receipt blob `e4eddf65c8f7b1388a4edaf20a1c5963f9f03c37`, terminal task blob `7acdd16b8773c7ec3897adf490fba14c2e517b47`. The next normal wake at 12:30 UTC committed `914800c47c5e2dcc07cb2925a0489f57bcd158af` as `NOOP_SOURCE_MISSING`, with no repeated candidate or new scientific producer. Decisive time proof: currently OPEN frozen V2 epoch (`research/research_os/runtime/V2_ACTIVE_EPOCH.json`, blob `fe8830dc08dd2751e0aa2ec482e55c65baea2fe6`) has `knowledge_cutoff=2026-10-20T01:00:00Z`, while first verified SEC Rule204 document capture and `available_at` are `2026-11-04T03:26:37Z`. `research/research_os/expansion/v2_stage_executor.py` at installed release `d12fffdb7...` correctly rejects source `available_at` beyond frozen epoch cutoff before ideation. Historic CFR edition 2025 cannot be substituted for verified PIT availability. This is a scientifically correct and durable negative/safety disposition; it does NOT qualify new frozen hypothesis, NO_CANDIDATE, independent validation, economic edge or F6 finish. Next action: PARK the terminal task; either retrieve independent primary evidence proving genuine pre-cutoff public availability without changing frozen capture receipts, or separately govern/qualify a new post-capture epoch and a new admissible task without reusing the blocked lineage or breaking blinding/epoch memory. No free retry, epoch timestamp rewriting, quota increase, additional mandate or VM mutation is implied. F6 full operational E2E remains NOT PROVEN; QUANT_SYSTEM_V1_FINISHED and economic edge are not established. No new Codex, secondary agent, VM mutation, economic/prospective/capital/live action is authorized.
 
 ## Other finish-gate state retained
 
@@ -239,7 +245,7 @@ For F2, corrected immutable runtime subject `d0414d7...` passed all four exact r
 
 F0 exact branch inventory and known live consumers have now been verified and capitalized; existing machine two-branch validation is set to `ENFORCED`. Server-side creation restrictions remain `UNKNOWN`.
 
-F0 known-live-consumer scope, F2 bounded VM two-wake dedup, F4 and bounded synthetic F5, Product B synthetic E2E, and now Rule204 real-VM one-task issuance plus first Legacy stage have durable evidence. F6 **full scientific terminal disposition and operational handoff remain NOT PROVEN**; `QUANT_SYSTEM_V1_FINISHED` is not established.
+F0 known-live-consumer scope, F2 bounded VM two-wake dedup, F4 and bounded synthetic F5, Product B synthetic E2E, and now Rule204 real-VM one-task issuance plus first Legacy stage have durable evidence. F6 scientific terminal BLOCK is proven, but further admissible scientific continuation and operational handoff remain NOT PROVEN; `QUANT_SYSTEM_V1_FINISHED` is not established.
 
 ## Authority ceiling
 
