@@ -1,6 +1,6 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_RULE204_SOURCE_PIT_BLOCKED_SAFE`
+STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_RULE204_EPOCH2_PRODUCER_COMPLETE_VALIDATION_PENDING`
 DATE=`2026-11-04`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
@@ -160,9 +160,9 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F6 (F2 VM dedup closed)
 
 `CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
-`CURRENT_BLOCKER=F6_RULE204_SOURCE_CAPTURE_AFTER_FROZEN_EPOCH_KNOWLEDGE_CUTOFF`
+`CURRENT_BLOCKER=F6_INDEPENDENT_DOCUMENTARY_VALIDATION_PENDING__HOSTED_HISTORICAL_EPOCH_FIXTURE_GATES`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=QUALIFY_PREDECLARED_EPOCH_STAGING_THEN_SEPARATELY_ACTIVATE_AFTER_20261104T1530Z_IF_SAFE`
+`MANDATORY_NEXT_DECISION=REUSE_REAL_VM_NATURAL_INDEPENDENT_VALIDATION_AND_REQUALIFY_20261020_TEST_FIXTURE_ON_EXACT_SHA`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -216,7 +216,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_V2_EPOCH_KNOWLEDGE_CUTOFF=2026-10-20T01:00:00Z`
 `F6_RULE204_FIRST_VERIFIED_SOURCE_CAPTURE=2026-11-04T03:26:37Z`
 `F6_ECONOMIC_EDGE=NOT_OBSERVED`
-`F6_OPERATING_DECISION=CONNECT_PREDECLARED_SUCCESSOR_EPOCH_STAGE_ONLY_NO_RUNTIME_CHANGE`
+`F6_OPERATING_DECISION=REUSE_REAL_VM_VALIDATION_REPAIR_HOSTED_FIXTURE_ONLY`
 
 ### Closed F6 source and native qualification step
 
@@ -253,6 +253,26 @@ The admitted frontier produced a **real VM task and one successful stage**: at `
 The exact original epoch blob `fe8830dc08dd2751e0aa2ec482e55c65baea2fe6` remains the active immutable historical epoch and is also archived byte-identically under `research/research_os/runtime/epoch_admissions/`. A **different**, CLEAN and BLINDED successor was predeclared in Git before its future 15:25 knowledge cutoff and 15:30 research-window opening. It retains the source's authentic November 4 first-capture timestamp and records the original Rule204 PIT failure as a distinct terminal predecessor, not as an economic result or scientific novelty. It permits only a new bounded post-capture research cohort, with max one export and inherited all-disabled economic/prospective/capital/live authority. New candidate frontier and tests are staged without changing `V2_ACTIVE_EPOCH.json`, the operational `RESEARCH_FRONTIER.json`, any existing task, the VM or the systemd timer. Focused hosted tests affirm old PIT FAIL/new PIT PASS and one subsequent source-bound preview with no repeat after terminal; a future activation must still satisfy all exact SHA gates, fresh admission, legal epoch succession and no feedback leakage.
 
 Do not mislabel the historical blocked task as NO_CANDIDATE, an independent candidate, an economic edge, or F6 operational PASS. If the old epoch cannot be legitimately superseded without contaminating a protocol or violating predeclared close rules, retain staged files and return BLOCK rather than forcing activation.
+
+### F6 real successor-epoch runtime outcome — 2026-11-04 16:30 UTC
+
+`F6_SUCCESSOR_ACTIVATION_CODE_COMMIT=4a4a90172117d3a7baed220b90b4671f81c87ed6`
+`F6_SUCCESSOR_REAL_VM_PRODUCER_STATUS=COMPLETE_FIVE_OF_FIVE_STAGES`
+`F6_SUCCESSOR_REAL_VM_PRODUCER_COMMIT=a519ab60153caa734d739d6fa53664e5567185a8`
+`F6_SUCCESSOR_REAL_VM_PRODUCER_TASK_BLOB=ab8d2d59933898e10b2d657502ff84afafeee014`
+`F6_SUCCESSOR_REAL_VM_HANDOFF_ARTIFACT_BLOB=2e0baaf0249a9e80a4d2722e658fc4cd4a4e4fe5`
+`F6_SUCCESSOR_VALIDATOR_TASK_ID=VALIDATE-DOC-FLOW-7ddc4c400115df87`
+`F6_SUCCESSOR_VALIDATOR_TASK_BLOB=2f81009d7d7e3d2f6c542448ec4f063a49f57830`
+`F6_SUCCESSOR_VALIDATOR_STATUS=READY_INDEPENDENT_CHALLENGE_NOT_YET_EXECUTED`
+`F6_SUCCESSOR_HOSTED_HISTORICAL_FIXTURE_REPAIR_SHA=760888598dffc1d1f8db6bbc44059d20648f9f03`
+`F6_SUCCESSOR_HOSTED_REQUALIFICATION=IN_PROGRESS_EXACT_SHA`
+`F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
+
+At 2026-11-04 15:31:20Z after the predeclared successor opening, code commit `4a4a90172117d3a7baed220b90b4671f81c87ed6` activated exactly the new epoch blob `6bff13c24c64459995b19c8e9f4f63ca76061601` and a single new source-frontier without modifying or relabeling the earlier terminally BLOCKED Rule204 task. Subsequent actual natural VM wakes on still-installed release `d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd` produced new task `FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001` and completed five durable producer stages: legacy screen, mechanism research, disconfirmation, freeze, validation handoff. The real immutable task/blob and handoff artifact were directly read at code `a519ab60153caa734d739d6fa53664e5567185a8`, and the resulting independent validation task `VALIDATE-DOC-FLOW-7ddc4c400115df87` is READY, **not yet independently validated or an economic result**.
+
+Activation exact-sha CI `4a4a9017...` was RED in Oracle V2 Core and Canonical Code because synthetic 2026-10-20 temporary Git tests copied the 2026-11-04 active epoch and were refused before test ideation; this is not evidence of production task failure. Code commits `f9805a98f383a43401c0b80dda0d18ad6cee4cc0` and `760888598dffc1d1f8db6bbc44059d20648f9f03` repair only the synthetic test fixture: restore the exact archived October epoch by temporary test-seed Git push, never by canonical-worker policy mutation. Both real runtime epochs and task/receipt identities remain immutable. Requalification on the latest exact SHA is still pending at this checkpoint, so no retrospective blanket CI PASS is claimed.
+
+Next action: **REUSE** the natural real-VM independent challenge wake and collect its immutable receipt and terminal disposition; qualify hosted V2 Core, Canonical Code, AI Method and SEC on same exact code SHA; if red and material, minimal repair only. A frozen documentary hypothesis and validation task are not proof of true economic edge, executable alpha, real capital, live trading or `QUANT_SYSTEM_V1_FINISHED`. No new agent, new VM command, rollback or trading action follows from this checkpoint.
 
 ## Other finish-gate state retained
 
