@@ -311,6 +311,25 @@ class V2WorkerIntegrationTests(unittest.TestCase):
         harness = fixture.WorkerTests()
         harness.setUp()
         self.addCleanup(harness.tearDown)
+        # This historical real-Git fixture is dated 2026-10-20. Do not
+        # inherit the live post-capture 2026-11-04 epoch from the repo seed:
+        # its research window correctly rejects this earlier fixture clock.
+        # Restore the exact archived October epoch in the synthetic Git
+        # harness only. Production runtime, past tasks, and timestamps stay put.
+        import json
+        from pathlib import Path
+        historic = json.loads((Path(__file__).resolve().parents[1] /
+            "research/research_os/runtime/epoch_admissions/"
+            "F6_RULE204_PREDECESSOR_EPOCH_20261020.json").read_text())
+        with harness.store.snapshot() as snapshot:
+            current = snapshot.read(ACTIVE_EPOCH_PATH)
+            if current["research_epoch_id"] != historic["research_epoch_id"]:
+                self.assertEqual(current["parent_epoch_id"], historic["research_epoch_id"])
+                self.assertEqual(historic["knowledge_cutoff"], "2026-10-20T01:00:00Z")
+                harness.store.commit(
+                    snapshot, {ACTIVE_EPOCH_PATH: historic},
+                    message="synthetic fixture: restore exact historical V2 epoch",
+                )
         harness.producer()
         harness.now = datetime(2026, 10, 20, 2, tzinfo=timezone.utc)
         worker = build_v2_worker(self.worker_config(), store=harness.store, backend=harness.model)
