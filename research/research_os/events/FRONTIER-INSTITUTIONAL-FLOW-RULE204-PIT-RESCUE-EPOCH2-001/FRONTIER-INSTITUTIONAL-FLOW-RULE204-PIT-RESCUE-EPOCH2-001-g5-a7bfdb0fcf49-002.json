@@ -1,0 +1,23 @@
+{
+  "action_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+  "emitted_at": "2026-11-04T16:30:20Z",
+  "event_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g5-a7bfdb0fcf49-2",
+  "event_seq": 2,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 5,
+  "payload": {
+    "active_count": 1,
+    "claimed_count": 0,
+    "next_lane": "independent_challenge",
+    "next_task_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
+    "queue_state": "QUEUED",
+    "ready_count": 1,
+    "result": "COMPLETE",
+    "stage": "validation_handoff",
+    "task_count": 75,
+    "terminal_count": 74,
+    "unknown_count": 0
+  },
+  "session_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g5-a7bfdb0fcf49",
+  "worker_id": "oracle-research-v2.market_discovery"
+}

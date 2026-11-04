@@ -1,0 +1,76 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "economic_result": "NOT_OBSERVED",
+  "epoch_manifest_hash": "49869741ed4d4c9574c89a9e8758315b236b688dfc690508b6558a73b0e3813f",
+  "handoff": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
+  "input_head": "7aea174621a6d8330e29330e0102940a3b09cf63",
+  "next_lane": "independent_challenge",
+  "outcome_accessed": false,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 16,
+      "overlap_map_hash": "96ad3e32041dfcf7bb50a17c1552a40bb4032159f9fd8918df94ae12ce9f9b8d",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6fb97681d2a471de54701139037d1e5c37900cac24fd1d6265eeaeeb331cc529"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "recovered_source_review_count": 1,
+      "recovered_source_reviews_hash": "c7b141c2e4dbf2a5e1f8e5f14b116fd1aed2d49c38a0b91b45ca17ff04c256c6",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "c14d5985e4150838c32e47d91632967c010a38915cbbad1f10fd4bd6d49e89eb",
+    "status": "PASS",
+    "task_authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    }
+  },
+  "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "research_contract_version": "v2-core",
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261104-002",
+  "stage": "validation_handoff",
+  "state_branch": "code/canonical",
+  "state_repository": "fahimahmedb/Quant-Trade",
+  "v2_validation_handoff": {
+    "candidate": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/candidate_frozen.json.json",
+    "epoch_manifest_hash": "49869741ed4d4c9574c89a9e8758315b236b688dfc690508b6558a73b0e3813f",
+    "task": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
+    "trial": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-v2/research_trial.json.json"
+  }
+}

@@ -14,6 +14,15 @@
     "real_capital_authorized": false,
     "scope": "BOUNDED_FRONTIER_DISCOVERY_AND_FREEZE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/tasks/VALIDATE-DOC-FLOW-7ddc4c400115df87.json",
+      "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/validation_handoff.json"
+    ],
+    "completed_at": "2026-11-04T16:30:20Z",
+    "receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g5-a7bfdb0fcf49.json",
+    "result": "COMPLETE"
+  },
   "created_at": "2026-11-04T15:40:23Z",
   "derivation": {
     "derivation_key": "506bc0655223e125d2df07d71ce4b925ebe9150902bfe9330b5e4ab53ee46f02",
@@ -122,9 +131,13 @@
       "mechanism_research": {
         "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/mechanism_research.json",
         "artifact_hash": "ed2b1823f75ad4fb6952d3d29afd5771f7b50962e21457c4aaefa9d89798c3c4"
+      },
+      "validation_handoff": {
+        "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/validation_handoff.json",
+        "artifact_hash": "d66c073af5bab8d84d2c7198deaa4ec334989c05842b22d01637930dbcf4e50c"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g4-51c32bfccfa7.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g5-a7bfdb0fcf49.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
     "session_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g5-a7bfdb0fcf49",
@@ -165,16 +178,16 @@
   },
   "lease": {
     "claimed_at": "2026-11-04T16:30:16Z",
-    "expires_at": "2026-11-04T16:40:16Z",
+    "expires_at": "2026-11-04T16:30:20Z",
     "generation": 5,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 75,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "success_condition": "At most one pre-outcome documented Rule204 mechanism is independently screened and sent to validation, or a durable NO_CANDIDATE/BLOCK is recorded; previous terminal blocked lineage and unobserved economics preserved.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-11-04T16:30:16Z"
+  "updated_at": "2026-11-04T16:30:20Z"
 }
