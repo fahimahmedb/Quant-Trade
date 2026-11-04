@@ -146,6 +146,7 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(second['status'], 'NO_ADMISSIBLE_LANE_TASK')
         self.assertTrue(second['deduplicated'])
         self.assertIn('reused_receipt', second)
+        self.assertEqual(second['reused_receipt'], second['prior_durable_receipt'])
         self.assertNotIn('output_commit', second)
         self.assertEqual(git(self.remote, 'rev-parse', 'recovery'), head)
         self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 1)
@@ -159,6 +160,9 @@ class WorkerTests(unittest.TestCase):
         self.now += timedelta(minutes=10)
         other = self.worker(lane='independent_challenge', worker_id='different-worker').wake()
         self.assertEqual(other['status'], 'NO_ADMISSIBLE_LANE_TASK')
+        # A lane changes the set of tasks admissible to this worker.
+        self.assertEqual(first['selection_lane'], 'evidence_data')
+        self.assertEqual(other['selection_lane'], 'independent_challenge')
         self.assertIn('output_commit', other)
         self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 2)
         self.assertEqual(self.worker(lane='independent_challenge',
@@ -172,6 +176,28 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(resumed['stage'], 'recover_or_qualify')
         self.assertIn('output_commit', resumed)
         self.assertEqual(self.model.calls, 0)
+
+    def test_same_lane_different_worker_deduplicates_but_scientific_frontier_change_does_not(self):
+        self._terminal_queue()
+        first = self.worker(lane='evidence_data', worker_id='worker-a').wake()
+        self.assertIn('output_commit', first)
+        count = self.count_paths('runtime/worker_wakes/')
+        self.store = LocalStore(self.root / 'new-worker-cold-cache', self.remote)
+        repeat = self.worker(lane='evidence_data', worker_id='worker-b').wake()
+        self.assertTrue(repeat['deduplicated'])
+        self.assertNotIn('output_commit', repeat)
+        self.assertEqual(self.count_paths('runtime/worker_wakes/'), count)
+
+        def change_frontier(snapshot):
+            frontier = snapshot.read(PREFIX + 'runtime/RESEARCH_FRONTIER.json')
+            frontier['frontiers'][0]['priority'] += 1
+            return {PREFIX + 'runtime/RESEARCH_FRONTIER.json': frontier}
+        self.remote_change(change_frontier)
+        changed = self.worker(lane='evidence_data', worker_id='worker-b').wake()
+        self.assertEqual(changed['status'], 'NO_ADMISSIBLE_LANE_TASK')
+        self.assertIn('output_commit', changed)
+        self.assertNotIn('deduplicated', changed)
+        self.assertEqual(self.count_paths('runtime/worker_wakes/'), count + 1)
 
     def test_idle_dedup_rejects_changed_head_before_reuse(self):
         self._terminal_queue()

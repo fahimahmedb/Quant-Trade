@@ -108,6 +108,20 @@ jobs:
             git show "$GIGA_Q_SHA:$f" > "$f"
           done
           python -m pytest -q "${files[@]}"
+      - name: Exact Oracle VM installer Research OS verification suite
+        env:
+          PYTHONPATH: .:src
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -m unittest -v research.research_os.tests.test_implementability_depth \
+            research.research_os.tests.test_experiment_runner_frozen_protocol \
+            research.research_os.tests.test_economic_readiness_validation \
+            research.research_os.tests.test_economic_identity_portfolio_readiness \
+            research.research_os.tests.test_producer_economic_readiness \
+            research.research_os.tests.test_economic_readiness_integration \
+            research.research_os.tests.test_queue_replenisher \
+            research.research_os.tests.test_model_backend \
+            research.research_os.tests.test_oracle_worker
       - name: Product B synthetic E2E crash replay and Learning qualification
         env:
           PYTHONPATH: .:src

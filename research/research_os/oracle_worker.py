@@ -260,6 +260,7 @@ class ResearchOSWorker:
 
     def _idle(self, snapshot, base_receipt, reason, *, persist=True):
         result = dict(base_receipt, status=reason, queue=queue_summary(snapshot.tasks()),
+                      selection_lane=self.lane,
                       observed_at=timestamp(self.now()), writes=0)
         if persist:
             # First legitimate NOOP remains a Git receipt. Repeated identical
@@ -285,9 +286,10 @@ class ResearchOSWorker:
                 self.fault('before_idempotent_noop_freshness_check')
                 with self.store.snapshot() as fresh:
                     if fresh.head != snapshot.head:
-                        raise StateConflict('HEAD_CHANGED_BEFORE_IDEMPOTENT_NOOP')
+                        raise StateConflict('HEAD_CHANGED_BEFORE_IDLE_REUSE')
                 result['deduplicated'] = True
                 result['prior_durable_receipt'] = path
+                result['reused_receipt'] = path  # Existing installer/test consumer contract.
                 result['prior_receipt_head'] = snapshot.head
             else:
                 result['output_commit'] = self.store.commit(
