@@ -105,6 +105,14 @@
     "type": "EMPTY_QUEUE_FRONTIER_REFILL"
   },
   "execution": {
+    "attempts": {},
+    "completed_stages": {
+      "legacy_duplicate_check": {
+        "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001/oracle-worker/legacy_duplicate_check.json",
+        "artifact_hash": "4531cb5bba5800d4e5f2abef3b3d91bd15755b76b475e7e9da825f4f95d8ff0e"
+      }
+    },
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001-g1-2ae5387f39db.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
     "session_id": "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001-g1-2ae5387f39db",
@@ -144,16 +152,16 @@
   },
   "lease": {
     "claimed_at": "2026-11-04T12:10:08Z",
-    "expires_at": "2026-11-04T12:20:08Z",
+    "expires_at": "2026-11-04T12:10:15Z",
     "generation": 1,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 75,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "One distinct documented Rule204 premise is legacy-screened and handed to independent validation, or NO_CANDIDATE/BLOCK is durably recorded; never infer a forced purchase or payoff from law alone.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-11-04T12:10:08Z"
+  "updated_at": "2026-11-04T12:10:15Z"
 }
