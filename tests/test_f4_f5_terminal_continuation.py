@@ -164,8 +164,11 @@ class TerminalBridgeTests(unittest.TestCase):
             self.assertNotIn("output_commit", second)
             with cold.snapshot() as snapshot:
                 self.assertEqual(snapshot.head, original_head)
+                # Scope synthetic F2 assertions to this harness release: real VM
+                # wake receipts may already be present in the seeded repository.
                 idle = [p for p in snapshot.blobs
-                        if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")]
+                        if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")
+                        and snapshot.read(p).get("release_sha") == RELEASE]
                 self.assertEqual(len(idle), 1)
                 self.assertEqual(snapshot.read(idle[0])["causal_predecessor"], cause)
 
@@ -185,7 +188,8 @@ class TerminalBridgeTests(unittest.TestCase):
             self.assertIn("output_commit", distinct)
             with mutator.snapshot() as snapshot:
                 idle = [p for p in snapshot.blobs
-                        if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")]
+                        if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")
+                        and snapshot.read(p).get("release_sha") == RELEASE]
                 self.assertEqual(len(idle), 3)
         finally:
             harness.tearDown()
@@ -221,7 +225,8 @@ class TerminalBridgeTests(unittest.TestCase):
             with competing.snapshot() as snapshot:
                 self.assertEqual(snapshot.head, changed[0])
                 paths = [p for p in snapshot.blobs
-                         if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")]
+                         if p.startswith(PREFIX + "runtime/worker_wakes/idempotent-")
+                        and snapshot.read(p).get("release_sha") == RELEASE]
                 self.assertEqual(len(paths), 1, "stale worker must never add a second idle commit")
         finally:
             harness.tearDown()

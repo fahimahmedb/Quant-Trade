@@ -1,22 +1,22 @@
 {
-  "mission_id": "F2_VM_DEDUP_EVIDENCE_CANONICALIZE_20261104",
+  "mission_id": "F2_ISOLATE_SYNTHETIC_IDLE_RECEIPTS_20261104",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-04T02:25:43.414Z",
+  "receipt_timestamp": "2026-11-04T02:29:32.929Z",
   "project_canonical_sha": "671d0a7f6a607004f50ca6d8fbd38cd6f891966b",
-  "code_canonical_sha": "afeb0f52d3389ff46267e18d1dbfd1eef05d58a3",
+  "code_canonical_sha": "ad5a674ec8e96d94549da95b03797b104f648a08",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@866b70b1386bee8b5599ff5532298da565f16b03",
   "current_subject": {
     "project_sha": "671d0a7f6a607004f50ca6d8fbd38cd6f891966b",
-    "code_sha": "afeb0f52d3389ff46267e18d1dbfd1eef05d58a3",
-    "object": "F2 real-VM idempotent NOOP, existing exact release qualification and F6 source/frontier handoff"
+    "code_sha": "ad5a674ec8e96d94549da95b03797b104f648a08",
+    "object": "F2 exact-head PR46 synthetic fixture isolation after new real VM wake receipt; hosted regression repair only"
   },
-  "current_blocker_or_decision": "F2 corrected release d0414d7 VM installed and promoted; two natural dedup wakes PASS at 02:10:16 and 02:20:07 UTC; prior project router checkpoint incorrectly states VM uninstalled. F6 separate 48/48 issued frontier budget and scientific search incomplete.",
-  "target_gate_or_blocker": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION;F6_OPERATIONAL_HANDOFF",
-  "existing_capability": "REUSE",
-  "requested_action": "REUSE",
-  "why_this_work_can_change_the_decision": "Preserve exact F2 VM proof in existing canonical router, prove current-head executable equivalence and advance to true F6 source/frontier constraint without new scheduler, VM mutation, or another method.",
-  "minimal_decisive_test": "Observe 2 natural distinct systemd invocations with deduplicated=true, same prior durable receipt, null output_commit, stable GitHub HEAD; confirm d0414d7 exact four hosted gates and only runtime-receipt changes up to afeb0f5; requalify admission-only metadata subject on hosted gates.",
-  "counterexample": "The initial 02:04:05 VM wake produced afeb0f52 commit and must not be miscounted as deduplicated; new source without a new admissible frontier mandate cannot overcome 12/12 per-frontier emission caps.",
+  "current_blocker_or_decision": "New code HEAD ad5a674... passed working method and V2 gates but Canonical Code Qualification 41760692282 FAILED two F2 PR46 tests: synthetic harness copies current Research OS runtime/worker_wakes and assertions globally count previously committed real VM idempotent receipt. VM 02:10 and 02:20 natural dedup PASS remains valid. Fix test counting, not production worker.",
+  "target_gate_or_blocker": "F2_EXACT_HEAD_ENGINEERING_QUALIFICATION",
+  "existing_capability": "REPAIR",
+  "requested_action": "REPAIR",
+  "why_this_work_can_change_the_decision": "Minimal test-only correction: count just idempotent receipt from synthetic RELEASE='a'*40, not unrelated live-VM release d0414d7 receipts copied into test seed. Retain adversarial stale-HEAD check and all real production logic.",
+  "minimal_decisive_test": "Exact hosted PR46 suite tests.test_f4_f5_terminal_continuation including cold restart, semantic change and injected stale HEAD; exact installer nine modules, four code-head CI gates. Same F2 VM immutable release unchanged.",
+  "counterexample": "A historical idempotent receipt from live d0414d7 may exist in test fixture and must not be mistaken for a newly written synthetic-release receipt; stale-head fault must still fence new idle commit.",
   "primary_evidence": [
     {
       "claim_id": "F2_VM_TWO_DEDUP_WAKES",
@@ -87,10 +87,30 @@
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
+    },
+    {
+      "claim_id": "F2_CI_SYNTHETIC_RECEIPT_FIXTURE_REGRESSION",
+      "claim": "PR46 F2 tests count 2 instead of 1 idempotent receipts because current runtime fixture contains one older real VM receipt",
+      "source_kind": "GITHUB_ACTION_JOB_LOG",
+      "object_identity": "41760692282/job/126347428288",
+      "observed_value": "tests.test_f4_f5_terminal_continuation: at lines 169 and 225 expected len=1 but got 2; previously committed idempotent-e30b... exists at code head; no executable change in the previous admission-only commit",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "F2_TEST_BLOB_FIXTURE",
+      "claim": "F2 tests count every idempotent-* receipt in snapshot and WorkerTests fixture copies runtime whole",
+      "source_kind": "GIT_BLOBS",
+      "object_identity": "tests/test_f4_f5_terminal_continuation.py@ce7002ccb11283d09ac94d78bb69f5feff772224; research/research_os/tests/test_oracle_worker.py",
+      "observed_value": "three filter expressions omit synthetic RELEASE constraint; WorkerTests.setUp uses shutil.copytree(BASE/'runtime', self.base/'runtime')",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
     }
   ],
-  "durable_output_required": "Durable existing project/canonical router update: F2 VM install/activation/dedup true scoped; four SHA gates and executable-only compare; F6 blocker and next bounded non-economic source/mandate admission; no F2 unnecessary rerun.",
-  "next_action_after_pass_fail_block": "F6: qualify one genuinely distinct non-economic documentary source plus Owner-governed frontier mandate in existing Research Intelligence; do not raise issued cap, create tasks, use Codex, mutate VM, claim economic edge or authorize live/capital without evidence.",
+  "durable_output_required": "One test-only F2 fixture assertion correction plus renewed mission admission, four fresh exact hosted gates; then project F2 VM proof handoff.",
+  "next_action_after_pass_fail_block": "On four exact hosted PASS, update existing project router with F2 VM dedup and source-cap evidence, finalize current method handoff, continue F6 distinct-source/mandate admission only; if gates fail, repair observed minimal test defect.",
   "owner_authorization_required": false,
   "owner_authorized": true,
   "authority_scope": "Existing GitHub canonical evidence and checkpoint only; no VM, no Codex, no second agent, no economic/production/trading authority",
