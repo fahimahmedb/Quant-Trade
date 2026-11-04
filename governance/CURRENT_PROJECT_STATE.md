@@ -160,9 +160,9 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F2 (VM idempotent NOOP closed)
 
 `CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
-`CURRENT_BLOCKER=F6_RULE204_VM_RELEASE_AND_FRONTIER_ADMISSION_PENDING`
+`CURRENT_BLOCKER=F6_RULE204_FRONTIER_ADMISSION_AND_LIVE_TASK_PENDING`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=QUALIFY_AND_INSTALL_RULE204_RELEASE_BEFORE_ENABLING_FRONTIER`
+`MANDATORY_NEXT_DECISION=ADMIT_ENABLE_ONLY_RULE204_FRONTIER_THEN_VERIFY_REAL_NATURAL_WAKE`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -183,7 +183,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 ## Current decision frontier — F6
 
 `F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
-`F6_LOCAL_BLOCKER=RULE204_CURRENT_VM_RELEASE_NOT_INSTALLED`
+`F6_LOCAL_BLOCKER=RULE204_FRONTIER_DISABLED_PENDING_ADMISSION`
 `F6_PRIMARY_OFFICIAL_SOURCE_CAPTURE=PASS`
 `F6_PRIMARY_CAPTURE_RUN=41767148087`
 `F6_PRIMARY_CAPTURE_ARTIFACT=13293470473`
@@ -196,9 +196,13 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_NEW_READY_TASK=NOT_CREATED`
 `F6_VM_SCIENTIFIC_CONTINUATION=NOT_PROVEN`
 `F6_NON_ECONOMIC_CODE_CANDIDATE_SHA=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
-`F6_VM_PROMOTION=NOT_EXECUTED`
+`F6_VM_PROMOTION=PASS_OPERATOR_TRANSACTIONAL_RECEIPT`
+`F6_VM_ACTIVE_RELEASE=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
+`F6_VM_ROLLBACK_BACKUP=/var/backups/quant-v2-handoff-20261104T114445-2290aeb2`
+`F6_VM_FIRST_NEW_RELEASE_WAKE=PASS_GITHUB_DURABLE_NOOP`
+`F6_VM_FIRST_NEW_RELEASE_WAKE_COMMIT=fdf346e76d45b457bfb13377f618ddbe559332a4`
 `F6_ECONOMIC_EDGE=NOT_OBSERVED`
-`F6_OPERATING_DECISION=BLOCK_EXACT_NEW_RELEASE_VM_INSTALL_THEN_SEPARATE_FRONTIER_ADMISSION`
+`F6_OPERATING_DECISION=CONNECT_EXISTING_RULE204_ONE_SOURCE_MANDATE_WITH_FRESH_ADMISSION`
 
 ### Closed F6 source and native qualification step
 
@@ -206,15 +210,15 @@ The first F6 source blocker has been **actually lifted**, not inferred from a se
 
 The existing source/adaptor/provenance route was CONNECTED, not replaced: `research/research_os/expansion/source_adapters_v1.py`, `engine_dossiers_v1.py` and `frontier_source_planner_v2.py` now qualify the exact official Rule 204 captured packet under `INSTITUTIONAL_FLOW` with pinned original and section hashes. The real packet at `research/research_os/sources/reg_sho_rule204_2025.json` is identical to staged packet blob `8e6796e2752cd5e000b2667b8558d994b5552628` and is source-kind isolated from prior 17 CFR 240.15c6-1 T+1 packet. The official dated Rule 204 legal closeout rule permits borrow as an alternative to purchase and contains many deadlines/exceptions. Actual fail volume, affected trades, directional forced purchase, historical PIT, empirical return, economic advantage and current legal opinion are all UNKNOWN or NOT_OBSERVED.
 
-The original four Owner-governed frontiers still have 12/12 issued each, and the existing V2 timer was observed at 72/72 terminal. Exactly one new source-scoped frontier `INSTITUTIONAL_FLOW_REGSHO_RULE204_2025` was added **DISABLED** under the existing `research/research_os/runtime/RESEARCH_FRONTIER.json` blob `69652e707a0b6930d1d00f8a951f626960d202c9`. Its `required_source_rule_kind=REG_SHO_CLOSEOUT_OPERATIVE_RULE`; all four forbidden economic/prospective/capital/live authority flags remain false. Never rewrite the old tasks or raise existing issuance quotas. The disabled state is intentional: the installed VM still runs older corrected release `d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`, which lacks the Rule 204 adapter and source-kind filter. Enabling before verified VM release promotion could create an invalid or misbound task.
+The original four Owner-governed frontiers still have 12/12 issued each, and the existing V2 timer was observed at 72/72 terminal. Exactly one new source-scoped frontier `INSTITUTIONAL_FLOW_REGSHO_RULE204_2025` was added **DISABLED** under the existing `research/research_os/runtime/RESEARCH_FRONTIER.json` blob `69652e707a0b6930d1d00f8a951f626960d202c9`. Its `required_source_rule_kind=REG_SHO_CLOSEOUT_OPERATIVE_RULE`; all four forbidden economic/prospective/capital/live authority flags remain false. Never rewrite the old tasks or raise existing issuance quotas. The disabled state was intentional before the VM upgrade: the old `d0414d7...` release lacked the Rule 204 adapter and source-kind filter. The exact candidate `d12fffdb7...` has now been installed and transactionally promoted on the intended host; its first durable wake remains a NOOP because the new source frontier is still disabled. Separate mission admission remains required before enabling it.
 
 A hosted dedicated Rule 204 source workflow tested the original capture (3/3) and later the native packet, tamper resistance, documentary output, explicit UNKNOWN economics, strict source-kind matching, one-task in-memory derivation and disabled-runner safety (8/8). On the disabled-frontier candidate, that focused witness is run `41769040168` on SHA `d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`; its other exact same-SHA gate outcomes must be verified before a VM install, and any later code movement must be reconciled rather than inferred.
 
 ### Remaining F6 operational sequence and hard safety gate
 
-Next bounded technical step: install the immutable, four-gate-qualified `d12fffdb7...` on the **same intended VM** via the existing nine-module installer and existing root-controlled transactional `deploy.oracle_v2_deploy --action resume-terminal`, with explicit expected currently active SHA `d0414d7...` and exact Oracle V2 Core/SEC run IDs. The transaction fails closed on stale host state, altered root proof, mismatched release or check; do not force. Do not describe this as performed until an actual terminal receipt is observed.
+Completed VM upgrade: Owner-provided terminal output shows `F6_PROMOTION_PREFLIGHT_PASS` and transaction status `ACTIVE_F4_RUNTIME_PROOF_PENDING`, `release_sha=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`, `external_agent_dispatches=0`, backup `/var/backups/quant-v2-handoff-20261104T114445-2290aeb2`, active release symlink to `d12fffdb7...`, V2 timer active/enabled, worker inactive/result success. The separately opened GitHub primary commit `fdf346e76d45b457bfb13377f618ddbe559332a4` (2026-11-04 11:45:47 UTC) adds an actual bounded worker wake receipt with `release_sha=d12fffdb7...`, `preflight.status=PASS`, `status=NOOP_SEARCH_SPACE_INCOMPLETE`, all scientific/economic/capital/live authority flags false, and no hosted model calls. This proves the promoted release has executed and published a normal wake; it does not prove a new Rule 204 task.
 
-**Only after** current VM release is verified active: separately admit and enable the exact one-source Rule 204 frontier through the existing canonical admission, respecting one mutating builder and immutable source/Legacy scientific checks. Then observe normal natural service wake(s) and durable source-bound task/legacy duplicate screen/NO_CANDIDATE or validation handoff, not a synthetic stand-in. F6 `PROVEN_END_TO_END` stays FALSE until this runtime witness exists; `QUANT_SYSTEM_V1_FINISHED` still NOT established. No autonomous Codex, extra agent, direct VM access, economic/prospective/capital/live action or forced publication is authorized by this checkpoint.
+Current next action: separately admit and enable the exact one-source Rule 204 frontier through the existing canonical admission, respecting one mutating builder and immutable source/Legacy scientific checks. Then observe normal natural service wake(s) and durable source-bound task/legacy duplicate screen/NO_CANDIDATE or validation handoff, not a synthetic stand-in. F6 `PROVEN_END_TO_END` stays FALSE until this runtime witness exists; `QUANT_SYSTEM_V1_FINISHED` still NOT established. No autonomous Codex, extra agent, direct VM access, economic/prospective/capital/live action or forced publication is authorized by this checkpoint.
 
 ## Other finish-gate state retained
 
@@ -227,7 +231,7 @@ For F2, corrected immutable runtime subject `d0414d7...` passed all four exact r
 
 F0 exact branch inventory and known live consumers have now been verified and capitalized; existing machine two-branch validation is set to `ENFORCED`. Server-side creation restrictions remain `UNKNOWN`.
 
-F0 known-live-consumer scope, F2 bounded VM two-wake dedup, F4 and bounded synthetic F5, and Product B qualified E2E have durable evidence. F6 scientific source admissibility and operational handoff remain BLOCKED; `QUANT_SYSTEM_V1_FINISHED` is not established.
+F0 known-live-consumer scope, F2 bounded VM two-wake dedup, F4 and bounded synthetic F5, and Product B qualified E2E have durable evidence. F6 real-VM new-frontier scientific task admission/use and operational handoff remain BLOCKED; `QUANT_SYSTEM_V1_FINISHED` is not established.
 
 ## Authority ceiling
 
