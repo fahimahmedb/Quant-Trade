@@ -81,6 +81,87 @@ A new architecture, scheduler, control plane, memory system, framework or agent 
 
 Hosted reasoning is reserved for a demonstrated high-value engineering or validation gap that deterministic checks/local GPT-OSS cannot close. Routine inspection, prioritization, waiting, summaries and no-delta monitoring stay local. State an invocation budget before dispatch; do not silently renew it by renaming a failed task. The current F3 transport trial allows one builder and at most one review, with no paid automatic retry. Invocation limits are not a token or monetary ceiling; do not invent usage estimates.
 
+## 5.1 Opportunity-rescue law — challenge the implementation before PARK
+
+A documented implementation blocker is not, by itself, proof that its underlying
+economic/scientific mechanism is false. Before proposing a terminal `PARK`,
+`BLOCK` or `STOP` for a candidate, perform a **bounded decision-changing
+solution search** within the existing mission and authority:
+
+1. **Name the failure precisely.** Distinguish mechanism/inference, frozen
+   experimental expression, instrument/right, point-in-time information, access
+   or custody, broker/corporate-action transmission, cost/liquidity, execution
+   clock, data licensing, and Owner/VM permission. State whether the failure is
+   `FALSIFIED`, `NOT_IMPLEMENTABLE_ON_TESTED_ROUTE` or `UNKNOWN`.
+2. **REUSE first.** Inspect existing source qualifications, negative memory,
+   admissible alternatives, available connectors and previously tested routes.
+   Do not replay closed trials or rebuild an exhausted research architecture.
+3. **Challenge plausible solutions, not arbitrary variants.** For each
+   materially distinct, feasible path capable of changing the next decision,
+   examine the exact right/instrument, legally accessible intermediary or
+   transfer agent, causal information timestamp, actual operational action,
+   fees, delay, worst-case downside, and documentary proof. Prefer a small
+   set of decisive alternatives over exhaustive broker scans or limitless
+   creativity. Do not use unauthorized resources or circumvent access rules.
+4. **Choose the least costly decisive discriminator.** When one missing
+   document, entitlement, fee schedule, time-of-publication check or
+   independent synthetic-safe test can resolve a path, pursue it within scope
+   before a broad PARK. If primary evidence cannot be obtained within
+   the authorized bound, mark that path `UNKNOWN` with exact reopen evidence.
+5. **Preserve scientific identity.** Never alter a frozen T0, first-event
+   selection, cost/size, source route, outcome membrane or trial accounting
+   because a result or broker constraint is inconvenient. A different
+   instrument, broker-execution rule, information clock or payoff expression
+   that materially changes the inference is a **distinct, linked prospective
+   hypothesis**, admitted and predeclared before any new outcome access;
+   it does not reset multiplicity or transform contaminated history into OOS.
+6. **Classify narrowly.** `PARK_IMPLEMENTATION` in prose may close a tested
+   route while preserving the family as `CONDITIONAL_FEASIBILITY` or
+   `UNKNOWN`. Use the existing machine `PARK/BLOCK/UNKNOWN` states; do
+   not invent a new scheduler, router or authority enum. When a mechanism is
+   economically falsified by a valid test, record that negative result instead
+   of inventing rescue variants to evade it.
+7. **Hand off one decision-changing next action.** Record paths actually
+   checked, primary proof or contradiction, not-checked high-value path if
+   any, conclusion by mechanism versus implementation, next exact witness,
+   and stop/reopen condition in existing evidence/checkpoint surfaces.
+
+**Machine receipt boundary.** For material `PARK/BLOCK` completions, the
+existing admission/completion validator must require an explicit disposition
+scope. An implementation-specific terminal result needs a bounded rescue
+review, the decisive witness/reopen condition and an explicit non-falsification
+of the underlying mechanism. A proven authority/safety stop can remain
+immediate. The validator checks declared structure and binding, **not**
+whether a model genuinely considered every economic alternative. That
+requires independent behavioral challenge and eventual runtime witnesses.
+
+**Real FINAL_HANDOFF binding.** The existing GitHub method gate uses an outer
+completion `claim=PASS` to represent successful transmission of a
+`FINAL_HANDOFF`, even when the **actual** admitted result is
+`handoff_result=PARK` or `handoff_result=BLOCK`. Terminal behavioral
+requirements apply to the admitted `handoff_result`, not merely the outer
+CI claim. For such a terminal result, include `disposition_scope`,
+`exact_reopen_condition` and, where implementation-specific,
+`tested_implementation_route` and `solution_search` in the **same
+mission admission**, causally bound to opened primary evidence. A
+`CHECKPOINT` is not terminal; a proven Owner/safety prohibition can
+be recorded as a direct scoped hard stop without speculative rescue.
+
+**Stopping discipline.** Do not extend a solved decision, audit an audit,
+or enumerate speculative routes. Stop when remaining alternatives cannot
+materially change the decision, have no lawful/technically plausible path,
+lack required Owner authority or verified budget/permission, entail
+unacceptable risk, or would require a forbidden post-outcome protocol change.
+A local blocker never stops unaffected authorized work. A valid PARK is
+acceptable after this bounded challenge; numerical counts of options,
+reports or synthetic tests are not success metrics.
+
+**Scope.** This is a decision-quality rule, not an authorization to trade,
+observe prospective/economic outcomes, invoke agents, access paid data, spend
+capital, alter runtime or mutate another active seam. An agent's statement
+that it searched is not behavioral proof; fresh-agent counterexamples and
+real operating decisions must be checked separately.
+
 ## 6. Concurrency and ownership
 
 - one primary Builder may mutate a capability/seam at a time;
@@ -181,6 +262,8 @@ The real admission interface and its tests must fail closed for at least:
 - duplicate review without new decision-changing input;
 - local-only PASS;
 - unjustified global stop from a local blocker;
+- a route-specific implementation BLOCK/PARK generalized to mechanism or family failure without the bounded decision-changing §5.1 challenge;
+- an alleged rescue that rewrites frozen prospective conditions, resets scientific multiplicity, or grants economic/capital/live authority;
 - WIP or same-seam concurrent-Builder violation;
 - missing required Owner authority;
 - missing next action;
@@ -215,7 +298,7 @@ The machine contract/validator must fail closed when required provenance is miss
 
 ## 14. Stop law
 
-Stop a work unit when the decision is resolved, the required gate is proven/falsified, a bounded blocker is established, additional evidence cannot change the conclusion, or the work is correctly PARKed.
+Stop a work unit when the decision is resolved, the required gate is proven/falsified, or a bounded blocker is established **after the decision-changing solution search of §5.1** (unless a hard authority, safety or resource boundary prevents that search). A blocked implementation does not by itself falsify its mechanism. Stop when further evidence cannot change the conclusion, or the affected route is correctly PARKed with an exact reopen condition.
 
 Do not continue merely to make the report larger.
 

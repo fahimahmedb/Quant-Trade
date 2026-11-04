@@ -34,6 +34,17 @@ A material mission is admitted only when it can change a current decision, close
 
 `UNKNOWN` blocks only the affected action. It does not authorize global archaeology.
 
+## Opportunity-rescue behavior
+
+`SOLUTION_SEARCH_BEFORE_PARK` is defined by §5.1 of
+`governance/AI_WORKING_METHOD_V1.md`. Before a terminal economic or
+implementation PARK/BLOCK, distinguish route failure from mechanism
+falsification; explore decision-changing lawful documentary access/clock/
+instrument alternatives within existing authority and budget, and record
+checked paths plus an exact reopen condition. Keep frozen protocols, all prior
+trial exposure and hard authorization limits intact. Do **not** delay a proven
+safety/authority stop or manufacture unbounded speculative options.
+
 ## Concurrency and continuation
 
 - one mutating Builder per capability/seam;

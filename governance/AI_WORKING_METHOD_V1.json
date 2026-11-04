@@ -221,5 +221,70 @@
     "checkpoint_implies_final_handoff": false,
     "checkpoint_proves_autonomous_relaunch": false,
     "local_blocker_stops_independent_work": false
+  },
+  "behavioral_opportunity_rescue": {
+    "version": 1,
+    "status": "PARTIAL_TERMINAL_RECEIPT_ENFORCEMENT_PENDING_CANONICAL_PROMOTION",
+    "target": "Every bounded material candidate disposition to PARK, BLOCK or STOP",
+    "required_distinctions": [
+      "MECHANISM",
+      "FROZEN_EXPRESSION",
+      "IMPLEMENTATION_ROUTE",
+      "PIT_INFORMATION",
+      "LEGAL_ACCESS_AND_RIGHTS",
+      "OPERATIONAL_EXECUTION",
+      "COST_AND_RISK",
+      "AUTHORITY"
+    ],
+    "priority": [
+      "REUSE_EXISTING_EVIDENCE",
+      "CONNECT_ACCESS_OR_DATA",
+      "REPAIR_MINIMAL",
+      "QUALIFY_NEW_DISTINCT_HYPOTHESIS_IF_ADMITTED",
+      "PARK_NARROWLY"
+    ],
+    "evidence_for_disposition": [
+      "exact_tested_route",
+      "material_obstacle",
+      "decision_changing_alternatives_checked",
+      "primary_support_or_contradiction",
+      "unresolved_witness",
+      "one_next_action_or_exact_reopen_condition"
+    ],
+    "preserve": [
+      "frozen_protocols",
+      "first_eligible_event",
+      "PIT_clocks",
+      "exposure_memory",
+      "trial_multiplicity",
+      "authority_boundaries",
+      "two_canonical_branches"
+    ],
+    "local_blocker_does_not_falsify_family": true,
+    "no_alternative_outcome_backfill": true,
+    "no_extra_economic_observation_authority": true,
+    "no_extra_capital_or_live_authority": true,
+    "no_extra_paid_tool_or_agent_authority": true,
+    "no_unbounded_search": true,
+    "implementation_before_family_PARK": true,
+    "must_stop_when_no_decision_impact": true,
+    "executable_validator_update": "CANDIDATE_CODE_PREPARED_NOT_ACTIVE",
+    "fresh_agent_behavioral_witness": "NOT_PROVEN",
+    "terminal_disposition_required": true,
+    "terminal_claims": [
+      "PARK",
+      "BLOCK"
+    ],
+    "disposition_scopes": [
+      "IMPLEMENTATION",
+      "MECHANISM",
+      "SCIENTIFIC",
+      "AUTHORITY",
+      "RUNTIME",
+      "UNKNOWN"
+    ],
+    "require_implementation_rescue_evidence": true,
+    "require_exact_reopen_condition": true,
+    "forbid_mechanism_falsification_from_route_block": true
   }
 }
