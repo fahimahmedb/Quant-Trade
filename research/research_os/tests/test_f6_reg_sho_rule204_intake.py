@@ -182,6 +182,84 @@ class F6Rule204SourceTests(unittest.TestCase):
         )
         self.assertIsNone(third["task"], "Same packet under staging alias must never refill twice")
 
+    def test_new_epoch_candidate_is_only_staged_until_governed_activation(self):
+        # Successor epoch was predeclared before its future 15:30Z opening.
+        from datetime import datetime, timezone
+        from research.research_os.expansion.v2_core import (
+            build_epoch_manifest, assert_epoch_blinding,
+        )
+        from research.research_os.expansion.v2_stage_executor import _source_pit
+        from research.research_os.queue_replenisher import load_source_catalog
+
+        staged = BASE / "runtime" / "epoch_admissions"
+        prior = json.loads((staged / "F6_RULE204_PREDECESSOR_EPOCH_20261020.json").read_text())
+        successor = json.loads((staged / "F6_RULE204_EPOCH_20261104.json").read_text())
+        frontier = json.loads((staged / "F6_RULE204_FRONTIER_20261104.json").read_text())
+        new_id = "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2"
+        source_packet = source()["documentary_packet"]
+        to_time = lambda s: datetime.fromisoformat(s.replace("Z", "+00:00")).astimezone(timezone.utc)
+        self.assertEqual(prior["research_epoch_id"], "ORACLE-V2-EPOCH-20261020-001")
+        self.assertEqual(prior["knowledge_cutoff"], "2026-10-20T01:00:00Z")
+        self.assertEqual(successor["parent_epoch_id"], prior["research_epoch_id"])
+        self.assertEqual(successor["epoch_knowledge_parent"], prior["research_epoch_id"])
+        self.assertEqual(successor["epoch_feedback_dependencies"], [])
+        self.assertFalse(successor["first_evaluation_export_accepted"])
+        self.assertEqual(successor["max_candidate_exports"], 1)
+        self.assertTrue(to_time(source_packet["available_at"]) < to_time(successor["knowledge_cutoff"])
+                        < to_time(successor["opened_at"]))
+        manifest = build_epoch_manifest(successor)
+        self.assertEqual(assert_epoch_blinding(
+            manifest, owner_status=successor["owner_outcome_blinding_status"],
+            supervisor_status=successor["supervisor_outcome_blinding_status"],
+        )["epoch_blinding_integrity"], "PASS")
+        packet_output = {"candidate": {"documentary_evidence": {"packet": source_packet}}}
+        self.assertEqual(_source_pit(packet_output, prior)["source_pit"], "FAIL")
+        self.assertEqual(_source_pit(packet_output, successor)["source_pit"], "PASS")
+        self.assertEqual([entry["frontier_id"] for entry in frontier["frontiers"] if not entry["enabled"]],
+                         [new_id], "Staging never activates the successor frontier")
+        self.assertEqual(frontier["frontiers"][:-1], load_frontier(BASE)["frontiers"][:5])
+        self.assertTrue(all(flag is False for flag in frontier["authority"].values()))
+
+        historical_tasks = load_tasks(BASE)
+        blocked = [t for t in historical_tasks if t.get("task_id") ==
+                   "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001"]
+        self.assertEqual(len(blocked), 1)
+        self.assertEqual(blocked[0]["status"], "BLOCKED")
+        self.assertNotIn("mechanism_research",
+                         (blocked[0].get("execution") or {}).get("completed_stages") or {})
+        ready_frontier = deepcopy(frontier)
+        ready_frontier["frontiers"][-1]["enabled"] = True
+        result = derive_refill_task(
+            frontier=ready_frontier, tasks=historical_tasks,
+            created_at="2026-11-04T15:31:00Z",
+            source_catalog=load_source_catalog(BASE),
+            research_policy_context=load_research_policy_context(BASE),
+        )
+        self.assertEqual(result["status"], "DERIVED_ONE_READY_TASK")
+        task = result["task"]
+        self.assertEqual(task["derivation"]["frontier_id"], new_id)
+        self.assertEqual(task["inputs"]["documentary_source"], TARGET)
+        self.assertEqual(task["inputs"]["documentary_source_packet_hash"],
+                         source_packet["content_hash"])
+        validate_derived_task(task)
+        self.assertTrue(all(flag is False for flag in task["authority"].values()))
+        again = derive_refill_task(
+            frontier=ready_frontier, tasks=historical_tasks + [task],
+            created_at="2026-11-04T15:41:00Z",
+            source_catalog=load_source_catalog(BASE),
+            research_policy_context=load_research_policy_context(BASE),
+        )
+        self.assertIsNone(again["task"], "No second source issuance when READY exists")
+        done = deepcopy(task)
+        done["status"] = "BLOCKED"
+        again_terminal = derive_refill_task(
+            frontier=ready_frontier, tasks=historical_tasks + [done],
+            created_at="2026-11-04T15:51:00Z",
+            source_catalog=load_source_catalog(BASE),
+            research_policy_context=load_research_policy_context(BASE),
+        )
+        self.assertIsNone(again_terminal["task"], "Terminal source identity cannot be reused")
+
     def test_preflight_no_matching_source_yields_no_task(self):
         frontier = deepcopy(load_frontier(BASE))
         frontier["frontiers"].append(frontier_entry())
