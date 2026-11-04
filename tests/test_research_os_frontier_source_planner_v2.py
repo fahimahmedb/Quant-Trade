@@ -138,8 +138,15 @@ class FrontierSourcePlannerV2Test(unittest.TestCase):
         catalog = deepcopy(self.catalog)
         rule = "research/research_os/sources/sec_t1_operative_rule.json"
         catalog[rule]["blob_sha"] = "5" * 40
+        # This unit tests the historical T+1 source in isolation. The later
+        # Rule204 frontier is separately admitted and has higher priority.
+        historical_frontier = deepcopy(self.frontier)
+        historical_frontier["frontiers"] = [
+            item for item in historical_frontier["frontiers"]
+            if item["frontier_id"] != "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"
+        ]
         result = derive_refill_task(
-            frontier=self.frontier,
+            frontier=historical_frontier,
             tasks=tasks,
             created_at="2026-10-20T15:01:00Z",
             source_catalog=catalog,

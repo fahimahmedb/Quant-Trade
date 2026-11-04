@@ -105,8 +105,11 @@ class F6Rule204SourceTests(unittest.TestCase):
 
     def test_only_existing_12_issued_frontiers_and_one_new_bounded_candidate(self):
         frontier = deepcopy(load_frontier(BASE))
-        frontier["frontiers"].append(frontier_entry())
-        tasks = load_tasks(BASE)
+        # Production runtime may already contain the first real Rule204 task;
+        # isolate the 72 terminal predecessor tasks for this offline preview.
+        tasks = [task for task in load_tasks(BASE)
+                 if (task.get("derivation") or {}).get("frontier_id")
+                 != "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"]
         catalog = {TARGET: source()}
         result = derive_refill_task(
             frontier=frontier, tasks=tasks, created_at="2026-11-04T03:27:00Z",
@@ -124,7 +127,7 @@ class F6Rule204SourceTests(unittest.TestCase):
                          "Preview must never publish to the operational research queue")
 
     def test_operational_one_source_frontier_after_qualified_vm_rebind(self):
-        from research.research_os.queue_replenisher import derive_from_repo, load_source_catalog
+        from research.research_os.queue_replenisher import load_source_catalog
         current = load_frontier(BASE)
         new = next(item for item in current["frontiers"]
                    if item["frontier_id"] == "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025")
@@ -134,7 +137,24 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertFalse(current["producer_execution_same_refill_wake"])
         self.assertFalse(current["recursive_refill_same_wake"])
         self.assertTrue(all(value is False for value in current["authority"].values()))
-        first = derive_from_repo(BASE, created_at="2026-11-04T11:58:00Z")
+
+        actual_tasks = load_tasks(BASE)
+        live = [t for t in actual_tasks if (t.get("derivation") or {}).get("frontier_id")
+                == new["frontier_id"]]
+        self.assertLessEqual(len(live), 1, "Never issue a second Rule204 task")
+        historical = [t for t in actual_tasks if t not in live]
+        catalog = load_source_catalog(BASE)
+        # Production V2 also sees the staged copy. Both copies have the same
+        # packet hash and cannot be counted as independent scientific sources.
+        catalog["research/research_os/sources/staging/reg_sho_rule204_2025.json"] = {
+            "record": source()
+        }
+        first = derive_refill_task(
+            frontier=current, tasks=historical,
+            created_at="2026-11-04T11:58:00Z",
+            source_catalog=catalog,
+            research_policy_context=load_research_policy_context(BASE),
+        )
         self.assertEqual(first["status"], "DERIVED_ONE_READY_TASK")
         task = first["task"]
         self.assertEqual(task["derivation"]["frontier_id"], new["frontier_id"])
@@ -142,22 +162,32 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertEqual(task["inputs"]["documentary_source_packet_hash"],
                          source()["documentary_packet"]["content_hash"])
         validate_derived_task(task)
-        self.assertFalse((BASE / "tasks" / (task["task_id"] + ".json")).exists())
         second = derive_refill_task(
-            frontier=current,
-            tasks=load_tasks(BASE) + [task],
+            frontier=current, tasks=historical + [task],
             created_at="2026-11-04T11:59:00Z",
-            source_catalog=load_source_catalog(BASE),
+            source_catalog=catalog,
             research_policy_context=load_research_policy_context(BASE),
         )
         self.assertEqual(second["status"], "NOOP_QUEUE_NOT_EMPTY")
         self.assertIsNone(second["task"])
+        terminal = deepcopy(task)
+        terminal["status"] = "COMPLETE"
+        third = derive_refill_task(
+            frontier=current, tasks=historical + [terminal],
+            created_at="2026-11-04T12:10:00Z",
+            source_catalog=catalog,
+            research_policy_context=load_research_policy_context(BASE),
+        )
+        self.assertIsNone(third["task"], "Same packet under staging alias must never refill twice")
 
     def test_preflight_no_matching_source_yields_no_task(self):
         frontier = deepcopy(load_frontier(BASE))
         frontier["frontiers"].append(frontier_entry())
+        old_tasks = [task for task in load_tasks(BASE)
+                     if (task.get("derivation") or {}).get("frontier_id")
+                     != "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"]
         result = derive_refill_task(
-            frontier=frontier, tasks=load_tasks(BASE), created_at="2026-11-04T03:27:00Z",
+            frontier=frontier, tasks=old_tasks, created_at="2026-11-04T03:27:00Z",
             source_catalog={"research/research_os/sources/sec_t1_operative_rule.json":
                             json.loads(OLD_T1.read_text())},
             research_policy_context=load_research_policy_context(BASE))
