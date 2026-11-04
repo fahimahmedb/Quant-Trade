@@ -1,0 +1,79 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "causal_predecessor": {
+    "predecessor_dispatch_id": "28ae3466232abdd373402aeeb9b80eeee4be7b25e4c485af2e5640f3aeb0f7c9",
+    "predecessor_ledger_sha256": "6e0630f4819c577a816ffab66824a0375a91fdb208e7708ec4f34ba8861441c7",
+    "predecessor_project_sha": "2b7d04286f35e1ca6fa5562cccb9daceb20b19b1",
+    "predecessor_result_sha": "e2d8f0c5679bc52c5d22a993dab2d0f50d14681a",
+    "predecessor_task_id": "F3-ENGINEERING-20261103T160613Z",
+    "schema": "f4-terminal-research-v1"
+  },
+  "hosted_model_calls": 0,
+  "input_head": "5cf398167a9d5b6af55883f506d123c9acc00c12",
+  "observed_at": "2026-11-04T17:30:05Z",
+  "one_lineage_per_wake": true,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 16,
+      "overlap_map_hash": "96ad3e32041dfcf7bb50a17c1552a40bb4032159f9fd8918df94ae12ce9f9b8d",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6fb97681d2a471de54701139037d1e5c37900cac24fd1d6265eeaeeb331cc529"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "recovered_source_review_count": 1,
+      "recovered_source_reviews_hash": "c7b141c2e4dbf2a5e1f8e5f14b116fd1aed2d49c38a0b91b45ca17ff04c256c6",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "aaf6d59fcb07cb60d7217733f36d24eff85fe7bdfe42f2a0db29f50bafab97c6",
+    "status": "PASS",
+    "task_authority": null
+  },
+  "queue": {
+    "active_count": 0,
+    "claimed_count": 0,
+    "ready_count": 0,
+    "task_count": 75,
+    "terminal_count": 75,
+    "unknown_count": 0
+  },
+  "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "selection_lane": "auto",
+  "state_branch": "code/canonical",
+  "state_repository": "fahimahmedb/Quant-Trade",
+  "status": "NOOP_SOURCE_MISSING",
+  "writes": 0
+}
