@@ -1,0 +1,67 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "blocker": "V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION",
+  "economic_result": "NOT_OBSERVED",
+  "input_head": "b63a91204eff99146547462937c8ebb42973e0f9",
+  "outcome_accessed": false,
+  "preflight": {
+    "control_plane": {
+      "authority": {
+        "economic_experiment_authorized": false,
+        "live_trading_authorized": false,
+        "prospective_observation_authorized": false,
+        "real_capital_authorized": false
+      },
+      "mode": "PRODUCTION_RESEARCH_WORKERS",
+      "workflow_model": "ONE_LINEAGE_MULTI_STAGE"
+    },
+    "current_corpus": {
+      "count": 15,
+      "overlap_map_hash": "4f4c3299c8d04786f2384f453f7f4c194409532a8a5ea8878f3ab0336bf0c7b0",
+      "review_count": 1,
+      "review_pairs": [
+        {
+          "basis": [
+            "entity",
+            "mechanism_tokens"
+          ],
+          "classification": "HIGH_CURRENT_EXPOSURE_OVERLAP_REVIEW",
+          "left": "FUND-ASML-CAPACITY-PRICING-001",
+          "mechanism_overlap": 0.2529,
+          "review_required": true,
+          "right": "FUND-ASML-CAPACITY-SERVICE-001"
+        }
+      ],
+      "snapshot_hash": "6489306307d9fa7899dc57696c9e770e780193fa1ba066690b77cd34c2cdc7b0"
+    },
+    "legacy": {
+      "ledger_blob_sha": "ba9b165aaf96956776672df51233bb9bf1e6cbc9",
+      "loaded_record_count": 20,
+      "manifest_historical_research_items_found": 33,
+      "reconciliation_status": "PARTIAL_WITH_EXPLICIT_GAPS",
+      "recovered_source_review_count": 1,
+      "recovered_source_reviews_hash": "c7b141c2e4dbf2a5e1f8e5f14b116fd1aed2d49c38a0b91b45ca17ff04c256c6",
+      "schema_version": "legacy-research-ledger-v1",
+      "source_commit": "183ad65ff260b903a16548ce37948f54d47a9ec8",
+      "status": "PASS"
+    },
+    "preflight_hash": "7b7d2ba6e0b6de86cd5626dc40b386ee7669a11fe0194306a83022b0bf05b099",
+    "status": "PASS",
+    "task_authority": {
+      "economic_experiment_authorized": false,
+      "live_trading_authorized": false,
+      "prospective_observation_authorized": false,
+      "real_capital_authorized": false
+    }
+  },
+  "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
+  "retryable": false,
+  "stage": "mechanism_research",
+  "state_branch": "code/canonical",
+  "state_repository": "fahimahmedb/Quant-Trade"
+}

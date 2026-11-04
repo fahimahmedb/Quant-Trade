@@ -1,0 +1,10 @@
+{
+  "blocker": "V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION",
+  "disposition": "EXECUTION_BLOCKED",
+  "generation": 2,
+  "intent": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001/oracle-v2/trial_intents/g000002.json",
+  "model_calls": [],
+  "outcome_accessed": false,
+  "scientific_decision": null,
+  "task_status": "BLOCKED"
+}
