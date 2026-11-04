@@ -15,12 +15,16 @@
   "execution": {
     "attempts": {},
     "completed_stages": {
+      "cross_examination": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/cross_examination.json",
+        "artifact_hash": "af06379f0278bd59f3030d475e866557391112cba010aefbe1c991f21b34f93f"
+      },
       "independent_validation": {
         "artifact": "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/independent_validation.json",
         "artifact_hash": "f876bf0cc121293d915a1ea1c04d17190e6e64b9565ab504add7802aaf8ea1ae"
       }
     },
-    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g1-e677467ab8d3.json",
+    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g2-fa22fae80ffe.json",
     "lineage": "DOC-FLOW-7ddc4c400115df87",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
     "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g2-fa22fae80ffe",
@@ -52,7 +56,7 @@
   },
   "lease": {
     "claimed_at": "2026-11-04T16:50:14Z",
-    "expires_at": "2026-11-04T17:00:14Z",
+    "expires_at": "2026-11-04T16:51:53Z",
     "generation": 2,
     "owner": "oracle-research-v2.independent_challenge"
   },
@@ -66,9 +70,9 @@
   "priority": 75,
   "required_capability": "validator",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
   "task_type": "VALIDATION",
-  "updated_at": "2026-11-04T16:50:14Z"
+  "updated_at": "2026-11-04T16:51:53Z"
 }
