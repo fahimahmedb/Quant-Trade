@@ -111,6 +111,10 @@
         "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/disconfirmation.json",
         "artifact_hash": "20271509bbdd6ab986b43beb5305c060fb563919623e525dabfcee68363c8d7f"
       },
+      "freeze_hypothesis": {
+        "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/freeze_hypothesis.json",
+        "artifact_hash": "55e2b985a90fcf495d3339f3a29d7bc2e00de96a55756c383cb7aea0844244c7"
+      },
       "legacy_duplicate_check": {
         "artifact": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/legacy_duplicate_check.json",
         "artifact_hash": "b503c81b3cfec993140fde581727734237146245f91005ede81d14d809061495"
@@ -120,7 +124,7 @@
         "artifact_hash": "ed2b1823f75ad4fb6952d3d29afd5771f7b50962e21457c4aaefa9d89798c3c4"
       }
     },
-    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g3-15bb19c87ded.json",
+    "last_receipt": "research/research_os/receipts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g4-51c32bfccfa7.json",
     "lineage": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
     "session_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001-g4-51c32bfccfa7",
@@ -161,16 +165,16 @@
   },
   "lease": {
     "claimed_at": "2026-11-04T16:20:22Z",
-    "expires_at": "2026-11-04T16:30:22Z",
+    "expires_at": "2026-11-04T16:20:26Z",
     "generation": 4,
     "owner": "oracle-research-v2.market_discovery"
   },
   "priority": 75,
   "required_capability": "institutional_flows",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "READY",
   "success_condition": "At most one pre-outcome documented Rule204 mechanism is independently screened and sent to validation, or a durable NO_CANDIDATE/BLOCK is recorded; previous terminal blocked lineage and unobserved economics preserved.",
   "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
   "task_type": "INSTITUTIONAL_FLOW",
-  "updated_at": "2026-11-04T16:20:22Z"
+  "updated_at": "2026-11-04T16:20:26Z"
 }

@@ -1,0 +1,30 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "claim": "17 CFR 242.204, official 2025-04-01 edition, specifies a base next-settlement-day close-out and conditional three-settlement-day long-sale/market-maker and 35-calendar-day restricted-sale cases. The actual participant, fail quantity, exemption, current law, forced purchase, timing, price effect and payoff are UNKNOWN.",
+  "decision_map": {
+    "premise_fails": "KILL_GENERATION",
+    "premise_survives": "EXPLORE"
+  },
+  "falsification_scope": "Reject the premise if no eligible clearing participant or actual fail exists, an applicable exception or allocation changes the deadline, a lawful borrow satisfies it without a purchase, or later law supersedes the captured edition. Any claimed trading effect requires independent PIT fail and transaction evidence, costs and Legacy novelty review.",
+  "family_id": "INSTITUTIONAL_FLOW",
+  "freeze_status": "FROZEN",
+  "frozen_at": "2026-11-04T16:20:25Z",
+  "generation_id": "G1",
+  "hypothesis_id": "DOC-FLOW-7ddc4c400115df87",
+  "issuer": "SEC_REG_SHO_242_204",
+  "mechanism": "A registered clearing-agency participant with a real equity fail-to-deliver may face a dated Rule 204 close-out obligation, with borrow-or-purchase alternatives and different legal exceptions. A rule alone does not establish actual inventory pressure or a market opportunity.",
+  "parent_generation_ids": [],
+  "prediction": "Documentary premise only; economic payoff NOT_OBSERVED",
+  "worker_provenance": {
+    "candidate_hash": "d3312e12d82a9ce90794edaa40881dd6ee409ef3dfbbcc8f3776f25992a36208",
+    "engine_output_ref": "research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001/oracle-worker/mechanism_research.json",
+    "lane": "market_discovery",
+    "task_id": "FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001",
+    "worker_id": "oracle-research-v2.market_discovery"
+  }
+}
