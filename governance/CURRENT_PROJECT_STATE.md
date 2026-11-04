@@ -1,17 +1,17 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F0_ENFORCED_PASS__F4_F5_PRODUCT_B_PASS__F2_HOSTED_RELEASE_QUALIFIED_VM_ROLLOUT_PENDING__F6_SCIENTIFIC_FRONTIER_BLOCKED`
+STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_SCIENTIFIC_FRONTIER_BLOCKED`
 DATE=`2026-11-04`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=F0_TWO_BRANCH_KNOWN_CONSUMER_ENFORCEMENT_20261103`
+`LAST_MATERIAL_HANDOFF_MISSION=F2_VM_DEDUP_FINAL_HANDOFF_20261104`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=2ea05ecf6ed17c91385faf19dcba7c9facc7d8ab`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F2: repair repeated unchanged Research OS idle commits with the existing worker and terminal V2 transaction; qualify the exact code head, then obtain a separately authorized VM witness of deduplicated natural wakes. Keep F6 scientific source/frontier BLOCK and economic/capital/live authority closed.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F0 only if a new remote branch exists, a verified live consumer requires a removed historical branch, or the current enforced validator/automation evidence is contradicted; no GitHub server-side branch-creation guarantee was established.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=0cf2e8708540d5268c5e63b51c4f44b4e6d8aa6c`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F6: qualify one distinct non-economic primary documentary source and a fresh Owner-governed frontier mandate using existing Research Intelligence; do not raise task issuance caps, replay blocked tasks, dispatch Codex or grant economic/capital/live authority.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F2 only for new executable/contract changes, changed VM release, contradicted dedup/HEAD witness, or a new exact-SHA gate failure; F6 source admissibility is a separate block.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
@@ -157,39 +157,37 @@ Exact hosted `Canonical Code Qualification` run [41707221169](https://github.com
 
 Scope limit: this proves synthetic/non-economic product mechanics and causal **strategy/opportunity/Book/Learning** identity on a real implemented path; it does **not** prove profitable market edge, real-host economic use, F6 scientific admissibility, prospective observation, real capital, production or live trading. Other F0/F2/F6 finish gates retain their own exact-head acceptance conditions.
 
-## Current decision frontier — F2 (independent engineering seam)
+## Current decision frontier — F2 (VM idempotent NOOP closed)
 
-`CURRENT_GATE=F2_EXACT_HEAD_ENGINEERING_QUALIFICATION`
-`CURRENT_BLOCKER=OLD_ACTIVE_F4_NOOP_RECEIPTS_KEEP_MOVING_CODE_HEAD_UNTIL_SEPARATELY_AUTHORIZED_VM_UPGRADE`
+`CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
+`CURRENT_BLOCKER=SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=PREPARE_SAFE_F4_TO_F4_VM_UPGRADE_THEN_PROVE_TWO_NATURAL_DEDUP_WAKES_ONLY_WHEN_VM_AUTHORIZED`
-`F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=NOT_PROVEN_AT_CURRENT_HEAD`
+`MANDATORY_NEXT_DECISION=QUALIFY_NEW_NON_ECONOMIC_SOURCE_AND_OWNER_GOVERNED_FRONTIER_BEFORE_ADMISSION`
+`F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
-`F2_VM_INSTALLATION_OF_CORRECTED_RELEASE=NOT_EXECUTED`
-`F2_NEW_RELEASE_VM_ACTIVATION=NOT_EXECUTED`
-`F2_TWO_NATURAL_DEDUP_WAKE_WITNESS=NOT_PROVEN`
+`F2_VM_INSTALLATION_OF_CORRECTED_RELEASE=PASS`
+`F2_NEW_RELEASE_VM_ACTIVATION=PASS`
+`F2_TWO_NATURAL_DEDUP_WAKE_WITNESS=PASS`
 
-F2 implementation checkpoint (NOT a final F2 handoff): the existing `ResearchOSWorker._idle` Git CAS and F4->F4 terminal transaction were minimally repaired. The old VM installer had failed on release `5d967c2b9f10d0725a4f2c8da3eb6d0055cded23` with three `test_oracle_worker` mismatches. On corrected immutable release `d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`, the hosted **same nine-module VM installer suite** ran **110 tests, all PASS** (Canonical Code Qualification job `126331649774`). New real local bare-Git counterexamples cover cold restart, distinct admissibility lanes, same-lane different worker, scientific task mutation and concurrent HEAD fencing. Existing F5 and scheduler regressions are restored. No Codex, scheduler rewrite or trading authority.
+Immutable corrected executable release `d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7` passed the VM installer's exact nine-module suite **110/110** (job `126331649774`) and all four same-SHA gates: AI Working Method `41755849103`, Canonical Code Qualification `41755849120`, Oracle V2 Core `41755849098`, SEC P0 pre-t0 `41755849195` (SUCCESS). Its F4->F4 VM installation and promotion were confirmed by the Owner-provided raw Ubuntu terminal outputs: `F2_INSTALLATION=PASS`, `ACTIVE_F4_RUNTIME_PROOF_PENDING`, V2 timer active, symlink targeting `/opt/quant-research/releases/d0414d7...`. Exact root transaction snapshot: `/var/backups/quant-v2-handoff-20261104T020306-fee345ef`; `external_agent_dispatches=0`. These terminal logs were **operator-provided**, not independently fetched by GitHub; no subsequent VM mutation was performed by this agent.
 
-Four required GitHub qualification runs are `SUCCESS` for that **same immutable SHA**:
-- AI Working Method Gate: `41755849103`;
-- Canonical Code Qualification: `41755849120`;
-- Oracle V2 Core: `41755849098`;
-- SEC P0 pre-t0 gate: `41755849195`.
+The **first** natural new-release wake at `2026-11-04T02:04:05Z` appropriately created GitHub commit `afeb0f52d3389ff46267e18d1dbfd1eef05d58a3`, `research/research_os/runtime/worker_wakes/idempotent-e30b73b01bf684aeb6aac4f4bb07fefacdc57aff0eb46b97c2d47830b098c747.json`, blob `a5952b8c7c1812dab2e1cde24b33b8a027bb76ea`. Its creation was **excluded** from the two-wake dedup test.
 
-Material current-head caveat: after the qualified commit, the still-running previous F4 release `f7949decd0e1b23c017c03bf57951f91a7303192` generated `cd969c1211a72a0429c810517124c8b3bac9d209` (`2026-11-04T01:50:07Z`, `[skip ci]`). Git compare from the qualified SHA showed **one added file only**, `research/research_os/runtime/worker_wakes/20261104T015006Z-cdfe76222b.json` (blob `a5c2210d6ef05548419a89a09db2549b19c6390a`); this receipt declares `release_sha=f7949de...`, `NOOP_SEARCH_SPACE_INCOMPLETE`, 72/72 terminal and all economic/capital/live authority false. Thus corrected executable code remains an immutable qualified candidate, but the GitHub **moving HEAD is not qualified on its exact SHA**, and the VM has not consumed the fix. Do not discard or rewrite the real VM receipt or falsely claim F2 end-to-end PASS.
+The two subsequent *distinct natural VM systemd invocations*, shown in the user-provided `sudo -n journalctl` transcript at `2026-11-04T02:10:16Z` and `02:20:07Z`, both reported `status=NOOP_SEARCH_SPACE_INCOMPLETE`, `deduplicated=true`, `prior_receipt_head=afeb0f52...`, same prior durable receipt and `output_commit=null`; operator control `F2_VM_JOURNAL=PASS`. The independent GitHub ref check confirmed HEAD remained `afeb0f52...` after both.
 
-Minimal next action: keep F4 active; do not alter the VM in the current GitHub-only mission. For a separately authorized operator rollout, confirm the actual root-owned current release/config and prior F4 terminal qualification, install the immutable corrected release with the EXISTING `deploy.oracle_release_install` transaction, verify all four exact CI runs, invoke the EXISTING `deploy.oracle_v2_deploy --action resume-terminal` F4->F4 transaction with previous SHA and CI run IDs, retain its rollback backup, then observe at least two natural unchanged-lane wakes and stable code HEAD. Any root proof/config/drop-in drift must refuse BEFORE downtime. No Codex, new scheduler or economic/trading authority. F6 scientific frontier shortage is a separate existing blocker and stays CLOSED.
+The Git compare `d0414d7...afeb0f52...` proved exactly three **runtime receipt JSON additions**, no executable/test/workflow modification. Subsequent GitHub-only engineering commits updated `.quant/MISSION_ADMISSION.json` and repaired a **synthetic F2 test count** after new real VM receipt history caused a PR46 CI false negative: the fixture previously counted all live-receipt records rather than the synthetic `RELEASE='a'*40`. Corrected test blob `7bc2ec0f87e451bb55e72a02774e3dae33964184` at code `0cf2e8708540d5268c5e63b51c4f44b4e6d8aa6c`, with *no production worker change*. Its exact same-code hosted gate results are required for current-head qualification. The earlier admission-only candidate `ad5a674ec8e96d94549da95b03797b104f648a08` failed Canonical Code job `126347428288` on these two fixture assertions and is not a qualified subject; do not hide this red run.
+
+This closes only the **bounded F2 engineering/dedup proof**; it does not prove further scientific source admission, economic value, real capital/production or live trading. F6 remains blocked independently.
 
 ## Current decision frontier — F6
 
 `F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
 `F6_LOCAL_BLOCKER=SCIENTIFIC_WORK_NOT_ADMISSIBLE_SEARCH_SPACE_INCOMPLETE`
 
-The live system has a working V2 timer, safe F3->F4 successor, frozen causal identity, existing Research Intelligence refill policy and safe durable NOOP. However the observed frontier is 72/72 terminal, 0 admissible ready tasks; `NOOP_SEARCH_SPACE_INCOMPLETE` explicitly does **not** certify scientific search-space completeness or any productive source/mandate. Do not fabricate novelty or equate autonomous idle with scientific/economic system use.
+The live system has a working V2 timer, safe F3->F4 successor, frozen causal identity, existing Research Intelligence refill policy and a qualified repeated durable NOOP after the F2 upgrade. However the observed frontier is 72/72 terminal, 0 admissible ready tasks; `NOOP_SEARCH_SPACE_INCOMPLETE` explicitly does **not** certify scientific search-space completeness or any productive source/mandate. Do not fabricate novelty or equate autonomous idle with scientific/economic system use.
 
-Minimal next investigation: use the existing Research Intelligence policy, source catalog, frontier and capability registry to identify the smallest legitimate **non-economic** source/mandate that can be admitted for normal scientific use; if no grounded admissible source exists, return `BLOCK` for only that lane. No new scheduler, architecture campaign, task substitution, Codex dispatch, production trading or economic claim.
+Bounded primary F6 challenge: `research/research_os/runtime/RESEARCH_FRONTIER.json` blob `6e1fb65023e83c9140a664b22c8d56cea7c799ed` sets `max_issued_per_frontier=12`; fresh task inventory has **12 issued in each of four frontier families**, exhausting all 48 permitted issuances. This is an issuance cap, not proof the scientific search space is exhausted. Representative last-task artifacts prove exact current duplicates in Event Document and Fundamental, `STAGE_NOT_EXPLICITLY_AUTHORIZED:mechanism_research` in Institutional Flow, and `MISSING_QUALIFIED_DOCUMENTARY_SOURCE_FOR_ENGINE:quant` in Quant. Existing `queue_replenisher.py` counts blocked tasks as issued and cannot reopen them merely by adding a new source. Minimal next action: qualify one genuinely distinct **non-economic** documentary source and Owner-governed frontier mandate within existing Research Intelligence and legacy-memory checks; prove normal route/capability admissibility before scheduling a task. If no source/mandate is grounded, keep F6 `BLOCK`. Do not arbitrarily raise issuance caps, replay old tasks, use Codex, mutate VM, add a scheduler, or claim economic/capital/live authority.
 
 ## Other finish-gate state retained
 
@@ -198,11 +196,11 @@ Minimal next investigation: use the existing Research Intelligence policy, sourc
 
 F1 durable witness remains the fresh repository-only recovery previously capitalized in canonical history. Do not rerun F1 absent contradictory F1-critical evidence.
 
-For F2, the executable F4 subject `f7949decd0e1b23c017c03bf57951f91a7303192` passed all four exact release gates listed under F4. The subsequent runtime-only receipt commits `9346022...` and `d0cf17a...` deliberately carry `[skip ci]`; do not claim F2 exact-current-head qualification from the earlier SHA. Recheck F2 against the exact then-current `code/canonical` SHA when closing the whole project.
+For F2, corrected immutable runtime subject `d0414d7...` passed all four exact release gates and the VM installer suite; its real natural idle wakes at 02:10 and 02:20 UTC deduplicated without commits. The first valid receipt was committed at `afeb0f52...`. A subsequent test-only synthetic fixture assertion fix prevents existing real wake receipts from contaminating F2 CI; it is independently hosted-qualified on `0cf2e8708540d5268c5e63b51c4f44b4e6d8aa6c`. For every future executable change, requalify the then-current head.
 
 F0 exact branch inventory and known live consumers have now been verified and capitalized; existing machine two-branch validation is set to `ENFORCED`. Server-side creation restrictions remain `UNKNOWN`.
 
-F0 known-live-consumer scope, F4 and bounded synthetic F5, and Product B qualified E2E have durable evidence. F2 exact-head stability and F6 scientific/economic operational handoff remain open. Do not claim `QUANT_SYSTEM_V1_FINISHED`.
+F0 known-live-consumer scope, F2 bounded VM two-wake dedup, F4 and bounded synthetic F5, and Product B qualified E2E have durable evidence. F6 scientific source admissibility and operational handoff remain BLOCKED; `QUANT_SYSTEM_V1_FINISHED` is not established.
 
 ## Authority ceiling
 
