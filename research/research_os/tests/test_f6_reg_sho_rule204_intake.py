@@ -44,6 +44,29 @@ def frontier_entry():
     return item
 
 
+def historical_predecessor_tasks(*, include_blocked_rule204=False):
+    """Offline pre-admission fixture: omit tasks issued after the preview clock.
+
+    The real GitHub queue is never edited. The genuine successor producer and
+    validator can be active or terminal without contaminating older previews.
+    """
+    tasks = []
+    for task in load_tasks(BASE):
+        frontier_id = (task.get("derivation") or {}).get("frontier_id")
+        if task.get("task_type") in ("VALIDATION", "RED_TEAM"):
+            continue
+        if frontier_id == "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2":
+            continue
+        if frontier_id == "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025":
+            if include_blocked_rule204:
+                tasks.append(task)
+            continue
+        if task.get("status") in ("COMPLETE", "BLOCKED", "INVALIDATED_PROTOCOL", "NEGATIVE"):
+            tasks.append(task)
+    return tasks
+
+
+
 class F6Rule204SourceTests(unittest.TestCase):
     def test_official_capture_reproduces_exact_pinned_packet(self):
         s = source()
@@ -109,11 +132,8 @@ class F6Rule204SourceTests(unittest.TestCase):
             item for item in frontier["frontiers"]
             if item["frontier_id"] != "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2"
         ]
-        # Production runtime may already contain the first real Rule204 task;
-        # isolate the 72 terminal predecessor tasks for this offline preview.
-        tasks = [task for task in load_tasks(BASE)
-                 if (task.get("derivation") or {}).get("frontier_id")
-                 != "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"]
+        # A pre-admission preview excludes later real Rule204 + successor work.
+        tasks = historical_predecessor_tasks()
         catalog = {TARGET: source()}
         task_files_before = {item.name for item in (BASE / "tasks").glob("*.json")}
         result = derive_refill_task(
@@ -152,7 +172,7 @@ class F6Rule204SourceTests(unittest.TestCase):
         live = [t for t in actual_tasks if (t.get("derivation") or {}).get("frontier_id")
                 == new["frontier_id"]]
         self.assertLessEqual(len(live), 1, "Never issue a second Rule204 task")
-        historical = [t for t in actual_tasks if t not in live]
+        historical = historical_predecessor_tasks()
         catalog = load_source_catalog(BASE)
         # Production V2 also sees the staged copy. Both copies have the same
         # packet hash and cannot be counted as independent scientific sources.
@@ -230,7 +250,7 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertEqual(frontier["frontiers"][:-1], load_frontier(BASE)["frontiers"][:5])
         self.assertTrue(all(flag is False for flag in frontier["authority"].values()))
 
-        historical_tasks = load_tasks(BASE)
+        historical_tasks = historical_predecessor_tasks(include_blocked_rule204=True)
         blocked = [t for t in historical_tasks if t.get("task_id") ==
                    "FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001"]
         self.assertEqual(len(blocked), 1)
