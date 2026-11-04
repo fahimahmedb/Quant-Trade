@@ -11,6 +11,14 @@
     "real_capital_authorized": false,
     "scope": "INDEPENDENT_DOCUMENTARY_CHALLENGE_ONLY"
   },
+  "completion": {
+    "artifacts": [
+      "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/integration_handoff.json"
+    ],
+    "completed_at": "2026-11-04T17:20:10Z",
+    "receipt": "research/research_os/receipts/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g5-00636ec547c9.json",
+    "result": "COMPLETE"
+  },
   "created_at": "2026-11-04T16:30:19Z",
   "execution": {
     "attempts": {},
@@ -27,12 +35,16 @@
         "artifact": "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/independent_validation.json",
         "artifact_hash": "f876bf0cc121293d915a1ea1c04d17190e6e64b9565ab504add7802aaf8ea1ae"
       },
+      "integration_handoff": {
+        "artifact": "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/integration_handoff.json",
+        "artifact_hash": "17d51ee3e4aa1d3bd5300ef0ef46eda31b29511d0a41e149eec80555cecb0cf1"
+      },
       "red_team": {
         "artifact": "research/research_os/artifacts/VALIDATE-DOC-FLOW-7ddc4c400115df87/oracle-worker/red_team.json",
         "artifact_hash": "bcf4fe5661434bf7700f5d967fb83df4325151befcb0ce3aba9274cf65cb67c2"
       }
     },
-    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g4-98d151c7a412.json",
+    "last_receipt": "research/research_os/receipts/VALIDATE-DOC-FLOW-7ddc4c400115df87/VALIDATE-DOC-FLOW-7ddc4c400115df87-g5-00636ec547c9.json",
     "lineage": "DOC-FLOW-7ddc4c400115df87",
     "release_sha": "d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd",
     "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g5-00636ec547c9",
@@ -64,7 +76,7 @@
   },
   "lease": {
     "claimed_at": "2026-11-04T17:20:06Z",
-    "expires_at": "2026-11-04T17:30:06Z",
+    "expires_at": "2026-11-04T17:20:10Z",
     "generation": 5,
     "owner": "oracle-research-v2.independent_challenge"
   },
@@ -78,9 +90,9 @@
   "priority": 75,
   "required_capability": "validator",
   "research_contract_version": "v2-core",
-  "status": "CLAIMED",
+  "status": "COMPLETE",
   "success_condition": "Persist independent challenge and claim restrictions without economic outcomes.",
   "task_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
   "task_type": "VALIDATION",
-  "updated_at": "2026-11-04T17:20:06Z"
+  "updated_at": "2026-11-04T17:20:10Z"
 }

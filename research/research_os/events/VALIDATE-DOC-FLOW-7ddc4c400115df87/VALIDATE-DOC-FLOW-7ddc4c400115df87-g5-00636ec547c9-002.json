@@ -1,0 +1,21 @@
+{
+  "action_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87",
+  "emitted_at": "2026-11-04T17:20:10Z",
+  "event_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g5-00636ec547c9-2",
+  "event_seq": 2,
+  "event_type": "ACTION_COMPLETED",
+  "generation": 5,
+  "payload": {
+    "active_count": 0,
+    "claimed_count": 0,
+    "queue_state": "IDLE",
+    "ready_count": 0,
+    "result": "COMPLETE",
+    "stage": "integration_handoff",
+    "task_count": 75,
+    "terminal_count": 75,
+    "unknown_count": 0
+  },
+  "session_id": "VALIDATE-DOC-FLOW-7ddc4c400115df87-g5-00636ec547c9",
+  "worker_id": "oracle-research-v2.independent_challenge"
+}
