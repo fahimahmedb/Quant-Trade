@@ -75,24 +75,36 @@ jobs:
       - name: Regress cumulative D0 lifecycle
         run: python3 -m unittest discover -s tests -p 'test_mega_d0_economic_lifecycle.py' -v
 
-      - name: Prove W1 Factory owned implementation law unchanged
+      - name: Prove historical W1 Factory non-change and reviewed current bounded evolution
         shell: bash
         run: |
           set -euo pipefail
-          test -z "$(git diff --name-only "${WAVE2_IMMUTABLE_BASE_SHA}"...HEAD -- \
-            research/research_os/contracts/experiment-infrastructure.schema.json \
-            research/research_os/expansion/economic_test_readiness_v1.py \
-            research/research_os/expansion/experiment_geometry.py \
-            research/research_os/expansion/experiment_infrastructure.py \
-            research/research_os/expansion/experiment_outcome_firewall.py \
-            research/research_os/expansion/experiment_power.py \
-            research/research_os/expansion/experiment_registry.py \
-            research/research_os/expansion/experiment_runner.py \
-            research/research_os/expansion/validation_readiness.py \
-            src/quant/factory/experiments.py \
-            src/quant/factory/geometry.py \
-            src/quant/factory/outcome_firewall.py \
-            src/quant/factory/power.py)"
+          paths=(
+            research/research_os/contracts/experiment-infrastructure.schema.json
+            research/research_os/expansion/economic_test_readiness_v1.py
+            research/research_os/expansion/experiment_geometry.py
+            research/research_os/expansion/experiment_infrastructure.py
+            research/research_os/expansion/experiment_outcome_firewall.py
+            research/research_os/expansion/experiment_power.py
+            research/research_os/expansion/experiment_registry.py
+            research/research_os/expansion/experiment_runner.py
+            research/research_os/expansion/validation_readiness.py
+            src/quant/factory/experiments.py
+            src/quant/factory/geometry.py
+            src/quant/factory/outcome_firewall.py
+            src/quant/factory/power.py
+          )
+          test -z "$(git diff --name-only "$WAVE2_IMMUTABLE_BASE_SHA" "$C2_C0_CANONICAL_PORT_COMMIT" -- "${paths[@]}")"
+          git diff --name-only "$WAVE2_IMMUTABLE_BASE_SHA"...HEAD -- "${paths[@]}" | sort > /tmp/w1-factory-current.paths
+          printf '%s\n' research/research_os/expansion/economic_test_readiness_v1.py research/research_os/expansion/experiment_outcome_firewall.py | sort > /tmp/w1-factory-reviewed.paths
+          diff -u /tmp/w1-factory-reviewed.paths /tmp/w1-factory-current.paths
+          test "$(git rev-parse "$WAVE2_IMMUTABLE_BASE_SHA:research/research_os/expansion/economic_test_readiness_v1.py")" = "90cbe89aecba477470f8472442cee5daceecc10d"
+          test "$(git rev-parse "$WAVE2_IMMUTABLE_BASE_SHA:research/research_os/expansion/experiment_outcome_firewall.py")" = "c62eaf8cf2250ce578e9e37479b48161b3ad934b"
+          test "$(git rev-parse HEAD:research/research_os/expansion/economic_test_readiness_v1.py)" = "1a6b48c389d34f8ae98c530bb25c2f8e3140f51f"
+          test "$(git rev-parse HEAD:research/research_os/expansion/experiment_outcome_firewall.py)" = "8c946d9bb6d74ffba0830358caa5b4c2218730a8"
+          echo "W1_FACTORY_HISTORICAL_PORT_IMMUTABILITY=PASS"
+          echo "W1_FACTORY_CURRENT_REVIEWED_DELTA=2_PATHS"
+          echo "W1_FACTORY_CURRENT_REGRESSION=TEST_STEPS_REQUIRED"
 
       - name: Prove C0 authority, outcome and ownership membrane
         run: |

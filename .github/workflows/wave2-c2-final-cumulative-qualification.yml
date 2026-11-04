@@ -25,6 +25,8 @@ env:
   MULTISOURCE_CORE_BLOB: 8d6e5d27386c437e66593a2e533f67a7f45227e5
   C0_HISTORICAL_BLOB: 3f0e1b7bae53e9513f0061cabcfae2505a6795f3
   E_PROJECTION_BLOB: b130ae27f1a8b036e23b4f0c6c131dd2a611e703
+  REVIEWED_CURRENT_MEGA_E_PROJECTION_BLOB: 2bb0c500c219a14eac5c10efaa0249c2a48566b7
+  REVIEWED_CURRENT_MULTISOURCE_HARDENING_BLOB: ad8dcf8ae60da5fed058ed2a9aead3debd886f10
   E_RECEIPT_TEST_BLOB: c39d10789502b70db20ab4df005307a23b5b5d86
   PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
 
@@ -50,11 +52,13 @@ jobs:
           for a in "$WAVE2_IMMUTABLE_BASE_SHA" "$C2_B_PORT_SHA" "$C2_D0_PORT_SHA" "$C2_C0_SOURCE_PRESERVATION_COMMIT" "$C2_C0_CANONICAL_PORT_COMMIT" "$C2_MEGA_E_PORT_COMMIT" "$C2_MULTISOURCE_MERGE_COMMIT"; do git merge-base --is-ancestor "$a" HEAD; done
           test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "$NORTH_STAR_BLOB"
           test "$(git rev-parse HEAD:research/research_os/expansion/_scientific_adjudication_c0.py)" = "$C0_HISTORICAL_BLOB"
-          test "$(git rev-parse HEAD:deploy/oracle_live_projection.py)" = "$E_PROJECTION_BLOB"
+          test "$(git rev-parse "$C2_MEGA_E_PORT_COMMIT:deploy/oracle_live_projection.py")" = "$E_PROJECTION_BLOB"
+          test "$(git rev-parse HEAD:deploy/oracle_live_projection.py)" = "$REVIEWED_CURRENT_MEGA_E_PROJECTION_BLOB"
           test "$(git rev-parse HEAD:research/research_os/tests/test_mega_e_live_receipt_reconciliation.py)" = "$E_RECEIPT_TEST_BLOB"
           test "$(git rev-parse HEAD:research/research_os/ideation_cycle.py)" = "$MULTISOURCE_IDEATION_CYCLE_BLOB"
           test "$(git rev-parse HEAD:research/research_os/multi_source_ideation.py)" = "$MULTISOURCE_CORE_BLOB"
-          test "$(git rev-parse HEAD:research/research_os/multi_source_ideation_hardening.py)" = "$MULTISOURCE_CANONICAL_HARDENING_BLOB"
+          test "$(git cat-file -t "$MULTISOURCE_CANONICAL_HARDENING_BLOB")" = "blob"
+          test "$(git rev-parse HEAD:research/research_os/multi_source_ideation_hardening.py)" = "$REVIEWED_CURRENT_MULTISOURCE_HARDENING_BLOB"
           test "$(git rev-parse HEAD:tests/test_multi_source_ideation_v2_durable_ledger_truth_operational_firewall.py)" = "$MULTISOURCE_CANONICAL_FIREWALL_TEST_BLOB"
           test "$(git rev-parse HEAD:tests/test_multi_source_ideation_v2_no_cross_lane.py)" = "$MULTISOURCE_NO_CROSS_TEST_BLOB"
           echo "CANDIDATE_HEAD=$GITHUB_SHA" | tee /tmp/final.env

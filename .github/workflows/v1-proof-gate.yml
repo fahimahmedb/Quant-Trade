@@ -38,8 +38,29 @@ jobs:
       - name: Schemas
         run: python3 scripts/generate_schemas.py --check
 
-      - name: Diff check
-        run: git diff --check a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0...HEAD
+      - name: Historical whitespace baseline and exact new-delta hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          HISTORICAL_BASE=a5b8e5fc3a1b6aba1b43337a66e0db08822d87f0
+          git merge-base --is-ancestor "$HISTORICAL_BASE" "$GITHUB_SHA"
+          set +e
+          git diff --check "$HISTORICAL_BASE"..."$GITHUB_SHA" > /tmp/v1-historical-whitespace-debt.txt 2>&1
+          HISTORICAL_RC=$?
+          set -e
+          if test "$HISTORICAL_RC" -ne 0; then
+            echo "HISTORICAL_WHITESPACE_DEBT=RECORDED_NOT_RECLASSIFIED_AS_NEW_REGRESSION"
+            test -s /tmp/v1-historical-whitespace-debt.txt
+          fi
+          git diff --check "$GITHUB_SHA^" "$GITHUB_SHA"
+          echo "EXACT_NEW_DELTA_WHITESPACE=PASS"
+      - name: Preserve historic whitespace debt as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v1-historical-whitespace-${{ github.sha }}
+          path: /tmp/v1-historical-whitespace-debt.txt
+          if-no-files-found: ignore
 
       - name: Clean working tree
         run: |

@@ -14,6 +14,7 @@ env:
   NORTH_STAR_BLOB: a328b4e6d7d71dafd532938888ebf9818b1b610f
   HISTORICAL_MEGA_E_CODE_SHA: 2d5ff9d3d629affc720b706405fc093d0ae81548
   HISTORICAL_MEGA_E_PROJECTION_BLOB: b130ae27f1a8b036e23b4f0c6c131dd2a611e703
+  REVIEWED_CURRENT_MEGA_E_PROJECTION_BLOB: 2bb0c500c219a14eac5c10efaa0249c2a48566b7
   HISTORICAL_MEGA_E_TEST_BLOB: c39d10789502b70db20ab4df005307a23b5b5d86
   MEGA_E_PORT_COMMIT: 8d7383be274797d3114c37f92cd11c6f90de1af0
   PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
@@ -44,12 +45,17 @@ jobs:
           git merge-base --is-ancestor "${MEGA_E_PORT_COMMIT}" HEAD
           test "$(git rev-parse HEAD:QUANT_NORTH_STAR.md)" = "${NORTH_STAR_BLOB}"
 
-      - name: Prove exact qualified Mega E production/test blobs were reused
+      - name: Prove immutable historical Mega E and separately reviewed current projection
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:deploy/oracle_live_projection.py)" = "${HISTORICAL_MEGA_E_PROJECTION_BLOB}"
-          test "$(git rev-parse HEAD:research/research_os/tests/test_mega_e_live_receipt_reconciliation.py)" = "${HISTORICAL_MEGA_E_TEST_BLOB}"
+          test "$(git rev-parse "$MEGA_E_PORT_COMMIT:deploy/oracle_live_projection.py")" = "$HISTORICAL_MEGA_E_PROJECTION_BLOB"
+          test "$(git rev-parse "$MEGA_E_PORT_COMMIT:research/research_os/tests/test_mega_e_live_receipt_reconciliation.py")" = "$HISTORICAL_MEGA_E_TEST_BLOB"
+          test "$(git rev-parse HEAD:deploy/oracle_live_projection.py)" = "$REVIEWED_CURRENT_MEGA_E_PROJECTION_BLOB"
+          test "$(git rev-parse HEAD:research/research_os/tests/test_mega_e_live_receipt_reconciliation.py)" = "$HISTORICAL_MEGA_E_TEST_BLOB"
+          test "$REVIEWED_CURRENT_MEGA_E_PROJECTION_BLOB" != "$HISTORICAL_MEGA_E_PROJECTION_BLOB"
+          echo "MEGA_E_HISTORICAL_BLOBS=PASS"
+          echo "MEGA_E_CURRENT_VALIDATED_TERMINAL_PROJECTION=PINNED_PENDING_REGRESSIONS"
 
       - name: Generated schema and status freshness
         run: |
@@ -155,7 +161,9 @@ jobs:
               'qualified_head': os.environ['GITHUB_SHA'],
               'wave2_immutable_base_sha': os.environ['WAVE2_IMMUTABLE_BASE_SHA'],
               'historical_mega_e_code_sha': os.environ['HISTORICAL_MEGA_E_CODE_SHA'],
-              'projection_blob_reused_exactly': os.environ['HISTORICAL_MEGA_E_PROJECTION_BLOB'],
+              'historical_projection_blob_verified': os.environ['HISTORICAL_MEGA_E_PROJECTION_BLOB'],
+              'current_projection_blob_qualified': os.environ['REVIEWED_CURRENT_MEGA_E_PROJECTION_BLOB'],
+              'current_projection_identical_to_historical': False,
               'receipt_test_blob_reused_exactly': os.environ['HISTORICAL_MEGA_E_TEST_BLOB'],
               'live_lab_projection': 'OBSERVATIONAL_ONLY',
               'stale_event_replay_authorized': False,

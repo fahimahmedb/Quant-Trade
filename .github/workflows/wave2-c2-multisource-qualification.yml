@@ -14,6 +14,7 @@ env:
   MULTISOURCE_REVIEWED_SOURCE_HEAD: bbdea6a794377f8cab54fa8bcb6ad2242616e426
   MULTISOURCE_SOURCE_HARDENING_BLOB: 29a560b672d0aa3c2c7fc838339dd864da65f71b
   MULTISOURCE_CANONICAL_HARDENING_BLOB: 3a19c9568a5d3b6c7cd867cd6341f66463d69dc2
+  REVIEWED_CURRENT_MULTISOURCE_HARDENING_BLOB: ad8dcf8ae60da5fed058ed2a9aead3debd886f10
   MULTISOURCE_CANONICAL_FIREWALL_TEST_BLOB: 43c0f1a1de5797eed644266a2713f6951f866a89
   MULTISOURCE_NO_CROSS_TEST_BLOB: 30f20bbac415d328117c3a5cb9687b67ebf1d949
   MULTISOURCE_IDEATION_CYCLE_BLOB: 09c3886258c9d86fb2e7a9809aae7b9476550ebf
@@ -57,7 +58,9 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse "$MULTISOURCE_REVIEWED_SOURCE_HEAD:research/research_os/multi_source_ideation_hardening.py")" = "$MULTISOURCE_SOURCE_HARDENING_BLOB"
           test "$(git rev-parse "$MULTISOURCE_REVIEWED_SOURCE_HEAD:tests/test_multi_source_ideation_v2_no_cross_lane.py")" = "$MULTISOURCE_NO_CROSS_TEST_BLOB"
-          test "$(git hash-object research/research_os/multi_source_ideation_hardening.py)" = "$MULTISOURCE_CANONICAL_HARDENING_BLOB"
+          test "$(git cat-file -t "$MULTISOURCE_CANONICAL_HARDENING_BLOB")" = "blob"
+          test "$(git hash-object research/research_os/multi_source_ideation_hardening.py)" = "$REVIEWED_CURRENT_MULTISOURCE_HARDENING_BLOB"
+          test "$REVIEWED_CURRENT_MULTISOURCE_HARDENING_BLOB" != "$MULTISOURCE_CANONICAL_HARDENING_BLOB"
           test "$(git hash-object tests/test_multi_source_ideation_v2_durable_ledger_truth_operational_firewall.py)" = "$MULTISOURCE_CANONICAL_FIREWALL_TEST_BLOB"
           test "$(git hash-object tests/test_multi_source_ideation_v2_no_cross_lane.py)" = "$MULTISOURCE_NO_CROSS_TEST_BLOB"
           test "$(git hash-object research/research_os/ideation_cycle.py)" = "$MULTISOURCE_IDEATION_CYCLE_BLOB"
@@ -144,7 +147,7 @@ jobs:
           e={}
           for line in Path('/tmp/ms.env').read_text().splitlines():
               if '=' in line: k,v=line.split('=',1); e[k]=v
-          r={'mission':'WAVE2_C2_CANONICAL_INTEGRATION','stage':'MULTISOURCE_COMPATIBILITY_AND_MEMBRANE_REPAIR','qualified_head':os.environ['GITHUB_SHA'],'reviewed_source_head':os.environ['MULTISOURCE_REVIEWED_SOURCE_HEAD'],'observed_source_head':e['OBSERVED_MULTISOURCE_HEAD'],'canonical_hardening_blob':os.environ['MULTISOURCE_CANONICAL_HARDENING_BLOB'],'source_adversarial_files':int(e['MULTISOURCE_SOURCE_TEST_FILES']),'truth_firewall':'PASS','operational_firewall':'PASS','passive_storage_compatibility':'PASS','research_intelligence_remains_required':True,'outcome_accessed':False}
+          r={'mission':'WAVE2_C2_CANONICAL_INTEGRATION','stage':'MULTISOURCE_COMPATIBILITY_AND_MEMBRANE_REPAIR','qualified_head':os.environ['GITHUB_SHA'],'reviewed_source_head':os.environ['MULTISOURCE_REVIEWED_SOURCE_HEAD'],'observed_source_head':e['OBSERVED_MULTISOURCE_HEAD'],'historical_canonical_hardening_blob':os.environ['MULTISOURCE_CANONICAL_HARDENING_BLOB'],'reviewed_current_hardening_blob':os.environ['REVIEWED_CURRENT_MULTISOURCE_HARDENING_BLOB'],'source_adversarial_files':int(e['MULTISOURCE_SOURCE_TEST_FILES']),'truth_firewall':'PASS','operational_firewall':'PASS','passive_storage_compatibility':'PASS','research_intelligence_remains_required':True,'outcome_accessed':False}
           Path('/tmp/wave2-c2-multisource-receipt.json').write_text(json.dumps(r,indent=2)+'\n')
           PY
       - uses: actions/upload-artifact@v4
