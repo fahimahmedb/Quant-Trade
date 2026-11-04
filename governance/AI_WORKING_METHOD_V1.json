@@ -224,7 +224,7 @@
   },
   "behavioral_opportunity_rescue": {
     "version": 1,
-    "status": "PARTIAL_TERMINAL_RECEIPT_ENFORCEMENT_PENDING_CANONICAL_PROMOTION",
+    "status": "ACTIVE_CANONICAL_CI_TERMINAL_RECEIPT_ENFORCEMENT",
     "target": "Every bounded material candidate disposition to PARK, BLOCK or STOP",
     "required_distinctions": [
       "MECHANISM",
@@ -268,7 +268,7 @@
     "no_unbounded_search": true,
     "implementation_before_family_PARK": true,
     "must_stop_when_no_decision_impact": true,
-    "executable_validator_update": "CANDIDATE_CODE_PREPARED_NOT_ACTIVE",
+    "executable_validator_update": "CANONICAL_CODE_HOSTED_METHOD_GATE_SUCCESS",
     "fresh_agent_behavioral_witness": "NOT_PROVEN",
     "terminal_disposition_required": true,
     "terminal_claims": [

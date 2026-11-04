@@ -7,11 +7,11 @@ This file is the single current-state router. Historical detail remains in Git h
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=F6_REAL_VM_SCIENTIFIC_NEGATIVE_SAFE_OPERATIONAL_FINAL_ADMISSION_20261104`
+LAST_MATERIAL_HANDOFF_MISSION=NR_GLOBAL_HISTORIC_CURRENT_DUAL_PROOF_REPAIR_20261104`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=77193979cca2cb10f56dcafb0b7e9a45f91d5745`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=REUSE the existing source-scoped Oracle research path with new PIT-admissible sources; PARK unproven Rule204 economics and separately qualify historical C0/Wave2 checks before any QUANT_SYSTEM_V1_FINISHED claim.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F6 only for contradicted real-host receipts, broken autonomous terminal recovery, new P0 blocker or a relevant exact-SHA F6 regression.`
+LAST_MATERIAL_HANDOFF_SUBJECT=b4a04897d8943386022a4c7ce6f26af094abb5da`
+LAST_MATERIAL_HANDOFF_NEXT_ACTION=REUSE qualified F0-F6 operational and exact-head software NR; preserve frozen scientific memory; qualify new PIT-admissible sources and separately authorized economic trials before any claim of profitability or QUANT_SYSTEM_V1_FINISHED.`
+LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen global software NR only for a material executable/test/workflow or authority change, a failed exact-SHA required gate, unreviewed historical/current source drift, or an evidenced safety/behavioral regression.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
@@ -160,9 +160,9 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F6 (F2 VM dedup closed)
 
 `CURRENT_GATE=GLOBAL_FINISH_GATE_RECONCILIATION`
-`CURRENT_BLOCKER=NONE_F6_OPERATIONAL__ECONOMIC_EDGE_UNPROVEN_AND_HISTORICAL_GLOBAL_CI_SEPARATE`
+`CURRENT_BLOCKER=NONE_F6_OPERATIONAL__GLOBAL_SOFTWARE_NR_QUALIFIED_BOUNDED__ECONOMIC_EDGE_UNPROVEN`
 `NEXT_GATE=GLOBAL_FINISH_GATE_RECONCILIATION_NOT_YET_PROVEN`
-`MANDATORY_NEXT_DECISION=REUSE_QUALIFIED_ORACLE_RESEARCH_WHEN_NEW_PIT_SOURCES_EXIST__PARK_UNRELATED_HISTORICAL_CI`
+`MANDATORY_NEXT_DECISION=REUSE_QUALIFIED_RESEARCH_WHEN_NEW_PIT_SOURCES_EXIST__EVALUATE_NEW_ECONOMIC_EDGE_SEPARATELY`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -321,6 +321,22 @@ A completed receipt becomes historical evidence after durable state changes; the
 `governance/POST_OPERATIONAL_RESUME_PROGRAM_2026-11-02.md=NON_AUTHORITATIVE_HISTORICAL_PREPARED_EVIDENCE`
 `POST_OPERATIONAL_RESUME_PROGRAM_BOOTSTRAP_REQUIRED=FALSE`
 
+### Bounded AI opportunity rescue and global hosted software NR — scoped PASS
+
+`GLOBAL_SOFTWARE_NR_15_HOSTED_GATES=PASS_EXACT_SHA`
+`GLOBAL_SOFTWARE_NR_QUALIFIED_SHA=b4a04897d8943386022a4c7ce6f26af094abb5da`
+`GLOBAL_SOFTWARE_NR_PROJECT_METHOD_GATE=PASS_41882579456`
+`AI_WORKING_METHOD_OPPORTUNITY_RESCUE=PASS_CANONICAL_CODE_AND_PROJECT_METHOD`
+`AI_WORKING_METHOD_FRESH_INDEPENDENT_AGENT_RESILIENCE=NOT_PROVEN`
+`ECONOMIC_NET_EDGE=NOT_PROVEN`
+`REAL_TRADING_AND_CAPITAL_AUTHORITY=FALSE`
+
+The preceding AI Working Method §5.1 governance and active code implementation are present on the canonical branches, with a validated terminal receipt guard. The code and global non-regression repairs are independently hosted-qualified on immutable executable subject `b4a04897d8943386022a4c7ce6f26af094abb5da`: **15/15 triggered workflows SUCCESS, 0 FAILURE**, across runs: `41884930871`, `41884931088`, `41884930995`, `41884931404`, `41884930938`, `41884931185`, `41884931347`, `41884930974`, `41884930804`, `41884930919`, `41884931341`, `41884931270`, `41884931455`, `41884931527`, `41884931263`. In scope: Canonical Code, Project + Code Method Gates, SEC P0, V1 Proof, Economic Readiness, Oracle V2, Research OS Depth, Wave2 C0/D0/Mega E/Multi-Source/cumulative and synthetic Product B replay.
+
+Historic port proofs remain anchored at the original immutable objects. The current W1 economic/firewall, Mega E projection and Multi-Source hardening changes are separately reviewed by deterministic exact-current blob checks and executable regression tests. A historical V1 whitespace debt report is preserved as an artifact, while the new delta still fails closed for whitespace regressions. Newly parametrized pytest cases are collected explicitly. No historical red test was simply relabelled.
+
+This is **bounded software NR**; eight other path-filtered/scheduled code workflows were not triggered by this batch, so no assertion that every conceivable gate or production combination was tested. F6 operational safe-negative runtime remains PASS but **new VM integration and fresh independent agent behavioral adherence are not implied**. All prospective, economic, real-capital and live-trading authorities remain closed. `QUANT_SYSTEM_V1_FINISHED=NOT_PROVEN` remains unchanged.
+
 ## Historical continuity
 
 Detailed pre-F3 checkpoints, failed trials, F1 proof construction, repository cleanup receipts and old runtime states remain in Git history and their original evidence objects. They are deliberately not duplicated here because they are no longer current decision authority.
@@ -333,4 +349,4 @@ At the actual Oracle VM release `d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`, the 
 
 The subsequent actual normal systemd worker wake at 2026-11-04T17:30:05Z added commit `d4262372fe90641ce6762f24636a872b3d5174af` with wake blob `aad5244c4ab557ad7a18d69a4a722549954a35e8`: preflight PASS, 75/75 tasks terminal, zero active/ready/claimed/unknown, `NOOP_SOURCE_MISSING`, zero writes, zero hosted model calls, all forbidden authority false. This proves safe terminal recovery, without a fabricated task or automatic access to a new external scientific source. The documented next action is reuse of the existing source intake and Research Intelligence when a new distinct PIT-qualified source becomes available. No architecture campaign, VM relaunch or new worker code is needed. An empty source catalogue is a legitimate PARK, not an assertion of profitable autonomy.
 
-Same-executable hosted F6 qualification on code `77193979cca2cb10f56dcafb0b7e9a45f91d5745`: method-gate run `41874263929`, Oracle V2 Core `41874263997`, SEC P0 `41874263908`, Canonical Code `41874263842`, Primary Source `41874264002`, Python readiness `41874264044`, and final gate `41874264147` were all SUCCESS. Later real Oracle commits only mutate scientific tasks/artifacts/events/receipts and admissions, not this qualified executable. Other historical C0/Wave2/Mega E blob-pin and global proof gates are RED, separately PARK for global finish; do not assert `QUANT_SYSTEM_V1_FINISHED` from this F6 conclusion. The F6 runtime evidence warrants `F6_OPERATIONAL_HANDOFF=PASS` as a *non-economic operational* result only, subject to the existing exact admission/completion gate. Do not relabel the scientific negative as an edge.
+Same-executable hosted F6 qualification on code `77193979cca2cb10f56dcafb0b7e9a45f91d5745`: method-gate run `41874263929`, Oracle V2 Core `41874263997`, SEC P0 `41874263908`, Canonical Code `41874263842`, Primary Source `41874264002`, Python readiness `41874264044`, and final gate `41874264147` were all SUCCESS. Later real Oracle commits only mutate scientific tasks/artifacts/events/receipts and admissions, not this qualified executable. At the F6 checkpoint those historical Wave2/current-HEAD equality checks were RED; subsequent bounded NR repair is now hosted-qualified 15/15 on `b4a04897d8943386022a4c7ce6f26af094abb5da` without rewriting immutable historic blobs. This does not prove `QUANT_SYSTEM_V1_FINISHED` or profitability. The F6 runtime evidence warrants `F6_OPERATIONAL_HANDOFF=PASS` as a *non-economic operational* result only, subject to the existing exact admission/completion gate. Do not relabel the scientific negative as an edge.
