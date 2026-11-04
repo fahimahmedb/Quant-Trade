@@ -1,17 +1,17 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_RULE204_EPOCH2_PRODUCER_COMPLETE_VALIDATION_PENDING`
+STATUS=`F0_ENFORCED_PASS__F2_VM_DEDUP_QUALIFIED__F4_F5_PRODUCT_B_PASS__F6_OPERATIONAL_HANDOFF_PASS_SAFE_NEGATIVE`
 DATE=`2026-11-04`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
 
 ## Latest material handoff
 
-`LAST_MATERIAL_HANDOFF_MISSION=F2_VM_DEDUP_FINAL_HANDOFF_20261104`
+`LAST_MATERIAL_HANDOFF_MISSION=F6_REAL_VM_SCIENTIFIC_NEGATIVE_SAFE_OPERATIONAL_FINAL_ADMISSION_20261104`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-`LAST_MATERIAL_HANDOFF_SUBJECT=0cf2e8708540d5268c5e63b51c4f44b4e6d8aa6c`
-`LAST_MATERIAL_HANDOFF_NEXT_ACTION=F6: qualify one distinct non-economic primary documentary source and a fresh Owner-governed frontier mandate using existing Research Intelligence; do not raise task issuance caps, replay blocked tasks, dispatch Codex or grant economic/capital/live authority.`
-`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F2 only for new executable/contract changes, changed VM release, contradicted dedup/HEAD witness, or a new exact-SHA gate failure; F6 source admissibility is a separate block.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=77193979cca2cb10f56dcafb0b7e9a45f91d5745`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=REUSE the existing source-scoped Oracle research path with new PIT-admissible sources; PARK unproven Rule204 economics and separately qualify historical C0/Wave2 checks before any QUANT_SYSTEM_V1_FINISHED claim.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen F6 only for contradicted real-host receipts, broken autonomous terminal recovery, new P0 blocker or a relevant exact-SHA F6 regression.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
@@ -160,9 +160,9 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F6 (F2 VM dedup closed)
 
 `CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
-`CURRENT_BLOCKER=F6_INDEPENDENT_DOCUMENTARY_VALIDATION_PENDING__HOSTED_HISTORICAL_EPOCH_FIXTURE_GATES`
-`NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=REUSE_REAL_VM_NATURAL_INDEPENDENT_VALIDATION_AND_REQUALIFY_20261020_TEST_FIXTURE_ON_EXACT_SHA`
+`CURRENT_BLOCKER=NONE_F6_OPERATIONAL__ECONOMIC_EDGE_UNPROVEN_AND_HISTORICAL_GLOBAL_CI_SEPARATE`
+`NEXT_GATE=GLOBAL_FINISH_GATE_RECONCILIATION_NOT_YET_PROVEN`
+`MANDATORY_NEXT_DECISION=REUSE_QUALIFIED_ORACLE_RESEARCH_WHEN_NEW_PIT_SOURCES_EXIST__PARK_UNRELATED_HISTORICAL_CI`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -178,12 +178,12 @@ The two subsequent *distinct natural VM systemd invocations*, shown in the user-
 
 The Git compare `d0414d7...afeb0f52...` proved exactly three **runtime receipt JSON additions**, no executable/test/workflow modification. Subsequent GitHub-only engineering commits updated `.quant/MISSION_ADMISSION.json` and repaired a **synthetic F2 test count** after new real VM receipt history caused a PR46 CI false negative: the fixture previously counted all live-receipt records rather than the synthetic `RELEASE='a'*40`. Corrected test blob `7bc2ec0f87e451bb55e72a02774e3dae33964184` at code `0cf2e8708540d5268c5e63b51c4f44b4e6d8aa6c`, with *no production worker change*. Its exact same-code hosted gate results are required for current-head qualification. The earlier admission-only candidate `ad5a674ec8e96d94549da95b03797b104f648a08` failed Canonical Code job `126347428288` on these two fixture assertions and is not a qualified subject; do not hide this red run.
 
-This closes only the **bounded F2 engineering/dedup proof**; it does not prove further scientific source admission, economic value, real capital/production or live trading. F6 remains blocked independently.
+This historical checkpoint closed the bounded F2 engineering/dedup proof, not scientific source admission. F6 was subsequently admitted and its non-economic runtime operational handoff is independently recorded below. Economic edge, real capital and live trading remain unproven and unauthorized.
 
 ## Current decision frontier — F6
 
-`F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
-`F6_LOCAL_BLOCKER=RULE204_TERMINAL_BLOCK_V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION`
+`F6_OPERATIONAL_HANDOFF=PASS`
+`F6_LOCAL_BLOCKER=NONE_OPERATIONAL__SCIENTIFIC_NEGATIVE_CLOSED_AND_PARKED`
 `F6_PRIMARY_OFFICIAL_SOURCE_CAPTURE=PASS`
 `F6_PRIMARY_CAPTURE_RUN=41767148087`
 `F6_PRIMARY_CAPTURE_ARTIFACT=13293470473`
@@ -194,7 +194,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_NEW_FRONTIER_MANDATE=ACTIVE_ONE_SOURCE_CANONICALLY_ADMITTED`
 `F6_NEW_FRONTIER_ID=INSTITUTIONAL_FLOW_REGSHO_RULE204_2025`
 `F6_NEW_READY_TASK=PASS_REAL_VM_RULE204_ONE_TASK_PUBLISHED`
-`F6_VM_SCIENTIFIC_CONTINUATION=PASS_QUEUE_REFILL_LEGACY_STAGE_AND_SAFE_TERMINAL_SOURCE_PIT_BLOCK`
+`F6_VM_SCIENTIFIC_CONTINUATION=PASS_EPOCH2_PRODUCER_VALIDATOR_AND_NATURAL_POST_TERMINAL_NOOP`
 `F6_NON_ECONOMIC_CODE_CANDIDATE_SHA=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
 `F6_VM_PROMOTION=PASS_OPERATOR_TRANSACTIONAL_RECEIPT`
 `F6_VM_ACTIVE_RELEASE=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`
@@ -216,7 +216,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_V2_EPOCH_KNOWLEDGE_CUTOFF=2026-10-20T01:00:00Z`
 `F6_RULE204_FIRST_VERIFIED_SOURCE_CAPTURE=2026-11-04T03:26:37Z`
 `F6_ECONOMIC_EDGE=NOT_OBSERVED`
-`F6_OPERATING_DECISION=REUSE_REAL_VM_VALIDATION_REPAIR_HOSTED_FIXTURE_ONLY`
+`F6_OPERATING_DECISION=REUSE_EXISTING_ORACLE_SCIENTIFIC_AND_DOCUMENTARY_SOURCE_PIPELINE`
 
 ### Closed F6 source and native qualification step
 
@@ -234,7 +234,7 @@ Completed VM upgrade: Owner-provided terminal output shows `F6_PROMOTION_PREFLIG
 
 The admitted frontier produced a **real VM task and one successful stage**: at `2026-11-04T12:00:07Z` natural worker wake, commit `397415dbac51c0a80b511f128d92582ff6838fa5` added exactly one Rule204 READY task `FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001`, bound to source blob `8e6796e2752cd5e000b2667b8558d994b5552628` and packet `7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d`; corresponding durable queue-refill receipt blob `59f20d1cd258720d29aaeb383d79935e72922224` reports `DERIVED_ONE_READY_TASK`, `producer_execution_same_wake=false`, `hosted_model_calls=0`, four authority flags false. At natural wake `2026-11-04T12:10:15Z`, commit `74e2d2f4da67ca2d1a3df8fbd1c295f621b55698` records stage `legacy_duplicate_check: CONTINUE`, task still READY, artifact blob `20c64cb6d5b10cf13e43967d4a33cf3a80fe03c5`, stage receipt blob `944ed5efe10f1e3ec189cefd1a425b19a26df547`, same qualified release, no economic/capital/live authority. This proves bounded VM scientific queue refill and first legacy-screen stage, **not** a complete new frozen hypothesis, economic result or terminal scientific disposition. Subsequent real VM wake at 2026-11-04T12:20:12Z ended the same task terminal `BLOCKED`, `retryable=false`, reason `V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION`. Primary artifact `research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001/oracle-worker/mechanism_research.json` blob `42bf5014ccb37e2e165faced0aed9a8e13cbb0a8`, receipt blob `e4eddf65c8f7b1388a4edaf20a1c5963f9f03c37`, terminal task blob `7acdd16b8773c7ec3897adf490fba14c2e517b47`. The next normal wake at 12:30 UTC committed `914800c47c5e2dcc07cb2925a0489f57bcd158af` as `NOOP_SOURCE_MISSING`, with no repeated candidate or new scientific producer. Decisive time proof: currently OPEN frozen V2 epoch (`research/research_os/runtime/V2_ACTIVE_EPOCH.json`, blob `fe8830dc08dd2751e0aa2ec482e55c65baea2fe6`) has `knowledge_cutoff=2026-10-20T01:00:00Z`, while first verified SEC Rule204 document capture and `available_at` are `2026-11-04T03:26:37Z`. `research/research_os/expansion/v2_stage_executor.py` at installed release `d12fffdb7...` correctly rejects source `available_at` beyond frozen epoch cutoff before ideation. Historic CFR edition 2025 cannot be substituted for verified PIT availability. This is a scientifically correct and durable negative/safety disposition; it does NOT qualify new frozen hypothesis, NO_CANDIDATE, independent validation, economic edge or F6 finish. Next action: PARK the terminal task; either retrieve independent primary evidence proving genuine pre-cutoff public availability without changing frozen capture receipts, or separately govern/qualify a new post-capture epoch and a new admissible task without reusing the blocked lineage or breaking blinding/epoch memory. No free retry, epoch timestamp rewriting, quota increase, additional mandate or VM mutation is implied. F6 full operational E2E remains NOT PROVEN; QUANT_SYSTEM_V1_FINISHED and economic edge are not established. No new Codex, secondary agent, VM mutation, economic/prospective/capital/live action is authorized.
 
-### F6 predeclared successor-epoch staging (2026-11-04; not activated)
+### F6 predeclared successor-epoch staging (historically inert; later activated at 15:31 UTC)
 
 `F6_SUCCESSOR_EPOCH_STAGING_COMMIT=c1e8a442ab9ccd49d8427080a292f3084ad7812c`
 `F6_SUCCESSOR_EPOCH_BLOB=6bff13c24c64459995b19c8e9f4f63ca76061601`
@@ -243,12 +243,12 @@ The admitted frontier produced a **real VM task and one successful stage**: at `
 `F6_SUCCESSOR_KNOWLEDGE_CUTOFF=2026-11-04T15:25:00Z`
 `F6_SUCCESSOR_OPENED_AT=2026-11-04T15:30:00Z`
 `F6_SUCCESSOR_FRONTIER_ID=INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2`
-`F6_SUCCESSOR_ACTIVATION=NOT_EXECUTED`
+`F6_SUCCESSOR_ACTIVATION=PASS_REAL_VM_GOVERNED_EPOCH2`
 `F6_SUCCESSOR_SOURCE_TEST=PASS_GITHUB_RUN_41854461126`
 `F6_SUCCESSOR_V2_CORE_TEST=PASS_GITHUB_RUN_41854460631`
 `F6_SUCCESSOR_METHOD_GATE=PASS_GITHUB_RUN_41854461222`
 `F6_SUCCESSOR_CANONICAL_CODE=PASS_GITHUB_RUN_41854461317`
-`F6_SUCCESSOR_SEC_GATE=PENDING_AT_CHECKPOINT`
+`F6_SUCCESSOR_SEC_GATE=PASS_41874263908_ON_77193979`
 
 The exact original epoch blob `fe8830dc08dd2751e0aa2ec482e55c65baea2fe6` remains the active immutable historical epoch and is also archived byte-identically under `research/research_os/runtime/epoch_admissions/`. A **different**, CLEAN and BLINDED successor was predeclared in Git before its future 15:25 knowledge cutoff and 15:30 research-window opening. It retains the source's authentic November 4 first-capture timestamp and records the original Rule204 PIT failure as a distinct terminal predecessor, not as an economic result or scientific novelty. It permits only a new bounded post-capture research cohort, with max one export and inherited all-disabled economic/prospective/capital/live authority. New candidate frontier and tests are staged without changing `V2_ACTIVE_EPOCH.json`, the operational `RESEARCH_FRONTIER.json`, any existing task, the VM or the systemd timer. Focused hosted tests affirm old PIT FAIL/new PIT PASS and one subsequent source-bound preview with no repeat after terminal; a future activation must still satisfy all exact SHA gates, fresh admission, legal epoch succession and no feedback leakage.
 
@@ -263,10 +263,21 @@ Do not mislabel the historical blocked task as NO_CANDIDATE, an independent cand
 `F6_SUCCESSOR_REAL_VM_HANDOFF_ARTIFACT_BLOB=2e0baaf0249a9e80a4d2722e658fc4cd4a4e4fe5`
 `F6_SUCCESSOR_VALIDATOR_TASK_ID=VALIDATE-DOC-FLOW-7ddc4c400115df87`
 `F6_SUCCESSOR_VALIDATOR_TASK_BLOB=2f81009d7d7e3d2f6c542448ec4f063a49f57830`
-`F6_SUCCESSOR_VALIDATOR_STATUS=READY_INDEPENDENT_CHALLENGE_NOT_YET_EXECUTED`
+`F6_SUCCESSOR_VALIDATOR_STATUS=COMPLETE_5_OF_5_REAL_VM_SAFE_BLOCK`
 `F6_SUCCESSOR_HOSTED_HISTORICAL_FIXTURE_REPAIR_SHA=760888598dffc1d1f8db6bbc44059d20648f9f03`
-`F6_SUCCESSOR_HOSTED_REQUALIFICATION=IN_PROGRESS_EXACT_SHA`
-`F6_OPERATIONAL_HANDOFF=NOT_PROVEN`
+`F6_SUCCESSOR_HOSTED_REQUALIFICATION=PASS_77193979_METHOD_SEC_V2_CANONICAL_PYTHON_PRIMARY_FINAL`
+`F6_EPOCH2_PRODUCER_TERMINAL_BLOB=ab8d2d59933898e10b2d657502ff84afafeee014`
+`F6_EPOCH2_VALIDATOR_TERMINAL_COMMIT=5cf398167a9d5b6af55883f506d123c9acc00c12`
+`F6_EPOCH2_VALIDATOR_TERMINAL_TASK_BLOB=2d83511d31fa99806bb70c97dafeb75d8bc9e69a`
+`F6_EPOCH2_VALIDATOR_DECISION=BLOCK_IMPLEMENTABILITY_AND_DESIGN_ONLY`
+`F6_EPOCH2_INTEGRATION_HANDOFF=NO_CHILD_PARK_BLOCKED_NO_INTEGRATION_AUTHORITY`
+`F6_EPOCH2_INTEGRATION_ARTIFACT_BLOB=f674a3b8fd16e9d4fe35fccb5bfc838758828458`
+`F6_REAL_VM_POST_TERMINAL_WAKE_COMMIT=d4262372fe90641ce6762f24636a872b3d5174af`
+`F6_REAL_VM_POST_TERMINAL_WAKE_BLOB=aad5244c4ab557ad7a18d69a4a722549954a35e8`
+`F6_EXACT_QUALIFIED_EXECUTABLE_CODE_SHA=77193979cca2cb10f56dcafb0b7e9a45f91d5745`
+`F6_GLOBAL_FINISH=NOT_PROVEN`
+`QUANT_SYSTEM_V1_FINISHED=NOT_PROVEN`
+`F6_OPERATIONAL_HANDOFF=PASS`
 
 At 2026-11-04 15:31:20Z after the predeclared successor opening, code commit `4a4a90172117d3a7baed220b90b4671f81c87ed6` activated exactly the new epoch blob `6bff13c24c64459995b19c8e9f4f63ca76061601` and a single new source-frontier without modifying or relabeling the earlier terminally BLOCKED Rule204 task. Subsequent actual natural VM wakes on still-installed release `d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd` produced new task `FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001` and completed five durable producer stages: legacy screen, mechanism research, disconfirmation, freeze, validation handoff. The real immutable task/blob and handoff artifact were directly read at code `a519ab60153caa734d739d6fa53664e5567185a8`, and the resulting independent validation task `VALIDATE-DOC-FLOW-7ddc4c400115df87` is READY, **not yet independently validated or an economic result**.
 
@@ -315,3 +326,11 @@ A completed receipt becomes historical evidence after durable state changes; the
 Detailed pre-F3 checkpoints, failed trials, F1 proof construction, repository cleanup receipts and old runtime states remain in Git history and their original evidence objects. They are deliberately not duplicated here because they are no longer current decision authority.
 
 Do not reopen a completed mission without new contradictory primary evidence.
+
+### F6 final operational handoff — real Oracle scientific negative and safe continuation
+
+At the actual Oracle VM release `d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`, the governed PIT-successor Rule204 producer `FRONTIER-INSTITUTIONAL-FLOW-RULE204-PIT-RESCUE-EPOCH2-001` persisted five stages and completed (task blob `ab8d2d59933898e10b2d657502ff84afafeee014`). It generated the frozen documentary hypothesis and independent validation lineage. The independent validator `VALIDATE-DOC-FLOW-7ddc4c400115df87` separately completed all five stages at Git commit `5cf398167a9d5b6af55883f506d123c9acc00c12`, terminal task blob `2d83511d31fa99806bb70c97dafeb75d8bc9e69a`. Its deterministic validator judged the documentary dossier `BLOCK_IMPLEMENTABILITY` with six unqualified dimensions; V2 readiness is `INCOMPLETE`, claim ceiling `DESIGN_ONLY`, no empirical return/alpha and no outcome accessed. The terminal handoff artifact blob `f674a3b8fd16e9d4fe35fccb5bfc838758828458` records `PARK_BLOCKED_NO_INTEGRATION_AUTHORITY` and `handoff_created=false`. No economic/prospective/capital/live rights were opened.
+
+The subsequent actual normal systemd worker wake at 2026-11-04T17:30:05Z added commit `d4262372fe90641ce6762f24636a872b3d5174af` with wake blob `aad5244c4ab557ad7a18d69a4a722549954a35e8`: preflight PASS, 75/75 tasks terminal, zero active/ready/claimed/unknown, `NOOP_SOURCE_MISSING`, zero writes, zero hosted model calls, all forbidden authority false. This proves safe terminal recovery, without a fabricated task or automatic access to a new external scientific source. The documented next action is reuse of the existing source intake and Research Intelligence when a new distinct PIT-qualified source becomes available. No architecture campaign, VM relaunch or new worker code is needed. An empty source catalogue is a legitimate PARK, not an assertion of profitable autonomy.
+
+Same-executable hosted F6 qualification on code `77193979cca2cb10f56dcafb0b7e9a45f91d5745`: method-gate run `41874263929`, Oracle V2 Core `41874263997`, SEC P0 `41874263908`, Canonical Code `41874263842`, Primary Source `41874264002`, Python readiness `41874264044`, and final gate `41874264147` were all SUCCESS. Later real Oracle commits only mutate scientific tasks/artifacts/events/receipts and admissions, not this qualified executable. Other historical C0/Wave2/Mega E blob-pin and global proof gates are RED, separately PARK for global finish; do not assert `QUANT_SYSTEM_V1_FINISHED` from this F6 conclusion. The F6 runtime evidence warrants `F6_OPERATIONAL_HANDOFF=PASS` as a *non-economic operational* result only, subject to the existing exact admission/completion gate. Do not relabel the scientific negative as an edge.
