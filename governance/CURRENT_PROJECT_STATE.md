@@ -7,11 +7,11 @@ This file is the single current-state router. Historical detail remains in Git h
 
 ## Latest material handoff
 
-LAST_MATERIAL_HANDOFF_MISSION=NR_GLOBAL_HISTORIC_CURRENT_DUAL_PROOF_REPAIR_20261104`
+`LAST_MATERIAL_HANDOFF_MISSION=NR_GLOBAL_HISTORIC_CURRENT_DUAL_PROOF_REPAIR_20261104`
 `LAST_MATERIAL_HANDOFF_RESULT=PASS`
-LAST_MATERIAL_HANDOFF_SUBJECT=b4a04897d8943386022a4c7ce6f26af094abb5da`
-LAST_MATERIAL_HANDOFF_NEXT_ACTION=REUSE qualified F0-F6 operational and exact-head software NR; preserve frozen scientific memory; qualify new PIT-admissible sources and separately authorized economic trials before any claim of profitability or QUANT_SYSTEM_V1_FINISHED.`
-LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen global software NR only for a material executable/test/workflow or authority change, a failed exact-SHA required gate, unreviewed historical/current source drift, or an evidenced safety/behavioral regression.`
+`LAST_MATERIAL_HANDOFF_SUBJECT=b4a04897d8943386022a4c7ce6f26af094abb5da`
+`LAST_MATERIAL_HANDOFF_NEXT_ACTION=REUSE qualified F0-F6 operational and exact-head software NR; preserve frozen scientific memory; qualify new PIT-admissible sources and separately authorized economic trials before any claim of profitability or QUANT_SYSTEM_V1_FINISHED.`
+`LAST_MATERIAL_HANDOFF_REOPEN_CONDITION=Reopen global software NR only for a material executable/test/workflow or authority change, a failed exact-SHA required gate, unreviewed historical/current source drift, or an evidenced safety/behavioral regression.`
 
 The active durable-continuation mechanism remains the existing `AI Working Method Gate`; no second router, memory system or methodology is introduced. `FINAL_HANDOFF` is authoritative only when the hosted gate verifies these exact router markers against a fresh admission.
 
