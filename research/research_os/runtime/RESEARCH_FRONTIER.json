@@ -149,6 +149,34 @@
       ],
       "success_condition": "One distinct documented Rule204 premise is legacy-screened and handed to independent validation, or NO_CANDIDATE/BLOCK is durably recorded; never infer a forced purchase or payoff from law alone.",
       "required_source_rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE"
+    },
+    {
+      "frontier_id": "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2",
+      "enabled": true,
+      "priority": 75,
+      "task_type": "INSTITUTIONAL_FLOW",
+      "required_capability": "institutional_flows",
+      "target_lane": "market_discovery",
+      "objective": "Successor-epoch pre-outcome review of the identical official Rule204 document after a prior pre-ideation PIT refusal. Previous blocked task remains immutable; this is a distinct governed post-capture research cohort, not an invented historical publication, new empirical claim or reset of scientific memory. Legacy duplication screening mandatory.",
+      "allowed_actions": [
+        "read fresh Legacy ledger, duplication map and negative knowledge before ideation",
+        "research one bounded institutional-flow mechanism from admissible public rules and documentary evidence",
+        "inspect public rules, institutional constraints, calendars and implementation mechanics",
+        "map forced actor, constraint, clock, affected universe, capacity and falsification",
+        "actively seek structural disconfirmation",
+        "persist at most one frozen CandidateHypothesis and exactly one VALIDATION handoff, or persist NO_CANDIDATE"
+      ],
+      "forbidden_actions": [
+        "candidate return inspection",
+        "backtest",
+        "post-outcome event selection or tuning",
+        "prospective observation",
+        "capital allocation",
+        "order generation",
+        "live trading"
+      ],
+      "success_condition": "At most one pre-outcome documented Rule204 mechanism is independently screened and sent to validation, or a durable NO_CANDIDATE/BLOCK is recorded; previous terminal blocked lineage and unobserved economics preserved.",
+      "required_source_rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE"
     }
   ]
 }

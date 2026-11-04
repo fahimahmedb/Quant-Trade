@@ -143,7 +143,10 @@ class FrontierSourcePlannerV2Test(unittest.TestCase):
         historical_frontier = deepcopy(self.frontier)
         historical_frontier["frontiers"] = [
             item for item in historical_frontier["frontiers"]
-            if item["frontier_id"] != "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"
+            if item["frontier_id"] not in {
+                "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025",
+                "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2",
+            }
         ]
         result = derive_refill_task(
             frontier=historical_frontier,

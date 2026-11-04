@@ -105,6 +105,10 @@ class F6Rule204SourceTests(unittest.TestCase):
 
     def test_only_existing_12_issued_frontiers_and_one_new_bounded_candidate(self):
         frontier = deepcopy(load_frontier(BASE))
+        frontier["frontiers"] = [
+            item for item in frontier["frontiers"]
+            if item["frontier_id"] != "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2"
+        ]
         # Production runtime may already contain the first real Rule204 task;
         # isolate the 72 terminal predecessor tasks for this offline preview.
         tasks = [task for task in load_tasks(BASE)
@@ -130,7 +134,11 @@ class F6Rule204SourceTests(unittest.TestCase):
 
     def test_operational_one_source_frontier_after_qualified_vm_rebind(self):
         from research.research_os.queue_replenisher import load_source_catalog
-        current = load_frontier(BASE)
+        current = deepcopy(load_frontier(BASE))
+        current["frontiers"] = [
+            item for item in current["frontiers"]
+            if item["frontier_id"] != "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2"
+        ]
         new = next(item for item in current["frontiers"]
                    if item["frontier_id"] == "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025")
         self.assertTrue(new["enabled"], "Separate F6 admission requires qualified real-VM upgrade")
@@ -194,6 +202,8 @@ class F6Rule204SourceTests(unittest.TestCase):
         staged = BASE / "runtime" / "epoch_admissions"
         prior = json.loads((staged / "F6_RULE204_PREDECESSOR_EPOCH_20261020.json").read_text())
         successor = json.loads((staged / "F6_RULE204_EPOCH_20261104.json").read_text())
+        active_epoch = json.loads((BASE / "runtime" / "V2_ACTIVE_EPOCH.json").read_text())
+        self.assertEqual(active_epoch, successor, "Runtime epoch must be the qualified predeclared snapshot")
         frontier = json.loads((staged / "F6_RULE204_FRONTIER_20261104.json").read_text())
         new_id = "INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2"
         source_packet = source()["documentary_packet"]
