@@ -162,7 +162,7 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 `CURRENT_GATE=F6_OPERATIONAL_HANDOFF`
 `CURRENT_BLOCKER=F6_RULE204_SOURCE_CAPTURE_AFTER_FROZEN_EPOCH_KNOWLEDGE_CUTOFF`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=BLOCK_REPLAY__QUALIFY_HISTORICAL_PIT_SOURCE_OR_GOVERN_NEW_EPOCH_BEFORE_NEXT_ADMISSION`
+`MANDATORY_NEXT_DECISION=QUALIFY_PREDECLARED_EPOCH_STAGING_THEN_SEPARATELY_ACTIVATE_AFTER_20261104T1530Z_IF_SAFE`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=PASS_EXECUTABLE_EQUIVALENCE`
 `F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
 `F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
@@ -216,7 +216,7 @@ This closes only the **bounded F2 engineering/dedup proof**; it does not prove f
 `F6_V2_EPOCH_KNOWLEDGE_CUTOFF=2026-10-20T01:00:00Z`
 `F6_RULE204_FIRST_VERIFIED_SOURCE_CAPTURE=2026-11-04T03:26:37Z`
 `F6_ECONOMIC_EDGE=NOT_OBSERVED`
-`F6_OPERATING_DECISION=PARK_SOURCE_PIT_NOT_REPAIRABLE_BY_WAIT_OR_UNVERIFIED_REDATE`
+`F6_OPERATING_DECISION=CONNECT_PREDECLARED_SUCCESSOR_EPOCH_STAGE_ONLY_NO_RUNTIME_CHANGE`
 
 ### Closed F6 source and native qualification step
 
@@ -233,6 +233,26 @@ A hosted dedicated Rule 204 source workflow tested the original capture (3/3) an
 Completed VM upgrade: Owner-provided terminal output shows `F6_PROMOTION_PREFLIGHT_PASS` and transaction status `ACTIVE_F4_RUNTIME_PROOF_PENDING`, `release_sha=d12fffdb7c2a382fd7714b7f3f5d813a4a0af8dd`, `external_agent_dispatches=0`, backup `/var/backups/quant-v2-handoff-20261104T114445-2290aeb2`, active release symlink to `d12fffdb7...`, V2 timer active/enabled, worker inactive/result success. The separately opened GitHub primary commit `fdf346e76d45b457bfb13377f618ddbe559332a4` (2026-11-04 11:45:47 UTC) adds an actual bounded worker wake receipt with `release_sha=d12fffdb7...`, `preflight.status=PASS`, `status=NOOP_SEARCH_SPACE_INCOMPLETE`, all scientific/economic/capital/live authority flags false, and no hosted model calls. This proves the promoted release has executed and published a normal wake; it does not prove a new Rule 204 task.
 
 The admitted frontier produced a **real VM task and one successful stage**: at `2026-11-04T12:00:07Z` natural worker wake, commit `397415dbac51c0a80b511f128d92582ff6838fa5` added exactly one Rule204 READY task `FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001`, bound to source blob `8e6796e2752cd5e000b2667b8558d994b5552628` and packet `7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d`; corresponding durable queue-refill receipt blob `59f20d1cd258720d29aaeb383d79935e72922224` reports `DERIVED_ONE_READY_TASK`, `producer_execution_same_wake=false`, `hosted_model_calls=0`, four authority flags false. At natural wake `2026-11-04T12:10:15Z`, commit `74e2d2f4da67ca2d1a3df8fbd1c295f621b55698` records stage `legacy_duplicate_check: CONTINUE`, task still READY, artifact blob `20c64cb6d5b10cf13e43967d4a33cf3a80fe03c5`, stage receipt blob `944ed5efe10f1e3ec189cefd1a425b19a26df547`, same qualified release, no economic/capital/live authority. This proves bounded VM scientific queue refill and first legacy-screen stage, **not** a complete new frozen hypothesis, economic result or terminal scientific disposition. Subsequent real VM wake at 2026-11-04T12:20:12Z ended the same task terminal `BLOCKED`, `retryable=false`, reason `V2_SOURCE_PIT_NOT_QUALIFIED_BEFORE_IDEATION`. Primary artifact `research/research_os/artifacts/FRONTIER-INSTITUTIONAL-FLOW-REGSHO-RULE204-2025-001/oracle-worker/mechanism_research.json` blob `42bf5014ccb37e2e165faced0aed9a8e13cbb0a8`, receipt blob `e4eddf65c8f7b1388a4edaf20a1c5963f9f03c37`, terminal task blob `7acdd16b8773c7ec3897adf490fba14c2e517b47`. The next normal wake at 12:30 UTC committed `914800c47c5e2dcc07cb2925a0489f57bcd158af` as `NOOP_SOURCE_MISSING`, with no repeated candidate or new scientific producer. Decisive time proof: currently OPEN frozen V2 epoch (`research/research_os/runtime/V2_ACTIVE_EPOCH.json`, blob `fe8830dc08dd2751e0aa2ec482e55c65baea2fe6`) has `knowledge_cutoff=2026-10-20T01:00:00Z`, while first verified SEC Rule204 document capture and `available_at` are `2026-11-04T03:26:37Z`. `research/research_os/expansion/v2_stage_executor.py` at installed release `d12fffdb7...` correctly rejects source `available_at` beyond frozen epoch cutoff before ideation. Historic CFR edition 2025 cannot be substituted for verified PIT availability. This is a scientifically correct and durable negative/safety disposition; it does NOT qualify new frozen hypothesis, NO_CANDIDATE, independent validation, economic edge or F6 finish. Next action: PARK the terminal task; either retrieve independent primary evidence proving genuine pre-cutoff public availability without changing frozen capture receipts, or separately govern/qualify a new post-capture epoch and a new admissible task without reusing the blocked lineage or breaking blinding/epoch memory. No free retry, epoch timestamp rewriting, quota increase, additional mandate or VM mutation is implied. F6 full operational E2E remains NOT PROVEN; QUANT_SYSTEM_V1_FINISHED and economic edge are not established. No new Codex, secondary agent, VM mutation, economic/prospective/capital/live action is authorized.
+
+### F6 predeclared successor-epoch staging (2026-11-04; not activated)
+
+`F6_SUCCESSOR_EPOCH_STAGING_COMMIT=c1e8a442ab9ccd49d8427080a292f3084ad7812c`
+`F6_SUCCESSOR_EPOCH_BLOB=6bff13c24c64459995b19c8e9f4f63ca76061601`
+`F6_SUCCESSOR_EPOCH_ID=ORACLE-V2-EPOCH-20261104-002`
+`F6_SUCCESSOR_SOURCE_FIRST_VERIFIED_AT=2026-11-04T03:26:37Z`
+`F6_SUCCESSOR_KNOWLEDGE_CUTOFF=2026-11-04T15:25:00Z`
+`F6_SUCCESSOR_OPENED_AT=2026-11-04T15:30:00Z`
+`F6_SUCCESSOR_FRONTIER_ID=INSTITUTIONAL_FLOW_RULE204_PIT_RESCUE_EPOCH2`
+`F6_SUCCESSOR_ACTIVATION=NOT_EXECUTED`
+`F6_SUCCESSOR_SOURCE_TEST=PASS_GITHUB_RUN_41854461126`
+`F6_SUCCESSOR_V2_CORE_TEST=PASS_GITHUB_RUN_41854460631`
+`F6_SUCCESSOR_METHOD_GATE=PASS_GITHUB_RUN_41854461222`
+`F6_SUCCESSOR_CANONICAL_CODE=PASS_GITHUB_RUN_41854461317`
+`F6_SUCCESSOR_SEC_GATE=PENDING_AT_CHECKPOINT`
+
+The exact original epoch blob `fe8830dc08dd2751e0aa2ec482e55c65baea2fe6` remains the active immutable historical epoch and is also archived byte-identically under `research/research_os/runtime/epoch_admissions/`. A **different**, CLEAN and BLINDED successor was predeclared in Git before its future 15:25 knowledge cutoff and 15:30 research-window opening. It retains the source's authentic November 4 first-capture timestamp and records the original Rule204 PIT failure as a distinct terminal predecessor, not as an economic result or scientific novelty. It permits only a new bounded post-capture research cohort, with max one export and inherited all-disabled economic/prospective/capital/live authority. New candidate frontier and tests are staged without changing `V2_ACTIVE_EPOCH.json`, the operational `RESEARCH_FRONTIER.json`, any existing task, the VM or the systemd timer. Focused hosted tests affirm old PIT FAIL/new PIT PASS and one subsequent source-bound preview with no repeat after terminal; a future activation must still satisfy all exact SHA gates, fresh admission, legal epoch succession and no feedback leakage.
+
+Do not mislabel the historical blocked task as NO_CANDIDATE, an independent candidate, an economic edge, or F6 operational PASS. If the old epoch cannot be legitimately superseded without contaminating a protocol or violating predeclared close rules, retain staged files and return BLOCK rather than forcing activation.
 
 ## Other finish-gate state retained
 
