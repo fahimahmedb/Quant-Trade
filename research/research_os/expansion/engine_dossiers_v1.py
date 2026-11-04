@@ -46,12 +46,18 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
         blockers.append("DOCUMENT_CLASS_OUTSIDE_STABLE_ENGINE_CONTRACT")
     event_distribution = documentary and family == 'EVENT_DOCUMENT'
     settlement_constraint = documentary and family == 'INSTITUTIONAL_FLOW'
+    reg_sho_constraint = settlement_constraint and packet.get('rule_kind') == 'REG_SHO_CLOSEOUT_OPERATIVE_RULE'
     if settlement_constraint:
         try:
-            from .source_adapters_v1 import sec_t1_packet, sec_t1_rule_packet
-            adapter = sec_t1_rule_packet if packet.get('rule_kind') == 'STANDARD_SETTLEMENT_OPERATIVE_RULE' else sec_t1_packet
-            if packet != adapter(packet['capture']):
-                raise ValueError('rule explanation differs from captured facts')
+            from .source_adapters_v1 import sec_t1_packet, sec_t1_rule_packet, reg_sho_rule204_packet
+            adapters = {
+                'STANDARD_SETTLEMENT_OPERATIVE_RULE': sec_t1_rule_packet,
+                'STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION': sec_t1_packet,
+                'REG_SHO_CLOSEOUT_OPERATIVE_RULE': reg_sho_rule204_packet,
+            }
+            adapter = adapters.get(packet.get('rule_kind'))
+            if adapter is None or packet != adapter(packet['capture']):
+                raise ValueError('rule text differs from its verified capture')
         except (KeyError, ValueError, TypeError, AttributeError, InvalidOperation):
             blockers.append('DOCUMENT_CAPTURE_NOT_QUALIFIED')
     elif event_distribution:
@@ -130,6 +136,9 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
         blockers.append("DOCUMENT_CLOCK_INVALID")
     facts = packet.get("facts", {})
     required_facts = ({"previous_distribution", "current_distribution"} if event_distribution
+                      else {"base_closeout_following_settlement_days", "long_sale_grace_settlement_days",
+                            "market_maker_grace_settlement_days", "restricted_sale_grace_calendar_days"}
+                            if reg_sho_constraint
                       else {"standard_settlement_business_days"} if settlement_constraint
                       else DOCUMENT_FACTS.get(family))
     if not event_distribution and "event_kind" in packet:
@@ -146,6 +155,14 @@ def qualify_document_packet(packet: Dict[str, Any], family: str, freeze_time: st
             if family == "FUNDAMENTAL":
                 if values["revenue"] <= 0 or values["capital_expenditure"] < 0:
                     raise ValueError("invalid statement magnitude")
+            elif reg_sho_constraint:
+                if (
+                    values["base_closeout_following_settlement_days"] != 1
+                    or values["long_sale_grace_settlement_days"] != 3
+                    or values["market_maker_grace_settlement_days"] != 3
+                    or values["restricted_sale_grace_calendar_days"] != 35
+                ):
+                    raise ValueError("unqualified Rule 204 deadline")
             elif settlement_constraint:
                 if values["standard_settlement_business_days"] != 1:
                     raise ValueError("unqualified settlement standard")
@@ -218,6 +235,36 @@ def documentary_candidate(engine: Any, source: Dict[str, Any], context: Any, hyp
         claim = f"{issuer} {period}: guidance midpoint changed by {delta} {unit}, from {before} to {after}."
         disconfirm = "Withdraw the revision premise if the document is corrected, superseded, or the periods/units differ."
         tags, horizon = ["guidance_revision", "information_processing", "equity_beta"], "1-20d"
+    elif engine.family == "INSTITUTIONAL_FLOW" and packet.get('rule_kind') == 'REG_SHO_CLOSEOUT_OPERATIVE_RULE':
+        measurements = {
+            'base_closeout_following_settlement_days': str(facts['base_closeout_following_settlement_days']),
+            'long_sale_grace_settlement_days': str(facts['long_sale_grace_settlement_days']),
+            'market_maker_grace_settlement_days': str(facts['market_maker_grace_settlement_days']),
+            'restricted_sale_grace_calendar_days': str(facts['restricted_sale_grace_calendar_days']),
+            'actual_failed_quantity': 'UNKNOWN',
+            'directional_flow': 'UNKNOWN',
+        }
+        mechanism = (
+            'A registered clearing-agency participant with a real equity fail-to-deliver '
+            'may face a dated Rule 204 close-out obligation, with borrow-or-purchase '
+            'alternatives and different legal exceptions. A rule alone does not '
+            'establish actual inventory pressure or a market opportunity.'
+        )
+        claim = (
+            '17 CFR 242.204, official 2025-04-01 edition, specifies a base '
+            'next-settlement-day close-out and conditional three-settlement-day '
+            'long-sale/market-maker and 35-calendar-day restricted-sale cases. '
+            'The actual participant, fail quantity, exemption, current law, '
+            'forced purchase, timing, price effect and payoff are UNKNOWN.'
+        )
+        disconfirm = (
+            'Reject the premise if no eligible clearing participant or actual fail '
+            'exists, an applicable exception or allocation changes the deadline, '
+            'a lawful borrow satisfies it without a purchase, or later law supersedes '
+            'the captured edition. Any claimed trading effect requires independent '
+            'PIT fail and transaction evidence, costs and Legacy novelty review.'
+        )
+        tags, horizon = ['settlement_fail_closeout', 'institutional_constraint', 'liquidity'], 'UNQUALIFIED'
     elif engine.family == "INSTITUTIONAL_FLOW" and packet.get('rule_kind') in {
             'STANDARD_SETTLEMENT_CONSTRAINT_EXPLANATION', 'STANDARD_SETTLEMENT_OPERATIVE_RULE'}:
         measurements = {'standard_settlement_business_days':str(facts['standard_settlement_business_days']),
@@ -371,7 +418,7 @@ def documentary_dossier_detail(output: Dict[str, Any]) -> Dict[str, Any]:
         detail['eligibility_rule'] = record('UNKNOWN', {}, [],
             'Captured excerpts do not establish record dates, holders, ex-date or tradable eligibility.')
     elif family == 'INSTITUTIONAL_FLOW':
-        operative = packet['rule_kind'] == 'STANDARD_SETTLEMENT_OPERATIVE_RULE'
+        operative = packet['rule_kind'] in {'STANDARD_SETTLEMENT_OPERATIVE_RULE', 'REG_SHO_CLOSEOUT_OPERATIVE_RULE'}
         detail['forced_actor'] = record('PARTIAL', {
             'rule_actor':packet['actor'], 'actual_constrained_actor':'UNKNOWN', 'forced_quantity':'UNKNOWN',
         }, ['actor', 'capture'], 'A legal obligation does not demonstrate actual binding pressure.')

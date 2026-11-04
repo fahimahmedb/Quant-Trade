@@ -223,8 +223,14 @@ def plan_frontier_source(
     consumed = _consumed_bindings(tasks, frontier_id=frontier_id, task_type=task_type)
     qualified = []
     rejections = []
+    requested_rule_kind = frontier_entry.get("required_source_rule_kind")
     for path, raw in sorted(source_catalog.items()):
         entry = _catalog_entry(path, raw)
+        packet = ((entry["record"] or {}).get("documentary_packet") or {}
+                  if isinstance(entry["record"], Mapping) else {})
+        if requested_rule_kind and packet.get("rule_kind") != requested_rule_kind:
+            rejections.append({"path": path, "reason": "FRONTIER_RULE_KIND_MISMATCH"})
+            continue
         decision = _qualified_source(entry, family=family, qualifier=qualifier)
         if decision["status"] == "PASS":
             qualified.append(decision)

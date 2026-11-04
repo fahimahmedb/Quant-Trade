@@ -1,0 +1,41 @@
+{
+  "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+  "freeze_time": "2026-11-04T03:26:37Z",
+  "documentary_packet": {
+    "evidence_class": "DOCUMENTARY",
+    "source_ref": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+    "issuer_id": "SEC_REG_SHO_242_204",
+    "published_at": "2026-11-04T03:26:37Z",
+    "available_at": "2026-11-04T03:26:37Z",
+    "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+    "period": "CFR_2025_04_01_RULE_204",
+    "unit": "specified_statutory_deadline_days",
+    "rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE",
+    "facts": {
+      "base_closeout_following_settlement_days": "1",
+      "long_sale_grace_settlement_days": "3",
+      "market_maker_grace_settlement_days": "3",
+      "restricted_sale_grace_calendar_days": "35"
+    },
+    "actor": "Participant of a registered clearing agency with a fail to deliver position in an equity security",
+    "constraint": "Close out the fail by borrowing or purchasing equivalent securities under Rule 204 deadlines; exceptions and alternative allocations apply",
+    "instrument": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN",
+    "horizon": "Statutory close-out clock only; tradable horizon UNKNOWN",
+    "capture": {
+      "source_url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/CFR-2025-title17-vol5.htm",
+      "raw_sha256": "b96b2d2400e15fa391dc5cf0e75f2985037fbd6d155c869cf270b41b538e6870",
+      "raw_byte_length": 3175956,
+      "retrieved_at": "2026-11-04T03:26:37Z",
+      "publication_clock_basis": "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT",
+      "document_kind": "GOVINFO_2025_CFR_RULE204_OPERATIVE",
+      "edition_date": "2025-04-01",
+      "section": "17 CFR 242.204",
+      "section_text_sha256": "bf0583a656085d0bc267b8d49fed5e448e0672303600fc314c80789c6fcda882",
+      "section_text_zlib_b64": "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",
+      "extractor": "govinfo-html-regsho-rule204-v1",
+      "source_workflow_run": 41767148087,
+      "source_artifact_id": 13293470473
+    },
+    "content_hash": "7ddc4c400115df8795c35384f2dbf55efe87d001c69a981aabce57760ea40a1d"
+  }
+}

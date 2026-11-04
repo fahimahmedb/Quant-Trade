@@ -412,3 +412,90 @@ class DesignOnlyAdapterRegistry:
             "outcome_authorized_count": sum(bool(item["outcome_access_authorized"]) for item in entries),
             "immutable": True,
         }
+
+
+# F6: pinned Rule 204 documentary capture only; no runtime/market authority.
+# The original HTML bytes and section identity were independently preserved by
+# GitHub Actions run 41767148087, artifact 13293470473.
+REG_SHO_RULE204_URL = (
+    "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/html/"
+    "CFR-2025-title17-vol5.htm"
+)
+REG_SHO_RULE204_RAW_SHA256 = "b96b2d2400e15fa391dc5cf0e75f2985037fbd6d155c869cf270b41b538e6870"
+REG_SHO_RULE204_SECTION_SHA256 = "bf0583a656085d0bc267b8d49fed5e448e0672303600fc314c80789c6fcda882"
+
+
+def reg_sho_rule204_packet(capture: Dict[str, Any]) -> Dict[str, Any]:
+    """Qualify the exact dated *documentary rule*, not an actual forced trade.
+
+    A bounded immutable compressed section retains the extracted original text.
+    The captured HTML sha is bound to an independently preserved CI artifact.
+    Unknown current-law changes, fail quantities, actual exemptions and returns
+    remain outside source qualification.
+    """
+    import base64
+    import zlib
+    from .engine_dossiers_v1 import _clock
+
+    fields = {
+        "source_url", "raw_sha256", "raw_byte_length", "retrieved_at",
+        "publication_clock_basis", "document_kind", "edition_date",
+        "section", "section_text_sha256", "section_text_zlib_b64",
+        "extractor", "source_workflow_run", "source_artifact_id",
+    }
+    if (set(capture) != fields
+            or capture.get("source_url") != REG_SHO_RULE204_URL
+            or capture.get("raw_sha256") != REG_SHO_RULE204_RAW_SHA256
+            or capture.get("raw_byte_length") != 3175956
+            or capture.get("section_text_sha256") != REG_SHO_RULE204_SECTION_SHA256
+            or capture.get("edition_date") != "2025-04-01"
+            or capture.get("section") != "17 CFR 242.204"
+            or capture.get("document_kind") != "GOVINFO_2025_CFR_RULE204_OPERATIVE"
+            or capture.get("extractor") != "govinfo-html-regsho-rule204-v1"
+            or capture.get("publication_clock_basis") != "FIRST_VERIFIED_PUBLIC_CAPTURE_NOT_HISTORICAL_PIT"
+            or capture.get("source_workflow_run") != 41767148087
+            or capture.get("source_artifact_id") != 13293470473
+            or _clock(capture["retrieved_at"]).isoformat() < "2025-04-01"):
+        raise ValueError("REG_SHO_RULE204_CAPTURE_NOT_VERIFIED")
+    try:
+        encoded = capture["section_text_zlib_b64"]
+        if not isinstance(encoded, str) or len(encoded) > 5000:
+            raise ValueError("invalid size")
+        compressed = base64.b64decode(encoded, validate=True)
+        decompressor = zlib.decompressobj()
+        extracted = decompressor.decompress(compressed, 25001)
+        if not decompressor.eof or decompressor.unconsumed_tail or len(extracted) > 25000:
+            raise ValueError("incomplete or oversized source")
+        section = extracted.decode("utf-8")
+        if (hashlib.sha256(extracted).hexdigest() != REG_SHO_RULE204_SECTION_SHA256
+                or not section.startswith("Sec. 242.204 Close-out requirement.")
+                or "(g) Definitions." not in section):
+            raise ValueError("incorrect rule section")
+    except (ValueError, TypeError, UnicodeError, zlib.error) as exc:
+        raise ValueError("REG_SHO_RULE204_SECTION_NOT_VERIFIED") from exc
+
+    captured_at = capture["retrieved_at"]
+    packet = {
+        "evidence_class": "DOCUMENTARY",
+        "source_ref": REG_SHO_RULE204_URL,
+        "issuer_id": "SEC_REG_SHO_242_204",
+        "published_at": captured_at,
+        "available_at": captured_at,
+        "revision_status": "CAPTURED_VERSION_AS_OF_RETRIEVAL",
+        "period": "CFR_2025_04_01_RULE_204",
+        "unit": "specified_statutory_deadline_days",
+        "rule_kind": "REG_SHO_CLOSEOUT_OPERATIVE_RULE",
+        "facts": {
+            "base_closeout_following_settlement_days": "1",
+            "long_sale_grace_settlement_days": "3",
+            "market_maker_grace_settlement_days": "3",
+            "restricted_sale_grace_calendar_days": "35",
+        },
+        "actor": "Participant of a registered clearing agency with a fail to deliver position in an equity security",
+        "constraint": "Close out the fail by borrowing or purchasing equivalent securities under Rule 204 deadlines; exceptions and alternative allocations apply",
+        "instrument": "Covered equity securities with a fail at a registered clearing agency; actual issuer, side and eligibility UNKNOWN",
+        "horizon": "Statutory close-out clock only; tradable horizon UNKNOWN",
+        "capture": deepcopy(capture),
+    }
+    packet["content_hash"] = sha256_json(packet)
+    return packet
