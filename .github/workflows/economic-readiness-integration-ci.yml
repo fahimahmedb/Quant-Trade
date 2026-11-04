@@ -12,6 +12,9 @@ permissions:
 jobs:
   python-readiness:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .:src
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,6 +22,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install pinned qualification dependencies
+        run: python -m pip install --disable-pip-version-check pytest==9.1.1 jsonschema==4.26.0
       - name: Materialize pinned read-only Legacy corpus
         run: |
           git fetch --depth=1 origin 183ad65ff260b903a16548ce37948f54d47a9ec8
@@ -35,9 +40,11 @@ jobs:
             research.research_os.tests.test_economic_readiness_integration -v
       - name: All Research OS Python regressions, canonical spine/depth, replay and recovery
         run: python -m unittest discover -s research/research_os/tests -p 'test_*.py' -v
+      - name: Full pytest collection including parameterized Mega-B regressions
+        run: python -m pytest -q research/research_os/tests
       - name: Schema drift
         run: python scripts/generate_schemas.py --check
-      - name: Exact-head manifest and port preservation
+      - name: Immutable B7 port proof and current-head economic qualifications
         run: |
           python - <<'PY'
           import json, os, subprocess
@@ -55,27 +62,65 @@ jobs:
           manifest['QUALIFIED_HEAD'] = os.environ['GITHUB_SHA']
           manifest['CI_RUN_ID'] = os.environ['GITHUB_RUN_ID']
           port_path = receipt.with_name('ECON_READINESS_PORT_MANIFEST_20261016.json')
-          if port_path.exists():
-              port = json.loads(port_path.read_text())
-              changed = subprocess.check_output(['git', 'diff', '--name-only', port['AUTONOMOUS_SOURCE_HEAD'], 'HEAD'], text=True).splitlines()
-              assert set(changed) <= set(port['FILES_PORTED']), changed
-              for item in port['FILES_PORTED']:
-                  if item == str(port_path):
-                      continue
-                  current = subprocess.check_output(['git', 'rev-parse', 'HEAD:' + item], text=True).strip()
-                  qualified = subprocess.check_output(['git', 'rev-parse', port['B7_SOURCE_HEAD'] + ':' + item], text=True).strip()
-                  assert current == qualified, item
-              manifest.update(port)
-              manifest['PORT_CANDIDATE_HEAD'] = os.environ['GITHUB_SHA']
-              manifest['AUTONOMOUS_RUNTIME_STATE_PRESERVED'] = True
-          else:
-              manifest['B6_FINAL_HEAD'] = os.environ['GITHUB_SHA']
-              manifest['B7_SOURCE_HEAD'] = os.environ['GITHUB_SHA']
+          assert port_path.is_file(), 'MISSING_HISTORICAL_PORT_MANIFEST'
+          port = json.loads(port_path.read_text())
+          historical_sha = 'd5e6d55ba6084729b585a7bb41cede62d8d0f01b'
+          historical_manifest_blob = '9402b3b3236fa27f3b6e7fff6e1f31dd27b6869f'
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          original_path = f'{historical_sha}:{port_path}'
+          assert git('rev-parse', original_path) == historical_manifest_blob, 'PORT_MANIFEST_BLOB_DRIFT'
+          original = json.loads(git('show', original_path))
+          for key in ('FILES_PORTED', 'FILES_EXCLUDED', 'B7_SOURCE_HEAD', 'RUNTIME_STATE_DO_NOT_TOUCH', 'AUTHORITY_STATE'):
+              assert port[key] == original[key], f'HISTORICAL_PORT_CONTRACT_CHANGED:{key}'
+          assert port['QUALIFIED_PORT_SOURCE_HEAD'] == historical_sha, 'WRONG_PORT_QUALIFICATION_REF'
+          baseline_sha = original['AUTONOMOUS_SOURCE_HEAD']
+          assert baseline_sha == '3e77863fd308646d9a2a31e583455530f6fa8c0a', 'WRONG_ORIGINAL_BASE'
+          assert git('rev-parse', historical_sha + '^^') == baseline_sha, 'PORT_ANCESTRY_CHANGED'
+          assert original['B7_SOURCE_HEAD'] == 'b1f7b33545fb9668b9b1709cdb1a7d59e9c9e06d', 'B7_SOURCE_CHANGED'
+          changed = git('diff', '--no-renames', '--name-only', baseline_sha, historical_sha).splitlines()
+          assert len(changed) == 74 and set(changed) == set(original['FILES_PORTED']), 'HISTORICAL_PORT_SCOPE_CHANGED'
+          protected = ('research/research_os/tasks/', 'research/research_os/runtime/', 'research/research_os/receipts/', 'research/research_os/events/', 'research/research_os/artifacts/', 'research/research_os/assessments/', 'research/research_os/hypotheses/')
+          assert not any(path.startswith(protected) for path in changed), 'HISTORICAL_RUNTIME_MUTATION'
+          for path in original['FILES_PORTED']:
+              if path == str(port_path):
+                  continue  # The original port receipt was newly created and separately pinned.
+              assert git('rev-parse', f'{historical_sha}:{path}') == git('rev-parse', f"{original['B7_SOURCE_HEAD']}:{path}"), f'B7_PORT_BLOB_MISMATCH:{path}'
+          current_drift = []
+          for path in original['FILES_PORTED']:
+              current_blob = git('rev-parse', f'HEAD:{path}')
+              b7_blob = git('rev-parse', f"{original['B7_SOURCE_HEAD']}:{path}")
+              if current_blob != b7_blob:
+                  current_drift.append({'path': path, 'current_blob': current_blob, 'b7_blob': b7_blob})
+          manifest['HISTORICAL_PORT_PROOF'] = {
+              'status': 'PASS', 'baseline_sha': baseline_sha,
+              'b7_source_sha': original['B7_SOURCE_HEAD'],
+              'qualified_port_sha': historical_sha,
+              'historical_manifest_blob': historical_manifest_blob,
+              'changed_paths': len(changed), 'runtime_mutated_by_port': False,
+          }
+          manifest['CURRENT_CODE_QUALIFICATION'] = {
+              'tested_sha': os.environ['GITHUB_SHA'],
+              'b7_drift': current_drift, 'b7_drift_count': len(current_drift),
+              'claim': 'EXACT_SHA_PYTHON_UNITTEST_PYTEST_SCHEMA_AND_ECONOMIC_GATES_ONLY',
+              'outcome_accessed': False, 'economic_authority_granted': False,
+          }
+          manifest['PORT_CANDIDATE_HEAD'] = os.environ['GITHUB_SHA']
           manifest['AUTHORITY_STATE'] = AUTHORITY
           manifest['CROSS_MODULE_PATH'] = 'PASS'
           manifest['OUTCOME_ACCESS'] = 'CLOSED'
           manifest['REMAINING_BLOCKERS'] = ['OWNER_AUTHORIZATION']
           Path('/tmp/economic-readiness-exact-head.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+      - name: Ensure qualification does not dirty active scientific runtime
+        run: |
+          git diff --exit-code -- research/research_os/tasks research/research_os/runtime research/research_os/receipts research/research_os/events research/research_os/artifacts research/research_os/assessments research/research_os/hypotheses
+          python - <<'PY'
+          import subprocess
+          paths = ('research/research_os/tasks', 'research/research_os/runtime', 'research/research_os/receipts', 'research/research_os/events', 'research/research_os/artifacts', 'research/research_os/assessments', 'research/research_os/hypotheses')
+          untracked = subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard', '--', *paths], text=True).strip()
+          assert not untracked, f'CI_CREATED_UNTRACKED_RUNTIME_FILES:{untracked[:500]}'
+          print('QUALIFICATION_RUNTIME_CLEAN=PASS')
           PY
       - uses: actions/upload-artifact@v4
         with:
