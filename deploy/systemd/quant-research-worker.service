@@ -17,7 +17,7 @@ Environment=GIT_TERMINAL_PROMPT=0
 EnvironmentFile=-/etc/quant-research/worker.env
 # Lock the stable directory inode. Git HEAD/task fencing also protects other VMs.
 # One timer wake is routed to exactly one bounded path: the existing Research OS
-# worker by default, or one GPT-OSS/Codex orchestration step when explicitly enabled.
+# worker by default, or one explicitly enabled local engineering orchestration step.
 ExecStart=/usr/bin/flock --nonblock --conflict-exit-code=0 /var/lib/quant-research /usr/bin/python3.12 -m research.research_os.host_wake --config /etc/quant-research/worker.json
 TimeoutStartSec=8min
 Restart=no

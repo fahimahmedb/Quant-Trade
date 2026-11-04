@@ -286,7 +286,7 @@ class ResearchOSWorker:
                 self.fault('before_idempotent_noop_freshness_check')
                 with self.store.snapshot() as fresh:
                     if fresh.head != snapshot.head:
-                        raise StateConflict('HEAD_CHANGED_BEFORE_IDLE_REUSE')
+                        raise StateConflict('HEAD_CHANGED_BEFORE_IDEMPOTENT_NOOP')
                 result['deduplicated'] = True
                 result['prior_durable_receipt'] = path
                 result['reused_receipt'] = path  # Existing installer/test consumer contract.

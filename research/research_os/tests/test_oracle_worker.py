@@ -177,7 +177,7 @@ class WorkerTests(unittest.TestCase):
         self.assertIn('output_commit', resumed)
         self.assertEqual(self.model.calls, 0)
 
-    def test_same_lane_different_worker_deduplicates_but_scientific_frontier_change_does_not(self):
+    def test_same_lane_different_worker_deduplicates_but_scientific_task_change_does_not(self):
         self._terminal_queue()
         first = self.worker(lane='evidence_data', worker_id='worker-a').wake()
         self.assertIn('output_commit', first)
@@ -188,11 +188,12 @@ class WorkerTests(unittest.TestCase):
         self.assertNotIn('output_commit', repeat)
         self.assertEqual(self.count_paths('runtime/worker_wakes/'), count)
 
-        def change_frontier(snapshot):
-            frontier = snapshot.read(PREFIX + 'runtime/RESEARCH_FRONTIER.json')
-            frontier['frontiers'][0]['priority'] += 1
-            return {PREFIX + 'runtime/RESEARCH_FRONTIER.json': frontier}
-        self.remote_change(change_frontier)
+        def change_scientific_task(snapshot):
+            task_path = PREFIX + 'tasks/RECOVER-TEST-001.json'
+            task = snapshot.read(task_path)
+            task['priority'] += 1
+            return {task_path: task}
+        self.remote_change(change_scientific_task)
         changed = self.worker(lane='evidence_data', worker_id='worker-b').wake()
         self.assertEqual(changed['status'], 'NO_ADMISSIBLE_LANE_TASK')
         self.assertIn('output_commit', changed)
@@ -219,7 +220,7 @@ class WorkerTests(unittest.TestCase):
                 yield snap
 
         with patch.object(self.store, 'snapshot', raced):
-            with self.assertRaisesRegex(StateConflict, 'HEAD_CHANGED_BEFORE_IDLE_REUSE'):
+            with self.assertRaisesRegex(StateConflict, 'HEAD_CHANGED_BEFORE_IDEMPOTENT_NOOP'):
                 self.worker(lane='evidence_data').wake()
         self.assertEqual(n['calls'], 2)
         self.assertEqual(self.count_paths('runtime/worker_wakes/'), before + 2)
