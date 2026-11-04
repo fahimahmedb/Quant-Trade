@@ -1,22 +1,22 @@
 {
   "mission_id": "F6_REAL_VM_SCIENTIFIC_NEGATIVE_SAFE_OPERATIONAL_FINAL_ADMISSION_20261104",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-04T17:31:00Z",
-  "project_canonical_sha": "481e74c6ca45d63e3cd6a478cc07269603cea878",
-  "code_canonical_sha": "6a77b202d7379deae4419ec3bff1c9c53b77d0d6",
-  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@beb50a71be0d9f0ba8f70b4a9a0c6c08f95dbd76",
+  "receipt_timestamp": "2026-11-04T17:55:00Z",
+  "project_canonical_sha": "6e554f91aa2c719de34d9621cdb80f19cc6d539f",
+  "code_canonical_sha": "d0707aed27f90dbc8d5ad99105bf659054635cf9",
+  "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@3258a15e2e4cf3021cbdc98a7327cd3aae25972e",
   "current_subject": {
-    "project_sha": "481e74c6ca45d63e3cd6a478cc07269603cea878",
-    "code_sha": "6a77b202d7379deae4419ec3bff1c9c53b77d0d6",
-    "object": "Final exact authority binding for non-economic real-VM F6 operational handoff: epoch2 source-bound five-stage producer, five-stage independent validation with safe scientific BLOCK, terminal NOOP 75/75, qualified unchanged executable; distinguish F6 PASS from economic edge or whole-system finish"
+    "project_sha": "6e554f91aa2c719de34d9621cdb80f19cc6d539f",
+    "code_sha": "d0707aed27f90dbc8d5ad99105bf659054635cf9",
+    "object": "F6 FINAL_HANDOFF exact-project/router refresh after clearing contradictory historical checkpoint labels; runtime source science unchanged; validate current F6 PASS without claiming QUANT_SYSTEM_V1_FINISHED"
   },
-  "current_blocker_or_decision": "F6_OPERATIONAL_HANDOFF=PASS is now durably recorded in the project router on actual source and runtime receipts. Earlier FINAL_HANDOFF admission on 6a77 failed method-gate because handoff fields and matching project markers were missing. The router commit 481e74c6... supplies exact F6 handoff markers and evidence; this new admission restores current project/router SHA and adds explicit final-handoff binding fields, no runtime source/epoch/worker change.",
+  "current_blocker_or_decision": "Project router had material historic language describing original Rule204 PIT failure and initial validator READY as if still current, despite exact later 5/5 producer + 5/5 validator + 75/75 terminal live-wake evidence. Project commit 6e554f91 now explicitly scopes those statements to their earlier checkpoints, records F6_OPERATIONAL_HANDOFF=PASS and current gate=GLOBAL_FINISH_GATE_RECONCILIATION while all forbidden economic/capital/live flags remain false. Refresh final admission only, no executable or VM changes.",
   "target_gate_or_blocker": "F6_OPERATIONAL_HANDOFF",
   "existing_capability": "REUSE",
   "requested_action": "REUSE",
-  "why_this_work_can_change_the_decision": "Enforce existing FINAL_HANDOFF machine admission and durable router binding on the actual current SHA, without loosening or bypassing CI; confirm terminal scientific negative and autonomous safe continuation as non-economic operational handoff.",
-  "minimal_decisive_test": "Hosted AI Working Method Gate plus durable continuation FINAL_HANDOFF PASS on this exact SHA, Oracle V2 Core, Canonical Code, SEC P0 and Python readiness/primary-source qualified same unchanged executable; real VM producer 5/5, validator 5/5 independent BLOCK, no child integration, normal 75/75 terminal NOOP and no authority expansion.",
-  "counterexample": "A final admission without handoff_result/handoff_subject_sha/reopen condition fails before completion; a router mismatch must fail CANONICAL_HANDOFF_* and stale project SHA must fail before promotion. A correct NOOP after a scientifically blocked source is not proof of economic discovery or future continuous source acquisition.",
+  "why_this_work_can_change_the_decision": "Final working method gate requires current project head and exact router blob. Fresh-agent bootstrap needs the F6 PASS and historical failed checkpoints reconciled rather than contradictory. Rebind the authoritative handoff to the current project router without relaxing any machine checks.",
+  "minimal_decisive_test": "AI Working Method Gate on exact updated admission/code SHA reports REAL_MISSION_ADMISSION=PASS and DURABLE_CONTINUATION_GATE=PASS; current project-method-gate PASS; unchanged executable blob previously qualified with Oracle V2 Core, SEC P0, Canonical Code, Primary Source and Python readiness; real VM F6 epoch2 producer/validator 5/5 terminal and post-terminal NOOP, authority closed.",
+  "counterexample": "A final admission tied to project 481e74 rather than current 6e554f91 must be rejected as STALE_PROJECT_SHA/STALE_ROUTER_IDENTITY, and an apparent F6 PASS based on original-epoch PIT BLOCK instead of the separate governed epoch2 handoff is unsound. Distinguish F6 operational PASS from QUANT_SYSTEM_V1_FINISHED and economic claims.",
   "primary_evidence": [
     {
       "claim_id": "F6_REAL_VM_PRODUCER_EPOCH2",
@@ -69,27 +69,27 @@
       "opened": true
     },
     {
-      "claim_id": "F6_FINAL_CANONICAL_ROUTER",
-      "claim": "Project current router contains exact scientific-negative F6 operational handoff and excludes whole-system finish",
+      "claim_id": "F6_FINAL_ROUTER_RECONCILED",
+      "claim": "Current canonical F6 PASS router distinguishes earlier negative PIT checkpoint and later governed epoch2 operational completion",
       "source_kind": "GIT_BLOB",
-      "object_identity": "governance/CURRENT_PROJECT_STATE.md@beb50a71be0d9f0ba8f70b4a9a0c6c08f95dbd76",
-      "observed_value": "project/canonical=481e74c6ca45d63e3cd6a478cc07269603cea878, F6_OPERATIONAL_HANDOFF=PASS, QUANT_SYSTEM_V1_FINISHED=NOT_PROVEN, handoff mission=F6_REAL_VM_SCIENTIFIC_NEGATIVE_SAFE_OPERATIONAL_FINAL_ADMISSION_20261104 and source SHA 77193979...",
+      "object_identity": "governance/CURRENT_PROJECT_STATE.md@3258a15e2e4cf3021cbdc98a7327cd3aae25972e",
+      "observed_value": "project/canonical=6e554f91aa2c719de34d9621cdb80f19cc6d539f; CURRENT_GATE=GLOBAL_FINISH_GATE_RECONCILIATION; F6_OPERATIONAL_HANDOFF=PASS; QUANT_SYSTEM_V1_FINISHED=NOT_PROVEN; final mission markers stable",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     },
     {
-      "claim_id": "F6_PRIOR_FINAL_CI_COUNTEREXAMPLE",
-      "claim": "Previous final admission method CI failed for missing required handoff fields, not because of failed runtime",
+      "claim_id": "F6_CI_FINAL_EVIDENCE",
+      "claim": "Prior exact-sha F6 FINAL_HANDOFF pass was established before the project historical-language refinement",
       "source_kind": "GITHUB_WORKFLOW_JOB_LOG",
-      "object_identity": "41878397005/job/126744121578",
-      "observed_value": "REAL_MISSION_ADMISSION=PASS then KeyError: 'handoff_result'; router old F2 handoff. Now restored exact project/router identity and fields.",
+      "object_identity": "41881262971/job/126754027526",
+      "observed_value": "REAL_MISSION_ADMISSION=PASS and DURABLE_CONTINUATION_GATE=PASS for F6 safe-negative handoff, proving machine gate accepts valid matched five-router-marker model; needs current router rebinding",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     }
   ],
-  "durable_output_required": "One current admission-only canonical code SHA qualified by hosted durable FINAL_HANDOFF method, with matching project router F6_OPERATIONAL_HANDOFF=PASS and no false QUANT_SYSTEM_V1_FINISHED or economic alpha assertion.",
+  "durable_output_required": "One exact-sha admission-only code commit with hosted method final handoff PASS bound to current router; F6 operational PASS preserved and global finish NOT_PROVEN. Keep existing worker and VM untouched.",
   "next_action_after_pass_fail_block": "REUSE the existing source-scoped Oracle research path with new PIT-admissible sources; PARK unproven Rule204 economics and separately qualify historical C0/Wave2 checks before any QUANT_SYSTEM_V1_FINISHED claim.",
   "owner_authorization_required": true,
   "owner_authorized": true,
