@@ -6,6 +6,11 @@ on:
       - scripts/f6_capture_reg_sho_rule204.py
       - tests/test_f6_capture_reg_sho_rule204.py
       - .github/workflows/f6-rule204-primary-capture.yml
+      - research/research_os/tests/test_f6_reg_sho_rule204_intake.py
+      - research/research_os/expansion/source_adapters_v1.py
+      - research/research_os/expansion/engine_dossiers_v1.py
+      - research/research_os/frontier_source_planner_v2.py
+      - research/research_os/sources/staging/reg_sho_rule204_2025.json
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,6 +22,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Offline extractor adversarial tests
         run: python -m unittest discover -s tests -p test_f6_capture_reg_sho_rule204.py -v
+      - name: F6 bounded native research documentary preview
+        run: python -m unittest research.research_os.tests.test_f6_reg_sho_rule204_intake -v
       - name: Capture official 2025 CFR HTML bytes once
         shell: bash
         run: |
