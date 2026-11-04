@@ -1,0 +1,35 @@
+{
+  "authority": {
+    "economic_experiment_authorized": false,
+    "live_trading_authorized": false,
+    "prospective_observation_authorized": false,
+    "real_capital_authorized": false
+  },
+  "blinding": {
+    "epoch_blinding_integrity": "PASS",
+    "owner_outcome_blinding_status": "BLINDED",
+    "supervisor_outcome_blinding_status": "BLINDED"
+  },
+  "blockers": [
+    "BLOCK_CAPACITY",
+    "BLOCK_CLAIM_LEVEL",
+    "BLOCK_CLOCK",
+    "BLOCK_COST_MODEL",
+    "BLOCK_DATA",
+    "BLOCK_ECONOMIC_IDENTITY",
+    "BLOCK_IMPLEMENTABILITY",
+    "BLOCK_LEAKAGE",
+    "BLOCK_MULTIPLICITY",
+    "BLOCK_PIT",
+    "BLOCK_REPRODUCIBILITY",
+    "BLOCK_TRIAL_ACCOUNTING",
+    "PRE_OUTCOME_READINESS_NOT_READY",
+    "V2_VALIDATOR_BLOCK"
+  ],
+  "candidate_hash": "07611c996a950c175d9474d93f815509dd246e6edc96bef5a905ed479bf60026",
+  "claim_ceiling": "DESIGN_ONLY",
+  "outcome_accessed": false,
+  "research_epoch_id": "ORACLE-V2-EPOCH-20261104-002",
+  "status": "INCOMPLETE",
+  "validator_hash": "0859a4d7913174d39ab1cb40b17a32cbca30c3316560955835dc09eba7d7bc6e"
+}
