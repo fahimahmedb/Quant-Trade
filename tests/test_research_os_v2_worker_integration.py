@@ -326,10 +326,14 @@ class V2WorkerIntegrationTests(unittest.TestCase):
             if current["research_epoch_id"] != historic["research_epoch_id"]:
                 self.assertEqual(current["parent_epoch_id"], historic["research_epoch_id"])
                 self.assertEqual(historic["knowledge_cutoff"], "2026-10-20T01:00:00Z")
-                harness.store.commit(
-                    snapshot, {ACTIVE_EPOCH_PATH: historic},
-                    message="synthetic fixture: restore exact historical V2 epoch",
-                )
+                # Owner-style fixture update via the temporary seed repository:
+                # the real canonical worker store correctly forbids policy edits.
+                from research.research_os.tests import test_oracle_worker as fixture
+                seed_epoch = harness.seed / ACTIVE_EPOCH_PATH
+                seed_epoch.write_text(json.dumps(historic))
+                fixture.git(harness.seed, "add", ACTIVE_EPOCH_PATH)
+                fixture.git(harness.seed, "commit", "-m", "test-only historical epoch fixture")
+                fixture.git(harness.seed, "push", str(harness.remote), "HEAD:recovery")
         harness.producer()
         harness.now = datetime(2026, 10, 20, 2, tzinfo=timezone.utc)
         worker = build_v2_worker(self.worker_config(), store=harness.store, backend=harness.model)
