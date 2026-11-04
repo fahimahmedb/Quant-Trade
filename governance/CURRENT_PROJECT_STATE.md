@@ -1,7 +1,7 @@
 # Quant-Trade — current canonical project state
 
-STATUS=`F0_ENFORCED_PASS__F4_F5_PRODUCT_B_PASS__F2_IDLE_STABILITY_REPAIR_NEXT__F6_SCIENTIFIC_FRONTIER_BLOCKED`
-DATE=`2026-11-03`
+STATUS=`F0_ENFORCED_PASS__F4_F5_PRODUCT_B_PASS__F2_HOSTED_RELEASE_QUALIFIED_VM_ROLLOUT_PENDING__F6_SCIENTIFIC_FRONTIER_BLOCKED`
+DATE=`2026-11-04`
 
 This file is the single current-state router. Historical detail remains in Git history and durable evidence objects. Do not reconstruct current state from old chats, old branch names, superseded checkpoints or the non-authoritative post-operational program.
 
@@ -160,14 +160,27 @@ Scope limit: this proves synthetic/non-economic product mechanics and causal **s
 ## Current decision frontier — F2 (independent engineering seam)
 
 `CURRENT_GATE=F2_EXACT_HEAD_ENGINEERING_QUALIFICATION`
-`CURRENT_BLOCKER=F2_REPEATED_IDENTICAL_NOOP_COMMITS_ADVANCE_UNQUALIFIED_CODE_HEAD`
+`CURRENT_BLOCKER=OLD_ACTIVE_F4_NOOP_RECEIPTS_KEEP_MOVING_CODE_HEAD_UNTIL_SEPARATELY_AUTHORIZED_VM_UPGRADE`
 `NEXT_GATE=F6_OPERATIONAL_HANDOFF`
-`MANDATORY_NEXT_DECISION=REPAIR_EXISTING_IDLE_DEDUP_AND_F4_SAFE_UPGRADE`
+`MANDATORY_NEXT_DECISION=PREPARE_SAFE_F4_TO_F4_VM_UPGRADE_THEN_PROVE_TWO_NATURAL_DEDUP_WAKES_ONLY_WHEN_VM_AUTHORIZED`
 `F2_EXACT_HEAD_ENGINEERING_QUALIFICATION=NOT_PROVEN_AT_CURRENT_HEAD`
+`F2_CORRECTED_IMMUTABLE_RELEASE_HOSTED_QUALIFICATION=PASS`
+`F2_CORRECTED_RELEASE_SHA=d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`
+`F2_VM_INSTALLATION_OF_CORRECTED_RELEASE=NOT_EXECUTED`
+`F2_NEW_RELEASE_VM_ACTIVATION=NOT_EXECUTED`
+`F2_TWO_NATURAL_DEDUP_WAKE_WITNESS=NOT_PROVEN`
 
-The live V2 worker publishes a new `research/research_os/runtime/worker_wakes/<timestamp>-<random>.json` commit on `code/canonical` for each identical NOOP, with `[skip ci]`. This moves the actual code HEAD beyond any previously qualified executable SHA. Real consecutive receipts `934602276488699d21be5508b181e6c80655a145` and `d0cf17a6f1fad94ab889baa86fb1dfa37d6ca348` differ only in `input_head` and `observed_at`; queue, preflight, release, status and predecessor are the same.
+F2 implementation checkpoint (NOT a final F2 handoff): the existing `ResearchOSWorker._idle` Git CAS and F4->F4 terminal transaction were minimally repaired. The old VM installer had failed on release `5d967c2b9f10d0725a4f2c8da3eb6d0055cded23` with three `test_oracle_worker` mismatches. On corrected immutable release `d0414d7a2acca5b40321bab5cd525dfcf9a6a9c7`, the hosted **same nine-module VM installer suite** ran **110 tests, all PASS** (Canonical Code Qualification job `126331649774`). New real local bare-Git counterexamples cover cold restart, distinct admissibility lanes, same-lane different worker, scientific task mutation and concurrent HEAD fencing. Existing F5 and scheduler regressions are restored. No Codex, scheduler rewrite or trading authority.
 
-Reuse `ResearchOSWorker._idle`, the existing CAS state store and original F4 terminal-only transactional V2 handoff to publish the first NOOP per distinct semantic state but deduplicate identical wake receipts. Before a deduplicated return, refetch the remote HEAD to reject stale read/claim. Extend the existing transaction to safely upgrade an already running F4 terminal-only release without dispatching Codex. Exact hosted CI and separately authorized VM rollout/wake proof remain required; code construction alone is not runtime activation.
+Four required GitHub qualification runs are `SUCCESS` for that **same immutable SHA**:
+- AI Working Method Gate: `41755849103`;
+- Canonical Code Qualification: `41755849120`;
+- Oracle V2 Core: `41755849098`;
+- SEC P0 pre-t0 gate: `41755849195`.
+
+Material current-head caveat: after the qualified commit, the still-running previous F4 release `f7949decd0e1b23c017c03bf57951f91a7303192` generated `cd969c1211a72a0429c810517124c8b3bac9d209` (`2026-11-04T01:50:07Z`, `[skip ci]`). Git compare from the qualified SHA showed **one added file only**, `research/research_os/runtime/worker_wakes/20261104T015006Z-cdfe76222b.json` (blob `a5c2210d6ef05548419a89a09db2549b19c6390a`); this receipt declares `release_sha=f7949de...`, `NOOP_SEARCH_SPACE_INCOMPLETE`, 72/72 terminal and all economic/capital/live authority false. Thus corrected executable code remains an immutable qualified candidate, but the GitHub **moving HEAD is not qualified on its exact SHA**, and the VM has not consumed the fix. Do not discard or rewrite the real VM receipt or falsely claim F2 end-to-end PASS.
+
+Minimal next action: keep F4 active; do not alter the VM in the current GitHub-only mission. For a separately authorized operator rollout, confirm the actual root-owned current release/config and prior F4 terminal qualification, install the immutable corrected release with the EXISTING `deploy.oracle_release_install` transaction, verify all four exact CI runs, invoke the EXISTING `deploy.oracle_v2_deploy --action resume-terminal` F4->F4 transaction with previous SHA and CI run IDs, retain its rollback backup, then observe at least two natural unchanged-lane wakes and stable code HEAD. Any root proof/config/drop-in drift must refuse BEFORE downtime. No Codex, new scheduler or economic/trading authority. F6 scientific frontier shortage is a separate existing blocker and stays CLOSED.
 
 ## Current decision frontier — F6
 
