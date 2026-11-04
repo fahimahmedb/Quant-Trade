@@ -111,6 +111,7 @@ class F6Rule204SourceTests(unittest.TestCase):
                  if (task.get("derivation") or {}).get("frontier_id")
                  != "INSTITUTIONAL_FLOW_REGSHO_RULE204_2025"]
         catalog = {TARGET: source()}
+        task_files_before = {item.name for item in (BASE / "tasks").glob("*.json")}
         result = derive_refill_task(
             frontier=frontier, tasks=tasks, created_at="2026-11-04T03:27:00Z",
             source_catalog=catalog, research_policy_context=load_research_policy_context(BASE))
@@ -123,8 +124,9 @@ class F6Rule204SourceTests(unittest.TestCase):
         self.assertTrue(task["inputs"]["legacy_gate_required"])
         self.assertFalse(task["authority"]["live_trading_authorized"])
         validate_derived_task(task)
-        self.assertFalse((BASE / "tasks" / (task["task_id"] + ".json")).exists(),
-                         "Preview must never publish to the operational research queue")
+        self.assertEqual({item.name for item in (BASE / "tasks").glob("*.json")},
+                         task_files_before,
+                         "Offline preview must not mutate the operational research queue")
 
     def test_operational_one_source_frontier_after_qualified_vm_rebind(self):
         from research.research_os.queue_replenisher import load_source_catalog
