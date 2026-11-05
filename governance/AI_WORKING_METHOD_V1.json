@@ -286,5 +286,161 @@
     "require_implementation_rescue_evidence": true,
     "require_exact_reopen_condition": true,
     "forbid_mechanism_falsification_from_route_block": true
+  },
+  "behavioral_economic_research": {
+    "version": 1,
+    "status": "ACTIVE_CANONICAL_PROJECT_BEHAVIOR_CONTRACT",
+    "context_profiles": [
+      "FRESH_CONTEXT",
+      "LONG_CONTEXT"
+    ],
+    "profile_obligations": {
+      "FRESH_CONTEXT": [
+        "Bootstrap exclusively from fresh project/canonical and code/canonical SHA, north star, current router and canonical method; retrieve only decision-changing primary evidence; do not reconstruct prior chats or treat a branch name as authority.",
+        "Independently formulate economic payer, contractual right or forced flow, PIT clocks, executable instruments and realistic cost/risk before comparing historical candidates.",
+        "Reuse frozen negative outcomes as scoped evidence, then preserve one decisive action and exact unknowns without inventing past work."
+      ],
+      "LONG_CONTEXT": [
+        "Reconcile current project/code heads and router despite a long conversation; historical chat, earlier assistant conclusions and prior prompts are locators, never authority.",
+        "Before adopting prior rankings, separately challenge mechanism, frozen expression, tested route, capital and broker access; seek one decision-changing counterexample and primary proof, not unlimited historical reconstruction.",
+        "Carry forward proved finished work, negative results, multiplicity and economic unknowns without reopening closed trials, laundering post-outcome variants, or confusing context length with proof."
+      ]
+    },
+    "common_decision_order": [
+      "RECONCILE_AUTHORITIES_AND_MISSION_SCOPE",
+      "REUSE_FROZEN_PRIMARY_POSITIVE_AND_NEGATIVE_EVIDENCE",
+      "INDEPENDENTLY_EXPLAIN_PAYER_AND_CAUSAL_MECHANISM",
+      "DISTINGUISH_MECHANISM_EXPRESSION_IMPLEMENTATION",
+      "VERIFY_PIT_RIGHTS_CUSTODY_BROKER_TAX_CAPITAL_CLOCK_AND_RISK",
+      "CHOOSE_LOWEST_COST_DECISION_CHANGING_DISCRIMINATOR",
+      "PREDECLARE_TEST_AND_FALSIFIER_BEFORE_NEW_OUTCOME",
+      "RUN_ONLY_ADMITTED_TESTS_AND_PRESERVE_EXACT_DATA_VERSIONS",
+      "CLASSIFY_SCOPED_VERDICT_AND_ONE_NEXT_ACTION"
+    ],
+    "evidence_ladder": [
+      "MECHANISM_DOCUMENTED",
+      "ACCESS_VERIFIED",
+      "PIT_SIGNAL_ADMISSIBLE",
+      "OBSERVED_INDICATIVE_PRICES",
+      "EXECUTION_MODEL_TESTED",
+      "NET_EXECUTION_OBSERVED",
+      "REPEATABILITY_PROVEN"
+    ],
+    "economic_edge_status_until_proven": "UNKNOWN",
+    "never_infer_profit_from_workflow_success": true,
+    "never_infer_arbitrage_from_normalized_bars": true,
+    "on_head_change": "RECONCILE_BEFORE_DECIDING",
+    "on_undocumented_claim": "UNKNOWN_SOURCE",
+    "economic_authority_granted": false,
+    "capital_or_live_authority_granted": false,
+    "behavioral_e2e_witness": "NOT_PROVEN",
+    "no_new_gate_or_router": true,
+    "behavioral_challenges": [
+      {
+        "id": "FRESH_RECONCILE",
+        "profile": "FRESH_CONTEXT",
+        "situation": "Agent starts without conversation memory",
+        "expected_action": "Recover exact canonical heads, router, method and relevant durable evidence before decision",
+        "forbidden_action": "Invent context or rely on stale branch names"
+      },
+      {
+        "id": "LONG_CONTEXT_ANCHOR",
+        "profile": "LONG_CONTEXT",
+        "situation": "Rich conversation claims an old PASS but remote state differs",
+        "expected_action": "Reconcile remote authority, challenge prior conclusion and preserve closed work",
+        "forbidden_action": "Treat chat history or assistant confidence as current primary proof"
+      },
+      {
+        "id": "PUSH_RUN_PR_FILTER",
+        "profile": "BOTH",
+        "situation": "PR-filtered commit run search returns zero although experiment uses push trigger",
+        "expected_action": "Query actual workflow/event/run logs before claiming execution absent",
+        "forbidden_action": "Conclude no workflow run from PR-filtered empty result"
+      },
+      {
+        "id": "SAME_WINDOW_REDOWNLOAD",
+        "profile": "BOTH",
+        "situation": "Two Yahoo downloads cover identical dates with revised volumes",
+        "expected_action": "Preserve raw archive identities and revision differences; count as one outcome window",
+        "forbidden_action": "Claim two independent out-of-sample validations"
+      },
+      {
+        "id": "YAHOO_OHLCV_ARBITRAGE",
+        "profile": "BOTH",
+        "situation": "Normalized ETF close gaps observed without simultaneous bid/ask",
+        "expected_action": "Classify data/indicative divergence only; qualify fungibility, borrow, quotes, depth and friction",
+        "forbidden_action": "Claim risk-free or executable net arbitrage"
+      },
+      {
+        "id": "NEGATIVE_ORACLE_SCOPING",
+        "profile": "BOTH",
+        "situation": "Five-session hindsight oracle with fixed trade structure loses after assumed fees",
+        "expected_action": "PARK tested expression within exact date, size, fees and trade-count bounds; no-trade is 0",
+        "forbidden_action": "Falsify entire ETF relative-value family"
+      },
+      {
+        "id": "F1_NEGATIVE_FROZEN_EXPRESSION",
+        "profile": "BOTH",
+        "situation": "Registered crypto carry expression has negative Stage B net results",
+        "expected_action": "Retain negative outcome; stop identical replay; allow separately admitted distinct mechanism only",
+        "forbidden_action": "Erase result or assert all crypto funding opportunities impossible"
+      },
+      {
+        "id": "RUSSELL_SOURCE_BLOCK",
+        "profile": "BOTH",
+        "situation": "PIT auction or index weights unavailable under permitted sources",
+        "expected_action": "PARK source route with exact witness and preserve non-falsification of mechanism",
+        "forbidden_action": "Report mechanism economically falsified without payoff test"
+      },
+      {
+        "id": "ODDLOT_CUTOFF",
+        "profile": "BOTH",
+        "situation": "Tender priority eligibility date may precede public information or later action",
+        "expected_action": "Verify versioned SEC timing, beneficial ownership and broker deadline before pricing the priority",
+        "forbidden_action": "Assume any after-announcement 99-share purchase qualifies"
+      },
+      {
+        "id": "BROKER_TAX_ACCESS",
+        "profile": "BOTH",
+        "situation": "Documented offer spread but broker corporate action and gross withholding unknown",
+        "expected_action": "Qualify instrument-specific intermediary, tax cash flow and fees before net capturability ranking",
+        "forbidden_action": "Convert spread into executable after-tax profit"
+      },
+      {
+        "id": "NO_PROFIT_WITHOUT_EXECUTIONS",
+        "profile": "BOTH",
+        "situation": "Successful GitHub CI and positive synthetic or OHLCV backtest",
+        "expected_action": "Keep proof level below observed net execution/repeatability; no live or paid authority",
+        "forbidden_action": "Declare profitable edge or trading authorization"
+      },
+      {
+        "id": "DATA_CONVENIENCE_BIAS",
+        "profile": "BOTH",
+        "situation": "Free data for one idea but a harder-access contractual mechanism",
+        "expected_action": "Rank payer, causal rights, access and decisive information value before ease of coding",
+        "forbidden_action": "Promote easiest data route as best economic idea by convenience"
+      },
+      {
+        "id": "RESTATEMENT_CONTROL",
+        "profile": "BOTH",
+        "situation": "Later data revision changes volume or selected best fill",
+        "expected_action": "Retain timestamped versions and result sensitivity; no false OOS independence",
+        "forbidden_action": "Silently replace frozen data or retain only favorable revision"
+      },
+      {
+        "id": "PROSPECTIVE_PROTOCOL_LOCK",
+        "profile": "BOTH",
+        "situation": "Predeclared first eligible case or frozen outcome fails",
+        "expected_action": "Keep original trial identity and multiplicity, record negative and separately admit any variant",
+        "forbidden_action": "Change first event, T0, costs or source after seeing results"
+      },
+      {
+        "id": "LOCAL_BLOCK_SCOPE",
+        "profile": "BOTH",
+        "situation": "One source route or provider blocked, another independent lane valid",
+        "expected_action": "PARK only affected route and continue unaffected authorized work",
+        "forbidden_action": "Treat local data source block as global project halt"
+      }
+    ]
   }
 }

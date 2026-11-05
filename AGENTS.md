@@ -45,6 +45,10 @@ checked paths plus an exact reopen condition. Keep frozen protocols, all prior
 trial exposure and hard authorization limits intact. Do **not** delay a proven
 safety/authority stop or manufacture unbounded speculative options.
 
+## Economic research for fresh and long-context AI
+
+Before research, apply §5.2 of `governance/AI_WORKING_METHOD_V1.md` and `behavioral_economic_research` in the machine contract. This binds **both** `FRESH_CONTEXT` and `LONG_CONTEXT` roles: the fresh AI must recover exact primary repository authority without reconstructing chat; the long-context AI must independently revalidate old conclusions rather than privilege remembered answers. Both must identify the economic payer/right, PIT, broker/tax/borrow/quotes, capital, costs and a decisive falsifier before choosing an experiment. Do not promote easy Yahoo data, positive historical statistics, a successful GitHub run or an OHLCV divergence into a net economic edge. Preserve frozen negative memory; scope `PARK` and `FAIL` to the exact tested expression/route, and keep `UNKNOWN` when proof is missing. The project-owned challenge tests are static contract checks, not proof of actual model behavior or permission for prospective/live trading.
+
 ## Concurrency and continuation
 
 - one mutating Builder per capability/seam;

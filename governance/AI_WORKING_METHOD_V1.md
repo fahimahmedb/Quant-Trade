@@ -162,6 +162,35 @@ capital, alter runtime or mutate another active seam. An agent's statement
 that it searched is not behavioral proof; fresh-agent counterexamples and
 real operating decisions must be checked separately.
 
+## 5.2 Economic research behavior — fresh and long-context AI
+
+This extends the **same** canonical method and existing §5.1 rescue rule. It does not create a new memory, router, gate, agent, or experimental authorization. Both `FRESH_CONTEXT` and `LONG_CONTEXT` AIs are subject to the same scientific and authority boundaries. Their **starting failure modes differ**:
+
+- **`FRESH_CONTEXT` AI:** bootstrap from fresh `project/canonical` and `code/canonical` heads, `QUANT_NORTH_STAR.md`, the current router and this method. Retrieve only decision-changing Git objects and frozen result evidence. Never fill absent historical context with a guess, treat chat reconstruction as a prerequisite, or redo a proved finished/failed experiment without a new material contradiction. Form an independent payer-and-mechanism hypothesis before reading an earlier ranking as anything more than a locator.
+- **`LONG_CONTEXT` AI:** its accumulated chat, remembered SHAs, previous answers and lengthy analytical narratives are **not** authority. Re-fetch heads/router and reconcile previous decisions with current exact primary evidence. Specifically challenge anchoring, prior rapid-reasoning assumptions, omitted negative results, stale permissions and concurrent work. Preserve continuity and proven closed work, but do not treat confidence, elapsed reflection time or context length as economic proof.
+
+**Common economic decision order** (all roles, including Research and Reviewer):
+
+1. **Reconcile, reuse and bound.** Identify current authorized decision; reuse existing positive/negative trials and prior scientific exposure; stop when no decision-changing evidence remains. Avoid auditing audits.
+2. **Economic cause before software.** Identify who actually pays, why they are constrained or contractually committed, the claimant's exact economic right, available capital, risk and capacity. Separate a documented mechanism, a frozen testable expression, an actual implementation route and observed net result.
+3. **Capturability before ranking.** Verify point-in-time public information and its time relative to ownership/eligibility, settlement, custodian/broker access, tax withholding and cash immobilization, permitted orders, real bid/ask depth, borrow, financing, fixed and variable fees. Unknown broker or tax access means `UNKNOWN/BLOCK` **for that route**, not mechanism `FAIL`.
+4. **Predeclare one discriminator.** Write the smallest decisive hypothesis, falsifier, timestamp, instrument, costs, executable trade size, negative case and expected proof **before any new outcome access**. Do not reselect first events, rewrite frozen T0, reset multiplicity or call post-hoc cases out of sample.
+5. **Test the actual claim, not a proxy.** Successful workflow/CSV capture is `PASS_DATA` only; normalized OHLCV gaps are descriptive, **not executable arbitrage**. Inspect workflow runs by relevant event (a PR-filtered empty search cannot exclude a push run). Same-date archive recollections with volume restatements are **not independent experiments**: retain both versions and their sensitivity.
+6. **Challenge and scope a negative.** For a hindsight upper-bound oracle, document the exact horizon, number of trades, long/short hedge, volume fraction, assumed fees and whether the no-trade action gives zero. A negative oracle rejects only the tested family under these constraints; do not falsely eliminate an entire mechanism or rescue a genuinely negative frozen expression by re-fitting it.
+7. **Keep the evidence ladder strict.** `MECHANISM_DOCUMENTED → ACCESS_VERIFIED → PIT_SIGNAL_ADMISSIBLE → OBSERVED_INDICATIVE_PRICES → EXECUTION_MODEL_TESTED → NET_EXECUTION_OBSERVED → REPEATABILITY_PROVEN`. These are distinct evidence claims, **not a requirement that every mechanism follows one temporal sequence**. No profitable-edge claim from a model, CI, paper outcome or hindsight upper bound. Distinguish economic premium for assumed risk from proven alpha.
+8. **Stop with one next decision.** Return a scoped `PASS/FAIL/PARK/BLOCK/UNKNOWN`, the decisive opened evidence, one counterexample, tested versus merely proposed checks, exact reopen condition and one bounded next action. Prefer `NO_CHANGE_REQUIRED` when the prior result already settles the exact expression.
+
+**Mandatory counterexamples from actual research history:**
+
+- A missing workflow run from a **PR-only** lookup does not prove absence of a **push** run. Confirm the correct event and inspect actual logs/artifacts.
+- Two downloads covering **the same five ETF sessions** are revised measurements, not two OOS confirmations. Yahoo 1m bars are not guaranteed executable quotes.
+- A negative constrained one-trade-per-session ETF oracle after **hypothetical** fees does not invalidate other horizons, instruments or all relative value; no-trade gives a zero benchmark.
+- A negative predeclared crypto-carry expression must not be replayed unchanged; a Russell data-access blocker must not be mislabeled an economic falsification.
+- An odd-lot tender right requires exact SEC publication/ownership deadlines, beneficial holder aggregation, broker participation, withholding and stress costs **before** using an offer-price spread as expected profit.
+- A positive historical options/VIX statistic is a **locator until the exact instrument, primary run, costs, margin, sample, and entitlement are checked**; VIX-index fear-spike studies are not automatically VIX-options strategies.
+
+**Test and claim boundary.** `governance/tests/test_economic_research_behavior_contract.py` checks the project policy, both AI profiles, explicit adversarial cases and unchanged F0–F6/authority/non-regression invariants. It is a **static contract test**. Actual fresh-context and long-context model behavior needs separate, independently executed cases on the **same frozen prompt and exact heads**; until then `behavioral_e2e_witness=NOT_PROVEN`. No test grants economic, prospective, capital or trading authority.
+
 ## 6. Concurrency and ownership
 
 - one primary Builder may mutate a capability/seam at a time;
