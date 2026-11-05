@@ -1,22 +1,22 @@
 {
-  "mission_id": "ECONOMIC_AI_DUAL_CONTEXT_BEHAVIOR_PROJECT_20261105",
+  "mission_id": "F0_BRANCH_RECOVERY_AND_DUAL_CONTEXT_CI_20261105",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-05T02:01:00Z",
-  "project_canonical_sha": "899fd9f9bc2f295fd32581f805c1d84c9077c9b1",
-  "code_canonical_sha": "2175b8267e19190a2a1f90a5c3fd3a76b5f16099",
+  "receipt_timestamp": "2026-11-05T02:09:45.865Z",
+  "project_canonical_sha": "727c34924a064b0ed390dcc92e4d73900bcadcff",
+  "code_canonical_sha": "52019b76fd2345113448319a181ab51c5a39af18",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
-    "project_sha": "899fd9f9bc2f295fd32581f805c1d84c9077c9b1",
-    "code_sha": "2175b8267e19190a2a1f90a5c3fd3a76b5f16099",
-    "object": "Durable dual-context economic research behavior already published at project/canonical; repair admission commit trailer and bind exact current SHA, retain scoped observed static tests 5/5 and canonical NR 64/64; E2E NOT_PROVEN"
+    "project_sha": "727c34924a064b0ed390dcc92e4d73900bcadcff",
+    "code_sha": "52019b76fd2345113448319a181ab51c5a39af18",
+    "object": "Requalify static economic dual-context contract after F0 restoration. Experimental SHA retained under archive tag; only two branches; exact code method gate CHECKPOINT. Independent two-model behavior NOT_PROVEN."
   },
-  "current_blocker_or_decision": "DUAL_CONTEXT_BEHAVIOR_CONTRACT_TESTS_PASS_STATIC__PROJECT_GATE_BLOCKED_BY_EXTRA_EXPERIMENT_BRANCH__CODE_ADMISSION_TRAILER_REPAIR",
-  "target_gate_or_blocker": "DUAL_CONTEXT_ECONOMIC_RESEARCH_BEHAVIOR_AND_NON_REGRESSION",
+  "current_blocker_or_decision": "F0_TWO_BRANCH_AUTHORITY_RESTORED__QUALIFY_CODE_GATE__TWO_INDEPENDENT_MODEL_WITNESSES_NOT_PROVEN",
+  "target_gate_or_blocker": "F0_TWO_BRANCH_AUTHORITY_AND_DUAL_CONTEXT_ECONOMIC_METHOD",
   "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
-  "why_this_work_can_change_the_decision": "Existing canonical method covers anti-PARK and provenance, but lacks an explicit, testable common economic research process and distinct fresh/long-context failure-mode handling. Prevent false economic PASS and misplaced abandonment.",
-  "minimal_decisive_test": "Run project-owned deterministic dual-profile challenge cases and existing canonical method NR suite on exact project contract; independent actual fresh/long-context model witness remains separate and not implied by static tests.",
-  "counterexample": "A PR-only workflow-run lookup falsely claims no push run; two downloads of the same five sessions are called independent out-of-sample evidence; a negative same-day oracle wrongly falsifies all ETF value-relative mechanisms; a broker-only BLOCK is generalized to scientific FAIL.",
+  "why_this_work_can_change_the_decision": "F0 extra branch caused both hosted gates to fail despite the 5+64 project tests. Tag archive and safe branch removal have succeeded; rerun exact method gates without weakening branch invariant.",
+  "minimal_decisive_test": "CI on project/canonical and code/canonical exact SHAs passes with two heads only; do not confuse static challenge cases with independent fresh and long-context model witnesses.",
+  "counterexample": "Branch deletion without an archival tag loses an active experiment; an experimental HEAD update between preflight and deletion must block; static 5/5 tests cannot establish actual two-model E2E behavior.",
   "primary_evidence": [
     {
       "claim_id": "PROJECT_METHOD",
@@ -47,14 +47,34 @@
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
+    },
+    {
+      "claim_id": "F0_ARCHIVE_REF",
+      "claim": "Experimental latest SHA retained under remote tag while branch removed",
+      "source_kind": "GIT_REF",
+      "object_identity": "refs/tags/archive/experiment-mwrd-iwda-economic-20261105@0f837ccf12cf83e10257291684bfe4918b1a1bb7",
+      "observed_value": "GitHub refs: tag exists, only project/canonical and code/canonical heads remain",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "F0_REPAIR_RUN",
+      "claim": "One-shot archive-and-prune Github Action completed successfully",
+      "source_kind": "GITHUB_WORKFLOW_JOB_LOG",
+      "object_identity": "41953110470/job/127001466829",
+      "observed_value": "Archive/tag and safe delete PASS; workflow itself will be removed",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
     }
   ],
-  "durable_output_required": "Project method text + machine policy + AGENTS entrypoint + project-local regression/challenge cases, with hosted exact-subject evidence; no assertion of model E2E behavior without fresh-agent proof.",
-  "next_action_after_pass_fail_block": "Preserve 5/5 + 64/64 exact-project tests; do not weaken F0. Resolve extra experiment branch without losing active research or authority, then rerun hosted full method gate; actual fresh/long-context AI E2E remains NOT_PROVEN.",
+  "durable_output_required": "Hosted exact-subject method gate PASS with archived experiment preserved; limited static economic behavior acceptance only, independent behavioral profiles NOT_PROVEN.",
+  "next_action_after_pass_fail_block": "Once both canonical method gates PASS, close F0 repository branch repair. Plan separate admitted, budgeted independent fresh/long-context real-model challenge if actual model dispatch becomes available; keep economic edge and live trading unauthorized.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner explicitly requested integration of fresh-context and long-context economic research behavior on project/canonical with new tests and NR; only canonical receipt update permitted on code; no trading, VM, agent dispatch, paid source or prospective observation.",
-  "active_seam": "PROJECT_ECONOMIC_AI_BEHAVIOR",
+  "authority_scope": "Owner requested resolving GitHub F0 branch conflict and remaining static qualification, preserving experiment under verified tag. No authorized paid model dispatch, live capital, VM or economic experiment.",
+  "active_seam": "F0_BRANCH_RECOVERY_AND_AI_METHOD_CI",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "completion_intent": "CHECKPOINT",
