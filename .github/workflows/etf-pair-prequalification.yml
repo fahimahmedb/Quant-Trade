@@ -1,0 +1,29 @@
+name: ETF pair Yahoo 1m economic prequalification
+on:
+  push:
+    branches: [experiment/mwrd-iwda-economic-20261105]
+    paths:
+      - "experiments/etf_pair/**"
+      - ".github/workflows/etf-pair-prequalification.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  yahoo-etf-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Retrieve Yahoo 1m and classify economic evidence
+        run: python3 experiments/etf_pair/yahoo_1m_prequalification.py
+      - name: Preserve evidence including failed fetches
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yahoo-etf-pair-prequalification
+          path: artifacts/etf-pair/
+          if-no-files-found: warn
+          retention-days: 14
