@@ -1,0 +1,53 @@
+name: F0 one-shot archive experimental branch (2026-11-05)
+on:
+  push:
+    branches:
+      - project/canonical
+    paths:
+      - ".github/workflows/f0-archive-experiment-once-20261105.yml"
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: f0-archive-experiment-mwrd-iwda-20261105
+  cancel-in-progress: false
+jobs:
+  preserve-and-prune:
+    if: github.repository == 'fahimahmedb/Quant-Trade'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout triggering exact canonical commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: true
+      - name: Preserve experimental commit as archival tag before atomically deleting extra branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXP_BRANCH: experiment/mwrd-iwda-economic-20261105
+          EXPECTED_SHA: 0f837ccf12cf83e10257291684bfe4918b1a1bb7
+          ARCHIVE_TAG: archive/experiment-mwrd-iwda-economic-20261105
+        shell: bash
+        run: |
+          set -euo pipefail
+          CURRENT_SHA="$(git ls-remote --heads origin "refs/heads/$EXP_BRANCH" | awk '{print $1}')"
+          test -n "$CURRENT_SHA" || { echo 'BLOCK: branch disappeared; inspect before proceeding'; exit 1; }
+          test "$CURRENT_SHA" = "$EXPECTED_SHA" || { echo "BLOCK: branch moved to $CURRENT_SHA; refusing deletion"; exit 1; }
+          ACTIVE="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?branch=$EXP_BRANCH&per_page=30" --jq '[.workflow_runs[] | select(.status != "completed")] | length')"
+          test "$ACTIVE" = "0" || { echo "BLOCK: $ACTIVE experimental workflow runs active"; exit 1; }
+          git fetch --no-tags origin "refs/heads/$EXP_BRANCH:refs/remotes/origin/$EXP_BRANCH"
+          test "$(git rev-parse "refs/remotes/origin/$EXP_BRANCH")" = "$EXPECTED_SHA"
+          TAG_SHA="$(git ls-remote --tags origin "refs/tags/$ARCHIVE_TAG" | awk '{print $1}')"
+          if [ -z "$TAG_SHA" ]; then
+            git push origin "$EXPECTED_SHA:refs/tags/$ARCHIVE_TAG"
+          else
+            test "$TAG_SHA" = "$EXPECTED_SHA" || { echo 'BLOCK: archive tag collision'; exit 1; }
+          fi
+          test "$(git ls-remote --tags origin "refs/tags/$ARCHIVE_TAG" | awk '{print $1}')" = "$EXPECTED_SHA"
+          echo "ARCHIVE_PROVEN=$ARCHIVE_TAG@$EXPECTED_SHA"
+          git push --force-with-lease="refs/heads/$EXP_BRANCH:$EXPECTED_SHA" origin ":refs/heads/$EXP_BRANCH"
+          test -z "$(git ls-remote --heads origin "refs/heads/$EXP_BRANCH")"
+          echo 'F0_BRANCH_REPAIR=PASS'
+          git ls-remote --heads origin | awk '{print $2}' | sort
