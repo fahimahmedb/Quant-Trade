@@ -6,6 +6,11 @@ on:
       - "experiments/etf_pair/**"
       - ".github/workflows/etf-pair-prequalification.yml"
   workflow_dispatch:
+  pull_request:
+    branches: [project/canonical]
+    paths:
+      - "experiments/etf_pair/**"
+      - ".github/workflows/etf-pair-prequalification.yml"
 permissions:
   contents: read
 jobs:
