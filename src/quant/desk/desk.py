@@ -109,6 +109,14 @@ class CapitalDesk:
                     raise ValueError("pending retirement replay lacks original Book authority")
                 tasks.append((definition, opportunity_id, authority))
                 pending_books.add(authority)
+            # Explicit evaluation_track preserves the zero-authority
+            # counterfactual lifecycle even after retirement from CAPITAL.
+            if definition.evaluation_track and "EVALUATION" not in pending_books:
+                evaluation_id = (ordinary_id if not any(
+                    item[1] == ordinary_id for item in tasks)
+                    else f"OPP-{definition.strategy_id}-EVALUATION-{date}")
+                tasks.append((definition, evaluation_id, "EVALUATION"))
+                pending_books.add("EVALUATION")
             for book in (self.capital, self.evaluation):
                 authority = book.state.authority
                 if (authority not in pending_books
@@ -199,7 +207,9 @@ class CapitalDesk:
             strategy_id=definition.strategy_id, lifecycle=definition.lifecycle,
             ledger=ledger.state.authority, execution_date=next_date)
 
-        if definition.lifecycle == "RETIRED":
+        if (definition.lifecycle == "RETIRED"
+                and not (ledger.state.authority == "EVALUATION"
+                         and definition.evaluation_track)):
             held = decision_ledger.sleeve_exposures_at(definition.strategy_id, decision_prices)
             if not held:
                 return self._finish(definition, ticket.stop(
