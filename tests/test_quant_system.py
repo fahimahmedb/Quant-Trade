@@ -1447,6 +1447,27 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertFalse(verify_final(ledger, "S", safe, RiskLimits(),
                                           nav_adjustment=-0.02)["approved"])
 
+    def test_T3_reducing_final_basket_vetoes_unsafe_first_durable_leg(self):
+        panel = fixture_panel(sessions=300)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            for symbol, signed_notional in (("AAA", -10_000.0),
+                                            ("BBB", 15_000.0)):
+                price = panel.adjusted(dates[20], symbol, "close")
+                desk.capital.apply_fill(symbol, signed_notional / price, price,
+                                        0.0, dates[20], "STR-TEST",
+                                        "seed-" + symbol)
+            desk.capital.state.peak_nav = desk.capital.nav / 0.79
+            desk.strategies.get("STR-TEST").transition("RETIRED", "synthetic test")
+            ticket = desk.run_session(panel, dates[20], dates[21])["tickets"][0]
+            self.assertEqual(ticket["status"], "VETOED", ticket)
+            self.assertIn("unsafe intermediate fill", ticket["reason"])
+            self.assertEqual(desk.capital.state.fills, 2)
+            self.assertEqual(set(desk.capital.sleeve_exposures("STR-TEST")),
+                             {"AAA", "BBB"})
+
+
     def test_T4_subminimum_retired_residual_is_reported_not_erased(self):
         panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)

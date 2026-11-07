@@ -1,23 +1,23 @@
 {
   "mission_id": "QT_DESK_SECURITY_T1_T6_20261107",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-07T01:12:52.908Z",
+  "receipt_timestamp": "2026-11-07T01:15:35.798Z",
   "project_canonical_sha": "727c34924a064b0ed390dcc92e4d73900bcadcff",
-  "code_canonical_sha": "2b766e5cd145394923997805f00517f0c3b332d8",
+  "code_canonical_sha": "9f7de4dca0a66aefb0e96974b5305da8278033d9",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "727c34924a064b0ed390dcc92e4d73900bcadcff",
-    "code_sha": "2b766e5cd145394923997805f00517f0c3b332d8",
+    "code_sha": "9f7de4dca0a66aefb0e96974b5305da8278033d9",
     "seam": "CapitalDesk / ExecutionModel / RiskLimits",
     "scope": "synthetic-safe isolated engineering only"
   },
-  "current_blocker_or_decision": "T1–T6 synthetic Desk repair source staged; qualify exact next immutable code subject with hosted focused regression, preserve pre-existing F0–F6 and economic authority ceilings.",
+  "current_blocker_or_decision": "T1–T6 synthetic security qualification and exact-SHA test admission; strengthen intermediate-fill halt challenge without economic/live authority",
   "target_gate_or_blocker": "DESK_T1_T6_SYNTHETIC_SAFE_QUALIFICATION",
   "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
   "why_this_work_can_change_the_decision": "Fix demonstrated Desk/Book defects: zero ADV fabricated fill, retirement original ledger/replay, drawdown risk-reductions, residual orders and signal loss; keep cost/capacity assumptions explicit.",
-  "minimal_decisive_test": "Run committed tests/test_quant_system.py T1–T6 + existing replay/Book suite and exact-head hosted canonical gates on current source; ensure no missing-data, retirement/EVALUATION regression, or silent residual.",
+  "minimal_decisive_test": "Execute dedicated T1–T6 tests incl entire retired-state evaluation replay and adversarial short-first halt basket, plus canonical code, method, V1 E2E and focused regressions on immutable published SHA.",
   "counterexample": "Retiring a strategy with a pending CAPITAL fill re-routes replay to EVALUATION; zero ADV fabricates execution; covering a short may lower gross and increase absolute net risk; a below-500 residual may be silently skipped.",
   "primary_evidence": [
     {
@@ -62,7 +62,7 @@
     }
   ],
   "durable_output_required": "Exact test fixtures and results, qualified code SHA and regression status in existing canonical surfaces, traceable T1–T6 matrix, no VM or economic/live/trading claims.",
-  "next_action_after_pass_fail_block": "On hosted PASS of exact published subject: preserve evidence and close T1–T6 CHECKPOINT without VM activation; on failing specific tests repair in admitted synthetic scope and renew receipt; EOD source access remains independent PARK.",
+  "next_action_after_pass_fail_block": "If hosted PASS: close bounded synthetic Desk security qualification with explicit no deployment/live/economic authority; if FAIL: reuse exact logs and make minimal admitted correction; EOD source remains separate route-level PARK pending license and PIT evidence.",
   "owner_authorization_required": true,
   "owner_authorized": true,
   "authority_scope": "Owner instruction 2026-11-07 to continue the existing T1–T6 repair workflow until qualified; strictly isolated synthetic-safe code/tests, existing GitHub code/canonical, no VM, external agent, paid dispatch, scientific/economic experiment, future outcome observation, live trading, real capital, production deployment or unblinding.",
