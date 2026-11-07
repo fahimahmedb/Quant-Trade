@@ -22,6 +22,10 @@ from ..dataplane.panel import PricePanel
 RESEARCH_ONE_WAY_COST_BPS = 5.0
 
 
+class ExecutionCapacityUnavailable(ValueError):
+    """No historical capacity evidence: never fabricate a modeled fill."""
+
+
 @dataclass(frozen=True)
 class ExecutionModel:
     commission_bps: float = 0.5
@@ -45,16 +49,20 @@ class ExecutionModel:
     def fill(self, panel: PricePanel, symbol: str, quantity: float, signal_date: str,
              execution_date: str) -> dict[str, Any]:
         """Model one order. Returns the (possibly capacity-truncated) fill."""
+        if quantity == 0:
+            raise ValueError("zero quantity is not an execution order")
         reference = panel.adjusted(execution_date, symbol, "open")
-        capacity = self.adv(panel, symbol, signal_date) * self.max_participation
+        average_notional = self.adv(panel, symbol, signal_date)
+        if not math.isfinite(average_notional) or average_notional <= 0:
+            raise ExecutionCapacityUnavailable("ADV_ZERO_OR_UNAVAILABLE: no modeled fill")
+        capacity = average_notional * self.max_participation
         requested_notional = abs(quantity) * reference
         truncated = False
         if capacity > 0 and requested_notional > capacity:
             quantity = math.copysign(capacity / reference, quantity)
             requested_notional = capacity
             truncated = True
-        participation = (requested_notional / self.adv(panel, symbol, signal_date)
-                         if self.adv(panel, symbol, signal_date) > 0 else 0.0)
+        participation = requested_notional / average_notional
         impact_bps = self.impact_bps_at_full_participation * math.sqrt(
             min(participation, 1.0) / self.max_participation) if participation > 0 else 0.0
         side = 1.0 if quantity > 0 else -1.0
