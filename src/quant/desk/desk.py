@@ -92,6 +92,14 @@ class CapitalDesk:
                 tasks.append((definition, ordinary_id, None))
                 continue
             pending_books: set[str] = set()
+            # A decision already booked under the legacy per-session identity
+            # cannot be silently followed by a second retirement fill on replay.
+            prior = self.journal.outcomes.get(ordinary_id)
+            if ordinary_id in self.journal.processed and isinstance(prior, dict):
+                prior_authority = prior.get("ledger")
+                if prior_authority in {"CAPITAL", "EVALUATION"}:
+                    tasks.append((definition, ordinary_id, prior_authority))
+                    pending_books.add(prior_authority)
             for opportunity_id, plan in sorted(self.journal.pending.items()):
                 if (plan.get("strategy_id") != definition.strategy_id
                         or plan.get("session_date") != date):
