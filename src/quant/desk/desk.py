@@ -35,7 +35,7 @@ from ..factory.signals import should_rebalance, weights_for
 from ..factory.strategies import StrategyDefinition, StrategyRegistry
 from ..paths import QuantPaths
 from ..state import ComponentRegistry, append_jsonl, read_jsonl
-from .execution import ExecutionModel
+from .execution import ExecutionCapacityUnavailable, ExecutionModel
 from .journal import DeskJournal
 from .opportunity import OpportunityTicket
 from .risk import RiskLimits, evaluate as evaluate_risk, verify_final
@@ -63,13 +63,52 @@ class CapitalDesk:
                                  "EVALUATION", initial_capital)
 
     # --- helpers -----------------------------------------------------------
-    def ledger_for(self, definition: StrategyDefinition) -> Ledger:
+    def ledger_for(self, definition: StrategyDefinition,
+                   authority: str | None = None) -> Ledger:
+        if authority is not None:
+            if authority == "CAPITAL":
+                return self.capital
+            if authority == "EVALUATION":
+                return self.evaluation
+            raise ValueError(f"unknown recorded Book authority: {authority}")
         return self.capital if definition.tradable else self.evaluation
 
     def actionable(self) -> list[StrategyDefinition]:
         return sorted((definition for definition in self.strategies.strategies.values()
-                       if definition.tradable or definition.evaluation_track),
+                       if definition.tradable or definition.evaluation_track
+                       or any(book.sleeve_exposures(definition.strategy_id)
+                              for book in (self.capital, self.evaluation))
+                       or any(plan.get("strategy_id") == definition.strategy_id
+                              for plan in self.journal.pending.values())),
                       key=lambda item: item.strategy_id)
+
+    def _work_items(self, date: str, actionable: list[StrategyDefinition]
+                    ) -> list[tuple[StrategyDefinition, str, str | None]]:
+        """Retired sleeves remain tracked in their original Book, not rehomed."""
+        tasks: list[tuple[StrategyDefinition, str, str | None]] = []
+        for definition in actionable:
+            ordinary_id = f"OPP-{definition.strategy_id}-{date}"
+            if definition.lifecycle != "RETIRED":
+                tasks.append((definition, ordinary_id, None))
+                continue
+            pending_books: set[str] = set()
+            for opportunity_id, plan in sorted(self.journal.pending.items()):
+                if (plan.get("strategy_id") != definition.strategy_id
+                        or plan.get("session_date") != date):
+                    continue
+                authority = (plan.get("ticket") or {}).get("ledger")
+                if authority not in {"CAPITAL", "EVALUATION"}:
+                    raise ValueError("pending retirement replay lacks original Book authority")
+                tasks.append((definition, opportunity_id, authority))
+                pending_books.add(authority)
+            for book in (self.capital, self.evaluation):
+                authority = book.state.authority
+                if (authority not in pending_books
+                        and book.sleeve_exposures(definition.strategy_id)):
+                    tasks.append((definition,
+                                  f"OPP-{definition.strategy_id}-{authority}-{date}",
+                                  authority))
+        return tasks
 
     # --- the chain ---------------------------------------------------------
     def run_session(self, panel: PricePanel, date: str, next_date: str | None) -> dict[str, Any]:
@@ -91,8 +130,7 @@ class CapitalDesk:
                 self.components.set(name, "IDLE", "no opportunity reached this stage")
             self.log.emit("DESK", "SCAN", "session_no_candidates", date,
                           reason="no strategy holds a tradable lifecycle state")
-        for definition in actionable:
-            opportunity_id = f"OPP-{definition.strategy_id}-{date}"
+        for definition, opportunity_id, authority in self._work_items(date, actionable):
             if self.journal.is_processed(opportunity_id):
                 outcome = self.journal.outcomes.get(opportunity_id)
                 if outcome:
@@ -107,7 +145,8 @@ class CapitalDesk:
             try:
                 tickets.append(self._run_strategy(
                     panel, date, next_date, definition, opportunity_id,
-                    decision_ledgers[self.ledger_for(definition).state.authority]))
+                    decision_ledgers[self.ledger_for(definition, authority).state.authority],
+                    authority=authority))
             except Exception as exc:
                 # Once intent is durable this is a transaction interruption,
                 # not a strategy fault.  Let the process boundary propagate so
@@ -116,7 +155,7 @@ class CapitalDesk:
                     raise
                 ticket = OpportunityTicket(opportunity_id, date, definition.strategy_id,
                                            definition.lifecycle,
-                                           self.ledger_for(definition).state.authority,
+                                           self.ledger_for(definition, authority).state.authority,
                                            execution_date=next_date)
                 ticket.stop("SCAN", "FAULT", f"{type(exc).__name__}: {exc}")
                 self.components.set("SCAN", "FAULT", ticket.reason)
@@ -139,9 +178,10 @@ class CapitalDesk:
 
     def _run_strategy(self, panel: PricePanel, date: str, next_date: str | None,
                       definition: StrategyDefinition, opportunity_id: str,
-                      decision_ledger: Ledger) -> OpportunityTicket:
+                      decision_ledger: Ledger, authority: str | None = None
+                      ) -> OpportunityTicket:
         spec = definition.to_spec()
-        ledger = self.ledger_for(definition)
+        ledger = self.ledger_for(definition, authority)
         decision_prices = {symbol: panel.adjusted(date, symbol, "close")
                            for symbol in panel.symbols if panel.has(date, symbol)}
         execution_prices = ({symbol: panel.adjusted(next_date, symbol, "open")
@@ -151,57 +191,86 @@ class CapitalDesk:
             strategy_id=definition.strategy_id, lifecycle=definition.lifecycle,
             ledger=ledger.state.authority, execution_date=next_date)
 
-        # --- SCAN ----------------------------------------------------------
-        missing = self.datasets.missing_for([spec.dataset_id] if spec.dataset_id else [])
-        if missing:
-            self.components.set("SCAN", "BLOCKED", f"dataset unavailable: {missing}")
-            return self._finish(definition, ticket.stop(
-                "SCAN", "BLOCKED", f"required dataset unavailable: {missing}", missing=missing))
-        weights = weights_for(panel, spec, date)
-        ticket.target_weights = weights
-        if not weights:
-            self.components.set("SCAN", "IDLE", "no qualifying cross-sectional signal")
-            return self._finish(definition, ticket.stop(
-                "SCAN", "NO_TRADE", "no symbol cleared the signal threshold at this session"))
-        ticket.record("SCAN", "CANDIDATE", f"{len(weights)} legs proposed by "
-                      f"{spec.label}", gross=sum(abs(value) for value in weights.values()))
+        if definition.lifecycle == "RETIRED":
+            held = decision_ledger.sleeve_exposures_at(definition.strategy_id, decision_prices)
+            if not held:
+                return self._finish(definition, ticket.stop(
+                    "SCAN", "NO_TRADE", "retired sleeve already flat in original Book"))
+            ticket.record("SCAN", "CANDIDATE",
+                          "retired sleeve requires tracked risk reduction",
+                          residual_notional=held, source_ledger=ledger.state.authority)
+            if next_date is None:
+                return self._finish(definition, ticket.stop(
+                    "VET", "BLOCKED", "no eligible next execution session for retired sleeve",
+                    residual_notional=held))
+            ticket.record("VET", "ACCEPTED", "retirement exit mandate only")
+            target_notional = {symbol: 0.0 for symbol in held}
+            ticket.record("SIZE", "SIZED", "reduce retired sleeve to zero where admissible",
+                          gross_notional=sum(abs(value) for value in held.values()))
+        else:
+            # --- SCAN ----------------------------------------------------------
+            missing = self.datasets.missing_for([spec.dataset_id] if spec.dataset_id else [])
+            if missing:
+                self.components.set("SCAN", "BLOCKED", f"dataset unavailable: {missing}")
+                return self._finish(definition, ticket.stop(
+                    "SCAN", "BLOCKED", f"required dataset unavailable: {missing}", missing=missing))
+            weights = weights_for(panel, spec, date)
+            ticket.target_weights = weights
+            if not weights:
+                existing = decision_ledger.sleeve_exposures_at(definition.strategy_id, decision_prices)
+                aligned_index = panel.aligned_index(spec.universe, date)
+                if aligned_index is None:
+                    status = "BLOCKED"
+                    reason = "required aligned signal data unavailable"
+                elif aligned_index < spec.lookback_days:
+                    status = "NO_TRADE"
+                    reason = "insufficient signal history; existing sleeve remains tracked"
+                else:
+                    status = "NO_TRADE"
+                    reason = "no qualifying signal target; existing sleeve remains tracked"
+                self.components.set("SCAN", "IDLE" if status == "NO_TRADE" else "BLOCKED", reason)
+                return self._finish(definition, ticket.stop(
+                    "SCAN", status, reason, held_notional=existing,
+                    signal_state="DATA_UNAVAILABLE" if status == "BLOCKED" else "NO_TARGET"))
+            ticket.record("SCAN", "CANDIDATE", f"{len(weights)} legs proposed by "
+                          f"{spec.label}", gross=sum(abs(value) for value in weights.values()))
 
-        # --- VET -----------------------------------------------------------
-        self.components.set("VET", "RUN", definition.strategy_id)
-        if next_date is None:
-            self.components.set("VET", "BLOCKED", "no execution session follows this one")
-            return self._finish(definition, ticket.stop(
-                "VET", "BLOCKED", "no later session exists in which orders could execute"))
-        sessions_held = self._sessions_since_rebalance(definition, panel, date)
-        current_weights = self._current_weights(decision_ledger, definition, decision_prices)
-        drift = sum(abs(weights.get(symbol, 0.0) - current_weights.get(symbol, 0.0))
-                    for symbol in set(weights) | set(current_weights))
-        if not should_rebalance(sessions_held, drift, spec):
-            self.components.set("VET", "IDLE", "holding period or no-trade band")
-            return self._finish(definition, ticket.stop(
-                "VET", "NO_TRADE", f"{sessions_held} sessions into a "
-                f"{spec.holding_days}-session hold with drift {drift:.3f} against a "
-                f"{spec.no_trade_band:.2f} band", sessions_held=sessions_held, drift=drift))
-        ticket.record("VET", "ACCEPTED", f"rebalance due, drift {drift:.3f}", drift=drift,
-                      lifecycle=definition.lifecycle)
+            # --- VET -----------------------------------------------------------
+            self.components.set("VET", "RUN", definition.strategy_id)
+            if next_date is None:
+                self.components.set("VET", "BLOCKED", "no execution session follows this one")
+                return self._finish(definition, ticket.stop(
+                    "VET", "BLOCKED", "no later session exists in which orders could execute"))
+            sessions_held = self._sessions_since_rebalance(definition, panel, date)
+            current_weights = self._current_weights(decision_ledger, definition, decision_prices)
+            drift = sum(abs(weights.get(symbol, 0.0) - current_weights.get(symbol, 0.0))
+                        for symbol in set(weights) | set(current_weights))
+            if not should_rebalance(sessions_held, drift, spec):
+                self.components.set("VET", "IDLE", "holding period or no-trade band")
+                return self._finish(definition, ticket.stop(
+                    "VET", "NO_TRADE", f"{sessions_held} sessions into a "
+                    f"{spec.holding_days}-session hold with drift {drift:.3f} against a "
+                    f"{spec.no_trade_band:.2f} band", sessions_held=sessions_held, drift=drift))
+            ticket.record("VET", "ACCEPTED", f"rebalance due, drift {drift:.3f}", drift=drift,
+                          lifecycle=definition.lifecycle)
 
-        # --- SIZE ----------------------------------------------------------
-        self.components.set("SIZE", "RUN", definition.strategy_id)
-        capital = decision_ledger.nav_at(decision_prices) * definition.capital_fraction * self.strategy_allocation
-        target_notional = {symbol: capital * weight for symbol, weight in weights.items()}
-        # Legs the sleeve holds but no longer wants are targeted at zero, so RISK
-        # scores the portfolio the fills will actually produce.
-        for symbol in decision_ledger.sleeve_exposures_at(definition.strategy_id, decision_prices):
-            target_notional.setdefault(symbol, 0.0)
-        ticket.sized_notional = sum(abs(value) for value in target_notional.values())
-        entitlement = ("counterfactual size on the evaluation ledger"
-                       if not definition.tradable else
-                       f"{definition.lifecycle} capital entitlement")
-        ticket.record("SIZE", "SIZED",
-                      f"{entitlement}: {definition.capital_fraction:.0%} of a "
-                      f"{self.strategy_allocation:.0%} allocation",
-                      capital_fraction=definition.capital_fraction, allocation=capital,
-                      gross_notional=ticket.sized_notional)
+            # --- SIZE ----------------------------------------------------------
+            self.components.set("SIZE", "RUN", definition.strategy_id)
+            capital = decision_ledger.nav_at(decision_prices) * definition.capital_fraction * self.strategy_allocation
+            target_notional = {symbol: capital * weight for symbol, weight in weights.items()}
+            # Legs the sleeve holds but no longer wants are targeted at zero, so RISK
+            # scores the portfolio the fills will actually produce.
+            for symbol in decision_ledger.sleeve_exposures_at(definition.strategy_id, decision_prices):
+                target_notional.setdefault(symbol, 0.0)
+            ticket.sized_notional = sum(abs(value) for value in target_notional.values())
+            entitlement = ("counterfactual size on the evaluation ledger"
+                           if not definition.tradable else
+                           f"{definition.lifecycle} capital entitlement")
+            ticket.record("SIZE", "SIZED",
+                          f"{entitlement}: {definition.capital_fraction:.0%} of a "
+                          f"{self.strategy_allocation:.0%} allocation",
+                          capital_fraction=definition.capital_fraction, allocation=capital,
+                          gross_notional=ticket.sized_notional)
 
         # --- RISK ----------------------------------------------------------
         self.components.set("RISK", "RUN", definition.strategy_id)
@@ -224,9 +293,12 @@ class CapitalDesk:
         ticket.legs = legs
         ticket.fills = fills
         if not fills:
-            self.components.set("FILLS", "IDLE", "no order cleared the minimum size")
+            reasons = [leg.get("skipped") for leg in legs if leg.get("skipped")]
+            status = "BLOCKED" if reasons else "NO_TRADE"
+            reason = "; ".join(sorted(set(reasons))) if reasons else "no executable orders"
+            self.components.set("FILLS", "BLOCKED" if reasons else "IDLE", reason)
             return self._finish(definition, ticket.stop(
-                "FILLS", "NO_TRADE", "every implied order was below the minimum order size"))
+                "FILLS", status, reason, residual_legs=legs))
 
         # Capacity truncation can move the executed portfolio away from the approved
         # one, so the limits are checked once more on what will actually be applied.
@@ -250,6 +322,27 @@ class CapitalDesk:
                 "RISK", "VETOED",
                 "executed portfolio breaches a hard limit: " + "; ".join(final["vetoes"]),
                 **final))
+        # Under a drawdown halt, every independently durable prefix must remain
+        # a valid whole-Book risk reduction; a safe final basket is insufficient.
+        if verdict["drawdown"] <= self.limits.drawdown_halt:
+            for prefix_length in range(1, len(fills) + 1):
+                prefix = fills[:prefix_length]
+                prefix_prices = dict(execution_prices)
+                prefix_prices.update({fill["symbol"]: fill["fill_price"] for fill in prefix})
+                q = {symbol: position.quantity
+                     for symbol, position in ledger.sleeves.get(definition.strategy_id, {}).items()
+                     if abs(position.quantity) > 1e-9}
+                for fill in prefix:
+                    q[fill["symbol"]] = q.get(fill["symbol"], 0.0) + fill["quantity"]
+                prefix_notional = {symbol: quantity * prefix_prices[symbol]
+                                   for symbol, quantity in q.items() if abs(quantity) > 1e-9}
+                prefix_verdict = verify_final(
+                    ledger, definition.strategy_id, prefix_notional, self.limits,
+                    prefix_prices, nav_adjustment=-sum(item["commission"] for item in prefix))
+                if not prefix_verdict["approved"]:
+                    return self._finish(definition, ticket.stop(
+                        "RISK", "VETOED", "unsafe intermediate fill under drawdown halt",
+                        prefix_length=prefix_length, vetoes=prefix_verdict["vetoes"]))
         ticket.record("FILLS", "FILLED", f"{len(fills)} orders executed at the "
                       f"{next_date} open",
                       shortfall=sum(fill["implementation_shortfall"] for fill in fills),
@@ -268,7 +361,7 @@ class CapitalDesk:
     def _apply(self, definition: StrategyDefinition, ticket: OpportunityTicket,
                fills: list[dict[str, Any]], execution_date: str) -> OpportunityTicket:
         """Apply a recorded plan. Safe to call again after a crash."""
-        ledger = self.ledger_for(definition)
+        ledger = self.ledger_for(definition, ticket.ledger)
         effects = [ledger.apply_fill(fill["symbol"], fill["quantity"], fill["fill_price"],
                                      fill["commission"], execution_date,
                                      definition.strategy_id,
@@ -348,7 +441,11 @@ class CapitalDesk:
             if abs(delta_notional) < MIN_ORDER_NOTIONAL:
                 leg["skipped"] = "below minimum order size"
                 continue
-            fill = self.execution.fill(panel, symbol, delta_notional / price, date, next_date)
+            try:
+                fill = self.execution.fill(panel, symbol, delta_notional / price, date, next_date)
+            except ExecutionCapacityUnavailable as exc:
+                leg["skipped"] = str(exc)
+                continue
             if abs(fill["quantity"]) * fill["fill_price"] < MIN_ORDER_NOTIONAL:
                 leg["skipped"] = "capacity truncation left the order below minimum size"
                 continue
