@@ -1352,15 +1352,21 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
     """Authorized synthetic-only safety characterization and repair contracts."""
 
     def test_T1_zero_ADV_never_produces_a_modeled_fill_or_book_mutation(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         for bar in panel.bars.values():
             bar["volume"] = 0.0
         dates = panel.aligned_dates(UNIVERSE)
         with self.assertRaisesRegex(ExecutionCapacityUnavailable, "ADV_ZERO_OR_UNAVAILABLE"):
             ExecutionModel().fill(panel, "AAA", 100, dates[20], dates[21])
         with tempfile.TemporaryDirectory() as directory:
-            desk = shadow_desk(Path(directory), panel)
-            summary = desk.run_session(panel, dates[20], dates[21])
+            # Establish a valid registered fixture first, then inject the
+            # zero-ADV market state: dataset registration and capacity are
+            # separate gates, neither may fabricate a fill.
+            desk_panel = fixture_panel(sessions=300)
+            desk = shadow_desk(Path(directory), desk_panel)
+            for bar in desk_panel.bars.values():
+                bar["volume"] = 0.0
+            summary = desk.run_session(desk_panel, dates[20], dates[21])
             self.assertEqual(desk.capital.state.fills, 0)
             self.assertEqual(desk.evaluation.state.fills, 0)
             self.assertTrue(any(t["status"] == "BLOCKED"
@@ -1368,7 +1374,7 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
                                 for t in summary["tickets"]), summary["tickets"])
 
     def test_T2_retirement_keeps_original_CAPITAL_and_EVALUATION_sleeves(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)
         with tempfile.TemporaryDirectory() as directory:
             desk = shadow_desk(Path(directory), panel)
@@ -1390,7 +1396,7 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertTrue(all(t["status"] == "BOOKED" for t in retired), retired)
 
     def test_T2_pending_CAPITAL_plan_replays_after_retirement_in_original_book(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)
         with tempfile.TemporaryDirectory() as directory:
             desk = shadow_desk(Path(directory), panel)
@@ -1427,7 +1433,8 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertTrue(verify_final(ledger, "S", safe, limits)["approved"])
             self.assertFalse(evaluate_risk(ledger, "S", unsafe, limits)["approved"])
             self.assertFalse(verify_final(ledger, "S", unsafe, limits)["approved"])
-            self.assertFalse(evaluate_risk(ledger, "S", {}, limits)["approved"])
+            # Full liquidation decreases all exposures without new risk.
+            self.assertTrue(evaluate_risk(ledger, "S", {}, limits)["approved"])
 
     def test_T3_Nav_floor_does_not_disappear_when_halt_reduction_pays_fees(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -1441,7 +1448,7 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
                                           nav_adjustment=-0.02)["approved"])
 
     def test_T4_subminimum_retired_residual_is_reported_not_erased(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)
         with tempfile.TemporaryDirectory() as directory:
             desk = shadow_desk(Path(directory), panel)
@@ -1459,7 +1466,7 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertEqual(desk.capital.state.fills, 1)
 
     def test_T5_no_target_is_explicitly_traced_and_does_not_add_exposure(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)
         with tempfile.TemporaryDirectory() as directory:
             desk = shadow_desk(Path(directory), panel)
@@ -1480,7 +1487,7 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertAlmostEqual(desk.capital.sleeves["STR-TEST"]["AAA"].quantity, 20)
 
     def test_T6_cost_curve_and_capacity_recompute_on_actual_fill(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         dates = panel.aligned_dates(UNIVERSE)
         model = ExecutionModel()
         adv = model.adv(panel, "AAA", dates[20])
@@ -1500,7 +1507,7 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertGreater(fill["implementation_shortfall"], 0)
 
     def test_T1_T2_T3_T4_combined_preserves_blocked_residual_in_original_book(self):
-        panel = fixture_panel(sessions=80)
+        panel = fixture_panel(sessions=300)
         for bar in panel.bars.values():
             bar["volume"] = 0.0
         dates = panel.aligned_dates(UNIVERSE)
