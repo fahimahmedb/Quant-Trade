@@ -79,6 +79,56 @@ def assess(portfolio: dict[str, float], nav: float, drawdown: float,
                 "concentration_within_limit": largest <= limits.max_symbol_ratio + 1e-9}}
 
 
+def _halt_reduction_qualified(ledger: Ledger, strategy_id: str,
+                              target_notional: dict[str, float],
+                              limits: RiskLimits,
+                              prices: dict[str, float] | None = None,
+                              nav_adjustment: float = 0.0) -> bool:
+    """A narrowly scoped safe exit, not a general halt bypass.
+
+    Every sleeve exposure must move toward zero without reversing.  The whole
+    Book is compared at one price vector; all ordinary hard limits still apply
+    after the reduction, including the NAV floor after modeled costs.
+    """
+    before_nav = ledger.nav_at(prices) if prices is not None else ledger.nav
+    after_nav = before_nav + nav_adjustment
+    if before_nav <= 0 or after_nav <= 0:
+        return False
+    peak = max(ledger.state.peak_nav, ledger.state.initial_capital)
+    if before_nav / peak - 1.0 > limits.drawdown_halt:
+        return False
+    held = (ledger.sleeve_exposures_at(strategy_id, prices) if prices is not None
+            else ledger.sleeve_exposures(strategy_id))
+    for symbol in set(held) | set(target_notional):
+        current = held.get(symbol, 0.0)
+        proposed = target_notional.get(symbol, 0.0)
+        if abs(proposed) > abs(current) + 1e-9:
+            return False
+        if abs(current) < 1e-9 and abs(proposed) > 1e-9:
+            return False
+        if current * proposed < -1e-9:
+            return False
+
+    before_portfolio = (ledger.symbol_exposures_at(prices) if prices is not None
+                        else ledger.symbol_exposures())
+    after_portfolio = project(ledger, strategy_id, target_notional, prices)
+    before = assess(before_portfolio, before_nav, before_nav / peak - 1.0,
+                    limits, ledger.state.initial_capital)
+    after = assess(after_portfolio, after_nav, after_nav / peak - 1.0,
+                   limits, ledger.state.initial_capital)
+    if any(not violation.startswith("drawdown ") for violation in after["violations"]):
+        return False
+    return (after["gross_ratio"] < before["gross_ratio"] - 1e-9
+            and abs(after["net_ratio"]) <= abs(before["net_ratio"]) + 1e-9
+            and after["largest_symbol_ratio"] <= before["largest_symbol_ratio"] + 1e-9)
+
+
+def _halt_filtered_vetoes(violations: list[str], qualifies: bool) -> list[str]:
+    if not qualifies:
+        return violations
+    return [item for item in violations if not item.startswith("drawdown ")]
+
+
 def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float],
              limits: RiskLimits, prices: dict[str, float] | None = None) -> dict[str, Any]:
     """Decide on the proposal and return the exact scaled target approved."""
@@ -116,10 +166,12 @@ def evaluate(ledger: Ledger, strategy_id: str, target_notional: dict[str, float]
 
     scaled = {symbol: value * scale for symbol, value in target_notional.items()}
     final = assess(project(ledger, strategy_id, scaled, prices), nav, drawdown, limits, initial)
+    safe_halt_reduction = _halt_reduction_qualified(ledger, strategy_id, scaled, limits, prices)
+    vetoes = _halt_filtered_vetoes(final["violations"], safe_halt_reduction)
 
-    return {"approved": not final["violations"], "scale": scale,
+    return {"approved": not vetoes, "scale": scale,
             "throttled": scale < 1.0, "scaled_target": scaled,
-            "vetoes": final["violations"], "checks": final["checks"],
+            "vetoes": vetoes, "checks": final["checks"],
             "drawdown": drawdown, "nav": nav,
             "gross_ratio": final["gross_ratio"], "net_ratio": final["net_ratio"],
             "largest_symbol_ratio": final["largest_symbol_ratio"],
@@ -143,7 +195,10 @@ def verify_final(ledger: Ledger, strategy_id: str, executed_notional: dict[str, 
     drawdown = nav / max(ledger.state.peak_nav, ledger.state.initial_capital) - 1.0
     verdict = assess(project(ledger, strategy_id, executed_notional, prices), nav,
                      drawdown, limits, ledger.state.initial_capital)
-    return {"approved": not verdict["violations"], "vetoes": verdict["violations"],
+    safe_halt_reduction = _halt_reduction_qualified(
+        ledger, strategy_id, executed_notional, limits, prices, nav_adjustment)
+    vetoes = _halt_filtered_vetoes(verdict["violations"], safe_halt_reduction)
+    return {"approved": not vetoes, "vetoes": vetoes,
             "gross_ratio": verdict["gross_ratio"], "net_ratio": verdict["net_ratio"],
             "largest_symbol_ratio": verdict["largest_symbol_ratio"],
             "checks": verdict["checks"], "nav": nav, "drawdown": drawdown}
