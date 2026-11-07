@@ -1378,7 +1378,9 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
                 book.apply_fill(symbol, 20.0, price, 0.0, dates[20],
                                 definition.strategy_id, book.state.authority + "-seed")
             definition.transition("RETIRED", "synthetic test")
-            definition.evaluation_track = True
+            # Without an explicit evaluation-track mandate, both old sleeves
+            # must be exited only in the Book that originally owned them.
+            definition.evaluation_track = False
             summary = desk.run_session(panel, dates[20], dates[21])
             retired = [t for t in summary["tickets"] if t["strategy_id"] == "STR-TEST"]
             self.assertEqual({t["ledger"] for t in retired}, {"CAPITAL", "EVALUATION"})
