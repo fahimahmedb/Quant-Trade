@@ -22,8 +22,9 @@ from quant.dataplane.panel import PricePanel, Window
 from quant.dataplane.registry import DatasetRecord, DatasetRegistry
 from quant.dataplane.validation import validate_panel
 from quant.desk.desk import CapitalDesk
-from quant.desk.execution import ExecutionModel
+from quant.desk.execution import ExecutionCapacityUnavailable, ExecutionModel
 from quant.desk.journal import DeskJournal
+from quant.desk.opportunity import OpportunityTicket
 from quant.desk.risk import RiskLimits, evaluate as evaluate_risk, verify_final
 from quant.events import EventLog
 from quant.factory.evaluate import (compound, falsify, required_t_statistic,
@@ -1345,6 +1346,175 @@ class VersionPreservationTests(unittest.TestCase):
             self.assertEqual(stored.previous_versions[0]["spec"]["lookback_days"], 5)
             self.assertEqual(stored.previous_versions[0]["evidence"]["validation"]["net_return"],
                              0.1)
+
+
+class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
+    """Authorized synthetic-only safety characterization and repair contracts."""
+
+    def test_T1_zero_ADV_never_produces_a_modeled_fill_or_book_mutation(self):
+        panel = fixture_panel(sessions=80)
+        for bar in panel.bars.values():
+            bar["volume"] = 0.0
+        dates = panel.aligned_dates(UNIVERSE)
+        with self.assertRaisesRegex(ExecutionCapacityUnavailable, "ADV_ZERO_OR_UNAVAILABLE"):
+            ExecutionModel().fill(panel, "AAA", 100, dates[20], dates[21])
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            summary = desk.run_session(panel, dates[20], dates[21])
+            self.assertEqual(desk.capital.state.fills, 0)
+            self.assertEqual(desk.evaluation.state.fills, 0)
+            self.assertTrue(any(t["status"] == "BLOCKED"
+                                and "ADV_ZERO_OR_UNAVAILABLE" in t["reason"]
+                                for t in summary["tickets"]), summary["tickets"])
+
+    def test_T2_retirement_keeps_original_CAPITAL_and_EVALUATION_sleeves(self):
+        panel = fixture_panel(sessions=80)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            definition = desk.strategies.get("STR-TEST")
+            for book, symbol in ((desk.capital, "AAA"), (desk.evaluation, "BBB")):
+                price = panel.adjusted(dates[20], symbol, "close")
+                book.apply_fill(symbol, 20.0, price, 0.0, dates[20],
+                                definition.strategy_id, book.state.authority + "-seed")
+            definition.transition("RETIRED", "synthetic test")
+            definition.evaluation_track = True
+            summary = desk.run_session(panel, dates[20], dates[21])
+            retired = [t for t in summary["tickets"] if t["strategy_id"] == "STR-TEST"]
+            self.assertEqual({t["ledger"] for t in retired}, {"CAPITAL", "EVALUATION"})
+            self.assertEqual(len({t["opportunity_id"] for t in retired}), 2)
+            for book in (desk.capital, desk.evaluation):
+                self.assertFalse(book.sleeve_exposures("STR-TEST"))
+            self.assertTrue(all(t["status"] == "BOOKED" for t in retired), retired)
+
+    def test_T2_pending_CAPITAL_plan_replays_after_retirement_in_original_book(self):
+        panel = fixture_panel(sessions=80)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            definition = desk.strategies.get("STR-TEST")
+            opportunity_id = f"OPP-STR-TEST-{dates[20]}"
+            ticket = OpportunityTicket(opportunity_id, dates[20], "STR-TEST",
+                                       "SHADOW", "CAPITAL", execution_date=dates[21])
+            price = panel.adjusted(dates[21], "AAA", "open")
+            fill = {"symbol": "AAA", "quantity": 20.0, "fill_price": price,
+                    "commission": 0.0, "notional": 20.0 * price}
+            desk.journal.begin(opportunity_id, "STR-TEST", dates[20],
+                               ticket.to_dict(), [fill])
+            definition.transition("RETIRED", "synthetic test")
+            summary = desk.run_session(panel, dates[20], dates[21])
+            self.assertIn(opportunity_id, summary["replayed"])
+            self.assertEqual(desk.capital.state.fills, 1)
+            self.assertEqual(desk.evaluation.state.fills, 0)
+            self.assertAlmostEqual(desk.capital.sleeves["STR-TEST"]["AAA"].quantity, 20)
+            # A new, ordinary retirement decision is separate from durable replay.
+            again = desk.run_session(panel, dates[20], dates[21])
+            self.assertEqual(desk.capital.state.fills, 1)
+            self.assertIn(opportunity_id, again["replayed"])
+
+    def test_T3_halt_only_allows_strict_whole_book_risk_reductions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = Ledger(Path(directory) / "book.json", initial_capital=100_000.0)
+            ledger.apply_fill("AAA", 150.0, 100.0, 0, "2025-01-02", "S", "one")
+            ledger.apply_fill("BBB", -100.0, 100.0, 0, "2025-01-02", "S", "two")
+            ledger.state.peak_nav = 130_000.0
+            limits = RiskLimits()
+            safe = {"AAA": 12_500.0, "BBB": -10_000.0}
+            unsafe = {"AAA": 15_000.0, "BBB": -7_500.0}
+            self.assertTrue(evaluate_risk(ledger, "S", safe, limits)["approved"])
+            self.assertTrue(verify_final(ledger, "S", safe, limits)["approved"])
+            self.assertFalse(evaluate_risk(ledger, "S", unsafe, limits)["approved"])
+            self.assertFalse(verify_final(ledger, "S", unsafe, limits)["approved"])
+            self.assertFalse(evaluate_risk(ledger, "S", {}, limits)["approved"])
+
+    def test_T3_Nav_floor_does_not_disappear_when_halt_reduction_pays_fees(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = Ledger(Path(directory) / "book.json", initial_capital=100_000.0)
+            ledger.apply_fill("AAA", 150.0, 100.0, 0, "2025-01-02", "S", "one")
+            ledger.apply_fill("BBB", -100.0, 100.0, 0, "2025-01-02", "S", "two")
+            ledger.state.cash = 45_000.01  # NAV = 50,000.01
+            ledger.state.peak_nav = 130_000.0
+            safe = {"AAA": 12_500.0, "BBB": -10_000.0}
+            self.assertFalse(verify_final(ledger, "S", safe, RiskLimits(),
+                                          nav_adjustment=-0.02)["approved"])
+
+    def test_T4_subminimum_retired_residual_is_reported_not_erased(self):
+        panel = fixture_panel(sessions=80)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            price = panel.adjusted(dates[20], "AAA", "close")
+            quantity = 300.0 / price
+            desk.capital.apply_fill("AAA", quantity, price, 0, dates[20],
+                                    "STR-TEST", "residual")
+            desk.strategies.get("STR-TEST").transition("RETIRED", "synthetic test")
+            summary = desk.run_session(panel, dates[20], dates[21])
+            self.assertEqual(summary["tickets"][0]["ledger"], "CAPITAL")
+            self.assertEqual(summary["tickets"][0]["status"], "BLOCKED")
+            self.assertIn("minimum order size", summary["tickets"][0]["reason"])
+            self.assertAlmostEqual(desk.capital.sleeves["STR-TEST"]["AAA"].quantity,
+                                   quantity)
+            self.assertEqual(desk.capital.state.fills, 1)
+
+    def test_T5_no_target_is_explicitly_traced_and_does_not_add_exposure(self):
+        panel = fixture_panel(sessions=80)
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            price = panel.adjusted(dates[20], "AAA", "close")
+            desk.capital.apply_fill("AAA", 20.0, price, 0, dates[20],
+                                    "STR-TEST", "existing")
+            import quant.desk.desk as desk_module
+            original = desk_module.weights_for
+            desk_module.weights_for = lambda *args: {}
+            try:
+                ticket = desk.run_session(panel, dates[20], dates[21])["tickets"][0]
+            finally:
+                desk_module.weights_for = original
+            self.assertEqual(ticket["status"], "NO_TRADE")
+            self.assertEqual(ticket["stage_trace"][-1]["detail"]["signal_state"], "NO_TARGET")
+            self.assertIn("AAA", ticket["stage_trace"][-1]["detail"]["held_notional"])
+            self.assertEqual(desk.capital.state.fills, 1)
+            self.assertAlmostEqual(desk.capital.sleeves["STR-TEST"]["AAA"].quantity, 20)
+
+    def test_T6_cost_curve_and_capacity_recompute_on_actual_fill(self):
+        panel = fixture_panel(sessions=80)
+        dates = panel.aligned_dates(UNIVERSE)
+        model = ExecutionModel()
+        adv = model.adv(panel, "AAA", dates[20])
+        reference = panel.adjusted(dates[21], "AAA", "open")
+        for participation, expected in ((0.0001, 1.9472135955),
+                                        (0.006125, 5.0),
+                                        (0.05, 11.5),
+                                        (0.10, 11.5)):
+            fill = model.fill(panel, "AAA", adv * participation / reference,
+                              dates[20], dates[21])
+            self.assertAlmostEqual(
+                fill["impact_bps"] + model.half_spread_bps + model.commission_bps,
+                expected, places=5)
+            self.assertAlmostEqual(fill["participation"], min(participation, 0.05),
+                                   places=9)
+            self.assertEqual(fill["capacity_truncated"], participation > 0.05)
+            self.assertGreater(fill["implementation_shortfall"], 0)
+
+    def test_T1_T2_T3_T4_combined_preserves_blocked_residual_in_original_book(self):
+        panel = fixture_panel(sessions=80)
+        for bar in panel.bars.values():
+            bar["volume"] = 0.0
+        dates = panel.aligned_dates(UNIVERSE)
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            price = panel.adjusted(dates[20], "AAA", "close")
+            quantity = 300.0 / price
+            desk.capital.apply_fill("AAA", quantity, price, 0, dates[20],
+                                    "STR-TEST", "existing")
+            desk.capital.state.peak_nav = desk.capital.nav / 0.79
+            desk.strategies.get("STR-TEST").transition("RETIRED", "synthetic test")
+            ticket = desk.run_session(panel, dates[20], dates[21])["tickets"][0]
+            self.assertEqual(ticket["ledger"], "CAPITAL")
+            self.assertIn(ticket["status"], {"VETOED", "BLOCKED"})
+            self.assertGreater(abs(desk.capital.sleeve_exposures("STR-TEST")["AAA"]), 0)
+            self.assertEqual(desk.capital.state.fills, 1)
 
 
 if __name__ == "__main__":
