@@ -320,18 +320,8 @@ class CapitalDesk:
 
         # Capacity truncation can move the executed portfolio away from the approved
         # one, so the limits are checked once more on what will actually be applied.
-        final_prices = dict(execution_prices)
-        final_prices.update({fill["symbol"]: fill["fill_price"] for fill in fills})
-        quantities = {symbol: position.quantity
-                      for symbol, position in ledger.sleeves.get(definition.strategy_id, {}).items()
-                      if abs(position.quantity) > 1e-9}
-        for fill in fills:
-            quantities[fill["symbol"]] = quantities.get(fill["symbol"], 0.0) + fill["quantity"]
-        executed = {symbol: quantity * final_prices[symbol]
-                    for symbol, quantity in quantities.items() if abs(quantity) > 1e-9}
-        commission = sum(fill["commission"] for fill in fills)
-        final = verify_final(ledger, definition.strategy_id, executed, self.limits,
-                             final_prices, nav_adjustment=-commission)
+        final = self._verify_modeled_fills(ledger, definition.strategy_id, fills,
+                                          execution_prices)
         if not final["approved"]:
             self.components.set("RISK", "IDLE", "executed portfolio vetoed")
             self.log.emit("DESK", "RISK", "execution_vetoed", ticket.opportunity_id,
@@ -340,23 +330,12 @@ class CapitalDesk:
                 "RISK", "VETOED",
                 "executed portfolio breaches a hard limit: " + "; ".join(final["vetoes"]),
                 **final))
-        # Under a drawdown halt, every independently durable prefix must remain
-        # a valid whole-Book risk reduction; a safe final basket is insufficient.
-        if verdict["drawdown"] <= self.limits.drawdown_halt:
-            for prefix_length in range(1, len(fills) + 1):
-                prefix = fills[:prefix_length]
-                prefix_prices = dict(execution_prices)
-                prefix_prices.update({fill["symbol"]: fill["fill_price"] for fill in prefix})
-                q = {symbol: position.quantity
-                     for symbol, position in ledger.sleeves.get(definition.strategy_id, {}).items()
-                     if abs(position.quantity) > 1e-9}
-                for fill in prefix:
-                    q[fill["symbol"]] = q.get(fill["symbol"], 0.0) + fill["quantity"]
-                prefix_notional = {symbol: quantity * prefix_prices[symbol]
-                                   for symbol, quantity in q.items() if abs(quantity) > 1e-9}
-                prefix_verdict = verify_final(
-                    ledger, definition.strategy_id, prefix_notional, self.limits,
-                    prefix_prices, nav_adjustment=-sum(item["commission"] for item in prefix))
+        # An overnight gap can activate the halt after the decision. Every
+        # independently durable prefix must then pass at the same opening marks.
+        if min(verdict["drawdown"], final["drawdown"]) <= self.limits.drawdown_halt:
+            for prefix_length in range(1, len(fills)):
+                prefix_verdict = self._verify_modeled_fills(
+                    ledger, definition.strategy_id, fills[:prefix_length], execution_prices)
                 if not prefix_verdict["approved"]:
                     return self._finish(definition, ticket.stop(
                         "RISK", "VETOED", "unsafe intermediate fill under drawdown halt",
@@ -375,6 +354,21 @@ class CapitalDesk:
         self.journal.begin(opportunity_id, definition.strategy_id, date,
                            ticket.to_dict(), fills)
         return self._apply(definition, ticket, fills, next_date)
+
+    def _verify_modeled_fills(self, ledger: Ledger, strategy_id: str,
+                              fills: list[dict[str, Any]],
+                              opening_prices: dict[str, float]) -> dict[str, Any]:
+        """Compare Book risk at fixed opening marks, including execution loss."""
+        exposures = ledger.sleeve_exposures_at(strategy_id, opening_prices)
+        nav_adjustment = 0.0
+        for fill in fills:
+            symbol = fill["symbol"]
+            price = opening_prices[symbol]
+            quantity = fill["quantity"]
+            exposures[symbol] = exposures.get(symbol, 0.0) + quantity * price
+            nav_adjustment -= quantity * (fill["fill_price"] - price) + fill["commission"]
+        return verify_final(ledger, strategy_id, exposures, self.limits, opening_prices,
+                            nav_adjustment=nav_adjustment)
 
     def _apply(self, definition: StrategyDefinition, ticket: OpportunityTicket,
                fills: list[dict[str, Any]], execution_date: str) -> OpportunityTicket:
@@ -442,20 +436,23 @@ class CapitalDesk:
         prices = {symbol: panel.adjusted(next_date, symbol, "open") for symbol in panel.symbols
                   if panel.has(next_date, symbol)}
         held = ledger.sleeve_exposures_at(definition.strategy_id, prices)
+        unpriced_held = {symbol for symbol in held if prices.get(symbol, 0.0) <= 0.0}
         legs: list[dict[str, Any]] = []
         fills: list[dict[str, Any]] = []
         for symbol in sorted(set(target_notional) | set(held)):
-            if not panel.has(next_date, symbol):
-                continue
-            price = panel.adjusted(next_date, symbol, "open")
-            if price <= 0:
-                continue
             target = target_notional.get(symbol, 0.0)
             current = held.get(symbol, 0.0)
             delta_notional = target - current
             leg = {"symbol": symbol, "target_notional": target, "current_notional": current,
                    "delta_notional": delta_notional}
             legs.append(leg)
+            price = prices.get(symbol, 0.0)
+            if price <= 0.0:
+                leg["skipped"] = "opening price unavailable"
+                continue
+            if unpriced_held:
+                leg["skipped"] = "existing sleeve has an unpriced opening leg"
+                continue
             if abs(delta_notional) < MIN_ORDER_NOTIONAL:
                 leg["skipped"] = "below minimum order size"
                 continue

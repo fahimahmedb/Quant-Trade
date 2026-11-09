@@ -1,13 +1,13 @@
 {
   "mission_id": "QT_DESK_SECURITY_T1_T6_20261109",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-09T13:13:44.792213Z",
+  "receipt_timestamp": "2026-11-09T13:24:12.762066Z",
   "project_canonical_sha": "727c34924a064b0ed390dcc92e4d73900bcadcff",
-  "code_canonical_sha": "1abc2f3fb185db37b698e89b8988a492b3b95e52",
+  "code_canonical_sha": "353e9e5b9a192f83c5a686d2b718d6461b8c9323",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "727c34924a064b0ed390dcc92e4d73900bcadcff",
-    "code_sha": "1abc2f3fb185db37b698e89b8988a492b3b95e52",
+    "code_sha": "353e9e5b9a192f83c5a686d2b718d6461b8c9323",
     "seam": "CapitalDesk execution-time risk and opening-price residuals",
     "scope": "T3/T4, synthetic-safe engineering on code/canonical"
   },
@@ -17,14 +17,14 @@
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
   "why_this_work_can_change_the_decision": "An unsafe order sequence can mutate CAPITAL in halt and an unavailable opening price can conceal an existing holding or block a valid sister exit.",
-  "minimal_decisive_test": "On an isolated synthetic Desk run, a close at -19.95% followed by an open at -20.070075% must veto the first AAA cover and preserve two seeds. A missing AAA open must leave an explicit original-Book residual, and any quoted sibling leg must pass ordinary Book risk. Run T1-T6, crash/replay, V1 proof, Canonical Code and Method gates on the exact repair subject.",
+  "minimal_decisive_test": "On an isolated synthetic Desk run, a close at -19.95% followed by an open at -20.070075% must veto the first AAA cover and preserve two seeds. With an unpriced existing position, retain and trace the affected sleeve in the original Book and withhold the entire affected basket; recover when the opening price returns without duplicate operations. Run T1-T6, crash/replay, V1 proof, Canonical Code and Method gates on the exact repair subject.",
   "counterexample": "Retired sleeve AAA short 10000 and BBB long 15000 at close, BBB opens 10% lower. The first cover increases absolute open-mark net from 3500 to 13500 although the final flat basket decreases risk.",
   "primary_evidence": [
     {
       "claim_id": "DESK_PATH",
       "claim": "Prefix check uses only the close-time drawdown and absent opening quotes are skipped",
       "source_kind": "GIT_BLOB",
-      "object_identity": "1abc2f3fb185db37b698e89b8988a492b3b95e52:src/quant/desk/desk.py@2da6ceac0eb24a4808eb7e0877e40677d39f0f72",
+      "object_identity": "353e9e5b9a192f83c5a686d2b718d6461b8c9323:src/quant/desk/desk.py@2da6ceac0eb24a4808eb7e0877e40677d39f0f72",
       "observed_value": "_run_strategy execution recheck and prefix gate; _execute skips missing quotes before recording a leg",
       "support": "SUPPORTS",
       "scope": "CURRENT",
@@ -46,6 +46,26 @@
       "source_kind": "LOCAL_SYNTHETIC_TEST_LOG",
       "object_identity": "sha256:cd96ee5da0cb50f37062c5da96fc1dbc09828d8efe3c9d8ec8acd41baa0da2c8",
       "observed_value": "MISSING_OPEN ONLY NO_TRADE with empty legs; MISSING_OPEN PARTIAL FAULT KeyError AAA and both original positions remain",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "ADMITTED_BASE",
+      "claim": "The bounded repair admission passed the canonical hosted method gate",
+      "source_kind": "GITHUB_WORKFLOW_JOB_LOG",
+      "object_identity": "42623751835/job/129182143225",
+      "observed_value": "Exact Code 353e9e5b9a192f83c5a686d2b718d6461b8c9323, admission identity sha256:b927697f174395e4a04faf7137aee460c81c828f31014118f5e750ad2f854d49, REAL_MISSION_ADMISSION=PASS, DURABLE_CONTINUATION_GATE=PASS, 69 tests passed, CHECKPOINT",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "REGRESSION_RED",
+      "claim": "The two new tests detect the pre-fix defects in all three cases",
+      "source_kind": "LOCAL_SYNTHETIC_TEST_LOG",
+      "object_identity": "sha256:6e232cdd90e441a75ac6b9f8b54808c3b76b73125f8a6541a170bb30c6cf06aa",
+      "observed_value": "Old source produces three failures: the overnight gap, a sole absent opening bar, and one absent bar in a two-leg held sleeve.",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true

@@ -1467,6 +1467,31 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertEqual(set(desk.capital.sleeve_exposures("STR-TEST")),
                              {"AAA", "BBB"})
 
+    def test_T3_opening_gap_into_halt_vetoes_unsafe_first_durable_leg(self):
+        panel = fixture_panel(sessions=300)
+        date, next_date = panel.aligned_dates(UNIVERSE)[20:22]
+        with tempfile.TemporaryDirectory() as directory:
+            desk = shadow_desk(Path(directory), panel)
+            for symbol, notional, opening_ratio in (("AAA", -10_000, 1.0),
+                                                   ("BBB", 15_000, 0.90)):
+                close = panel.adjusted(date, symbol, "close")
+                panel.bars[next_date, symbol]["open"] = close * opening_ratio
+                desk.capital.apply_fill(symbol, notional / close, close, 0.0,
+                                        date, "STR-TEST", f"seed-{symbol}")
+            desk.capital.state.peak_nav = desk.capital.nav / 0.8005
+            opening = {symbol: panel.adjusted(next_date, symbol, "open")
+                       for symbol in ("AAA", "BBB")}
+            opening_drawdown = desk.capital.nav_at(opening) / desk.capital.state.peak_nav - 1
+            self.assertGreater(desk.capital.drawdown, desk.limits.drawdown_halt)
+            self.assertLess(opening_drawdown, desk.limits.drawdown_halt)
+            desk.strategies.get("STR-TEST").transition("RETIRED", "synthetic test")
+
+            ticket = desk.run_session(panel, date, next_date)["tickets"][0]
+
+            self.assertEqual(ticket["status"], "VETOED", ticket)
+            self.assertIn("unsafe intermediate fill", ticket["reason"])
+            self.assertEqual(desk.capital.state.applied_operations, ["seed-AAA", "seed-BBB"])
+            self.assertEqual(desk.capital.state.fees_paid, 0.0)
 
     def test_T4_subminimum_retired_residual_is_reported_not_erased(self):
         panel = fixture_panel(sessions=300)
@@ -1485,6 +1510,37 @@ class DeskT1T6SyntheticSecurityTests(unittest.TestCase):
             self.assertAlmostEqual(desk.capital.sleeves["STR-TEST"]["AAA"].quantity,
                                    quantity)
             self.assertEqual(desk.capital.state.fills, 1)
+
+    def test_T4_missing_open_reports_residual_and_blocks_unpriced_sleeve(self):
+        panel = fixture_panel(sessions=300)
+        date, next_date = panel.aligned_dates(UNIVERSE)[20:22]
+        sparse_panel = PricePanel([
+            dict(bar, date=day, symbol=symbol)
+            for (day, symbol), bar in panel.bars.items()
+            if (day, symbol) != (next_date, "AAA")
+        ])
+        for symbols in (("AAA",), ("AAA", "BBB")):
+            with self.subTest(symbols=symbols), tempfile.TemporaryDirectory() as directory:
+                desk = shadow_desk(Path(directory), panel)
+                for symbol in symbols:
+                    price = panel.adjusted(date, symbol, "close")
+                    desk.capital.apply_fill(symbol, 2_000 / price, price, 0.0,
+                                            date, "STR-TEST", f"seed-{symbol}")
+                desk.strategies.get("STR-TEST").transition("RETIRED", "synthetic test")
+
+                ticket = desk.run_session(sparse_panel, date, next_date)["tickets"][0]
+
+                self.assertEqual((ticket["status"], ticket["ledger"]), ("BLOCKED", "CAPITAL"))
+                self.assertEqual(ticket["fills"], [])
+                legs = {leg["symbol"]: leg for leg in ticket["legs"]}
+                self.assertEqual(legs["AAA"]["skipped"], "opening price unavailable")
+                self.assertAlmostEqual(legs["AAA"]["current_notional"], 2_000)
+                if "BBB" in symbols:
+                    self.assertEqual(legs["BBB"]["skipped"],
+                                     "existing sleeve has an unpriced opening leg")
+                self.assertEqual(set(desk.capital.sleeve_exposures("STR-TEST")), set(symbols))
+                self.assertEqual(desk.capital.state.fills, len(symbols))
+                self.assertEqual(desk.evaluation.state.fills, 0)
 
     def test_T5_no_target_is_explicitly_traced_and_does_not_add_exposure(self):
         panel = fixture_panel(sessions=300)

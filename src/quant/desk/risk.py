@@ -186,10 +186,9 @@ def verify_final(ledger: Ledger, strategy_id: str, executed_notional: dict[str, 
     """Re-check the exact post-fill portfolio before it is committed to Book.
 
     ``executed_notional`` must already be final quantity multiplied by the one
-    valuation vector supplied in ``prices``. ``nav_adjustment`` carries cash-only
-    implementation frictions (currently commissions) that Book will deduct when
-    the fills are applied, so a floor/drawdown check cannot approve a NAV that
-    will not exist after booking.
+    valuation vector supplied in ``prices``. ``nav_adjustment`` accounts for the
+    implementation loss relative to those marks, including commissions, so the
+    floor and drawdown use the same marks before and after booking.
     """
     nav = (ledger.nav_at(prices) if prices is not None else ledger.nav) + nav_adjustment
     drawdown = nav / max(ledger.state.peak_nav, ledger.state.initial_capital) - 1.0
