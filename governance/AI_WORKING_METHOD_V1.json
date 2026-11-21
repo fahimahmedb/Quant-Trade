@@ -297,7 +297,7 @@
     "profile_obligations": {
       "FRESH_CONTEXT": [
         "Bootstrap exclusively from fresh project/canonical and code/canonical SHA, north star, current router and canonical method; retrieve only decision-changing primary evidence; do not reconstruct prior chats or treat a branch name as authority.",
-        "Independently formulate economic payer, contractual right or forced flow, PIT clocks, executable instruments and realistic cost/risk before comparing historical candidates.",
+        "Independently formulate the economic mechanism and identify the payer where the effect depends on one. Assess point-in-time information, instruments, feasible access, cost and risk at the level appropriate to discovery or later qualification.",
         "Reuse frozen negative outcomes as scoped evidence, then preserve one decisive action and exact unknowns without inventing past work."
       ],
       "LONG_CONTEXT": [
@@ -309,9 +309,9 @@
     "common_decision_order": [
       "RECONCILE_AUTHORITIES_AND_MISSION_SCOPE",
       "REUSE_FROZEN_PRIMARY_POSITIVE_AND_NEGATIVE_EVIDENCE",
-      "INDEPENDENTLY_EXPLAIN_PAYER_AND_CAUSAL_MECHANISM",
+      "EXPLAIN_CAUSAL_MECHANISM_AND_PAYER_WHERE_RELEVANT",
       "DISTINGUISH_MECHANISM_EXPRESSION_IMPLEMENTATION",
-      "VERIFY_PIT_RIGHTS_CUSTODY_BROKER_TAX_CAPITAL_CLOCK_AND_RISK",
+      "SCREEN_FEASIBILITY_AT_DISCOVERY_AND_VERIFY_RELEVANT_EXECUTION_CONDITIONS_BEFORE_CLAIMING_CAPTURABILITY",
       "CHOOSE_LOWEST_COST_DECISION_CHANGING_DISCRIMINATOR",
       "PREDECLARE_TEST_AND_FALSIFIER_BEFORE_NEW_OUTCOME",
       "RUN_ONLY_ADMITTED_TESTS_AND_PRESERVE_EXACT_DATA_VERSIONS",
@@ -440,6 +440,13 @@
         "situation": "One source route or provider blocked, another independent lane valid",
         "expected_action": "PARK only affected route and continue unaffected authorized work",
         "forbidden_action": "Treat local data source block as global project halt"
+      },
+      {
+        "id": "SHARED_SOURCE_AND_JOINT_FEASIBILITY",
+        "profile": "BOTH",
+        "situation": "Two reports repeat an issuer's election notice. Separate custodian terms set an earlier deadline for holders.",
+        "expected_action": "Count the shared observation once. Check when both terms were available and whether combining eligibility and the custodian deadline changes the feasible action. Retain material uncertainty for documentary qualification.",
+        "forbidden_action": "Count the reports as independent confirmations, overlook a binding interaction or infer a net gain from feasibility."
       }
     ],
     "ai_fallibility_and_anti_drift": {
@@ -480,6 +487,20 @@
       },
       "behavioral_e2e_witness": "NOT_PROVEN",
       "new_authority_granted": false
+    },
+    "open_financial_discovery": {
+      "universe": "Independently discover investment decisions across instruments, mechanisms, disciplines and sources within the mandate, including those new to the project. Original hypotheses and new applications of known mechanisms are eligible.",
+      "source_count_target": null,
+      "source_contribution": "Trace original observations, point-in-time versions, dependencies and contradictions. Consider marginal and joint effects on choice, size, hedge, execution or abstention.",
+      "documentary_qualification": "Retain plausible, material hypotheses after screening feasibility. State decisive uncertainties and the next evidence, including for hard-to-test ideas. Complexity, novelty and data convenience carry no presumption of value.",
+      "profitability_proof_required_at_discovery": false,
+      "validation": {
+        "counterfactual": "Best simple feasible alternative specified before outcomes, at comparable risk, external cash flows, horizon and liquidity constraints.",
+        "comparison": "Real net wealth after costs, tax and inflation. Predeclare informative comparisons of marginal and joint contributions.",
+        "use_independent_validation_data_for_discovery": false,
+        "account_for_all_trials_and_variants": true,
+        "economic_experiment_requires_explicit_owner_authorization": true
+      }
     }
   }
 }

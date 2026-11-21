@@ -52,6 +52,19 @@ class EconomicBehaviorContractTests(unittest.TestCase):
             "PROSPECTIVE_PROTOCOL_LOCK","LOCAL_BLOCK_SCOPE"):
             self.assertIn(required,ids)
 
+    def test_open_discovery_separates_qualification_from_validation(self):
+        discovery = self.b["open_financial_discovery"]
+        self.assertIsNone(discovery["source_count_target"])
+        self.assertIs(discovery["profitability_proof_required_at_discovery"], False)
+        validation = discovery["validation"]
+        self.assertIs(validation["use_independent_validation_data_for_discovery"], False)
+        self.assertIs(validation["account_for_all_trials_and_variants"], True)
+        self.assertIs(validation["economic_experiment_requires_explicit_owner_authorization"], True)
+        shared_cases = {
+            case["id"] for case in self.b["behavioral_challenges"] if case["profile"] == "BOTH"
+        }
+        self.assertIn("SHARED_SOURCE_AND_JOINT_FEASIBILITY", shared_cases)
+
     def test_regression_old_authority_and_gate_contract(self):
         c=self.contract
         self.assertEqual(c["contract_version"],1)
