@@ -441,6 +441,45 @@
         "expected_action": "PARK only affected route and continue unaffected authorized work",
         "forbidden_action": "Treat local data source block as global project halt"
       }
-    ]
+    ],
+    "ai_fallibility_and_anti_drift": {
+      "source_issue": 59,
+      "scope": "ALL_ROLES_ALL_MISSIONS",
+      "objective": "EXISTING_NORTH_STAR",
+      "methods_contestable": true,
+      "pre_research_fields": [
+        "concrete_decision",
+        "material_impact",
+        "decisive_missing_information",
+        "stop_condition"
+      ],
+      "safeguards": {
+        "self_confirming_frame": "DECISION_CHANGING_DISTINCT_ALTERNATIVE",
+        "false_consensus": "INDEPENDENT_EVIDENCE",
+        "biased_judge": "INDEPENDENTLY_CHECKABLE_CRITERIA",
+        "unknown_opportunity": "JUSTIFIED_BOUND_OR_UNKNOWN",
+        "luck": "INDEPENDENT_OBSERVATIONS",
+        "fallible_verifier": "OBSERVABLE_FALSIFIER"
+      },
+      "reopen_only_material_contradiction_or_benefit": true,
+      "stop_when_no_material_decision_change": true,
+      "pilot": {
+        "baseline": "A_PROVISIONAL",
+        "candidate": "B_UNVALIDATED",
+        "controls": [
+          "ISOLATED_EQUAL_RESOURCES",
+          "PRECOMMITTED_THRESHOLDS",
+          "CALCULABLE_TWINS",
+          "DECOYS",
+          "NO_OP",
+          "NON_DECISIVE_CHANGES"
+        ],
+        "material_gain": "FURTHER_QUALIFICATION",
+        "no_material_gain": "RETAIN_A",
+        "ambiguous": "UNKNOWN_RETAIN_A"
+      },
+      "behavioral_e2e_witness": "NOT_PROVEN",
+      "new_authority_granted": false
+    }
   }
 }

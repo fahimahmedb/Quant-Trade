@@ -191,6 +191,22 @@ This extends the **same** canonical method and existing §5.1 rescue rule. It do
 
 **Test and claim boundary.** `governance/tests/test_economic_research_behavior_contract.py` checks the project policy, both AI profiles, explicit adversarial cases and unchanged F0–F6/authority/non-regression invariants. It is a **static contract test**. Actual fresh-context and long-context model behavior needs separate, independently executed cases on the **same frozen prompt and exact heads**; until then `behavioral_e2e_witness=NOT_PROVEN`. No test grants economic, prospective, capital or trading authority.
 
+### 5.2.1 AI fallibility and bounded anti-drift (all roles and missions; Owner issue #59)
+
+The objective is real net wealth after costs, tax and inflation at comparable external flows and within the mandate, not intellectual perfection. All reference frames, curricula (including Master 203), models, consensus, judges and this method itself are contestable. Preserve the existing authority and scientific boundaries, including §5.1.
+
+Before material research or meta-research state the concrete decision, economic or gate impact (in euros or justified bound where applicable), decisive missing information and stop condition. Use one cycle: objective and mandate → decision → primary evidence → targeted challenge → minimal correction → verification → decision and stop. PARK immaterial work; UNKNOWN is local. Do not reopen methods absent a concrete decision-changing contradiction or evidence of material benefit. Do not turn abstract fallibility into infinite audits or repeated permission requests.
+
+- Self-confirming frame: consider a genuinely distinct alternative, including no change, if it could change the decision.
+- False consensus: require evidence independent of AI agreement.
+- Biased judge: prefer independently checkable criteria and cases.
+- Unknown opportunity: bound its material impact where justified; otherwise UNKNOWN, not claimed exhaustiveness.
+- Luck versus competence: use independent observations, distinguish decision quality from outcomes.
+- Fallible verifier: give an observable falsifier, including for this method; stop after bounded challenge when further checks cannot materially change the decision.
+
+For the existing A/B pilot only, retain actual A with provenance (label any reconstruction), B as unvalidated hypothesis. If admitted and unfinished, reuse isolated equal-resource trials with precommitted economic thresholds and stopping rules, independently calculable synthetic twin cases, irrelevant changes, decoys, no-op cases and repetitions within budget. Accept justified conditional answers; do not impose unjustified priority inversions. Report discoveries, omissions, false alerts, erroneous abstentions, feasibility and research cost separately. Target judge/style controls (A/A, placebo, independent labels) only if decision-changing. Synthetic evidence covers represented mechanisms only; capture–recapture estimates and expert envelopes are not guaranteed bounds. Reproducible material B gain without material degradation warrants further qualification, not activation; demonstrated absence of material gain retains A; ambiguity or insufficient power is UNKNOWN with A provisional. Resume already authorized work. No new architecture, global score, agent consultation or economic authority follows. Written rules and static tests do not prove actual behavior.
+
+
 ## 6. Concurrency and ownership
 
 - one primary Builder may mutate a capability/seam at a time;
