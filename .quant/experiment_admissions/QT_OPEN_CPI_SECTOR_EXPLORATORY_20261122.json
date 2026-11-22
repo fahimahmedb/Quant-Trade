@@ -1,0 +1,31 @@
+{
+  "schema": "quant-trade-scoped-economic-research-admission-v1",
+  "mission_id": "QT_OPEN_CPI_SECTOR_EXPLORATORY_20261122",
+  "authority": {
+    "type": "OWNER_DIRECT",
+    "source": "Explicit Owner grant of 2026-11-22 allowing autonomous governance, data research and economic experimentation",
+    "scope": "SECOND_BOUNDED_HISTORICAL_EXPLORATORY_CASE"
+  },
+  "lineage": {
+    "prior_trial": "QT_OPEN_MACRO_CROSSASSET_20261122_V1",
+    "prior_result": "NEGATIVE",
+    "prior_market_exposure": "SPY/TLT/GLD and 10y2y; XLE/XLI returns not inspected before freeze",
+    "economic_trials_in_this_burst": 2
+  },
+  "allowed": {
+    "historical_data_read": true,
+    "one_exploratory_backtest": true,
+    "source_snapshot_and_results_write": true
+  },
+  "not_allowed": {
+    "live_trading": true,
+    "real_capital": true,
+    "deployment": true,
+    "paid_subscriptions": true,
+    "prospective_capture": true,
+    "scientific_unblinding": true,
+    "parameter_search_after_outcomes": true
+  },
+  "global_permissions_unchanged": true,
+  "importance": "Not a scientific evidence admission for production; one predeclared exploratory test with an independent economic mechanism; preserve negative findings and account for two trials."
+}
