@@ -1,0 +1,54 @@
+name: Quant Open Economic Replay (exploratory, no trading)
+on:
+  push:
+    branches:
+      - code/canonical
+    paths:
+      - ".github/workflows/quant-open-economic-replay.yml"
+      - "research/edge_lab/discovery/experiments/qt-open-*"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check reproducible runners
+        run: |
+          node --version
+          node --check research/edge_lab/discovery/experiments/qt-open-macro-crossasset-20261122-run.cjs
+          node --check research/edge_lab/discovery/experiments/qt-open-cpi-energy-industry-20261122-run.cjs
+      - name: Recompute both frozen results and compare with saved evidence
+        shell: bash
+        run: |
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const cp = require('node:child_process');
+          const base='research/edge_lab/discovery/experiments/';
+          const run=(f)=>JSON.parse(cp.execFileSync(process.execPath,[base+f],{encoding:'utf8',timeout:120000}));
+          const saved=(f)=>JSON.parse(fs.readFileSync(base+f,'utf8'));
+          const near=(actual,expected,tag)=>{
+            assert(Number.isFinite(actual)&&Number.isFinite(expected),'nonfinite '+tag);
+            assert(Math.abs(actual-expected)<=1e-5,'mismatch '+tag+': '+actual+' vs '+expected);
+          };
+          const a=run('qt-open-macro-crossasset-20261122-run.cjs');
+          const A=saved('qt-open-macro-crossasset-20261122-result.json');
+          for(const k of ['combined','macro_only','trend_only','static_tlt','static_gold','static_mixed']){
+            near(a.outcomes[k].terminal_real_US_CPI_pre_tax,A.portfolio_metrics[k].terminal_real_US_CPI_pre_tax,'trial1 '+k);
+          }
+          assert.equal(a.months,44);
+          assert.equal(a.signals.combined_GLD_months,2);
+          near(a.pairwise_real.combined_minus_static_mixed,A.pairwise_real.combined_minus_static_mixed,'trial1 delta');
+          const b=run('qt-open-cpi-energy-industry-20261122-run.cjs');
+          const B=saved('qt-open-cpi-energy-industry-20261122-result.json');
+          for(const k of ['combined','macro_only','price_only','static_energy','static_industry','static_mixed']){
+            near(b.outcome[k].real_wealth_US_CPI_pre_tax,B.outcomes[k].real_wealth,'trial2 '+k);
+          }
+          assert.equal(b.observations,104);
+          assert.deepEqual(b.missing_macro_months,['2025-12','2026-03']);
+          near(b.difference_real.combined_minus_macro_only,B.rounded_pairwise_real.combined_minus_macro_only,'trial2 delta');
+          console.log('PASS 2 frozen exploratory replays, 12 compared policy wealths; no market access/production/trades');
+          NODE
