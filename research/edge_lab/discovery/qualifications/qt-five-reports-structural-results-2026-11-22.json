@@ -1,0 +1,512 @@
+{
+  "study_id": "QT_H2_5REPORTS_20261122_STRUCTURAL_MECHANISMS_FULL_COVERAGE_V1",
+  "as_of": "2026-11-22",
+  "class": "REPLAY_EXISTING_RESULTS_PLUS_DOCUMENTARY_AND_SYNTHETIC_STRESS_ONLY",
+  "count_executed_assertions": 93,
+  "all_pass": true,
+  "assertion_labels": [
+    "D01 prob=25% hurdle",
+    "D02 certain event hurdle",
+    "D03 threshold indifference",
+    "D04 10pct discount does not imply outperformance",
+    "D05 larger discount increases synthetic proceeds",
+    "D06 more events help in this optimistic case",
+    "D07 fees damage case",
+    "D08 nonrecovering marked discount damages case",
+    "D09 zero reserve equals baseline",
+    "D10 linear capital fraction within hypothetical model",
+    "C01_2024 trigger ordering",
+    "C02_2024 margin over model mean",
+    "C01_2026 trigger ordering",
+    "C02_2026 margin over model mean",
+    "C03 2024 margin nominal",
+    "C04 2026 margin nominal",
+    "C05 2024 arith spread",
+    "C06 2026 arith spread",
+    "C07 spread difference",
+    "C08 stressed 2026 proxy negative",
+    "F01 population reconciliation",
+    "F02 net arithmetic",
+    "F03 stressed net arithmetic",
+    "F04 hit count",
+    "F05 retain frozen negative decision",
+    "J01 information may change action (synthetic)",
+    "J02 information may not change action",
+    "J03 information gain in constructed well calibrated case",
+    "J04 erroneous confidence gives negative value",
+    "J05 explicit decision hurdle",
+    "J06 prior 2 joint rules do not show positive delta",
+    "J07 alternative baseline reverses naive conclusion",
+    "I01 declared ETS arithmetic gap",
+    "I02 naive opposite-sign surplus",
+    "I03 reporting perimeter changes sign",
+    "I04 carbon physical upper proxy",
+    "I05 illustrative framework margin",
+    "I06 Q3 Europe EBITDA down QoQ",
+    "I07 Q3 Europe EBITDA up YoY",
+    "I08 comparison horizon flips sign",
+    "E01 Nexans tax",
+    "E02 1EUR x 2 fixed commission",
+    "E03 20bps spread offsets 2 EUR commission",
+    "E04 double FX illustrative 0.5pct each",
+    "E05 double FX illustrative 0.15pct each",
+    "E06 tax dominates small-ticket fixed fee",
+    "N01 EBITDA/revenue ratio",
+    "N02 adjusted EPS cannot replace reported EPS",
+    "N03 earnings growth may coexist with shareholder price loss",
+    "N04 break-even PE compression",
+    "N05 Q3 YoY nonvol share down",
+    "N06 nonvol revenue/cost consistency",
+    "O01 call can lower yield at premium",
+    "O02 coupon exceeds investor IRR",
+    "O03 coupon exceeds not-called IRR at premium",
+    "O04 discounted cash flows reconcile",
+    "P01 net receivable 2026",
+    "P02 net receivable 2025",
+    "P03 coverage ratio 2026",
+    "P04 coverage stock ratio falls",
+    "P05 origination volume grew",
+    "P06 subtraction only non-P&L identity",
+    "P07 impairment allowance rollforward 9m",
+    "P08 90+ day delinquency stock share rose",
+    "P09 reserves vs delinquency divergent direction",
+    "P10 delinquency sum 2026",
+    "P11 delinquency sum 2025",
+    "U01 basis net is negative after funding shock",
+    "U02 levered equity exposure",
+    "U03 topup exhausts posted equity if no extra liquidity",
+    "X01 hypothetical cheap storage unlocks positive value",
+    "X02 higher storage cost reverses negative-price trade",
+    "X03 physically profitable spread may fail after costs",
+    "T01 eligible old PEA beats PFU CTA on identical realized positive gain",
+    "T02 12.8pp differential on 2500 gain",
+    "T03 CTO example",
+    "T04 PEA example",
+    "T05 tax rate gap is 12.8 points",
+    "V01 yearly totals reconcile",
+    "V02 central cost reconciliation",
+    "V03 stressed cost reconciliation",
+    "V04 year count",
+    "V05 cluster interval spans zero",
+    "V06 observed loss scales with capital",
+    "V07 existing largest-year adversary passes",
+    "S01 sector event count",
+    "S02 sector cost flips gross-positive to net-negative",
+    "S03 trading frictions matter in exact observed setup",
+    "M01 month-end counts",
+    "M02 preserve adequacy no-payoff gate",
+    "R01 arithmetic zero",
+    "R02 arithmetic zero but geometric negative",
+    "R03 50pct loss requires 100pct recovery"
+  ],
+  "code_vs_market_boundary": "No new historical market payoff simulation, no PIT/OOS, no trading, no proof of actual investment profitability",
+  "documented_inputs": {
+    "cat_bonds": "World Bank case studies and 2026 press release",
+    "gilt_fire_sales": "Bank of England 2024 Fire sales of safe assets; mechanism not re-estimated",
+    "Shopify": "SEC 2026-09-30 10-Q",
+    "Nexans": "2026-02-04 Nexans/Enedis issuer release",
+    "ArcelorMittal": "2026 Q3 SEC results and declared 2021-25 ETS FAQ; no independently verified actual transfer flows",
+    "Euronext": "FY2025 investor release + Q3 2026 release",
+    "Fed_basis": "Federal Reserve FEDS Note 2026-06-22",
+    "PJM": "PJM FTR official description",
+    "MBS": "FRBSF and SEC MBS prepayment explanatory documents",
+    "France_2026_tax": "impots.gouv.fr PEA after 5 years 18.6pct; economie.gouv.fr PFU 31.4pct"
+  },
+  "tests": {
+    "H_DRYPOWDER": {
+      "kind": "SYNTHETIC",
+      "status": "COST_OF_OPTION_MATERIAL; REAL_EDGE_UNKNOWN",
+      "break_even_discount_certain": 0.10800926987868997,
+      "break_even_discount_prob25": 0.41330326448193455,
+      "grid": [
+        {
+          "p": 0,
+          "d": 0.1,
+          "relative_terminal_delta": -0.1734536067903767
+        },
+        {
+          "p": 0,
+          "d": 0.2,
+          "relative_terminal_delta": -0.1734536067903767
+        },
+        {
+          "p": 0,
+          "d": 0.3,
+          "relative_terminal_delta": -0.1734536067903767
+        },
+        {
+          "p": 0,
+          "d": 0.4,
+          "relative_terminal_delta": -0.1734536067903767
+        },
+        {
+          "p": 0.25,
+          "d": 0.1,
+          "relative_terminal_delta": -0.13231500228130755
+        },
+        {
+          "p": 0.25,
+          "d": 0.2,
+          "relative_terminal_delta": -0.10134310192987317
+        },
+        {
+          "p": 0.25,
+          "d": 0.3,
+          "relative_terminal_delta": -0.06152208719231467
+        },
+        {
+          "p": 0.25,
+          "d": 0.4,
+          "relative_terminal_delta": -0.008427400875570035
+        },
+        {
+          "p": 0.5,
+          "d": 0.1,
+          "relative_terminal_delta": -0.0911763977722384
+        },
+        {
+          "p": 0.5,
+          "d": 0.2,
+          "relative_terminal_delta": -0.029232597069369648
+        },
+        {
+          "p": 0.5,
+          "d": 0.3,
+          "relative_terminal_delta": 0.050409432405747356
+        },
+        {
+          "p": 0.5,
+          "d": 0.4,
+          "relative_terminal_delta": 0.15659880503923684
+        },
+        {
+          "p": 1,
+          "d": 0.1,
+          "relative_terminal_delta": -0.008899188754100007
+        },
+        {
+          "p": 1,
+          "d": 0.2,
+          "relative_terminal_delta": 0.1149884126516374
+        },
+        {
+          "p": 1,
+          "d": 0.3,
+          "relative_terminal_delta": 0.2742724716018716
+        },
+        {
+          "p": 1,
+          "d": 0.4,
+          "relative_terminal_delta": 0.48665121686885016
+        }
+      ]
+    },
+    "H_ILS": {
+      "kind": "DOCUMENTARY_PRIMARY_PLUS_SYNTHETIC_STRESS",
+      "status": "PARAMETRIC_INSURANCE_EXISTS; DIRECT_RETAIL_JAMAICA_2026_NOT_ASSUMED",
+      "cases": {
+        "2024": {
+          "notional_musd": 150,
+          "margin": 0.07,
+          "EL": 0.0161,
+          "attach": 0.0246,
+          "exhaust": 0.0084,
+          "annual_margin_musd": 10.500000000000002,
+          "annual_model_EL_musd": 2.415,
+          "gross_margin_minus_model_EL_pp": 5.390000000000001,
+          "EL_over_margin": 0.22999999999999998,
+          "stress": [
+            {
+              "EL_multiplier": 1,
+              "annual_frictions_rate": 0.01,
+              "margin_minus_stressed_EL_and_cost_pp": 4.390000000000001
+            },
+            {
+              "EL_multiplier": 2,
+              "annual_frictions_rate": 0.01,
+              "margin_minus_stressed_EL_and_cost_pp": 2.7800000000000007
+            },
+            {
+              "EL_multiplier": 3,
+              "annual_frictions_rate": 0.01,
+              "margin_minus_stressed_EL_and_cost_pp": 1.170000000000001
+            }
+          ]
+        },
+        "2026": {
+          "notional_musd": 200,
+          "margin": 0.0675,
+          "EL": 0.0248,
+          "attach": 0.0386,
+          "exhaust": 0.0108,
+          "annual_margin_musd": 13.5,
+          "annual_model_EL_musd": 4.96,
+          "gross_margin_minus_model_EL_pp": 4.2700000000000005,
+          "EL_over_margin": 0.36740740740740735,
+          "stress": [
+            {
+              "EL_multiplier": 1,
+              "annual_frictions_rate": 0.01,
+              "margin_minus_stressed_EL_and_cost_pp": 3.27
+            },
+            {
+              "EL_multiplier": 2,
+              "annual_frictions_rate": 0.01,
+              "margin_minus_stressed_EL_and_cost_pp": 0.7900000000000006
+            },
+            {
+              "EL_multiplier": 3,
+              "annual_frictions_rate": 0.01,
+              "margin_minus_stressed_EL_and_cost_pp": -1.689999999999999
+            }
+          ]
+        }
+      }
+    },
+    "H_FLOW": {
+      "kind": "CANONICAL_RESULT_RECONCILIATION_ONLY",
+      "status": "KILL_FROZEN_SPY_TLT_EXPRESSION",
+      "result": {
+        "events": 83,
+        "through_2021": 15,
+        "from_2022": 68,
+        "central_cost": 0.0008,
+        "mean_central_net": -0.0009995546544003969,
+        "mean_gross": -0.0001995546544003967,
+        "mean_stress_net": -0.0016995546544003968,
+        "hit_rate": 0.39759036144578314,
+        "decision": "KILL_EXPRESSION",
+        "sample": "2016-09-12..2026-09-11",
+        "git_result_blob": "b4b0460483e1c978d2cc3202df788c0f6a7e5368"
+      }
+    },
+    "H_JOINT": {
+      "kind": "CANONICAL_RESULT_RECONCILIATION_PLUS_SYNTHETIC_DECISION",
+      "status": "TWO_PRIOR_COMBINATIONS_NO_INCREMENTAL_EDGE",
+      "break_even_positive_state_probability": 0.6756756756756757,
+      "prior_result_deltas": {
+        "macro_vs_static": -0.26886687907056483,
+        "macro_vs_macro_only": -0.17837441063480286,
+        "energy_vs_price_only": -0.05487700000000029,
+        "energy_vs_macro_only": -0.20435500000000006,
+        "energy_vs_static": 0.05463799999999974
+      }
+    },
+    "H_INDUSTRY": {
+      "kind": "DOCUMENTARY_ACCOUNTING_PLUS_SYNTHETIC_SENSITIVITY",
+      "status": "CONTRACT_AND_COST_MECHANISM; EQUITY_VALUE_UNKNOWN",
+      "result": {
+        "nexans_framework_meur": 600,
+        "nexans_framework_years": 7,
+        "nexans_option_years": 3,
+        "arcelor_ETS_free_gross": 212809169,
+        "arcelor_ETS_to_power": 72056762,
+        "arcelor_verified_emissions": 170075530,
+        "eaf_steel_mtons_y": 2,
+        "reference_CO2_t_per_t": 1.73,
+        "eaf_CO2_t_per_t": 0.6,
+        "illustrative_EUA_eur": 75,
+        "arcelor_Europe_EBITDA_Q2_2026_mUSD": 697,
+        "arcelor_Europe_EBITDA_Q3_2026_mUSD": 548,
+        "arcelor_Europe_EBITDA_Q3_2025_mUSD": 513,
+        "nexans_flat_year_meur_UNJUSTIFIED_AS_FORECAST": 85.71428571428571,
+        "nexans_if_5pct_incremental_margin_meur": 30.0,
+        "ETS_usable_after_declared_transfer": 140752407,
+        "ETS_declared_arithmetic_gap": 29323123,
+        "ETS_naive_unadjusted_surplus": 42733639,
+        "eaf_gross_carbon_value_meur_y": 169.49999999999997,
+        "arcelor_Europe_EBITDA_delta_QoQ_mUSD": -149,
+        "arcelor_Europe_EBITDA_delta_YoY_mUSD": 35
+      }
+    },
+    "H_IMPLEMENT": {
+      "kind": "DOCUMENTARY_TAX_COMMISSION_COST_IDENTITIES",
+      "status": "TRANSACTION_COST_EXISTS; REAL_FILLS_UNKNOWN",
+      "result": {
+        "nexans_5000_ttf_eur": 20.0,
+        "tr_1000_no_ttf_cost_eur": 2.0,
+        "zero_comm_1000_bps20_cost_eur": 2.0,
+        "fx_5000_0_5pct_each_eur": 50.0,
+        "fx_5000_0_15pct_each_eur": 15.0
+      }
+    },
+    "H_INTERMEDIARY": {
+      "kind": "REPORTED_ACCOUNTS_PLUS_SYNTHETIC_VALUATION",
+      "status": "REVENUE_FRANCHISE_OBSERVED; SHAREHOLDER_EDGE_UNKNOWN",
+      "result": {
+        "revenues_mEUR": 1823.2,
+        "adj_ebitda_mEUR": 1143.1,
+        "net_income_reported_mEUR": 642.9,
+        "non_volume_share": 0.59,
+        "q3_2026_share": 0.55,
+        "q3_2025_share": 0.6,
+        "eps_reported": 6.34,
+        "eps_adjusted": 7.27,
+        "q3_2026_rev_mEUR": 547.4,
+        "q3_2026_adj_ebitda_mEUR": 364.2,
+        "ebitda_margin": 0.6269745502413339,
+        "non_volume_revenue_mEUR_proxy": 1075.6879999999999,
+        "eps_break_even_CAGR_at_PE30_to20_3y": 0.14471424255333187,
+        "synthetic_10pct_epsgrowth_30to20_return_exdiv": -0.11266666666666647,
+        "q3_2026_margin": 0.6653270003653635
+      }
+    },
+    "H_OPTION": {
+      "kind": "SYNTHETIC_CASHFLOW_CONTRACT",
+      "status": "OPTION_PRICE_MATTERS; HISTORIC_EXCESS_RETURN_UNKNOWN",
+      "result": {
+        "price": 102,
+        "coupon": 5,
+        "principal": 100,
+        "call_year": 2,
+        "maturity_year": 4,
+        "yield_to_call": 0.039405116352444716,
+        "yield_to_maturity_if_not_called": 0.044432527081507314,
+        "annual_coupon_rate_on_par": 0.05
+      }
+    },
+    "H_PLATFORM": {
+      "kind": "SEC_REPORT_STOCK_VS_FLOW_RECONCILIATION",
+      "status": "CREDIT_FRANCHISE_EXISTS; DATA_CAUSAL_VALUE_UNKNOWN",
+      "result": {
+        "gross_2026_mUSD": 2596,
+        "allowance_2026_mUSD": 246,
+        "gross_2025_mUSD": 1979,
+        "allowance_2025_mUSD": 195,
+        "originations_9m_2026_mUSD": 4300,
+        "originations_9m_2025_mUSD": 2800,
+        "interest_fees_9m_2026_mUSD": 271,
+        "provisions_9m_2026_mUSD": 217,
+        "chargeoffs_net_9m_2026_mUSD": 166,
+        "chargeoffs_net_9m_2025_mUSD": 101,
+        "ninety_to_179_days_2026_mUSD": 37,
+        "over_180_days_2026_mUSD": 157,
+        "ninety_to_179_days_2025_mUSD": 23,
+        "over_180_days_2025_mUSD": 112,
+        "loan_reserve_begin_2026_9m_mUSD": 195,
+        "net_book_2026": 2350,
+        "net_book_2025": 1784,
+        "coverage_2026": 0.09476117103235747,
+        "coverage_2025": 0.09853461344113189,
+        "origination_growth_9m": 0.5357142857142858,
+        "misleading_271_minus_217_not_profit": 54,
+        "late_90plus_2026": 194,
+        "late_90plus_2025": 135,
+        "late_90plus_share_2026": 0.07473035439137134,
+        "late_90plus_share_2025": 0.06821627084386053
+      }
+    },
+    "H_FUNDING": {
+      "kind": "SYNTHETIC_REPO_MARGIN_PATH",
+      "status": "CONVERGENCE_CAN_FAIL_ON_FUNDING_PATH",
+      "result": {
+        "pnl_eur": -100000.0,
+        "loss_over_equity": -0.02,
+        "equity": 5000000,
+        "illustrative_margin_topup_5pct": 5000000.0,
+        "source": "US Federal Reserve 2026"
+      }
+    },
+    "H_PHYSICAL": {
+      "kind": "SYNTHETIC_STORAGE_AND_DISPATCH",
+      "status": "PHYSICAL_CAPABILITY_CAN_REVERSE_THE_SIGN",
+      "result": {
+        "wti_may2020_settle_usd_per_barrel": -37.63,
+        "charge_power_eur_mwh": 20,
+        "sell_power_eur_mwh": 100,
+        "battery_efficiency": 0.85,
+        "wti_zero_sale_storage_cost20_profit_per_barrel": 17.630000000000003,
+        "wti_zero_sale_storage_cost40_profit_per_barrel": -2.3699999999999974,
+        "battery_gross_margin_per_MWh_delivered": 76.47058823529412,
+        "battery_after_80eur_mwh_all_in_degradation_charge": -3.529411764705884
+      }
+    },
+    "H_TAX": {
+      "kind": "OFFICIAL_2026_FISCAL_RATES_PLUS_SAME_GAIN_IDENTITY",
+      "status": "POSITIVE_TAX_SAVING_IF_ELIGIBLE; SPECIFIC_PORTFOLIO_NOT_TESTED",
+      "result": {
+        "notional_initial_eur": 5000,
+        "net_realized_gain_eur": 2500,
+        "cto_PFU_2026": 0.314,
+        "pea_5yr_socials_2026": 0.186,
+        "eligible_instrument_and_5yr_age_assumed": true,
+        "cto_after_tax_capital": 6715.0,
+        "pea_after_tax_capital": 7035.0,
+        "pea_minus_cto_eur": 320.0
+      }
+    },
+    "H_VIX": {
+      "kind": "CANONICAL_RESULT_RECONCILIATION_ONLY",
+      "status": "PROMOTE_EXPRESSION_ONLY_2013_2021; NOT_ALPHA",
+      "result": {
+        "trades": 36,
+        "years": 9,
+        "central_mean_points": 0.9739861111111111,
+        "gross_mean_points": 1.073986111111111,
+        "stress_mean_points": 0.8239861111111111,
+        "central_cost_points": 0.1,
+        "stress_cost_points": 0.25,
+        "worst_trade_points": -14.7,
+        "removed_year": 2018,
+        "central_mean_ex_largest_year": 0.736359375,
+        "gross_bootstrap_95pct": [
+          -0.010736111111111111,
+          2.103805555555554
+        ],
+        "year_totals_points": {
+          "2013": -2.15,
+          "2014": 7.5,
+          "2015": -9.55,
+          "2016": 9.5,
+          "2017": 1.15,
+          "2018": 11.5,
+          "2019": 1.2,
+          "2020": 6.0,
+          "2021": 9.9135
+        },
+        "git_blob": "44a792e222f5cd763dcf1becdab9a6eb4d728286",
+        "mean_from_yearly_totals": 0.973986111111111,
+        "fraction_positive_years": 0.7777777777777778,
+        "minimum_equity_for_20pct_max_loss_at_mark_usd": 73500.0
+      }
+    },
+    "H_SECTOR_SHOCK": {
+      "kind": "CANONICAL_RESULT_RECONCILIATION_ONLY",
+      "status": "KILL_EXACT_EXPRESSION",
+      "result": {
+        "events": 722,
+        "negative": 360,
+        "positive": 362,
+        "gross_mean": 0.0004154588861753844,
+        "central_net": -0.00038454111382461555,
+        "central_roundtrip_cost": 0.0008,
+        "worst_return": -0.08855273131448801,
+        "git_blob": "03c0176a3363d1980050d43f44712dd42752b551"
+      }
+    },
+    "H_MONTHEND": {
+      "kind": "CANONICAL_ADEQUACY_RECONCILIATION_ONLY",
+      "status": "PARK_DATA_WITHOUT_PAYOFF",
+      "result": {
+        "events": 120,
+        "long_signal": 37,
+        "short_signal": 83,
+        "minimum_per_side": 40,
+        "economics_computed": false,
+        "git_blob": "cb7805a102bcfc35d32a60932e560b6298c767ef"
+      }
+    },
+    "H_RISK": {
+      "kind": "MATH_IDENTITIES",
+      "status": "ARITHMETIC_RETURN_NOT_TERMINAL_WEALTH",
+      "result": {
+        "up": 0.2,
+        "down": -0.2,
+        "arith_mean": 0.0,
+        "geo_mean": -0.020204102886728803
+      }
+    }
+  },
+  "permissions": "READ_ONLY_GITHUB+LOCAL_NON_MARKET_CALCULATIONS; no new economic admission triggered",
+  "future_next_witness": "Single PIT dated accessible event with ex-ante instrument + net execution price, use active H2 issue #60; do not tune previously seen ETF/sector trials."
+}
