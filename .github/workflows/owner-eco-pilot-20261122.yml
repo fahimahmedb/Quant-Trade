@@ -1,0 +1,44 @@
+name: Owner historical economic pilot 2026-11-22 (bounded)
+on:
+  push:
+    branches:
+      - research/owner-eco-20261122-sector-mv-v1
+    paths:
+      - .github/workflows/owner-eco-pilot-20261122.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-historical-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Capture source identities
+        run: |
+          echo "RUN_SUBJECT=$GITHUB_SHA"
+          git rev-parse HEAD
+          git hash-object data/datasets/us_sector_etf_daily.csv
+          git hash-object data/datasets/us_sector_etf_daily.meta.json
+          test "$(git hash-object data/datasets/us_sector_etf_daily.csv)" = 9fe148438ea0ef657cbe14fe352bd51491a8bd50
+          test "$(git hash-object data/datasets/us_sector_etf_daily.meta.json)" = 89277501c126f5984c87a7d17b6cf4c46601f359
+      - name: Compile and test no-lookahead synthetic geometry
+        run: |
+          python -m py_compile research/economic_pilots/sector_mv_v1.py
+          python research/economic_pilots/sector_mv_v1.py --self-test
+      - name: Execute frozen historic panel and verify predeclared negative
+        run: |
+          python research/economic_pilots/sector_mv_v1.py --input data/datasets/us_sector_etf_daily.csv --output /tmp/owner_pilot_result.json
+          python - <<'PY'
+          import json,math
+          x=json.load(open('/tmp/owner_pilot_result.json'))
+          assert x["protocol"]=="QT_OWNER_ECO_SECTOR_MOMENTUM_VOL_20261122_v1"
+          assert x["source_rows"]==30168 and x["sessions"]==2514 and x["signals"]==108
+          assert x["predeclared_promotion_criterion_pass"] is False
+          r={(q["policy"],q["one_way_bps"]):q for q in x["policies"]}
+          assert math.isclose(r["B0",25]["full"]["final_nav"],17296.434484731813,rel_tol=0,abs_tol=0.1)
+          assert math.isclose(r["MV",25]["full"]["final_nav"],14542.444356219461,rel_tol=0,abs_tol=0.1)
+          assert all(r[p,25]["full"]["final_nav"] < r[p,10]["full"]["final_nav"] for p in ("B0","B1","M","V","MV"))
+          print("HISTORICAL_PILOT_SOURCE_BOUND=PASS; RESULT_REPLICATION=PASS; SCIENTIFIC_EDGE=NOT_PROVEN")
+          print(json.dumps({p:{str(b):r[p,b]["full"] for b in (10,25)} for p in ("B0","B1","M","V","MV")},indent=2))
+          PY
