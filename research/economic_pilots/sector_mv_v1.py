@@ -209,7 +209,7 @@ def self_test():
         b=simulate(ds,prices,schedule,p,25)
         assert b['full']['final_nav'] < a['full']['final_nav']
         assert a['trades']==len(schedule)
-    print('SYNTHETIC_SELFTEST=PASS; assertions=16; no financial outcome accessed')
+    print('SYNTHETIC_SELFTEST=PASS; assertions=13; no financial outcome accessed')
 
 
 def main():
