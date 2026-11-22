@@ -1,0 +1,95 @@
+{
+  "protocol_id": "QT_OPEN_MACRO_CROSSASSET_20261122_V1",
+  "admission": ".quant/experiment_admissions/QT_OPEN_MACRO_CROSSASSET_EXPLORATORY_20261122.json",
+  "frozen_before_economic_return_access": true,
+  "data": [
+    {
+      "repo": "fahimahmedb/Quant-Trade",
+      "sha": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+      "file": "data/datasets/us_sector_etf_daily.csv",
+      "symbols": [
+        "SPY",
+        "TLT",
+        "GLD"
+      ],
+      "vintage": "2026-09-13",
+      "limitation": "Yahoo adjusted prices restated ex post; close bars not executable quotes"
+    },
+    {
+      "repo": "brendanbiles/market-dashboard",
+      "sha": "c3ae587001c526afd0b9f460b8d873008e86b90a",
+      "file": "historical_data.json",
+      "field": "spreads_all",
+      "vintage": "2026-11-21",
+      "limitation": "Current-vintage FRED-derived Treasury slope, not strictly PIT"
+    },
+    {
+      "repo": "datasets/cpi-us",
+      "sha": "a2c6c876b198d05f0fba67b8501f105d4d2bf09d",
+      "file": "data/cpiai.csv",
+      "field": "Date,Index",
+      "limitation": "CPI used as common ex-post deflator only"
+    }
+  ],
+  "window": {
+    "development": "2016-09-12..2022-12-31",
+    "evaluation": "2023-01-01..2026-08-31",
+    "status": "EXPLORATORY_NOT_GENUINE_OOS"
+  },
+  "capital": {
+    "currency": "USD",
+    "initial_wealth": 1,
+    "external_cashflows": 0,
+    "long_only": true,
+    "equity_weight": 0.6,
+    "hedge_weight": 0.4
+  },
+  "signal_timing": "At previous month's last ETF trading CLOSE compute 6-calendar-month SPY adjusted-price momentum. Last Treasury spread observation dated <= that trading date minus FIVE calendar days. Entry on first ETF trading day CLOSE of new month. Exit/next entry on first ETF trading day CLOSE of next month.",
+  "signals": {
+    "inverted": "10y_minus_2y_spread < 0",
+    "equity_downtrend": "SPY six-calendar-month price ratio < 1; nearest close on or before calendar cutoff"
+  },
+  "arms": {
+    "combined": "60 SPY + 40 GLD when inverted AND equity_downtrend; otherwise 60 SPY + 40 TLT",
+    "macro_only": "60 SPY + 40 GLD when inverted; else 60 SPY + 40 TLT",
+    "trend_only": "60 SPY + 40 GLD when equity_downtrend; else 60 SPY + 40 TLT",
+    "static_tlt": "60 SPY + 40 TLT",
+    "static_gold": "60 SPY + 40 GLD",
+    "static_mixed": "60 SPY + 20 TLT + 20 GLD"
+  },
+  "treatment": "At each entry close rebalance previous drifted holdings to target weights. Cost 10bp per dollar transacted, including initial notional. Monthly holding return is weighted adjusted-close price ratio between consecutive first-trading-day closes; no same-session future signal. CPI: index of entry month vs exit month, ratio nominal/(CPI_exit/CPI_entry).",
+  "costs": {
+    "trading_bps_per_notional": 10,
+    "taxes": "NOT_MODELED",
+    "FX": "NOT_MODELED",
+    "financing": "NO_BORROW"
+  },
+  "metrics": [
+    "terminal nominal wealth",
+    "terminal US-CPI-adjusted wealth",
+    "annualized real growth",
+    "monthly mark-to-market max drawdown",
+    "annualized volatility",
+    "turnover",
+    "number of GLD allocations",
+    "pairwise real wealth differences"
+  ],
+  "caveats": [
+    "Historical 2026-vintage information not strict PIT",
+    "SPY dividends in adjusted prices, no dividend double count",
+    "Close-only fills optimistic",
+    "Tax and USD/EUR effects omitted",
+    "Alternative-asset risks not volatility matched",
+    "6 fixed arms, no parameter tuning",
+    "No LLM value proven",
+    "No independent OOS due to LLM data exposure"
+  ],
+  "test_plan": [
+    "Check signals strictly earlier than entries",
+    "Identical monthly dates across all arms",
+    "One initial cost and rebalance costs exactly once",
+    "Compare full portfolio wealth, no independent seed"
+  ],
+  "stop": "One run and mechanical checks only. No optimization or re-selection after examining results. Record negative or UNKNOWN; no capital use.",
+  "status": "FROZEN_BEFORE_RETURN_ANALYSIS"
+}
