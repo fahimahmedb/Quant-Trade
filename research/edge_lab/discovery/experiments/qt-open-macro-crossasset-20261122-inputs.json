@@ -1,0 +1,458 @@
+{
+  "id": "QT_OPEN_MACRO_CROSSASSET_20261122_V1_INPUTS",
+  "mission_protocol": "research/edge_lab/protocols/qt-open-macro-crossasset-exploratory-20261122-v1.json",
+  "source_blobs": {
+    "market": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+    "macro": "c3ae587001c526afd0b9f460b8d873008e86b90a",
+    "CPI": "a2c6c876b198d05f0fba67b8501f105d4d2bf09d"
+  },
+  "CPI_US": {
+    "start_month": "2023-01",
+    "start_index": 299.17,
+    "end_month": "2026-09",
+    "end_index": 336.94
+  },
+  "data_is_current_vintage_not_original_PIT": true,
+  "records": [
+    {
+      "month": "2023-01",
+      "signal_etf_date": "2022-12-30",
+      "macro_date": "2022-12-23",
+      "macro_slope_10y2y": -0.56,
+      "spy_6m_reference": "2022-06-30",
+      "spy_6m_momentum": 0.022569364363489663,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-02",
+      "signal_etf_date": "2023-01-31",
+      "macro_date": "2023-01-26",
+      "macro_slope_10y2y": -0.68,
+      "spy_6m_reference": "2022-07-29",
+      "spy_6m_momentum": -0.004771900813038021,
+      "inverted": true,
+      "downtrend": true
+    },
+    {
+      "month": "2023-03",
+      "signal_etf_date": "2023-02-28",
+      "macro_date": "2023-02-23",
+      "macro_slope_10y2y": -0.78,
+      "spy_6m_reference": "2022-08-26",
+      "spy_6m_momentum": -0.013804593906652007,
+      "inverted": true,
+      "downtrend": true
+    },
+    {
+      "month": "2023-04",
+      "signal_etf_date": "2023-03-31",
+      "macro_date": "2023-03-24",
+      "macro_slope_10y2y": -0.38,
+      "spy_6m_reference": "2022-09-30",
+      "spy_6m_momentum": 0.15583077515833033,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-05",
+      "signal_etf_date": "2023-04-28",
+      "macro_date": "2023-04-21",
+      "macro_slope_10y2y": -0.6,
+      "spy_6m_reference": "2022-10-28",
+      "spy_6m_momentum": 0.07818274683475024,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-06",
+      "signal_etf_date": "2023-05-31",
+      "macro_date": "2023-05-26",
+      "macro_slope_10y2y": -0.74,
+      "spy_6m_reference": "2022-12-01",
+      "spy_6m_momentum": 0.0343433437507763,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-07",
+      "signal_etf_date": "2023-06-30",
+      "macro_date": "2023-06-23",
+      "macro_slope_10y2y": -0.97,
+      "spy_6m_reference": "2022-12-30",
+      "spy_6m_momentum": 0.1678600571770874,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-08",
+      "signal_etf_date": "2023-07-31",
+      "macro_date": "2023-07-26",
+      "macro_slope_10y2y": -0.96,
+      "spy_6m_reference": "2023-01-31",
+      "spy_6m_momentum": 0.1347276774186641,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-09",
+      "signal_etf_date": "2023-08-31",
+      "macro_date": "2023-08-25",
+      "macro_slope_10y2y": -0.78,
+      "spy_6m_reference": "2023-03-03",
+      "spy_6m_momentum": 0.12261066407631249,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-10",
+      "signal_etf_date": "2023-09-29",
+      "macro_date": "2023-09-22",
+      "macro_slope_10y2y": -0.66,
+      "spy_6m_reference": "2023-03-29",
+      "spy_6m_momentum": 0.07283273250110733,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-11",
+      "signal_etf_date": "2023-10-31",
+      "macro_date": "2023-10-26",
+      "macro_slope_10y2y": -0.16,
+      "spy_6m_reference": "2023-05-01",
+      "spy_6m_momentum": 0.01377590567653919,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2023-12",
+      "signal_etf_date": "2023-11-30",
+      "macro_date": "2023-11-24",
+      "macro_slope_10y2y": -0.45,
+      "spy_6m_reference": "2023-05-30",
+      "spy_6m_momentum": 0.09408174936643676,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-01",
+      "signal_etf_date": "2023-12-29",
+      "macro_date": "2023-12-22",
+      "macro_slope_10y2y": -0.41,
+      "spy_6m_reference": "2023-06-29",
+      "spy_6m_momentum": 0.09315125166252036,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-02",
+      "signal_etf_date": "2024-01-31",
+      "macro_date": "2024-01-26",
+      "macro_slope_10y2y": -0.19,
+      "spy_6m_reference": "2023-07-31",
+      "spy_6m_momentum": 0.06281919049455387,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-03",
+      "signal_etf_date": "2024-02-29",
+      "macro_date": "2024-02-23",
+      "macro_slope_10y2y": -0.41,
+      "spy_6m_reference": "2023-08-29",
+      "spy_6m_momentum": 0.13977070809808412,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-04",
+      "signal_etf_date": "2024-03-28",
+      "macro_date": "2024-03-22",
+      "macro_slope_10y2y": -0.37,
+      "spy_6m_reference": "2023-09-28",
+      "spy_6m_momentum": 0.22939993245195933,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-05",
+      "signal_etf_date": "2024-04-30",
+      "macro_date": "2024-04-25",
+      "macro_slope_10y2y": -0.26,
+      "spy_6m_reference": "2023-10-30",
+      "spy_6m_momentum": 0.21653847853830155,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-06",
+      "signal_etf_date": "2024-05-31",
+      "macro_date": "2024-05-24",
+      "macro_slope_10y2y": -0.47,
+      "spy_6m_reference": "2023-12-01",
+      "spy_6m_momentum": 0.1569446944376678,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-07",
+      "signal_etf_date": "2024-06-28",
+      "macro_date": "2024-06-21",
+      "macro_slope_10y2y": -0.45,
+      "spy_6m_reference": "2023-12-28",
+      "spy_6m_momentum": 0.14890626275342944,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-08",
+      "signal_etf_date": "2024-07-31",
+      "macro_date": "2024-07-26",
+      "macro_slope_10y2y": -0.16,
+      "spy_6m_reference": "2024-01-31",
+      "spy_6m_momentum": 0.14791205152036913,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-09",
+      "signal_etf_date": "2024-08-30",
+      "macro_date": "2024-08-23",
+      "macro_slope_10y2y": -0.09,
+      "spy_6m_reference": "2024-03-01",
+      "spy_6m_momentum": 0.10608467694707335,
+      "inverted": true,
+      "downtrend": false
+    },
+    {
+      "month": "2024-10",
+      "signal_etf_date": "2024-09-30",
+      "macro_date": "2024-09-25",
+      "macro_slope_10y2y": 0.26,
+      "spy_6m_reference": "2024-03-28",
+      "spy_6m_momentum": 0.10382273294147204,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2024-11",
+      "signal_etf_date": "2024-10-31",
+      "macro_date": "2024-10-25",
+      "macro_slope_10y2y": 0.14,
+      "spy_6m_reference": "2024-05-01",
+      "spy_6m_momentum": 0.14364818512721111,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2024-12",
+      "signal_etf_date": "2024-11-29",
+      "macro_date": "2024-11-22",
+      "macro_slope_10y2y": 0.04,
+      "spy_6m_reference": "2024-05-29",
+      "spy_6m_momentum": 0.1525338091848938,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-01",
+      "signal_etf_date": "2024-12-31",
+      "macro_date": "2024-12-26",
+      "macro_slope_10y2y": 0.28,
+      "spy_6m_reference": "2024-07-01",
+      "spy_6m_momentum": 0.08163035147155506,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-02",
+      "signal_etf_date": "2025-01-31",
+      "macro_date": "2025-01-24",
+      "macro_slope_10y2y": 0.36,
+      "spy_6m_reference": "2024-07-31",
+      "spy_6m_momentum": 0.09964926638921168,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-03",
+      "signal_etf_date": "2025-02-28",
+      "macro_date": "2025-02-21",
+      "macro_slope_10y2y": 0.23,
+      "spy_6m_reference": "2024-08-28",
+      "spy_6m_momentum": 0.07112387670098785,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-04",
+      "signal_etf_date": "2025-03-31",
+      "macro_date": "2025-03-26",
+      "macro_slope_10y2y": 0.37,
+      "spy_6m_reference": "2024-10-01",
+      "spy_6m_momentum": -0.009952087673876231,
+      "inverted": false,
+      "downtrend": true
+    },
+    {
+      "month": "2025-05",
+      "signal_etf_date": "2025-04-30",
+      "macro_date": "2025-04-25",
+      "macro_slope_10y2y": 0.55,
+      "spy_6m_reference": "2024-10-30",
+      "spy_6m_momentum": -0.03780931723855374,
+      "inverted": false,
+      "downtrend": true
+    },
+    {
+      "month": "2025-06",
+      "signal_etf_date": "2025-05-30",
+      "macro_date": "2025-05-23",
+      "macro_slope_10y2y": 0.51,
+      "spy_6m_reference": "2024-11-29",
+      "spy_6m_momentum": -0.015595872421168888,
+      "inverted": false,
+      "downtrend": true
+    },
+    {
+      "month": "2025-07",
+      "signal_etf_date": "2025-06-30",
+      "macro_date": "2025-06-25",
+      "macro_slope_10y2y": 0.55,
+      "spy_6m_reference": "2024-12-30",
+      "spy_6m_momentum": 0.05664661099182644,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-08",
+      "signal_etf_date": "2025-07-31",
+      "macro_date": "2025-07-25",
+      "macro_slope_10y2y": 0.49,
+      "spy_6m_reference": "2025-01-31",
+      "spy_6m_momentum": 0.056554525395697164,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-09",
+      "signal_etf_date": "2025-08-29",
+      "macro_date": "2025-08-22",
+      "macro_slope_10y2y": 0.58,
+      "spy_6m_reference": "2025-02-28",
+      "spy_6m_momentum": 0.09209860806782233,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-10",
+      "signal_etf_date": "2025-09-30",
+      "macro_date": "2025-09-25",
+      "macro_slope_10y2y": 0.54,
+      "spy_6m_reference": "2025-03-28",
+      "spy_6m_momentum": 0.20577636042816216,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-11",
+      "signal_etf_date": "2025-10-31",
+      "macro_date": "2025-10-24",
+      "macro_slope_10y2y": 0.54,
+      "spy_6m_reference": "2025-05-01",
+      "spy_6m_momentum": 0.22830771434311425,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2025-12",
+      "signal_etf_date": "2025-11-28",
+      "macro_date": "2025-11-21",
+      "macro_slope_10y2y": 0.55,
+      "spy_6m_reference": "2025-05-28",
+      "spy_6m_momentum": 0.16943251136225523,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-01",
+      "signal_etf_date": "2025-12-31",
+      "macro_date": "2025-12-26",
+      "macro_slope_10y2y": 0.68,
+      "spy_6m_reference": "2025-07-01",
+      "spy_6m_momentum": 0.11038810513387753,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-02",
+      "signal_etf_date": "2026-01-30",
+      "macro_date": "2026-01-23",
+      "macro_slope_10y2y": 0.64,
+      "spy_6m_reference": "2025-07-30",
+      "spy_6m_momentum": 0.0968994977887252,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-03",
+      "signal_etf_date": "2026-02-27",
+      "macro_date": "2026-02-20",
+      "macro_slope_10y2y": 0.6,
+      "spy_6m_reference": "2025-08-27",
+      "spy_6m_momentum": 0.06695399694039028,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-04",
+      "signal_etf_date": "2026-03-31",
+      "macro_date": "2026-03-26",
+      "macro_slope_10y2y": 0.46,
+      "spy_6m_reference": "2025-10-01",
+      "spy_6m_momentum": -0.021552776618737335,
+      "inverted": false,
+      "downtrend": true
+    },
+    {
+      "month": "2026-05",
+      "signal_etf_date": "2026-04-30",
+      "macro_date": "2026-04-24",
+      "macro_slope_10y2y": 0.53,
+      "spy_6m_reference": "2025-10-30",
+      "spy_6m_momentum": 0.06313630199217246,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-06",
+      "signal_etf_date": "2026-05-29",
+      "macro_date": "2026-05-22",
+      "macro_slope_10y2y": 0.43,
+      "spy_6m_reference": "2025-11-28",
+      "spy_6m_momentum": 0.1132550563604009,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-07",
+      "signal_etf_date": "2026-06-30",
+      "macro_date": "2026-06-25",
+      "macro_slope_10y2y": 0.31,
+      "spy_6m_reference": "2025-12-30",
+      "spy_6m_momentum": 0.09276227291830774,
+      "inverted": false,
+      "downtrend": false
+    },
+    {
+      "month": "2026-08",
+      "signal_etf_date": "2026-07-31",
+      "macro_date": "2026-07-24",
+      "macro_slope_10y2y": 0.36,
+      "spy_6m_reference": "2026-01-30",
+      "spy_6m_momentum": 0.08530707523456216,
+      "inverted": false,
+      "downtrend": false
+    }
+  ]
+}
