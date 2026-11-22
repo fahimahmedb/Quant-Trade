@@ -1,0 +1,104 @@
+{
+  "trial_id": "QT_OPEN_MACRO_CROSSASSET_20261122_V1_INPUTS",
+  "admission": ".quant/experiment_admissions/QT_OPEN_MACRO_CROSSASSET_EXPLORATORY_20261122.json",
+  "protocol": "research/edge_lab/protocols/qt-open-macro-crossasset-exploratory-20261122-v1.json",
+  "result_status": "NEGATIVE_FOR_COMBINED_AGAINST_MIXED_AND_SIMPLE_ABLATIONS",
+  "evidence_level": "HISTORICAL_EXPLORATORY_PRE_TAX_NOT_STRICT_PIT_NOT_OOS",
+  "not_a_proof_of_ai_skill": true,
+  "real_orders": 0,
+  "fees_bps_assumed": 10,
+  "source_blobs": {
+    "market": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+    "macro": "c3ae587001c526afd0b9f460b8d873008e86b90a",
+    "CPI": "a2c6c876b198d05f0fba67b8501f105d4d2bf09d"
+  },
+  "CPI": {
+    "start_month": "2023-01",
+    "start_index": 299.17,
+    "end_month": "2026-09",
+    "end_index": 336.94
+  },
+  "observations": 44,
+  "signals": {
+    "inverted_months": 21,
+    "downtrend_months": 6,
+    "both_months": 2
+  },
+  "portfolio_metrics": {
+    "combined": {
+      "terminal_nominal_wealth": 1.5411651421217911,
+      "terminal_real_US_CPI_pre_tax": 1.3684049847705118,
+      "real_annualized_growth": 0.08930488022287952,
+      "annualized_monthly_volatility": 0.11319224161710283,
+      "max_monthly_drawdown": -0.092570926705977,
+      "total_traded_notional_per_1_initial": 3.283432182905223,
+      "GLD_months": 2,
+      "observations": 44
+    },
+    "macro_only": {
+      "terminal_nominal_wealth": 1.7420591954001627,
+      "terminal_real_US_CPI_pre_tax": 1.5467793954053146,
+      "real_annualized_growth": 0.12632126831175405,
+      "annualized_monthly_volatility": 0.10389250384209993,
+      "max_monthly_drawdown": -0.06031354447767823,
+      "total_traded_notional_per_1_initial": 2.5303010637684507,
+      "GLD_months": 21,
+      "observations": 44
+    },
+    "trend_only": {
+      "terminal_nominal_wealth": 1.5760822607510434,
+      "terminal_real_US_CPI_pre_tax": 1.3994079953371215,
+      "real_annualized_growth": 0.09598094833452042,
+      "annualized_monthly_volatility": 0.11240239690531699,
+      "max_monthly_drawdown": -0.092570926705977,
+      "total_traded_notional_per_1_initial": 6.401313038985252,
+      "GLD_months": 6,
+      "observations": 44
+    },
+    "static_tlt": {
+      "terminal_nominal_wealth": 1.5279929022646923,
+      "terminal_real_US_CPI_pre_tax": 1.3567093149241052,
+      "real_annualized_growth": 0.08675779887284296,
+      "annualized_monthly_volatility": 0.11291157824684887,
+      "max_monthly_drawdown": -0.092570926705977,
+      "total_traded_notional_per_1_initial": 1.6856493883942072,
+      "GLD_months": 0,
+      "observations": 44
+    },
+    "static_gold": {
+      "terminal_nominal_wealth": 2.2130498731244446,
+      "terminal_real_US_CPI_pre_tax": 1.964973379659999,
+      "real_annualized_growth": 0.20228205470926408,
+      "annualized_monthly_volatility": 0.10769903442691378,
+      "max_monthly_drawdown": -0.06832087096588069,
+      "total_traded_notional_per_1_initial": 1.9332383589594946,
+      "GLD_months": 44,
+      "observations": 44
+    },
+    "static_mixed": {
+      "terminal_nominal_wealth": 1.8439762736992755,
+      "terminal_real_US_CPI_pre_tax": 1.6372718638410766,
+      "real_annualized_growth": 0.14392244510270014,
+      "annualized_monthly_volatility": 0.10396559249934077,
+      "max_monthly_drawdown": -0.07020280183692595,
+      "total_traded_notional_per_1_initial": 1.8414513906225456,
+      "GLD_months": 0,
+      "observations": 44
+    }
+  },
+  "pairwise_real": {
+    "combined_minus_static_mixed": -0.26886687907056483,
+    "combined_minus_macro_only": -0.17837441063480286,
+    "combined_minus_trend_only": -0.0310030105666097
+  },
+  "replay_note": "Economic arithmetic ran twice in independent JS code paths against pinned source data and the frozen 44-row snapshot. Published Node script is source for future external re-execution; its process-level execution is NOT claimed here.",
+  "limitations": [
+    "No strict historical data vintages",
+    "US rather than French inflation and tax framework",
+    "Assumed cost, close fill, no bid ask",
+    "No stress/liquidity/FX/tax",
+    "Fixed 60% equity, hedge portfolios not variance matched",
+    "All experiments exposed/contaminated for later independent OOS",
+    "Only this specific joint rule rejected in this period; not all macro combinations"
+  ]
+}
