@@ -1,0 +1,113 @@
+{
+  "trial_id": "QT_OPEN_CPI_ENERGY_INDUSTRY_20261122_V1",
+  "admission": ".quant/experiment_admissions/QT_OPEN_CPI_SECTOR_EXPLORATORY_20261122.json",
+  "protocol": "research/edge_lab/protocols/qt-open-cpi-energy-industry-exploratory-20261122-v1.json",
+  "amendment": "research/edge_lab/protocols/qt-open-cpi-energy-industry-exploratory-20261122-v1a-missing-cpi.json",
+  "inputs": "research/edge_lab/discovery/experiments/qt-open-cpi-energy-industry-20261122-inputs.json",
+  "status": "NO_MULTISOURCE_INCREMENTAL_ADVANTAGE_DEMONSTRATED",
+  "test_type": "EXPLORATORY_HISTORICAL_ECONOMIC_SIMULATION_PRE_TAX_NO_REAL_CAPITAL",
+  "not_prospective_OOS": true,
+  "versioned_PIT_inputs_NOT_PROVEN": true,
+  "observations": 104,
+  "period": {
+    "entry": "2018-01-02",
+    "exit": "2026-09-01"
+  },
+  "data_sources": {
+    "market_blob": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+    "CPI_blob": "a2c6c876b198d05f0fba67b8501f105d4d2bf09d"
+  },
+  "CPI": {
+    "start": 247.867,
+    "end": 336.94,
+    "start_month": "2018-01",
+    "end_month": "2026-09"
+  },
+  "macro_missing_months": [
+    "2025-12",
+    "2026-03"
+  ],
+  "flags": {
+    "inflation_acceleration_months": 55,
+    "energy_strength_months": 43,
+    "both_months": 31
+  },
+  "cost_bps_per_traded_notional": 10,
+  "outcomes": {
+    "combined": {
+      "nominal_wealth": 3.168788,
+      "real_wealth": 2.331091,
+      "real_CAGR": 0.102581,
+      "annualized_vol": 0.176404,
+      "max_monthly_drawdown": -0.269658,
+      "turnover_notional": 15.25549,
+      "energy_months": 31
+    },
+    "macro_only": {
+      "nominal_wealth": 3.446579,
+      "real_wealth": 2.535446,
+      "real_CAGR": 0.113324,
+      "annualized_vol": 0.201114,
+      "max_monthly_drawdown": -0.366575,
+      "turnover_notional": 22.175925,
+      "energy_months": 56
+    },
+    "price_only": {
+      "nominal_wealth": 3.243384,
+      "real_wealth": 2.385968,
+      "real_CAGR": 0.105546,
+      "annualized_vol": 0.17703,
+      "max_monthly_drawdown": -0.269658,
+      "turnover_notional": 15.375169,
+      "energy_months": 43
+    },
+    "static_energy": {
+      "nominal_wealth": 3.135557,
+      "real_wealth": 2.306646,
+      "real_CAGR": 0.101241,
+      "annualized_vol": 0.204593,
+      "max_monthly_drawdown": -0.366074,
+      "turnover_notional": 3.72175,
+      "energy_months": 104
+    },
+    "static_industry": {
+      "nominal_wealth": 2.989634,
+      "real_wealth": 2.199298,
+      "real_CAGR": 0.095202,
+      "annualized_vol": 0.17569,
+      "max_monthly_drawdown": -0.269658,
+      "turnover_notional": 2.08067,
+      "energy_months": 0
+    },
+    "static_mixed": {
+      "nominal_wealth": 3.094515,
+      "real_wealth": 2.276453,
+      "real_CAGR": 0.099568,
+      "annualized_vol": 0.183984,
+      "max_monthly_drawdown": -0.318832,
+      "turnover_notional": 3.049024,
+      "energy_months": 0
+    }
+  },
+  "rounded_pairwise_real": {
+    "combined_minus_mixed": 0.054638,
+    "combined_minus_macro_only": -0.204355,
+    "combined_minus_price_only": -0.054876
+  },
+  "economic_interpretation": "Combined beats static mixed by a small historical amount but loses to each simple ablation; the inflation source has no established positive marginal value given the price signal at similar monthly volatility and drawdown. Macro-only wins wealth but has substantially more volatility and drawdown; not risk-matched.",
+  "execution_receipt": {
+    "arithmetic": "EXECUTED_ON_REAL_HISTORICAL_MARKET_AND_CPI_SERIES_IN_CONNECTED_TOOL",
+    "logic_checks": "104 aligned observations; two source-backed macro missing cases; all entry dates after signals; finite portfolio wealth; 6 arms exactly as frozen",
+    "external_Node_runner": "PUBLISHED_NOT_INDEPENDENTLY_EXECUTED",
+    "economic_orders": "NONE"
+  },
+  "limitations": [
+    "No point-in-time certified vintage",
+    "No holdings/tax/FX model applicable to French client",
+    "Cost 10 bps assumed and close-only fill",
+    "No risk matching across XLE and XLI",
+    "No independent OOS due data exposure, cannot validate autonomous AI",
+    "Current-vintage adjusted price and CPI levels",
+    "This is trial 2 in same research burst; both trials reported, no selective winner"
+  ]
+}
