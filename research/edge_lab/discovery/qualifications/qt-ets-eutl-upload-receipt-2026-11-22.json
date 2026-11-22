@@ -1,1 +1,142 @@
-The requested file reference is not currently visible. Use files.search or files.list to rediscover the file, then retry with a returned ref_id or file_id.
+{
+  "as_of": "2026-11-22",
+  "source_sha256": {
+    "transactions_eutl_2026.zip": "b19060b8df7c7053b4e8486f98e8fe47f67d4fc11bbb878ce145c4c4d273dcb2",
+    "operators_daily 2.csv.gz": "79eac53e3066f6c8eb9233cce2b74dc6624e21fccf657df617ae4e0dad5f3cd5",
+    "operators_daily.csv.gz": "79eac53e3066f6c8eb9233cce2b74dc6624e21fccf657df617ae4e0dad5f3cd5",
+    "registry_holdings_daily.csv.gz": "29117517fe116a77ecdbdafb5f61040d0beb0e1cb5558a3799a74eeb5639cd09",
+    "verified_emissions_2025_en.xlsx": "8f4e628d9d8d7decb0a9bae4cde067442dec9a25c12ec2a561f52687cfb6b99a",
+    "compliance_2025_code_en.xlsx": "2ab43fc5d8675d0c22c4f9688a6f8a246a11d30bc5ee058e7fb0bc79b2b1d2ed"
+  },
+  "archive_integrity": "ZIP CRC PASS; full CSV parsed 2,210,346 rows, 0 bad",
+  "transactions_noted": "EUTL public non-ESD",
+  "transaction_date_max": "2023",
+  "transaction_rows": 2210346,
+  "candidate_transfer_records": 74,
+  "distinct_transaction_ids": 73,
+  "gross_candidate_non_kyoto_units": 43495168,
+  "gross_candidate_by_year": {
+    "2021": 12244566,
+    "2022": 16977534,
+    "2023": 14273068
+  },
+  "candidate_counterparties": [
+    {
+      "counterparty": "Electrabel",
+      "2021": 4028778,
+      "2022": 4604190,
+      "2023": 4108771,
+      "total_2021_2023": 12741739,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    },
+    {
+      "counterparty": "ENGIE",
+      "2021": 3003880,
+      "2022": 3773529,
+      "2023": 3094027,
+      "total_2021_2023": 9871436,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    },
+    {
+      "counterparty": "TAMEH Polska Sp. z o. o.",
+      "2021": 1519319,
+      "2022": 3994541,
+      "2023": 3229900,
+      "total_2021_2023": 8743760,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    },
+    {
+      "counterparty": "Aboño Generaciones Eléctricas, S.L.U.",
+      "2021": 1689237,
+      "2022": 2750665,
+      "2023": 2010341,
+      "total_2021_2023": 6450243,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    },
+    {
+      "counterparty": "Vulkan Energiewirtschaft Oderbrücke GmbH",
+      "2021": 1764789,
+      "2022": 1737043,
+      "2023": 1785331,
+      "total_2021_2023": 5287163,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    },
+    {
+      "counterparty": "Cogeneración Siderúrgica Asturiana, S.A.",
+      "2021": 194498,
+      "2022": 69818,
+      "2023": 0,
+      "total_2021_2023": 264316,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    },
+    {
+      "counterparty": "DALKIA",
+      "2021": 44065,
+      "2022": 47748,
+      "2023": 44698,
+      "total_2021_2023": 136511,
+      "qualification": "ENERGY_COUNTERPARTY_CANDIDATE_NOT_CONTRACT_PROOF"
+    }
+  ],
+  "verified_xlsx_vs_registry": {
+    "2021_allocation": {
+      "matched": 61,
+      "xlsx_no_value": 14,
+      "mismatched": 1,
+      "total_abs_diff": 10147
+    },
+    "2021_emissions": {
+      "matched": 63,
+      "xlsx_no_value": 13
+    },
+    "2022_allocation": {
+      "matched": 61,
+      "xlsx_no_value": 14,
+      "mismatched": 1,
+      "total_abs_diff": 10147
+    },
+    "2022_emissions": {
+      "matched": 63,
+      "xlsx_no_value": 13
+    },
+    "2023_allocation": {
+      "matched": 61,
+      "xlsx_no_value": 14,
+      "mismatched": 1,
+      "total_abs_diff": 10147
+    },
+    "2023_emissions": {
+      "matched": 63,
+      "xlsx_no_value": 13
+    },
+    "2024_allocation": {
+      "matched": 61,
+      "xlsx_no_value": 14,
+      "mismatched": 1,
+      "total_abs_diff": 10147
+    },
+    "2024_emissions": {
+      "matched": 62,
+      "xlsx_no_value": 14
+    },
+    "2025_allocation": {
+      "matched": 58,
+      "xlsx_no_value": 14,
+      "mismatched": 4,
+      "total_abs_diff": 21778
+    },
+    "2025_emissions": {
+      "matched": 48,
+      "xlsx_no_value": 28
+    }
+  },
+  "compliance_2025_workbook_vs_2021_2025_daily_sum": {
+    "TOTAL_VERIFIED_EMISSIONS_exact_2021_2025_sum": 61,
+    "TOTAL_SURRENDERED_ALLOWANCES_exact_2021_2025_sum": 57,
+    "TOTAL_SURRENDERED_ALLOWANCES_missing_full_5years": 6,
+    "TOTAL_VERIFIED_EMISSIONS_missing_full_5years": 2
+  },
+  "validation_level": "DOCUMENTARY_CANDIDATES_NOT_PROVEN_WASTE_GAS_CONTRACT_TRANSFERS",
+  "2024_2025_transfers": "UNAVAILABLE_PUBLIC_LAG",
+  "reconciliation_of_72056762": "UNKNOWN"
+}
