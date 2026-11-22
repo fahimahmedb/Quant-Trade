@@ -1,0 +1,13 @@
+country,installation_id,measure,year,published_2024,published_2025,delta,holder_as_of_2026
+DE,67,ALLOCATION,2021,61484,53765,-7719,ArcelorMittal Hamburg GmbH
+BE,108,VERIFIED_EMISSIONS,2022,23319,23624,305,ArcelorMittal Belgium
+DE,67,ALLOCATION,2022,55286,48864,-6422,ArcelorMittal Hamburg GmbH
+DE,1364,ALLOCATION,2023,11886,11763,-123,ArcelorMittal Bremen GmbH
+DE,1892,ALLOCATION,2023,81680,80938,-742,ArcelorMittal Eisenhüttenstadt GmbH
+DE,204194,ALLOCATION,2023,16357,13615,-2742,ArcelorMittal Bremen GmbH
+DE,60,ALLOCATION,2023,4341968,4340328,-1640,ArcelorMittal Bremen GmbH
+DE,67,ALLOCATION,2023,55286,49930,-5356,ArcelorMittal Hamburg GmbH
+DE,70,ALLOCATION,2023,2678485,2678779,294,ArcelorMittal Eisenhüttenstadt GmbH
+LU,12,VERIFIED_EMISSIONS,2023,143629,143590,-39,ArcelorMittal Belval et Differdange
+LU,13,VERIFIED_EMISSIONS,2023,155195,156347,1152,ArcelorMittal Belval et Differdange
+PL,899,ALLOCATION,2023,43016,43911,895,ArcelorMittal Poland S.A.
