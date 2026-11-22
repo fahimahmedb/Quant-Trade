@@ -1,0 +1,1058 @@
+{
+  "id": "QT_OPEN_CPI_ENERGY_INDUSTRY_20261122_V1_INPUTS",
+  "protocol": "research/edge_lab/protocols/qt-open-cpi-energy-industry-exploratory-20261122-v1.json",
+  "missing_cpi_amendment": "research/edge_lab/protocols/qt-open-cpi-energy-industry-exploratory-20261122-v1a-missing-cpi.json",
+  "source_blobs": {
+    "ETF": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+    "CPI": "a2c6c876b198d05f0fba67b8501f105d4d2bf09d"
+  },
+  "US_CPI": {
+    "entry_month": "2018-01",
+    "entry_index": 247.867,
+    "exit_month": "2026-09",
+    "exit_index": 336.94
+  },
+  "not_historical_vintages": true,
+  "rows": [
+    {
+      "ym": "2018-01",
+      "signal_etf_date": "2017-12-29",
+      "reference_etf_date": "2017-06-29",
+      "macro_latest_cpi": "2017-11",
+      "macro_prior_cpi": "2017-08",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0026360872662500867,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-02",
+      "signal_etf_date": "2018-01-31",
+      "reference_etf_date": "2017-07-31",
+      "macro_latest_cpi": "2017-12",
+      "macro_prior_cpi": "2017-09",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0012388139043479907,
+      "energy_leads": false
+    },
+    {
+      "ym": "2018-03",
+      "signal_etf_date": "2018-02-28",
+      "reference_etf_date": "2017-08-28",
+      "macro_latest_cpi": "2018-01",
+      "macro_prior_cpi": "2017-10",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0002937891829899453,
+      "energy_leads": false
+    },
+    {
+      "ym": "2018-04",
+      "signal_etf_date": "2018-03-29",
+      "reference_etf_date": "2017-09-29",
+      "macro_latest_cpi": "2018-02",
+      "macro_prior_cpi": "2017-11",
+      "macro_missing": false,
+      "inflation_acceleration": 0.00009212482555476242,
+      "energy_leads": false
+    },
+    {
+      "ym": "2018-05",
+      "signal_etf_date": "2018-04-30",
+      "reference_etf_date": "2017-10-30",
+      "macro_latest_cpi": "2018-03",
+      "macro_prior_cpi": "2017-12",
+      "macro_missing": false,
+      "inflation_acceleration": 0.002506289294044839,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-06",
+      "signal_etf_date": "2018-05-31",
+      "reference_etf_date": "2017-12-01",
+      "macro_latest_cpi": "2018-04",
+      "macro_prior_cpi": "2018-01",
+      "macro_missing": false,
+      "inflation_acceleration": 0.003922363230596471,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-07",
+      "signal_etf_date": "2018-06-29",
+      "reference_etf_date": "2017-12-29",
+      "macro_latest_cpi": "2018-05",
+      "macro_prior_cpi": "2018-02",
+      "macro_missing": false,
+      "inflation_acceleration": 0.005892162935688949,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-08",
+      "signal_etf_date": "2018-07-31",
+      "reference_etf_date": "2018-01-31",
+      "macro_latest_cpi": "2018-06",
+      "macro_prior_cpi": "2018-03",
+      "macro_missing": false,
+      "inflation_acceleration": 0.005118364313437818,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-09",
+      "signal_etf_date": "2018-08-31",
+      "reference_etf_date": "2018-03-02",
+      "macro_latest_cpi": "2018-07",
+      "macro_prior_cpi": "2018-04",
+      "macro_missing": false,
+      "inflation_acceleration": 0.004867711433123034,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-10",
+      "signal_etf_date": "2018-09-28",
+      "reference_etf_date": "2018-03-28",
+      "macro_latest_cpi": "2018-08",
+      "macro_prior_cpi": "2018-05",
+      "macro_missing": false,
+      "inflation_acceleration": -0.001018316106201178,
+      "energy_leads": true
+    },
+    {
+      "ym": "2018-11",
+      "signal_etf_date": "2018-10-31",
+      "reference_etf_date": "2018-05-01",
+      "macro_latest_cpi": "2018-09",
+      "macro_prior_cpi": "2018-06",
+      "macro_missing": false,
+      "inflation_acceleration": -0.005945756411176895,
+      "energy_leads": false
+    },
+    {
+      "ym": "2018-12",
+      "signal_etf_date": "2018-11-30",
+      "reference_etf_date": "2018-05-30",
+      "macro_latest_cpi": "2018-10",
+      "macro_prior_cpi": "2018-07",
+      "macro_missing": false,
+      "inflation_acceleration": -0.004270451580400847,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-01",
+      "signal_etf_date": "2018-12-31",
+      "reference_etf_date": "2018-06-29",
+      "macro_latest_cpi": "2018-11",
+      "macro_prior_cpi": "2018-08",
+      "macro_missing": false,
+      "inflation_acceleration": -0.005225790720350343,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-02",
+      "signal_etf_date": "2019-01-31",
+      "reference_etf_date": "2018-07-31",
+      "macro_latest_cpi": "2018-12",
+      "macro_prior_cpi": "2018-09",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0036681334556762923,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-03",
+      "signal_etf_date": "2019-02-28",
+      "reference_etf_date": "2018-08-28",
+      "macro_latest_cpi": "2019-01",
+      "macro_prior_cpi": "2018-10",
+      "macro_missing": false,
+      "inflation_acceleration": -0.009712347904079044,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-04",
+      "signal_etf_date": "2019-03-29",
+      "reference_etf_date": "2018-09-28",
+      "macro_latest_cpi": "2019-02",
+      "macro_prior_cpi": "2018-11",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0065646576621909425,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-05",
+      "signal_etf_date": "2019-04-30",
+      "reference_etf_date": "2018-10-30",
+      "macro_latest_cpi": "2019-03",
+      "macro_prior_cpi": "2018-12",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0004763610806219898,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-06",
+      "signal_etf_date": "2019-05-31",
+      "reference_etf_date": "2018-11-30",
+      "macro_latest_cpi": "2019-04",
+      "macro_prior_cpi": "2019-01",
+      "macro_missing": false,
+      "inflation_acceleration": 0.004452046373311314,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-07",
+      "signal_etf_date": "2019-06-28",
+      "reference_etf_date": "2018-12-28",
+      "macro_latest_cpi": "2019-05",
+      "macro_prior_cpi": "2019-02",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0027009320283308824,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-08",
+      "signal_etf_date": "2019-07-31",
+      "reference_etf_date": "2019-01-31",
+      "macro_latest_cpi": "2019-06",
+      "macro_prior_cpi": "2019-03",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0021403808449291795,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-09",
+      "signal_etf_date": "2019-08-30",
+      "reference_etf_date": "2019-03-01",
+      "macro_latest_cpi": "2019-07",
+      "macro_prior_cpi": "2019-04",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0018497496913674194,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-10",
+      "signal_etf_date": "2019-09-30",
+      "reference_etf_date": "2019-03-29",
+      "macro_latest_cpi": "2019-08",
+      "macro_prior_cpi": "2019-05",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0004044857933724888,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-11",
+      "signal_etf_date": "2019-10-31",
+      "reference_etf_date": "2019-05-01",
+      "macro_latest_cpi": "2019-09",
+      "macro_prior_cpi": "2019-06",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0006281985709326587,
+      "energy_leads": false
+    },
+    {
+      "ym": "2019-12",
+      "signal_etf_date": "2019-11-29",
+      "reference_etf_date": "2019-05-29",
+      "macro_latest_cpi": "2019-10",
+      "macro_prior_cpi": "2019-07",
+      "macro_missing": false,
+      "inflation_acceleration": -0.00047421861972130053,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-01",
+      "signal_etf_date": "2019-12-31",
+      "reference_etf_date": "2019-07-01",
+      "macro_latest_cpi": "2019-11",
+      "macro_prior_cpi": "2019-08",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0030149809246247106,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-02",
+      "signal_etf_date": "2020-01-31",
+      "reference_etf_date": "2019-07-31",
+      "macro_latest_cpi": "2019-12",
+      "macro_prior_cpi": "2019-09",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0057382522695219595,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-03",
+      "signal_etf_date": "2020-02-28",
+      "reference_etf_date": "2019-08-28",
+      "macro_latest_cpi": "2020-01",
+      "macro_prior_cpi": "2019-10",
+      "macro_missing": false,
+      "inflation_acceleration": 0.007225290108290761,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-04",
+      "signal_etf_date": "2020-03-31",
+      "reference_etf_date": "2019-10-01",
+      "macro_latest_cpi": "2020-02",
+      "macro_prior_cpi": "2019-11",
+      "macro_missing": false,
+      "inflation_acceleration": 0.002835955820543301,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-05",
+      "signal_etf_date": "2020-04-30",
+      "reference_etf_date": "2019-10-30",
+      "macro_latest_cpi": "2020-03",
+      "macro_prior_cpi": "2019-12",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0074580274820190695,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-06",
+      "signal_etf_date": "2020-05-29",
+      "reference_etf_date": "2019-11-29",
+      "macro_latest_cpi": "2020-04",
+      "macro_prior_cpi": "2020-01",
+      "macro_missing": false,
+      "inflation_acceleration": -0.021574752689136334,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-07",
+      "signal_etf_date": "2020-06-30",
+      "reference_etf_date": "2019-12-30",
+      "macro_latest_cpi": "2020-05",
+      "macro_prior_cpi": "2020-02",
+      "macro_missing": false,
+      "inflation_acceleration": -0.022169471937352414,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-08",
+      "signal_etf_date": "2020-07-31",
+      "reference_etf_date": "2020-01-31",
+      "macro_latest_cpi": "2020-06",
+      "macro_prior_cpi": "2020-03",
+      "macro_missing": false,
+      "inflation_acceleration": -0.008935939443643237,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-09",
+      "signal_etf_date": "2020-08-31",
+      "reference_etf_date": "2020-03-02",
+      "macro_latest_cpi": "2020-07",
+      "macro_prior_cpi": "2020-04",
+      "macro_missing": false,
+      "inflation_acceleration": 0.006569851389668813,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-10",
+      "signal_etf_date": "2020-09-30",
+      "reference_etf_date": "2020-03-30",
+      "macro_latest_cpi": "2020-08",
+      "macro_prior_cpi": "2020-05",
+      "macro_missing": false,
+      "inflation_acceleration": 0.011917190121200072,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-11",
+      "signal_etf_date": "2020-10-30",
+      "reference_etf_date": "2020-04-30",
+      "macro_latest_cpi": "2020-09",
+      "macro_prior_cpi": "2020-06",
+      "macro_missing": false,
+      "inflation_acceleration": 0.007255918135009809,
+      "energy_leads": false
+    },
+    {
+      "ym": "2020-12",
+      "signal_etf_date": "2020-11-30",
+      "reference_etf_date": "2020-05-29",
+      "macro_latest_cpi": "2020-10",
+      "macro_prior_cpi": "2020-07",
+      "macro_missing": false,
+      "inflation_acceleration": 0.001959843424237828,
+      "energy_leads": false
+    },
+    {
+      "ym": "2021-01",
+      "signal_etf_date": "2020-12-31",
+      "reference_etf_date": "2020-07-01",
+      "macro_latest_cpi": "2020-11",
+      "macro_prior_cpi": "2020-08",
+      "macro_missing": false,
+      "inflation_acceleration": -0.001351095980627548,
+      "energy_leads": false
+    },
+    {
+      "ym": "2021-02",
+      "signal_etf_date": "2021-01-29",
+      "reference_etf_date": "2020-07-29",
+      "macro_latest_cpi": "2020-12",
+      "macro_prior_cpi": "2020-09",
+      "macro_missing": false,
+      "inflation_acceleration": -0.00009319366337146029,
+      "energy_leads": false
+    },
+    {
+      "ym": "2021-03",
+      "signal_etf_date": "2021-02-26",
+      "reference_etf_date": "2020-08-26",
+      "macro_latest_cpi": "2021-01",
+      "macro_prior_cpi": "2020-10",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0021770357383259498,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-04",
+      "signal_etf_date": "2021-03-31",
+      "reference_etf_date": "2020-10-01",
+      "macro_latest_cpi": "2021-02",
+      "macro_prior_cpi": "2020-11",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0050167943310654994,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-05",
+      "signal_etf_date": "2021-04-30",
+      "reference_etf_date": "2020-10-30",
+      "macro_latest_cpi": "2021-03",
+      "macro_prior_cpi": "2020-12",
+      "macro_missing": false,
+      "inflation_acceleration": 0.012577570142398686,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-06",
+      "signal_etf_date": "2021-05-28",
+      "reference_etf_date": "2020-11-27",
+      "macro_latest_cpi": "2021-04",
+      "macro_prior_cpi": "2021-01",
+      "macro_missing": false,
+      "inflation_acceleration": 0.02759925097142024,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-07",
+      "signal_etf_date": "2021-06-30",
+      "reference_etf_date": "2020-12-30",
+      "macro_latest_cpi": "2021-05",
+      "macro_prior_cpi": "2021-02",
+      "macro_missing": false,
+      "inflation_acceleration": 0.03316491320219961,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-08",
+      "signal_etf_date": "2021-07-30",
+      "reference_etf_date": "2021-01-29",
+      "macro_latest_cpi": "2021-06",
+      "macro_prior_cpi": "2021-03",
+      "macro_missing": false,
+      "inflation_acceleration": 0.027716889043621462,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-09",
+      "signal_etf_date": "2021-08-31",
+      "reference_etf_date": "2021-03-03",
+      "macro_latest_cpi": "2021-07",
+      "macro_prior_cpi": "2021-04",
+      "macro_missing": false,
+      "inflation_acceleration": 0.012057804006832873,
+      "energy_leads": false
+    },
+    {
+      "ym": "2021-10",
+      "signal_etf_date": "2021-09-30",
+      "reference_etf_date": "2021-03-30",
+      "macro_latest_cpi": "2021-08",
+      "macro_prior_cpi": "2021-05",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0025856501728052095,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-11",
+      "signal_etf_date": "2021-10-29",
+      "reference_etf_date": "2021-04-29",
+      "macro_latest_cpi": "2021-09",
+      "macro_prior_cpi": "2021-06",
+      "macro_missing": false,
+      "inflation_acceleration": -0.000011025582421719804,
+      "energy_leads": true
+    },
+    {
+      "ym": "2021-12",
+      "signal_etf_date": "2021-11-30",
+      "reference_etf_date": "2021-05-28",
+      "macro_latest_cpi": "2021-10",
+      "macro_prior_cpi": "2021-07",
+      "macro_missing": false,
+      "inflation_acceleration": 0.008563936639435,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-01",
+      "signal_etf_date": "2021-12-31",
+      "reference_etf_date": "2021-07-01",
+      "macro_latest_cpi": "2021-11",
+      "macro_prior_cpi": "2021-08",
+      "macro_missing": false,
+      "inflation_acceleration": 0.01557731284931485,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-02",
+      "signal_etf_date": "2022-01-31",
+      "reference_etf_date": "2021-07-30",
+      "macro_latest_cpi": "2021-12",
+      "macro_prior_cpi": "2021-09",
+      "macro_missing": false,
+      "inflation_acceleration": 0.016460540104659804,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-03",
+      "signal_etf_date": "2022-02-28",
+      "reference_etf_date": "2021-08-27",
+      "macro_latest_cpi": "2022-01",
+      "macro_prior_cpi": "2021-10",
+      "macro_missing": false,
+      "inflation_acceleration": 0.012580035649602195,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-04",
+      "signal_etf_date": "2022-03-31",
+      "reference_etf_date": "2021-10-01",
+      "macro_latest_cpi": "2022-02",
+      "macro_prior_cpi": "2021-11",
+      "macro_missing": false,
+      "inflation_acceleration": 0.01062061057932806,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-05",
+      "signal_etf_date": "2022-04-29",
+      "reference_etf_date": "2021-10-29",
+      "macro_latest_cpi": "2022-03",
+      "macro_prior_cpi": "2021-12",
+      "macro_missing": false,
+      "inflation_acceleration": 0.01506052689297288,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-06",
+      "signal_etf_date": "2022-05-31",
+      "reference_etf_date": "2021-12-01",
+      "macro_latest_cpi": "2022-04",
+      "macro_prior_cpi": "2022-01",
+      "macro_missing": false,
+      "inflation_acceleration": 0.007787568725932559,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-07",
+      "signal_etf_date": "2022-06-30",
+      "reference_etf_date": "2021-12-30",
+      "macro_latest_cpi": "2022-05",
+      "macro_prior_cpi": "2022-02",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0071044764593724,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-08",
+      "signal_etf_date": "2022-07-29",
+      "reference_etf_date": "2022-01-28",
+      "macro_latest_cpi": "2022-06",
+      "macro_prior_cpi": "2022-03",
+      "macro_missing": false,
+      "inflation_acceleration": 0.005173024099417223,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-09",
+      "signal_etf_date": "2022-08-31",
+      "reference_etf_date": "2022-03-03",
+      "macro_latest_cpi": "2022-07",
+      "macro_prior_cpi": "2022-04",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0026618540474314667,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-10",
+      "signal_etf_date": "2022-09-30",
+      "reference_etf_date": "2022-03-30",
+      "macro_latest_cpi": "2022-08",
+      "macro_prior_cpi": "2022-05",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0031881904056028088,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-11",
+      "signal_etf_date": "2022-10-31",
+      "reference_etf_date": "2022-04-29",
+      "macro_latest_cpi": "2022-09",
+      "macro_prior_cpi": "2022-06",
+      "macro_missing": false,
+      "inflation_acceleration": -0.008580883209505341,
+      "energy_leads": true
+    },
+    {
+      "ym": "2022-12",
+      "signal_etf_date": "2022-11-30",
+      "reference_etf_date": "2022-05-27",
+      "macro_latest_cpi": "2022-10",
+      "macro_prior_cpi": "2022-07",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0077938741482059815,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-01",
+      "signal_etf_date": "2022-12-30",
+      "reference_etf_date": "2022-06-30",
+      "macro_latest_cpi": "2022-11",
+      "macro_prior_cpi": "2022-08",
+      "macro_missing": false,
+      "inflation_acceleration": -0.011523697089245166,
+      "energy_leads": true
+    },
+    {
+      "ym": "2023-02",
+      "signal_etf_date": "2023-01-31",
+      "reference_etf_date": "2022-07-29",
+      "macro_latest_cpi": "2022-12",
+      "macro_prior_cpi": "2022-09",
+      "macro_missing": false,
+      "inflation_acceleration": -0.017472683124228006,
+      "energy_leads": true
+    },
+    {
+      "ym": "2023-03",
+      "signal_etf_date": "2023-02-28",
+      "reference_etf_date": "2022-08-26",
+      "macro_latest_cpi": "2023-01",
+      "macro_prior_cpi": "2022-10",
+      "macro_missing": false,
+      "inflation_acceleration": -0.013352803619486542,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-04",
+      "signal_etf_date": "2023-03-31",
+      "reference_etf_date": "2022-09-30",
+      "macro_latest_cpi": "2023-02",
+      "macro_prior_cpi": "2022-11",
+      "macro_missing": false,
+      "inflation_acceleration": -0.010747097163251285,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-05",
+      "signal_etf_date": "2023-04-28",
+      "reference_etf_date": "2022-10-28",
+      "macro_latest_cpi": "2023-03",
+      "macro_prior_cpi": "2022-12",
+      "macro_missing": false,
+      "inflation_acceleration": -0.014694272093116467,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-06",
+      "signal_etf_date": "2023-05-31",
+      "reference_etf_date": "2022-12-01",
+      "macro_latest_cpi": "2023-04",
+      "macro_prior_cpi": "2023-01",
+      "macro_missing": false,
+      "inflation_acceleration": -0.014798265706673419,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-07",
+      "signal_etf_date": "2023-06-30",
+      "reference_etf_date": "2022-12-30",
+      "macro_latest_cpi": "2023-05",
+      "macro_prior_cpi": "2023-02",
+      "macro_missing": false,
+      "inflation_acceleration": -0.01988003805074623,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-08",
+      "signal_etf_date": "2023-07-31",
+      "reference_etf_date": "2023-01-31",
+      "macro_latest_cpi": "2023-06",
+      "macro_prior_cpi": "2023-03",
+      "macro_missing": false,
+      "inflation_acceleration": -0.020157964675402873,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-09",
+      "signal_etf_date": "2023-08-31",
+      "reference_etf_date": "2023-03-03",
+      "macro_latest_cpi": "2023-07",
+      "macro_prior_cpi": "2023-04",
+      "macro_missing": false,
+      "inflation_acceleration": -0.017525402202467566,
+      "energy_leads": false
+    },
+    {
+      "ym": "2023-10",
+      "signal_etf_date": "2023-09-29",
+      "reference_etf_date": "2023-03-29",
+      "macro_latest_cpi": "2023-08",
+      "macro_prior_cpi": "2023-05",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0038249688839242513,
+      "energy_leads": true
+    },
+    {
+      "ym": "2023-11",
+      "signal_etf_date": "2023-10-31",
+      "reference_etf_date": "2023-05-01",
+      "macro_latest_cpi": "2023-09",
+      "macro_prior_cpi": "2023-06",
+      "macro_missing": false,
+      "inflation_acceleration": 0.007305204667855447,
+      "energy_leads": true
+    },
+    {
+      "ym": "2023-12",
+      "signal_etf_date": "2023-11-30",
+      "reference_etf_date": "2023-05-30",
+      "macro_latest_cpi": "2023-10",
+      "macro_prior_cpi": "2023-07",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0006336447395103306,
+      "energy_leads": true
+    },
+    {
+      "ym": "2024-01",
+      "signal_etf_date": "2023-12-29",
+      "reference_etf_date": "2023-06-29",
+      "macro_latest_cpi": "2023-11",
+      "macro_prior_cpi": "2023-08",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0052784167555777195,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-02",
+      "signal_etf_date": "2024-01-31",
+      "reference_etf_date": "2023-07-31",
+      "macro_latest_cpi": "2023-12",
+      "macro_prior_cpi": "2023-09",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0034757528991420372,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-03",
+      "signal_etf_date": "2024-02-29",
+      "reference_etf_date": "2023-08-29",
+      "macro_latest_cpi": "2024-01",
+      "macro_prior_cpi": "2023-10",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0015025987066514812,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-04",
+      "signal_etf_date": "2024-03-28",
+      "reference_etf_date": "2023-09-28",
+      "macro_latest_cpi": "2024-02",
+      "macro_prior_cpi": "2023-11",
+      "macro_missing": false,
+      "inflation_acceleration": 0.00015900412019820287,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-05",
+      "signal_etf_date": "2024-04-30",
+      "reference_etf_date": "2023-10-30",
+      "macro_latest_cpi": "2024-03",
+      "macro_prior_cpi": "2023-12",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0012526223860780394,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-06",
+      "signal_etf_date": "2024-05-31",
+      "reference_etf_date": "2023-12-01",
+      "macro_latest_cpi": "2024-04",
+      "macro_prior_cpi": "2024-01",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0026647916889110945,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-07",
+      "signal_etf_date": "2024-06-28",
+      "reference_etf_date": "2023-12-28",
+      "macro_latest_cpi": "2024-05",
+      "macro_prior_cpi": "2024-02",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0011585793607842287,
+      "energy_leads": true
+    },
+    {
+      "ym": "2024-08",
+      "signal_etf_date": "2024-07-31",
+      "reference_etf_date": "2024-01-31",
+      "macro_latest_cpi": "2024-06",
+      "macro_prior_cpi": "2024-03",
+      "macro_missing": false,
+      "inflation_acceleration": -0.005059879627747232,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-09",
+      "signal_etf_date": "2024-08-30",
+      "reference_etf_date": "2024-03-01",
+      "macro_latest_cpi": "2024-07",
+      "macro_prior_cpi": "2024-04",
+      "macro_missing": false,
+      "inflation_acceleration": -0.004626107516278566,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-10",
+      "signal_etf_date": "2024-09-30",
+      "reference_etf_date": "2024-03-28",
+      "macro_latest_cpi": "2024-08",
+      "macro_prior_cpi": "2024-05",
+      "macro_missing": false,
+      "inflation_acceleration": -0.007382987604830582,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-11",
+      "signal_etf_date": "2024-10-31",
+      "reference_etf_date": "2024-05-01",
+      "macro_latest_cpi": "2024-09",
+      "macro_prior_cpi": "2024-06",
+      "macro_missing": false,
+      "inflation_acceleration": -0.005307640761933241,
+      "energy_leads": false
+    },
+    {
+      "ym": "2024-12",
+      "signal_etf_date": "2024-11-29",
+      "reference_etf_date": "2024-05-29",
+      "macro_latest_cpi": "2024-10",
+      "macro_prior_cpi": "2024-07",
+      "macro_missing": false,
+      "inflation_acceleration": -0.002968482935766348,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-01",
+      "signal_etf_date": "2024-12-31",
+      "reference_etf_date": "2024-07-01",
+      "macro_latest_cpi": "2024-11",
+      "macro_prior_cpi": "2024-08",
+      "macro_missing": false,
+      "inflation_acceleration": 0.002186500996335994,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-02",
+      "signal_etf_date": "2025-01-31",
+      "reference_etf_date": "2024-07-31",
+      "macro_latest_cpi": "2024-12",
+      "macro_prior_cpi": "2024-09",
+      "macro_missing": false,
+      "inflation_acceleration": 0.004474241889100838,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-03",
+      "signal_etf_date": "2025-02-28",
+      "reference_etf_date": "2024-08-28",
+      "macro_latest_cpi": "2025-01",
+      "macro_prior_cpi": "2024-10",
+      "macro_missing": false,
+      "inflation_acceleration": 0.004025782072354378,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-04",
+      "signal_etf_date": "2025-03-31",
+      "reference_etf_date": "2024-10-01",
+      "macro_latest_cpi": "2025-02",
+      "macro_prior_cpi": "2024-11",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0007216855565694846,
+      "energy_leads": true
+    },
+    {
+      "ym": "2025-05",
+      "signal_etf_date": "2025-04-30",
+      "reference_etf_date": "2024-10-30",
+      "macro_latest_cpi": "2025-03",
+      "macro_prior_cpi": "2024-12",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0049733196608356955,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-06",
+      "signal_etf_date": "2025-05-30",
+      "reference_etf_date": "2024-11-29",
+      "macro_latest_cpi": "2025-04",
+      "macro_prior_cpi": "2025-01",
+      "macro_missing": false,
+      "inflation_acceleration": -0.006891942504766213,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-07",
+      "signal_etf_date": "2025-06-30",
+      "reference_etf_date": "2024-12-30",
+      "macro_latest_cpi": "2025-05",
+      "macro_prior_cpi": "2025-02",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0046665241627283915,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-08",
+      "signal_etf_date": "2025-07-31",
+      "reference_etf_date": "2025-01-31",
+      "macro_latest_cpi": "2025-06",
+      "macro_prior_cpi": "2025-03",
+      "macro_missing": false,
+      "inflation_acceleration": 0.002784877643258188,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-09",
+      "signal_etf_date": "2025-08-29",
+      "reference_etf_date": "2025-02-28",
+      "macro_latest_cpi": "2025-07",
+      "macro_prior_cpi": "2025-04",
+      "macro_missing": false,
+      "inflation_acceleration": 0.003936135354779102,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-10",
+      "signal_etf_date": "2025-09-30",
+      "reference_etf_date": "2025-03-28",
+      "macro_latest_cpi": "2025-08",
+      "macro_prior_cpi": "2025-05",
+      "macro_missing": false,
+      "inflation_acceleration": 0.005612777488237297,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-11",
+      "signal_etf_date": "2025-10-31",
+      "reference_etf_date": "2025-05-01",
+      "macro_latest_cpi": "2025-09",
+      "macro_prior_cpi": "2025-06",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0034346375730329726,
+      "energy_leads": false
+    },
+    {
+      "ym": "2025-12",
+      "signal_etf_date": "2025-11-28",
+      "reference_etf_date": "2025-05-28",
+      "macro_latest_cpi": "2025-10",
+      "macro_prior_cpi": "2025-07",
+      "macro_missing": true,
+      "inflation_acceleration": null,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-01",
+      "signal_etf_date": "2025-12-31",
+      "reference_etf_date": "2025-07-01",
+      "macro_latest_cpi": "2025-11",
+      "macro_prior_cpi": "2025-08",
+      "macro_missing": false,
+      "inflation_acceleration": -0.0018108982917577343,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-02",
+      "signal_etf_date": "2026-01-30",
+      "reference_etf_date": "2025-07-30",
+      "macro_latest_cpi": "2025-12",
+      "macro_prior_cpi": "2025-09",
+      "macro_missing": false,
+      "inflation_acceleration": -0.003355962476506047,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-03",
+      "signal_etf_date": "2026-02-27",
+      "reference_etf_date": "2025-08-27",
+      "macro_latest_cpi": "2026-01",
+      "macro_prior_cpi": "2025-10",
+      "macro_missing": true,
+      "inflation_acceleration": null,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-04",
+      "signal_etf_date": "2026-03-31",
+      "reference_etf_date": "2025-10-01",
+      "macro_latest_cpi": "2026-02",
+      "macro_prior_cpi": "2025-11",
+      "macro_missing": false,
+      "inflation_acceleration": -0.003209714684922149,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-05",
+      "signal_etf_date": "2026-04-30",
+      "reference_etf_date": "2025-10-30",
+      "macro_latest_cpi": "2026-03",
+      "macro_prior_cpi": "2025-12",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0057933991121330575,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-06",
+      "signal_etf_date": "2026-05-29",
+      "reference_etf_date": "2025-11-28",
+      "macro_latest_cpi": "2026-04",
+      "macro_prior_cpi": "2026-01",
+      "macro_missing": false,
+      "inflation_acceleration": 0.014244136872174407,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-07",
+      "signal_etf_date": "2026-06-30",
+      "reference_etf_date": "2025-12-30",
+      "macro_latest_cpi": "2026-05",
+      "macro_prior_cpi": "2026-02",
+      "macro_missing": false,
+      "inflation_acceleration": 0.01834561052534034,
+      "energy_leads": true
+    },
+    {
+      "ym": "2026-08",
+      "signal_etf_date": "2026-07-31",
+      "reference_etf_date": "2026-01-30",
+      "macro_latest_cpi": "2026-06",
+      "macro_prior_cpi": "2026-03",
+      "macro_missing": false,
+      "inflation_acceleration": 0.0027500462469807196,
+      "energy_leads": true
+    }
+  ]
+}
