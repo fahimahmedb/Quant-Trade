@@ -1,0 +1,31 @@
+{
+  "schema": "quant-trade-scoped-economic-research-admission-v1",
+  "mission_id": "QT_OPEN_MACRO_CROSSASSET_EXPLORATORY_20261122",
+  "authority": {
+    "source": "Explicit owner authorization in current ChatGPT conversation on 2026-11-22: full governance/data authority and instruction to proceed as far as economic tests; no requirement for interim approval.",
+    "type": "OWNER_DIRECT",
+    "scope": "ONE_BOUNDED_HISTORICAL_EXPLORATORY_RESEARCH_CASE"
+  },
+  "parents": {
+    "project_canonical": "668214eae51425d9e3a2208d79978e978ede39fb",
+    "code_canonical": "d7b135bc0f725c65950e8437a77285bc3f6e954a",
+    "router_blob": "45984e9a8de5480a5baab8d4b6c64d27ebedb06c"
+  },
+  "permitted": {
+    "read_public_historical_market_data": true,
+    "exploratory_economic_backtest": true,
+    "commit_reproducible_protocol_and_results": true,
+    "read_only_historical_source_acquisition": true
+  },
+  "forbidden": {
+    "real_money_orders": true,
+    "live_trading": true,
+    "production_deployment": true,
+    "market_data_purchase": true,
+    "prospective_collection": true,
+    "scientific_unblinding": true,
+    "overwriting_prior_negative_results": true
+  },
+  "note": "Scoped one-off Owner admission. Global authorization flags remain FALSE; this does not open unattended runtime experiments or replace a prospectively frozen independent proof. Existing builder receipt is not overwritten. No inference of actual profitability.",
+  "revocation": "This admission terminates after one predeclared exploratory evaluation and its negative controls; any new strategy or evaluation requires a distinct scope and trial count."
+}
