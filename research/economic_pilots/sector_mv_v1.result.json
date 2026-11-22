@@ -1,0 +1,224 @@
+{
+  "protocol": "QT_OWNER_ECO_SECTOR_MOMENTUM_VOL_20261122_v1",
+  "owner_authorization": "issue-60-comment-7071680051",
+  "base_code_head": "d7b135bc0f725c65950e8437a77285bc3f6e954a",
+  "source": {
+    "path": "data/datasets/us_sector_etf_daily.csv",
+    "git_blob_sha": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+    "meta_sha": "89277501c126f5984c87a7d17b6cf4c46601f359",
+    "metadata_sha256": "f108a6f41552afdb42100d3188d7194006de1aae6a27bd7722330818e6dcb6d1",
+    "total_rows": 30168,
+    "aligned_sessions": 2514,
+    "first_date": "2016-09-12",
+    "last_date": "2026-09-11",
+    "already_exposed_to_prior_research": true,
+    "adjusted_close_is_retroactively_restated": true
+  },
+  "portfolio": {
+    "initial_units": 5000,
+    "first_execution": "2017-10-02",
+    "end": "2026-09-11",
+    "sessions": 2248,
+    "monthly_rebalance_signals": 108,
+    "strategies": [
+      "B0-SPY-buy-hold",
+      "B1-equal-nine-sectors-monthly",
+      "M-top-three-12minus1-momentum-equal",
+      "V-nine-sectors-inverse-63d-vol",
+      "MV-top-three-momentum-inverse-63d-vol"
+    ],
+    "costs_bps_one_way": [
+      10,
+      25
+    ],
+    "capital_flows": "none",
+    "no_leverage": true,
+    "long_only": true,
+    "transaction_fee_convention": "proportional approx using pre-cost weights, charged at next session adjusted close",
+    "taxes_fx_inflation": "NOT_MODELLED"
+  },
+  "outcomes": [
+    {
+      "model": "B0",
+      "fee_bps_one_way": 10,
+      "final_nav": 17322.444160648745,
+      "cagr_pct": 14.945866487721915,
+      "vol_pct": 18.793262393054377,
+      "max_drawdown_pct": -33.717274318762314,
+      "trade_events": 1,
+      "model_fees_units": 5,
+      "pre2022_return_pct": 102.57709596087938,
+      "post2022_return_pct": 71.02075709480961
+    },
+    {
+      "model": "B0",
+      "fee_bps_one_way": 25,
+      "final_nav": 17296.434484731813,
+      "cagr_pct": 14.926506145156381,
+      "vol_pct": 18.793474789201966,
+      "max_drawdown_pct": -33.7172743187623,
+      "trade_events": 1,
+      "model_fees_units": 12.5,
+      "pre2022_return_pct": 102.27292614712407,
+      "post2022_return_pct": 71.02075709480941
+    },
+    {
+      "model": "B1",
+      "fee_bps_one_way": 10,
+      "final_nav": 14532.491506055385,
+      "cagr_pct": 12.705113405126166,
+      "vol_pct": 17.678194333340585,
+      "max_drawdown_pct": -36.71612267644535,
+      "trade_events": 108,
+      "model_fees_units": 30.790154198131717,
+      "pre2022_return_pct": 80.47287690581561,
+      "post2022_return_pct": 61.04903689920715
+    },
+    {
+      "model": "B1",
+      "fee_bps_one_way": 25,
+      "final_nav": 14446.798964668764,
+      "cagr_pct": 12.630418593301496,
+      "vol_pct": 17.67842644505566,
+      "max_drawdown_pct": -36.718069739161066,
+      "trade_events": 108,
+      "model_fees_units": 76.71278346859762,
+      "pre2022_return_pct": 79.85502308656956,
+      "post2022_return_pct": 60.649379892104434
+    },
+    {
+      "model": "M",
+      "fee_bps_one_way": 10,
+      "final_nav": 16939.923680031152,
+      "cagr_pct": 14.658497756542733,
+      "vol_pct": 18.99504002207583,
+      "max_drawdown_pct": -30.260011425666466,
+      "trade_events": 108,
+      "model_fees_units": 421.58203653275194,
+      "pre2022_return_pct": 78.92438934202815,
+      "post2022_return_pct": 89.35287405283967
+    },
+    {
+      "model": "M",
+      "fee_bps_one_way": 25,
+      "final_nav": 15816.451062244521,
+      "cagr_pct": 13.779863424939887,
+      "vol_pct": 19.002352930361152,
+      "max_drawdown_pct": -30.2607805964038,
+      "trade_events": 108,
+      "model_fees_units": 1012.0021893754474,
+      "pre2022_return_pct": 73.35300367952331,
+      "post2022_return_pct": 82.47680428409885
+    },
+    {
+      "model": "V",
+      "fee_bps_one_way": 10,
+      "final_nav": 13633.677448349039,
+      "cagr_pct": 11.901375893419196,
+      "vol_pct": 16.990948400202925,
+      "max_drawdown_pct": -35.42158550465686,
+      "trade_events": 108,
+      "model_fees_units": 60.41035712255462,
+      "pre2022_return_pct": 79.57277170431185,
+      "post2022_return_pct": 51.845709335026854
+    },
+    {
+      "model": "V",
+      "fee_bps_one_way": 25,
+      "final_nav": 13480.025221242542,
+      "cagr_pct": 11.759290815436273,
+      "vol_pct": 16.99150222418914,
+      "max_drawdown_pct": -35.42929097965201,
+      "trade_events": 108,
+      "model_fees_units": 150.03420408929833,
+      "pre2022_return_pct": 78.48763313852261,
+      "post2022_return_pct": 51.04716202697157
+    },
+    {
+      "model": "MV",
+      "fee_bps_one_way": 10,
+      "final_nav": 15737.147331100463,
+      "cagr_pct": 13.715768605779811,
+      "vol_pct": 18.451329194927716,
+      "max_drawdown_pct": -29.805486875938215,
+      "trade_events": 108,
+      "model_fees_units": 466.15483277476727,
+      "pre2022_return_pct": 74.3540093131641,
+      "post2022_return_pct": 80.51947750549691
+    },
+    {
+      "model": "MV",
+      "fee_bps_one_way": 25,
+      "final_nav": 14542.444356219461,
+      "cagr_pct": 12.713763547049982,
+      "vol_pct": 18.462126926306215,
+      "max_drawdown_pct": -29.81068820229037,
+      "trade_events": 108,
+      "model_fees_units": 1112.759288129013,
+      "pre2022_return_pct": 68.2009733068727,
+      "post2022_return_pct": 72.91748163297052
+    }
+  ],
+  "independent_implementation": {
+    "name": "share_ledger_and_fixed_point_fee_solver",
+    "final_nav_25bps": {
+      "B0": 17296.54258812304,
+      "B1": 14446.902255916717,
+      "M": 15818.195339113012,
+      "V": 13480.124494070978,
+      "MV": 14544.461482352508
+    },
+    "comparison": [
+      {
+        "policy": "B0",
+        "abs_nav_difference": 0.10810339122690493
+      },
+      {
+        "policy": "B1",
+        "abs_nav_difference": 0.10329124795316602
+      },
+      {
+        "policy": "M",
+        "abs_nav_difference": 1.7442768684904877
+      },
+      {
+        "policy": "V",
+        "abs_nav_difference": 0.09927282843636931
+      },
+      {
+        "policy": "MV",
+        "abs_nav_difference": 2.017126133046986
+      }
+    ],
+    "max_abs_difference_units": 2.017126133046986,
+    "reason": "first model approximate pre-cost weight turnover; independent method solves post-cost shares; never treated as exact same execution convention"
+  },
+  "checks": {
+    "positive_adj_closes": true,
+    "all_12_etfs_aligned": true,
+    "adjusted_daily_abs_return_gt25pct": 0,
+    "all_weights_sum_to_one": true,
+    "cost_monotonic_for_each_strategy": true,
+    "lag_at_least_next_close": true,
+    "synthetic_python_self_test": "PASS_13_ASSERTS",
+    "reproducible_runner_python_syntax": "PASS",
+    "criterion": "MV must beat B0, B1, M and V in both pre2022 and post2022 under 25bps one-way, and have <= SPY vol and no worse SPY drawdown",
+    "promotion_criterion_pass": false
+  },
+  "status": "NEGATIVE_FOR_THIS_FROZEN_EXPRESSION_ONLY",
+  "evidence_ceiling": "HISTORICAL_INDICATIVE_US_ETF_PRICES_AFTER_ASSUMED_TRADE_FEES",
+  "NOT_PROVEN": [
+    "posttax real wealth France",
+    "executable fills or spreads",
+    "unseen out-of-sample alpha",
+    "multi-sourced AI advantage",
+    "CBAM/Nexans investment edge"
+  ],
+  "permissions": {
+    "single_historical_pilot_authorized_by_owner": true,
+    "canonical_global_experiment_permission_changed": false,
+    "prospective": false,
+    "real_capital": false,
+    "live_trading": false
+  }
+}
