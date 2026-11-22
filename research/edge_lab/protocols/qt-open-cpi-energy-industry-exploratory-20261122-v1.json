@@ -1,0 +1,62 @@
+{
+  "protocol_id": "QT_OPEN_CPI_ENERGY_INDUSTRY_20261122_V1",
+  "admission": ".quant/experiment_admissions/QT_OPEN_CPI_SECTOR_EXPLORATORY_20261122.json",
+  "frozen_before_looking_at_XLE_XLI_performance": true,
+  "economic_mechanism": "US headline inflation acceleration may shift energy producer margins relative to industrial users, but macro information may already be priced. Cross-source interaction with independently observed sector price strength may be redundant or detrimental.",
+  "sources": [
+    {
+      "market": {
+        "repo": "fahimahmedb/Quant-Trade",
+        "path": "data/datasets/us_sector_etf_daily.csv",
+        "sha": "9fe148438ea0ef657cbe14fe352bd51491a8bd50",
+        "symbols": [
+          "SPY",
+          "XLE",
+          "XLI"
+        ],
+        "vintage": "2026-09-13",
+        "limitation": "Adj close restated for dividends; no actual fill quotes"
+      }
+    },
+    {
+      "inflation": {
+        "repo": "datasets/cpi-us",
+        "path": "data/cpiai.csv",
+        "sha": "a2c6c876b198d05f0fba67b8501f105d4d2bf09d",
+        "upstream": "Bureau of Labor Statistics",
+        "vintage": "2026-11",
+        "limitation": "Current-vintage CPI, not archived vintage; two-month signal lag below"
+      }
+    }
+  ],
+  "window": {
+    "warmup": "2016-09-12..2017-12-31",
+    "evaluation": "2018-01-01..2026-08-31",
+    "no_truly_independent_OOS": true
+  },
+  "cashflow": "USD 1 initially, no deposits/withdrawals. Unlevered 60% SPY core and 40% sector sleeve (XLE or XLI). USD US-CPI real wealth before taxes/FX.",
+  "signals": {
+    "CPI": "For entry month t, use month t-2 CPI YoY rate CPI[t-2]/CPI[t-14]-1; compare same rate for month t-5 CPI[t-5]/CPI[t-17]-1. Accelerating if difference>0. No current or prior-month CPI leakage.",
+    "relative_sector": "At last completed trading close of month t-1 compute 6-calendar-month adjusted-price return of XLE and XLI, using closest trading close on/before that 6-month cutoff. XLE_6m>XLI_6m indicates relative energy strength.",
+    "combined": "60% SPY + 40% XLE only if CPI accelerating AND XLE relative 6-month strength positive; otherwise 60% SPY + 40% XLI.",
+    "macro_only": "60% SPY+40% XLE if CPI accelerating, else 40% XLI",
+    "price_only": "60% SPY+40% XLE if XLE 6m return > XLI 6m return, else 40% XLI",
+    "static_energy": "60% SPY+40% XLE",
+    "static_industry": "60% SPY+40% XLI",
+    "static_mixed": "60% SPY+20% XLE+20% XLI"
+  },
+  "execution": "First ETF trading session CLOSE of t to first ETF trading session CLOSE t+1. Signal from previous EOM and lagged CPI; target weights rebalanced monthly from drifted weights; no intramonth trades. Adjusted closes proxy total returns; no tax or FX, 10 bps per USD notional bought/sold, once per trade.",
+  "metrics": [
+    "nominal and US-CPI deflated terminal wealth",
+    "real annualized growth",
+    "monthly maximum drawdown",
+    "monthly annualized volatility",
+    "turnover cost",
+    "count of energy sleeve months",
+    "combined minus mixed, macro_only and price_only terminal wealth"
+  ],
+  "counterexample": "Energy has different beta and commodity convexity; CPI is generally expected and cannot capture surprises. Static XLE or XLI may outperform adaptive, and cost/overfitting reduce the edge. Any success is exploratory contaminated given 2026 model knowledge.",
+  "rules": "Exactly 6 predeclared arms. No parameter searches, no post hoc threshold shifts, no winner selection as scientific validation, no real orders; count this as second historical trial in research burst.",
+  "stop": "Compute one fixed economic test with accuracy checks. PARK/NO_CHANGE_REQUIRED if combined not better than static mixed and both ablations; record result honestly.",
+  "status": "FROZEN_BEFORE_ECONOMIC_RESULT"
+}
