@@ -1,0 +1,19 @@
+{
+  "id": "QT_OPEN_CPI_ENERGY_INDUSTRY_20261122_V1A_MISSING_CPI",
+  "parent_protocol": "research/edge_lab/protocols/qt-open-cpi-energy-industry-exploratory-20261122-v1.json",
+  "reason": "Strict input check before reading any XLE/XLI returns identified absent monthly US CPI 2025-10 due to 2025 federal shutdown, as independently confirmed by BLS.",
+  "source": "https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm",
+  "missing_macro_decision_months": [
+    "2025-12",
+    "2026-03"
+  ],
+  "amendment_before_outcome_access": true,
+  "predeclared_fallback": "When any of CPI[t-2], CPI[t-14], CPI[t-5], CPI[t-17] is absent, the combined and macro_only policies RETAIN their last fully determined sector TARGET (XLE or XLI); do not synthesize missing CPI, do not access future CPI. First no-history default = XLI. The price_only and three static controls are unaffected. Maintain 60% SPY / 40% sector and rebalance to the retained target at the ordinary first-trading-session close.",
+  "invalid_inferences": [
+    "2025-10 CPI value reconstructed ex post is not original available information",
+    "Missing macro input does not prove absence of economic opportunity",
+    "Ad hoc optimized fallback after reading returns prohibited"
+  ],
+  "status": "FROZEN_BEFORE_RETURN_ANALYSIS_AFTER_MISSING_DATA_EXCEPTION",
+  "no_extra_trial_count": "This is a data-gap handling amendment for the same trial, not a new strategy or additional performance sweep."
+}
