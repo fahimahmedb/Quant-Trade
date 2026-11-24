@@ -532,7 +532,7 @@
     },
     "decision_relevant_tool_use": {
       "version": 1,
-      "status": "CANONICAL_POLICY_STATIC_QUALIFICATION_REQUIRED",
+      "status": "STATIC_RECEIPT_DECLARATIONS_QUALIFIED",
       "applies_to_all_roles": true,
       "material_gap_selection_required": true,
       "actual_call_required_if_material_authorized_available": true,
@@ -576,7 +576,22 @@
       "capital_or_live_authority_granted": false,
       "new_router_or_gate": false,
       "existing_receipt_path": ".quant/MISSION_ADMISSION.json",
-      "machine_receipt_enforcement": "PENDING_EXISTING_VALIDATOR_EXTENSION"
+      "machine_receipt_enforcement": "ACTIVE_EXISTING_VALIDATOR_DECLARATION_CHECKS",
+      "static_qualification": {
+        "code_sha": "18fddb1e973deb2c2ffaedae211f42b5bd2bfd23",
+        "validator_blob": "b2035ab1864c6493b5746b0532bc701831dea99b",
+        "method_run": 45475741867,
+        "method_job": 138735377475,
+        "hosted_tests_passed": 83,
+        "claim_ceiling": "DECLARATION_SHAPE_AUTHORITY_AND_PRIMARY_LINKAGE_ONLY"
+      },
+      "admission_review_field": "tool_use_review",
+      "review_fields": [
+        "receipts",
+        "planned"
+      ],
+      "executed_requires_call_receipt": true,
+      "final_handoff_allows_planned": false
     }
   }
 }
