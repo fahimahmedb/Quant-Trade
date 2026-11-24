@@ -49,6 +49,10 @@ safety/authority stop or manufacture unbounded speculative options.
 
 Before research, apply §5.2 of `governance/AI_WORKING_METHOD_V1.md` and `behavioral_economic_research` in the machine contract. This binds **both** `FRESH_CONTEXT` and `LONG_CONTEXT` roles: the fresh AI must recover exact primary repository authority without reconstructing chat; the long-context AI must independently revalidate old conclusions rather than privilege remembered answers. Both must identify the economic payer/right, PIT, broker/tax/borrow/quotes, capital, costs and a decisive falsifier before choosing an experiment. Do not promote easy Yahoo data, positive historical statistics, a successful GitHub run or an OHLCV divergence into a net economic edge. Preserve frozen negative memory; scope `PARK` and `FAIL` to the exact tested expression/route, and keep `UNKNOWN` when proof is missing. The project-owned challenge tests are static contract checks, not proof of actual model behavior or permission for prospective/live trading.
 
+## Decision-relevant tool utilization
+
+Apply §5.2.3 of the canonical working method and its `decision_relevant_tool_use` contract. For a material gap use the minimum suitable authorized specialist tools actually available in the host, or record a precise skip/block rationale. Retain primary evidence and actual call receipts; do not count duplicate origins as independent or infer cross-host permissions from installation. Preserve all existing budget, dispatch, scientific and trading boundaries.
+
 ## Concurrency and continuation
 
 - one mutating Builder per capability/seam;

@@ -65,6 +65,29 @@ class EconomicBehaviorContractTests(unittest.TestCase):
         }
         self.assertIn("SHARED_SOURCE_AND_JOINT_FEASIBILITY", shared_cases)
 
+    def test_decision_relevant_tool_use_is_bounded(self):
+        t = self.b["decision_relevant_tool_use"]
+        for key in ("applies_to_all_roles", "material_gap_selection_required",
+                    "actual_call_required_if_material_authorized_available",
+                    "skip_requires_reason", "minimum_sufficient_tools",
+                    "independent_origin_not_provider_count",
+                    "no_unverified_paid_or_external_dispatch", "no_credential_transfer",
+                    "host_capability_independently_verified"):
+            self.assertIs(t[key], True)
+        for key in ("economic_authority_granted", "capital_or_live_authority_granted",
+                    "new_router_or_gate"):
+            self.assertIs(t[key], False)
+        self.assertEqual(t["existing_receipt_path"], self.contract["mission_admission"]["receipt_path"])
+        self.assertEqual(t["behavioral_e2e_witness"], "NOT_PROVEN")
+        self.assertEqual(set(t["dispositions"]), {"EXECUTED", "BLOCKED", "SKIPPED"})
+        self.assertIn("primary_refs", t["receipt_fields"])
+        self.assertIn("UNVERIFIED_BUDGET", t["allowed_skip_reasons"])
+        self.assertIn("### 5.2.3 Decision-relevant tool utilization", self.method)
+        self.assertIn("Decision-relevant tool utilization", self.agents)
+        ids = {x["id"] for x in self.b["behavioral_challenges"]}
+        self.assertTrue({"TOOL_MATERIAL_GAP", "TOOL_DUPLICATE_ORIGIN",
+                         "TOOL_HOST_PERMISSION", "TOOL_NOOP"} <= ids)
+
     def test_regression_old_authority_and_gate_contract(self):
         c=self.contract
         self.assertEqual(c["contract_version"],1)
