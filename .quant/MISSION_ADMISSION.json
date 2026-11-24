@@ -1,68 +1,58 @@
 {
-  "mission_id": "QT_PLUGIN_GOVERNANCE_P0_20261124",
+  "mission_id": "QT_PLUGIN_GOVERNANCE_RECEIPTS_20261124",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-24T17:16:06.391Z",
-  "project_canonical_sha": "668214eae51425d9e3a2208d79978e978ede39fb",
-  "code_canonical_sha": "9004dda239c6c027febd54972e41846b066d8747",
+  "receipt_timestamp": "2026-11-24T19:56:41.169Z",
+  "project_canonical_sha": "8ed211fd1478e56072ce57b8b93f288b20d8c4ca",
+  "code_canonical_sha": "268a011f46ac8d5b95302e0d13f801a289feb7ac",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
-    "project_sha": "668214eae51425d9e3a2208d79978e978ede39fb",
-    "code_sha": "9004dda239c6c027febd54972e41846b066d8747",
-    "seam": "Existing AI working method and tool-use admission checks"
+    "project_sha": "8ed211fd1478e56072ce57b8b93f288b20d8c4ca",
+    "code_sha": "268a011f46ac8d5b95302e0d13f801a289feb7ac",
+    "seam": "Existing AI Working Method admission/completion validator"
   },
-  "current_blocker_or_decision": "Two canonical branches restored; prior admission stale; decision-relevant plugin rule not integrated.",
-  "target_gate_or_blocker": "P0 campaign governance and existing AI Working Method Gate",
+  "current_blocker_or_decision": "Canonical tool-use policy is published and static project gate passed; machine receipt checks are not implemented.",
+  "target_gate_or_blocker": "P0 existing method gate",
   "existing_capability": "REPAIR",
-  "why_this_work_can_change_the_decision": "Require relevant authorized tool selection and observable evidence, not repeated searches or fabricated use.",
-  "minimal_decisive_test": "Validate fresh admission; reject stale head and unverified dispatch; qualify narrow project method and existing validator/test changes on exact remote subjects.",
-  "counterexample": "Installed plugin unavailable in Codex or returns duplicate issuer notice; justified skip or scoped block must not be treated as independent evidence.",
+  "why_this_work_can_change_the_decision": "Reject missing, contradictory or unauthorized declared tool receipts without new architecture.",
+  "minimal_decisive_test": "Existing admission function on exact relevant contract; existing hosted gate plus focused tests for no-op, planned, blocked, executed, forged or unlinked declarations.",
+  "counterexample": "A planned call or duplicate source must not become a final validated result; unverified budget cannot be treated as authorized execution.",
   "primary_evidence": [
     {
-      "claim_id": "METHOD",
-      "claim": "Existing section 5.2.2 concerns complementary sources.",
+      "claim_id": "POLICY",
+      "claim": "The canonical contract now contains decision-relevant tool-use policy.",
       "source_kind": "GIT_BLOB",
-      "object_identity": "668214eae51425d9e3a2208d79978e978ede39fb:governance/AI_WORKING_METHOD_V1.md@12bec44b351b34ba298ddc3d1ad32e2b9df79697",
-      "observed_value": "Decision determines sources and marginal/joint contribution.",
-      "support": "SUPPORTS",
-      "scope": "CURRENT",
-      "opened": true
-    },
-    {
-      "claim_id": "CONTRACT",
-      "claim": "Existing contract enforces two branches and two active lanes.",
-      "source_kind": "GIT_BLOB",
-      "object_identity": "668214eae51425d9e3a2208d79978e978ede39fb:governance/AI_WORKING_METHOD_V1.json@32319027953b473f1ff2a0fd3014bdd6b13730c5",
-      "observed_value": "ENFORCED; max_active_decision_lanes=2.",
-      "support": "SUPPORTS",
-      "scope": "CURRENT",
-      "opened": true
-    },
-    {
-      "claim_id": "ROUTER",
-      "claim": "Existing router does not authorize global economic or live actions.",
-      "source_kind": "GIT_BLOB",
-      "object_identity": "668214eae51425d9e3a2208d79978e978ede39fb:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Economic, prospective, capital, live and deployment authorities FALSE.",
+      "object_identity": "8ed211fd1478e56072ce57b8b93f288b20d8c4ca:governance/AI_WORKING_METHOD_V1.json@9927f01ea9ce8dc0ac5735d958485bd3617968bc",
+      "observed_value": "Static qualification succeeded; executable receipt enforcement remains pending.",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     },
     {
       "claim_id": "VALIDATOR",
-      "claim": "Existing admission validator checks identity, evidence and authorization.",
+      "claim": "The existing validator is the sole enforcement seam.",
       "source_kind": "GIT_BLOB",
-      "object_identity": "9004dda239c6c027febd54972e41846b066d8747:scripts/validate_ai_working_method.py@83c0246a72d1d92b0c7d375dfb0fc8abfd952c9f",
-      "observed_value": "Reuse existing gate; no new control plane.",
+      "object_identity": "268a011f46ac8d5b95302e0d13f801a289feb7ac:scripts/validate_ai_working_method.py@83c0246a72d1d92b0c7d375dfb0fc8abfd952c9f",
+      "observed_value": "Existing validator checks admission and completion, not tool-use receipts.",
+      "support": "SUPPORTS",
+      "scope": "CURRENT",
+      "opened": true
+    },
+    {
+      "claim_id": "ROUTER",
+      "claim": "Economic, prospective, capital and live authority remain bounded.",
+      "source_kind": "GIT_BLOB",
+      "object_identity": "8ed211fd1478e56072ce57b8b93f288b20d8c4ca:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
+      "observed_value": "No new scientific or operational authority.",
       "support": "SUPPORTS",
       "scope": "CURRENT",
       "opened": true
     }
   ],
-  "durable_output_required": "Exact admission, narrow tool-use rule and contract regression, hosted gate receipts and scoped limits.",
-  "next_action_after_pass_fail_block": "Qualify P0 static policy; if blocked preserve exact evidence and continue lawful documentary work; independent behavioral and host access qualification remains separate.",
+  "durable_output_required": "Exact validator and tests, fresh admission, hosted gate results.",
+  "next_action_after_pass_fail_block": "Verify exact code gate; retain behavioral host qualification as separate and proceed only on independently admitted research.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner requests start of frozen campaign and P0 governance correction. No external agent dispatch, paid data, prospective, real capital, deployment or live authority.",
+  "authority_scope": "Existing P0 governance and test campaign only; no new paid service, dispatch, economic experiment, capital or runtime activation.",
   "external_agent_dispatch_requested": false,
   "active_seam": "Existing AI working method",
   "active_decision_lanes": 1,
@@ -70,5 +60,41 @@
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
   "local_blocker": false,
-  "global_stop_requested": false
+  "global_stop_requested": false,
+  "tool_use_review": {
+    "receipts": [
+      {
+        "gap": "Exact canonical policy and validator identity",
+        "tool": "GitHub",
+        "disposition": "EXECUTED",
+        "reason": "Primary repository objects inspected",
+        "host": "ChatGPT",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [
+          "8ed211fd1478e56072ce57b8b93f288b20d8c4ca:governance/AI_WORKING_METHOD_V1.json@9927f01ea9ce8dc0ac5735d958485bd3617968bc",
+          "268a011f46ac8d5b95302e0d13f801a289feb7ac:scripts/validate_ai_working_method.py@83c0246a72d1d92b0c7d375dfb0fc8abfd952c9f",
+          "8ed211fd1478e56072ce57b8b93f288b20d8c4ca:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c"
+        ],
+        "validation": "VALIDATED",
+        "decision_impact": "Reuse existing validator rather than create another gate",
+        "call_receipt": "Exact blobs read via authenticated repository connector; project gate 45475292286."
+      },
+      {
+        "gap": "Independent specialist contribution to static schema repair",
+        "tool": "NONE",
+        "disposition": "SKIPPED",
+        "reason": "NO_MATERIAL_INCREMENT",
+        "host": "ChatGPT",
+        "access_verified": false,
+        "authorized": false,
+        "budget_verified": false,
+        "primary_refs": [],
+        "validation": "NOT_EXECUTED",
+        "decision_impact": "Existing canonical code and deterministic checks suffice"
+      }
+    ],
+    "planned": []
+  }
 }

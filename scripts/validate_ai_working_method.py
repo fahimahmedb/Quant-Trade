@@ -368,6 +368,71 @@ def validate_primary_evidence(contract: Mapping[str, Any], admission: Mapping[st
     return errors
 
 
+def validate_tool_use_review(contract: Mapping[str, Any], admission: Mapping[str, Any]) -> List[str]:
+    """Validate declarations, not actual tool execution or model behavior."""
+    policy = contract.get("behavioral_economic_research", {}).get("decision_relevant_tool_use")
+    if policy is None:
+        return []
+    if not isinstance(policy, Mapping):
+        return ["TOOL_POLICY_INVALID"]
+    review = admission.get("tool_use_review")
+    if not isinstance(review, Mapping):
+        return ["TOOL_REVIEW_REQUIRED"]
+    receipts, planned = review.get("receipts"), review.get("planned")
+    if not isinstance(receipts, list) or not isinstance(planned, list) or not (receipts or planned):
+        return ["TOOL_REVIEW_EMPTY_OR_INVALID"]
+    errors = []
+    if planned and admission.get("completion_intent") == "FINAL_HANDOFF":
+        errors.append("TOOL_FINAL_HANDOFF_WITH_PLANNED_CALLS")
+    def nonblank(x):
+        return isinstance(x, str) and bool(x.strip())
+    for item in planned:
+        if (not isinstance(item, Mapping)
+                or not all(nonblank(item.get(k)) for k in ("gap", "tool", "host", "reason"))
+                or item.get("tool") == "NONE"
+                or not all(item.get(k) is True for k in ("access_verified", "authorized", "budget_verified"))):
+            errors.append("TOOL_PLAN_UNVERIFIED")
+    evidence = admission.get("primary_evidence")
+    opened_refs = {item["object_identity"] for item in (evidence if isinstance(evidence, list) else [])
+                   if isinstance(item, Mapping) and nonblank(item.get("object_identity"))
+                   and item.get("opened") is True and item.get("support") in ("SUPPORTS", "CONTRADICTS")
+                   and item.get("scope") == "CURRENT"}
+    skip = {"NO_MATERIAL_INCREMENT", "REUSE_VALID_EVIDENCE", "DUPLICATE_ORIGIN", "FROZEN_EXPOSURE", "NO_DECISION_GAP"}
+    block = {"UNAVAILABLE", "UNVERIFIED_PERMISSION", "UNVERIFIED_BUDGET", "CONFIDENTIALITY"}
+    for item in receipts:
+        if not isinstance(item, Mapping):
+            errors.append("TOOL_RECEIPT_INVALID")
+            continue
+        if (not all(nonblank(item.get(k)) for k in ("gap", "tool", "reason", "host", "validation", "decision_impact"))
+                or not all(type(item.get(k)) is bool for k in ("access_verified", "authorized", "budget_verified"))):
+            errors.append("TOOL_RECEIPT_FIELDS_INVALID")
+            continue
+        refs = item.get("primary_refs")
+        if not isinstance(refs, list) or not all(nonblank(ref) for ref in refs) or len(set(refs)) != len(refs):
+            errors.append("TOOL_PRIMARY_REFS_INVALID")
+            continue
+        disposition = item.get("disposition")
+        if disposition == "EXECUTED":
+            if item.get("tool") == "NONE" or not all(item.get(k) is True for k in ("access_verified", "authorized", "budget_verified")):
+                errors.append("TOOL_EXECUTION_UNAUTHORIZED_OR_UNVERIFIED")
+            if not nonblank(item.get("call_receipt")):
+                errors.append("TOOL_CALL_RECEIPT_REQUIRED")
+            if item["validation"] not in ("VALIDATED", "FAILED", "UNKNOWN"):
+                errors.append("TOOL_EXECUTION_VALIDATION_INVALID")
+            if item["validation"] == "VALIDATED" and (not refs or not set(refs) <= opened_refs):
+                errors.append("TOOL_VALIDATED_OUTPUT_WITHOUT_OPENED_PRIMARY")
+        elif disposition in ("BLOCKED", "SKIPPED"):
+            if item["reason"] not in (block if disposition == "BLOCKED" else skip):
+                errors.append("TOOL_SKIP_BLOCK_REASON_INVALID")
+            if item["validation"] != "NOT_EXECUTED" or refs or item.get("call_receipt"):
+                errors.append("TOOL_UNEXECUTED_CLAIMS_RESULT")
+            if disposition == "BLOCKED" and item["reason"] != "CONFIDENTIALITY" and all(item[k] is True for k in ("access_verified", "authorized", "budget_verified")):
+                errors.append("TOOL_BLOCK_CONTRADICTS_PREFLIGHT")
+        else:
+            errors.append("TOOL_DISPOSITION_INVALID")
+    return errors
+
+
 def validate_real_mission_admission(
     contract: Mapping[str, Any],
     admission: Mapping[str, Any],
@@ -407,6 +472,7 @@ def validate_real_mission_admission(
         errors.append("MISSING_NEXT_ACTION")
 
     errors.extend(validate_primary_evidence(contract, admission))
+    errors.extend(validate_tool_use_review(contract, admission))
 
     existing = admission.get("existing_capability")
     if existing not in {"REUSE", "CONNECT", "REPAIR", "BUILD_REQUIRED", "UNKNOWN"}:

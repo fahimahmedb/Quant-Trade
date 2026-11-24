@@ -666,3 +666,131 @@ def test_final_handoff_unhashable_disposition_does_not_crash_validation():
     assert isinstance(validate_completion_binding(
         contract(), a, c, current_project_sha="p1", current_code_sha="c2",
     ), list)
+
+
+# Static receipt declarations; not a tool runtime or fresh-agent witness.
+def _tool_policy_contract():
+    result = contract()
+    result["behavioral_economic_research"] = {"decision_relevant_tool_use": {}}
+    return result
+
+
+def _tool_policy_admission():
+    a = base_admission(completion_intent="CHECKPOINT")
+    a["tool_use_review"] = {
+        "receipts": [{
+            "gap": "canonical source", "tool": "GitHub", "host": "test",
+            "disposition": "EXECUTED", "reason": "inspect source",
+            "access_verified": True, "authorized": True, "budget_verified": True,
+            "primary_refs": [a["primary_evidence"][0]["object_identity"]],
+            "validation": "VALIDATED", "decision_impact": "reuse",
+            "call_receipt": "synthetic test receipt",
+        }, {
+            "gap": "duplicate search", "tool": "NONE", "host": "test",
+            "disposition": "SKIPPED", "reason": "DUPLICATE_ORIGIN",
+            "access_verified": False, "authorized": False, "budget_verified": False,
+            "primary_refs": [], "validation": "NOT_EXECUTED", "decision_impact": "no increment",
+        }],
+        "planned": [],
+    }
+    return a
+
+
+def _tool_validate(a):
+    return validate_real_mission_admission(
+        _tool_policy_contract(), a, current_project_sha="p1", current_code_sha="c1",
+        current_router_identity="governance/CURRENT_PROJECT_STATE.md@r1",
+        expected_mission_id="method-enforcement-1",
+    )
+
+
+def test_tool_review_accepts_valid_receipts_and_scoped_noop():
+    assert _tool_validate(_tool_policy_admission()) == []
+
+
+def test_tool_review_rejects_missing_review():
+    assert "TOOL_REVIEW_REQUIRED" in _tool_validate(base_admission())
+
+
+def test_tool_review_rejects_empty_review():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"] = []
+    assert "TOOL_REVIEW_EMPTY_OR_INVALID" in _tool_validate(a)
+
+
+def test_tool_review_rejects_unverified_execution():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"][0]["budget_verified"] = False
+    assert "TOOL_EXECUTION_UNAUTHORIZED_OR_UNVERIFIED" in _tool_validate(a)
+
+
+def test_tool_review_requires_call_receipt():
+    a = _tool_policy_admission()
+    del a["tool_use_review"]["receipts"][0]["call_receipt"]
+    assert "TOOL_CALL_RECEIPT_REQUIRED" in _tool_validate(a)
+
+
+def test_tool_review_rejects_unlinked_primary():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"][0]["primary_refs"] = ["unopened"]
+    assert "TOOL_VALIDATED_OUTPUT_WITHOUT_OPENED_PRIMARY" in _tool_validate(a)
+
+
+def test_tool_review_rejects_duplicate_primary_refs():
+    a = _tool_policy_admission()
+    r = a["tool_use_review"]["receipts"][0]["primary_refs"]
+    r.append(r[0])
+    assert "TOOL_PRIMARY_REFS_INVALID" in _tool_validate(a)
+
+
+def test_tool_review_rejects_fake_skip_result():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"][1]["validation"] = "VALIDATED"
+    assert "TOOL_UNEXECUTED_CLAIMS_RESULT" in _tool_validate(a)
+
+
+def test_tool_review_rejects_convenience_skip():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"][1]["reason"] = "CONVENIENCE"
+    assert "TOOL_SKIP_BLOCK_REASON_INVALID" in _tool_validate(a)
+
+
+def test_tool_review_accepts_local_budget_block():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"][1].update(
+        tool="Specialist", disposition="BLOCKED", reason="UNVERIFIED_BUDGET")
+    assert _tool_validate(a) == []
+
+
+def _tool_plan():
+    return {"gap": "sample", "tool": "Public source", "host": "test", "reason": "material gap",
+            "access_verified": True, "authorized": True, "budget_verified": True}
+
+
+def test_tool_review_accepts_verified_plan_at_checkpoint():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["planned"].append(_tool_plan())
+    assert _tool_validate(a) == []
+
+
+def test_tool_review_rejects_planned_calls_at_final_handoff():
+    a = _tool_policy_admission()
+    a["completion_intent"] = "FINAL_HANDOFF"
+    a["tool_use_review"]["planned"].append(_tool_plan())
+    assert "TOOL_FINAL_HANDOFF_WITH_PLANNED_CALLS" in _tool_validate(a)
+
+
+def test_tool_review_rejects_unverified_plan():
+    a = _tool_policy_admission()
+    plan = _tool_plan()
+    plan["budget_verified"] = False
+    a["tool_use_review"]["planned"].append(plan)
+    assert "TOOL_PLAN_UNVERIFIED" in _tool_validate(a)
+
+
+def test_tool_review_rejects_contradictory_block():
+    a = _tool_policy_admission()
+    a["tool_use_review"]["receipts"][1].update(
+        tool="Specialist", disposition="BLOCKED", reason="UNAVAILABLE",
+        access_verified=True, authorized=True, budget_verified=True)
+    assert "TOOL_BLOCK_CONTRADICTS_PREFLIGHT" in _tool_validate(a)
