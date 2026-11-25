@@ -4,11 +4,11 @@ import csv,io,json,hashlib,math,statistics as st,random,re,sys,urllib.request,zi
 BASE="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
 FILES={"US":["F-F_Research_Data_Factors_CSV.zip","6_Portfolios_2x3_CSV.zip","6_Portfolios_ME_OP_2x3_CSV.zip","6_Portfolios_ME_Prior_12_2_CSV.zip"],"EU":["Europe_3_Factors_CSV.zip","Europe_6_Portfolios_ME_BE-ME_CSV.zip","Europe_6_Portfolios_ME_OP_CSV.zip","Europe_6_Portfolios_ME_Prior_12_2_CSV.zip"]}
 MONTHS=[f"{y}{m:02d}" for y in range(1991,2026) for m in range(1,13)]
-COLS={"US":[[("mktrf",),("rf",)],[("bighibm",),("smallhibm",)],[("bighiop",)],[("bighiprior",)]],"EU":[[("mktrf",),("rf",)],[("bv","bh"),("sv","sh")],[("br",)],[("bw",)]]}
+COLS={"US":[[("mktrf",),("rf",)],[("bighibm",),("smallhibm",)],[("bighiop",)],[("bighiprior",)]],"EU":[[("mktrf",),("rf",)],[("bv","bh","bighibm"),("sv","sh","smallhibm")],[("br","bighiop")],[("bw","bighiprior","bighimom")]]}
 POL={"B":[1,0,0,0,0],"V":[.5,.5,0,0,0],"Q":[.5,0,0,.5,0],"M":[.5,0,0,0,.5],"S":[.5,0,.5,0,0],"X":[.5,1/6,0,1/6,1/6]}
 def norm(s):return re.sub(r"[^a-z0-9]","",s.lower())
 def parse(s,cols,market=False):
-    rows=list(csv.reader(io.StringIO(s)))
+    rows=list(csv.reader(io.StringIO(s,newline="")))
     if market:start=0
     else:
         markers=[i for i,r in enumerate(rows) if norm(" ".join(r)) in ("averagevalueweightedreturnsmonthly","valueweightedreturnsmonthly")]
@@ -88,6 +88,10 @@ def self_test():
     fake="Average Value Weighted Returns -- Monthly\n,SMALL LoBM,SMALL HiBM,BIG HiBM\n"+"".join(f"{m},1,2,3\n" for m in MONTHS)+"\nAverage Equal Weighted Returns -- Monthly\n"
     a=parse(fake,[("bighibm",),("smallhibm",)])
     assert a[MONTHS[0]]==[.03,.02] and len(a)==420
+    assert parse(fake.replace("\n","\r"),COLS["EU"][1])==a
+    for header, aliases in [("BIG HiOP", COLS["EU"][2]), ("BIG HiPRIOR", COLS["EU"][3])]:
+        fixture="Average Value Weighted Returns -- Monthly\r\n,"+header+"\r"+"".join(f"{m},3\r" for m in MONTHS)+"\n"
+        assert parse(fixture,aliases)[MONTHS[0]]==[.03]
     x=path([("199101",[.1,0,0,0,0])],[.5,.5,0,0,0],10,0)
     assert abs(x[0][1]-1.05*.999)<1e-12
     b=path([("199101",[.1,0,0,0,0]),("199102",[-.1,0,0,0,0])],POL["B"],0,0)

@@ -1,4 +1,4 @@
-name: QT H2 long-only premia economic batch (one-shot)
+name: QT H2 long-only premia economic batch (parser repair one-shot)
 on:
   push:
     branches: [code/canonical]
@@ -21,12 +21,12 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "${{ github.event.before }}" = "377134cca70b5201a06a824b060421fc7143fd5e"
+          test "${{ github.event.before }}" = "6d8f13bb64f2145072969863e38febfa3e998ed3"
           git fetch --no-tags origin project/canonical
           test "$(git rev-parse FETCH_HEAD)" = "d772dd96cdac107363dec1503c5cf60e49bc4862"
           git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/qt-h2-contract.json
           git ls-remote --heads origin | awk '{sub("refs/heads/", "", $2); print $2}' > /tmp/qt-h2-branches.txt
-          python scripts/validate_ai_working_method.py /tmp/qt-h2-contract.json AGENTS.md --branches-file /tmp/qt-h2-branches.txt --admission .quant/MISSION_ADMISSION.json --current-project-sha d772dd96cdac107363dec1503c5cf60e49bc4862 --current-code-sha 377134cca70b5201a06a824b060421fc7143fd5e --current-router-identity governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c --expected-mission-id QT_H2_LONG_ONLY_PREMIA_20261125
+          python scripts/validate_ai_working_method.py /tmp/qt-h2-contract.json AGENTS.md --branches-file /tmp/qt-h2-branches.txt --admission .quant/MISSION_ADMISSION.json --current-project-sha d772dd96cdac107363dec1503c5cf60e49bc4862 --current-code-sha 6d8f13bb64f2145072969863e38febfa3e998ed3 --current-router-identity governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c --expected-mission-id QT_H2_LONG_ONLY_PREMIA_PARSER_REPAIR_20261125
       - name: Synthetic parser and accounting checks
         run: python research/edge_lab/discovery/experiments/qt-h2-long-only-premia-20261125.py --self-test
       - name: Evaluate fixed allocations in both regions

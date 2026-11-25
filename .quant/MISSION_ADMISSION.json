@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_LONG_ONLY_PREMIA_20261125",
+  "mission_id": "QT_H2_LONG_ONLY_PREMIA_PARSER_REPAIR_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:09:48.981Z",
+  "receipt_timestamp": "2026-11-25T01:12:15.935Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "377134cca70b5201a06a824b060421fc7143fd5e",
+  "code_canonical_sha": "6d8f13bb64f2145072969863e38febfa3e998ed3",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "377134cca70b5201a06a824b060421fc7143fd5e",
+    "code_sha": "6d8f13bb64f2145072969863e38febfa3e998ed3",
     "seam": "Five fixed long-only allocations, historical two-region batch"
   },
-  "current_blocker_or_decision": "Can any unlevered factor tilt materially outperform broad equity after cost and robust risk checks?",
+  "current_blocker_or_decision": "Frozen batch failed before any candidate computation due to CSV newlines and EU header naming",
   "target_gate_or_blocker": "H2 bounded economic discovery",
-  "existing_capability": "CONNECT",
+  "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Compare compounded wealth and regional persistence rather than source-only qualification.",
-  "minimal_decisive_test": "Frozen #7149233676, unchanged at rebase #7149248206; five fixed expressions, two regions, 420 months, two costs, multiple comparisons, no fitting.",
-  "counterexample": "Long-short premiums may vanish in long-only funds; US advantage may fail in Europe and recent decade after fees.",
+  "why_this_work_can_change_the_decision": "Obtain first actual economic results for unchanged five candidates",
+  "minimal_decisive_test": "Parser-only repair #7149306314; preserve all arithmetic, parameters, source files and frozen protocol #7149233676; one replay",
+  "counterexample": "Header alias must map same economic characteristic uniquely, not a different series; refuse missing or ambiguous columns.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -85,6 +85,16 @@
       "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/Data_Library/six_portfolios_momentum_developed.html",
       "observed_value": "Lagged returns and monthly portfolio formation",
       "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "PARSER",
+      "claim": "Both regions blocked before any candidate computation",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523677569/job/138901585739",
+      "observed_value": "US newline error, EU BIG HiBM/SMALL HiBM header, zero results; raw log opened",
+      "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
@@ -166,6 +176,22 @@
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
         "decision_impact": "Existing official archives and free runner sufficient; no paid tools."
+      },
+      {
+        "gap": "Repair exact observed source parsing failures",
+        "tool": "GitHub",
+        "host": "ChatGPT",
+        "disposition": "EXECUTED",
+        "reason": "Inspect prior run logs and exact source",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523677569/job/138901585739"
+        ],
+        "validation": "VALIDATED",
+        "decision_impact": "Parser-only correction; economic tests unchanged",
+        "call_receipt": "job 138901585739 raw logs, runner blob fb5952ea5ae89a50549e9fffb5845e8f733dcaf5"
       }
     ],
     "planned": [
