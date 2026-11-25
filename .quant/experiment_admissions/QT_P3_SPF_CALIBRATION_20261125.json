@@ -1,0 +1,26 @@
+{
+  "schema": "quant-trade-scoped-economic-research-admission-v1",
+  "mission_id": "QT_P3_SPF_CALIBRATION_20261125",
+  "authority": {
+    "type": "OWNER_DIRECT",
+    "source": "Issue #60 standing historical research grant and Owner continuation request; protocol comment 7148473179",
+    "scope": "ONE_DESCRIPTIVE_HISTORICAL_CALIBRATION"
+  },
+  "protocol_ref": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7148473179",
+  "allowed": {
+    "historical_data_read": true,
+    "one_historical_probability_evaluation": true,
+    "source_hash_and_results_write": true
+  },
+  "not_allowed": {
+    "live_trading": true,
+    "real_capital": true,
+    "deployment": true,
+    "paid_subscriptions": true,
+    "prospective_capture": true,
+    "scientific_unblinding": true,
+    "parameter_search_after_outcomes": true,
+    "use_of_LOT01_or_robot": true
+  },
+  "global_permissions_unchanged": true
+}
