@@ -7,10 +7,12 @@ REAL="https://www.federalreserve.gov/data/yield-curve-tables/feds200805.csv"
 CPI="https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS&cosd=2003-01-01&coed=2024-12-31"
 def fetch(url):
     req=urllib.request.Request(url,headers={"User-Agent":"QuantTrade public historical research"})
-    with urllib.request.urlopen(req,timeout=30) as f:
+    with urllib.request.urlopen(req,timeout=60 if url==CPI else 30) as f:
         if f.url!=url:raise ValueError("unexpected redirect")
         b=f.read(30_000_001)
     if len(b)>30_000_000:raise ValueError("source exceeds cap")
+    expected={NOM:"26ae7fccdf348a190b9859e512c6c40190418d3fe84966a7ad1a9d0519404129",REAL:"a205b662458cd10107860f580accf47fdbc894f7b356a75e9f2976a959f5fffc"}
+    if url in expected and hashlib.sha256(b).hexdigest()!=expected[url]:raise ValueError("source hash changed")
     print("SOURCE "+json.dumps(dict(url=url,bytes=len(b),sha256=hashlib.sha256(b).hexdigest())),flush=True)
     return b.decode("utf-8-sig")
 def curve(s,prefix):

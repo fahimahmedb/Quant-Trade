@@ -1,22 +1,22 @@
 {
-  "mission_id": "QT_H2_TIPS_SWITCH_20261125",
+  "mission_id": "QT_H2_TIPS_TRANSPORT_RETRY_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:21:27.935Z",
+  "receipt_timestamp": "2026-11-25T01:23:04.275Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "0ef0a87922fa76d12a2a0c481cc5a0317a538d05",
+  "code_canonical_sha": "aba4583b72a06a22b6fcb76c82d902ccc1fc059f",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "0ef0a87922fa76d12a2a0c481cc5a0317a538d05",
+    "code_sha": "aba4583b72a06a22b6fcb76c82d902ccc1fc059f",
     "seam": "Historical nominal vs real Treasury allocation"
   },
-  "current_blocker_or_decision": "Does one trailing CPI vs breakeven rule outperform same-maturity static assets?",
+  "current_blocker_or_decision": "CPI transport timeout only; one retry without economic change",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
   "why_this_work_can_change_the_decision": "Separate inflation allocation from duration effects",
-  "minimal_decisive_test": "Frozen #7149456987: 20 annual periods, two fee levels, one rule.",
+  "minimal_decisive_test": "Same frozen #7149456987, transport retry #7149486914, exact two curve hashes, CPI timeout 60s.",
   "counterexample": "Breakeven includes risk and liquidity premia; revised curves are not executable.",
   "primary_evidence": [
     {
@@ -88,6 +88,16 @@
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
+    },
+    {
+      "claim_id": "TRANSPORT",
+      "claim": "CPI timed out, no economic outcomes",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45525161031/job/138906561005",
+      "observed_value": "Admission and synthetic tests PASS, both curve hashes logged, CPI read timeout",
+      "source_kind": "GITHUB_ACTIONS_LOG",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
     }
   ],
   "durable_output_required": "Three source hashes, annual returns, benchmarks, exact run and decision.",
@@ -115,11 +125,12 @@
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149426538"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149426538",
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45525161031/job/138906561005"
         ],
         "validation": "VALIDATED",
         "decision_impact": "Avoid retuning failed duration rules",
-        "call_receipt": "Both heads read and prior result verified #7149426538"
+        "call_receipt": "Both heads and failed exact job checked; no economic output."
       },
       {
         "gap": "Primary curve data and counterargument",
@@ -156,7 +167,7 @@
     ],
     "planned": [
       {
-        "gap": "Acquire three official CSVs and compute frozen test",
+        "gap": "One bounded retry of exact source and unchanged economic test",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
         "reason": "Proven public free runner and source data acquisition",
