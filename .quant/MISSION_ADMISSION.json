@@ -1,29 +1,29 @@
 {
-  "mission_id": "QT_OPEN_VOLATILITY_ALLOCATION_20261125",
+  "mission_id": "QT_H2_LONG_ONLY_PREMIA_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:04:41.897Z",
+  "receipt_timestamp": "2026-11-25T01:09:48.981Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "57500a5b5dd2fd3e567da55a79425063c2faa9b5",
+  "code_canonical_sha": "377134cca70b5201a06a824b060421fc7143fd5e",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "57500a5b5dd2fd3e567da55a79425063c2faa9b5",
-    "seam": "One unlevered volatility allocation historical economic expression"
+    "code_sha": "377134cca70b5201a06a824b060421fc7143fd5e",
+    "seam": "Five fixed long-only allocations, historical two-region batch"
   },
-  "current_blocker_or_decision": "Can unlevered fixed 10 percent volatility timing improve wealth versus static ex-ante risk-matched exposure after costs?",
-  "target_gate_or_blocker": "H2 economic discovery; no global economic permission",
+  "current_blocker_or_decision": "Can any unlevered factor tilt materially outperform broad equity after cost and robust risk checks?",
+  "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Potential gain in annual compounded net-of-modeled-cost wealth without more risk; no repeated source-only checks.",
-  "minimal_decisive_test": "Frozen comment 7149172250, 1965-84 training, 1985-2025 three fixed held-out periods, 10/25bp, one candidate, official data.",
-  "counterexample": "Volatility timing sells after losses and misses recovery; sample-specific positive alpha may disappear after costs and risk matching.",
+  "why_this_work_can_change_the_decision": "Compare compounded wealth and regional persistence rather than source-only qualification.",
+  "minimal_decisive_test": "Frozen #7149233676, unchanged at rebase #7149248206; five fixed expressions, two regions, 420 months, two costs, multiple comparisons, no fitting.",
+  "counterexample": "Long-short premiums may vanish in long-only funds; US advantage may fail in Europe and recent decade after fees.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Existing qualified method remains active",
+      "claim": "Existing tool policy active",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
-      "observed_value": "No global authority granted",
+      "observed_value": "Existing admission and receipt checks",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -31,9 +31,9 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Economic permissions global false",
+      "claim": "Global permissions remain false",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Only individually scoped historical experiment",
+      "observed_value": "Only separately scoped historical research",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -41,52 +41,62 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Current code subject and workflows inspected",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45520793969",
-      "observed_value": "15/15 runs completed successfully",
+      "claim": "Negative volatility trial not reopened",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523020157",
+      "observed_value": "Exact prior successful run, economic expression failed",
       "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "SOURCE",
-      "claim": "Official daily factors and risk-free rate",
+      "claim_id": "REBASE",
+      "claim": "Concurrent commit changed only feed paths",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/commit/377134cca70b5201a06a824b060421fc7143fd5e",
+      "observed_value": "Six data/feeds files; no strategy changes",
+      "source_kind": "GIT_COMMIT",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "LIBRARY",
+      "claim": "Official monthly archives and methodological change",
       "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-      "observed_value": "Daily Fama French 3 factors public research source; revised data caveat",
+      "observed_value": "Public value-weighted research portfolios, revised US methodology; native ZIP unsupported",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "HYPOTHESIS",
-      "claim": "Volatility management mechanism",
-      "object_identity": "https://www.nber.org/papers/w22208",
-      "observed_value": "Evidence of volatility managed factor returns; not this strategy",
+      "claim_id": "EU",
+      "claim": "European value portfolios described",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.french/Data_Library/six_portfolios_developed.html",
+      "observed_value": "Monthly returns since July 1990",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "COUNTER",
-      "claim": "Out-of-sample challenge",
-      "object_identity": "https://www.sciencedirect.com/science/article/abs/pii/S0304405X2030132X",
-      "observed_value": "Out-of-sample comparison may fail; risk matching and costs necessary",
+      "claim_id": "EU_MOM",
+      "claim": "European momentum portfolio formation",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/Data_Library/six_portfolios_momentum_developed.html",
+      "observed_value": "Lagged returns and monthly portfolio formation",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Official source hash, exact executable result and decision.",
-  "next_action_after_pass_fail_block": "Read raw job result, preserve negative outcome; independent source/execution/fiscal qualification only if threshold met.",
+  "durable_output_required": "Exact source hashes and all five results or explicit data blocks.",
+  "next_action_after_pass_fail_block": "Persist all results; survivors require retail implementation and independent qualification; no retuning.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 bounded historical experimental permission and current request for material economic advance; no trading or live capital.",
+  "authority_scope": "Issue #60 bounded historical research and current Owner instruction; no global or capital authority.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 volatility allocation",
+  "active_seam": "H2 long-only premia historical batch",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -94,43 +104,58 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Current authority and earlier trials",
+        "gap": "Reconcile authority and concurrent data-only update",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Exact canonical reads and runs",
+        "reason": "Read exact heads, prior logs, and compare",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45520793969"
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523020157",
+          "https://github.com/fahimahmedb/Quant-Trade/commit/377134cca70b5201a06a824b060421fc7143fd5e"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "One new economic expression rather than duplicate TED metadata",
-        "call_receipt": "Exact head 57500a5 and run 45520793969 verified."
+        "decision_impact": "No duplicate or overwritten work",
+        "call_receipt": "Exact heads and six-path diff verified; rebase comment 7149248206."
       },
       {
-        "gap": "New mechanism, data and counterexample",
+        "gap": "Official data and portfolio construction",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Original library and authors/publisher abstracts",
+        "reason": "Official library and construction pages opened; ZIP routes attempted",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-          "https://www.nber.org/papers/w22208",
-          "https://www.sciencedirect.com/science/article/abs/pii/S0304405X2030132X"
+          "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.french/Data_Library/six_portfolios_developed.html",
+          "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/Data_Library/six_portfolios_momentum_developed.html"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Unlevered fixed rule and risk-matched comparison, costs",
-        "call_receipt": "Opened official library and source abstracts; no historical input records retrieved."
+        "decision_impact": "Use source archives rather than fabricated returns",
+        "call_receipt": "Library and developed market docs opened; ZIP retrieval unsupported in web."
       },
       {
-        "gap": "Additional literature and duplicate acquisition",
+        "gap": "Independent challenge to factor hypothesis",
+        "tool": "Wiley Scholar Gateway",
+        "host": "ChatGPT",
+        "disposition": "EXECUTED",
+        "reason": "Free 29/30 quota verified; targeted query",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [],
+        "validation": "UNKNOWN",
+        "decision_impact": "Momentum crash and quality definition risk noted; no strategy performance asserted",
+        "call_receipt": "6 articles returned 2026-11-25T01:07:20.704Z; DOI 10.1111/joes.70178 review."
+      },
+      {
+        "gap": "Other providers for identical sources",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -140,15 +165,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Existing primary research and counterexample sufficient for this frozen expression; no paid quota."
+        "decision_impact": "Existing official archives and free runner sufficient; no paid tools."
       }
     ],
     "planned": [
       {
-        "gap": "Acquire and compute official daily factors",
+        "gap": "Acquire and test fixed batch",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Free standard runner proven on earlier public sources; actual source access to test",
+        "reason": "Proven free runner and official-source downloads",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
