@@ -1,29 +1,29 @@
 {
-  "mission_id": "QT_H2_LONG_ONLY_PREMIA_PARSER_REPAIR_20261125",
+  "mission_id": "QT_H2_GEOGRAPHIC_REBALANCE_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:12:15.935Z",
+  "receipt_timestamp": "2026-11-25T01:15:13.523Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "6d8f13bb64f2145072969863e38febfa3e998ed3",
+  "code_canonical_sha": "e4e3a8e6550188aef6cb78871908fe5de6174156",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "6d8f13bb64f2145072969863e38febfa3e998ed3",
-    "seam": "Five fixed long-only allocations, historical two-region batch"
+    "code_sha": "e4e3a8e6550188aef6cb78871908fe5de6174156",
+    "seam": "Historical regional allocation and rebalancing comparison"
   },
-  "current_blocker_or_decision": "Frozen batch failed before any candidate computation due to CSV newlines and EU header naming",
-  "target_gate_or_blocker": "H2 bounded economic discovery",
-  "existing_capability": "REPAIR",
+  "current_blocker_or_decision": "Does fixed annual regional rebalancing beat both developed market and equivalent unrebalanced weights after incremental costs?",
+  "target_gate_or_blocker": "H2 historical economic discovery only",
+  "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Obtain first actual economic results for unchanged five candidates",
-  "minimal_decisive_test": "Parser-only repair #7149306314; preserve all arithmetic, parameters, source files and frozen protocol #7149233676; one replay",
-  "counterexample": "Header alias must map same economic characteristic uniquely, not a different series; refuse missing or ambiguous columns.",
+  "why_this_work_can_change_the_decision": "Test distinct economic mechanism of diversification/volatility harvesting rather than characteristics or volatility timing.",
+  "minimal_decisive_test": "Frozen protocol #7149351486; 420 months and two cost scenarios; two baselines; reuse existing parser and official archives.",
+  "counterexample": "Sustained regional trend makes rebalancing inferior to buy-and-hold; diversification gains must not be mislabeled rebalancing gains.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Existing tool policy active",
+      "claim": "Existing tool policy and receipt gate remain active",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
-      "observed_value": "Existing admission and receipt checks",
+      "observed_value": "No new control or global authority",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -31,9 +31,9 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Global permissions remain false",
+      "claim": "Global capital and economic permissions unchanged",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Only separately scoped historical research",
+      "observed_value": "Only bounded historical research",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -41,72 +41,52 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Negative volatility trial not reopened",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523020157",
-      "observed_value": "Exact prior successful run, economic expression failed",
+      "claim": "Twenty prior evaluations actually executed and none meets frozen screen",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523987755/job/138902635279",
+      "observed_value": "Both regions 420 months; no parameter retuning",
       "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "REBASE",
-      "claim": "Concurrent commit changed only feed paths",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/commit/377134cca70b5201a06a824b060421fc7143fd5e",
-      "observed_value": "Six data/feeds files; no strategy changes",
-      "source_kind": "GIT_COMMIT",
+      "claim_id": "SOURCE",
+      "claim": "Official developed-market region returns are USD inclusive of dividends and gains",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_3developed.html",
+      "observed_value": "Four region composition and Mkt-RF definition",
+      "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
       "claim_id": "LIBRARY",
-      "claim": "Official monthly archives and methodological change",
+      "claim": "Official archives linked",
       "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-      "observed_value": "Public value-weighted research portfolios, revised US methodology; native ZIP unsupported",
+      "observed_value": "Five monthly ZIP archives; native binary reader unsupported",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "EU",
-      "claim": "European value portfolios described",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.french/Data_Library/six_portfolios_developed.html",
-      "observed_value": "Monthly returns since July 1990",
+      "claim_id": "RIGHTS",
+      "claim": "Cboe website terms restrict use to personal noncommercial download and constrain verification of other data",
+      "object_identity": "https://www.cboe.com/terms/",
+      "observed_value": "Section 2: rights for proposed public runner reconciliation not established; park",
       "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "EU_MOM",
-      "claim": "European momentum portfolio formation",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/Data_Library/six_portfolios_momentum_developed.html",
-      "observed_value": "Lagged returns and monthly portfolio formation",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "PARSER",
-      "claim": "Both regions blocked before any candidate computation",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523677569/job/138901585739",
-      "observed_value": "US newline error, EU BIG HiBM/SMALL HiBM header, zero results; raw log opened",
-      "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact source hashes and all five results or explicit data blocks.",
-  "next_action_after_pass_fail_block": "Persist all results; survivors require retail implementation and independent qualification; no retuning.",
+  "durable_output_required": "Exact source hashes and raw run result; decision against both baselines; no tuning.",
+  "next_action_after_pass_fail_block": "Preserve result; new independent retail implementation qualification only if frozen screen passes.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 bounded historical research and current Owner instruction; no global or capital authority.",
+  "authority_scope": "Issue #60 bounded historical research and explicit current-chat continuation; no capital or global economic authority.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 long-only premia historical batch",
+  "active_seam": "H2 geographic allocation",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -114,58 +94,57 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Reconcile authority and concurrent data-only update",
+        "gap": "Canonical state and earlier economic results",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read exact heads, prior logs, and compare",
+        "reason": "Read exact remote heads and prior raw log",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523020157",
-          "https://github.com/fahimahmedb/Quant-Trade/commit/377134cca70b5201a06a824b060421fc7143fd5e"
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523987755/job/138902635279"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "No duplicate or overwritten work",
-        "call_receipt": "Exact heads and six-path diff verified; rebase comment 7149248206."
+        "decision_impact": "STOP prior factors, no retuning; new mechanism only",
+        "call_receipt": "job 138902635279 read and archived #7149329447; current HEAD verified."
       },
       {
-        "gap": "Official data and portfolio construction",
+        "gap": "Official source schema and data rights",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Official library and construction pages opened; ZIP routes attempted",
+        "reason": "Opened source methodology, exact linked archives and Cboe terms",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
+          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_3developed.html",
           "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.french/Data_Library/six_portfolios_developed.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/Ken.French/Data_Library/six_portfolios_momentum_developed.html"
+          "https://www.cboe.com/terms/"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Use source archives rather than fabricated returns",
-        "call_receipt": "Library and developed market docs opened; ZIP retrieval unsupported in web."
+        "decision_impact": "Use official five region files; park VIX rights",
+        "call_receipt": "Official data library and Cboe terms §2 opened; four archive clicks failed only unsupported binary type."
       },
       {
-        "gap": "Independent challenge to factor hypothesis",
+        "gap": "Independent literature challenge to rebalancing",
         "tool": "Wiley Scholar Gateway",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Free 29/30 quota verified; targeted query",
+        "reason": "FREE 28/30 checked; targeted query",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [],
         "validation": "UNKNOWN",
-        "decision_impact": "Momentum crash and quality definition risk noted; no strategy performance asserted",
-        "call_receipt": "6 articles returned 2026-11-25T01:07:20.704Z; DOI 10.1111/joes.70178 review."
+        "decision_impact": "Distinguish fixed regional diversification from rebalancing; include buy-and-hold baseline",
+        "call_receipt": "2026-11-25T01:14:19.982Z, five passages four articles, DOI 10.1002/ijfe.1545."
       },
       {
-        "gap": "Other providers for identical sources",
+        "gap": "Duplicate sources or unknown paid services",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -175,31 +154,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Existing official archives and free runner sufficient; no paid tools."
-      },
-      {
-        "gap": "Repair exact observed source parsing failures",
-        "tool": "GitHub",
-        "host": "ChatGPT",
-        "disposition": "EXECUTED",
-        "reason": "Inspect prior run logs and exact source",
-        "access_verified": true,
-        "authorized": true,
-        "budget_verified": true,
-        "primary_refs": [
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523677569/job/138901585739"
-        ],
-        "validation": "VALIDATED",
-        "decision_impact": "Parser-only correction; economic tests unchanged",
-        "call_receipt": "job 138901585739 raw logs, runner blob fb5952ea5ae89a50549e9fffb5845e8f733dcaf5"
+        "decision_impact": "Official dataset plus independent counterargument sufficient."
       }
     ],
     "planned": [
       {
-        "gap": "Acquire and test fixed batch",
+        "gap": "Compute frozen comparison on five official archives",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Proven free runner and official-source downloads",
+        "reason": "Previously proved free public runner and same parser; no raw redistribution",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
