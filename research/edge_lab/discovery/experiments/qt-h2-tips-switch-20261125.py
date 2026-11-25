@@ -42,6 +42,35 @@ def cpi(s):
         except ValueError:continue
         if math.isfinite(v) and v>0:out[k]=v
     return out
+def bls_cpi():
+    url="https://api.bls.gov/publicAPI/v1/timeseries/data/"
+    out={}
+    for start,end in ((2003,2012),(2013,2022),(2023,2024)):
+        body=json.dumps({"seriesid":["CUUR0000SA0"],"startyear":str(start),"endyear":str(end)}).encode()
+        req=urllib.request.Request(url,data=body,headers={"Content-Type":"application/json","User-Agent":"QuantTrade public historical research"})
+        with urllib.request.urlopen(req,timeout=30) as f:
+            if f.url!=url:raise ValueError("unexpected BLS redirect")
+            b=f.read(2_000_001)
+        if len(b)>2_000_000:raise ValueError("BLS source exceeds cap")
+        print("SOURCE "+json.dumps(dict(url=url,start=start,end=end,bytes=len(b),sha256=hashlib.sha256(b).hexdigest())),flush=True)
+        p=json.loads(b)
+        if p.get("status")!="REQUEST_SUCCEEDED" or p.get("message"):raise ValueError("BLS status/message "+repr((p.get("status"),p.get("message"))))
+        ss=p["Results"]["series"]
+        if len(ss)!=1 or ss[0]["seriesID"]!="CUUR0000SA0":raise ValueError("wrong BLS series")
+        chunk={}
+        for row in ss[0]["data"]:
+            y=int(row["year"]);m=int(row["period"][1:]);v=float(row["value"])
+            if row["period"]=="M13":continue
+            if row["period"]!=f"M{m:02d}" or not start<=y<=end or not 1<=m<=12 or (y,m) in chunk or not math.isfinite(v) or v<=0:raise ValueError("bad BLS observation")
+            chunk[y,m]=v
+        if set(chunk)!={(y,m) for y in range(start,end+1) for m in range(1,13)}:raise ValueError("incomplete BLS chunk")
+        if out.keys() & chunk.keys():raise ValueError("duplicate BLS chunk")
+        out.update(chunk)
+    if len(out)!=264:raise ValueError("wrong BLS coverage")
+    for k,v in {(2022,9):296.808,(2022,10):298.012,(2023,9):307.789,(2023,10):307.671}.items():
+        if abs(out[k]-v)>1e-9:raise ValueError("BLS official sample mismatch")
+    print("BLS_CPI_VALIDATED n=264 controls=4",flush=True)
+    return out
 def refcpi(d,cp):
     if d.month!=12:raise ValueError("December only")
     a,b=cp[d.year,9],cp[d.year,10]
@@ -99,5 +128,5 @@ def self_test():
     print("SELF_TEST_PASS",flush=True)
 if __name__=="__main__":
     if "--self-test" in sys.argv:self_test();sys.exit(0)
-    data=join(curve(fetch(NOM),"SVENY"),curve(fetch(REAL),"TIPSY"));cp=cpi(fetch(CPI))
+    cp=bls_cpi();data=join(curve(fetch(NOM),"SVENY"),curve(fetch(REAL),"TIPSY"))
     print("TIPS_RESULT "+json.dumps(evaluate(data,cp),sort_keys=True,allow_nan=False),flush=True)
