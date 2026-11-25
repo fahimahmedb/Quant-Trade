@@ -1,29 +1,29 @@
 {
-  "mission_id": "QT_H2_TIPS_BLS_SOURCE_REPAIR_20261125",
+  "mission_id": "QT_H2_CALENDAR_LIQUIDITY_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:27:13.241Z",
+  "receipt_timestamp": "2026-11-25T01:41:52.435Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "990a72244ae284c77ec89fb82d8da0e442820df7",
+  "code_canonical_sha": "b43fdc4bc7b8f297bc2ada10024aac4f69ada96d",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "990a72244ae284c77ec89fb82d8da0e442820df7",
-    "seam": "Historical nominal vs real Treasury allocation"
+    "code_sha": "b43fdc4bc7b8f297bc2ada10024aac4f69ada96d",
+    "seam": "One frozen calendar-liquidity expression in three historical markets"
   },
-  "current_blocker_or_decision": "FRED twice timed out; original producer exact CPI series alternative route only",
-  "target_gate_or_blocker": "H2 bounded economic discovery",
+  "current_blocker_or_decision": "Can scheduled monthly liquidity timing produce net gain beyond a training-risk-calibrated static allocation?",
+  "target_gate_or_blocker": "H2 bounded historical economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Separate inflation allocation from duration effects",
-  "minimal_decisive_test": "Frozen #7149456987; source-equivalence repair #7149556726; 264 exact CPI observations with four official controls and unchanged Fed hashes",
-  "counterexample": "Breakeven includes risk and liquidity premia; revised curves are not executable.",
+  "why_this_work_can_change_the_decision": "Test a distinct institutional liquidity mechanism rather than volatility timing or factor tilts already tested.",
+  "minimal_decisive_test": "Frozen #7149837103, 1991–2000 training, 2001–2025 test, three regions, 5/15bp, paired Bonferroni hurdle.",
+  "counterexample": "An effect documented before 2001 may disappear after publication and costs; static comparator may dominate.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Current method and receipt gate",
+      "claim": "Existing canonical tool receipt checks",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
-      "observed_value": "No change to authority",
+      "observed_value": "No new authority",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -31,9 +31,9 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Bounded historical research only",
+      "claim": "Bounded historical research, no global authority",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "No live or capital authority",
+      "observed_value": "Global economic, prospective, live, capital permissions remain false",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -41,102 +41,52 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Treasury maturity rules fail",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149426538",
-      "observed_value": "Risk condition failed; 88–93% advantage attributable to static duration",
+      "claim": "VIX statistical sensitivity and risk block",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149790175",
+      "observed_value": "Do not replay prior strategies",
       "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DATA0",
-      "claim": "Official series methodology/schema or missingness",
-      "object_identity": "https://www.federalreserve.gov/data/tips-yield-curve-and-inflation-compensation.htm",
-      "observed_value": "Reviewed; frozen before outcome calculation",
+      "claim_id": "SOURCE",
+      "claim": "Three official daily factor files linked",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+      "observed_value": "US, Europe and Japan; binary ZIP native reader unsupported",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DATA1",
-      "claim": "Official series methodology/schema or missingness",
-      "object_identity": "https://fred.stlouisfed.org/series/CPIAUCNS",
-      "observed_value": "Reviewed; frozen before outcome calculation",
+      "claim_id": "MECHANISM",
+      "claim": "Published four-day turn-of-month effect",
+      "object_identity": "https://rpc.cfainstitute.org/research/financial-analysts-journal/2008/equity-returns-at-the-turn-of-the-month",
+      "observed_value": "Fixed four-day calendar rule, no tuning",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DATA2",
-      "claim": "Official series methodology/schema or missingness",
-      "object_identity": "https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm",
-      "observed_value": "Reviewed; frozen before outcome calculation",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "DATA3",
-      "claim": "Official series methodology/schema or missingness",
-      "object_identity": "https://www.federalreserve.gov/data/yield-curve-tables/feds200805_1.html",
-      "observed_value": "Reviewed; frozen before outcome calculation",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "PARK",
-      "claim": "Second FRED timeout; no economic result",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45525359394/job/138907212952",
-      "observed_value": "Second FRED timeout; no economic result",
-      "source_kind": "GITHUB_ACTIONS_LOG",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "BLSID",
-      "claim": "Original publisher equivalent NSA CPI-U series",
-      "object_identity": "https://www.bls.gov/cpi/factsheets/cpi-series-ids.htm",
-      "observed_value": "Original publisher equivalent NSA CPI-U series",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "BLSAPI",
-      "claim": "Public API v1 bounded queries documented",
-      "object_identity": "https://www.bls.gov/developers/api_signature.htm",
-      "observed_value": "Public API v1 bounded queries documented",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "BLSCTRL",
-      "claim": "Four official controls frozen before evaluation",
-      "object_identity": "https://www.bls.gov/news.release/archives/cpi_11142023.htm",
-      "observed_value": "Four official controls frozen before evaluation",
+      "claim_id": "CHALLENGE",
+      "claim": "Recent evidence of attenuation after 2001",
+      "object_identity": "https://www.sciencedirect.com/science/article/pii/S1544612324014909",
+      "observed_value": "Test post-2000 across three regions, costs and risk-matched comparators",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Three source hashes, annual returns, benchmarks, exact run and decision.",
-  "next_action_after_pass_fail_block": "Preserve outcome; if survivor, separately verify execution/availability/fiscality and independent data, no promotion.",
+  "durable_output_required": "Official source hashes, actual test and full results, economic decision.",
+  "next_action_after_pass_fail_block": "Retain exact negative or blocked results; only a survivor merits separately admitted implementation qualification.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 scoped historical authority and explicit current-chat continuation; no live/capital/prospective permission.",
+  "authority_scope": "Issue #60 and present Owner request, individually bounded historical experiment only; no real capital, trading, prospective or deployment authority.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 inflation allocation",
+  "active_seam": "H2 calendar liquidity",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -144,48 +94,57 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and prior negative result",
+        "gap": "Current authority and prior negative results",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read exact heads and raw job log",
+        "reason": "Opened exact heads, canonical method and router, prior economic results",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149426538",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45525359394/job/138907212952"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149790175"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Avoid retuning failed duration rules",
-        "call_receipt": "Exact heads and failed run previously read; current comparison shows information-flow-only commits, TIPS unchanged."
+        "decision_impact": "One distinct scoped historical mechanism",
+        "call_receipt": "Exact heads, two branches and 15 prior workflows completed successfully."
       },
       {
-        "gap": "Primary curve data and counterargument",
+        "gap": "Official source schema and competing evidence",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened Fed methodology and located original paper and NBER abstract",
+        "reason": "Opened original library and scholarly sources",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://www.federalreserve.gov/data/tips-yield-curve-and-inflation-compensation.htm",
-          "https://fred.stlouisfed.org/series/CPIAUCNS",
-          "https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm",
-          "https://www.federalreserve.gov/data/yield-curve-tables/feds200805_1.html",
-          "https://www.bls.gov/cpi/factsheets/cpi-series-ids.htm",
-          "https://www.bls.gov/developers/api_signature.htm",
-          "https://www.bls.gov/news.release/archives/cpi_11142023.htm"
+          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+          "https://rpc.cfainstitute.org/research/financial-analysts-journal/2008/equity-returns-at-the-turn-of-the-month",
+          "https://www.sciencedirect.com/science/article/pii/S1544612324014909"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Same original published series; no economic alteration",
-        "call_receipt": "FRED metadata, BLS IDs and documented API, and official CPI release checked; four sample controls fixed."
+        "decision_impact": "Three post-publication regional tests, fixed costs and comparators",
+        "call_receipt": "Official three ZIP links clicked; native reader unsupported content type."
       },
       {
-        "gap": "Independent specialist contribution for same source",
+        "gap": "Independent literature challenge",
+        "tool": "Wiley Scholar Gateway",
+        "host": "ChatGPT",
+        "disposition": "EXECUTED",
+        "reason": "Free 25/30 quota verified; actual targeted research",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [],
+        "validation": "UNKNOWN",
+        "decision_impact": "Ogden 1990 explicitly challenges profits after costs; 5 passages, 4 articles, no historical series acquired",
+        "call_receipt": "2026-11-25T01:40:46.125Z, DOI 10.1111/j.1540-6261.1990.tb02435.x."
+      },
+      {
+        "gap": "Redundant search and restricted Cboe data",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -195,15 +154,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Original data and author research sufficient; no redundant literature call or paid quota."
+        "decision_impact": "Use existing official academic source; Cboe rights separate."
       }
     ],
     "planned": [
       {
-        "gap": "One bounded original-producer route and unchanged economic test",
+        "gap": "Acquire three official archives and execute frozen test",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Proven public free runner and source data acquisition",
+        "reason": "Existing free standard runner already demonstrated; no new service",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true

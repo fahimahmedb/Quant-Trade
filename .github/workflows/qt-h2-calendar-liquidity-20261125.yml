@@ -1,0 +1,33 @@
+name: QT H2 calendar liquidity economic test (one-shot)
+on:
+  push:
+    branches: [code/canonical]
+    paths:
+      - ".github/workflows/qt-h2-calendar-liquidity-20261125.yml"
+permissions:
+  contents: read
+jobs:
+  bounded-replay:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact admission before outcomes
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "${{ github.event.before }}" = "b43fdc4bc7b8f297bc2ada10024aac4f69ada96d"
+          git fetch --no-tags origin project/canonical
+          test "$(git rev-parse FETCH_HEAD)" = "d772dd96cdac107363dec1503c5cf60e49bc4862"
+          git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/qt-calendar-contract.json
+          git ls-remote --heads origin | awk '{sub("refs/heads/", "", $2); print $2}' > /tmp/qt-calendar-branches.txt
+          python scripts/validate_ai_working_method.py /tmp/qt-calendar-contract.json AGENTS.md --branches-file /tmp/qt-calendar-branches.txt --admission .quant/MISSION_ADMISSION.json --current-project-sha d772dd96cdac107363dec1503c5cf60e49bc4862 --current-code-sha b43fdc4bc7b8f297bc2ada10024aac4f69ada96d --current-router-identity governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c --expected-mission-id QT_H2_CALENDAR_LIQUIDITY_20261125
+      - name: Synthetic chronology and accounting checks
+        run: python research/edge_lab/discovery/experiments/qt-h2-calendar-liquidity-20261125.py --self-test
+      - name: One frozen historical test
+        run: python research/edge_lab/discovery/experiments/qt-h2-calendar-liquidity-20261125.py
