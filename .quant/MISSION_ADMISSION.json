@@ -1,29 +1,29 @@
 {
-  "mission_id": "QT_H2_GEOGRAPHIC_REBALANCE_20261125",
+  "mission_id": "QT_H2_TREASURY_ROLLDOWN_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:15:13.523Z",
+  "receipt_timestamp": "2026-11-25T01:18:05.678Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "e4e3a8e6550188aef6cb78871908fe5de6174156",
+  "code_canonical_sha": "24812f400a7e8a6b550a9828459be884c1b1f890",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "e4e3a8e6550188aef6cb78871908fe5de6174156",
-    "seam": "Historical regional allocation and rebalancing comparison"
+    "code_sha": "24812f400a7e8a6b550a9828459be884c1b1f890",
+    "seam": "Historical Treasury zero curve carry and slope economic proxy"
   },
-  "current_blocker_or_decision": "Does fixed annual regional rebalancing beat both developed market and equivalent unrebalanced weights after incremental costs?",
-  "target_gate_or_blocker": "H2 historical economic discovery only",
+  "current_blocker_or_decision": "Can fixed carry or slope maturity selection beat static Treasury durations after modeled fees and risk checks?",
+  "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Test distinct economic mechanism of diversification/volatility harvesting rather than characteristics or volatility timing.",
-  "minimal_decisive_test": "Frozen protocol #7149351486; 420 months and two cost scenarios; two baselines; reuse existing parser and official archives.",
-  "counterexample": "Sustained regional trend makes rebalancing inferior to buy-and-hold; diversification gains must not be mislabeled rebalancing gains.",
+  "why_this_work_can_change_the_decision": "Quantify distinct term structure mechanism rather than retune failed equities.",
+  "minimal_decisive_test": "Frozen protocol #7149399213; annual 1990–2025, two rules, four benchmarks, two costs, no fitting.",
+  "counterexample": "Slope reflects rate expectations and duration risk; fitted zero prices and revisions are not executable trades.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Existing tool policy and receipt gate remain active",
+      "claim": "Current method and receipt gate",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
-      "observed_value": "No new control or global authority",
+      "observed_value": "No change to authority",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -31,9 +31,9 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Global capital and economic permissions unchanged",
+      "claim": "Bounded historical research only",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Only bounded historical research",
+      "observed_value": "No live or capital authority",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -41,52 +41,52 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Twenty prior evaluations actually executed and none meets frozen screen",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523987755/job/138902635279",
-      "observed_value": "Both regions 420 months; no parameter retuning",
+      "claim": "Geographic allocation failed frozen screen",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45524372541/job/138903910718",
+      "observed_value": "Exact successful computation; failed economic candidate",
       "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "SOURCE",
-      "claim": "Official developed-market region returns are USD inclusive of dividends and gains",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_3developed.html",
-      "observed_value": "Four region composition and Mkt-RF definition",
+      "claim_id": "GSW",
+      "claim": "Fed fitted nominal yield data",
+      "object_identity": "https://www.federalreserve.gov/data/nominal-yield-curve.htm",
+      "observed_value": "Hypothetical off-the-run curve, weekly updates, revisions, Svensson since 1980",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "LIBRARY",
-      "claim": "Official archives linked",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-      "observed_value": "Five monthly ZIP archives; native binary reader unsupported",
+      "claim_id": "METHOD_SOURCE",
+      "claim": "Primary data methodology",
+      "object_identity": "https://www.federalreserve.gov/econres/feds/the-us-treasury-yield-curve-1961-to-the-present.htm",
+      "observed_value": "Daily estimated discount function for historical research",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "RIGHTS",
-      "claim": "Cboe website terms restrict use to personal noncommercial download and constrain verification of other data",
-      "object_identity": "https://www.cboe.com/terms/",
-      "observed_value": "Section 2: rights for proposed public runner reconciliation not established; park",
+      "claim_id": "COUNTER",
+      "claim": "Slope not equivalent to bond return forecast factor",
+      "object_identity": "https://www.nber.org/papers/w9178",
+      "observed_value": "Cochrane/Piazzesi abstract provides counterexample to slope proxy",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact source hashes and raw run result; decision against both baselines; no tuning.",
-  "next_action_after_pass_fail_block": "Preserve result; new independent retail implementation qualification only if frozen screen passes.",
+  "durable_output_required": "Primary source SHA256, exact run and both complete candidate results.",
+  "next_action_after_pass_fail_block": "Preserve outcome; if survivor, separately verify execution/availability/fiscality and independent data, no promotion.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 bounded historical research and explicit current-chat continuation; no capital or global economic authority.",
+  "authority_scope": "Issue #60 scoped historical authority and explicit current-chat continuation; no live/capital/prospective permission.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 geographic allocation",
+  "active_seam": "H2 Treasury maturity selection",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -94,57 +94,43 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and earlier economic results",
+        "gap": "Canonical state and prior negative result",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read exact remote heads and prior raw log",
+        "reason": "Read exact heads and raw job log",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45523987755/job/138902635279"
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45524372541/job/138903910718"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "STOP prior factors, no retuning; new mechanism only",
-        "call_receipt": "job 138902635279 read and archived #7149329447; current HEAD verified."
+        "decision_impact": "New term structure mechanism rather than replay equities",
+        "call_receipt": "job 138903910718 consumed, archive #7149373199."
       },
       {
-        "gap": "Official source schema and data rights",
+        "gap": "Primary curve data and counterargument",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened source methodology, exact linked archives and Cboe terms",
+        "reason": "Opened Fed methodology and located original paper and NBER abstract",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/f-f_3developed.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-          "https://www.cboe.com/terms/"
+          "https://www.federalreserve.gov/data/nominal-yield-curve.htm",
+          "https://www.federalreserve.gov/econres/feds/the-us-treasury-yield-curve-1961-to-the-present.htm",
+          "https://www.nber.org/papers/w9178"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Use official five region files; park VIX rights",
-        "call_receipt": "Official data library and Cboe terms §2 opened; four archive clicks failed only unsupported binary type."
+        "decision_impact": "Use fitted zero prices and conservative signal lag, avoid claim of actual fills",
+        "call_receipt": "Fed methodology and data source identified; no source values opened."
       },
       {
-        "gap": "Independent literature challenge to rebalancing",
-        "tool": "Wiley Scholar Gateway",
-        "host": "ChatGPT",
-        "disposition": "EXECUTED",
-        "reason": "FREE 28/30 checked; targeted query",
-        "access_verified": true,
-        "authorized": true,
-        "budget_verified": true,
-        "primary_refs": [],
-        "validation": "UNKNOWN",
-        "decision_impact": "Distinguish fixed regional diversification from rebalancing; include buy-and-hold baseline",
-        "call_receipt": "2026-11-25T01:14:19.982Z, five passages four articles, DOI 10.1002/ijfe.1545."
-      },
-      {
-        "gap": "Duplicate sources or unknown paid services",
+        "gap": "Independent specialist contribution for same source",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -154,15 +140,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Official dataset plus independent counterargument sufficient."
+        "decision_impact": "Original data and author research sufficient; no redundant literature call or paid quota."
       }
     ],
     "planned": [
       {
-        "gap": "Compute frozen comparison on five official archives",
+        "gap": "Acquire one official CSV and compute frozen test",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Previously proved free public runner and same parser; no raw redistribution",
+        "reason": "Proven public free runner and source data acquisition",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
