@@ -1,0 +1,33 @@
+name: QT frozen volatility allocation economic test (one-shot)
+on:
+  push:
+    branches: [code/canonical]
+    paths:
+      - ".github/workflows/qt-open-volatility-allocation-20261125.yml"
+permissions:
+  contents: read
+jobs:
+  bounded-replay:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact admitted subject before outcomes
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "${{ github.event.before }}" = "57500a5b5dd2fd3e567da55a79425063c2faa9b5"
+          git fetch --no-tags origin project/canonical
+          test "$(git rev-parse FETCH_HEAD)" = "d772dd96cdac107363dec1503c5cf60e49bc4862"
+          git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/qt-vol-contract.json
+          git ls-remote --heads origin | awk '{sub("refs/heads/", "", $2); print $2}' > /tmp/qt-vol-branches.txt
+          python scripts/validate_ai_working_method.py /tmp/qt-vol-contract.json AGENTS.md --branches-file /tmp/qt-vol-branches.txt --admission .quant/MISSION_ADMISSION.json --current-project-sha d772dd96cdac107363dec1503c5cf60e49bc4862 --current-code-sha 57500a5b5dd2fd3e567da55a79425063c2faa9b5 --current-router-identity governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c --expected-mission-id QT_OPEN_VOLATILITY_ALLOCATION_20261125
+      - name: Accounting and chronology checks before data
+        run: python research/edge_lab/discovery/experiments/qt-open-volatility-allocation-20261125.py --self-test
+      - name: Official source and one frozen economic evaluation
+        run: python research/edge_lab/discovery/experiments/qt-open-volatility-allocation-20261125.py

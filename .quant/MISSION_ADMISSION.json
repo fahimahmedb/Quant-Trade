@@ -1,29 +1,29 @@
 {
-  "mission_id": "QT_P2_TED_AWARD_ENRICHMENT_20261125",
+  "mission_id": "QT_OPEN_VOLATILITY_ALLOCATION_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T00:47:08.350Z",
+  "receipt_timestamp": "2026-11-25T01:04:41.897Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "185a14b9a390f6e7f6c58babe1519cb68f70051a",
+  "code_canonical_sha": "57500a5b5dd2fd3e567da55a79425063c2faa9b5",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "185a14b9a390f6e7f6c58babe1519cb68f70051a",
-    "seam": "P2 fixed award metadata coverage and duplication"
+    "code_sha": "57500a5b5dd2fd3e567da55a79425063c2faa9b5",
+    "seam": "One unlevered volatility allocation historical economic expression"
   },
-  "current_blocker_or_decision": "Do the fixed 15 award-class notices contain usable winner, contract date, value and correction metadata without treating publications as independent contracts?",
-  "target_gate_or_blocker": "P2 source qualification only",
+  "current_blocker_or_decision": "Can unlevered fixed 10 percent volatility timing improve wealth versus static ex-ante risk-matched exposure after costs?",
+  "target_gate_or_blocker": "H2 economic discovery; no global economic permission",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Assess observability before any economic test and reject duplicate contract counts.",
-  "minimal_decisive_test": "Frozen comment 7148854840: one POST over exact 15 IDs; 9 synthetic checks and Firecrawl four fixed viewers; no prices or outcome data.",
-  "counterexample": "Same procedure contains repeated contract identifiers or result notice without a winner/contract; flattened fields do not prove binding value.",
+  "why_this_work_can_change_the_decision": "Potential gain in annual compounded net-of-modeled-cost wealth without more risk; no repeated source-only checks.",
+  "minimal_decisive_test": "Frozen comment 7149172250, 1965-84 training, 1985-2025 three fixed held-out periods, 10/25bp, one candidate, official data.",
+  "counterexample": "Volatility timing sells after losses and misses recovery; sample-specific positive alpha may disappear after costs and risk matching.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Canonical tool-use policy remains qualified",
+      "claim": "Existing qualified method remains active",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
-      "observed_value": "Current canonical policy",
+      "observed_value": "No global authority granted",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -31,112 +31,62 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Global economic, prospective, capital and live permissions unchanged",
+      "claim": "Economic permissions global false",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Source metadata only",
+      "observed_value": "Only individually scoped historical experiment",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "COHORT",
-      "claim": "Fixed cohort was retrieved and passed",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45520501631/job/138890834001",
-      "observed_value": "Raw logs opened: 30 notices, 15 can-standard; fixed exact IDs.",
+      "claim_id": "PRIOR",
+      "claim": "Current code subject and workflows inspected",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45520793969",
+      "observed_value": "15/15 runs completed successfully",
       "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "FIELDS",
-      "claim": "Official field names verified",
-      "object_identity": "https://docs.ted.europa.eu/ODS/latest/reuse/field-list.html",
-      "observed_value": "Award, value, correction and contract fields documented.",
+      "claim_id": "SOURCE",
+      "claim": "Official daily factors and risk-free rate",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+      "observed_value": "Daily Fama French 3 factors public research source; revised data caveat",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "CORRECTIONS",
-      "claim": "Changes may preserve notice type",
-      "object_identity": "https://docs.ted.europa.eu/eforms/latest/schema/change-notice.html",
-      "observed_value": "Publication does not equal independent economic event.",
+      "claim_id": "HYPOTHESIS",
+      "claim": "Volatility management mechanism",
+      "object_identity": "https://www.nber.org/papers/w22208",
+      "observed_value": "Evidence of volatility managed factor returns; not this strategy",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "TERMS",
-      "claim": "TED public reuse permitted with exceptions",
-      "object_identity": "https://ted.europa.eu/en/legal-notice",
-      "observed_value": "No personal names stored; metadata scope only.",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "RUNNER_BUDGET",
-      "claim": "Standard runner public repo free",
-      "object_identity": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
-      "observed_value": "No new subscriptions or artifact uploads.",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "VIEW_0",
-      "claim": "Official notice viewer was read",
-      "object_identity": "https://ted.europa.eu/en/notice/-/detail/211180-2026",
-      "observed_value": "HTTP 200; 17 distinct contract identifier strings; Firecrawl receipt 01a2102a-d947-702e-9818-c4c7a0a5b9ae",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "VIEW_1",
-      "claim": "Official notice viewer was read",
-      "object_identity": "https://ted.europa.eu/en/notice/-/detail/213243-2026",
-      "observed_value": "HTTP 200; 0 distinct contract identifier strings; Firecrawl receipt 01a2102a-d948-76d9-a9d1-2c2e520358b7",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "VIEW_2",
-      "claim": "Official notice viewer was read",
-      "object_identity": "https://ted.europa.eu/en/notice/-/detail/168830-2026",
-      "observed_value": "HTTP 200; 31 distinct contract identifier strings; Firecrawl receipt 01a2102a-d950-72de-b49b-35b3a34270c2",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "VIEW_3",
-      "claim": "Official notice viewer was read",
-      "object_identity": "https://ted.europa.eu/en/notice/-/detail/204015-2026",
-      "observed_value": "HTTP 200; 32 distinct contract identifier strings; Firecrawl receipt 01a2102a-d8db-72c1-8c85-f1eb91c3fc63",
+      "claim_id": "COUNTER",
+      "claim": "Out-of-sample challenge",
+      "object_identity": "https://www.sciencedirect.com/science/article/abs/pii/S0304405X2030132X",
+      "observed_value": "Out-of-sample comparison may fail; risk matching and costs necessary",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact source hash, coverage and duplicate witness, raw job log and bounded conclusion.",
-  "next_action_after_pass_fail_block": "Archive exact observed coverage; no market trial unless separately admitted and independent issuer identity/clock/value proven.",
+  "durable_output_required": "Official source hash, exact executable result and decision.",
+  "next_action_after_pass_fail_block": "Read raw job result, preserve negative outcome; independent source/execution/fiscal qualification only if threshold met.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner continuation of P2 frozen public metadata qualification; no economic, prospective or live action.",
+  "authority_scope": "Issue #60 bounded historical experimental permission and current request for material economic advance; no trading or live capital.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "P2 TED award metadata",
+  "active_seam": "H2 volatility allocation",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -144,81 +94,61 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Reconcile authority and fixed cohort",
+        "gap": "Current authority and earlier trials",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read exact heads and successful source qualification log",
+        "reason": "Exact canonical reads and runs",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45520501631/job/138890834001"
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45520793969"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Reuse 15 exact notice IDs, no broadening",
-        "call_receipt": "Job 138890834001 and issue comment 7148849798 read."
+        "decision_impact": "One new economic expression rather than duplicate TED metadata",
+        "call_receipt": "Exact head 57500a5 and run 45520793969 verified."
       },
       {
-        "gap": "Field meanings, correction semantics and reuse",
+        "gap": "New mechanism, data and counterexample",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened official documentation and terms",
+        "reason": "Original library and authors/publisher abstracts",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://docs.ted.europa.eu/ODS/latest/reuse/field-list.html",
-          "https://docs.ted.europa.eu/eforms/latest/schema/change-notice.html",
-          "https://ted.europa.eu/en/legal-notice",
-          "https://docs.github.com/en/billing/concepts/product-billing/github-actions"
+          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+          "https://www.nber.org/papers/w22208",
+          "https://www.sciencedirect.com/science/article/abs/pii/S0304405X2030132X"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Distinguish metadata from contract economics",
-        "call_receipt": "Official TED field list, change notice, terms and GitHub billing docs."
+        "decision_impact": "Unlevered fixed rule and risk-matched comparison, costs",
+        "call_receipt": "Opened official library and source abstracts; no historical input records retrieved."
       },
       {
-        "gap": "Independent-format verification of repeated procedure notices",
-        "tool": "Firecrawl",
-        "host": "ChatGPT",
-        "disposition": "EXECUTED",
-        "reason": "Four frozen official viewer reads after included quota verified",
-        "access_verified": true,
-        "authorized": true,
-        "budget_verified": true,
-        "primary_refs": [
-          "https://ted.europa.eu/en/notice/-/detail/211180-2026",
-          "https://ted.europa.eu/en/notice/-/detail/213243-2026",
-          "https://ted.europa.eu/en/notice/-/detail/168830-2026",
-          "https://ted.europa.eu/en/notice/-/detail/204015-2026"
-        ],
-        "validation": "VALIDATED",
-        "decision_impact": "Repeated contract IDs and a result without contract IDs observed",
-        "call_receipt": "Four HTTP 200 scrape IDs 01a2102a-d947-702e-9818-c4c7a0a5b9ae, 01a2102a-d948-76d9-a9d1-2c2e520358b7, 01a2102a-d950-72de-b49b-35b3a34270c2, 01a2102a-d8db-72c1-8c85-f1eb91c3fc63; 959 to 955 included credits."
-      },
-      {
-        "gap": "Additional search or literature for same source",
+        "gap": "Additional literature and duplicate acquisition",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
-        "reason": "DUPLICATE_ORIGIN",
+        "reason": "NO_MATERIAL_INCREMENT",
         "access_verified": false,
         "authorized": false,
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Primary API and viewer sufficient for this gap"
+        "decision_impact": "Existing primary research and counterexample sufficient for this frozen expression; no paid quota."
       }
     ],
     "planned": [
       {
-        "gap": "One fixed award metadata query",
+        "gap": "Acquire and compute official daily factors",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Previously proven official POST and free compute",
+        "reason": "Free standard runner proven on earlier public sources; actual source access to test",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
