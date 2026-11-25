@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_TREASURY_ROLLDOWN_20261125",
+  "mission_id": "QT_H2_TIPS_SWITCH_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:18:05.678Z",
+  "receipt_timestamp": "2026-11-25T01:21:27.935Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "24812f400a7e8a6b550a9828459be884c1b1f890",
+  "code_canonical_sha": "0ef0a87922fa76d12a2a0c481cc5a0317a538d05",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "24812f400a7e8a6b550a9828459be884c1b1f890",
-    "seam": "Historical Treasury zero curve carry and slope economic proxy"
+    "code_sha": "0ef0a87922fa76d12a2a0c481cc5a0317a538d05",
+    "seam": "Historical nominal vs real Treasury allocation"
   },
-  "current_blocker_or_decision": "Can fixed carry or slope maturity selection beat static Treasury durations after modeled fees and risk checks?",
+  "current_blocker_or_decision": "Does one trailing CPI vs breakeven rule outperform same-maturity static assets?",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Quantify distinct term structure mechanism rather than retune failed equities.",
-  "minimal_decisive_test": "Frozen protocol #7149399213; annual 1990–2025, two rules, four benchmarks, two costs, no fitting.",
-  "counterexample": "Slope reflects rate expectations and duration risk; fitted zero prices and revisions are not executable trades.",
+  "why_this_work_can_change_the_decision": "Separate inflation allocation from duration effects",
+  "minimal_decisive_test": "Frozen #7149456987: 20 annual periods, two fee levels, one rule.",
+  "counterexample": "Breakeven includes risk and liquidity premia; revised curves are not executable.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -41,52 +41,62 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Geographic allocation failed frozen screen",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45524372541/job/138903910718",
-      "observed_value": "Exact successful computation; failed economic candidate",
-      "source_kind": "GITHUB_ACTIONS_LOG",
+      "claim": "Treasury maturity rules fail",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149426538",
+      "observed_value": "Risk condition failed; 88–93% advantage attributable to static duration",
+      "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "GSW",
-      "claim": "Fed fitted nominal yield data",
-      "object_identity": "https://www.federalreserve.gov/data/nominal-yield-curve.htm",
-      "observed_value": "Hypothetical off-the-run curve, weekly updates, revisions, Svensson since 1980",
+      "claim_id": "DATA0",
+      "claim": "Official series methodology/schema or missingness",
+      "object_identity": "https://www.federalreserve.gov/data/tips-yield-curve-and-inflation-compensation.htm",
+      "observed_value": "Reviewed; frozen before outcome calculation",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "METHOD_SOURCE",
-      "claim": "Primary data methodology",
-      "object_identity": "https://www.federalreserve.gov/econres/feds/the-us-treasury-yield-curve-1961-to-the-present.htm",
-      "observed_value": "Daily estimated discount function for historical research",
+      "claim_id": "DATA1",
+      "claim": "Official series methodology/schema or missingness",
+      "object_identity": "https://fred.stlouisfed.org/series/CPIAUCNS",
+      "observed_value": "Reviewed; frozen before outcome calculation",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "COUNTER",
-      "claim": "Slope not equivalent to bond return forecast factor",
-      "object_identity": "https://www.nber.org/papers/w9178",
-      "observed_value": "Cochrane/Piazzesi abstract provides counterexample to slope proxy",
+      "claim_id": "DATA2",
+      "claim": "Official series methodology/schema or missingness",
+      "object_identity": "https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm",
+      "observed_value": "Reviewed; frozen before outcome calculation",
+      "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "DATA3",
+      "claim": "Official series methodology/schema or missingness",
+      "object_identity": "https://www.federalreserve.gov/data/yield-curve-tables/feds200805_1.html",
+      "observed_value": "Reviewed; frozen before outcome calculation",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Primary source SHA256, exact run and both complete candidate results.",
+  "durable_output_required": "Three source hashes, annual returns, benchmarks, exact run and decision.",
   "next_action_after_pass_fail_block": "Preserve outcome; if survivor, separately verify execution/availability/fiscality and independent data, no promotion.",
   "owner_authorization_required": true,
   "owner_authorized": true,
   "authority_scope": "Issue #60 scoped historical authority and explicit current-chat continuation; no live/capital/prospective permission.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 Treasury maturity selection",
+  "active_seam": "H2 inflation allocation",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -105,11 +115,11 @@
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45524372541/job/138903910718"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7149426538"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "New term structure mechanism rather than replay equities",
-        "call_receipt": "job 138903910718 consumed, archive #7149373199."
+        "decision_impact": "Avoid retuning failed duration rules",
+        "call_receipt": "Both heads read and prior result verified #7149426538"
       },
       {
         "gap": "Primary curve data and counterargument",
@@ -121,13 +131,14 @@
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://www.federalreserve.gov/data/nominal-yield-curve.htm",
-          "https://www.federalreserve.gov/econres/feds/the-us-treasury-yield-curve-1961-to-the-present.htm",
-          "https://www.nber.org/papers/w9178"
+          "https://www.federalreserve.gov/data/tips-yield-curve-and-inflation-compensation.htm",
+          "https://fred.stlouisfed.org/series/CPIAUCNS",
+          "https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm",
+          "https://www.federalreserve.gov/data/yield-curve-tables/feds200805_1.html"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Use fitted zero prices and conservative signal lag, avoid claim of actual fills",
-        "call_receipt": "Fed methodology and data source identified; no source values opened."
+        "decision_impact": "Same maturity; exclude missing October 2025 before outcomes",
+        "call_receipt": "Fed and BLS/FRED primary methodology/schema and shutdown FAQ"
       },
       {
         "gap": "Independent specialist contribution for same source",
@@ -145,7 +156,7 @@
     ],
     "planned": [
       {
-        "gap": "Acquire one official CSV and compute frozen test",
+        "gap": "Acquire three official CSVs and compute frozen test",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
         "reason": "Proven public free runner and source data acquisition",
