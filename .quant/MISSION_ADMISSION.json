@@ -1,29 +1,29 @@
 {
-  "mission_id": "QT_P3_SPF_CALIBRATION_20261125",
+  "mission_id": "QT_P2_TED_API_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T00:25:20.477Z",
+  "receipt_timestamp": "2026-11-25T00:44:55.804Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "18fddb1e973deb2c2ffaedae211f42b5bd2bfd23",
+  "code_canonical_sha": "1e4be9276d6b0eaf1494385ef0afb91f5068509f",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "18fddb1e973deb2c2ffaedae211f42b5bd2bfd23",
-    "seam": "P3 bounded historical calibration on public SPF and first-release GDP"
+    "code_sha": "1e4be9276d6b0eaf1494385ef0afb91f5068509f",
+    "seam": "P2 frozen public TED metadata acquisition"
   },
-  "current_blocker_or_decision": "Can frozen simple shrinkage improve probability forecasts versus raw SPF and a fixed base rate?",
-  "target_gate_or_blocker": "P3 calibration; no economic edge or F0-F6 reopening",
+  "current_blocker_or_decision": "Can the official anonymous TED API return known award and complete fixed Q1 cable metadata cohort?",
+  "target_gate_or_blocker": "P2 source access; no economic trial",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Identify whether simple combination deserves further evaluation before costly model complexity.",
-  "minimal_decisive_test": "Predeclared protocol #7148473179, validate admission before data acquisition, self-test, one historical evaluation on official inputs.",
-  "counterexample": "Revised GDP labels or quarter misalignment can falsely improve scores; use first release and next-quarter target.",
+  "why_this_work_can_change_the_decision": "Distinguish reproducible cohort acquisition from individual viewer research.",
+  "minimal_decisive_test": "Frozen issue comment 7148586004; two read-only POST requests, eight synthetic checks, no retries or market outcomes.",
+  "counterexample": "Truncated results, duplicated notices, missing CPV/date or corrections counted as awards.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Current tool policy is static-qualified.",
+      "claim": "Canonical tool policy",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
-      "observed_value": "Existing validator declaration requirements, no new authority.",
+      "observed_value": "Static receipt validation",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -31,9 +31,9 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Global economic and live permissions remain false.",
+      "claim": "Global economic authorities unchanged",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Bounded historical probability evaluation only.",
+      "observed_value": "Read-only historical source qualification",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
@@ -41,52 +41,52 @@
     },
     {
       "claim_id": "VALIDATOR",
-      "claim": "Existing code gate verified exact subject.",
-      "object_identity": "18fddb1e973deb2c2ffaedae211f42b5bd2bfd23:scripts/validate_ai_working_method.py@b2035ab1864c6493b5746b0532bc701831dea99b",
-      "observed_value": "Run 45475741867 SUCCESS.",
+      "claim": "Exact current method qualified",
+      "object_identity": "1e4be9276d6b0eaf1494385ef0afb91f5068509f:scripts/validate_ai_working_method.py@b2035ab1864c6493b5746b0532bc701831dea99b",
+      "observed_value": "15 workflows succeeded on current code",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "SPF",
-      "claim": "RECESS2 predicts next-quarter negative GDP growth.",
-      "object_identity": "https://www.philadelphiafed.org/surveys-and-data/recess",
-      "observed_value": "Percent probabilities; GDP from 1992.",
+      "claim_id": "TED_DOC",
+      "claim": "Anonymous POST search documented",
+      "object_identity": "https://docs.ted.europa.eu/api/latest/search.html",
+      "observed_value": "Public data reuse without authentication",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "LABEL",
-      "claim": "First-release GDP growth available separately from revisions.",
-      "object_identity": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/routput",
-      "observed_value": "First/second/third release workbook linked.",
+      "claim_id": "TED_FIELDS",
+      "claim": "Request fields, page and scope documented",
+      "object_identity": "https://docs.ted.europa.eu/ODS/latest/reuse/search-api.html",
+      "observed_value": "PAGE_NUMBER, 250 max per page",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "FREE_RUNTIME",
-      "claim": "Public repository standard runner compute is free.",
+      "claim_id": "BUDGET",
+      "claim": "Standard public runner compute free",
       "object_identity": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
-      "observed_value": "Standard GitHub-hosted runners in public repositories free; no artifact/cache upload.",
+      "observed_value": "No artifact upload or paid runner",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Frozen scope, reproducible runner, exact source hashes, test log and scoped result or failure.",
-  "next_action_after_pass_fail_block": "Read exact hosted result; preserve negative result or BLOCK_DATA; no parameter retuning or capital action.",
+  "durable_output_required": "Exact API runner, response hashes, sanitized metadata and exact hosted run.",
+  "next_action_after_pass_fail_block": "Archive bounded results, distinguish source access from economics, no broadened query after exposure.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner's standing historical research permission in issue #60 and request to continue frozen P3 campaign; one descriptive historical forecast evaluation, no trade or unblinding.",
+  "authority_scope": "Owner continuation of P2 frozen historical source qualification, no new economic or prospective experiment.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "P3 public historical probability calibration",
+  "active_seam": "P2 TED public metadata",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -94,43 +94,56 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Exact current authority and existing tests",
+        "gap": "Canonical source authority",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read canonical objects and hosted run statuses",
+        "reason": "Opened current heads, policy, router, previous receipts and all 15 successful run statuses",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "18fddb1e973deb2c2ffaedae211f42b5bd2bfd23:scripts/validate_ai_working_method.py@b2035ab1864c6493b5746b0532bc701831dea99b"
+          "1e4be9276d6b0eaf1494385ef0afb91f5068509f:scripts/validate_ai_working_method.py@b2035ab1864c6493b5746b0532bc701831dea99b"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "P0 static complete; P3 only",
-        "call_receipt": "Exact heads and 14 completed code workflows read."
+        "decision_impact": "Reuse qualified execution route",
+        "call_receipt": "Exact current refs and 15 completed successful workflows."
       },
       {
-        "gap": "Official dataset and runtime terms",
+        "gap": "API and quota documentation",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read source metadata and linked workbook paths, official billing docs",
+        "reason": "Opened official API and billing documentation",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://www.philadelphiafed.org/surveys-and-data/recess",
-          "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/routput",
+          "https://docs.ted.europa.eu/api/latest/search.html",
+          "https://docs.ted.europa.eu/ODS/latest/reuse/search-api.html",
           "https://docs.github.com/en/billing/concepts/product-billing/github-actions"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Frozen target and free acquisition path",
-        "call_receipt": "Official metadata opened; direct spreadsheet reader rejected XLSX, local DNS failed."
+        "decision_impact": "Anonymous documented endpoint and free runner",
+        "call_receipt": "Official TED search, Open Data reuse and GitHub billing pages opened."
       },
       {
-        "gap": "Alternative proprietary dataset or agent",
+        "gap": "Known TED viewer evidence",
+        "tool": "Firecrawl",
+        "host": "ChatGPT",
+        "disposition": "SKIPPED",
+        "reason": "REUSE_VALID_EVIDENCE",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [],
+        "validation": "NOT_EXECUTED",
+        "decision_impact": "Prior official viewer receipt already available, no redundant scrape"
+      },
+      {
+        "gap": "Additional literature or search provider for API response",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -140,15 +153,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "No need for paid data or duplicate specialist search"
+        "decision_impact": "Direct official API is decisive; secondary search cannot qualify it"
       }
     ],
     "planned": [
       {
-        "gap": "Acquire two official XLSX files and evaluate once",
+        "gap": "Two frozen TED API requests",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Native reader rejects XLSX; ordinary public runner free, repository admin access and existing hosted execution verified; actual source access to be tested",
+        "reason": "Previously proven direct historical file acquisition, free standard public runner; actual TED access tested once",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
