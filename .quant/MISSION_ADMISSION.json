@@ -1,22 +1,22 @@
 {
-  "mission_id": "QT_H2_INFORMATION_FLOW_20261125",
+  "mission_id": "QT_H2_INFORMATION_FLOW_YAML_REPAIR_20261125",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-25T01:25:05.723Z",
+  "receipt_timestamp": "2026-11-25T01:26:08.716Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "88386cdb645cbc2ade0ab328e7b54bb12b0fac0a",
+  "code_canonical_sha": "98af189c68b184e131509bef65301d3ad79aaf54",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "88386cdb645cbc2ade0ab328e7b54bb12b0fac0a",
+    "code_sha": "98af189c68b184e131509bef65301d3ad79aaf54",
     "seam": "H2 historical public earnings/accounting information-flow economic expressions"
   },
-  "current_blocker_or_decision": "Do five long-only information and accounting signals or their fixed mix add material compounded return after cost and risk checks in postpublication history?",
+  "current_blocker_or_decision": "Workflow YAML invalid before job creation; no source or economic outcomes accessed.",
   "target_gate_or_blocker": "H2 bounded historical economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
   "why_this_work_can_change_the_decision": "Different economic information mechanism than failed broad characteristics, fixed six candidates and actual compounding comparisons.",
-  "minimal_decisive_test": "Frozen #7149506623; pinned authors' release, 216 months 2007–2024, six fixed expressions and 2 cost levels, familywise bootstrap.",
+  "minimal_decisive_test": "Same frozen #7149506623, replace YAML plain scalar with block scalar, locally reproduced syntax error and verified same command, execute unchanged economic runner.",
   "counterexample": "Postpublication underreaction may disappear after trading costs; long-short academic spreads may not survive long-only; quality and size exposure can explain returns.",
   "primary_evidence": [
     {
@@ -118,6 +118,16 @@
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
+    },
+    {
+      "claim_id": "YAML",
+      "claim": "Original run failed before job creation; pip command has unquoted colon-space",
+      "object_identity": "98af189c68b184e131509bef65301d3ad79aaf54:.github/workflows/qt-h2-information-flow-20261125.yml@3daca15f30abb0af3ac3bfefaf0c1d4d4b6b9218",
+      "observed_value": "Run 45525618057 failure, zero jobs; PyYAML reproduces mapping values not allowed, block scalar parses unchanged shell command.",
+      "source_kind": "GIT_BLOB",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
     }
   ],
   "durable_output_required": "Source hashes, exact run, full economic effects, local blocks and decision.",
@@ -127,7 +137,7 @@
   "authority_scope": "Issue #60 and current-chat continuation: individually scoped historical analysis only, no live or real capital.",
   "external_agent_dispatch_requested": false,
   "active_seam": "H2 information-flow portfolio experiment",
-  "active_decision_lanes": 2,
+  "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
   "global_stop_requested": false,
@@ -150,11 +160,12 @@
           "OpenSourceAP/CrossSection@9f053398c4995651d822e90d81526d0644c6f3e5:SignalDoc.csv@f81cd7ae04eeb3c14eaf0cffd5b621f81ba5a73c",
           "OpenSourceAP/CrossSection@9f053398c4995651d822e90d81526d0644c6f3e5:Portfolios/Code/01_PortfolioFunction.R@89092dc411b2a8140560a4e67117de8d81174f49",
           "OpenSourceAP/CrossSection@9f053398c4995651d822e90d81526d0644c6f3e5:Portfolios/Code/30_PredictorAltPorts.R@c96533a39148dd43c4edfb9615e820ee43b85c53",
-          "OpenSourceAP/CrossSection@9f053398c4995651d822e90d81526d0644c6f3e5:Portfolios/Code/11_ProcessCRSP.R@b0e59f728316c8ffcf212fc7695a49a8752cf3f1"
+          "OpenSourceAP/CrossSection@9f053398c4995651d822e90d81526d0644c6f3e5:Portfolios/Code/11_ProcessCRSP.R@b0e59f728316c8ffcf212fc7695a49a8752cf3f1",
+          "98af189c68b184e131509bef65301d3ad79aaf54:.github/workflows/qt-h2-information-flow-20261125.yml@3daca15f30abb0af3ac3bfefaf0c1d4d4b6b9218"
         ],
         "validation": "VALIDATED",
         "decision_impact": "Reuse accounting; fix signed quintile direction, lag and percent units",
-        "call_receipt": "Exact refs and source objects read; prior result and TIPS isolated in-flight job verified."
+        "call_receipt": "Exact refs and source objects read; prior result and TIPS isolated in-flight job verified. Run 45525618057 had zero jobs; exact YAML read, local PyYAML check reproduced failure and verified correction."
       },
       {
         "gap": "Dataset catalog and legal public access unavailable in native reader",
@@ -193,7 +204,7 @@
         "gap": "Acquire pinned public parquet and compute fixed batch",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Free proven public runner; exact source acquisition and parser to test",
+        "reason": "Retry unchanged frozen economic code after YAML-only repair.",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
