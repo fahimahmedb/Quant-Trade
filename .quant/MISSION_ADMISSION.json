@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_FISCAL_CAPTURE_20261126",
+  "mission_id": "QT_H2_INTEGRATED_WEALTH_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T02:01:23.243Z",
+  "receipt_timestamp": "2026-11-26T02:10:18.977Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2",
+  "code_canonical_sha": "aaebcb760be631585cc84cd67b2cff9cea0ae492",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2",
-    "seam": "PER vs PEA matched net cash fiscal model"
+    "code_sha": "aaebcb760be631585cc84cd67b2cff9cea0ae492",
+    "seam": "Integrated matched-cash economic decision model"
   },
-  "current_blocker_or_decision": "Can deferred taxation and reinvested refund overcome wrapper fees and exit taxes under same cash budget?",
+  "current_blocker_or_decision": "Does corrected effective fiscal model survive, and can match plus tax deferral combine without double counting?",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Quantify exact thresholds and historical return-path stress, not new alpha",
-  "minimal_decisive_test": "Frozen #7180371113 A: 600 deterministic grid, 54 retrospective cohort groups, two cost scenarios, no optimization",
-  "counterexample": "Long-horizon fee drag or high exit tax can outweigh deduction; lockup differs.",
+  "why_this_work_can_change_the_decision": "Material newly discovered quotient and cap, matched allocation, actual constraints; no repeat unmodified trial",
+  "minimal_decisive_test": "Frozen #7180517321: corrected 96 A groups, 96 C groups, withdrawal and transfer deterministic comparisons",
+  "counterexample": "High cost, tax brackets and concentration shock can make hybrid worse than its strongest component.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -41,49 +41,69 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Prior stock reversal closed",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180245140",
-      "observed_value": "No replay",
+      "claim": "Exact prior fiscal challenge",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180447600",
+      "observed_value": "Effective rate materially differs from TMI",
       "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "PER",
-      "claim": "Capital treatment for deductible contributions",
-      "object_identity": "https://bofip.impots.gouv.fr/bofip/14911-PGP.html/identifiant=BOI-ANNX-000513-20260810",
-      "observed_value": "Ordinary capital withdrawal, contribution and gains distinct",
+      "claim_id": "ARCH",
+      "claim": "Previous pinned archive hashes",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180408208",
+      "observed_value": "Reuse same three original archives; no independent evidence claim",
+      "source_kind": "GITHUB_ISSUE_COMMENT",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "QUOT",
+      "claim": "BOFiP current quotient and fractional tax basis",
+      "object_identity": "https://bofip.impots.gouv.fr/bofip/7456-PGP.html/identifiant=BOI-RSA-PENS-30-10-20-20260810",
+      "observed_value": "§90–160, prior three years matter",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "PEA",
-      "claim": "PEA gains exempt from income tax after five years",
-      "object_identity": "https://www.service-public.gouv.fr/particuliers/vosdroits/F22449",
-      "observed_value": "PS still payable",
+      "claim_id": "DEC",
+      "claim": "Decote applied after gross quotient",
+      "object_identity": "https://bofip.impots.gouv.fr/bofip/2495-PGP.html/identifiant=BOI-IR-LIQ-20-20-30-20260407",
+      "observed_value": "Tax calculation order",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "SOCIAL",
-      "claim": "2026 general social contribution 18.6%",
-      "object_identity": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2329",
-      "observed_value": "Future tax uncertain",
+      "claim_id": "LAW",
+      "claim": "Current capital withdrawal right",
+      "object_identity": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038507627/2026-04-11",
+      "observed_value": "Capital once or fractionated for eligible rights",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "FEES",
-      "claim": "Illustrative wrapper fee from actual provider",
-      "object_identity": "https://www.linxea.com/per/linxea-spirit-per/",
-      "observed_value": "0.50% annual UC and EUR10 association fee; ETF transaction fees inconsistent with help",
+      "claim_id": "PEE",
+      "claim": "PEE gain and withdrawal taxation",
+      "object_identity": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2142",
+      "observed_value": "Employer and employee investment, PS on gains",
+      "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "TRANSFER",
+      "claim": "PER transfer cost and age",
+      "object_identity": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34982",
+      "observed_value": "1% maximum before 5y; zero afterward",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
@@ -91,22 +111,22 @@
     },
     {
       "claim_id": "REUSE",
-      "claim": "Reuse already qualified original reader",
-      "object_identity": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2:research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py@7cfa8481a7934313b3ff684b23b63069d6c037a4",
-      "observed_value": "420 months, original archive hashes and raw sentinel validation",
+      "claim": "Existing original parser exact blob",
+      "object_identity": "aaebcb760be631585cc84cd67b2cff9cea0ae492:research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py@7cfa8481a7934313b3ff684b23b63069d6c037a4",
+      "observed_value": "Already qualified coverage and sentinels",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Full grid and cohort aggregates with exact source hashes and outcome decisions",
-  "next_action_after_pass_fail_block": "Archive and qualify conditional threshold; other lanes in current chat, no real capital",
+  "durable_output_required": "Exact logs, pinned sources, results, comparative decisions and limitations",
+  "next_action_after_pass_fail_block": "Persist all results, qualify eligibility and no real activation",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner issue #60 bounded retrospective research and hypothetical calculations, no capital or prospective authority",
+  "authority_scope": "Issue #60 and current request, bounded retrospective and deterministic only; no capital/live/prospective authority",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 fiscal capture",
+  "active_seam": "H2 integrated wealth",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -114,59 +134,63 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and reuse",
+        "gap": "Current authority and prior evidence",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Exact heads, prior issue and source reader inspected",
+        "reason": "Exact heads, method/router, prior source and result",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180245140",
-          "00d29c839b8e3aea499d389b0ead9bcec5d65ff2:research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py@7cfa8481a7934313b3ff684b23b63069d6c037a4"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180447600",
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180408208",
+          "aaebcb760be631585cc84cd67b2cff9cea0ae492:research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py@7cfa8481a7934313b3ff684b23b63069d6c037a4"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Reuse known reader, no new architecture",
-        "call_receipt": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2, reader 7cfa8481a7934313b3ff684b23b63069d6c037a4."
+        "decision_impact": "Correct prior assumptions instead of replay",
+        "call_receipt": "aaebcb760be631585cc84cd67b2cff9cea0ae492, reader 7cfa8481a7934313b3ff684b23b63069d6c037a4."
       },
       {
-        "gap": "Current official tax model and fee assumptions",
+        "gap": "Actual tax/withdrawal rules",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Official doctrine and fee page opened",
+        "reason": "Opened current BOFiP, L224-5 and official PEE/PER",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://bofip.impots.gouv.fr/bofip/14911-PGP.html/identifiant=BOI-ANNX-000513-20260810",
-          "https://www.service-public.gouv.fr/particuliers/vosdroits/F22449",
-          "https://www.service-public.gouv.fr/particuliers/vosdroits/F2329",
-          "https://www.linxea.com/per/linxea-spirit-per/"
+          "https://bofip.impots.gouv.fr/bofip/7456-PGP.html/identifiant=BOI-RSA-PENS-30-10-20-20260810",
+          "https://bofip.impots.gouv.fr/bofip/2495-PGP.html/identifiant=BOI-IR-LIQ-20-20-30-20260407",
+          "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038507627/2026-04-11",
+          "https://www.service-public.gouv.fr/particuliers/vosdroits/F2142",
+          "https://www.service-public.gouv.fr/particuliers/vosdroits/F34982"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Separate tax on capital/gain, model known cost and future uncertainty",
-        "call_receipt": "BOI-ANNX-000513 20260810, F22449/F2329, Linxea official fee page."
+        "decision_impact": "Quotient applied to gross before decote; fractionation, cap and transfer rules",
+        "call_receipt": "BOI-RSA-PENS-30-10-20 20260810, BOI-IR-LIQ-20-20-30 20260407, F2142, F34982."
       },
       {
-        "gap": "Independent statutory retrieval",
+        "gap": "Independent legal exact reference",
         "tool": "Legal Data Hunter",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Targeted resolver, prior free access verified; no upgrade",
+        "reason": "Confirmed L224-5 current full text, no upgrade",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
-        "primary_refs": [],
-        "validation": "FAILED",
-        "decision_impact": "163 quatervicies returned abrogated identity; excluded, use primary current BOFiP",
-        "call_receipt": "LEGIARTI000006308148 ABROGE effective 1991-12-31; wrong match."
+        "primary_refs": [
+          "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038507627/2026-04-11"
+        ],
+        "validation": "VALIDATED",
+        "decision_impact": "Capital single or fractionated permitted for qualifying rights",
+        "call_receipt": "FR/LegifranceCodes LEGIARTI000038507627 VIGUEUR."
       },
       {
-        "gap": "Additional literature providers",
+        "gap": "Redundant literature",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -176,15 +200,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Deterministic tax and fees, no paper needed to establish current statutory rule."
+        "decision_impact": "Official tax law and matched arithmetic decisive."
       }
     ],
     "planned": [
       {
-        "gap": "Run original archive return-path stress",
+        "gap": "Evaluate corrected historical and deterministic models",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Existing free runner, identical proven acquisition, scoped retrospective only",
+        "reason": "Existing free runner, exact pinned source, bounded one-shot",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
