@@ -1,0 +1,33 @@
+name: QT H2 real liability sequence (one-shot)
+on:
+  push:
+    branches: [code/canonical]
+    paths:
+      - ".github/workflows/qt-h2-real-liability-sequence-20261126.yml"
+permissions:
+  contents: read
+jobs:
+  bounded-replay:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact admission before outcomes
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "${{ github.event.before }}" = "3de3874d6166c7042cc542d4108e9ca27122213d"
+          git fetch --no-tags origin project/canonical
+          test "$(git rev-parse FETCH_HEAD)" = "d772dd96cdac107363dec1503c5cf60e49bc4862"
+          git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/qt-sequence-contract.json
+          git ls-remote --heads origin | awk '{sub("refs/heads/", "", $2); print $2}' > /tmp/qt-sequence-branches.txt
+          python scripts/validate_ai_working_method.py /tmp/qt-sequence-contract.json AGENTS.md --branches-file /tmp/qt-sequence-branches.txt --admission .quant/MISSION_ADMISSION.json --current-project-sha d772dd96cdac107363dec1503c5cf60e49bc4862 --current-code-sha 3de3874d6166c7042cc542d4108e9ca27122213d --current-router-identity governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c --expected-mission-id QT_H2_REAL_LIABILITY_SEQUENCE_20261126
+      - name: Synthetic checks
+        run: python research/edge_lab/discovery/experiments/qt-h2-real-liability-sequence-20261126.py --self-test
+      - name: Fixed real liability comparison
+        run: python research/edge_lab/discovery/experiments/qt-h2-real-liability-sequence-20261126.py

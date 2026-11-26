@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_CREDIT_DIVERSIFICATION_20261126",
+  "mission_id": "QT_H2_REAL_LIABILITY_SEQUENCE_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T02:22:52.655Z",
+  "receipt_timestamp": "2026-11-26T02:29:12.988Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "a7f898ec885631fdbbf71cc1cb168a6935ffc6fd",
+  "code_canonical_sha": "3de3874d6166c7042cc542d4108e9ca27122213d",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "a7f898ec885631fdbbf71cc1cb168a6935ffc6fd",
-    "seam": "Fixed corporate credit allocation versus Treasury and risk-calibrated benchmark"
+    "code_sha": "3de3874d6166c7042cc542d4108e9ca27122213d",
+    "seam": "Real spending liability and sequence risk"
   },
-  "current_blocker_or_decision": "Does replacing part of government bonds with corporate credit improve historical net wealth without higher observed risk?",
+  "current_blocker_or_decision": "Can a cash bucket improve ability to honor real fixed spending without terminal wealth sacrifice?",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "New credit exposure rather than equity factors, timing or fiscal retuning",
-  "minimal_decisive_test": "Frozen #7180737247 A, 98 years, 42 train/56 test, 2 fixed candidates, 4 primary contrasts, no outcome-dependent tuning",
-  "counterexample": "Credit premium may be duration or equity risk; default and liquidity costs; annual risk hides intra-year losses",
+  "why_this_work_can_change_the_decision": "Liquidity obligations and actual real wealth differ from pure accumulation; same exposure comparator",
+  "minimal_decisive_test": "Frozen #7180839999 A, 79 overlapping 20-year windows, 4 fixed policies, 3 withdrawal rates, 2 fees, actual CPI and fixed inflation stress",
+  "counterexample": "Not rebalancing after equity losses may forgo recovery; excessive cash drag",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -41,29 +41,29 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Marginal fiscal test finished",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45741082066",
-      "observed_value": "Raw logs show no universal pass; not replayed",
-      "source_kind": "GITHUB_ACTIONS_LOG",
+      "claim": "Credit campaign finished and archived",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180803835",
+      "observed_value": "Do not replay credit",
+      "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DATA",
-      "claim": "Damodaran historical annual total return source",
-      "object_identity": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html",
-      "observed_value": "Official header and some rows visible, exploratory only",
-      "source_kind": "OFFICIAL_WEB_PAGE",
+      "claim_id": "REUSE",
+      "claim": "Exact prior annual market reader and source hash",
+      "object_identity": "3de3874d6166c7042cc542d4108e9ca27122213d:research/edge_lab/discovery/experiments/qt-h2-credit-diversification-20261126.py@28b5395ab3b1c2d16eded3c19633da055f332bdb",
+      "observed_value": "98 years, pinned SHA256",
+      "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DATA_INDEX",
-      "claim": "NYU source description",
-      "object_identity": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datacurrent.html",
-      "observed_value": "January 2026 update, annual returns from 1928",
+      "claim_id": "CPI",
+      "claim": "Official BLS CPI-U via FRED",
+      "object_identity": "https://fred.stlouisfed.org/series/CPIAUCNS",
+      "observed_value": "NSA monthly 1913 onward, use December endpoints",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
@@ -71,32 +71,22 @@
     },
     {
       "claim_id": "COUNTER",
-      "claim": "NBIM duration and equity confounds",
-      "object_identity": "https://www.nbim.no/contentassets/ae25de20dc7541ee8cb169b389a985ea/discussion-note-2-17---corporate-bonds.pdf",
-      "observed_value": "Page 8 screenshot examined; duration match unavailable here",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "AQR",
-      "claim": "Independent source metadata",
-      "object_identity": "https://www.aqr.com/Insights/Datasets/Credit-Risk-Premium-Preliminary-Paper-Data",
-      "observed_value": "1926–2014 working paper data, not executable product",
+      "claim": "Cash bucket can fail to replenish equity in drawdowns",
+      "object_identity": "https://www.kitces.com/blog/managing-sequence-of-return-risk-with-bucket-strategies-vs-a-total-return-with-rebalancing-approach/",
+      "observed_value": "Matched allocation and rebalancing control",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact primary archive hash, full result or typed source block",
-  "next_action_after_pass_fail_block": "Persist results, only qualify survivors with independent duration-matched data and real product costs; other lanes independent",
+  "durable_output_required": "Exact source hashes, all fixed scenario results and any CPI block",
+  "next_action_after_pass_fail_block": "Archive and compare conditional cash liability funding separately; no capital",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner issue #60 and present request, one bounded retrospective exploratory batch, no capital or live permissions",
+  "authority_scope": "Issue #60 and present request; one bounded retrospective batch; no real capital, live, prospective or deployment",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 credit diversification",
+  "active_seam": "H2 real liability sequence",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -104,77 +94,61 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and prior output",
+        "gap": "Canonical state and prior archive",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read actual heads, raw jobs and existing code",
+        "reason": "Read exact heads, credit logs, prior result and router",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45741082066"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180803835",
+          "3de3874d6166c7042cc542d4108e9ca27122213d:research/edge_lab/discovery/experiments/qt-h2-credit-diversification-20261126.py@28b5395ab3b1c2d16eded3c19633da055f332bdb"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Do not repeat prior marginal rule",
-        "call_receipt": "a7f898ec and jobs 139644477058/139645960768."
+        "decision_impact": "Reuse pinned market source; no repeated credit",
+        "call_receipt": "3de3874d and #7180803835, run45742040597."
       },
       {
-        "gap": "Original data, source metadata and counterexample",
+        "gap": "Actual inflation and counterexample",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened source headers and independent NBIM primary discussion note",
+        "reason": "Opened official FRED/NYU and published sequence-risk counterexample",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html",
-          "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datacurrent.html",
-          "https://www.nbim.no/contentassets/ae25de20dc7541ee8cb169b389a985ea/discussion-note-2-17---corporate-bonds.pdf",
-          "https://www.aqr.com/Insights/Datasets/Credit-Risk-Premium-Preliminary-Paper-Data"
+          "https://fred.stlouisfed.org/series/CPIAUCNS",
+          "https://www.kitces.com/blog/managing-sequence-of-return-risk-with-bucket-strategies-vs-a-total-return-with-rebalancing-approach/"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Separate broad allocation from pure credit, fixed risk comparison and costs",
-        "call_receipt": "NYU Jan2026 data page and NBIM p8 visually checked; some source rows already exposed."
+        "decision_impact": "Use matched exposure control and actual December CPI",
+        "call_receipt": "CPIAUCNS metadata and Kitces full page opened."
       },
       {
-        "gap": "Independent academic challenge",
-        "tool": "Wiley Scholar Gateway",
+        "gap": "Additional metered searches",
+        "tool": "NONE",
         "host": "ChatGPT",
-        "disposition": "EXECUTED",
-        "reason": "Free plan 21 remaining preflight, targeted query returned 5 passages/5 articles",
-        "access_verified": true,
-        "authorized": true,
-        "budget_verified": true,
+        "disposition": "SKIPPED",
+        "reason": "NO_MATERIAL_INCREMENT",
+        "access_verified": false,
+        "authorized": false,
+        "budget_verified": false,
         "primary_refs": [],
-        "validation": "UNKNOWN",
-        "decision_impact": "Credit exposure and equity/default correlation require separate risk attribution",
-        "call_receipt": "2026-11-26T02:22:19.771Z, DOI 10.1111/j.1468-036X.2013.12009.x and 10.1111/jofi.12195."
-      },
-      {
-        "gap": "Existing laboratory state",
-        "tool": "Quant-Trade · Laboratoire",
-        "host": "ChatGPT",
-        "disposition": "EXECUTED",
-        "reason": "Read-only lab status, no test execution",
-        "access_verified": true,
-        "authorized": true,
-        "budget_verified": true,
-        "primary_refs": [],
-        "validation": "UNKNOWN",
-        "decision_impact": "Lab metadata idle, cannot assert ongoing execution",
-        "call_receipt": "Observed 2026-11-26T02:20:03.929Z, IDLE_NO_ADMISSIBLE_WORK."
+        "validation": "NOT_EXECUTED",
+        "decision_impact": "Primary market and CPI source plus clear counterexample sufficient for frozen exploratory test."
       }
     ],
     "planned": [
       {
-        "gap": "One original source retrieval and fixed statistical experiment",
+        "gap": "Run fixed withdrawal policies against pinned market and actual CPI",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Existing free runner, no new service",
+        "reason": "Existing free runner, exact admission, no new service",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
