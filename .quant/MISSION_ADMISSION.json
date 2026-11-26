@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_MARGINAL_ALLOCATION_PATH_20261126",
+  "mission_id": "QT_H2_CREDIT_DIVERSIFICATION_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T02:14:20.631Z",
+  "receipt_timestamp": "2026-11-26T02:22:52.655Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "80d94422c4d4b1ec24097e9a2d88375ef1241b64",
+  "code_canonical_sha": "a7f898ec885631fdbbf71cc1cb168a6935ffc6fd",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "80d94422c4d4b1ec24097e9a2d88375ef1241b64",
-    "seam": "Fixed marginal deduction allocation"
+    "code_sha": "a7f898ec885631fdbbf71cc1cb168a6935ffc6fd",
+    "seam": "Fixed corporate credit allocation versus Treasury and risk-calibrated benchmark"
   },
-  "current_blocker_or_decision": "Does bracket-limited allocation beat both full cap and PEA across fixed paths?",
+  "current_blocker_or_decision": "Does replacing part of government bonds with corporate credit improve historical net wealth without higher observed risk?",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Avoid over-contributing into lower deduction bracket, assess fixed rule without fitting",
-  "minimal_decisive_test": "Frozen #7180593121, 72 groups, same exact previously exposed paths, fixed comparison to best alternatives",
-  "counterexample": "Small fixed fee, weak returns, high exit tax or fee drag can defeat the limited contribution",
+  "why_this_work_can_change_the_decision": "New credit exposure rather than equity factors, timing or fiscal retuning",
+  "minimal_decisive_test": "Frozen #7180737247 A, 98 years, 42 train/56 test, 2 fixed candidates, 4 primary contrasts, no outcome-dependent tuning",
+  "counterexample": "Credit premium may be duration or equity risk; default and liquidity costs; annual risk hides intra-year losses",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -40,63 +40,63 @@
       "scope": "CURRENT"
     },
     {
-      "claim_id": "RULE",
-      "claim": "Bracket rule deterministic proof",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180588316",
-      "observed_value": "960 frozen scenarios; independent Decimal and JS agree",
-      "source_kind": "GITHUB_ISSUE_COMMENT",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
       "claim_id": "PRIOR",
-      "claim": "Integrated model and return path results",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180569174",
-      "observed_value": "Exact prior archives and current reader",
-      "source_kind": "GITHUB_ISSUE_COMMENT",
+      "claim": "Marginal fiscal test finished",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45741082066",
+      "observed_value": "Raw logs show no universal pass; not replayed",
+      "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "REUSE",
-      "claim": "Integrated allocation code",
-      "object_identity": "80d94422c4d4b1ec24097e9a2d88375ef1241b64:research/edge_lab/discovery/experiments/qt-h2-integrated-wealth-20261126.py@c045a5f699b2c1645cc677bfaf32793426813021",
-      "observed_value": "Reuse previously executed allocation, hash check and tax function",
-      "source_kind": "GIT_BLOB",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "QUOT",
-      "claim": "BOFiP current quotient and fractional tax basis",
-      "object_identity": "https://bofip.impots.gouv.fr/bofip/7456-PGP.html/identifiant=BOI-RSA-PENS-30-10-20-20260810",
-      "observed_value": "§90–160, prior three years matter",
+      "claim_id": "DATA",
+      "claim": "Damodaran historical annual total return source",
+      "object_identity": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html",
+      "observed_value": "Official header and some rows visible, exploratory only",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DEC",
-      "claim": "Decote applied after gross quotient",
-      "object_identity": "https://bofip.impots.gouv.fr/bofip/2495-PGP.html/identifiant=BOI-IR-LIQ-20-20-30-20260407",
-      "observed_value": "Tax calculation order",
+      "claim_id": "DATA_INDEX",
+      "claim": "NYU source description",
+      "object_identity": "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datacurrent.html",
+      "observed_value": "January 2026 update, annual returns from 1928",
+      "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "COUNTER",
+      "claim": "NBIM duration and equity confounds",
+      "object_identity": "https://www.nbim.no/contentassets/ae25de20dc7541ee8cb169b389a985ea/discussion-note-2-17---corporate-bonds.pdf",
+      "observed_value": "Page 8 screenshot examined; duration match unavailable here",
+      "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "AQR",
+      "claim": "Independent source metadata",
+      "object_identity": "https://www.aqr.com/Insights/Datasets/Credit-Risk-Premium-Preliminary-Paper-Data",
+      "observed_value": "1926–2014 working paper data, not executable product",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact pinned inputs, full group results and decisions",
-  "next_action_after_pass_fail_block": "Persist actual outcome and conditions; no claim of independent sample or actual eligibility",
+  "durable_output_required": "Exact primary archive hash, full result or typed source block",
+  "next_action_after_pass_fail_block": "Persist results, only qualify survivors with independent duration-matched data and real product costs; other lanes independent",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 and current request, one bounded retrospective test only",
+  "authority_scope": "Owner issue #60 and present request, one bounded retrospective exploratory batch, no capital or live permissions",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 marginal tax allocation",
+  "active_seam": "H2 credit diversification",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -104,62 +104,77 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and current rule",
+        "gap": "Canonical state and prior output",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Exact heads and prior deterministic result read",
+        "reason": "Read actual heads, raw jobs and existing code",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180588316",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180569174",
-          "80d94422c4d4b1ec24097e9a2d88375ef1241b64:research/edge_lab/discovery/experiments/qt-h2-integrated-wealth-20261126.py@c045a5f699b2c1645cc677bfaf32793426813021"
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45741082066"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Reuse fixed rule and exact existing runner instead of rebuilding",
-        "call_receipt": "Protocol 7180593121, previous 7180588316 and 7180569174."
+        "decision_impact": "Do not repeat prior marginal rule",
+        "call_receipt": "a7f898ec and jobs 139644477058/139645960768."
       },
       {
-        "gap": "Current tax rules",
+        "gap": "Original data, source metadata and counterexample",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Current official BOFiP already opened in this session",
+        "reason": "Opened source headers and independent NBIM primary discussion note",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://bofip.impots.gouv.fr/bofip/7456-PGP.html/identifiant=BOI-RSA-PENS-30-10-20-20260810",
-          "https://bofip.impots.gouv.fr/bofip/2495-PGP.html/identifiant=BOI-IR-LIQ-20-20-30-20260407"
+          "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html",
+          "https://pages.stern.nyu.edu/adamodar/New_Home_Page/datacurrent.html",
+          "https://www.nbim.no/contentassets/ae25de20dc7541ee8cb169b389a985ea/discussion-note-2-17---corporate-bonds.pdf",
+          "https://www.aqr.com/Insights/Datasets/Credit-Risk-Premium-Preliminary-Paper-Data"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Reuse tax and quotient order unchanged",
-        "call_receipt": "BOI-RSA-PENS-30-10-20 20260810 and BOI-IR-LIQ-20-20-30 20260407."
+        "decision_impact": "Separate broad allocation from pure credit, fixed risk comparison and costs",
+        "call_receipt": "NYU Jan2026 data page and NBIM p8 visually checked; some source rows already exposed."
       },
       {
-        "gap": "Additional metered search",
-        "tool": "NONE",
+        "gap": "Independent academic challenge",
+        "tool": "Wiley Scholar Gateway",
         "host": "ChatGPT",
-        "disposition": "SKIPPED",
-        "reason": "NO_MATERIAL_INCREMENT",
-        "access_verified": false,
-        "authorized": false,
-        "budget_verified": false,
+        "disposition": "EXECUTED",
+        "reason": "Free plan 21 remaining preflight, targeted query returned 5 passages/5 articles",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
         "primary_refs": [],
-        "validation": "NOT_EXECUTED",
-        "decision_impact": "Fixed historical path challenge, sources and rights already available."
+        "validation": "UNKNOWN",
+        "decision_impact": "Credit exposure and equity/default correlation require separate risk attribution",
+        "call_receipt": "2026-11-26T02:22:19.771Z, DOI 10.1111/j.1468-036X.2013.12009.x and 10.1111/jofi.12195."
+      },
+      {
+        "gap": "Existing laboratory state",
+        "tool": "Quant-Trade · Laboratoire",
+        "host": "ChatGPT",
+        "disposition": "EXECUTED",
+        "reason": "Read-only lab status, no test execution",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [],
+        "validation": "UNKNOWN",
+        "decision_impact": "Lab metadata idle, cannot assert ongoing execution",
+        "call_receipt": "Observed 2026-11-26T02:20:03.929Z, IDLE_NO_ADMISSIBLE_WORK."
       }
     ],
     "planned": [
       {
-        "gap": "Execute pinned path challenge",
+        "gap": "One original source retrieval and fixed statistical experiment",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Existing free runner, exact hashes, one-shot",
+        "reason": "Existing free runner, no new service",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
