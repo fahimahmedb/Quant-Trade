@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_REAL_LIABILITY_SEQUENCE_20261126",
+  "mission_id": "QT_H2_REAL_LIABILITY_ACTUAL_CPI_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T02:29:12.988Z",
+  "receipt_timestamp": "2026-11-26T02:31:33.113Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "3de3874d6166c7042cc542d4108e9ca27122213d",
+  "code_canonical_sha": "7899893041e2f96734427c95df55cda2936f27a3",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "3de3874d6166c7042cc542d4108e9ca27122213d",
-    "seam": "Real spending liability and sequence risk"
+    "code_sha": "7899893041e2f96734427c95df55cda2936f27a3",
+    "seam": "Only blocked actual CPI source arm"
   },
-  "current_blocker_or_decision": "Can a cash bucket improve ability to honor real fixed spending without terminal wealth sacrifice?",
+  "current_blocker_or_decision": "Complete actual inflation comparison using producer's equivalent published series",
   "target_gate_or_blocker": "H2 bounded economic discovery",
-  "existing_capability": "CONNECT",
+  "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Liquidity obligations and actual real wealth differ from pure accumulation; same exposure comparator",
-  "minimal_decisive_test": "Frozen #7180839999 A, 79 overlapping 20-year windows, 4 fixed policies, 3 withdrawal rates, 2 fees, actual CPI and fixed inflation stress",
-  "counterexample": "Not rebalancing after equity losses may forgo recovery; excessive cash drag",
+  "why_this_work_can_change_the_decision": "Constant inflation stresses cannot establish actual historical purchasing-power outcomes",
+  "minimal_decisive_test": "Frozen #7180878646, 99 exact December values, original pinned market hash, unchanged evaluator; only actual CPI arm",
+  "counterexample": "Constant inflation stress may obscure clustered inflation; transcription error possible",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -40,10 +40,10 @@
       "scope": "CURRENT"
     },
     {
-      "claim_id": "PRIOR",
-      "claim": "Credit campaign finished and archived",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180803835",
-      "observed_value": "Do not replay credit",
+      "claim_id": "PARTIAL",
+      "claim": "Original job actual CPI blocked; fixed arms completed",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180874797",
+      "observed_value": "No actual CPI outcomes; do not replay fixed arms",
       "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
@@ -51,42 +51,42 @@
     },
     {
       "claim_id": "REUSE",
-      "claim": "Exact prior annual market reader and source hash",
-      "object_identity": "3de3874d6166c7042cc542d4108e9ca27122213d:research/edge_lab/discovery/experiments/qt-h2-credit-diversification-20261126.py@28b5395ab3b1c2d16eded3c19633da055f332bdb",
-      "observed_value": "98 years, pinned SHA256",
+      "claim": "Existing exact policy evaluator",
+      "object_identity": "7899893041e2f96734427c95df55cda2936f27a3:research/edge_lab/discovery/experiments/qt-h2-real-liability-sequence-20261126.py@d7aee7cf5eda0df55946667ed1e101a4153df340",
+      "observed_value": "Use unchanged evaluation and pinned market hash",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "CPI",
-      "claim": "Official BLS CPI-U via FRED",
-      "object_identity": "https://fred.stlouisfed.org/series/CPIAUCNS",
-      "observed_value": "NSA monthly 1913 onward, use December endpoints",
+      "claim_id": "BLS",
+      "claim": "Official BLS historical table",
+      "object_identity": "https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-202412.pdf",
+      "observed_value": "Both pages visually inspected, December 1927–2024",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "COUNTER",
-      "claim": "Cash bucket can fail to replenish equity in drawdowns",
-      "object_identity": "https://www.kitces.com/blog/managing-sequence-of-return-risk-with-bucket-strategies-vs-a-total-return-with-rebalancing-approach/",
-      "observed_value": "Matched allocation and rebalancing control",
+      "claim_id": "BLS2025",
+      "claim": "Official December 2025 CPI release",
+      "object_identity": "https://www.bls.gov/news.release/archives/cpi_01132026.htm",
+      "observed_value": "December 2025 324.054, 2024 315.605",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact source hashes, all fixed scenario results and any CPI block",
-  "next_action_after_pass_fail_block": "Archive and compare conditional cash liability funding separately; no capital",
+  "durable_output_required": "Actual CPI group results and same decision criterion, source provenance and limits",
+  "next_action_after_pass_fail_block": "Archive completed arm; no retuning; if new candidate, independently qualify",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 and present request; one bounded retrospective batch; no real capital, live, prospective or deployment",
+  "authority_scope": "Issue #60 and present request, only blocked historical CPI arm, no global or live authority",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 real liability sequence",
+  "active_seam": "H2 actual CPI source repair",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -94,61 +94,48 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and prior archive",
+        "gap": "Prior results and exact evaluator",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Read exact heads, credit logs, prior result and router",
+        "reason": "Read partial logs, exact source, frozen replacement inputs",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180803835",
-          "3de3874d6166c7042cc542d4108e9ca27122213d:research/edge_lab/discovery/experiments/qt-h2-credit-diversification-20261126.py@28b5395ab3b1c2d16eded3c19633da055f332bdb"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180874797",
+          "7899893041e2f96734427c95df55cda2936f27a3:research/edge_lab/discovery/experiments/qt-h2-real-liability-sequence-20261126.py@d7aee7cf5eda0df55946667ed1e101a4153df340"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Reuse pinned market source; no repeated credit",
-        "call_receipt": "3de3874d and #7180803835, run45742040597."
+        "decision_impact": "No replay, same model",
+        "call_receipt": "Run 45742752620 and #7180874797/#7180878646."
       },
       {
-        "gap": "Actual inflation and counterexample",
+        "gap": "Producer-equivalent CPI source",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened official FRED/NYU and published sequence-risk counterexample",
+        "reason": "BLS PDF pages 1/2 screenshots inspected and 2025 release table read",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://fred.stlouisfed.org/series/CPIAUCNS",
-          "https://www.kitces.com/blog/managing-sequence-of-return-risk-with-bucket-strategies-vs-a-total-return-with-rebalancing-approach/"
+          "https://www.bls.gov/cpi/tables/supplemental-files/historical-cpi-u-202412.pdf",
+          "https://www.bls.gov/news.release/archives/cpi_01132026.htm"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Use matched exposure control and actual December CPI",
-        "call_receipt": "CPIAUCNS metadata and Kitces full page opened."
-      },
-      {
-        "gap": "Additional metered searches",
-        "tool": "NONE",
-        "host": "ChatGPT",
-        "disposition": "SKIPPED",
-        "reason": "NO_MATERIAL_INCREMENT",
-        "access_verified": false,
-        "authorized": false,
-        "budget_verified": false,
-        "primary_refs": [],
-        "validation": "NOT_EXECUTED",
-        "decision_impact": "Primary market and CPI source plus clear counterexample sufficient for frozen exploratory test."
+        "decision_impact": "Restore historical inflation arm without changing rules; manual transcription limitation",
+        "call_receipt": "Official historical-cpi-u-202412.pdf pages 1/2, Jan13 2026 release; 99 values frozen."
       }
     ],
     "planned": [
       {
-        "gap": "Run fixed withdrawal policies against pinned market and actual CPI",
+        "gap": "Execute only actual CPI arm",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Existing free runner, exact admission, no new service",
+        "reason": "Existing free one-shot runner, no new infrastructure",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
