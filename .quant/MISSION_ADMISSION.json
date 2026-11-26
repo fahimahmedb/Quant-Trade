@@ -1,22 +1,22 @@
 {
   "mission_id": "QT_H2_INDUSTRY_DIVERSIFICATION_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T01:08:47.741Z",
+  "receipt_timestamp": "2026-11-26T01:09:58.117Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "dda5ef5b50301f5ca7330b0a55c5d86b911b03d3",
+  "code_canonical_sha": "17a90b463c5255728101f71a348168b5e334a4bf",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "dda5ef5b50301f5ca7330b0a55c5d86b911b03d3",
+    "code_sha": "17a90b463c5255728101f71a348168b5e334a4bf",
     "seam": "Four fixed industry diversification expressions"
   },
-  "current_blocker_or_decision": "Does equal industry weighting with scheduled rebalancing outperform passive alternatives after costs and statistical hurdles?",
+  "current_blocker_or_decision": "Synthetic sentinel rejection failed before any historical data access; fix raw percentage sentinel only.",
   "target_gate_or_blocker": "H2 bounded historical economic discovery",
-  "existing_capability": "CONNECT",
+  "existing_capability": "REPAIR",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
   "why_this_work_can_change_the_decision": "Distinct concentration and rebalancing mechanism without predicting returns; isolate same initial holdings comparator.",
-  "minimal_decisive_test": "Frozen 7179466861, four expressions, 1970–89 training, 1990–2025 evaluation, 10/30bp, cost drag and Bonferroni 8 contrasts.",
+  "minimal_decisive_test": "Original frozen #7179466861 unchanged; repair comment 7179498715; run 45733736771 synthetic failed, outcomes skipped. Reject original -99.99/-999 before scale, rerun same test once.",
   "counterexample": "Drifting buyhold may beat rebalancing; size/value exposure or risk difference can explain apparent gain.",
   "primary_evidence": [
     {
@@ -95,6 +95,16 @@
       "object_identity": "https://academic.oup.com/raps/article/13/2/307/6874022",
       "observed_value": "Distinct from industry allocation; need direct test",
       "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "REPAIR",
+      "claim": "Pre-data synthetic failure and skipped outcome step",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45733736771/job/139621838948",
+      "observed_value": "REAL_MISSION_ADMISSION=PASS; AssertionError missing sentinel accepted; real test skipped",
+      "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
@@ -177,6 +187,22 @@
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
         "decision_impact": "Direct official archive is decisive; no additional subscription."
+      },
+      {
+        "gap": "Repair exact source without accessing outcome",
+        "tool": "GitHub",
+        "host": "ChatGPT",
+        "disposition": "EXECUTED",
+        "reason": "Original source blob and actual failed job/steps/log inspected",
+        "access_verified": true,
+        "authorized": true,
+        "budget_verified": true,
+        "primary_refs": [
+          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45733736771/job/139621838948"
+        ],
+        "validation": "VALIDATED",
+        "decision_impact": "Fix raw sentinel comparison only; original protocol preserved",
+        "call_receipt": "Run 45733736771 / job 139621838948, source af0dd7c24496cdb3da2a25e57102b4b9d90ae9bc."
       }
     ],
     "planned": [

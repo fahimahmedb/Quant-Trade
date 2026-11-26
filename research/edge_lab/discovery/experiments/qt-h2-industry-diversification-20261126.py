@@ -38,7 +38,9 @@ def parse(text,n):
         begun=True;d=row[0].strip()
         if d not in MONTHS:continue
         if d in out:raise ValueError("duplicate "+d)
-        v=[float(row[j])/100 for j in indices]
+        raw=[float(row[j]) for j in indices]
+        if any(x in (-99.99,-999.0) for x in raw):raise ValueError("missing sentinel "+d)
+        v=[x/100 for x in raw]
         if not all(math.isfinite(x) and -1<x<5 and x not in (-.9999,-.99,-.999) for x in v):raise ValueError("invalid or missing "+d)
         if not n and (v[0]+v[3]<=-1 or abs(v[3])>.1):raise ValueError("market/RF invalid")
         out[d]=v
