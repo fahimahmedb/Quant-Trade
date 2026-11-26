@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_STOCK_REVERSAL_20261126",
+  "mission_id": "QT_H2_FISCAL_CAPTURE_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T01:51:11.884Z",
+  "receipt_timestamp": "2026-11-26T02:01:23.243Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "12d29d7e33414c385e82495746c2a9d50034222d",
+  "code_canonical_sha": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "12d29d7e33414c385e82495746c2a9d50034222d",
-    "seam": "Stock reversal economic screening"
+    "code_sha": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2",
+    "seam": "PER vs PEA matched net cash fiscal model"
   },
-  "current_blocker_or_decision": "Can fixed loser tilt produce economically material net gain?",
+  "current_blocker_or_decision": "Can deferred taxation and reinvested refund overcome wrapper fees and exit taxes under same cash budget?",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Distinct liquidity and long-horizon correction mechanism; same-size neutral comparison.",
-  "minimal_decisive_test": "Frozen #7180194122 A, 4 fixed expressions, 420 months, 8 contrasts, fees and drag, no parameter tuning",
-  "counterexample": "Costs, distress and size exposure can overwhelm reversal premium.",
+  "why_this_work_can_change_the_decision": "Quantify exact thresholds and historical return-path stress, not new alpha",
+  "minimal_decisive_test": "Frozen #7180371113 A: 600 deterministic grid, 54 retrospective cohort groups, two cost scenarios, no optimization",
+  "counterexample": "Long-horizon fee drag or high exit tax can outweigh deduction; lockup differs.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -41,52 +41,72 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Previous deployment and frictions work complete",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180113420",
-      "observed_value": "Do not replay prior result",
+      "claim": "Prior stock reversal closed",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180245140",
+      "observed_value": "No replay",
       "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "LIB",
-      "claim": "Official original archives",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-      "observed_value": "Exact links 214 and 238 opened; ZIP unsupported/cache miss",
+      "claim_id": "PER",
+      "claim": "Capital treatment for deductible contributions",
+      "object_identity": "https://bofip.impots.gouv.fr/bofip/14911-PGP.html/identifiant=BOI-ANNX-000513-20260810",
+      "observed_value": "Ordinary capital withdrawal, contribution and gains distinct",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "ST",
-      "claim": "Short term size/prior methodology",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_1_0.html",
-      "observed_value": "Monthly prior return, NYSE cutoffs",
+      "claim_id": "PEA",
+      "claim": "PEA gains exempt from income tax after five years",
+      "object_identity": "https://www.service-public.gouv.fr/particuliers/vosdroits/F22449",
+      "observed_value": "PS still payable",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "LT",
-      "claim": "Long term size/prior methodology",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_60_13.html",
-      "observed_value": "Prior 13–60 returns, value-weighted source",
+      "claim_id": "SOCIAL",
+      "claim": "2026 general social contribution 18.6%",
+      "object_identity": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2329",
+      "observed_value": "Future tax uncertain",
       "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "FEES",
+      "claim": "Illustrative wrapper fee from actual provider",
+      "object_identity": "https://www.linxea.com/per/linxea-spirit-per/",
+      "observed_value": "0.50% annual UC and EUR10 association fee; ETF transaction fees inconsistent with help",
+      "source_kind": "OFFICIAL_WEB_PAGE",
+      "opened": true,
+      "support": "SUPPORTS",
+      "scope": "CURRENT"
+    },
+    {
+      "claim_id": "REUSE",
+      "claim": "Reuse already qualified original reader",
+      "object_identity": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2:research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py@7cfa8481a7934313b3ff684b23b63069d6c037a4",
+      "observed_value": "420 months, original archive hashes and raw sentinel validation",
+      "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "All exact original source hashes and economic test results, including blocks",
-  "next_action_after_pass_fail_block": "Persist complete results, only further qualify survivor, continue other lanes",
+  "durable_output_required": "Full grid and cohort aggregates with exact source hashes and outcome decisions",
+  "next_action_after_pass_fail_block": "Archive and qualify conditional threshold; other lanes in current chat, no real capital",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Owner issue #60 scoped historical research; no capital, deployment or prospective rights",
+  "authority_scope": "Owner issue #60 bounded retrospective research and hypothetical calculations, no capital or prospective authority",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 stock reversal",
+  "active_seam": "H2 fiscal capture",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -94,62 +114,77 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Canonical state and earlier work",
+        "gap": "Canonical state and reuse",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Exact canonical heads and records retrieved",
+        "reason": "Exact heads, prior issue and source reader inspected",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180113420"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180245140",
+          "00d29c839b8e3aea499d389b0ead9bcec5d65ff2:research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py@7cfa8481a7934313b3ff684b23b63069d6c037a4"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "New stock-level expression, no repeat of rejected sector strategy",
-        "call_receipt": "Exact HEAD and #7180113420 read."
+        "decision_impact": "Reuse known reader, no new architecture",
+        "call_receipt": "00d29c839b8e3aea499d389b0ead9bcec5d65ff2, reader 7cfa8481a7934313b3ff684b23b63069d6c037a4."
       },
       {
-        "gap": "Official archive links and methodology",
+        "gap": "Current official tax model and fee assumptions",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened official library and detail methods",
+        "reason": "Official doctrine and fee page opened",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_1_0.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_60_13.html"
+          "https://bofip.impots.gouv.fr/bofip/14911-PGP.html/identifiant=BOI-ANNX-000513-20260810",
+          "https://www.service-public.gouv.fr/particuliers/vosdroits/F22449",
+          "https://www.service-public.gouv.fr/particuliers/vosdroits/F2329",
+          "https://www.linxea.com/per/linxea-spirit-per/"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Fixed size/prior sleeves and matched neutral",
-        "call_receipt": "Library 214/238 links; native unsupported/cache miss."
+        "decision_impact": "Separate tax on capital/gain, model known cost and future uncertainty",
+        "call_receipt": "BOI-ANNX-000513 20260810, F22449/F2329, Linxea official fee page."
       },
       {
-        "gap": "Independent literature challenge",
-        "tool": "Wiley Scholar Gateway",
+        "gap": "Independent statutory retrieval",
+        "tool": "Legal Data Hunter",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Free quota 22/30 verified and targeted search",
+        "reason": "Targeted resolver, prior free access verified; no upgrade",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [],
-        "validation": "UNKNOWN",
-        "decision_impact": "Market impact may erase reversal; model explicit additional drag",
-        "call_receipt": "5 passages/2 papers, 2026-11-26T01:49:58.115Z DOI 10.1111/j.1540-6261.2006.01060.x."
+        "validation": "FAILED",
+        "decision_impact": "163 quatervicies returned abrogated identity; excluded, use primary current BOFiP",
+        "call_receipt": "LEGIARTI000006308148 ABROGE effective 1991-12-31; wrong match."
+      },
+      {
+        "gap": "Additional literature providers",
+        "tool": "NONE",
+        "host": "ChatGPT",
+        "disposition": "SKIPPED",
+        "reason": "NO_MATERIAL_INCREMENT",
+        "access_verified": false,
+        "authorized": false,
+        "budget_verified": false,
+        "primary_refs": [],
+        "validation": "NOT_EXECUTED",
+        "decision_impact": "Deterministic tax and fees, no paper needed to establish current statutory rule."
       }
     ],
     "planned": [
       {
-        "gap": "Original archives and frozen test",
+        "gap": "Run original archive return-path stress",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Previously successful free public runner",
+        "reason": "Existing free runner, identical proven acquisition, scoped retrospective only",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
