@@ -1,0 +1,33 @@
+name: QT H2 available capital deployment (one-shot)
+on:
+  push:
+    branches: [code/canonical]
+    paths:
+      - ".github/workflows/qt-h2-available-capital-deployment-20261126.yml"
+permissions:
+  contents: read
+jobs:
+  bounded-replay:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact admitted subject
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "${{ github.event.before }}" = "2255625959fe82a6f3afcd1427933d9cdb08454a"
+          git fetch --no-tags origin project/canonical
+          test "$(git rev-parse FETCH_HEAD)" = "d772dd96cdac107363dec1503c5cf60e49bc4862"
+          git show FETCH_HEAD:governance/AI_WORKING_METHOD_V1.json > /tmp/qt-deploy-contract.json
+          git ls-remote --heads origin | awk '{sub("refs/heads/", "", $2); print $2}' > /tmp/qt-deploy-branches.txt
+          python scripts/validate_ai_working_method.py /tmp/qt-deploy-contract.json AGENTS.md --branches-file /tmp/qt-deploy-branches.txt --admission .quant/MISSION_ADMISSION.json --current-project-sha d772dd96cdac107363dec1503c5cf60e49bc4862 --current-code-sha 2255625959fe82a6f3afcd1427933d9cdb08454a --current-router-identity governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c --expected-mission-id QT_H2_AVAILABLE_CAPITAL_DEPLOYMENT_20261126
+      - name: Synthetic checks before outcomes
+        run: python research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py --self-test
+      - name: Evaluate frozen matched cohorts
+        run: python research/edge_lab/discovery/experiments/qt-h2-available-capital-deployment-20261126.py

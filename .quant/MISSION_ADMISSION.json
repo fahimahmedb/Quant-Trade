@@ -1,27 +1,27 @@
 {
-  "mission_id": "QT_H2_INDUSTRY_DIVERSIFICATION_20261126",
+  "mission_id": "QT_H2_AVAILABLE_CAPITAL_DEPLOYMENT_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T01:09:58.117Z",
+  "receipt_timestamp": "2026-11-26T01:40:47.862Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "17a90b463c5255728101f71a348168b5e334a4bf",
+  "code_canonical_sha": "2255625959fe82a6f3afcd1427933d9cdb08454a",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "17a90b463c5255728101f71a348168b5e334a4bf",
-    "seam": "Four fixed industry diversification expressions"
+    "code_sha": "2255625959fe82a6f3afcd1427933d9cdb08454a",
+    "seam": "Historical available-capital deployment timing"
   },
-  "current_blocker_or_decision": "Synthetic sentinel rejection failed before any historical data access; fix raw percentage sentinel only.",
-  "target_gate_or_blocker": "H2 bounded historical economic discovery",
-  "existing_capability": "REPAIR",
+  "current_blocker_or_decision": "Quantify gain and risk cost of delaying already available long-term capital",
+  "target_gate_or_blocker": "H2 bounded economic discovery",
+  "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "Distinct concentration and rebalancing mechanism without predicting returns; isolate same initial holdings comparator.",
-  "minimal_decisive_test": "Original frozen #7179466861 unchanged; repair comment 7179498715; run 45733736771 synthetic failed, outcomes skipped. Reject original -99.99/-999 before scale, rerun same test once.",
-  "counterexample": "Drifting buyhold may beat rebalancing; size/value exposure or risk difference can explain apparent gain.",
+  "why_this_work_can_change_the_decision": "A net opportunity-cost decision separate from directional signals, reserve timing and rejected expressions.",
+  "minimal_decisive_test": "Frozen #7180005005; 12 primary contrasts; 10/30bp fees; 361 matched rolling cohorts; 24m block bootstrap.",
+  "counterexample": "Immediate equity deployment increases initial drawdown; risk-aversion and fair-value uncertainty may favor staging.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
-      "claim": "Current qualified declaration gate",
+      "claim": "Existing qualified tool policy",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
       "observed_value": "No new authority",
       "source_kind": "GIT_BLOB",
@@ -31,92 +31,72 @@
     },
     {
       "claim_id": "ROUTER",
-      "claim": "Scoped historical mandate only",
+      "claim": "Bounded historical work only",
       "object_identity": "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-      "observed_value": "Global economic/live/capital permissions false",
+      "observed_value": "Global capital/live permission unchanged",
       "source_kind": "GIT_BLOB",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DIFF",
-      "claim": "Only unrelated feed paths changed since previous experiment",
-      "object_identity": "https://api.github.com/repos/fahimahmedb/Quant-Trade/compare/3ac87c18bb68e5331958ed552f558abe9ea39b75...dda5ef5b50301f5ca7330b0a55c5d86b911b03d3",
-      "observed_value": "Six feed paths; no input values inspected",
-      "source_kind": "GITHUB_DIFF",
+      "claim_id": "PRIOR",
+      "claim": "Four industry strategies failed",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7179518326",
+      "observed_value": "Prior results retained; all 15 runs verified terminal success",
+      "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "LIB",
-      "claim": "Official research library and exact archive links",
+      "claim_id": "DATA",
+      "claim": "Official Fama French library",
       "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-      "observed_value": "Historical returns revised; monthly industry portfolios",
+      "observed_value": "Monthly data link; prior runner access",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "I12",
-      "claim": "12 industry methodology",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_12_ind_port.html",
-      "observed_value": "Annual SIC industry classification",
+      "claim_id": "SCHEMA",
+      "claim": "International factor construction",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library/f-f_3developed.html",
+      "observed_value": "Total returns USD and US T-bill proxy",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "I49",
-      "claim": "49 industry methodology",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_49_ind_port.html",
-      "observed_value": "Annual SIC classification; not stock equal weighting",
+      "claim_id": "KNOWN",
+      "claim": "Earlier evidence of time-in-market advantage",
+      "object_identity": "https://www.vanguard.co.uk/professional/vanguard-365/financial-planning/financial-well-being/cost-averaging",
+      "observed_value": "Known economic mechanism; downside tradeoff",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "COUNTER",
-      "claim": "Buyhold can outperform periodic rebalancing",
-      "object_identity": "https://link.springer.com/article/10.1007/s11408-022-00419-6",
-      "observed_value": "Momentum, costs and risk differences matter",
+      "claim_id": "CHALLENGE",
+      "claim": "DCA downside risk analysis",
+      "object_identity": "https://doi.org/10.1016/J.EJOR.2020.04.055",
+      "observed_value": "Risk and implementation tradeoffs",
       "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "SUPPORT",
-      "claim": "Stock-level diversification literature",
-      "object_identity": "https://academic.oup.com/raps/article/13/2/307/6874022",
-      "observed_value": "Distinct from industry allocation; need direct test",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "REPAIR",
-      "claim": "Pre-data synthetic failure and skipped outcome step",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45733736771/job/139621838948",
-      "observed_value": "REAL_MISSION_ADMISSION=PASS; AssertionError missing sentinel accepted; real test skipped",
-      "source_kind": "GITHUB_ACTIONS_LOG",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Three source hashes, full results, all eight primary contrasts and decision.",
-  "next_action_after_pass_fail_block": "Persist all results; only survivor merits independently admitted implementation tests.",
+  "durable_output_required": "Exact source hashes, full matched results, risk and tax scenario, next decision.",
+  "next_action_after_pass_fail_block": "Record qualified historical criterion, not trading recommendation or independent alpha; continue distinct hypothesis.",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 and current request; four bounded historical expressions only, no trading, capital, prospective or deployment authority.",
+  "authority_scope": "Issue #60 and present Owner request, scoped historical analysis only.",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 industry diversification",
+  "active_seam": "H2 available capital deployment",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -124,59 +104,58 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Current authority and change reconciliation",
+        "gap": "Current authority and completed prior results",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Exact heads, method, router and diff inspected",
+        "reason": "Opened exact heads, method, router and prior result",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://api.github.com/repos/fahimahmedb/Quant-Trade/compare/3ac87c18bb68e5331958ed552f558abe9ea39b75...dda5ef5b50301f5ca7330b0a55c5d86b911b03d3"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7179518326"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "No overwrite or repeated negative trial",
-        "call_receipt": "Exact bases and prior result 7149869984 read."
+        "decision_impact": "Do not replay failed industry expression",
+        "call_receipt": "Exact heads 22556259 and d772dd96; 15 workflows success."
       },
       {
-        "gap": "Official data and theoretical counterexample",
+        "gap": "Original data and known risk tradeoff",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened original industry methodology and source links, competing papers",
+        "reason": "Official metadata and public study abstracts returned",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_12_ind_port.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_49_ind_port.html",
-          "https://link.springer.com/article/10.1007/s11408-022-00419-6",
-          "https://academic.oup.com/raps/article/13/2/307/6874022"
+          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library/f-f_3developed.html",
+          "https://www.vanguard.co.uk/professional/vanguard-365/financial-planning/financial-well-being/cost-averaging",
+          "https://doi.org/10.1016/J.EJOR.2020.04.055"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Value weighted industry sleeves, drift comparator and costs",
-        "call_receipt": "12 and 49 ZIP downloads unsupported 400; original detail pages opened."
+        "decision_impact": "Do not mistake risk premium for new alpha; compare same available cash.",
+        "call_receipt": "Official library and international factor description, Vanguard and EJOR result retrieved."
       },
       {
         "gap": "Independent literature challenge",
         "tool": "Wiley Scholar Gateway",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Free quota 24/30 checked, targeted actual search",
+        "reason": "Free quota 23/30 preflight; targeted actual search",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [],
         "validation": "UNKNOWN",
-        "decision_impact": "6 passages/5 papers, identify factor and rebalancing confounds; no exact outcome evidence",
-        "call_receipt": "2026-11-26T01:07:32.689Z, DOI 10.1111/0022-1082.00146 and 10.1111/j.1467-6419.2012.00742.x."
+        "decision_impact": "Fair value dispersion and utility differ from expected wealth; add CE diagnostics",
+        "call_receipt": "5 passages/3 papers; 2026-11-26T01:39:44.494Z; DOI 10.1002/cfp2.1182."
       },
       {
-        "gap": "Duplicate provider or paid service",
+        "gap": "Additional redundant searches",
         "tool": "NONE",
         "host": "ChatGPT",
         "disposition": "SKIPPED",
@@ -186,31 +165,15 @@
         "budget_verified": false,
         "primary_refs": [],
         "validation": "NOT_EXECUTED",
-        "decision_impact": "Direct official archive is decisive; no additional subscription."
-      },
-      {
-        "gap": "Repair exact source without accessing outcome",
-        "tool": "GitHub",
-        "host": "ChatGPT",
-        "disposition": "EXECUTED",
-        "reason": "Original source blob and actual failed job/steps/log inspected",
-        "access_verified": true,
-        "authorized": true,
-        "budget_verified": true,
-        "primary_refs": [
-          "https://github.com/fahimahmedb/Quant-Trade/actions/runs/45733736771/job/139621838948"
-        ],
-        "validation": "VALIDATED",
-        "decision_impact": "Fix raw sentinel comparison only; original protocol preserved",
-        "call_receipt": "Run 45733736771 / job 139621838948, source af0dd7c24496cdb3da2a25e57102b4b9d90ae9bc."
+        "decision_impact": "Official source and literature sufficient; no paid services."
       }
     ],
     "planned": [
       {
-        "gap": "Acquire three archives and execute fixed batch",
+        "gap": "Acquire official archives and compute frozen historical comparison",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Previously verified free public runner and exact official source access",
+        "reason": "Previously verified free standard public runner and original source access",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true

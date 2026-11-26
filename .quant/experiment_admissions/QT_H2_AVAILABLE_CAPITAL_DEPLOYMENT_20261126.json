@@ -1,0 +1,25 @@
+{
+  "schema": "quant-trade-scoped-economic-research-admission-v1",
+  "mission_id": "QT_H2_AVAILABLE_CAPITAL_DEPLOYMENT_20261126",
+  "authority": {
+    "type": "OWNER_DIRECT",
+    "source": "Issue #60 and present continuation request",
+    "scope": "ONE_DEPLOYMENT_BATCH_TWELVE_HISTORICAL_CONTRASTS"
+  },
+  "protocol_ref": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180005005",
+  "allowed": {
+    "historical_data_read": true,
+    "one_fixed_batch": true,
+    "source_hash_and_results_write": true
+  },
+  "not_allowed": {
+    "live_trading": true,
+    "real_capital": true,
+    "deployment": true,
+    "paid_subscriptions": true,
+    "prospective_capture": true,
+    "scientific_unblinding": true,
+    "parameter_search_after_outcomes": true
+  },
+  "global_permissions_unchanged": true
+}
