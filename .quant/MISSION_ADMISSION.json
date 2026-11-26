@@ -1,23 +1,23 @@
 {
-  "mission_id": "QT_H2_AVAILABLE_CAPITAL_DEPLOYMENT_20261126",
+  "mission_id": "QT_H2_STOCK_REVERSAL_20261126",
   "mission_kind": "BUILDER",
-  "receipt_timestamp": "2026-11-26T01:40:47.862Z",
+  "receipt_timestamp": "2026-11-26T01:51:11.884Z",
   "project_canonical_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-  "code_canonical_sha": "2255625959fe82a6f3afcd1427933d9cdb08454a",
+  "code_canonical_sha": "12d29d7e33414c385e82495746c2a9d50034222d",
   "current_router_identity": "governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
   "current_subject": {
     "project_sha": "d772dd96cdac107363dec1503c5cf60e49bc4862",
-    "code_sha": "2255625959fe82a6f3afcd1427933d9cdb08454a",
-    "seam": "Historical available-capital deployment timing"
+    "code_sha": "12d29d7e33414c385e82495746c2a9d50034222d",
+    "seam": "Stock reversal economic screening"
   },
-  "current_blocker_or_decision": "Quantify gain and risk cost of delaying already available long-term capital",
+  "current_blocker_or_decision": "Can fixed loser tilt produce economically material net gain?",
   "target_gate_or_blocker": "H2 bounded economic discovery",
   "existing_capability": "CONNECT",
   "requested_action": "REPAIR",
   "completion_intent": "CHECKPOINT",
-  "why_this_work_can_change_the_decision": "A net opportunity-cost decision separate from directional signals, reserve timing and rejected expressions.",
-  "minimal_decisive_test": "Frozen #7180005005; 12 primary contrasts; 10/30bp fees; 361 matched rolling cohorts; 24m block bootstrap.",
-  "counterexample": "Immediate equity deployment increases initial drawdown; risk-aversion and fair-value uncertainty may favor staging.",
+  "why_this_work_can_change_the_decision": "Distinct liquidity and long-horizon correction mechanism; same-size neutral comparison.",
+  "minimal_decisive_test": "Frozen #7180194122 A, 4 fixed expressions, 420 months, 8 contrasts, fees and drag, no parameter tuning",
+  "counterexample": "Costs, distress and size exposure can overwhelm reversal premium.",
   "primary_evidence": [
     {
       "claim_id": "METHOD",
@@ -41,62 +41,52 @@
     },
     {
       "claim_id": "PRIOR",
-      "claim": "Four industry strategies failed",
-      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7179518326",
-      "observed_value": "Prior results retained; all 15 runs verified terminal success",
+      "claim": "Previous deployment and frictions work complete",
+      "object_identity": "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180113420",
+      "observed_value": "Do not replay prior result",
       "source_kind": "GITHUB_ISSUE_COMMENT",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "DATA",
-      "claim": "Official Fama French library",
+      "claim_id": "LIB",
+      "claim": "Official original archives",
       "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-      "observed_value": "Monthly data link; prior runner access",
+      "observed_value": "Exact links 214 and 238 opened; ZIP unsupported/cache miss",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "SCHEMA",
-      "claim": "International factor construction",
-      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library/f-f_3developed.html",
-      "observed_value": "Total returns USD and US T-bill proxy",
+      "claim_id": "ST",
+      "claim": "Short term size/prior methodology",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_1_0.html",
+      "observed_value": "Monthly prior return, NYSE cutoffs",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     },
     {
-      "claim_id": "KNOWN",
-      "claim": "Earlier evidence of time-in-market advantage",
-      "object_identity": "https://www.vanguard.co.uk/professional/vanguard-365/financial-planning/financial-well-being/cost-averaging",
-      "observed_value": "Known economic mechanism; downside tradeoff",
-      "source_kind": "OFFICIAL_WEB_PAGE",
-      "opened": true,
-      "support": "SUPPORTS",
-      "scope": "CURRENT"
-    },
-    {
-      "claim_id": "CHALLENGE",
-      "claim": "DCA downside risk analysis",
-      "object_identity": "https://doi.org/10.1016/J.EJOR.2020.04.055",
-      "observed_value": "Risk and implementation tradeoffs",
+      "claim_id": "LT",
+      "claim": "Long term size/prior methodology",
+      "object_identity": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_60_13.html",
+      "observed_value": "Prior 13–60 returns, value-weighted source",
       "source_kind": "OFFICIAL_WEB_PAGE",
       "opened": true,
       "support": "SUPPORTS",
       "scope": "CURRENT"
     }
   ],
-  "durable_output_required": "Exact source hashes, full matched results, risk and tax scenario, next decision.",
-  "next_action_after_pass_fail_block": "Record qualified historical criterion, not trading recommendation or independent alpha; continue distinct hypothesis.",
+  "durable_output_required": "All exact original source hashes and economic test results, including blocks",
+  "next_action_after_pass_fail_block": "Persist complete results, only further qualify survivor, continue other lanes",
   "owner_authorization_required": true,
   "owner_authorized": true,
-  "authority_scope": "Issue #60 and present Owner request, scoped historical analysis only.",
+  "authority_scope": "Owner issue #60 scoped historical research; no capital, deployment or prospective rights",
   "external_agent_dispatch_requested": false,
-  "active_seam": "H2 available capital deployment",
+  "active_seam": "H2 stock reversal",
   "active_decision_lanes": 1,
   "mutating_builders_on_seam": 1,
   "local_blocker": false,
@@ -104,76 +94,62 @@
   "tool_use_review": {
     "receipts": [
       {
-        "gap": "Current authority and completed prior results",
+        "gap": "Canonical state and earlier work",
         "tool": "GitHub",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Opened exact heads, method, router and prior result",
+        "reason": "Exact canonical heads and records retrieved",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/AI_WORKING_METHOD_V1.json@963238082295738f4462ec3764b5a11f2100b2c5",
           "d772dd96cdac107363dec1503c5cf60e49bc4862:governance/CURRENT_PROJECT_STATE.md@45984e9a8de5480a5baab8d4b6c64d27ebedb06c",
-          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7179518326"
+          "https://github.com/fahimahmedb/Quant-Trade/issues/60#issuecomment-7180113420"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Do not replay failed industry expression",
-        "call_receipt": "Exact heads 22556259 and d772dd96; 15 workflows success."
+        "decision_impact": "New stock-level expression, no repeat of rejected sector strategy",
+        "call_receipt": "Exact HEAD and #7180113420 read."
       },
       {
-        "gap": "Original data and known risk tradeoff",
+        "gap": "Official archive links and methodology",
         "tool": "native web",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Official metadata and public study abstracts returned",
+        "reason": "Opened official library and detail methods",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [
           "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
-          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library/f-f_3developed.html",
-          "https://www.vanguard.co.uk/professional/vanguard-365/financial-planning/financial-well-being/cost-averaging",
-          "https://doi.org/10.1016/J.EJOR.2020.04.055"
+          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_1_0.html",
+          "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_6_port_form_sz_pr_60_13.html"
         ],
         "validation": "VALIDATED",
-        "decision_impact": "Do not mistake risk premium for new alpha; compare same available cash.",
-        "call_receipt": "Official library and international factor description, Vanguard and EJOR result retrieved."
+        "decision_impact": "Fixed size/prior sleeves and matched neutral",
+        "call_receipt": "Library 214/238 links; native unsupported/cache miss."
       },
       {
         "gap": "Independent literature challenge",
         "tool": "Wiley Scholar Gateway",
         "host": "ChatGPT",
         "disposition": "EXECUTED",
-        "reason": "Free quota 23/30 preflight; targeted actual search",
+        "reason": "Free quota 22/30 verified and targeted search",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true,
         "primary_refs": [],
         "validation": "UNKNOWN",
-        "decision_impact": "Fair value dispersion and utility differ from expected wealth; add CE diagnostics",
-        "call_receipt": "5 passages/3 papers; 2026-11-26T01:39:44.494Z; DOI 10.1002/cfp2.1182."
-      },
-      {
-        "gap": "Additional redundant searches",
-        "tool": "NONE",
-        "host": "ChatGPT",
-        "disposition": "SKIPPED",
-        "reason": "NO_MATERIAL_INCREMENT",
-        "access_verified": false,
-        "authorized": false,
-        "budget_verified": false,
-        "primary_refs": [],
-        "validation": "NOT_EXECUTED",
-        "decision_impact": "Official source and literature sufficient; no paid services."
+        "decision_impact": "Market impact may erase reversal; model explicit additional drag",
+        "call_receipt": "5 passages/2 papers, 2026-11-26T01:49:58.115Z DOI 10.1111/j.1540-6261.2006.01060.x."
       }
     ],
     "planned": [
       {
-        "gap": "Acquire official archives and compute frozen historical comparison",
+        "gap": "Original archives and frozen test",
         "tool": "GitHub Actions standard public runner",
         "host": "GitHub Actions",
-        "reason": "Previously verified free standard public runner and original source access",
+        "reason": "Previously successful free public runner",
         "access_verified": true,
         "authorized": true,
         "budget_verified": true
